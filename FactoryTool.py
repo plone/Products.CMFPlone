@@ -134,7 +134,10 @@ class TempFolder(TempFolderBase):
             return (aq_base(self._getOb(id)).__of__(temp_folder)).__of__(intended_parent)
         else:
             type_name = self.getId()
-            self.invokeFactory(id=id, type_name=type_name)
+            try:
+                self.invokeFactory(id=id, type_name=type_name)
+            except:
+                getToolByName(self, 'plone_utils').logException()
             obj = self._getOb(id)
             obj.unindexObject()  # keep obj out of the catalog
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
