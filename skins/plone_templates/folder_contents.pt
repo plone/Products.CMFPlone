@@ -74,7 +74,8 @@
             </tal:contentTypes>
 
             <div tal:condition="standalone|nothing"
-                 tal:define="types allowedSortedContentTypes;">
+                 tal:define="types allowedSortedContentTypes;
+                             filterOut here/getNotAddableTypes;">
 
                 <!-- Add Item pulldown -->
                 <label for="select_add_item">
@@ -90,6 +91,8 @@
                     <option value="Select" i18n:translate="label_select">Select</option>
                     <metal:block tal:repeat="ctype types">
                     <option value="Document"
+                            tal:define="Id ctype/getId"
+                            tal:condition="python:Id not in filterOut"
                             tal:attributes="value ctype/getId"
                             tal:content="ctype/Title"
                             i18n:translate="">Document</option>
