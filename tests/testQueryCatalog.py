@@ -121,9 +121,15 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
 
     def testEmptyItem(self):
         request = {'SearchableText':''}
-        expected = request
+        # queryCatalog will return empty result without calling the catalog tool
+        expected = []
         self.assertEqual(self.folder.queryCatalog(request), expected)
 
+    def testEmptyItemShowAll(self):
+        request = {'SearchableText':''}
+        # Catalog gets a blank search, and returns the empty dict
+        expected = {}
+        self.assertEqual(self.folder.queryCatalog(request, show_all=1), expected)
 
 AddPortalTopics = 'Add portal topics'
 

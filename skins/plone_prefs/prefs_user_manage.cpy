@@ -64,5 +64,5 @@ for userid in resetpw:
 if removed:
     acl_users.userFolderDelUsers(removed)
 
-portal_status_message="Changes made"
+portal_status_message="Changes made."
 return state.set(portal_status_message=portal_status_message)

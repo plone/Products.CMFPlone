@@ -108,10 +108,8 @@
                  width="16" 
                  height="16" 
                  tal:attributes="src string:$portal_url/${portaltype/getIcon}"/>
-            <span tal:omit-tag="" i18n:translate="Add ${type}">Add 
-                <tal:title i18n:name="type"
-                           tal:content="portaltype/Title">Title</tal:title>
-            </span>
+            <span tal:define="ttype python:here.translate(portaltype.Title())"
+                  tal:replace="python:here.translate('Add ${type}', {'type':ttype})" />
         </a>
     </li>
 

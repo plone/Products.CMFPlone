@@ -24,7 +24,7 @@ for product in ('CMFPlone', 'Formulator', 'CMFActionIcons', 'CMFQuickInstallerTo
                 'BTreeFolder2', 'GroupUserFolder', 'CMFFormController',
                 'PlacelessTranslationService', 'Archetypes', 'generator', 'validation',
                 'PortalTransforms', 'CMFCore', 'CMFDefault', 'CMFCalendar', 'DCWorkflow',
-                'CMFTopic'):
+                'CMFTopic', 'PloneErrorReporting'):
     os.system("cd .. ; cp -rfL %s %s" % (product, releasename))
 
 # clean up

@@ -6,6 +6,11 @@ from Products.CMFCore.FSImage import FSImage
 
 def tag(self, height=None, width=None, alt=None,
         scale=0, xscale=0, yscale=0, css_class=None, title=None, longdesc=None, **args ):
+    """
+    monkey-patched by Plone to add auto-scaling support,
+    long description, etc.
+    """
+
     if not args.has_key('border'):
         args['border'] = None
 
@@ -55,8 +60,16 @@ def tag(self, height=None, width=None, alt=None,
     return '%s />' % result
 
 def fstag(self, *args, **kwargs):
+    """
+    monkey-patched by Plone.
+    """
     self._updateFromFS()
     return tag(self, *args, **kwargs)
 
+# don't lose the docstrings, they are necessary if these methods
+# are published directly.
+tag.__doc__ = '\n'.join((Image.tag.__doc__, tag.__doc__))
 Image.tag = tag
+
+fstag.__doc__ = '\n'.join((FSImage.tag.__doc__ or '', fstag.__doc__))
 FSImage.tag = fstag

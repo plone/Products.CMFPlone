@@ -473,8 +473,9 @@ class PloneTool(UniqueObject, SimpleItem):
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
-        """Set default so we can return whatever we want instead of index_html"""
-##        import pdb;pdb.set_trace()
+        """Set default so we can return whatever we want instead of
+        index_html
+        """
         # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
         # and then requests that object, for example for: /, with verb PROPFIND
         # means acquire PROPFIND from the folder and call it
@@ -482,7 +483,7 @@ class PloneTool(UniqueObject, SimpleItem):
         request = getattr(self, 'REQUEST', None)
         if request and request.has_key('REQUEST_METHOD'):
             if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
-                return self, [request['REQUEST_METHOD']]
+                return obj, [request['REQUEST_METHOD']]
         # now back to normal
 
         portal = getToolByName(self, 'portal_url').getPortalObject()
@@ -501,10 +502,11 @@ class PloneTool(UniqueObject, SimpleItem):
         for page in pages:
             if ids.has_key(page):
                 return obj, [page]
-        # we look for the default_page in the skins aswell.
+        # we look for the default_page in the portal and/or skins aswell.
+        # Use path/to/template to reference an object or a skin.
         for page in pages:
-            if hasattr(portal.portal_skins, page):
-                return obj, [page]
+            if portal.unrestrictedTraverse(page,None):
+                return obj, page.split('/')
 
         # Try the default sitewide default_page setting
         for page in portal.portal_properties.site_properties.getProperty('default_page', []):

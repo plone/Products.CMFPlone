@@ -137,9 +137,9 @@ Improved docs:
      http://sourceforge.net/projects/collective
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=107326
 
-  - "Epoz": 
+  - "Epoz 0.7.5": 
      Epoz allows you to edit Zope- or Plone-objects with a wysiwyg-editor.
-     http://zope.org/Members/mjablonski/Epoz
+     http://mjablonski.zope.de/Epoz
  
 =============================================================================== 
 
