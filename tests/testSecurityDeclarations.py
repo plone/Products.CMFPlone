@@ -241,7 +241,7 @@ except ParseError: pass
                        'print DateTime.DateTime.DateTimeError')
 
         def testCatch_DateTimeErrorRaisedByPythonModule(self):
-            self.folder._setObject('raiseDateTimeError', dummy.Raiser(DateTimeError))
+            self.folder._setObject('raiseDateTimeError', dummy.Raiser(self.DateTimeError))
             try:
                 self.check('''
 from DateTime.DateTime import DateTimeError
