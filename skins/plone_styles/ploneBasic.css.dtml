@@ -81,6 +81,7 @@ p a:active {
 
 p img {
     border: &dtml-contentImageBorder;;
+    margin: 1em;
 }
 
 
