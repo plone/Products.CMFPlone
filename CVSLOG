@@ -1,3 +1,13 @@
+2004-03-09 12:10  limi
+
+	* skins/plone_templates/colophon.pt (Plone-2_0-branch): Updated the
+	  WAI rating to AA. Maybe Tom can tell us earlier than the day
+	  before release the next time.
+
+2004-03-09 05:05  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-09 03:10  dtremea
 
 	* skins/plone_scripts/translate.py (Plone-2_0-branch): Added a
