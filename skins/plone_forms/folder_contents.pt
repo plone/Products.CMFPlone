@@ -3,6 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
+      i18n:domain="plone"
       metal:use-macro="here/main_template/macros/master">
 
   <metal:block metal:fill-slot="javascript_head_slot">
