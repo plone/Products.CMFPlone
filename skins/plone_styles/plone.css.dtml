@@ -192,7 +192,7 @@ form {
     margin: 0;
 }
 textarea {
-    font: 110% Monaco, "Courier New", Courier, monospace;
+    font: 100% Monaco, "Courier New", Courier, monospace;
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
     background-color: white;
