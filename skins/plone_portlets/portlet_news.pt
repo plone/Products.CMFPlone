@@ -7,7 +7,7 @@
 <!-- The news box -->
 
 <div metal:define-macro="portlet"
-     tal:define="results python:request.get('news', here.portal_catalog.searchResults( meta_type='News Item'
+     tal:define="results python:request.get('news', here.portal_catalog.searchResults( portal_type='News Item'
                                                                                      , sort_on='Date'
                                                                                      , sort_order='reverse'
                                                                                      , review_state='published')[:5]);
