@@ -8,7 +8,7 @@
 		 view_action python:test(hereTypeInfo, hereTypeInfo.getActionById('view'), '');
 		 isViewTemplate python:test(template.getId(), 1, 0);"
      tal:condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0) ">	
-    TypeInfo: <span tal:replace="hereTypeInfo" />
+
     <form name="reply" 
           action="" 
           method="post"
