@@ -67,7 +67,7 @@ def normalize_tabs(self):
  
     get_transaction().commit(1)
     import time
-        return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
+    return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
 
     """
     we really ought to take actions from portal_actions, unless they belong there
