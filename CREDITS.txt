@@ -9,12 +9,15 @@ The following people contributed to help iron out wrinkles, gave feedback and co
 
 Geir Bækholt (http://elvix.com) 
 Stian Søiland (http://stain.portveien.to) 
-Magnus
-Manfred Ackermann 
-Andy Dawkins
-Ignacio Valdes
+Magnus (??lastname??) - python guru 
+Manfred Ackermann - persistent and faithful tester
+Andy Dawkins - Calendar and general Zopista 
+Ignacio Valdes - documetnation, questions
 Zope Corporation for producing ZOPE and CMF (especially Tres Seaver, Shane Hathaway, and Andrew Sawyers)
-Steve Alexander
+Steve Alexander - Helpful ZOPE Guru
+Lalo Martin - Zope Plumbing, PortalFactory, Translator Tool
+Kapil (hazmat) - Helpful ZOPE Guru
+Luis Lavena - favicon
 
 #zope on irc.openprojects.net for insight and soapbox to preach
 zopelabs.com for useful scripts 

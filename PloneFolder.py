@@ -1,6 +1,8 @@
 from Products.CMFCore.utils import _verifyActionPermissions
+from Products.CMFCore.CMFCorePermissions import View, ManageProperties, ListFolderContents
+from Products.CMFCore.CMFCorePermissions import AddPortalFolders, AddPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
-from AccessControl import Permissions, getSecurityManager
+from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base
 from Globals import InitializeClass
@@ -52,6 +54,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 DefaultSkinnedFolder = SkinnedFolder
 class PloneFolder ( DefaultSkinnedFolder ):
     meta_type = 'Plone Folder' 
+    security=ClassSecurityInfo()
 
     def __call__(self):
         '''
@@ -64,7 +67,16 @@ class PloneFolder ( DefaultSkinnedFolder ):
              return view()
 
     view = __call__
-
+    
+    security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
+    def manage_addPloneFolder(self, id, title='', REQUEST=None):
+        """ adds a new PloneFolder """
+        ob=PloneFolder(id, title)
+	self._setObject(id, ob)
+	if REQUEST is not None:
+            return self.folder_contents(self, REQUEST, portal_status_message='Folder added')
+       
+    security.declareProtected( ListFolderContents, 'listFolderContents')   
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): # XXX
         """
         Hook around 'contentValues' to let 'folder_contents'
@@ -113,14 +125,16 @@ def _getViewFor(obj, view='view', default=None):
         raise 'Not Found', ('Cannot find default view for "%s"' %
                             string.join(obj.getPhysicalPath(), '/'))
 
-def addPloneFolder( self, id, title='', description='', REQUEST=None ):
-    """
-    """
-    sf = PloneFolder( id, title )
-    sf.description = description
-    self._setObject( id, sf )
-    sf = self._getOb( id )
-    if REQUEST is not None:
-        REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
+addPloneFolder=manage_addPloneFolder=PloneFolder.manage_addPloneFolder
+
+#def addPloneFolder( self, id, title='', description='', REQUEST=None ):
+#    """
+#    """
+#    sf = PloneFolder( id, title )
+#    sf.description = description
+#    self._setObject( id, sf )
+#    sf = self._getOb( id )
+#    if REQUEST is not None:
+#        REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
 
 InitializeClass(SkinnedFolder)

@@ -1,6 +1,7 @@
 from Products.CMFDefault.MembershipTool import MembershipTool
 from Products.CMFDefault import Document
 from Products.CMFCore.utils import getToolByName
+import PloneFolder 
 
 default_member_content = '''Default page for %s
 
@@ -19,12 +20,17 @@ class MembershipTool(MembershipTool):
         """
         create a member area with a workflow enabled homepage
         """
-        portalObject = getToolByName(self, 'portal_url').getPortalObject()
-        members =  getattr(portalObject, 'Members', None)
+        parent=self.aq_inner.aq_parent
+        members=getattr(parent, 'Members', None)
     
         if members is not None and not hasattr(members, member_id):
             f_title = "%s's Home" % member_id
-            members.manage_addPortalFolder( id=member_id, title=f_title )
+            #addPloneFolder(members, id=member_id )
+            if members.meta_type=='Plone Folder':
+                members.manage_addPloneFolder( member_id, f_title )
+            else:
+                members.manage_addPortalFolder( member_id, f_title)
+
             f=getattr(members, member_id)
     
             # Grant ownership to Member
@@ -56,6 +62,7 @@ class MembershipTool(MembershipTool):
             f.index_html.reindexObject()
 
             #Add .personal folder for Portraits and Personal content
-            f.manage_addPortalFolder( id='.personal', title='Personal Items' )
-
-            
+            if f.meta_type=='Plone Folder':
+                f.manage_addPloneFolder(id='.personal', title='Personal Items' )
+            else:
+                f.manage_addPortalFolder(id='.personal', title='Personal Items')
