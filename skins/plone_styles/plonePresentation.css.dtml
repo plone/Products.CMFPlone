@@ -97,5 +97,9 @@ div.document a:visited:after {
    font-size: 90%;
    }
 
+a.skipnav { 
+    display: none;
+}
+
 </dtml-with>
 
