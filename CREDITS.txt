@@ -32,6 +32,7 @@ Godefroid Chapelle (__gotcha, BubbleNet - http://bubblenet.be) - tools subclassi
 Dieter Maurer for his Python/Zope omniscience and help around the bobosphere.
 Gregor Webber - for add on components and adventuring into the realm of Editions.
 Stefan Holek (lurker) - for the elegant unit testing framework.
+Paul Everitt - help, advice and enthusiasm
 
 Companies (Not in order of importance):
 
