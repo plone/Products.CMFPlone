@@ -88,6 +88,18 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Folder has no 'edit' action")
 
+    def testFolderEditActionBeforeSharing(self):
+        # Edit tab of folders should appear before the sharing tab
+        folder = self.types.getTypeInfo('Folder')
+        i = j = count = 0
+        for action in folder._cloneActions():
+            if action.id == 'edit':
+                i = count
+            elif action.id == 'local_roles':
+                j = count
+            count += 1
+        self.failIf(j < i)
+
     def testTopicHasFolderListingAction(self):
         # Topics should have a 'folderlisting' action
         topic = self.types.getTypeInfo('Topic')
