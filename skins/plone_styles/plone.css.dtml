@@ -1276,6 +1276,10 @@ ul.configletDetails li label {
     margin: 0;
 }
 
+.visualFontSizeCorrection { /* Correction for WYSIWYG editors */
+    font-size: 75%;
+}
+
 /*
 ** Calendar elements - used in the calendar rendering 
 */
