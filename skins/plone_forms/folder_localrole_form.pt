@@ -299,89 +299,94 @@
         </form>
       </tal:block>
 
-      <h1 i18n:translate="heading_group_shares">Add sharing permissions to groups</h1>
+      <tal:groupshares define="grouplist here/portal_groups/listGroups"
+                       condition="grouplist">
 
-      <p i18n:translate="description_group_shares">
-        Groups are a convenient way to share items to a common set of
-        users. Select one or more groups, and a role to assign.
-      </p>
-
-      <form method="post"
-            name="change_type"
-            action="folder_localrole_edit"
-            tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
-
-        <fieldset>
-
-                <legend i18n:translate="legend_available_groups">
-                    Available Groups
-                </legend>
-
-                <input type="hidden" name="change_type" value="add" />
-
-                <table class="listing" summary="Available groups">
-                <thead>
-                    <tr>
-                    <th>&nbsp;</th>
-                    <th i18n:translate="listingheader_name">Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr tal:repeat="member here/portal_groups/listGroups">
-                    <td>
-                        <label class="hiddenLabel" for="member_ids:list"
-                               i18n:translate="label_select_group">
-                            select group <span tal:content="python:member.getUserName()" i18n:name="name"/>
+          <h1 i18n:translate="heading_group_shares">Add sharing permissions to groups</h1>
+    
+          <p i18n:translate="description_group_shares">
+            Groups are a convenient way to share items to a common set of
+            users. Select one or more groups, and a role to assign.
+          </p>
+    
+          <form method="post"
+                name="change_type"
+                action="folder_localrole_edit"
+                tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
+    
+            <fieldset>
+    
+                    <legend i18n:translate="legend_available_groups">
+                        Available Groups
+                    </legend>
+    
+                    <input type="hidden" name="change_type" value="add" />
+    
+                    <table class="listing" summary="Available groups">
+                    <thead>
+                        <tr>
+                        <th>&nbsp;</th>
+                        <th i18n:translate="listingheader_name">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr tal:repeat="member grouplist">
+                        <td>
+                            <label class="hiddenLabel" for="member_ids:list"
+                                   i18n:translate="label_select_group">
+                                select group <span tal:content="python:member.getUserName()" i18n:name="name"/>
+                            </label>
+                            <input class="formSelection"
+                                type="checkbox"
+                                name="member_ids:list"
+                                id="#"
+                                value=""
+                                tabindex=""
+                                tal:attributes="value python:member.getUserName();
+                                                tabindex tabindex/next;"/>
+                        </td>
+                        <td tal:content="python:member.getUserNameWithoutGroupPrefix()">
+                            groupname
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+    
+                    <div class="field">
+    
+                        <label for="group_member_role" i18n:translate="label_localrole_to_assign">
+                            Role to assign
                         </label>
-                        <input class="formSelection"
-                            type="checkbox"
-                            name="member_ids:list"
-                            id="#"
-                            value=""
+    
+                        <select name="member_role"
+                                id="group_member_role"
+                                tabindex=""
+                                tal:attributes="tabindex tabindex/next;">
+                            <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
+                                    tal:attributes="value lroles"
+                                    tal:content="lroles"
+                                    i18n:translate="">
+                                Role name
+                            </option>
+                        </select>
+                    </div>
+    
+                    <div class="submit">
+                        <input class="context"
+                            type="submit"
+                            value="Assign Local Role to Selected Group(s)"
+                            i18n:attributes="value"
                             tabindex=""
-                            tal:attributes="value python:member.getUserName();
-                                            tabindex tabindex/next;"/>
-                    </td>
-                    <td tal:content="python:member.getUserNameWithoutGroupPrefix()">
-                        groupname
-                    </td>
-                    </tr>
-                </tbody>
-                </table>
+                            tal:attributes="tabindex tabindex/next;"
+                            />
+                    </div>
+    
+                </fieldset>
+    
+            </form>
 
-                <div class="field">
-
-                    <label for="group_member_role" i18n:translate="label_localrole_to_assign">
-                        Role to assign
-                    </label>
-
-                    <select name="member_role"
-                            id="group_member_role"
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;">
-                        <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
-                                tal:attributes="value lroles"
-                                tal:content="lroles"
-                                i18n:translate="">
-                            Role name
-                        </option>
-                    </select>
-                </div>
-
-                <div class="submit">
-                    <input class="context"
-                        type="submit"
-                        value="Assign Local Role to Selected Group(s)"
-                        i18n:attributes="value"
-                        tabindex=""
-                        tal:attributes="tabindex tabindex/next;"
-                        />
-                </div>
-
-            </fieldset>
-
-        </form>
-
+        </tal:groupshares>
+        
     </div>
 
   </div> <!-- fill-slot -->
