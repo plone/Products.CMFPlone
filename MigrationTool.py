@@ -11,6 +11,7 @@ import sys
 import types
 
 def log(message,summary='',severity=0):
+    print severity, message
     zLOG.LOG('Plone: ',severity, summary, message)
 
 _upgradePaths = {}
@@ -203,7 +204,7 @@ class MigrationTool( UniqueObject, SimpleItem):
     ##############################################################
 
     security.declareProtected(ManagePortal, 'upgrade')
-    def upgrade(self, REQUEST=None, dry_run=None):
+    def upgrade(self, REQUEST=None, dry_run=None, swallow_errors=1):
         """ perform the upgrade """
         # keep it simple
         out = []
@@ -231,12 +232,12 @@ class MigrationTool( UniqueObject, SimpleItem):
                 for line in traceback.format_tb(sys.exc_traceback):
                     out.append((line, zLOG.ERROR))
                     
-                err_log=self.error_log
-                err_log.raising(sys.exc_info())
-                
                 # set newv to None
                 # to break the loop
                 newv = None
+                if not swallow_errors:
+                    for msg, sev in out: log(msg, severity=sev)
+                    raise
                 
         out.append(("End of upgrade path, migration has finished", zLOG.INFO))
         
@@ -252,6 +253,9 @@ class MigrationTool( UniqueObject, SimpleItem):
             except:
                 out.append(("Exception was thrown while cataloging", zLOG.ERROR))
                 out += traceback.format_tb(sys.exc_traceback)
+                if not swallow_errors:
+                    for msg, sev in out: log(msg, severity=sev)
+                    raise
 
         if self.needUpdateRole():
             try:
@@ -260,14 +264,16 @@ class MigrationTool( UniqueObject, SimpleItem):
             except:
                 out.append(("Exception was thrown while updating role mappings", zLOG.ERROR))
                 out += traceback.format_tb(sys.exc_traceback)
+                if not swallow_errors:
+                    for msg, sev in out: log(msg, severity=sev)
+                    raise
                 
         if dry_run:
             out.append(("Dry run selected, transaction aborted", zLOG.INFO))
             get_transaction().abort()
     
         # log all this to the ZLOG
-        for msg, sev in out:
-            log(msg, severity=sev)
+        for msg, sev in out: log(msg, severity=sev)
         
         return self.manage_results(self, out=out)
         

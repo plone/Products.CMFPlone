@@ -302,7 +302,7 @@ class PloneGenerator(Portal.PortalGenerator):
         m = p.portal_migration
         # XXX we need to make this read version.txt
         m.setInstanceVersion('1.0beta2') #.1')
-        m.upgrade()
+        m.upgrade(swallow_errors=0)
 
     def create(self, parent, id, create_userfolder):
         id = str(id)
