@@ -122,10 +122,13 @@
                                    tabindex=""
                                    style="font-size: 100%;"
                                    i18n:attributes="value"
+                                   tal:define="typename python:types[0].Title()"
                                    tal:condition="python: num_types"
                                    tal:attributes="tabindex tabindex/next|nothing;
                                                    value python:test( num_types == 1
-                                                                    , translate('Add New ${type}', {'type': types[0].Title()})
+                                                                    , translate('Add New ${type}',
+                                                                                {'type': typename},
+                                                                                default='Add new %s' % typename)
                                                                     , 'Add New Item');" />
                         </td>
                     </tr>
