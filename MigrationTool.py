@@ -84,7 +84,10 @@ class MigrationTool( UniqueObject, SimpleItem):
             out.append("Migration has failed")
 
         # do this once all the changes have been done
-        self.portal_catalog.refreshCatalog()
+        try:
+            self.portal_catalog.refreshCatalog()
+        except:
+            pass #this can happen
         self.portal_workflow.updateRoleMappings()
         return '\n'.join(out)
         
