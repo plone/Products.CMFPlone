@@ -15,6 +15,7 @@
                 <span tal:replace="action/name">dummy</span>
             </span>
         </a>
+    </li>
     </tal:actions>
     <div class="clear"></div>
 </ul>

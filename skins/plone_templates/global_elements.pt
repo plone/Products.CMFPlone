@@ -60,7 +60,7 @@
                  selected_tabs python:here.selectedTabs(template.getId(), here);
                  selected_portal_tab selected_tabs/portal;" >
     <ul id="portalTabs">
-       <h5 class="hiddenstructure" i18n:translate="">Navigation</h5>
+       <h5 class="hiddenstructure">Navigation</h5>
        <tal:tabs tal:repeat="tab portal_tabs">
        <li tal:define="firstitem repeat/tab/first;
                        lastitem repeat/tab/last;"
@@ -86,7 +86,7 @@
                  global_actions global_actions|actions/global;
                  mtool mtool|here/portal_membership;
                  display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">
-    <h5 class="hiddenstructure" i18n:translate="">Personal tools</h5>
+    <h5 class="hiddenstructure">Personal tools</h5>
     <li id="personalBar-user" class="firstItem" tal:condition="not: isAnon"><a href=""
         tal:omit-tag="not: mtool/getHomeFolder"
         tal:attributes="href string:${mtool/getHomeUrl}"
