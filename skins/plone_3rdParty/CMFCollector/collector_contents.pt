@@ -67,9 +67,9 @@
       </thead>
       
       <tbody tal:repeat="itemnum python: range(len(batch))">
-
-        <tr>
-        <metal:block tal:define="global item python: batch[itemnum];
+        <tr tal:define="oddrow repeat/itemnum/odd"
+                      tal:attributes="class python:test(oddrow, 'even', 'odd')">
+        <metal:block tal:define="global item python:batch[itemnum];
                         itemurl item/getURL;
                         itemtype item/Type|nothing;
                         icon item/getIcon|item/icon|nothing;
@@ -185,7 +185,6 @@
 
         </metal:block>
         </tr>
-
       </tbody>
 
     </table>
@@ -374,4 +373,3 @@
 </div>
 </body>
 </html>
-
