@@ -21,6 +21,7 @@ from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
 from types import StringType
 from ExtensionClass import Base
+from DocumentTemplate.sequence import sort
 
 # this import can change with Zope 2.7 to
 try:
@@ -174,13 +175,13 @@ class OrderedContainer(Folder):
 
         return counter
 
-    security.declarePrivate('getCMFObjectsSubset')
+    security.declarePrivate('getCMFObjectsSubsetIds')
     def getCMFObjectsSubsetIds(self, objs):
         """Get the ids of only cmf objects (used for moveObjectsByDelta)
         """
         ttool = getToolByName(self, 'portal_types')
         cmf_meta_types = ttool.listContentTypes(by_metatype=1)
-        return [obj.getId() for obj in objs if obj['meta_type'] in cmf_meta_types ]
+        return [obj['id'] for obj in objs if obj['meta_type'] in cmf_meta_types ]
 
     security.declareProtected(ModifyPortalContent, 'getObjectPosition')
     def getObjectPosition(self, id):
