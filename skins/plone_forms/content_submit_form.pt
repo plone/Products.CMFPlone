@@ -25,7 +25,8 @@
     
     <form class="group"
           method="post" 
-          action="content_status_modify">
+          action="content_status_modify"
+          tal:attributes="action string:${here/absolute_url}/content_status_modify">
         
         <span class="legend">Item comments</span>
         
