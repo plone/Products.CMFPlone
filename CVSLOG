@@ -1,3 +1,35 @@
+2004-03-16 03:46  limi
+
+	* skins/plone_images/user.gif (Plone-2_0-branch): Removing more
+	  stray pixels.
+
+2004-03-16 01:36  limi
+
+	* skins/plone_styles/stylesheet_properties.props
+	  (Plone-2_0-branch): Better deprecation message.
+
+2004-03-15 23:17  shh42
+
+	* tests/testCatalogTool.py: The catalog is fine, it's Alan who
+	  doesn't know how to operate it ;-)
+
+2004-03-15 23:01  limi
+
+	* skins/plone_forms/content_status_history.cpt (Plone-2_0-branch):
+	  Removed old JS calls to help tooltips on the publishing page. Fix
+	  for http://plone.org/collector/2872
+
+2004-03-15 18:16  runyaga
+
+	* tests/testCatalogTool.py: commiting a test for catalog that
+	  searches to ensure folder titles are updated in the catalog.	it
+	  seems the catalog in the tests are severly borken resulting in a
+	  string indexes must be integers
+
+2004-03-15 05:03  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-14 19:02  limi
 
 	* skins/plone_images/discussionitem_icon.gif (Plone-2_0-branch):
