@@ -71,12 +71,18 @@
                 <span class="folderName" tal:condition="python: user.getUserName()==here.getId()">
                 My Stuff
                 </span> 
-    
+                
                 <span class="folderName" tal:condition="python: user.getUserName()!=here.getId()" tal:content="here/title_or_id">
                 Directory Id
                 </span> 
     
+                (<a href="" 
+                   tal:define="parent_url python:here.navigationParent(here, template.getId());"
+                   tal:attributes="href parent_url">Up one level</a>)
+
             </div>
+
+
     
             <metal:block tal:condition="not: folder_contents">
             <p>
@@ -87,6 +93,8 @@
      
             <metal:block tal:condition="folder_contents">
      
+            <div tal:content="structure here/Description"> description </div>
+
             <table id="sortable"
                    class="listing"
                    summary="Content listing"

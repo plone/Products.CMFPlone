@@ -33,23 +33,34 @@
         <h1 tal:content="here/title_or_id">Title or id</h1>
         </div>
 
-       <div class="description"
-            tal:content="structure here/Description"> description </div>
+        <div class="description"
+             tal:content="structure here/Description"> description </div>
 
-       <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
+        <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
                            here.portal_membership.checkPermission('Add portal content', here)">
-          This folder does not have a default page.
+          This folder does not have a default page, therefore a list of items
+          is shown instead.
           <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document">Click here</a>
-	  to create a default page in this folder. 
-       </div>
+          if you want to create a default page in this folder that will
+          replace the item listing. 
+        </div>
 
+        <p>
+            <a href="" 
+               tal:define="parent_url python:here.navigationParent(here, template.getId());"
+               tal:attributes="href parent_url">
+            Up one level
+            </a>
+        </p>
+       
         <table class="listing"
 	       id="sortable"
                tal:condition="here/contentValues">
         
             <thead>
                 <tr>
-                    <th>Title</th>
+                    <th>Title&nbsp;<img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                    <th>Type</th>
                     <th>Size</th>
                     <th>Last Modified</th>
                     <th>Description</th>
@@ -66,6 +77,7 @@
 			<a href="#" tal:attributes="href string:${obj/absolute_url}/view"
                            tal:content="obj/title_or_id" />
                     </td>   
+                    <td tal:content="obj/Type">Type</td>
                     <td tal:content="python:test(hasattr(obj, 'get_size'), here.getObjSize(obj), 'n/a')">Size</td>
                     <td tal:content="python:here.toPortalTime(obj.ModificationDate())">Modification Date</td>
                     <td tal:content="structure python:test(obj.Description(), obj.Description(), 'n/a')"> description </td>
