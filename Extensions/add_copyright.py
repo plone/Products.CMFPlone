@@ -39,7 +39,7 @@ def change_py(file):
         print "Changed", file
 
 def change_pt(file):
-    add = """\n<tal:comment replace="nothing">\n""" + copytext + """</tal:comment>\n"""
+    add = """\n<tal:copyright replace="nothing">\n""" + copytext + """</tal:copyright>\n"""
 
     res = notPresent(file, add)
     if res is not None:
