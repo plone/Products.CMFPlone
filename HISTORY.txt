@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3429 - the section class was missing
+      from the tableless skin.
+      [limi]
+
     - Fixed http://plone.org/collector/3086 - there is now an 
       unRegisterPloneFunction in the plone_javascripts that allows you to
       unregister an onload event. Thanks to acamargo for the patch!
