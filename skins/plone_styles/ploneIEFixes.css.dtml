@@ -4,6 +4,13 @@
 
 /* <dtml-with base_properties> */
 
+* html #portal-columns {
+  width: 100%;
+}
+* html*#portal-columns {
+    width: auto;
+}
+
 #content,
 div.comment {
     /* Fix for IE6 disappearing float bug */
@@ -11,10 +18,6 @@ div.comment {
 }
 .hiddenStructure {
     display: none;
-}
-
-body {
-    width: expression(document.body.clientWidth < 795 ? "795px" : "auto");
 }
 
 input {
@@ -35,7 +38,7 @@ div#portal-columns div#portal-column-one,
 div#portal-columns div#portal-column-two {
     overflow: hidden;
 }
-div.visualOverflow{
+div.visualOverflow {
     overflow: auto;
 }
 

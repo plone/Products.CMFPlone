@@ -10,6 +10,7 @@ body {
     min-width: 58em;
 }
 #portal-columns {
+    width: auto;
     margin: 0;
 }
 #visual-column-wrapper {
@@ -38,15 +39,6 @@ body {
     float: right;
     width: 17em;
     overflow: hidden;
-}
-
-/* ie fixes */
-
-* html #portal-columns {
-  width: 100%;
-}
-* html*#portal-columns {
-    width: auto;
 }
 
 /* padding - thanks to the w3c box model :P */

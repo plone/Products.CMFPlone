@@ -5,21 +5,18 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul class="menuBar"
-    tal:define="contentTypes python:here.sortObjects(here.allowedContentTypes());">
-    <li class="menuButton"
-        tal:condition="contentTypes">
+<ul tal:define="contentTypes python:here.sortObjects(here.allowedContentTypes());">
+    <li tal:condition="contentTypes">
         <a href="#"
-           onclick="return buttonClick(event, 'itemMenu');"
-           onmouseover="buttonMouseover(event, 'itemMenu');"
+           onclick="return buttonClick(event, 'objectMenu');"
+           onmouseover="buttonMouseover(event, 'objectMenu');"
            i18n:translate="">Add New Item</a>
 
-        <ul class="menu" id="itemMenu"
+        <ul class="actionMenu" id="objectMenu"
             onmouseover="menuMouseover(event)"
             tal:define="filterOut here/getNotAddableTypes;">
             <metal:block tal:repeat="ctype contentTypes"> 
-            <li class="menuItem"
-                tal:define="Title ctype/Title;Id ctype/getId"
+            <li tal:define="Title ctype/Title;Id ctype/getId"
                 tal:condition="python:test(Id not in filterOut, 1, 0)">
                 <a href="#" 
                    tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
@@ -36,16 +33,16 @@
             </metal:block>
         </ul>
     </li>
-    <li class="menuButton">
-    
-    
+
+    <li>
+
+        <span i18n:translate="">State:</span>
+        
         <a href="#"
            onclick="return buttonClick(event, 'statusMenu');"
            onmouseover="buttonMouseover(event, 'statusMenu');"
            tal:define="review_state wf_state"
            tal:condition="review_state">
-           
-           <span class="menuIndicator">State:</span>
            
            <span tal:content="review_state"
                  tal:attributes="class string:state-${review_state}"
@@ -55,20 +52,20 @@
            
        </a>
 
-        <ul class="menu"
+        <ul class="actionMenu"
             id="statusMenu"
             onmouseover="menuMouseover(event)"
             tal:define="global transitions python:wtool.getTransitionsFor(here, here)"
             tal:condition="transitions">  
             <tal:block repeat="transition transitions">
-            <li class="menuItem">
+            <li>
                 <a href="#"
                    i18n:translate=""
                    tal:content="transition/name"
                    tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=${transition/id}">File Menu Item 1</a>
             </li>
             </tal:block>
-            <li class="menuItem menuSep">
+            <li class="actionSeperator">
                 <a href="#" 
                    tal:attributes="href string:${here/absolute_url}/content_status_history"
                    i18n:translate="">Advanced</a>

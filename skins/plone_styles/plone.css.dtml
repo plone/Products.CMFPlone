@@ -434,9 +434,10 @@ input.searchButton {
     color: &dtml-contentViewFontColor;;
 }
 
-.configlet .contentViews {
-    font-size: 90%;
-} 
+/*
+** Javascript Content Action Menus
+*/
+
 .contentActions {
     border-collapse: collapse;
     background-color: &dtml-contentViewBackgroundColor;;
@@ -449,26 +450,80 @@ input.searchButton {
     z-index: 2;
 }
 
-.contentActions a {
-    text-decoration: none;
-    color: &dtml-contentViewFontColor;
+.contentActions ul,
+.contentActions li {
+    margin: 0;
+    list-style: none;
+    list-style-image: none;
+    display: inline;
+    color: &dtml-fontColor;;
+    text-align: left;
 }
 
 .contentActions ul {
-    background-color: transparent;
-    border: none;
     line-height: 1.2em;
-    list-style: none;
-    display: inline;
-}
-.contentActions ul li {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
-    border-style: none none none &dtml-borderStyle;;
-    display: inline;
-    padding: 0 1em;
+    height: 1.2em;
+    padding: 0;
     margin: 0;
 }
+.contentActions li {
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+    z-index: 4;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    padding: 0 0 0 1em;
+}
 
+.contentActions a {
+    text-decoration: none;
+    color: &dtml-contentViewFontColor;;
+    padding: 0 1em 0 0;
+}
+
+.contentActions .actionMenu {
+    visibility: hidden;
+    z-index: 5;
+    position: absolute;
+    background: &dtml-contentViewBackgroundColor;;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
+    border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
+}
+
+.actionMenu li {
+    background: none;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+.actionMenu li a {
+    display: block;
+    white-space: nowrap;
+    padding: 0 0.5em;
+    margin: 0.2em 0;
+}
+
+.actionMenu li a:hover {
+    background-color: &dtml-contentViewBorderColor;;
+    color: White;
+}
+
+.actionMenu .actionSeperator a {
+    margin-top: 0.2em;
+    padding-top: 0.2em;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+}
+
+.configlet .contentViews {
+    font-size: 90%;
+}
+ 
 #content {
     padding: 1em;
     margin: 0em 0em 2em 0em;
@@ -681,92 +736,6 @@ input.searchButton {
     padding: 1em;
     margin: 0;
     width: 68% !important;
-}
-
-/* javascript menu (contentbar) */
-
-ul.menuBar {
-    padding: 0;
-    margin: 0;
-    margin-bottom: 1px;
-    color: &dtml-fontColor;;
-}
-ul.menuBar, ul.menuBar li.menuButton {
-    margin: 0;
-    padding: 0;
-    display: inline;
-    list-style: none;
-}
-
-ul.menuBar li.menuButton {
-    border-color: &dtml-contentViewBorderColor;;
-    border-style: none none none &dtml-borderStyle;;
-    border-width: &dtml-borderWidth;
-} 
-/*  border-style: solid none solid solid; */
-ul.menuBar li.menuButton .menuIndicator {
-    color: &dtml-fontColor;;
-}
-
-ul.menuBar li.menuButton a {
-    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
-    background-repeat: no-repeat;
-    background-position: center right;
-    color: &dtml-contentViewFontColor;;
-    cursor: pointer;
-    text-decoration: none;
-    z-index: 4;
-    margin: 0;
-    padding: 0 1em;
-    text-transform: &dtml-textTransform;;
-}
-
-ul.menu {
-    background-color: &dtml-contentViewBackgroundColor;;
-    border-style: &dtml-borderStyle;;
-    border-color: &dtml-contentViewBorderColor;;
-    border-width: &dtml-borderWidth;;
-    color: &dtml-contentViewFontColor;;
-    text-transform: &dtml-textTransform;;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    visibility: hidden;
-    text-align: left;
-    z-index: 5;
-    white-space: nowrap;
-    width: auto;
-    margin: 0;
-    padding: 0;
-    border-top: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
-}
-ul.menu, ul.menu li {
-    background: &dtml-contentViewBackgroundColor;;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-collapse: collapse;
-}
-ul.menu li {
-    margin: 0;
-    padding: 0;
-    border: none;
-}
-ul.menu li.menuItem a {
-    color: &dtml-contentViewFontColor;;
-    background-image: none ! important;
-    display: block;
-    margin: 0;
-    padding: 0;
-    text-transform: none ! important;
-    text-decoration: none;
-}
-ul.menu li.menuItem a:hover {
-    background-color: &dtml-contentViewBorderColor;;
-    color: White;
-}
-ul.menu li.menuSep {
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
 .card {

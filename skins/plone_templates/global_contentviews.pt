@@ -28,21 +28,21 @@
      class="contentActions"
      tal:define="content_actions actions/object_actions|nothing;">
 
-    <ul>
+    <ul tal:condition="content_actions">
     <tal:contentactions repeat="action content_actions">
-    <li tal:attributes="id string:contentaction-${action/id};">
-        <a class="" href=""
-           tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
-           i18n:attributes="accesskey" >
-            <img tal:define="actionid action/id;
-                             icon python:aitool.renderActionIcon('content_actions', actionid, None);"
-                 tal:condition="icon"
-                 tal:replace="structure icon" />
-            <span tal:omit-tag="" i18n:translate="">
-                <span tal:replace="action/name">dummy</span>
-            </span>
-        </a>
-    </li>
+        <li tal:attributes="id string:contentaction-${action/id};">
+            <a class="" href=""
+               tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
+               i18n:attributes="accesskey" >
+                <img tal:define="actionid action/id;
+                                 icon python:aitool.renderActionIcon('content_actions', actionid, None);"
+                     tal:condition="icon"
+                     tal:replace="structure icon" />
+                <span tal:omit-tag="" i18n:translate="">
+                    <span tal:replace="action/name">dummy</span>
+                </span>
+            </a>
+        </li>
     </tal:contentactions>
     </ul>
     
