@@ -15,7 +15,7 @@ context.portal_workflow.doActionFor( context
                                    , workflow_action
                                    , comment=comment )
 
-return ( 'success'
-       , context
-       , { 'portal_status_message' : context.REQUEST.get( 'portal_status_message'
-                                                        , 'Your contents status has been modified')} )
+return ( 'success', context,
+        {'portal_status_message':
+         context.REQUEST.get('portal_status_message',
+                             'Your contents status has been modified')} )
