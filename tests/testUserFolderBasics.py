@@ -43,9 +43,7 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.failIfEqual(self.uf.getUserById(default_user), None)
 
     def testGetBadUserById(self):
-        # XXX: This changed in GRUF3?
-        #self.assertEqual(self.uf.getUserById('user2'), None)
-        self.failUnlessRaises(ValueError, self.uf.getUserById, 'user2')
+        self.assertEqual(self.uf.getUserById('user2'), None)
 
     def testGetUsers(self):
         users = self.uf.getUsers()
