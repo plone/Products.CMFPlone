@@ -18,8 +18,9 @@ for id in ids:
     try:
         if o.isPrincipiaFolderish and include_subfolders:
             workflow.doActionFor(o, workflow_action, comment=comment)
-            o.folder_publish(o.objectIds(), workflow_action, comment=comment, include_subfolders=include_subfolders)       
+            o.folder_publish(workflow_action, o.objectIds(), comment=comment, include_subfolders=include_subfolders)       
         else:
+            context.plone_debug(workflow_action + ', ' + o.absolute_url())
             workflow.doActionFor(o, workflow_action, comment=comment)
             success[id]=comment
     except Exception, e:
