@@ -6,23 +6,30 @@ Plone 2.0 - Fyuti
 
    RC6, updated to fix non-critical issues
 
+    - The tableless skin didn't have the top_slot defined.
+      [limi]
+
     - Fix WebDAV for the nth time. browserDefault was using the
       portal_utils tool as the context for all DAV requests, instead
-      of the real object.
+      of the real object. 
+      [dreamcatcher]
 
     - fixed #2808
       metadata_edit form was broken when the date format was set to
-      international (zope 2.7). Fixed date_components_support.py [tiran]
+      international (zope 2.7). Fixed date_components_support.py 
+      [tiran]
 
     - fixed #2804
       the plone_memberprefs_panel.pt ignored the 'visible' of configlet
-      actions. thats corrected now [zworkb]
+      actions. thats corrected now 
+      [zworkb]
 
     - breadcrumbs.py had bugs in which (1) a terminal object was sometimes 
       displayed twice, and (2) terminal non-content non-view objects (e.g. page 
       templates) were not displayed at all.  The bugs have been fixed and 
       breadcrumbs.py has been refactored a bit to make the source easier to 
-      understand and maintain. [geoffd]
+      understand and maintain. 
+      [geoffd]
 
     - Fixed some instances of 'disable_border' being written as 'disable_border1'
       [limi]
