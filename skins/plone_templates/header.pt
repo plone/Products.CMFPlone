@@ -96,7 +96,8 @@
 
                     <input class="context" 
                            type="submit" 
-                           value="Search" />
+                           value="Search"
+                           i18n:attributes="value" />
                 </form>
             </div>
 
