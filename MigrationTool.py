@@ -29,7 +29,7 @@ class MigrationTool( UniqueObject, SimpleItem):
         """ The version this instance of plone is on """
         if getattr(self, '_version', None) is None:
             self.setInstanceVersion(self.getFileSystemVersion())
-        return self._version
+        return self._version.lower()
 
     security.declareProtected(ManagePortal, 'setInstanceVersion')
     def setInstanceVersion(self, version):
@@ -44,7 +44,7 @@ class MigrationTool( UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'getFileSystemVersion')
     def getFileSystemVersion(self):
         """ The version this instance of plone is on """
-        return self.Control_Panel.Products.CMFPlone.version
+        return self.Control_Panel.Products.CMFPlone.version.lower()
 
     security.declareProtected(ManagePortal, 'needUpgrading')
     def needUpgrading(self):
@@ -94,6 +94,7 @@ class MigrationTool( UniqueObject, SimpleItem):
         
 
     def _upgrade(self, version):
+        version = version.lower()
         if not _upgradePaths.has_key(version): 
 #            log('No upgrade path found for version "%s"\n' % version)
             return None
@@ -105,6 +106,6 @@ class MigrationTool( UniqueObject, SimpleItem):
 
 def registerUpgradePath(oldversion, newversion, function): 
     """ Basic register func """
-    _upgradePaths[oldversion] = [newversion, function]
+    _upgradePaths[oldversion.lower()] = [newversion.lower(), function]
 
 InitializeClass(MigrationTool)
