@@ -155,6 +155,7 @@ pre {
     padding: 1em;
     border: &dtml-preBorder;;
     background-color: &dtml-preBackground;;
+    width: 95%;
 }
 
 .netscape4 {
