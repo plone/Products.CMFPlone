@@ -107,7 +107,7 @@
                                                 i18n:translate="label_show_x_only"
                                                 tal:attributes="value typeid;
                                                                 selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', '');"
-                                        ><span i18n:name="type" tal:omit-tag=""><span i18n:translate="" tal:content="string:${typetitle}" tal:omit-tag="" /></span>s only</option>
+                                        ><span i18n:name="type"><span i18n:translate="" tal:content="string:${typetitle}" tal:omit-tag="" /></span>s only</option>
                                     </metal:block>
                                 </select>
                     
