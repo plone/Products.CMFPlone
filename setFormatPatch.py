@@ -9,7 +9,7 @@ def setFormat( self, format ):
     """
     self.__old_setFormat(format)
     # Update the content_type property if present
-    if (hasattr(aq_base(self), 'hasProperty') and
+    if (getattr(aq_base(self), 'hasProperty', None) and
         self.hasProperty('content_type')):
         self.manage_changeProperties(content_type=format)
 
