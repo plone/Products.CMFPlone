@@ -219,7 +219,7 @@ div.message {
     background: &dtml-messageBackground;;
     border: &dtml-messageBorder;;
     font: &dtml-messageFont;;
-    margin: 1em 0em;
+    margin: 0em 0em 1em 0em;
     padding: 0.5em 1em;
     vertical-align: middle;
     
