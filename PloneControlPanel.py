@@ -116,6 +116,14 @@ default_configlets = (
      'permission': ManagePortal,
      'imageUrl':'plone_images/error_log_icon.gif'},
 
+   {'id':'PortalProperties',
+     'appId':'PortalProperties',
+     'name':'PortalProperties',
+     'action':'string:${portal_url}/prefs_portal_properties_list.pt',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/site_icon.gif'}, 
+
 )
 
 
