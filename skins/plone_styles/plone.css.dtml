@@ -74,6 +74,7 @@ h1, h2, h3, h4, h5, h6 {
     background-color: transparent;
     font-family: <dtml-var headingFontFamily>;
     font-size: &dtml-headingFontBaseSize;;
+    font-weight: normal;
     margin: 0;
     padding-top: 0.5em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -788,7 +789,6 @@ ul.configlets {
 
 ul.configlets li {
     list-style: none;
-    cursor: pointer;
     margin-bottom: 1em;
     text-transform: &dtml-textTransform;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;  
