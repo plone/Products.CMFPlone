@@ -173,7 +173,9 @@
                                 tal:condition="lrole"
                                 tal:attributes="tabindex tabindex/next;
                                                 value lrole"/>
-                        <span tal:condition="lrole" tal:content="lrole">role</span>
+                        <span tal:condition="lrole" 
+                              i18n:translate=""
+                              tal:content="lrole">role</span>
                     </td>
                 </tr>
             </table>
