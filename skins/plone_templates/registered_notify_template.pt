@@ -11,10 +11,10 @@ This describes the purpose of the portal:
 
 Visit us at <span tal:omit-tag="" tal:content="here/portal_url" />
 
-Your login id and password are:
+Your sign-in name and password are:
 
-Login ID: <span tal:omit-tag="" tal:content="options/member" />
-Password: <span tal:omit-tag="" tal:content="options/password" />
+Sign-in name : <span tal:omit-tag="" tal:content="options/member" />
+Password     : <span tal:omit-tag="" tal:content="options/password" />
 
 --
 Portal Admin
