@@ -65,7 +65,7 @@ class FactoryTool(UniqueObject, SimpleItem):
             if not id:
                 id = obj_id
             type_name = aq_parent(aq_inner(obj)).id
-            folder = aq_parent(aq_parent(aq_inner(obj)))
+            folder = aq_parent(aq_parent(aq_parent(aq_inner(obj))))
             folder.invokeFactory(id=id, type_name=type_name)
             obj = getattr(folder, id)
 
