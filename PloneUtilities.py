@@ -5,6 +5,7 @@ from DateTime import DateTime
 import Globals
 import OFS
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
+from Products.CMFCore.utils import getToolByName
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -196,3 +197,33 @@ class ToolInit(CMFCoreToolInit):
                     if not hasattr(misc, pid):
                         setattr(misc, pid, Misc(pid, {}))
                     getattr(misc, pid)[name] = icon
+
+def _createObjectByType(type_name, container, id, *args, **kw):
+    """Create an object without performing security checks
+    
+    invokeFactory and fti.constructInstance perform some security checks
+    before creating the object. Use this function instead if you need to
+    skip these checks.
+    
+    This method uses some code from
+    CMFCore.TypesTool.FactoryTypeInformation.constructInstance
+    to create the object without security checks.
+    """
+    id = str(id)
+    typesTool = getToolByName(container, 'portal_types')
+    fti = typesTool.getTypeInfo(type_name)
+    if not fti:
+        raise ValueError, 'Invalid type %s' % type_name
+
+    # we have to do it all manually :(
+    p = container.manage_addProduct[fti.product]
+    m = getattr(p, fti.factory, None)
+    if m is None:
+        raise ValueError, ('Product factory for %s was invalid' %
+                           fti.getId())
+
+    # construct the object
+    m(id, *args, **kw)
+    ob = container._getOb( id )
+    
+    return fti._finishConstruction(ob)
