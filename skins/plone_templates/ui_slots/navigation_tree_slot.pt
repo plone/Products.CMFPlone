@@ -26,6 +26,12 @@
 
         <div class="content odd">
                  
+            <div tal:condition="tree/prev">
+                <a tal:attributes="href string:${request/URL}?navbatchstart=${tree/prevBatchStart}">
+                    <span i18n:translate="">...</span>
+                </a>
+            </div>
+            
             <div style="white-space: nowrap;"
                  tal:repeat="te tree/list">
         
@@ -68,23 +74,16 @@
                         <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
                         <strong tal:condition=" iscurrent" tal:content="structure sibling_title" />
                     </a>
-                    
-                    <div tal:condition="tree/prev">
-                        <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
-                            <span i18n:translate="">...</span>
-                        </a>
-                    </div>
-    
-        
                 </tal:block>
             </div>
+            <div tal:condition="tree/next">
+                <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">
+                    <span i18n:translate="">...</span>
+                </a>
+            </div>
+    
         </div>
             
-        <div tal:condition="tree/next">
-            <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">
-                <span i18n:translate="">...</span>
-            </a>
-        </div>
                     
     
         <div class="content even"
