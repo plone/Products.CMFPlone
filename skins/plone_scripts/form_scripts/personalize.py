@@ -9,11 +9,12 @@
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 portrait_id='MyPortrait'
+skinvar=context.portal_skins.getRequestVarname()
 
 errors=context.validate_personalize()
 if errors:
     edit_form=getattr(context, 'personalize_form')
-    return edit_form()
+    return edit_form(errors)
     
 try:
     context.portal_registration.setProperties(REQUEST)
@@ -21,8 +22,7 @@ except: #CMF1.3 below
     member=context.portal_membership.getAuthenticatedMember()
     member.setProperties(REQUEST)
     
-if REQUEST.has_key('portal_skin'):
-    context.portal_skins.updateSkinCookie()
+context.portal_skins.updateSkinCookie()
     
 #if a portait file was upload put it in the /Members/XXXX/.personal/MyPortrait
 if portrait and portrait.filename:
@@ -39,4 +39,4 @@ if portrait and portrait.filename:
 qs = '/personalize_form?portal_status_message=Member+changed.'
 tmsg=context.portal_membership.getAuthenticatedMember().getUserName()+' personalized their settings.'
 transaction_note(tmsg)
-REQUEST.RESPONSE.redirect(context.portal_url() + qs)
+return REQUEST.RESPONSE.redirect(context.portal_url() + qs)

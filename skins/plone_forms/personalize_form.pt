@@ -83,7 +83,8 @@
                     you change its security settings, even if you select "unlisted" here.
                     </div>                
                 </div>
-                <div class="field"> 
+                <div class="field"
+		     tal:define="listed python:request.get('listed', member.listed);">
                     <input type="radio" 
                            class="noborder" 
                            name="listed" 
@@ -93,7 +94,7 @@
                            tabindex="2"
                            onfocus="formtooltip('listed_status_help',1)" 
                            onblur="formtooltip('listed_status_help',0)" 
-                           tal:condition="python:member.listed and ('checked' or '');" />
+                           tal:condition="listed" />
                            
                     <input type="radio" 
                            class="noborder" 
@@ -103,7 +104,7 @@
                            tabindex="2"
                            onfocus="formtooltip('listed_status_help',1)" 
                            onblur="formtooltip('listed_status_help',0)" 
-                           tal:condition="python:not(member.listed) and 'checked' or '';" />
+                           tal:condition="not: listed" />
                     
                     <label for="cb_listed">Listed</label>
                     
@@ -117,7 +118,7 @@
                            tabindex="2"
                            onfocus="formtooltip('listed_status_help',1)" 
                            onblur="formtooltip('listed_status_help',0)" 
-                           tal:condition="python:member.listed and 'checked' or '';" />
+                           tal:condition="listed" />
                     
                     <input type="radio" 
                            class="noborder" 
@@ -128,13 +129,14 @@
                            tabindex="2"
                            onfocus="formtooltip('listed_status_help',1)" 
                            onblur="formtooltip('listed_status_help',0)" 
-                           tal:condition="python:not(member.listed) and 'checked' or '';" />		   
+                           tal:condition="not: listed " />		   
                     
                     <label for="cb_unlisted">Unlisted</label>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row"
+	         tal:define="formtooltips python:request.get('formtooltips', member.formtooltips);">
                 <div class="label">
                     <span i18n:id="formtooltips_status">Display form tooltips</span>
 
@@ -155,7 +157,7 @@
                            tabindex="2"
                            onfocus="formtooltip('formtooltips_help',1)" 
                            onblur="formtooltip('formtooltips_help',0)" 
-                           tal:condition="python:member.formtooltips and ('checked' or '');" />
+                           tal:condition="formtooltips" />
                            
                     <input type="radio" 
                            class="noborder" 
@@ -165,7 +167,7 @@
                            tabindex="2"
                            onfocus="formtooltip('formtooltips_help',1)" 
                            onblur="formtooltip('formtooltips_help',0)" 
-                           tal:condition="python:not(member.formtooltips) and 'checked' or '';" />
+                           tal:condition="not: formtooltips" />
                     
                     <label for="cb_formtooltips">Yes</label>
                     
@@ -179,7 +181,7 @@
                            tabindex="2"
                            onfocus="formtooltip('formtooltips_help',1)" 
                            onblur="formtooltip('formtooltips_help',0)" 
-                           tal:condition="python:member.formtooltips and 'checked' or '';" />
+                           tal:condition="formtooltips" />
                     
                     <input type="radio" 
                            class="noborder" 
@@ -190,14 +192,15 @@
                            tabindex="2"
                            onfocus="formtooltip('formtooltips_help',1)" 
                            onblur="formtooltip('formtooltips_help',0)" 
-                           tal:condition="python:not(member.formtooltips) and 'checked' or '';" />		   
+                           tal:condition="not: formtooltips" />		   
                     
                     <label for="cb_noformtooltips">No</label>
                 </div>
             </div>
 
 
-            <div class="row">
+            <div class="row"
+	         tal:define="visible_ids python:request.get('visible_ids', member.visible_ids)">
                 <div class="label">
                     <span i18n:id="visible_ids_status">Display content ids</span>
 
@@ -218,7 +221,7 @@
                            tabindex="2"
                            onfocus="formtooltip('visible_ids_help',1)" 
                            onblur="formtooltip('visible_ids_help',0)" 
-                           tal:condition="python:member.visible_ids and ('checked' or '');" />
+                           tal:condition="visible_ids" />
                            
                     <input type="radio" 
                            class="noborder" 
@@ -228,7 +231,7 @@
                            tabindex="2"
                            onfocus="formtooltip('visible_ids_help',1)" 
                            onblur="formtooltip('visible_ids_help',0)" 
-                           tal:condition="python:not(member.visible_ids) and 'checked' or '';" />
+                           tal:condition="not: visible_ids" />
                     
                     <label for="cb_visible_ids">Yes</label>
                     
@@ -242,7 +245,7 @@
                            tabindex="2"
                            onfocus="formtooltip('visible_ids_help',1)" 
                            onblur="formtooltip('visible_ids_help',0)" 
-                           tal:condition="python:member.visible_ids and 'checked' or '';" />
+                           tal:condition="visible_ids" />
                     
                     <input type="radio" 
                            class="noborder" 
@@ -253,7 +256,7 @@
                            tabindex="2"
                            onfocus="formtooltip('visible_ids_help',1)" 
                            onblur="formtooltip('visible_ids_help',0)" 
-                           tal:condition="python:not(member.visible_ids) and 'checked' or '';" />		   
+                           tal:condition="not: visible_ids" />		   
                     
                     <label for="cb_invisible_ids">No</label>
                 </div>
@@ -283,7 +286,7 @@
                     <option value="#"
                             tal:repeat="skin container/portal_skins/getSkinSelections"
                             tal:attributes="value skin;
-                            selected python:test(request.get('portal_skin', request[skinvar]==skin), 'selected', '');"
+                            selected python:test(request.get(skinvar, '')==skin, 'selected', '');"
                             tal:content="skin">Plone</option>
                     </select>
                 </div>
@@ -335,7 +338,7 @@
             </div>
         		
 		</form>
-    
+
     </metal:block>
 	
     
