@@ -10,7 +10,7 @@ ExtInstalled=0
 
 def register(context, app_state):
     addPolicy('Default Plone', DefaultCustomizationPolicy())
-    
+
 class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """
     __implements__ = ICustomizationPolicy
@@ -22,9 +22,9 @@ class DefaultCustomizationPolicy:
         p=PropertyManager('id')
         if id not in portal.portal_properties.objectIds():
             portal.portal_properties.addPropertySheet(id, title, p)
-            
+
         p=getattr(portal.portal_properties, id)
-        
+
         #Now we add the lagniappe
         if not hasattr(p,'allowAnonymousViewAbout'): p._setProperty('allowAnonymousViewAbout', 1, 'boolean')
         if not hasattr(p,'localTimeFormat'): p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
@@ -34,7 +34,7 @@ class DefaultCustomizationPolicy:
         if not hasattr(p,'use_folder_tabs'): p._setProperty('use_folder_tabs',('Folder',), 'lines')
         if not hasattr(p,'use_folder_contents'): p._setProperty('use_folder_contents',('Folder',), 'lines')
         if not hasattr(p,'ext_editor'): p._setProperty('ext_editor', ExtInstalled, 'boolean')
-        if not hasattr(p, 'available_editors'): 
+        if not hasattr(p, 'available_editors'):
             p._setProperty('available_editors', ('None', ), 'lines')
         if not hasattr(p, 'allowRolesToAddKeywords'): p._setProperty('allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
 
@@ -52,8 +52,8 @@ class DefaultCustomizationPolicy:
         portal.Members._setProperty('right_slots', (), 'lines')
 
     def installExternalEditor(self, portal):
-        ''' responsible for doing whats necessary if 
-            external editor is found 
+        ''' responsible for doing whats necessary if
+            external editor is found
         '''
         types_tool=getToolByName(portal, 'portal_types')
         methods=('PUT', 'manage_FTPget') #if a definition has these methods it shoudl work
@@ -66,7 +66,7 @@ class DefaultCustomizationPolicy:
                                , CMFCorePermissions.ModifyPortalContent
                                , 'object'
                                , 0 )
-     
+
     def assignTitles(self, portal):
         titles={'portal_actions':'Contains custom tabs and buttons',
          'portal_membership':'Handles membership policies',
@@ -99,10 +99,10 @@ class DefaultCustomizationPolicy:
         #Plone1.0alpha4 we are moving people to use portal_form nav/validation proxy
         types_tool=getToolByName(portal, 'portal_types')
         for ptype in types_tool.objectValues():
-            ptype_actions=ptype._cloneActions()            
-            for action in ptype_actions:                
+            ptype_actions=ptype._cloneActions()
+            for action in ptype_actions:
                 if not action['action'].startswith('portal_form') and \
-                    action['id'] in ('edit', 'metadata'): 
+                    action['id'] in ('edit', 'metadata'):
                     action['action']='portal_form/'+action['action']
             ptype._actions=tuple(ptype_actions)
 
@@ -122,9 +122,9 @@ class DefaultCustomizationPolicy:
 
     def customize(self, portal):
         #make 'reply' tab unvisible
-        dt=getToolByName(portal, 'portal_discussion') 
-        dt_actions=dt._cloneActions()        
-        for a in dt_actions: 
+        dt=getToolByName(portal, 'portal_discussion')
+        dt_actions=dt._cloneActions()
+        for a in dt_actions:
             if a.id=='reply': a.visible=0
         dt._actions=dt_actions
 
@@ -139,7 +139,7 @@ class DefaultCustomizationPolicy:
         tt=getToolByName(portal, 'portal_types')
         folder_actions=tt['Folder']._cloneActions()
         for a in folder_actions:
-            if a.get('id','') in ('folderlisting', ): 
+            if a.get('id','') in ('folderlisting', ):
                 a['visible'] = 0
             if a.get('id','')=='edit':
                 a['name'] = 'Properties'
@@ -153,7 +153,7 @@ class DefaultCustomizationPolicy:
         #get rid of the download tab on File, the view has a download button
         file_actions=tt['File']._cloneActions()
         tt['File']._actions=[action for action in file_actions if action['id']!='download']
-        
+
         #change all Metadata labels to Properties for usability
         for t in tt.objectValues():
             _actions=t._cloneActions()
@@ -168,12 +168,12 @@ class DefaultCustomizationPolicy:
             if a.id=='folderContents' and a.category=='object':
                 a.visible=0
             if a.id=='folderContents' and a.category=='folder':
-                a.title='Contents'
+                a.title='Folder Contents'
         at._actions=at_actions
 
         at.addAction('index_html','Welcome','portal_url','', 'View', 'portal_tabs')
         at.addAction('Members','Members','string:$portal_url/Members','','View','portal_tabs')
-        at.addAction('news','News','string:$portal_url/news','','View', 'portal_tabs')	
+        at.addAction('news','News','string:$portal_url/news','','View', 'portal_tabs')
         at.addAction('search_form','Search','string:$portal_url/search_form','','View','portal_tabs')
 
         at.addAction( 'content_status_history'
@@ -183,7 +183,7 @@ class DefaultCustomizationPolicy:
                     , 'View'
                     , 'object_tabs' )
         at.addAction( 'change_ownership', 'Ownership', 'string:${object_url}/ownership_form', '', CMFCorePermissions.ManagePortal, 'object_tabs', 0)
-        
+
         at.addAction('rename','Rename','string:folder_rename_form:method','', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('cut', 'Cut', 'string:folder_cut:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('copy', 'Copy', 'string:folder_copy:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
@@ -191,7 +191,7 @@ class DefaultCustomizationPolicy:
         at.addAction('delete', 'Delete', 'string:folder_delete:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         #add properties on portal object
-        
+
         ExtInstalled=0
         ExtEditProd=getattr(portal.Control_Panel.Products, 'ExternalEditor', None)
         if ExtEditProd is not None and ExtEditProd.import_error_ is None:
@@ -202,7 +202,7 @@ class DefaultCustomizationPolicy:
         md=getToolByName(portal, 'portal_memberdata')
         if not hasattr(md,'formtooltips'):
             md._setProperty('formtooltips', '1', 'boolean')
-        if not hasattr(md,'visible_ids'):            
+        if not hasattr(md,'visible_ids'):
             md._setProperty('visible_ids', '1', 'boolean')
         if not hasattr(md,'wysiwyg_editor'):
             md._setProperty('wysiwyg_editor', '', 'string')
@@ -212,7 +212,7 @@ class DefaultCustomizationPolicy:
             md._setPropValue('listed','1')
         if not hasattr(md, 'fullname'):
             md._setProperty('fullname', '', 'string')
-      
+
         #customize membership tool
         mt=getToolByName(portal, 'portal_membership')
         mt.addAction('myworkspace'
@@ -221,7 +221,7 @@ class DefaultCustomizationPolicy:
                     ,'python: member and portal.portal_membership.getHomeFolder()'
                     ,'View'
                     ,'user'
-                    , visible=0)		    
+                    , visible=0)
         new_actions=[]
         for a in mt._cloneActions():
             if a.id=='login':
@@ -232,10 +232,10 @@ class DefaultCustomizationPolicy:
                 a.title='My Preferences'
                 a.action=Expression('string:${portal_url}/portal_form/personalize_form')
                 new_actions.insert(0, a)
-            if getattr(a,'id','') in ('addFavorite', 'favorites'): 
+            if getattr(a,'id','') in ('addFavorite', 'favorites'):
                 a.visible=0
                 new_actions.insert(1,a)
-            if a.id=='mystuff': 
+            if a.id=='mystuff':
                 a.title='My Folder'
                 new_actions.insert(0, a)
             elif a.id=='myworkspace':
@@ -245,7 +245,7 @@ class DefaultCustomizationPolicy:
             else:
                 new_actions.insert(len(new_actions)-1,a)
         mt._actions=new_actions
-        
+
         #customized the registration tool
         if hasattr(portal, 'portal_registration'):
             rt=getToolByName(portal, 'portal_registration')
@@ -254,7 +254,7 @@ class DefaultCustomizationPolicy:
                 if a.id=='join':
                     a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
             rt._actions=rt_actions
-	
+
         pp=getToolByName(portal, 'portal_properties')
         pp_actions=pp._cloneActions()
         for a in pp_actions:
@@ -272,12 +272,12 @@ class DefaultCustomizationPolicy:
                     , CMFCorePermissions.UndoChanges
                     , 'user'
                     , visible=0)
-        
+
         #the new plone actions are prefix with 'portal_form/'  this
         #ensures a special proxy object shadows content objects and
         #they can participate in validation/navigation
         self.plonify_typeActions(portal)
-        
+
         #remove non Plone skins from skins tool
         #since we implemented the portal_form proxy these skins will no longer work
         st=getToolByName(portal, 'portal_skins')
@@ -293,7 +293,7 @@ class DefaultCustomizationPolicy:
         #set up cookie crumbler
         cookie_authentication = getToolByName(portal, 'cookie_authentication')
         cookie_authentication._updateProperty('auto_login_page', 'require_login')
-        
+
 
         self.setupDefaultSlots(portal)
         self.addSiteProperties(portal)

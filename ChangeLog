@@ -1,3 +1,9 @@
+2003-05-30  Sidnei da Silva  <sidnei@frodo.x3ng.intranet>
+
+	* migrations/one01_one02.py (onezerotwo): Fix a badly titled
+	action. Folder Contents is used everywere, so we shouldnt use
+	Contents here.
+
 2003-05-15  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* FormTool.py (CMFForm.get_field): Fixes a leak found by Shane
