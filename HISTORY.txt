@@ -5,6 +5,19 @@ Changelog for Plone
 Plone 2.0 - Fyuti
 
    Final
+
+    - Checked in fix for 2600: group names and user names were not
+      shown correctly in the Group Memberships form and the Members of
+      Group from, if viewed not in english. Fix Suggested by ozone [jok2]
+    
+    - Fix for 2704: added manager proxy role to register.cpy to avoid
+      error if mail could not be sent to new member. Fix suggested by
+      Seb Potter [jok2]
+      
+    - Fix for 2462: change default value of ids to empty list instead
+      of None (folder_delete.cpy). Done to avoid error about iteration 
+      over non-sequence, if no item is selected for deletion. Fix 
+      suggested by Seb Potter [jok2]
    
     - Merge the fix for portlet_related over from the microoptimisations 
       branch and fix for 2293 and 1920 [andym]
