@@ -220,9 +220,4 @@ class FactoryTool(UniqueObject, SimpleItem):
             return getattr(self, name)
         return self.getTempFolder(name)
 
-<<<<<<< FactoryTool.py
-
 InitializeClass(FactoryTool)
-=======
-InitializeClass(FactoryTool)
->>>>>>> 1.17.8.2
