@@ -43,7 +43,8 @@ currentlyViewingFolderContents = (published_id in ['folder_contents',
 path_seq = []
 subpath = []
 
-o = current = published or context
+#o = current = published or context
+o = current = context
 
 # Add breadcrumbs for directories between the root and the published object.
 while current and current is not portal:
@@ -61,10 +62,7 @@ while current and current is not portal:
         # or at it's attributes. We probably dont
         # have the required permissions, so let's
         # try to skip this object on to the next one.
-        try:
-            subpath = list(url_tool.getRelativeContentPath(current))[:-1]
-        except:
-            subpath = list(url_tool.getRelativeContentPath(context))[:-1]
+        subpath = list(url_tool.getRelativeContentPath(current))[:-1]
         while subpath:
             try:
                 o = portal.restrictedTraverse(subpath)
