@@ -17,7 +17,9 @@
   </metal:block>
 
 <div metal:fill-slot="main"
-      tal:condition="here/rejectAnonymous">
+      tal:condition="here/rejectAnonymous"
+      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                  tabindex python:Iterator();">
     
     <script language="JavaScript" 
             src="cmf_skin_tools/calendar.js"
