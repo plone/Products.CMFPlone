@@ -26,39 +26,6 @@
  *
  */
 
-div.row {
-    clear: both;
-    min-height: 4em;
-}
-
-div.rowEven {
-    background: &dtml-evenRowBackground;;
-    clear: both;
-}
-
-div.rowOdd {
-    background: &dtml-oddRowBackground;;
-    clear: both;
-}
-
-.group {
-    border: &dtml-groupBorder;;
-    padding: 1em;
-    padding-bottom: 4em;
-    margin-bottom: 1em;
-    margin-top: 2em;
-    width: 95%;
-}
-
-.legend {
-    position : relative;
-    top: -1.7em;
-    left: 1em;
-    background: &dtml-mainBackground;;
-    padding: 0.5em;
-}
-
-
 input.standalone {
     background: &dtml-standaloneButtonBackground;;
     color: &dtml-standaloneButtonTextColor;;
@@ -82,6 +49,49 @@ input.noborder {
     border: &dtml-noBorder;;
 }
 
+div.row {
+    clear: both;
+    min-height: 4em;
+    margin-top: 1em;
+}
+
+.group {
+    border: &dtml-groupBorder;;
+    margin-bottom: 1em;
+    margin-top: 2em;
+    width: 94%;
+}
+
+.legend {
+    position : relative;
+    top: -0.8em;
+    left: 1em;
+    background: &dtml-mainBackground;;
+    padding: 0.5em;
+}
+
+span.label {
+    float: left;
+    font-weight: bold;
+    text-align: right;
+    width: 15%;
+    position : relative;
+    left: -1em;
+}
+
+span.field {
+    float: left;
+    text-align: left;
+    width: 55%;
+}
+
+span.info {
+    background-color: transparent;
+    float: right;
+    text-align: left;
+    width: 28%;
+}
+
 .error {
     /* Class for error indication in forms */
     background: &dtml-messageBackground;;
@@ -94,29 +104,6 @@ input.noborder {
     background: &dtml-requiredField;;
 }
 
-.label {
-    float: left;
-    font-weight: bold;
-    padding: 1em 0em;
-    text-align: right;
-    width: 15%;
-}
-
-.field {
-    float: left;
-    padding: 1em 0em 1em 1em;
-    text-align: left;
-    width: 45%;
-}
-
-.info {
-    background-color: transparent;
-    float: right;
-    padding: 1em;
-    text-align: left;
-    width: 30%;
-}
-
 span.card {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColor;;
@@ -127,18 +114,6 @@ span.card {
     padding: 1em;
     text-align: center;
     width: 15%;
-}
-
-span.left {
-    float: left;
-    text-align: left;
-    width: 40%;
-}
-
-span.right {
-    float: right;
-    text-align: right;
-    width: 40%;
 }
 
 table.listing {
@@ -184,7 +159,8 @@ table.box {
     border-collapse: collapse;
     border-bottom: &dtml-boxBorder;;
     border-left: &dtml-boxBorder;;
-    margin: 0em 1em 2em 0em;
+    margin: 0;
+    margin-bottom: 2em;
 }
 
 table.box th {

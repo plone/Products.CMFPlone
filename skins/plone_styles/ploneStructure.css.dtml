@@ -101,7 +101,7 @@ div.personalBar {
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    padding-right: 2em;
+    padding-right: 3em;
     text-align: right;
     text-transform: &dtml-textTransform;;
 }
@@ -143,25 +143,19 @@ table.columns {
 
 table.columns td.left {
     vertical-align: top;
-    padding-left: 2em;
-    padding-right: 1em;
-    padding-top: 2em;
     width: &dtml-leftColumnWidth;;
+    padding: 2em 1em 1em 2em;
 }
 
 table.columns td.main {
     vertical-align: top;
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: 2em;
+    padding: 2em 2em 1em 1em;
+    margin: 0;
     width: &dtml-mainColumnWidth;;
 }
 
 table.columns td.right {
     vertical-align: top;
-    padding-left: 1em;
-    padding-right: 2em;
-    padding-top: 2em;
     width: &dtml-rightColumnWidth;;
 }
 
@@ -208,10 +202,8 @@ div.contentBar {
 div.document {
     /* The document class encloses the object content when editing is not permitted */
     background: &dtml-contentBackground;;
-    margin: 0;
-    margin-bottom: 2em;
-    padding: 2em;
-    padding-top: 0;
+    padding: 0;
+    margin: 0em 0em 2em 0em;
 }
 
 div.editableDocument {
@@ -219,7 +211,7 @@ div.editableDocument {
     background: &dtml-contentBackground;;
     border: &dtml-contentTabBorder;;
     margin: 0em 0em 2em 0em;
-    padding: 1em 2em 2em 2em;
+    padding: 2em 1em;
 }
 
 div.message {
@@ -238,6 +230,7 @@ div.message {
     /* The summary text describing the document */
     font: &dtml-descriptionFont;;
     display: block;
+    margin-bottom: 1em;
 }
 
 .footer {

@@ -8,10 +8,16 @@
 
 <dtml-with stylesheet_properties>
 
-/*  A table to do positioning. Necessary to make Netscape 4.x look acceptable.
- *  Used above and below the content-listings.
- */
+div.rowEven {
+    background: &dtml-evenRowBackground;;
+    clear: both;
+}
 
+div.rowOdd {
+    background: &dtml-oddRowBackground;;
+    clear: both;
+}
+ 
 div.title {
     /* This is the object title, the one next the type icon. Also contains status */
     background-color: transparent;
