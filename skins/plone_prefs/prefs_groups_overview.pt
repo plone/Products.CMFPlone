@@ -53,17 +53,17 @@
       certain Groups have a particular role.
     </p>
 
-    <input tabindex=""
+ <!--   <input tabindex=""
            type="text"
            name="addname"
            value=""
            tal:attributes="tabindex tabindex/next;"
-           />
+           />-->
 
-   <input class="context add"
+   <input class="standalone add"
           tabindex=""
           type="submit"
-          name="prefs_group_add:method"
+          name="prefs_group_details:method"
           value="Add New Group"
           tal:attributes="tabindex tabindex/next;"
           i18n:attributes="value"
