@@ -76,6 +76,14 @@ default_configlets = (
      'permission': SetOwnPassword,
      'imageUrl':'plone_images/user.gif'},
 
+    {'id':'WorkflowPrefs',
+     'appId':'Plone',
+     'name':'Manage Workflow',
+     'action':'string:${portal_url}/prefs_workflow_basic',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/site_icon.gif'},
+
 )
 
 
