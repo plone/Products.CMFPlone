@@ -11,7 +11,7 @@
   </metal:block>
     
 <div metal:fill-slot="main"
-     tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
+     tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_start python:request.get('b_start',0);">

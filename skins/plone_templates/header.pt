@@ -28,9 +28,9 @@
 
     <!-- Basic crude style for Netscape4.x - This can be removed
          if you don't want the special NS4 look - it will still work,
-	 just be plain text instead.   -->
+         just be plain text instead.  
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
-
+    -->
 
     <!-- Column layout stylesheet. Even kinda works with Netscape4 -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneColumns.css" />
@@ -87,9 +87,6 @@
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_javascripts.js"></script>
 
-    <!-- XXX this member before said tal:define="member member|portal..."
-         BUT THAT IS BAD.  It would CALL member which is wrong..
-         We want a nocall:  just removed it for now -->
     <tal:block tal:define="showdefault python:test(portal.portal_memberdata.getProperty('formtooltips'), 'true', 0);
                            formtooltips python:member.getProperty('formtooltips', showdefault)"
                tal:omit-tag="">

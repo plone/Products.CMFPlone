@@ -21,7 +21,7 @@
 
 
  body {
-    font: &dtml-mainFont;;
+    font: <dtml-var mainFont>;
     background: &dtml-mainBackground;;
     color: &dtml-mainFontColor;;
     margin: 0;
@@ -60,7 +60,7 @@ img {
 
 p {
     margin: 0.5em 0em 1em 0em;
-    text-align: justify;
+    text-align: left;
     line-height: 1.5em;
 }
 
@@ -97,8 +97,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
     color: &dtml-headingFontColor;;
-
-    font: &dtml-headingFont;;
+    font: <dtml-var headingFont>;
     margin: 0;
     padding-top: 0.5em;
     border-bottom: 1px solid &dtml-mainTabBorderColor;;
@@ -201,7 +200,7 @@ textarea {
 }
 
 input {
-    font: &dtml-inputFont;;
+    font: <dtml-var inputFont>;
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
     background-color: white;
@@ -211,7 +210,7 @@ input {
 }
 
 select {
-    font: &dtml-inputFont;;
+    font: <dtml-var inputFont>;
     border: &dtml-inputBorder;;  
     vertical-align: top;
 }
@@ -388,7 +387,7 @@ div.pathBar {
     border-bottom: &dtml-contentTabBorder;;
     padding-left: 1em;
     margin-top: 1em;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 
 #contentTabs a {
@@ -427,7 +426,7 @@ div.pathBar {
 
 div.document {
     background: &dtml-mainBackground;;
-    font: &dtml-contentFont;;
+    font: <dtml-var contentFont>;
     padding: 0;
     margin: 0em 0em 2em 0em;
 }
@@ -435,7 +434,7 @@ div.document {
 div.editableDocument {
     background: &dtml-contentBackground;;
     border: &dtml-contentTabBorder;;
-    font: &dtml-contentFont;;
+    font: <dtml-var contentFont>;
     margin: 0em 0em 2em 0em;
     padding: 0em 1em 2em 1em;
 }
@@ -449,7 +448,7 @@ div.message {
     background: &dtml-messageBackground;;
     border: &dtml-messageBorder;;
     color: &dtml-mainFontColor;;
-    font: &dtml-messageFont;;
+    font: <dtml-var messageFont>;
     margin: 2em 0em 1em 0em;
     padding: 0.5em 1em;
     vertical-align: middle;
@@ -468,7 +467,7 @@ div.title {
 
 .description {
     /* The summary text describing the document */
-    font: &dtml-descriptionFont;;
+    font: <dtml-var descriptionFont>;
     display: block;
     margin: 1em 0em;
     line-height: 1.5em;
@@ -541,7 +540,6 @@ input.noborder {
 }
 
 div.row {
-    clear: both;
     min-height: 4em;
     margin: 0em 0em 1em 0em;
     position: relative;

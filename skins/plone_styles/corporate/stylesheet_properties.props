@@ -1,6 +1,6 @@
 plone_skin:string=Plone XP
 
-mainFont:string=65% Verdana, Helvetica, Arial, sans-serif
+mainFont:string=11px Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=#EFF7FF
 mainFontColor:string=Black
 mainLinkColor:string=#000066

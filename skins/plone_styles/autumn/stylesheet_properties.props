@@ -1,6 +1,6 @@
 plone_skin:string=Plone Autumn
 
-mainFont:string=70% Verdana, Helvetica, Arial, sans-serif
+mainFont:string=11px Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=White
 mainFontColor:string=Black
 mainLinkColor:string=#39798F

@@ -15,10 +15,10 @@
 
 
 /* Basic Elements */
-body, td, th, div, span, table { font-family: Verdana, Helvetica, sans-serif; }
+body, td, th, div, span, table { /*font: <dtml-var mainFont>*/ }
 body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; }
 a { text-decoration: none; color: &dtml-mainLinkColor;; }
-p { font-family: Verdana, Helvetica, sans-serif; }
+p { /*font: <dtml-var mainFont>*/ }
 p a { text-decoration: underline; }
 p img { border: &dtml-contentImageBorder;; }
 hr { margin:0; padding: 0; }
@@ -52,7 +52,7 @@ div.contentBar {  }
 div.document { background: &dtml-contentBackground;; }
 div.editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
 div.message { background: &dtml-messageBackground;; font: &dtml-messageFont;; padding: 0.5em 1em; vertical-align: middle; }
-.description { font-family: Verdana, Helvetica, Arial, sans-serif; display: block; }
+.description { /*font: <dtml-var mainFont>;*/ display: block; }
 .footer { clear: both; float: none; padding: 0em 0em 0em 0em; text-align: center; }
 
 /* Widgets */

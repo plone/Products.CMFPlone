@@ -1,6 +1,6 @@
 plone_skin:string=Plone Zed
 
-mainFont:string=65% Verdana, Helvetica, Arial, sans-serif
+mainFont:string=11px Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=White
 mainFontColor:string=#8B8B8B
 mainLinkColor:string=#497E94

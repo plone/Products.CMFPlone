@@ -1,55 +1,28 @@
-.columns,
-.columns .left,
-.columns .right,
-.columns .main
-	{
-	margin				: 0px;
-	padding				: 0px;
-	}
+
+.columns{
+}
 
 
-/*
-make sure that .leftcolumn's width is equal to .centercolumn's margin-left
--11px margin-top enables columns to lign up in NN4 rather than dropping down unacceptably
-*/
-.columns .left
-	{
+.columns .left{
 	float				: left;
-	left				: 0px;
 	width				: 17%;
-   padding-right   : 2px;
-	margin-top			: -11px;
+}
 
-	}
-/* reset post NN4 */
-.columns .left
-	{
-/*/*/
-	margin-top			: 0px;
-/* */
-	}
+.columns .right{
+   width : 17%;
+   float : right;   
 
-/*
-make sure that .rightcolumn's width is equal to .centercolumn's margin-right
-*/
-.columns .right
-	{
-	position			: static;
-	float				: right;
-	width				: 17%;
+}
+
+.columns .main{
+   float : none;
+   width : 65%;
 	}
 
-/* NN4 values */
-.columns .main
-	{
-	margin-right		: 0px;
-	margin-left			: -25px;
-	}
-/* Other browsers */
-/*/*/
-.columns .main
-	{
-	margin-right		: 17%;
-	margin-left			: 17%;
-	}
-/* */
+.columns .innermain{
+   float : none;
+   padding : 0 25px;
+}
+
+.columns .innermain a:link{
+}

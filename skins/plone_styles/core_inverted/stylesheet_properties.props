@@ -1,6 +1,6 @@
 plone_skin:string=Plone Core Inverted
 
-mainFont:string=65% Verdana, Helvetica, Arial, sans-serif
+mainFont:string=11px Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=#292929
 mainFontColor:string=#7F7F7F
 mainLinkColor:string=#7F7F7F

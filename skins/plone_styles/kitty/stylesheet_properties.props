@@ -1,6 +1,6 @@
 plone_skin:string=Plone Kitty
 
-mainFont:string=65% Verdana, Helvetica, Arial, sans-serif
+mainFont:string=11px Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=White
 mainFontColor:string=Black
 mainLinkColor:string=#41A6A6

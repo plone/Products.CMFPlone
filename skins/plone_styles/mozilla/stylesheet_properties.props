@@ -1,6 +1,6 @@
 plone_skin:string=Mozilla
 
-mainFont:string=10px Verdana, Helvetica, Arial, sans-serif
+mainFont:string=11px Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=White
 mainFontColor:string=Black
 mainLinkColor:string=#C04735

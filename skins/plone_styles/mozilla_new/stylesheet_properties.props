@@ -1,6 +1,6 @@
-plone_skin:string=Plone Default
+plone_skin:string=Plone Mozilla New
 
-mainFont:string=65% Verdana, Helvetica, Arial, sans-serif
+mainFont:string=11px Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=White
 mainFontColor:string=Black
 mainLinkColor:string=#900000

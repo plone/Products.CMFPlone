@@ -74,6 +74,7 @@
          tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions );
                      Iterator python:modules['Products.CMFPlone'].IndexIterator;
                      tabindex python:Iterator(pos=0);">
+        <div class="innermain">
 
         <metal:ifborder tal:condition="show_border" >
             <div metal:use-macro="here/view_tabs/macros/content_tabs"></div>
@@ -110,6 +111,7 @@
                 </metal:sub>
             </div>
         </div>
+    </div>
     </div>
     <!-- end main content block -->
 
