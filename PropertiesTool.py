@@ -23,7 +23,7 @@ class PropertiesTool(Folder, BaseTool):
     manage_addPropertySheetForm = PageTemplateFile( 'www/addPropertySheet'
                                                   , globals() )
     
-    def addPropertySheet(id, title='', propertysheet=None):
+    def addPropertySheet(self, id, title='', propertysheet=None):
         """ add a new PropertySheet """
         o=SimpleItemWithProperties(id, title)
         self._setObject(id, o)
