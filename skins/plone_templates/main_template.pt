@@ -39,7 +39,7 @@
     </metal:javascriptslot>
 </head>
 
-<body onload="setStyle();">
+<body>
 
 <div id="visual-portal-wrapper">
 
