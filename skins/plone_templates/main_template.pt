@@ -21,8 +21,8 @@
     
                 <td class="left">
 
-                    <div metal:use-macro="here/navigation_slot/macros/CMFTopic_navigation_box">
-                    Navigation box
+                    <div metal:use-macro="here/topic_navigator_slot/macros/CMFTopic_navigation_box">
+                    Topic Navigation box - only does 1 level so far
                     </div>
 
                     <div metal:use-macro="here/navigation_slot/macros/navigationBox">
