@@ -13,7 +13,7 @@
  * Public License, as long as you do not remove or alter this notice.
  */
 
-// $Id: inplace_calendar.js.dtml,v 1.2 2003/09/12 22:05:35 buehlmann Exp $
+// $Id: plone_inplace_calendar.js.pt,v 1.1 2003/09/14 10:11:02 buehlmann Exp $
 
 /** The Calendar object constructor. */
 Calendar = function (mondayFirst, dateStr, onSelected, onClose) {
@@ -1438,7 +1438,7 @@ Calendar._MN = new Array
  "<span i18n:translate="ic_july" tal:omit-tag="">July</span>",
  "<span i18n:translate="ic_august" tal:omit-tag="">August</span>",
  "<span i18n:translate="ic_september" tal:omit-tag="">September</span>",
- "<span i18n:translate="ic_oktober" tal:omit-tag="">Oktober</span>",
+ "<span i18n:translate="ic_october" tal:omit-tag="">October</span>",
  "<span i18n:translate="ic_november" tal:omit-tag="">November</span>",
  "<span i18n:translate="ic_december" tal:omit-tag="">December</span>");
 
