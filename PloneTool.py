@@ -17,7 +17,6 @@ from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone import ToolNames, transaction_note
-from Products.Archetypes.interfaces.templatemixin import ITemplateMixin
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
@@ -595,13 +594,21 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         else:
                             return translation, ['view']
             return obj, [page]
-        
-        # Look Archetypes' template mixin
-        if ITemplateMixin.isImplementedBy(obj):
-            pages = [obj.getLayout(),]
-        else:
+
+        # XXX: Must get rid of this!
+        # Look for Archetypes' template mixin
+        try:
+            from Products.Archetypes.interfaces.templatemixin import ITemplateMixin
+        except ImportError:
             # Look for default_page on the object
             pages = getattr(aq_base(obj), 'default_page', [])
+        else:
+            if ITemplateMixin.isImplementedBy(obj):
+                pages = [obj.getLayout(),]
+            else:
+                # Look for default_page on the object
+                pages = getattr(aq_base(obj), 'default_page', [])
+
         # Make sure we don't break if default_page is a
         # string property instead of a sequence
         if type(pages) in (StringType, UnicodeType):
