@@ -21,8 +21,7 @@
                            tal:attributes="href string:${related/url}/view"
                            class="marker"><img src="" 
                                                border="0" 
-                                               tal:attributes="src string:$portal_url/${related/icon}" />&nbsp;
-                                          <span tal:replace="related/title">Object related by keyword</span></a><br />
+                                               tal:attributes="src string:$portal_url/${related/icon}" />&nbsp;<span tal:replace="related/title">Object related by keyword</span></a><br />
                 </span> 
             </td>
         </tr>
