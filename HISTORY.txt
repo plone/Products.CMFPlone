@@ -32,6 +32,7 @@
     - undo form now will return you to where you were when you went to the undo form 
     - added a PrivateSiteCustomizationPolicy that makes a plone site "private" (preconfigures workflow's) -- you will still need to 
     customize the header to get rid of the search_form tal:condition="not: here/portal_membership/isAnonymousUser"
+    - added metadata tab to Event contentType in DefaultCustomizationPolicy 
 
 1.0a - Boards of Canada Release:
     - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()

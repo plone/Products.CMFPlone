@@ -16,7 +16,7 @@ class DefaultCustomizationPolicy:
     def customize(self, portal):
 	#make 'reply' tab unvisible
         dt=getToolByName(portal, 'portal_discussion') 
-	dt_actions=dt._cloneActions()        
+        dt_actions=dt._cloneActions()        
         for a in dt_actions: 
             if a.id=='reply': a.visible=0
         dt._actions=dt_actions
@@ -30,12 +30,18 @@ class DefaultCustomizationPolicy:
 
         #now lets get rid of folder_listing/folder_contents tabs for folder objects
         tt=getToolByName(portal, 'portal_types')
-	folder_actions=tt['Folder']._cloneActions()
+        folder_actions=tt['Folder']._cloneActions()
         for a in folder_actions:
             if a.get('id','') in ('folderlisting', ): a['visible']=0
         tt['Folder']._actions=folder_actions
 
-	#add custom Plone actions
+        tt['Event'].addAction( 'metadata'
+                             , 'Metadata'
+                             , 'metadata_edit_form'
+                             , CMFCorePermissions.ModifyPortalContent
+                             , 'object' )
+
+        #add custom Plone actions
         at=getToolByName(portal, 'portal_actions')
         at.addAction('index_html','Welcome','portal_url','', 'View', 'portal_tabs')
         at.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','portal_tabs')
@@ -55,7 +61,7 @@ class DefaultCustomizationPolicy:
         md._setProperty('formtooltips', '1', 'boolean')
         md._setProperty('visible_ids', '', 'boolean')
 
-	#customize membership tool
+        #customize membership tool
         mt=getToolByName(portal, 'portal_membership')
         mt.addAction('myworkspace'
                     ,'My Workspace'
@@ -78,7 +84,7 @@ class DefaultCustomizationPolicy:
                 new_actions.insert(len(new_actions)-1,a)
         mt._actions=new_actions
         
-	#customized the registration tool
+        #customized the registration tool
         rt=getToolByName(portal, 'portal_registration')
         rt_actions=rt._cloneActions()
         for a in rt_actions:
