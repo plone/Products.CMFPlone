@@ -30,8 +30,7 @@
            />
     </form>
     
-    <div tal:condition="python:here.portal_discussion.isDiscussionAllowedFor(here)"
-	 tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
+    <div tal:condition="python:here.portal_discussion.isDiscussionAllowedFor(here)">
 	<a name="comments"> </a>
 	<div tal:repeat="reply python:container.sort_modified_ascending(here.talkback.getReplies())">
 
@@ -49,7 +48,7 @@
                     <span i18n:translate="label_commented_at">at</span> 
                     <span tal:replace="python: here.toPortalTime(reply.modified())">8/23/2001 12:40:44 PM</span>
         
-                    <div tal:content="structure python:stx(reply.text)">
+                    <div tal:content="structure reply/CookedBody">
                         This is the body text of the comment. 
                     </div>
         			
