@@ -125,7 +125,7 @@ class WorkflowTool(BaseTool):
                     for key in wlist_def.var_matches.keys(): var_matches[key] = wlist_def.var_matches[key]
                     a_wlist = { 'id':worklist['id']
                               , 'guard' : wlist_def.getGuard()
-                              , 'guard_permissions' : wlist_def.getGuard().getPermissionsText()
+                              , 'guard_permissions' : wlist_def.getGuard().permissions
                               , 'guard_roles' : wlist_def.getGuard().roles
                               , 'catalog_vars' : var_matches
                               , 'name' : getattr(wlist_def, 'actbox_name', None)
@@ -138,14 +138,19 @@ class WorkflowTool(BaseTool):
         return wf_with_wlists
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'getChainForPortalType')
-    def getChainForPortalType(self, pt_name):
+    def getChainForPortalType(self, pt_name, managescreen=0):
 
         """ Get a chain for a specific portal type.
         """
         if self._chains_by_type.has_key(pt_name):
             return self._chains_by_type[pt_name]
         else:
-            return ('Default',)
+            # (Default) is _not_ a chain nor a workflow in a chain.
+            if managescreen:
+                return '(Default)'
+            else:
+                # Return the default chain.
+                return self._default_chain
 
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'listWorkflows')
