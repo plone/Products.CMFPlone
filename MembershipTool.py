@@ -1,6 +1,5 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
-from Products.CMFDefault.MembershipTool import DEFAULT_MEMBER_CONTENT
 from Products.CMFDefault.Document import addDocument
 from Acquisition import aq_base
 
@@ -85,8 +84,9 @@ class MembershipTool( BaseTool ):
             f.changeOwnership(user)
             f.manage_setLocalRoles(member_id, ['Owner'])
             # Create Member's home page.
-            # DEFAULT_MEMBER_CONTENT ought to be configurable per
-            # instance of MembershipTool.
+            # go get the home page text from the skin
+            DEFAULT_MEMBER_CONTENT = self.homePageText()
+
             addDocument( f
                        , 'index_html'
                        , member_id+"'s Home Page"
