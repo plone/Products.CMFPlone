@@ -199,12 +199,6 @@ msgstr "Reset"
 msgid "Save"
 msgstr "Save"
 
-#: from plone_forms/reconfig_form.pt
-#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save Settings" class="context" type="submit" name="submit" />
-#.   
-msgid "Save Settings"
-msgstr "Save Settings"
-
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <input value="Search" class="context" type="Submit" />
 #.   
@@ -221,10 +215,10 @@ msgid "Send me my password"
 msgstr "Send me my password"
 
 #: from plone_forms/registered.pt
-#.   <input value="Sign in" class="standalone" type="submit" />
+#.   <input value="Log in" class="standalone" type="submit" />
 #.   
 #: from plone_templates/ui_slots/login_slot.pt
-#.   <input value="Sign in" class="context" name="submit" type="submit" />
+#.   <input value="Log in" class="context" name="submit" type="submit" />
 #.   
 msgid "Log in"
 msgstr "Log in"
@@ -258,13 +252,6 @@ msgstr "Undo"
 msgid "back_to_where_you_came_from"
 msgstr "back to where you came from"
 
-#: from plone_3rdParty/CMFCollector/collector_macros.pt
-#.   <span omit-tag="">
-#.                 Displaying
-#.                 </span>
-msgid "batch_displaying"
-msgstr "Displaying"
-
 #: from plone_forms/search.pt
 #.   <span omit-tag="">items</span>
 #: from plone_forms/search.pt
@@ -293,40 +280,15 @@ msgstr "Next"
 msgid "batch_previous"
 msgstr "Previous"
 
-#: from plone_3rdParty/CMFCollector/collector_macros.pt
-#.   <span omit-tag="">to</span>
-#: from plone_3rdParty/CMFCollector/collector_macros.pt
-#.   <span omit-tag="">
-#.                 of
-#.                 </span>
-msgid "batch_to"
-msgstr "of"
-
-#: from plone_3rdParty/CMFCollector/collector_macros.pt
-#.   <span omit-tag="">total</span>
-msgid "batch_total"
-msgstr "total"
-
-#: from plone_forms/search.pt
-#.   <span>items matching your criteria</span>
-msgid "batch_x_items_matching_your_criteria"
-msgstr "items matching your criteria"
-
 #: from plone_templates/ui_slots/about_slot.pt
 #.   <th>About</th>
 msgid "box_about"
 msgstr "About"
 
 #: from plone_templates/ui_slots/about_slot.pt
-#.   <strong>Created&nbsp;by:</strong>
+#.   <strong>Created by</strong>
 msgid "box_created_by"
-msgstr "Created&nbsp;by:"
-
-#: from plone_templates/ui_slots/navigation_slot.pt
-#.   <span>Editor view</span>
-#: from plone_templates/ui_slots/navigation_slot.pt
-msgid "box_editor_view"
-msgstr "Editor view"
+msgstr "Created by"
 
 #: from plone_templates/ui_slots/related_slot.pt
 #.   <strong>External links</strong>
@@ -344,9 +306,9 @@ msgid "box_forgot_password_option"
 msgstr "Forgot your password?"
 
 #: from plone_templates/ui_slots/about_slot.pt
-#.   <strong>Last&nbsp;modified:</strong>
+#.   <strong>Last modified</strong>
 msgid "box_last_modified"
-msgstr "Last&nbsp;modified:"
+msgstr "Last modified"
 
 #: from plone_templates/ui_slots/related_slot.pt
 #.   <strong condition="localContent">Local resources</strong>
@@ -356,14 +318,14 @@ msgstr "Local resources"
 #: from plone_templates/ui_slots/favorites_slot.pt
 #.   <th>My&nbsp;Favorites</th>
 msgid "box_my_favorites"
-msgstr "My&nbsp;Favorites"
+msgstr "My Favorites"
 
 #: from plone_templates/ui_slots/navigation_slot.pt
 #.   <th>Navigation</th>
 #: from plone_templates/ui_slots/topic_navigator_slot.pt
-#.   <th>navigation</th>
+#.   <th>Navigation</th>
 msgid "box_navigation"
-msgstr "navigation"
+msgstr "Navigation"
 
 #: from plone_templates/ui_slots/login_slot.pt
 #.   <span omit-tag="">New user?</span>
@@ -374,11 +336,6 @@ msgstr "New user?"
 #.   <th>News</th>
 msgid "box_news"
 msgstr "News"
-
-#: from plone_templates/ui_slots/navigation_slot.pt
-#.   <span>Ordinary view</span>
-msgid "box_ordinary_view"
-msgstr "Ordinary view"
 
 #: from plone_templates/ui_slots/favorites_slot.pt
 #.   <a attributes="href string:${folder/absolute_url}/folder_contents" href="" class="marker">Organize Favorites</a>
@@ -401,7 +358,7 @@ msgid "box_review_list"
 msgstr "Review List"
 
 #: from plone_templates/ui_slots/login_slot.pt
-#.   <th>Sign in</th>
+#.   <th>Log in</th>
 msgid "box_sign_in"
 msgstr "Log in"
 
@@ -796,13 +753,13 @@ msgid "description_registration_form"
 msgstr "By registering with us, you will have your own account with the possibility to have personalized content, and you will be able to add your own documents, images and files to the site."
 
 #: from plone_forms/folder_rename_form.pt
-#.   <p>To rename an item, enter the new name below.</p>
+#.   <p>Each item has a Name and a Title, which you can change by entering the new details below.</p>
 msgid "description_rename_item"
-msgstr "To rename an item, enter the new name below."
+msgstr "Each item has a Name and a Title, which you can change by entering the new details below."
 
 #: from plone_forms/login_form.pt
 #.   <p>
-#.   To access this part of the site, you need to sign in with your username and password.
+#.   To access this part of the site, you need to log in with your username and password.
 #.   </p>
 msgid "description_sign_in"
 msgstr "To access this part of the site, you need to log in with your username and password."
@@ -818,7 +775,7 @@ msgstr "You are not currently logged in. Your user name and/or password may be i
 
 #: from plone_forms/logged_in.pt
 #.   <span>
-#.                   This is the first time that you've signed in to 
+#.                   This is the first time that you've logged in to 
 #.                   </span>
 msgid "description_signed_in"
 msgstr "This is the first time that you've logged in to"
@@ -885,7 +842,7 @@ msgstr "Syndication enables you to syndicate this folder so it can be synchroniz
 #: from plone_forms/login_form.pt
 #.   <span>
 #.                   Make sure to enable cookies in your web browser. 
-#.                   Don't forget to sign out or exit your browser when you're done.
+#.                   Don't forget to log out or exit your browser when you're done.
 #.                   </span>
 msgid "description_trouble_logging_in"
 msgstr "Make sure to enable cookies in your web browser. Don't forget to log out or exit your browser when you're done."
@@ -1235,7 +1192,7 @@ msgstr "Specifies whether discussion items and comments can be added to this ite
 #.                   The body text of the news item. 
 #.                   </div>
 msgid "help_body_text"
-msgstr "The body text of the news item."
+msgstr "The body text of the item."
 
 #: from plone_forms/content_status_history.pt
 #.   <div class="help" id="change_status_help" style="visibility:hidden">
@@ -1401,7 +1358,7 @@ msgstr "Specify the default site wide look to be used for users."
 #.                   Enter a brief description of the folder. 
 #.                   </div>
 msgid "help_description"
-msgstr "Enter a brief description of the folder."
+msgstr "Enter a brief description of the item."
 
 #: from plone_forms/personalize_form.pt
 #.   <div class="help" id="visible_ids_help" style="visibility:hidden">
@@ -1501,7 +1458,7 @@ msgstr "Enter the optional web address of a page containing more info about the 
 #.                   invisible for others at the given date. If no date is chosen, it will never expire.
 #.                   </div>
 msgid "help_expiration_date"
-msgstr "The date when the document expires. This will automatically make the document invisible for others at the given date. If no date is chosen, it will never expire."
+msgstr "The date when the item expires. This will automatically make the item invisible for others at the given date. If no date is chosen, it will never expire."
 
 #: from plone_content/file_edit_form.pt
 #.   <div class="help" id="file_help" style="visibility:hidden">
@@ -1576,11 +1533,10 @@ msgstr "Here you add the relevant keywords that describe this item. You can eith
 
 #: from plone_content/metadata_edit_form.pt
 #.   <div class="help" id="language_help" style="visibility:hidden">
-#.                   The language the document is written in, indicated
-#.                   by the ISO-639-2 code.
+#.                   The language the document is written in.
 #.                   </div>
 msgid "help_language"
-msgstr "The language the document is written in, indicated by the ISO-639-2 code."
+msgstr "The language the document is written in."
 
 #: from plone_content/newsitem_edit_form.pt
 #.   <div class="help" id="leadin_help" style="visibility:hidden">
@@ -1594,10 +1550,10 @@ msgstr "A short descriptive summary of the news. This will be what shows up on t
 #.   <div class="help" id="listed_status_help" style="visibility:hidden">
 #.                       Select whether you want to be listed on the public membership listing
 #.                       or not.	Remember that your Member folder will still be publicly accessible unless
-#.                       you change its security settings, even if you select "unlisted" here.
+#.                       you change its security settings, even if you select 'unlisted' here.
 #.                       </div>
 msgid "help_listed_status"
-msgstr "Select whether you want to be listed on the public membership listing or not. Remember that your Member folder will still be publicly accessible unless you change its security settings, even if you select \"unlisted\" here."
+msgstr "Select whether you want to be listed on the public membership listing or not. Remember that your Member folder will still be publicly accessible unless you change its security settings, even if you select 'unlisted' here."
 
 #: from plone_forms/reconfig_form.pt
 #.   <div class="help" id="long_date_format_help" style="visibility:hidden">
@@ -1658,7 +1614,7 @@ msgstr "Check this box to have your password delivered to your mailbox, so you w
 #.                   "expense-report-2002"
 #.                   </div>
 msgid "help_name"
-msgstr "Enter the Short Name of the image. This is the part that will show up as part of the web address. This should be short, descriptive and preferrably not contain spaces, underscores or mixed case. Example: \"expense-report-2002\""
+msgstr "Enter the Name of the item. This is the part that will show up as part of the web address. This should be short, descriptive and preferrably not contain spaces, underscores or mixed case. Example: 'expense-report-2002'"
 
 #: from plone_forms/personalize_form.pt
 #.   <div class="help" id="new_email_help" style="visibility:hidden">
@@ -1790,13 +1746,13 @@ msgstr "Return items of a specific type."
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="keywords_search_help" style="visibility:hidden">
-#.                   Return items matching one or more of these subjects.
+#.                   Return items matching one or more of these keywords.
 #.                   Multiple words may be found
 #.                   by pressing <strong>Ctrl</strong> while 
 #.                   <strong>left clicking</strong> the keywords.
 #.                   </div>
 msgid "help_search_keywords"
-msgstr "Return items matching one or more of these subjects. Multiple words may be found by by pressing <strong>Ctrl</strong> while <strong>left clicking</strong> the keywords."
+msgstr "Return items matching one or more of these keywords. Multiple words may be found by by pressing <strong>Ctrl</strong> while <strong>left clicking</strong> the keywords."
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="new_items_since_search_help" style="visibility:hidden">
@@ -1879,7 +1835,7 @@ msgstr "This is the address of your local SMTP (outgoing mail) server. Usually \
 #.                   Enter the title of the folder.
 #.                   </div>
 msgid "help_title"
-msgstr "Enter the title of the folder."
+msgstr "Enter the title of the item."
 
 #: from plone_content/document_edit_form.pt
 #.   <div class="help" id="upload_help" style="visibility:hidden">
@@ -1919,11 +1875,11 @@ msgstr "Enter the user name you use on this site. If you haven't got a user name
 #: from plone_forms/join_form.pt
 #.   <div class="help" id="user_name_help" style="visibility:hidden">
 #.                   Enter the user name you want, usually something like
-#.                   "jsmith". No spaces or special characters. 
+#.                   'jsmith'. No spaces or special characters. 
 #.                   This is the name you use to log in.
 #.                   </div>
 msgid "help_user_name_creation"
-msgstr "Enter the user name you want, usually something like \"jsmith\". No spaces or special characters. This is the name you use to log in."
+msgstr "Enter the user name you want, usually something like 'jsmith'. No spaces or special characters. This is the name you use to log in."
 
 #: from plone_content/document_edit_form.pt
 #.   <label for="cb_html">HTML</label>
@@ -3195,20 +3151,20 @@ msgstr "No"
 
 #: from plone_content/document_view.pt
 #.   <p condition="not: len_text">
-#.       This document has yet to be written, click the edit tab to change the document.
+#.       This item does not have any body text, click the edit tab to change it.
 #.       </p>
 #: from plone_content/frontpage_view.pt
 #.   <p condition="not: len_text">
-#.         This document has yet to be written, click the edit tab to change the document.
+#.         This item does not have any body text, click the edit tab to change it.
 #.         </p>
 #: from plone_content/newsitem_view.pt
 #.   <p condition="not: len_text">
 
-#.             This document has yet to be written, click the edit button to write on document.
+#.             This item does not have any body text, click the edit tab to change it.
 
 #.           </p>
 msgid "no_body_text"
-msgstr "This document has yet to be written, click the edit button to write on document."
+msgstr "This item does not have any body text, click the edit tab to change it."
 
 #: from plone_forms/content_status_history.pt
 #.   <span condition="not: rhComments">
@@ -3231,10 +3187,10 @@ msgstr "No comments."
 #.                   </span>
 #: from plone_content/image_edit_form.pt
 #.   <span condition="python:test(here.size, 0, 1)">
-#.                      (No image has been uploaded yet)
+#.                      (No file has been uploaded yet)
 #.                   </span>
 msgid "no_file_uploaded"
-msgstr "(No image has been uploaded yet)"
+msgstr "(No file has been uploaded yet)"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
 #.   <span>

@@ -27,7 +27,7 @@
 
     <p tal:condition="not: len_text"
        i18n:translate="no_body_text">
-    This document has yet to be written, click the edit tab to change the document.
+    This item does not have any body text, click the edit tab to change it.
     </p>
 
     <div tal:condition="len_text"
