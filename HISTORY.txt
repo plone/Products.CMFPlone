@@ -4,6 +4,19 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - http://plone.org/collector/2826. searchterm-highlighting now functions 
+      correctly, it highlights text in the fuill content-area, but only 
+      highlights the parts it is supposed to highlight.
+	  [elvix]
+
+	- http://plone.org/collector/2691 External-link-detector javasdcript 
+	  is now case-insensitive
+      [elvix]
+
+    - http://plone.org/collector/3001. Fallback handling to avoid 
+      javascript-error-messages in IE5   
+      [elvix]
+
     - Fixed http://plone.org/collector/2859.  plonifyActions accepts javascript
       urls
       [tiran]
