@@ -192,7 +192,7 @@
                                 <img tal:define="icon python:item.getIcon(1); iconObject python:getattr(here,icon)"
                                      tal:attributes="src string:$portal_url/$icon; 
                                                      alt iconObject/title_or_id;
-                                                     title item/id"
+                                                     title item_typeinfo/Title"
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
 
