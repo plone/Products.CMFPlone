@@ -40,7 +40,6 @@ class MembershipTool(BaseTool):
         """ """
         _user=self.REQUEST.get('_portaluser', None)
         if _user is None:
-            print 'foo'
             _user = BaseTool.getAuthenticatedMember(self)
             self.REQUEST.set('_portaluser', _user)
         return _user
