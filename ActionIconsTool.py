@@ -77,7 +77,7 @@ class ActionIconsTool(BaseTool):
 
     def manage_removeActionIcon( self, category, action_id, REQUEST ):
         """ remove ActionIcons from ZMI and remove cache entry """
-        Basetool.manage_removeActionIcon(self, category, action_id)
+        BaseTool.manage_removeActionIcon(self, category, action_id, REQUEST)
         removeAICacheEntry(category, action_id)
             
 ActionIconsTool.__doc__ = BaseTool.__doc__
