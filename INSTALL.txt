@@ -15,8 +15,9 @@ date, and have nice and funky pictures to go with them ;)
 
   - "GroupUserFolder":http://sf.net/projecst/collective
  
-  - (optional, required for Large Folder Support) 
-    "BTreeFolder2":http://cvs.zope.org/Products/BTreeFolder2/ (get tarball)
+  - "BTreeFolder2":http://cvs.zope.org/Products/BTreeFolder2/ (get tarball)
+ 
+  - "CMFFormController":http://sf.net/projects/collective
 
   - (optional, but recommended) 
     "ExternalEditor 0.6 or later":http://www.zope.org/Members/Caseman/ExternalEditor
