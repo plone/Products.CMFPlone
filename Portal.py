@@ -25,7 +25,7 @@ import Globals
 import string
 import os, sys, re
 
-__version__='1.0'
+__version__='1.1'
 
 default_frontpage=r"""
 You can customize this frontpage by clicking the edit tab on this document if you
@@ -290,7 +290,10 @@ class PloneGenerator(Portal.PortalGenerator):
             if not re_comment.match(line) and not re_blank.match(line):
                 match = re_transition.match(line)
                 if match:
-                    nav_tool.addTransitionFor(match.group('type'), match.group('page'), match.group('outcome'), match.group('action'))
+                    nav_tool.addTransitionFor(match.group('type'), 
+                                              match.group('page'), 
+                                              match.group('outcome'), 
+                                              match.group('action'))
                 else:
                     sys.stderr.write("Unable to parse '%s' in navigation properties file" % (line))
 
@@ -303,12 +306,13 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupForms(p)
 
         m = p.portal_migration
-        # XXX we need to make this read version.txt
-        m.setInstanceVersion('1.0beta2') #.1')
-        m.upgrade(swallow_errors=0)
 
-        installer=getToolByName(p, 'portal_quickinstaller')
-        installer.installProduct('CMFCalendar')
+        # XXX we need to make this read version.txt
+        m.setInstanceVersion('1.1') #.1')
+        from migrations.plone1_1 import make_plone
+        make_plone(p)
+        #we no longer use migrations to setupPlone in the generator        
+        #m.upgrade(swallow_errors=0)
 
     def create(self, parent, id, create_userfolder):
         id = str(id)

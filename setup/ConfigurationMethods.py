@@ -202,12 +202,14 @@ def addNewActions(self, portal):
                  condition='python:portal.portal_membership.getMembersFolder()',
                  permission='View',
                  category='portal_tabs')
-    at.addAction('content_status_history',
-                 name='State',
-                 action='string:${object_url}/content_status_history',
-                 condition='python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())',
-                 permission='View',
-                 category='object_tabs' )
+
+    #at.addAction('content_status_history',
+    #             name='State',
+    #             action='string:${object_url}/content_status_history',
+    #             condition='python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())',
+    #             permission='View',
+    #             category='object_tabs' )
+
     at.addAction('change_ownership',
                  name='Ownership',
                  action='string:${object_url}/ownership_form',

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - all the previous migrations have been rolled into 1 migration method
+      make_plone and removed ancient cruft (alpha/early betas)
+
     - Password generation code now eliminates characters that look alike from 
       passwords (e.g. 0 and O, 1 and l, etc).  This should reduce the number of
       user complaints about their initial passwords. [geoffd]

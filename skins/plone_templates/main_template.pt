@@ -98,7 +98,7 @@
 
 
         <div id="documentContent"
-             tal:attributes="class python:test(show_border, 'editable document', 'document')">
+             tal:attributes="class python:test(show_border,'editable document','document')">
 
 	    <a name="documentContent"></a>
 
@@ -109,8 +109,6 @@
             <div metal:use-macro="here/document_actions/macros/document_actions">
                 Document actions (print, sendto etc)
             </div>
-
-
 
             <metal:header metal:define-slot="header" tal:content="nothing">
                 Visual Header
