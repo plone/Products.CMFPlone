@@ -51,6 +51,9 @@ if pages:
     for page in pages:
         if page in ids:
             return context, [page]
+    for page in pages:
+        if hasattr(context, page ):
+            return context, [page]
 
 # what if the page isnt found?
 try:
