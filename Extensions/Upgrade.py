@@ -120,7 +120,7 @@ def normalize_tabs(self):
 					  , category='user'
 					  , permissions=('View',)
 					  , condition=Expression('python: member and portal.portal_membership.getHomeFolder()')
-					  , action=Expression('python: portal.portal_membership.getHomeUrl()+"/folder_contents"')))
+					  , action=Expression('python: portal.portal_membership.getHomeUrl()+"/workspace"')))
     mt._actions=mt_actions
 
     #get_transaction().commit(1)
