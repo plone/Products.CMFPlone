@@ -29,6 +29,8 @@
       action="collector_edit" 
       method="post">
 
+    <span class="legend">Collector Details</span>
+    
     <div class="row">
         <div class="label"> Title </div> 
         <div class="field">
