@@ -6,6 +6,13 @@ Plone 2.0 - Fyuti
 
     RC2 
 
+    - Now comments in Plone are text/plain.  No longer using structured-text.
+      DiscussionTool has grown a method, cookReply.  This is temp fix.
+      CMFDefault.Document should have a cook method which can 'recook' its 
+      body text.  This is something Archetypes should implement.  Being able
+      to recook without passing in the values.
+      Modified CMFDefault to accept a text-format in createReply.  
+
     - Add 'site_actions' category to portal_actions.  This includes:
       Small, Normal, Large text links.  This was added in
       setup/ConfigurationMethods.py addSiteActions.  We add 3 actions to
