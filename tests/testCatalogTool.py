@@ -90,6 +90,45 @@ class TestCatalogSearch(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
 
 
+class TestFolderCataloging(PloneTestCase.PloneTestCase):
+    # Tests for http://plone.org/collector/2876
+    # folder_edit must recatalog.
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+        self.folder.invokeFactory('Folder', id='foo')
+
+    def testFolderTitleIsUpdatedOnEdit(self):
+        # Test for catalog that searches to ensure folder titles are 
+        # updated in the catalog. 
+        title = 'Test User Folder - Snooze!'
+        self.folder.foo.folder_edit(title, '')
+        results = self.catalog(Title='Snooze')
+        self.failUnless(results)
+        for result in results:
+            self.assertEqual(result.Title, title)
+            self.assertEqual(result.id, 'foo')
+
+    def testFolderTitleIsUpdatedOnRename(self):
+        # Test for catalog that searches to ensure folder titles are 
+        # updated in the catalog. 
+        title = 'Test User Folder - Snooze!'
+        get_transaction().commit(1) # make rename work
+        self.folder.foo.folder_edit(title, '', id='bar')
+        results = self.catalog(Title='Snooze')
+        self.failUnless(results)
+        for result in results:
+            self.assertEqual(result.Title, title)
+            self.assertEqual(result.id, 'bar')
+
+    def testSetTitleDoesNotUpdateCatalog(self):
+        # setTitle() should not update the catalog
+        title = 'Test User Folder - Snooze!'
+        self.failUnless(self.catalog(id='foo'))
+        self.folder.foo.setTitle(title)
+        self.failIf(self.catalog(Title='Snooze'))
+
+
 class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -130,5 +169,6 @@ else:
         suite = TestSuite()
         suite.addTest(makeSuite(TestCatalogTool))
         suite.addTest(makeSuite(TestCatalogSearch))
+        suite.addTest(makeSuite(TestFolderCataloging))
         suite.addTest(makeSuite(TestCatalogBugs))
         return suite
