@@ -8,7 +8,8 @@ portrait_id='MyPortrait'
 try:
     context.portal_registration.setProperties(REQUEST)
 except: #CMF1.3 below
-    context.portal_membership.setProperties(REQUEST)
+    member=context.portal_membership.getAuthenticatedMember()
+    member.setProperties(REQUEST)
     
 if REQUEST.has_key('portal_skin'):
     context.portal_skins.updateSkinCookie()
