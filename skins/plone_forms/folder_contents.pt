@@ -8,8 +8,6 @@
 
 <body>
 
-
-
     <div metal:fill-slot="super1">
 
         <div metal:use-macro="here/portal_tabs/macros/folderTabs">
@@ -65,7 +63,7 @@
                     results python:here.sortObjectValues(folder_contents);
                     global DateTime python:modules['DateTime'].DateTime;
                     Batch python:modules['ZTUtils'].Batch;
-                    global batch python:Batch(results, 50, int(b_start), orphan=0)"
+                    global batch python:Batch(results, 5000, int(b_start), orphan=0)"
 	tal:condition="results" >
   		
     <input type="hidden" name="filter_state" value="set_view_filter"/>
