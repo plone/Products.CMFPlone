@@ -132,7 +132,7 @@ def rc5_final(portal):
     out.append('Added Plone Tabless skin')
     addTablelessSkin(portal)
 
-    out.append('Adding in Plone 2 base')
+    out.append('Adding in catalog indexes')
     addCatalogIndexes(portal)
     return out
 
