@@ -11,13 +11,13 @@
 
    <div metal:fill-slot="main"
       tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_configuration');
-                  groups python:controlPanel.getGroups('site');
+                  groups python:controlPanel.getGroups('member');
                   getIconFor nocall:putils/getIconFor">
 
-    <h1 i18n:translate="heading_control_panel">Plone Setup</h1>
+    <h1 i18n:translate="heading_user_panel">Preferences</h1>
 
-    <div id="description" i18n:translate="description_control_panel">
-      Configuration area for Plone and add-on Products.
+    <div id="description" i18n:translate="description_user_panel">
+      This area allows you to set your preferences.
     </div>
 
     <tal:block tal:repeat="group groups">

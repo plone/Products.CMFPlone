@@ -9,7 +9,7 @@ from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation, oai
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.TypesTool import TypeInformation
-from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFCore.CMFCorePermissions import ManagePortal, SetOwnProperties, SetOwnPassword
 from Products.CMFCore.utils import _checkPermission, _dtmldir, getToolByName, SimpleItemWithProperties, UniqueObject
 
 from Products.CMFCore.interfaces.portal_actions import portal_actions as IActionsTool
@@ -60,6 +60,22 @@ default_configlets = (
      'permission': ManagePortal,
      'imageUrl':'plone_images/user.gif'},
 
+    {'id':'MemberPrefs',
+     'appId':'Plone',
+     'name':'Plone Preferences',
+     'action':'string:${portal_url}/personalize_form',
+     'category':'Member',
+     'permission': SetOwnProperties,
+     'imageUrl':'plone_images/user.gif'},
+
+    {'id':'MemberPassword',
+     'appId':'Plone',
+     'name':'Change Password',
+     'action':'string:${portal_url}/password_form',
+     'category':'Member',
+     'permission': SetOwnPassword,
+     'imageUrl':'plone_images/user.gif'},
+
 )
 
 
@@ -85,7 +101,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     manage_options=ActionProviderBase.manage_options + PropertyManager.manage_options
 
-    groups=['Plone|Plone Preferences','Products|Add-on Product Preferences']
+    groups=['site|Plone|Plone Preferences','site|Products|Add-on Product Preferences','member|Member|Plone Member Preferences']
 
     def __init__(self,**kw):
         if kw:
@@ -101,11 +117,11 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
     def registerDefaultConfiglets(self):
         self.registerConfiglets(default_configlets)
         
-    def getGroupIds(self):
-        return [g.split('|')[0] for g in self.groups]
+    def getGroupIds(self,category=''):
+        return [g.split('|')[1] for g in self.groups if category=='' or g.split('|')[0]==category]
 
-    def getGroups(self):
-        return [{'id':g.split('|')[0],'title':g.split('|')[-1]} for g in self.groups]
+    def getGroups(self,category=''):
+        return [{'id':g.split('|')[1],'title':g.split('|')[2]} for g in self.groups if category=='' or g.split('|')[0]==category]
 
     def enumConfiglets(self,group=None):
         portal=getToolByName(self,'portal_url').getPortalObject()
