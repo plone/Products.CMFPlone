@@ -1,3 +1,24 @@
+2004-05-12 12:40  psol
+
+	* skins/plone_portlets/portlet_review.pt (Plone-2_0-branch): review
+	  list uses objects, not brains now, changed from getURL to
+	  absolute_url
+
+2004-05-12 12:08  azy
+
+	* skins/plone_ecmascript/plone_javascripts.js: refixed highlight
+	  bug in plone_javascripts.js
+
+2004-05-12 12:07  azy
+
+	* HISTORY.txt, skins/plone_ecmascript/plone_javascripts.js
+	  (Plone-2_0-branch): fixed a small bug in plone_javascripts.js
+	  that prevents highlight on simple searchs
+
+2004-05-12 06:16  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-12 00:57  limi
 
 	* README.txt (Plone-2_0-branch): Updated README
