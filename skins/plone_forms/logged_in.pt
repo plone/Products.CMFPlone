@@ -45,13 +45,11 @@
 		
         <div tal:condition="python: not(here.portal_membership.isAnonymousUser())"
              tal:define="member python: here.portal_membership.getAuthenticatedMember()">
-            
-            <div tal:condition="python: member.login_time == here.ZopeTime('2000/01/01') and p_props.validate_email">
+
+             <div tal:condition="python: member.login_time == here.ZopeTime('2000/01/01') and p_props.validate_email">
 
 		<metal:block tal:on-error="nothing"
-		             tal:define="dum_reg python: here.portal_registeration.setProperties(last_login_time=here.ZopeTime(),login_time=here.ZopeTime())" />
-		<metal:block tal:on-error="nothing" 
-		             tal:define="dum_reg python: here.portal_membership.setProperties(last_login_time=here.ZopeTime(),login_time=here.ZopeTime())" />
+		             tal:define="dum_reg python: member.setProperties(last_login_time=here.ZopeTime(),login_time=here.ZopeTime())" />
 
                 <h1 i18n:translate="">Welcome!</h1>
                 
@@ -122,17 +120,12 @@
             </div>
 			
             
-            <div tal:condition="python: not(member.login_time == here.ZopeTime('2000/01/01') and here.validate_email)">
-                <metal tal:on-error="nothing"
-		     tal:define="d_reg python: here.portal_registration.setProperties(last_login_time=member.login_time); 
-                                 ereg python: here.portal_registration.setProperties(login_time=here.ZopeTime());
+             <div tal:condition="python: not(member.login_time == here.ZopeTime('2000/01/01') and here.validate_email)">
+                <metal:block tal:on-error="nothing"
+		     tal:define="d_reg python: member.setProperties(last_login_time=member.login_time); 
+                                 ereg python: member.setProperties(login_time=here.ZopeTime());
                                  global actions python: here.portal_actions.listFilteredActionsFor(here);">
-                </metal>
-                <metal tal:on-error="nothing"
-		                     tal:define="d_reg python: here.portal_registration.setProperties(last_login_time=member.login_time); 
-				                 ereg python: here.portal_registration.setProperties(login_time=here.ZopeTime());
-				                 global actions python: here.portal_actions.listFilteredActionsFor(here);">
-                </metal>
+                </metal:block>
 				
                 <div tal:condition="request/came_from | nothing ">
                     <div tal:define="dummy python: request.RESPONSE.redirect(request.get('came_from'))">
