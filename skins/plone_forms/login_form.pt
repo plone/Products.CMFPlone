@@ -86,7 +86,7 @@ to become a member.
 
             <div i18n:translate="help_user_name_caps"
                  class="formHelp">
-    		Usernames and passwords are case sensitive, make sure the caps lock key is not enabled.
+    		Usernames are case sensitive, make sure the caps lock key is not enabled.
             </div>
 
             <input type="text"
@@ -105,8 +105,9 @@ to become a member.
             <label i18n:translate="label_password"
                    tal:attributes="for ac_password">Password</label>
 
-            <div i18n:translate="help_password_retrieval"
+            <div i18n:translate="help_capslock_password_retrieval"
                  class="formHelp">
+                Case sensitive, make sure caps lock is not enabled.
                 If you have forgotten your password,
                 <a href="mail_password_form">click here to retrieve it</a>.
             </div>
