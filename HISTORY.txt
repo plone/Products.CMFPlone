@@ -5,6 +5,35 @@ Changelog for Plone
 Plone 2.0 - Fyuti
 
     Beta 2
+
+    - personalBar (mystuff, preferences, undo, logout) now no longer uses
+      'global' actions.  This was causing worklist 'pending XXX (N)' in
+      the personalBar.  Which is not i18nable and breaks semantics of
+      the personalBar (which are user-centric actions).  Two things were
+      introduced:
+
+        - keyFilteredActions which will return a two dimensional dictionary
+        keyed_actions=[category][action_id] so you can easily pick out actions
+        using its category and id.
+
+        - getOrderedUserActions which given a two dimensional dictionary
+        keyed like keyFilteredActions and a ordering dictionary will return
+        'in order' the user actions.  If you add more actions using tools
+        they will show up in between the 'pre','post' ordering lists (which
+        can be passed ala ordering dictionary)
+ 
+      NOTE: 
+
+        - portal_undo actions 'undo' category should be 'user' not 'global'
+          this goes the same for portal_properties' 'configPortal' action
+ 
+        - plone should not ship with 'default_workflow' which injects
+          hardcoded information into the listFilteredActionsFor.
+
+        - all worklists in plone workflows should not use 'global' category
+          but should use the 'workflow' or 'worklist' category.  Up to whoever
+          gets to it first 8-).
+            
     
     - Presentation mode now renders paragraph tags invisible, which means
       you can create a richer document for web and/or print, but keep the 

@@ -14,6 +14,7 @@
         global membersfolder mtool/getMembersFolder;
         global isAnon mtool/isAnonymousUser;
         global actions python:here.portal_actions.listFilteredActionsFor(here);
+        global keyed_actions python:here.keyFilteredActions(actions);
         global user_actions actions/user;
         global workflow_actions actions/workflow;
         global folder_actions actions/folder;

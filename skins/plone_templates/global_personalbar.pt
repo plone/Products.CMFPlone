@@ -12,7 +12,9 @@
                   mtool mtool|here/portal_membership;
                   display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];"
       tal:omit-tag="" >
+
 <h5 class="hiddenstructure" i18n:translate="heading_personal_tools">Personal tools</h5>
+
 <ul id="personalBar">
     <li id="personalBar-user" tal:condition="not: isAnon"><a href=""
         tal:omit-tag="not: mtool/getHomeFolder"
@@ -23,11 +25,14 @@
              john
         </span>
     </a></li>
+
     <li class="notLoggedIn" tal:condition="isAnon"
           i18n:translate="you_are_not_logged_in">
               You are not logged in
     </li>
-    <tal:actions tal:repeat="action python:display_actions">
+
+       
+    <tal:actions tal:repeat="action python:here.getOrderedUserActions(keyed_actions=keyed_actions)">
         <li>
             <a href=""
                tal:attributes="href action/url"
@@ -37,6 +42,7 @@
             </a>
         </li>
     </tal:actions>
+
 </ul>
 </span>
 
