@@ -3,7 +3,6 @@ from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
 import MembershipTool, FormulatorTool, CalendarTool
 import PloneFolder
 
-BROWSE_DIRECTORY_LISTING = 'Browse directory listing'
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
 #for plone_debug method
