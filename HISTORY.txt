@@ -44,6 +44,9 @@ Plone 1.0 rc2
       **Remember that you need to run Zope without any special language 
         settings for this to work**
     - Search results now use the defined time format
+    - Added CSS workaround for STX tables, they now look like real 
+      Plone Tables(tm ;)
+    - Lots and lots of i18n updates
       
 Plone 1.0 rc1
     - added 'fullname' to portal_memberdata
