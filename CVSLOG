@@ -1,3 +1,22 @@
+2004-03-27 19:08  limi
+
+	* skins/plone_content/: document_edit_form.cpt,
+	  event_edit_form.cpt, file_edit_form.cpt, folder_edit_form.cpt,
+	  image_edit_form.cpt, link_edit_form.cpt, newsitem_edit_form.cpt
+	  (Plone-2_0-branch): Improved the wording in the Short Name help.
+
+2004-03-27 15:35  limi
+
+	* skins/plone_content/: document_edit_form.cpt,
+	  event_edit_form.cpt, file_edit_form.cpt, folder_edit_form.cpt,
+	  image_edit_form.cpt, link_edit_form.cpt, newsitem_edit_form.cpt
+	  (Plone-2_0-branch): Changed the wording in the Short Name help to
+	  say that underscores/uppercase/etc are not recommended.
+
+2004-03-27 05:03  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-26 05:03  longsleep
 
 	* CVSLOG: auto generated new changelog
