@@ -21,7 +21,10 @@
 
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors;
-                     review_state wf_state;" >
+                     review_state wf_state;
+		     contentTypes python: here.getAllowedTypes(); 
+		     num_types python: len(contentTypes)
+		     " >
 
       <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
 
@@ -102,8 +105,7 @@
 
             <div tal:define="inputname  string:effective_date;
                              formname   string:edit_form;
-                             effective here/EffectiveDate;
-                             inputvalue python:test(effective and effective!='None', effective, request.get('effective_date', ''));
+                             inputvalue python:test(here.EffectiveDate() and here.EffectiveDate()!='None', here.EffectiveDate(), request.get('effective_date', ''));
                              tabindex tabindex/next;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
@@ -129,8 +131,7 @@
             <div class="field">
               <div tal:define="inputname  string:expiration_date;
                                formname   string:edit_form;
-                               expiration here/ExpirationDate;
-                               inputvalue python:test(expiration and expiration!='None', expiration, request.get('expiration_date', ''));
+                               inputvalue python:test(here.ExpirationDate() and here.ExpirationDate()!='None', here.ExpirationDate(), request.get('expiration_date', ''));
                                onfocus string:formtooltip('expiration_date_help',1);
                                onblur string:formtooltip('expiration_date_help',0);
                                tabindex tabindex/next;"
