@@ -1,15 +1,17 @@
 /*
 ** Plone style sheet for CSS2-capable browsers.
-** Copyright Alexander Limi, 2001-2003 - http://www.plonesolutions.com
+** Copyright Alexander Limi (http://www.plonesolutions.com),
+** Joe Geldart & Tom Croucher (http://www.netalleynetworks.com),
+** Micheal Zeltner (http://www.niij.org) 2001-2003. 
 **
 ** Thanks to Geir Bækholt, Stian Søiland for input and guidance.
 **
 ** Style sheet documentation can be found at http://plone.org/documentation
 **
 ** You should preferrably use ploneCustom.css to add your own CSS classes and to
-** customize your portal, as these are the base fundaments of Plone, and will 
+** customize your portal, as these are the base fundaments of Plone, and will
 ** change and be refined in newer versions. Keeping your changes in
-** ploneCustom.css will make it easier to upgrade. 
+** ploneCustom.css will make it easier to upgrade.
 **
 ** Feel free to use whole or parts of this for your own designs, but give credit
 ** where credit is due.
