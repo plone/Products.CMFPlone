@@ -1049,10 +1049,17 @@ ul.configlets li a {
 }
 
 .hiddenStructure {
+    display: block;
+    background: none;
+    background-image: none; /* safari bug */
     border: none;
-    height: 0px;
+    height: 0px !important;
+    height /**/: 1px;
     overflow: hidden;
-    padding-top: 0px;
+    padding: 0;
+    margin: 0 !important;
+    margin /**/: -1px 0 0 0;
+    width: 0;
 }
 .visualClear {
     clear: both;

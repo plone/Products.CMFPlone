@@ -45,6 +45,8 @@
 
 <div id="portal-top" i18n:domain="plone">
 
+    <a href="#documentContent" class="hiddenStructure">Skip to content.</a>
+
     <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
         The skin switcher tabs. Based on which role you have, you
         get a selection of skins that you can switch between.
@@ -102,6 +104,8 @@
                 </metal:ifborder>
 
                 <div class="documentContent">
+
+                    <a name="documentContent"></a>
 
                     <div metal:use-macro="here/global_statusmessage/macros/portal_message">
                         Portal status message

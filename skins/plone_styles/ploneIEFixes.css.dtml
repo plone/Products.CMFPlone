@@ -23,9 +23,6 @@ h6,
     /* Fix for IE6 disappearing float bug */
     height: 100%;
 }
-.hiddenStructure {
-    display: none;
-}
 
 input {
         margin-bottom: 1px; /* bug fix */
