@@ -33,7 +33,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testHasOrderSupport(self):
         # The portal should show the ordering controls in the ZMI
-        support = getattr(self.portal, 'has_order_support', 0)
+        support = getattr(aq_base(self.portal), 'has_order_support', 0)
         self.failUnless(support)
 
     def testCanViewManagementScreen(self):

@@ -9,6 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from Acquisition import aq_base
 
 try: from zExceptions import NotFound
 except ImportError: NotFound = 'NotFound'
@@ -56,7 +57,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
 
     def testHasOrderSupport(self):
         # PloneFolders should show the ordering controls in the ZMI
-        support = getattr(self.folder, 'has_order_support', 0)
+        support = getattr(aq_base(self.folder), 'has_order_support', 0)
         self.failUnless(support)
 
     def testCanViewManagementScreen(self):
