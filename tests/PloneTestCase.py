@@ -16,8 +16,6 @@ ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
-ZopeTestCase.installProduct('ExternalEditor')
-ZopeTestCase.installProduct('BTreeFolder2')
 ZopeTestCase.installProduct('CMFPlone')
 
 from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager

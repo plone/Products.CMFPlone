@@ -71,20 +71,24 @@ def setupDefaultItemActionSlots(self, portal):
 
 def installExternalEditor(self, portal):
     ''' responsible for doing whats necessary if external editor is found '''
-    types_tool=getToolByName(portal, 'portal_types')
-    methods=('PUT', 'manage_FTPget')
-    exclude=('Topic', 'Event', 'Folder')
-    for ctype in types_tool.objectValues():
-        if ctype.getId() not in exclude:
-            ctype.addAction( 'external_edit',
-                            name='External Edit',
-                            action='external_edit',
-                            condition='',
-                            permission=CMFCorePermissions.ModifyPortalContent,
-                            category='object',
-                            visible=0 )
-    from Products.ExternalEditor.ExternalEditor import ExternalEditorPermission
-    portal.manage_permission(ExternalEditorPermission, ('Manager', 'Authenticated'), acquire=0)
+    try:
+        from Products.ExternalEditor.ExternalEditor import ExternalEditorPermission
+    except ImportError:
+        pass
+    else:
+        types_tool=getToolByName(portal, 'portal_types')
+        methods=('PUT', 'manage_FTPget')
+        exclude=('Topic', 'Event', 'Folder')
+        for ctype in types_tool.objectValues():
+            if ctype.getId() not in exclude:
+                ctype.addAction( 'external_edit',
+                                name='External Edit',
+                                action='external_edit',
+                                condition='',
+                                permission=CMFCorePermissions.ModifyPortalContent,
+                                category='object',
+                                visible=0 )
+        portal.manage_permission(ExternalEditorPermission, ('Manager', 'Authenticated'), acquire=0)
 
 def assignTitles(self, portal):
     titles={'portal_actions':'Contains custom tabs and buttons',
