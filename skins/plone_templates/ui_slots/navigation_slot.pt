@@ -30,7 +30,7 @@
                 <strong>Other items</strong> <br />
                 <div tal:repeat="sibling siblings">
                     <a href="#" class="plain"
-                     tal:define="url string:${here/absolute_url}/folder_contents;
+                     tal:define="url string:${sibling/absolute_url}/folder_contents;
 		                 sibling_title python:'&nbsp;;'.join(sibling.title_or_id()[:18].split(' '));"
                      tal:attributes="href url">
                         <img src="" height="16" width="16" alt="dummy" 

@@ -88,7 +88,13 @@ def normalize_tabs(self):
 				, category='global_tabs'
 				, permissions='View'
 				, action=Expression('string: $portal_url/search_form'))
-	return (welcome, members, news, search)
+	publishing=ActionInformation( 'content_status_history'
+                                    , title='Publishing'
+                                    , category='local_tabs'
+                                    , permissions='View'
+                                    , condition=Expression("python: member and hasattr(object, 'workflow_history')")
+	                           , action=Expression("string: ${object_url}/content_status_history"))
+	return (welcome, members, news, search, publishing)
 			      
     #make 'syndication' tab unvisible
     st=getToolByName(self, 'portal_actions')
@@ -97,15 +103,8 @@ def normalize_tabs(self):
         if a.id=='folderContents':
             a.id='folder_contents'
 	st_actions.append(a)
-
     for globaltab in global_tabs():
         st_actions.append(globaltab)
-    st_actions.append( ActionInformation( 'content_status_history'
-                                        , title='Publishing'
-                                        , category='local_tabs'
-                                        , permissions='View'
-                                        , condition=Expression("python: member and hasattr(object, 'workflow_history')")
-                                        , action=Expression("string: ${object_url}/content_status_history")))
     st._actions=st_actions
 
     #move add to favorites 
