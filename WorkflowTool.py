@@ -124,6 +124,24 @@ class WorkflowTool(BaseTool):
 
         return wf_with_wlists
 
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'getChainForPortalType')
+    def getChainForPortalType(self, pt_name):
+
+        """ Get a chain for a specific portal type.
+        """
+        if self._chains_by_type.has_key(pt_name):
+            return self._chains_by_type[pt_name]
+        else:
+            return ('Default',)
+
+
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'listWorkflows')
+    def listWorkflows(self):
+
+        """ Return the list of workflows
+        """
+        return self.objectIds()
+
 WorkflowTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(WorkflowTool)
