@@ -1,11 +1,11 @@
 #this should be automated in the CMFSetup product
-#you should be able to define Product dependnecies and error messages
+#you should be able to define Product dependencies and error messages
 #in the config file
 
 import zLOG
 
 def log(message,summary='',severity=0):
-    zLOG.LOG('Plone Depedency: ',severity,summary,message)
+    zLOG.LOG('Plone Depeedency: ',severity,summary,message)
 
 try:
     import Products.CMFQuickInstallerTool
