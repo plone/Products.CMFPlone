@@ -54,7 +54,6 @@ def setupDefaultSlots(self, portal):
     """ sets up the slots on objectmanagers """
     left_slots=( 'here/navigation_tree_slot/macros/navigationBox'
                , 'here/login_slot/macros/loginBox'
-               , 'here/about_slot/macros/aboutBox'
                , 'here/related_slot/macros/relatedBox' )
     right_slots=( 'here/workflow_review_slot/macros/review_box'
                 , 'here/calendar_slot/macros/calendarBox' )
