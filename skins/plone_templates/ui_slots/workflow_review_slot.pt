@@ -13,23 +13,27 @@
                  results here/my_worklist;"
      tal:condition="results">
 
-    <span class="boxTitle" i18n:translate="box_review_list">Review List</span>
-
     <div class="box" tal:repeat="o results">
 
-        <div tal:define="oddrow repeat/o/odd"
-             tal:attributes="class python:test(oddrow, 'content odd','content even')">
+        <h5 i18n:translate="box_review_list">Review List</h5>
 
-                <a href="#"
-                   class="marker"
-                   tal:attributes="href string:${o/absolute_url}/view">
-                    <span tal:replace="o/title_or_id">
-                    Extended Calendar Product
-                    </span>
-                </a>
+        <div class="body">
 
-                <div class="boxDetails"
-                     tal:content="python:DateTime(o.ModificationDate()).strftime('%B %d, %H:%M')">July 7, 08:11</div>
+            <div tal:define="oddrow repeat/o/odd"
+                 tal:attributes="class python:test(oddrow, 'content odd','content even')">
+    
+                    <a href="#"
+                       class="marker"
+                       tal:attributes="href string:${o/absolute_url}/view">
+                        <span tal:replace="o/title_or_id">
+                        Extended Calendar Product
+                        </span>
+                    </a>
+    
+                    <div class="boxDetails"
+                         tal:content="python:DateTime(o.ModificationDate()).strftime('%B %d, %H:%M')">July 7, 08:11</div>
+            </div>
+
         </div>
 
     </div>

@@ -3,6 +3,15 @@ Plone 1.0 rc2
     - typo in portal_navigation default.folder_rename_form.success should be script:folder_rename
       this typo was propagated throughout previous migration scripts and was also fixed.
       thanks to flacoste for pointing this out.
+    - Rewrote the box code, thanks to interra for help with troubleshooting 
+      browser bugs. Any customized boxes will need a small update, essentially 
+      you need to do the following to make a box:
+      <div class="box">
+        <h5>Title</h5>
+        <div class="body">
+         Then it's just the usual:
+         <div class="even content">
+         etc.
 
 Plone 1.0 rc1
     - added 'fullname' to portal_memberdata

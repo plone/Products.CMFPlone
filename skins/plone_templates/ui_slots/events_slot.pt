@@ -16,26 +16,30 @@
                                                                  , review_state='published')[:5];"
      tal:condition="python:test(results, 1, 0)">
 
-    <span class="boxTitle" i18n:translate="box_events">Upcoming Events</span>
-
     <div class="box">
+
+        <h5 i18n:translate="box_events">Upcoming Events</h5>
     
-        <tal:block tal:repeat="obj results">
-                
-            <div tal:define="oddrow repeat/obj/odd"
-                 tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
+        <div class="body">
         
-                <a href=""
-                   tal:attributes="href obj/getURL">
-                    <img tal:replace="structure here/event_icon.gif" />
-                    <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Event </span>
-                </a>
+            <tal:block tal:repeat="obj results">
+                    
+                <div tal:define="oddrow repeat/obj/odd"
+                     tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
+            
+                    <a href=""
+                       tal:attributes="href obj/getURL">
+                        <img tal:replace="structure here/event_icon.gif" />
+                        <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Event </span>
+                    </a>
+            
+                    <div class="boxDetails"
+                         tal:content="python:here.toPortalTime(obj.start)">July 7, 08:11</div>
+                </div>
         
-                <div class="boxDetails"
-                     tal:content="python:here.toPortalTime(obj.start)">July 7, 08:11</div>
-            </div>
-    
-        </tal:block>
+            </tal:block>
+
+        </div>
     
     </div>
         

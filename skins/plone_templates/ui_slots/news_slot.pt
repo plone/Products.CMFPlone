@@ -15,27 +15,31 @@
                                                                                      , review_state='published')[:5]);"
      tal:condition="python:test(template.getId()!='recent_news' and results, 1, 0)">
 
-    <span class="boxTitle" i18n:translate="box_news">News</span>
-
     <div class="box">
     
-        <tal:block tal:repeat="obj results">
-                
-            <div tal:define="oddrow repeat/obj/odd"
-                 tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
+        <h5 i18n:translate="box_news">News</h5>
+
+        <div class="body">
+
+            <tal:block tal:repeat="obj results">
+                    
+                <div tal:define="oddrow repeat/obj/odd"
+                     tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
+            
+                    <a href=""
+                       tal:attributes="href obj/getURL">
+                        <img tal:replace="structure here/newsitem_icon.gif" />
+                        <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Extended Calendar Product </span>
+                    </a>
+            
+                    <div class="boxDetails"
+                         tal:content="python:here.toPortalTime(obj.modified)">July 7, 08:11</div>
+                </div>
         
-                <a href=""
-                   tal:attributes="href obj/getURL">
-                    <img tal:replace="structure here/newsitem_icon.gif" />
-                    <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Extended Calendar Product </span>
-                </a>
-        
-                <div class="boxDetails"
-                     tal:content="python:here.toPortalTime(obj.modified)">July 7, 08:11</div>
-            </div>
+            </tal:block>
     
-        </tal:block>
-    
+        </div>
+
     </div>
         
 </div>
