@@ -16,7 +16,7 @@ homeFolder = context.portal_membership.getHomeFolder()
 
 # Create Trashcan if it not exists
 
-if '.trashcan' not in homeFolder.objectIds():
+if homeFolder and '.trashcan' not in homeFolder.objectIds():
     homeFolder.invokeFactory(id='.trashcan', title='Trashcan', type_name='Folder')
     homeFolder.folder_publish(workflow_action='hide', ids=['.trashcan'])
 
@@ -26,15 +26,16 @@ status='failure'
 status_msg='Please select one or more items to delete.'
 
 if ids:
-    Trashcan = getattr(homeFolder.aq_explicit, '.trashcan')
+    if homeFolder:
+        Trashcan = getattr(homeFolder.aq_explicit, '.trashcan')
     
     # If current Folder is Trashcan, then delete objects.
 
-    if context == Trashcan:
+    if homeFolder is None or context == Trashcan:
         status='success'
         message=', '.join(ids)+' has been deleted.'
         transaction_note(message)        
-        Trashcan.manage_delObjects(ids)
+        context.manage_delObjects(ids)
 
     # If not, move objects to Trashcan
 
