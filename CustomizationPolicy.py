@@ -14,7 +14,7 @@ class DefaultCustomizationPolicy:
     __implements__ = ICustomizationPolicy
 
     def customize(self, portal):
-	#make 'reply' tab unvisible
+        #make 'reply' tab unvisible
         dt=getToolByName(portal, 'portal_discussion') 
         dt_actions=dt._cloneActions()        
         for a in dt_actions: 
@@ -104,3 +104,10 @@ class DefaultCustomizationPolicy:
                 a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
         rt._actions=rt_actions
 	
+        pp=getToolByName(portal, 'portal_properties')
+        pp_actions=pp._cloneActions()
+        for a in pp_actions:
+            if a.id=='configPortal':
+                a.name='Plone Setup'
+        pp._actions=pp_actions
+
