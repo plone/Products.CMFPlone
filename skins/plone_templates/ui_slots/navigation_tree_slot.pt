@@ -32,7 +32,10 @@
                 <tal:block tal:define="iscurrent te/iscurrent | python:0;
                                        sibling python:te['object'];
                                        stdCommand python:test(template.getId()=='folder_contents' and  
-                                       sibling.isPrincipiaFolderish , 'folder_contents', 'view');
+                                           sibling.isPrincipiaFolderish , 'folder_contents', 
+                                               test(sibling.isPrincipiaFolderish,'','view'));
+                                           
+                                       
                                        sibling_title python:'&nbsp;;'.join(te['object'].title_or_id()[:18].split(' '));"
                                        tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                        >
