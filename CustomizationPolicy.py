@@ -135,6 +135,8 @@ class DefaultCustomizationPolicy:
                     , visible=0)		    
         new_actions=[]
         for a in mt._cloneActions():
+            if a.id=='preferences':
+                a.action=Expression('string:${portal_url}/portal_form/personalize_form')
             if getattr(a,'id','') in ('addFavorite', 'favorites'): 
                 a.visible=0
             if a.id=='mystuff': 
@@ -143,8 +145,6 @@ class DefaultCustomizationPolicy:
                 new_actions.insert(1, a)
             elif a.id=='logout':
                 new_actions.append(a)
-            elif a.id=='preferences':
-                a.action=Expression('string:${portal_url}/portal_form/personalize_form')
             else:
                 new_actions.insert(len(new_actions)-1,a)
         mt._actions=new_actions
