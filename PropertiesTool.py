@@ -1,5 +1,6 @@
 from ComputedAttribute import ComputedAttribute
 from Acquisition import aq_parent, aq_inner
+from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.CMFCorePermissions import ManagePortal
@@ -14,6 +15,7 @@ from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.interfaces.PropertiesTool import IPropertiesTool
 
 class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
@@ -27,9 +29,10 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
          },
         ))
 
-    __implements__ = (PloneBaseTool.__implements__,
-                      BaseTool.__implements__,
-                      Folder.__implements__, )
+    __implements__ = ((IPropertiesTool,) +
+                      (PloneBaseTool.__implements__,
+                      ActionProviderBase.__implements__,
+                      Folder.__implements__, ))
 
     manage_options = ((Folder.manage_options[0],) +
                         BaseTool.manage_options)
@@ -44,8 +47,7 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         """
         return BaseTool.title(self)
 
-    # XXX breaks interface implementation and unit test
-    #title = ComputedAttribute(title, 1)
+    title = ComputedAttribute(title, 1)
 
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ Add a new PropertySheet
