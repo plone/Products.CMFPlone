@@ -31,8 +31,8 @@ for id in new_ids:
     else:
         # id is good; make sure we have no id collisions
         if id != old:
-            if getattr(context, id, None):
-                errors[old] = 'This name is reserved.'
+#            if getattr(context, id, None):
+#                errors[old] = 'This name is reserved.'
             if id in context.objectIds():
                 errors[old] = 'This name is already in use.'
 
