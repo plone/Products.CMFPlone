@@ -8,8 +8,7 @@
 ##title=
 ##
 REQUEST=context.REQUEST
-if not field_id:
-    field_id=context.getId()
+
 id, title, description = field_id, field_title, field_description
 
 errors=context.validate_topic_edit()

@@ -11,10 +11,6 @@ from Products.CMFPlone import transaction_note
 from StringIO import StringIO
 REQUEST=context.REQUEST
 
-if not field_id:
-    field_id=context.getId()
-    REQUEST.set('field_id', field_id)
-
 file=field_file
 id=field_id
 
@@ -46,7 +42,9 @@ if hasattr(context, 'extended_edit'):
     response=edit_hook(redirect=0)
     if response:
         return response
+
 context.rename_object(redirect=0, id=id)
+
 tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
 transaction_note(tmsg)
 target_action = context.getTypeInfo().getActionById( 'view' )

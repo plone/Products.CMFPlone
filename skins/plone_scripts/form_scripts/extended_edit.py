@@ -26,5 +26,4 @@ if title or description or subject:
                           effective_date=effective_date, 
                           expiration_date=expiration_date, 
                           redirect=0)
-#moved the id/filename renaming to the xxx_edit scripts
-#use rename_object() script
+

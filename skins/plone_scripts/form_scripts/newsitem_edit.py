@@ -3,9 +3,7 @@
 ##title=Edit a news item
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
-if not field_id:
-    field_id=context.getId()
-    REQUEST.set('field_id', field_id)
+
 id,description = field_id, field_description
 
 errors=context.validate_newsitem_edit()
@@ -28,8 +26,7 @@ context.edit( text
             , description
             , text_format )
 
-if id!=context.getId():
-    context.rename_object(redirect=0, id=id)
+context.rename_object(redirect=0, id=id)
 
 tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
 transaction_note(tmsg)
