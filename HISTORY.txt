@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+   RC6/Final?
+ 
+    - Fix bug 2373 so folder_contents items goto
+      getTypeInfo.getActionById('view')
+
    RC5/Final?   
 
     - Removed false 'required' indicators for Title attribute on file/image
