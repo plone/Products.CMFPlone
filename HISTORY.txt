@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - check_id script now rejects ids that are also catalog indices [geoff]
+
+    - Fixed portal_factory passthrough problem reported in 3243.  Also
+	  portal_factory now logs exceptions during object creation (some were
+	  being swallowed higher up) (fix for 3148).  [geoff]
+
     - Added enableHTTPCompression script and enabled http compression for
       html, css and javascript [tiran]
 
