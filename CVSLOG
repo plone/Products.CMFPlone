@@ -1,3 +1,110 @@
+2003-11-16 12:45  runyaga
+
+	* skins/plone_form_scripts/plone_change_password.py
+	  (Plone-2_0-branch): some error handling for users outside the
+	  portal trying to change their passwords
+
+2003-11-16 12:45  limi
+
+	* skins/plone_templates/: folder_listing.pt, recently_published.pt
+	  (Plone-2_0-branch): Updated Recent Items to match the format of
+	  the other item listing bylines.
+
+2003-11-16 12:31  limi
+
+	* skins/: plone_ecmascript/plone_menu.js.dtml,
+	  plone_templates/global_contentmenu.pt (Plone-2_0-branch): The
+	  menu now disappears after a selection has been made, like it
+	  should. Thanks to ender for the one-line fix :)
+
+2003-11-16 12:10  runyaga
+
+	* skins/plone_templates/global_contentviews.pt (Plone-2_0-branch):
+	  not using python expressons but TALEs now
+
+2003-11-16 12:03  runyaga
+
+	* skins/plone_templates/global_contentviews.pt (Plone-2_0-branch):
+	  remove unused variable
+
+2003-11-16 11:38  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Added portal_controlpanel
+	  migration instructions.
+
+2003-11-16 11:33  runyaga
+
+	* HISTORY.txt, PloneControlPanel.py, ToolNames.py,
+	  migrations/oneX_twoBeta2.py, migrations/plone2_base.py,
+	  skins/plone_prefs/plone_control_panel.pt,
+	  skins/plone_prefs/plone_memberprefs_panel.pt,
+	  skins/plone_scripts/controlPanelParentUrl.py (Plone-2_0-branch):
+	  USE ToolNames constants.  PLEASE! renamed
+	  portal_control_panel_actions to portal_controlpanel and limi is
+	  posting how to fix it if you have existing system.  (look in
+	  HISTORY)
+
+2003-11-16 10:48  runyaga
+
+	* HISTORY.txt (Plone-2_0-branch): commens are now in text/plain.
+	  yay.	added a temporary method and committed fix to CMFDefault.
+	  We need to get rid of the DiscussionTool and adopt either
+	  CMFForum or PloneBoard or CMFBoard..
+
+2003-11-16 10:38  runyaga
+
+	* DiscussionTool.py, skins/plone_form_scripts/discussion_reply.py
+	  (Plone-2_0-branch): comments are now in plain-text.  this is done
+	  by adding a method on DiscussionTool.cookReply(replyobj) and now
+	  discussion_reply.py can be passed in a text_format.  this needs
+	  to go down into CMF
+
+2003-11-16 09:00  limi
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  External links no longer open in a new window. You can still get
+	  this behaviour back by uncommenting it in the JS, though.
+
+2003-11-16 08:59  runyaga
+
+	* HISTORY.txt, setup/ConfigurationMethods.py (Plone-2_0-branch):
+	  added site_actions to the top of the right page.  this is nice
+	  accessibility feature and it stores a cookie on the client.
+	  NOTE: it uses plone_utils.getIconFor which caches action icon
+	  mappings.  If you change a actionicon you need to restart Zope
+	  ;-(
+
+2003-11-16 08:30  runyaga
+
+	* HISTORY.txt, version.txt, setup/ConfigurationMethods.py,
+	  skins/plone_portlets/calendar_slot.pt,
+	  skins/plone_portlets/events_slot.pt,
+	  skins/plone_portlets/favorites_slot.pt,
+	  skins/plone_portlets/language_slot.pt,
+	  skins/plone_portlets/login_slot.pt,
+	  skins/plone_portlets/navigation_tree_slot.pt,
+	  skins/plone_portlets/news_slot.pt,
+	  skins/plone_portlets/portlet_calendar.pt,
+	  skins/plone_portlets/portlet_events.pt,
+	  skins/plone_portlets/portlet_favorites.pt,
+	  skins/plone_portlets/portlet_language.pt,
+	  skins/plone_portlets/portlet_login.pt,
+	  skins/plone_portlets/portlet_navigation.pt,
+	  skins/plone_portlets/portlet_news.pt,
+	  skins/plone_portlets/portlet_recent.pt,
+	  skins/plone_portlets/portlet_related.pt,
+	  skins/plone_portlets/portlet_review.pt,
+	  skins/plone_portlets/recently_published_slot.pt,
+	  skins/plone_portlets/related_slot.pt,
+	  skins/plone_portlets/workflow_review_slot.pt (Plone-2_0-branch):
+	  now in plone creation we are using portlet_foo/macros/portlet.
+	  detailed in the HISTORY for RC2.  This does not break backwards
+	  compatibility.  Limi made me do it.
+
+2003-11-16 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-16 04:23  eaon
 
 	* skins/: plone_styles/plone.css.dtml,
