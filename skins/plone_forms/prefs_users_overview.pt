@@ -18,15 +18,19 @@
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
 <ul id="contentTabs">
+  <li class="">
+    <a href="plone_control_panel"
+       i18n:translate="">Plone Setup</a>
+  </li>
   <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}"
-    >Users</a>
+       i18n:translate="">Users</a>
   </li>
   <li class="">
     <a href=""
        tal:attributes="href string: prefs_groups_overview"
-    >Groups</a>
+       i18n:translate="">Groups</a>
   </li>
 </ul>
 <div id="contentBar">&nbsp;</div>
@@ -45,14 +49,14 @@
 
     <!-- jcc says: this is my solution to a confusing situation. There are other solutions, but this and the add form should not
            be adjacent visually. Do we even need a quicksearch? -->
-    QuickSearch:
+    <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
     <input class="quickSearch"
-            tabindex=""
-            type="text"
-            name="searchstring"
-            value=""
-            tal:attributes="tabindex tabindex/next;"
-            />
+           tabindex=""
+           type="text"
+           name="searchstring"
+           value=""
+           tal:attributes="tabindex tabindex/next;"
+           />
 
     <input type="hidden" name="searchonly" value="users" />
     <input type="submit"
@@ -60,6 +64,7 @@
            name="prefs_user_group_search_form:method"
            value="Search"
            tabindex=""
+           i18n:attributes="value"
            tal:attributes="tabindex tabindex/next;" />
 
     <p i18n:translate="description_user_management">
@@ -84,15 +89,11 @@
                tal:condition="portal_users">
 
             <tr>
-                <th>User name</th>
-                <th>E-mail Address</th>
-                <th>Reset<br />Password</th>
-                <th>Remove user</th>
+                <th i18n:translate="listingheader_user_name">User name</th>
+                <th i18n:translate="listingheader_email_address">E-mail Address</th>
+                <th i18n:translate="listingheader_reset_password">Reset Password</th>
+                <th i18n:translate="listingheader_remove_user">Remove user</th>
             </tr>
-
-            <tal:comment replace="nothing">
-            We don't filter anymore because Membership tool should be doing this for us.
-            </tal:comment>
 
             <tal:comment replace="nothing">
             pjgrizel->limi: GRUF already has several API methods to return the results you'd like to have:
