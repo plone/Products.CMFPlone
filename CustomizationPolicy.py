@@ -87,7 +87,7 @@ class DefaultCustomizationPolicy:
          'portal_membership':'encapsulates membership policy',
          'portal_memberdata':'defines available properties on Members',
          'portal_undo':'defines actions and functionality related to unfo',
-         'portal_types':'defines wired Python objects to CMF.',
+         'portal_types':'defines Python Products in the CMF',
          'plone_utils':'utility methods in PloneTool.py',
          'portal_navigation':'coordinating portal_form and nav_props',
          'portal_metadata':'assign metadata, like keywords i.e. Subject',
