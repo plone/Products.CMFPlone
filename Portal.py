@@ -45,6 +45,16 @@ Thanks for using our product.
 class PloneGenerator(Portal.PortalGenerator):
 
     def customizePortalTypes(self, p):
+
+        # BUGBUG FIXME - hack to make Links use the portal_form machinery
+        typeInfo = typesTool.getTypeInfo('Link')
+        for action in typeInfo.getActions():
+            if action.get('id', None) == 'edit':
+                link_edit_action = action
+                break
+        link_edit_action['action'] = 'portal_form/link_edit_form'
+
+
         typesToSkip=['Folder', 'Discussion Item', 'Topic']
         typesTool=getToolByName(p, 'portal_types')
         typesTool._delObject('Folder')
@@ -62,15 +72,20 @@ class PloneGenerator(Portal.PortalGenerator):
                 view='folder_contents'
                 typeObj._setPropValue('immediate_view', view)
 
+        
     def customizePortalOptions(self, p):
         p.manage_delObjects( 'portal_membership' )
         p.manage_delObjects( 'portal_workflow' )
+        p.manage_delObjects( 'portal_properties' )
         addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
         addPloneTool('Plone Membership Tool', None)
         addPloneTool('CMF Workflow Tool', None) 
         addPloneTool('CMF Formulator Tool', None)
         addPloneTool('Plone Utility Tool', None)
         addPloneTool('CMF Navigation Tool', None)
+        addPloneTool('Plone Factory Tool', None)
+        addPloneTool('Plone Form Tool', None)
+        addPloneTool('Plone Properties Tool', None)
 
         p.manage_permission( CMFCorePermissions.ListFolderContents, ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
@@ -163,13 +178,70 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupSecondarySkin(sk_tool, 'Plone XP', 'plone_styles/winxp')
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
         sk_tool.request_varname='plone_skin'
+
+    def setupForms(self, p):
+        prop_tool = p.portal_properties
+        prop_tool.manage_addPropertySheet('navigation_properties', 'Navigation Properties')
+        prop_tool.manage_addPropertySheet('form_properties', 'Form Properties')
         
+        form_tool = p.portal_form
+        form_tool.setValidator('link_edit_form', 'validate_link_edit')
+        
+        nav_tool = p.portal_navigation
+        nav_tool.addTransitionFor('Link', 'link_edit_form', 'failure', 'link_edit_form')
+        nav_tool.addTransitionFor('Link', 'link_edit_form', 'success', 'script:link_edit')
+        nav_tool.addTransitionFor('Link', 'link_edit', 'failure', 'link_edit_form')
+        nav_tool.addTransitionFor('Link', 'link_edit', 'success', 'action:view')
+
+        nav_tool.addTransitionFor('Document', 'document_edit', 'success', 'action:view')
+        nav_tool.addTransitionFor('Document', 'document_edit', 'failure', 'action:edit')
+        nav_tool.addTransitionFor('News Item', 'newsitem_edit', 'success', 'action:view')
+        nav_tool.addTransitionFor('News Item', 'newsitem_edit', 'failure', 'action:edit')
+        nav_tool.addTransitionFor('Image', 'image_edit', 'success', 'action:view')
+        nav_tool.addTransitionFor('Image', 'image_edit', 'failure', 'action:edit')
+        nav_tool.addTransitionFor('File', 'file_edit', 'success', 'action:view')
+        nav_tool.addTransitionFor('File', 'file_edit', 'failure', 'action:edit')
+        nav_tool.addTransitionFor('Folder', 'folder_copy', 'success', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_copy', 'failure', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_paste', 'success', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_paste', 'failure', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_cut', 'success', '"folder_contents"') 
+        nav_tool.addTransitionFor('Folder', 'folder_cut', 'failure', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_delete', 'success', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_delete', 'failure', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_rename', 'success', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_rename', 'failure', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_edit', 'success', '"folder_contents"')
+        nav_tool.addTransitionFor('Folder', 'folder_edit', 'failure', 'action:edit')
+        nav_tool.addTransitionFor('Folder', 'reconfig', 'success', '"reconfig_form"')
+        nav_tool.addTransitionFor('Folder', 'reconfig', 'failure', '"reconfig_form"')
+        nav_tool.addTransitionFor('Topic', 'topic_editCriteria', 'success', 'action:criteria')
+        nav_tool.addTransitionFor('Topic', 'topic_editTopic', 'success', 'action:view')
+        nav_tool.addTransitionFor('Topic', 'topic_editTopic', 'failure', 'action:edit')
+        nav_tool.addTransitionFor('Topic', 'folder_cut', 'success', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_cut', 'failure', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_rename', 'success', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_rename', 'failure', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_delete', 'success', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_delete', 'failure', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_copy', 'success', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_copy', 'failure', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_paste', 'success', 'action:subtopics')
+        nav_tool.addTransitionFor('Topic', 'folder_paste', 'failure', 'action:subtopics')
+        nav_tool.addTransitionFor('Event', 'event_edit', 'success', 'action:view')
+        nav_tool.addTransitionFor('Event', 'event_edit', 'failure', 'action:edit')
+        nav_tool.addTransitionFor('Default', 'metadata_edit', 'success', 'action:view')
+        nav_tool.addTransitionFor('Default', 'metadata_edit', 'failure', 'action:metadata')
+        nav_tool.addTransitionFor('Default', 'content_status_modify', 'success', 'action:view')
+        nav_tool.addTransitionFor('Default', 'content_status_modify', 'failure', 'action:publishing')
+
     def setupPlone(self, p): 
         self.customizePortalTypes(p)
         self.customizePortalOptions(p)
         self.setupPloneWorkflow(p)
         self.setupPloneSkins(p)
         self.setupPortalContent(p)
+        self.setupForms(p)
         CalendarInstall.install(p)
         
     def create(self, parent, id, create_userfolder):
@@ -191,7 +263,7 @@ def manage_addSite(self, id, title='Portal', description='',
                    email_from_name='Portal Administrator',
                    validate_email=0,
                    custom_policy='',
-		   RESPONSE=None):
+                   RESPONSE=None):
     """ Plone Site factory """
     gen = PloneGenerator()
     p = gen.create(self, id.strip(), create_userfolder)
