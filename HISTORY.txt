@@ -6,6 +6,32 @@ Plone 2.0 - Fyuti
 
     Beta 3
 
+    - Removed the CMFWiki and CMFCollector skins from Plone core.
+      **NOTE:** You need to add the correct skin paths if you are using 
+      these products, they are no longer installed by default. The skins
+      are now located inside the Products themselves.
+      [limi]
+
+    - Added version checking of Products, and easy reinstall from Add/Remove 
+      Products panel.
+      [zwork] [limi]
+
+    - Hooked up the plone_memberprefs_panel for easy adding of user-specific 
+      control panels.
+      [ronnix] [andym] [limi]
+
+    - Portlets overhaul and renaming, in separate directory now.
+      [limi]
+
+    - Removed XML-RPC from Add Comment form.
+      [limi]
+
+    - Renamed "Name" to "Short Name" in the edit forms.
+      [limi]
+
+    - Moved all the skins to PloneSkins in the Collective.
+      [limi]
+
     - got rid of the ancient, nasty FormulatorTool. [geoffd]
 
     - fixed portal_factory so that the folder and folder_url values provided to
