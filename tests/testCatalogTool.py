@@ -20,65 +20,160 @@ group2 = 'g2'
 
 try:
     import Products.TextIndexNG2
-    have_txng = 1
+    txng_version = 2
 except:
-    have_txng = 0
+    txng_version = 0
 
 
-class TestCatalogTool(PloneTestCase.PloneTestCase):
+class TestCatalogSetup(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
 
-    def testSearchableTextIsZCTextIndex(self):
-        # SearchableText index should be a ZCTextIndex
-        itype = self.catalog.Indexes['SearchableText'].__class__.__name__
-        if have_txng:
+    if txng_version == 2:
+
+        def testSearchableTextIsTextIndexNG(self):
+            # SearchableText index should be a TextIndexNG
+            itype = self.catalog.Indexes['SearchableText'].__class__.__name__
             self.assertEqual(itype, 'TextIndexNG')
-        else:
+
+        def testDescriptionIsTextIndexNG(self):
+            # Description index should be a TextIndexNG
+            itype = self.catalog.Indexes['Description'].__class__.__name__
+            self.assertEqual(itype, 'TextIndexNG')
+
+        def testTitleIsTextIndexNG(self):
+            # Title index should be a TextIndexNG
+            itype = self.catalog.Indexes['Title'].__class__.__name__
+            self.assertEqual(itype, 'TextIndexNG')
+
+    else:
+
+        def testSearchableTextIsZCTextIndex(self):
+            # SearchableText index should be a ZCTextIndex
+            itype = self.catalog.Indexes['SearchableText'].__class__.__name__
             self.assertEqual(itype, 'ZCTextIndex')
 
-    def testDescriptionIsZCTextIndex(self):
-        # Description index should be a ZCTextIndex
-        itype = self.catalog.Indexes['Description'].__class__.__name__
-        if have_txng:
-            self.assertEqual(itype, 'TextIndexNG')
-        else:
+        def testDescriptionIsZCTextIndex(self):
+            # Description index should be a ZCTextIndex
+            itype = self.catalog.Indexes['Description'].__class__.__name__
             self.assertEqual(itype, 'ZCTextIndex')
 
-    def testTitleIsZCTextIndex(self):
-        # Title index should be a ZCTextIndex
-        itype = self.catalog.Indexes['Title'].__class__.__name__
-        if have_txng:
-            self.assertEqual(itype, 'TextIndexNG')
-        else:
+        def testTitleIsZCTextIndex(self):
+            # Title index should be a ZCTextIndex
+            itype = self.catalog.Indexes['Title'].__class__.__name__
             self.assertEqual(itype, 'ZCTextIndex')
-
-    if not have_txng:
 
         def testPloneLexiconIsZCTextLexicon(self):
             # Lexicon should be a ZCTextIndex lexicon
             self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
             self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
 
-    def testDescriptionIsZCTextIndex(self):
-        # Description index should be a ZCTextIndex
-        itype = self.catalog.Indexes['Description'].__class__.__name__
-        if have_txng:
-            self.assertEqual(itype, 'TextIndexNG')
-        else:
-            self.assertEqual(itype, 'ZCTextIndex')
 
-    def testTitleIsZCTextIndex(self):
-        # Title index should be a ZCTextIndex
-        itype = self.catalog.Indexes['Title'].__class__.__name__
-        if have_txng:
-            self.assertEqual(itype, 'TextIndexNG')
-        else:
-            self.assertEqual(itype, 'ZCTextIndex')
+class TestCatalogIndexing(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+        self.folder.invokeFactory('Document', id='doc', title='Foo', description='Bar')
+        self.catalog.unindexObject(self.folder.doc)
+
+    def testFixture(self):
+        self.assertEqual(self.folder.doc.getId(), 'doc')
+        self.assertEqual(self.folder.doc.Title(), 'Foo')
+        self.assertEqual(self.folder.doc.Description(), 'Bar')
+        self.assertEqual(len(self.catalog(id='doc')), 0)
+        self.assertEqual(len(self.catalog(Title='Foo')), 0)
+        self.assertEqual(len(self.catalog(Description='Bar')), 0)
+
+    def testIndexObject(self):
+        # Object should be indexed
+        self.catalog.indexObject(self.folder.doc)
+        self.assertEqual(len(self.catalog(id='doc')), 1)
+        self.assertEqual(len(self.catalog(Title='Foo')), 1)
+        self.assertEqual(len(self.catalog(Description='Bar')), 1)
+
+    def testReindexObject(self):
+        # Object should be indexed
+        self.catalog.reindexObject(self.folder.doc)
+        self.assertEqual(len(self.catalog(id='doc')), 1)
+        self.assertEqual(len(self.catalog(Title='Foo')), 1)
+        self.assertEqual(len(self.catalog(Description='Bar')), 1)
+
+    def testUnindexObject(self):
+        # Object should be unindexed
+        self.catalog.indexObject(self.folder.doc)
+        self.assertEqual(len(self.catalog(id='doc')), 1)
+        self.catalog.unindexObject(self.folder.doc)
+        self.assertEqual(len(self.catalog(id='doc')), 0)
+
+    def testIndexObjectUpdatesMetadata(self):
+        # Indexing should update metadata
+        self.catalog.indexObject(self.folder.doc)
+        brain = self.catalog(id='doc')[0]
+        self.assertEqual(brain.id, 'doc')
+        self.assertEqual(brain.Title, 'Foo')
+        self.assertEqual(brain.Description, 'Bar')
+
+    def testReindexObjectUpdatesMetadata(self):
+        # Reindexing should update metadata
+        self.catalog.indexObject(self.folder.doc)
+        self.folder.doc.title = 'Fred'
+        self.folder.doc.description = 'Barney'
+        self.catalog.reindexObject(self.folder.doc)
+        brain = self.catalog(id='doc')[0]
+        self.assertEqual(brain.id, 'doc')
+        self.assertEqual(brain.Title, 'Fred')
+        self.assertEqual(brain.Description, 'Barney')
+
+    def testReindexObjectSkipsMetadata(self):
+        # Reindexing should not update metadata when update_metadata=0
+        self.catalog.indexObject(self.folder.doc)
+        self.folder.doc.title = 'Fred'
+        self.folder.doc.description = 'Barney'
+        self.catalog.reindexObject(self.folder.doc, update_metadata=0)
+        brain = self.catalog(id='doc')[0]
+        # Metadata did not change
+        self.assertEqual(brain.id, 'doc')
+        self.assertEqual(brain.Title, 'Foo')
+        self.assertEqual(brain.Description, 'Bar')
+
+    def testReindexTitleOnly(self):
+        # Reindexing should only index the Title
+        self.catalog.indexObject(self.folder.doc)
+        self.folder.doc.title = 'Fred'
+        self.folder.doc.description = 'Barney'
+        self.catalog.reindexObject(self.folder.doc, idxs=['Title'])
+        self.assertEqual(len(self.catalog(id='doc')), 1)
+        self.assertEqual(len(self.catalog(Title='Fred')), 1)
+        # Description index did not change
+        self.assertEqual(len(self.catalog(Description='Bar')), 1)
+        self.assertEqual(len(self.catalog(Description='Barney')), 0)
+
+    def testReindexTitleOnlyUpdatesMetadata(self):
+        # Reindexing Title should update metadata
+        self.catalog.indexObject(self.folder.doc)
+        self.folder.doc.title = 'Fred'
+        self.folder.doc.description = 'Barney'
+        self.catalog.reindexObject(self.folder.doc, idxs=['Title'])
+        brain = self.catalog(id='doc')[0]
+        self.assertEqual(brain.id, 'doc')
+        self.assertEqual(brain.Title, 'Fred')
+        self.assertEqual(brain.Description, 'Barney')
+
+    def testReindexTitleOnlySkipsMetadata(self):
+        # Reindexing Title should not update metadata when update_metadata=0
+        self.catalog.indexObject(self.folder.doc)
+        self.folder.doc.title = 'Fred'
+        self.folder.doc.description = 'Barney'
+        self.catalog.reindexObject(self.folder.doc, idxs=['Title'], update_metadata=0)
+        brain = self.catalog(id='doc')[0]
+        # Metadata did not change
+        self.assertEqual(brain.id, 'doc')
+        self.assertEqual(brain.Title, 'Foo')
+        self.assertEqual(brain.Description, 'Bar')
 
 
-class TestCatalogSearch(PloneTestCase.PloneTestCase):
+class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
@@ -218,8 +313,9 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestCatalogTool))
-    suite.addTest(makeSuite(TestCatalogSearch))
+    suite.addTest(makeSuite(TestCatalogSetup))
+    suite.addTest(makeSuite(TestCatalogIndexing))
+    suite.addTest(makeSuite(TestCatalogSearching))
     suite.addTest(makeSuite(TestFolderCataloging))
     suite.addTest(makeSuite(TestCatalogBugs))
     return suite

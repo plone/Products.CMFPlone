@@ -1,19 +1,29 @@
-from Products.ZCatalog.ZCatalog import ZCatalog
-from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
-from Products.CMFCore.utils import _getAuthenticatedUser, _checkPermission
-from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent, ManagePortal
-from Products.CMFPlone import ToolNames
-from AccessControl import ClassSecurityInfo
-from Acquisition import aq_base
-from Globals import InitializeClass
-from DateTime import DateTime
-from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+#
+# Plone CatalogTool
+#
 
+from AccessControl import ClassSecurityInfo
+from Globals import InitializeClass
+
+from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
+from Products.CMFCore.CatalogTool import IndexableObjectWrapper
+from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone import ToolNames
+
+from Products.ZCatalog.ZCatalog import ZCatalog
+from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
+
+from Acquisition import aq_base
+
+
+# Use TextIndexNG2 if installed
 try: 
     import Products.TextIndexNG2
     txng_version = 2
 except ImportError:
     txng_version = 0
+
 
 class CatalogTool(PloneBaseTool, BaseTool):
 
@@ -21,13 +31,13 @@ class CatalogTool(PloneBaseTool, BaseTool):
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/book_icon.gif'
     
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__)
 
     def __init__(self):
         ZCatalog.__init__(self, self.getId())
         self._initIndexes()
         
-    security.declarePublic( 'enumerateIndexes' ) 
+    security.declarePublic('enumerateIndexes') 
     def enumerateIndexes(self):
 
         return ( ('Subject', 'KeywordIndex')
@@ -73,6 +83,7 @@ class CatalogTool(PloneBaseTool, BaseTool):
             self._removeIndex(idx)
 
         if txng_version == 2:
+
             # Prefer TextIndexNG V2 if available instead of ZCTextIndex 
 
             extra = args(default_encoding='utf-8')
@@ -112,7 +123,6 @@ class CatalogTool(PloneBaseTool, BaseTool):
                               index_type  = 'Okapi BM25 Rank' )
                 self.manage_addIndex('Title', 'ZCTextIndex', extra=extra)
 
-
     security.declareProtected(ManagePortal, 'migrateIndexes')
     def migrateIndexes(self):
         """ Recreate all indexes """
@@ -130,10 +140,42 @@ class CatalogTool(PloneBaseTool, BaseTool):
 
     security.declarePrivate('indexObject')
     def indexObject(self, object, idxs=[]):
-        '''Add to catalog.
+        '''Add object to catalog.
+        The optional idxs argument is a list of specific indexes
+        to populate (all of them by default).
+        '''
+        self.reindexObject(object, idxs)
+
+    security.declarePrivate('reindexObject')
+    def reindexObject(self, object, idxs=[], update_metadata=1):
+        '''Update catalog after object data has changed.
+        The optional idxs argument is a list of specific indexes
+        to update (all of them by default).
+        The update_metadata flag controls whether the object's
+        metadata record is updated as well.
         '''
         url = self.__url(object)
-        self.catalog_object(object, url, idxs)
+        if idxs != []:
+            # Filter out invalid indexes.
+            valid_indexes = self._catalog.indexes.keys()
+            idxs = [i for i in idxs if i in valid_indexes]
+        self.catalog_object(object, url, idxs, update_metadata)
+
+    security.declareProtected(ManageZCatalogEntries, 'catalog_object')
+    def catalog_object(self, object, uid, idxs=[], update_metadata=1):
+        # Wraps the object with workflow and accessibility
+        # information just before cataloging.
+        wf = getattr(self, 'portal_workflow', None)
+        if wf is not None:
+            vars = wf.getCatalogVariablesFor(object)
+        else:
+            vars = {}
+        w = IndexableObjectWrapper(vars, object)
+        try:
+            ZCatalog.catalog_object(self, w, uid, idxs, update_metadata)
+        except TypeError:
+            ZCatalog.catalog_object(self, w, uid, idxs)
+
 
 CatalogTool.__doc__ = BaseTool.__doc__
 

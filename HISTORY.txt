@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1-beta1 - Warp - Released (no date yet)
 
+    - Changed CatalogTool.catalog_object() and CatalogTool.reindexObject() to 
+      support the new update_metadata protocol (Zope > 2.6.2). An optional
+      'update_metadata' argument controls whether the object's metadata record
+      is updated while cataloging. It defaults to yes.
+      [stefan]
+
     - SearchableText, Title, and Description now use TextIndexNG2 if installed.
       All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
       not installed. Note that in Plone 2.0 Title and Description used to be plain 
