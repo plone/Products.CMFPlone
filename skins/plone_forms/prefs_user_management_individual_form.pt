@@ -36,6 +36,12 @@
 
         <span class="legend">User Properties</span>
 
+        <div class="portrait" style="float: right;"
+             tal:define="portrait python: here.portal_membership.getPersonalPortrait(user.getId());">
+            <img src="" alt="" 
+                 tal:attributes="src portrait/absolute_url" />     
+        </div>
+
         <input type="hidden" name="userid" value="username" 
                tal:attributes="value user/getId" />
 

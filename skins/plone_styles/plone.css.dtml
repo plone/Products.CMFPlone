@@ -627,16 +627,16 @@ div.help {
     background: &dtml-requiredField;;
 }
 
-span.card {
+span.card,
+div.portrait {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColor;;
     border-width: 1px;
     border-style: solid;
-    float: left;
     margin: 1em;
     padding: 1em;
     text-align: center;
-    width: 15%;
+    width: 100px;
 }
 
 table.listing,

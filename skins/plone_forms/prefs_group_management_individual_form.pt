@@ -23,7 +23,7 @@
                                                       acl_users.getGroup(groupname, prefixed=0).getRoles())" />
     </tal:conditional>
 
-    <h1 i18n:translate="">Add/Edit Groups</h1>
+    <h1 i18n:translate="">Edit Group Properties</h1>
 
     <p i18n:translate="">
     Groups are logical collections of users, like departments and business units.
@@ -31,48 +31,66 @@
     use Roles for that - and let certain Groups have a particular role.
     </p>
 
-    <form action=""
+    <form class="group"
+          action=""
           name="groups"
           method="post"
           tal:attributes="action here/absolute_url">
 
-    Group Name
-    <br />
-    <input type="text" name="groupname" value="" 
-           tal:attributes="value groupname" /> 
-    <br />
+        <span class="legend">Group Properties</span>     
+          
+        <div class="row">
+            <div class="label">Group Name</div>
+    
+            <div class="field">   
+                <input type="text" name="groupname" value="" 
+                       tal:attributes="value groupname" 
+                       tal:condition="not: groupname"
+                       /> 
 
-    Roles
-    <br />
+                <span tal:replace="groupname"
+                      tal:condition="groupname">
+                Group name (if already assigned)
+                </span>
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="label">Roles</div>
+    
+            <div class="field">   
+                <select name="roles:list" multiple>
+                  <tal:options repeat="role portal_roles">
+                        <option tal:content="role"
+                                tal:attributes="selected python:test(role in request['grouproles'], 'selected', '')">
+                        Portal Role
+                        </option>
+                  </tal:options>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="label">Users</div>
+    
+            <div class="field">   
+                <select name="users:list" multiple>
+                  <tal:options repeat="userid acl_users/Users/acl_users/getUserNames">
+                    <option tal:define="userobj python:acl_users.getUser(userid);
+                                        user_groups python:userobj.getGroups();"
+                            tal:attributes="selected python:test(groupprefix+groupname in user_groups, 'SELECTED','')"
+                            tal:content="userid">
+                    username
+                    </option>
+                  </tal:options>
+                </select>
+            </div>
+        </div>
 
-    <select name="roles:list" multiple>
-      <tal:options repeat="role portal_roles">
-            <option tal:content="role"
-                    tal:attributes="selected python:test(role in request['grouproles'], 'selected', '')">
-            Portal Role
-            </option>
-      </tal:options>
-    </select>
-    <br />
-   
-    Users
-    <br />
-    <select name="users:list" multiple>
-      <tal:options repeat="userid acl_users/Users/acl_users/getUserNames">
-        <option tal:define="userobj python:acl_users.getUser(userid);
-                            user_groups python:userobj.getGroups();"
-                tal:attributes="selected python:test(groupprefix+groupname in user_groups, 'SELECTED','')"
-                tal:content="userid">
-        username
-        </option>
-      </tal:options>
-    </select>
-    <br />
-
-
-    <br />
-    <input type="submit" name="prefs_group_edit:method" value="Apply" 
-        tal:attributes="value python:test(groupname, 'Edit group', 'Add group')" />
+    <input class="context"
+           type="submit" 
+           name="prefs_group_edit:method" 
+           value="Save" />
 
     </form>
 
