@@ -47,7 +47,7 @@
                 
                 <dd class="link">
                     <a href="/view"
-                       tal:content="structure result/Description"
+                       tal:content="result/Description"
                        tal:attributes="href result/getURL">
                     Description
                     </a>

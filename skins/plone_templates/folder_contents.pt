@@ -44,7 +44,7 @@
           Up one level
         </a>
 
-        <p tal:content="structure here/Description">
+        <p tal:content="here/Description">
           Description
         </p>
 

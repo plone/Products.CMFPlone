@@ -50,7 +50,7 @@
 
                 <div class="newsContent">
 
-                    <p tal:content="structure result/Description">
+                    <p tal:content="result/Description">
                         Description
                     </p>
     

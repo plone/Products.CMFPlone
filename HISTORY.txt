@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3494. Description was used with 'structure'
+      in some templates, notably news.pt and folder_listing. Note that Dublin Core 
+      defines this element as plain text. If your site relies on the old behavior
+      refer to the patch in the collector issue. Patch by mathie, thanks.
+      [stefan]
+
     - Fixed http://plone.org/collector/2931. News items displayed "Read More"
       link even if there was nothing more to read. Thanks to mathie for the patch.
       [stefan]
