@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - MembershipTool's listMembers and listMemberIds now only return real users 
+      (not groups) when GRUF is employed. The MembershipTool comes with tests!
+      [redcor] [stefan]
+
+    - Added a ZopeTestCase based test framework developed at the Castle Sprint. 
+      Nuked the old tests (with Sidnei's permission).
+      [stefan]
+
     - Removed Domains from the user preferences - this field makes it very easy to 
       lock yourself out of your account, and should therefore only be available to
       administrators.

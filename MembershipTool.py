@@ -169,32 +169,24 @@ class MembershipTool(BaseTool):
             if notify_script is not None:
                 notify_script()
 
-
     def listMembers(self):
         '''Gets the list of all members.
         '''
-        members = BaseTool.listMembers(self)
-        groups = []
-        # can we allways asume that there is a groups_tool ??
-        try:
-            groups = self.portal_groups.listGroupIds()
-            result = []
-            for member in members:
-                if member.getUser().getUserName() in groups:
-                    continue
-                result.append(member)
-        except:
-            result = members
-        return result
-
+        uf = self.acl_users
+        if hasattr(aq_base(uf), 'getPureUsers'): # GRUF
+            return [BaseTool.wrapUser(self, x) for x in uf.getPureUsers()]
+        else:
+            return BaseTool.listMembers(self)
+            
     def listMemberIds(self):
         '''Lists the ids of all members.  This may eventually be
         replaced with a set of methods for querying pieces of the
         list rather than the entire list at once.
         '''
-        try:
-            return self.acl_users.getPureUserNames()
-        except:
+        uf = self.acl_users
+        if hasattr(aq_base(uf), 'getPureUserNames'): # GRUF
+            return uf.getPureUserNames()
+        else:
             return self.__getPUS().getUserNames()
 
     # this should probably be in MemberDataTool.py
