@@ -26,8 +26,7 @@
           action="folder_object"
           tal:attributes="action here/absolute_url"
           tal:define="b_start python:request.get('b_start', 0);
-                      results python:here.sortObjectValues(folder_contents);
-                      global DateTime python:modules['DateTime'].DateTime;
+                      results python:here.sortObjects(folder_contents);
                       Batch python:modules['Products.CMFPlone'].Batch;
                       batch python:Batch(results, 100, int(b_start), orphan=0);">
 
@@ -83,15 +82,14 @@
                 <thead >
                     <tr tal:condition="standalone|nothing">
                         <td class="top" colspan="6"
-                            tal:define="types python:here.allowedContentTypes();
-                                        dummy python:types.sort( lambda x,y: cmp(x.Title().lower(), y.Title().lower()) );
+                            tal:define="types python:here.sortObjects(here.allowedContentTypes());
                                         no_types python:len(types);" >
 
                             <!-- Filter pulldown -->
                             <tal:block tal:condition="no_types">
                             <span style="float: left"
                                   tal:define="filterValues decodedFilter/keys | nothing;"
-                                  tal:condition="python:here.listFolderContents() and types">
+                                  tal:condition="python:folder_contents and types">
                     
                                 <select id="filter_selection" 
                                         name="filter_by_portal_type:list" 
@@ -103,8 +101,8 @@
                     
                                     <option value="#" 
                                             tal:attributes="selected
-					    python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');"
-					    i18n:translate="label_show_all_items">
+                                            python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');"
+                                            i18n:translate="label_show_all_items">
                                     Show All Items
                                     </option>  
                                     <metal:block tal:repeat="type types">
@@ -156,7 +154,6 @@
                                                    value python:test( no_types == 1
                                                                     , 'Add New ' + types[0].Title()
                                                                     , 'Add New Item');" />
-            
                         </td>
                     </tr> 
 

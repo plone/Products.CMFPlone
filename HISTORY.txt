@@ -5,6 +5,11 @@ Plone 1.0 rc1
       using the existing script.  Fixes Issue 600.
     - Added a fallback for createObject navigation when the new object has no 'edit' action.
       Fixes problems with installing CMFWiki and possibly other packages.
+    - refactored (only slightly) folder_contents.  Think I may have solved some leakage. 
+      In previous versions we got a reference to allowedContentTypes and then did a .sort() 
+      and it seemed ZPT was not cleaning up after itself. ;'( introduced sortObjects (was
+      sortObjectValues) and I think its "Doing The Right Thing"
+      
 Plone 1.0 beta3
     - Added all missing i18n strings, merged some strings to better facilitate translations to
       Japanese, Chinese and Korean.
