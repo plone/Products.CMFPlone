@@ -2,6 +2,16 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.0.1 - Jello
+
+    - Inserted a metal definition that enables the folder_listing to be
+      used from other templates. [limi] 
+      Example::
+
+      <div metal:use-macro="here/folder_listing/macros/listing">
+      The folder listing of the current folder
+      </div>
+
 Plone 2.0 - Fyuti
 
    Final
