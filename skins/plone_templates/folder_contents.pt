@@ -144,7 +144,7 @@
                         <th>&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_modified">Modified</span>&nbsp;</th>
                         <th>&nbsp;<span tal:omit-tag=""
-                        i18n:translate="listingheader_status">Status</span>&nbsp;</th>
+                        i18n:translate="listingheader_status">State</span>&nbsp;</th>
                         <th tal:condition="isOrderable">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_order">order</span>&nbsp;</th>
                     </tr>
@@ -215,7 +215,7 @@
                         <td class="private"
                             tal:define="review_state python:getInfoFor(item, 'review_state', '')"
                             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
-                            tal:attributes="class python:test(review_state, review_state, 'private')"
+                            tal:attributes="class python:test(review_state, 'state-'+review_state, 'state-private')"
                             i18n:translate="">&nbsp;
                         </td>
                         <td tal:condition="isOrderable">

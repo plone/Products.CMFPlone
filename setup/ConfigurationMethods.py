@@ -292,8 +292,8 @@ def addNewActions(self, portal):
                  condition='',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
-    at.addAction('change_status',
-                 name='Change Status',
+    at.addAction('change_state',
+                 name='Change State',
                  action='string:content_status_history:method',
                  condition='',
                  permission=CMFCorePermissions.ModifyPortalContent,
