@@ -10,7 +10,7 @@
  * Read the entire license text here: http://www.gnu.org/licenses/lgpl.html
  */
 
-// $Id: calendar.js,v 1.22 2003/11/05 17:30:12 mishoo Exp $
+// $Id: calendar.js,v 1.1.2.1 2003/12/22 10:26:55 vinsci Exp $
 
 /** The Calendar object constructor. */
 Calendar = function (mondayFirst, dateStr, onSelected, onClose) {
@@ -1279,7 +1279,7 @@ Calendar.prototype.showAtElement = function (el, opts) {
 	var self = this;
 	var p = Calendar.getAbsolutePos(el);
 	if (!opts || typeof opts != "string") {
-		this.showAt(p.x, p.y + el.offsetHeight);
+		this.showAt(p.x, p.y + el.offsetHeight + 1);
 		return true;
 	}
 	this.element.style.display = "block";
