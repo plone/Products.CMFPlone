@@ -485,7 +485,7 @@ function highlightSearchTerm() {
         query = window.location.search
         // _robert_ ie 5 does not have decodeURI 
         if (typeof decodeURI != 'undefined'){
-            query = decodeURI(unescape(query)) // thanks, Casper 
+            query = unescape(decodeURI(query)) // thanks, Casper 
         }
         else {
             return false
