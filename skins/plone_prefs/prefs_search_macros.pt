@@ -70,7 +70,7 @@
 		  <img src="group.gif" />
 		  <a href="" tal:attributes="href string:prefs_group_details?groupname=${obj/getGroupName}"
 			tal:content="obj/getGroupName | default"
-                        i18n:translate="link_groupname_not_available">
+                        i18n:translate="label_groupname_not_available">
 			groupname not available
 		  </a>
 		</tal:block>
@@ -78,7 +78,7 @@
 		  <img src="user.gif" />
 		  <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
 			tal:content="obj/getUserName | default"
-                        i18n:translate="link_username_not_available">
+                        i18n:translate="label_username_not_available">
 			username not available
 		  </a>
 		</tal:block>

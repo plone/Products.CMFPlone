@@ -34,13 +34,16 @@
             <h1 i18n:translate="heading_sign_in_failure">Cookies must be enabled</h1>
 
             <p>
-            <span tal:omit-tag="" i18n:translate="description_sign_in_failure">
+            <span tal:omit-tag="" i18n:translate="description_sign_in_failure2">
             You are not currently signed in because you are not accepting
             cookies.  Please make sure that your browser is configured to
-	    </span>
+	    
             <a href="enabling_cookies"
-               i18n:translate="description_sign_in_failure_enabling_cookies">
+               i18n:translate="description_sign_in_failure2_accept_cookies"
+               i18n:name="accept_cookies">
             accept cookies</a>.
+	    
+	    </span>
 	    </p>
 
             <p i18n:translate="description_still_failure">
@@ -48,12 +51,12 @@
             your browser, here are some possible reasons:</p>
 
             <ul>
-               <li>
-	       <span tal:omit-tag="" i18n:translate="description_still_failure_reason1">
+               <li i18n:translate="description_still_failure_reason1">
                You may be running web filtering software that
                disables cookies.  If so, you will need to configure the
-               software so that it enables you to accept cookies from</span>
-               <span tal:replace="here/portal_url"/></li>
+               software so that it enables you to accept cookies from
+               <span tal:replace="here/portal_url" i18n:name="portal_url"/>.
+               </li>
                <li i18n:translate="description_still_failure_reason2">
                Your computer may be behind a firewall or proxy server
                that prevents cookies from being sent to or from your browser.

@@ -65,7 +65,7 @@
         <p i18n:translate="label_no_group_specified">No group was specified.</p>
     
         <p><a href="prefs_groups_overview"
-              i18n:translate="link_find_group">Find a group here</a></p>
+              i18n:translate="label_find_group">Find a group here</a></p>
     
         </metal:block>
     
@@ -95,7 +95,7 @@
                           targetGetProperty nocall:group/getProperty | nocall:here/returnNone;">
     
             <span class="legend"
-                  i18n:translate="link_group_properties">Group Properties</span>
+                  i18n:translate="legend_group_properties">Group Properties</span>
     
             <div class="row" metal:define-slot="name">
                <label for="addname">name</label>

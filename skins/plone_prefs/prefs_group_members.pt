@@ -55,7 +55,7 @@
         <p i18n:translate="label_no_group_specified">No group was specified.</p>
     
         <p><a href="prefs_groups_overview"
-              i18n:translate="link_find_group">Find a group here</a></p>
+              i18n:translate="label_find_group">Find a group here</a></p>
     </div>
     
     <div class="contentContent"
