@@ -749,6 +749,9 @@ div.box .highlight {
     background-color: &dtml-boxHighlight;;
 }
 
+div.box input {
+    font-size: 100%;
+}
 
 div.spacer {
 	margin: 1em;

@@ -40,7 +40,7 @@
                     &nbsp;
                     <br />
     
-                    <input class="context searchButton" 
+                    <input class="context" 
                            type="submit" 
                            name="submit"
                            value="Log in" 
