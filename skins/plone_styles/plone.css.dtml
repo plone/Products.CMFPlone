@@ -7,9 +7,9 @@
 ** Style sheet documentation can be found at http://plone.org/documentation
 **
 ** You should preferrably use ploneCustom.css to add your own CSS classes and to
-** customize your portal, as these are the base fundaments of Plone, and will 
+** customize your portal, as these are the base fundaments of Plone, and will
 ** change and be refined in newer versions. Keeping your changes in
-** ploneCustom.css will make it easier to upgrade. 
+** ploneCustom.css will make it easier to upgrade.
 **
 ** Feel free to use whole or parts of this for your own designs, but give credit
 ** where credit is due.
@@ -25,7 +25,7 @@ body {
     color: &dtml-mainFontColor;;
     margin: 0;
     padding: 0;
-/* These work in IE only, changes the look of the scrollbar + textareas 
+/* These work in IE only, changes the look of the scrollbar + textareas
     scrollbar-base-color: &dtml-mainTabBackground;;
     scrollbar-highlight-color: &dtml-mainTabBackground;;
     scrollbar-track-color: &dtml-evenRowBackground;;
@@ -92,7 +92,7 @@ h3 a,
 h4 a,
 h5 a,
 h6 a {
-    color: &dtml-headingFontColor; ! important; 
+    color: &dtml-headingFontColor; ! important;
 }
 
 h1 {
@@ -128,7 +128,7 @@ h6 {
 }
 
 
-ul { 
+ul {
     line-height: 1.5em;
     list-style-type: square;
     margin: 0.5em 0 0 2em;
@@ -146,7 +146,7 @@ li {
     margin-bottom: 1em;
 }
 dt {
-    font-weight: bold;    
+    font-weight: bold;
 }
 dt a {
     text-decoration: underline;
@@ -180,7 +180,7 @@ form {
     margin: 0;
 }
 textarea {
-    border: &dtml-inputBorder;;  
+    border: &dtml-inputBorder;;
     color: &dtml-mainFontColor;;
     background-color: white;
     width: 98%;
@@ -189,7 +189,7 @@ textarea {
 input {
     visibility: visible;
     font: <dtml-var inputFont>;
-    border: &dtml-inputBorder;;  
+    border: &dtml-inputBorder;;
     color: &dtml-mainFontColor;;
     background-color: white;
     vertical-align: middle;
@@ -198,7 +198,7 @@ input {
 }
 select {
     font: <dtml-var inputFont>;
-    border: &dtml-inputBorder;;  
+    border: &dtml-inputBorder;;
     vertical-align: top;
 }
 abbr, acronym, .explain {
@@ -243,7 +243,7 @@ pre {
 
 div#switchbar {
     /* The skin switcher at the top, only shows up if you have multiple skins available */
-    
+
 }
 
 div#switchbar a {
@@ -318,7 +318,7 @@ ul#portalTabs li a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-mainTabBackgroundNotSelected;;
     border-color: &dtml-mainTabBorderColor;;
-    border-width: 1px; 
+    border-width: 1px;
     border-style: solid solid none solid;
     color: &dtml-mainTabFontColor;;
     font-weight: &dtml-mainTabFontWeight;;
@@ -350,7 +350,7 @@ ul#personalBar {
     border-bottom-width: 1px;
     line-height: 1.2em;
     color: &dtml-mainFontColor;;
-    padding: 0em 3em 0em 3em;
+    padding: 0em 3em 0.3em 3em;
     margin: 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
@@ -363,7 +363,7 @@ ul#personalBar li#personalBar-user a {
     background: transparent url(user.gif) center left no-repeat;
     padding-left: 15px;
 }
-    
+
 ul#personalBar li a {
     background: transparent url(linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
@@ -398,6 +398,7 @@ ul#contentTabs {
     line-height: 1.2em;
     margin-top: 1em;
     margin-left: 0;
+    margin-bottom: 1px;
     /* white-space: nowrap; */
     list-style: none;
 }
@@ -412,7 +413,7 @@ ul#contentTabs li {
     font-weight: &dtml-contentTabFontWeight;;
     height: 1.2em;
     margin-right: 0.5em;
-    padding: 0em 2em;
+    padding: 0em 1em;
     line-height: 1.2em;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
@@ -452,7 +453,7 @@ div.editableDocument {
     padding: 0em 1em 2em 1em ! important;
 }
 div.documentActions {
-    float: right; 
+    float: right;
     margin-top: 1.5em;
 }
 div.message {
@@ -538,7 +539,7 @@ input.context {
 }
 input.destructive {
     background: &dtml-destructiveButtonBackground;;
-    border: &dtml-destructiveButtonBorder;;  
+    border: &dtml-destructiveButtonBorder;;
     color: &dtml-destructiveButtonFontColor;;
     cursor: pointer;
     font-size: 80%;
@@ -557,7 +558,7 @@ input.add {
 input.quickSearch {
 }
 input.notify {
-    border: &dtml-destructiveButtonBorder;;  
+    border: &dtml-destructiveButtonBorder;;
 }
 div.row {
     min-height: 4em;
@@ -581,8 +582,8 @@ div.field {
     margin-top: 0.2em;
 }
 div.help {
-    background-color: #FFFFE1; 
-    border: 1px solid black; 
+    background-color: #FFFFE1;
+    border: 1px solid black;
     font-size: 80%;
     font-weight: normal;
     line-height: normal;
@@ -695,7 +696,7 @@ div.box h4 {
     font-size: 1em;
     font-weight: normal;
 }
-div.box h5 { 
+div.box h5 {
     background: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
     border-style: solid solid none solid;
@@ -707,7 +708,7 @@ div.box h5 {
     height: 1em;
     font-weight: normal;
 }
-div.box h6 { 
+div.box h6 {
     background: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
     border-style: solid solid none solid;
@@ -743,9 +744,9 @@ div.box a.close {
     border-left: &dtml-boxBorder;;
     padding: 0em 0.2em;
 }
-div.box h1, 
-div.box h2, 
-div.box h3, 
+div.box h1,
+div.box h2,
+div.box h3,
 div.box h4 {
     margin: 0;
     padding: 0;
@@ -761,8 +762,8 @@ div.box input {
 }
 
 div.comment {
-    background: &dtml-listingEvenBackground;; 
-    border: 1px dashed gray; 
+    background: &dtml-listingEvenBackground;;
+    border: 1px dashed gray;
     padding: 0 1em 0.5em 1em;
     border-style: dashed;
     color: gray;
@@ -773,7 +774,7 @@ div.comment {
 div.comment h1,
 div.comment h2,
 div.comment h3,
-div.comment h4, 
+div.comment h4,
 div.comment h5,
 div.comment h6 {
     border-bottom: 1px dashed gray;
@@ -836,7 +837,7 @@ div listingBar img {
 }
 
 /*
-** Accessibility and visual enhancement elements 
+** Accessibility and visual enhancement elements
 */
 
 a.external {
@@ -865,7 +866,7 @@ div.label {
 }
 
 /*
-** Calendar elements - used in the calendar rendering 
+** Calendar elements - used in the calendar rendering
 */
 
 div.day {
