@@ -184,11 +184,12 @@
             </table>
     
             </metal:block>
-     
+
+    
             <!-- Filter pulldown -->
             <span style="float: right"
                   tal:define="filterValues decodedFilter/keys | nothing;
-                              types python:container.portal_types.listContentTypes();"
+                              types here/allowedContentTypes"
                   tal:condition="here/listFolderContents">
     
                 <select id="filter_selection" 
@@ -202,13 +203,14 @@
                             tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
                     Show All Items
                     </option>  
-    
-                    <option value="#"
-                            tal:repeat="type types"
-                            tal:content="python:type+'s only'"
-                            tal:attributes="value type;
-                                            selected python:test( len(filterTypes)==1 and (type in filterTypes), 'selected', '');"
-                    >Filtered type</option>
+                    <metal:block tal:repeat="type types">
+                        <option value="#"
+                                tal:define="typetitle type/Title"
+                                tal:content="string:${typetitle}s only"
+                                tal:attributes="value typetitle;
+                                                selected python:test( len(filterTypes)==1 and (typetitle in filterTypes), 'selected', '');"
+                        >Filtered type</option>
+                    </metal:block>
                 </select>
     
                 <input type="hidden" name="filter_by_Subject:tokens" value="" />
