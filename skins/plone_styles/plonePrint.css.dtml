@@ -66,6 +66,10 @@ a:link, a:visited {
 	text-decoration: underline;
 	}
 
+pre {
+  white-space: normal;
+}
+
 div.document a:link:after, 
 div.document a:visited:after {
    content: " (" attr(href) ") ";
