@@ -1,8 +1,9 @@
 NAME=CMFPlone
+PKGNAME=PloneBase
 MAJOR_VERSION=2.0
 MINOR_VERSION=1
 RELEASE_TAG=
-PACKAGE_NAME=${NAME}-${MAJOR_VERSION}.${MINOR_VERSION}${RELEASE_TAG}
+PACKAGE_NAME=${PKGNAME}-${MAJOR_VERSION}.${MINOR_VERSION}${RELEASE_TAG}
 
 PYTHON="/usr/bin/python"
 TMPDIR=~/tmp
@@ -58,7 +59,7 @@ sdist_tgz:
           ${CURDIR}/version.txt
 	${MKDIR} ${TMPDIR}
 	${CD} ${TMPDIR} && \
-          ${LN} ${CUR_DIR} ${NAME} && \
+          ${LN} ${CURDIR} ${NAME} && \
           ${CD} ${TMPDIR} && ${TAR} czfh ${BASE_DIR}/${PACKAGE_NAME}.tgz ${NAME} \
            --exclude=${PACKAGE_NAME}.tgz\
            --exclude=CVS \
