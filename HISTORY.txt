@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Fixed http://plone.org/collector/2973. Try to avoid brain.getObject() to
+      speed up plone.
+      [tiran]
+
+    - Fixed http://plone.org/collector/2795. Replaced aq_explicit by aq_inner
+      in batchedFolderContents.py
+      [tiran]
+      
     - http://plone.org/collector/472.  empty discussions
       Discussion now uses CMFFormController and subject/body are required fields now
       [mrtopf]
