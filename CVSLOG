@@ -1,3 +1,163 @@
+2004-04-15 22:14  tiran
+
+	* PloneFolder.py, interfaces/OrderedContainer.py
+	  (Plone-2_0-branch), PloneFolder.py,
+	  interfaces/OrderedContainer.py: New moveObjectsByDelta method
+	  based on the new interface with subset_ids
+
+2004-04-15 20:47  shh42
+
+	* HISTORY.txt (Plone-2_0-branch), HISTORY.txt: Note changes to
+	  validate_document_edit.vpy
+
+2004-04-15 20:22  shh42
+
+	* setFormatPatch.py: Repair indentation accident.
+
+2004-04-15 15:23  shh42
+
+	* CREDITS.txt, FormTool.py, GroupsTool.py, HISTORY.txt,
+	  LargePloneFolder.py, MigrationTool.py, NavigationTool.py,
+	  PloneControlPanel.py, PloneTool.py, PloneUtilities.py, Portal.py,
+	  StatelessTree.py, StatelessTreeNav.py, WorkflowTool.py,
+	  Extensions/accessRule.py, migrations/__init__.py,
+	  migrations/v1/rc1_rc2.py, migrations/v2/__init__.py,
+	  migrations/v2/final_two01.py, migrations/v2/oneX_twoBeta2.py,
+	  migrations/v2/plone2_base.py, setup/ConfigurationMethods.py,
+	  setup/customization_policy.py,
+	  skins/plone_content/document_byline.pt,
+	  skins/plone_content/document_edit_form.cpt,
+	  skins/plone_content/event_edit_form.cpt,
+	  skins/plone_content/file_edit_form.cpt,
+	  skins/plone_content/folder_edit_form.cpt,
+	  skins/plone_content/image_edit_form.cpt,
+	  skins/plone_content/image_view.pt,
+	  skins/plone_content/image_view_fullscreen.pt,
+	  skins/plone_content/link_edit_form.cpt,
+	  skins/plone_content/metadata_edit_form.cpt,
+	  skins/plone_content/newsitem_edit_form.cpt,
+	  skins/plone_form_scripts/event_edit.cpy,
+	  skins/plone_form_scripts/sendto.cpy,
+	  skins/plone_forms/search_form.pt,
+	  skins/plone_images/arrowBlank.gif.metadata,
+	  skins/plone_images/arrowBottom.gif.metadata,
+	  skins/plone_images/arrowDown.gif.metadata,
+	  skins/plone_images/arrowDownAlternative.gif.metadata,
+	  skins/plone_images/arrowLeft.gif,
+	  skins/plone_images/arrowLeft.gif.metadata,
+	  skins/plone_images/arrowLeftmost.gif,
+	  skins/plone_images/arrowLeftmost.gif.metadata,
+	  skins/plone_images/arrowRight.gif,
+	  skins/plone_images/arrowRight.gif.metadata,
+	  skins/plone_images/arrowRightmost.gif,
+	  skins/plone_images/arrowRightmost.gif.metadata,
+	  skins/plone_images/arrowTop.gif.metadata,
+	  skins/plone_images/arrowUp.gif.metadata,
+	  skins/plone_images/arrowUpAlternative.gif.metadata,
+	  skins/plone_images/backtalk.gif,
+	  skins/plone_images/backtalk.gif.metadata,
+	  skins/plone_images/book_icon.gif,
+	  skins/plone_images/book_icon.gif.metadata,
+	  skins/plone_images/bullet.gif.metadata,
+	  skins/plone_images/bulletBig.gif.metadata,
+	  skins/plone_images/colophon_anybrowser.png,
+	  skins/plone_images/colophon_anybrowser.png.metadata,
+	  skins/plone_images/discussionitem_icon.gif.metadata,
+	  skins/plone_images/document_icon.gif.metadata,
+	  skins/plone_images/edit.gif.metadata,
+	  skins/plone_images/error_log_icon.gif.metadata,
+	  skins/plone_images/event_icon.gif.metadata,
+	  skins/plone_images/extedit_icon.gif.metadata,
+	  skins/plone_images/favorite_icon.gif.metadata,
+	  skins/plone_images/file_icon.gif.metadata,
+	  skins/plone_images/flag_dk.png,
+	  skins/plone_images/flag_dk.png.metadata,
+	  skins/plone_images/flag_no.png,
+	  skins/plone_images/flag_no.png.metadata,
+	  skins/plone_images/flag_uk.png,
+	  skins/plone_images/flag_uk.png.metadata,
+	  skins/plone_images/folder.gif.metadata,
+	  skins/plone_images/folder_icon.gif.metadata,
+	  skins/plone_images/image_icon.gif.metadata,
+	  skins/plone_images/info.gif.metadata,
+	  skins/plone_images/linkOpaque.gif.metadata,
+	  skins/plone_images/linkTransparent.gif.metadata,
+	  skins/plone_images/link_icon.gif.metadata,
+	  skins/plone_images/lock_icon.gif.metadata,
+	  skins/plone_images/logo.jpg.metadata,
+	  skins/plone_images/logoIcon.gif.metadata,
+	  skins/plone_images/mail_icon.gif.metadata,
+	  skins/plone_images/newsitem_icon.gif.metadata,
+	  skins/plone_images/pdf_icon.gif.metadata,
+	  skins/plone_images/pencil_icon.gif.metadata,
+	  skins/plone_images/phone_icon.gif.metadata,
+	  skins/plone_images/plone_powered.gif.metadata,
+	  skins/plone_images/popup_calendar.gif.metadata,
+	  skins/plone_images/print_icon.gif.metadata,
+	  skins/plone_images/product_icon.gif,
+	  skins/plone_images/product_icon.gif.metadata,
+	  skins/plone_images/required.gif.metadata,
+	  skins/plone_images/rss.gif.metadata,
+	  skins/plone_images/search_icon.gif.metadata,
+	  skins/plone_images/shopping_cart.gif.metadata,
+	  skins/plone_images/site_icon.gif.metadata,
+	  skins/plone_images/sitemap_icon.gif.metadata,
+	  skins/plone_images/skins_icon.gif.metadata,
+	  skins/plone_images/textsize_huge.gif.metadata,
+	  skins/plone_images/textsize_large.gif.metadata,
+	  skins/plone_images/textsize_normal.gif.metadata,
+	  skins/plone_images/textsize_small.gif.metadata,
+	  skins/plone_images/topic_icon.gif.metadata,
+	  skins/plone_images/treeCollapsed.gif.metadata,
+	  skins/plone_images/treeExpanded.gif.metadata,
+	  skins/plone_images/user.gif.metadata,
+	  skins/plone_images/workflow_icon.gif.metadata,
+	  skins/plone_images/xml.gif.metadata,
+	  skins/plone_portlets/portlet_prefs.pt,
+	  skins/plone_prefs/personalize_form.cpt,
+	  skins/plone_prefs/plone_control_panel.pt,
+	  skins/plone_prefs/prefs_error_log_showEntry.pt,
+	  skins/plone_prefs/prefs_install_product_readme.pt.metadata,
+	  skins/plone_prefs/prefs_install_products.pt.metadata,
+	  skins/plone_prefs/prefs_install_products_form.pt,
+	  skins/plone_prefs/prefs_main_template.pt,
+	  skins/plone_scripts/date_components_support.py,
+	  skins/plone_scripts/extract_date_components.py,
+	  skins/plone_scripts/folder_paste.cpy,
+	  skins/plone_scripts/navigationLocalRelated.py,
+	  skins/plone_scripts/navigationParent.py,
+	  skins/plone_scripts/queryCatalog.py,
+	  skins/plone_scripts/sortObjects.py,
+	  skins/plone_scripts/translate.py,
+	  skins/plone_styles/plone.css.dtml,
+	  skins/plone_styles/ploneCustom.css.dtml,
+	  skins/plone_styles/ploneIEFixes.css.dtml,
+	  skins/plone_tableless/main_template.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/folder_listing.pt,
+	  skins/plone_templates/global_contentmenu.pt,
+	  skins/plone_templates/main_template.pt,
+	  skins/plone_templates/news.pt, tests/dummy.py,
+	  tests/testContentTypeScripts.py, tests/testMemberDataTool.py,
+	  tests/testMembershipTool.py, tests/testPloneTool.py,
+	  tests/testPortalCreation.py, tests/testQueryCatalog.py,
+	  tests/testSecurityDeclarations.py: Merge Plone-2_0-branch to HEAD
+
+2004-04-15 14:21  shh42
+
+	* skins/plone_form_scripts/: validate_document_edit.vpy
+	  (Plone-2_0-branch), validate_document_edit.vpy: Content-Type
+	  header is not guaranteed to be present.
+
+2004-04-15 14:15  shh42
+
+	* tests/testCatalogTool.py: Separate out tests for folder
+	  re-cataloging.
+
+2004-04-15 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-15 03:11  zopezen
 
 	* GroupsTool.py, PloneUtilities.py (Plone-2_0-branch): Allow the
