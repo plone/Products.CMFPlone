@@ -10,7 +10,7 @@
 
 
     <div metal:fill-slot="main"
-          tal:define="members mtool.getRoster();
+          tal:define="members mtool/getRoster;
                       Batch python:modules['Products.CMFPlone'].Batch;
                       DateTime python:modules['DateTime'].DateTime;
                       b_start python:request.get('b_start', 0);
