@@ -31,6 +31,11 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
         assert self.memberdata._getPortrait(_user_name).getId() == _user_name
         assert self.memberdata._getPortrait(_user_name).meta_type == 'Image'
 
+    def testDeletePortrait(self):
+        self.memberdata._setPortrait(Image(id=_user_name, file=Portrait(), title=''), _user_name)
+        self.memberdata._deletePortrait(_user_name)
+        assert self.memberdata._getPortrait(_user_name) == None
+
     def testPruneMemberDataContents(self):
         # Only test what is not already tested elswhere
         self.memberdata._setPortrait(Image(id=_user_name, file=Portrait(), title=''), _user_name)

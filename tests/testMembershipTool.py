@@ -52,6 +52,12 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         assert self.membership.getPersonalPortrait(_user_name).getId() == _user_name
         assert self.membership.getPersonalPortrait(_user_name).meta_type == 'Image'
 
+    def testdeletePersonalPortrait(self):
+        '''Should change the portrait image'''
+        self.membership.changeMemberPortrait(Portrait(), _user_name)
+        self.membership.deletePersonalPortrait(_user_name)
+        assert self.membership.getPersonalPortrait(_user_name).getId() == 'defaultUser.gif'
+
     def testGetPersonalPortraitWithoutPassingId(self):
         '''Should return the logged in users portrait if no id is given'''
         self.membership.changeMemberPortrait(Portrait(), _user_name)

@@ -22,6 +22,11 @@ if member_context is None:
 if (portrait and portrait.filename):
     context.portal_membership.changeMemberPortrait(portrait)
 
+delete_portrait = context.REQUEST.get('delete_portrait', None)
+if delete_portrait:
+    context.portal_membership.deletePersonalPortrait(member.getId())
+
+
 tmsg=member.getUserName()+' personalized their settings.'
 transaction_note(tmsg)
 
