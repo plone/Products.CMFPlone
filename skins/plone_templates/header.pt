@@ -91,6 +91,10 @@
     </metal:block>
 
     <!-- Common Plone ECMAScripts -->
+
+    <!-- IE min- max-width support -->
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_minmax.js"></script>
      
     <!-- ECMAScript menu -->
     <script type="text/javascript"

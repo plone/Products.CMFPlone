@@ -79,9 +79,6 @@
 <!-- The wrapper div. It contains the three columns. -->
 <div id="columns" tal:attributes="class string:${hidecolumns}">
 
-    <!-- start of the IE-fix wrap -->
-    <div id="fixwrap">
-
     <!-- start of the main and left columns -->
     <div id="main-left">
 
@@ -153,8 +150,6 @@
     </div>
     <!-- end of the right (by default at least) column -->
 
-    </div>
-    <!-- end of the IE-fix wrap -->
 </div>
 
 <div class="clear">&nbsp;</div>
