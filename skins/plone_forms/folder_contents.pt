@@ -184,7 +184,8 @@
                 <!--you can filter by subject keywords by filling in this value-->
             </span>
 
-            <metal:block tal:condition="folder_contents">
+            <metal:block tal:condition="folder_contents"
+	                 tal:define="pps modules/Products.PythonScripts.standard">
               <tal:block tal:repeat="button actions/local_buttons|nothing">
               <input class="context" 
 	             type="submit" 

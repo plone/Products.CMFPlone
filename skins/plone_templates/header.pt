@@ -105,7 +105,7 @@
             <a href="" class=""
                tal:attributes="href tab/url;
                                class python:test(compare_id==tab['id'], 'selected', 'plain')">
-                <span tal:replace="tab/name">welcome</span>
+                <span tal:replace="structure tab/name">welcome</span>
             </a>
             
             <span class="netscape4">&middot;</span>
@@ -173,13 +173,13 @@
 
                 <a href="#" 
                    tal:attributes="href python:crumb[1]"
-                   tal:content="python:crumb[0]" 
+                   tal:content="structure python:crumb[0]" 
                    tal:condition="not: is_last">crumb</a>
 
                 <strong tal:condition="python:not is_last"> &raquo; </strong>
 
                 <strong tal:condition="python:is_last"
-                        tal:content="python:crumb[0]" > crumb </strong>
+                        tal:content="structure python:crumb[0]" > crumb </strong>
 
             </span>
 
