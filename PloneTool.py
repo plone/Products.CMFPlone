@@ -3,6 +3,7 @@ import sys
 import traceback
 from types import TupleType, UnicodeType, StringType
 import urlparse
+import operator
 
 from zLOG import LOG, INFO, WARNING
 
@@ -504,6 +505,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if ntp.sortAttribute and ntp.sortOrder:
             query['sort_order'] = ntp.sortOrder
 
+        #get ids not to list and make a dict to make the search fast
+        ids_not_to_list = ntp.idsNotToList
+        excluded_ids = {}
+        map(operator.setitem, [excluded_ids]*len(ids_not_to_list), ids_not_to_list, [1]*len(ids_not_to_list))
+
         rawresult = ct(**query)
 
         # Build result dict
@@ -523,13 +529,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                     'creation_date': item.CreationDate,
                     'review_state': item.review_state,
                     'Description':item.Description,
-                    'children':[]}
+                    'children':[],
+                    'no_display': excluded_ids.has_key(item.getId)}
             parentpath = '/'.join(path.split('/')[:-1])
             # Tell parent about self
-            if result.has_key(parentpath):
-                result[parentpath]['children'].append(data)
-            else:
-                result[parentpath] = {'children':[data]}
+            cur_parent = result.setdefault(parentpath, {'children':[]})
+            cur_parent['children'].append(data)
             # If we have processed a child already, make sure we register it
             # as a child
             if result.has_key(path):
@@ -568,6 +573,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if ntp.typesToList:
             query['portal_type'] = ntp.typesToList
 
+        #get ids not to list and make a dict to make the search fast
+        ids_not_to_list = ntp.idsNotToList
+        excluded_ids = {}
+        map(operator.setitem, [excluded_ids]*len(ids_not_to_list), ids_not_to_list, [1]*len(ids_not_to_list))
+
         rawresult = ct(**query)
 
         #sort items on path length
@@ -578,9 +588,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         result = []
         for r_tuple in dec_result:
             item = r_tuple[1]
-            data = {'name':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
-                    'id':item.getId,'url': item.getURL()}
-            result.append(data)
+            if not excluded_ids.has_key(item.getId):
+                data = {'name':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+                        'id':item.getId,'url': item.getURL()}
+                result.append(data)
         return result
 
     # expose ObjectManager's bad_id test to skin scripts
