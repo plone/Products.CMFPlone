@@ -57,7 +57,7 @@ class MigrationTool( UniqueObject, SimpleItem):
             raise 'You must be in a Plone site to migrate.'
         
     security.declareProtected(ManagePortal, 'upgrade')
-    def upgrade(self, REQUEST=None):
+    def upgrade(self, REQUEST=None, dry_run=None):
         """ perform the upgrade """
         # keep it simple
         out = []
@@ -97,6 +97,11 @@ class MigrationTool( UniqueObject, SimpleItem):
         except:
             out.append("Exception was thrown while cataloging")
             pass
+
+        if dry_run:
+            out.append("Dry run selected, transaction aborted")
+            get_transaction().abort()
+            
         return '\n'.join(out)
         
 
