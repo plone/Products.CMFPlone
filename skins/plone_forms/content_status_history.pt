@@ -77,7 +77,8 @@
           name="edit_form" 
           method="post" 
           action="content_status_modify"
-          tal:attributes="action python:test(request.get('ids', None), 'folder_publish', request.URL)" >
+          tal:define="self_publish string:${request/UR1}/portal_form/${template/getId}"
+          tal:attributes="action python:test(request.get('ids', None), 'folder_publish', self_publish)" >
         
         <span class="legend" i18n:translate="legend_publishing_details">Publishing Details</span>
 
