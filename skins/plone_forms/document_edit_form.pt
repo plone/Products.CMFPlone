@@ -5,7 +5,9 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-   <div metal:fill-slot="main" tal:define="errors python:request.get('errors', {})">
+   <div metal:fill-slot="main" 
+        tal:define="rejection here/rejectAnonymous;
+	            errors python:request.get('errors', {});">
 
     <h1>Edit Document</h1>
     

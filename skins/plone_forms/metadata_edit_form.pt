@@ -7,8 +7,10 @@
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main" 
+     tal:define="rejection here/rejectAnonymous">
 
+    
     <script language="JavaScript"> 
     function submitFormAction(folderAction) {
         document.edit_form.action = document.edit_form.action+'/'+folderAction;
