@@ -248,7 +248,7 @@ class OneFourConfiguration(OriginalConfiguration):
                     a.name = 'Properties'
             t._actions=_actions
 
-registerConfiguration(('1.4','Unreleased'), OneFourConfiguration)
+registerConfiguration(('1.4','Unreleased','CMF-1.4beta1'), OneFourConfiguration)
 
 
 
