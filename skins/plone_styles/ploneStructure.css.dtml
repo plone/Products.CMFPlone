@@ -232,6 +232,11 @@ div.message {
     
 }
 
+div.message a {
+	color: &dtml-mainFontColor;;
+    text-decoration: underline;
+}
+
 
 .description {
     /* The summary text describing the document */
