@@ -32,7 +32,7 @@ for action in actionlist:
     item['id']=actionid=action['id']
 
     aurl=action['url'].strip()
-    if not aurl.startswith('http'):
+    if not (aurl.startswith('http') or aurl.startswith('javascript')):
         item['url']='%s/%s'%(here_url,aurl)
     else:
         item['url']=aurl
