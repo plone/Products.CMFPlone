@@ -132,6 +132,12 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.assertEqual(manage_charset, 'utf-8')
 
+    def testManagementPageCharsetFallbackNotAPropertySheet(self):
+        self.properties._delObject('site_properties')
+        self.properties.site_properties = 'foo'
+        manage_charset = getattr(self.portal, 'management_page_charset', None)
+        self.assertEqual(manage_charset, 'utf-8')
+
     def testManagementPageCharsetFallbackNoPropertyTool(self):
         self.portal._delObject('portal_properties')
         manage_charset = getattr(self.portal, 'management_page_charset', None)
