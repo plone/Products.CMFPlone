@@ -155,13 +155,20 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
                     new_parent.manage_pasteObjects( o.aq_parent.manage_copyObjects( (o.getId(),)))
                 except:
                     out.write('Raw copy didnt work')
+                    
+                new_object=new_parent[o.getId()]
                 try:
-                    new_object=new_parent[o.getId()]
                     owner_id=o.getOwner().getUserName()
                     user=newsite.acl_users.getUser(owner_id).__of__(newsite.acl_users)
                     new_object.changeOwnership(user)
                 except:
                     out.write('Problems transfering Membership')
+                try:
+                    wf_history=PersistentMapping()
+                    wf_history.update(o.workflow_history.__dict__)
+                    new_object.workflow_history=wf_history
+                except:
+                    out.write('Problems transfering workflow_history')
             else:
                 out.write('Object existed :'+o.getId()+'\n')
             return #its not content, just copied. Content in other folders will not be migrated.
