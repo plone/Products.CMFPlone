@@ -55,7 +55,7 @@
     
                     &nbsp;
                     <span tal:replace="obj/location">Oslo</span>,
-                    <span tal:replace="python: obj.end().ISO()">from date</span> -
+                    <span tal:replace="python: obj.start().ISO()">from date</span> -
                     <span tal:replace="python: obj.end().ISO()">to date</span>
                     
                 </span>
