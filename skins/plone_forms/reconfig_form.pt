@@ -361,13 +361,13 @@
         <div class="row"
              tal:condition="exists:site_properties/allow_sendto">
             <div class="label">
-                <span i18n:translate="label_form_help">Send URL to friends</span>
+                <span i18n:translate="label_allow_sendto">Enable "Send this page to somebody" Feature</span>
 
                 <div id="allow_sendto_help"
                      i18n:translate="help_allow_sendto" 
                      class="help" 
                      style="visibility:hidden">
-                Select whether you want to enable the "Send URL to friends" feature.
+                Select whether you want to enable the "Send this page to somebody" feature.
                 </div>                
             </div>
             <div class="field"
