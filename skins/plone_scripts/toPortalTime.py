@@ -4,12 +4,15 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=time=None
+##parameters=time=None, long_format=None
 ##title=
 ##
 #given a time string convert it into a DateTime and then format it appropariately
 from DateTime import DateTime
-format=context.portal_properties.localTimeFormat
+if not long_format:
+    format=context.portal_properties.localTimeFormat
+else:
+    format=context.portal_properties.localLongTimeFormat
 portal_time=None
 if time is None: 
     time=DateTime()

@@ -111,6 +111,10 @@ def migrate099to10(self):
     portal=getToolByName(self, 'portal_url').getPortalObject()
     if not hasattr(portal, 'localTimeFormat'):
         portal._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
+
+    if not hasattr(portal, 'localLongTimeFormat'):
+        portal._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
+        
     normalize_tabs(self)
     wt=getToolByName(self, 'portal_workflow')
     wt.manage_delObjects('default_workflow')

@@ -36,9 +36,9 @@
                 <div class="label" i18n:translate="">When</div>
                 <div class="field">
                     <span i18n:translate="">Between</span>
-                    <span tal:replace="python:here.toPortalTime(here.start())">Start Date Time</span>
+                    <span tal:replace="python:here.toPortalTime(here.start(), long_format=1)">Start Date Time</span>
                     <span i18n:translate="">and</span>
-                    <span tal:replace="python:here.toPortalTime(here.end())">End Date Time</span>
+                    <span tal:replace="python:here.toPortalTime(here.end(), long_format=1)">End Date Time</span>
                 </div>
             </div>
 
