@@ -115,7 +115,9 @@
 	   input_id string:${formname}_${inputname}_${tabindex};
 	   values   python:here.date_components_support(inputvalue);
            days values/days; months values/months; years values/years;
-           minutes values/minutes; hours values/hours;">
+           minutes values/minutes; hours values/hours;
+           yearStart python:years[0]['value'];
+           yearEnd python:years[-1]['value'];">
 
             <input type="hidden" tal:attributes="name string:$inputname;                                    
                                                  id input_id;
@@ -185,7 +187,7 @@
                </select>
             </span>
 
-	    <a tal:attributes="onclick string:return showJsCalendar(${input_id}_day, $input_id, ${input_id}_year, ${input_id}_month, ${input_id}_day, ${input_id}_hour, ${input_id}_minute, 'y/mm/dd');"><img tal:replace="structure here/popup_calendar.gif" /></a>
+	    <a tal:attributes="onclick string:return showJsCalendar('${input_id}_month', '$input_id', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', $yearStart, $yearEnd);"><img tal:replace="structure here/popup_calendar.gif" /></a>
 
             <span>
                 <select name="ic_hour"
