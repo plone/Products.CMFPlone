@@ -27,12 +27,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # index_html should render
         self.portal.index_html()
 
-    def testWorkflowIsNoActionProvider(self):
+    def testWorkflowIsActionProvider(self):
+        # XXX: This change has been backed out and the test inverted!
         # Remove portal_workflow by default.  We are falling back to
         # our use of the 'review_slot'.  There are no places using 
         # the worklist ui anymore directly from the listFilteredActionsFor
         at = self.portal.portal_actions
-        self.failIf('portal_workflow' in at.listActionProviders())
+        self.failUnless('portal_workflow' in at.listActionProviders())
 
     def testReplyTabIsOff(self):
         # Ensure 'reply' tab is turned off
