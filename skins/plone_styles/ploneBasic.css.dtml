@@ -141,6 +141,7 @@ input {
 select {
     font: &dtml-inputFont;;
     border: &dtml-inputBorder;;  
+    margin: 0em 0em 1em 0em;
 }
 
 abbr, acronym, .help {

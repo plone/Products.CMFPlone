@@ -29,7 +29,7 @@
 
 
     <form name="folderContentsForm"
-          method="GET"
+          method="post"
           action="folder_object"
           tal:attributes="action here/absolute_url"
           tal:define="global folder_contents python:here.listFolderContents( contentFilter=filter ); 
@@ -40,151 +40,156 @@
                       global batch python:Batch(results, 5000, int(b_start), orphan=0);">
 
         <input type="hidden" name="filter_state" value="set_view_filter" />
-
-        <div class="title"> 
-
-            <img src="folder.gif" alt="Folder" tal:attributes="src string:$portal_url/folder.gif" /> 
-
-            <span class="folderName" tal:condition="python: user.getUserName()==here.getId()">
-            My Stuff
-            </span> 
-
-            <span class="folderName" tal:condition="python: user.getUserName()!=here.getId()" tal:content="here/title_or_id">
-            Directory Id
-            </span> 
-
-            <!-- Add Item pulldown -->
-            <select name="type_name" >
-                <option value="Select">Select</option>
-                <metal:block tal:repeat="ctype here/allowedContentTypes"
-                             tal:define="global filterOut  python:['Favorite']">
-                <option value="Document"
-                        tal:condition="python: ctype.getId() not in filterOut"
-                        tal:attributes="value ctype/getId"
-                        tal:content="ctype/getId">Document</option>
-                </metal:block>
-            </select>
-
-            <input class="standalone" type="submit" name="folder_factories:method" value="Add New Item" />
-
-        </div>
-
-        <metal:block tal:condition="not: folder_contents">
-        <p>
-        This folder has no visible items. To add content, press the "Add New Item" button,
-        or paste content from another location.
-        </p>						    
- </metal:block>
- 
-        <metal:block tal:condition="folder_contents">
- 
-        <table id="sortable"
-               class="listing"
-               summary="Content listing"
-               cellpadding="0" cellspacing="0"
-               metal:define-macro="folder_listing">
-
-            <thead> 
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Size</th>
-                    <th>Modified</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            <metal:block tal:repeat="item batch"> 
-                <tr tal:define="oddrow repeat/item/odd"
-                  tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
-
-                    <td>
-                        <input type="checkbox" class="noborder" name="ids:list" id="#"
-                               value="#"
-                               tal:attributes="value item/getId;
-                                               id python: 'cb_'+item.getId();
-                                               checked request/ids_checked|nothing;"/>
-                    </td>
-
-                    <td tal:define="action python:item.getTypeInfo().getActionById('view');
-                                    url python:test(action, item.absolute_url()+'/'+action, item.absolute_url()+'/folder_contents');"> 
-
-                        <a href="#" tal:attributes="href url">
-                            <img src="" alt="Folder" border="0"
-                                 height="16"
-                                 width="16"
-                                 tal:attributes="src item/getIcon;
-                                                 alt item/Type;"
-                         />&nbsp;<span tal:replace="item/title_or_id">Title</span>
-                        </a> 
-
-                      <span class="expired"
-                            tal:condition="python:container.isExpired(item)">expired</span>
-                    </td>
-
-                    <td tal:content="item/Type">
-                    folder
-                    </td>
-
-                    <td tal:define="size python:here.getObjSize(item)"
-                        tal:content="structure python:test(size, size, '&nbsp;')">
-                    size
-                    </td>
-
-                    <td tal:content="python:here.toPortalTime(item.ModificationDate())">
-                    08/19/2001 03:01 AM 
-                    </td>
-
-                    <td class="private"
-                        tal:define="review_state python:container.portal_workflow.getInfoFor(item, 'review_state', '')"
-                        tal:content="structure python:test(review_state, review_state, '&nbsp;')"
-                        tal:attributes="class python:test(review_state, review_state, 'private')">&nbsp;
-                    </td>
-                </tr>
+        
+        <!-- FIXME: This is a quick hack, as IE doesn't support display: table. -->
+        <table><tbody><tr><td>
+        
+            <div class="title"> 
+    
+                <span style="float: right; vertical-align: top;">
+                    <!-- Add Item pulldown -->
+                    <select name="type_name" >
+                        <option value="Select">Select</option>
+                        <metal:block tal:repeat="ctype here/allowedContentTypes"
+                                     tal:define="global filterOut  python:['Favorite']">
+                        <option value="Document"
+                                tal:condition="python: ctype.getId() not in filterOut"
+                                tal:attributes="value ctype/getId"
+                                tal:content="ctype/getId">Document</option>
+                        </metal:block>
+                    </select>
+        
+                    <input class="standalone" type="submit" name="folder_factories:method" value="Add New Item" />
+                </span>
+                
+                <img src="folder.gif" alt="Folder" tal:attributes="src string:$portal_url/folder.gif" /> 
+    
+                <span class="folderName" tal:condition="python: user.getUserName()==here.getId()">
+                My Stuff
+                </span> 
+    
+                <span class="folderName" tal:condition="python: user.getUserName()!=here.getId()" tal:content="here/title_or_id">
+                Directory Id
+                </span> 
+    
+            </div>
+    
+            <metal:block tal:condition="not: folder_contents">
+            <p>
+            This folder has no visible items. To add content, press the "Add New Item" button,
+            or paste content from another location.
+            </p>						    
             </metal:block>
-            </tbody> 
-        </table>
+     
+            <metal:block tal:condition="folder_contents">
+     
+            <table id="sortable"
+                   class="listing"
+                   summary="Content listing"
+                   cellpadding="0" cellspacing="0"
+                   metal:define-macro="folder_listing">
+    
+                <thead> 
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Modified</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                <metal:block tal:repeat="item batch"> 
+                    <tr tal:define="oddrow repeat/item/odd"
+                      tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
+    
+                        <td>
+                            <input type="checkbox" class="noborder" name="ids:list" id="#"
+                                   value="#"
+                                   tal:attributes="value item/getId;
+                                                   id python: 'cb_'+item.getId();
+                                                   checked request/ids_checked|nothing;"/>
+                        </td>
+    
+                        <td tal:define="action python:item.getTypeInfo().getActionById('view');
+                                        url python:test(action, item.absolute_url()+'/'+action, item.absolute_url()+'/folder_contents');"> 
+    
+                            <a href="#" tal:attributes="href url">
+                                <img src="" alt="Folder" border="0"
+                                     height="16"
+                                     width="16"
+                                     tal:attributes="src item/getIcon;
+                                                     alt item/Type;"
+                             />&nbsp;<span tal:replace="item/title_or_id">Title</span>
+                            </a> 
+    
+                          <span class="expired"
+                                tal:condition="python:container.isExpired(item)">expired</span>
+                        </td>
+    
+                        <td tal:content="item/Type">
+                        folder
+                        </td>
+    
+                        <td tal:define="size python:here.getObjSize(item)"
+                            tal:content="structure python:test(size, size, '&nbsp;')">
+                        size
+                        </td>
+    
+                        <td tal:content="python:here.toPortalTime(item.ModificationDate())">
+                        08/19/2001 03:01 AM 
+                        </td>
+    
+                        <td class="private"
+                            tal:define="review_state python:container.portal_workflow.getInfoFor(item, 'review_state', '')"
+                            tal:content="structure python:test(review_state, review_state, '&nbsp;')"
+                            tal:attributes="class python:test(review_state, review_state, 'private')">&nbsp;
+                        </td>
+                    </tr>
+                </metal:block>
+                </tbody> 
+            </table>
+    
+            </metal:block>
+     
+            <!-- Filter pulldown -->
+            <span style="float: right"
+                  tal:define="filterValues decodedFilter/keys | nothing;
+                              types python:container.portal_types.listContentTypes();"
+                  tal:condition="here/listFolderContents">
+    
+                <select name="filter_by_Type:list" onChange="submitFilterAction()"
+                        tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" >
+    
+                    <option value="#" 
+                            tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
+                    Show All Items
+                    </option>  
+    
+                    <option value="#"
+                            tal:repeat="type types"
+                            tal:content="python:type+'s only'"
+                            tal:attributes="value type;
+                                            selected python:test( len(filterTypes)==1 and (type in filterTypes), 'selected', '');"
+                    >Filtered type</option>
+                </select>
+    
+                <input type="hidden" name="filter_by_Subject:tokens" value="" />
+                <!--you can filter by subject keywords by filling in this value-->
+            </span>
 
-        </metal:block>
- 
-        <input class="context" type="submit" name="folder_rename_form:method" value="Rename" tal:condition="folder_contents" />
-        <input class="context" type="submit" name="folder_cut:method" value="Cut" tal:condition="folder_contents" /> 
-        <input class="context" type="submit" name="folder_copy:method" value="Copy" tal:condition="folder_contents" />
-        <input tal:condition="here/cb_dataValid | nothing"
-               class="context" type="submit" name="folder_paste:method" value="Paste" />
-        <input class="context" type="submit" name="folder_delete:method" value="Delete" tal:condition="folder_contents" />
-        <input class="context" type="submit" name="content_publishing_history:method" value="Change Status" tal:condition="folder_contents" />
-
-        <!-- Filter pulldown -->
-        <span tal:define="filterValues decodedFilter/keys | nothing;
-                          types python:container.portal_types.listContentTypes();"
-              tal:condition="here/listFolderContents">
-
-
-            Show:
-
-            <select id="filter_selection" name="filter_by_Type:list" onChange="submitFilterAction()"
-                    tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" >
-
-                <option value="#" 
-                        tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
-                All items
-                </option>  
-
-                <option value="#"
-                        tal:repeat="type types"
-                        tal:content="python:type+'s only'"
-                        tal:attributes="value type;
-                                        selected python:test( len(filterTypes)==1 and (type in filterTypes), 'selected', '');"
-                >Filtered type</option>
-            </select>
-
-            <input type="hidden" name="filter_by_Subject:tokens" value="" />
-            <!--you can filter by subject keywords by filling in this value-->
-        </span>
-
+            <input class="context" type="submit" name="folder_rename_form:method" value="Rename" tal:condition="folder_contents" />
+            <input class="context" type="submit" name="folder_cut:method" value="Cut" tal:condition="folder_contents" /> 
+            <input class="context" type="submit" name="folder_copy:method" value="Copy" tal:condition="folder_contents" />
+            <input tal:condition="here/cb_dataValid | nothing"
+                   class="context" type="submit" name="folder_paste:method" value="Paste" />
+            <input class="context" type="submit" name="folder_delete:method" value="Delete" tal:condition="folder_contents" />
+            <input class="context" type="submit" name="content_publishing_history:method" value="Change Status" tal:condition="folder_contents" />
+    
+        </td></tr></tbody></table>
+    
     </form>
 
 </div>
