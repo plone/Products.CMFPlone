@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=date=None
+##parameters=date=None, use_ampm=0
 ##title=
 ##
 
@@ -96,14 +96,21 @@ for x in range(1, 32):
         d['selected']=1
     days.append(d)
 
-hour=int(date.strftime('%H'))
+if use_ampm:
+    hours_range=[12]+range(1,12)
+    hour_default='12'
+    hour=int(date.strftime('%I'))
+else:
+    hours_range=range(0,24)
+    hour_default='00'
+    hour=int(date.strftime('%H'))
 
 if default:
-    hours.append({'id': '----', 'value': '00', 'selected': 1})
+    hours.append({'id': '----', 'value': hour_default, 'selected': 1})
 else:
-    hours.append({'id': '----', 'value': '00', 'selected': None})
+    hours.append({'id': '----', 'value': hour_default, 'selected': None})
 
-for x in range(0, 24):
+for x in hours_range:
     d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None }
     if x==hour and not default:
         d['selected']=1
@@ -118,11 +125,18 @@ else:
 
 for x in range(0, 60, 5):
     d={'id': '%02d' % x, 'value': '%02d' % x, 'selected': None}
-    if x==minute and not default:
+    if (x==minute or minute < x < minute+5) and not default:
         d['selected']=1
     minutes.append(d)
 
-#  ampm = date.strftime('%p');
+if use_ampm:
+    p=date.strftime('%p')
+
+    for x in ('AM', 'PM'):
+        d={'id': x, 'value': x, 'selected': None}
+        if x==p and not default:
+            d['selected']=1
+        ampm.append(d)
 
 return {'years': years, 'months': months, 'days': days,
-        'hours': hours, 'minutes': minutes}
+        'hours': hours, 'minutes': minutes, 'ampm': ampm}

@@ -676,7 +676,7 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
 
 
 // This function updates a hidden date field with the current values of the widgets
-function update_date_field(field, year, month, day, hour, minute)
+function update_date_field(field, year, month, day, hour, minute, ampm)
 {
     var field  = document.getElementById(field)
     var date   = document.getElementById(date)
@@ -685,12 +685,16 @@ function update_date_field(field, year, month, day, hour, minute)
     var day    = document.getElementById(day)
     var hour   = document.getElementById(hour)
     var minute = document.getElementById(minute)
+    var ampm   = document.getElementById(ampm)
 
     if (year.value > 0) 
     {
         // Return ISO date string
         // Note: This relies heavily on what date_components_support.py puts into the form.
         field.value = year.value + "-" + month.value + "-" + day.value + " " + hour.value + ":" + minute.value
+        // Handle optional AM/PM
+        if (ampm.value)
+            field.value = field.value + " " + ampm.value
     } 
     else 
     {
