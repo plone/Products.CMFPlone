@@ -14,7 +14,14 @@
 
     <span tal:define="dummy python:request.response.setHeader('pragma','no-cache')" />
 
-    <h1 i18n:translate="heading_my_preferences">My Preferences</h1>
+    <h1 i18n:translate="heading_my_preferences">Personal Preferences</h1>
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_memberprefs_panel"
+       i18n:translate="">
+    Up to My Preferences
+    </a>
 
     <p i18n:translate="description_my_preferences">
     Your personal settings.
