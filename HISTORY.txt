@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello - Released XX. April 2004
 
+    - Added a new variable 'current_page_url' to 'global_defines'. Since it's 
+      pretty much impossible to get the correct URL to the current page once
+      you're inside CMF, the base tag and Zope and a VHM, I added this 
+      convenience variable. For those who are curious, here's how it looks:
+      'current_page_url request/VIRTUAL_URL|string:${request/SERVER_URL}${request/PATH_TRANSLATED}'
+      Easy, eh? Updated the Plone templates to use this variable instead. Use 
+      this if you need a variable to use with HTML anchors, it will give you
+      the actual URL that is currently being displayed in your browser.
+      [limi]
+
     - Default text on member pages are now disabled, since it just pollutes the
       search results. You can insert the default text in 'homePageText.pt' like
       before, the only difference is that it's disabled by default, and uses
