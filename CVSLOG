@@ -1,3 +1,27 @@
+2003-11-21 00:21  dreamcatcher
+
+	* skins/plone_wysiwyg/wysiwyg_support.pt (Plone-2_0-branch): Allow
+	  to specify rows and cols when calling macro, for Archetypes
+
+2003-11-20 21:38  dpunktnpunkt
+
+	* skins/: plone_images/search_icon.gif, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): Made search_icon transparent.
+
+2003-11-20 21:04  dreamcatcher
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): Huh? Should be
+	  portal, not self
+
+2003-11-20 18:12  zopezen
+
+	* setup/dependencies.py (Plone-2_0-branch): GroupUserFolder is not
+	  optional.  CMFFormController is a requirement.
+
+2003-11-20 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-19 11:08  shh42
 
 	* MembershipTool.py, tests/testMembershipTool.py
