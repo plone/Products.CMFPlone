@@ -9,8 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-ZopeTestCase.installProduct('SomeProduct')
-
 
 class TestSomeProduct(PloneTestCase.PloneTestCase):
 
@@ -25,6 +23,8 @@ class TestSomeProduct(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework()
 else:
+    # While framework.py provides its own test_suite()
+    # method the testrunner utility does not.
     import unittest
     def test_suite():
         suite = unittest.TestSuite()
