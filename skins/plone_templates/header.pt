@@ -20,8 +20,7 @@
                                                template_title )"
            tal:content="string:$portal_title - $here_title">Title of page</title>
 
-    <base href="" tal:attributes="href here/renderBase" />
-
+    <metal:block metal:define-slot="base" />
 
     <meta tal:condition="here/listMetaTags|nothing"
           tal:repeat="keyval here/listMetaTags"
