@@ -48,7 +48,7 @@ def initialize(context):
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('localized_time')
-    allow_module('Products.CMFPlone.PloneUtilites')
+    allow_module('Products.CMFPlone.PloneUtilities')
 
     import StatelessTreeNav
     from StatelessTree import NavigationTreeViewBuilder
@@ -105,7 +105,7 @@ def initialize(context):
     allow_class(EmailField)
     allow_class(FormValidationError)
     allow_class(BasicForm)
-    
+
     # Setup migrations
     import migrations
     migrations.registerMigrations()
