@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone unknown
 
+    - Use images in plone_tabless\colophon.pt just like the one in 
+      plone_templates.
+      [panjunyong]
+
     - Fixed ATContentTypes bug [ 1158950 ] ATTopic default view wrong.
       PloneUtils.browseDefault wasn't playing nice with folders and template
       mixin.
