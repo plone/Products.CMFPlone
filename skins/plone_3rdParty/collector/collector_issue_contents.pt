@@ -1,3 +1,6 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master">
@@ -25,37 +28,23 @@
 
   <div metal:define-macro="transcript">
 
-    <table tal:define="entries here/action_number;
-                       ending python: (entries == 1 and 'y') or 'ies'">
-
-      <tr bgcolor="#ccffcc">
-        <td colspan="2" align="center">
-          <font size="+1">
-            <strong>
-              Issue <span tal:replace="here/id">ID</span> Transcript
-            </strong>
-          </font>
-        </td>
-      </tr>
-      <tr>
-        <th colspan="2" align="left">
-          <span tal:replace="python: '%d entr%s' % (entries, ending)"></span>
-        </th>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <table border="1">
-            <tr> <td>
-           <span tal:replace="structure here/CookedBody">
-                  TRANSCRIPT
-           </span>
-            </td> </tr>
-          </table>
-        </td>
-      </tr>
-
-    </table>
-
+    <div class="row">
+        <div class="box" tal:define="entries here/action_number;
+                                     ending python: (entries == 1 and 'y') or 'ies'">
+    
+            <div class="heading"> 
+                Transcript for Issue
+                <span tal:replace="here/id">ID</span> 
+                (<span tal:replace="python: '%d entr%s' % (entries, ending)"></span>)
+            </div>
+    
+            <span tal:replace="structure here/CookedBody">
+                      TRANSCRIPT
+            </span>
+    
+        </div>
+    </div>
+        
   </div>
 
 </div>

@@ -1,3 +1,6 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal">
   <body>
@@ -16,35 +19,26 @@
 
     <div metal:define-macro="collector_header">
 
-      <table>
-        <tr>
-          <th align="left">
-            <div class="DesktopTitle">
-              <font size="+1">
-                <em tal:condition="here/Title"
-                    tal:content="here/Title">TITLE</em>
-                <span tal:condition="here/abbrev">
-                    [<em tal:replace="here/abbrev|nothing"></em>]
-                </span>
-                Issue Collector
-              </font>
-            </div>
-          </th>
-        </tr>
-        <tr>
-          <td valign="top">
-            <div id="DesktopDescription"
-                 tal:define="stx nocall:
-                       modules/Products/PythonScripts/standard/structured_text"
-                 tal:content="structure here/description">
-              DESCRIPTION
-            </div>
-          </td>
-        </tr>
-      </table>
+        <h1>
+            <span tal:condition="here/Title"
+                tal:content="here/Title">TITLE</span>
+    
+            <span tal:condition="here/abbrev">
+                [<span tal:replace="here/abbrev|nothing"></span>]
+            </span>
+            Issue Collector
+        </h1>
+
+        <div class="description"
+             tal:define="stx nocall:
+                   modules/Products/PythonScripts/standard/structured_text"
+             tal:content="structure here/description">
+          DESCRIPTION
+        </div>
 
     </div>  <!-- End macro: collector_header -->
 
+    
     <div metal:define-macro="issue_header"
          tal:define="TITLELEN python: 150;
                      split nocall: modules/string/split;
@@ -53,21 +47,17 @@
                             python: [i for i in here.objectValues()
                                        if i.Type()
                                          != 'Collector Issue Transcript']">
-
+        <h1>
+            Issue <span tal:replace="here/id">ID</span> of
+            <a href=""
+             tal:attributes="href python:here.aq_parent.absolute_url()">
+            <span tal:replace="here/aq_parent/Title">COLLECTOR TITLE</span>
+            [<span tal:replace="here/abbrev|nothing"/>]
+            </a>
+        </h1>
+        
        <table summary="Issue Characteristics" cellspacing="4">
 
-         <tr>
-           <td colspan="4">
-             <font size="+1">
-               Issue <span tal:replace="here/id">ID</span> of
-               <a href=""
-                 tal:attributes="href python:here.aq_parent.absolute_url()">
-                <span tal:replace="here/aq_parent/Title">COLLECTOR TITLE</span>
-                [<em><span tal:replace="here/abbrev|nothing"/></em>]
-               </a>
-             </font>
-           </td>
-         </tr>
 
          <tr>
            <td align="right"> Title: </td>
@@ -223,12 +213,10 @@
                     </span>                
                     <a href="ITEM URL" tal:attributes="href item_url"
                        tal:content="item/id">ITEM ID</a>
-                  <font color="gray">
                     <span tal:replace="python: item.description[:45]
                                                + (item.description[46:]
                                                   and '...')">
                     DESCRIPTION</span>
-                  </font>
                 </td> </tr>
               </div>
             </table>
@@ -254,7 +242,7 @@
           - last_batch
       </span>
 
-      <table width="100%"
+      <table
              tal:define="url_query nocall: modules/ZTUtils/url_query;
                          make_query nocall: modules/ZTUtils/make_query;
                          base python: url_query(request, omit='b_start')">

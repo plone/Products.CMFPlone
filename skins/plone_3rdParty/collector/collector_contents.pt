@@ -1,3 +1,6 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master">
@@ -8,7 +11,7 @@
 
 <body>
 
-<div metal:fill-slot="super"
+<div metal:fill-slot="header"
      tal:define="global collector_header_present python: 1">
 
     <div metal:use-macro="here/collector_macros/macros/collector_header">
@@ -46,39 +49,33 @@
                  next batch/next|nothing;
                  last_batch python: max(int(here.length()) - BATCHSIZE, 1)">
 
-    <table class="listing">
+    <div metal:use-macro="here/collector_macros/macros/issue_batch_nav">
+    ISSUE-BATCH NAVIGATION
+    </div>
+
+
+    <table id="sortable" class="listing">
       <thead>
       <tr>
-        <th colspan="3">
-          <div metal:use-macro="here/collector_macros/macros/issue_batch_nav">
-            ISSUE-BATCH NAVIGATION
-          </div>
-        </th>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Submitter</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Description</th>
       </tr>
       </thead>
       
       <tbody tal:repeat="itemnum python: range(len(batch))">
 
-        <tr bgcolor="ALTERNATING"
-            tal:attributes="bgcolor alternatingcolor"
-            tal:define="global item python: batch[itemnum];
+        <tr>
+        <metal:block tal:define="global item python: batch[itemnum];
                         itemurl item/getURL;
                         itemtype item/Type|nothing;
                         icon item/getIcon|item/icon|nothing;
                         odd repeat/itemnum/odd;
                         global alternatingcolor python:
                                                 ['#ffffff', '#eeeeee'][odd]">
-
-          <td>
-             <a href=""
-                tal:attributes="href itemurl">
-                <img src="" alt="Issue" border="0"
-                     tal:condition="icon"
-                     tal:attributes="src icon">
-                <span tal:replace="itemtype"
-                      tal:condition="not: icon"></span>
-            </a>
-          </td>
 
           <td>
             <a href="ITEMURL" tal:attributes="href itemurl">
@@ -88,35 +85,36 @@
 
           <td>
             <a href="ITEMURL" tal:attributes="href itemurl">
-              <b>
+                <img src="" alt="Issue" border="0"
+                     tal:condition="icon"
+                     tal:attributes="src icon">
+                <span tal:replace="itemtype"
+                      tal:condition="not: icon"></span>
+
                 <span tal:condition="item/Title"
                       tal:replace="python:
                                    item.Title[:TITLELEN]
                                    + (item.Title[TITLELEN:] and '...')">
                   TITLE
                 </span>
-              </b>
             </a>
           </td>
 
-        </tr>
+        </metal:block>
 
-        <tr tal:attributes="bgcolor alternatingcolor"
-            tal:define="crdate item/created;
-                        moddate item/modified;
-                        global numcmts python: int(item.action_number)-1;
-                        datesdiff python: ((moddate - crdate) * 86400) > 30">
-          <td> &nbsp; </td>
-          <td> &nbsp; </td>
+        <metal:block tal:define="crdate item/created;
+                                 moddate item/modified;
+                                 global numcmts python: int(item.action_number)-1;
+                                 datesdiff python: ((moddate - crdate) * 86400) > 30">
 
           <td>
 
-            From
             <span tal:replace="item/submitter_id|nothing">SUBMITTER ID</span
-              ><span tal:condition="numcmts">.</span>
-            <span tal:condition="not: item/submitter_id|nothing">
-              <em>???</em></span>
-
+              ><span tal:condition="numcmts"></span>
+            <span tal:condition="not: item/submitter_id|nothing">?</span>
+          </td>
+          
+          <td>
             <span tal:replace="python: here.aCompact(crdate)">CREATEDATE
               </span><span tal:condition="python: datesdiff"> ...
                 <span tal:replace="python: here.aCompact(moddate)">
@@ -124,16 +122,13 @@
             </span>
           </td>
 
-        </tr>
+        </metal:block>
 
-        <tr tal:attributes="bgcolor alternatingcolor"
-            tal:define="security python: item.security_related;
-                        confidential python: split(item.status, '_')[-1]
-                                              == 'confidential';
-                        plrlcmts python: (numcmts != 1) and 's' or ''">
-          <td> &nbsp; </td>
-          <td> &nbsp; </td>
-          <td>
+        <metal:block tal:define="security python: item.security_related;
+                                 confidential python: split(item.status, '_')[-1]
+                                                      == 'confidential';
+                                 plrlcmts python: (numcmts != 1) and 's' or ''">
+          <td style="white-space: nowrap">
 
             <!-- The color indicates whether the item is security-related, and
                   parenthesizing indicates that a security-related item has not
@@ -141,65 +136,67 @@
             <font color="SECURITY COLOR"
                   tal:attributes="color python: 
                                         (security and 'brown' or 'black')">
-              <em>
                 <span tal:content="python: (confidential and '(' or '')
                                            + cap(split(item.status,
                                                        '_')[0])
                                            + (confidential and ')' or '')">
                   STATUS</span>
-              </em>
             </font>
-
-            <span tal:replace="python: '%s/%s'
+            
+            <br />
+            
+            <span tal:replace="python: '%s %s'
                                        % (item.topic, item.classification)">
               TOPIC/CLASSIFICATION
             </span>
+            
+            <br />
+            
             <span tal:replace="item/importance">
               Importance
-            </span>
-
-            <span tal:condition="numcmts">
-              <span tal:replace="numcmts">NUM COMMENTS</span>
-              followup<span tal:replace="plrlcmts">S?</span>
             </span>
 
             <span tal:condition="not: numcmts"
                   tal:replace="nothing">
             </span><span tal:condition="item/assigned_to|nothing">,
-              Assigned: 
+              <br />
+              Assigned:
+               
               <span tal:content="python: ', '.join(item.assigned_to)">
                 SUPPORTERS
               </span>
             </span>
           </td>
 
-        </tr>
 
-        <tr tal:attributes="bgcolor alternatingcolor"
-            tal:condition="item/Description">
-          <td> &nbsp; </td>
-          <td> &nbsp; </td>
           <td>
-            <font color="gray"
-                  tal:content="python: item.Description[:DESCRLEN]
+          <metal:block tal:content="python: item.Description[:DESCRLEN]
                                + (item.Description[DESCRLEN:] and '...')">
-              DESCRIPTION</font>
+              DESCRIPTION
+          </metal:block>
+      
+          <metal:block tal:condition="numcmts">
+              <br />
+              (<span tal:replace="numcmts">NUM COMMENTS</span>
+              followup<span tal:replace="plrlcmts">S?</span>)
+          </metal:block>
+
           </td>
+
+        </metal:block>
         </tr>
 
       </tbody>
 
-      <tr bgcolor="#ccffcc"
-          tal:condition="batch">
-        <td colspan="3">
-          <div metal:use-macro="here/collector_macros/macros/issue_batch_nav">
-            ISSUE-BATCH NAVIGATION
-          </div>
-        </td>
-      </tr>
     </table>
 
-    <form action="RETURNHERE" method="get"
+    <div metal:use-macro="here/collector_macros/macros/issue_batch_nav">
+    ISSUE-BATCH NAVIGATION
+    </div>
+
+
+    <form class="group" 
+          action="RETURNHERE" method="get"
           tal:attributes="action python: here.absolute_url()
                                          + '/collector_contents'"
           tal:define="uniquevals python:
@@ -207,156 +204,170 @@
                       ordered nocall: here/collector_ordered_traits">
       <input type="hidden" name="searching" value="yep">
 
-        <table class="listing">
-          <tr>
-            <th colspan="4">Search criteria</th>
-          </tr>
-          
-          <tr>
-            <td COLSPAN="4">
-              <strong>Any text:</strong>
-              <input type="text" name="SearchableText" size="40"
-                     value="TEXT"
-                     tal:attributes="value request/SearchableText|nothing">
-            </td>
-          </tr>
-          <tr>
-            <th align="center"> Status </th>
-            <th align="center"> Requester</th>
-            <th align="center"> Assigned </th>
-            <th align="center"> Security Related </th>
-          </tr>
-          <tr>
-            <td>
-              <select name="status:list:ignore_empty" multiple size="SIZE"
-                    tal:define="values here/collector_issue_trim_states"
-                    tal:attributes="size python: min(max(len(values), 3), 5)">
-                <option value=""
-                        tal:repeat="status values"
-                        tal:attributes="value status;
-                                        selected python: status
-                                               in request.get('status', [])"
-                        tal:content="status">
-                </option>
-             </select>
-            </td>
-            <td>
-              <select name="Creator:list:ignore_empty" multiple size="SIZE"
-                      tal:define="values python: uniquevals('Creator')"
-                      tal:attributes="size python: min(max(len(values), 3), 
-                                                       5)">
-                <option value=""
-                        tal:repeat="creator values"
-                        tal:attributes="
-                            value creator;
-                            selected python: creator
-                                             in request.get('Creator', [])"
-                        tal:content="creator">
-                </option>
-              </select>
-            </td>
-            <td align="center">
-              <select name="supporters:list:ignore_empty" multiple size="SIZE"
-                      tal:define="values python:
-                                         ordered(uniquevals('assigned_to'),
-                                                 here.supporters)"
-                      tal:attributes="size python: min(max(len(values), 3),
-                                                       5)">
-                <option value=""
-                        tal:repeat="supporter values"
-                        tal:attributes="
-                            value supporter;
-                            selected python: supporter 
-                                     in request.get('supporters', [])"
-                        tal:content="supporter">
-                </option>
-              </select>
-            </td>
-            <td>
-              <select name="security_related:list:ignore_empty" size="3" multiple
-                      tal:define="was python: request.get('security_related',
-                                                          [])">
-                <option value="No"
-                        tal:attributes="selected python: 'No' in was">
-                  No </option>
-                <option value="Yes"
-                        tal:attributes="selected python: 'Yes' in was">
-                  Yes </option>
-              </select>
-            </td>
+      <span class="legend">Search for issues</span>
 
-          </tr>
-          <tr>
-            <th> Topic </th>
-            <th> Classification </th>
-            <th> Importance </th>
-            <th> &nbsp; </th>
-          </tr>
-          <tr>
-            <td>
-              <select name="topics:list:ignore_empty" multiple size="SIZE"
-                    tal:define="values python: ordered(uniquevals('topic'),
-                                                       here.topics)"
-                    tal:attributes="size python: min(max(len(values), 3), 5)">
-                <option value=""
-                        tal:repeat="topic values"
-                        tal:attributes="
-                            value topic;
-                            selected python: topic
-                                             in request.get('topics', [])"
-                        tal:content="topic">
-                </option>
-             </select>
-            </td>
-            <td>
-              <select name="classifications:list:ignore_empty" multiple size="SIZE"
-                      tal:define="values python: 
-                                         ordered(uniquevals('classification'),
-                                                 here.classifications)"
-                      tal:attributes="size python: min(max(len(values), 3),
-                                                       5)">
-                <option value=""
-                        tal:repeat="classification values"
-                        tal:attributes="
-                           value classification;
-                           selected python: classification
-                                            in request.get('classifications',
-                                                           [])"
-                        tal:content="classification">
-                </option>
-              </select>
-            </td>
-            <td>
-              <select name="importances:list:ignore_empty" multiple size="SIZE"
-                      tal:define="values python: 
-                                         ordered(uniquevals('importance'),
-                                                 here.importances)"
-                      tal:attributes="size python: min(max(len(values), 3), 
-                                                       5)">
-                <option value=""
-                        tal:repeat="importance values"
-                        tal:attributes="
-                            value importance;
-                            selected python: importance
-                                             in request.get('importances',
-                                                            [])"
-                        tal:content="importance">
-                </option>
-             </select>
-          </td>
-          
-          <td>
-          &nbsp;
-          </td>
-          
-        </tr>
+      <div class="row">
+          <div class="label">Contains</div>
+    
+          <div class="field">
+             <input type="text" name="SearchableText" size="40"
+                    value="TEXT"
+                    tal:attributes="value request/SearchableText|nothing">
+          </div>
+      </div>
 
+      <div class="row">
+          <div class="label">&nbsp;</div>
 
-      </table>
+          <div class="field">
+                <table>
+                  
+                  <tr>
+                    <th> Status </th>
+                    <th> Requester</th>
+                    <th> Assigned </th>
+                    <th> Security Related </th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select name="status:list:ignore_empty" multiple size="SIZE"
+                            tal:define="values here/collector_issue_trim_states"
+                            tal:attributes="size python: min(max(len(values), 3), 5)">
+                        <option value=""
+                                tal:repeat="status values"
+                                tal:attributes="value status;
+                                                selected python: status
+                                                       in request.get('status', [])"
+                                tal:content="status">
+                        </option>
+                     </select>
+                    </td>
+                    <td>
+                      <select name="Creator:list:ignore_empty" multiple size="SIZE"
+                              tal:define="values python: uniquevals('Creator')"
+                              tal:attributes="size python: min(max(len(values), 3), 
+                                                               5)">
+                        <option value=""
+                                tal:repeat="creator values"
+                                tal:attributes="
+                                    value creator;
+                                    selected python: creator
+                                                     in request.get('Creator', [])"
+                                tal:content="creator">
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <select name="supporters:list:ignore_empty" multiple size="SIZE"
+                              tal:define="values python:
+                                                 ordered(uniquevals('assigned_to'),
+                                                         here.supporters)"
+                              tal:attributes="size python: min(max(len(values), 3),
+                                                               5)">
+                        <option value=""
+                                tal:repeat="supporter values"
+                                tal:attributes="
+                                    value supporter;
+                                    selected python: supporter 
+                                             in request.get('supporters', [])"
+                                tal:content="supporter">
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <select name="security_related:list:ignore_empty" size="3" multiple
+                              tal:define="was python: request.get('security_related',
+                                                                  [])">
+                        <option value="No"
+                                tal:attributes="selected python: 'No' in was">
+                          No </option>
+                        <option value="Yes"
+                                tal:attributes="selected python: 'Yes' in was">
+                          Yes </option>
+                      </select>
+                    </td>
+        
+                  </tr>
+                  <tr>
+                    <th> Topic </th>
+                    <th> Classification </th>
+                    <th> Importance </th>
+                    <th> &nbsp; </th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select name="topics:list:ignore_empty" multiple size="SIZE"
+                            tal:define="values python: ordered(uniquevals('topic'),
+                                                               here.topics)"
+                            tal:attributes="size python: min(max(len(values), 3), 5)">
+                        <option value=""
+                                tal:repeat="topic values"
+                                tal:attributes="
+                                    value topic;
+                                    selected python: topic
+                                                     in request.get('topics', [])"
+                                tal:content="topic">
+                        </option>
+                     </select>
+                    </td>
+                    <td>
+                      <select name="classifications:list:ignore_empty" multiple size="SIZE"
+                              tal:define="values python: 
+                                                 ordered(uniquevals('classification'),
+                                                         here.classifications)"
+                              tal:attributes="size python: min(max(len(values), 3),
+                                                               5)">
+                        <option value=""
+                                tal:repeat="classification values"
+                                tal:attributes="
+                                   value classification;
+                                   selected python: classification
+                                                    in request.get('classifications',
+                                                                   [])"
+                                tal:content="classification">
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <select name="importances:list:ignore_empty" multiple size="SIZE"
+                              tal:define="values python: 
+                                                 ordered(uniquevals('importance'),
+                                                         here.importances)"
+                              tal:attributes="size python: min(max(len(values), 3), 
+                                                               5)">
+                        <option value=""
+                                tal:repeat="importance values"
+                                tal:attributes="
+                                    value importance;
+                                    selected python: importance
+                                                     in request.get('importances',
+                                                                    [])"
+                                tal:content="importance">
+                        </option>
+                     </select>
+                  </td>
+                  
+                  <td>
+                  &nbsp;
+                  </td>
+                  
+                </tr>
+        
+        
+              </table>
+        </div>
+     </div>   
+     
+     <div class="row">
+     
+        <div class="label">&nbsp;</div>  
 
-      <input class="context" type="Submit" value="Search" />
-      <input class="standalone" type="reset" value="Reset" />
-
+        <div class="field">
+            <input class="context" type="Submit" value="Search" />
+            <input class="standalone" type="reset" value="Reset" />
+        </div>
+    </div>
+    
 </form>
 
 </div>
