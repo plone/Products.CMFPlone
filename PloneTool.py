@@ -527,9 +527,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         result.append((user, roles, type, name))
                 if parent==portal:
                     cont=0
-		elif hasattr(parent,'isLocalRoleAcquired'):
+		elif hasattr(parent, 'isLocalRoleAcquired'):
                     print "role acq check", parent, parent.isLocalRoleAcquired()
-                    if not parent.isLocalRoleAcquired(): 
+                    if not parent.isLocalRoleAcquired():
                         cont=0
                 else:
                     parent=parent.aq_parent
