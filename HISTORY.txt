@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Members can be searched by group name in folder_local_role now.
+      [panjunyong]
+
     - Moved the setting of login_time and last_login_time out of the
       (not always reached) login_success.pt and login_password.pt templates
       and into the (always executed) logged_in.py script. [rafrombrc]

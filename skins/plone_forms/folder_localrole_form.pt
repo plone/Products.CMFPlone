@@ -364,6 +364,9 @@
                         <option value="email" i18n:translate="label_email_address">
                             Email Address
                         </option>
+                        <option value="groupname" i18n:translate="label_group_name">
+                            Group Name
+                        </option>
                     </select>
 
                 </div>

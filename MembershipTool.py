@@ -278,6 +278,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         - email
         - last_login_time
         - roles
+        - groupname
 
         This is an 'AND' request.
 
@@ -289,6 +290,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         this can return partial results. This may change in the future.
         """
         md = self.portal_memberdata
+        groups_tool = self.portal_groups
         if REQUEST:
             dict = REQUEST
         else:
@@ -299,12 +301,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
         email = dict.get('email', None)
         roles = dict.get('roles', None)
         last_login_time = dict.get('last_login_time', None)
+        groupname = dict.get('groupname', '').strip()
         is_manager = self.checkPermission('Manage portal', self)
         if name:
             name = name.strip().lower()
         if email:
             email = email.strip().lower()
-
 
         # We want 'name' request to be handled properly with large user folders.
         # So we have to check both the fullname and loginname, without scanning all
@@ -314,7 +316,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         if name:
             # We first find in MemberDataTool users whose _full_ name match what we want.
             lst = md.searchMemberDataContents('fullname', name)
-            md_users = [ x['username'] for x in lst ]
+            md_users = [ x['username'] for x in lst]
 
             # Fast search management if the underlying acl_users support it.
             # This will allow us to retreive users by their _id_ (not name).
@@ -326,22 +328,41 @@ class MembershipTool(PloneBaseTool, BaseTool):
         # Now we have to merge both lists to get a nice users set.
         # This is possible only if both lists are filled (or we may miss users else).
         members = []
+        g_userids, g_members = [], []
+        
+        if groupname:
+            groups = groups_tool.searchForGroups(title=groupname) + \
+                     groups_tool.searchForGroups(name=groupname)
+
+            for group in groups:
+                for member in group.getGroupMembers():
+                    if member not in g_members:
+                        g_members.append(member)
+            g_userids = map(lambda x: x.getMemberId(), g_members)
+        if groupname and not g_userids:
+            return []
+
         if md_users is not None and uf_users is not None:
             names_checked = 1
             wrap = self.wrapUser
             getUser = acl_users.getUser
             for userid in md_users:
-                members.append(wrap(getUser(userid)))
+                if not g_userids or userid in g_userids:
+                    members.append(wrap(getUser(userid)))
             for userid in uf_users:
                 if userid in md_users:
                     continue             # Kill dupes
-                members.append(wrap(getUser(userid)))
+                if not g_userids or userid in g_userids:
+                    members.append(wrap(getUser(userid)))
 
             # Optimization trick
             if not email and \
                    not roles and \
                    not last_login_time:
-                return members          
+                return members
+        elif groupname:
+            members = g_members
+            names_checked = 0
         else:
             # If the lists are not available, we just stupidly get the members list
             members = self.listMembers()
