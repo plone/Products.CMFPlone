@@ -2,6 +2,7 @@
       tal:define="
         global utool nocall:here/portal_url;
         global mtool nocall:here/portal_membership;
+        global gtool nocall:here/portal_groups;
         global atool nocall:here/portal_actions;
         global aitool nocall:here/portal_actionicons;
         global putils nocall:here/plone_utils;
