@@ -29,7 +29,7 @@ def twoBeta2_twoBeta3(portal):
 
     # and then in workflow remove any workflow from it
     wt = getToolByName(portal, "portal_workflow")
-    wt.setChainForPortalTypes(("Plone Site"), "")
+    wt.setChainForPortalTypes((factory_type_information['id']), "")
 
 
 if __name__=='__main__':
