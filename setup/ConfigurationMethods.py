@@ -5,8 +5,16 @@ from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Acquisition import aq_get
 
+from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
+
 from zLOG import INFO, ERROR
 from SetupBase import SetupWidget
+
+
+def addErrorLog(self, portal):
+    if "error_log" not in portal.objectIds():
+        manage_addErrorLog(portal)
+        portal.error_log.copy_to_zlog = 1
 
 def modifyAuthentication(self, portal):
     #set up cookie crumbler
@@ -313,6 +321,7 @@ functions = {
     'installPortalTools': installPortalTools,
     'modifyAuthentication': modifyAuthentication,
     'modifyActionProviders': modifyActionProviders,
+    'addErrorLog':addErrorLog
     }
 
 class GeneralSetup(SetupWidget):
