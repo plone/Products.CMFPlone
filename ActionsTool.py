@@ -116,8 +116,15 @@ class ActionsTool(PloneBaseTool, BaseTool):
                 if catlist is None:
                     filtered_actions[category] = catlist = []
                 # Filter out duplicate actions by identity...
-                if not action in catlist:
-                    catlist.append(action)
+                #
+                # SdS: 2005-05-04 Dieter Maurer noted this snipped
+                # doesn't do what it claims to do, and also 70% of the
+                # time is spent to render this method is spent on the
+                # next two lines. Tres Seaver points out that the
+                # code has already been removed in CMF 1.5.
+                #
+                # if not action in catlist:
+                #     catlist.append(action)
                 # ...should you need it, here's some code that filters
                 # by equality (use instead of the two lines above)
                 #if not [a for a in catlist if a==action]:
