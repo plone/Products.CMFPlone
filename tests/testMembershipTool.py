@@ -52,17 +52,11 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         assert self.membership.getPersonalPortrait(_user_name).getId() == _user_name
         assert self.membership.getPersonalPortrait(_user_name).meta_type == 'Image'
 
-#     def testGetPersonalPortraitUsesRequestVar(self):
-#         '''Should use the request var if member_id is not given'''
-#         self.membership.changeMemberPortrait(Portrait(), 'user_2')
-#         assert self.membership.getPersonalPortrait(None).getId() == 'defaultUser.gif'
-#         self.app.REQUEST['userid'] = 'user_2'
-#         assert self.membership.getPersonalPortrait(None).getId() == 'user_2'
-
-    def testGetPersonalPortraitWithoutId(self):
-        """  getPeronalPortrait sould return logged in users portrait if no id is given """
-        # stefan, how can I get an authenticated member ????
-        pass
+    def testGetPersonalPortraitWithoutPassingId(self):
+        '''Should return the logged in users portrait if no id is given'''
+        self.membership.changeMemberPortrait(Portrait(), _user_name)
+        assert self.membership.getPersonalPortrait().getId() == _user_name
+        assert self.membership.getPersonalPortrait().meta_type == 'Image'
 
     def testListMembers(self):
         '''Should return the members list'''
