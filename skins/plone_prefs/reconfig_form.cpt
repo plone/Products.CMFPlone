@@ -60,7 +60,7 @@
                 <label i18n:translate="label_portal_description">Portal description</label>
     
                 <div class="formHelp" i18n:translate="help_portal_description">
-                This description is made available via syndicated
+                The portal description is available in syndicated
                 content and elsewhere. Keep it brief.
                 </div>
     
@@ -79,8 +79,8 @@
                 <label i18n:translate="label_portal_from_name">Portal 'From' name</label>
     
                 <div class="formHelp" i18n:translate="help_portal_from_name">
-                When Plone generates mail, it uses this name
-                as its (apparent) sender.
+                Plone generates e-mail using this name
+                as the (apparent) e-mail sender.
                 </div>
     
                 <div tal:content="error">Validation error output</div>
@@ -105,8 +105,8 @@
                       i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_portal_from_address">
-                When Plone generates mail, it uses this address
-                as its (apparent) return address.
+                Plone generates e-mail using this address
+                as the (apparent) e-mail return address.
                 </div>
     
                 <div tal:content="error">Validation error output</div>
@@ -149,9 +149,9 @@
                 <label i18n:translate="label_password_policy">Password policy</label>
     
                 <div class="formHelp" i18n:translate="help_password_policy">
-                Whether the users can choose their initial password or not. It's easier
-                to create bogus accounts if the password is not generated, so if this is a concern,
-                choose "Generate".
+                Determines if users can choose their initial password. If the password
+                is selected by the user, it's easier for the user to create
+                to a bogus account. If this is a concern, choose "Generate".
                 </div>
     
                 <input class="noborder"
@@ -223,8 +223,8 @@
                 <label i18n:translate="label_setup_ext_editor">Enable External Editor Feature</label>
     
                 <div class="formHelp" i18n:translate="help_setup_ext_editor">
-                Select whether you want to enable the external editor feature. 
-                This requires a special client-side application installed.
+                Determines if the external editor feature is enabled. 
+                This feature requires a special client-side application installed.
                 </div>
     
                 <input type="radio"
