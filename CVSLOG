@@ -1,3 +1,85 @@
+2003-12-30 21:48  vinsci
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  Remove non-comment <!--
+
+2003-12-30 20:33  dreamcatcher
+
+	* skins/: plone_content/document_edit_form.cpt,
+	  plone_content/event_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/folder_edit_form.cpt,
+	  plone_content/image_edit_form.cpt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_content/newsitem_edit_form.cpt,
+	  plone_forms/content_status_history.cpt (Plone-2_0-branch): More
+	  untabification
+
+2003-12-30 19:39  dreamcatcher
+
+	* skins/plone_content/document_edit_form.cpt (Plone-2_0-branch):
+	  Untabify
+
+2003-12-30 19:35  dreamcatcher
+
+	* skins/plone_forms/content_status_history.cpt (Plone-2_0-branch):
+	  Rewrapped a bit some explanatory text
+
+2003-12-30 19:32  dreamcatcher
+
+	* skins/plone_forms/content_status_history.cpt (Plone-2_0-branch):
+	  Remove double-head, and reindent a bit
+
+2003-12-30 19:16  dreamcatcher
+
+	* skins/plone_content/: document_edit_form.cpt,
+	  event_edit_form.cpt, file_edit_form.cpt, folder_edit_form.cpt,
+	  image_edit_form.cpt, link_edit_form.cpt, newsitem_edit_form.cpt
+	  (Plone-2_0-branch): Some rewrapping and whitespace cleaning.
+	  Added missing 'rows' and 'cols' attributes to description widget
+	  of document_edit_form
+
+2003-12-30 19:05  dreamcatcher
+
+	* skins/: plone_content/metadata_edit_form.cpt,
+	  plone_portlets/calendar_slot.pt (Plone-2_0-branch): Just some
+	  rewrapping. Nothing to see there. I wanted to fix the following
+	  warnings of the w3c validator:
+
+	     1.  Line 442, column 32:  end tag for "select" which is not
+	  finished  (explain...).
+
+				    </select>
+					    ^
+
+	     2. Line 631, column 28: reference to non-existent ID
+	  "expiration_date"
+
+			    <label for="expiration_date">Expiration
+	  Date</label>
+					^
+
+	     3. Line 452, column 28: reference to non-existent ID
+	  "effective_date"
+
+			    <label for="effective_date">Effective
+	  Date</label>
+					^
+
+	  ... But it seems its non-trivial to figure out the id for a
+	  calendarDatePickerBox
+
+2003-12-30 18:35  pupq
+
+	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch):
+	  Apparently we want static class name link-plain, not ref to
+	  nonexistent variable. Collector #2240.
+
+2003-12-30 05:05  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-29 21:49  limi
 
 	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch): Fix
