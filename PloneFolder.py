@@ -1,3 +1,4 @@
+from zExceptions import NotFound
 from Products.CMFCore.utils import _verifyActionPermissions, \
      getToolByName, getActionContext
 from Products.CMFCore.Skinnable import SkinnableObjectManager
