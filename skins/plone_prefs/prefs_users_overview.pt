@@ -62,26 +62,6 @@
         </p>
 
         <input type="hidden" value="1" name="came_from_prefs" />
-        <input class="standalone add"
-                tabindex=""
-                type="submit"
-                name="join_form:method"
-                value="Add New User"
-                i18n:attributes="value"
-                tal:attributes="tabindex tabindex/next;"
-                tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
-                />
-
-        <input class="standalone add"
-                tabindex=""
-                type="submit"
-                name="createMember:method"
-                value="Add New User"
-                i18n:attributes="value"
-                tal:attributes="tabindex tabindex/next;"
-                tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
-                />
-
             <table class="listing">
                 <tr>
                     <th colspan="4">
@@ -193,7 +173,29 @@
 		value="Apply Changes"
 		i18n:attributes="value"
 		tal:attributes="tabindex tabindex/next;"
+		tal:condition="batch" 
 		/>
+		
+        <input class="standalone add"
+                tabindex=""
+                type="submit"
+                name="join_form:method"
+                value="Add New User"
+                i18n:attributes="value"
+                tal:attributes="tabindex tabindex/next;"
+                tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+                />
+
+        <input class="standalone add"
+                tabindex=""
+                type="submit"
+                name="createMember:method"
+                value="Add New User"
+                i18n:attributes="value"
+                tal:attributes="tabindex tabindex/next;"
+                tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+                />
+
         </form>
 
     </div>
