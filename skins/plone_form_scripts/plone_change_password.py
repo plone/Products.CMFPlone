@@ -44,7 +44,7 @@ from Products.CMFPlone import transaction_note
 transaction_note('Changed password for %s' % (member.getUserName()))
 
 url='%s/%s?portal_status_message=%s' % ( context.absolute_url()
-                                      , 'personalize_form'
+                                      , 'plone_memberprefs_panel'
                                       , 'Password+changed.' )
 
 return context.REQUEST.RESPONSE.redirect(url)
