@@ -102,6 +102,8 @@ def addCatalogIndexes(portal):
         catalog.addColumn('meta_type', None)
     if not catalog._catalog.schema.has_key('location'):
         catalog.addColumn('location', None)
+    if not catalog._catalog.schema.has_key('getRemoteUrl'):
+        catalog.addColumn('getRemoteUrl', None)
 
 def addNavigationProperties(portal):
     nav_tool=portal.portal_navigation

@@ -1,12 +1,16 @@
 ##parameters=event
 
-if event['start'] and event['end']:
-    eventstring = "%s-%s %s" % (event['start'], event['end'], event['title'])
-elif event['start']: # can assume not event['end']
-    eventstring = "%s - %s" % (event['start'], event['title'] or "something")
+start = event['start'] and ':'.join(event['start'].split(':')[:2]) or ''
+end = event['end'] and ':'.join(event['end'].split(':')[:2]) or ''
+title = event['title'] or "something"
+
+if start and end:
+    eventstring = "%s-%s %s" % (start, end, title)
+elif start: # can assume not event['end']
+    eventstring = "%s - %s" % (start, title)
 elif event['end']: # can assume not event['start']
-    eventstring = "%s - %s" % (event['title'], event['end'])
+    eventstring = "%s - %s" % (title, end)
 else: # can assume not event['start'] and not event['end']
-    eventstring = event['title']
+    eventstring = title
 
 return eventstring
