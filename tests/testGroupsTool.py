@@ -186,6 +186,14 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo', '', [], [])
         self.failIfEqual(self.groups.getGroupareaURL('foo'), None)
 
+    def testGetGroupareaFolderPermission(self):
+        self.groups.toggleGroupWorkspacesCreation()
+        self.groups.addGroup('foo', '', [], [])
+        self.acl_users._updateUser(default_user, groups=['foo'])
+        user = self.acl_users.getUser(default_user)
+        self.login()   # !!! Fixed in Zope 2.6.2
+        self.failUnless(user.has_permission('View Groups', self.groups.getGroupWorkspacesFolder()))
+
     #def testGetGroupareaFolderForAuthenticated(self):
     #    # XXX: ERROR!
     #    self.groups.toggleGroupWorkspacesCreation()
