@@ -1,4 +1,4 @@
-mproved docs: 
+Improved docs: 
 
 =============================================================================== 
 **SUMMARY** 
@@ -31,7 +31,7 @@ mproved docs:
 
   **MANDATORY** 
    
-  - "Zope 2.6.2 or later": 
+  - "Zope 2.6.2 or later (but not Zope 2.6.3)": 
      http://www.zope.org/Products 
      http://zope.org/Products/Zope/2.6.4rc2 
      http://zope.org/Products/Zope/2.7.0rc2
