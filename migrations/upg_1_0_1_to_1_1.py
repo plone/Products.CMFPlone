@@ -98,7 +98,7 @@ def addActionIcons(portal):
         qi=getToolByName(portal, 'portal_quickinstaller')
         qi.installProduct('CMFActionIcons')
     except AlreadyInstalled:
-        pass #Portal.py got to it first
+        qi.notifyInstalled('CMFActionIcons') #Portal.py got to it first
 
     ai=getToolByName(portal, 'portal_actionicons')
     ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
