@@ -37,6 +37,11 @@ def twothree(portal):
 
     # line 195
     # add in site properties sheet
+    
+    #moving properties from CMF Site object to portal_properties/site_properties
+    policy=DefaultCustomizationPolicy()
+    policy.addSiteProperties(portal)       
+    
     prop_tool = portal.portal_properties
     if 'site_properties' not in prop_tool.objectIds():
         prop_tool.manage_addPropertySheet('site_properties', 'Site Properties')
@@ -54,10 +59,6 @@ def twothree(portal):
     if 'enable_navigation_logging' not in _ids:
         p._setProperty('enable_navigation_logging', 0, 'int')
     # /adding
-
-    #moving properties from CMF Site object to portal_properties/site_properties
-    policy=DefaultCustomizationPolicy()
-    policy.addSiteProperties(portal)
 
     #adding navigation properties
     nav_tool=portal.portal_navigation
