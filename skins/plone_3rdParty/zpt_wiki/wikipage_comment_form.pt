@@ -54,7 +54,8 @@
             <form method="post"
                   class="group"
                   action="wikipage_editcomment_handler"
-                  enctype="multipart/form-data">
+                  enctype="multipart/form-data"
+	          tal:attributes="action string:${here/getId}/wikipage_editcomment_handler">
 
                 <span class="legend">Comment details</span>
                 

@@ -33,9 +33,8 @@
 <p>
 
   <form method="POST"
-        action="wikipage_editcomment_handler"
-        enctype="multipart/form-data"
-	tal:attributes="action string:${here/getId}/wikipage_editcomment_handler">
+        action="&dtml-getId;/wikipage_editcomment_handler"
+        enctype="multipart/form-data">
   <input type=hidden name=page value="&dtml-getId;">
 
   <table width="100%" border="0" cellspacing="0" cellpadding="5">
