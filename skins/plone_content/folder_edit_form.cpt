@@ -28,7 +28,7 @@
           
             <div class="field" 
                  tal:condition="python:member.getProperty('visible_ids', None) and
-                                       len(utool.getRelativeContentPath(getattr(here, here.getId())))"
+                                       len(utool.getRelativeContentPath(here))"
                  tal:define="error errors/id | nothing;
                              id python:request.get('id', test(here.show_id(),here.getId(),''));"
                  tal:attributes="class python:test(error, 'field error', 'field')">
@@ -56,7 +56,7 @@
             <input type="hidden" 
                    name="id" 
                    tal:condition="python:not member.getProperty('visible_ids', '') or 
-                                         not len(utool.getRelativeContentPath(getattr(here, id)))"
+                                         not len(utool.getRelativeContentPath(here))"
                    tal:define="id python:request.get('id', here.getId())"
                    tal:attributes="value id" 
                    />
