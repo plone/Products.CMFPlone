@@ -25,6 +25,8 @@ if cmfcore:
     from App.Common import package_home
     from os.path import join
 
+    x = []
+    CMF_VERSION = 'Unknown'
     try:
         file = join(package_home(cmfcore_globals), 'version.txt')
         CMF_VERSION = open(file, 'r').read().strip()
@@ -35,10 +37,13 @@ if cmfcore:
                 filtered += v
             else:
                 break
-        filtered = [int(x) for x in filtered.split('.')]
-    except IOError, ValueError:
-        x = []
-        CMF_VERSION = 'Unknown'
+        x = [int(x) for x in filtered.split('.')]
+    except IOError:
+        # couldnt find file, oh well
+        pass    
+    except ValueError:
+        # couldnt make sense of the version number
+        pass
     if x < [1,4]:
         log("Plone requires CMF 1.4 or later.  Your version: %s" % CMF_VERSION, severity=zLOG.INFO, optional=1)
 
