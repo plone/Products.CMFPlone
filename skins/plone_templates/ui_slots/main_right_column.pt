@@ -1,7 +1,0 @@
-<metal:block define-macro="column">
-
-    <div metal:use-macro="here/login_slot/macros/loginBox">
-    Login box
-    </div>
-
-</metal:block>

@@ -29,8 +29,8 @@ Header stuff
     <tbody>
         <tr>
             <td class="left">
-                <div metal:use-macro="here/ui_slots/topic_navigator_slot/macros/CMFTopic_navigation_box">
-                Navigation box
+                <div metal:use-macro="here/navigation_slot/macros/navigationBox">
+                  Navigation
                 </div>
 
                 <div metal:use-macro="here/ui_slots/news_slot/macros/newsBox">

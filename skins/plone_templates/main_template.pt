@@ -36,11 +36,7 @@ Header stuff
         <tr>
             <td class="left">
                 <metal:block use-macro="here/main_left_column/macros/column">
-                Left Column of three-column Layout
-                </metal:block>
-
-                <metal:block use-macro="here/main_right_column/macros/column">
-                Right column of three-column layout
+                Left Column boxes
                 </metal:block>
             </td>
             
