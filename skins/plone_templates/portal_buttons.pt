@@ -6,7 +6,7 @@
                  isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
 		 hereTypeInfo python:request.get('this_typeinfo', container.portal_types.getTypeInfo(here.Type()));
 		 view_action python:test(hereTypeInfo, hereTypeInfo.getActionById('view'), '');
-		 isViewTemplate python:test(template.getId(), 1, 0);"
+		 isViewTemplate python:test(template.getId()==view_action, 1, 0);"
      tal:condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0) ">	
 
     <form name="reply" 
