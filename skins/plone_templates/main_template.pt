@@ -11,7 +11,7 @@
   </metal:block>
   
   <metal:block metal:fill-slot="head_slot">
-    <META HTTP-EQUIV="pragma" CONTENT="no-cache">
+    <meta http-equiv="pragma" content="no-cache" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('pragma', 'no-cache')" />
     <metal:block metal:define-slot="head_slot" />
   </metal:block>
