@@ -13,7 +13,7 @@
                         class python:test(selected, 'selected', 'plain')">
         <a class="" href=""
            tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
-           i18n:attributes="accesskey" >
+           i18n:attributes="accesskey">
             <span tal:omit-tag="" i18n:translate="">
                 <span tal:replace="action/name">dummy</span>
             </span>

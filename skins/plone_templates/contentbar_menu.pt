@@ -34,6 +34,9 @@
         </ul>
     </li>
     <li class="menuButton">
+    
+        State:
+    
         <a href="#"
            onclick="return buttonClick(event, 'statusMenu');"
            onmouseover="buttonMouseover(event, 'statusMenu');"

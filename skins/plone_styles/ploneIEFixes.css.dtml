@@ -1,25 +1,29 @@
-/* <dtml-with stylesheet_properties>
-** WinIE Fix stylesheet
+/*
+** Stylesheet with Internet Explorer-specific workarounds.
 */
-body {
-/* These work in IE only, changes the look of the scrollbar + textareas
-    scrollbar-base-color: &dtml-mainTabBackground;;
-    scrollbar-highlight-color: &dtml-mainTabBackground;;
-    scrollbar-track-color: &dtml-evenRowBackground;;
-    scrollbar-darkshadow-color: &dtml-evenRowBackground;;
-    scrollbar-3dlight-color: &dtml-mainTabBorderColorSelected;;
-    scrollbar-shadow-color: &dtml-mainTabBorderColorSelected;;
-    scrollbar-arrow-color: &dtml-mainTabFontColorSelected;;
-*/
-}
-div.comment,
-.pageContent {
+
+/* <dtml-with stylesheet_properties> */
+
+.pageContent,
+div.comment {
     /* Fix for IE6 disappearing float bug */
     height: 100%;
 }
 .hiddenstructure {
     display: none;
 }
+
+input {
+        margin-bottom: 1px; /* bug fix */
+}
+
+table.listing td.top {
+    /* insane IE row bug workaround */
+    position: relative;
+    left: -1px;
+    top: -1px;
+}
+
 div#columns div.box {
     text-align: left;
 }
@@ -29,6 +33,16 @@ div#columns div#right {
 }
 div.overflow {
     overflow: auto;
+}
+
+body { /* These work in IE only, changes the look of the scrollbar + textareas */
+    scrollbar-base-color: &dtml-mainTabBackground;;
+    scrollbar-highlight-color: &dtml-mainTabBackground;;
+    scrollbar-track-color: &dtml-evenRowBackground;;
+    scrollbar-darkshadow-color: &dtml-evenRowBackground;;
+    scrollbar-3dlight-color: &dtml-mainTabBorderColorSelected;;
+    scrollbar-shadow-color: &dtml-mainTabBorderColorSelected;;
+    scrollbar-arrow-color: &dtml-mainTabFontColorSelected;;
 }
 
 /* </dtml-with> */

@@ -13,7 +13,7 @@
 
     <h1 tal:content="here/title_or_id">Title or id</h1>
 
-    <div id="description"
+    <div class="description"
          tal:content="here/Description">
     description
     </div>
@@ -24,7 +24,7 @@
                 tal:content="here/remote_url">remote url</a>
     </p>
 
-    <div id="byline" metal:use-macro="here/byline/macros/byline">
+    <div metal:use-macro="here/byline/macros/byline">
       Get the byline - contains details about author and modification date.
     </div>
 

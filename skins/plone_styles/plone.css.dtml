@@ -26,6 +26,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 table {
     font-size: 100%;
 }
@@ -184,7 +185,6 @@ input {
     color: &dtml-mainFontColor;;
     background-color: white;
     vertical-align: middle;
-    margin-bottom: 1px; /* IE bug fix */
     padding: 0.1em;
 }
 select {
@@ -460,9 +460,6 @@ ul.contentViews li {
     margin-right: 1em;
 }
 
-
-
-
 .pageContent {
     padding: 1em;
     margin: 0em 0em 2em 0em;
@@ -503,14 +500,14 @@ div.message a {
 div.title {
     margin-top: 1em;
 }
-#description {
+.description {
     /* The summary text describing the document */
     font: <dtml-var descriptionFont>;
     display: block;
     margin: 1em 0em;
     line-height: 1.5em;
 }
-#byline {
+.byline {
     text-align: right;
     font-size: 80%;
     clear: both;
@@ -683,10 +680,6 @@ table.listing td.top {
     border-right: 1px solid &dtml-contentBackground; ! important;
     text-align: right ! important;
     padding: 0em 0em 1em 0em;
-    /* insane IE row bug workaround */
-    position: relative;
-    left: -1px;
-    top: -1px;
 }
 table.listing tr.odd {
     /*every second line should be shaded */
@@ -911,17 +904,20 @@ div.label {
 
 .notLoggedIn {} /* Used on all descriptions relevant to those not logged in */
 
-div.editableDocument > * select,
-div.editableDocument > * input,
-div.editableDocument > * textarea {
+/*
+.editable > * select,
+.editable > * input,
+.editable > * textarea {
     background: #f3f3f3;
     color: #3f3f3f;
 }
-div.editableDocument > * select:focus,
-div.editableDocument > * input:focus,
-div.editableDocument > * textarea:focus {
-    background: #ffffff;
-    color: #000000;
+*/
+
+.editable > * select:focus,
+.editable > * input:focus,
+.editable > * textarea:focus {
+    border-color: #FFA500; 
+    border-width: 2px;
 }
 div.overflow pre {
     overflow: auto;
@@ -1000,7 +996,8 @@ span.higligthedSearchTerm{
 
 ul.menuBar {
     margin-bottom: 1px;
-}
+    color: &dtml-contentTabFontColor;;
+ }
 ul.menuBar, ul.menuBar li.menuButton {
     margin: 0;
     padding: 0;
@@ -1008,23 +1005,22 @@ ul.menuBar, ul.menuBar li.menuButton {
     list-style: none;
 }
 ul.menuBar li.menuButton a {
-    background-image: url(<dtml-var portal_url>/arrowDown.gif);
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: center right;
     text-transform: &dtml-textTransform;;
-    color: #000000;
     cursor: pointer;
     text-decoration: none;
     z-index: 4;
-    padding-right: 1em;
+    padding: 0 1em;
     margin: 0;
+    border-left: 1px dashed &dtml-contentTabFontColor;;
 }
 ul.menuBar li.menuButton a:hover {
-    background-color: transparent;
-    color: #000000;
 }
 ul.menu {
     background: &dtml-contentTabBackground;;
+    border: &dtml-contentTabBorder;;
     color: &dtml-contentTabFontColor;;
     text-transform: &dtml-textTransform;;
     position: absolute;
@@ -1035,6 +1031,9 @@ ul.menu {
     z-index: 5;
     white-space: nowrap;
     width: auto;
+    margin: 0;
+    padding: 0;
+    border-top: &dtml-contentTabBackground; 1px solid;
 }
 ul.menu, ul.menu li {
     background: &dtml-contentTabBackground;;
@@ -1044,19 +1043,22 @@ ul.menu, ul.menu li {
     border-collapse: collapse;
 }
 ul.menu li {
-    padding: 0.2em;
+    margin: 0;
+    padding: 0;
+    text-transform: none;
 }
 ul.menu li.menuItem a {
     display: block;
     background: &dtml-contentTabBackground;;
     margin: 0;
     padding: 0;
-    color: #000000;
     text-decoration: none;
+    border: &dtml-contentTabBorder;;
+    border-color: &dtml-contentTabBackground;
 }
 ul.menu li.menuItem a:hover {
-    background: #00008b;
-    color: white;
+    background-color: &dtml-contentTabFontColor;;
+    color: White;
 }
 ul.menu li.menuSep {
     border-top: 1px solid &dtml-contentTabFontColor;;
