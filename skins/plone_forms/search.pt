@@ -22,18 +22,22 @@
 			
         <div class="rowOdd">
         
-            <span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
-                <form method="get" action="search" >
-                    <input type="hidden" tal:replace="structure python:mhi(request.form, b_start=p.first)" />
-                    <input class="standalone" type="submit" value="previous items" />                   
-                </form> 
+            <span class="left" 
+	          tal:define="p batch/previous | nothing" 
+		  tal:condition="p"> 
+		<a href=""
+		   tal:attributes="href python: '?' + mq( request.form, b_start=p.first )">
+		   previous <span tal:replace="p/length">n</span> items
+		</a>
             </span>
                 
-            <span class="right" tal:define="n batch/next | nothing" tal:condition="n">
-                <form method="get" action="search">
-                    <input type="hidden" tal:replace="structure python:mhi(request.form, b_start=n.first)" />
-                    <input class="standalone" type="submit" value="next items" />
-                </form>
+            <span class="right" 
+	          tal:define="n batch/next | nothing" 
+		  tal:condition="n">
+		<a href=""
+                   tal:attributes="href python: '?' + mq( request.form, b_start=n.first )">
+                   next <span tal:replace="n/length">n</span> items
+                </a>
             </span> 
             
         </div>
@@ -73,31 +77,34 @@
 			</div>
 		 </span>	
     
-			<!-- Navigation -->
+        <!-- Navigation -->
 
         <div class="rowOdd">
-        
-            <span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
-                <form method="get" action="search" >
-                    <input type="hidden" tal:replace="structure python:mhi(request.form, b_start=p.first)" />
-                    <input class="standalone" type="submit" value="previous items" />                   
-                </form> 
+
+            <span class="left"
+                  tal:define="p batch/previous | nothing"
+                  tal:condition="p">
+               <a href=""
+                  tal:attributes="href python: '?' + mq( request.form, b_start=p.first )">
+                  previous <span tal:replace="p/length">n</span> items
+               </a>
             </span>
-                
-            <span class="right" tal:define="n batch/next | nothing" tal:condition="n">
-                <form method="get" action="search">
-                    <input type="hidden" tal:replace="structure python:mhi(request.form, b_start=n.first)" />
-                    <input class="standalone" type="submit" value="next items" />
-                </form>
-            </span> 
-            
+
+            <span class="right"
+                  tal:define="n batch/next | nothing"
+                  tal:condition="n">
+               <a href=""
+                  tal:attributes="href python: '?' + mq( request.form, b_start=n.first )">
+                  next <span tal:replace="n/length">n</span> items
+               </a>
+            </span>																
         </div>
 			
       </span>
  	<div tal:condition="not: results">
            <strong> No Results were Found </strong>
         </div>		 
-  </span>
+     </span>
 	   
 
 </body>
