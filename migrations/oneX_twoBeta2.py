@@ -84,7 +84,6 @@ def swapPortalRoot(portal):
     """ We want to swap CMFDefault.PortalObject.Portal with CMFPlone.Portal.Portal """
     from Products.CMFPlone.Portal import PloneSite
     from StringIO import StringIO
-    import pdb; pdb.set_trace()
     if portal.meta_type=='Plone Site':
         return
 
