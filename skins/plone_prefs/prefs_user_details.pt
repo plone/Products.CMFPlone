@@ -20,6 +20,7 @@ we eventually might want to merge this form with personalize_form
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
+     <h1 tal:content="userid"></h1>
 <ul id="contentTabs">
   <li class="">
     <a href="prefs_users_overview" i18n:translate="">
@@ -56,21 +57,30 @@ we eventually might want to merge this form with personalize_form
       Change member properties.
     </p>
 
+     <h1 tal:content="member/getId"></h1>
     <form class="group"
           action=""
           name="users"
           method="post"
+          enctype="multipart/form-data"
           tal:condition="user | nothing"
           tal:attributes="action string:${here/portal_memberdata/absolute_url}">
 
         <span class="legend" i18n:translate="legend_member_details">Member Details</span>
 
-        <div class="portrait" style="float: right;"
-             tal:define="portrait python: here.portal_membership.getPersonalPortrait(user.getId());">
-            <img src="" alt=""
-                 tal:attributes="src portrait/absolute_url" />
+        <div id="portrait_edit">
+            <div class="portrait"
+                tal:define="portrait here/portal_membership/getPersonalPortrait">
+                <img src="" alt=""
+                    tal:attributes="src portrait/absolute_url" />
+            </div>
+            <input type="file"
+                size="30"
+                tabindex=""
+                name = "portrait"
+                tal:attributes="tabindex tabindex/next">
         </div>
-
+        <p/>
         <input type="hidden" name="userid" value="username"
                tal:attributes="value member/getId" />
 
@@ -446,8 +456,7 @@ we eventually might want to merge this form with personalize_form
                     </select>
                 </div>
             </div>
-
-            <div class="row"
+            <!--div class="row"
                  tal:define="portrait here/portal_membership/getPersonalPortrait;
                              personal here/portal_membership/getPersonalFolder"
                  tal:condition="python: personal is not None">
@@ -482,7 +491,7 @@ we eventually might want to merge this form with personalize_form
                          tal:attributes="src portrait/absolute_url"
                          />
                 </div>
-            </div>
+            </div-->
 
             <div class="row">
                 <div class="label">&nbsp;</div>

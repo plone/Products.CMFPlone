@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=searchstring, restrict
+##parameters=searchstring, restrict, return_form=None
 ##title=Valid Search Resriction
 ##
 #MembershipTool.searchForMembers
@@ -13,15 +13,17 @@ members_tool = context.portal_membership
 retlist = []
 
 if not searchstring:
-	if restrict != "groups":
-		retlist = retlist + members_tool.listMembers()
-	if restrict != "users":
-		retlist = retlist + groups_tool.listGroups()
+    if restrict != "groups":
+        retlist = retlist + members_tool.listMembers()
+    if restrict != "users":
+        retlist = retlist + groups_tool.listGroups()
 else:
-	if restrict != "groups":
-		retlist = retlist + members_tool.searchForMembers(REQUEST=None, name=searchstring)
-	if restrict != "users":
-		retlist = retlist + groups_tool.searchForGroups(REQUEST=None, name=searchstring)
+    if restrict != "groups":
+        retlist = retlist + members_tool.searchForMembers(REQUEST=None, name=searchstring)
+    if restrict != "users":
+        retlist = retlist + groups_tool.searchForGroups(REQUEST=None, name=searchstring)
 
 # reorder retlist?
+if return_form:
+    context.REQUEST.RESPONSE.redirect( context.absolute_url() + '/' + return_form )
 return retlist

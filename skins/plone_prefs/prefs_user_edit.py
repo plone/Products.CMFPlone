@@ -4,17 +4,24 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=userid
+##parameters=userid, portrait=''
 ##title=Edit user
 ##
+#update portrait
+portal_membership = context.portal_membership
+if portrait:
+    portrait.seek(0)
+    portal_membership.changeMemberPortrait(portrait, userid)
+
 REQUEST=context.REQUEST
-member=context.portal_membership.getMemberById(userid)
+member=portal_membership.getMemberById(userid)
 
 processed={}
 for id, property in context.portal_memberdata.propertyItems():
     processed[id]=REQUEST.get(id, None)
-    
+
 context.plone_utils.setMemberProperties(member, **processed)
+
 
 REFERER=REQUEST.HTTP_REFERER
 if REFERER.find('portal_status_message')!=-1:

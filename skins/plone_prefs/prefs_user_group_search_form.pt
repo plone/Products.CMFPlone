@@ -1,21 +1,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-      lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+    lang="en-US"
+    metal:use-macro="here/main_template/macros/master">
 
 <tal:block metal:fill-slot="head_slot">
-   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+<tal:block tal:define="dummy python:request.set('disable_border',1)" />
 </tal:block>
 
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {});
+    tal:define="errors python:request.get('errors', {});
                 Batch python:modules['ZTUtils'].Batch;
                 b_start python:request.get('b_start',0);
-		searchonly request/searchonly | nothing;
-		searchstring request/searchstring | nothing;
-		searchfor request/searchonly | request/searching | nothing;"
-     tal:condition="here/rejectAnonymous" >
+        searchonly request/searchonly | nothing;
+        searchstring request/searchstring | nothing;
+        searchfor request/searchonly | request/searching | nothing;"
+    tal:condition="here/rejectAnonymous" >
 
     <h1 i18n:translate="">Search for Users and Groups</h1>
 
@@ -25,49 +25,52 @@
     </p>
 
     <form action=""
-          name="users"
-          method="post">
+        name="users"
+        method="post">
 
         Show me
 
         <select name="searching"
                 tabindex=""
                 tal:attributes="tabindex tabindex/next;"
-		tal:condition="python: not here.prefs_valid_search_restriction(searchonly)">
+                tal:condition="python: not here.prefs_valid_search_restriction(searchonly)">
             <option value="both"> Users and groups </option>
             <option value="users"> Users </option>
             <option value="groups"> Groups </option>
         </select>
-	<input type="hidden" name="searchonly"
-		tal:condition="python: here.prefs_valid_search_restriction(searchonly)"
-		tal:attributes="value request/searchonly" />
-	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="">users</span>
-	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="">groups</span>
+        <input type="hidden" name="searchonly"
+            tal:condition="python: here.prefs_valid_search_restriction(searchonly)"
+            tal:attributes="value request/searchonly" />
+        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="">users</span>
+        <input type="hidden" name="restrict" tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" value="users" />
+        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="">groups</span>
+        <input type="hidden" name="restrict" tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" value="groups" />
+        <input type="hidden" name="restrict" tal:condition="python: not here.prefs_valid_search_restriction(searchonly)" value="" />
 
         containing
 
         <input tabindex=""
-               type="text"
-               name="searchstring"
-               value=""
-               tal:attributes="tabindex tabindex/next;"
-               />
+            type="text"
+            name="searchstring"
+            value=""
+            tal:attributes="tabindex tabindex/next;"
+            />
 
         <input class="context"
-               tabindex=""
-               type="submit"
-               name="prefs_user_group_search:method"
-               value="Search"
-               tal:attributes="tabindex tabindex/next;"
-               />
+            tabindex=""
+            type="submit"
+            name="prefs_user_group_search:method"
+            value="Search"
+            tal:attributes="tabindex tabindex/next;"
+            />
 
 
         <h2>Returned results</h2>
-	Search string: <span tal:content="request/searchstring | default">none specified</span>
-	<!--restricted by <span tal:replace="searchfor"/>-->
+        Search string: <span tal:content="request/searchstring | default">none specified</span>
+        <!--restricted by <span tal:replace="searchfor"/>-->
         <table class="listing"
-               id="sortable"
-	       tal:define="searchresults python:Batch(here.prefs_user_group_search(searchstring, searchfor), 25, int(b_start), orphan=1)">
+            id="sortable"
+            tal:define="searchresults python:Batch(here.prefs_user_group_search(searchstring, searchfor), 25, int(b_start), orphan=1)">
 
             <tr>
                 <th tal:condition="request/takeaction | nothing">&nbsp;</th>
@@ -75,16 +78,16 @@
                 <th>Type</th>
             </tr>
 
-	    <tr class="odd"
-		tal:repeat="usergroup searchresults"
-		tal:attributes="classex python:test(repeat['usergroup'].even, 'even', 'odd');
-			class repeat/usergroup/odd">
+            <tr class="odd"
+            tal:repeat="usergroup searchresults"
+            tal:attributes="classex python:test(repeat['usergroup'].even, 'even', 'odd');
+                class repeat/usergroup/odd">
                 <td tal:condition="request/takeaction | nothing">
                 <input class="noborder"
-			type="checkbox"
-			selected="selected"
-			name="id:list"
-			tal:attributes="value usergroup/getGroupId | usergroup/getId" />
+                    type="checkbox"
+                    selected="selected"
+                    name="id:list"
+                    tal:attributes="value usergroup/getGroupId | usergroup/getId" />
                 </td>
 
                 <td>
@@ -92,42 +95,44 @@
                 <img src="group.gif" tal:condition="usergroup/getGroupName | nothing" />
 
                 <a href="" tal:condition="not:usergroup/getGroupName | nothing"
-			tal:attributes="href string:prefs_user_details?userid=${usergroup/getId}"
-			tal:content="usergroup/getUserName | default">
-			username not available
-		</a>
+                    tal:attributes="href string:prefs_user_details?userid=${usergroup/getId}"
+                    tal:content="usergroup/getUserName | default">
+                    username not available
+                </a>
                 <a href="" tal:condition="usergroup/getGroupName | nothing"
-			tal:attributes="href string:prefs_group_details?groupname=${usergroup/getGroupName}"
-			tal:content="usergroup/getGroupName | default">
-			groupname not available
-		</a>
-		</td>
+                    tal:attributes="href string:prefs_group_details?groupname=${usergroup/getGroupName}"
+                    tal:content="usergroup/getGroupName | default">
+                    groupname not available
+                </a>
+                </td>
 
                 <td tal:condition="not:usergroup/getGroupName | nothing">User</td>
                 <td tal:condition="usergroup/getGroupName | nothing">Group</td>
-           </tr>
+            </tr>
 
         </table>
 
-	<input type="hidden" name="userid" value=""
-		tal:condition="request/userid | nothing"
-		tal:attributes="value request/userid" />
-	<input type="hidden" name="groupname" value=""
-		tal:condition="request/groupname | nothing"
-		tal:attributes="value request/groupname" />
-	<input type="hidden" name="takeaction" value=""
-		tal:condition="request/takeaction | nothing"
-		tal:attributes="value request/takeaction" />
+        <input type="hidden" name="userid" value=""
+            tal:condition="request/userid | nothing"
+            tal:attributes="value request/userid" />
+        <input type="hidden" name="groupname" value=""
+            tal:condition="request/groupname | nothing"
+            tal:attributes="value request/groupname" />
+        <input type="hidden" name="takeaction" value=""
+            tal:condition="request/takeaction | nothing"
+            tal:attributes="value request/takeaction" />
+
+        <input type="hidden" name="return_form" tal:attributes="value template/getId" >
 
         <input class="context"
-               tabindex=""
-               type="submit"
-               name="prefs_user_manage:method"
-               value="Use Selected..."
-	       tal:condition="request/takeaction | nothing"
-               tal:attributes="tabindex tabindex/next;
-	       				name string:${request/takeaction}:method"
-               />
+            tabindex=""
+            type="submit"
+            name="prefs_user_manage:method"
+            value="Use Selected..."
+        tal:condition="request/takeaction | nothing"
+            tal:attributes="tabindex tabindex/next;
+                        name string:${request/takeaction}:method"
+            />
 
     </form>
 

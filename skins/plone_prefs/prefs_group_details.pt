@@ -81,97 +81,97 @@
          </tal:set>
 
         <tal:properties repeat="property targetobject/propertyMap">
+            <span tal:condition="python:property['id'] != 'listed'" tal:omit-tag="">
+                <div class="row">
 
-          <div class="row">
-
-          <label for="value"
-                 tal:define="global id property/id;
-                             global type property/type;
-                             global propertyvalue python:targetGetProperty(id, None);"
-                 tal:attributes="for id"
-                 tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
-
-
-              <div class="field"
-                   tal:define="propertyitem python:targetobject.getProperty(id)"
-               tal:condition="python:'w' in property.get('mode', 'awd')">
-
-               <input type="text" name="id" size="35"
-                      tal:condition="python:type in ('int', 'long')"
-                      tal:attributes="name string:$id:$type;
-                                      value python:test(propertyvalue, propertyvalue, '')" />
-
-               <input type="text" name="id" size="35"
-                      tal:condition="python:type in ('float','date')"
-                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
-                                      value python:test(propertyvalue, propertyvalue, '')" />
-
-               <input type="text" name="string and ustring" size="35"
-                      tal:condition="python:type in ('string','ustring')"
-                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
-                                      value python:test(propertyvalue, propertyvalue, '')" />
-
-               <input type="checkbox"
-                      class="noborder"
-                      name="id"
-                      id="cb-checkbox"
-                      tal:condition="python: type in ('boolean',)"
-                      tal:attributes="name string:$id:$type;
-                                      id string:cb-$id;
-                                      checked python:test(propertyvalue, 'checked', '')" />
-
-               <input name="tokens and utokens" value="" type="text" size="35"
-                      tal:condition="python:type in ('tokens', 'utokens')"
-                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
-                                      value python:test(propertyvalue, propertyvalue, '')" />
-
-               <textarea name="text and utext"
-                      rows="6"
-                      cols="35"
-                      tal:condition="python: type in ('text', 'utext')"
-                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
-                      tal:content="propertyvalue">some data</textarea>
-
-               <textarea name="lines and ulines"
-                      rows="6"
-                      cols="35"
-                      tal:condition="python: type in ('lines', 'ulines')"
-                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type;"
-                      tal:content="propertyvalue"><tal:content
-                tal:repeat="line propertyvalue"><span tal:replace="string:line\n"/></tal:content>
-                </textarea>
+                <label for="value"
+                        tal:define="global id property/id;
+                                    global type property/type;
+                                    global propertyvalue python:targetGetProperty(id, None);"
+                        tal:attributes="for id"
+                        tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
 
 
-                <tal:selections tal:condition="python:type in ('selection', 'multiple selection')"
-                                tal:define="select_variable python:property.get('select_variable','')">
+                <div class="field"
+                    tal:define="propertyitem python:targetobject.getProperty(id)"
+                tal:condition="python:'w' in property.get('mode', 'awd')">
 
-                <tal:define condition="select_variable"
-                            define="global select_value python:path('here/%s' %select_variable);" />
+                <input type="text" name="id" size="35"
+                        tal:condition="python:type in ('int', 'long')"
+                        tal:attributes="name string:$id:$type;
+                                        value python:test(propertyvalue, propertyvalue, '')" />
 
-                <select name="selection" tal:condition="python:type in ('selection',)"
-                    tal:attributes="name string:$id:${request/management_page_charset_tag}text">
-                    <tal:values repeat="option select_value">
-                        <option tal:attributes="SELECTED python:test(propertyvalue==option,'SELECTED','')"
-                            tal:content="option">value</option>
-                    </tal:values>
-                </select>
+                <input type="text" name="id" size="35"
+                        tal:condition="python:type in ('float','date')"
+                        tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                        value python:test(propertyvalue, propertyvalue, '')" />
 
-                <select name="multiple selection" multiple tal:condition="python:type in ('multiple selection',)"
-                        tal:attributes="name string:$id:${request/management_page_charset_tag}list:string;
-                                        size python:min(7, len(select_value));">
-                    <tal:values repeat="option select_value">
-                        <option tal:attributes="SELECTED python:test(propertyvalue and option in propertyvalue,
-                                                                    'selected', '')"
+                <input type="text" name="string and ustring" size="35"
+                        tal:condition="python:type in ('string','ustring')"
+                        tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                        value python:test(propertyvalue, propertyvalue, '')" />
+
+                <input type="checkbox"
+                        class="noborder"
+                        name="id"
+                        id="cb-checkbox"
+                        tal:condition="python: type in ('boolean',)"
+                        tal:attributes="name string:$id:$type;
+                                        id string:cb-$id;
+                                        checked python:test(propertyvalue, 'checked', '')" />
+
+                <input name="tokens and utokens" value="" type="text" size="35"
+                        tal:condition="python:type in ('tokens', 'utokens')"
+                        tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                        value python:test(propertyvalue, propertyvalue, '')" />
+
+                <textarea name="text and utext"
+                        rows="6"
+                        cols="35"
+                        tal:condition="python: type in ('text', 'utext')"
+                        tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
+                        tal:content="propertyvalue">some data</textarea>
+
+                <textarea name="lines and ulines"
+                        rows="6"
+                        cols="35"
+                        tal:condition="python: type in ('lines', 'ulines')"
+                        tal:attributes="name string:$id:${request/management_page_charset_tag}$type;"
+                        tal:content="propertyvalue"><tal:content
+                    tal:repeat="line propertyvalue"><span tal:replace="string:line\n"/></tal:content>
+                    </textarea>
+
+
+                    <tal:selections tal:condition="python:type in ('selection', 'multiple selection')"
+                                    tal:define="select_variable python:property.get('select_variable','')">
+
+                    <tal:define condition="select_variable"
+                                define="global select_value python:path('here/%s' %select_variable);" />
+
+                    <select name="selection" tal:condition="python:type in ('selection',)"
+                        tal:attributes="name string:$id:${request/management_page_charset_tag}text">
+                        <tal:values repeat="option select_value">
+                            <option tal:attributes="SELECTED python:test(propertyvalue==option,'SELECTED','')"
                                 tal:content="option">value</option>
-                    </tal:values>
-                </select>
+                        </tal:values>
+                    </select>
 
-                </tal:selections>
+                    <select name="multiple selection" multiple tal:condition="python:type in ('multiple selection',)"
+                            tal:attributes="name string:$id:${request/management_page_charset_tag}list:string;
+                                            size python:min(7, len(select_value));">
+                        <tal:values repeat="option select_value">
+                            <option tal:attributes="SELECTED python:test(propertyvalue and option in propertyvalue,
+                                                                        'selected', '')"
+                                    tal:content="option">value</option>
+                        </tal:values>
+                    </select>
 
-              </div>
+                    </tal:selections>
 
-            </div>
+                </div>
 
+                </div>
+            </span>
         </tal:properties>
 
         <input class="context"
