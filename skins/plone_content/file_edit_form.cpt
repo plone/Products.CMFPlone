@@ -135,7 +135,8 @@
              tal:define="error_file errors/file|nothing;
                          file request/file|here/file|nothing;">
             
-            <div class="label required">
+            <div class="label required"
+                 tal:attributes="class python:here.data and 'label' or default">
                 <span i18n:translate="label_file">File</span>
                 <div id="file_help" 
                      i18n:translate="help_file"
