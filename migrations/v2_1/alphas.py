@@ -356,12 +356,7 @@ def addNewsFolder(portal, out):
     news.setLocallyAllowedTypes(addable_types)
     out.append("Set constrain types for news folder")
 
-    if 'index_html' not in news.objectIds():
-        #Certainly not the best way to do this, but I'll wait for input before
-        #determining a final implementation.
-        pt_path = os.path.join(Globals.package_home(cmfplone_globals),
-                                            'skins/plone_templates/news.pt')
-        pt_file = open(pt_path, 'r')
-        add_pt = news.manage_addProduct['PageTemplates'].manage_addPageTemplate
-        add_pt('index_html', title='News', text=pt_file.read())
+    #Add news_listing.pt as default page
+    if not news.hasProperty('default_pages'):
+        news.manage_addProperty('default_page', ['news_listing','index_html'], 'lines')
         out.append("Added default view for news folder")
