@@ -2,10 +2,13 @@
 # Plone CatalogTool
 #
 
+from Products.ZCatalog.ZCatalog import ZCatalog
+from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
+from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
-from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.CatalogTool import IndexableObjectWrapper
 from Products.CMFCore.CMFCorePermissions import ManagePortal
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool

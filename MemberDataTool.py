@@ -6,8 +6,7 @@ from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
 from ZPublisher.Converters import type_converters
 from AccessControl import ClassSecurityInfo
-from Acquisition import aq_inner, aq_parent, aq_base
-from BTrees.OOBTree import OOBTree
+from Acquisition import aq_base
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool

@@ -56,19 +56,7 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
             raise ValueError, 'Member %s does not exist' % member_id
         user = user.__of__(uf)
         # Home folder
-        members = membership.getMembersFolder()
-        members.manage_addPloneFolder(member_id)
-        folder = membership.getHomeFolder(member_id)
-        folder.changeOwnership(user)
-        folder.__ac_local_roles__ = None
-        folder.manage_setLocalRoles(member_id, ['Owner'])
-        # Personal folder
-        folder.manage_addPloneFolder(membership.personal_id)
-        personal = membership.getPersonalFolder(member_id)
-        personal.changeOwnership(user)
-        personal.__ac_local_roles__ = None
-        personal.manage_setLocalRoles(member_id, ['Owner'])
-        catalog.unindexObject(personal)
+        membership.createMemberArea(member_id, minimal=1)
 
     def setGroups(self, groups, name=default_user):
         '''Changes the specified user's groups. Assumes GRUF.'''

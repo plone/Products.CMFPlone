@@ -1,5 +1,4 @@
 from Products.CMFCore.PortalContent import PortalContent
-from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
 class PloneContent(PortalContent):

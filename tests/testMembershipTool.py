@@ -314,6 +314,7 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
     def testMemberareaIsCataloged(self):
         # Memberarea should be cataloged
         catalog = self.portal.portal_catalog
+        brains = catalog(id='user2', Type='Folder')
         self.failUnless(catalog(id='user2', Type='Folder', Title="user2's Home"),
                         "Could not find user2's home folder in the catalog")
 

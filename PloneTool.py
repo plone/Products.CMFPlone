@@ -1,10 +1,8 @@
 import re
 import sys
 import traceback
-from types import TupleType, UnicodeType, DictType, StringType
-from urllib import urlencode
+from types import TupleType, UnicodeType, StringType
 import urlparse
-from cgi import parse_qs
 
 from zLOG import LOG, INFO, WARNING
 
@@ -13,7 +11,6 @@ from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
-from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
@@ -22,10 +19,9 @@ from Products.CMFPlone import ToolNames
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
-from Globals import InitializeClass, DTMLFile
-from AccessControl import ClassSecurityInfo, Unauthorized
-from StatelessTree import constructNavigationTreeViewBuilder, \
-     NavigationTreeViewBuilder as NTVB
+from Globals import InitializeClass
+from AccessControl import ClassSecurityInfo
+from StatelessTree import NavigationTreeViewBuilder as NTVB
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 

@@ -1,24 +1,19 @@
 from ZPublisher.mapply import mapply
-from ZPublisher.Publish import call_object, missing_name, dont_publish_class
+from ZPublisher.Publish import call_object, dont_publish_class
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
 from Products.CMFPlone import ToolNames
-from Acquisition import Implicit
 from OFS.SimpleItem import SimpleItem
-from Globals import InitializeClass, DTMLFile
+from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Products.CMFCore import CMFCorePermissions
-from types import TupleType
 from urllib import urlencode
 from cgi import parse_qs
 from PloneUtilities import log as debug_log
 from PloneUtilities import log_deprecated
 from urlparse import urlparse, urljoin
 import re
-import traceback
-import sys
 from ZODB.POSException import ConflictError
 
 from interfaces.NavigationController import INavigationController

@@ -9,8 +9,8 @@ __metaclass__ = type
 import sys
 from os import remove, rename
 from os.path import join, walk, splitext, exists
-from xml.dom import minidom
-from xml.parsers.expat import ExpatError
+#X#from xml.dom import minidom
+#X#from xml.parsers.expat import ExpatError
 from cStringIO import StringIO
 
 class BaseChecker:

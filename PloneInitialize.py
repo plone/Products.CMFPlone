@@ -3,18 +3,8 @@ from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
 
-from AccessControl import User
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
-from App.Extensions import getObject
-from App.Common import package_home
-
-import string
-import glob
-import OFS.Application
-import os
-import sys
-import zLOG
 
 def create(app, admin_username='admin'):
     out = []

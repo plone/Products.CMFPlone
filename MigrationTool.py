@@ -10,7 +10,6 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 import zLOG
 import traceback
 import sys
-import types
 
 def log(message,summary='',severity=0):
     zLOG.LOG('Plone: ', severity, summary, message)

@@ -1,21 +1,15 @@
-from Globals import InitializeClass, DTMLFile, package_home
-from Acquisition import aq_base, aq_inner, aq_parent
+from Globals import DTMLFile
 from AccessControl import ClassSecurityInfo
 from OFS.Folder import Folder
 from OFS.SimpleItem import SimpleItem
 from OFS.PropertyManager import PropertyManager
 
 from Products.CMFCore.Expression import Expression, createExprContext
-from Products.CMFCore.ActionInformation import ActionInformation, oai
+from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
-from Products.CMFCore.TypesTool import TypeInformation
 from Products.CMFCore.CMFCorePermissions import ManagePortal, \
      SetOwnProperties, SetOwnPassword, View
-from Products.CMFCore.utils import _checkPermission, _dtmldir, \
-     getToolByName, SimpleItemWithProperties, UniqueObject
-
-from Products.CMFCore.interfaces.portal_actions \
-     import portal_actions as IActionsTool
+from Products.CMFCore.utils import _checkPermission, getToolByName, UniqueObject
 
 import ToolNames
 from interfaces.PloneControlPanel import IControlPanel

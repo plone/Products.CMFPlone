@@ -1,8 +1,6 @@
 from Products.CMFCore.CMFCorePermissions import SetOwnPassword
-from Products.CMFCore.utils import getToolByName, _checkPermission
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
-from Products.CMFDefault.Document import addDocument
-from Products.CMFPlone.PloneFolder import addPloneFolder
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.PloneUtilities import translate
 from OFS.Image import Image
@@ -113,94 +111,162 @@ class MembershipTool(PloneBaseTool, BaseTool):
             membertool._setPortrait(portrait, member_id)
 
 
-    def createMemberarea(self, member_id=None):
+    def _createObjectByType(self, type, container, id):
+        """Create an object by type id without using security checks
+        
+        invokeFactory or fti.constructInstance are doing some security checks
+        before creating the object. This security checks would fail for the
+        current user because he hasn't enough permissions to create it's own
+        user folder.
+        
+        This method is using some code from
+        CMFCore.TypesTool.FactoryTypeInformation.constructInstance to create
+        the object without security tests.
+        """
+        id = str(id)
+        typesTool = getToolByName(self, 'portal_types')
+        fti = typesTool.getTypeInfo(type)
+        if not fti:
+            raise ValueError, 'Wrong type %s' % type
+
+        # we have to do it all manually :(
+        p = container.manage_addProduct[fti.product]
+        m = getattr(p, fti.factory, None)
+        if m is None:
+            raise ValueError, ('Product factory for %s was invalid' %
+                               fti.getId())
+
+        # construct the object
+        m(id)
+        ob = container._getOb( id )
+        
+        return fti._finishConstruction(ob)
+    
+    def createMemberarea(self, member_id=None, minimal=0):
         """
         Create a member area for 'member_id' or the authenticated user.
         """
+        catalog = getToolByName(self, 'portal_catalog')
+        membership = getToolByName(self, 'portal_membership')
         members = self.getMembersFolder()
 
         if not member_id:
             # member_id is optional (see CMFCore.interfaces.portal_membership:
             #     Create a member area for 'member_id' or authenticated user.)
-            portal_membership = getToolByName(self, 'portal_membership')
-            member = portal_membership.getAuthenticatedMember()
+            member = membership.getAuthenticatedMember()
             member_id = member.getId()
 
         if hasattr(members, 'aq_explicit'):
             members=members.aq_explicit
 
-        if members is not None and not hasattr(members, member_id):
-            f_title = "%s's Home" % member_id
-            from Products.CMFPlone.PloneFolder import addPloneFolder
-            addPloneFolder(members, id=member_id, title=f_title)
-            f=getattr(members, member_id)
+        if members is None:
+            # no members area
+            # XXX exception?
+            return
+        
+        if hasattr(members, member_id):
+            # has already this member
+            # XXX exception
+            return
+        
+        self._createObjectByType('Folder', members, id=member_id)
 
-            acl_users = self.__getPUS()
-            user = acl_users.getUser(member_id)
+        # get the user object from acl_users
+        # XXX what about portal_membership.getAuthenticatedMember()?
+        acl_users = self.__getPUS()
+        user = acl_users.getUser(member_id)
+        if user is not None:
+            user= user.__of__(acl_users)
+        else:
+            user= getSecurityManager().getUser()
+            # check that we do not do something wrong
+            if user.getId() != member_id:
+                raise NotImplementedError, \
+                    'cannot get user for member area creation'
 
-            if user is not None:
-                user= user.__of__(acl_users)
+        ## get some translations
+        member_folder_title = translate(
+            'plone', 'title_member_folder',
+            {'member': member_id}, self,
+            default = "%s's Home" % member_id)
+       
+        member_folder_description = translate(
+            'plone', 'description_member_folder',
+            {'member': member_id}, self,
+            default = 'Home page area that contains the items created ' \
+            'and collected by %s' % member_id)
+
+        member_folder_index_html_title = translate(
+            'plone', 'title_member_folder_index_html',
+            {'member': member_id}, self,
+            default = "Home page for %s" % member_id)
+
+        personal_folder_title = translate(
+            'plone', 'title_member_personal_folder',
+            {'member': member_id}, self,
+            default = "Personal Items for %s" % member_id)
+
+        personal_folder_description = translate(
+            'plone', 'description_member_personal_folder',
+            {'member': member_id}, self,
+            default = 'contains personal workarea items for %s' % member_id)
+
+        ## Modify member folder
+        member_folder = self.getHomeFolder(member_id)
+        # Grant Ownership and Owner role to Member
+        member_folder.changeOwnership(user)
+        member_folder.__ac_local_roles__ = None
+        member_folder.manage_setLocalRoles(member_id, ['Owner'])
+        # set title and description (edit invokes reindexObject)
+        member_folder.edit(title=member_folder_title,
+                           description=member_folder_description)
+        member_folder.reindexObject()
+
+        ## Create personal folder for personal items
+        self._createObjectByType('Folder', member_folder, id=self.personal_id)
+        personal = getattr(member_folder, self.personal_id)
+        personal.edit(title=personal_folder_title,
+                      description=personal_folder_description)
+        # Grant Ownership and Owner role to Member
+        personal.changeOwnership(user)
+        personal.__ac_local_roles__ = None
+        personal.manage_setLocalRoles(member_id, ['Owner'])
+        # Don't add .personal folders to catalog
+        catalog.unindexObject(personal)
+        
+        if minimal:
+            # don't set up the index_html for unit tests to speed up tests
+            return
+
+        ## add homepage text
+        # get the text from portal_skins automagically
+        homepageText = getattr(self, 'homePageText', None)
+        if homepageText:
+            member_object = self.getMemberById(member_id)
+            portal = getToolByName(self, 'portal_url')
+            # call the page template
+            content = homepageText(member=member_object, portal=portal).strip()
+            self._createObjectByType('Document', member_folder, id='index_html')
+            hpt = getattr(member_folder, 'index_html')
+            # edit title, text and format
+            # XXX
+            hpt.setTitle(member_folder_index_html_title)
+            if hpt.meta_type == 'Document':
+                # CMFDefault Document
+                hpt.edit(text_format='structured-text', text=content)
             else:
-                from AccessControl import getSecurityManager
-                user= getSecurityManager().getUser()
-                # check that we do not do something wrong
-                if user.getId() != member_id:
-                    raise NotImplementedError, \
-                        'cannot get user for member area creation'
-
+                hpt.update(text=content)
+            hpt.setFormat('structured-text')
+            hpt.reindexObject()
             # Grant Ownership and Owner role to Member
-            f.changeOwnership(user)
-            f.__ac_local_roles__ = None
-            f.manage_setLocalRoles(member_id, ['Owner'])
+            hpt.changeOwnership(user)
+            hpt.__ac_local_roles__ = None
+            hpt.manage_setLocalRoles(member_id, ['Owner'])
 
-            # Create Member's home page.
-            # Go get the home page text from the skin
-            if hasattr(self, 'homePageText'):
-                member_object = self.getMemberById(member_id)
-                DEFAULT_MEMBER_CONTENT = self.homePageText(member=member_object).strip()
-                addDocument( f
-                           , 'index_html'
-                           , "Home page for " + member_id
-                           , ""
-                           , "structured-text"
-                           , DEFAULT_MEMBER_CONTENT
-                           )
-                f.index_html._setPortalTypeName( 'Document' )
-                # Grant Ownership and Owner role to Member
-                f.index_html.changeOwnership(user)
-                f.index_html.__ac_local_roles__ = None
-                f.index_html.manage_setLocalRoles(member_id, ['Owner'])
-                # Overcome an apparent catalog bug.
-                f.index_html.reindexObject()
-                wftool = getToolByName( self, 'portal_workflow' )
-                wftool.notifyCreated( f.index_html )
-
-            #XXX The above was more or less copied from CMFDefault.MembershipTool
-
-            #XXX Below is what really is Plone customizations
-            member_folder=self.getHomeFolder(member_id)
-            member_folder.description = translate(
-                'plone', 'description_member_folder',
-                {'member': member_id}, self,
-                default = 'Home page area that contains the items created ' \
-                'and collected by %s' % member_id)
-
-            member_folder.manage_addPloneFolder(self.personal_id, 'Personal Items')
-            personal=getattr(member_folder, self.personal_id)
-            personal.description = "contains personal workarea items for %s" % member_id
-            # Grant Ownership and Owner role to Member
-            personal.changeOwnership(user)
-            personal.__ac_local_roles__ = None
-            personal.manage_setLocalRoles(member_id, ['Owner'])
-            # Don't add .personal folders to catalog
-            catalog = getToolByName(self, 'portal_catalog')
-            catalog.unindexObject(personal)
-
-            # Hook to allow doing other things after memberarea creation.
-            notify_script = getattr(member_folder, 'notifyMemberAreaCreated', None)
-
-            if notify_script is not None:
-                notify_script()
+        ## Hook to allow doing other things after memberarea creation.
+        notify_script = getattr(member_folder, 'notifyMemberAreaCreated', None)
+        if notify_script is not None:
+            notify_script()
 
 
     # deal with ridiculous API change in CMF

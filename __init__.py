@@ -41,7 +41,7 @@ def initialize(context):
     # For test authors (and people who use parts of Plone only)
     # it does speed up import *significantly*.
 
-    from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
+    from AccessControl import ModuleSecurityInfo
     from AccessControl import allow_module, allow_class, allow_type
 
     # zLOG is deprecated in Zope >2.7.0, use logger instead

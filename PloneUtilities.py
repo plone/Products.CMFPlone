@@ -1,4 +1,4 @@
-from os.path import join, abspath, basename, dirname, split
+from os.path import join, abspath, dirname, split
 from types import StringType, UnicodeType, IntType
 from DateTime import DateTime
 

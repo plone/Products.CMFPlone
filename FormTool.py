@@ -6,9 +6,7 @@ from Products.CMFFormController.ControllerState import ControllerState
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
-from OFS.Folder import Folder
-from OFS.Traversable import Traversable
-from Acquisition import aq_parent, aq_base
+from Acquisition import aq_parent
 from OFS.SimpleItem import Item
 from OFS.ObjectManager import bad_id
 from ZPublisher.mapply import mapply

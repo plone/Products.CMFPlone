@@ -1,14 +1,9 @@
 from __future__ import nested_scopes
-
 from ComputedAttribute import ComputedAttribute
-
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
-from Products.CMFPlone import PloneFolder
 from Products.CMFPlone import ToolNames
-from Products.CMFPlone import LargePloneFolder
 from Products.CMFDefault.Portal import CMFSite
-from Products.CMFDefault import Document
 
 def listPolicies(creation=1):
     """ Float default plone to the top """
@@ -25,20 +20,16 @@ def listPolicies(creation=1):
 def addPolicy(label, klass):
     custom_policies[label]=klass
 
-from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-from Products.PythonScripts.PythonScript import PythonScript
 from Products.CMFCore import CMFCorePermissions
-from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
-from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
-from Products.CMFCore.utils import getToolByName, registerIcon
+from Products.CMFCore.TypesTool import FactoryTypeInformation
+from Products.CMFCore.DirectoryView import addDirectoryViews
+from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import Portal, DublinCore
-from Products.ExternalMethod import ExternalMethod
 from Products.CMFPlone.PloneFolder import OrderedContainer
 import Globals
-import string
 import os, sys, re
 
-from AccessControl import getSecurityManager, ClassSecurityInfo
+from AccessControl import ClassSecurityInfo
 
 __version__='1.1'
 
@@ -105,7 +96,6 @@ class PloneSite(CMFSite, OrderedContainer):
     """
     security=ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
-    manage_addPloneFolder = PloneFolder.addPloneFolder
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__
 
@@ -176,25 +166,34 @@ class PloneGenerator(Portal.PortalGenerator):
 
 
     def setupPortalContent(self, p):
+        catalog = getToolByName(p, 'portal_catalog')
+
+        # add Members folder
         p.manage_delObjects('Members')
-        LargePloneFolder.addLargePloneFolder(p, 'Members')
+        p.invokeFactory('Large Plone Folder', 'Members')
+        members = getattr(p , 'Members')
+        members.setTitle('Members')
+        members.setDescription("Container for portal members' home directories")
+        catalog.unindexObject(members) #unindex Members folder
 
-        p.portal_catalog.unindexObject(p.Members) #unindex Members folder
-        p.Members._setPortalTypeName( 'Folder' )
-        Document.addDocument(p, 'index_html')
-        o = p.index_html
-        o._setPortalTypeName( 'Document' )
-        o.setTitle('Welcome to Plone')
-        o.setDescription('This welcome page is used to introduce you'+\
+        # add index_html to portal root
+        p.invokeFactory('Document', 'index_html')
+        idx = getattr(p, 'index_html')
+        idx.setTitle('Welcome to Plone')
+        idx.setDescription('This welcome page is used to introduce you'+\
                          ' to the Plone Content Management System.')
-        o.edit('structured-text', default_frontpage)
+        idx.setFormat('structured-text')
+        if idx.meta_type == 'Document':
+            # CMFDefault document
+            idx.edit('structured-text', default_frontpage)
+        else:
+            idx.edit(text=default_frontpage)
+        idx.reindexObject()
 
-        o = p.Members
-        o.setTitle('Members')
-        o.setDescription("Container for portal members' home directories")
-
-        o._setObject('index_html', PythonScript('index_html'))
-        index_html=o['index_html']
+        # add index_html to Members area
+        addPy = members.manage_addProduct['PythonScripts'].manage_addPythonScript
+        addPy('index_html')
+        index_html = getattr(members, 'index_html')
         index_html.write(member_indexhtml)
         index_html.ZPythonScript_setTitle('Member Search')
 

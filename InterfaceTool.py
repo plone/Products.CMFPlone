@@ -1,17 +1,19 @@
-import sys
-from types import ClassType, ModuleType
-from zLOG import LOG, INFO, WARNING
-from Products.CMFPlone.interfaces.interface import Interface, Attribute
+from types import ModuleType, ListType, TupleType
+from zLOG import LOG, INFO
+from Products.CMFPlone.interfaces.interface import Interface
 from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool
-from Acquisition import aq_inner, aq_parent, aq_base
-from Products.CMFCore.utils import UniqueObject, getToolByName
+from Acquisition import aq_base
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+
+from Interface.Implements import getImplements, flattenInterfaces
+from Interface import Interface
+from Interface.IMethod import IMethod
 
 def log(summary='', text='', log_level=INFO):
     LOG('InterfaceTool', log_level, summary, text)
@@ -51,6 +53,67 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
         iface = resolveInterface(dotted_name)
         nd = iface.namesAndDescriptions(all=all)
         return [(n, d.getDoc()) for n, d in nd]
+    
+    security.declarePublic('getInterfacesOf')
+    def getInterfacesOf(self, object):
+        """Returns the list of interfaces which are implemented by the object
+        """
+        impl = getImplements(object)
+        if impl:
+            if type(impl) in (ListType, TupleType):
+                result = flattenInterfaces(impl)
+            else:
+                result = (impl, )
+            return [ iface for iface in result if iface is not Interface ]
+
+    def getBaseInterfacesOf(self, object):
+        """Returns all base interfaces of an object but no direct interfaces
+        
+        Base interfaces are the interfaces which are the super interfaces of the
+        direct interfaces
+        """
+        ifaces = self.getInterfacesOf(object)
+        bases = []
+        for iface in ifaces:
+            visitBaseInterfaces(iface, bases)
+        return [biface for biface in bases if biface not in ifaces ]
+
+    def getInterfaceInformations(self, iface):
+        """Gets all useful informations from an iface
+        
+        * name
+        * dotted name
+        * trimmed doc string
+        * base interfaces
+        * methods with signature and trimmed doc string
+        * attributes with trimemd doc string
+        """
+        bases = [ base for base in iface.getBases() if base is not Interface ]
+
+        attributes = []
+        methods = []
+        for name, desc in iface.namesAndDescriptions():
+            if IMethod.isImplementedBy(desc):
+                methods.append({'signature' : desc.getSignatureString(),
+                                'name' : desc.getName(),
+                                'doc' : _trim_doc_string(desc.getDoc()),
+                               })
+            else:
+                attributes.append({'name' : desc.getName(),
+                                   'doc' : _trim_doc_string(desc.getDoc()),
+                                  })
+
+        result = {
+            'name' : iface.getName(),
+            'dotted_name' : getDottedName(iface),
+            'doc' : _trim_doc_string(desc.getDoc()),
+            'bases' : bases,
+            'base_names' : [getDottedName(iface) for base in bases ],
+            'attributes' : attributes,
+            'methods' : methods,
+            }
+
+        return result
 
 def resolveInterface(dotted_name):
     parts = dotted_name.split('.')
@@ -64,6 +127,32 @@ def resolveInterface(dotted_name):
 
 def getDottedName(iface):
     return "%s.%s" % (iface.__module__, iface.__name__)
+
+def _trim_doc_string(text):
+    """
+    Trims a doc string to make it format
+    correctly with structured text.
+    """
+    text = text.strip().replace('\r\n', '\n')
+    lines = text.split('\n')
+    nlines = [lines[0]]
+    if len(lines) > 1:
+        min_indent=None
+        for line in lines[1:]:
+            indent=len(line) - len(line.lstrip())
+            if indent < min_indent or min_indent is None:
+                min_indent=indent
+        for line in lines[1:]:
+            nlines.append(line[min_indent:])
+    return '\n'.join(nlines)
+
+def visitBaseInterfaces(iface, lst):
+    bases = iface.getBases()
+    for base in bases:
+        if base is Interface or base in lst:
+            return
+        lst.append(base)
+        visitBaseInterfaces(iface, lst)
 
 class InterfaceFinder:
 
