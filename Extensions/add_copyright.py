@@ -34,9 +34,12 @@ class PythonChecker(BaseChecker):
             # XXX We need a better check here
             if data.split('\n')[0].startswith('## '):
                 return False
+            if data.find('##parameters=') > -1:
+                return False
             if data.startswith('#!'):
                 return False
-        return True
+            return True
+        return False
 
 class PageTemplateChecker(BaseChecker):
     pass
@@ -53,32 +56,17 @@ class BaseProcessor:
 class PythonProcessor(BaseProcessor):
     pass
 
-def findAndAppend(root, name, new_node):
-    nodes = root.getElementsByTagName(name)
-    if nodes:
-        nodes[0].childNodes.append(new_node)
-        return True
-    return False
-
 class PageTemplateProcessor(BaseProcessor):
 
     def process(self, fname, data):
-        try:
-            d = minidom.parseString(data)
-        except ExpatError, msg:
-            print >> self.out, "Not valid XML. %s" % fname
-            return False
-        try:
-            new = minidom.parseString(self.text)
-        except ExpatError, msg:
-            print >> self.out, "String to insert is Not valid XML. %s" % fname
-            return False
-        if findAndAppend(d, 'body', new.childNodes[0]):
-            return d.toxml()
+        start = data.find('</body>')
+        if start > -1:
+            data = "%s\n%s\n%s" % (data[:start], self.text, data[start:])
+            return data
         return False
 
 
-pycopyright = """\
+copyright = """\
 ##############################################################################
 #
 # Copyright (c) 2003 Alan Runyan, Alexander Limi and Contributors
@@ -95,13 +83,13 @@ pycopyright = """\
 
 ptcopyright = """\
 <tal:copyright replace="nothing">
-%s
-</tal:copyright>
-""" % pycopyright
+%s</tal:copyright>
+""" % copyright
 
 class Walker:
 
-    def __init__(self, checkers, processors, dry=False, ignore=None, out=StringIO()):
+    def __init__(self, checkers, processors, dry=False,
+                 ignore=None, out=StringIO()):
         self.checkers = checkers
         self.processors = processors
         self.out = out
@@ -184,10 +172,10 @@ class Walker:
 if __name__=='__main__':
     out = StringIO()
 
-    checkers = {'.pt':PageTemplateChecker(ptcopyright, out),
-                '.py':PythonChecker(pycopyright, out)}
+    checkers = {'.pt':PageTemplateChecker(copyright, out),
+                '.py':PythonChecker(copyright, out)}
     processors = {'.pt':PageTemplateProcessor(ptcopyright, out),
-                  '.py':PythonProcessor(pycopyright, out)}
+                  '.py':PythonProcessor(copyright, out)}
 
     walker = Walker(checkers, processors, dry=False, out=out)
     walk(sys.argv[1], walker.walk, [])
