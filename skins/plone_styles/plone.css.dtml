@@ -1102,7 +1102,6 @@ input.searchButton {
   background: Window;
   color: WindowText;
   font-family: tahoma,verdana,sans-serif;
-  z-index: 10;
 }
 
 .inplacecalendar table {
