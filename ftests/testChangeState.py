@@ -13,10 +13,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-app=ZopeTestCase.app()
-ZopeTestCase.utils.setupSiteErrorLog(app)
-ZopeTestCase.close(app)
-
+ZopeTestCase.utils.setupSiteErrorLog()
 ZopeTestCase.utils.startZServer(2)
 
 from Acquisition import aq_base
@@ -92,7 +89,7 @@ class TestChangeState(ZopeTestCase.Functional, PloneTestCase.PloneTestCase):
         self.b["expiration_date_year"]=["2004"]
         self.b["expiration_date_month"]=["04"]
         self.b["expiration_date_day"]=["20"]
-        self.b["expiration_date_hour"]=["20"]
+        self.b["expiration_date_hour"]=["12"]
         self.b["expiration_date_minute"]=["00"]
         self.b["comment"]="TEST"
         #print out the form controls
