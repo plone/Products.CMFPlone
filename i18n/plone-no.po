@@ -769,8 +769,7 @@ msgstr "For å få tilgang til dette innholdet, må du logge inn med brukernavn og 
 #.               If you need help please try the 'Forgotten password' link or contact
 #.               </span>
 msgid "description_sign_in_failure"
-msgstr "Du ble ikke logget inn. Brukernavne og/eller passord er muligens feil. Nettleseren din kan også være satt opp til ikke å ta i mot informasjonskapsler. 
-Hvis du trenger hjelp, forsøk &laquo;Glemt passord&raquo;-valget eller send en e-post til"
+msgstr "Du ble ikke logget inn. Brukernavne og/eller passord er muligens feil. Nettleseren din kan også være satt opp til ikke å ta i mot informasjonskapsler. Hvis du trenger hjelp, forsøk &laquo;Glemt passord&raquo;-valget eller send en e-post til"
 
 #: from plone_forms/logged_in.pt
 #.   <span>
@@ -1215,8 +1214,7 @@ msgstr "Dette er rapportsamlerens &laquo;Fra&raquo;-adresse."
 #.               management roster.)
 #.           </span>
 msgid "help_collector_managers"
-msgstr "Administratorer styrer innstillingene til rapportsamleren og mottar rapporter. De kan akseptere rapporter, men må være på støttespiller-listen 
-for å bli tilordnet oppgaver. Administratorer kan ikke fjerne seg selv fra administrator-listen."
+msgstr "Administratorer styrer innstillingene til rapportsamleren og mottar rapporter. De kan akseptere rapporter, men må være på støttespiller-listen for å bli tilordnet oppgaver. Administratorer kan ikke fjerne seg selv fra administrator-listen."
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>
@@ -3413,7 +3411,7 @@ msgid "CMF Wiki"
 msgstr "Wiki"
 
 msgid "Cut"
-msgstr "Klipp"
+msgstr "Klipp ut"
 
 msgid "Copy"
 msgstr "Kopiér"
