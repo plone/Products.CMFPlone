@@ -3,7 +3,7 @@ custom_policies={} #stores the registered Policies
 
 from Products.CMFCore import DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
-import MembershipTool, FormulatorTool, TranslatorTool, PloneTool, WorkflowTool
+import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
 import PloneFolder, Portal
 import CustomizationPolicy
 
@@ -50,7 +50,6 @@ ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
 
 tools = ( MembershipTool.MembershipTool
         , FormulatorTool.FormulatorTool 
-        , TranslatorTool.TranslatorTool
         , PloneTool.PloneTool
         , WorkflowTool.WorkflowTool )
 
