@@ -6,6 +6,22 @@ Plone 2.0 - Fyuti
 
    Final
     
+    - Diet Plone® - an initial page load of Plone was reduced from 
+      150K to 75K, and HTTP requests from 30 to 16 by performing 
+      the following tweaks:
+      [limi]
+
+      - Calendar JS only included on pages that use it
+
+      - Deprecated pop-up tool tips JS code commented out 
+        (easy to re-enable if you need it for legacy sites)
+
+      - Made the colophon buttons with CSS instead of using images
+
+      - Pulldown menu only available to logged-in users
+        (although it can be enabled for anonymous too, if you need it)
+
+
     - Added fix for the bug reported by Edward Muller (skin setting 
       and login problems). Don't clear the name of the skin cookie
       in the prefs_portal_skiset.py. [jok2] 
