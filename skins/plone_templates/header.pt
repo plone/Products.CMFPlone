@@ -13,7 +13,7 @@
     <metal:block define-slot="base" />
     
     <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support  
-         it. Site will still be viewable, but look a bit stripped :) --> 
+         it. Site will still be viewable, but look a bit stripped. --> 
     <link rel="Stylesheet" type="text/css" href="" 
           tal:attributes="href string:$portal_url/ploneBasicNS.css" />
     <link rel="Stylesheet" type="text/css" href="" 

@@ -246,7 +246,7 @@
                      i18n:translate="help_format"
                      class="help" 
                      style="visibility:hidden">
-                The MIME-type of the document. If you don't know what this does, just leave it :)<br /> Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
+                The MIME-type of the document. If you don't know what this does, just leave it. <br /> Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
                 </div>
             </div>
             
