@@ -15,7 +15,7 @@ Visit us at &dtml-portal_url;
 Your login name and password are:
 
 Login name : <dtml-var "member.getUserName()">
-Password   : &dtml-password;
+Password   : <dtml-var password>
 
 --
 &dtml-email_from_name;
