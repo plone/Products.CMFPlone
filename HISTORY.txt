@@ -16,6 +16,17 @@ Plone 2.0 - Fyuti
       This could be prohibitively expensive.  Changes made in
       CMFPlone/setup/ConfigurationMethods.py
 
+      - It was possible to delete something out of a folder even if you
+      did not have 'Delete objects' permission.  If you 'cut' a object
+      from one folder and pasted it into another.  So we put an extra
+      condition on 'cut', python:portal.portal_membership.checkPermission(
+      'Delete objects', object)
+
+      - XXX We should wipe out all actions and reinstall them that are
+      regarding the 'folder_buttons' category
+
+      - This is in regards to issue, #1985
+
     - moved CMFPlone/migrations files into CMFPlone/migrations/v1 or v2
     modules.   Although this is not a permenant solution.  It will work
     well enough.

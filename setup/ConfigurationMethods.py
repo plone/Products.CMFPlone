@@ -282,7 +282,7 @@ def addNewActions(self, portal):
     at.addAction('cut',
                  name='Cut',
                  action='string:folder_cut:method',
-                 condition='',
+                 condition='python:portal.portal_membership.checkPermission("Delete objects", object)',
                  permission=Permissions.ModifyPortalContent,
                  category='folder_buttons')
     at.addAction('copy',
