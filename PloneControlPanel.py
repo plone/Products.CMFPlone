@@ -84,6 +84,30 @@ default_configlets = (
      'permission': ManagePortal,
      'imageUrl':'plone_images/site_icon.gif'},
 
+    {'id':'MailHost',
+     'appId':'MailHost',
+     'name':'Mail Host',
+     'action':'string:${portal_url}/prefs_mailhost_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/site_icon.gif'},
+
+    {'id':'PortalSkin',
+     'appId':'PortalSkin',
+     'name':'Portal Skin',
+     'action':'string:${portal_url}/prefs_portalskin_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/site_icon.gif'},
+
+    {'id':'Syndication',
+     'appId':'Syndication',
+     'name':'Syndication',
+     'action':'string:${portal_url}/prefs_syndication_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/site_icon.gif'},
+
 )
 
 
