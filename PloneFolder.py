@@ -85,7 +85,7 @@ class PloneFolder ( SkinnedFolder ):
 
 	we also do not wanat to show objects that begin with a .
         """
-        items = self.contentValues(filter=contentFilter)
+        items = self.contentValues(spec=spec, filter=contentFilter)
         l = []
         for obj in items:
             id = obj.getId()
