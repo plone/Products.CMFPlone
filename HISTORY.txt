@@ -6,6 +6,9 @@ Plone 2.0 - Fyuti
 
    RC5/Final?   
 
+    - The base slots were being filled in the wrong order, causing it to 
+      not work as expected. Fixed.
+
     - Added macro names for the left/right slots, so you can override them
       by filling the slots from a template. Example::
 
@@ -14,6 +17,7 @@ Plone 2.0 - Fyuti
 
       This enables you to "turn off" the slots from a template, thus
       eliminating the need to create a folder to do it.
+      [limi]
 
    RC4
 
