@@ -19,8 +19,8 @@
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
-                   typesForcedFolderContents here/navtree_properties/typesForcedFolderContents | here/portal_properties/navtree_properties/typesForcedFolderContents | python:();
-                   rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner']
+                   rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner'];
+                   useFolderContents here/portal_properties/use_folder_contents | python:['Folder']
                    "
 
                    >
@@ -75,9 +75,8 @@
             
                     <span tal:define="iscurrent te/iscurrent | python:0;
                                       sibling python:te['object'];
-                                      stdCommand python:test(sibling.getTypeInfo().id in typesForcedFolderContents or (template.getId()=='folder_contents' and  
-                                          sibling.isPrincipiaFolderish ), 'folder_contents', 
-                                              test(sibling.isPrincipiaFolderish,'','view'));
+                                      typeInfo sibling/getTypeInfo;
+                                      stdCommand python:test(notFolderContents,test(typeInfo.id in useFolderContents,'',typeInfo.immediate_view),'folder_contents');
                                       title python:te['object'].title_or_id();
                                       sibling_title python:' '.join(title[:croppingLength].split(' '));"
                                       tal:on-error="structure string:<!--Error in Navigation loop!!-->"
