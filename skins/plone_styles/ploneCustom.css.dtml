@@ -42,7 +42,7 @@
    
    logoName - the file name of the portal logo. 
    
-   fontFamily - the font family used for all test that is not headers
+   fontFamily - the font family used for all text that is not headers
    
    fontBaseSize - the base font size that everything is calculated from
    
