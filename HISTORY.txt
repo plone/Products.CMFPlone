@@ -6,6 +6,15 @@ Plone 2.0 - Fyuti
 
     Beta 3
 
+    - WARNING! If you attempt to add several Plone sites back-to-back you will
+      encounter some problems.  The system works fine for adding a single
+      Plone site.  If you want to add more you will have to restart your Zope.
+      We have worked out the problem and its not too difficult we just need
+      to put a solution in place.  Thanks to Steve Alexander and Tres Seaver 
+      for helping out. In summary, we know there is a problem.  Please do
+      not bug us.  We are attempting to adhere to the mantra, 
+      'release early, release often.'
+
     - Deprecated stylesheet_properties for the new base_properties in the CSS.
       This one is much more flexible, clean and reusable, but note that if your
       site relied a lot on the old stylesheet_properties file, you will have to 
