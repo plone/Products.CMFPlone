@@ -40,9 +40,9 @@ div.overflow {
 }
 
 body { /* These work in IE only, changes the look of the scrollbar + textareas */
-    scrollbar-base-color: &dtml-mainTabBackground;;
-    scrollbar-highlight-color: &dtml-mainTabBackground;;
-    scrollbar-track-color: &dtml-evenRowBackgroundColorColor;;
+    scrollbar-base-color: &dtml-globalBackgroundColor;;
+    scrollbar-highlight-color: &dtml-globalBackgroundColor;;
+    scrollbar-track-color: &dtml-evenRowBackgroundColor;;
     scrollbar-darkshadow-color: &dtml-evenRowBackgroundColor;;
     scrollbar-3dlight-color: &dtml-globalBorderColor;;
     scrollbar-shadow-color: &dtml-globalBorderColor;;
