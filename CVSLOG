@@ -1,3 +1,54 @@
+2004-03-03 22:50  limi
+
+	* skins/plone_forms/join_form.cpt (Plone-2_0-branch): Removed stray
+	  '1'.
+
+2004-03-03 19:38  shh42
+
+	* INSTALL.txt (Plone-2_0-branch): Add version number for Epoz and
+	  update the link. Epoz 1.0 does not work with Plone.
+
+2004-03-03 19:34  runyaga
+
+	* Extensions/package_plone.py (Plone-2_0-branch): we ship with a
+	  error reporting gadget
+
+2004-03-03 19:13  plonista
+
+	* skins/plone_scripts/breadcrumbs.py (Plone-2_0-branch): Fix for
+	  breadcrumbs with content objects that lack a 'getId' method
+
+2004-03-03 17:42  shh42
+
+	* ftests/__init__.py: Make ftests a package by adding an
+	  __init__.py file.
+
+2004-03-03 11:14  limi
+
+	* skins/plone_templates/main_template.pt (Plone-2_0-branch): Made
+	  the skip-to-content link not reload the page, even in virtual
+	  hosting scenarios. The piece of code required to do this is
+	  insane. Thanks to Simon for figuring it out.
+
+2004-03-03 10:39  eaon
+
+	* skins/plone_tableless/ReadMe-Tableless.txt (Plone-2_0-branch):
+	  updated tableless readme
+
+2004-03-03 10:26  tiran
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch): sort product list
+
+2004-03-03 10:14  eaon
+
+	* skins/plone_tableless/colophon.pt (Plone-2_0-branch): updated
+	  tableless colophon - no images & ugliness anymore
+
+2004-03-03 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-03 02:38  limi
 
 	* skins/plone_styles/ploneTextSmall.css (Plone-2_0-branch): Made
