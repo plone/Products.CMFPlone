@@ -4,10 +4,15 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Subclassed all CMFCore and CMFDefault tools for easier extension in the future.
+      [dreamcatcher]
+
     - generateUniqueId and isIDUnique now are a bit more unique (with regards to randomness)
       and we now suffix generated ID's with .html - issue #1343
+      [runyaga]
 
     - Added Recently Published slot, and a complimentary Archive page.
+      [limi]
     
     - Changed the comment structure and layout - it's much moresimple and 
       elegant now.
