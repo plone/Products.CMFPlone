@@ -62,11 +62,7 @@ to become a member.
 <script type="text/javascript">
 <!--
    if (cookiesEnabled && !cookiesEnabled()) {
-<<<<<<< login_form.pt
       document.writeln('<div class="message"><img src="info.gif">Cookies are not enabled. <a href="enabling_cookies">How to enable cookies</a></div>');
-=======
-      document.writeln('<div class="message>Cookies must be enabled on your browser before you can sign in. <a href="enabling_cookies">How to enable cookies</a></div>');
->>>>>>> 1.31.6.3
    }
 //-->
 </script>
