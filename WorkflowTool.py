@@ -19,6 +19,7 @@ class WorkflowTool( CoreWorkflowTool ):
         """ this is really hokey - hold on!!"""
         if hasattr(objs, 'startswith'): return ()
         transitions=()
+        t_names=[]
         for o in [getattr(self, oid, None) for oid in objs]:
             trans=()
             try:
@@ -26,12 +27,10 @@ class WorkflowTool( CoreWorkflowTool ):
             except: #yikes
                 pass
             if trans:
-                for t in trans:
-                   t_names=[]
-                   if transitions:
-                       t_names = [transition.values() for transition in transitions]
+                for t in trans:                   
                    if t['name'] not in t_names:
                       transitions+=(t,)
+                      t_names.append(t['name'])
         return transitions
     
     security.declarePublic('getTransitionsFor')
