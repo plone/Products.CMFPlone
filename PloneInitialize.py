@@ -2,6 +2,8 @@ from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
 from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
+
+# add in message catalog stuff
 try:
     from Products.Localizer.Localizer import manage_addLocalizer
     from Products.Localizer.MessageCatalog import manage_addMessageCatalog
@@ -55,6 +57,17 @@ def go(app):
 def _get_error():
     type, value = sys.exc_info()[:2]
     return str(type), str(value)
+
+def _installSkins(plone, skinList):
+    skin_tool = getattr(plone, 'portal_skins')
+
+   # ripped from Portal.py
+    for skin in skinList:
+        # cheeky fellow, this is bound to break at some point
+        directory_id = 'plone_styles/' + skin[6:].replace(' ', '_').lower()
+        path = [elem.strip() for elem in skin_tool.getSkinPath('Plone Default').split(',')]
+        path.insert(path.index('custom')+1, directory_id)
+        skin_tool.addSkinSelection(skin_title, ','.join(path))
 
 def _installLocalizer(plone):
     out.append('Installing Localizer')
@@ -132,6 +145,7 @@ def _go(app):
         usernm  = cfg.get('databaseSetup', 'user')
         productList = cfg.get('databaseSetup', 'products').split(',')
         create = cfg.getint('databaseSetup', 'create')
+        skinList = cfg.get('databaseSetup', 'skins').split(',')
     except ConfigParser.NoSectionError:
         # no section name databaseSetup
         out.append("NoSectionError when parsing config file")
@@ -233,6 +247,9 @@ def _go(app):
         except:
             value, type = _get_error()
             out.append("Failed to install %s, reason:" % (productId, value, type))
+
+    # go and install the skins...
+    _installSkins(plone, skinList)
 
     # go and install the translation service...
     if hasLocalizer:
