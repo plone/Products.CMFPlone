@@ -7,22 +7,12 @@
 ##parameters=text, text_format, title='', description='', choice=' Change ', subject=None, id=''
 ##title=Edit a news item
 
-errors=context.portal_form_validation.validate(context, 'validate_newsitem_edit')
-if errors:
-    edit_form=context.portal_navigation.getNextPageFor( context
-                                                , script.getId()
-                                                , 'failure')
-    return edit_form()
+new_context = context.portal_factory.doCreate(context,id)
+new_context.edit( text 
+                , description
+                , text_format )
+new_context.plone_utils.contentEdit( context
+                                   , id=id
+                                   , description=description)
+return ('success', new_context)
 
-context.edit( text 
-            , description
-            , text_format )
-
-context.plone_utils.contentEdit( context
-                               , id=id
-                               , description=description)
-
-return context.portal_navigation.getNextRequestFor( context
-                                            , script.getId()
-                                            , 'success'
-                                            , portal_status_message='News item changed.' )

@@ -11,9 +11,10 @@ from types import TupleType
 from urllib import urlencode
 from cgi import parse_qs
 import re
-from PloneUtilities import log, log_deprecated
+from PloneUtilities import log as debug_log
+from PloneUtilities import log_deprecated
 
-debug = 0  # enable/disable logging
+debug = 1  # enable/disable logging
 
 class NavigationTool (UniqueObject, SimpleItem):
     """ provides navigation related utilities """
@@ -278,9 +279,9 @@ class NavigationTool (UniqueObject, SimpleItem):
     def log(self, msg, loc=None):
         """ """
         if loc is None:              
-            log(msg + ' - NavigationTool')
+            debug_log(msg + ' - NavigationTool')
         else:
-            log(msg + ' - NavigationTool.'+loc)
+            debug_log(msg + ' - NavigationTool.'+loc)
 
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
     # USE GETNEXT() INSTEAD AND UPDATE THE NAVIGATION PROPERTIES FILE

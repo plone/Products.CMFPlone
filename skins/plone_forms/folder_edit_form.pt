@@ -18,7 +18,8 @@
     <form class="group"
           name="edit_form" 
           action="folder_edit" 
-          method="post">
+          method="post"
+          tal:attributes="action request/URL" >
 
         <span class="legend" i18n:translate="">Folder Details</span>
 
@@ -79,7 +80,8 @@
             <div class="field"
                   tal:attributes="class python:test(error_title, 'field error', 'field')" >
 
-                <div tal:replace="error_title" />
+                <div tal:condition="error_title"
+                     tal:replace="structure string:$error_title <br />" />
 
                 <input type="text" 
                        name="title" 
@@ -132,6 +134,11 @@
                        />
             </div>
         </div>
+        
+        <span tal:replace="nothing">
+        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
+        </span>
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
 
     </form>
 

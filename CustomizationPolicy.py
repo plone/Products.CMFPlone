@@ -29,7 +29,24 @@ class DefaultCustomizationPolicy:
                                , 'object'
                                , 0 )
             
-        
+    def plonify_typeActions(self, portal):
+        #Plone1.0alpha4 we are moving people to use portal_form nav/validation proxy
+        types_tool=getToolByName(portal, 'portal_types')
+        for ptype in types_tool.objectValues():
+            ptype_actions=ptype._cloneActions()            
+            for action in ptype_actions:                
+                if not action['action'].startswith('portal_form') and \
+                    action['id'] in ('edit', 'metadata'): 
+                    action['action']='portal_form/'+action['action']
+            ptype._actions=tuple(ptype_actions)
+
+        actions_tool=getToolByName(portal, 'portal_actions')
+        actions=actions_tool._cloneActions()
+        for action in actions:
+                if action.id=='publishing':
+                    action.action=Expression('string:${object_url}/portal_form/content_status_history')
+        actions_tool._actions=tuple(actions)
+
     def customize(self, portal):
         #make 'reply' tab unvisible
         dt=getToolByName(portal, 'portal_discussion') 
@@ -60,7 +77,12 @@ class DefaultCustomizationPolicy:
                              , 'metadata_edit_form'
                              , CMFCorePermissions.ModifyPortalContent
                              , 'object' )
-
+                             
+        #the new plone actions are prefix with 'portal_form/'  this
+        #ensures a special proxy object shadows content objects and
+        #they can participate in validation/navigation
+        self.plonify_typeActions(portal)
+        
         #change all Metadata labels to Properties for usability
         for t in tt.objectValues():
             _actions=t._cloneActions()

@@ -18,9 +18,4 @@ context.plone_utils.editMetadata(context,
                                  format=format,
                                  language=language,
                                  rights=rights)
-
-return context.portal_navigation.getNextRequestFor( context
-                                            , script.getId()
-                                            , 'success'
-                                            , portal_status_message='Metadata changed.' )
-
+return ('success', context)

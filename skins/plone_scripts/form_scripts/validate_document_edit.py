@@ -20,4 +20,7 @@ if file and getattr(file, 'filename' ,''):
     if headers['Content-Type'].find('text')==-1:
         errors.update( {'file':'This file is not text, To upload binary files create File content,'} )
 
-return errors
+if errors:
+    return ('failure', errors, 'Please correct the indicated errors.')
+else:
+    return ('success', errors, None)

@@ -33,4 +33,7 @@ if not errors.get('start_date') and not errors.get('end_date'):
             errors['end_date'] = 'An event must end after it starts.'
             errors['start_date'] = 'An event must start before it ends.'
 
-return errors
+if errors:
+    return ('failure', errors, 'Please correct the indicated errors.')
+else:
+    return ('success', errors, None)

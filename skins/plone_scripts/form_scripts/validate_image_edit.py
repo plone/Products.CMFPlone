@@ -17,6 +17,7 @@ size=context.get_size()
 if not filename and not size:
     errors['file']='You must upload a file'
 
-return errors
-
+if errors:
+    return ('failure', errors, 'Please correct the indicated errors.')
+return ('success', errors, None)
 

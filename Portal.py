@@ -192,7 +192,12 @@ class PloneGenerator(Portal.PortalGenerator):
         
         form_tool = p.portal_form
         form_tool.setValidators('link_edit_form', ['validate_id', 'validate_link_edit'])
-
+        form_tool.setValidators('newsitem_edit_form', ['validate_id', 'validate_newsitem_edit'])
+        form_tool.setValidators('document_edit_form', ['validate_id', 'validate_document_edit'])
+        form_tool.setValidators('image_edit_form', ['validate_id', 'validate_image_edit'])
+        form_tool.setValidators('file_edit_form', ['validate_id', 'validate_file_edit'])
+        form_tool.setValidators('folder_edit_form', ['validate_id', 'validate_folder_edit'])
+        form_tool.setValidators('event_edit_form', ['validate_id', 'validate_event_edit'])
 
         # grab the initial portal navigation properties from data/navigation_properties
         nav_tool = p.portal_navigation

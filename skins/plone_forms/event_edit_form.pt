@@ -19,11 +19,13 @@
     Fill in the details of the event you want to add.
     </p>
 
+    
     <form class="group"
           name="edit_form" 
           action="event_edit" 
           method="post" 
-          enctype="multipart/form-data">
+          enctype="multipart/form-data"
+          tal:attributes="action request/URL" >
 
     <span class="legend" i18n:translate="">Event Details</span>    
       
@@ -362,6 +364,11 @@
             </div>
         </div>
         
+        <span tal:replace="nothing">
+        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
+        </span>
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+
     </form>
 
     </div>
