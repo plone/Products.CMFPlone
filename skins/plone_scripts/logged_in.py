@@ -28,7 +28,7 @@ if REQUEST.get('__cp', None) is not None:
 # is the 'logged_out' page, return the default 'login_success' form
 if came_from is not None:
     template_id = came_from.split('?')[0].split('/')[-1]
-if came_from is None or \
+if not came_from or \
    template_id.endswith('logged_out') or \
    template_id.endswith('mail_password') or \
    template_id.endswith('member_search_results') or \
