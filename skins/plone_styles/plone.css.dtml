@@ -587,7 +587,9 @@ span.legend {
     left: 0em;
 }
 
-div.label {
+div.label,
+label
+{
     font-weight: bold;
     display: inline;
     padding-right: 0.5em;
