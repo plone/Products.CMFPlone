@@ -65,11 +65,11 @@
                     </span>
                   </td>
                   <tal:notdayevent tal:condition="not: day/event">
-                  <td tal:condition="python: current.year()==year and current.month()==month and current.day()==int(daynumber);"
+                  <td tal:condition="python: current.year()==year and current.month()==month and current.day()==int(daynumber)"
                       tal:content="python: daynumber or default" class="todaynoevent">
                     &nbsp;
                   </td>
-                  <td tal:condition="not: python: current.year()==year and current.month()==month and current.day()==int(daynumber);"
+                  <td tal:condition="not: python: current.year()==year and current.month()==month and current.day()==int(daynumber)"
                       tal:content="python: daynumber or default">
                     &nbsp;
                   </td>
