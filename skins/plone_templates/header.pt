@@ -51,10 +51,14 @@
     </metal:block>
     <script type="text/javascript" tal:attributes="src here/plone_javascripts.js/absolute_url"></script>
     <tal:block tal:define="formtooltips python:getattr(here.portal_membership.getAuthenticatedMember(), 'formtooltips', 'true')" tal:omit-tag="">
+      <script tal:condition="formtooltips"
+              type="text/javascript"
+              tal:attributes="src here/plone_formtooltip.js/absolute_url"></script>
+      <metal:block tal:condition="not:formtooltips">
       <tal:block tal:replace="structure string:&lt;script language='javascript' type='text/javascript' &gt;" />
-        <metal:block tal:condition="formtooltips" tal:replace="structure here/plone_formtooltip.js" />
-        <metal:block tal:condition="not:formtooltips">function formtooltip(el,flag){}</metal:block>
+        <metal:block >function formtooltip(el,flag){}</metal:block>
       <tal:block tal:replace="structure python:'&lt;/script&gt;'" />
+      </metal:block>
     </tal:block>
 </head>
 
