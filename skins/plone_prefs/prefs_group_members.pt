@@ -13,8 +13,6 @@
                 portal_roles mtool/getPortalRoles;
                 Batch python:modules['ZTUtils'].Batch;
                 b_start python:request.get('b_start',0);
-                gtool here/portal_groups;
-                gdtool here/portal_groupdata;
                 groupname request/groupname|nothing;
                 grouproles python:request.set('grouproles', []);
                 group python:gtool.getGroupById(groupname);

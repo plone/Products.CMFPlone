@@ -12,8 +12,6 @@
      tal:define="errors python:request.get('errors', {});
                  acl_users here/acl_users;
                  portal_roles mtool/getPortalRoles;
-                 gtool here/portal_groups;
-                 gdtool here/portal_groupdata;
                  groupname request/groupname | nothing;
                  grouproles python:request.set('grouproles', []);
                  group python:gtool.getGroupById(groupname)">
@@ -105,7 +103,7 @@
         <form action=""
               name="groups"
               method="post"
-              tal:attributes="action string:${here/portal_groups/absolute_url}"
+              tal:attributes="action string:${gtool/absolute_url}"
               tal:define="targetobject gdtool;
                           targetGetProperty nocall:group/getProperty | nocall:here/returnNone;">
     

@@ -83,7 +83,7 @@
                 </tr>
     
     	  <tr tal:repeat="groupid member/getGroups" class="odd">
-    	      <tal:block tal:define="group python:here.portal_groups.getGroupById(groupid);
+    	      <tal:block tal:define="group python:gtool.getGroupById(groupid);
     		                     groupname group/getGroupName">
                 <td>
                     <a href="prefs_group_details"

@@ -361,7 +361,7 @@
         </form>
       </tal:block>
 
-      <tal:groupshares define="grouplist here/portal_groups/listGroups"
+      <tal:groupshares define="grouplist gtool/listGroups"
                        condition="grouplist">
 
           <h1 i18n:translate="heading_group_shares">Add sharing permissions to groups</h1>
