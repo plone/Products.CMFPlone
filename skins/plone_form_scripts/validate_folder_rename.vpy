@@ -5,27 +5,39 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=new_ids=[],old_ids=[],new_titles=[]
+##parameters=ids=[],new_ids=[],new_titles=[]
 ##title=Validate folder renaming
 ##
 
-if not new_ids or not old_ids or not new_titles:
-    return state.set(status='failure', portal_status_message='Please check an item or items to rename.')
+ids=[id for id in ids if id]
+new_ids=[id for id in new_ids if id]
+new_titles=[title for title in new_titles]
+
+if len(ids)!=len(new_ids):
+    return state.set(status='failure', portal_status_message='You must provide content names')
+if not ids:
+    return state.set(status='failure', portal_status_message='Need source content ids.')
+if not new_ids:
+    state.setError(id, 'Please provide an id')
+    return state.set(status='failure', portal_status_message='Need destination content ids.')
 
 check_id=context.check_id
 for x in range(0, len(new_ids)):
-    oldid = old_ids[x]
+    id = ids[x]
     newid = new_ids[x]
 
-    if not oldid:
-        state.setError(oldid, 'You must enter a name.', 'input_required')
+    if not id:
+        state.setError(id, 'You must enter a name.', 'input_required')
         continue
 
-    resp=check_id(newid)
+    try:
+        resp=check_id(newid)
+    except:
+        resp='An error occurred validating new id'
+
     if resp is not None:
-        state.setError(newid, resp)
+        return state.set(status='failure', portal_status_message=resp)
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
-else:
-    return state
+return state

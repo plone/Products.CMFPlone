@@ -9,7 +9,6 @@
 <body>
 
 <div metal:fill-slot="main">
-
     <metal:block tal:condition="not: request/ids | nothing">
     <tal:block tal:replace="nothing"
                tal:condition="not: request/ids | nothing"
