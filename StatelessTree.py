@@ -68,8 +68,12 @@ class NavigationTreeViewBuilder(SimpleItem):
     # XXX I did not find this in the API but there 
     # should be something like this....   
     def checkPublished(self, o):
+        user=getSecurityManager().getUser()
+        showUnpublishedContent = user.has_role(self.rolesSeeUnpublishedContent,o)
         try:
-	    workflow_tool = getToolByName(self, 'portal_workflow')
+            if showUnpublishedContent:
+                return showUnpublishedContent
+	        workflow_tool = getToolByName(self, 'portal_workflow')
             if workflow_tool.getInfoFor(o,'review_state','') != 'published':
                 return 0
             now     = DateTime()
@@ -94,7 +98,6 @@ class NavigationTreeViewBuilder(SimpleItem):
         # the 'important' users may see unpublished content
         # who can see unpublished content may also see hidden files
         showHiddenFiles = user.has_role(self.rolesSeeHiddenContent or [],obj)
-        showUnpublishedContent = user.has_role(self.rolesSeeUnpublishedContent or [] ,obj)
         
         try:
             if obj.meta_type in self.parentMetaTypesNotToQuery:
@@ -148,8 +151,7 @@ class NavigationTreeViewBuilder(SimpleItem):
                 perm = 'View' #XXX should be imported
                 res = [o for o in objs if perm_check(perm, o)] 
                     
-            if not showUnpublishedContent:  # the 'important' users may see unpublished content
-                res = [o for o in res if self.checkPublished(o) ]
+            res = [o for o in res if self.checkPublished(o) ]
                     
             try:
                 res.sort(self._navtree_cmp) #if sorting fails - never mind, it shall not break nav
