@@ -197,6 +197,14 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         # Make sure the script created AT types
         self.assertEqual(self.folder.Favorites.meta_type, 'ATFolder')
         self.assertEqual(favorite.meta_type, 'ATFavorite')
+        
+    def test_listMetaTypes(self):
+        self.folder.invokeFactory('Document', id='doc')
+        tool = self.portal.plone_utils
+        doc = self.folder.doc
+        doc.setTitle('title')
+        metatypes = tool.listMetaTags(doc)
+        # TODO: atm it checks only of the script can be called w/o an error
 
 
 class TestEditShortName(PloneTestCase.PloneTestCase):

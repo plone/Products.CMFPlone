@@ -15,6 +15,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone import ToolNames, transaction_note
 
@@ -24,15 +25,13 @@ from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from DateTime import DateTime
 
 _marker = ()
 _icons = {}
 
-try:
-    True
-except:
-    True=1
-    False=0
+CEILING_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__CEILING_DATE
+FLOOR_DATE = DefaultDublinCoreImpl._DefaultDublinCoreImpl__FLOOR_DATE
 
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
@@ -64,6 +63,24 @@ def _normalizeChar(c=''):
         return mapping.get(ord(c),c)
     else:
         return "%x" % ord(c)
+
+# dublic core accessor name -> metadata name
+METADATA_DCNAME = {
+    # the first two rows are handle in a special way
+    # 'Description'      : 'description',
+    # 'Subject'          : 'keywords',
+    'Description'      : 'DC.description',
+    'Subject'          : 'DC.subject',
+    'Creator'          : 'DC.creator',
+    'Contributors'     : 'DC.contributors',
+    'Publisher'        : 'DC.publisher',
+    'CreationDate'     : 'DC.date.created',
+    'ModificationDate' : 'DC.date.modified',
+    'Type'             : 'DC.type',
+    'Format'           : 'DC.format',
+    'Language'         : 'DC.language',
+    'Rights'           : 'DC.rights',
+    }
 
 
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
@@ -813,5 +830,77 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             base = base + "." + ext
         return base
 
-InitializeClass(PloneTool)
+    security.declarePublic('listMetaTas')
+    def listMetaTags(self, context):
+        """List meta tags helper
+        
+        Creates a mapping of meta tags -> values for the listMetaTags script
+        """
+        result = {}
+        for accessor, key in METADATA_DCNAME.items():
+            method = getattr(aq_inner(context).aq_explicit, accessor, None)
+            if not callable(method):
+                # ups
+                continue
+        
+            # Catch AttributeErrors raised by some AT applications
+            try:
+                value = method()
+            except AttributeError:
+                value = None
+        
+            if not value:
+                # no data
+                continue
+            if accessor == 'Publisher' and value == 'No publisher':
+                # No publisher is hardcoded (XXX: still?)
+                continue
+            if isinstance(value, (list, tuple)):
+                # convert a list to a string
+                value = ', '.join(value)
+            
+            # special cases
+            if accessor == 'Description':
+                result['description'] = value
+            if accessor == 'Subject':
+                result['keywords'] = value
+            
+            result[key] = value
+        
+        created = context.CreationDate()
+        
+        try:
+            effective = context.EffectiveDate()
+            if effective == 'None':
+                effective = None
+            if effective:
+                effective = DateTime(effective)
+        except AttributeError:
+            effective = None
+  
+        try:
+            expires = context.ExpirationDate()
+            if expires == 'None':
+                expires = None
+            if expires:
+                expires = DateTime(expires)
+        except AttributeError:
+            expires = None
+        
+        #   Filter out DWIMish artifacts on effective / expiration dates
+        if effective is not None and effective > FLOOR_DATE and effective != created:
+            eff_str = effective.Date()
+        else:
+            eff_str = ''
+        
+        if expires is not None and expires < CEILING_DATE:
+            exp_str = expires.Date()
+        else:
+            exp_str = ''
 
+        if exp_str or exp_str:
+            result['DC.date.valid_range'] = '%s - %s' % (eff_str, exp_str)
+        
+        return result
+
+InitializeClass(PloneTool)

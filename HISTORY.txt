@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Cleaned up listMetaTypes by moving the payload into PloneTool and
+      cleaning up the code.
+      [tiran]
+
     - Added PIL to dependencies to be able to close PLIP 82.
       [stefan]
 
