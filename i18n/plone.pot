@@ -1001,58 +1001,6 @@ msgstr "Criteria for"
 msgid "heading_currently_assigned_localroles"
 msgstr "Currently assigned local roles in folder ${folder}"
 
-#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
-#.   <h1>
-#.       Edit Collector Issue
-#.       </h1>
-msgid "heading_edit_collector_issue"
-msgstr "Edit Collector Issue"
-
-#: from plone_content/document_edit_form.pt
-#.   <h1>Edit Document</h1>
-msgid "heading_edit_document"
-msgstr "Edit Document"
-
-#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
-#.   <h1>Edit Event</h1>
-msgid "heading_edit_event"
-msgstr "Edit Event"
-
-#: from plone_content/file_edit_form.pt
-#.   <h1>Edit file</h1>
-msgid "heading_edit_file"
-msgstr "Edit file"
-
-#: from plone_forms/folder_edit_form.pt
-#.   <h1>Edit Folder Properties</h1>
-msgid "heading_edit_folder_properties"
-msgstr "Edit Folder Properties"
-
-#: from plone_content/image_edit_form.pt
-#.   <h1>Edit Image</h1>
-msgid "heading_edit_image"
-msgstr "Edit Image"
-
-#: from plone_content/link_edit_form.pt
-#.   <h1>Edit Link item</h1>
-msgid "heading_edit_link_item"
-msgstr "Edit Link item"
-
-#: from plone_content/newsitem_edit_form.pt
-#.   <h1>Edit News Item</h1>
-msgid "heading_edit_news_item"
-msgstr "Edit News Item"
-
-#: from plone_content/metadata_edit_form.pt
-#.   <h1>Edit Properties</h1>
-msgid "heading_edit_properties"
-msgstr "Edit Properties"
-
-#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
-#.   <h1>Edit Topic</h1>
-msgid "heading_edit_topic"
-msgstr "Edit Topic"
-
 #: from plone_content/file_view.pt
 #.   <h2>File contents</h2>
 msgid "heading_file_contents"
@@ -3525,4 +3473,146 @@ msgstr ""
 
 msgid "Metadata"
 msgstr ""
+
+
+##################################
+# Added in the 17.11.2002 update #
+##################################
+
+#: from plone_templates/registered_notify_template.pt
+#.   <span omit-tag="">Portal Membership Information</span>
+msgid "mailtemplate_registered_portal_membership_info"
+msgstr "Portal Membership Information"
+
+
+#: from plone_templates/registered_notify_template.pt
+msgid "mailtemplate_registered_body"
+msgstr "You have been registered as a member of ${name}, which"
+       "allows you to personalize your view of the website and participate in"
+       "the community."
+       ""
+       "Description:"
+       "${description}"
+       ""
+       "Visit us at ${portal_url}"
+       ""
+       "Your login name and password are:"
+       ""
+       "Login name : ${username}"
+       "Password   : ${password}"
+
+#: from plone_templates/sendto_template.pt
+msgid "mailtemplate_sendto_body"
+msgstr "This link is sent to you from ${portal_url}"
+       " "
+       "You are receiving this mail because someone read a page at" 
+       "${portal_title}" 
+       "and thought it might interest you."
+       " "
+       "It is sent by ${name} with the following comment:" 
+       "${comment}"
+       " "
+       "${document_title}"
+       " "
+       "${document_description}"
+       " "
+       "${document_url}"
+
+#: from plone_templates/header.pt
+msgid "tabs_home"
+msgstr "Home"
+
+#:from plone_content/discussionitem_view.pt
+msgid "heading_comment"
+msgstr "Comment"
+
+#:from plone_content/discussionitem_view.pt
+msgid "description_above_in_comment_thread"
+msgstr "Above in this comment thread:"
+
+#:from plone_forms/viewThreadsAtBottom.pt
+msgid "legend_replies_to_this_comment"  
+msgstr "Replies to this comment"
+
+#:from plone_templates/news.pt
+msgid "heading_news"  
+msgstr "News"
+
+#:from plone_templates/news.pt
+msgid "description_news"  
+msgstr "The latest news, sorted in reverse chronological order."
+
+#:from plone_forms/reconfig_form.pt
+msgid "help_allow_sendto"  
+msgstr "Select whether you want to enable the 'Send this page to somebody' feature."
+
+#:from plone_forms/reconfig_form.pt
+msgid "label_allow_sendto"  
+msgstr "Enable 'Send this page to somebody' Feature"
+
+#:from plone_forms/reply_review_form.pt
+msgid "box_comment_preview"  
+msgstr "Comment Preview"
+
+#:from plone_templates/ui_slots/navigation_box.pt
+msgid "box_contents_view"  
+msgstr "Switch to Contents View"
+
+#:from plone_templates/ui_slots/navigation_box.pt
+msgid "box_item_view"  
+msgstr "Switch to Item View"
+
+#: from all the edit forms, header
+msgid "heading_edit_item"
+msgstr "Edit ${itemtype}"
+
+#. The below is collected by inserting a plone-my-lang.missing file in the i18n
+#. directory. Thus we can translate tabs, pushishing states, item type names
+#. and type descriptions.
+
+msgid "Change Comment"
+msgstr ""
+  
+msgid "Remove This Discussion"
+msgstr ""
+  
+msgid "Remove This Reply"
+msgstr ""
+  
+msgid "State"  
+msgstr ""
+
+#### Skin names ####
+
+msgid "Plone Autumn"  
+msgstr ""
+  
+msgid "Plone Core"  
+msgstr ""
+  
+msgid "Plone Corporate"  
+msgstr ""
+  
+msgid "Plone Default"  
+msgstr ""
+  
+msgid "Plone Kitty"  
+msgstr ""
+  
+msgid "Plone Mozilla"  
+msgstr ""
+  
+msgid "Plone Prime"  
+msgstr ""
+  
+msgid "Plone XP"  
+msgstr ""
+  
+msgid "Plone Zed"  
+msgstr ""
+  
+
+##################################
+# End 17.11.2002 update          #
+##################################
 

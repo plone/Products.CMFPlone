@@ -1126,7 +1126,7 @@ msgstr "Innloggingsfeil"
 #: from plone_forms/logged_out.pt
 #.   <h1>You are now logged out</h1>
 msgid "heading_signed_out"
-msgstr "Du er nå utlogget"
+msgstr "Du er nå logget ut"
 
 #: from plone_templates/standard_error_message.pt
 #.   <h1>Site error</h1>
@@ -2489,7 +2489,7 @@ msgstr "Varslinger"
 #.                            Ordinary Form-based Editor (works in all browsers)
 #.                            </option>
 msgid "label_ordinary_content_editor"
-msgstr "Vanlig skjema-basert regigering (virker i alle nettlesere)"
+msgstr "Vanlig skjema-basert redigering (virker i alle nettlesere)"
 
 #: from plone_forms/join_form.pt
 #.   <span>Password</span>
@@ -3526,4 +3526,142 @@ msgstr "Under-emner"
 
 msgid "Metadata"
 msgstr "Egenskaper"
+
+
+##################################
+# Added in the 17.11.2002 update #
+##################################
+
+#: from plone_templates/registered_notify_template.pt
+#.   <span omit-tag="">Portal Membership Information</span>
+msgid "mailtemplate_registered_portal_membership_info"
+msgstr "Innloggingsinformasjon"
+
+
+#: from plone_templates/registered_notify_template.pt
+msgid "mailtemplate_registered_body"
+msgstr "Du er registrert som en bruker av ${name}."
+       "Ved å logge inn med informasjonen under får du tilgang til å tilpasse"
+       "nettstedet etter dine ønsker og delta i diskusjoner og lignende."
+       " "
+       "Beskrivelse:"
+       "${description}"
+       " "
+       "Logg inn her: ${portal_url}"
+       " "
+       "Brukernavnet og passordet er:"
+       " "
+       "Brukernavn : ${username}"
+       "Passord    : ${password}"
+
+#: from plone_templates/sendto_template.pt
+msgid "mailtemplate_sendto_body"
+msgstr "Denne lenken ble sendt til deg fra ${portal_url}"
+       " "
+       "Du har fått tilsendt denne e-posten fordi noen leste en side hos" 
+       "${portal_title}" 
+       "og mente at den ville være interessant for deg."
+       " "
+       "Lenken ble sendt av ${name}, med følgende kommentar: "
+       "${comment}"
+       " "
+       "${document_title}"
+       " "
+       "${document_description}"
+       " "
+       "${document_url}"
+
+#: from plone_templates/header.pt
+msgid "tabs_home"
+msgstr "Forside"
+
+#:from plone_content/discussionitem_view.pt
+msgid "heading_comment"
+msgstr "Kommentar"
+
+#:from plone_content/discussionitem_view.pt
+msgid "description_above_in_comment_thread"
+msgstr "Tidligere i denne kommentar-rekken:"
+
+#:from plone_forms/viewThreadsAtBottom.pt
+msgid "legend_replies_to_this_comment"  
+msgstr "Svar til denne kommentaren"
+
+#:from plone_templates/news.pt
+msgid "heading_news"  
+msgstr "Nyheter"
+
+#:from plone_templates/news.pt
+msgid "description_news"  
+msgstr "De sist publiserte nyhetene, sortert i omvendt kronologisk rekkefølge."
+
+#:from plone_forms/reconfig_form.pt
+msgid "help_allow_sendto"  
+msgstr "Velg om du vil tillate brukerne å sende pekere til nettstedet med den innebygde funksjonen for dette."
+
+#:from plone_forms/reconfig_form.pt
+msgid "label_allow_sendto"  
+msgstr "Tillat &laquo;Send denne siden til en venn&raquo;-funksjonen"
+
+#:from plone_forms/reply_review_form.pt
+msgid "box_comment_preview"  
+msgstr "Forhåndsvisning av kommentar"
+
+#:from plone_templates/ui_slots/navigation_box.pt
+msgid "box_contents_view"  
+msgstr "Bytt til innholdsvisning"
+
+#:from plone_templates/ui_slots/navigation_box.pt
+msgid "box_item_view"  
+msgstr "Bytt til normal visning"
+
+#: from all the edit forms, header
+msgid "heading_edit_item"
+msgstr "Endre ${itemtype}"
+
+#. The below is collected by inserting a plone-my-lang.missing file in the i18n
+#. directory. Thus we can translate tabs, pushishing states, item type names
+#. and type descriptions.
+
+msgid "Change Comment"
+msgstr "Endre kommentar"
+  
+msgid "Remove This Discussion"
+msgstr "Fjern denne kommentaren"
+  
+msgid "Remove This Reply"
+msgstr "Fjern denne kommentaren"
+  
+msgid "State"  
+msgstr "Tilstand"
+
+#### Skin names ####
+
+msgid "Plone Autumn"  
+msgstr "Høst-Plone"
+  
+msgid "Plone Core"  
+msgstr "Gråtone-Plone"
+  
+msgid "Plone Corporate"  
+msgstr "Firma-Plone"
+  
+msgid "Plone Default"  
+msgstr "Standard-Plone"
+  
+msgid "Plone Kitty"  
+msgstr "Pusekatt-Plone"
+  
+msgid "Plone Mozilla"  
+msgstr "Mozilla-Plone"
+  
+msgid "Plone Prime"  
+msgstr "Primær-Plone"
+  
+msgid "Plone Zed"  
+msgstr "Neon-Plone"
+
+##################################
+# End 17.11.2002 update          #
+##################################
 

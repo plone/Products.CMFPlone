@@ -12,7 +12,14 @@
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
         
-    <h1 i18n:translate="heading_edit_link_item">Edit Link item</h1>
+    <h1 i18n:translate="heading_edit_item">
+    Edit
+        <span i18n:name="itemtype">
+              <span i18n:translate=""         
+                    tal:content="python:here.getTypeInfo().Title()" 
+                    tal:omit-tag="">Item type</span>
+        </span> 
+    </h1>
     
     <p i18n:translate="description_edit_link_item">
     A link is a pointer to a location on the internet or intranet.
