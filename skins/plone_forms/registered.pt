@@ -3,7 +3,11 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 <body>
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="auth nocall:here/cookie_authentication;
+                 ac_name auth/name_cookie;
+                 ac_password auth/pw_cookie;
+                 ac_persist auth/persist_cookie;">
 
 <div tal:define="pprops here/portal_properties/site_properties; ve pprops/validate_email">
 
@@ -21,7 +25,7 @@ You will receive an email shortly containing your password
     <form action=""
           method="post"
           tal:define="username request/username;
-		                  password request/password;"
+                      password request/password;"
           tal:attributes="action python:'%s/logged_in' % here.portal_url()"
 	        >
         <input type="hidden"
@@ -29,13 +33,15 @@ You will receive an email shortly containing your password
                value=""
                tal:attributes="value request/came_from|nothing;" />
         <input type="hidden"
-               name="__ac_name"
+               name="ac_name"
                value=""
-               tal:attributes="value username;" />
+               tal:attributes="name ac_name;
+                               value username;" />
         <input type="hidden"
-               name="__ac_password"
+               name="ac_password"
                value=""
-               tal:attributes="value password;" />
+               tal:attributes="name ac_password;
+                               value password;" />
         <input class="standalone"
                type="submit"
                value="Log in"

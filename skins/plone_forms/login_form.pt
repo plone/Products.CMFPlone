@@ -30,7 +30,11 @@ function cookiesEnabled() {
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="auth nocall:here/cookie_authentication;
+                 ac_name auth/name_cookie;
+                 ac_password auth/pw_cookie;
+                 ac_persist auth/persist_cookie;">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
@@ -89,12 +93,12 @@ to become a member.
 
 			<div class="field">
 				<input type="text"
-                       name="__ac_name"
                        size="15"
                        tabindex=""
                        onfocus="formtooltip('user_name_help',1)"
                        onblur="formtooltip('user_name_help',0)"
-                       tal:attributes="value python:request.get('__ac_name', '');
+                       tal:attributes="name ac_name;
+                                       value python:request.get(ac_name, '');
                                        tabindex tabindex/next;"
                        />
 			</div>
@@ -115,12 +119,12 @@ to become a member.
 
         <div class="field">
             <input type="password"
-                   name="__ac_password"
                    size="15"
                    tabindex=""
                    onfocus="formtooltip('password_help',1)"
                    onblur="formtooltip('password_help',0)"
-                   tal:attributes="tabindex tabindex/next;"
+                   tal:attributes="name ac_password;
+                                   tabindex tabindex/next;"
                    />
         </div>
 	</div>
@@ -140,14 +144,14 @@ to become a member.
         <div class="field">
             <input type="checkbox"
                    class="noborder"
-                   name="__ac_persistent"
                    value="1"
                    checked="checked"
                    id="cb_remember"
                    tabindex=""
                    onfocus="formtooltip('remember_help',1)"
                    onblur="formtooltip('remember_help',0)"
-                   tal:attributes="tabindex tabindex/next;"
+                   tal:attributes="name ac_persist;
+                                   tabindex tabindex/next;"
                    />
 
             <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
