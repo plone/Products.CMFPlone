@@ -165,7 +165,8 @@
                tal:attributes="href string:${mtool/getHomeUrl}">
                 <img tal:replace="structure here/user.gif" />
             
-                <span tal:replace="user/getUserName">john</span>
+                <span tal:content="user/getUserName"
+                      class="case_sensitive">john</span>
             </a>
 
             <span tal:condition="isAnon" 

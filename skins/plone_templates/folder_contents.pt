@@ -177,7 +177,8 @@
                 <metal:block tal:condition="folder_contents|not:standalone|nothing">
                 <tbody>
                 <metal:block tal:repeat="item batch"> 
-                    <tr tal:define="oddrow repeat/item/odd"
+                    <tr tal:define="oddrow repeat/item/odd;
+                                    item_typeinfo item/getTypeInfo"
                         tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
     
                         <td>
@@ -189,8 +190,8 @@
                                                    tabindex tabindex/next|nothing"/>
                         </td>
     
-                        <td tal:define="action python:item.getTypeInfo().immediate_view;
-                                        url python:test(item.getTypeInfo().getId() in use_folder_contents, 
+                        <td tal:define="action python:item_typeinfo.immediate_view;
+                                        url python:test(item_typeinfo.getId() in use_folder_contents, 
                                                         item.absolute_url()+'/folder_contents',
                                                         item.absolute_url()+'/'+action);"> 
     
@@ -198,7 +199,7 @@
                                 <img alt="" tal:attributes="src python:item.getIcon(1)" 
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
-                            <tal:block tal:condition="python:test(site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
+                            <tal:block tal:condition="python:site_properties.ext_editor and item_typeinfo.getActionById('external_edit',None)">
 
                             <a href="absolute_url/external_edit"
                                tal:attributes="href string:${item/absolute_url}/external_edit">
@@ -215,7 +216,7 @@
                                 tal:condition="python:isExpired(item)">expired</span>
                         </td>
     
-                        <td i18n:translate="" tal:content="python:item.getTypeInfo().Title()">
+                        <td i18n:translate="" tal:content="python:item_typeinfo.Title()">
                         folder
                         </td>
     
