@@ -90,7 +90,7 @@ we eventually might want to merge this form with personalize_form
                 <div class="field" tal:attributes="class python:test(error_fullname, 'field error', 'field')">
     
                     <div tal:condition="error_fullname">
-                        <tal:block i18n:translate="" content="error_fullname">Error</tal:block>
+                        <tal:block i18n:translate="text_error" content="error_fullname">Error</tal:block>
                         <br />
                     </div>
     
@@ -123,7 +123,7 @@ we eventually might want to merge this form with personalize_form
     
                 <div class="field" tal:attributes="class python:test(error_email, 'field error', 'field')">
                     <div tal:condition="error_email">
-                        <tal:block i18n:translate="" content="error_email">Error</tal:block>
+                        <tal:block i18n:translate="text_error" content="error_email">Error</tal:block>
                         <br />
                     </div>
     
