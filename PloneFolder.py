@@ -60,7 +60,7 @@ class PloneFolder ( DefaultSkinnedFolder ):
         '''
         Invokes the default view.
         '''
-        view = _getViewFor(self, 'index_html', 'folderlisting')
+        view = _getViewFor(self, 'view', 'folderlisting')
         if getattr(aq_base(view), 'isDocTemp', 0):
             return apply(view, (self, self.REQUEST))
         else:
@@ -106,7 +106,7 @@ def _getViewFor(obj, view='view', default=None):
             if action.get('id', None) == default:
                 default=action
             if action.get('id', None) == view:
-                if _verifyActionPermissions(obj, action):
+                if _verifyActionPermissions(obj, action) and not(action['action']==''):
                     return obj.restrictedTraverse(action['action'])
 
         # not Best Effort(tm) just yet
@@ -117,7 +117,7 @@ def _getViewFor(obj, view='view', default=None):
         # "view" action is not present or not allowed.
         # Find something that's allowed.
         for action in actions:
-            if _verifyActionPermissions(obj, action):
+            if _verifyActionPermissions(obj, action) and not(action['action']==''):
                 return obj.restrictedTraverse(action['action'])
         raise 'Unauthorized', ('No accessible views available for %s' %
                                string.join(obj.getPhysicalPath(), '/'))
