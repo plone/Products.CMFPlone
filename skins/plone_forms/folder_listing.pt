@@ -36,7 +36,8 @@
        <div class="description"
             tal:content="structure here/Description"> description </div>
 
-       <div tal:condition="python:not hasattr(here.aq_explicit, 'index_html')">
+       <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
+                           here.portal_membership.checkPermission('Add portal content', here)">
           This folder does not have a default page.
           <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document">Click here</a>
 	  to create a default page in this folder. 
