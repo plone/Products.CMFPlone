@@ -1340,6 +1340,11 @@ ol.visualNoMarker {
     font-weight: normal;
 }
 
+.discreet a {
+    color: &dtml-discreetColor;;
+    text-decoration: underline;
+}
+
 .listingBar {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
