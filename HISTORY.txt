@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged plip72-LiveSearch r6110:HEAD into 2.1 branch. Adds LiveSearch by
+      ObjectRealms to the search box.
+      [stefan] [_ender_] [MrTopf]
+
     - Merged plip71-full-screen-mode r6124:HEAD into 2.1 branch. This adds a
       document_action to enter full screen mode.
       [stefan] [arjen] [elvix]

@@ -129,6 +129,12 @@
             tal:attributes="src string:$portal_url/plone_javascripts.js">
     </script>
 
+    <script type="text/javascript" 
+            tal:attributes="src string:${portal_url}/sarissa.js"></script>
+
+    <script type="text/javascript" 
+            tal:attributes="src string:${portal_url}/livesearch.js"></script>
+
   </head>
 
   <body>
