@@ -7,28 +7,37 @@
 ##title=Action to change password
 ##parameters=password, confirm, current, domains=None
 
-if context.REQUEST.form.has_key('cancel'):
-    context.REQUEST.set('portal_status_message', 'Password change was canceled.')
+REQUEST=context.REQUEST
+if REQUEST.form.has_key('cancel'):
+    REQUEST.set('portal_status_message', 'Password change was canceled.')
     return context.personalize_form()
 
 mt=context.portal_membership
 
 if not mt.testCurrentPassword(current):
     failMessage='Does not match current password.'
-    context.REQUEST.set('portal_status_message', 'Does not match current password.')
+    REQUEST.set('portal_status_message', 'Does not match current password.')
     return context.password_form(context,
-                                 context.REQUEST,
+                                 REQUEST,
                                  error=failMessage)
 
 failMessage=context.portal_registration.testPasswordValidity(password, confirm)
 if failMessage:
-    context.REQUEST.set('portal_status_message', failMessage)
+    REQUEST.set('portal_status_message', failMessage)
     return context.password_form(context,
-                                 context.REQUEST,
+                                 REQUEST,
                                  error=failMessage)
 
 member=mt.getAuthenticatedMember()
-mt.setPassword(password, domains)
+try:
+    mt.setPassword(password, domains)
+except AttributeError:
+    failMessage='While changing your password an AttributeError occurred.  This is usually caused by your user being defined outside the portal.'
+    REQUEST.set('portal_status_message', failMessage)
+    return context.password_form(context,
+                                 REQUEST,
+                                 error=failMessage)
+
 #mt.credentialsChanged(password) now in setPassword
 
 url='%s/%s?portal_status_message=%s' % ( context.absolute_url()
