@@ -152,7 +152,7 @@
 
                     <tal:block tal:define="site_props here/portal_properties/site_properties;
                                            allowRolesToAddKeywords site_props/allowRolesToAddKeywords"
-                              tal:condition="python:[role for role in user.getRoles() if role in allowRolesToAddKeywords]">
+                              tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
                     <span i18n:translate="label_new_keywords">New keywords</span> <br />
                     <input type="text" 
                            name="entered_keyword" 
