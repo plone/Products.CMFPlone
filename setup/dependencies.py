@@ -38,10 +38,14 @@ except ImportError:
     log("GroupUserFolder not found. Please download it from http://sf.net/projects/collective", optional=1)
 
 try:
-    import Products.CMFFormControllerPatch
+    import Products.CallProfiler
+    try:
+        import Products.CMFFormControllerPatch
+    except ImportError:
+        log("CMFFormControllerPatch not found. This is only required for using Call Profiler with Plone, you can download it from http://sf.net/projects/collective", severity=zLOG.INFO, optional=1)
 except ImportError:
-    log("CMFFormControllerPatch not found. This is required for using Call Profiler with Plone, you can download it from http://sf.net/projects/collective", optional=1)
-
+    pass
+    
 try:
     import Products.BTreeFolder2
 except ImportError:
