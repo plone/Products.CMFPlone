@@ -22,6 +22,8 @@
 
     <metal:block metal:define-slot="base" />
 
+    <meta name="generator" content="Plone - http://plone.org" />
+    
     <meta tal:condition="here/listMetaTags|nothing"
           tal:repeat="keyval here/listMetaTags"
           tal:attributes="name python:keyval[0];
