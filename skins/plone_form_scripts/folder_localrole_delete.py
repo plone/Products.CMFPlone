@@ -10,6 +10,13 @@ if len(member_ids)>0:
     pm.deleteLocalRoles( obj=context,
                          member_ids=member_ids )
 
+def parseMemberRoleString( s ):
+    sidx = s.find('((')
+    eidx = s.find('))')
+    if sidx == -1 or eidx == -1:
+        return None
+    return s[:sidx], s[sidx+2:eidx]
+
 #
 # second look for certain roles
 #
@@ -22,7 +29,7 @@ if len(member_role_ids)>0:
     # sort members first
     members={}
     for s in member_role_ids:
-        member_role = pu.parseMemberRoleString(s)
+        member_role = parseMemberRoleString(s)
         # XXX: should not happen actually
         if member_role is None: 
             continue

@@ -39,7 +39,6 @@ def log(summary='', text='', log_level=INFO):
 
 EMAIL_RE = re.compile(r"^(\w&.+-]+!)*[\w&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]") # used to find double new line (in any variant)
-MEMBER_ROLE_RE = re.compile('(.+)\(\((.+)\)\)')
 BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
 
 #XXX Remove this when we don't depend on python2.1 any longer, use email.Utils.getaddresses instead
@@ -605,17 +604,5 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             'Total failure getting the folderlisting action for the folder, "%s"' \
             % obj.absolute_url())
             return obj, ['folder_listing']
-
-    security.declarePublic('parseMemberRoleString')
-    def parseMemberRoleString(self, s):
-        """parse a member_role string for editing a localrole form
-        """
-        match=MEMBER_ROLE_RE.match(s)
-        if match is None:
-            return None
-        groups=match.groups()
-        if len(groups)!=2:
-            return None
-        return groups
 
 InitializeClass(PloneTool)

@@ -47,21 +47,6 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # Folder_localrole_form should render
         self.folder.folder_localrole_form()
 
-    def testMemberRoleStringParse(self):
-        """try parsing a member role string for deleting a single role of a user"""
-        member = self.membership.getMemberById('user2')
-        test1="member2((Annoyance Manager))"
-        member,role=self.folder.plone_utils.parseMemberRoleString(test1)
-        self.assertEqual(member,'member2')
-        self.assertEqual(role,'Annoyance Manager')
-
-        # harder test
-        testMember="Member%&(//))]test"
-        testRole="Manager %%&&==(who?) Manager"
-        test2="%s((%s))" %(testMember,testRole)
-        member,role=self.folder.plone_utils.parseMemberRoleString(test2)
-        self.assertEqual(member,testMember)
-        self.assertEqual(role,testRole)
     
     def testDeleteSingleRole(self):
         """try deleting a single role"""
