@@ -204,6 +204,8 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_setPortalFactoryTypes')
     def manage_setPortalFactoryTypes(self, REQUEST=None, listOfTypeIds=None):
+        """
+        """
         if listOfTypeIds is not None:
             dict = {}
             for l in listOfTypeIds:
