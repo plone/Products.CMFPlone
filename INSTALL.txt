@@ -12,6 +12,10 @@ date, and have nice and funky pictures to go with them ;)
   - Plone comes with 3 Products that need to be installed in the Products 
     directory: CMFPlone, DCWorkflow and Formulator.
 
+  - If you are using Zope 2.5.1, you will also need to download ActivePak from
+       http://plone.org/download and put it in your Products directory.  DO NOT
+       INSTALL ActivePak if you are using Zope 2.6+
+
 **The installation procedure:**
 
 - Install Zope (2.5.1 or later)
@@ -20,7 +24,8 @@ date, and have nice and funky pictures to go with them ;)
   directory (CMF1.3 or later)
 
 - Unpack the Plone directory (CMFPlone) into your Products directory 
-  (also include the DCWorkflow and Formulator products)
+  (also include the DCWorkflow and Formulator products as well as ActivePak
+  if you are using Zope 2.5.1 -- DO NOT USE ActivePak with Zope 2.6+)
 
 - Start Zope
 
