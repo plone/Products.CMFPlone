@@ -148,7 +148,9 @@
               <option value="subj"
                       tal:repeat="subj allowedSubjects"
                       tal:attributes="value subj; selected python:subj in contentSubject and 1 or 0"
-                      tal:content="subj">Event Type N</option>
+                      tal:content="subj"
+                      i18n:domain="plone-metadata"
+                      i18n:translate="">Event Type N</option>
             </select>
           </div>
 
