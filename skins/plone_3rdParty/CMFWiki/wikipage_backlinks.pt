@@ -74,15 +74,17 @@
     
     <div tal:replace="nothing">
       No time for this right now, but this is broken - chrism
-      <p> <a name="nesting">
+      <p>
     <a href="" 
+       name="nesting"
        tal:attributes="href string:../${here/getId}"
-       tal:content="here/getId"></a></a> nesting
+       tal:content="here/getId"></a> nesting
     context in the Wiki folder, including offspring, ancestors, and siblings.
     (Branches are abbreviated with '...' elipses after the first time they're
     spelled out.)
     
-    <span tal:replace="here.wiki_context(request, with_siblings=1)" />
+    <span tal:replace="python:here.wiki_context(request, with_siblings=1)" />
+
     </div>
     
     
