@@ -27,6 +27,10 @@ You will receive an email shortly containing your password
           tal:attributes="action python:'%s/logged_in' % here.portal_url()"
 	        >
         <input type="hidden" 
+               name="came_from" 
+               value=""
+               tal:attributes="value request/came_from|nothing;" />
+        <input type="hidden" 
                name="__ac_name" 
                value=""
                tal:attributes="value username;" />
