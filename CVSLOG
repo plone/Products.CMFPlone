@@ -1,3 +1,57 @@
+2003-12-19 00:15  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): all
+	  folder_contents will have green border
+
+2003-12-19 00:01  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  folder_contents was broken under some cases since we tried to
+	  optimize it.	now its fixed
+
+2003-12-18 16:35  shh42
+
+	* tests/: testGroupsTool.py, testPloneTool.py (Plone-2_0-branch):
+	  Add a test for changeOwnershipOf. This is related to #2042. Note
+	  that the same issue exists with group workspaces.
+
+2003-12-18 16:33  shh42
+
+	* tests/testInterfaces.py (Plone-2_0-branch): Allow to run this
+	  test from the command line as well (not just with a testrunner)
+
+2003-12-18 14:57  yenzenz
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  bug fixed: one old name 'allowed' was left, changed to new
+	  allowedSortedContentTypes
+
+2003-12-18 14:55  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  minor cleanup
+
+2003-12-18 13:59  dpunktnpunkt
+
+	* skins/plone_images/search_icon.gif (Plone-2_0-branch): Stupid
+	  white border.
+
+2003-12-18 08:12  limi
+
+	* skins/plone_forms/join_form.cpt (Plone-2_0-branch): Added a note
+	  about the username and password being case sensitive to the join
+	  form in addition to the login form. Issue #1105.
+
+2003-12-18 05:52  limi
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): The news
+	  listing was saying "last updated" when it actually prints the
+	  publication date. Fixed.
+
+2003-12-18 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-18 02:45  vinsci
 
 	* skins/plone_portlets/portlet_navigation.pt (Plone-2_0-branch):
