@@ -12,6 +12,7 @@ class IControlPanel(Interface):
                  , visible=1
                  , appId=None
                  , imageUrl=None
+                 , description=''
                  , REQUEST=None
                  ):
         """ Registration of a Configlet """
