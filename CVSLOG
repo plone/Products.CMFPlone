@@ -1,3 +1,13 @@
+2003-11-19 11:08  shh42
+
+	* MembershipTool.py, tests/testMembershipTool.py
+	  (Plone-2_0-branch): Remove getCandidateLocalRoles as the one from
+	  CMFCore is superior
+
+2003-11-19 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-18 18:06  shh42
 
 	* MembershipTool.py (Plone-2_0-branch): Make createMemberarea work
