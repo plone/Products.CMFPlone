@@ -1120,6 +1120,7 @@ ol.visualNoMarker {
     float: left; 
     border: 1px solid #8cacbb; 
     background-color: #dee7ec;
+    font-size: 85%;
 }
 
 .portletMore {
@@ -1201,7 +1202,7 @@ ol.visualNoMarker {
 /* New-style navigation tree */
 
 .portletNavigationTree {
-    margin: 0 0 0 0.5em; 
+    margin: 0 0 0 0.75em; 
     padding: 0; 
     list-style: none; 
     list-style-image: none; 
