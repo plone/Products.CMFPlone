@@ -1,5 +1,5 @@
 #
-# Skeleton integration test. A full-blown Plone portal is set up.
+# Skeleton Plone test. A full-blown Plone portal is set up.
 #
 
 import os, sys
@@ -9,19 +9,17 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+ZopeTestCase.installProduct('SomeProduct')
+
 # Create a Plone site in the test (demo-) storage
 app = ZopeTestCase.app()
 PloneTestCase.setupPloneSite(app, id='portal')
 ZopeTestCase.close(app)
 
-ZopeTestCase.installProduct('SomeProduct')
-
 
 class TestSomeProduct(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        ''' At this point a Plone Site is setup
-            Install additional Users, Rolse, Product here'''
         pass
 
     def testSomething(self):

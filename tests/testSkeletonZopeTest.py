@@ -1,5 +1,5 @@
 #
-# Skeleton unit test. Nothing CMF/Plone specific is set up.
+# Skeleton ZopeTestCase. Nothing CMF/Plone specific is set up.
 #
 
 import os, sys
