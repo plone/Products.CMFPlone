@@ -16,8 +16,8 @@
         Content tabs
         </div>
         
-        <div metal:use-macro="here/portal_bars/macros/contentBar">        
-        Content bar
+        <div class="contentBar">        
+        &nbsp;
         </div>	
 
     </div>

@@ -32,7 +32,9 @@
                     <dtml-if show_border>
                         <dtml-var "macro_renderer(template='here/portal_tabs', macro='contentTabs')" >
                         
-                        <dtml-var "macro_renderer(template='here/portal_bars', macro='contentBar')" >
+                        <div class="contentBar">
+			&nbsp;
+			</div>
                     </dtml-if>
  
                     </dtml-let>
