@@ -31,7 +31,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                   }
                                 , { 'id'            : 'local_roles'
                                   , 'name'          : 'Local Roles'
-                                  , 'action'        : 'folder_localroles_form'
+                                  , 'action'        : 'folder_localrole_form'
                                   , 'permissions'   :
                                      (CMFCorePermissions.ManageProperties,)
                                   , 'category'      : 'folder'
