@@ -1,3 +1,40 @@
+2004-04-09 04:37  limi
+
+	* skins/plone_prefs/plone_control_panel.pt (Plone-2_0-branch): Made
+	  the main Control Panel screen use the configlet template too.
+
+2004-04-09 04:25  limi
+
+	* skins/plone_images/book_icon.gif (Plone-2_0-branch): Noisy
+	  pixels, begone!
+
+2004-04-09 02:42  limi
+
+	* skins/plone_portlets/portlet_prefs.pt (Plone-2_0-branch): Made
+	  the configlet links into block elements.
+
+2004-04-09 01:11  limi
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch): The wonders of modern browsers. Had to add
+	  &nbsp; here and there for IE.
+
+2004-04-09 01:07  limi
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch): Fixed some i18n problems and inserted
+	  additional error icons.
+
+2004-04-09 00:51  limi
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch): Split the Add/Remove lists vertically, had to
+	  use a double set of floats because of browser bugs.
+
+2004-04-08 04:58  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-07 20:15  limi
 
 	* HISTORY.txt, skins/plone_forms/search_form.pt (Plone-2_0-branch):
