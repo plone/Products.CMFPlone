@@ -8,7 +8,8 @@
 <ul tal:define="contentTypes allowed_types;
         filterOut here/getNotAddableTypes;
         size python:len(contentTypes);
-        folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());">
+        folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
+        isContextDefaultPage here/isDefaultPageInFolder;">
 
     <tal:states define="review_state wf_state;
                         transitions workflow_actions;"
@@ -124,7 +125,6 @@
                                contextVocab here/getSelectableViews;
                                canSelectDefaultFolderPage folder/canSelectDefaultPage;
                                canSelectDefaultContextPage here/canSelectDefaultPage;
-                               isContextDefaultPage here/isDefaultPageInFolder;
                                showMenu python:(context is folder and not contextHasIndexHtml) or 
                                                (isContextDefaultPage and not folderHasIndexHtml);
                                "
