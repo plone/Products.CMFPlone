@@ -54,7 +54,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # the worklist ui anymore directly from the listFilteredActionsFor
         at = self.portal.portal_actions
         self.failUnless('portal_workflow' not in at.listActionProviders())
-            
+        # Ensure 'reply' tab is turned off
+        # XXX NOTE: ActionProviderBAse should have a 'getActionById' 
+        # that does this for x in: if x == id
+        dt_actions = self.portal.portal_discussion.listActions()
+        reply_visible=1
+        for action in dt_actions:
+            if action.id=='reply':
+                reply_visible=action.visible
+        self.assertEqual(reply_visible, 0)
+
 if __name__ == '__main__':
     framework()
 else:
