@@ -43,6 +43,6 @@ notifyBackgroundColor:string=#ffce7b
 discreetColor:string=#76797c
 helpBackgroundColor:string=#ffffe1
 
-portalMinWidth:string=56em
+portalMinWidth:string=70em
 columnOneWidth:string=16em
 columnTwoWidth:string=16em
