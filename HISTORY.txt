@@ -6,6 +6,16 @@ Plone 2.0 - Fyuti
 
     RC3
 
+    - Permissions changes.  The folder_buttons, copy,paste,rename,delete,cut
+      were protected by CMFCorePermission.ModifyPortalContent which is
+      incorrect.  Moved it to AccessControl.Permissions.copy_or_move.  I am
+      not sure that is correct either because all permissions checking for
+      folder_buttons is done at the folder level.  If we want to be more
+      fine grain (show a delete button if we have access to any content to
+      delete) we will need to execute a condition (script) for all content.
+      This could be prohibitively expensive.  Changes made in
+      CMFPlone/setup/ConfigurationMethods.py
+
     - moved CMFPlone/migrations files into CMFPlone/migrations/v1 or v2
     modules.   Although this is not a permenant solution.  It will work
     well enough.

@@ -4,7 +4,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Acquisition import aq_get
-
+from AccessControl import Permissions
 from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
 
 from zLOG import INFO, ERROR
@@ -277,31 +277,31 @@ def addNewActions(self, portal):
                  name='Rename',
                  action='string:folder_rename_form:method',
                  condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=CMFCorePermissions.AddPortalContent,
                  category='folder_buttons')
     at.addAction('cut',
                  name='Cut',
                  action='string:folder_cut:method',
                  condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=Permissions.copy_or_move,
                  category='folder_buttons')
     at.addAction('copy',
                  name='Copy',
                  action='string:folder_copy:method',
                  condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=Permissions.copy_or_move,
                  category='folder_buttons')
     at.addAction('paste',
                  name='Paste',
                  action='string:folder_paste:method',
                  condition='folder/cb_dataValid',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=Permissions.copy_or_move,
                  category='folder_buttons')
     at.addAction('delete',
                  name='Delete',
                  action='string:folder_delete:method',
                  condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=Permissions.delete_objects,
                  category='folder_buttons')
     at.addAction('change_state',
                  name='Change State',
