@@ -85,7 +85,9 @@
                 </div>
                 <div class="field"
                      tal:define="wysiwyg_editor python:request.get('wysiwyg_editor', member.wysiwyg_editor)">
-                     <select name="wysiwyg_editor">
+                     <select name="wysiwyg_editor"
+                             onfocus="formtooltip('wysiwyg_editor_help',1)"
+                             onblur="formtooltip('wysiwyg_editor_help',0)">
                          <tal:block tal:repeat="editor here/portal_properties/available_editors">
                          <option value="None"
                                  tal:attributes="value editor;
