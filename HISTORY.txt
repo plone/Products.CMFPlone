@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Portal.py: Removed monkey patch that renamed the skin request var to
+      plone_skin. Now it's portal_skin again.
+      [tiran]
+      
+    - Fixed http://plone.org/collector/2583. Disable submit button when item is
+      locked and add a locked icon next to the disabled submit button.
+      [tiran]
+
     - http://plone.org/collector/2826. searchterm-highlighting now functions 
       correctly, it highlights text in the fuill content-area, but only 
       highlights the parts it is supposed to highlight.
