@@ -3,7 +3,7 @@ CMFPlone tests depend on the ZopeTestCase package.
 As of this writing ZopeTestCase is hosted in the Collective CVS. It comes
 with useful documentation worth reading. <wink>
 
-The required version of ZopeTestCase is 0.9.0 or better.
+The required version of ZopeTestCase is 0.9.2 or better.
 
 Note that ZopeTestCase must be installed into lib/python/Testing and *not*
 lib/python/Products!
@@ -32,38 +32,40 @@ How to run the tests:
 
     - Run all tests: python /path/to/zope/utilites/testrunner.py -qia
 
-    - If this fails, you probably link your products into your instance, so use: 
+    - If this fails, you probably link your products into your instance, so use:
       python /path/to/zope/utilites/testrunner.py -qa -I /path/to/your/instance
 
 
 How to setup a new unittest for a CMFPlone component:
 
-    - Install ZopeTestCase                                                                                      
-                                                                                                                
-    - Install testrunner.py                                                                                     
-                                                                                                                
-    - Copy one of the testSkeleton* files and give it a new name, starting with 'test', e.g: testMyCoolProduct.py
-                                                                                                                
-    - Open the new script and change all instances of 'SomeProduct' to the name of your product.                
-                                                                                                                
+    - Install ZopeTestCase
 
-How to use ZopeTestCase with a Plone/CMF based Product:   
+    - Install testrunner.py
 
-    - Install Plone                                                           
+    - Copy the testSkeleton.py file and give it a new name, starting with 'test', e.g: testMyCoolFeature.py
 
-    - Install ZopeTestCase                                                                                      
-                                                                                                                
-    - Install testrunner.py                                                                                     
-                                                                                                                
-    - In your Products directory create a directory named 'tests'                                                
-                                                                                                                
-    - Copy the following files from CMFPlone/tests into 'tests': 
-    
+    - Open the new script and change all instances of 'Something' to the name of the Tool/Class/Whatever
+      under test.
+
+
+How to use ZopeTestCase with a Plone/CMF based Product:
+
+    - Install Plone
+
+    - Install ZopeTestCase
+
+    - Install testrunner.py
+
+    - In your Products directory create a directory named 'tests'
+
+    - Copy the following files from CMFPlone/tests into 'tests':
+
         - framework.py
 
-        - runalltests.py   
-                                                                                                                                                                                                                             
-    - Copy one of the testSkeleton* files and give it a new name, starting with 'test', e.g: testMyCoolProduct.py
-                                                                                                                
-    - Open the new script and change all instances of 'SomeProduct' to the name of your product.    
+        - runalltests.py
+
+    - Copy the testSkeleton.py file and give it a new name, starting with 'test', e.g: testMyCoolProduct.py
+
+    - Open the new script and change all instances of 'Something' to the name of the Product/Class/Whatever
+      under test.
 
