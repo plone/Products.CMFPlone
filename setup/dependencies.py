@@ -65,6 +65,12 @@ except ImportError:
          "Please download it from http://cvs.zope.org/Products/"))
 
 try:
+    import PIL
+except ImportError:
+    log(("PIL not found. "
+         "Please download it from http://www.pythonware.com/products/pil/"))
+
+try:
     import Products.ExternalEditor
 except ImportError:
     log(("ExternalEditor not found.  If you want "
