@@ -27,11 +27,13 @@
   <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}?groupname=${groupname}"
+       i18n:translate=""
     >Group</a>
   </li>
   <li class="">
     <a href=""
        tal:attributes="href string:prefs_group_members?groupname=${groupname}"
+       i18n:translate=""
     >Group Members</a>
   </li>
 </ul>
@@ -42,9 +44,10 @@
    tal:condition="not:group | nothing">
     <h1 i18n:translate="">Group Members</h1>
 
-    <p>No group was specified.</p>
+    <p i18n:translate="label_no_group_specified">No group was specified.</p>
 
-    <p><a href="prefs_groups_overview">Find a group here</a></p>
+    <p><a href="prefs_groups_overview"
+          i18n:translate="link_find_group">Find a group here</a></p>
 </div>
 
 <div class="document editable"
@@ -67,7 +70,8 @@
           tal:define="targetobject gdtool;
                       targetGetProperty nocall:group/getProperty | nothing;">
 
-        <span class="legend">Group Properties</span>
+        <span class="legend"
+              i18n:translate="link_group_properties">Group Properties</span>
 
         <input type="hidden" name="groupname" value="groupname"
                tal:attributes="value group/getGroupName | nothing"/>

@@ -39,7 +39,8 @@
 
             </tal:block>
 
-            <div class="content odd" tal:condition="not: results">
+            <div class="content odd" tal:condition="not: results"
+                 i18n:translate="box_recently_no_items">
             No items published since your last log-in.
             </div>
 

@@ -68,7 +68,7 @@
                                 <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)">
                                      <a href=""
                                         tal:attributes="href string:${resultObject/absolute_url}#comments">
-                                        <span tal:replace="python:talkback.replyCount(resultObject)" /> comments
+                                        <span tal:replace="python:talkback.replyCount(resultObject)" /> <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
                                      </a>
                                 </span>
                             </span>

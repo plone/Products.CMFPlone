@@ -20,9 +20,10 @@
 
         <div class="body">
 
-            <label for="language" ><div class="hiddenlabel">Choose your language</div>
+            <label for="language" >
+            <div class="hiddenlabel" i18n:translate="label_choose_language">Choose your language</div>
 	    <select name="language" id="language" onChange="document.cookie='user_language=' + this.options[this.selectedIndex].value + ';path=/'; window.location.reload()"
-                    style="width: 175px" alt="Choose your Language" title="Choose your language">
+                    style="width: 175px" alt="Choose your Language" title="Choose your language" i18n:attributes="title">
 
                 <tal:block tal:repeat="lang plone_langs">
                     <option value=""

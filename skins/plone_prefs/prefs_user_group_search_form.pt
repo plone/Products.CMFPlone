@@ -28,26 +28,26 @@
         name="users"
         method="post">
 
-        Show me
+        <span omit-tag="" i18n:translate="label_show_me">Show me</span>
 
         <select name="searching"
                 tabindex=""
                 tal:attributes="tabindex tabindex/next;"
                 tal:condition="python: not here.prefs_valid_search_restriction(searchonly)">
-            <option value="both"> Users and groups </option>
-            <option value="users"> Users </option>
-            <option value="groups"> Groups </option>
+            <option value="both" i18n:translate="">Users and groups</option>
+            <option value="users" i18n:translate="">Users</option>
+            <option value="groups" i18n:translate="">Groups</option>
         </select>
         <input type="hidden" name="searchonly"
             tal:condition="python: here.prefs_valid_search_restriction(searchonly)"
             tal:attributes="value request/searchonly" />
-        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="">users</span>
+        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="" i18n:translate="">Users</span>
         <input type="hidden" name="restrict" tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" value="users" />
-        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="">groups</span>
+        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="" i18n:translate="">Groups</span>
         <input type="hidden" name="restrict" tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" value="groups" />
         <input type="hidden" name="restrict" tal:condition="python: not here.prefs_valid_search_restriction(searchonly)" value="" />
 
-        containing
+        <span i18n:translate="label_containing">containing</span>
 
         <input tabindex=""
             type="text"
@@ -62,11 +62,14 @@
             name="prefs_user_group_search:method"
             value="Search"
             tal:attributes="tabindex tabindex/next;"
+            i18n:attributes="value"
             />
 
 
-        <h2>Returned results</h2>
-        Search string: <span tal:content="request/searchstring | default">none specified</span>
+        <h2 i18n:translate="heading_returned_results">Returned results</h2>
+        <span omit-tag="" i18n:translate="description_search_string"
+             >Search string:</span>
+        <span tal:content="request/searchstring | default" i18n:translate="">none specified</span>
         <!--restricted by <span tal:replace="searchfor"/>-->
         <table class="listing"
             id="sortable"
@@ -74,8 +77,8 @@
 
             <tr>
                 <th tal:condition="request/takeaction | nothing">&nbsp;</th>
-                <th>Name</th>
-                <th>Type</th>
+                <th i18n:translate="listingheader_name">Name</th>
+                <th i18n:translate="listingheader_type">Type</th>
             </tr>
 
             <tr class="odd"
@@ -106,8 +109,10 @@
                 </a>
                 </td>
 
-                <td tal:condition="not:usergroup/getGroupName | nothing">User</td>
-                <td tal:condition="usergroup/getGroupName | nothing">Group</td>
+                <td tal:condition="not:usergroup/getGroupName | nothing"
+                    i18n:translate="">User</td>
+                <td tal:condition="usergroup/getGroupName | nothing"
+                    i18n:translate="">Group</td>
             </tr>
 
         </table>
@@ -122,7 +127,8 @@
             tal:condition="request/takeaction | nothing"
             tal:attributes="value request/takeaction" />
 
-        <input type="hidden" name="return_form" tal:attributes="value template/getId" >
+        <input type="hidden" name="return_form" value=""
+               tal:attributes="value template/getId"/>
 
         <input class="context"
             tabindex=""
@@ -132,6 +138,7 @@
         tal:condition="request/takeaction | nothing"
             tal:attributes="tabindex tabindex/next;
                         name string:${request/takeaction}:method"
+            i18n:attributes="value"
             />
 
     </form>

@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>User/Group Search Macro(s)</title>
-	<head>
+	</head>
 	<body>
 
 <div metal:define-macro="search">
@@ -18,20 +18,25 @@
 		tal:attributes="value user/getId" />
         </span>
 
-        Show me
+        <span omit-tag="" i18n:translate="label_show_me">Show me</span>
 
         <select name="searching"
                 tabindex=""
                 tal:attributes="tabindex tabindex/next;"
 		tal:condition="python: not here.prefs_valid_search_restriction(searchonly)">
-            <option value="both"> Users and groups </option>
-            <option value="users"> Users </option>
-            <option value="groups"> Groups </option>
+            <option value="both" i18n:translate="">Users and groups</option>
+            <option value="users" i18n:translate="">Users</option>
+            <option value="groups" i18n:translate="">Groups</option>
         </select>
-	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="">users</span>
-	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="">groups</span>
+	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])"
+              tal:omit-tag=""
+              i18n:translate="">Users</span>
+	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])"
+              tal:omit-tag=""
+              i18n:translate="">Groups</span>
 
-        with names containing
+        <span omit-tag=""
+              i18n:translate="label_names_containing">with names containing</span>
 
         <input tabindex=""
                type="text"
@@ -43,7 +48,8 @@
                type="submit"
                name="search"
                value="Search"
-               tal:attributes="tabindex tabindex/next;" />
+               tal:attributes="tabindex tabindex/next;"
+               i18n:attributes="value" />
 </form>
 
 </div>
@@ -63,8 +69,11 @@
 		tal:attributes="value user/getId" />
         </span>
 
-        <h4>Candidates</h4>
-	Search string: <span tal:content="request/searchstring | default">none specified</span>
+        <h4 i18n:translate="heading_candidates">Candidates</h4>
+	<span omit-tag="" i18n:translate="description_search_string"
+             >Search string</span>:
+        <span tal:content="request/searchstring | default"
+              i18n:translate="">none specified</span>
         <table class="listing"
                id="sortable"
 	       tal:condition="exists:request/searchstring"
@@ -72,8 +81,8 @@
 
             <tr>
                 <th tal:condition="takeaction | nothing">&nbsp;</th>
-                <th>Name</th>
-                <th>Type</th>
+                <th i18n:translate="listingheader_name">Name</th>
+                <th i18n:translate="listingheader_type">Type</th>
             </tr>
 
 	    <tr class="odd"
@@ -93,18 +102,22 @@
 
                 <a href="" tal:condition="not:usergroup/getGroupName | nothing"
 			tal:attributes="href string:prefs_user_details?userid=${usergroup/getId}"
-			tal:content="usergroup/getUserName | default">
+			tal:content="usergroup/getUserName | default"
+                        i18n:translate="link_username_not_available">
 			username not available
 		</a>
                 <a href="" tal:condition="usergroup/getGroupName | nothing"
 			tal:attributes="href string:prefs_group_details?groupname=${usergroup/getGroupName}"
-			tal:content="usergroup/getGroupName | default">
+			tal:content="usergroup/getGroupName | default"
+                        i18n:translate="link_groupname_not_available">
 			groupname not available
 		</a>
 		</td>
 
-                <td tal:condition="not:usergroup/getGroupName | nothing">User</td>
-                <td tal:condition="usergroup/getGroupName | nothing">Group</td>
+                <td tal:condition="not:usergroup/getGroupName | nothing"
+                    i18n:translate="">User</td>
+                <td tal:condition="usergroup/getGroupName | nothing"
+                    i18n:translate="">Group</td>
            </tr>
 
         </table>
@@ -116,7 +129,8 @@
                name="addingaction"
                value="Use Selected..."
 	       tal:condition="exists:request/searchstring"
-               tal:attributes="tabindex tabindex/next;" />
+               tal:attributes="tabindex tabindex/next;"
+               i18n:attributes="value" />
 	</tal:hide>
 
 	<div metal:define-slot="removables" />

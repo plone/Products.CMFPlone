@@ -22,21 +22,22 @@
     </tr>
 
     <tr>
-        <th> Status </th><td tal:content="here/getStatus"> status </td>
+        <th i18n:translate="label_status"> Status </th><td tal:content="here/getStatus"> status </td>
     </tr>
 
     <tr tal:condition="here/hasError">
-        <th> Error </th>
+        <th i18n:translate="">Error</th>
         <td tal:condition="here/hasError">
-            <img src="/misc_/PageTemplates/exclamation.gif">
-            There were Errors during install, check Transcript
+            <img src="/misc_/PageTemplates/exclamation.gif" />
+            <span omit-tag=""
+                  i18n:translate="error_installed_product">There were Errors during install, check Transcript</span>
         </td>
     </tr>
 
 
 </table>
 
-<h2>Transcript</h2>
+<h2 i18n:translate="heading_installed_transcript">Transcript</h2>
 
 <span tal:content="structure python:here.getTranscriptAsText().replace('\n','<br>')">
 </span>

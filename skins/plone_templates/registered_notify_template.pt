@@ -1,5 +1,6 @@
+<span tal:omit-tag="">
 To: <span tal:replace="options/member/email" />
-From: "<span tal:replace="here/email_from_name" />" <span tal:replace="structure &lt;" /><span tal:replace="here/email_from_address" /><span tal:replace="structure &gt;" />
+From: &quot;<span tal:replace="here/email_from_name" />&quot; <span tal:replace="structure &lt;" /><span tal:replace="here/email_from_address" /><span tal:replace="structure &gt;" />
 Subject: <span i18n:translate="mailtemplate_registered_portal_membership_info" tal:omit-tag="">Portal Membership Information</span>
 Content-Type: text/plain; charset=<span tal:replace="here/portal_properties/site_properties/default_charset" />
 
@@ -20,3 +21,4 @@ Password   : <span i18n:name="password" tal:omit-tag="" tal:content="options/pas
 </div>
 --
 <span tal:replace="here/email_from_name" />
+</span>

@@ -10,14 +10,14 @@
 
 
 <div metal:fill-slot="main" i18n:domain="plone" tal:define="QI python:here.portal_url.getPortalObject().portal_quickinstaller">
-    <h2> Products available for install </h2>
+    <h2 i18n:translate="heading_install_products_available"> Products available for install </h2>
     <form action="installProducts" tal:attributes="action python:QI.absolute_url()+'/installProducts'" method="POST">
 
         <table>
             <tr tal:repeat="product QI/listInstallableProducts">
                 <td><input class="noborder"
-                           type=checkbox
-                           name=products:list
+                           type="checkbox"
+                           name="products:list"
                            tal:attributes="value product/id"
                            /></td>
                 <td tal:content="product/id">product name</td>
@@ -27,31 +27,32 @@
             </tr>
         </table>
         <input class="context"
-               type=submit
+               type="submit"
                i18n:attributes="value"
                value="Install"
                />
     </form>
 
-    <h2> Installed products </h2>
+    <h2 i18n:translate="heading_install_products_installed"> Installed products </h2>
     <form action="uninstallProducts" tal:attributes="action python:QI.absolute_url()+'/uninstallProducts'" method="POST">
 
         <table>
             <tr tal:repeat="product QI/listInstalledProducts">
                 <td><input class="noborder"
-                           type=checkbox
-                           name=products:list tal:attributes="value product/id"
+                           type="checkbox"
+                           name="products:list" tal:attributes="value product/id"
                            /></td>
                 <td>
                      <span tal:content="product/id" >product name</span>
 
-                     (<a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">Install log</a>)
+                     (<a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview"
+                         i18n:translate="link_install_products_log">Install log</a>)
 
                 </td>
             </tr>
         </table>
         <input class="context"
-               type=submit
+               type="submit"
                i18n:attributes="value"
                value="Uninstall"
                />

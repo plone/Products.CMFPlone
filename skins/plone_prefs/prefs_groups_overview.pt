@@ -88,6 +88,7 @@
           name="prefs_group_add:method"
           value="Add New Group"
           tal:attributes="tabindex tabindex/next;"
+          i18n:attributes="value"
           />
 
         <table class="listing"

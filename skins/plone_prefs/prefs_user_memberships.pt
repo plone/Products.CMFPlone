@@ -25,11 +25,13 @@
   <li class="">
     <a href=""
        tal:attributes="href string: prefs_user_details?userid=${userid}"
+       i18n:translate=""
     >User</a>
   </li>
   <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}?userid=${userid}"
+       i18n:translate=""
     >Group Membership</a>
   </li>
 </ul>
@@ -69,8 +71,8 @@
 	<table class="listing">
 
             <tr>
-	      <th>Group name</th>
-	      <th>Remove Group</th>
+	      <th i18n:translate="listingheader_group_name">Group name</th>
+	      <th i18n:translate="listingheader_group_remove">Remove Group</th>
             </tr>
 
 	  <tr tal:repeat="groupid user/getGroups" class="odd">
@@ -100,7 +102,8 @@
         <input class="destructive"
                type="submit"
                name="deleteaction"
-               value="Remove selected groups" />
+               value="Remove selected groups"
+               i18n:attributes="value" />
 	  </div>
 
 	</div>

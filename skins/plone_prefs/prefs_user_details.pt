@@ -30,14 +30,16 @@ we eventually might want to merge this form with personalize_form
 
   <li class="selected">
     <a href=""
-       tal:attributes="href string:${template/id}?userid=${userid}">
+       tal:attributes="href string:${template/id}?userid=${userid}"
+       i18n:translate="">
       Edit User Details
     </a>
   </li>
 
   <li class="">
     <a href=""
-       tal:attributes="href string: prefs_user_memberships?userid=${userid}">
+       tal:attributes="href string: prefs_user_memberships?userid=${userid}"
+       i18n:translate="">
       Group Membership
     </a>
   </li>
@@ -78,7 +80,7 @@ we eventually might want to merge this form with personalize_form
                 size="30"
                 tabindex=""
                 name = "portrait"
-                tal:attributes="tabindex tabindex/next">
+                tal:attributes="tabindex tabindex/next" />
         </div>
         <p/>
         <input type="hidden" name="userid" value="username"

@@ -15,10 +15,12 @@
 
 <ul id="contentTabs">
   <li class="selected">
-    <a href="prefs_default_workflow_form">Default workflow configuration</a>
+    <a href="prefs_default_workflow_form"
+       i18n:translate="link_workflow_default">Default workflow configuration</a>
   </li>
   <li class="">
-    <a href="prefs_advanced_workflow_form">Advanced</a>
+    <a href="prefs_advanced_workflow_form"
+       i18n:translate="link_workflow_advanced">Advanced</a>
   </li>
 </ul>
 <div id="contentBar">&nbsp;</div>
@@ -36,8 +38,8 @@
         
         <form name="change_default_workflow" action="change_default_workflow" method="POST">
 
-	<p>
-	Workflow let you manage the publication process in your site. Plone ships with 4 common workflows:
+	<p i18n:translate="description_workflow_common">
+	Workflows let you manage the publication process in your site. Plone ships with 4 common workflows:
         </p>
         
         <div class="group">
@@ -52,16 +54,16 @@
 	                tal:attributes="tabindex tabindex;"
                         />
           <label for="one_step_workflow" i18n:translate="label_one_step_workflow">One step publication workflow</label> <br />
-	  <p>if you want to have all the contents immediately available for everyone, 
+	  <p i18n:translate="description_workflow_one_step">if you want to have all the contents immediately available for everyone, 
              without having any review process you shoud use this One step publication. 
           </p>
-          <span>You can also change the starting state of all documents: </span>
+          <span i18n:translate="label_workflow_default_state">You can also change the starting state of all documents: </span>
           <select id="select_default_state"
 	          name="default_state"
                   tabindex=""
                   alt="">
           
-              <option value="current">Select</option>
+              <option value="current" i18n:translate="">Select</option>
               <metal:block tal:repeat="wf workflow_list">
                   <option value="wf"                  
                               tal:attributes="value wf"
@@ -82,11 +84,11 @@
                         onblur=""
 	                tal:attributes="tabindex tabindex;"
                         />
-          <label for="one_step_workflow" i18n:translate="label_one_step_workflow">Community workflow</label> <br />
-	  <p>if you want to have all the contents immediately available for everyone, 
+          <label for="one_step_workflow" i18n:translate="label_community_workflow">Community workflow</label> <br />
+	  <p i18n:translate="description_workflow_community">if you want to have all the contents immediately available for everyone, 
              but you also want to have a review process you shoud use this! 
           </p>
-          <span>You can also change the starting state of all documents: </span>
+          <span i18n:translate="label_workflow_default_state">You can also change the starting state of all documents: </span>
           <select id="select_default_state"
 	          name="default_state"
                   tabindex=""
