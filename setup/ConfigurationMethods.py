@@ -162,7 +162,14 @@ def modifyActionProviders(self, portal):
             action.title='Contents'
             action.name='Contents'
     at._actions=_actions
-    
+   
+    dt=getToolByName(portal, 'portal_discussion')
+    _actions=dt._cloneActions()
+    for action in _actions:
+        if action.id=='reply':
+            action.visible=0
+    dt._actions=_actions
+ 
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
     mt.addAction('myworkspace'
