@@ -23,16 +23,17 @@ cmfplone_globals = {}
 
 __version__='0.9'
 default_frontpage=r"""
-<p> You can customize the frontpage by editing the index_html Document that is in your root folder.
-In fact this is how you use your new system.  Create folders and put content in those folders. ;)
-Its a very simple and powerful system.  </p>
+<p> 
+You can customize this frontpage by editing the index_html Document that is in your root folder.
+In fact this is how you use your new system.  Create folders and put content in those folders.
+It's a very simple and powerful system.  </p>
 <p> For more information: </p>
 <ul> 
    <li> Plone website - <a href="http://www.plone.org">plone.org</a> </li>
    <li> ZOPE site - <a href="http://www.zope.org">ZOPE</a> </li>
    <li> CMF website - <a href="http://cmf.zope.org">CMF</a> </li>
 </ul>
-<p> There is a enormous user community for you to take advantage of. 
+<p> There is an enormous user community for you to take advantage of. 
 There are <a href="http://www.zope.org/Resources/MailingLists">mailing lists</a>, 
 <a href="http://www.zopelabs.com/">websites</a>, and 
 <a href="http://www.zope.org/Documentation/Chats">online chat</a> mediums available to 
@@ -211,22 +212,10 @@ def install_PloneSkins(self, out):
         out.write( "Plone Default skin unable to install\n" )
     
     try:
-        install_SubSkin(self, out, 'Plone DHTML', 'plone_ie55')
-        out.write('Plone DHTML subskin successfully installed\n')
-    except:
-        out.write('Plone DHTML subskin unable to install\n')
-    
-    try:
         install_SubSkin(self, out, 'Plone Mozilla', 'plone_mozilla')
         out.write('Mozilla subskin successfully installed\n')
     except:
         out.write('Mozilla subskin unable to successfully install\n')
-
-    try:
-        install_SubSkin(self, out, 'Plone Konqueror', 'plone_konqueror')
-        out.write('Konqueror subskin successfully installed\n')
-    except:
-        out.write('Konqueror subskin unable to successfully install\n')
 
     try:
         install_SubSkin(self, out, 'Plone XP', 'plone_xp')
