@@ -10,7 +10,7 @@
        tal:define="results python:container.portal_catalog(request);
                  Batch python:modules['ZTUtils'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
-                 b_size python:10;b_start python:0;b_start request/b_start | b_start;">
+                 b_size python:30;b_start python:0;b_start request/b_start | b_start;">
 
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);
@@ -42,6 +42,40 @@
         </div>
 
         <!-- Search results -->
+        
+        <table class="listing"
+                tal:condition="here/contentValues">
+        
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Last Modified</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+
+            <tbody>
+	        <metal:block tal:repeat="result batch">
+                <tr class="even" 
+		            tal:define="oddrow repeat/result/odd;
+                                result_url result/getURL;
+                                url string:$result_url/view;" 
+		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+                    <td>
+		                <img src="#" tal:attributes="src result/getIcon; alt result/Type;" />
+			            <a href="#" tal:attributes="href url"
+                                    tal:content="result/title_or_id" />
+                    </td>
+                    <td tal:content="result/Creator">Author </td>
+                    <td tal:content="result/ModificationDate">Modification Date</td>
+                    <td tal:content="result/Description"> Description </td>
+                </tr>
+		</metal:block>
+            </tbody>
+        </table>
+
+        <!-- Old Search results 
         <span tal:repeat="result batch">
             <div class="rowEven"
                  tal:define="rowodd repeat/result/odd;
@@ -75,6 +109,7 @@
 
             </div>
          </span>	
+-->
 
         <!-- Navigation -->
         <div class="listingBar">
