@@ -12,7 +12,6 @@
                  results python:[r for r in results if r.getObject()];
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start python:request.get('b_start',0);
-                 usericon_imgtag here/user.gif;
                  portal_discussion nocall:here/portal_discussion;
                  isDiscussionAllowedFor nocall:portal_discussion/isDiscussionAllowedFor;
                  getDiscussionFor nocall:portal_discussion/getDiscussionFor;
