@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Fixed http://plone.org/collector/3641 - validate_start_end_date chopped
+      off the AM/PM value when saving Events.
+      [stefan]
+
     - Plone now supports/requires GRUF 3.1.1. Thanks to pjgrizel for the patches.
       [jladage]
 
