@@ -67,6 +67,13 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 
     manage_options = Folder.manage_options + \
                      CMFCatalogAware.manage_options
+
+    # fix permissions set by CopySupport.py
+    __ac_permissions__=(
+        ('Modify portal content',
+         ('manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjects',
+          'manage_renameForm', 'manage_renameObject', 'manage_renameObjects',)),
+        )
     
     def __init__(self, id, title=''):
         DefaultDublinCoreImpl.__init__(self)
@@ -104,8 +111,8 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """ adds a new PloneFolder """
         ob=PloneFolder(id, title)
-    	self._setObject(id, ob)
-    	if REQUEST is not None:
+        self._setObject(id, ob)
+        if REQUEST is not None:
             return self.folder_contents(self, REQUEST, portal_status_message='Folder added')
 
     manage_addFolder = manage_addPloneFolder
