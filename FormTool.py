@@ -29,6 +29,7 @@ validator_cache = {}  # a place to stash cached validators
 debug = 0  # enable/disable logging
 
 class FormTool(PloneBaseTool, UniqueObject, SimpleItem):
+    """ Form Tool """
     id = 'portal_form'
     meta_type= 'Plone Form Tool'
     toolicon = 'skins/plone_images/error_icon.gif'
