@@ -6,6 +6,10 @@ Plone 2.0 - Fyuti
 
    Final
 
+    - Added cleanupSkinPath method to migration_util, used to remove
+      bad skin layers when adding the Plone Tableless skin in the RC5-RC6
+      migration.[geoffd, tiran]
+
     - Updated isExpired.py to take the case that datetime instances
       are not callable.  It looks a bit strange.  But its fixed.
       Future versions should use ExpirationDate accessor.
