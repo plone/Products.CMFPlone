@@ -54,9 +54,8 @@
                        tal:condition="python: not iscurrent and sibling.meta_type == 'CMF Site'"
                        tal:define="url string:${sibling/absolute_url}"
                        tal:attributes="href url" >
-                       <img 
-                           tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
-                        />&nbsp;<tal:block tal:content="structure sibling_title" />
+                       <img tal:replace="structure here/favorite_icon.gif" 
+                       />&nbsp;<tal:block tal:content="structure sibling_title" />
                     </a>
                     <tal:block tal:condition="iscurrent">
                     <span class="even">

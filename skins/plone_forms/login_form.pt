@@ -60,7 +60,7 @@ to become a member.
 			<div class="field">
 				<input type="text" 
                        name="__ac_name" 
-                       size="20"
+                       size="15"
                        tabindex=""
                        onfocus="formtooltip('user_name_help',1)" 
                        onblur="formtooltip('user_name_help',0)" 
@@ -86,7 +86,7 @@ to become a member.
         <div class="field">
             <input type="password" 
                    name="__ac_password" 
-                   size="10" 
+                   size="15" 
                    tabindex=""
                    onfocus="formtooltip('password_help',1)" 
                    onblur="formtooltip('password_help',0)"
