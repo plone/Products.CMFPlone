@@ -122,6 +122,16 @@ def normalize_tabs(self):
 					  , action=Expression('python: portal.portal_membership.getHomeUrl()+"/workspace"')))
     mt._actions=mt_actions
 
+    #make 'join' action disappear if anonymous cant add portal member
+    #this is aligned with out the 'sign in' box works in ui_slots
+    rt=getToolByName(self, 'portal_registration')
+    rt_actions=[]
+    for a in rt._actions:
+        if a.id=='join':
+            a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
+        rt_actions.append(a)
+    rt._actions=rt_actions
+    
     #get_transaction().commit(1)
     import time
     return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
