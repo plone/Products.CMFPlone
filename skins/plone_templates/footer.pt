@@ -3,32 +3,6 @@
 <div id="footer" metal:define-macro="portal_footer" i18n:domain="plone"
      tal:define="portal_url here/portal_url">
 
-<a href="http://plone.org">
-<img src="" 
-     height="15"
-     width="80"
-     alt="Powered by Plone"
-     title="This site was built using the Plone Content Management System. Click for more information."
-     tal:attributes="src string:$portal_url/plone_powered.gif" 
-     i18n:attributes="alt title" />
-</a>
-
-<!-- 
-     
-     Please keep the Plone Powered button (or a textual link to us) if you use 
-     Plone on your site. It's a nice token of gratitude, and we appreciate your
-     help in promoting the Plone name. 
-     
-     Plone is powered by the combined forces of Zope and CMF, two absolutely
-     great systems made by Zope Corporation (http://zope.com) and they in turn
-     are based on the best programming language in the world - Python
-     (http://www.python.org). We owe these guys a lot, thanks for making Plone
-     possible!
-     
- -->
-
-<br />
-
 <span i18n:translate="description_copyright" tal:omit-tag="">
 Plone and its visual design is Copyright &copy; 2000-<span i18n:name="current_year" tal:define="now modules/DateTime/DateTime" tal:content="now/year" />
 by
@@ -36,16 +10,6 @@ by
 <span i18n:name="runyaga"><a href="http://www.runyaga.com">Alan Runyan</a></span>,
 <span i18n:name="blacktar"><a href="http://blacktar.com">Vidar Andersen</a></span>.
 </span>
-
-<hr class="netscape4" />
-
-<strong class="netscape4">
-If you can read this text, it means you are not experiencing the Plone design at its best.
-Plone makes heavy use of CSS, which means it is accessible to any internet browser, 
-but the design needs a 
-<a href="http://www.webstandards.org/act/campaign/buc/">standards-compliant browser to look like we intended it</a>. 
-Just so you know ;)
-</strong>
  
 </div>
 

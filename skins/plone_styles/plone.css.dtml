@@ -183,7 +183,7 @@ textarea {
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
     background-color: white;
-    width: 100%;
+    width: 98%;
     padding: 0.1em;
 }
 input {
@@ -475,7 +475,7 @@ div.byline {
     font-size: 80%;
     clear: both;
     font-weight: normal;
-    color: gray;
+    color: #999999;
 }
 
 div#footer {
@@ -484,10 +484,19 @@ div#footer {
     border-bottom: &dtml-footerBorder;;
     color: &dtml-mainFontColor;;
     float: none;
-    margin: 2em 0em;
+    margin: 2em 0em 1em 0em;
     padding: 0.5em 0em 1em 0em;
     text-align: center;
 }
+
+div#colophon {
+    color: &dtml-mainFontColor;;
+    float: none;
+    margin: 0em 0em 2em 0em;
+    padding: 0.5em 0em 1em 0em;
+    text-align: center;
+}
+
 
 /*
 ** Widgets

@@ -62,11 +62,7 @@ abbr, acronym, .explain { cursor: help; }
 code { }
 pre { padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
 
-
-#portalTabs li, #personalbar li, #contentTabs li {
-  display: inline;
-  display: none;
-}
+#portalTabs li, #personalbar li, #contentTabs li { display: inline; display: none; }
 
 div#top { background: &dtml-topBackground;; width: 100%; }
 div#searchBox { float: right; text-align: right; }
@@ -85,7 +81,7 @@ div#pathBar { padding: 0 0 0 1em; margin: 0;}
 #editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
 div.message { background: &dtml-messageBackground;; font: <dtml-var messageFont>; padding: 0.5em 1em; vertical-align: middle; }
 #description { font: <dtml-var mainFont>; display: block; }
-div#footer { float: none; padding: 0em 0em 0em 0em; text-align: center; }
+div#footer { float: none; clear: both; padding: 0em 0em 0em 0em; text-align: center; }
 
 div.row {  }
 div.rowEven {  }

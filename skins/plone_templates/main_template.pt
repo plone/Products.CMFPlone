@@ -152,7 +152,7 @@
     <!-- end of the IE-fix wrap -->
 </div>
 
-<div class="clear"></div>
+<div class="clear">&nbsp;</div>
 <!-- end column wrapper -->
 
 <hr class="netscape4" />
@@ -160,6 +160,12 @@
 <div id="footer" metal:use-macro="here/footer/macros/portal_footer">
   Footer
 </div>
+
+<div id="footer" metal:use-macro="here/colophon/macros/colophon">
+  The colophon area - contains details about the production of
+  the site. Typically "powered by" buttons, standards, tools used.
+</div>
+
 
 </body>
 </html>

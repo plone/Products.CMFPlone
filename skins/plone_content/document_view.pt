@@ -11,6 +11,23 @@
     Title or id
     </h1>
 
+    <div id="description"
+         tal:content="here/Description">
+    description
+    </div>
+
+    <p tal:condition="not: len_text"
+       i18n:translate="no_body_text">
+    This item does not have any body text, click the edit tab to change it.
+    </p>
+
+    <div id="bodyContent"
+         class="stx"
+         tal:condition="len_text"
+         tal:attributes="class python:test(here.text_format=='structured-text', 'stx', 'plain')">
+        <div tal:replace="structure here/CookedBody" />
+    </div>
+
     <div class="byline"
          tal:define="creator here/Creator;
                      creator_home python:mtool.getHomeUrl(creator);">
@@ -29,30 +46,13 @@
         <span tal:condition="not: creator_home"
               tal:content="creator">bob</span>
 
-        -
+        <br />
 
-        <span i18n:translate="box_last_modified">last modified</span>
+        <span i18n:translate="box_last_modified">Last modified</span>
         <span tal:replace="here/ModificationDate">
         August 16, 2001 at 23:35:59
-        </span>.
+        </span>
 
-    </div>
-
-    <div id="description"
-         tal:content="here/Description">
-    description
-    </div>
-
-    <p tal:condition="not: len_text"
-       i18n:translate="no_body_text">
-    This item does not have any body text, click the edit tab to change it.
-    </p>
-
-    <div id="bodyContent"
-         class="stx"
-         tal:condition="len_text"
-         tal:attributes="class python:test(here.text_format=='structured-text', 'stx', 'plain')">
-        <div tal:replace="structure here/CookedBody" />
     </div>
 
 </metal:main>
