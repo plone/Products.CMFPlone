@@ -11,7 +11,7 @@
                                                                                      , sort_on='Date'
                                                                                      , sort_order='reverse'
                                                                                      , review_state='published')[:5]);
-                 portal_url here/portal_ur;"
+                 portal_url here/portal_url;"
      tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
 
     <div class="portlet" id="portlet-news">
