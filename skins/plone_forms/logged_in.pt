@@ -85,8 +85,9 @@
                     <input type="hidden" 
                            name="came_from" 
                            value=""
-                           tal:condition="python:request.get('came_from', '')"
-                           tal:attributes="value request/came_from" 
+                           tal:define="came_from request/came_from|nothing"
+                           tal:condition="came_from"
+                           tal:attributes="value came_from" 
                            />
                            
                

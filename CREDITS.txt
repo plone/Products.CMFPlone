@@ -22,6 +22,10 @@ Sidnei De Silva - python guru
 David Harvey - python,ZPT,Makes sures things dont fall through the cracks ;)
 Geoff Davis (plonista) - form validation refactorings, form_tool and deep insight
 
+Plone1.0alpha4
+Kevin MCKeown - q/a and testing
+
+
 #zope on irc.openprojects.net for insight and soapbox to preach
 zopelabs.com for useful scripts 
 please help out the CMF and Plone community by becoming involved.  check out http://www.plone.org/ for more information

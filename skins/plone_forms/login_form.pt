@@ -32,8 +32,12 @@ If you do not have an account here, head over to the <a href="join_form">registr
       action="logged_in" 
       method="post">
 
-	<input type="hidden" name="came_from" value=""
-	       tal:attributes="value request/came_from|request/HTTP_REFERER" />
+	<input type="hidden" 
+           name="came_from" 
+           value=""
+           tal:define="global came_from request/came_from|request/HTTP_REFERER;
+                       corrected_from python:test(came_from.split('/')[-1:][0] in ('login_form', 'logged_out'), 'logged_in', came_from);"
+	       tal:attributes="value corrected_from" />
 
 <span class="legend" i18n:translate="">Account details</span>
 	
