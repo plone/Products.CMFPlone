@@ -64,7 +64,7 @@
                     tal:content="python:result.Title or result.getId" />
                     </td>
                     <td tal:content="result/Creator">Author </td>
-                    <td tal:content="result/ModificationDate">Modification Date</td>
+                    <td tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>
                     <td tal:content="result/Description"> Description </td>
                 </tr>
 		</metal:block>
