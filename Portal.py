@@ -117,9 +117,14 @@ class PloneGenerator(Portal.PortalGenerator):
         o.setDescription("Container for portal members' home directories")
         
         skins=getToolByName(p, 'portal_skins')
-        skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
-        p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
-        p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
+        try:
+            # work around faulty CopySupport
+            # FIXME: this try/except should be removed once CopySupport is fixed
+            skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
+            p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
+            p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
+        except:
+            pass
 
     def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow
