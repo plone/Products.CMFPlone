@@ -132,6 +132,14 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         memberfolder = self.membership.getHomeFolder('user2')
         self.failUnless(memberfolder, 'wrapUser failed to create memberarea')
 
+    def testGetMemberById(self):
+        # This should work for portal users,
+        self.failIfEqual(self.membership.getMemberById(default_user), None)
+        # return None for unknown users,
+        self.assertEqual(self.membership.getMemberById('foo'), None)
+        # and return None for users defined outside of the portal.
+        self.assertEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
+
 
 # Fake upload object
 
