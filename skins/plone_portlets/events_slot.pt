@@ -28,7 +28,8 @@
                      tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
 
                     <a href=""
-                       tal:attributes="href obj/getURL">
+                       tal:attributes="href obj/getURL;
+                                       title obj/Description">
                         <img tal:replace="structure here/event_icon.gif" />
                         <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Event </span>
                     </a>
