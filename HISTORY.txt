@@ -1,12 +1,17 @@
 Changelog for Plone
 
-  (name of developer listed in brackets)
+   (name of developer listed in brackets)
 
-Plone 1.1 - Fyuti
+Plone 2.0 - Fyuti
+
+    - Content types in Plone now have the notion of both Views and
+      Actions. Actions are show on the content bar, views are tabs, as
+      earlier.
+      [limi]
 
     - Reworked the way Content Views are constructed - now you can have 
       multiple content areas with tabs on one page. Idea by [arnia], 
-      implementation by limi.
+      implementation by [limi].
 
     - Reworked the default content views, they look much better now.
       [limi]
