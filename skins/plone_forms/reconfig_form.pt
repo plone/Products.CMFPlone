@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <tal:block metal:fill-slot="base">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -68,7 +67,7 @@
         <div class="row"
              tal:define="email_from_address request/email_from_address|props/email_from_address;
                          error_email_from_address errors/email_from_address | nothing;">
-            <div class="label">
+            <div class="label required">
                 <span i18n:id="portal_from_address">Portal 'From' address</span>
 
                 <div id="portal_from_address_help"
@@ -80,7 +79,8 @@
                 </div>
             </div>
             
-            <div class="field">
+            <div class="field"
+                 tal:attributes="class python:test(error_email_from_address, 'field error', 'field')">
             
                 <div tal:condition="error_email_from_address"
                      tal:replace="structure string:$error_email_from_address <br />" />
@@ -112,7 +112,8 @@
                 </div>
             </div>
             
-            <div class="field">
+            <div class="field"
+                 tal:attributes="class python:test(error_smtp_server, 'field error', 'field')">
             
                 <div tal:condition="error_smtp_server"
                      tal:replace="structure string:$error_smtp_server <br />" />

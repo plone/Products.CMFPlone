@@ -8,7 +8,7 @@ if errors:
                                                       , script.getId()
                                                       , 'failure' )
     return edit_form()
-    
+
 REQUEST=context.REQUEST
 context.portal_properties.editProperties(REQUEST)
 default_skin=context.portal_skins.getDefaultSkin()

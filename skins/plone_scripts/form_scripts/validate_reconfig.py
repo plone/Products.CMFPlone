@@ -18,8 +18,4 @@ validator.addField('email_from_name', 'String', required=0)
 validator.addField('email_from_address', 'Email', required=0)
 validator.addField('smtp_server', 'String', required=0)
 
-errors = validator.validate(context.REQUEST)
-
-return errors
-
-
+return validator.validate(context.REQUEST)

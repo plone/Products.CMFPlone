@@ -13,6 +13,7 @@ from AccessControl import ClassSecurityInfo
 class PropertiesTool(Folder, BaseTool):
     """ Specialized PropertiesTool that contains PropertySheets """
     id = 'portal_properties'
+
     meta_type = 'Plone Properties Tool'
     meta_types = all_meta_types =  ( ( { 'name' : 'PropertySheet'
                                        , 'action' : 'manage_addPropertySheetForm' }, ) )
@@ -22,7 +23,11 @@ class PropertiesTool(Folder, BaseTool):
 
     manage_addPropertySheetForm = PageTemplateFile( 'www/addPropertySheet'
                                                   , globals() )
-    
+
+    def title(self):
+        """ return BaseTool title """
+        return BaseTool.title(self)
+
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ add a new PropertySheet """
         o=SimpleItemWithProperties(id, title)
@@ -58,8 +63,7 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
     A common base class for objects with configurable
     properties in a fixed schema.
     """
-    manage_options = (
-        PropertyManager.manage_options
-        + SimpleItem.manage_options)
+    manage_options = ( PropertyManager.manage_options
+                     + SimpleItem.manage_options)
 
 InitializeClass( SimpleItemWithProperties )
