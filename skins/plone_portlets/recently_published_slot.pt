@@ -17,6 +17,8 @@
 
     <div class="box" id="portlet-recently-published">
 
+    <div class="padding">
+
         <h5 i18n:translate="box_recentlypublished">Recently Published</h5>
 
         <div class="body">
@@ -59,7 +61,8 @@
 
 </div>
 
+</div>
+
 </body>
 
 </html>
-

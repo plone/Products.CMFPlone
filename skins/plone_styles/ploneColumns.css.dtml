@@ -48,13 +48,17 @@ div#columns div#right {
 /* padding - thanks to the w3c box model :P */
 
 div#columns div#main-left div.main div.padding {
-    padding: 0.5em 2em 1em 2em;
+    padding: 1em 2em 1em 2em;
 }
 div#columns div#main-left div#left div.padding {
     padding: 2em 0em 1em 2em;
 }
 div#columns div#right div.padding {
     padding: 2em 2em 1em 0em;
+}
+div#columns div#main-left div#left div.box div.padding,
+div#columns div#right div.box div.padding {
+    padding: 0;
 }
 
 /* hide columns */

@@ -26,6 +26,8 @@
 
     <div class="box" id="portlet-navigation-tree">
 
+    <div class="padding">
+
         <h5 i18n:translate="box_navigation">Navigation</h5>
 
         <div class="body">
@@ -95,7 +97,8 @@
 
 </div>
 
+</div>
+
 </body>
 
 </html>
-

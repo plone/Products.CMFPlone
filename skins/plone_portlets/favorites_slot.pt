@@ -9,11 +9,12 @@
 <div metal:define-macro="favoritesBox"
      tal:omit-tag=""
      tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
-     tal:condition="nocall: folder"
-     >
+     tal:condition="nocall: folder">
 
     <div class="box"
          tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);" id="portlet-favorites">
+
+    <div class="padding">
 
         <h5 i18n:translate="box_my_favorites">My Favorites</h5>
 
@@ -44,7 +45,8 @@
 
 </div>
 
+</div>
+
 </body>
 
 </html>
-

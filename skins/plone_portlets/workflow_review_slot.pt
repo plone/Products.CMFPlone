@@ -13,6 +13,8 @@
 
     <div class="box" id="portlet-workflow-review">
 
+    <div class="padding">
+
         <h5 i18n:translate="box_review_list">Review List</h5>
 
         <div class="body">
@@ -36,6 +38,8 @@
         </div>
 
     </div>
+
+</div>
 
 </div>
 

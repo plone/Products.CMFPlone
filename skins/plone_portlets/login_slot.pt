@@ -13,6 +13,8 @@
 
     <div class="box" tal:define="portal_url portal_url|here/portal_url" id="portlet-login">
 
+    <div class="padding">
+
         <h5 i18n:translate="box_sign_in">Log in</h5>
 
         <div class="body">
@@ -78,7 +80,8 @@
 
 </div>
 
+</div>
+
 </body>
 
 </html>
-

@@ -16,6 +16,8 @@
 
     <div class="box" id="portlet-events">
 
+    <div class="padding">
+
         <h5 i18n:translate="box_events">Upcoming Events</h5>
 
         <div class="body">
@@ -43,7 +45,8 @@
 
 </div>
 
+</div>
+
 </body>
 
 </html>
-

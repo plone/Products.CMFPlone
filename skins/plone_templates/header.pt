@@ -36,10 +36,10 @@
            tal:content="string:@import url($portal_url/ploneColumns.css);"></style>
     
     <!-- Internet Explorer CSS Fixes -->
-    <tal:comment replace="structure string:<!--[if IE]>" />
+    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
     <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
            tal:content="string:@import url($portal_url/ploneIEFixes.css);"></style>
-    <tal:comment replace="structure string:<![endif]-->" />
+    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
 
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="screen"
@@ -92,6 +92,7 @@
     <!-- ECMAScript menu -->
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_menu.js"></script>
+
     <!-- ECMAScript calendar -->
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_inplace_calendar.js"></script>
@@ -119,5 +120,3 @@
 </head>
 
 </html>
-
-

@@ -1,11 +1,19 @@
 /* <dtml-with stylesheet_properties>
 ** WinIE Fix stylesheet
 */
-* html #documentContent {
+#documentContent {
     /* Fix for IE6 disappearing float bug */
     height: 100%;
 }
-* html .hiddenstructure {
+.hiddenstructure {
     display: none;
 }
+div#columns div.box {
+    text-align: left;
+}
+div#columns div#left,
+div#columns div#right {
+    overflow: hidden;
+}
+
 /* </dtml-with> */

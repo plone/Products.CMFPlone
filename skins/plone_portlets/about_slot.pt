@@ -14,6 +14,8 @@
 
     <div class="box" id="portlet-about">
 
+    <div class="padding">
+
         <h5 i18n:translate="box_about">About</h5>
 
         <div class="body">
@@ -80,7 +82,8 @@
 
 </div>
 
+</div>
+
 </body>
 
 </html>
-

@@ -14,6 +14,8 @@
     <div class="box" tal:define="plone_langs python:PTS.getLanguages('plone');
                                  current_lang python:PTS.negotiate(plone_langs, request)" id="portlet-language">
 
+    <div class="padding">
+
         <h5 i18n:translate="label_language">Language</h5>
 
         <div class="body">
@@ -35,6 +37,8 @@
         </div>
 
     </div>
+
+</div>
 
 </div>
 

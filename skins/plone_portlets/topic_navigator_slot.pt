@@ -16,6 +16,8 @@
 
     <div class="box" tal:define="navExpand python:request.SESSION.get('navExpand', results[0].Title)" id="portlet-topic-navigator">
 
+    <div class="padding">
+
         <h5 i18n:translate="box_navigation">Navigation</h5>
 
         <div class="body">
@@ -48,8 +50,8 @@
     </div>
 
 </div>
+</div>
 
 </body>
 
 </html>
-
