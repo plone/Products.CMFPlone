@@ -1,4 +1,8 @@
-
+    - The *big* i18n branch was merged into main Plone, breaks the existing 
+      translation files, (none of who are complete at the moment anyway)
+      but is much more future-proof. We have this change in as early as possible,
+      and it makes everything much easier to manage from here on.
+      to have a much better control over i18n in the future. 
     - subjects(keywords) in metadata tool were being saved with null property.. automatically relating items
     - filtering was broke changed folder_contents had filter_by_Type where CMF1.3 now uses filter_by_portal_type 
       this required changed to folder_contents and filterTypes - only 2 lines of code to change ;) - thanks Florrent!
