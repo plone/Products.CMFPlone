@@ -5,6 +5,12 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
+<head metal:fill-slot="base"
+      tal:define="global disable_border python:request.set('disable_border', 1)"
+      tal:replace="nothing">
+    Disable the green border for error messages
+</head>
+
 <body>
 
 <div metal:fill-slot="main">
