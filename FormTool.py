@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.23.2.3 2002/10/24 10:21:20 plonista Exp $
+# $Id: FormTool.py,v 1.24 2002/10/28 23:21:41 runyaga Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.23.2.3 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.24 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -16,7 +16,6 @@ from OFS.ObjectManager import bad_id
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import getToolByName
-from NavigationTool import NavigationError
 from PloneUtilities import log_deprecated
 from interfaces.FormTool import IFormTool, ICMFForm
 from PloneUtilities import log as debug_log
@@ -43,6 +42,10 @@ class FormTool(UniqueObject, SimpleItem):
     def __before_publishing_traverse__(self, other, REQUEST):
         # kill off everything in the traversal stack after the item after portal_form
         stack = REQUEST.get('TraversalRequestNameStack', None)
+#        self.log('stack = ' + str(stack))
+        # get rid of extra portal_forms
+        while 'portal_form' in stack:
+            stack.remove('portal_form')
         REQUEST.set('TraversalRequestNameStack', [stack[-1]])
 
 
@@ -104,13 +107,14 @@ class FormTool(UniqueObject, SimpleItem):
 
 
     def __bobo_traverse__(self, REQUEST, name):
-        self.log('in bobo_traverse (%s)' % name)
+#        self.log('in bobo_traverse (%s)' % name)
         # We intercept traversal when a form needs validation.  We insert a FormValidator object
         # into the traversal stack which, when published, does the proper validation and then
         # hands off to the navigation tool to determine the correct object to publish.
 
         # see if we are handling validation for this form
         validators = self.getValidators(name)
+#        self.log('validators = ' + str(validators))
         if validators is None:
 
             # make sure this is a normal REQUEST
@@ -168,7 +172,7 @@ class FormTool(UniqueObject, SimpleItem):
             else:
                 return REQUEST.RESPONSE.notFoundError("%s\n" % (name))
 
-        self.log('returning validator')
+#        self.log('returning validator')
         return FormValidator(name, validators, aq_parent(self)).__of__(aq_parent(self)) # wrap in acquisition layer
 
 
@@ -208,9 +212,9 @@ class FormValidator(SimpleItem):
     def __init__(self, form, validators, context):
         self.form = form
         self.validators = validators
-        self.id = "temp"
+        self.id = "Error" # This should only be seen if an error occurs
         self.title = None
-        self.log("created validator")
+#        self.log("created validator")
 
     def __str__(self):
         return 'FormValidator, form=%s, validators=%s' % \
@@ -220,8 +224,7 @@ class FormValidator(SimpleItem):
     security.declarePublic('__call__')
     def __call__(self, client=None, REQUEST={}, RESPONSE=None, **kw):
         """ """
-        self.log("__call__")
-        trace = ['\n']
+        trace = []
 
         try:
             trace.append('Invoking validation')
@@ -238,10 +241,10 @@ class FormValidator(SimpleItem):
                 self.title = getattr(obj, 'title', None)
             return apply(obj, (), kwargs)
 
-        except NavigationError:
+        except:
+            nav = getToolByName(self, 'portal_navigation')
+            nav.logTrace(trace)
             raise
-        except Exception, e:
-            raise NavigationError(e, trace)
 
 
     index_html = None  # call __call__, not index_html
@@ -286,8 +289,10 @@ class FormValidator(SimpleItem):
                     trace.append("\t context changed to '%s'" % str(context))
             trace.append('Validation returned (%s, %s)' % (status, str(kwargs)))
             return (status, kwargs, trace)
-        except Exception, e:
-            raise NavigationError(e, trace)
+        except:
+            nav = getToolByName(self, 'portal_navigation')
+            nav.logTrace(trace)
+            raise
 
 
     security.declarePublic('log')

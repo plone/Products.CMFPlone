@@ -12,9 +12,14 @@
 # for now e will start off with the top tabs, 'portal_tabs'
 
 tabs={}
-if obj is None:
-    obj = context
-contentpath=context.portal_url.getRelativeContentPath(obj)
+contentpath = None
+try:
+    # bad things can happen to context if an exception is thrown during traversal
+    if obj is None:
+        obj = context
+    contentpath=context.portal_url.getRelativeContentPath(obj)
+except:
+    pass
 if not contentpath:
     tabs['portal']=default_tab
 else:

@@ -57,7 +57,7 @@ def twothree(portal):
     if 'allow_sendto' not in _ids:
         p._setProperty('allow_sendto', 0, 'boolean')
     if 'enable_navigation_logging' not in _ids:
-        p._setProperty('enable_navigation_logging', 0, 'int')
+        p._setProperty('enable_navigation_logging', 0, 'boolean')
     # /adding
 
     #adding navigation properties

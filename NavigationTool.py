@@ -1,6 +1,6 @@
-# $Id$
-# $Source$
-__version__ = "$Revision$"[11:-2] + " " + "$Name$"[7:-2]
+# $Id: NavigationTool.py,v 1.34 2002/10/30 22:39:38 lalo Exp $
+# $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
+__version__ = "$Revision: 1.34 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -35,7 +35,7 @@ class NavigationTool (UniqueObject, SimpleItem):
     __implements__ = INavigationController,
 
     security.declarePublic('getNext')
-    def getNext(self, context, script, status, trace=['\n'], **kwargs):
+    def getNext(self, context, script, status, trace=[], **kwargs):
         """ Perform the next action specified by in portal_properties.navigation_properties.
             Get the object that will perform the next action, then call the object
             to perform the next action.
@@ -56,14 +56,13 @@ class NavigationTool (UniqueObject, SimpleItem):
             (obj, kwargs) = self.getNextObject(context, script, status, trace, **kwargs)
             return apply(obj, (), {'REQUEST':context.REQUEST})
 
-        except NavigationError:
+        except:
+            self.logTrace(trace)
             raise
-        except Exception, e:
-             raise NavigationError(e, trace)
 
 
     security.declarePublic('getNextObject')
-    def getNextObject(self, context, script, status, trace=['\n'], **kwargs):
+    def getNextObject(self, context, script, status, trace=[], **kwargs):
         """ Get the object that will perform the next action specified by
             portal_properties.navigation_properties.  Returns an object that
             can be placed on the traversal stack so that it will get called
@@ -84,7 +83,8 @@ class NavigationTool (UniqueObject, SimpleItem):
             trace.append('Looking up transition for %s.%s.%s' % (context, script, status))
             (transition_type, redirect, transition) = self.getNavigationTransition(context, script, status)
             trace.append('Found transition: %s, %s' % (transition_type, transition))
-            self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
+            self.log(trace,'getNextObject')
+            self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNextObject')
 
             if transition_type == 'action':
                 return self._getAction(context, transition, redirect, trace, **kwargs)
@@ -94,11 +94,9 @@ class NavigationTool (UniqueObject, SimpleItem):
                 return self._getScript(context, transition, redirect, trace, **kwargs)
             else:
                 raise KeyError('Unknown transition type %s' % transition_type)
-        except NavigationError:
+        except:
+            self.logTrace(trace)
             raise
-        except Exception, e:
-             raise NavigationError(e, trace)
-
 
     
     def addTransitionFor(self, content, script, status, destination):
@@ -301,15 +299,17 @@ class NavigationTool (UniqueObject, SimpleItem):
             self.log('status = %s, new_context = %s, kwargs = %s' % (str(status), str(new_context), str(kwargs)), '_getScript')
 
             return self.getNextObject(new_context, script, status, trace, **kwargs)
-        except NavigationError:
+        except:
+            self.logTrace(trace)
             raise
-        except Exception, e:
-            raise NavigationError(e, trace)
 
 
     def _getUrl(self, context, url, redirect, trace, **kwargs):
         try:
             if redirect:
+                # don't pass along errors to subsequent forms
+                if kwargs.has_key('errors'):
+                    del kwargs['errors']
                 url = self._addUrlArgs(url, kwargs)
                 if len(urlparse(url)[1]) == 0:
                     # no host specified -- url is relative
@@ -338,10 +338,9 @@ class NavigationTool (UniqueObject, SimpleItem):
                 self.log("url = %s, redirect = %s, context = %s" % (str(url), str(redirect), str(context)), '_getUrl')
                 trace.append("_getUrl: url = %s, redirect = %s, context = %s" % (str(url), str(redirect), str(context)))
                 return (context.restrictedTraverse(url), kwargs)
-        except NavigationError:
+        except:
+            self.logTrace(trace)
             raise
-        except Exception, e:
-            raise NavigationError(e, trace)
 
 
     def _getAction(self, context, action_id, redirect, trace, **kwargs):
@@ -354,10 +353,9 @@ class NavigationTool (UniqueObject, SimpleItem):
             if next_action.startswith('portal_form/') and context.REQUEST.URL.find('portal_form') != -1:
                 next_action = next_action[len('portal_form/'):]
             return self._getUrl(context, next_action, redirect, trace, **kwargs)
-        except NavigationError:
+        except:
+            self.logTrace(trace)
             raise
-        except Exception, e:
-            raise NavigationError(e, trace)
 
 
     def _addUrlArgs(self, base, kwargs):
@@ -393,6 +391,24 @@ class NavigationTool (UniqueObject, SimpleItem):
         if loc:
             prefix = prefix + '. ' + str(loc)
         debug_log(prefix+': '+str(msg))
+
+
+    RE_BAD_SCRIPT = re.compile("\'None\' object has no attribute \'co_varnames\'")
+    
+    def logTrace(self, trace, clearTrace=1):
+        if trace:
+            formattedTrace = '\n'.join(trace)+'\n\n'
+            pt = getToolByName(self, 'plone_utils')
+            exceptionString = pt.exceptionString()
+            hint = ''
+            if self.RE_BAD_SCRIPT.search(exceptionString):
+                hint = hint + 'The script or validator on which mapply is operating may not be compiling properly.\n'
+            import zLOG
+            zLOG.LOG('Plone: ', 0, exceptionString \
+                    + '\n\nNavigation trace: (version ' + __version__.strip() + ')\n-----------------' \
+                    + formattedTrace + hint)
+            if clearTrace:
+                del trace[0:len(trace)]  # clear out the trace so that logging is only done once up the exception stack
 
 
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
@@ -455,35 +471,6 @@ class NavigationTool (UniqueObject, SimpleItem):
                                                              , url_params) )
               
 InitializeClass(NavigationTool)
-
-
-class NavigationError(Exception):
-    RE_BAD_VALIDATOR = re.compile("\'None\' object has no attribute \'co_varnames\'")
-
-    def __init__(self, exception, trace):
-        global __version__
-        self.exception = exception
-        self.trace = '\n'.join(trace) + '\n\n' + ''.join(traceback.format_exception(*sys.exc_info()))
-        import zLOG
-        zLOG.LOG('Plone: ', 0, str(self.exception) \
-                + '\n\nNavigation trace: (version ' + __version__.strip() + ')\n-----------------' \
-                + self.trace + self._helpfulHints())
-#        self.trace = self.trace.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-#        return '<pre>' + str(self.exception) \
-#                       + '\n\nNavigation trace: (version ' + __version__.strip() + ')\n-----------------' \
-#                       + self.trace + self._helpfulHints() + '</pre>'
-
-    def __str__(self):
-        return str(self.exception)
-
-    def _helpfulHints(self):
-        st = str(self.exception)
-        hint = ''
-        if self.RE_BAD_VALIDATOR.search(st):
-            hint = hint + 'The script or validator on which mapply is operating may not be compiling properly.\n'
-        if hint:
-            hint = '\n\nHelpful Hints:\n--------------\n' + hint
-        return hint
 
 
 # Eventually this object will be the preferred return type for scripts that are handled

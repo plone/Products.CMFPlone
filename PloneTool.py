@@ -265,7 +265,7 @@ class PloneTool (UniqueObject, SimpleItem):
         if type(s[0]) == type(''):
             return s[0]
         return str(s[1])
-        return sys.exc_info()[0]
+
 
 InitializeClass(PloneTool)
 
