@@ -47,7 +47,7 @@ div.rowOdd {
     padding-bottom: 4em;
     margin-bottom: 1em;
     margin-top: 2em;
-    width: 89%;
+    width: 95%;
 }
 
 .legend {

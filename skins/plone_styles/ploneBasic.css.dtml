@@ -39,17 +39,6 @@ body {
     scrollbar-3dlight-color: &dtml-mainTabBorderColorSelected;;
     scrollbar-shadow-color: &dtml-mainTabBorderColorSelected;;
     scrollbar-arrow-color: &dtml-mainTabFontColorSelected;;
-
-
-/* Original values
-    scrollbar-base-color: #dee7ec;
-    scrollbar-highlight-color: #dee7ec;
-    scrollbar-track-color: #f7f9fa;
-    scrollbar-darkshadow-color: #f7f9fa;
-    scrollbar-3dlight-color: #8cacbb;
-    scrollbar-shadow-color: #8cacbb;
-    scrollbar-arrow-color: #8cacbb;
-*/
 }
 
 
