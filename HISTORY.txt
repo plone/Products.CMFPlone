@@ -16,7 +16,11 @@ Plone 1.0 beta3
       Now folders that begin with a . will not show up.  Ideally we would want this turned 
       off if we were a Manager.  This is something people can customize themself.  
       .personal should be for: Portrait, Personal Events, etc.  
-      
+    - added getFolderContents which wraps listFolderContents for backwards compatibility
+      with PortalFolder.  Since it does not provide a suppressHiddenFiles arg we will
+      manually apply the suppression in the script.
+      navtree_builder has been modified as well so that we will not show these in the navigation tree
+
     *NOTE*
     We released a beta3 tarball and then decided to fix the above before a final beta3 tarball release
 

@@ -18,14 +18,14 @@
                  global member here/portal_membership/getAuthenticatedMember;
                  standalone python:1;
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+                 tabindex python:Iterator();
+                 folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);">
 
     <form name="folderContentsForm"
           method="post"
           action="folder_object"
           tal:attributes="action here/absolute_url"
-          tal:define="global folder_contents python:here.listFolderContents( contentFilter=filter, suppressHiddenFiles=1 ); 
-                      b_start python:request.get('b_start', 0);
+          tal:define="b_start python:request.get('b_start', 0);
                       results python:here.sortObjectValues(folder_contents);
                       global DateTime python:modules['DateTime'].DateTime;
                       Batch python:modules['Products.CMFPlone'].Batch;

@@ -146,8 +146,8 @@ def childFinder(obj,folderishOnly=1):
             cat = getToolByName( obj, 'portal_catalog' )
             
             folderishOnly= not showTopicResults #in order to view all topic results in the tree 
-    
-            res=obj.listFolderContents()
+
+            res=obj.getFolderContents(suppressHiddenFiles=1)
             subs=obj.queryCatalog()
             
             # get the objects out of the cat results
@@ -161,7 +161,7 @@ def childFinder(obj,folderishOnly=1):
         else:    
             #traversal to all 'CMFish' folders
             if hasattr(obj.aq_explicit,'listFolderContents'):
-                res=obj.listFolderContents()
+                res=obj.getFolderContents(suppressHiddenFiles=1)
             else:
                 #and all other *CMF* folders
                 res=obj.contentValues()
