@@ -38,6 +38,11 @@ textarea {
     width: 88%;
 }
 
+.hiddenStructure { /* This is necessary to eliminate the 1px high object in
+                      the document flow in place of .hiddenStructure block objects */
+    position: absolute;
+}
+
 body { /* These work in IE only, changes the look of the scrollbar + textareas */
     scrollbar-base-color: &dtml-globalBackgroundColor;;
     scrollbar-highlight-color: &dtml-globalBackgroundColor;;
