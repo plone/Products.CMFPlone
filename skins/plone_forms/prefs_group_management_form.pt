@@ -74,7 +74,9 @@
                                      groupname python:this_group">
          
             <td>
-                <a href="XXX_prefs_group_management_individual_form">
+                <a href="prefs_group_management_individual_form"
+                   tal:define="removeprefix python:groupname.getId()[len(acl_users.getGroupPrefix()):]"
+                   tal:attributes="href string:${here/absolute_url}/prefs_group_management_individual_form?groupname=$removeprefix">
                    
                     <img src=""
                          tal:replace="structure portal/group.gif" />&nbsp;<span 

@@ -11,7 +11,8 @@
 <div metal:fill-slot="main"
      tal:define="errors python:request.get('errors', {});
                 Batch python:modules['ZTUtils'].Batch;
-                b_start python:request.get('b_start',0);"
+                b_start python:request.get('b_start',0);
+                acl_users here/acl_users;"
      tal:condition="here/rejectAnonymous" >
 	
     <h1 i18n:translate="">User Management</h1>
@@ -60,8 +61,14 @@
             </tr>
             
             <metal:block tal:repeat="this_user batch">
+           
+            <tal:comment replace="nothing">
+            Unfortunately alot of this stuff is tied to the GroupUserFolder.  Things like getUsers()
+            will return both groups and users 8-( - so you have to do alot of filtered like the below not:
+            </tal:comment>
             
             <tr tal:define="oddrow repeat/this_user/odd"
+                tal:condition="not: python: this_user.getId().startswith(acl_users.getGroupPrefix())"
                  tal:attributes="class python:test(oddrow,'odd','even')">
             
             <metal:block tal:define="roles python: this_user.getRoles();

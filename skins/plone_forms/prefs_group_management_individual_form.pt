@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<tal:head metal:fill-slot="head_slot"
+          tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {});
+                 acl_users here/acl_users;
+                 portal_roles mtool/getPortalRoles;
+                 groupname request/groupname|nothing;
+                 grouproles python:request.set('grouproles', []);
+                 groupnames python:acl_users.getGroupNames(without_prefix=1);
+                 groupexists python:groupname in groupnames;
+                 groupprefix acl_users/getGroupPrefix;"
+     tal:condition="here/rejectAnonymous" >
+
+    <tal:conditional condition="groupexists">
+        <tal:defines define="dummy python:request.set('grouproles', 
+                                                      acl_users.getGroup(groupname, prefixed=0).getRoles())" />
+    </tal:conditional>
+
+    <h1 i18n:translate="">Add/Edit Groups</h1>
+
+    <p i18n:translate="">
+    Groups are logical collections of users, like departments and business units.
+    They are not directly related to permissions on a global level, you normally
+    use Roles for that - and let certain Groups have a particular role.
+    </p>
+
+    <form action=""
+          name="groups"
+          method="post"
+          tal:attributes="action here/absolute_url">
+
+    Group Name
+    <br />
+    <input type="text" name="groupname" value="" 
+           tal:attributes="value groupname" /> 
+    <br />
+
+    Roles
+    <br />
+
+    <select name="roles:list" multiple>
+      <tal:options repeat="role portal_roles">
+            <option tal:content="role"
+                    tal:attributes="selected python:test(role in request['grouproles'], 'selected', '')">
+            Portal Role
+            </option>
+      </tal:options>
+    </select>
+    <br />
+   
+    Users
+    <br />
+    <select name="users:list" multiple>
+      <tal:options repeat="userid acl_users/Users/acl_users/getUserNames">
+        <option tal:define="userobj python:acl_users.getUser(userid);
+                            user_groups python:userobj.getGroups();"
+                tal:attributes="selected python:test(groupprefix+groupname in user_groups, 'SELECTED','')"
+                tal:content="userid">
+        username
+        </option>
+      </tal:options>
+    </select>
+    <br />
+
+
+    <br />
+    <input type="submit" name="prefs_group_edit:method" value="Apply" 
+        tal:attributes="value python:test(groupname, 'Edit group', 'Add group')" />
+
+    </form>
+
+</div>
+
+</body>
+</html>
+
