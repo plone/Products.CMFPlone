@@ -115,10 +115,6 @@ div.personalBar a{
     font-weight: &dtml-mainTabFontWeight;;
 }
 
-div.personalBar img {
-	vertical-align: text-top;
-}
-
 div.pathBar {
     /* The path bar, including breadcrumbs and add to favorites */
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
@@ -127,10 +123,6 @@ div.pathBar {
     padding-left: 2em;
     padding-right: 2em;
     text-transform: &dtml-textTransform;;
-}
-
-div.pathBar img {
-	vertical-align: text-top;
 }
 
 .breadcrumbs {
