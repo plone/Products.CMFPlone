@@ -51,8 +51,8 @@ If you do not have an account here, head over to the
 
 <span i18n:name="registration_form">
     <a href=""
-	   tal:define="join python:join.pop();
-                   join python:join+test(join.find('?')==-1, '?', '&')+ztutils.make_query(came_from=came_from);"
+       tal:define="join python:join.pop();
+                   join python:join+test(join.find('?')==-1, '?', '&amp;')+ztutils.make_query(came_from=came_from);"
        tal:attributes="href join"
        i18n:translate="description_no_account_registration_linktext">
         registration form
@@ -60,6 +60,7 @@ If you do not have an account here, head over to the
 </span>
 
 to become a member.
+
 </p>
 
 <script type="text/javascript">
@@ -165,11 +166,9 @@ to become a member.
 
         </div>
 
-
         <p i18n:translate="remember_to_log_out">
             Please log out or exit your browser when you're done.
         </p>
-
 
     </fieldset>
 
