@@ -1,5 +1,6 @@
-    - Fixed skinpath so CMFWiki and CMFCollector are set up correctly by default.
-    - Moved all javascript/ECMAscript into the plone_ecmascript folder.
+    - Moved all javascript/ECMAscript into the plone_ecmascript folder. This
+      will require earlier instances of Plone to have plone_ecmascript added
+      to their skinpath. New sites will work fine.
     - The *big* i18n branch was merged into main Plone, breaks the existing 
       translation files, (none of who are complete at the moment anyway)
       but is much more future-proof. We have this change in as early as possible,
