@@ -35,4 +35,7 @@
         global sl slots_mapping/left;
         global sr slots_mapping/right;
         global hidecolumns python:here.hide_columns(sl,sr);
+        global translate python:(
+               lambda msgid, mapping, default=None:
+               modules['Products.CMFPlone.PloneUtilities'].translate_wrapper('plone', msgid, mapping, context=here, default=default))
 " />
