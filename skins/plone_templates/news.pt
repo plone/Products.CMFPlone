@@ -10,7 +10,9 @@
 <div metal:fill-slot="main"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
                  Batch python:modules['Products.CMFPlone'].Batch;
-                 b_start python:request.get('b_start',0);">
+                 b_start python:request.get('b_start',0);
+                 usericon_imgtag here/user.gif;
+                 discussionitem_imgtag here/discussionitem_icon.gif">
 
 
     <h1 i18n:translate="heading_news" style="margin-bottom: 10px">News</h1>
@@ -38,7 +40,7 @@
                     <a href=""
                        tal:attributes="href python: home_url(creator)">
 
-                        <img tal:replace="structure here/user.gif" />
+                        <img tal:replace="structure usericon_imgtag" />
 
                         <span tal:replace="creator" >
                         Author
@@ -51,7 +53,8 @@
                 </h6>
 
                 <div class="portletBody">
-                    <div class="content">
+                    <div class="content"
+                         tal:define="resulturl resultObject/absolute_url">
 
                         <h2 tal:content="result/Title">
                         Title
@@ -64,18 +67,19 @@
 
                         <p>
                             <span style="float: right"
-                                  tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).hasReplies(resultObject) ), 1, 0)">
-                                <img tal:replace="structure here/discussionitem_icon.gif" />
-                                <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)">
+                                  tal:define="is_discussable python: here.portal_discussion.isDiscussionAllowedFor(resultObject);
+                                              talkback python: here.portal_discussion.getDiscussionFor(resultObject);
+                                              has_replies python: is_discussable and talkback.hasReplies(resultObject)"
+                                  tal:condition="python: is_discussable and has_replies">
+                                <img tal:replace="structure discussionitem_imgtag" />
                                      <a href=""
-                                        tal:attributes="href string:${resultObject/absolute_url}#comments">
-                                        <span tal:replace="python:talkback.replyCount(resultObject)" /> <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
+                                        tal:attributes="href string:${resulturl}#comments">
+                                        <span tal:replace="python: talkback.replyCount(resultObject)" /> <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
                                      </a>
-                                </span>
                             </span>
 
 
-                            <a href="/view" tal:attributes="href resultObject/absolute_url" i18n:translate="read_more">
+                            <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
                             Read More
                             </a>
                         </p>
