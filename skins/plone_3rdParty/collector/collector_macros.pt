@@ -21,12 +21,12 @@
 
         <h1>
             <span tal:condition="here/Title"
-                tal:content="here/Title">TITLE</span>
+                tal:replace="here/Title">TITLE</span>
     
             <span tal:condition="here/abbrev">
                 [<span tal:replace="here/abbrev|nothing"></span>]
             </span>
-            Issue Collector
+            - Issue Collector
         </h1>
 
         <div class="description"
@@ -313,7 +313,8 @@
     </div>
 
     <div metal:define-macro="add_artifacts_table">
-    
+        
+        <!-- Deprecated in Plone, included for compatibility -->
         <div class="group">
             <input class="noborder" type=radio name="filetype" value="File" checked /> File 
             <input class="noborder" type=radio name="filetype" value="Image" /> Image

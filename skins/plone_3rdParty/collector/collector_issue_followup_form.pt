@@ -32,110 +32,108 @@
     </div>
   </div>
 
-  <form method="POST" enctype="multipart/form-data"
-        action="collector_issue_followup">
+<div class="message" tal:condition="here/no_submitter_email">
+    <img src="info.gif" alt="Portal information" tal:attributes="src string:$portal_url/info.gif">
+    Note: We have no mail address for the submitters, so they won't get followups.
+</div>
 
-    <table tal:define="actions_pairs here/valid_actions_pairs"
-      border="0" cellspacing="0">
+  
+<form class="group"
+      method="post" 
+      enctype="multipart/form-data"
+      action="collector_issue_followup"
+      tal:define="actions_pairs here/valid_actions_pairs">
 
-      <tr bgcolor="#ccffcc">
-        <td NOWRAP colspan="DEPENDS"
-            tal:attributes="colspan python: (here.no_submitter_email() and 1)
-                                            or 3">
-          <font size="+1">
-            <strong>
-              Issue <span tal:replace="here/id">ID</span>
-            </strong>
-          </font>
-        </td>
-        <td tal:condition="here/no_submitter_email" align="right">
-          <em>
-            Note: We have no submitter address, so they won't get followups.
-          </em>
-        </td>
-      </tr>
+    <span class="legend">Follow-up details</span>    
 
-      <tr>
-        <th align="left" NOWRAP>
-          Entry <span tal:replace="python: here.action_number + 1"></span>
-        </th>
-        <td align="center">
+
+    <div class="row" tal:condition="actions_pairs">
+        <div class="label"> Action </div> 
+        <div class="field">
+            <input class="noborder"
+                   type="radio"
+                   name="action" value="comment" checked="checked" />Comment&nbsp;
+
+            <span tal:repeat="pair actions_pairs">
+                <span tal:condition="python: pair[1] != 'Assign'">
+                    <input class="noborder" 
+                           type="radio" 
+                           name="action" 
+                           value="VALUE"
+                           tal:attributes="value python: pair[0]"
+                     /><span tal:replace="python: pair[1]">ACTION</span>&nbsp;
+                </span>
+            </span>
+
+            <span tal:define="assigning python: [i[0] for i in actions_pairs
+                                         if i[1] == 'Assign']"
+                  tal:condition="assigning">
+                <input class="noborder"
+                       type="radio" 
+                       name="action" 
+                       value="Assign"
+                       tal:attributes="value python: assigning[0]"/>Assign to:
+                <span tal:define="assigning python: [1 for i in actions_pairs
+                                                     if i[1] == 'Assign'];
+                                  supporters here/aq_parent/supporters"
+                      tal:condition="assigning">
+              
+                    <select name="assignees:list" MULTIPLE size="5"
+                            tal:attributes="size python:min(max(len(supporters), 3), 8)">
+                        
+                        <option tal:content="supporter"
+                                tal:repeat="supporter supporters"
+                                tal:attributes="selected python:supporter in here.assigned_to()">
+                        SUPPORTER
+                        </option>
+                    </select>
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label"> Follow-up </div> 
+        <div class="field">
+          <textarea name="comment" rows="10" cols="65" wrap="soft"
+                    tal:content="python: (request.get('do_cite')
+                                          and here.cited_text()) or ''">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
+        </div>
+    </div>
+
+
           Click <a href="QUALIFIED" 
                    tal:attributes="href python: request.URL + '?do_cite=1'">
                 here</a> to cite the existing transcript.
-        </td>
-      </tr>
 
-      <tr tal:condition="not: actions_pairs">
-        <td colspan="2">
-          Enter your followup.
-        </td>
-      </tr>
-      <tr tal:condition="actions_pairs">
-        <th align="right"> Action: </th>
-        <td>
-          <input type="radio"
-                 name="action" value="comment" CHECKED>Comment&nbsp;
-          <span tal:repeat="pair actions_pairs">
-            <span tal:condition="python: pair[1] != 'Assign'">
-                <input type="radio" name="action" value="VALUE"
-                       tal:attributes="value python: pair[0]"
-                  ><span tal:replace="python: pair[1]">ACTION</span>&nbsp;
-            </span>
-          </span>
-        </td>
-
-        <td tal:define="assigning python: [i[0] for i in actions_pairs
-                                             if i[1] == 'Assign']"
-            tal:condition="assigning">
-          <input type="radio" name="action" value="Assign"
-                 tal:attributes="value python: assigning[0]">Assign:
-        </td>
-      </tr>
-
-      <tr>
-        <td colspan="2">
-          <textarea name="comment" rows="10" cols="65" wrap="soft"
-                    tal:content="python: (request.get('do_cite')
-                                          and here.cited_text()) or ''">
-</textarea>
-          <font size="-1">
-            <br>
-            Prefix lines with whitespace or '&gt;' to preserve their format.
-          </font>
-        </td>
-
-
-        <td valign="top"
-            tal:define="assigning python: [1 for i in actions_pairs
-                                             if i[1] == 'Assign'];
-                        supporters here/aq_parent/supporters"
-            tal:condition="assigning">
-          <select name="assignees:list" MULTIPLE size="5"
-                  tal:attributes="size python:
-                                       min(max(len(supporters), 3), 8)">
-            <option tal:content="supporter"
-                    tal:repeat="supporter supporters"
-                    tal:attributes="selected python:
-                    supporter in here.assigned_to()">
-              SUPPORTER
-            </option>
-          </select>
-        </td>
-
-      </tr>
-
-    </table>
-
-    <div metal:use-macro="here/collector_macros/macros/add_artifacts_table">
-       add_artifacts_excerpt
+    <div class="row">
+        <div class="label"> Attachment (optional)</div> 
+        <div class="field">
+            <input type=file name="file" size="20" />
+        </div>
     </div>
 
-      <tr>
-        <td colspan="5">
-            <input type="submit" name="submit" value="Submit">
-        </td>
-      </tr>
+    <div class="row">
+        <div class="label"> Attachment type (optional)</div>
+        <div class="field">
+            <input class="noborder" type=radio name="filetype" value="File" checked /> File 
+            <input class="noborder" type=radio name="filetype" value="Image" /> Image
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label">Id of upload (optional)</div>
+        <div class="field">
+            <input type=text name="fileid" size="12" />
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label">&nbsp;</div>
+        <div class="field">
+         <input class="context" type="submit" value="Submit">
+        </div>
+    </div>
 
   </form>
 

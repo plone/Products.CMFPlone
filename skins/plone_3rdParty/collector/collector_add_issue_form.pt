@@ -19,9 +19,14 @@
 
 <div metal:fill-slot="header">
 
-  <div metal:use-macro="here/collector_macros/macros/collector_header">
-    COLLECTOR HEADER
-  </div>
+<h1>
+Add new issue to <span tal:condition="here/Title" tal:replace="here/Title">TITLE</span>
+</h1>
+
+<div class="description">
+Use this form to add your issue to the Collector. Please provide as many details
+as possible.
+</div>
 
 </div>
 
