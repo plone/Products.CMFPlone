@@ -125,7 +125,7 @@ def addActionIcons(portal):
     ai=getToolByName(portal, 'portal_actionicons')
     ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
     ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
-    ai.addActionIcon('plone', 'rss', 'xml.gif', 'Syndication')
+    ai.addActionIcon('plone', 'rss', 'rss.gif', 'Syndication')
 
 def addDocumentActions(portal):
     at = portal.portal_actions
@@ -142,7 +142,7 @@ def addDocumentActions(portal):
                  'View',
                  'document_actions')
     at.addAction('rss',
-                 'RSS Feed of this folders contents',
+                 'RSS feed of this folder\'s contents',
                  'string:${object_url}/RSS',
                  'python:portal.portal_syndication.isSyndicationAllowed(object)',
                  'View',

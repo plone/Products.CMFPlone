@@ -22,8 +22,8 @@
 <a href="" tal:condition="python:here.isPrincipiaFolderish and 'syndication_information' in here.objectIds()"
    tal:attributes="href string:${here/absolute_url}/RSS">
    <img i18n:attributes="title"
-        tal:attributes="src string:$portal_url/xml.gif"
-	src="xml.gif" alt="RSS"
+        tal:attributes="src string:$portal_url/rss.gif"
+	src="rss.gif" alt="RSS"
 	title="Syndication" />
 </a>
 </metal:block>
