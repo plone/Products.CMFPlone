@@ -15,7 +15,8 @@
     <form class="group"
           action="change_ownership"
           name="ownership_form"
-          method="post">
+          method="post"
+          tal:attributes="action string:${here/absolute_url}/change_ownership">
 
         <span class="legend" i18n:translate="legend_change_ownership">Change Ownership</span>
 
