@@ -72,7 +72,7 @@ p {
 }
 
 ul { 
-    list-style-type: square;
+    list-style-image: url("bulletBig.gif"); 
 }
 
 pre { 
