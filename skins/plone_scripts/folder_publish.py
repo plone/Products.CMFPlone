@@ -1,20 +1,30 @@
-## Script (Python) "folder_delete"
+## Script (Python) "folder_publish"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=ids, workflow_action, comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
 ##title=Publish objects from a folder
 ##
 REQUEST=context.REQUEST
 workflow = context.portal_workflow
-try:
-    if REQUEST.has_key('ids'):
-      for id in REQUEST['ids']:
-        o = getattr(context, id)
-        workflow.doActionFor(o, 'publish', comment='Published from folder_contents')
-    return REQUEST.RESPONSE.redirect(context.absolute_url() + '/folder_contents?portal_status_message=Content+published.')
-except Exception, e:
-    REQUEST.RESPONSE.redirect(context.absolute_url() + '/folder_contents?portal_status_message='+str(e))
+
+failed = {}
+success = {}
+context.plone_debug('include subfolders?' + REQUEST.get('include_subfolders', ''))
+
+for id in ids:
+    o = getattr(context, id)
+    try:
+        if o.getTypeInfo().getId()=='Folder' and REQUEST.get('include_subfolders', ''):
+            o.folder_publish(o.objectIds(), workflow_action, comment)       
+        else:
+            workflow.doActionFor(o, workflow_action, comment=comment)
+            success[id]=comment
+    except Exception, e:
+        failed[id]=e
+
+view = getattr(context, 'folder_contents')
+return view(REQUEST, failed, success)
 

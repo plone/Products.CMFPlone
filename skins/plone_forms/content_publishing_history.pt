@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+<body>
+
+<div metal:fill-slot="main"
+      tal:condition="here/rejectAnonymous">
+      
+    <script language="JavaScript" 
+            src="cmf_skin_tools/calendar.js"
+            tal:attributes="src string:${here/portal_url}/cmf_skin_tools/calendar.js">
+    </script>
+
+    <h1>Publish contents</h1>
+    
+    <p>
+    An item's status (also called its review state) determines who can see it.
+    A <strong>private</strong> item can only be viewed by its Owner and by the site
+    management. Only <strong>published</strong> items are available to the general
+    member base and anonymous visitors. To make an item published, it
+    has to be reviewed by one of the site's Reviewers. You can request
+    that an item be reviewed by setting its status to <strong>pending</strong>. <br />
+        
+    Another way to control the visibility of an item is with its <strong>effective
+    date</strong>. An item is not publicly available before its effective date,
+    <em>even if its status is <strong>published</strong></em>.
+    </p>
+    
+    <div class="group">
+        <span class="legend">Status</span>
+    
+        <div class="row">
+            <span class="label">Status</span>
+            <span class="field">
+           		This item is currently in <strong>review_state;</strong> status.
+            </span>
+            <span class="info"></span>
+        </div>
+    
+    </div>
+
+    <form class="group"
+          id="edit_form"
+          name="edit_form" 
+          method="post" 
+          action="content_status_modify"
+          tal:attributes="action string:${here/getId}/folder_publish">
+       
+
+        <span class="legend">Publishing Details</span>
+
+        <div class="row">
+           <span class="field"
+                 tal:define="Batch python:modules['ZTUtils'].Batch;
+                             dummy python:request.set('ids_checked', 1);
+                             global batch python:Batch([b.getObject() for b in here.portal_catalog(id=request.get('ids', ' '))], 50, int(0), orphan=0)"
+                 tal:condition="batch">
+            <table metal:use-macro="here/folder_contents/macros/folder_listing">
+            </table>
+            </span>
+	
+	<div>
+
+        <div class="row">
+           <span class="label">include subfolders</span>
+           <span class="field">
+               <input type="checkbox"
+                      class="noborder"
+                      name="include_subfolders"
+                      checked />
+           </span>
+           <span class="info">
+           If checked, it will attempt to publish all content in subfolders
+           </span>	
+	<div>
+	
+        <div class="row">
+            <span class="label">
+              Effective Date
+            </span>
+            <span class="field">
+                <div tal:define="inputname  string:effective_date; 
+                                 formname   string:edit_form;
+                                 inputvalue string:">
+                  <div metal:use-macro="here/portal_boxes/macros/calendarDatePickerBox">
+                    a calendar, hopefully
+                  </div>
+                </div>
+            </span>
+            <span class="info">
+            The date when the document will be visible when it's published. This way, you can 
+            publish a document in advance, but it will not be visible before this date.  If no date is select 
+            the document will be effective immediately.
+            </span>
+        </div>
+        
+        <div class="row">
+            <span class="label">
+              Expiration Date
+            </span>
+            <span class="field">
+                <div tal:define="inputname  string:expiration_date; 
+                                 formname   string:edit_form;
+                                 inputvalue string:">
+                  <div metal:use-macro="here/portal_boxes/macros/calendarDatePickerBox">
+                    a calendar, hopefully
+                  </div>
+                </div>
+            
+            </span>
+            <span class="info">
+            The date when the document expires. This will automatically make the document
+            invisible for others at the given date. If no date as selected it will never expire.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Comments</span>
+            <span class="field">
+                <textarea id="comment" name="comment" cols="60" rows="5" wrap="soft" style="width: 100%"></textarea>
+            </span>
+        </div>
+
+        <div class="row">
+            <input type="hidden" id="workflow_action" name="workflow_action" value="" />
+            <span class="label"></span>
+    
+            <span class="field"
+                  tal:define="wf_actions actions/workflow;
+                  publish python:here.getActionUrlById('publish', wf_actions);
+                  submit python:here.getActionUrlById('submit', wf_actions);
+                  retract python:here.getActionUrlById('retract', wf_actions);
+                  hide python:here.getActionUrlById('hide', wf_actions);
+                  reject python:here.getActionUrlById('reject', wf_actions);
+                  visible python:here.getActionUrlById('visible', wf_actions);
+		  show python:here.getActionUrlById('show', wf_actions);">
+		  
+                <input class="context" type="submit" value="Show" 
+                       onclick="javascript:document.getElementById('workflow_action').value='show';" />
+
+                <input class="context" type="submit" value="Visible" 
+                       onclick="javascript:document.getElementById('workflow_action').value='visible';" />
+		       
+                <input class="context" type="submit" value=" Publish this Item " 
+                       onclick="javascript:document.getElementById('workflow_action').value='publish';" />
+             
+                <input class="context" type="submit" value="Submit for review" 
+                       onclick="javascript:document.getElementById('workflow_action').value='submit';" />
+
+                <input class="context" type="submit" value="Retract" 
+                       onclick="javascript:document.getElementById('workflow_action').value='retract';" >
+
+                <input class="context" type="submit" value="Hide" 
+                       onclick="javascript:document.getElementById('workflow_action').value='hide';" />
+
+                <input class="context" type="submit" value="Reject" 
+                       onclick="javascript:document.getElementById('workflow_action').value='reject';" />
+    
+            </span>
+            
+        </div>
+
+    </form>
+
+
+</div>
+  
+</body>
+</html>
+

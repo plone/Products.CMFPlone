@@ -6,13 +6,14 @@
 
 <body>
 
- <span metal:fill-slot="main"
+ <span metal:fill-slot="main">
+   
        tal:define="review_state python:here.portal_workflow.getInfoFor(here, 'review_state');
                    review_history python: here.portal_workflow.getInfoFor(here, 'review_history');">
 
    <script language="JavaScript" src="cmf_skin_tools/calendar.js"></script> 
 
-    <h1>Publish item</h1>
+    <h1>Publishing multiple items</h1>
    
     <p>
     A <strong>published</strong> item is available to the general
@@ -27,10 +28,27 @@
           method="post" 
           action="content_status_modify"
           tal:attributes="action string:${here/absolute_url}/content_status_modify">
-    
-        <span class="legend">Item Comments</span>
-
+	  
         <input type="hidden" name="workflow_action" value="publish" />
+
+
+        <span class="legend">Select content items </span>
+
+        <div class="row">
+	    <span class="label">
+	    choose content     
+	    </span>
+	    
+	    <span class="field">
+	     <div>
+	       <span> CHK </span>
+	       <span> 
+	     </div>
+	    </span>
+	    
+	    <span class="info">
+	    </span>
+	</div>
 
         <div class="row">
             <span class="label">Status</span>

@@ -117,7 +117,11 @@
 
 			   
         
-    <table class="listing" summary="Content listing" cellpadding="0" cellspacing="0"> <!-- Sorry about the cellpadding/cellspacing values, Netscape 4 and 6 have bugs in the table code -->
+    <table class="listing"
+           summary="Content listing"
+           cellpadding="0" cellspacing="0"
+           metal:define-macro="folder_listing">
+           <!-- Sorry about the cellpadding/cellspacing values, Netscape 4 and 6 have bugs in the table code -->
 
 	  <thead> 
 
@@ -142,7 +146,8 @@
           <input type="checkbox" class="noborder" name="ids:list" id="#"
                  value="#"
                  tal:attributes="value item/getId;
-					                   id python: 'cb_'+item.getId()" />
+				 id python: 'cb_'+item.getId();
+				 checked request/ids_checked|nothing;"/>
         </td>
         
         <td tal:define="action python:here.getActionUrlById('view', actions['object']);
@@ -174,7 +179,7 @@
       </tbody> 
     </table>
 
-    <input class="context" type="submit" name="folder_publish:method" value="Publish" />
+    <input class="context" type="submit" name="content_publishing_history:method" value="Publishing" />
     <input class="context" type="submit" name="folder_rename_form:method" value="Rename" />
     <input class="context" type="submit" name="folder_cut:method" value="Cut"  /> 
     <input class="context" type="submit" name="folder_copy:method" value="Copy"  />
