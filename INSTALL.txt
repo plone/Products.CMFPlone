@@ -49,11 +49,6 @@ Installing Plone manually, step by step instructions.
      http://cvs.zope.org/Products/DCWorkflow/ 
      http://cvs.zope.org/Products/DCWorkflow/DCWorkflow.tar.gz?tarball=1 
  
-  - Formulator 1.4.0 or later
-     Included in the Plone tarball 
-     http://www.zope.org/Members/infrae/Formulator 
-     http://zope.org/Members/infrae/Formulator/Formulator-1.6.2/Formulator-1.6.2.tgz 
- 
   - CMFActionsIcons
      Included in the Plone tarball 
      http://cvs.zope.org/Products/CMFActionIcons/ 
@@ -65,11 +60,11 @@ Installing Plone manually, step by step instructions.
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78893 
      http://prdownloads.sourceforge.net/collective/CMFQuickInstallerTool-1.5.1.tgz?download 
  
-  - GroupUserFolder 2.0.1 (not 3.0)
+  - GroupUserFolder
      Included in the Plone tarball 
      http://sf.net/projects/collective 
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=81576 
-     http://prdownloads.sourceforge.net/collective/GroupUserFolder-2.0.1.tgz?download 
+     http://prdownloads.sourceforge.net/collective/GroupUserFolder-3.1.1.tar.gz?download 
  
   - BTreeFolder2
      Included in the Plone tarball 
