@@ -7,7 +7,7 @@ Plone 2.0 - Fyuti
    Final
     
     - Diet Plone® - an initial page load of Plone was reduced from 
-      150K to 75K, and HTTP requests from 30 to 16 by performing 
+      150K to 75K, and HTTP requests from 30 to 15 by performing 
       the following tweaks:
       [limi]
 
