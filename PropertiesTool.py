@@ -24,18 +24,6 @@ class PropertiesTool(Folder, BaseTool):
 
     manage_options = ( (Folder.manage_options[0], ) +
                         BaseTool.manage_options  )
-    _actions = (ActionInformation(id='configPortal'
-                            , title='Reconfigure Portal'
-                            , description='Reconfigure the portal'
-                            , action=Expression(
-            text='string: ${portal_url}/plone_control_panel')
-                            , permissions=(ManagePortal,)
-                            , category='global'
-                            , condition=None
-                            , visible=1
-                             )
-               ,
-               )
 
     manage_addPropertySheetForm = PageTemplateFile( 'www/addPropertySheet'
                                                   , globals() )
