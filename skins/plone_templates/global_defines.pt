@@ -1,0 +1,30 @@
+<metal:block define-macro="defines"
+      tal:define="global utool nocall:here/portal_url;
+        global mtool here/portal_membership;
+        global atool here/portal_actions;
+        global wtool here/portal_workflow;
+        global portal_object utool/getPortalObject;
+        global portal_title portal_object/Title;
+        global object_title here/Title;
+        global portal_url utool;
+        global portal nocall:portal_object;
+        global member mtool/getAuthenticatedMember;
+        global membersfolder mtool/getMembersFolder;
+        global isAnon mtool/isAnonymousUser;
+        global actions python:here.portal_actions.listFilteredActionsFor(here);
+        global user_actions actions/user;
+        global workflow_actions actions/workflow;
+        global folder_actions actions/folder;
+        global global_actions actions/global;
+        global wf_state python:wtool.getInfoFor(here,'review_state',None);
+        global site_properties here/portal_properties/site_properties;
+        global ztu modules/ZTUtils;
+        global actions options/actions|actions;
+        global wf_actions workflow_actions;
+        global isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);
+        global template_id options/template_id|template_id|template/getId|nothing;
+        global slots_mapping options/slots_mapping|here/prepare_slots|nothing;
+        global Iterator python:modules['Products.CMFPlone'].IndexIterator;
+        global tabindex python:Iterator(pos=30000);
+        global here_url here/absolute_url" />
+
