@@ -6,6 +6,7 @@
 
 import os
 
+from ComputedAttribute import ComputedAttribute
 from OFS.SimpleItem import SimpleItem
 from ZPublisher.HTTPRequest import FileUpload
 
@@ -26,7 +27,7 @@ class Dummy:
 
 
 class Item(SimpleItem):
-    '''Dummy Item 
+    '''Dummy Item
        First-class Zope object. Can be _setObject'ed.
     '''
 
@@ -66,7 +67,7 @@ class SizedItem(Item):
 
 
 class File(FileUpload):
-    '''Dummy upload object 
+    '''Dummy upload object
        Used to fake uploaded files.
     '''
 
@@ -111,7 +112,7 @@ class Raiser(SimpleItem):
             self.exception = exception
 
     def __call__(self, *args, **kw):
-        raise self.exception 
+        raise self.exception
 
 
 class DefaultPage(Item):
@@ -127,3 +128,24 @@ class DefaultPage(Item):
 
     def has_key(self, key):
         return self._has_key or key in self.keys
+
+
+class ImageComputedProps(Item):
+    '''Helper for testing the imagePatch interaction with
+    ComputedAttributes (which are used in Archetypes ImageField).
+    '''
+
+    def get_title(self):
+        return getattr(self, '_title', '')
+
+    title = ComputedAttribute(get_title, 1)
+
+    def get_alt(self):
+        return getattr(self, '_alt', '')
+
+    alt = ComputedAttribute(get_alt, 1)
+
+    def get_longdesc(self):
+        return getattr(self, '_longdesc', '')
+
+    longdesc = ComputedAttribute(get_longdesc, 1)

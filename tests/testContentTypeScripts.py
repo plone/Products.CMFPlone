@@ -357,6 +357,23 @@ class TestBadFileIds(PloneTestCase.PloneTestCase):
     # XXX: Dang! No easy way to get at the validator state...
 
 
+class TestImagePatch(PloneTestCase.PloneTestCase):
+
+    def testImagePatchComputedProps(self):
+        from Products.CMFPlone.patches.imagePatch import tag
+        kw = {'_title':'some title',
+              '_alt':'alt tag',
+              '_longdesc':'stupid longdesc',
+              'height':100,
+              'width':100}
+        # Wrap object so that ComputedAttribute gets executed.
+        self.ob = dummy.ImageComputedProps(**kw).__of__(self.folder)
+
+        endswith = ('alt="alt tag" title="some title" longdesc="stupid longdesc" '
+                    'height="100" width="100" />')
+        self.assertEqual(tag(self.ob)[-len(endswith):], endswith)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -366,6 +383,7 @@ def test_suite():
     suite.addTest(makeSuite(TestFileURL))
     suite.addTest(makeSuite(TestFileExtensions))
     suite.addTest(makeSuite(TestBadFileIds))
+    suite.addTest(makeSuite(TestImagePatch))
     return suite
 
 if __name__ == '__main__':

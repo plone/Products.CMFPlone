@@ -85,8 +85,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testFolderEditActionHasEditTitle(self):
         # Edit tab of folders should be named 'edit', not 'properties'
-        topic = self.types.getTypeInfo('Folder')
-        for action in topic._cloneActions():
+        folder = self.types.getTypeInfo('Folder')
+        for action in folder._cloneActions():
             if action.id == 'edit':
                 self.assertEqual(action.title, 'Edit')
                 break
