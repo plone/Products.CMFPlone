@@ -224,7 +224,6 @@ def modifySkins(self, portal):
     # this should be run through the skins setup widget :)
     st=getToolByName(portal, 'portal_skins')
     skins_map=st._getSelections()
-    skins_map=st._getSelections()
 
     if skins_map.has_key('No CSS'):
         del skins_map['No CSS']
@@ -246,7 +245,7 @@ def modifySkins(self, portal):
                 a.title = 'Sharing'
             if a.id == 'content_status_history':
                 a.visible = 0
-        #in 2.0 teh Sharing tab is on portal_actions ActionProvider
+        #in 2.0 the Sharing tab is on portal_actions ActionProvider
         t._actions=[a for a in _actions if a.id!='local_roles']
 
 def addNewActions(self, portal):
