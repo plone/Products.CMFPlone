@@ -21,7 +21,7 @@
 
                 <a href="#"
                    class="marker"
-                   tal:attributes="href python:container.getActionUrlById('view', actions['object'])">
+                   tal:attributes="href string:${o/absolute_url}/view">
                     <span tal:replace="o/title_or_id">
                     Extended Calendar Product
                     </span>
