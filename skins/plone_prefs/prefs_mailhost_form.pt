@@ -1,0 +1,125 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {})">
+
+    <h1 i18n:translate="heading_mailhost_setup">MailHost Setup</h1>
+
+    <p i18n:translate="description_mailhost_setup">
+    Here you configure some of the settings that affect MailHost.
+    </p>
+
+    <form class="group"
+          action=""
+          name="reconfig"
+          method="post"
+          tal:attributes="action string:prefs_mailhost_set"
+          tal:define="props python:here.portal_properties;">
+
+        <span class="legend" i18n:translate="legend_mailhost_details">MailHost Details</span>
+
+	<!-- host -->
+        <div class="row"
+             tal:define="smtp_server request/smtp_server | site_properties/smtp_server;
+                         error_smtp_server errors/smtp_servers | nothing;">
+            <div class="label">
+                <span i18n:translate="label_smtp_server">SMTP server</span>
+
+                <div id="smtp_server_help"
+                     i18n:translate="help_smtp_server"
+                     class="help"
+                     style="visibility:hidden">
+                This is the address of your local SMTP (outgoing
+                mail) server. Usually "localhost", unless you use an
+                external server to send mail.
+                </div>
+            </div>
+
+            <div class="field"
+                 tal:attributes="class python:test(error_smtp_server, 'field error', 'field')">
+
+                <div tal:condition="error_smtp_server">
+                    <tal:block i18n:translate="" content="error_smtp_server">Error</tal:block>
+                    <br />
+                </div>
+
+                <input name="smtp_server"
+                       value=""
+                       size="30"
+                       tabindex=""
+                       onfocus="formtooltip('smtp_server_help',1)"
+                       onblur="formtooltip('smtp_server_help',0)"
+                       tal:attributes="value smtp_server;
+                                       tabindex tabindex/next;" />
+            </div>
+        </div>
+
+
+	<!-- port -->
+        <div class="row"
+             tal:define="smtp_port request/smtp_port | here/MailHost/smtp_port;
+                         error_smtp_port errors/smtp_ports | nothing;">
+            <div class="label">
+                <span i18n:translate="label_smtp_server">SMTP port</span>
+
+                <div id="smtp_port_help"
+                     i18n:translate="help_smtp_port"
+                     class="help"
+                     style="visibility:hidden">
+                This is the port of your local SMTP (outgoing
+                mail) server. Usually "25".
+                </div>
+            </div>
+
+            <div class="field"
+                 tal:attributes="class python:test(error_smtp_port, 'field error', 'field')">
+
+                <div tal:condition="error_smtp_port">
+                    <tal:block i18n:translate="" content="error_smtp_port">Error</tal:block>
+                    <br />
+                </div>
+
+                <input name="smtp_port"
+                       value=""
+                       size="30"
+                       tabindex=""
+                       onfocus="formtooltip('smtp_port_help',1)"
+                       onblur="formtooltip('smtp_port_help',0)"
+                       tal:attributes="value smtp_port;
+                                       tabindex tabindex/next;" />
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="label">&nbsp;</div>
+            <div class="field">
+                <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="submit"
+                       value="Save"
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+        </div>
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
+
+    </form>
+
+</div>
+
+</body>
+</html>
+
+
