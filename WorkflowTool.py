@@ -15,15 +15,17 @@ class WorkflowTool( BaseTool ):
 
     #XXX this should not make it into 1.0 
     # Refactor me, my maker was tired
-    def flattenTransitions(self, objs): 
+    def flattenTransitions(self, objs, container=None): 
         """ this is really hokey - hold on!!"""
         if hasattr(objs, 'startswith'): return ()
         transitions=()
         t_names=[]
-        for o in [getattr(self, oid, None) for oid in objs]:
+        if container is None:
+            container = self
+        for o in [getattr(container, oid, None) for oid in objs]:
             trans=()
             try:
-                trans=self.getTransitionsFor(o)
+                trans=self.getTransitionsFor(o, container)
             except: #yikes
                 pass
             if trans:
@@ -34,15 +36,12 @@ class WorkflowTool( BaseTool ):
         return transitions
     
     security.declarePublic('getTransitionsFor')
-    def getTransitionsFor(self, obj=None, REQUEST=None):	
+    def getTransitionsFor(self, obj=None, container=None, REQUEST=None):	
         wf_tool=getToolByName(self, 'portal_workflow')
         if type(obj)==type([]):
-            return self.flattenTransitions(objs=obj)
-        #elif hasattr(obj, 'isPortalContent'):
+            return self.flattenTransitions(objs=obj, container=container)
         else:
             obj=obj
-        #else: 
-        #    obj=getattr(self.getParentNode(), obj)
         wfs=()
         avail_trans=()
         objstate=None

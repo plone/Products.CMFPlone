@@ -21,7 +21,8 @@
 <div metal:fill-slot="main"
       tal:condition="here/rejectAnonymous"
       tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                  tabindex python:Iterator();">
+                  tabindex python:Iterator();
+                  errors request/errors | nothing;">
     
     <script language="JavaScript" 
             src="cmf_skin_tools/calendar.js"
@@ -216,28 +217,33 @@
             </div>
     
             <div class="field"
-                 tal:define="tabindex tabindex/next;">
-                <span tal:define="objs request/ids|nothing;
-                                  target python:test(objs, objs, here)">
-                <metal:block tal:define="global transitions python:here.portal_workflow.getTransitionsFor(target)"
+                 tal:define="tabindex tabindex/next;
+                             error_workflow_action errors/workflow_action|nothing;
+                             objs request/ids|nothing;
+                             target python:test(objs, objs, here);"
+                 tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
+                 
+                <div tal:condition="error_workflow_action"
+                     tal:replace="structure string:$error_workflow_action <br />" />
+                
+                <metal:block tal:define="global transitions python:here.portal_workflow.getTransitionsFor(target, here)"
                              tal:repeat="transition transitions">
-                <input class="noborder"
-                       id=""
-                       type="radio"
-                       name="workflow_action" 
-                       title="" 
-                       value=""
-                       onfocus="formtooltip('change_status_help',1)" 
-                       onblur="formtooltip('change_status_help',0)" 
-                       tal:attributes="value transition/id;
-                                       id    transition/id;
-                                       title transition/name;" />
-                <label for=""
-                       tal:attributes="for transition/id;"
-                       tal:content="transition/name">Name of the transition</label>
-                <br />
+                    <input class="noborder"
+                           id=""
+                           type="radio"
+                           name="workflow_action" 
+                           title="" 
+                           value=""
+                           onfocus="formtooltip('change_status_help',1)" 
+                           onblur="formtooltip('change_status_help',0)" 
+                           tal:attributes="value transition/id;
+                                           id    transition/id;
+                                           title transition/name;" />
+                    <label for=""
+                           tal:attributes="for transition/id;"
+                           tal:content="transition/name">Name of the transition</label>
+                    <br />
                 </metal:block>
-                </span>
 
             </div>
             
@@ -278,9 +284,9 @@
 
             <metal:block tal:repeat="items review_history">
             <tr tal:define="review_history python: here.reverseList(review_history);
-	                    global odd repeat/items/odd; global rhComments items/comments;"
-		tal:attributes="class python:test(odd, 'even', 'odd')"
-	        tal:condition="items/action">
+	                        global odd repeat/items/odd; global rhComments items/comments;"
+                tal:attributes="class python:test(odd, 'even', 'odd')"
+                tal:condition="items/action">
                 <td> 
                 <span tal:replace="items/action" /> 
                 </td>

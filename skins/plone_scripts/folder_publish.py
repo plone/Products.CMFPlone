@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=workflow_action, ids=[], comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
+##parameters=workflow_action=None, ids=[], comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
 ##title=Publish objects from a folder
 ##
 from Products.CMFPlone import transaction_note
@@ -13,6 +13,10 @@ workflow = context.portal_workflow
 failed = {}
 success = {}
 
+if workflow_action is None:
+    return REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
+                                    , 'folder_contents'
+                                    , 'portal_status_message=You+must+select+a+publishing+action.') )
 if not ids:
     return REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                     , 'folder_contents'
