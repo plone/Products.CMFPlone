@@ -109,7 +109,8 @@ class PloneTool (UniqueObject, SimpleItem):
             if rights is None:
                 rights=REQUEST.get(pfx+'rights', obj.Rights())
 
-        if Discussable.isImplementedBy(obj): 
+        if Discussable.isImplementedBy(obj) or \
+            getattr(obj, '_isDiscussable', None): 
             if allowDiscussion and type(allowDiscussion)==StringType:
                 allowDiscussion=allowDiscussion.lower().strip()
             if allowDiscussion=='default': 

@@ -44,7 +44,7 @@
             
             <div class="field">
 	        <metal:block tal:define="val request/allowDiscussion | python: here.portal_discussion.isDiscussionAllowedFor(here);
-                                   val python:test(val=='default',None,val);
+                                   val python:test(not hasattr(here,'allow_discussion'),None,val);
                                    val python:test(val=='off',0,val);
                                    val python:test(val=='on',1,val);
                                    tabindex tabindex/next;">
@@ -56,7 +56,7 @@
                        id="discussion_default"
                        onfocus="formtooltip('allow_discussion_help',1)" 
                        onblur="formtooltip('allow_discussion_help',0)" 
-		                   tal:attributes="checked python: test(val == None, '1', None);
+		                   tal:attributes="checked python:val is None;
                                            tabindex tabindex;"
                        />
                 <label for="discussion_default" i18n:translate="label_discussion_default">Default</label> <br />
