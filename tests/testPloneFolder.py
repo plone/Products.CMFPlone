@@ -31,7 +31,9 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('sub1'), 0)
 
     def testGetObjectPositionRaisesNotFound(self):
-        self.assertRaises(NotFound, self.folder.getObjectPosition, 'foobar')
+        #self.assertRaises(NotFound, self.folder.getObjectPosition, 'foobar')
+        # Zope 2.7 implementation raise ValueError instead
+        self.assertRaises(ValueError, self.folder.getObjectPosition, 'foobar')
 
     def testSortOrder(self):
         self.assertEqual(self.folder.objectIds(), 

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Removed our implementation of OrderedContainer. We derive from Zope's
+      OrderedFolder now.
+      [stefan]
+
     - Removed deprecated generateId script. We use generateUniqueId.
       [stefan]
 
