@@ -3,6 +3,7 @@ Plone 1.0 RC1
     - Workflow modification so that Owners can see folder_buttons in Folders that they own.
       Also moved over hardcoded Permissions to constants found in CMFCore.CMFCorePermissions
       fixes Issue 557
+    - misspell in PloneWorkflow.py found by dc0e - thanks!
 
 Plone 1.0 beta3
     - whether or not /folder_contents is appended to the url in folder_contents is now determined by site_properties/use_folder_contents

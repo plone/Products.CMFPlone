@@ -29,7 +29,7 @@ def setupPrivatePloneWorkflow(wf):
     wf.states.addState('public')
     sdef=wf.states.public
     sdef.setProperties( title='Publicly available'
-                        , transitions=('published', 'reject', 'retract') )
+                        , transitions=('publish', 'reject', 'retract') )
     sdef.setPermission(View, 1, ('Anonymous', 'Authenticated'))
     sdef.setPermission(AccessContentsInformation, 1, \
                        ('Anonymous', 'Authenticated'))
