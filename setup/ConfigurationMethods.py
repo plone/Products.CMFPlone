@@ -45,6 +45,8 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'available_editors', ('None', ), 'lines')
     if not hasattr(p, 'allowRolesToAddKeywords'):
         safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
+    if not hasattr(p,'allow_sendto'):
+        safeEditProperty(p, 'allow_sendto', 0, 'boolean')        
 
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
