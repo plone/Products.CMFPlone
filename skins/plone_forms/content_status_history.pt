@@ -146,7 +146,7 @@
                                  tabindex tabindex/next;"
                      tal:attributes="class python:test(error, 'field error', 'field')">
                   <div tal:replace="error" />
-                  <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                  <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
                     calendar pop-up
                   </div>
                 </div>
@@ -173,7 +173,7 @@
                                  tabindex tabindex/next;"
                      tal:attributes="class python:test(error, 'field error', 'field')">
                   <div tal:replace="error" />
-                  <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                  <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
                     calendar pop-up
                   </div>
                 </div>
