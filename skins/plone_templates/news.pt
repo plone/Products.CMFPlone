@@ -53,7 +53,7 @@
                 </h6>
 
                 <div class="portletBody">
-                    <div class="content"
+                    <div class="portletContent"
                          tal:define="resulturl resultObject/absolute_url">
 
                         <h2 tal:content="result/Title">

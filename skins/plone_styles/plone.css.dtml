@@ -543,8 +543,8 @@ input.searchButton {
     margin-bottom: 1.5em;
 }
 
-#content-news .portletBody {
-    padding: 1em 1em 0.5em 1em;
+#content-news .portletContent {
+    padding: 1em 1em 0em 1em;
 }
 
 .documentEditable {
