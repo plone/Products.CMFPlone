@@ -154,7 +154,10 @@
                    tal:condition="prefs" 
                    tal:attributes="href prefs"
                    >set up your Preferences</a>.
+		If you were in the process of working and needed to be logged in before continuing. 
+		You can go <a href="" tal:attributes="href request/HTTP_REFERRER">back to where you came from</a>.
                 </p>
+		
                 
                 <p>We wish you a pleasant stay here.
                 If you have any questions or comments, visit the <a href="help">Help section</a> or 
