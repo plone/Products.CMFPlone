@@ -4,20 +4,41 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
-    - User Management Screens have landed
-        prefs_user_management_form - batch user maintenance
-        prefs_user_management_individual_form - editing attributes of a member
-        prefs_group_management_form - batch group maintenance
-        prefs_group_management_group_form - assign roles/users to a group
-        !REQUIRES! GroupUserFolder from http://sf.net/projects/collective
-    
-    - PloneTool.editMetadata made a really bad asssumption.  We now use interface packages to
-      assert that a object implements the interfaces before attempting to set DublinCore attributes
-      *or* Discussable attributes
+    - User Management Screens were added:
 
-    - Now require CMFActionIcons Product from cvs.zope.org.  We register document_action icons
-      for such actions as: Send to friend, Print this page, and RSS.  Please use the
-      putils (in global_defines.pt) getIconFor which will return the id of the icon.
+      - Users overview - prefs_users_overview - batch user maintenance
+
+      - User details - prefs_user_details - editing attributes of a member
+
+      - User Memberships - prefs_user_memberships - add/remove group 
+        membership for a user
+
+      - Groups overview - prefs_groups_overview - batch group maintenance
+
+      - Group details - prefs_group_details - editing settings for a group
+
+      - Group Members - prefs_group_members - add/remove members of a group
+
+      - User/Group selection form - prefs_user_group_search_form - a screen 
+        to select users/groups and feed them back to the other screens
+
+      [limi] [runyaga]
+
+      Note: **Requires** 
+      "GroupUserFolder from Collective":http://sf.net/projects/collective
+    
+
+    - PloneTool.editMetadata made a really bad asssumption.  We now use 
+      interface packages to assert that a object implements the interfaces 
+      before attempting to set DublinCore attributes *or* Discussable 
+      attributes.
+      [runyaga]
+
+    - Now require CMFActionIcons Product from cvs.zope.org.  We register 
+      document_action icons for such actions as: Send to friend, Print 
+      this page, and RSS.  Please use the putils (in global_defines.pt) 
+      getIconFor which will return the id of the icon.
+      [runyaga]
       
     - Groups support via GRUF
       [runyaga]
