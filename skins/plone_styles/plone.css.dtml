@@ -365,6 +365,8 @@ ul#personalBar li#personalBar-user {
     background: transparent url(<dtml-var portal_url>/user.gif) center left no-repeat;
     padding-left: 15px;
 }
+
+.notLoggedIn {} /* Used on all descriptions relevant to those not logged in */
     
 ul#personalBar li {
     background: transparent url(<dtml-var portal_url>/linkOpaque.gif) center left no-repeat;
