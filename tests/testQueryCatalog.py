@@ -10,13 +10,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
-from Globals import REPLACEABLE
-
-portal_name = PloneTestCase.portal_name
-
-user1  = PloneTestCase.default_user
-user2  = 'u2'
-group2 = 'g2'
 
 
 class TestQueryCatalog(PloneTestCase.PloneTestCase):
@@ -79,6 +72,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         expected = {'modified': {'query': '2004-01-01', 'range': 'min'}}
         self.assertEqual(self.folder.queryCatalog(request), expected)
 
+
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     """Test logic quoting features queryCatalog script.
     
@@ -131,8 +125,6 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.queryCatalog(request), expected)
 
 
-
-
 if __name__ == '__main__':
     framework()
 else:
@@ -140,4 +132,5 @@ else:
     def test_suite():
         suite = TestSuite()
         suite.addTest(makeSuite(TestQueryCatalog))
+        suite.addTest(makeSuite(TestQueryCatalogQuoting))
         return suite
