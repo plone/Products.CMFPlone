@@ -19,7 +19,9 @@ h3,
 h4,
 h5,
 h6,
-.description {
+.description,
+.portalMessage
+{
     /* Fix for IE6 disappearing float bug */
     height: 100%;
 }

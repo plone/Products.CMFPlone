@@ -296,8 +296,13 @@ pre {
     width: 30%;
 }
 input.searchButton {
-    font-size: 100% ! important;
+    font-size: 100%;
     margin-bottom: &dtml-borderWidth; ! important;
+    background: transparent url(search_icon.png) 7px 1px no-repeat;
+    cursor: pointer;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+
 }
 #portal-globalnav {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */

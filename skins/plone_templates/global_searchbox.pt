@@ -19,7 +19,7 @@
 	       i18n:attributes="alt accesskey title"
 	       tal:attributes="value request/SearchableText|nothing;
                                tabindex tabindex/next" class="visibility:visible" />
-        <input class="context searchButton"
+        <input class="searchButton"
                type="submit"
                value="Search"
 	       accesskey="accesskeys-search"
