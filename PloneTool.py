@@ -189,7 +189,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         REQUEST=self.REQUEST
         pfx = self.field_prefix
 
-        def getfield(request, name, default=None):
+        def getfield(request, name, default=None, pfx=pfx):
             return request.form.get(pfx+name, default)
 
         def tuplify(value):
