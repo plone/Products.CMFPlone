@@ -173,6 +173,12 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.utils.titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean"),
                          'c774bbf8c9f1-korean')
 
+    def testTitleToNormalizedIdUTF8(self):
+        # In real life, input will not be Unicode...
+        input = u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5".encode('utf-8')
+        self.assertEqual(self.utils.titleToNormalizedId(input),
+                         'eksempel-eoa-norsk-eoa')
+
 
 class TestEditMetadata(PloneTestCase.PloneTestCase):
 

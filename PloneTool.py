@@ -61,7 +61,7 @@ mapping = {138: 's', 140: 'OE', 142: 'z', 154: 's', 156: 'oe', 158: 'z', 159: 'Y
 
 def _normalizeChar(c=''):
     if ord(c) < 256:
-        return mapping.get(ord(c),c)
+        return mapping.get(ord(c), c)
     else:
         return "%x" % ord(c)
 
@@ -868,6 +868,11 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         >>> titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean")
         'c774bbf8c9f1-korean'
         """
+
+        # Make sure we are dealing with a unicode string
+        if not isinstance(title, unicode):
+            title = unicode(title, self.getSiteEncoding())
+
         title = title.lower()
         title = title.strip()
         title = self.normalizeISO(title)

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Because normalizeISO() only deals with Unicode strings titleToNormalizedId()
+      must make sure to pass it only Unicode. Added a check and a conversion from
+      the site's default encoding.
+      [stefan]
+
     - Merged plip81-BylineHistory r6154:HEAD into 2.1 branch. This adds
       workflow history to the document byline.
       [stefan] [ender] [limi]
