@@ -136,8 +136,10 @@ class DefaultCustomizationPolicy:
         for a in mt._cloneActions():
             if a.id=='preferences':
                 a.action=Expression('string:${portal_url}/portal_form/personalize_form')
+                new_actions.insert(0, a)
             if getattr(a,'id','') in ('addFavorite', 'favorites'): 
                 a.visible=0
+                new_actions.insert(1,a)
             if a.id=='mystuff': 
                 a.title='My Folder'
                 new_actions.insert(0, a)

@@ -51,7 +51,7 @@
         <div>
         <metal:block tal:repeat="result batch">
             <span class="card" tal:define="home python:container.portal_membership.getHomeUrl(result['id'], verifyPermission=1);
-                                           portrait python: here.getPlonePersonalPortait(result['id']);"> 
+                                           portrait python: here.portal_membership.getPersonalPortrait(result['id']);"> 
                 <a href="#" tal:attributes="href home">                    
                     <img src="defaultUser.gif" 
                          alt="" 

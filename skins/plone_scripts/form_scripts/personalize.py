@@ -22,4 +22,4 @@ if portrait and portrait.filename:
 tmsg=member.getUserName()+' personalized their settings.'
 transaction_note(tmsg)
 
-return ('success',  member_context, {})
+return ('success',  member_context, {'portal_status_message':'Your personal settings have been saved.'})

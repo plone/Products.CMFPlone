@@ -2,11 +2,39 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.MembershipTool import DEFAULT_MEMBER_CONTENT
 from Products.CMFDefault.Document import addDocument
+from Acquisition import aq_base
 
 class MembershipTool( BaseTool ):
     """ Plone customized Membership Tool """
     meta_type='Plone Membership Tool'
     plone_tool = 1
+    personal_id = '.personal'
+    portrait_id = 'MyPortrait'
+    
+    def getPersonalPortrait(self, member_id=None):
+        """
+        returns the Portait for a member_id
+        """
+        portrait=None
+        personal=self.getPersonalFolder(member_id)
+        if personal:
+            portrait=getattr( personal
+                            , self.portrait_id
+                            , None )
+        return portrait
+
+    def getPersonalFolder(self, member_id=None):
+        """
+        returns the Personal Item folder for a member
+        if no Personal Folder exists will return None
+        """
+        home=self.getHomeFolder(member_id)
+        personal=None
+        if home:
+            personal=getattr( home
+                            , self.personal_id
+                            , None )
+        return personal
 
     def changeMemberPortrait(self, portrait, member_id=None):
         """ 
@@ -16,18 +44,17 @@ class MembershipTool( BaseTool ):
 
         portraits are $MemberHomeFolder/.personal/MyPortrait
         """
-        portrait_id='MyPortrait'
         if portrait and portrait.filename:
             catalog=getToolByName(self, 'portal_catalog')
-            personal=self.getPlonePersonalFolder()
+            personal=self.getPersonalFolder(member_id)
             if not personal:
                 home=self.getHomeFolder(member_id)
-                home.invokeFactory(id='.personal', type_name='Folder')
-                personal=getattr(home, '.personal')
+                home.invokeFactory(id=self.personal_id, type_name='Folder')
+                personal=getattr(home, self.personal_id)
                 catalog.unindexObject(personal) #remove persona folder from catalog
-            if not hasattr(personal, portrait_id):
-                personal.invokeFactory(id=portrait_id, type_name='Image')
-                portrait_obj=getattr(personal, portrait_id, None)
+            if not hasattr(personal, self.portrait_id):
+                personal.invokeFactory(id=self.portrait_id, type_name='Image')
+                portrait_obj=getattr(personal, self.portrait_id, None)
                 portrait_obj.edit(file=portrait)
                 catalog.unindexObject(portrait_obj) #remove portrait image from catalog
                 

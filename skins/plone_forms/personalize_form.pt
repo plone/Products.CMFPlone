@@ -364,9 +364,9 @@
             </div>
 
             <div class="row"
-                 tal:define="portrait here/getPlonePersonalPortait | nothing;
-                             home python:container.portal_membership.getHomeUrl(member.getId())"
-                 tal:condition="home">
+                 tal:define="portrait python:here.portal_membership.getPersonalPortrait(member.getId());
+                             personal python:here.portal_membership.getPersonalFolder(member.getId());"
+                 tal:condition="personal">
                 <div class="label">
                     <span i18n:translate="label_portrait">Portrait</span>
                     <div id="portrait_help"
@@ -419,7 +419,6 @@
             <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
                         
 		</form>
-
     </metal:block>
 	
     
