@@ -1070,7 +1070,7 @@ ol.visualNoMarker {
     background: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
-    padding: 0em 1em 0em 1em;
+    padding: 0em 0.3em 0em 1em;
     text-transform: &dtml-textTransform;;
     display: block;
     font-size: 1em;
@@ -1088,20 +1088,16 @@ ol.visualNoMarker {
     text-align: right;
 }
 
-.portletMore {
-    display: block;
-    text-align: right;
-}
-
 .portletContent {
     padding: 1em;
 }
-.portletClose {
+.portletAction {
     float: right;
     text-transform: none;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0em 0.2em;
+    padding-left: 0.3em;
 }
+
 .portlet h1, 
 .portlet h2, 
 .portlet h3, 
@@ -1119,39 +1115,22 @@ ol.visualNoMarker {
     font-size: 100%;
 }
 
-.portlet ul,
-.portlet li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    list-style-image: none;
-    line-height: 1em;
+.portletSyndication {
+    display: block;
+    float: left; 
+    border: 1px solid #8cacbb; 
+    background-color: #dee7ec;
 }
 
-.comment {
-    background: &dtml-evenRowBackgroundColor;; 
-    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
-    padding: 0 1em 0.5em 1em;
-    margin-bottom: 1em;
+.portletMore {
+    display: block;
+    text-align: right;
 }
 
-.comment h1,
-.comment h2,
-.comment h3,
-.comment h4, 
-.comment h5,
-.comment h6 {
-    border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
-    font-weight: normal;
+.portletFooter {
+    padding: 0.5em 1em 1em 1em;
 }
 
-.commentBody {
-    margin: 0 1em 1em 1em;
-}
-
-.spacer {
-	margin: 1em;
-}
 
 /* Navigation tree styling */
 
@@ -1216,6 +1195,63 @@ ol.visualNoMarker {
 
 /* Add more levels if needed. Then again, if you have more than 3-4 level deep
    structures, you should definitely re-think your Information Architecture ;)*/
+
+
+
+/* New-style navigation tree */
+
+.portletNavigationTree {
+    margin: 0 0 0 0.5em; 
+    padding: 0; 
+    list-style: none; 
+    list-style-image: none; 
+    line-height: 1em;
+}
+
+.portletNavigationTreeItem {
+    margin: 0;
+}
+
+.portletNavigationTreeItem a {
+    display: block;
+    text-decoration: none;
+    padding: 0.5em 0 0.5em 1.75em;
+    background-repeat: no-repeat;
+    background-position: 0 3px;
+    border: &dtml-borderWidth; solid transparent;
+}
+
+.portletNavigationTreeItem a:hover,
+.currentNavItem {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
+}
+
+.comment {
+    background: &dtml-evenRowBackgroundColor;; 
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
+    padding: 0 1em 0.5em 1em;
+    margin-bottom: 1em;
+}
+
+.comment h1,
+.comment h2,
+.comment h3,
+.comment h4, 
+.comment h5,
+.comment h6 {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
+    font-weight: normal;
+}
+
+.commentBody {
+    margin: 0 1em 1em 1em;
+}
+
+.spacer {
+	margin: 1em;
+}
 
 /* workflow state colors */
 
