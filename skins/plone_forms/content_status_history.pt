@@ -19,7 +19,9 @@
       tal:condition="here/rejectAnonymous"
       tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                   tabindex python:Iterator();
-                  errors request/errors | nothing;">
+                  errors request/errors | nothing;
+		  review_state wf_state;
+		  review_history python:here.portal_workflow.getInfoFor(here, 'review_history')">
 
     <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
     
@@ -38,8 +40,6 @@
 
     
     <div class="group" tal:condition="not: request/ids|nothing">
-        <metal:block tal:define="global review_state python:here.portal_workflow.getInfoFor(here, 'review_state');
-                                 global review_history python:here.portal_workflow.getInfoFor(here, 'review_history');" />
         <span class="legend" i18n:translate="legend_status">Status</span>
     
         <div class="row">
