@@ -15,14 +15,14 @@
      tal:define="transactions python:container.portal_undo.listUndoableTransactionsFor(here);
                  Batch python:modules['ZTUtils'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
-                 b_start python:request.get('b_start',0);" >
+                 b_start python:request.get('b_start',0);">
 
     <form name="undo_form" 
           action="undo" 
-	  method="POST"
+          method="POST"
           tal:condition="transactions"
           tal:define="batch python:Batch(transactions, 15, int(b_start), orphan=1)">
-
+        <input type="hidden" name="came_from" value="" tal:attributes="value request/HTTP_REFERER" />
         <h1 i18n:translate="">Undo actions</h1>
 
         <p i18n:translate="">
@@ -136,7 +136,7 @@
         </div>
 
 </form>
- 
+
 </div>
 
 </body>
