@@ -30,7 +30,7 @@
 
         <strong> 
         <span tal:replace="python:len(results)" /> 
-        <span i18n:translate="description_x_items_matching_your_criteria">items matching your criteria</span>. 
+        <span i18n:translate="batch_x_items_matching_your_criteria">items matching your criteria</span>. 
         </strong> 
         
         <br/>
@@ -42,7 +42,10 @@
               tal:condition="p"> 
                 <a href=""
                    tal:attributes="href python: 'search?' + mq( request.form, b_start=p.first )">
-                   &laquo; Previous <span tal:replace="p/length">n</span> items
+                   &laquo;
+                   <span i18n:translate="batch_previous" omit-tag="">Previous</span>
+                   <span tal:replace="p/length">n</span> 
+                   <span i18n:translate="batch_items" omit-tag="">items</span>
                 </a>
             </span>
                 
@@ -51,7 +54,11 @@
               tal:condition="n">
                 <a href=""
                    tal:attributes="href python: 'search?' + mq( request.form, b_start=n.first )">
-                   Next <span tal:replace="n/length">n</span> items &raquo;
+                   &laquo;
+                   <span i18n:translate="batch_next" omit-tag="">Next</span>
+                   <span tal:replace="n/length">n</span> 
+                   <span i18n:translate="batch_items" omit-tag="">items</span>
+                   &raquo;
                 </a>
             </span> 
         </div>
@@ -104,7 +111,10 @@
               tal:condition="p"> 
                 <a href=""
                    tal:attributes="href python: 'search?' + mq( request.form, b_start=p.first )">
-                   &laquo; Previous <span tal:replace="p/length">n</span> items
+                   &laquo;
+                   <span i18n:translate="batch_previous" omit-tag="">Previous</span>
+                   <span tal:replace="p/length">n</span> 
+                   <span i18n:translate="batch_items" omit-tag="">items</span>
                 </a>
             </span>
                 
@@ -113,7 +123,11 @@
               tal:condition="n">
                 <a href=""
                    tal:attributes="href python: 'search?' + mq( request.form, b_start=n.first )">
-                   Next <span tal:replace="n/length">n</span> items &raquo;
+                   &laquo;
+                   <span i18n:translate="batch_next" omit-tag="">Next</span>
+                   <span tal:replace="n/length">n</span> 
+                   <span i18n:translate="batch_items" omit-tag="">items</span>
+                   &raquo;
                 </a>
             </span> 
         </div>

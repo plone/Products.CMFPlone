@@ -249,20 +249,11 @@
                          base python: url_query(request, omit='b_start')">
 
         <tr>
-          <td align="left" width="10%">
-           <strong>
-            <span tal:condition="prev">
-               <a href="FIRST BATCH"
-                  tal:attributes="href here/absolute_url">
-               &lt;&lt; </a>
-            </span>
-           </strong>
-          </td>
 
           <td align="left" width="30%">
             <span tal:condition="prev">
              <strong>
-              <a href="PREVIOUS BATCH" i18n:translate="previous_batch"
+              <a href="PREVIOUS BATCH" i18n:translate="batch_previous"
                 tal:attributes="href python:
                                      base+'&'+make_query(b_start=prev.first)">
                Previous</a>
@@ -303,7 +294,7 @@
           <td align="right" width="30%">
             <span tal:condition="next">
              <strong>
-              <a href="NEXT BATCH" i18n:translate="next_batch"
+              <a href="NEXT BATCH" i18n:translate="batch_next"
                 tal:attributes="href python:
                                      base+'&'+make_query(b_start=next.first)">
               Next</a>
