@@ -1,6 +1,6 @@
 from Products.CMFPlone import MigrationTool
 from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
-from Products.CMFPlone.ConfigurationMethods import addSiteProperties
+from Products.CMFPlone.setup.ConfigurationMethods import addSiteProperties
 from Products.CMFCore import CMFCorePermissions
 
 def twothree(portal):
@@ -41,7 +41,6 @@ def twothree(portal):
 
     #moving properties from CMF Site object to portal_properties/site_properties
     #policy=DefaultCustomizationPolicy()
-    from Products.CMFPlone.ConfigurationMethods import addSiteProperties
     addSiteProperties(portal,portal)
 
     prop_tool = portal.portal_properties
