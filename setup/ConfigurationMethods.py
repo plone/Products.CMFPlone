@@ -144,6 +144,7 @@ def modifyActionProviders(self, portal):
     for action in _actions:
         if action.id=='configPortal':
             action.title='Plone Setup'
+            action.category='user'
     mt._actions=_actions
 
     at=getToolByName(portal, 'portal_actions')
