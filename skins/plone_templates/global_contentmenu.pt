@@ -14,8 +14,8 @@
            title="Add new items to this folder"
            onclick="return buttonClick(event, 'objectMenu');"
            onmouseover="buttonMouseover(event, 'objectMenu');"
-           i18n:translate="label_add_new_item"
-           i18n:attributes="title">Add New Item</a>
+           i18n:attributes="title">
+	   <span i18n:translate="label_add_new_item">Add New Item</span></a>
 
         <ul class="actionMenu" id="objectMenu"
             onmouseover="menuMouseover(event)"
