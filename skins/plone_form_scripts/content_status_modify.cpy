@@ -36,9 +36,9 @@ if workflow_action!=current_state:
 if not contentEditSuccess:
     #The object post-transition could now have ModifyPortalContent permission.
     try:
-        editContent(context, effective_date, expiration_date)
+        editContent(newcontext, effective_date, expiration_date)
     except 'Unauthorized':
         pass
 
-return state.set(context=context, portal_status_message='Your contents status has been modified.')
+return state.set(context=newcontext, portal_status_message='Your contents status has been modified.')
 
