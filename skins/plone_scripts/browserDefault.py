@@ -42,7 +42,7 @@ if pages:
         # _robert_ I do not know why
         # but Authenticated is sometimes Anonymous and then
         # a private folder bombs with insufficent privileges
-        ids = context.contentIds()
+        ids = list(context.objectIds())
     except Unauthorized:
         context.plone_log("browserDefault Script (Python)",
         'User was not authorized to get the contentIds for the folder, "%s"' \
