@@ -102,7 +102,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('validateSingleEmailAddress')
     def validateSingleEmailAddress(self, address):
-        """Validate a single email address, see also validateSingleEmailAddress
+        """Validate a single email address, see also validateEmailAddresses
         """
         if type(address) is not StringType:
             return False
@@ -126,9 +126,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     def validateEmailAddresses(self, addresses):
         """Validate a list of possibly several email addresses, see also validateSingleEmailAddress
         """
-        #if addresses:
-        #    import pdb
-        #    pdb.set_trace()
         if type(addresses) is not StringType:
             return False
         
