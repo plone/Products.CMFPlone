@@ -1,0 +1,6 @@
+[default]
+title = Select default page
+
+[actions]
+action.success..Cancel=redirect_to_action:string:view
+action.success..Save=traverse_to:string:setDefaultPage

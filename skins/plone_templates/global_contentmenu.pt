@@ -121,14 +121,19 @@
 
 
 
-    <tal:templateMixin define="hasIndexHtml context/hasIndexHtml;
+    <tal:templateMixin define="contextHasIndexHtml context/hasIndexHtml;
+                               folderHasIndexHtml folder/hasIndexHtml;
                                parentVocab folder/getSelectableViews;
                                contextVocab here/getSelectableViews;
                                canSelectDefaultFolderPage folder/canSelectDefaultPage;
                                canSelectDefaultContextPage here/canSelectDefaultPage;
-                               isContextDefaultPage here/isDefaultPageInFolder;"
+                               isContextDefaultPage here/isDefaultPageInFolder;
+                               showMenu python:(not contextHasIndexHtml) or 
+                                               (isContextDefaultPage and not folderHasIndexHtml)"
                         condition="python:parentVocab or contextVocab or canSelectDefaultFolderPage or canSelectDefaultContextPage">
 
+
+        
         <li>
         
             <div class="menuPosition">
@@ -136,7 +141,7 @@
                 <span title="Delete or rename the index_html item to gain full control over how this folder is displayed."
                    i18n:attributes="title"
                    class="disabled"
-                   tal:condition="hasIndexHtml">
+                   tal:condition="not:showMenu">
                     <span i18n:translate="label_disabled_display_menu">Display</span>
                 </span>
                 
@@ -146,7 +151,7 @@
                    onclick="return buttonClick(event, 'templateMenu');"
                    onmouseover="buttonMouseover(event, 'templateMenu');"
                    i18n:attributes="title"
-                   tal:condition="not:hasIndexHtml">
+                   tal:condition="showMenu">
                     <span i18n:translate="label_choose_template">Display</span>
                 </a>
 
