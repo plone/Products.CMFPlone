@@ -262,6 +262,34 @@
    
     </form>
 
+    <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
+                       here.portal_membership.checkPermission('Add portal content', here)">
+
+        <p i18n:translate="description_no_default_folder_create_new">
+        This folder does not have a default page, therefore a list of items
+        is shown instead.
+        If you want to create a default page in this folder that will
+        replace the item listing, click the button.
+        </p> 
+        
+        <form action=""
+              method="post"
+              tal:attributes="action string:${here/absolute_url}/invokeFactory">
+            <input type="hidden" 
+                   name="id" 
+                   value="index_html"/>
+            <input type="hidden" 
+                   name="type_name" 
+                   value="Document"/>
+            <input class="standalone"
+                   type="submit"
+                   value="Create default document" 
+                   i18n:attributes="value"
+                   />
+        </form>         
+    </div>
+    
+    
 </div>
 
 
