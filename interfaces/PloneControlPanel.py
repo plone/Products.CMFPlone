@@ -1,6 +1,7 @@
 from interface import Interface, Attribute
+from PloneBaseTool import IPloneBaseTool
 
-class IControlPanel(Interface):
+class IControlPanel(IPloneBaseTool):
     """ Interface for the ControlPanel """
 
     def registerConfiglet( id

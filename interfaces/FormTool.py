@@ -1,4 +1,5 @@
 from interface import Interface
+from PloneBaseTool import IPloneBaseTool
 
 class ICMFForm(Interface):
     """ Wraps a Formulator BasicForm and provides convience methods to
@@ -17,7 +18,7 @@ class ICMFForm(Interface):
             We will also strip the prefix of 'field_' in the REQUEST.form dictionary.
         """
 
-class IFormTool(Interface):
+class IFormTool(IPloneBaseTool):
     """ FormTool handles Form validation, caching of Form validators and serves as a factory for portal_form objects.
     """
 
