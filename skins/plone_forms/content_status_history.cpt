@@ -21,7 +21,10 @@
 
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors;
-                     review_state wf_state;" >
+                     review_state wf_state;
+		     contentTypes python: here.getAllowedTypes(); 
+		     num_types python: len(contentTypes);
+		     " >
 
       <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
 
