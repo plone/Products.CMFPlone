@@ -60,7 +60,7 @@
             </thead>
 
             <tbody>
-	        <metal:block tal:repeat="obj python:here.listFolderContents(suppressHiddenFiles=1)">
+	        <metal:block tal:repeat="obj python:here.listFolderContents()">
                 <tr class="even" 
 		    tal:define="oddrow repeat/obj/odd" 
 		    tal:attributes="class python:test(oddrow, 'even', 'odd')" >
