@@ -11,10 +11,11 @@
            tal:define="title daction/name;
                        icon python:getIconFor(daction, nothing)">
             
-            <img i18n:attributes="title" title="#" alt=""
+            <img i18n:attributes="title" title="#"
                  tal:condition="icon"
                  tal:attributes="src string:$portal_url/${icon/getId};
-                                 title title" />
+                                 title title;
+				 alt title" />
         </a>
             
     </tal:actions>
