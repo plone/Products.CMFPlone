@@ -59,17 +59,17 @@
             
             <span class="field"
                   tal:define="contentSubjects here/Subject;
-                  allowedSubjects python:container.portal_metadata.listAllowedSubjects(here);">
+                              usedSubjects python:here.portal_catalog.uniqueValuesFor('Subject');">
             
-                <textarea name="subject:lines" rows="3" cols="25"><span tal:repeat="subject contentSubjects" tal:replace="python:subject+'\n'">Subject of the item</span></textarea>
+                <textarea name="Subject:lines" rows="3" cols="25"><span tal:repeat="subject contentSubjects" tal:replace="python:subject+'\n'">Subject of the item</span></textarea>
                 
                 <br />
                 
-                <select name="subject:list" size="7" multiple="multiple">
-                    <option value="FIXME">FIXME</option>
-                    <option value="fixme"
-                            tal:repeat="subject allowedSubjects"
-                            tal:replace="subject">fixme</option>
+                <select name="Subject:list" size="7" multiple="multiple">
+                    <option value="#"
+                            tal:repeat="subject usedSubjects"
+                            tal:content="subject"
+			    tal:attributes="value subject">fixme</option>
                 </select>
                 
             </span>
