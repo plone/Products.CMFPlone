@@ -82,9 +82,9 @@
                 <label for="wysiwyg_editor" i18n:translate="label_content_editor">Content editor</label>
     
                 <div class="formHelp" i18n:translate="help_content_editor">
-                Select the editor that you would like to use for editing
-                content more easily. Content editors
-                often have specific browser requirements.
+                Select the content editor that you would like to use.
+                Note that content editors often have specific browser
+                requirements.
                 </div>
     
                 <select name="wysiwyg_editor"
@@ -119,7 +119,7 @@
                 <label i18n:translate="label_listed_status">Listed status</label>
     
                 <div class="formHelp" i18n:translate="help_listed_search">
-                Select whether you want to show up in member searches done on this site.
+                Determines if your user name is listed in member searches done on this site.
                 </div>
     
                 <input type="radio"
@@ -177,9 +177,9 @@
                 <label i18n:translate="label_edit_short_names">Editing of Short Names</label>
     
                 <div class="formHelp" i18n:translate="help_display_names">
-                Select whether you want Short Names (also known as IDs) to be
-                visible and editable when editing contents. If you choose not
-                to display Names, they will be generated automatically.
+                Determines if Short Names (also known as IDs) are
+                visible and editable when editing contents. If Short Names
+                are not displayed, they will be generated automatically.
                 </div>
     
                 <input type="radio"
@@ -265,8 +265,9 @@
                 <label for="portrait" i18n:translate="label_portrait">Portrait</label>
     
                 <div class="formHelp" i18n:translate="help_portrait">
-                To add a new portrait, click the "Browse" button and select
-                a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall.
+                To add or change the portrait: click the "Browse" button;
+                select a picture of yourself. Recommended image size is 75
+                pixels wide by 100 pixels tall.
                 </div>
     
                 <img src=""
