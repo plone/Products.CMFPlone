@@ -57,8 +57,8 @@ if date is None:
 elif not same_type(date, now):
     date=DateTime(date)
 
-#Now we need to convert from CEILING to Plone CEILING
-if date.equalTo(CEILING):
+#Anything above PLONE_CEILING should be PLONE_CEILING
+if date.greaterThan(PLONE_CEILING):
     date = PLONE_CEILING
 
 year=int(date.strftime('%Y'))
