@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed HTML escape codes in password for special characters in
+      registered_notify_template (http://plone.org/collector/3499)
+      [jladage] 
+
     - Polished up the datetime-picker widget.  Now provides default values
       for month ('01') and day ('01').  Also new is the option to unset a
       date by deselecting the year ('----').
