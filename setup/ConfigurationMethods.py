@@ -283,13 +283,13 @@ def addNewActions(self, portal):
                  name='Cut',
                  action='string:folder_cut:method',
                  condition='python:portal.portal_membership.checkPermission("Delete objects", object)',
-                 permission=Permissions.ModifyPortalContent,
+                 permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
     at.addAction('copy',
                  name='Copy',
                  action='string:folder_copy:method',
                  condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=Permissions.copy_or_move,
                  category='folder_buttons')
     at.addAction('paste',
                  name='Paste',

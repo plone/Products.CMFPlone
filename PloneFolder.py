@@ -279,6 +279,8 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 
     index_html = ComputedAttribute(index_html, 1)
 
+    security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
+
     security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """ adds a new PloneFolder """
@@ -392,11 +394,12 @@ InitializeClass(BasePloneFolder)
 class PloneFolder( BasePloneFolder, OrderedContainer ):
     """ A Plone Folder """
     meta_type = 'Plone Folder'
-
+    security=ClassSecurityInfo()
     __implements__ = BasePloneFolder.__implements__ + \
                      OrderedContainer.__implements__
 
     manage_renameObject = OrderedContainer.manage_renameObject
+    security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
 InitializeClass(PloneFolder)
 

@@ -27,6 +27,9 @@ Plone 2.0 - Fyuti
 
       - This is in regards to issue, #1985
 
+      - Declared manage_copyObjects on PloneFolder.PloneFolder protected
+      by 'Copy or Move' instead of 'Modify portal content'
+
     - moved CMFPlone/migrations files into CMFPlone/migrations/v1 or v2
     modules.   Although this is not a permenant solution.  It will work
     well enough.
