@@ -67,6 +67,7 @@ def doit(self):
     oneX_twoBeta2(self)
     portal=swapPortalRoot(self)
     moveOldTemplates(portal)
+    migrateNavTree(portal)
     return "some templates in portal_skins/custom may have been renamed"
 
 def swap(self):
@@ -185,6 +186,50 @@ def migrateTools(portal):
     if 'portal_properties' not in ap:
         ap.append('portal_properties')
     at.action_providers = tuple(ap)
+
+def migrateNavTree(portal):
+    p=getToolByName(portal,'portal_properties').navtree_properties
+
+    if not p.hasProperty('showMyUserFolderOnly'):
+        p._setProperty('showMyUserFolderOnly', 1, 'boolean')
+    if not p.hasProperty('includeTop'):
+        p._setProperty('includeTop', 1, 'boolean')
+    if not p.hasProperty('showFolderishSiblingsOnly'):
+        p._setProperty('showFolderishSiblingsOnly', 1, 'boolean')
+    if not p.hasProperty('showFolderishChildrenOnly'):
+        p._setProperty('showFolderishChildrenOnly', 1, 'boolean')
+    if not p.hasProperty('showNonFolderishObject'):
+        p._setProperty('showNonFolderishObject', 0, 'boolean')
+    if not p.hasProperty('topLevel'):
+        p._setProperty('topLevel', 0, 'int')
+    if not p.hasProperty('batchSize'):
+        p._setProperty('batchSize', 30, 'int')
+    if not p.hasProperty('showTopicResults'):
+        p._setProperty('showTopicResults', 1, 'boolean')
+    if not p.hasProperty('rolesSeeUnpublishedContent'):
+        p._setProperty('rolesSeeUnpublishedContent', ['Manager','Reviewer','Owner'] , 'lines')
+    if not p.hasProperty('sortCriteria'):
+        p._setProperty('sortCriteria', ['isPrincipiaFolderish,desc','title_or_id,asc']  , 'lines')
+    if not p.hasProperty('metaTypesNotToList'):
+        p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')   
+    if not p.hasProperty('parentMetaTypesNotToQuery'):
+        p._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
+    if not p.hasProperty('croppingLength'):
+        p._setProperty('croppingLength',256,'int')
+    if not p.hasProperty('forceParentsInBatch'):
+        p._setProperty('forceParentsInBatch',0,'boolean')
+    if not p.hasProperty('skipIndex_html'):
+        p._setProperty('skipIndex_html',1,'boolean')
+    if not p.hasProperty('rolesSeeContentsView'):
+        p._setProperty('rolesSeeContentsView', ['Manager','Reviewer','Owner'] , 'lines')
+    if not p.hasProperty('rolesSeeHiddenContent'):
+        p._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
+    if not p.hasProperty('typesForcedFolderContents'):
+        p._setProperty('typesForcedFolderContents', [] , 'lines')
+    if not p.hasProperty('bottomLevel'):
+        p._setProperty('bottomLevel', 65535 , 'int') 
+    if not p.hasProperty('idsNotToList'):
+        p._setProperty('idsNotToList', [] , 'lines')
 
 def migrateMemberdataTool(portal):
     orig_md = getToolByName(portal, 'portal_memberdata')
