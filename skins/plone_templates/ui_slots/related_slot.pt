@@ -11,7 +11,7 @@
                  remoteContent here/navigationRemoteResources;"
      tal:condition="python:test(localContent or remoteContent, 1, 0)" >
 
-    <div class="box" id="portlet-related">
+    <div class="box">
 
         <h5 i18n:translate="box_related">Related</h5>
 
@@ -22,23 +22,26 @@
                 <br />
 
                 <div tal:repeat="related localContent">
-                        <a href=""
-                           tal:attributes="href string:${related/url}/view">
-                           <img src=""
-                                tal:attributes="src string:$portal_url/${related/icon};alt here/title" />
-                                &nbsp;<span tal:replace="related/title">Object related by keyword</span>
-                        </a>
+                    <a href=""
+                       tal:attributes="href string:${related/url}/view">
+                       <img src=""
+                            tal:attributes="src string:$portal_url/${related/icon};alt here/title" />
+                       &nbsp;<span tal:replace="related/title">Object related by keyword</span>
+                    </a>
                 </div>
             </div>
 
-            <div class="content even" tal:condition="remoteContent">
-                <strong i18n:translate="box_external_links">External links</strong>
-                <div tal:repeat="o remoteContent">
-                        <a href=""
-                           tal:attributes="href python:o[1]"
-                           tal:content="python:o[0]">Link object in same folder</a>
-                </div>
-            </div>
+              <div class="content even" tal:condition="remoteContent">
+                  <strong i18n:translate="box_external_links">External links</strong>
+                  <div tal:repeat="o remoteContent">
+                      <a href=""
+                         tal:attributes="href python:o[1]">
+                          <img src="link_icon.gif"
+                               tal:attributes="alt python:o[0]" />
+                          &nbsp;<span tal:replace="python:o[0]">Link object in same folder</span>
+                      </a>
+                  </div>
+              </div>
 
         </div>
 
@@ -49,4 +52,3 @@
 </body>
 
 </html>
-
