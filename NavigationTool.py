@@ -74,13 +74,13 @@ class NavigationTool (UniqueObject, SimpleItem):
 
         property_tool = getattr(self, 'portal_properties')
         navprops = getattr(property_tool, 'navigation_properties') #propertymanager that holds data
-        status = status.lower()
-        script = script.lower()
+
+        content=self._getContentFrom(content)
+        status = self._normalize(status)
+        script = self._normalize(script)
 
         if status not in self._availableStatus():
             raise KeyError, '%s status is not supported' % status
-
-        content=self._getContentFrom(content)
 
         transition = '%s.%s.%s'%( content
                                 , script
@@ -98,6 +98,8 @@ class NavigationTool (UniqueObject, SimpleItem):
         property_tool = getattr(self, 'portal_properties')
         navprops = getattr(property_tool, 'navigation_properties') #propertymanager that holds data
         transition = self._getContentFrom(content)
+        script = self._normalize(script)
+        status = self._normalize(status)
         if script is not None:
             transition += '.'+script
         if status is not None:
@@ -119,7 +121,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         if hasattr(content, 'getId'): #XXX use a xface
 #        if hasattr(content, '_isTypeInformation'): #XXX use a xface
             content = content.getId()
-        content = ''.join(content.lower().split(' ')) #normalize
+        content = self._normalize(content) #normalize
         return content
 
 
@@ -170,6 +172,9 @@ class NavigationTool (UniqueObject, SimpleItem):
         return (None, transition.strip())
 
     def getNavigationTransistion(self, context, script, status):
+        script = self._normalize(script) # normalize
+        status = self._normalize(status) # normalize
+        
         property_tool = getattr(self, 'portal_properties')
         navprops = getattr(property_tool, 'navigation_properties')
 
@@ -182,8 +187,13 @@ class NavigationTool (UniqueObject, SimpleItem):
 
             if transition is None:
                 transition_key='%s.%s.%s' % (self._getContentFrom(None),'default',status)
-                transition = getattr(navprops.aq_explicit, transition_key, '')
+                transition = getattr(navprops.aq_explicit, transition_key, None)
 
+                if transition is None:
+                    raise "Unable to find navigation transition for %s.%s.%s" % (self._getContentFrom(context), script, status)
+
+        self.log("getting transition %s.%s.%s, found [%s]\n" % (context, script, status, str(transition)))
+        
         transition = self._transitionSubstitute(transition, self.REQUEST)
         return self._parseTransition(transition)
 
@@ -246,6 +256,12 @@ class NavigationTool (UniqueObject, SimpleItem):
             if len(url_params) == 0:
                 separator = ''
         return base+separator+url_params 
+
+
+    def _normalize(self, st):
+        if st is None:
+            return None
+        return st.lower().replace(' ', '')
 
 
     def _availableStatus(self):
