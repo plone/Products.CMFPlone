@@ -604,6 +604,8 @@ div.help {
 .required {
     /* Used in addition to class "label" on required elements */
     background: &dtml-requiredField;;
+    background-position: left;
+    padding-left: 8px;
 }
 span.card,
 div.portrait {
@@ -856,7 +858,7 @@ div.hiddenlabel {
 label.hiddenlabel {
     visibility: hidden;
 }
-label.label {
+div.label {
     font-weight: bold;
     display: inline;
     padding-right: 0.5em;
