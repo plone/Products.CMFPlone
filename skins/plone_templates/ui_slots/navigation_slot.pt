@@ -36,7 +36,10 @@
 			      height="16" 
 			      width="16" 
 			      tal:attributes="src sibling/getIcon" /> &nbsp;
-			          <span tal:replace="python:here.truncID(sibling.title_or_id(), 10)"/>
+		         <span tal:replace="structure python:'&nbsp;'.join(here.truncID(sibling.title_or_id(), 14).split(' '))">
+			 truncated content title
+			 </span>
+			      
 		    </a>
                 </span>
             </div>
