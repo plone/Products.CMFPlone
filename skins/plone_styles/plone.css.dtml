@@ -413,7 +413,7 @@ div.pathBar {
 #contentTabs a {
     background: &dtml-contentTabBackgroundNotSelected;;
     border: &dtml-contentTabBorder;;
-    border-style: solid solid none solid;
+    border-style: solid solid solid solid;
     color: &dtml-contentTabFontColor;;
     font-weight: &dtml-contentTabFontWeight;;
     height: 1.2em;
