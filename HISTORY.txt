@@ -31,8 +31,9 @@ Plone 2.0 - Fyuti
       of a dropdown. ( fixes bug )
 
     - If a content type is listed in 
-      portal_properties/site_properties/useFolderContents then use
-      'folder_contents' to display it, not ''
+      portal_properties/site_properties/use_folder_contents then use
+      'folder_contents' to display it, not ''. Removed the migration
+      that initialized this value to ['Folder']
 
    RC5
 
