@@ -455,8 +455,9 @@ we eventually might want to merge this form with personalize_form
                         i18n:translate="help_portrait"
                         class="formHelp"
                         style="visibility:hidden">
-                    To add a new portrait, click the <strong>Browse</strong> button and select
-                    a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
+                                To add or change the portrait: click the "Browse" button;
+                                select a picture of yourself. Recommended image size is 75
+		                pixels wide by 100 pixels tall.
                     </div>
     
                 </div>
