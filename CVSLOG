@@ -1,3 +1,21 @@
+2004-03-19 02:40  dtremea
+
+	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch):
+	  Fixed broken tabindex'es. Cleaned up whitespaces.
+
+2004-03-19 01:15  limi
+
+	* HISTORY.txt, skins/plone_templates/folder_listing.pt
+	  (Plone-2_0-branch): Inserted a metal definition that enables the
+	  folder_listing to be used from other templates. Example:
+
+	  <div metal:use-macro="here/folder_listing/macros/listing"> The
+	  folder listing of the current folder </div>
+
+2004-03-18 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-17 17:35  limi
 
 	* HISTORY.txt (Plone-2_0-branch): We were missing part of our
