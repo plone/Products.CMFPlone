@@ -8,11 +8,15 @@
 ##title=Set Browser Default
 ##
 
-# WARNING: Do not remove this, or else WebDAV breaks badly
+# WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
+# and then requests that object, for example for: /, with verb PROPFIND
+# means acquire PROPFIND from the folder and call it
+# its all very odd and WebDAV'y
 request = context.REQUEST
 if request.has_key('REQUEST_METHOD'):
     if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
         return context, [request['REQUEST_METHOD']]
+# now back to normal
 
 default_pages = ['index_html', ]
 pages = getattr(context, 'default_page', [])
