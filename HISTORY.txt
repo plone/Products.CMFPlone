@@ -41,6 +41,8 @@ Plone 1.0 rc2
       
     - Fix for the printing problems which caused some text to disappear along the right edge.
     - Added more i18n stuff, the calendar is now fully localized. 
+      **Remember that you need to run Zope without any special language 
+        settings for this to work**
     - Search results now use the defined time format
       
 Plone 1.0 rc1
