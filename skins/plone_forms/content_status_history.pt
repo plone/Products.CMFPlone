@@ -116,8 +116,12 @@
                   retract python:here.getActionUrlById('retract', wf_actions);
                   hide python:here.getActionUrlById('hide', wf_actions);
                   reject python:here.getActionUrlById('reject', wf_actions);
-                  visible python:here.getActionUrlById('visible', wf_actions);">
-
+                  visible python:here.getActionUrlById('visible', wf_actions);
+		  show python:here.getActionUrlById('show', wf_actions);">
+		  
+                <input class="context" type="submit" value="Show" tal:condition="show"
+                       onclick="javascript:document.getElementById('workflow_action').value='show';" />
+		       
                 <input class="context" type="submit" value=" Publish this Item " tal:condition="publish"
                        onclick="javascript:document.getElementById('workflow_action').value='publish';" />
              

@@ -60,6 +60,7 @@
     - Comments have been modified - they are still unuseable ;(
     - Lucas Marshall pointed out a javascript error in the calendar slot on MacOS and a fix 8)
     - News items can now use structured-text in the edit_form
+    - my_worklist works correctly and sorts in ascending order for modified
     - many more changes and cleanups
 
 0.9.8 - Ulrich Schnauss Release:

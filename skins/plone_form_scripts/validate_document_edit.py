@@ -19,9 +19,10 @@ titleField=fv.createField('String', 'title', title='title', required=1, display_
 form.add_field(titleField)
 errors=fv.validate(form)
 
-
-if REQUEST.get('file', ''):
-    headers = REQUEST['file'].headers
+file=REQUEST.get('file', '')
+if file and file.read(): 
+    file.seek(0)
+    headers = file.headers
     if headers['Content-Type'].find('text')==-1:
         if not errors: errors={} 
 	errors.update( {'file':'This file is not text, To upload binary files create File content,'} )
