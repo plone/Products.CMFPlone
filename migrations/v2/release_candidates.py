@@ -144,6 +144,16 @@ def rc5_final(portal):
 
     return out
 
+def rc5_rc6(portal):
+    removeTypesForcedFolderContents(portal)
+
+def removeTypesForcedFolderContents(portal):
+    pp=getToolByName(portal,'portal_properties')
+    p = getattr(pp , 'navtree_properties', None)
+
+    if props.hasProperty('removeTypesForcedFolderContents(portal)'):
+        props._delProperty('removeTypesForcedFolderContents(portal)')    
+
 def addFolderContentsProperties(portal):
     """Existing use_folder_contents split into two new properties:
 

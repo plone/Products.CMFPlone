@@ -234,8 +234,8 @@ def migrateNavTree(portal):
 #        p._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
 
     # these are all new
-    if not p.hasProperty('typesForcedFolderContents'):
-        p._setProperty('typesForcedFolderContents', [] , 'lines')
+    #if not p.hasProperty('typesForcedFolderContents'):
+    #    p._setProperty('typesForcedFolderContents', [] , 'lines')
     if not p.hasProperty('bottomLevel'):
         p._setProperty('bottomLevel', 65535 , 'int')
     if not p.hasProperty('idsNotToList'):
