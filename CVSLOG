@@ -1,3 +1,62 @@
+2004-03-12 03:30  limi
+
+	* MigrationTool.py (Plone-2_0-branch): Changed wording so that a
+	  migration doesn't sound like it has failed when it reaches the
+	  final step. First change for 2.0.1 ;)
+
+2004-03-11 23:16  plonista
+
+	* ActionsTool.py, LICENSE.ZPL (Plone-2_0-branch): Added ZPL info
+
+2004-03-11 23:04  runyaga
+
+	* PloneFolder.py (Plone-2_0-branch): tesdal and others.  if you
+	  copy/pate code that you are not the creator of and do not give
+	  attribution.	and I get sued.  your ass is mine.
+
+2004-03-11 22:56  runyaga
+
+	* Extensions/package_plone.py (Plone-2_0-branch):
+	  make the release tarball as CMFPlone-$version.tar.gz instead of
+	  CMFPlone$version.tar.gz - no idea why this is importnat
+
+2004-03-11 22:49  runyaga
+
+	* PloneFolder.py (Plone-2_0-branch): add a link to the ZPL on the
+	  code that was claimed as copy/pasted from Zope
+
+2004-03-11 21:56  shh42
+
+	* HISTORY.txt (Plone-2_0-branch): Minor amendments before final.
+
+2004-03-11 18:01  plonista
+
+	* HISTORY.txt, migrations/__init__.py,
+	  migrations/v2/release_candidates.py,
+	  skins/plone_scripts/showEditableBorder.py (Plone-2_0-branch):
+	  Added migrations from rc6 to 2.0-final, snuck in quick fix for
+	  2852.
+
+2004-03-11 16:48  plonista
+
+	* HISTORY.txt (Plone-2_0-branch): added info about cleanupSkinPath
+	  to HISTORY.txt
+
+2004-03-11 16:23  plonista
+
+	* migrations/: migration_util.py, v2/release_candidates.py
+	  (Plone-2_0-branch): Added fix for rc5-rc6 migration when skin
+	  layers are broken/missing.
+
+2004-03-11 07:04  runyaga
+
+	* version.txt (Plone-2_0-branch): mark 2.0 final.. too weak.. to go
+	  on.. must complete in the morning
+
+2004-03-11 05:04  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-10 17:58  zopezen
 
 	* skins/plone_templates/footer.pt (Plone-2_0-branch): Update to
