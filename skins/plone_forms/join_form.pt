@@ -185,8 +185,8 @@
             </div>
         </div>
 
-        <div class="row" tal:condition="not: allowEnterPassword">
-            
+        <div class="row" tal:condition="not: allowEnterPassword" tal:define="mail_me request/mail_me|nothing">
+                        
             <div class="label">
                 <span i18n:id="mail_password">Mail Password?</span>
                 <div id="mail_password_help" 
@@ -204,10 +204,10 @@
                        name="field_mail_me" 
                        size="30" 
                        id="cb_mailme" 
-                       checked="checked" 
                        tabindex="6"
                        onfocus="formtooltip('mail_password_help',1)" 
-                       onblur="formtooltip('mail_password_help',0)" />
+                       onblur="formtooltip('mail_password_help',0)" 
+		       tal:attributes="checked python:test(mail_me, 'checked', '')" />
                 <label for="cb_mailme">Yes, mail me my password</label>
             </div>
         </div>
