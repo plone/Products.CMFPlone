@@ -178,7 +178,10 @@
                      <a href="" onclick="javascript:window.open('url','title', 'width=200,height=200,menubar=no,toolbar=no,scrollbars=no,resizable=yes').focus();return true;"
                         tal:attributes="href start_url;
                                         onclick string:window.open('$start_url','Link','width=200,height=200,resizable=yes').focus();; return false;;">
-                     Link to resource
+                     <img src=""
+                          alt=""
+                          title="Link to internal resource"
+                          tal:attributes="src string: ${portal_url}/sitemap_icon.gif" />
                      </a>
                  </span>
 
