@@ -41,9 +41,9 @@
                     Title
                     </a>
 
-                    <span class="discreet">
-                        by <span tal:replace="result/Creator"></span>,
-                        <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="result/modified" />
+                    <span class="discreet" i18n:translate="text_creator_date">
+                        by <span tal:replace="result/Creator" i18n:name="creator" />,
+                        last updated: <span tal:replace="result/modified" i18n:name="date" />
                     </span>
                 </dt>
 
