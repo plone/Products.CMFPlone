@@ -39,8 +39,7 @@
                           results python:here.sortObjectValues(folder_contents);
                           global DateTime python:modules['DateTime'].DateTime;
                           Batch python:modules['ZTUtils'].Batch;
-                          global batch python:Batch(results, 5000, int(b_start), orphan=0)"
-              tal:condition="results" >
+                          global batch python:Batch(results, 5000, int(b_start), orphan=0);">
 
             <input type="hidden" name="filter_state" value="set_view_filter" />
 
@@ -72,7 +71,15 @@
 
             </div>
 
-
+            <metal:block tal:condition="not: folder_contents">
+            <p>
+            This folder is empty. To add content, press the "Add New Item" button,
+            or paste content from another location.
+            </p>						    
+	    </metal:block>
+	    
+            <metal:block tal:condition="folder_contents">
+	    
             <table id="sortable"
                    class="listing"
                    summary="Content listing"
@@ -142,13 +149,15 @@
                 </tbody> 
             </table>
 
-            <input class="context" type="submit" name="folder_rename_form:method" value="Rename" />
-            <input class="context" type="submit" name="folder_cut:method" value="Cut" /> 
-            <input class="context" type="submit" name="folder_copy:method" value="Copy" />
+            </metal:block>
+	    
+            <input class="context" type="submit" name="folder_rename_form:method" value="Rename" tal:condition="folder_contents" />
+            <input class="context" type="submit" name="folder_cut:method" value="Cut" tal:condition="folder_contents" /> 
+            <input class="context" type="submit" name="folder_copy:method" value="Copy" tal:condition="folder_contents" />
             <input tal:condition="here/cb_dataValid | nothing"
                    class="context" type="submit" name="folder_paste:method" value="Paste" />
-            <input class="context" type="submit" name="folder_delete:method" value="Delete" />
-            <input class="context" type="submit" name="content_publishing_history:method" value="Change Status" />
+            <input class="context" type="submit" name="folder_delete:method" value="Delete" tal:condition="folder_contents" />
+            <input class="context" type="submit" name="content_publishing_history:method" value="Change Status" tal:condition="folder_contents" />
 
             <!-- Filter pulldown -->
             <span tal:define="filterValues decodedFilter/keys | nothing;
@@ -179,100 +188,6 @@
             </span>
 
         </form>
-
-
-
-<!-- Folder content is empty -->
-
-        <metal:block tal:condition="python:not folder_contents">
-
-            <div class="title">
-                <img src="folder.gif" alt="Folder" tal:attributes="src string:$portal_url/folder.gif" /> 
-                <span class="folderName" tal:condition="python: user.getUserName()==here.getId()">
-                My Stuff
-                </span> 
-
-                <span class="folderName" tal:condition="python: user.getUserName()!=here.getId()" tal:content="here/title_or_id">
-                Directory Id
-                </span> 
-
-                <!-- Add Item pulldown -->
-                <form class="inline" name="create" action="folder_factories" method="post">
-                    <select name="type_name" >
-    
-                        <option value="Select">Select</option>
-    
-                        <metal:block tal:repeat="ctype here/allowedContentTypes"
-                                     tal:define="global filterOut  python:['Favorite']">
-                        <option value="Document"
-                                tal:condition="python: ctype.getId() not in filterOut"
-                                tal:attributes="value ctype/getId"
-                                tal:content="ctype/getId"
-                        >Document</option>
-                        </metal:block>
-    
-                    </select>
-    
-                    <input class="standalone" type="submit" value="Add New Item" />
-                </form>
-
-                <p>
-                This folder is empty. To add content, press the "Add New Item" button,
-                or paste content from another location.
-                </p>
-
-                <form method="post" action="" tal:attributes="action here/absolute_url">
-    
-                    <input tal:condition="here/cb_dataValid | nothing"
-                           class="context" 
-                           type="submit" 
-                           name="folder_paste:method" 
-                           value="Paste" /> 
-                </form>
-
-            </div>
-
-            <div tal:define="syndicateInfo here/syndication_information | nothing;
-                             siteSyndicationAllowed container/portal_syndication/isSiteSyndicationAllowed;">
-
-                <!-- Filter pulldown -->
-                <form name="folderContentsForm" method="GET" action="#"
-                      tal:condition="here/listFolderContents"
-                      tal:attributes="action here/absolute_url" >
-    
-                    <input type="hidden" name="filter_state" value="set_view_filter"/>
-    
-                    <div class="viewFilter"
-                         tal:define="filterValues decodedFilter/keys | nothing;
-                                     types python:container.portal_types.listContentTypes();">
-    
-                        <select name="filter_by_Type:list" onChange="submitFilterAction()"
-                                tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));">
-    
-                            <option value="#" 
-                                    tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
-                            All objects
-                            </option>             
-    
-                            <option value="#"
-                                    tal:repeat="type here/portal_types/objectIds"
-                                    tal:content="python:type+' only'"
-                                    tal:attributes="value type;
-                                                    selected python:test( len(filterTypes)==1 and (type in filterTypes), 'selected', '');"
-                              >Filtered type
-                            </option>
-    
-                        </select>
-    
-                        <!--you can filter by subject keywords by filling in this value-->
-                        <input type="hidden" name="filter_by_Subject:tokens" value="" />
-    
-                    </div>
-                </form>
-
-            </div>
-
-        </metal:block>
 
     </div>
 
