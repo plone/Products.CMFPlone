@@ -12,14 +12,16 @@
                  year python:request.get('year', DateTime().year());
                  prevMonthTime python:here.getPreviousMonth(month, year);
                  nextMonthTime python:here.getNextMonth(month, year);
-                 weeks python:here.portal_calendar.getEventsForCalendar(month=month, year=year);">
+                 weeks python:here.portal_calendar.getEventsForCalendar(month=month, year=year);
+                 anchor_url request/anchor_url | here/absolute_url;
+                 anchor_method request/anchor_method | template/getId;">
     <!-- The calendar, rendered as a table -->
 
     <table cellspacing="0" class="calendar" id="thecalendar">
         <thead>
             <tr>
                 <th id="calendar-previous">
-                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
+                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
                 </th>
                 <th colspan="5"
                     tal:define="date string:$month/1/$year;">
@@ -39,7 +41,7 @@
                     </span>
                  </th>
                 <th id="calendar-next">
-                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
+                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
                 </th>
             </tr>
             <tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
