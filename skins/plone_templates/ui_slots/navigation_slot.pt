@@ -35,8 +35,7 @@
 		         <img src="" 
 			      height="16" 
 			      width="16" 
-			      tal:attributes="src sibling/getIcon" /> &nbsp;
-		         <span tal:replace="structure python:'&nbsp;'.join(here.truncID(sibling.title_or_id(), 14).split(' '))">
+			      tal:attributes="src sibling/getIcon" />&nbsp;<span tal:replace="structure python:'&nbsp;'.join(here.truncID(sibling.title_or_id(), 18).split(' '))">
 			 truncated content title whose white spaces are non-breaking
 			 </span>
 			      
