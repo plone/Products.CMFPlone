@@ -1,7 +1,7 @@
 <dtml-let expires="_.DateTime()+7" >
-<dtml-call "REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.rfc822() )" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
 </dtml-let>
 
 <dtml-with stylesheet_properties>
