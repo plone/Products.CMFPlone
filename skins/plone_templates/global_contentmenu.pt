@@ -84,7 +84,6 @@
                 <li tal:define="Title ctype/Title;Id ctype/getId">
                     <a href="#" 
                        onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                       tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
                        i18n:attributes="title"
                        tal:attributes="href python:folder.absolute_url()+'/createObject?type_name='+Id;
                                        title Title">
