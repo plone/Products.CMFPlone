@@ -86,7 +86,8 @@
     <div class="row">
         <div class="label"> Managers </div> 
         <div class="field">
-            <textarea name="managers:lines" rows="5" cols="15"><span tal:repeat="it here/managers" tal:replace="it"></span></textarea>
+            <textarea name="managers:lines" rows="5" cols="15">
+<span tal:repeat="it here/managers" tal:replace="it"></span></textarea>
             Managers configure the collector, and receive request notices.
             Managers can accept issues, but must be on Supporters roster to be
             assigned.  (Managers cannot remove <em>themselves</em> from the
@@ -97,7 +98,8 @@
     <div class="row">
         <div class="label"> Supporters </div> 
         <div class="field">
-            <textarea name="supporters:lines" rows="5" cols="15"><span tal:repeat="it here/supporters" tal:replace="it"></span></textarea>
+            <textarea name="supporters:lines" rows="5" cols="15">
+<span tal:repeat="it here/supporters" tal:replace="it"></span></textarea>
             Supporters can be assigned to requests.  They may or may not
             receive initial request notifications, depending on the
             "dispatching" setting below.
