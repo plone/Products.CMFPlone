@@ -191,134 +191,48 @@
             </div>
         </div>
 
-        <div class="row"> 
-            <div class="label">Event Starts</div>
-
+        <div class="row">
+            <div class="label">
+              <span i18n:id="start_date">Event Starts</span>
+                <div id="format_help"
+                     i18n:id="start_date_help" 
+                     class="help" 
+                     style="visibility:hidden">
+                     Enter the starting date and time,
+                     or click the calendar icon and select it.
+                </div>
+            </div>
             <div class="field">
-                <span tal:define="startstrings here/getStartStrings">
-                    
-                    <select name="effectiveYear">
-                        <option value=""
-                                tal:define="years here/buildYears"
-                                tal:repeat="year years"
-                                tal:attributes="value year; selected python:year == startstrings['year']"
-                                tal:content="year">
-                            Year
-                        </option>
-                    </select>
-                    
-                    <select name="effectiveMo">
-                        <option value=""
-                                tal:define="months here/buildMonths"
-                                tal:repeat="month months"
-                                tal:attributes="value month; selected python:month == startstrings['month']"
-                                tal:content="month">
-                            Month
-                        </option>
-                    </select>
-                    
-                    <select name="effectiveDay">
-                        <option value=""
-                                tal:define="days here/buildDays" 
-                                tal:repeat="day days"
-                                tal:attributes="value day; selected python:day == startstrings['day']"
-                                tal:content="day">
-                            Day
-                        </option>
-                    </select>
-                </span>
-
-                <span tal:define="stTimeString python:modules['string'].split(here.getStartTimeString());
-                                  amSel python:(len(stTimeString) == 2 and stTimeString[1] == 'am') and 1 or 0;
-                                  pmSel python:(len(stTimeString) == 2 and stTimeString[1] == 'pm') and 1 or 0">
-                    <select name="start_time">
-                        <option value=""
-                                tal:repeat="bt here/buildTimes"
-                                tal:attributes="value bt; selected python:bt == stTimeString[0]"
-                                tal:content="bt">
-                            Start time
-                        </option>
-                    </select>
-                    
-                    <input type="radio"
-                           name="startAMPM" 
-                           value="am"
-                           tal:attributes="checked amSel" /> AM
-                           
-                    <input type="radio"
-                           name="startAMPM" 
-                           value="pm"
-                           tal:attributes="checked pmSel" /> PM
-                           
-                    <input type="hidden" 
-                           name="startAMPM:default" 
-                           value="pm" />
-                </span>
-
-
+                <div tal:define="inputname  string:start_date; 
+                                 formname   string:edit_form;
+                                 inputvalue python:'%s %s'%(here.start().Date(),here.start().TimeMinutes())">
+                  <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                    a calendar, hopefully
+                  </div>
+                </div>
             </div>
         </div>
 
-        <div class="row"> 
-            <div class="label">Event Ends</div>
+        <div class="row">
+            <div class="label">
+              <span i18n:id="start_date">Event Ends</span>
+                <div id="format_help"
+                     i18n:id="end_date_help" 
+                     class="help" 
+                     style="visibility:hidden">
+                     Enter the ending date and time,
+                     or click the calendar icon and select it.
+                </div>
+            </div>
             <div class="field">
-                <span tal:define="endstrings here/getEndStrings">
-                    <select name="expirationYear">
-                        <option value=""
-                                tal:define="years here/buildYears"
-                                tal:repeat="year years"
-                                tal:attributes="value year; selected python:year == endstrings['year']"
-                                tal:content="year">
-                            Day
-                        </option>
-                    </select>
-                    
-                    <select name="expirationMo">
-                        <option value=""
-                                tal:define="months here/buildMonths"
-                                tal:repeat="month months"
-                                tal:attributes="value month; selected python:month == endstrings['month']"
-                                tal:content="month">
-                            Month
-                        </option>
-                    </select>
-                    
-                    <select name="expirationDay">
-                        <option value=""
-                                tal:define="days here/buildDays" 
-                                tal:repeat="day days"
-                                tal:attributes="value day; selected python:day == endstrings['day']"
-                                tal:content="day">
-                            Day
-                        </option>
-                    </select>
-                </span>
+                <div tal:define="inputname  string:end_date; 
+                                 formname   string:edit_form;
+                                 inputvalue python:'%s %s'%(here.end().Date(),here.end().TimeMinutes())">
 
-                <span tal:define="stTimeString python:modules['string'].split(here.getStopTimeString());
-                                  amSel python:(len(stTimeString) == 2 and stTimeString[1] == 'am') and 1 or 0;
-                                  pmSel python:(len(stTimeString) == 2 and stTimeString[1] == 'pm') and 1 or 0">
-                    <select name="stop_time">
-                        <option value=""
-                                tal:repeat="bt here/buildTimes"
-                                tal:attributes="value bt; selected python:bt == stTimeString[0]"
-                                tal:content="bt">
-                            End time
-                        </option>
-                    </select>
-                    
-                    <input type="radio"
-                           name="stopAMPM" 
-                           value="am"
-                           tal:attributes="checked amSel" /> AM
-                    
-                    <input type="radio"
-                           name="stopAMPM" 
-                           value="pm"
-                           tal:attributes="checked pmSel" /> PM
-
-                    <input type="hidden" 
-                           name="stopAMPM:default" value="pm" />
-                </span>
+                  <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                    a calendar, hopefully
+                  </div>
+                </div>
 
             </div>
         </div>
