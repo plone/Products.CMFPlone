@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - User Management Screens have landed
+        prefs_user_management_form - batch user maintenance
+        prefs_user_management_individual_form - editing attributes of a member
+        prefs_group_management_form - batch group maintenance
+        prefs_group_management_group_form - assign roles/users to a group
+        !REQUIRES! GroupUserFolder from http://sf.net/projects/collective
+    
     - PloneTool.editMetadata made a really bad asssumption.  We now use interface packages to
       assert that a object implements the interfaces before attempting to set DublinCore attributes
       *or* Discussable attributes

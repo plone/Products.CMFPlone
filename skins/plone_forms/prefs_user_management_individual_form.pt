@@ -17,14 +17,6 @@
                 b_start python:request.get('b_start',0);"
      tal:condition="here/rejectAnonymous" >
 	
-    <tal:set tal:condition="mdata/management_page_charset|nothing"
-            tal:define="dummy python:request.set('management_page_charset_tag','')" />
-            
-    <tal:set tal:condition="not:mdata/management_page_charset|nothing">
-        <tal:defines define="dummy python:request.set('management_page_charset','UTF-8');
-                             dummy python:request.set('management_page_charset_tag','UTF-8:');" />
-    </tal:set>
-            
     <h1 i18n:translate="">User Properties for <span tal:replace="user/getId"/></h1>
 
     <p i18n:translate="">
@@ -38,27 +30,37 @@
           tal:condition="user"
           tal:attributes="action string:${here/portal_memberdata/absolute_url}"
           tal:define="portal_users python: here.portal_membership.listMembers();
-                      batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
+                      batch python:Batch(portal_users, 25, int(b_start), orphan=1);
+                      targetobject mdata;
+                      targetGetProperty nocall:user/getProperty;">
 
         <span class="legend">User Properties</span>
 
         <input type="hidden" name="userid" value="username" 
-                tal:attributes="value user/getId" />
+               tal:attributes="value user/getId" />
 
-        <tal:properties repeat="property mdata/propertyMap">
+         <tal:set tal:condition="targetobject/management_page_charset|nothing"
+                  tal:define="dummy python:request.set('management_page_charset_tag','')" />
+
+         <tal:set tal:condition="not:targetobject/management_page_charset|nothing">
+            <tal:defines define="dummy python:request.set('management_page_charset','UTF-8');
+                                 dummy python:request.set('management_page_charset_tag','UTF-8:');" />
+         </tal:set>
+
+        <tal:properties repeat="property targetobject/propertyMap">
         
           <div class="row">
 
           <label for="value" 
                  tal:define="global id property/id;
                              global type property/type;
-                             global propertyvalue python:user.getProperty(id, None);"
+                             global propertyvalue python:targetGetProperty(id, None);"
                  tal:attributes="for id"
-                 tal:content="python:mdata.propertyLabel(id)">Property Value</label>
+                 tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
 
           
               <div class="field"
-                   tal:define="propertyitem python:mdata.getProperty(id)"
+                   tal:define="propertyitem python:targetobject.getProperty(id)"
                tal:condition="python:'w' in property.get('mode', 'awd')">
                
                <input type="text" name="id" size="35"

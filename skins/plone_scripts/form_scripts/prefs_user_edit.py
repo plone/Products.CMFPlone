@@ -10,13 +10,14 @@
 REQUEST=context.REQUEST
 member=context.portal_membership.getMemberById(userid)
 
-context.plone_utils.setMemberProperties(member, **REQUEST.form)
-
-print REQUEST
-return printed
+processed={}
+for id, property in context.portal_memberdata.propertyItems():
+    processed[id]=REQUEST.get(id, None)
+    
+context.plone_utils.setMemberProperties(member, **processed)
 
 REFERER=REQUEST.HTTP_REFERER
-statusmsg=REFERER.find('portal_status_message')
-url='%s&%s' % (REFERER[:REFERER.find('portal_status_message')],
-               'portal_status_message=Changes+made.')
+if REFERER.find('portal_status_message')!=-1:
+    REFERER=REFERER[:REFERER.find('portal_status_message')]
+url='%s&%s' % (REFERER, 'portal_status_message=Changes+made.')
 return REQUEST.RESPONSE.redirect(url)
