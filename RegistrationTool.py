@@ -37,6 +37,7 @@ class RegistrationTool(BaseTool):
     security = ClassSecurityInfo()
     plone_tool = 1
     md5key = None
+    _v_md5base = None
 
     def __init__(self):
         if hasattr(BaseTool, '__init__'):
@@ -45,10 +46,9 @@ class RegistrationTool(BaseTool):
         self.md5key = ''
         for i in range(0, 20):
             self.md5key += chr(ord('a')+random.randint(0,26))
-        self._v_md5base = None
 
     def _md5base(self):
-        if self._v_md5base == None:
+        if not hasattr(self, '_v_md5base') or self._v_md5base is None:
             self._v_md5base = md5.new(self.md5key)
         return self._v_md5base
 
