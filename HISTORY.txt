@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Added border-collapse to the columns, so pixel/bitmap layouts that 
+      depend on the columns having 0 margin will work automatically. This 
+      is cleaner than the cellspacing="0" cellpadding="0" HTML approach
+      that people seem to use.
+      Fixes http://plone.org/collector/3511
+      [limi]
+      
     - Fixed HTML escape codes in password for special characters in
       registered_notify_template (http://plone.org/collector/3499)
       [jladage] 
