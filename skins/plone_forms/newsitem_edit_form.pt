@@ -107,7 +107,7 @@
                     <label for="cb_html">HTML</label> <br />
 		    <input class="noborder" type="radio" name="text_format" value="plain" id="cb_plain"
                            tal:attributes="checked python:test(here.text_format=='plain', 1, 0)" />
-                    <label for="cb_html">Plain Text</label>
+                    <label for="cb_plain">Plain Text</label>
             </span>
             <span class="info">
             Select which format you want to type the contents of this
