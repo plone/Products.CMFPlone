@@ -79,8 +79,8 @@ class CalendarTool (UniqueObject, SimpleItem):
     
         query=self.portal_catalog(Type='Event',
                                   review_state='published',	                          
-                                  start=(first_date, last_date),
-                                  start_usage='range:min:max',
+                                  effective=(first_date, last_date),
+                                  effective_usage='range:min:max',
                                   sort_on='start')
         # I don't like doing two searches
         # What i want to do is
@@ -92,8 +92,8 @@ class CalendarTool (UniqueObject, SimpleItem):
         # if you look at calendar_slot you can see how to do this in 1 query - runyaga
         query+=self.portal_catalog(Type='Event',
 	                           review_state='published',
-                                   end=(first_date, last_date),
-                                   end_usage='range:min:max',
+                                   expires=(first_date, last_date),
+                                   expires_usage='range:min:max',
                                    sort_on='end')
         
         # compile a list of the days that have events

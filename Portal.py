@@ -4,6 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import Portal
 from Products.CMFPlone import cmfplone_globals
 from Extensions.Upgrade import normalize_tabs
+from Products.CMFCalendar.Extensions import Install as CalendarInstall
 from Products.ExternalMethod import ExternalMethod
 import Globals
 import string
@@ -65,7 +66,7 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
             addPloneTool('Plone Membership Tool', None)
             addPloneTool('CMF Formulator Tool', None)
-            addPloneTool('CMF Calendar Tool', None)
+            #addPloneTool('CMF Calendar Tool', None)
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=1
         p.portal_membership.setMemberareaCreationFlag()
@@ -75,10 +76,13 @@ class PloneGenerator(Portal.PortalGenerator):
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
         p.invokeFactory('Folder', 'Members')
+	p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
+	                                                        , 'Member list', '<dtml-return roster>')
         p.invokeFactory('Document', 'index_html')
         o=p.index_html
         o.edit('structured-text', default_frontpage)
-        o.setTitle('Welcome to Plone')
+	o.setTitle('Welcome to Plone')
+	o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
         
     def setupPloneWorkflow(self, p):
         wf_tool=p.portal_workflow
@@ -124,6 +128,7 @@ class PloneGenerator(Portal.PortalGenerator):
                                            module='CMFPlone.PloneWorklists',
                                            function='getWorklists')
         p._setObject('getWorklists', em)
+
         
         
     def setupPlone(self, p): 
@@ -133,6 +138,7 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupPloneWorkflow(p)
         self.setupPloneSkins(p)
         self.setupExternalMethods(p)
+	CalendarInstall.install(p)
         normalize_tabs(p)
         
     def create(self, parent, id, create_userfolder):
