@@ -296,8 +296,12 @@ def manage_addSite(self, id, title='Portal', description='',
     customization_policy=None
     if listPolicies() and custom_policy:
         customization_policy=custom_policies[custom_policy]
-        customization_policy.customize(p)
-    
+        # Save customization policy results on a object
+        result = customization_policy.customize(p)
+        if result:
+            p.invokeFactory(type_name='Document', id='CustomizationLog')
+            p.CustomizationLog.edit(text_format='plain', text=result)
+
     # reindex catalog and workflow settings
     p.portal_catalog.refreshCatalog()     
     p.portal_workflow.updateRoleMappings() 
