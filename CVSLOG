@@ -1,3 +1,113 @@
+2004-04-15 03:11  zopezen
+
+	* GroupsTool.py, PloneUtilities.py (Plone-2_0-branch): Allow the
+	  ability to change the icon for each tool in the ZMI. This is done
+	  because ToolInit only excepts one icon for the whole Plone Tool
+	  set. So without hacking the CMFCore this easily lets you alter
+	  what you see in the ZMI.
+
+	  To use:
+
+	  - look at the GroupsTool.py example - add in the
+	  ToolImageOverride class - define an iconlist variable that is the
+	  list of icons
+
+2004-04-15 02:02  limi
+
+	* skins/plone_prefs/: prefs_install_product_readme.pt.metadata,
+	  prefs_install_products.pt.metadata (Plone-2_0-branch): Adding
+	  metadata file for Product readme, removing unused metadata file.
+
+2004-04-15 01:52  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  Added link-parent to the list of float fixes.
+
+2004-04-15 01:27  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  Added visualIEFloatFix class to help fix an IE float bug. More
+	  details here:
+
+	  http://plone.org/development/teams/ui/p2uicookbook/CompensatingFo
+	  rErroneousSpacingWhenUsingFloatsInIE
+
+2004-04-14 23:02  zopezen
+
+	* skins/plone_styles/ploneCustom.css.dtml (Plone-2_0-branch): typo
+
+2004-04-14 22:03  buehlmann
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  added class="actionSingular" to status to remove arrow if menu is
+	  not present
+
+2004-04-14 18:45  zopezen
+
+	* Extensions/accessRule.py (Plone-2_0-branch): Correct my own typo
+	  and point out the siteRoot object
+
+2004-04-14 18:41  zopezen
+
+	* Extensions/accessRule.py (Plone-2_0-branch): Add in some nice
+	  comments on the accessRule explaining exactly what it does, how
+	  and how to disable it.
+
+2004-04-14 18:00  dreamcatcher
+
+	* skins/plone_templates/main_template.pt (Plone-2_0-branch): Added
+	  a 'content' slot and macro to allow for better reuse. Reindented
+	  main_template.
+
+2004-04-14 05:44  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): The
+	  insanity won't end. IE must die. Bring out the soft cushion!
+
+2004-04-14 05:28  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  Reducing Internet Explorer suckage.
+
+2004-04-14 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2004-04-14 03:13  dpunktnpunkt
+
+	* skins/plone_scripts/sortObjects.py (Plone-2_0-branch): Added
+	  method argument.
+
+2004-04-14 02:01  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): All
+	  definition lists need to be fixed for IE, not only those in
+	  #documentContent.
+
+2004-04-13 22:26  shh42
+
+	* LargePloneFolder.py (Plone-2_0-branch): In the spirit of
+	  consistency make all our ComputedAttributes set the second
+	  parameter to 1.  This param appears to control whether
+	  acquisition wrapping occurs. Not sure this is still the case ;-)
+	  http://cvs.zope.org/Cruft/ExtensionClass/Attic/ComputedAttribute.
+	  c
+
+2004-04-13 18:21  tesdal
+
+	* skins/plone_scripts/date_components_support.py
+	  (Plone-2_0-branch): Instead of just setting CEILING to
+	  PLONE_CEILING, set everything above PLONE_CEILING to
+	  PLONE_CEILING.  Thanks to James Henderson of Logical Progression
+	  LTD.
+
+2004-04-13 14:12  limi
+
+	* skins/: plone_prefs/prefs_error_log_showEntry.pt,
+	  plone_styles/plone.css.dtml (Plone-2_0-branch): Added classes for
+	  inserted/deleted text (ins/del tags), and made the error log
+	  detail use the correct template.
+
 2004-04-12 18:34  tiran
 
 	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
