@@ -1,3 +1,111 @@
+2004-01-09 04:07  runyaga
+
+	* skins/plone_styles/: plone.css.dtml, plonePresentation.css.dtml
+	  (Plone-2_0-branch): remove use of relative url's for CSS.  only
+	  call portal_url 1nce per .css instead of each time.  this should
+	  fix some caching issues I've seen on plone.org
+
+2004-01-09 02:42  gerry_kirk
+
+	* skins/plone_prefs/: prefs_group_manage.cpy,
+	  prefs_group_manage.cpy.metadata, prefs_group_manage.py,
+	  prefs_groups_overview.pt, prefs_search_macros.pt,
+	  prefs_user_manage.cpy, prefs_user_manage.cpy.metadata,
+	  prefs_user_manage.py, prefs_user_memberships.pt,
+	  prefs_users_overview.pt (Plone-2_0-branch): fix for Issue 2144
+
+2004-01-09 02:37  runyaga
+
+	* skins/plone_templates/global_defines.pt (Plone-2_0-branch): move
+	  around global_defines declarations. instead of using 'here' use
+	  'portal' this makes no difference, just cleaner
+
+2004-01-09 02:21  runyaga
+
+	* skins/plone_templates/: global_defines.pt, main_template.pt
+	  (Plone-2_0-branch): move all globals (atleast in maintemplate) to
+	  global_defines - yuk
+
+2004-01-09 02:14  runyaga
+
+	* skins/plone_templates/: global_defines.pt, main_template.pt
+	  (Plone-2_0-branch): minor optimization - put default_language in
+	  globals - saves 2 additional lookups
+
+2004-01-09 02:07  runyaga
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): just in case
+	  repeat does what we would not expect it to do ;-) m
+
+2004-01-09 02:03  runyaga
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): minor
+	  optimization
+
+2004-01-09 01:37  tiran
+
+	* Extensions/package_plone.py: merging my version from the branch
+
+2004-01-08 20:41  vinsci
+
+	* skins/plone_templates/global_contentmenu.pt: Fix for
+	  http://plone.org/collector/2306
+
+2004-01-08 20:31  vinsci
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  Fix for http://plone.org/collector/2306
+
+2004-01-08 20:27  tiran
+
+	* Extensions/package_plone.py (Plone-2_0-branch): beautified
+	  version :)
+
+2004-01-08 19:42  runyaga
+
+	* Extensions/package_plone.py: remove .pyo files when packaging
+
+2004-01-08 14:07  shh42
+
+	* skins/: plone_form_scripts/portrait_delete.cpy,
+	  plone_forms/login_failed.pt, plone_portlets/portlet_calendar.pt,
+	  plone_portlets/portlet_language.pt,
+	  plone_portlets/portlet_login.pt, plone_portlets/portlet_news.pt,
+	  plone_portlets/portlet_related.pt,
+	  plone_scripts/date_components_support.py,
+	  plone_templates/global_contentmenu.pt,
+	  plone_templates/global_contentviews.pt,
+	  plone_templates/global_siteactions.pt,
+	  plone_templates/main_template.pt: "Fixing" skins by overwriting
+	  HEAD with Plone-2_0-branch.
+
+2004-01-08 12:54  shh42
+
+	* skins/plone_portlets/actions_slot.pt: This file has been removed
+	  for good; let's keep it that way ;-)
+
+2004-01-08 07:49  limi
+
+	* skins/plone_portlets/: navigation_tree_slot.pt,
+	  portlet_navigation.pt (Plone-2_0-branch),
+	  navigation_tree_slot.pt, portlet_navigation.pt: Un-fucktardifying
+	  the navtree. Now it indents better - still not optimally, but at
+	  least it tries. I am really looking forward to get rid of this
+	  crap.
+
+2004-01-08 06:40  limi
+
+	* StatelessTreeNav.py (Plone-2_0-branch), StatelessTreeNav.py:
+	  Making the navtree respect the ordering property.
+
+2004-01-08 05:30  runyaga
+
+	* skins/plone_forms/login_failed.pt: move from 2_0 branch to HEAD
+
+2004-01-08 05:03  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-08 01:42  runyaga
 
 	* skins/plone_portlets/actions_slot.pt: move removals
