@@ -8,6 +8,10 @@ from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 
+from Products.CMFCore.ActionInformation import ActionInformation
+from Products.CMFCore.Expression import Expression
+from Products.CMFCore.CMFCorePermissions import ManagePortal
+
 class PropertiesTool(Folder, BaseTool):
     """ Specialized PropertiesTool that contains PropertySheets """
     id = 'portal_properties'
@@ -18,6 +22,18 @@ class PropertiesTool(Folder, BaseTool):
 
     manage_options = ( (Folder.manage_options[0], ) +
                         BaseTool.manage_options  )
+    _actions = (ActionInformation(id='configPortal'
+                            , title='Reconfigure Portal'
+                            , description='Reconfigure the portal'
+                            , action=Expression(
+            text='string: ${portal_url}/plone_control_panel')
+                            , permissions=(ManagePortal,)
+                            , category='global'
+                            , condition=None
+                            , visible=1
+                             )
+               ,
+               )
 
     manage_addPropertySheetForm = PageTemplateFile( 'www/addPropertySheet'
                                                   , globals() )
