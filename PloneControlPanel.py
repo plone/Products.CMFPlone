@@ -75,6 +75,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
     security = ClassSecurityInfo()
 
     id = 'portal_configuration'
+    title = 'Control Panel'
     meta_type = 'Plone Control Panel'
     _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )
 
