@@ -71,6 +71,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                   , 'permissions'   :
                                      (CMFCorePermissions.View,)
                                   , 'category'      : 'folder'
+                                  , 'visible'       : 0
                                   }
                                 )
                              }
