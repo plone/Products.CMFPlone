@@ -10,6 +10,8 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
+from AccessControl import Unauthorized
+from Products.CMFCore.CMFCorePermissions import AddPortalMember
 
 member_id = 'new_member'
 
@@ -30,6 +32,18 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                           self.registration.addMember,
                           member_id, 'secret',
                           properties={'username': member_id, 'email': ''})
+
+    def testJoinWithoutPermissionRaisesUnauthorized(self):
+        # http://plone.org/collector/3000
+        self.portal.manage_permission(AddPortalMember, ['Manager'], acquire=0)
+        self.assertRaises(Unauthorized,
+                          self.registration.restrictedTraverse, 'addMember')
+
+    def testJoinWithoutPermissionRaisesUnauthorizedFormScript(self):
+        # http://plone.org/collector/3000
+        self.portal.manage_permission(AddPortalMember, ['Manager'], acquire=0)
+        self.app.REQUEST['username'] = member_id
+        self.assertRaises(Unauthorized, self.portal.register)
 
 
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):
