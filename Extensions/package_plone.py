@@ -1,6 +1,11 @@
 import os
 
-release='1.0.1'
+def get_version():
+    # you run python Extensions/package_plone.py from CMFPlone
+    f=open('version.txt', 'r')
+    return f.read().strip()
+
+release=get_version()
 releasename='CMFPlone-%s' % release
 releasetar='CMFPlone%s.tar' % release
 
