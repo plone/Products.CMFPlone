@@ -2,6 +2,7 @@
 #you should be able to define Product dependencies and error messages
 #in the config file
 
+import re
 import zLOG
 
 def log(message,summary='',severity=zLOG.ERROR, optional=None):
@@ -25,21 +26,19 @@ if cmfcore:
     from App.Common import package_home
     from os.path import join
 
+    major_minor = 0.0
     try:
         file = join(package_home(cmfcore_globals), 'version.txt')
         CMF_VERSION = open(file, 'r').read().strip()
-        version = CMF_VERSION[len('CMF-'):]
-        filtered = ''
-        for v in version:
-            if v in ['0','1','2','3','4','5','6','7','8','9','.']:
-                filtered += v
-            else:
-                break
-        x = float(filtered)
     except IOError:
-        x = 0
         CMF_VERSION = 'Unknown'
-    if x < 1.4:
+
+    match = re.compile(r'\d+\.\d+').search(CMF_VERSION)
+    if match:
+        b,e = match.span()
+        major_minor = float(CMF_VERSION[b:e])
+        
+    if major_minor < 1.4:
         log("Plone requires CMF 1.4 or later.  Your version: %s" % CMF_VERSION)
 
 try:
