@@ -180,7 +180,7 @@
                  tal:define="tabindex tabindex/next;
                              error_workflow_action errors/workflow_action|nothing;
                              objs request/ids|nothing;
-                             review_state_label python:review_state[:1].upper()+review_state[1:];
+                             review_state_label string:No change;
                              target python:test(objs, objs, here);"
                  tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
 
