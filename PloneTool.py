@@ -184,7 +184,6 @@ class PloneTool (UniqueObject, SimpleItem):
         return nav_tool.getNextRequestFor(context, action, status, **kwargs)
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'changeOwnershipOf')
-    #security.declarePublic('changeOwnershipOf')
     def changeOwnershipOf(self, object, owner, recursive=0):
         """ changes the ownership of an object """
         membership=getToolByName(self, 'portal_membership')

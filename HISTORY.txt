@@ -36,7 +36,7 @@
       This works very well for TTW content.  Also made zbases initialize so you can inherient
       from Plone Folders.  NOTE: you will still need to 'register' this as being a Folderish object
       in the Portal properties (yuk!)
-
+    - Managers can now change Ownership of content (wired up ownership_form to CustomizationPolicy).
     
     
 1.0 alpha4
