@@ -13,7 +13,7 @@
                                                                                      , sort_on='Date'
                                                                                      , sort_order='reverse'
                                                                                      , review_state='published')[:5]);"
-     tal:condition="python:test(template.getId()!='recent_news' and results, 1, 0)">
+     tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
 
     <div class="box">
     
