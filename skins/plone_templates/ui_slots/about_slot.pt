@@ -8,12 +8,12 @@
         <tr><th>About</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
-    <tbody tal:define="portal_url here/portal_url">
+    <tbody>
         <tr class="odd">
             <td colspan="2">
 
             <img src="img/icons/folder.gif" alt=""
-                 tal:attributes="src here/getIcon;
+                 tal:attributes="src string:/${here/getIcon};
                  alt here/meta_type;" />&nbsp;<span tal:replace="python:here.getTypeInfo().Type()">Object type</span>
             </td>
         </tr>
