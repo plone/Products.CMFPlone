@@ -48,7 +48,7 @@
 
     <p>
     More metadata are available, but these are the most commonly used. To edit
-    all of them, use the <a href="full_metadata_edit_form" tal:attributes="href string:${here/getId}/full_metadata_edit_form" >full metadata form</a>.
+    all of them, use the <a href="full_metadata_edit_form">full metadata form</a>.
     </p>
 
     <form class="group"
