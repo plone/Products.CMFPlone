@@ -15,11 +15,17 @@ def nomatch(field):
     state.setError(field, 'Passwords do not match.', 'nomatch_password')
 def minlimit(field):
     state.setError(field, 'Passwords must contain at least 5 letters.', 'min_password')
+def notallowed(field):
+    state.setError(field, 'This username is reserved. Please choose a different name.', 'not_allowed')
+
 
 if not username:
     missing('username')
 if not email:
     missing('email')
+if username and username == context.portal_url.getPortalObject().getId():
+    notallowed('username')
+
 
 properties = context.portal_properties.site_properties
 if not properties.validate_email:

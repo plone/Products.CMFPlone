@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3417 - because of acquisition, a
+      user's name can not be the same as the portal name - this is now
+      caught in the user registration validation instead of giving an
+      error message. Thanks to kuru for the patch!
+      [limi]
+
     - Fixed http://plone.org/collector/2855 -  Folders have "Properties"
       instead of "Edit" as title for the edit form.
       [jladage]
