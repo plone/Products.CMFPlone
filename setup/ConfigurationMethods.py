@@ -172,8 +172,8 @@ def modifyActionProviders(self, portal):
 
     # Remove the portal_workflow from the actionproviders
     # Since we have the 'review_slot'
-    #at.deleteActionProvider('portal_workflow')
-
+#    at.deleteActionProvider('portal_workflow')
+    
     dt=getToolByName(portal, 'portal_discussion')
     _actions=dt._cloneActions()
     for action in _actions:
@@ -382,8 +382,7 @@ these functions do not have a uninstall function."""
     def addItems(self, fns):
         out = []
         for fn in fns:
-            portal=getToolByName(self, 'portal_url').getPortalObject()
-            functions[fn](self, portal)
+            functions[fn](self, self.portal)
             out.append(('Function %s has been applied' % fn, INFO))
         return out
 
