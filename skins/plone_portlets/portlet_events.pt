@@ -34,7 +34,7 @@
 
                     <div class="portletDetails">
                         <tal:location content="obj/location">Location</tal:location>, <br />
-                        <tal:date content="python:here.toPortalTime(obj.start)">July 7, 08:11</tal:date>
+                        <tal:date content="python:here.toLocalizedTime(obj.start)">July 7, 08:11</tal:date>
                     </div>
                 </div>
 

@@ -59,7 +59,7 @@
                                  pencil_icon portal_object/edit.gif;
                                  use_folder_contents site_properties/use_folder_contents;
                                  isExpired nocall:here/isExpired;
-                                 toPortalTime nocall:here/toPortalTime;
+                                 toLocalizedTime nocall:here/toLocalizedTime;
                                  getObjSize nocall:here/getObjSize;
                                  lock_tool here/portal_lock|nothing;
                                  getInfoFor python:wtool.getInfoFor;

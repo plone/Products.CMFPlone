@@ -34,9 +34,9 @@
             <dt i18n:translate="event_when">When</dt>
             <dd>
                 <span i18n:translate="event_between">Between</span>
-                <span tal:replace="python:here.toPortalTime(here.start(), long_format=1)">Start Date Time</span>
+                <span tal:replace="python:here.toLocalizedTime(here.start(), long_format=1)">Start Date Time</span>
                 <span i18n:translate="event_and">and</span>
-                <span tal:replace="python:here.toPortalTime(here.end(), long_format=1)">End Date Time</span>
+                <span tal:replace="python:here.toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
             </dd>
     
             <dt i18n:translate="event_where">Where</dt>

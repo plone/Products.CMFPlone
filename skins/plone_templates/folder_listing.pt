@@ -27,7 +27,7 @@
 
         <tal:listing condition="folderContents"
                      tal:define="global getObjSize nocall:here/getObjSize;
-                                 global toPortalTime nocall:here/toPortalTime;">
+                                 global toLocalizedTime nocall:here/toLocalizedTime;">
 
             <dl>
 	        <metal:block tal:repeat="obj folderContents">
