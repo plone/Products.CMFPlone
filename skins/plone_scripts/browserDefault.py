@@ -36,7 +36,13 @@ pages = list(pages) + default_pages
 if pages:
     # loop through each page given and 
     # return it as the default, if it is found
-    ids = context.objectIds()
+    try:
+        # _robert_ I do not know why
+        # but Authenticated is sometimes Anonymous and then
+        # a private folder bombs with insufficent privileges
+        ids = context.objectIds()
+    except:
+        ids =[]
     for page in pages:
         if page in ids:
             return context, [page]
