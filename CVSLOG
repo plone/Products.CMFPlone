@@ -1,3 +1,32 @@
+2004-05-11 01:42  tiran
+
+	* tests/testPloneTool.py (Plone-2_0-branch): Added some more evil
+	  email tests :)
+
+2004-05-10 17:24  shh42
+
+	* tests/README.txt (Plone-2_0-branch): Require ZopeTestCase 0.9.0
+
+2004-05-10 16:55  shh42
+
+	* tests/testPortalCreation.py (Plone-2_0-branch): Two tests to
+	  check the Members folder is of correct type.
+
+2004-05-10 16:49  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): - Add note that
+	  getPortal() should NOT be called by user code.  - Assert type of
+	  'group' argument to setGroups().
+
+2004-05-10 15:48  shh42
+
+	* LargePloneFolder.py, tests/PloneTestCase.py (Plone-2_0-branch):
+	  Fix some typos.
+
+2004-05-10 06:17  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-09 20:16  limi
 
 	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Added clear
