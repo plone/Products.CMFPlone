@@ -14,7 +14,11 @@
     <span tal:replace="here/getId" /> 
 </h1>
 
-<form class="group" action="" method="post" tal:attributes="action here/absolute_url">
+<form class="group" 
+      action="" 
+      method="post" 
+      tal:attributes="action here/absolute_url"
+      tal:condition="here/listCriteria">
 
     <span class="legend" i18n:translate="">Criteria Details</span>
 
