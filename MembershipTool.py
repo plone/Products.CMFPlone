@@ -4,6 +4,7 @@ from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
 from Products.CMFPlone.PloneFolder import addPloneFolder
 from Products.CMFPlone import ToolNames
+from Products.CMFPlone.PloneUtilities import translate
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -161,8 +162,11 @@ class MembershipTool(BaseTool):
 
             #XXX Below is what really is Plone customizations
             member_folder=self.getHomeFolder(member_id)
-            member_folder.description = 'Home page area that contains the items created and ' \
-                                        + 'collected by %s' % member_id
+            member_folder.description = translate(
+                'plone', 'description_member_folder',
+                {'member': member_id}, self,
+                default = 'Home page area that contains the items created ' \
+                'and collected by %s' % member_id)
 
             member_folder.manage_addPloneFolder(self.personal_id, 'Personal Items')
             personal=getattr(member_folder, self.personal_id)
