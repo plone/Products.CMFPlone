@@ -1,3 +1,17 @@
+2003-12-08 22:44  dpunktnpunkt
+
+	* skins/plone_templates/registered_notify_template.pt
+	  (Plone-2_0-branch): Fixes #2100
+
+2003-12-08 15:18  eaon
+
+	* skins/plone_styles/plonePresentation.css.dtml (Plone-2_0-branch):
+	  fixed presentation stylesheet
+
+2003-12-08 05:09  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-07 05:09  longsleep
 
 	* CVSLOG: auto generated new changelog
