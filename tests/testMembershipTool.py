@@ -298,7 +298,9 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
 
     def testMemberareaIsOwnedByMember(self):
         # Memberarea should be owned by member
-        owner_info = self.home.getOwner(info=1)
+        try: owner_info = self.home.getOwnerTuple()
+        except AttributeError:
+            owner_info = self.home.getOwner(info=1)
         self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
         self.assertEqual(owner_info[1], 'user2')
         self.assertEqual(len(self.home.get_local_roles()), 1)
@@ -326,7 +328,9 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
     def testHomePageIsOwnedByMember(self):
         # Home page should be owned by member
         page = self.home.index_html
-        owner_info = page.getOwner(info=1)
+        try: owner_info = page.getOwnerTuple()
+        except AttributeError:
+            owner_info = page.getOwner(info=1)
         self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
         self.assertEqual(owner_info[1], 'user2')
         self.assertEqual(len(page.get_local_roles()), 1)
@@ -355,7 +359,9 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
     def testPersonalFolderIsOwnedByMember(self):
         # .personal should be owned by member
         personal = self.home[self.membership.personal_id]
-        owner_info = personal.getOwner(info=1)
+        try: owner_info = personal.getOwnerTuple()
+        except AttributeError:
+            owner_info = personal.getOwner(info=1)
         self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
         self.assertEqual(owner_info[1], 'user2')
         self.assertEqual(len(personal.get_local_roles()), 1)
