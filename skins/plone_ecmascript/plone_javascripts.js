@@ -261,37 +261,48 @@ function submitFilterAction() {
 }
     
 
-// Functions for selecting all checkboxes in folder_contents view
+// Functions for selecting all checkboxes in folder_contents/search_form view
 
-isSelected = false;
-
-function selectAll() {
-  checkboxes = document.getElementsByName('ids:list');
+function selectAll(id) {
+  checkboxes = document.getElementsByName(id);
   for (i = 0; i < checkboxes.length; i++)
     checkboxes[i].checked = true ;
-  isSelected = true;
-  return isSelected;
 }
 
-function deselectAll() {
-  checkboxes = document.getElementsByName('ids:list');
+function deselectAll(id) {
+  checkboxes = document.getElementsByName(id);
   for (i = 0; i < checkboxes.length; i++)
     checkboxes[i].checked = false ;
-  isSelected = false;
-  return isSelected;
 }
 
-function toggleSelect(selectbutton) {
-  if (isSelected == false) {
+function toggleSelect(selectbutton, id, initialState) {
+  // required selectbutton: you can pass any object that will function as a toggle
+  // optional id: id of the the group of checkboxes that needs to be toggled (default=ids:list
+  // optional initialState: initial state of the group. (default=false)
+  //                              e.g. folder_contents is false, search_form=true because the item boxes
+  //                              are checked initially.
+
+  id=id || 'ids:list'  // defaults to ids:list, this is the most common usage
+
+  if (selectbutton.isSelected==null)
+  {
+      initialState=initialState || false;
+	  selectbutton.isSelected=initialState;
+  }
+  
+  // create and use a property on the button itself so you don't have to 
+  // use a global variable and we can have as much groups on a page as we like.
+  if (selectbutton.isSelected == false) {
     selectbutton.setAttribute('src', portal_url + '/select_none_icon.gif');
-    return selectAll();
+    selectbutton.isSelected=true;
+    return selectAll(id);
   }
   else {
     selectbutton.setAttribute('src',portal_url + '/select_all_icon.gif');
-    return deselectAll();
+    selectbutton.isSelected=false;
+    return deselectAll(id);
   }
 }
-
 
 
 function wrapNode(node, wrappertype, wrapperclass){

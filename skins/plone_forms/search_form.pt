@@ -144,6 +144,22 @@
                 Return items of a specific type.
                 </div>
     
+                <tal:tabindex define="tabindex tabindex/next">
+                <input type="checkbox"
+                       onclick="javascript:toggleSelect(this, 'portal_type:list', true); return false;"
+                       name="pt_toggle"
+                       value="#"
+                       id="pt_toggle"
+                       class="noborder"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;"/>
+                <label for=""
+                       i18n:translate=""
+                       tal:attributes="for string:pt_toggle"
+                       >toggle
+                </label>
+                <br />
+                </tal:tabindex>
                 <tal:contenttypes repeat="type python:container.portal_types.listContentTypes()">
                     <tal:tabindex define="tabindex tabindex/next">
                     <input type="checkbox"
@@ -202,6 +218,22 @@
                 in certain states, select them from this list.
                 </div>
     
+                <tal:tabindex define="tabindex tabindex/next">
+                <input type="checkbox"
+                       onclick="javascript:toggleSelect(this, 'review_state', true); return false;"
+                       name="rs_toggle"
+                       value="#"
+                       id="rs_toggle"
+                       class="noborder"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;"/>
+                <label for=""
+                       i18n:translate=""
+                       tal:attributes="for string:rs_toggle"
+                       >toggle
+                </label>
+                <br />
+                </tal:tabindex>
                 <tal:states tal:repeat="state python:here.portal_catalog.uniqueValuesFor('review_state')">
                     <metal:block tal:define="tabindex tabindex/next">
                     <input type="checkbox"
