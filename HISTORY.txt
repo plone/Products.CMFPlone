@@ -1,6 +1,10 @@
 Changelog for Plone
 
    (name of developer listed in brackets)
+   - CatalogTool's searchResults takes Permission settings aquired trough
+     local groups into acount. Permission local roles assigned to users
+     is still not honoured.
+     [_robert_]
 
 Plone 2.0 - Fyuti
 
@@ -100,7 +104,7 @@ Plone 2.0 - Fyuti
 
     - MembershipTool's listMembers and listMemberIds now only return real users 
       (not groups) when GRUF is employed. The MembershipTool comes with tests!
-      [redcor] [stefan]
+      [_robert_] [stefan]
 
     - Added a ZopeTestCase based test framework developed at the Castle Sprint. 
       Nuked the old tests (with Sidnei's permission).
