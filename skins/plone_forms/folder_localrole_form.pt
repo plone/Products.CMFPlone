@@ -70,7 +70,8 @@
     		
         		<div class="row">
         				
-          			<div class="label">
+          			<div class="label"
+                                     i18n:translate="">
           			Role to assign
           			</div>
         
@@ -94,7 +95,8 @@
         			  <div class="field">
                     <input class="context" 
                            type="submit" 
-                           value="Assign Local Role to Selected User(s)" 
+                           value="Assign Local Role to Selected User(s)"
+		           i18n:attributes="value"
                            tabindex=""
                            tal:attributes="tabindex tabindex/next;"
                            />
@@ -111,8 +113,9 @@
     <div>
         <span tal:condition="python:test(not search_submitted or (search_submitted and not search_results), 1, 0)">
        		  <h1>
-                <span i18n:translate="">Assign local roles to folder</span>
-      			    <span tal:replace="here/title_or_id">title</span> 
+                <span i18n:translate="">Assign local roles to folder
+      			    <span tal:replace="here/title_or_id" i18n:name="folder">title</span>
+		</span>
       			</h1>
       			
       			<p i18n:translate="">
@@ -143,7 +146,8 @@
       			
           			<div class="row">
           			
-          			<div class="label">
+          			<div class="label"
+                                     i18n:translate="">
           				Search by
           			</div>
           				
@@ -151,8 +155,8 @@
                     <select name="search_param"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
-                        <option value="username">User Name</option>
-                        <option value="email">Email Address</option>
+                        <option value="username" i18n:translate="">User Name</option>
+                        <option value="email" i18n:translate="">Email Address</option>
           					</select>
                 </div>
           			
@@ -160,7 +164,8 @@
           			
                 <div class="row">
           			
-                    <div class="label">
+                    <div class="label"
+                         i18n:translate="">
                         Search Term
                     </div>
 
@@ -183,6 +188,7 @@
                         <input class="context" 
                                type="submit" 
                                value="Perform Search"
+			       i18n:attributes="value"
                                tabindex=""
                                tal:attributes="tabindex tabindex/next;" 
                                />
@@ -197,8 +203,9 @@
         <hr />
     
         <h1>
-            <span i18n:translate="">Currently assigned local roles in folder</span>
-        		<span tal:replace="here/title_or_id">title</span>
+            <span i18n:translate="">Currently assigned local roles in folder
+        		<span tal:replace="here/title_or_id" i18n:name="folder">title</span>
+	    </span>
         </h1>
 
         <p i18n:translate="">
@@ -266,6 +273,7 @@
                     <input class="context" 
                            type="submit" 
                            value="Delete Selected Role(s)"
+                           i18n:attributes="value"
                            tabindex=""
                            tal:attributes="tabindex tabindex/next;" 
                            />
