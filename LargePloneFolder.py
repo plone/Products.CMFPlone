@@ -1,5 +1,5 @@
 from Globals import InitializeClass
-from PloneFolder import PloneFolder 
+from PloneFolder import PloneFolder
 from PloneFolder import factory_type_information as PloneFolder_fti
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 
@@ -18,7 +18,7 @@ class LargePloneFolder(BTreeFolder2Base, PloneFolder):
         PloneFolder.__init__(self, id, title)
         self.id=id
         self.title=title
-    
+
     # as per CMFBTreeFolder.py
     def _checkId(self, id, allow_dup=0):
         PloneFolder._checkId(self, id, allow_dup)

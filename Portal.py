@@ -4,6 +4,7 @@ from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
 from Products.CMFPlone import PloneFolder
 from Products.CMFPlone import ToolNames
+from Products.CMFPlone import LargePloneFolder
 from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDefault import Document
 
@@ -104,7 +105,7 @@ class PloneGenerator(Portal.PortalGenerator):
 
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
-        PloneFolder.addPloneFolder(p, 'Members')
+        LargePloneFolder.addLargePloneFolder(p, 'Members')
 
         p.portal_catalog.unindexObject(p.Members) #unindex Members folder
         p.Members._setPortalTypeName( 'Folder' )

@@ -17,6 +17,8 @@ from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
+from interfaces.OrderedContainer import IOrderedContainer
+
 # from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 
 from OFS.ObjectManager import REPLACEABLE, BeforeDeleteException
@@ -79,6 +81,8 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 
 
 class OrderedContainer(Folder):
+
+    __implements__  = (IOrderedContainer,)
 
     security = ClassSecurityInfo()
 
@@ -157,6 +161,7 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
     security=ClassSecurityInfo()
 
     __implements__ = (SkinnedFolder.__implements__ ,
+                      OrderedContainer.__implements__,
                       DefaultDublinCoreImpl.__implements__ ,
                       WriteLockInterface)
 

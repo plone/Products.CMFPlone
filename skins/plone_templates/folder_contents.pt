@@ -12,6 +12,9 @@
                  global filterValues decodedFilter;
                  global filter decodedFilter;
                  standalone python:1;
+                 orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
+                 iface_tool here/portal_interface;
+                 isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                  folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);">
 
     <form name="folderContentsForm"
@@ -142,6 +145,8 @@
                         i18n:translate="listingheader_modified">Modified</span>&nbsp;</th>
                         <th>&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_status">Status</span>&nbsp;</th>
+                        <th tal:condition="isOrderable">&nbsp;<span tal:omit-tag=""
+                        i18n:translate="listingheader_order">order</span>&nbsp;</th>
                     </tr>
                     </metal:block>
                 </thead>
@@ -212,6 +217,8 @@
                             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
                             tal:attributes="class python:test(review_state, review_state, 'private')"
                             i18n:translate="">&nbsp;
+                        </td>
+                        <td tal:condition="isOrderable">
                         </td>
                     </tr>
                 </metal:block>
