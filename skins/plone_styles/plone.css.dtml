@@ -6,6 +6,11 @@
 **
 ** Style sheet documentation can be found at http://plone.org/documentation
 **
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will 
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade. 
+**
 ** Feel free to use whole or parts of this for your own designs, but give credit
 ** where credit is due.
 **
