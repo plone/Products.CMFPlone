@@ -105,7 +105,7 @@ class PloneGenerator(Portal.PortalGenerator):
         p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
                                                                 , 'Member list'
                                                                 , '<dtml-return roster>')
-        p.invokeFactory('Document', 'frontpage')
+        p.invokeFactory('Document', 'index_html')
         o = p.frontpage
         o.setTitle('Welcome to Plone')
         o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
@@ -115,16 +115,6 @@ class PloneGenerator(Portal.PortalGenerator):
         o.setTitle('Members')
         o.setDescription("Container for portal members' home directories")
         
-        skins=getToolByName(p, 'portal_skins')
-        try:
-            # work around faulty CopySupport
-            # FIXME: this try/except should be removed once CopySupport is fixed
-            skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
-            p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
-            p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
-        except:
-            pass
-
     def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow
         wf_tool.manage_addWorkflow( id='plone_workflow'

@@ -24,4 +24,7 @@ new_context.plone_utils.contentEdit( context
                                    , id=id
                                    , title=title
                                    , description=description )
-return ('success', new_context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Document changes saved.')})
+return ( 'success'
+       , new_context
+       , { 'portal_status_message' : context.REQUEST.get( 'portal_status_message'
+                                                        , 'Document changes saved.') } )

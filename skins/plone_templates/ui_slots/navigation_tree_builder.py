@@ -18,13 +18,13 @@ def childFinder(obj,folderishOnly=1):
             res.append(wrap_obj(o,obj))
         
     else:    
-        if hasattr(obj,'listFolderContents'):
+        if hasattr(obj.aq_explicit,'listFolderContents'):
             res=obj.listFolderContents()
         else:
             res=obj.objectValues()
 
     if folderishOnly:
-        return filter(lambda x: hasattr(x,'isPrincipiaFolderish') and x.isPrincipiaFolderish,res)
+        return filter(lambda x: hasattr(x.aq_explicit,'isPrincipiaFolderish') and x.aq_explicit.isPrincipiaFolderish,res)
     else:
         return res
     
