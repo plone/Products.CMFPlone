@@ -411,17 +411,16 @@ class PloneTool(UniqueObject, SimpleItem):
             return 0
         return 1
 
-    # returns the acquired local roles
-    security.declareProtected(CMFCorePermissions.ManageProperties,
-                              'getInheritedLocalRoles')
+    # returns the acquired local roles 
+    security.declarePublic('getInheritedLocalRoles')
     def getInheritedLocalRoles(self, here):
         portal = here.portal_url.getPortalObject()
         result=()
+        cont=1
         if portal != here:
             parent = here.aq_parent
-            while not parent is portal:
+            while cont:   
                 userroles = parent.acl_users.getLocalRolesForDisplay(parent)
-                
                 for user, roles, type, name in userroles:
                     # find user in result
                     found=0
@@ -436,7 +435,10 @@ class PloneTool(UniqueObject, SimpleItem):
                     if found==0:
                         # add it to result
                         result=result + ((user, roles, type, name),)
-                parent=parent.aq_parent
+                if parent==portal:
+                    cont=0
+                else:
+                    parent=parent.aq_parent
     
         return result
 
