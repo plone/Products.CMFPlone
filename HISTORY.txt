@@ -4,30 +4,39 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
-   Final
+   RC6
+
+    - Moved 'document_byline' and 'document_actions' to the 
+      'plone_content' folder - as they belong to the content templates.
+      [limi]
 
     - Checked in fix for 2600: group names and user names were not
       shown correctly in the Group Memberships form and the Members of
-      Group from, if viewed not in english. Fix Suggested by ozone [jok2]
+      Group from, if viewed not in english. Fix Suggested by ozone. 
+      [jok2]
     
     - Fix for 2704: added manager proxy role to register.cpy to avoid
       error if mail could not be sent to new member. Fix suggested by
-      Seb Potter [jok2]
+      Seb Potter 
+      [jok2]
       
     - Fix for 2462: change default value of ids to empty list instead
       of None (folder_delete.cpy). Done to avoid error about iteration 
       over non-sequence, if no item is selected for deletion. Fix 
-      suggested by Seb Potter [jok2]
+      suggested by Seb Potter 
+      [jok2]
    
     - Merge the fix for portlet_related over from the microoptimisations 
-      branch and fix for 2293 and 1920 [andym]
+      branch and fix for 2293 and 1920 
+      [andym]
    
     - Split 'use_folder_contents' site property into two different
       properties: typesLinkToFolderContents (a navtree prop for
       how nav tree behaves) and typesLinkToFolderContentsInFC
       (a site-wide prop, for how folder_contents page should
       behave). Added migration to create these two and to remove
-      the old use_folder_contents. [pupq]
+      the old use_folder_contents. 
+      [pupq]
 
     - Diet Plone® - an initial page load of Plone was reduced from 
       150K to 75K, and HTTP requests from 30 to 15 by performing 
@@ -79,7 +88,8 @@ Plone 2.0 - Fyuti
     - If a content type is listed in 
       portal_properties/site_properties/use_folder_contents then use
       'folder_contents' to display it, not ''. Removed the migration
-      that initialized this value to ['Folder'] [?, pupq]
+      that initialized this value to ['Folder'] 
+      [pupq]
 
    RC5
 
@@ -103,7 +113,7 @@ Plone 2.0 - Fyuti
 
       This enables you to "turn off" the slots from a template, thus
       eliminating the need to create a folder to do it.
-      [limi]
+      [limi] [tesdal]
 
    RC4
 
