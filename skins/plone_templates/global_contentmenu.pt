@@ -60,14 +60,16 @@
         </a>
     </li>
 
-    <li tal:define="review_state wf_state"
-        tal:condition="review_state">
+    <li tal:define="review_state wf_state;
+                    transitions python:wtool.getTransitionsFor(here, here);"
+        tal:condition="python:review_state">
 
         <span i18n:translate="label_state">State</span>:
         
         <a href="#"
            onclick="return buttonClick(event, 'statusMenu');"
-           onmouseover="buttonMouseover(event, 'statusMenu');">
+           onmouseover="buttonMouseover(event, 'statusMenu');"
+           tal:omit-tag="not: transitions">
 
            <span tal:content="review_state"
                  tal:attributes="class string:state-${review_state}"
@@ -80,7 +82,6 @@
         <ul class="actionMenu"
             id="statusMenu"
             onmouseover="menuMouseover(event)"
-            tal:define="global transitions python:wtool.getTransitionsFor(here, here)"
             tal:condition="transitions">  
             <tal:block repeat="transition transitions">
             <li>
