@@ -46,11 +46,11 @@
         
             <thead>
                 <tr>
-                    <th> <span i18n:translate="listingheaders_title" omit-tag="">Title</span>&nbsp;<img tal:replace="structure here/arrowUp.gif" /></th>
-                    <th i18n:translate="listingheaders_type">Type</th>
-                    <th i18n:translate="listingheaders_size">Size</th>
-                    <th i18n:translate="listingheaders_last_modified">Last Modified</th>
-                    <th i18n:translate="listingheaders_description">Description</th>
+                    <th>&nbsp;<span i18n:translate="listingheaders_title" tal:omit-tag="">Title</span>&nbsp;</th>
+                    <th>&nbsp;<span i18n:translate="listingheaders_type" tal:omit-tag="">Type</span>&nbsp;</th>
+                    <th>&nbsp;<span i18n:translate="listingheaders_size" tal:omit-tag="">Size</span>&nbsp;</th>
+                    <th>&nbsp;<span i18n:translate="listingheaders_last_modified" tal:omit-tag="">Last Modified</span>&nbsp;</th>
+                    <th>&nbsp;<span i18n:translate="listingheaders_description" tal:omit-tag="">Description</span>&nbsp;</th>
                 </tr>
             </thead>
 

@@ -64,10 +64,10 @@
         
             <thead>
                 <tr>
-                    <th i18n:translate="listingheader_title">Title</th>
-                    <th i18n:translate="listingheader_author">Author</th>
-                    <th i18n:translate="listingheader_last_modified">Last Modified</th>
-                    <th i18n:translate="listingheader_description">Description</th>
+                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_title">Title</span>&nbsp;</th>
+                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_author">Author</span>&nbsp;</th>
+                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_last_modified">Last Modified</span>&nbsp;</th>
+                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_description">Description</span>&nbsp;</th>
                 </tr>
             </thead>
 
