@@ -4,8 +4,7 @@
        class="box"
        summary="News listing"
        cellpadding="0" cellspacing="0"
-       tal:define="DateTime python:modules['DateTime'].DateTime;
-                   results python:request.get('news', here.portal_catalog.searchResults( meta_type='News Item'
+       tal:define="results python:request.get('news', here.portal_catalog.searchResults( meta_type='News Item'
                                                                                        , sort_on='Date'
                                                                                        , sort_order='reverse'
                                                                                        , review_state='published')[:5]);"
@@ -32,7 +31,7 @@
                 </a>
 
                 <div class="boxDetails"
-                     tal:content="python:obj.modified.strftime('%B %d, %H:%M')">July 7, 08:11</div>
+                     tal:content="python:here.toPortalTime(obj.modified)">July 7, 08:11</div>
             </td>
 
         </tr>
