@@ -9,7 +9,17 @@
     - fixed FreeBSD segfault problem in forms caused by IndexIterator inheriting from ZTUtils.Iterator
     - Issue 236 resolves - verified by Michael Dietrich 
     - search_form changed to use portal_type instead of Type thanks to Buehlmann and JeffK
-
+    - moved all content forms to portal_form machinery
+    - 'editor view' wasnt going to the parent to list folder_contents
+    - added personazlie_form/reconfig_form to portal_from machinery
+    - when you changed password it was forwarding rather than redirecting to personalize_form and losing
+      the portal_form proxy
+    - portal_status_messages have been added for all the validate_xxx and xxx_edit forms
+    - news form now has links to Creators homepage
+    - first cut at a migration script look Extensions/migration.py
+    - many more changes 
+    
+    
 1.0 alpha3
     - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
     - reconfig_form for site wide configuraiton has form validation, and exposes loads of configuration options

@@ -3,6 +3,17 @@
 # and create a new instance of Plone and then migrate the old data to
 # the new Plone..  this is really required for older Plone sites pre-1.0 
 # coming of age.
+
+#Usage:
+#create an external method in the folder where your CMF/Plone sites
+#id: migrate_folders
+#module: CMFPlone.migration
+#function: migrate_portal
+#
+#now create a Python Script called gogo_migrate it should be simple
+#context.migrate_folders('portalobject_id')
+#return 'fin'
+
 from __future__ import nested_scopes
 from Products.CMFCore.utils import getToolByName
 
