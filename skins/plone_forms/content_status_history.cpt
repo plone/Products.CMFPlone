@@ -117,6 +117,7 @@
             <label i18n:translate="label_expiration_date">Expiration Date</label>
             <div class="formHelp"
                  i18n:translate="help_expiration_date">
+              The date when the item expires.
               This will automatically make the item invisible for
               others at the given date.  If no date is chosen, it will
               never expire.
