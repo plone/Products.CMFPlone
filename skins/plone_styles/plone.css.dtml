@@ -518,7 +518,8 @@ div#colophon ul li a {
 ** Widgets
 */
 
-input.standalone {
+input.standalone,
+div.editableDocument > * input.standalone {
     background: &dtml-standaloneButtonBackground;;
     color: &dtml-standaloneButtonFontColor;;
     cursor: pointer;
@@ -528,7 +529,8 @@ input.standalone {
     padding: &dtml-standaloneButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-input.context {
+input.context,
+div.editableDocument > * input.context {
     background: &dtml-contextButtonBackground;;
     color: &dtml-contextButtonFontColor;;
     cursor: pointer;
@@ -538,7 +540,8 @@ input.context {
     padding: &dtml-contextButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-input.destructive {
+input.destructive,
+div.editableDocument > * input.destructive {
     background: &dtml-destructiveButtonBackground;;
     border: &dtml-destructiveButtonBorder;;  
     color: &dtml-destructiveButtonFontColor;;
@@ -549,16 +552,19 @@ input.destructive {
     padding: &dtml-destructiveButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-input.noborder {
+input.noborder,
+div.editableDocument > * input.noborder {
     border: &dtml-noBorder;;
     margin: 0;
     background-color: transparent;
 }
-input.add {
+input.add,
+div.editableDocument > * input.add {
 }
 input.quickSearch {
 }
-input.notify {
+input.notify,
+div.editableDocument > * input.notify {
     border: &dtml-destructiveButtonBorder;;  
 }
 div.row {
@@ -873,6 +879,18 @@ div.label {
     font-weight: bold;
     display: inline;
     padding-right: 0.5em;
+}
+div.editableDocument > * select,
+div.editableDocument > * input,
+div.editableDocument > * textarea {
+    background: #f3f3f3;
+    color: #3f3f3f;
+}
+div.editableDocument > * select:focus,
+div.editableDocument > * input:focus,
+div.editableDocument > * textarea:focus {
+    background: #ffffff;
+    color: #000000;
 }
 
 /*
