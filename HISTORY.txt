@@ -4,12 +4,16 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
-    - Fixed http://plone.org/collector/3601 - Cancel in password_form redirected
-      to the wrong page. Thanks to Varun for the patch.
+    - Fixed it so the .error class no longer causes compression of items in
+      forms.
+      [limi]
+
+    - Fixed http://plone.org/collector/3601 - Cancel in password_form 
+      redirected to the wrong page. Thanks to Varun for the patch.
       [stefan]
 
-    - Fixed http://plone.org/collector/3599 - Cancel in personalize_form redirected
-      to the wrong page. Thanks to Varun for the patch.
+    - Fixed http://plone.org/collector/3599 - Cancel in personalize_form 
+      redirected to the wrong page. Thanks to Varun for the patch.
       [stefan]
 
     - Fixed http://plone.org/collector/3577 - Interchanged 'Edit' and 'Sharing'
