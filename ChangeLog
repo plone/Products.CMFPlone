@@ -1,3 +1,8 @@
+2003-05-15  Sidnei da Silva  <sidnei@x3ng.com>
+
+	* FormTool.py (CMFForm.get_field): Fixes a leak found by Shane
+	Hathaway, related to storing acquisition wrappers.
+
 2003-05-12  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* skins/{*.pt}: Change use of 'selected python:test(condition, 1,
