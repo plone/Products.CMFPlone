@@ -70,7 +70,7 @@
         <div class="row"
              tal:define="error_email errors/email | nothing;
                          email request/email | nothing;" >
-            <span class="label required">Email address</span>
+            <span class="label required">Email</span>
             <span class="field"
                   tal:attributes="class python:test(error_email, 'field error', 'field')" >
                 <div tal:condition="error_email "

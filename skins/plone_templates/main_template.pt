@@ -26,7 +26,7 @@
 
                     <div metal:use-macro="here/navigation_slot/macros/navigationBox">
                     Navigation box			
-                	</div>
+		    </div>
                 
                     <div tal:condition="python:test(not here.portal_membership.isAnonymousUser() or here.portal_properties.allowAnonymousViewAbout, 1, 0)">
                       <span metal:use-macro="here/about_slot/macros/aboutBox">

@@ -9,6 +9,7 @@
 ##
 
 listing=()
+
 if obj is None:
     obj=context
 

@@ -3,9 +3,8 @@
                    parent_url python:here.navigationParent(here, template.getId());
                    siblings here/navigationCurrent;
                    showOtherNav python:0;
-                   showNav python:0;
-                   showOtherNav here/portal_url/CMFTopic_navigator | showNav;"
-       tal:condition="python:parent_url and not(showOtherNav)"
+                   showNav python:0;"
+       tal:condition="parent_url"
        class="box"
        summary="Navigation"
        cellpadding="0"

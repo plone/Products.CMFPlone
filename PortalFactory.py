@@ -1,6 +1,8 @@
 """
 Instantiate a CMF Portal with Plone installed and preconfigured in it
 """
+from __future__ import nested_scopes
+
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews
 from Products.CMFCore.utils import getToolByName
@@ -265,6 +267,13 @@ def installExternalMethods(self, outStream):
         self._setObject('getWorklists', em)
 
     outStream.write('Installed getWorklists external method.\n')
+    if not 'migrateFolders' in self.objectIds():
+        em = ExternalMethod.ExternalMethod(id='migrateFolders', 
+                                           title='migrate to Plone Folders',
+                                           module='CMFPlone.migrateFolders',
+                                           function='migrateFolders')
+        self._setObject('migrateFolders', em)
+    outStream.write('Installed migrateFolders external method.\n')
 
 def install(self):
     """ Register the Plone Skins with portal_skins and friends """
@@ -292,7 +301,7 @@ def install(self):
     
     # this runs the newly created 'install_events' script
     self.install_events()
-    
+    return self.objectIds()
     return out.getvalue()
 
 
@@ -315,10 +324,6 @@ def manage_addSite(self, id, title='Portal', description='',
                          email_from_address, email_from_name,
                          validate_email, RESPONSE)
     install(getattr(self, id))
-    try:
-        migrateFolders(getattr(self, id))
-    except:
-        pass
 
 def migrateFolders(self):
     root=getToolByName(self, 'portal_url').getPortalObject()
@@ -328,7 +333,7 @@ def migrateFolders(self):
 
     def migrate(f):
         target=None
-        if f.isPrincipiaFolderish and f.meta_type in (folder_types):
+        if f.isPrincipiaFolderish and f.meta_type in folder_types:
            id, tmp_id = f.getId(), 'tmp__'+f.getId()
            parent=f.aq_parent
            if not hasattr(parent, 'portal_type'): return
