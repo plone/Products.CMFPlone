@@ -1,8 +1,8 @@
 from Acquisition import aq_base
 
 
-def two0x_beta1(portal):
-    """2.0.x -> 2.1-beta1
+def two05_alpha1(portal):
+    """2.0.5 -> 2.1-alpha1
     """
     out = []
 
@@ -21,8 +21,7 @@ def two0x_beta1(portal):
 
 
 def replaceMailHost(portal, out):
-    """replaces the mailhost with a secure mail host
-    """
+    """Replaces the mailhost with a secure mail host."""
     id = 'MailHost'
     oldmh = getattr(aq_base(portal), id)
     title = oldmh.title

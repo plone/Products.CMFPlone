@@ -1,4 +1,4 @@
-# Plone2.1.x migrations
+# Plone 2.1.x migrations
 
-# Plone2.1 betas
-import betas
+# Plone 2.1 alphas
+import alphas
