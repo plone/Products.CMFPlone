@@ -39,17 +39,19 @@ class MembershipTool(PloneBaseTool, BaseTool):
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
 
-    def getAuthenticatedMember(self):
-        """ """
-        _user=self.REQUEST.get('_portaluser', None)
-        if _user: # sanity check the cached user against the current user
-            user_id = getSecurityManager().getUser().getId()
-            if not user_id == _user.getId():
-                _user = None
-        if _user is None:
-            _user = BaseTool.getAuthenticatedMember(self)
-            self.REQUEST.set('_portaluser', _user)
-        return _user
+    # XXX: Comment this out to see if we still need it.
+    # We don't want to set wrapped users into the request!
+    #def getAuthenticatedMember(self):
+    #    """ """
+    #    _user=self.REQUEST.get('_portaluser', None)
+    #    if _user: # sanity check the cached user against the current user
+    #        user_id = getSecurityManager().getUser().getId()
+    #        if not user_id == _user.getId():
+    #            _user = None
+    #    if _user is None:
+    #        _user = BaseTool.getAuthenticatedMember(self)
+    #        self.REQUEST.set('_portaluser', _user)
+    #    return _user
 
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
