@@ -3,14 +3,14 @@
 body {
     background: White url(logo.jpg) no-repeat fixed 95% 95%;
     font-family: Verdana Helvetica Arial sans-serif;
-    font-size: 40px;
+    font-size: 60px ! important;
     color: Black;
     margin: 5%;
     
 }
 
 h1 {
-	font-size: 40px;
+	font-size: 60px  ! important;
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
     border-style: solid;
@@ -23,16 +23,16 @@ h1 {
 }
 
 h2 {
-    font-size: 30px;	
+    font-size: 50px  ! important;	
 }
 
 p, dl, ol, ul {
-    font-size: 30px;
+    font-size: 50px  ! important;
     text-align: left;
 }
 
 .description {
-    font-size: 30px;
+    font-size: 30px  ! important;
     font-weight: normal;
 }
 

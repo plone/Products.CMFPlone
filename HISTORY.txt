@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - The Presentation/Slide CSS is now optimized for 1024x768, 
+      which is the most common projector resolution. Too bad 
+      it's not possible to specify font size relative to the 
+      screen size.
+      [limi]
+
     - Added new Plone Powered icon and a few RSS ones. I don't
       know who the original author of the Powered button is, 
       but thanks! :)
