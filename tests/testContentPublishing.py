@@ -37,7 +37,7 @@ Tap all over this big world
 Take my hand you ugly girl """
 
 props={'description':'song by ween',
-       'contributors':['dean ween', 'gean ween'],
+       'contributors':['dean ween', 'gene ween'],
        'effective_date':'1/12/2004',
        'expiration_date':'12/12/2004',
        'format':'text/plain',
