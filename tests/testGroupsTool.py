@@ -138,7 +138,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         doc = self.folder.doc
         g = self.groups.getGroupById('foo')
         self.groups.setGroupOwnership(g, doc)
-        self.assertEqual(doc.Creator(), self.prefix + 'foo')
+        self.assertEqual(doc.getOwnerTuple()[1], self.prefix + 'foo')
         self.assertEqual(doc.get_local_roles_for_userid(self.prefix + 'foo'), ('Owner',))
         # XXX: Initial creator still has Owner role. Is this a bug?
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))

@@ -24,11 +24,11 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
     def testChangeOwnershipOf(self):
         self.folder.invokeFactory('Document', 'doc')
         doc = self.folder.doc
-        self.assertEqual(doc.Creator(), default_user)
+        self.assertEqual(doc.getOwnerTuple()[1], default_user)
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
 
         self.utils.changeOwnershipOf(doc, 'new_owner')
-        self.assertEqual(doc.Creator(), 'new_owner')
+        self.assertEqual(doc.getOwnerTuple()[1], 'new_owner')
         self.assertEqual(doc.get_local_roles_for_userid('new_owner'), ('Owner',))
 
         # Initial creator no longer has Owner role.
@@ -111,7 +111,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.folder.file.edit(file=dummy.File('foo.zip'))
         self.assertEqual(self.folder.file.Format(), 'application/zip')
         self.assertEqual(self.folder.file.content_type, 'application/zip')
-        # Changing the format should be reflected in content_type
+        # Changing the format should be reflected in content_type property
         self.utils.editMetadata(self.folder.file, format='image/gif')
         self.assertEqual(self.folder.file.Format(), 'image/gif')
         self.assertEqual(self.folder.file.content_type, 'image/gif')
@@ -123,7 +123,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.folder.image.edit(file=dummy.File('foo.zip'))
         self.assertEqual(self.folder.image.Format(), 'application/zip')
         self.assertEqual(self.folder.image.content_type, 'application/zip')
-        # Changing the format should be reflected in content_type
+        # Changing the format should be reflected in content_type property
         self.utils.editMetadata(self.folder.image, format='image/gif')
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.content_type, 'image/gif')
@@ -254,11 +254,10 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         # Note that empty entries are filtered
         self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
 
-    def testTuplifySubject_3(self):
+    def DISABLED_testTuplifySubject_3(self):
         self.utils.editMetadata(self.doc, subject='Foo, Bar, Baz')
         # XXX: Wishful thinking
-        #self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
-        self.assertEqual(self.doc.Subject(), ('F','o','o',',','','B','a','r',',','','B','a','z'))
+        self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
         
     def testTuplifyContributors_1(self):
         self.utils.editMetadata(self.doc, contributors=['Foo', 'Bar', 'Baz'])
@@ -269,11 +268,10 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         # Note that empty entries are filtered
         self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
 
-    def testTuplifyContributors_3(self):
+    def DISABLED_testTuplifyContributors_3(self):
         self.utils.editMetadata(self.doc, contributors='Foo; Bar; Baz')
         # XXX: Wishful thinking
-        #self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
-        self.assertEqual(self.doc.Contributors(), ('F','o','o',';','','B','a','r',';','','B','a','z'))
+        self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
         
 
 class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):

@@ -106,13 +106,13 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(str(self.folder.file), dummy.TEXT)
 
     def testImageCreate(self):
-        self.folder.invokeFactory('Image', id='image', file=dummy.File())
-        self.assertEqual(str(self.folder.image.data), dummy.TEXT)
+        self.folder.invokeFactory('Image', id='image', file=dummy.Image())
+        self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testImageEdit(self):
         self.folder.invokeFactory('Image', id='image')
-        self.folder.image.image_edit(file=dummy.File())
-        self.assertEqual(str(self.folder.image.data), dummy.TEXT)
+        self.folder.image.image_edit(file=dummy.Image())
+        self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFolderCreate(self):
         self.folder.invokeFactory('Folder', id='folder', title='Foo', description='Bar')
@@ -188,7 +188,7 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.folder.invokeFactory('File', id='file', file=dummy.File())
-        self.folder.invokeFactory('Image', id='image', file=dummy.File())
+        self.folder.invokeFactory('Image', id='image', file=dummy.Image())
 
     def testFileEditNone(self):
         self.folder.file.file_edit(file=None, title='Foo')
@@ -200,7 +200,7 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.folder.image.image_edit(file=None, title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.image.data), dummy.TEXT)
+        self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFileEditEmptyString(self):
         self.folder.file.file_edit(file='', title='Foo')
@@ -212,15 +212,15 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.folder.image.image_edit(file='', title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.image.data), dummy.TEXT)
+        self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFileEditString(self):
         self.folder.file.file_edit(file='foo')
         self.assertEqual(str(self.folder.file), 'foo')
 
     def testImageEditString(self):
-        self.folder.image.image_edit(file='foo')
-        self.assertEqual(str(self.folder.image.data), 'foo')
+        self.folder.image.image_edit(file=dummy.GIF)
+        self.assertEqual(str(self.folder.image.data), dummy.GIF)
 
     def testFileEditShortName(self):
         get_transaction().commit(1) # make rename work
@@ -241,7 +241,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('File', id='file')
         self.folder.file.file_edit(file=dummy.File('foo.pdf'))
         self.folder.invokeFactory('Image', id='image')
-        self.folder.image.image_edit(file=dummy.File('foo.gif'))
+        self.folder.image.image_edit(file=dummy.Image('foo.gif'))
 
     def testFileMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
@@ -320,7 +320,7 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
         self.failUnless('fred.txt' in self.folder.objectIds())
 
     def testUploadImage(self):
-        self.folder[self.image_id].image_edit(file=dummy.File('fred.gif'))
+        self.folder[self.image_id].image_edit(file=dummy.Image('fred.gif'))
         self.failUnless('fred.gif' in self.folder.objectIds())
 
     def DISABLED_testFileRenameKeepsExtension(self):

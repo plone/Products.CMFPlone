@@ -39,6 +39,9 @@ PUT index_html into a Plone Folder. Should work just fine.
   ...        handle_errors=False)
   HTTP/1.1 201 Created...
 
+  >>> 'index_html' in folder.objectIds()
+  True
+
   >>> print folder._getOb('index_html').meta_type
   Document
 

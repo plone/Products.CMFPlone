@@ -55,11 +55,6 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.objectIds(), 
             ['sub1', 'foo', 'sub3'])
 
-    def DISABLED_testHasOrderSupport(self):
-        # PloneFolders should show the ordering controls in the ZMI
-        support = getattr(aq_base(self.folder), 'has_order_support', 0)
-        self.failUnless(support)
-
     def testCanViewManagementScreen(self):
         # Make sure the ZMI management screen works
         self.folder.manage_main()

@@ -302,17 +302,21 @@ class MembershipTool(PloneBaseTool, BaseTool):
         else:
             dict = kw
 
-        # Attributes retreiving & mangling
         name = dict.get('name', None)
         email = dict.get('email', None)
         roles = dict.get('roles', None)
         last_login_time = dict.get('last_login_time', None)
         groupname = dict.get('groupname', '').strip()
         is_manager = self.checkPermission('Manage portal', self)
+
         if name:
             name = name.strip().lower()
+        if not name:
+            name = None
         if email:
             email = email.strip().lower()
+        if not email:
+            email = None
 
         # We want 'name' request to be handled properly with large user folders.
         # So we have to check both the fullname and loginname, without scanning all

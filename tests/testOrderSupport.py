@@ -184,7 +184,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testMoveCMFObjectsOnly(self):
         # Plone speciality
-        self.folder.manage_addDTMLMethod('wilma', file='')
+        self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')
         self.folder.moveObject('wilma', 2)
         # Non-CMF object should keep position
         self.folder.moveObjectToPosition('foo', 2)
@@ -195,7 +195,7 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
 
     def testMoveUpCMFObjectsOnly(self):
         # Plone speciality
-        self.folder.manage_addDTMLMethod('wilma', file='')
+        self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')
         self.folder.moveObject('wilma', 2)
         # Non-CMF object should keep position
         self.folder.moveObjectsUp(['baz'])

@@ -27,14 +27,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Plone skins should have been set up
         self.failUnless(hasattr(self.folder, 'plone_powered.gif'))
 
-    def testDefaultView(self):
+    def testDefaultSkin(self):
         # index_html should render
         self.portal.index_html()
 
-    def DISABLED_testHasOrderSupport(self):
-        # The portal should show the ordering controls in the ZMI
-        support = getattr(aq_base(self.portal), 'has_order_support', 0)
-        self.failUnless(support)
+    def testNoIndexHtmlDocument(self):
+        # The portal should not contain an index_html Document
+        self.failIf('index_html' in self.portal.objectIds())
 
     def testCanViewManagementScreen(self):
         # Make sure the ZMI management screen works
