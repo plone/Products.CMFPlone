@@ -4,7 +4,7 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
-   RC6, re-release
+   RC6, updated to fix non-critical issues
 
     - breadcrumbs.py had bugs in which (1) a terminal object was sometimes 
       displayed twice, and (2) terminal non-content non-view objects (e.g. page 
@@ -12,13 +12,16 @@ Plone 2.0 - Fyuti
       breadcrumbs.py has been refactored a bit to make the source easier to 
       understand and maintain. [geoffd]
 
+    - Fixed some instances of 'disable_border' being written as 'disable_border1'
+      [limi]
+
    RC6
 
     - Make portal more tolerant if admin removes cookie_authentication
       object which enables form-based logins.  This is a response to
       http://article.gmane.org/gmane.comp.web.zope.plone.user/13868
       It does not full fix, just a hold over until it is addressed 
-      properly.
+      properly. [runyaga]
   
     - Fix for http://plone.org/collector/2769
       You could not enable/disable green 'editable border'
@@ -30,7 +33,7 @@ Plone 2.0 - Fyuti
       'top_slot' which occurs before global_defines. 
       *All third-party products will have to fill 'top_slot'
       instead of the 'head_slot' to disable the borders, the
-      syntax apart from that is identical.*
+      syntax apart from that is identical.* [runyaga]
 
     - Fixed http://plone.org/collector/2744
       Large Plone Folders should use folder_workflow. Fixed 
