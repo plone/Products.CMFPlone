@@ -37,8 +37,8 @@ except:
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
 
-EMAIL_RE = re.compile(r"^(\w&.+-]+!)*[\w&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)
-EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]") # used to find double new line (in any variant)
+from Products.SecureMailHost.SecureMailHost import EMAIL_RE
+from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
 BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
 
 #XXX Remove this when we don't depend on python2.1 any longer, use email.Utils.getaddresses instead
