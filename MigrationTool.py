@@ -214,7 +214,10 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
         out = []
         if toAdd: out += self.installItems(widget, toAdd)
         if toDel: out += self.uninstallItems(widget, toDel)
-        return self.manage_results(self, out=out)
+        try:
+            return self.manage_results(self, out=out)
+        except NameError:
+            pass
 
     security.declareProtected(ManagePortal, 'installItems')
     def installItems(self, widget, items):
@@ -326,8 +329,10 @@ class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # log all this to the ZLOG
         for msg, sev in out: log(msg, severity=sev)
-
-        return self.manage_results(self, out=out)
+        try:
+            return self.manage_results(self, out=out)
+        except NameError:
+            pass
 
     ##############################################################
     # Private methods
