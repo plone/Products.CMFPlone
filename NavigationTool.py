@@ -17,6 +17,8 @@ import re
 import traceback
 import sys
 
+from interfaces.NavigationController import INavigationController
+
 debug = 0  # enable/disable logging
 
 class NavigationTool (UniqueObject, SimpleItem):
@@ -25,7 +27,7 @@ class NavigationTool (UniqueObject, SimpleItem):
     meta_type= 'CMF Navigation Tool'
     security = ClassSecurityInfo()
     plone_tool = 1
-
+    __implements__ = INavigationController,
 
     security.declarePublic('getNext')
     def getNext(self, context, script, status, trace=['\n'], **kwargs):
