@@ -45,8 +45,7 @@ class TestSkins(PloneTestCase.PloneTestCase):
         path = obj.absolute_url(1)
         path = path.split('/')
         return '/'.join(path[1:])
-            
+
 
 if __name__ == '__main__':
     framework(verbosity=0)
-

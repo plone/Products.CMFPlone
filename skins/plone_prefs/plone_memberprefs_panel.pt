@@ -10,7 +10,7 @@
 <body>
 
    <div metal:fill-slot="prefs_configlet_main"
-      tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_configuration');
+      tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                   groups python:controlPanel.getGroups('member');
                   getIconFor nocall:putils/getIconFor">
 
@@ -23,7 +23,8 @@
     <tal:block tal:repeat="group groups">
         <h2 tal:content="group/title"
             i18n:translate="">Plone Configlet Group Title</h2>
-        <ul tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
+        <ul class="configlets"
+            tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
 
             <li tal:repeat="configlet configlets">
                 <a href=""

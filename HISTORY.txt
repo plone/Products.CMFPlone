@@ -4,6 +4,209 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+    RC2 
+
+    - Renamed portal_control_panel_actions to 'portal_controlpanel' and made
+      it use ToolNames instead of hardcoded strings.
+      This will break RC1 sites, so here's how to update your existing site:
+
+      - Delete all ActionIcons with category "controlpanel" 
+
+      - Delete the portal_control_panel_actions tool
+
+      - Add Plone Tool - Plone Control Panel Tool
+
+      - Invoke the following URL:
+        http://mysite/portal_controlpanel/registerDefaultConfiglets
+
+    - Now comments in Plone are text/plain.  No longer using structured-text.
+      DiscussionTool has grown a method, cookReply.  This is temp fix.
+      CMFDefault.Document should have a cook method which can 'recook' its 
+      body text.  This is something Archetypes should implement.  Being able
+      to recook without passing in the values.
+      Modified CMFDefault to accept a text-format in createReply.  
+
+    - Add 'site_actions' category to portal_actions.  This includes:
+      Small, Normal, Large text links.  This was added in
+      setup/ConfigurationMethods.py addSiteActions.  We add 3 actions to
+      portal_actions and 3 icons to portal_actionicons.  NOTE:  We want
+      to cache the icons in the plone_utils.getIconFor -- this is a problem.
+      If you change an icon it will not take effect until you restart zope.
+
+    - Now in setup/ConfigurationMethods.py where the left/right_slots for the 
+      portal root are created have been changed.  It is quite sensible.  We
+      are removing the terminology of 'slots'.  We are moving towards the 
+      prefered naming, 'portlets'.  Macro paths are sensible: 
+      here/portlet_foo/macros/portlet
+      This means that all slots are now renamed portlet_$name and all macro have
+      been renamed to 'portlet'.  The old slot code still exists and has 
+      deprecation comments in the PageTemplates.
+
+    RC1
+
+    - PrivatePloneWorkflow and PrivateFolderWorkflow no longer register their 
+      workflow factories. They will disappear from Plone core.
+      [stefan]
+
+    - Fixed PloneWorkflow's mapping of ChangeEvents permission to follow the
+      mappings for ModifyPortalContent.
+      [stefan]
+
+    - Made ListFolderContents unavailable to Members when a folder is in the
+      private state (FolderWorkflow).
+      [stefan]
+
+    Beta 3
+
+    - WARNING! If you attempt to add several Plone sites back-to-back you will
+      encounter some problems.  The system works fine for adding a single
+      Plone site.  If you want to add more you will have to restart your Zope.
+      We have worked out the problem and its not too difficult we just need
+      to put a solution in place.  Thanks to Steve Alexander and Tres Seaver 
+      for helping out. In summary, we know there is a problem.  Please do
+      not bug us.  We are attempting to adhere to the mantra, 
+      'release early, release often.'
+
+    - Deprecated stylesheet_properties for the new base_properties in the CSS.
+      This one is much more flexible, clean and reusable, but note that if your
+      site relied a lot on the old stylesheet_properties file, you will have to 
+      move the attributes to the new file. The reason for renaming it was to not
+      cause errors when upgrading. It will reset your color choices, though.
+      The new properties are documented in ploneCustom.css.
+      [limi]
+
+    - Removed the CMFWiki and CMFCollector skins from Plone core.
+      **NOTE:** You need to add the correct skin paths if you are using 
+      these products, they are no longer installed by default. The skins
+      are now located inside the Products themselves.
+      [limi]
+
+    - Added version checking of Products, and easy reinstall from Add/Remove 
+      Products panel.
+      [zwork] [limi]
+
+    - Hooked up the plone_memberprefs_panel for easy adding of user-specific 
+      control panels.
+      [ronnix] [andym] [limi]
+
+    - Portlets overhaul and renaming, in separate directory now.
+      [limi]
+
+    - Removed XML-RPC from Add Comment form.
+      [limi]
+
+    - Renamed "Name" to "Short Name" in the edit forms.
+      [limi]
+
+    - Moved all the skins to PloneSkins in the Collective.
+      [limi]
+
+    - got rid of the ancient, nasty FormulatorTool. [geoffd]
+
+    - fixed portal_factory so that the folder and folder_url values provided to
+      actions are correct for temporary objects, made content_status_modify and 
+      metadata_edit portal_factory aware.  objects created with portal_factory
+      should now behave just like normal objects. [geoffd]
+
+    - renamed plone_debug script to plone_log.  if you want to log out to zLOG
+      simply context.plone_log('this should be in the log')
+
+    - removed 'portal_workflow' from list of portal_actions' Action Providers.
+      Sites with large worklists would benefit most from this.  We no longer
+      put worklist states in the 'personalBar'.  We use the 'review_slot'.  
+
+    Beta 2
+
+    - now shipping with Formulator 1.5
+
+    - add portal_actionicons.renderActionIcon(category, iconid, default)
+      which returns back the actual object instance instead of a path.
+      Now you can put icon and action in the bar left of the 'add new item'
+      in the green bar by:
+
+          - creating an action who's category is: object_actions
+
+          - create an action_icon whos category is: object_actions 
+          and icon_id is the same as the 'id' above
+
+      this potentially invokes lots of calls down to portal_actionicons
+      but its the only way to actually get the icons with all the attributes.
+      We could cache the icons in the renderActionIcon method.  Also added
+      unit tests.
+
+    - add PloneContent.py base class that inherients from PortalContent
+      we could use this in the future to hook the reference engine in
+      archetypes (or rather the reference engine that should move out
+      of archetypes *wink*)
+
+    - added 'enable_border' to folder_localrole_form, folder_edit_form,
+      content_status_history so that the greenborder will show up when
+      you are performing these actions at the root of the Plone site.
+      this should be done in python instead of in the templates.  2.1 ;-)
+
+    - added 'unwrapobjects' property to the CatalogTool PropertyManager
+      if this is True the catalog will unwrap the AcquisitionWrapper from
+      the object before indexing.  This was done because you could get
+      unexpected results if you had content with the same ID as a Index.
+      [stefan removed this because runyaga sucks but we need this w/ tests]
+      
+    - added a Plone Site portal_type.  This portal_type is what the root
+      of the Plone Site's _setPortalTypeName is set to.  This way the
+      Folder permissions are manipulated separately from the root of 
+      the Portal.  What became a major problem in "private" sites was
+      having a different policy set in the Permissions tab but then
+      someone "Updating Permissions" from the workflow tool which would
+      reset the permission on the root of your site!  This is added to
+      migrations.  
+
+        - If you only allow 'Authenticated' to 'View' the portal root
+        when you login you authenticate but get a 'Insufficient Privs'
+        page.
+
+        - It seems you can not logout ;-( -- maybe you logout but 
+        before redirection you dont have 'View' permissions and the
+        exception rollsback the logout?
+
+
+    - personalBar (mystuff, preferences, undo, logout) now no longer uses
+      'global' actions.  This was causing worklist 'pending XXX (N)' in
+      the personalBar.  Which is not i18nable and breaks semantics of
+      the personalBar (which are user-centric actions).  Two things were
+      introduced:
+
+        - keyFilteredActions which will return a two dimensional dictionary
+        keyed_actions=[category][action_id] so you can easily pick out actions
+        using its category and id.
+
+        - getOrderedUserActions which given a two dimensional dictionary
+        keyed like keyFilteredActions and a ordering dictionary will return
+        'in order' the user actions.  If you add more actions using tools
+        they will show up in between the 'pre','post' ordering lists (which
+        can be passed ala ordering dictionary)
+ 
+      NOTE: 
+
+        - portal_undo actions 'undo' category should be 'user' not 'global'
+          this goes the same for portal_properties' 'configPortal' action
+ 
+        - plone should not ship with 'default_workflow' which injects
+          hardcoded information into the listFilteredActionsFor.
+
+        - all worklists in plone workflows should not use 'global' category
+          but should use the 'workflow' or 'worklist' category.  Up to whoever
+          gets to it first 8-).
+            
+    - Presentation mode now renders paragraph tags invisible, which means
+      you can create a richer document for web and/or print, but keep the 
+      presentations without the additional comments. If you want the old
+      behaviour, just uncomment the relevant p {} section in the
+      plonePresentation.css style sheet.
+
+    - CMFPlone.Portal.Site now uses the OrderedContainer mixin.
+      __implements__ the OrderContainer and DefaultDublinCoreImpl xface.
+
+    Beta 1
+
     - Content types in Plone now have the notion of both Views and
       Actions. Actions are show on the content bar, views are tabs, as
       earlier.
@@ -34,9 +237,14 @@ Plone 2.0 - Fyuti
       installed.  QuickInstaller is now subclassed in Plone and has a test
       that installs/uninstalls a product.  [runyaga]
 
+    - CatalogTool's searchResults takes Permission settings aquired trough
+      local groups into acount. Permission local roles assigned to users
+      is still not honoured.
+      [_robert_]
+     
     - MembershipTool's listMembers and listMemberIds now only return real users 
       (not groups) when GRUF is employed. The MembershipTool comes with tests!
-      [redcor] [stefan]
+      [_robert_] [stefan]
 
     - Added a ZopeTestCase based test framework developed at the Castle Sprint. 
       Nuked the old tests (with Sidnei's permission).

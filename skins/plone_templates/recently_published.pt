@@ -6,6 +6,7 @@
   <metal:block fill-slot="head_slot"
                tal:define="dummy python:request.set('disable_border', 1)"
                />
+<body>
 
 <div metal:fill-slot="main"
      tal:define="results python:container.portal_catalog(sort_on='modified',sort_order='reverse',review_state='published');
@@ -16,7 +17,9 @@
 
     <h1 i18n:translate="heading_recently_published">Published items</h1>
 
-    <div i18n:translate="description_recently_published" id="description">All published items, latest first.</div>
+    <div i18n:translate="description_recently_published" class="documentDescription">
+        All published items, latest first.
+    </div>
 
     <form name="searchresults" action="" method="post" tal:condition="results"
                       tal:define="batch python:Batch(results, 20, int(b_start), orphan=1)">
@@ -38,13 +41,13 @@
                     Title
                     </a>
 
+                    <span class="discreet">
+                        by <span tal:replace="result/Creator"></span>,
+                        <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="result/modified" />
+                    </span>
                 </dt>
 
-                <div class="byline">
-                    by <span tal:replace="result/Creator"></span>,
-                    <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="here/modified" />
-                </div>
-
+                
                 <dd class="link">
                     <a href="/view"
                        tal:content="structure result/Description"
@@ -73,5 +76,6 @@
 
   </div>
 
+</body>
 
 </html>

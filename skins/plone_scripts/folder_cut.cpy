@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Cut objects from a folder and copy to the clipboard
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 REQUEST=context.REQUEST
 if REQUEST.has_key('ids'):

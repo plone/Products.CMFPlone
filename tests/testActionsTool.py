@@ -33,7 +33,7 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(action_infos[-1].permissions, ('foo_permission',))
         self.assertEqual(action_infos[-1].category, 'foo_category')
 
-            
+
 if __name__ == '__main__':
     framework()
 else:
@@ -42,4 +42,3 @@ else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(TestActionsTool))
         return suite
-

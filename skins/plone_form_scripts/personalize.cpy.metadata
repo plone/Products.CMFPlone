@@ -1,5 +1,5 @@
 [validators]
-validators = validate_personalize
+validators = validate_emailaddr
 
 [actions]
 action.failure=traverse_to:string:personalize_form

@@ -1,12 +1,14 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
+
 <body>
 
 <!-- THE SEARCHBOX DEFINITION -->
-<div id="searchBox" metal:define-macro="quick_search">
+<div id="portal-searchbox" metal:define-macro="quick_search">
     <form name="searchform"
           action="search"
           tal:attributes="action string:${portal_url}/search" >
-        <label for="searchGadget" class="hiddenlabel" i18n:translate="">Search</label><input id="searchGadget"
+        <label for="searchGadget" class="hiddenLabel" i18n:translate="">Search</label><input id="searchGadget"
                name="SearchableText"
                type="text"
                size="20"
@@ -17,7 +19,7 @@
 	       i18n:attributes="alt accesskey title"
 	       tal:attributes="value request/SearchableText|nothing;
                                tabindex tabindex/next" class="visibility:visible" />
-        <input class="context searchButton"
+        <input class="searchButton"
                type="submit"
                value="Search"
 	       accesskey="accesskeys-search"

@@ -2,7 +2,7 @@
 title=Please sign in
 
 [validators]
-validators..Register = validate_registration
+validators..Register = validate_emailaddr,validate_registration
 
 [actions]
 action.success..Register = traverse_to:string:register

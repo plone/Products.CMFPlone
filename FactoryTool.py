@@ -1,18 +1,19 @@
-from Products.CMFCore.utils import UniqueObject, getToolByName                        
-from Globals import InitializeClass
-from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
-from AccessControl import ClassSecurityInfo
-from OFS.SimpleItem import SimpleItem
+import os, sys
+import urllib
+import Globals
 from DateTime import DateTime
+from AccessControl import ClassSecurityInfo
+from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
+from OFS.ObjectManager import ObjectManager
+from OFS.SimpleItem import SimpleItem
+from ZPublisher.Publish import call_object, missing_name, dont_publish_class
+from ZPublisher.mapply import mapply
+from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore import CMFCorePermissions
-from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
-from DateTime import DateTime
-import urllib
-import sys
-
+from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFCore.Skinnable import SkinnableObjectManager
-from OFS.ObjectManager import ObjectManager
+from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 
 
 # ##############################################################################
@@ -23,9 +24,25 @@ from OFS.ObjectManager import ObjectManager
 # the portal.
 class TempFolder(TempFolderBase):
     portal_type = meta_type = 'TempFolder'
-    
+    isPrincipiaFolderish = 0
+
     parent = None
-    
+
+    # override getPhysicalPath so that temporary objects return a full path
+    # that includes the acquisition parent of portal_factory (otherwise we get
+    # portal_root/portal_factory/... no matter where the object will reside)
+    def getPhysicalPath(self):
+        '''Returns a path (an immutable sequence of strings)
+        that can be used to access this object again
+        later, for example in a copy/paste operation.  getPhysicalRoot()
+        and getPhysicalPath() are designed to operate together.
+        '''
+        portal_factory = aq_parent(aq_inner(self))
+        path = aq_parent(portal_factory).getPhysicalPath() + (portal_factory.getId(), self.getId(),)
+
+        return path
+
+
     def __getitem__(self, id):
         if id in self.objectIds():
             return self._getOb(id).__of__(aq_parent(aq_parent(self)))
@@ -36,11 +53,6 @@ class TempFolder(TempFolderBase):
             obj.unindexObject()
             return obj
 
-#    def __ac_local_roles__(self):
-#        membership_tool = getToolByName(self, 'portal_membership')
-#        member = membership_tool.getAuthenticatedMember()
-#        return {member.getUserName():['Owner']}
-        
 
 
 # ##############################################################################
@@ -49,8 +61,11 @@ class FactoryTool(UniqueObject, SimpleItem):
     id = 'portal_factory'
     meta_type= 'Plone Factory Tool'
     security = ClassSecurityInfo()
+    isPrincipiaFolderish = 0
 
-    manage_options = ( ({'label':'Overview', 'action':'manage_overview'},) +
+    manage_options = ( ({'label':'Overview', 'action':'manage_overview'}, \
+                        {'label':'Documentation', 'action':'manage_docs'}, \
+                        {'label':'Factory Types', 'action':'manage_portal_factory_types'},) +
                        SimpleItem.manage_options)
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_overview')
@@ -58,7 +73,53 @@ class FactoryTool(UniqueObject, SimpleItem):
     manage_overview.__name__ = 'manage_overview'
     manage_overview._need__name__ = 0
 
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_portal_factory_types')
+    manage_portal_factory_types = PageTemplateFile(os.path.join('www', 'portal_factory_manage_types'), globals())
+    manage_portal_factory_types.__name__ = 'manage_portal_factory_types'
+    manage_portal_factory_types._need__name__ = 0
+
     manage_main = manage_overview
+
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_docs')
+    manage_docs = PageTemplateFile(os.path.join('www','portal_factory_manage_docs'), globals())
+    manage_docs.__name__ = 'manage_docs'
+
+    wwwpath = os.path.join(Globals.package_home(cmfplone_globals), 'www')
+    f = open(os.path.join(wwwpath, 'portal_factory_docs.stx'), 'r')
+    _docs = f.read()
+    f.close()
+    _docs = format_stx(_docs)
+
+    security.declarePublic('docs')
+    def docs(self):
+        """Returns FactoryTool docs formatted as HTML"""
+        return self._docs
+
+
+    def getFactoryTypes(self):
+        if not hasattr(self, '_factory_types'):
+            self._factory_types = {}
+        return self._factory_types
+
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_setPortalFactoryTypes')
+    def manage_setPortalFactoryTypes(self, REQUEST=None, listOfTypeIds=None):
+        if listOfTypeIds is not None:
+            dict = {}
+            for l in listOfTypeIds:
+                dict[l] = 1
+        elif REQUEST is not None:
+            dict = REQUEST.form
+        if dict is None:
+            dict = {}
+        self._factory_types = {}
+        types_tool = getToolByName(self, 'portal_types')
+        for t in types_tool.listContentTypes():
+            if dict.has_key(t):
+                self._factory_types[t] = 1
+        self._p_changed = 1
+        if REQUEST:
+            REQUEST.RESPONSE.redirect('manage_main')
+
 
     def doCreate(self, obj, id=None, **kw):
         """Create a real object from a temporary object."""
@@ -108,7 +169,7 @@ class FactoryTool(UniqueObject, SimpleItem):
             self.REQUEST.set('URL%d' % n, '/'.join(url_list))
             url_list = url_list[:-1]
             n = n + 1
-        
+
         url_list = URL.split('/')
         m = 0
         while m < n:
@@ -119,7 +180,8 @@ class FactoryTool(UniqueObject, SimpleItem):
 
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""
-        return aq_parent(aq_inner(obj)).meta_type == TempFolder.meta_type
+        ob = aq_parent(aq_inner(obj))
+        return hasattr(ob, 'meta_type') and ob.meta_type == TempFolder.meta_type
 
 
     def __before_publishing_traverse__(self, other, REQUEST):
@@ -134,6 +196,7 @@ class FactoryTool(UniqueObject, SimpleItem):
     security.declarePublic('__call__')
     def __call__(self, *args, **kwargs):
         """call method"""
+
         factory_info = self.REQUEST.get('__factory_info__', {})
         if not factory_info.get('fixed_request'):
             self.fixRequest()
@@ -147,8 +210,9 @@ class FactoryTool(UniqueObject, SimpleItem):
             if args == ():
                 # XXX hideous hack -- why isn't REQUEST passed in in args??
                 args = (self.REQUEST, )
-            return obj(*args, **kwargs)
-
+            return mapply(obj, self.REQUEST.args, self.REQUEST,
+                               call_object, 1, missing_name, dont_publish_class,
+                               self.REQUEST, bind=1)
         id = stack[1]
         if id in aq_parent(self).objectIds():
             return aq_parent(self).restrictedTraverse('/'.join(stack[1:]))(*args, **kwargs)
@@ -157,15 +221,16 @@ class FactoryTool(UniqueObject, SimpleItem):
 
         path = '/'.join(stack[1:])
         obj = tempFolder.restrictedTraverse(path)
-        return obj(*args, **kwargs)
-    
+
+        return mapply(obj, self.REQUEST.args, self.REQUEST,
+                               call_object, 1, missing_name, dont_publish_class,
+                               self.REQUEST, bind=1)
+
 
     index_html = None  # call __call__, not index_html
 
 
     def getTempFolder(self, type_name):
-        import sys
-
         factory_info = self.REQUEST.get('__factory_info__', {})
         tempFolder = factory_info.get('tempFolder', None)
         if not tempFolder:
@@ -177,7 +242,7 @@ class FactoryTool(UniqueObject, SimpleItem):
             if not type_name in types_tool.TempFolder.allowed_content_types:
                 # update allowed types for tempfolder
                 types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
-    
+
             tempFolder = TempFolder(type_name)
             tempFolder.parent = aq_parent(self)
             tempFolder = aq_inner(tempFolder).__of__(self)
@@ -190,14 +255,14 @@ class FactoryTool(UniqueObject, SimpleItem):
         self.REQUEST.set('__factory_info__', factory_info)
         return tempFolder
 
-        
+
 
     def __bobo_traverse__(self, REQUEST, name):
         """ """
         # The portal factory intercepts URLs of the form
         #   .../portal_factory/TYPE_NAME/ID/...
         # where TYPE_NAME is a type from portal_types.listContentTypes() and
-        # ID is the desired ID for the object.  For intercepted URLs, 
+        # ID is the desired ID for the object.  For intercepted URLs,
         # portal_factory creates a temporary object of type TYPE_NAME with
         # id ID and puts it on the traversal stack.  The context for the
         # temporary object is set to portal_factory's context.
@@ -206,7 +271,7 @@ class FactoryTool(UniqueObject, SimpleItem):
         # portal_factory returns the existing object.
         #
         # All other requests are passed through unchanged.
-        # 
+        #
 
         # try to extract a type string from next piece of the URL
 
@@ -218,6 +283,5 @@ class FactoryTool(UniqueObject, SimpleItem):
             # nope -- do nothing
             return getattr(self, name)
         return self.getTempFolder(name)
-        
 
-InitializeClass(FactoryTool)
+Globals.InitializeClass(FactoryTool)

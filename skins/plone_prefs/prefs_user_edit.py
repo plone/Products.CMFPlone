@@ -11,14 +11,9 @@
 REQUEST=context.REQUEST
 portal_membership = context.portal_membership
 member=portal_membership.getMemberById(userid)
-
 if portrait:
     portrait.seek(0)
     portal_membership.changeMemberPortrait(portrait, userid)
-
-delete_portrait = REQUEST.get('delete_portrait', None)
-if delete_portrait:
-    portal_membership.deletePersonalPortrait(userid)
 
 processed={}
 for id, property in context.portal_memberdata.propertyItems():

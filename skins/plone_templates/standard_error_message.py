@@ -27,4 +27,3 @@ error_page=context.default_error_message(error_type=error_type,
                                          error_value=error_value)
 
 return error_page
-

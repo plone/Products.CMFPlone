@@ -12,118 +12,104 @@
 <div metal:fill-slot="prefs_configlet_main"
          tal:condition="here/rejectAnonymous" >
 
-    <p i18n:translate="description_error_log_setup" class="form-help">
-    This page lists the exceptions that have occurred in this site
-    recently.  You can configure how many exceptions should be kept
-    and whether the exceptions should be copied to Zope's event log
-    file(s).
+    <h1 i18n:translate="heading_error_log">Error log</h1>
+         
+    <p i18n:translate="description_error_log_setup">
+        This page lists the exceptions that have occurred in this site
+        recently.  You can configure how many exceptions should be kept
+        and whether the exceptions should be copied to Zope's event log
+        file(s).
     </p>
 
-    <form class="group" action="prefs_error_log_setProperties" method="post">
-        <table tal:define="props here/error_log/getProperties">
-            <tr>
-                <td align="left" valign="top">
-                    <div class="form-label">
-                        <span i18n:translate="label_number_exceptions">Number of exceptions to keep</span>
-                    </div>
-                </td>
-                <td align="left" valign="top">
-                    <input type="text" name="keep_entries" size="40"
-                        tal:attributes="value props/keep_entries" />
-                </td>
-            </tr>
-            <tr>
-                <td align="left" valign="top">
-                    <div class="form-label">
-                        <span i18n:translate="label_copy_exceptions">Copy exceptions to the event log</span>
-                    </div>
-                </td>
-                <td align="left" valign="top">
-                    <input type="checkbox" name="copy_to_zlog"
-                          tal:attributes="checked props/copy_to_zlog;
-                          disabled not:here/error_log/checkEventLogPermission|nothing" />
-                </td>
-            </tr>
-            <tr>
-                <td align="left" valign="top">
-                    <div class="form-label">
-                        <span i18n:translate="label_ignored_exception">Ignored exception types</span>
-                    </div>
-                </td>
-                <td align="left" valign="top">
-                    <textarea name="ignored_exceptions:lines" cols="40" rows="3"
-                          tal:content="python: '\n'.join(props['ignored_exceptions'])">
-                    </textarea>
-                </td>
-            </tr>
-            <tr>
-                <td align="left" valign="top">
-                </td>
-                <td align="left" valign="top">
-                    <div class="form-element">
-                        <input class="form-element" type="submit" name="submit"
-                              value=" Save Changes " />
-                    </div>
-                </td>
-            </tr>
-        </table>
+    <form action="prefs_error_log_setProperties" method="post">
+    
+        <fieldset tal:define="props here/error_log/getProperties">
+        
+            <legend>Log details</legend>
 
-        <h3>Exception Log (most recent first)</h3>
+            <div class="field">
+                <label i18n:translate="label_number_exceptions">Number of exceptions to keep</label>
 
-        <div tal:define="entries here/error_log/getLogEntries">
+                <div></div>
+                
+                <input type="text" 
+                       name="keep_entries" 
+                       size="40"
+                       tal:attributes="value props/keep_entries" />
+            </div>
+            
+            <div class="field">
+                <input type="checkbox"
+                       class="noborder"
+                       id="cb_copy_to_zlog" 
+                       name="copy_to_zlog"
+                       tal:attributes="checked props/copy_to_zlog;
+                                       disabled not:here/error_log/checkEventLogPermission|nothing" />
 
-            <em tal:condition="not:entries">
-                <span i18n:translate=""> No exceptions logged.</span>
-            </em>
+                <label for="cb_copy_to_zlog" i18n:translate="label_copy_exceptions">Copy exceptions to the event log</label>
+                
+            </div>
+                                       
+            <div class="field">
+                <label i18n:translate="label_ignored_exception">Ignored exception types</label>
+                
+                <textarea name="ignored_exceptions:lines" 
+                          cols="40" rows="3"
+                          tal:content="python: '\n'.join(props['ignored_exceptions'])"></textarea>
+            </div>
+            
+            <div class="formControls">
+                <input class="context" 
+                       type="submit" 
+                       name="submit" 
+                       value="Save" />
+            </div>
 
-            <table tal:condition="entries">
-                <tr>
-                    <th align="left">
-                        <span i18n:translate="">Time</span>
-                    </th>
-                    <th align="left">
-                        <span i18n:translate="">Username (User Id)</span>
-                    </th>
-                    <th align="left">
-                        <span i18n:translate="">Exception</span>
-                    </th>
-                </tr>
+            </fieldset>
 
-                <div tal:define="updatetime python:float(member.getProperty('error_log_update',''))">
-
-                    <tr tal:repeat="entry entries">
-                        <div tal:condition="python: test(entry['time'] > updatetime,1,0)">
-                            <td valign="top" nowrap="nowrap">
-                                <span tal:content="python: DateTime(entry['time']).Date()">13:04:41</span>
-                            </td>
-                            <td>
-                                <span tal:content="string: ${entry/username} (${entry/userid})">
-                                    joe (joe)
-                                </span>
-                            </td>
-                            <td valign="top">
-                                <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
-                                <span tal:content="entry/type">AttributeError</span>:
-                                <span tal:define="value entry/value"
-                                    tal:content="python: len(value) < 70 and value or value[:70] + '...'">
-                                    Application object has no attribute "zzope"
-                                </span>
-                                </a>
-                            </td>
-                        </div>
-                    </tr>
-                </div>
-            </table>
-        </div>
-    </form>
-    <p>
-        <form action="prefs_error_log_update" method="GET">
-            <input type="submit" name="submit" value=" Refresh " i18n:attributes="value" />
-            <input type="submit" name="submit" value=" I'm up to date " i18n:attributes="value" />
-            <input type="submit" name="submit" value=" Show all entries " i18n:attributes="value" />
         </form>
-    </p>
-</div>
+        
+        <form action="prefs_error_log_update" method="get">
+        
+            <fieldset tal:define="entries here/error_log/getLogEntries">
+            
+                <legend>Exception Log (most recent first)</legend>
+        
+                <div class="field" tal:condition="not:entries">
+                No exceptions logged.
+                </div>
 
+                <div class="field" tal:condition="entries">
+                        <span>Time</span>
+                        <span>Username (User Id)</span>
+                        <span>Exception</span>
+
+                    <div tal:define="updatetime python:float(member.getProperty('error_log_update',''))"
+                         tal:repeat="entry entries">
+                        
+                        <div tal:condition="python: test(entry['time'] > updatetime,1,0)">
+                        
+                            <span tal:replace="python: DateTime(entry['time']).Date()">13:04:41</span>
+                            <span tal:replace="string: ${entry/username} (${entry/userid})">joe</span>
+                            <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
+                                <span tal:replace="entry/type">AttributeError</span>:
+                                <span tal:define="value entry/value"
+                                      tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
+                                Application object has no attribute "gak"
+                                </span>
+                            </a>
+                        </div>
+                    </div>    
+                </div>
+                
+                <div class="formControls">
+                    <input class="standalone" type="submit" name="submit" value="Refresh" i18n:attributes="value" />
+                    <input class="standalone" type="submit" name="submit" value="Remove Displayed Entries" i18n:attributes="value" />
+                    <input class="standalone" type="submit" name="submit" value="Show all entries" i18n:attributes="value" />
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    
 </body>
 </html>

@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/prefs_main_template/macros/master">
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
 
 <tal:block metal:fill-slot="head_slot">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -18,7 +19,9 @@ we eventually might want to merge this form with personalize_form
                  errors python:request.get('errors', {})"
      tal:condition="here/rejectAnonymous" >
 
-<div class="editable pageContent">
+<div class="configlet">
+
+<div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -44,7 +47,7 @@ we eventually might want to merge this form with personalize_form
     </div>        
     <!-- End of tabs -->
 
-    <div class="contentContent">
+    <div class="documentContent">
 
         <h1 i18n:translate="heading_prefs_user_details">
           User Properties for
@@ -78,7 +81,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="full_name_help"
                         i18n:translate="help_full_name"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     You can change your full name here.
                     </div>
@@ -96,8 +99,6 @@ we eventually might want to merge this form with personalize_form
                         size="25"
                         tabindex=""
                         value="member.fullname html_quote"
-                        onfocus="formtooltip('full_name_help',1)"
-                        onblur="formtooltip('full_name_help',0)"
                         tal:attributes="value fullname;
                                         tabindex tabindex/next;"
                         />
@@ -114,7 +115,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="new_email_help"
                         i18n:translate="help_new_email"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Enter your new e-mail address here, if you want to change it.
                     </div>
@@ -131,8 +132,6 @@ we eventually might want to merge this form with personalize_form
                         size="25"
                         tabindex=""
                         value="member.email html_quote"
-                        onfocus="formtooltip('new_email_help',1)"
-                        onblur="formtooltip('new_email_help',0)"
                         tal:attributes="value email;
                                         tabindex tabindex/next;"
                         />
@@ -146,7 +145,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="wysiwyg_editor_help"
                         i18n:translate="help_content_editor"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Select the editor that you would like to use for editing
                     content more easily. Content editors
@@ -157,8 +156,6 @@ we eventually might want to merge this form with personalize_form
                     tal:define="wysiwyg_editor python:request.get('wysiwyg_editor',
                                                                 member.getProperty('wysiwyg_editor',''))">
                     <select name="wysiwyg_editor"
-                            onfocus="formtooltip('wysiwyg_editor_help',1)"
-                            onblur="formtooltip('wysiwyg_editor_help',0)"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
                         <tal:block tal:repeat="editor site_properties/available_editors">
@@ -189,7 +186,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="listed_status_help"
                         i18n:translate="help_listed_status"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Select whether you want to be listed on the public membership listing
                     or not.	Remember that your Member folder will still be publicly accessible unless
@@ -264,7 +261,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="formtooltips_help"
                         i18n:translate="help_form_help"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Select whether you want form help pop-ups to be displayed.
                     </div>
@@ -338,7 +335,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="visible_ids_help"
                         i18n:translate="help_display_names"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Select whether you want Names (also known as IDs) to be
                     visible and editable when editing contents. If you choose not
@@ -407,15 +404,18 @@ we eventually might want to merge this form with personalize_form
                 </div>
             </div>
     
-    
-            <div class="row"
+            <!--
+                _robert_: the following block is not needed here, since the skin has to be selected by an actual user and is set on her computer
+                by help of a cookie
+            -->
+            <!--div class="row"
                 tal:condition="here/portal_skins/allow_any">
     
                 <div class="label">
                     <span i18n:translate="label_look">Look</span>
                     <div id="skin_help"
                         i18n:translate="help_look"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Here you choose the appearance of the site. Several styles are available.
                     </div>
@@ -440,14 +440,14 @@ we eventually might want to merge this form with personalize_form
                             >dummy skin</option>
                     </select>
                 </div>
-            </div>
+            </div -->
             <div class="portrait_edit"
                 tal:define="portrait python:here.portal_membership.getPersonalPortrait(member.getId());">
                 <div class="label">
                     <span i18n:translate="label_portrait">Portrait</span>
                     <div id="portrait_help"
                         i18n:translate="help_portrait"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     To add a new portrait, click the <strong>Browse</strong> button and select
                     a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
@@ -473,28 +473,17 @@ we eventually might want to merge this form with personalize_form
                     tal:attributes="tabindex tabindex/next;"
                     />
                 <br />
-                <div class="label">
-                    <span i18n:translate="delete_portrait">delete Portrait</span>
-                    <div id="portrait_delete_help"
-                        i18n:translate="help_portrait_delete"
-                        class="help"
-                        style="visibility:hidden">
-                    To delete a portrait, check that box before saving <br />
-                    </div>
-    
-                </div>
-                <input type="checkbox"
-                    class="noborder"
-                    name="delete_portrait"
-                    id="delete_portrait"
+                <br />
+                <input class="standalone add"
                     tabindex=""
-                    onfocus="formtooltip('portrait_delete_help',1)"
-                    onblur="formtooltip('portrait_delete_help',0)"
-                    tal:attributes="tabindex tabindex;"
+                    type="submit"
+                    name="prefs_portrait_delete:method"
+                    value="Delete Portrait"
+                    i18n:attributes="value"
+                    tal:attributes="tabindex tabindex/next;"
                     />
                 <br />
-                <br />
-    
+
             </div>
     
     
@@ -511,10 +500,12 @@ we eventually might want to merge this form with personalize_form
                         />
                 </div>
             </div>
-    
+
         </form>
     
     </div>
+
+</div>
 
 </div>
 

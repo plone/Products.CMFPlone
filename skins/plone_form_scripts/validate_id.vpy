@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=id=None
 ##title=Validates an object id
 ##
-state = context.portal_form_controller.getState(script, is_validator=1)
 
 # do basic id validation
 if id is not None:

@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/prefs_main_template/macros/master">
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
 
 <tal:block metal:fill-slot="head_slot">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -15,8 +16,8 @@
 
 <ul id="contentTabs">
   <li class="selected">
-    <a href="prefs_default_workflow_form"
-       i18n:translate="label_workflow_default">Default workflow configuration</a>
+    <a href="prefs_workflow_basic"
+       i18n:translate="link_workflow_default">Default workflow configuration</a>
   </li>
   <li class="">
     <a href="prefs_advanced_workflow_form"
@@ -28,96 +29,87 @@
 
 
 
-     <metal:block tal:condition="python:test(request.get('type_name', 'Select')!='Select', 1, 0)">
+    <metal:block tal:condition="python:test(request.get('type_name', 'Select')!='Select', 1, 0)">
         <tal:block tal:define="pps python:modules['Products.PythonScripts.standard'];
-                               type_name python:pps.url_quote(request.get('type_name'));
-                               " />
-     </metal:block>
+                            type_name python:pps.url_quote(request.get('type_name'));
+                            " />
+    </metal:block>
 
-	<h1 i18n:translate="">Select workflow</h1>
-        
-        <form name="change_default_workflow" action="change_default_workflow" method="POST">
+    <h1 i18n:translate="">Select workflow</h1>
 
-	<p i18n:translate="description_workflow_common">
-	Workflows let you manage the publication process in your site. Plone ships with 4 common workflows:
+    <form name="change_default_workflow" action="prefs_workflow_basic_edit" method="post">
+
+        <p i18n:translate="description_workflow_common">
+            Workflows let you manage the publication process in your site. Plone ships with 4 common workflows:
         </p>
-        
-        <div class="group">
-          <input class="noborder"
+
+        <input class="noborder"
                         type="radio"
-                        name="onestep"
-                        value="off"
+                        name="default_workflow"
+                        value="1"
                         tabindex=""
                         id="onestep"
                         onfocus=""
                         onblur=""
-	                tal:attributes="tabindex tabindex;"
-                        />
-          <label for="one_step_workflow" i18n:translate="label_one_step_workflow">One step publication workflow</label> <br />
-	  <p i18n:translate="description_workflow_one_step">if you want to have all the contents immediately available for everyone, 
-             without having any review process you shoud use this One step publication. 
-          </p>
-          <span i18n:translate="label_workflow_default_state">You can also change the starting state of all documents: </span>
-          <select id="select_default_state"
-	          name="default_state"
-                  tabindex=""
-                  alt="">
-          
-              <option value="current" i18n:translate="">Select</option>
-              <metal:block tal:repeat="wf workflow_list">
-                  <option value="wf"                  
-                              tal:attributes="value wf"
-                              tal:content="wf"
-                              i18n:translate="">public draft</option>
-                  </metal:block>
-          </select>
-        </div>
-      
-      <div class="group">
-          <input class="noborder"
-                        type="radio"
-                        name="community"
-                        value="off"
-                        tabindex=""
-                        id="community"
-                        onfocus=""
-                        onblur=""
-	                tal:attributes="tabindex tabindex;"
-                        />
-          <label for="one_step_workflow" i18n:translate="label_community_workflow">Community workflow</label> <br />
-	  <p i18n:translate="description_workflow_community">if you want to have all the contents immediately available for everyone, 
-             but you also want to have a review process you shoud use this! 
-          </p>
-          <span i18n:translate="label_workflow_default_state">You can also change the starting state of all documents: </span>
-          <select id="select_default_state"
-	          name="default_state"
-                  tabindex=""
-                  alt="">
-          
-              <option value="current">Select</option>
-              <metal:block tal:repeat="wf workflow_list">
-                  <option value="wf"                  
-                              tal:attributes="value wf"
-                              tal:content="wf"
-                              i18n:translate="">public draft</option>
-                  </metal:block>
-          </select>
-        </div>
-      
-      <div class="row">
-                <div class="label">&nbsp;</div>
-                <div class="field">
-                    <input class="context"
-                           tabindex=""
-                           type="submit"
-                           name="Change"
-                           value="Save"
-                           i18n:attributes="value"
-                           tal:attributes="tabindex tabindex/next;" />
-                </div>
-      </div>
-  
-  </form>
+                        tal:attributes="tabindex tabindex;" />
+        <label for="one_step_workflow" i18n:translate="label_one_step_workflow">One step publication workflow</label> <br />
+        <p i18n:translate="description_workflow_one_step">if you want to have all the contents immediately available for everyone,
+                without having any review process you shoud use this One step publication.
+        </p>
+        <span i18n:translate="label_workflow_default_state">You can also change the starting state of all documents: </span>
+        <select id="select_default_state"
+            name="default_state"
+                tabindex=""
+                alt="">
+
+            <option value="current" i18n:translate="">Select</option>
+            <metal:block tal:repeat="wf workflow_list">
+                <option value="wf"
+                            tal:attributes="value wf"
+                            tal:content="wf"
+                            i18n:translate="">public draft</option>
+                </metal:block>
+        </select>
+
+            <input class="noborder"
+                            type="radio"
+                            name="default_workflow"
+                            value="2"
+                            tabindex=""
+                            id="community"
+                            onfocus=""
+                            onblur=""
+                        tal:attributes="tabindex tabindex;"
+                            />
+            <label for="one_step_workflow" i18n:translate="label_community_workflow">Community workflow</label> <br />
+            <p i18n:translate="description_workflow_community">if you want to have all the contents immediately available for everyone,
+                but you also want to have a review process you shoud use this!
+            </p>
+            <span i18n:translate="label_workflow_default_state">You can also change the starting state of all documents: </span>
+            <select id="select_default_state"
+                name="default_state"
+                    tabindex=""
+                    alt="">
+
+                <option value="current">Select</option>
+                <metal:block tal:repeat="wf workflow_list">
+                    <option value="wf"
+                                tal:attributes="value wf"
+                                tal:content="wf"
+                                i18n:translate="">public draft</option>
+                    </metal:block>
+            </select>
+
+            <div class="field">
+                <input class="context"
+                    tabindex=""
+                    type="submit"
+                    name="Change"
+                    value="Save"
+                    i18n:attributes="value"
+                    tal:attributes="tabindex tabindex/next;" />
+            </div>
+    </form>
 
 </div>
 

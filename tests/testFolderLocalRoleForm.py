@@ -18,12 +18,12 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         self.portal._addRole('Foo')
         # Cannot assign a role I do not have myself...
         self.setRoles(['Member', 'Foo'])
-        
+
     def testFolderLocalRoleAdd(self):
         # Should assing a local role
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
         member = self.membership.getMemberById('user2')
-        self.assertEqual(member.getRolesInContext(self.folder), 
+        self.assertEqual(member.getRolesInContext(self.folder),
                          ('Authenticated', 'Foo', 'Member'))
 
     def testFolderLocalRoleDelete(self):
@@ -40,7 +40,7 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # Folder_localrole_form should render
         self.folder.folder_localrole_form()
 
-            
+
 if __name__ == '__main__':
     framework()
 else:
@@ -49,4 +49,3 @@ else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(TestFolderLocalRole))
         return suite
-

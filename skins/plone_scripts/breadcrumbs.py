@@ -77,7 +77,7 @@ if published != o and  \
     currentlyViewingFolderContents and \
     published_id not in  ('view', 'index_html') and \
     hasattr(published, 'title_or_id'):
-      url = published.absolute_url() + '/view'
-      path_seq.append( (published.title_or_id(), url) )
+    url = published.absolute_url() + '/view'
+    path_seq.append( (published.title_or_id(), url) )
 
 return path_seq

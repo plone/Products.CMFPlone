@@ -12,8 +12,9 @@
                  global filterValues decodedFilter;
                  global filter decodedFilter;
                  standalone python:1;
-                 folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);">
-
+                 folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);
+                 mtool mtool|here/portal_membership;
+                 myfolder python:here.absolute_url()==mtool.getHomeUrl();">
     <form name="folderContentsForm"
           method="post"
           action="folder_object"
@@ -23,19 +24,15 @@
                       Batch python:modules['Products.CMFPlone'].Batch;
                       batch python:Batch(results, 100, int(b_start), orphan=0);">
 
-            <div class="title">
+            <h1 tal:condition="myfolder">
+            <img tal:replace="structure here/folder.gif" />
+            <span i18n:translate="heading_my_folder" tal:omit-tag="">My Folder</span>
+            </h1>
 
-                <h1 class="folderName" tal:condition="python:user.getUserName()==here.getId()">
-                <img tal:replace="structure here/folder.gif" />
-                <span i18n:translate="heading_my_folder" tal:omit-tag="">My Folder</span>
-                </h1>
-
-                <h1 tal:condition="python: user.getUserName()!=here.getId()">
-                <img tal:replace="structure here/folder.gif" />
-                <span tal:content="here/title_or_id" tal:omit-tag="">Directory Id</span>
-                </h1>
-
-            </div>
+            <h1 tal:condition="not:myfolder">
+            <img tal:replace="structure here/folder.gif" />
+            <span tal:content="here/title_or_id" tal:omit-tag="">Directory Id</span>
+            </h1>
 
             <metal:block tal:condition="not: folder_contents">
             <p i18n:translate="description_no_visible_items_press_add">
@@ -44,13 +41,13 @@
             </p>
             </metal:block>
 
-            <p tal:condition="python:user.getUserName()==here.getId()"
+            <p tal:condition="myfolder"
                   i18n:translate="description_contains_items_by">
             Contains the items created and collected by <tal:block content="python:user.getUserName()" i18n:name="name">User</tal:block>
             </p>
 
             <p tal:content="structure here/Description"
-               tal:condition="python:not user.getUserName()==here.getId()">
+               tal:condition="not:myfolder">
                description
             </p>
 
@@ -72,7 +69,8 @@
 				     getInfoFor python:wtool.getInfoFor;
                                      iface_tool here/portal_interface;
                                      orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
-                                     isOrderable python:iface_tool.objectImplements(here, orderable_iface);">
+                                     isOrderable python:iface_tool.objectImplements(here, orderable_iface);
+                                     nosortclass python:test(isOrderable, 'nosort', '')">
 
             <table id="sortable"
                    class="listing"
@@ -84,7 +82,7 @@
                         <td class="top" colspan="6">
 
                             <!-- Add Item pulldown -->
-                            <label for="select_add_item"><div class="hiddenlabel" i18n:translate="label_add_item">Select an item to add</div>
+                            <label for="select_add_item"><span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
 			    <select id="select_add_item"
 				    name="type_name"
                                     tabindex=""
@@ -135,17 +133,17 @@
 						 alt="Select all items"
                                                  i18n:attributes="title alt"
                                                  /></th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_title">Title</span>&nbsp;</th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_type">Type</span>&nbsp;</th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_size">Size</span>&nbsp;</th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_modified">Modified</span>&nbsp;</th>
-                        <th>&nbsp;<span tal:omit-tag=""
-                        i18n:translate="listingheader_status">Status</span>&nbsp;</th>
-                        <th tal:condition="isOrderable">&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
+                        i18n:translate="listingheader_status">State</span>&nbsp;</th>
+                        <th class="nosort" tal:condition="isOrderable">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_order">order</span>&nbsp;</th>
                     </tr>
                     </metal:block>
@@ -194,7 +192,7 @@
                                  tal:condition="python:(lockable and item.wl_isLocked()) or (lock_tool and lock_tool.isLockedOut(item))"
                                  tal:replace="structure python:locked.tag(title='Locked')" />
 
-                          <span class="expired"
+                          <span class="state-expired"
                                 tal:condition="python:isExpired(item)"
                                 i18n:translate="time_expired">expired</span>
                         </td>
@@ -215,19 +213,17 @@
                         <td class="private"
                             tal:define="review_state python:getInfoFor(item, 'review_state', '')"
                             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
-                            tal:attributes="class python:test(review_state, review_state, 'private')"
+                            tal:attributes="class python:test(review_state, 'state-'+review_state, 'state-private')"
                             i18n:translate="">&nbsp;
                         </td>
                         <td tal:condition="isOrderable">
                             <a href=""
-                               tal:attributes="href string:${here/absolute_url}/folder_position?position=up&id=${item/getId}">
-                            <img tal:replace="structure here/portal_url/arrowUp.gif" />
-                            </a>
+                               tal:attributes="href string:${here/absolute_url}/folder_position?position=up&amp;id=${item/getId}"
+                            ><img tal:replace="structure here/portal_url/arrowUp.gif" /></a>
                             &nbsp;
                             <a href=""
-                               tal:attributes="href string:${here/absolute_url}/folder_position?position=down&id=${item/getId}">
-                            <img tal:replace="structure here/portal_url/arrowDown.gif" />
-                            </a>
+                               tal:attributes="href string:${here/absolute_url}/folder_position?position=down&amp;id=${item/getId}"
+                            ><img tal:replace="structure here/portal_url/arrowDown.gif" /></a>
                         </td>
                     </tr>
                 </metal:block>

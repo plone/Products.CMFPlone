@@ -3,28 +3,23 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=
-##title=Rename Object
+##parameters=ids=[],new_ids=[],new_titles=[]
+##title=Rename Objects
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 from Products.CMFPlone import transaction_note
-REQUEST=context.REQUEST
-new_ids=REQUEST['new_ids']
-old_ids=REQUEST['ids']
-new_titles=REQUEST['new_titles']
 
-x=0
-for id in new_ids:
-    old_id=old_ids[x]
-    new_title=new_titles[x]
-    o=getattr(context,old_id)
-    if o.Title()!=new_title:
-        o.setTitle(new_title)
-    x=x+1
+for x in range(0, len(new_ids)):
+    new_id = new_ids[x]
+    id = ids[x]
+    new_title = new_titles[x]
+    obj = context.restrictedTraverse(id)
+    if new_title and obj.Title() != new_title:
+        obj.setTitle(new_title)
+    if new_id and id != new_id:
+        context.manage_renameObjects((id,), (new_id,))
 
-context.manage_renameObjects(old_ids, new_ids)
-transaction_note( str(old_ids) + 'have been renamed' )
-
+transaction_note( str(ids) + 'have been renamed' )
 return state.set(portal_status_message='Item(s) renamed.')

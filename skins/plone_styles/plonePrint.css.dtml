@@ -1,3 +1,19 @@
+/*
+** Plone Print style sheet for CSS2-capable browsers.
+** Copyright Alexander Limi, 2001-2003 - http://www.plonesolutions.com
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will 
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade. 
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
 /* Thanks to alistapart.com for useful extras */
 
 body {
@@ -9,25 +25,28 @@ body {
     padding: 0;
 }
 
-div#top,
-.netscape4,
-.tabs,
-#portalTabs,
-#personalBar,
-.hiddenstructure,
-#pathBar,
-td#left,
-td#right,
-#contentTabs,
-#contentBar,
-div.documentActions,
-#footer,
+div.top,
+#portal-logo,
+.hiddenStructure,
+#portal-searchbox,
+#portal-globalnav,
+#portal-personaltools,
+#portal-breadcrumbs,
+#portal-columns div#portal-column-one,
+#portal-columns div#portal-column-two,
+.contentViews,
+.contentActions,
 .help,
 .legend,
-div.message,
-input,
-a.skipnav
-{
+div.portalMessage,
+div.documentActions,
+.documentByLine,
+.netscape4,
+#portal-footer,
+#portal-colophon,
+input
+.skipnav {
+    /* Hides all the elements irrelevant for presentations */
     display: none;
 }
 
@@ -35,12 +54,10 @@ ul {
     list-style-type: square;
 }
 
-.editableDocument,
-.document,
-#description,
+#content,
+.documentDescription,
 .group,
 li,
-#content,
 .stx,
 p {
     background: transparent;
@@ -52,7 +69,7 @@ p {
     text-align: left;
 }
 
-.byline {
+.documentByLine {
     font-family: Georgia, Garamond, Times, serif;
 }
 
@@ -103,3 +120,16 @@ div.document a:visited:after {
    content: " ( " attr(href) " ) ";
 }
 
+div#portal-columns div#visual-column-wrapper,
+div#portal-columns div#visual-column-wrapper div#portal-column-content {
+    width: 100%;
+}
+
+div#portal-columns div#visual-column-wrapper div#portal-column-content {
+    padding: 0;
+    margin: 0;
+}
+
+div#portal-columns div#visual-column-wrapper div#portal-column-content * {
+    text-align: left;
+}

@@ -11,8 +11,8 @@ checkPermission=context.portal_membership.checkPermission
 
 listing=[]
 folder=None
-if obj is None: 
-    obj=context 
+if obj is None:
+    obj=context
 
 path_ids=context.portal_url.getRelativeContentPath(obj)
 

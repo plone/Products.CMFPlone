@@ -12,91 +12,77 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors python:request.get('errors', {})">
 
-    <h1 i18n:translate="heading_portalskin_setup">PortalSkin Setup</h1>
+    <h1 i18n:translate="heading_skin_setup">Skin Setup</h1>
 
-    <p i18n:translate="description_portalskin_setup">
-    Here you configure some of the settings that affect the Portal Skins.
+    <p i18n:translate="description_skin_setup">
+        Settings that affect the portal's look and template usage.
     </p>
 
-    <form class="group"
-          action=""
-          name="reconfig"
+    <form action=""
+          name=""
           method="post"
           tal:attributes="action string:prefs_portalskin_set"
           tal:define="props python:here.portal_properties;">
 
-        <span class="legend" i18n:translate="legend_portalskin_details">PortalSkin Details</span>
+        <fieldset>
+            <legend i18n:translate="legend_portalskin_details">PortalSkin Details</legend>
 
-
-	<!-- default skin -->
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_default_skin">Default skin</span>
-
-                <div id="default_skin_help"
-                     i18n:translate="help_default_skin"
-                     class="help"
-                     style="visibility:hidden">
-                Select the default skin for the Plone portal.
-                </div>
-            </div>
-
-            <div class="select">
-
-		<select name="default_skin" 
-			size="1"
-			onfocus="formtooltip('default_skin_help',1)"
-			onblur="formtooltip('default_skin_help',0)"
-			tal:attributes="tabindex tabindex/next"
-			tal:define="defskin here/portal_skins/getDefaultSkin">
-		  <option tal:repeat="skin here/portal_skins/getSkinSelections" 
-			  tal:content="skin" 
-			  tal:attributes="value skin;
-                                          selected python:test( skin==defskin,'selected' ,'')" />
-		  </select>
-            </div>
-        </div>
-
-	<!-- Skin flexibility -->
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_skin_flexibility">Skin flexibility</span>
-            </div>
-
-            <div class="checkbox">
-	      <input type="checkbox" 
-		     name="allow_any"
-		     tal:define="allowany here/portal_skins/getAllowAny"
-		     tal:attributes="checked python:test(allowany, 'checked', '')" />
-              <div id="skin_flexibility_help"
-                   i18n:translate="help_skin_flexibility">
-                Allow arbitrary skin to be selected.
-                </div>
-            </div>
-        </div>
-
-	<!-- Skin Cookie persistence -->
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_cookie_persistence">Skin Cookie persistence</span>
-            </div>
-
-            <div class="checkbox">
-	      <input type="checkbox" 
-		     name="cookie_persistence"
-		     tal:define="cookiepers here/portal_skins/getCookiePersistence"
-		     tal:attributes="checked python:test(cookiepers, 'checked', '')" />
-              <div id="cookie_persistence_help"
-                   i18n:translate="help_cookie_persistence">
-                Make skin cookie persist indefinitely.
-                </div>
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="label">&nbsp;</div>
+            
             <div class="field">
+                <label i18n:translate="label_default_skin">Default skin</label>
+    
+                <div class="formHelp" i18n:translate="help_default_skin">
+                    Select the default skin for the Plone portal.
+                </div>
+    
+                <select name="default_skin" 
+                    size="1"
+                    tal:attributes="tabindex tabindex/next"
+                    tal:define="defskin here/portal_skins/getDefaultSkin">
+
+                    <option tal:repeat="skin here/portal_skins/getSkinSelections" 
+                            tal:content="skin" 
+                            tal:attributes="value skin;
+                                            selected python:test( skin==defskin,'selected' ,'')" />
+    		    </select>
+            </div>
+
+            <div class="field">
+
+    	        <input type="checkbox" 
+                       class="noborder"
+                       id="cb_allow_any"
+                       name="allow_any"
+                       tal:define="allowany here/portal_skins/getAllowAny"
+                       tal:attributes="checked python:test(allowany, 'checked', '')" />
+
+                <label i18n:translate="label_skin_flexibility" for="cb_allow_any">Skin flexibility</label>
+                
+                <div class="formHelp" i18n:translate="help_skin_flexibility">
+                    Allow users to select skins.
+                </div>
+
+            </div>
+
+            <div class="field">
+    
+                <input type="checkbox"
+                     class="noborder" 
+                     id="cb_cookie"
+                     name="cookie_persistence"
+                     tal:define="cookiepers here/portal_skins/getCookiePersistence"
+                     tal:attributes="checked python:test(cookiepers, 'checked', '')" />
+
+                <label i18n:translate="label_cookie_persistence" for="cb_cookie">Skin Cookie persistence</label>
+                
+                <div class="formHelp" i18n:translate="help_cookie_persistence">
+                    Make skin cookie persist indefinitely.
+                </div>
+
+            </div>
+    
+    
+            <div class="formControls">
                 <input class="context"
                        tabindex=""
                        type="submit"
@@ -106,9 +92,9 @@
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-        </div>
+    
         <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
-
+      </fieldset>
     </form>
 
 </div>

@@ -23,4 +23,3 @@ msg = 'Syndication properties updated'
 RESPONSE.redirect('prefs_syndication_form?portal_status_message=' + msg)
 
 return
-

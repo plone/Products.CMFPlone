@@ -1,6 +1,7 @@
 import sys
 import Globals
 from os import path
+from Acquisition import aq_base
 
 cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
@@ -27,6 +28,10 @@ def transaction_note(note):
     T=get_transaction()
     T.note(str(note))
 
+def base_hasattr(ob, name):
+    ob = aq_base(ob)
+    if hasattr(ob, name):
+        return 1
 
 def initialize(context):
 
@@ -42,8 +47,9 @@ def initialize(context):
     ModuleSecurityInfo('zLOG').declarePublic('LOG')
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
+    ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('localized_time')
     allow_module('Products.CMFPlone.PloneUtilites')
-    
+
     import StatelessTreeNav
     from StatelessTree import NavigationTreeViewBuilder
     allow_class(NavigationTreeViewBuilder)
@@ -80,6 +86,12 @@ def initialize(context):
     ModuleSecurityInfo('Products.Formulator').declarePublic('StringField', 'EmailField')
     ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
 
+    # make unauthorized importable ttw
+    ModuleSecurityInfo('AccessControl').declarePublic('Unauthorized')
+
+    # make base_hasattr importable ttw
+    ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
+
     from Products.Formulator.StandardFields import StringField, EmailField
     from Products.Formulator.Form import FormValidationError, BasicForm
     allow_class(StringField)
@@ -87,25 +99,24 @@ def initialize(context):
     allow_class(FormValidationError)
     allow_class(BasicForm)
 
-    # Setup ZODB if needed
-    import PloneInitialize
-
     # Setup migrations
     import migrations
     migrations.registerMigrations()
 
-    import setup
-    import imagePatch
+    import setup           # Configuration Machinery - Andy we need to fix this at some point
+    import imagePatch      # WAII and 508 we need more properties on image objects
+    import zserverPatch    # identify Plone in HTTP Headers - netcraft here we come!
     import UnicodeSplitter # registers unicode splitter w/ zctextindex pipeline registry
 
     from Products.CMFCore import DirectoryView
     DirectoryView.registerDirectory('skins', cmfplone_globals)
 
-    import PloneFolder, PloneWorkflow, FolderWorkflow
+    import PloneContent, PloneFolder, PloneWorkflow, FolderWorkflow, Portal
 
     contentClasses = ( PloneFolder.PloneFolder , )
     contentConstructors = ( PloneFolder.addPloneFolder, )
-    ftis = (PloneFolder.factory_type_information, )
+    ftis = ( PloneFolder.factory_type_information,
+             Portal.factory_type_information, )
 
     try:
         import LargePloneFolder
@@ -120,7 +131,7 @@ def initialize(context):
     from Products.CMFCore import CachingPolicyManager
 
     # Plone Tools
-    import FormulatorTool, PloneTool, NavigationTool, FactoryTool
+    import PloneTool, NavigationTool, FactoryTool
     import FormTool, InterfaceTool, MigrationTool, PloneControlPanel
     import MembershipTool, WorkflowTool, URLTool, MetadataTool
     import RegistrationTool, MemberDataTool, SyndicationTool
@@ -131,7 +142,6 @@ def initialize(context):
 
     tools = ( MembershipTool.MembershipTool,
               MemberDataTool.MemberDataTool,
-              FormulatorTool.FormulatorTool,
               PloneTool.PloneTool,
               WorkflowTool.WorkflowTool,
               CachingPolicyManager.CachingPolicyManager,
@@ -183,4 +193,3 @@ def initialize(context):
 
     CustomizationPolicy.register(context, cmfplone_globals)
     PrivateSitePolicy.register(context, cmfplone_globals)
-

@@ -2,7 +2,7 @@
 title=Edit Link
 
 [validators]
-validators..Save = validate_id, validate_link_edit
+validators..Save = validate_id,validate_title,validate_link_edit
 validators..Cancel=
 
 [actions]

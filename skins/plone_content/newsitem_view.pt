@@ -7,15 +7,17 @@
 <div metal:fill-slot="main"
      tal:define="len_text python:len(here.text)">
 
+    <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+        Title or id
+    </h1>
+
     <div metal:use-macro="here/document_actions/macros/document_actions">
         Document actions (print, sendto etc)
     </div>
 
-    <h1 tal:content="here/title_or_id">Title or id</h1>
-
-    <span id="description" tal:content="here/Description">
+    <div class="documentDescription" tal:content="here/Description">
         News summary
-    </span>
+    </div>
 
     <p tal:condition="not: len_text"
        i18n:translate="no_body_text">
@@ -28,8 +30,8 @@
         <div tal:replace="structure here/CookedBody" />
     </div>
 
-    <div id="byline" metal:use-macro="here/byline/macros/byline">
-      Get the byline - contains details about author and modification date.
+    <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
     </div>
 
 </div>

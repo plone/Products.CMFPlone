@@ -17,4 +17,3 @@ return context.portal_navigation.getNext( context
                                         , 'metadata_edit'
                                         , 'success'
                                         , portal_status_message='Ownership has been changed.' )
-

@@ -14,8 +14,7 @@ mh = context.MailHost
 
 mh.manage_makeChanges('Plone Mail Host', smtp_server ,smtp_port)
 
-msg = 'MailHost %s updated' % mh.id
+msg = 'Mail Host Updated'
 RESPONSE.redirect('prefs_mailhost_form?portal_status_message=' + msg)
 
 return
-

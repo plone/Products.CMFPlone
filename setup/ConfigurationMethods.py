@@ -3,9 +3,18 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
+from Acquisition import aq_get
+
+from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
 
 from zLOG import INFO, ERROR
 from SetupBase import SetupWidget
+
+
+def addErrorLog(self, portal):
+    if "error_log" not in portal.objectIds():
+        manage_addErrorLog(portal)
+        portal.error_log.copy_to_zlog = 1
 
 def modifyAuthentication(self, portal):
     #set up cookie crumbler
@@ -45,30 +54,30 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'available_editors', ('None', ), 'lines')
     if not hasattr(p, 'allowRolesToAddKeywords'):
         safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
+    if not hasattr(p, 'auth_cookie_length'):
+        safeEditProperty(p, 'auth_cookie_length', 0, 'int')
     if not hasattr(p,'allow_sendto'):
-        safeEditProperty(p, 'allow_sendto', 1, 'boolean')        
+        safeEditProperty(p, 'allow_sendto', 1, 'boolean')
 
 
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
-    left_slots=( 'here/navigation_tree_slot/macros/navigationBox'
-               , 'here/login_slot/macros/loginBox'
-               , 'here/related_slot/macros/relatedBox' )
-    right_slots=( 'here/workflow_review_slot/macros/review_box'
-                , 'here/news_slot/macros/newsBox'
-                , 'here/events_slot/macros/eventsBox' 
-                , 'here/recently_published_slot/macros/recentlyPublishedBox' 
-                , 'here/calendar_slot/macros/calendarBox' )
+    left_slots=( 'here/portlet_navigation/macros/portlet'
+               , 'here/portlet_login/macros/portlet'
+               , 'here/portlet_related/macros/portlet' )
+    right_slots=( 'here/portlet_review/macros/portlet'
+                , 'here/portlet_news/macros/portlet'
+                , 'here/portlet_events/macros/portlet'
+                , 'here/portlet_recent/macros/portlet'
+                , 'here/portlet_calendar/macros/portlet' )
     safeEditProperty(portal, 'left_slots', left_slots, 'lines')
     safeEditProperty(portal, 'right_slots', right_slots, 'lines')
     safeEditProperty(portal.Members, 'right_slots', (), 'lines')
 
-def setupDefaultItemActionSlots(self, portal):                
+def setupDefaultItemActionSlots(self, portal):
     """ Sets up the default action item slots """
-    document_action_slots=( 'here/actions_slot/macros/print'
-                      , 'here/actions_slot/macros/sendto'
-          , 'here/actions_slot/macros/syndication' )
-    safeEditProperty(portal, 'document_action_slots', document_action_slots, 'lines')
+    'These are now document_actions ActionInformation object in portal_actiosn'
+    pass
 
 def installExternalEditor(self, portal):
     ''' responsible for doing whats necessary if external editor is found '''
@@ -89,7 +98,8 @@ def installExternalEditor(self, portal):
                                 permission=CMFCorePermissions.ModifyPortalContent,
                                 category='object',
                                 visible=0 )
-        portal.manage_permission(ExternalEditorPermission, ('Manager', 'Authenticated'), acquire=0)
+        portal.manage_permission(ExternalEditorPermission,
+                                 ('Manager', 'Authenticated'), acquire=0)
 
 def assignTitles(self, portal):
     titles={'portal_actions':'Contains custom tabs and buttons',
@@ -98,7 +108,7 @@ def assignTitles(self, portal):
      'portal_undo':'Defines actions and functionality related to undo',
      'portal_types':'Controls the available Content Types in your portal',
      'plone_utils':'Various Plone Utility methods',
-     'portal_navigation':'Responsible for redirecting to the right page in forms',
+     'portal_navigation':'Responsible for redirecting to the right page in forms (deprecated, use FormController)',
      'portal_metadata':'Controls metadata - like keywords, copyrights etc',
      'portal_migration':'Handles migrations to newer Plone versions',
      'portal_registration':'Handles registration of new users',
@@ -106,7 +116,7 @@ def assignTitles(self, portal):
      'portal_syndication':'Generates RSS for folders',
      'portal_workflow':'Contains workflow definitions for your portal',
      'portal_url':'Methods to anchor you to the root of your Plone site',
-     'portal_form':'Used together with templates to do validation and navigation',
+     'portal_form':'Used together with templates to do validation and navigation (deprecated, use FormController)',
      'portal_discussion':'Controls how discussions are stored by default on content',
      'portal_catalog':'Indexes all content in the site',
      'portal_form_validation':'Deprecated, not in use',
@@ -114,10 +124,10 @@ def assignTitles(self, portal):
      'portal_calendar':'Controls how Events are shown'
      }
 
-    for o in portal.objectValues():
-        title=titles.get(o.getId(), None)
+    for oid in portal.objectIds():
+        title=titles.get(oid, None)
         if title:
-            o.title=title
+            setattr(aq_get(portal, oid), 'title', title)
 
 def addMemberdata(self, portal):
     md=getToolByName(portal, 'portal_memberdata')
@@ -136,14 +146,21 @@ def addMemberdata(self, portal):
     if not hasattr(md, 'error_log_update'):
         safeEditProperty(md, 'error_log_update', 0.0, 'float')
 
-
 def modifyActionProviders(self, portal):
     mt=getToolByName(portal, 'portal_properties')
     _actions=mt._cloneActions()
     for action in _actions:
         if action.id=='configPortal':
             action.title='Plone Setup'
+            action.category='user'
     mt._actions=_actions
+
+    ut=getToolByName(portal, 'portal_undo')
+    _actions=ut._cloneActions()
+    for action in _actions:
+        if action.id=='undo':
+            action.category='user'
+    ut._actions=_actions
 
     at=getToolByName(portal, 'portal_actions')
     _actions=at._cloneActions()
@@ -152,7 +169,18 @@ def modifyActionProviders(self, portal):
             action.title='Contents'
             action.name='Contents'
     at._actions=_actions
-    
+
+    # Remove the portal_workflow from the actionproviders
+    # Since we have the 'review_slot'
+    #at.deleteActionProvider('portal_workflow')
+
+    dt=getToolByName(portal, 'portal_discussion')
+    _actions=dt._cloneActions()
+    for action in _actions:
+        if action.id=='reply':
+            action.visible=0
+    dt._actions=_actions
+
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
     mt.addAction('myworkspace'
@@ -170,12 +198,12 @@ def modifyMembershipTool(self, portal):
             a.title='Log out'
         if a.id=='preferences':
             a.title='My Preferences'
-            #a.action=Expression('string:${portal_url}/portal_form/personalize_form')
+            #a.action=Expression('string:${portal_url}/personalize_form')
             new_actions.insert(0, a)
-        if a.id in ('addFavorite', 'favorites'):
+        elif a.id in ('addFavorite', 'favorites'):
             a.visible=0
             new_actions.insert(1,a)
-        if a.id=='mystuff':
+        elif a.id=='mystuff':
             a.title='My Folder'
             new_actions.insert(0, a)
         elif a.id=='myworkspace':
@@ -189,18 +217,20 @@ def modifyMembershipTool(self, portal):
 def modifySkins(self, portal):
     #remove non Plone skins from skins tool
     #since we implemented the portal_form proxy these skins will no longer work
-    
+
     # this should be run through the skins setup widget :)
     st=getToolByName(portal, 'portal_skins')
     skins_map=st._getSelections()
+    skins_map=st._getSelections()
+
     if skins_map.has_key('No CSS'):
         del skins_map['No CSS']
-    if skins_map.has_key('Nouvelle'):        
+    if skins_map.has_key('Nouvelle'):
         del skins_map['Nouvelle']
-    if skins_map.has_key('Basic'):        
+    if skins_map.has_key('Basic'):
         del skins_map['Basic']
     st.selections=skins_map
-    
+
     types=getToolByName(portal, 'portal_types')
     for t in types.objectValues():
         _actions=t._cloneActions()
@@ -214,7 +244,7 @@ def modifySkins(self, portal):
             if a.id == 'content_status_history':
                 a.visible = 0
         t._actions=_actions
-            
+
 def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')
 
@@ -236,15 +266,6 @@ def addNewActions(self, portal):
                  condition='python:portal.portal_membership.getMembersFolder()',
                  permission='View',
                  category='portal_tabs')
-
-    #This is now a drop down.
-    #at.addAction('content_status_history',
-    #             name='State',
-    #             action='string:${object_url}/content_status_history',
-    #             condition='python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())',
-    #             permission='View',
-    #             category='object_tabs' )
-
     at.addAction('change_ownership',
                  name='Ownership',
                  action='string:${object_url}/ownership_form',
@@ -282,13 +303,50 @@ def addNewActions(self, portal):
                  condition='',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
-    at.addAction('change_status',
-                 name='Change Status',
+    at.addAction('change_state',
+                 name='Change State',
                  action='string:content_status_history:method',
                  condition='',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
 
+def addSiteActions(self, portal):
+    # site_actions which have icons associated with them as well
+    at=getToolByName(portal, 'portal_actions')
+    ai=getToolByName(portal, 'portal_actionicons')
+
+    at.addAction('small_text',
+                 name='Small Text',
+                 action="string:javascript:setActiveStyleSheet('Small Text', 1);",
+                 condition='',
+                 permission=CMFCorePermissions.View,
+                 category="site_actions")
+    at.addAction('normal_text', 
+                 name='Normal Text',
+                 action="string:javascript:setActiveStyleSheet('', 1);",
+                 condition='',
+                 permission=CMFCorePermissions.View,
+                 category="site_actions")
+    at.addAction('large_text', 
+                 name='Large Text',
+                 action="string:javascript:setActiveStyleSheet('Large Text', 1);",
+                 condition='',
+                 permission=CMFCorePermissions.View,
+                 category="site_actions")
+
+    ai.addActionIcon('site_actions',
+                     'small_text',
+                     'textsize_small.gif',
+                     'Small Text')
+    ai.addActionIcon('site_actions',
+                     'normal_text',
+                     'textsize_normal.gif',
+                     'Normal Text')
+    ai.addActionIcon('site_actions',
+                     'large_text',
+                     'textsize_large.gif',
+                     'Large Text')
+                 
 functions = {
     'addSiteProperties': addSiteProperties,
     'setupDefaultLeftRightSlots': setupDefaultLeftRightSlots,
@@ -302,34 +360,36 @@ functions = {
     'installPortalTools': installPortalTools,
     'modifyAuthentication': modifyAuthentication,
     'modifyActionProviders': modifyActionProviders,
+    'addErrorLog':addErrorLog,
+    'addSiteActions':addSiteActions,
     }
 
 class GeneralSetup(SetupWidget):
     type = 'General Setup'
-   
-    description = """This applies a function to the site. These functions are some of the basic 
+
+    description = """This applies a function to the site. These functions are some of the basic
 set up features of a site. The chances are you will not want to apply these again. <b>Please note</b>
 these functions do not have a uninstall function."""
-    
+
     def setup(self):
         pass
-    
+
     def delItems(self, fns):
-        out = []          
+        out = []
         out.append(('Currently there is no way to remove a function', INFO))
         return out
 
-    def addItems(self, fns):   
-        out = []         
+    def addItems(self, fns):
+        out = []
         for fn in fns:
-            functions[fn](self, self.portal)
+            portal=getToolByName(self, 'portal_url').getPortalObject()
+            functions[fn](self, portal)
             out.append(('Function %s has been applied' % fn, INFO))
         return out
 
     def installed(self):
         return []
-        
+
     def available(self):
         """ Go get the functions """
         return functions.keys()
-    

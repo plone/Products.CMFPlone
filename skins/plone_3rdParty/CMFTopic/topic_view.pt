@@ -7,14 +7,12 @@
 
 <div metal:fill-slot="main">
 
-
-    <h1 tal:content="structure here/title_or_id">
-    Title or id
+    <h1 tal:content="structure here/title_or_id" class="documentFirstHeading">
+        Title or id
     </h1>
 
-    <div id="description"
-         tal:content="structure here/Description">
-    description
+    <div class="documentDescription" tal:content="structure here/Description">
+        description
     </div>
 
     <metal:block tal:define="
@@ -33,10 +31,10 @@
 
         <thead>
             <tr>
-                <th>&nbsp;Title&nbsp;</th>
-                <th>&nbsp;Type&nbsp;</th>
-                <th>&nbsp;Last Modified&nbsp;</th>
-                <th>&nbsp;Description&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="heading_title">Title</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="heading_type">Type</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="heading_last_modified">Last Modified</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="heading_description">Description</tal:block>&nbsp;</th>
             </tr>
         </thead>
 

@@ -18,186 +18,135 @@
     good enough, this search form is just if you want to be more specific.
     </p>
 
-  	<form class="group"
-          action="search"
+  	<form action="search"
           method="get"
           name="search"
           tal:define="DateTime python:modules['DateTime'].DateTime">
 
-        <span class="legend" i18n:translate="legend_search_terms">Search Terms</span>
+        <fieldset>
 
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_search_text">Search Text</span>
-                <div id="text_search_help"
-                     i18n:translate="help_search_text"
-                     class="help"
-                     style="visibility:hidden">
+            <legend i18n:translate="legend_search_terms">Search Terms</legend>
+
+            <div class="field">
+                <label for="SearchableText" i18n:translate="label_search_text">Search Text</label>
+
+                <div class="formHelp" i18n:translate="help_search_text">
                 For a simple text search, enter your search term
                 here. Multiple words may be found by combining
                 them with <strong>AND</strong> and <strong>OR</strong>.
                 The text in this field will be matched with
                 items' contents, title and description.
                 </div>
-            </div>
 
-            <div class="field">
                 <input type="text"
                        name="SearchableText"
                        size="25"
                        tabindex=""
-                       onfocus="formtooltip('text_search_help',1)"
-                       onblur="formtooltip('text_search_help',0)"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-        </div>
-
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_title">Title</span>
-                <div id="title_search_help"
-                     i18n:translate="help_search_title"
-                     class="help"
-                     style="visibility:hidden">
-                Return items matching this title.
-                </div>
-            </div>
 
             <div class="field">
+                <label for="Title" i18n:translate="label_title">Title</label>
+
+                <div class="formHelp" i18n:translate="help_search_title">
+                Return items matching this title.
+                </div>
+
                 <input type="text"
                        name="Title"
                        size="25"
                        tabindex=""
-                       onfocus="formtooltip('title_search_help',1)"
-                       onblur="formtooltip('title_search_help',0)"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-        </div>
 
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_keywords">Keywords</span>
-                <div id="keywords_search_help"
-                     i18n:translate="help_search_keywords"
-                     class="help"
-                     style="visibility:hidden">
+            <div class="field">
+                <label for="Subject" i18n:translate="label_keywords">Keywords</label>
+
+                <div class="formHelp" i18n:translate="help_search_keywords">
                 Return items matching one or more of these keywords.
                 Multiple words may be found
                 by pressing <strong>Ctrl</strong> while
                 <strong>left clicking</strong> the keywords.
                 </div>
-            </div>
-
-            <div class="field"
-                  tal:define="contentSubjects here/Subject;
-                              usedSubjects python:here.portal_catalog.uniqueValuesFor('Subject');">
 
                 <select name="Subject:list"
                         size="7"
                         multiple="multiple"
                         tabindex=""
-                        onfocus="formtooltip('keywords_search_help',1)"
-                        onblur="formtooltip('keywords_search_help',0)"
                         tal:attributes="tabindex tabindex/next;"
+                        tal:define="contentSubjects here/Subject;
+                                    usedSubjects python:here.portal_catalog.uniqueValuesFor('Subject');"
                         >
                     <option value="#"
                             tal:repeat="subject usedSubjects"
                             tal:content="subject"
-			    tal:attributes="value subject">dummy</option>
+                            tal:attributes="value subject">dummy</option>
                 </select>
-
             </div>
-        </div>
+    
+            <div class="field">
+                <label for="Description" i18n:translate="label_description">Description</label>
 
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_description">Description</span>
-
-                <div id="description_search_help"
-                     i18n:translate="help_search_description"
-                     class="help"
-                     style="visibility:hidden">
+                <div class="formHelp" i18n:translate="help_search_description">
                 Return items matching this description.
                 Multiple words may be found
                 by combining them with <strong>AND</strong> and <strong>OR</strong>.
                 </div>
-            </div>
-
-            <div class="field">
+    
                 <input type="text"
                        name="Description"
                        size="25"
                        tabindex=""
-                       onfocus="formtooltip('description_search_help',1)"
-                       onblur="formtooltip('description_search_help',0)"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-        </div>
+    
+            <div class="field">
+                <label for="created" i18n:translate="label_new_items_since">New items since</label>
 
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_new_items_since">New items since</span>
-                <div id="new_items_since_search_help"
-                     i18n:translate="help_search_new_items_since"
-                     class="help"
-                     style="visibility:hidden">
+                <div class="formHelp" i18n:translate="help_search_new_items_since">
                 Return items added since you were last logged on, the last week, etc.
                 </div>
-            </div>
+    
+                <tal:datetime define="today python:DateTime().earliestTime()">
+                <select name="created:date"
+                        tabindex=""
+                        tal:attributes="tabindex tabindex/next;"
+                        tal:define="yesterday python:(today-1).Date();
+                                    lastweek python:(today-7).Date();
+                                    lastmonth python:(today-31).Date();
+                                    ever string:1970/02/01 00:00:00 GMT;">
+                    <option value="#"
+                            tal:condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1)"
+                            tal:attributes="value python:member.getProperty('last_login_time')"
+                            i18n:translate="last_login">Last log-in</option>
+                    <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday"> Yesterday </option>
+                    <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week"> Last week </option>
+                    <option value="#" tal:attributes="value lastmonth" i18n:translate="time_last_month"> Last month </option>
+                    <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever"> Ever </option>
+                </select>
+                </tal:datetime>
 
-            <div class="field">
-
-                <span tal:define="today python:DateTime().earliestTime()">
-
-                    <select name="created:date"
-                            tabindex=""
-                            onfocus="formtooltip('new_items_since_search_help',1)"
-                            onblur="formtooltip('new_items_since_search_help',0)"
-                            tal:attributes="tabindex tabindex/next;"
-                            tal:define="yesterday python:(today-1).Date();
-                                        lastweek python:(today-7).Date();
-                                        lastmonth python:(today-31).Date();
-                                        ever string:1970/02/01 00:00:00 GMT;">
-                        <option value="#"
-                                tal:condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1)"
-                                tal:attributes="value python:member.getProperty('last_login_time')"
-                                i18n:translate="last_login">Last log-in</option>
-                        <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday"> Yesterday </option>
-                        <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week"> Last week </option>
-                        <option value="#" tal:attributes="value lastmonth" i18n:translate="time_last_month"> Last month </option>
-                        <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever"> Ever </option>
-                    </select>
-
-                </span>
                 <input type="hidden" name="created_usage" value="range:min" />
             </div>
-        </div>
+    
+            <div class="field">
+                <label for="portal_type" i18n:translate="label_item_type">Item type</label>
 
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_item_type">Item type</span>
-                <div id="item_type_search_help"
-                     i18n:translate="help_search_item_type"
-                     class="help"
-                     style="visibility:hidden">
+                <div class="formHelp" i18n:translate="help_search_item_type">
                 Return items of a specific type.
                 </div>
-            </div>
-
-            <div class="field">
-                <span tal:repeat="type python:container.portal_types.listContentTypes()">
-                    <metal:block tal:define="tabindex tabindex/next">
+    
+                <tal:contenttypes repeat="type python:container.portal_types.listContentTypes()">
+                    <tal:tabindex define="tabindex tabindex/next">
                     <input type="checkbox"
                            name="portal_type:list"
                            value="#"
                            class="noborder"
                            checked="checked"
                            tabindex=""
-                           onfocus="formtooltip('item_type_search_help',1)"
-                           onblur="formtooltip('item_type_search_help',0)"
                            tal:attributes="value type;
                                            tabindex tabindex;
                                            id string:portal_type_${tabindex}"/>
@@ -207,61 +156,47 @@
                            tal:content="python:here.portal_types.getTypeInfo(type).Title()"
                            />
                     <br />
-                    </metal:block>
-                </span>
+                    </tal:tabindex>
+                </tal:contenttypes>
             </div>
-        </div>
+    
+            <div class="field">
+                <label for="Creator" i18n:translate="label_author">Author</label>
 
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_author">Author</span>
-                <div id="author_search_help"
-                     i18n:translate="help_search_author"
-                     class="help"
-                     style="visibility:hidden">
+                <div class="formHelp" i18n:translate="help_search_author">
                 Return items created by a particular person.
                 </div>
+    
+                <tal:creators tal:define="creators python:here.portal_catalog.uniqueValuesFor('Creator')">
+                    <select name="Creator"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;"
+                            tal:condition="python: len(creators) &lt;= 30">
+                        <option value="" i18n:translate="label_any_author">Any Author</option>
+                        <metal:block tal:repeat="creator creators">
+                            <option value="" tal:attributes="value creator" tal:content="creator"> username </option>
+                        </metal:block>
+                    </select>
+    
+                    <input name="Creator"
+                           tabindex=""
+                           tal:attributes="tabindex tabindex/next;"
+                           tal:condition="python: len(creators) &gt; 30 " />
+                </tal:creators>
             </div>
+    
+            <div class="field"
+                 tal:condition="python: container.portal_membership.checkPermission('Review portal content', here)">
+    
+                <label for="review_state" i18n:translate="label_review_status">Review status</label>
 
-            <div class="field" tal:define="creators python:here.portal_catalog.uniqueValuesFor('Creator')">
-                <select name="Creator"
-                        tabindex=""
-                        onfocus="formtooltip('author_search_help',1)"
-                        onblur="formtooltip('author_search_help',0)"
-                        tal:attributes="tabindex tabindex/next;"
-                        tal:condition="python: len(creators) <= 30">
-                    <option value="" i18n:translate="label_any_author">Any Author</option>
-                    <metal:block tal:repeat="creator creators">
-                        <option value="" tal:attributes="value creator" tal:content="creator"> username </option>
-                    </metal:block>
-                </select>
-
-                <input name="Creator"
-                       tabindex=""
-                       onfocus="formtooltip('author_search_help',1)"
-                       onblur="formtooltip('author_search_help',0)"
-                       tal:attributes="tabindex tabindex/next;"
-                       tal:condition="python: len(creators) > 30 " />
-            </div>
-        </div>
-
-        <div class="row"
-             tal:condition="python: container.portal_membership.checkPermission('Review portal content', here)">
-
-            <div class="label">
-                <span i18n:translate="label_review_status">Review status</span>
-                <div id="review_status_search_help"
-                     i18n:translate="help_search_review_status"
-                     class="help"
-                     style="visibility:hidden">
+                <div class="formHelp" i18n:translate="help_search_review_status">
                 As a reviewer, you may search for items based on their
                 review state. If you wish to constrain results to items
                 in certain states, select them from this list.
                 </div>
-            </div>
-
-            <div class="field">
-                <span tal:repeat="state python:here.portal_catalog.uniqueValuesFor('review_state')">
+    
+                <tal:states tal:repeat="state python:here.portal_catalog.uniqueValuesFor('review_state')">
                     <metal:block tal:define="tabindex tabindex/next">
                     <input type="checkbox"
                            name="review_state"
@@ -269,8 +204,6 @@
                            checked="checked"
                            class="noborder"
                            tabindex=""
-                           onfocus="formtooltip('review_status_search_help',1)"
-                           onblur="formtooltip('review_status_search_help',0)"
                            tal:attributes="value state;
                                            tabindex tabindex;
                                            id string:review_state_${tabindex}"/>
@@ -280,13 +213,10 @@
                            tal:attributes="for string:review_state_${tabindex}" />
                     <br />
                     </metal:block>
-                </span>
+                </tal:states>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="label">&nbsp;</div>
-            <div class="field">
+            <div class="formControls">
                 <input class="context"
                        tabindex=""
                        type="submit"
@@ -296,8 +226,9 @@
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-        </div>
 
+        </fieldset>
+    
     </form>
 
 </div>

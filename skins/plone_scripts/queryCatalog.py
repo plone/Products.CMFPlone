@@ -21,7 +21,7 @@ for i in indexes:
 notRawIndexFields=[k for k in REQUEST.form.keys() if k not in query.keys()]
 if notRawIndexFields:
     for k in notRawIndexFields:
-        if k.endswith('_usage'): 
+        if k.endswith('_usage'):
             query.update({k:REQUEST.get(k)})
 
 if query:

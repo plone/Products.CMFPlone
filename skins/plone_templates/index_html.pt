@@ -1,13 +1,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <body>
 
 <div metal:fill-slot="main">
 
-    <h1>Welcome to
-    <span tal:replace="here/title">Portal title</span>
+    <h1 i18n:translate="heading_welcome_to">Welcome to
+    <span i18n:name="sitename" tal:replace="here/title">Portal title</span>
     </h1>
 
     <p tal:content="here/portal_url/description">

@@ -1,5 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-      lang="en-US"
+      lang="en"
       metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
 
@@ -10,7 +10,7 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_main"
-     tal:define="errors python:request.get('errors', {})">
+     tal:define="errors options/state/getErrors;">
 
     <h1 title="title"
         i18n:attributes="title"
@@ -20,78 +20,57 @@
        i18n:attributes="title"
        tal:attributes="title string:description_${request/attr}">description</p>
 
-    <form class="group"
-          action=""
+    <form action=""
           name="reconfig"
           method="post"
 	  tal:attributes="action string:prefs_portal_properties_set"
           tal:define="props python:here.portal_properties;">
 
-    <input type="hidden" name="attr" tal:attributes="value request/attr">
+        <fieldset>
 
-        <span class="legend" i18n:translate="legend_plone_details">Plone Details</span>
+            <input type="hidden" name="attr" tal:attributes="value request/attr" />
 
-        <tal:block define="global obj python:getattr(here.portal_properties, request.get('attr',''))" />
+            <legend i18n:translate="legend_plone_details">Plone Details</legend>
+
+            <tal:block define="global obj python:getattr(here.portal_properties, request.get('attr',''))" />
  
-  	<div class="row" tal:repeat="id python:obj.propertyIds()">
-  	    <div class="label">
-	    
-	        <span tal:content="id" />
+            <div class="field"
+                 tal:repeat="id python:obj.propertyIds()">
 
-		<div i18n:translate=""
-		     tal:attributes="id string:${id}_help;
-				     style string:visibility:hidden;
-                                     class string:help"
-                     tal:content="string:${id}_help">
-		</div>     
-
-            </div>
-
-	    <div class="field">
-
-                <input size="30"
+                <label tal:content="id" />
+    
+                <input size="40"
                        tabindex=""
                        tal:attributes="name id;
-		       		       value python:obj.getProperty(id);
+                                       value python:obj.getProperty(id);
+                                       tabindex tabindex/next;"
+                        tal:condition="python:obj.getPropertyType(id) in ('float','date','string','ustring','tokens','utokens', 'int')" />
+    
+                <input tal:attributes="type string:checkbox;
+                                       name id;
+                                       size:int string:35;
                                        tabindex tabindex/next;
-				       onfocus string:formtooltip('${id}_help',1);
-				       onblur string:formtooltip('${id}_help',0)" 
-		       tal:condition="python:obj.getPropertyType(id) in ('float','date','string','ustring','tokens','utokens', 'int')"/>
-
-		<input tal:attributes="type string:checkbox;
-			              name id;
-				      size:int string:35;
-				      tabindex tabindex/next;
-                                      onfocus string:formtooltip('${id}_help',1);
-                                      onblur string:formtooltip('${id}_help',0);
-				      checked python:test(obj.getProperty(id))"
-		       tal:condition="python:obj.getPropertyType(id)=='boolean'" />
-
-		<textarea tal:attributes="name id;
-                                          onfocus string:formtooltip('${id}_help',1);
-                                          onblur string:formtooltip('${id}_help',0)"
-			  tal:condition="python:obj.getPropertyType(id) in ('text','utext','lines','ulines')">
+                                       checked python:test(obj.getProperty(id))"
+                       tal:condition="python:obj.getPropertyType(id)=='boolean'" />
+    
+                <textarea tal:attributes="name id;"
+                          tal:condition="python:obj.getPropertyType(id) in ('text','utext','lines','ulines')">
 <tal:block repeat="val python:obj.getProperty(id)"><span tal:replace="val" /></tal:block></textarea>
 
             </div>
 
-	</div>
-
-	<div class="row">
-            <div class="label">&nbsp;</div>
-            <div class="field">
+	        <div class="formControls">
                 <input class="context"
                        tabindex=""
                        type="submit"
                        name="manage_editProperties:method"
-                       value="Save Changes"
+                       value="Save"
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-        </div>
 
-
+        </fieldset>
 
     </form>
 

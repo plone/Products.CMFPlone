@@ -9,37 +9,43 @@
 ##
 # this script extracts %Y %m %d %H %M from a given date string
 
-try:
-  date = DateTime(date)
-except:
-  pass
+from DateTime import DateTime
 
 try:
-  day = date.strftime('%d');
-except:
-  day = '00'
-try:
-  month = date.strftime('%m');
-except:
-  month = '00'
-try:
-  year = date.strftime('%Y');
-except:
-  year = '00'
+    date = DateTime(date)
+except: #Combination of string/instances can be raised. catach all.
+    pass
 
 try:
-  hour = date.strftime('%H');
-except:
-  hour = '00'
-  
-try:
-  minute = date.strftime('%M');
-except:
-  minute = '00'
+    day = date.strftime('%d');
+except AttributeError:
+    day = '00'
 
 try:
-  ampm = date.strftime('%p');
-except:
-  ampm = '00'
+    month = date.strftime('%m');
+except AttributeError:
+    month = '00'
 
-return {'year':year,'month':month,'day':day, 'hour':hour, 'minute':minute, 'ampm':ampm}
+try:
+    year = date.strftime('%Y');
+except AttributeError:
+    year = '00'
+
+try:
+    hour = date.strftime('%H');
+except AttributeError:
+    hour = '00'
+
+try:
+    minute = date.strftime('%M');
+except AttributeError:
+    minute = '00'
+
+try:
+    ampm = date.strftime('%p');
+except AttributeError:
+    ampm = '00'
+
+return {'year':year, 'month':month,
+        'day':day, 'hour':hour,
+        'minute':minute, 'ampm':ampm}

@@ -20,243 +20,184 @@
     your own documents, images and files to the site.
     </p> 
 
-    <form class="group"
-          action="#" 
+    <form action="" 
           method="post"
           tal:define="allowEnterPassword here/portal_properties/site_properties/validate_email|nothing;"
-          tal:attributes="action string:${here/getId}/${template/getId}" >
+          tal:attributes="action template/getId" >
 
-        <span class="legend" i18n:translate="legend_personal_details">Personal Details</span>
+        <fieldset>
 
-        <input type="hidden" name="came_from" value=""
-               tal:attributes="value request/came_from|request/HTTP_REFERER" />
-        <input type="hidden" name="last_visit:date" value="ZopeTime"
-               tal:attributes="value here/ZopeTime" />
-        <input type="hidden" name="prev_visit:date" value="ZopeTime"
-               tal:attributes="value here/ZopeTime" />
-
-        <div class="row"
-             tal:define="error_fullname errors/fullname| nothing;
-                         fullname request/fullname | nothing;" >
-            
-            <div class="label">
-                <span i18n:translate="label_full_name">Full Name</span>
-                <div id="full_name_help" 
-                     i18n:translate="help_full_name_creation"
-                     class="help" 
-                     style="visibility:hidden">
+            <legend i18n:translate="legend_personal_details">Personal Details</legend>
+    
+            <input type="hidden" name="came_from" value=""
+                   tal:condition="request/came_from|nothing"
+                   tal:attributes="value request/came_from" />
+            <input type="hidden" name="last_visit:date" value="ZopeTime"
+                   tal:attributes="value here/ZopeTime" />
+            <input type="hidden" name="prev_visit:date" value="ZopeTime"
+                   tal:attributes="value here/ZopeTime" />
+            <input type="hidden" name="came_from_prefs" value=""
+                   tal:attributes="value request/came_from_prefs|nothing" />
+    
+            <div class="row"
+                 tal:define="error errors/fullname| nothing;
+                             fullname request/fullname | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+                
+                <label i18n:translate="label_full_name">Full Name</label>
+    
+                <div class="formHelp" i18n:translate="help_full_name_creation">
                 Enter your full name, eg. John Smith.
                 </div>
-            </div>
-            
-            <div class="field"
-                  tal:attributes="class python:test(error_fullname, 'field error', 'field')" >
-
-                <div tal:condition="error_fullname">
-                    <tal:block i18n:translate="" content="error_fullname">Error</tal:block>
-                    <br />
-                </div>
-
+                
+                <div tal:content="error">Validation error output</div>
+    
                 <input type="text" 
                        name="fullname" 
                        size="30"
                        value="fullname"
                        tabindex=""
-                       onfocus="formtooltip('full_name_help',1)" 
-                       onblur="formtooltip('full_name_help',0)" 
                        tal:attributes="value fullname;
                                        tabindex tabindex/next;"
                        />
+    
             </div>
-
-        </div>
-               
-        <div class="row"
-             tal:define="error_username errors/username| nothing;
-                         username request/username | nothing;" >
-            
-            <div class="label required">
-                <span i18n:translate="label_user_name">User Name</span>
-                <div id="user_name_help" 
-                     i18n:translate="help_user_name_creation"
-                     class="help" 
-                     style="visibility:hidden">
+                   
+            <div class="field"
+                 tal:define="error errors/username| nothing;
+                             username request/username | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+                
+                <label i18n:translate="label_user_name">User Name</label>
+    
+                <span class="fieldRequired" title="Required">(Required)</span>
+    
+                <div i18n:translate="help_user_name_creation"
+                     class="formHelp">
                 Enter the user name you want, usually something like
                 'jsmith'. No spaces or special characters. 
                 This is the name you use to log in.
                 </div>
-            </div>
-            
-            <div class="field"
-                  tal:attributes="class python:test(error_username, 'field error', 'field')" >
-
-                <div tal:condition="error_username">
-                    <tal:block i18n:translate="" content="error_username">Error</tal:block>
-                    <br />
-                </div>
-
+                
+                <div tal:content="error">Validation error output</div>
+    
                 <input type="text" 
                        name="username" 
                        size="30"
                        value="username"
                        tabindex=""
-                       onfocus="formtooltip('user_name_help',1)" 
-                       onblur="formtooltip('user_name_help',0)" 
                        tal:attributes="value username;
                                        tabindex tabindex/next;"
                        />
             </div>
-
-        </div>
-
-        <div class="row"
-             tal:define="error_email errors/email | nothing;
-                         email request/email | nothing;" >
-
-            <div class="label required">
-                <span i18n:translate="label_email">E-mail</span>
-                <div id="email_help" 
-                     i18n:translate="help_email_creation"
-                     class="help" 
-                     style="visibility:hidden">
+    
+            <div class="field"
+                 tal:define="error errors/email | nothing;
+                             email request/email | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label i18n:translate="label_email">E-mail</label>
+    
+                <span class="fieldRequired" title="Required">(Required)</span>
+    
+                <div class="formHelp" i18n:translate="help_email_creation">
                 Enter your email address. This is necessary in case you lose your
                 password. We respect your privacy, and will not give the address
-                away to any third parties.
-                </div>            
-            </div>
-
-            <div class="field"
-                  tal:attributes="class python:test(error_email, 'field error', 'field')" >
-		  
-                <div tal:condition="error_email">
-                    <tal:block i18n:translate="" content="error_email">Error</tal:block>
-                    <br />
+                away to any third parties or expose it at the site.
                 </div>
-
+    
+                <div tal:content="error">Validation error output</div>
+    
                 <input type="text" 
                        name="email" 
                        size="30"
                        tabindex=""
-                       onfocus="formtooltip('email_help',1)" 
-                       onblur="formtooltip('email_help',0)" 
                        tal:attributes="value email;
                                        tabindex tabindex/next;"
                        />
             </div>
-        </div>
-
-
-        <div class="row" 
-             tal:condition="not: allowEnterPassword"
-             tal:define="error_password errors/password | nothing;
-                         password request/password | nothing;" >
-
-            <div class="label required">
-                <span i18n:translate="label_password">Password</span>
-                <div id="password_help" 
-                     i18n:translate="help_password_creation"
-                     class="help" 
-                     style="visibility:hidden">
+    
+    
+            <div class="field" 
+                 tal:condition="not: allowEnterPassword"
+                 tal:define="error errors/password | nothing;
+                             password request/password | nothing;" 
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label i18n:translate="label_password">Password</label>
+    
+                <span class="fieldRequired" title="Required">(Required)</span>
+    
+                <div class="formHelp" i18n:translate="help_password_creation">
                 Enter the password you want. Minimum 5 characters.
                 </div>
-            </div>
-
-            <div class="field"
-                  tal:attributes="class python:test(error_password, 'field error', 'field')" >
-		  
-                <div tal:condition="error_password">
-                    <tal:block i18n:translate="" content="error_password">Error</tal:block>
-                    <br />
-                </div>
-	       
+    	       
+                <div tal:content="error">Validation error output</div>
+    
                 <input type="password" 
                        name="password" 
                        size="10"
                        value="" 
                        tabindex=""
-                       onfocus="formtooltip('password_help',1)" 
-                       onblur="formtooltip('password_help',0)" 
                        tal:attributes="value password;
                                        tabindex tabindex/next;" 
                        />
             </div>
-        </div>
-
-        <div class="row" 
-             tal:condition="not: allowEnterPassword"
-             tal:define="error_confirm errors/confirm | nothing;
-                         confirm request/confirm | nothing;" >
-                         
-            <div class="label required">
-                <span i18n:translate="label_confirm_password">Confirm <br />Password</span>
-                <div id="confirm_password_help" 
-                     i18n:translate="help_confirm_password"
-                     class="help" 
-                     style="visibility:hidden">
+    
+            <div class="field" 
+                 tal:condition="not: allowEnterPassword"
+                 tal:define="error errors/confirm | nothing;
+                             confirm request/confirm | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+                             
+                <label i18n:translate="label_confirm_password">Confirm Password</label>
+    
+                <span class="fieldRequired" title="Required">(Required)</span>
+    
+                <div class="formHelp" i18n:translate="help_confirm_password">
                 Re-enter the password. Make sure the passwords are identical.
                 </div>
-            </div>
-            
-            <div class="field"
-                 tal:attributes="class python:test(error_confirm, 'field error', 'field')" >
-                <div tal:condition="error_confirm">
-                    <tal:block i18n:translate="" content="error_confirm">Error</tal:block>
-                    <br />
-                </div>
-
+                
+                <div tal:content="error">Validation error output</div>
+    
                 <input type="password" 
                        name="confirm" 
                        size="10" 
                        value="" 
                        tabindex=""
-                       onfocus="formtooltip('confirm_password_help',1)" 
-                       onblur="formtooltip('confirm_password_help',0)" 
                        tal:attributes="value confirm;
                                        tabindex tabindex/next;"
                        />
             </div>
-        </div>
-
-        <div class="row" tal:condition="not: allowEnterPassword" tal:define="mail_me request/mail_me|nothing">
-                        
-            <div class="label">
-                <span i18n:translate="label_mail_password">Mail Password?</span>
-                <div id="mail_password_help" 
-                     i18n:translate="help_mail_password"
-                     class="help" 
-                     style="visibility:hidden">
-                Check this box to have your password 
-                delivered to your mailbox, so you won't lose it.
-                </div>
-            </div>
-            
-            <div class="field">
+    
+            <div class="field" 
+                 tal:condition="not: allowEnterPassword" 
+                 tal:define="mail_me request/mail_me|nothing">
+                            
+                <label i18n:translate="label_mail_password">Mail Password?</label>
+    
                 <input type="checkbox" 
                        class="noborder" 
                        name="mail_me" 
                        size="30" 
                        id="cb_mailme" 
                        tabindex=""
-                       onfocus="formtooltip('mail_password_help',1)" 
-                       onblur="formtooltip('mail_password_help',0)" 
                        tal:attributes="checked python:test(mail_me, 'checked', None);
                                        tabindex tabindex/next;" 
                        />
-                <label for="cb_mailme" i18n:translate="label_yes_mail_me_password">Yes, mail me my password</label>
+                <label for="cb_mailme" i18n:translate="label_yes_mail_password">Yes, send a mail containing the password</label>
             </div>
-        </div>
-
-        <div class="row" tal:condition="allowEnterPassword">
-            <div class="label"></div>
-            <div class="field" i18n:translate="label_password_will_be_mailed">
-            A password will be generated and 
-            e-mailed to you to complete the registration process.
+    
+            <div class="field" 
+                 tal:condition="allowEnterPassword">
+    
+                <div class="formHelp" i18n:translate="label_password_will_be_mailed">
+                A password will be generated and 
+                e-mailed to you to complete the registration process.
+                </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="label"></div>
-            <div class="field">
+    
+            <div class="formControls">
                 <input class="context" 
                        type="submit"
                        tabindex="" 
@@ -265,11 +206,9 @@
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;" />
             </div>
-        </div>
 
-        <span tal:replace="nothing">
-        ##### HIDDEN VARIABLE FOR THE PORTAL_FORM_CONTROLLER -- CUT AND PASTE INTO YOUR FORM ####
-        </span>
+        </fieldset>
+        
         <input type="hidden" name="form.submitted" value="1" />
 
     </form>

@@ -31,6 +31,10 @@ class MembershipTool(BaseTool):
     default_portrait = 'defaultUser.gif'
     security = ClassSecurityInfo()
 
+    #XXX I'm not quite sure why getPortalRoles is declared 'Managed'
+    #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
+    security.declareProtected(View, 'getPortalRoles')
+
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
         returns the Portait for a member_id
@@ -92,7 +96,7 @@ class MembershipTool(BaseTool):
             membertool._setPortrait(portrait, member_id)
 
 
-    def createMemberarea(self, member_id):
+    def createMemberarea(self, member_id=''):
         """
         since we arent using PortalFolders and invokeFactory will not work
         we must do all of this ourself. ;(
@@ -104,6 +108,13 @@ class MembershipTool(BaseTool):
 
         parent = self.aq_inner.aq_parent
         members =  self.getMembersFolder()
+
+        if not member_id:
+            # member_id is optional (see CMFCore.interfaces.portal_membership:
+            #     Create a member area for 'member_id' or authenticated user.
+            portal_membership = getToolByName(self, 'portal_membership')
+            member = portal_membership.getAuthenticatedMember()
+            member_id = member.id
 
         if members is None:
             parent.manage_addPloneFolder(id=self.membersfolder_id, title='Members')
@@ -154,7 +165,7 @@ class MembershipTool(BaseTool):
                        , member_id+"'s Home Page"
                        , member_id+"'s front page"
                        , "structured-text"
-                       , DEFAULT_MEMBER_CONTENT 
+                       , DEFAULT_MEMBER_CONTENT
                        )
 
             f.index_html._setPortalTypeName( 'Document' )
@@ -164,7 +175,7 @@ class MembershipTool(BaseTool):
             wftool.notifyCreated( f.index_html )
             #XXX the above is copy/pasted from CMFDefault.MembershipTool only because
             #its not using invokeFactory('Folder') -- FIX IT!
-            
+
             #XXX Below is what really is Plone customizations
             member_folder=self.getHomeFolder(member_id)
             member_folder.description = 'Home page area that contains the items created and ' \
@@ -185,6 +196,10 @@ class MembershipTool(BaseTool):
             if notify_script is not None:
                 notify_script()
 
+    # deal with ridiculous API change in CMF
+    security.declarePublic('createMemberArea')
+    createMemberArea = createMemberarea
+
     def listMembers(self):
         '''Gets the list of all members.
         '''
@@ -193,7 +208,7 @@ class MembershipTool(BaseTool):
             return [BaseTool.wrapUser(self, x) for x in uf.getPureUsers()]
         else:
             return BaseTool.listMembers(self)
-            
+
     def listMemberIds(self):
         '''Lists the ids of all members.  This may eventually be
         replaced with a set of methods for querying pieces of the
@@ -285,24 +300,30 @@ class MembershipTool(BaseTool):
 
             if domains is None:
                 domains = []
-            acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
-            #member.setSecurityProfile(password=password, domains=domains)
+            user = acl_users.getUserById(member.getUserName())
+            # we must change the users password trough grufs changepassword
+            # to keep her  group settings
+            if hasattr(user, 'changePassword'):
+                user.changePassword(password)
+            else:
+                acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
+            self.credentialsChanged(password)
         else:
             raise 'Bad Request', 'Not logged in.'
 
-    security.declareProtected(View, 'getCandidateLocalRoles') 
-    def getCandidateLocalRoles( self, obj ): 
-        """ What local roles can I assign? """ 
-        member = self.getAuthenticatedMember() 
+    security.declareProtected(View, 'getCandidateLocalRoles')
+    def getCandidateLocalRoles( self, obj ):
+        """ What local roles can I assign? """
+        member = self.getAuthenticatedMember()
 
-        if 'Manager' in member.getRoles(): 
-            return self.getPortalRoles() 
-        else: 
-            member_roles = list( member.getRolesInContext( obj ) ) 
-            if 'Member' in member_roles: 
-                del member_roles[member_roles.index( 'Member')] 
+        if 'Manager' in member.getRoles():
+            return self.getPortalRoles()
+        else:
+            member_roles = list( member.getRolesInContext( obj ) )
+            if 'Member' in member_roles:
+                del member_roles[member_roles.index( 'Member')]
 
-        return tuple( member_roles ) 
+        return tuple( member_roles )
 
 MembershipTool.__doc__ = BaseTool.__doc__
 

@@ -7,25 +7,27 @@
 
 <div metal:fill-slot="main">
 
+    <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+        Title or id
+    </h1>
+
     <div metal:use-macro="here/document_actions/macros/document_actions">
         Document actions (print, sendto etc)
     </div>
 
-    <h1 tal:content="here/title_or_id">Title or id</h1>
-
-    <div id="description"
+    <div class="documentDescription"
          tal:content="here/Description">
-    description
+        description
     </div>
 
     <p>
-    <span i18n:translate="link_address">The link address is:</span>
-    <a href="#" tal:attributes="href here/remote_url"
-                tal:content="here/remote_url">remote url</a>
+        <span i18n:translate="link_address">The link address is:</span>
+        <a href="#" tal:attributes="href here/remote_url"
+                    tal:content="here/remote_url">remote url</a>
     </p>
 
-    <div id="byline" metal:use-macro="here/byline/macros/byline">
-      Get the byline - contains details about author and modification date.
+    <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
     </div>
 
 </div>

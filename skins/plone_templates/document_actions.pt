@@ -1,28 +1,30 @@
-<html i18n:domain="plone">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
+
 <body>
 <div metal:define-macro="document_actions"
      class="documentActions"
      tal:define="document_actions actions/document_actions|nothing;
                  getIconFor nocall:putils/getIconFor"
      tal:condition="document_actions">
-    
+    <ul>
     <tal:actions repeat="daction document_actions">
-
-        <a href="" 
-           tal:attributes="href daction/url"
-           tal:define="title daction/name;
-                       icon python:getIconFor('plone', daction['id'], None)"
-           tal:condition="icon">
+        <li>
+            <a href="" 
+               tal:attributes="href daction/url"
+               tal:define="title daction/name;
+                           icon python:getIconFor('plone', daction['id'], None)"
+               tal:condition="icon">
             
-            <img i18n:attributes="title" title="#"
-                 tal:condition="icon"
-                 tal:attributes="src string:$portal_url/$icon;
-                                 title title;
-				 alt title" />
-        </a>
-            
+                <img i18n:attributes="title" title="#"
+                     tal:condition="icon"
+                     tal:attributes="src string:$portal_url/$icon;
+                                     title title;
+                                     alt title" />
+            </a>
+        </li>
     </tal:actions>
-    
+    </ul>
 </div>
 </body>
 </html>

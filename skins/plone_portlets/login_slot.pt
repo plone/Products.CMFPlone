@@ -2,43 +2,57 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
 
-<body tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                  tabindex python:Iterator()">
+<body>
 
-<!-- The Log in box -->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_login -->
 
 <div metal:define-macro="loginBox"
      tal:omit-tag=""
-     tal:condition="isAnon">
+     tal:condition="isAnon"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex tabindex|Iterator">
 
-    <div class="box" tal:define="portal_url portal_url|here/portal_url" id="portlet-login">
+    <div class="portlet" 
+         tal:define="portal_url portal_url|here/portal_url;
+                     auth nocall:here/cookie_authentication;
+                     ac_name auth/name_cookie;
+                     ac_password auth/pw_cookie;
+                     ac_persist auth/persist_cookie;"
+         id="portlet-login">
 
     <div class="padding">
 
         <h5 i18n:translate="box_sign_in">Log in</h5>
 
-        <div class="body">
+        <div class="portletBody">
 
-            <div class="content odd">
+            <div class="portletContent odd">
                 <form action="logged_in"
                       method="post"
                       tal:attributes="action string:$portal_url/logged_in">
 
                     <input type="hidden" name="came_from" value=""
-                           tal:condition="python:request.get('came_from', '')"
-                           tal:attributes="value request/came_from;
+                           tal:attributes="value request/URL;
                                            tabindex tabindex/next" />
 
-                    <label for="__ac_name"><strong i18n:translate="label_user_name">Name</strong> <br />
-                    <input type="text" id="__ac_name" name="__ac_name" size="12"
-                           tal:attributes="value python:request.get('__ac_name', ''); tabindex tabindex/next" alt="Username" accesskey="accesskeys-login" i18n:attributes="alt" />
-		    </label>
+                    <label for="ac_name"> 
+                      <strong i18n:translate="label_user_name">Name</strong> <br />
+                      <input type="text" id="ac_name" name="ac_name" size="12" alt="Username" accesskey="accesskeys-login" 
+                             tal:attributes="name ac_name;
+                                             value python:request.get(ac_name, ''); 
+                                             tabindex tabindex/next"
+                             i18n:attributes="alt" />
+                    </label>
 
                     <br />
 
-                    <label for="__ac_password"><strong i18n:translate="label_password">Password</strong>  <br />
-                    <input tal:attributes="tabindex tabindex/next" type="password" id="__ac_password" name="__ac_password" size="12" alt="Password" accesskey="accesskeys-login" i18n:attributes="alt accesskey" />
-		    </label>
+                    <label for="ac_password">
+                      <strong i18n:translate="label_password">Password</strong>  <br />
+                      <input type="password" id="ac_password" name="ac_password" size="12" alt="Password" accesskey="accesskeys-login" 
+                             tal:attributes="name ac_password;
+                                             tabindex tabindex/next;" 
+                             i18n:attributes="alt accesskey" />
+                    </label>
 
                     <br />
                     &nbsp;
@@ -55,7 +69,7 @@
                 </form>
             </div>
 
-            <div class="content even">
+            <div class="portletContent even">
                 <a href="mail_password_form"
                    tal:attributes="href string:$portal_url/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
                    <img tal:replace="structure portal_object/linkTransparent.gif" />
@@ -63,7 +77,7 @@
                 </a>
             </div>
 
-            <div class="content odd"
+            <div class="portletContent odd"
                 tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
                 tal:condition="python:test(join and hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
 

@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The news box -->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_news. -->
 
 <div metal:define-macro="newsBox"
      tal:define="results python:request.get('news', here.portal_catalog.searchResults( meta_type='News Item'
@@ -13,18 +13,18 @@
                                                                                      , review_state='published')[:5]);"
      tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
 
-    <div class="box" id="portlet-news">
+    <div class="portlet" id="portlet-news">
 
     <div class="padding">
 
         <h5 i18n:translate="box_news">News</h5>
 
-        <div class="body">
+        <div class="portletBody">
 
             <tal:block tal:repeat="obj results">
 
                 <div tal:define="oddrow repeat/obj/odd"
-                     tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
+                     tal:attributes="class python:test(oddrow, 'portletContent even', 'portletContent odd')">
 
                     <a href=""
                        tal:attributes="href obj/getURL;
@@ -33,16 +33,16 @@
                         <span tal:replace="python:test(obj.Title, obj.Title, obj.getId)"> Extended Calendar Product </span>
                     </a>
 
-                    <div class="boxDetails"
+                    <div class="portletDetails"
                          tal:content="python:here.toPortalTime(obj.Date)">July 7, 08:11</div>
                 </div>
 
             </tal:block>
 
-            <div class="content odd">
+            <div class="portletContent odd">
 
                 <a href=""
-                   class="more"
+                   class="portletMore"
                    tal:attributes="href string:${portal_url}/news"
                    i18n:translate="box_morelink"
                    >

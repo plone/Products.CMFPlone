@@ -8,16 +8,15 @@
 ##title=
 ##
 from DateTime import DateTime
-expiry=None
+from Products.CMFPlone import base_hasattr
 
-if hasattr(content, 'ExpirationDate'):
-    expiry=content.ExpirationDate()
-
-try:
-    if expiry and DateTime(expiry).isPast():
+if base_hasattr(content, 'expires'):
+    try:
+        expiry=content.expires()
+    except TypeError:
+        # expires is not the dublin core 'expires' method
+        expiry = None
+    if isinstance(expiry, DateTime) and expiry.isPast():
         return 1
-except IndexError:
-    pass #Could convert value to DateTime
 
 return 0
-

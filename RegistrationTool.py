@@ -1,5 +1,6 @@
 import random
 import md5
+import re
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
@@ -37,6 +38,8 @@ class RegistrationTool(BaseTool):
     security = ClassSecurityInfo()
     plone_tool = 1
     md5key = None
+    _v_md5base = None
+    email_regex="""^([0-9a-z_&.+-]+!)*[0-9a-z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,3}|([0-9]{1,3}\.){3}[0-9]{1,3})$"""
 
     def __init__(self):
         if hasattr(BaseTool, '__init__'):
@@ -45,13 +48,11 @@ class RegistrationTool(BaseTool):
         self.md5key = ''
         for i in range(0, 20):
             self.md5key += chr(ord('a')+random.randint(0,26))
-        self._v_md5base = None
 
     def _md5base(self):
-        if self._v_md5base == None:
+        if self._v_md5base is None:
             self._v_md5base = md5.new(self.md5key)
         return self._v_md5base
-
 
     # Get a password of the prescribed length
     #
@@ -59,14 +60,15 @@ class RegistrationTool(BaseTool):
     # For s!=None, generates a deterministic password using a hash of s
     #   (length must be <= 16 for s != None)
     #
+    # XXX: Could this be made private?
     def getPassword(self, length=5, s=None):
         global password_chars, md5base
 
         if s is None:
             password = ''
-            n = len(password_chars)
-            for i in range(0,length):
-                password += password_chars[random.randint(0,n-1)]
+            nchars = len(password_chars)
+            for i in range(0, length):
+                password += password_chars[random.randint(0,nchars-1)]
             return password
         else:
             m = self._md5base().copy()
@@ -79,15 +81,26 @@ class RegistrationTool(BaseTool):
                 password += password_chars[ord(d[i]) % nchars]
             return password
 
+    security.declarePublic('isValidEmail')
+    def isValidEmail(self, email):
+        """ checks for valid email """
+        pattern = re.compile(self.email_regex)
+        if pattern.search(email.lower()) == None:
+            return 0
+        return 1
 
     security.declarePublic('generatePassword')
     def generatePassword(self):
         """Generates a password which is guaranteed to comply
         with the password policy."""
-        # provide public access to the getPassword methog
         return self.getPassword(6)
+
+    security.declarePublic('generateResetCode')
+    def generateResetCode(self, salt, length=14):
+        """Generates a reset code which is guaranteed to return the
+        same value for a given length and salt, every time."""
+        return self.getPassword(length, salt)
 
 RegistrationTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(RegistrationTool)
-

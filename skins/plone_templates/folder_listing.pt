@@ -7,12 +7,13 @@
 
     <div metal:fill-slot="main">
 
-        <div class="contentHeader">
-        <h1 tal:content="here/title_or_id">Title or id</h1>
-        </div>
+        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+            Title or id
+        </h1>
 
-        <div id="description"
-             tal:content="structure here/Description"> description </div>
+        <div class="documentDescription" tal:content="structure here/Description">
+            description
+        </div>
 
         <p>
         <small>
@@ -25,12 +26,13 @@
         </small>
         </p>
 
-        <tal:listing condition="here/contentValues"
-                     tal:define="global getObjSize nocall:here/getObjSize;
+        <tal:listing condition="folderContents"
+                     tal:define="folderContents python:here.getFolderContents(suppressHiddenFiles=1);
+                                 global getObjSize nocall:here/getObjSize;
                                  global toPortalTime nocall:here/toPortalTime;">
 
             <dl>
-	        <metal:block tal:repeat="obj python:here.getFolderContents(suppressHiddenFiles=1)">
+	        <metal:block tal:repeat="obj folderContents">
 
                 <dt tal:define="url python:obj.absolute_url()+test(obj.isPrincipiaFolderish,'/','')">
                 <a href="#" tal:attributes="href url"
@@ -50,12 +52,12 @@
                             tal:attributes="href obj/getRemoteUrl"
                             tal:content="obj/title_or_id" />
 
-                <span class="discreet" style="font-weight: normal"
+                <span class="discreet"
                       tal:condition="python: obj.portal_type == 'Event'">
     
                     &nbsp;
                     <span tal:replace="obj/location">Oslo</span>,
-                    <span tal:replace="python: obj.end().ISO()">from date</span> -
+                    <span tal:replace="python: obj.start().ISO()">from date</span> -
                     <span tal:replace="python: obj.end().ISO()">to date</span>
                     
                 </span>
@@ -70,7 +72,7 @@
 
         </tal:listing>
 
-        <p tal:condition="not: here/contentValues" i18n:translate="description_no_items_in_folder">
+        <p tal:condition="not: python:here.getFolderContents(suppressHiddenFiles=1)" i18n:translate="description_no_items_in_folder">
          There are currently no items in this folder.
         </p>
 

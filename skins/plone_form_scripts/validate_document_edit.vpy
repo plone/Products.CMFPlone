@@ -3,19 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=id='',file=''
 ##title=Validates a document edit_form contents
 ##
-state = context.portal_form_controller.getState(script, is_validator=1)
-
-validator = context.portal_form.createForm()
-validator.addField('title', 'String', required=1)
-errors=validator.validate(context.REQUEST)
-for fieldid, error in errors.items():
-    state.setError(fieldid, error)
-
-file = context.REQUEST.get('file', '')
 filename = getattr(file, 'filename' ,'')
 if file and filename:
     file.seek(0)
@@ -30,7 +22,7 @@ if context.CreationDate() == context.ModificationDate() and filename:
 else:
     alternative_id = context.getId()
 
-id = context.REQUEST.get('id', '').strip()
+id=id.strip()
 id_err = context.check_id(id, 1, alternative_id)
 if id_err:
     state.setError('id', id_err)

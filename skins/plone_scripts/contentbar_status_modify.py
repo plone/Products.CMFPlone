@@ -7,12 +7,14 @@
 ##parameters=workflow_action, comment='', effective_date=None, expiration_date=None
 ##title=Copy object from a folder to the clipboard
 ##
-context.content_status_modify(workflow_action, comment, effective_date, expiration_date)
-
+RESPONSE=context.REQUEST.RESPONSE
 msg='portal_status_message=Your+contents+status+has+been+modified.'
 
-context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                                , context.getTypeInfo().getActionById( 'view' )
-                                                , msg
-                                                ) )
+context.content_status_modify(workflow_action,
+                              comment,
+                              effective_date,
+                              expiration_date)
 
+RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url(),
+                                  context.getTypeInfo().getActionById( 'view' ),
+                                  msg ) )

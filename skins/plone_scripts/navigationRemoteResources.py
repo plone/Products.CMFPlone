@@ -7,18 +7,19 @@
 ##parameters=obj=None
 ##title=encapsulates the related box
 ##
+from AccessControl import Unauthorized
 listing=[]
 
-if obj is None:    
+if obj is None:
     obj=context
     if not obj.isPrincipiaFolderish:
         obj=obj.aq_parent
 
-try:
-    for o in obj.contentValues('Link'):
+for o in obj.contentValues('Link'):
+    try:
         listing.append( (o.title_or_id(),
                          o.getRemoteUrl()) )
-except: 
-    pass
-    
+    except (Unauthorized,AttributeError):                         
+        pass
+
 return listing

@@ -10,20 +10,22 @@
 <body>
 
    <div metal:fill-slot="main"
-      tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_configuration');
+      tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
                   groups python:controlPanel.getGroups('site');
                   getIconFor nocall:putils/getIconFor">
 
     <h1 i18n:translate="heading_control_panel">Plone Setup</h1>
 
-    <div id="description" i18n:translate="description_control_panel">
+    <div class="documentDescription" i18n:translate="description_control_panel">
       Configuration area for Plone and add-on Products.
     </div>
 
     <tal:block tal:repeat="group groups">
+
         <h2 tal:content="group/title"
             i18n:translate="">Plone Configlet Group Title</h2>
-        <ul tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
+
+        <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
 
             <li tal:repeat="configlet configlets">
                 <a href=""
@@ -37,12 +39,12 @@
                 </a>
             </li>
 
-            <p tal:condition="not:configlets"
-               i18n:translate="label_no_panels_available">
-              No Preference Panels available.
-            </p>
+            <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
+                No Preference Panels available.
+            </li>
 
         </ul>
+
     </tal:block>
     </div>
 

@@ -19,7 +19,7 @@ if same_type(actions, {}):
         actionlist=actions['folder']+actions['object']+actions.get('object_tabs',[])
     else:
         actionlist=actions['object']+actions.get('object_tabs',[])
-   
+
 plone_actions=[]
 use_default=1
 for action in actionlist:
@@ -49,6 +49,4 @@ if use_default:
             action['selected']=1
             break
 
-return plone_actions 
-
-
+return plone_actions

@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=password='password', confirm='confirm'
+##parameters=password='password', confirm='confirm', came_from_prefs=None
 ##title=Register a User
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 REQUEST=context.REQUEST
 
@@ -22,15 +22,17 @@ portal_registration.addMember(username, password, properties=REQUEST)
 if site_properties.validate_email or REQUEST.get('mail_me', 0):
     try:
         portal_registration.registeredNotify(username)
-    except:
-        state.setError('email', 'We were unable to send your password to this address.', new_status='failure')
-        context.plone_utils.logException()
-        exception = context.plone_utils.exceptionString()
-        state.set(portal_status_message=exception)
-        state.set(came_from=context.REQUEST.get('came_from','logged_in'))
+    except: 
+        #XXX registerdNotify calls into various levels.  Lets catch all exceptions.
+        #    Should not fail.  They cant CHANGE their password ;-)  We should notify them.
+        state.set(portal_status_message='We were unable to send your password to your email address.')
+        state.set(came_from='logged_in')
         return state
+        
+state.set(portal_status_message=REQUEST.get('portal_status_message', 'Registered.'))
+state.set(came_from=REQUEST.get('came_from','logged_in'))
 
-state.set(portal_status_message=context.REQUEST.get('portal_status_message', 'Registered.'))
-state.set(came_from=context.REQUEST.get('came_from','logged_in'))
+if came_from_prefs:
+    state.set(status='prefs')
 
 return state

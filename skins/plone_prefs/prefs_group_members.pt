@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/prefs_main_template/macros/master">
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
 
 <tal:head metal:fill-slot="head_slot"
           tal:define="dummy python:request.set('disable_border',1)" />
@@ -24,7 +25,9 @@
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
     </tal:conditional>
 
-<div class="editable pageContent">
+<div class="configlet">
+
+<div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -48,7 +51,7 @@
     </div>        
     <!-- End of tabs -->
 
-    <div class="contentContent"
+    <div class="documentContent"
          tal:condition="not:group | nothing">
     	<h1 i18n:translate="">Group Members</h1>
     
@@ -58,7 +61,7 @@
               i18n:translate="label_find_group">Find a group here</a></p>
     </div>
     
-    <div class="contentContent"
+    <div class="documentContent"
          tal:condition="group | nothing">
     
         <h1 i18n:translate="">Members of the <tal:group content="groupname">Groupname</tal:group> Group</h1>
@@ -122,7 +125,7 @@
     
                 </td>
     
-                    <td class="checkbox">
+                    <td class="listingCheckbox">
                         <input type="checkbox"
                                class="noborder notify"
                                name="delete:list" tal:attributes="value username" />
@@ -140,6 +143,8 @@
     	  </metal:block>
     	</div>
     </div>
+</div>
+
 </div>
 
 </div>

@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns:tal="http://xml.zope.org/namespaces/tal"
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
@@ -8,104 +8,107 @@
           tal:define="dummy python:request.set('disable_border',1)"></tal:head>
 
 <div metal:fill-slot="main">
-    <script type="text/javascript" src="" tal:attributes="src here/vcXMLRPC.js/absolute_url"></script>
-    <script type="text/javascript" src="" tal:attributes="src here/stxPreview.js/absolute_url"></script>
 
     <h1 i18n:translate="heading_add_comment">Add Comment</h1>
 
     <p i18n:translate="description_add_comment">
-    You can add a comment by filling out the form below.
+        You can add a comment by filling out the form below. Plain text formatting.
     </p>
 
-    <form class="group"
-          name="edit_form"
+    <form name="edit_form"
           method="post"
           action="talkback"
-          tal:attributes="action string:${here/absolute_url}/talkback"
-          >
+          tal:attributes="action string:${here/absolute_url}/talkback" >
 
-        <span class="legend" i18n:translate="legend_comment_details">Comment Details</span>
+        <fieldset>
 
-        <input type="hidden" name="Creator" value=""
-        	   tal:attributes="value member/getUserName" />
+            <legend i18n:translate="legend_comment_details">Comment Details</legend>
 
-        <div class="row">
+            <input type="hidden" name="Creator" value=""
+                   tal:attributes="value member/getUserName" />
 
-            <div class="label" i18n:translate="label_subject">
-            Subject
+            <div class="portalMessage"
+                 tal:condition="here/portal_membership/isAnonymousUser">
+
+                <img tal:replace="structure here/info.gif"/>
+
+                <span>
+                    Note: you are not logged in.  You may optionally enter your username
+                    and password below.  If you don't enter your username and
+                    password below, this comment will be posted as the 'Anonymous User'.
+                </span>
+
+                <br/><br/>
+
+                <div class="field">
+
+                    <label for="username" i18n:translate="label_name">Name</label>
+
+                    <input name="username"
+                           value="" alt="Username" title="Name"
+                           size="40"
+                           tabindex=""
+                           tal:attributes="tabindex tabindex/next;" />
+
+                </div>
+
+                <div class="field">
+
+                    <label for="password" i18n:translate="label_password">Password</label>
+
+                    <input type="password"
+                           name="password"
+                           tabindex=""
+                           value="" alt="Password" title="Password"
+                           size="40"
+                           tal:attributes="tabindex tabindex/next;" />
+
+                </div>
+
             </div>
 
+
             <div class="field">
+
+                <label for="title" i18n:translate="label_subject">Subject</label>
+
                 <input name="title"
                        value=""
                        size="40"
                        tabindex=""
                        tal:attributes="value request/title_override|nothing;
-											                 tabindex tabindex/next;" />
-            </div>
+                                       tabindex tabindex/next" />
 
-        </div>
-
-        <div class="row">
-
-            <div class="label" i18n:translate="label_body_text">
-            Body text
             </div>
 
             <div class="field">
+
+                <label for="text" i18n:translate="label_body_text">Body text</label>
+
                 <textarea name="text"
                           cols="40"
                           rows="8"
                           tabindex=""
-                          tal:attributes="tabindex tabindex/next"
                           tal:content="request/text_override | nothing"
-                          ></textarea>
+                          tal:attributes="tabindex tabindex/next"
+                        ></textarea>
+
             </div>
 
-        </div>
-
-        <div class="row">
-
-            <div class="label">
-            &nbsp;
-            </div>
-
-            <div class="field">
+            <div class="formControls">
 
                 <input class="context"
+                       tabindex=""
                        type="submit"
                        value="Add Comment"
-                       name=""
-                       tabindex=""
+                       name="form.button.Save"
                        i18n:attributes="value"
-                       tal:attributes="name string:discussion_reply:method;
-											                 tabindex tabindex/next;" />
+                       tal:attributes="tabindex tabindex/next;
+                                       name string:discussion_reply:method;" />
+
             </div>
 
-        </div>
-
-    </form>
-
-    <p i18n:translate="description_preview_comment">To see how the comment
-    will look before submitting it, click 'Preview Comment'.
-    </p>
-
-    <form class="group" onsubmit="return false;">
-        <span class="legend" i18n:translate="legend_preview">Preview</span>
-        <br />
-        <span id="previewComment"></span>
-        <br />
-
-        <input class="context"
-                       type="submit"
-                       value="Preview Comment"
-                       name=""
-                       tabindex=""
-                       onclick="GetPreview(document.edit_form.text.value, 'previewComment')"
-                       i18n:attributes="value"
-                       tal:define="hId here/getId"
-                       tal:attributes="name string:$hId/discussion_reply_preview:method;
-											                 tabindex tabindex/next;" />
+        </fieldset>
 
     </form>
 
@@ -113,4 +116,3 @@
 
 </body>
 </html>
-

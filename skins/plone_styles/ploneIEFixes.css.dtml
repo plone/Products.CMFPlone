@@ -1,22 +1,61 @@
-/* <dtml-with stylesheet_properties>
-** WinIE Fix stylesheet
+/*
+** Stylesheet with Internet Explorer-specific workarounds.
 */
-#documentContent {
+
+/* <dtml-with base_properties> */
+
+* html #portal-columns {
+  width: 100%;
+}
+* html*#portal-columns {
+    width: auto;
+}
+
+#content,
+div.comment,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.description,
+.portalMessage
+{
     /* Fix for IE6 disappearing float bug */
     height: 100%;
 }
-.hiddenstructure {
-    display: none;
+
+input {
+        margin-bottom: 1px; /* bug fix */
 }
-div#columns div.box {
+
+table.listing td.top {
+    /* insane IE row bug workaround */
+    position: relative;
+    left: -1px;
+    top: -1px;
+}
+
+div#portal-columns div.portlet {
     text-align: left;
 }
-div#columns div#left,
-div#columns div#right {
+div#portal-columns div#portal-column-one,
+div#portal-columns div#portal-column-two {
     overflow: hidden;
 }
-div.overflow {
+div.visualOverflow {
     overflow: auto;
+}
+
+body { /* These work in IE only, changes the look of the scrollbar + textareas */
+    scrollbar-base-color: &dtml-globalBackgroundColor;;
+    scrollbar-highlight-color: &dtml-globalBackgroundColor;;
+    scrollbar-track-color: &dtml-evenRowBackgroundColor;;
+    scrollbar-darkshadow-color: &dtml-evenRowBackgroundColor;;
+    scrollbar-3dlight-color: &dtml-globalBorderColor;;
+    scrollbar-shadow-color: &dtml-globalBorderColor;;
+    scrollbar-arrow-color: &dtml-globalFontColor;;
 }
 
 /* </dtml-with> */

@@ -3,40 +3,52 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=ids=[],new_ids=[],new_titles=[]
 ##title=Validate folder renaming
 ##
-state = context.portal_form_controller.getState(script, is_validator=1)
 
-REQUEST=context.REQUEST
+ids=[id for id in ids if id]
+new_ids=[id for id in new_ids if id]
+new_titles=[title for title in new_titles]
 
-old_ids=REQUEST.get('ids',None)
-new_ids=REQUEST.get('new_ids',None)
-new_titles=REQUEST.get('new_titles',None)
+if len(ids)!=len(new_ids):
+    return state.set(status='failure',
+                     portal_status_message='You must provide content names')
 
-if not new_ids or not old_ids or not new_titles:
-    return state.set(status='failure', portal_status_message='Please check an item or items to rename.')
+if not ids:
+    return state.set(status='failure',
+                     portal_status_message='Need source content ids.')
 
-x=0
-for id in new_ids:
-    old = old_ids[x]
-    x = x + 1
+if not new_ids:
+    state.setError(id, 'Please provide an id')
+    return state.set(status='failure',
+                     portal_status_message='Need destination content ids.')
+
+check_id=context.check_id
+for x in range(0, len(new_ids)):
+    id = ids[x]
+    newid = new_ids[x]
+    resp = None
 
     if not id:
-        state.setError(old, 'You must enter a name.')
-    elif not context.portal_form.good_id(id):
-        # id is bad
-        state.setError(old, 'This is not a legal name.')
-    else:
-        # id is good; make sure we have no id collisions
-        if id != old:
-#            if getattr(context, id, None):
-#                 state.setError(old, 'This name is reserved.')
-            if id in context.objectIds():
-                state.setError(old, 'This name is already in use.')
+        state.setError(id, 'You must enter a name.', 'input_required')
+        continue
+
+    if id != newid:
+        try:
+            resp=check_id(newid)
+        #XXX Upon calling check_id various exceptions can be raised. 
+        #    catch all exceptions.
+        except:
+            resp='An error occurred validating new id'
+
+    if resp is not None:
+        return state.set(status='failure', portal_status_message=resp)
 
 if state.getErrors():
-    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
-else:
-    return state
+    return state.set(status='failure',
+                     portal_status_message='Please correct the indicated errors.')
+
+return state

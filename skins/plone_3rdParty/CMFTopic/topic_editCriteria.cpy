@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=REQUEST, RESPONSE, criteria
 ##title=
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 """\
 Save changes to the list of criteria.  This is done by going over

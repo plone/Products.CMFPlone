@@ -1,4 +1,6 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
+
 <body>
 
 <!-- THE SECTION TABS DEFINITION -->
@@ -7,8 +9,8 @@
      tal:define="portal_tabs actions/portal_tabs|nothing;
                  selected_tabs python:here.selectedTabs(template.getId(), here);
                  selected_portal_tab selected_tabs/portal;" >
-    <h5 class="hiddenstructure" i18n:translate="heading_sections">Sections</h5>
-    <ul id="portalTabs">
+    <h5 class="hiddenStructure" i18n:translate="heading_sections">Sections</h5>
+    <ul id="portal-globalnav">
        <tal:tabs tal:repeat="tab portal_tabs">
        <li tal:attributes="id string:portaltab-${tab/id};
                            class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">

@@ -3,42 +3,50 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=workflow_action, comment='', effective_date=None, expiration_date=None
+##parameters=workflow_action=None, comment='', effective_date=None, expiration_date=None, *args
 ##title=handles the workflow transitions of objects
 ##
-newcontext=context
+
 contentEditSuccess=0
-portal_workflow=context.portal_workflow
-current_state=portal_workflow.getInfoFor(context, 'review_state')
-state = context.portal_form_controller.getState(script, is_validator=0)
+plone_log=context.plone_log
+new_context = context.portal_factory.doCreate(context)
+portal_workflow=new_context.portal_workflow
+current_state=portal_workflow.getInfoFor(new_context, 'review_state')
 
 if workflow_action!=current_state and not effective_date:
     effective_date=DateTime()
 
-def editContent(obj, effective, expiry):
-    context.plone_utils.contentEdit( obj,
-                                     effective_date=effective,
-                                     expiration_date=expiry)
+#plone_log('effective date ' + str(effective_date))
 
+def editContent(obj, effective, expiry):
+    new_context.plone_utils.contentEdit( obj,
+                                         effective_date=effective,
+                                         expiration_date=expiry)
+
+#You can transition content but not have the permission to ModifyPortalContent
 try:
-    editContent(context,effective_date,expiration_date)
+    editContent(new_context,effective_date,expiration_date)
     contentEditSuccess=1
 except 'Unauthorized':
-    #You can transition content but not have the permission to ModifyPortalContent
     pass
 
+wfcontext = context
 if workflow_action!=current_state:
-    newcontext=context.portal_workflow.doActionFor( context,
-                                                    workflow_action,
-                                                    comment=comment )
+    wfcontext=new_context.portal_workflow.doActionFor( context,
+                                                       workflow_action,
+                                                       comment=comment )
+if not wfcontext:
+    wfcontext = new_context
 
+#The object post-transition could now have ModifyPortalContent permission.
 if not contentEditSuccess:
-    #The object post-transition could now have ModifyPortalContent permission.
     try:
-        editContent(context, effective_date, expiration_date)
+        editContent(wfcontext, effective_date, expiration_date)
     except 'Unauthorized':
         pass
 
-return state.set(context=context, portal_status_message='Your contents status has been modified.')
+return state.set(context=wfcontext,
+                 portal_status_message='Your contents status has been modified.')
 

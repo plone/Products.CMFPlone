@@ -14,7 +14,7 @@
                      errors python:request.get('errors', {})"
          tal:condition="here/rejectAnonymous" >
 
-        <h3>Exception traceback</h3>
+        <h2>Exception traceback</h2>
 
             <div tal:define="entry python:here.error_log.getLogEntryById(request.get('id'))">
 
@@ -24,30 +24,27 @@
 
                 <div tal:condition="entry">
 
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th align="left" valign="top">Time</th>
-                                <td tal:content="python: DateTime(entry['time'])"></td>
-                           </tr>
-                            <tr>
-                                <th align="left" valign="top">User Name (User Id)</th>
-                                <td tal:content="string: ${entry/username} (${entry/userid})">joe (joe)</td>
-                            </tr>
-                            <tr>
-                                <th align="left" valign="top">Request URL</th>
-                                <td tal:content="entry/url">http://example.com</td>
-                            </tr>
-                            <tr>
-                                <th align="left" valign="top">Exception Type</th>
-                                <td tal:content="entry/type">AttributeError</td>
-                            </tr>
-                            <tr>
-                                <th align="left" valign="top">Exception Value</th>
-                                <td tal:content="entry/value">zzope</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <dl>
+                        <dt>Time</dt>
+                        <dd tal:content="python: DateTime(entry['time'])"></dd>
+    
+                        <dt align="left" valign="top">User Name (User Id)</dt>
+                        <dd tal:content="string: ${entry/username} (${entry/userid})">joe (joe)</dd>
+    
+                        <dt align="left" valign="top">Request URL</dt>
+                        <dd tal:content="entry/url">http://example.com</dd>
+    
+                        <dt align="left" valign="top">Exception Type</dt>
+                        <dd tal:content="entry/type">AttributeError</dd>
+    
+                        <dt align="left" valign="top">Exception Value</dt>
+                        <dd tal:content="entry/value">gak</dd>
+                    </dl>
+                    
+                    <form action="prefs_error_log_form" method="get">
+                       <input class="standalone" type="submit" name="submit" value=" Return to log " />
+                    </form>
+
 
                     <div tal:condition="entry/tb_html" tal:content="structure entry/tb_html">
                     Traceback (HTML)
@@ -66,8 +63,8 @@
                     </div>
                 </div>
                 <p>
-                    <form action="prefs_error_log_form" method="GET">
-                       <input type="submit" name="submit" value=" Return to log " />
+                    <form action="prefs_error_log_form" method="get">
+                       <input class="standalone" type="submit" name="submit" value=" Return to log " />
                     </form>
                 </p>
             </div>

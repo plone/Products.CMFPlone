@@ -2,14 +2,14 @@
 ##title=Set Authentication Cookie
 ##parameters=resp, cookie_name, cookie_value
 
-try: 
+try:
     length = context.portal_properties.site_properties.auth_cookie_length
 except AttributeError:
     length = 0
 
-try: 
+try:
     length = int(length)
-except ValueError: 
+except ValueError:
     length = 0
 
 cookie_path = '/'
@@ -18,4 +18,3 @@ if length:
     resp.setCookie( cookie_name, cookie_value, path=cookie_path, expires=expires)
 else:
     resp.setCookie( cookie_name, cookie_value, path=cookie_path)
-

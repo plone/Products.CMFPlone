@@ -1,1 +1,0 @@
-This is a folder that contains the mozilla.org subskin.

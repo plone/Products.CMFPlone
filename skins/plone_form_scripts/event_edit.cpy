@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=title=None, description=None, event_type=None, start_date=None, end_date=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, id='' 
 ##title=Edit an event
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 # if there is no id specified, keep the current one
 if not id:
@@ -20,6 +20,8 @@ from DateTime import DateTime
 dt_start = DateTime(start_date)
 dt_end = DateTime(end_date)
 
+# Note: year/day and day/year hack copying below, due to bug in CMFCalendar
+# Further details in http://plone.org/collector/1950
 try:
     new_context = context.portal_factory.doCreate(context, id)
     new_context.edit( title=title
@@ -44,7 +46,7 @@ try:
     new_context.plone_utils.contentEdit( new_context
                                        , id=id
                                        , description=description )
-except:
+except: #XXX DateTime and contentEdit() has many things that could go wrong - catch all.
     return state.set(portal_status_message='Error saving event.', new_status='failure')
 
 return state.set(context=new_context, portal_status_message='Event changes saved.')

@@ -1,7 +1,7 @@
 x = XMLRPC;
 
 function GetPreview(text, element) {
-    var url = "&dtml-portal_url;";
+    var url = portal_url;
     var script = "formatStx";
 
     res = x.call(url, script, text);

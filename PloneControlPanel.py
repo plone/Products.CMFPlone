@@ -14,31 +14,32 @@ from Products.CMFCore.utils import _checkPermission, _dtmldir, getToolByName, Si
 
 from Products.CMFCore.interfaces.portal_actions import portal_actions as IActionsTool
 
+import ToolNames
 from interfaces.PloneControlPanel import IControlPanel
 
 class PloneConfiglet(ActionInformation):
     def __init__(self,appId,**kwargs):
         self.appId=appId
         ActionInformation.__init__(self,**kwargs)
-        
+
     def getAppId(self):
         return self.appId
-    
+
     def getDescription(self):
         return self.description
-    
+
     def clone(self):
         return self.__class__(**self.__dict__)
-    
+
     def getAction(self,ec):
         res=ActionInformation.getAction(self,ec)
         res['description']=self.getDescription()
         return res
-    
+
 default_configlets = (
     {'id':'QuickInstaller',
      'appId':'QuickInstaller',
-     'name':'Install Products',
+     'name':'Add/Remove Products',
      'action':'string:${portal_url}/prefs_install_products_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -50,11 +51,11 @@ default_configlets = (
      'action':'string:${portal_url}/reconfig_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+     'imageUrl':'plone_images/logoIcon.gif'},
 
     {'id':'UsersGroups',
      'appId':'UsersGroups',
-     'name':'Users and Groups',
+     'name':'Users and Groups Administration',
      'action':'string:${portal_url}/prefs_users_overview',
      'category':'Plone',
      'permission': ManagePortal,
@@ -74,39 +75,39 @@ default_configlets = (
      'action':'string:${portal_url}/password_form',
      'category':'Member',
      'permission': SetOwnPassword,
-     'imageUrl':'plone_images/user.gif'},
+     'imageUrl':'plone_images/lock_icon.gif'},
 
-    {'id':'WorkflowPrefs',
-     'appId':'Plone',
-     'name':'Manage Workflow',
-     'action':'string:${portal_url}/prefs_workflow_basic',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+#    {'id':'WorkflowPrefs',
+#     'appId':'Plone',
+#     'name':'Manage Workflow',
+#     'action':'string:${portal_url}/prefs_workflow_basic',
+#     'category':'Plone',
+#     'permission': ManagePortal,
+#     'imageUrl':'plone_images/site_icon.gif'},
 
     {'id':'MailHost',
      'appId':'MailHost',
-     'name':'Mail Host',
+     'name':'Mail Settings',
      'action':'string:${portal_url}/prefs_mailhost_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+     'imageUrl':'plone_images/mail_icon.gif'},
 
     {'id':'PortalSkin',
      'appId':'PortalSkin',
-     'name':'Portal Skin',
+     'name':'Skins',
      'action':'string:${portal_url}/prefs_portalskin_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+     'imageUrl':'plone_images/skins_icon.gif'},
 
-    {'id':'Syndication',
-     'appId':'Syndication',
-     'name':'Syndication',
-     'action':'string:${portal_url}/prefs_syndication_form',
-     'category':'Plone',
-     'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+#    {'id':'Syndication',
+#     'appId':'Syndication',
+#     'name':'Syndication',
+#     'action':'string:${portal_url}/prefs_syndication_form',
+#     'category':'Plone',
+#     'permission': ManagePortal,
+#     'imageUrl':'plone_images/site_icon.gif'},
 
     {'id':'errorLog',
      'appId':'ErrorLog',
@@ -116,18 +117,27 @@ default_configlets = (
      'permission': ManagePortal,
      'imageUrl':'plone_images/error_log_icon.gif'},
 
-   {'id':'PortalProperties',
-     'appId':'PortalProperties',
-     'name':'PortalProperties',
-     'action':'string:${portal_url}/prefs_portal_properties_list',
-     'category':'Plone',
+#   {'id':'PortalProperties',
+#     'appId':'PortalProperties',
+#     'name':'PortalProperties',
+#     'action':'string:${portal_url}/prefs_portal_properties_list',
+#     'category':'Plone',
+#     'permission': ManagePortal,
+#     'imageUrl':'plone_images/site_icon.gif'},
+
+    {
+        'id':'ZMI',
+        'appId':'ZMI',
+        'name':'Zope Management Interface',
+        'action':'string:${portal_url}/manage_main',
+        'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'}, 
+     'imageUrl':'plone_images/zope_icon.gif'},
 
 )
 
 
-        
+
 class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManager):
     """
         Weave together the various sources of "actions" which are apropos
@@ -138,9 +148,9 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     security = ClassSecurityInfo()
 
-    id = 'portal_configuration'
+    id = 'portal_controlpanel'
     title = 'Control Panel'
-    meta_type = 'Plone Control Panel'
+    meta_type = ToolNames.ControlPanelTool
     _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )
 
     _properties=(
@@ -149,31 +159,32 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     manage_options=ActionProviderBase.manage_options + PropertyManager.manage_options
 
-    groups=['site|Plone|Plone Preferences','site|Products|Add-on Product Preferences','member|Member|Plone Member Preferences']
+    groups=['site|Plone|Plone Configuration','site|Products|Add-on Product Configuration','member|Member|Plone Member Preferences']
 
     def __init__(self,**kw):
         if kw:
             self.__dict__.update(**kw)
-            
+
     security.declareProtected( ManagePortal, 'registerConfiglets' )
     def registerConfiglets(self,configlets):
         ''' attention: must be called AFTER portal_actionicons is installed '''
         for conf in configlets:
             self.registerConfiglet(**conf)
-            
+
     security.declareProtected( ManagePortal, 'registerDefaultConfiglets' )
     def registerDefaultConfiglets(self):
+        """ We need to bootstrap the default_configlets into the control panel """
         self.registerConfiglets(default_configlets)
 
     security.declareProtected( ManagePortal, 'getGroupIds' )
     def getGroupIds(self,category=''):
         return [g.split('|')[1] for g in self.groups if category=='' or g.split('|')[0]==category]
 
-    security.declareProtected( ManagePortal, 'getGroups' )
+    security.declareProtected( SetOwnProperties, 'getGroups' )
     def getGroups(self,category=''):
         return [{'id':g.split('|')[1],'title':g.split('|')[2]} for g in self.groups if category=='' or g.split('|')[0]==category]
 
-    security.declareProtected( ManagePortal, 'enumConfiglets' )
+    security.declareProtected( SetOwnProperties, 'enumConfiglets' )
     def enumConfiglets(self,group=None):
         portal=getToolByName(self,'portal_url').getPortalObject()
         context=createExprContext(self,portal,self)
@@ -202,9 +213,9 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
         for a in acts:
             if a.appId == appId and actionicons.queryActionInfo('controlpanel', a.id, None):
                 actionicons.removeActionIcon('controlpanel', a.id)
-        
-        
-        
+
+
+
     def _extractAction( self, properties, index ):
 
         """ Extract an ActionInformation from the funky form properties.
@@ -265,8 +276,8 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
                  , REQUEST=None
                  ):
         """ Add an action to our list.
-            attention: must be called AFTER portal_actionicons is installed 
-        
+            attention: must be called AFTER portal_actionicons is installed
+
         """
         if not name:
             raise ValueError('A name is required.')
@@ -292,18 +303,18 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
         new_actions.append( new_action )
         self._actions = tuple( new_actions )
-        
+
         if imageUrl:
             actionicons=getToolByName(self,'portal_actionicons')
             actionicons.addActionIcon('controlpanel',new_action.id,imageUrl,new_action.title)
-        
+
 
         if REQUEST is not None:
             return self.manage_editActionsForm(
                 REQUEST, manage_tabs_message='Added.')
 
     registerConfiglet=addAction
-    
+
     security.declareProtected( ManagePortal, 'manage_editActionsForm' )
     def manage_editActionsForm( self, REQUEST, manage_tabs_message=None ):
 

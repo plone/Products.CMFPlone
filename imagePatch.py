@@ -53,10 +53,10 @@ def tag(self, height=None, width=None, alt=None,
             result = '%s %s="%s"' % (result, key, value)
 
     return '%s />' % result
-  
+
 def fstag(self, *args, **kwargs):
     self._updateFromFS()
     return tag(self, *args, **kwargs)
-      
+
 Image.tag = tag
 FSImage.tag = fstag

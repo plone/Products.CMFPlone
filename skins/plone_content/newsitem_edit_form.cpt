@@ -22,177 +22,132 @@
     page. Add the relevant details below, and press 'Save'.
     </p>
 
-    <form class="group"
-          name="edit_form" 
-          action="newsitem_edit"           
+    <form name="edit_form"
+          action="." 
           method="post" 
+          enctype="multipart/form-data"
           tal:attributes="action string:${here/getId}/${template/getId}" >
-
-        <span class="legend" i18n:translate="legend_news_item_details">News Item Details</span>
         
-        <div class="row" 
-             tal:condition="python: member.getProperty('visible_ids', None)"
-             tal:define="error_id errors/id | nothing;
-                         id python:request.get('id', test(here.show_id(),here.getId(),''));">
-            <div class="label">
-            
-                <span i18n:translate="label_name">Name</span>
-            
-                <div id="id_help" 
-                     i18n:translate="help_name"
-                     class="help" 
-                     style="visibility:hidden">
-                Enter the Name of the document. This is the part that will show up as part
-                of the web address. This should be short, descriptive
-                and preferrably not contain spaces, underscores or mixed case. Example:
-                "expense-report-2002"
-                </div>
-            </div>
-            
-            <div class="field"
-                  tal:attributes="class python:test(error_id, 'field error', 'field')" >
+        <fieldset>
+    
+            <legend i18n:translate="legend_newsitem_details">News Item Details</legend>
+          
+            <div class="field" 
+                 tal:condition="python:member.getProperty('visible_ids', None)"
+                 tal:define="error errors/id | nothing;
+                             id python:request.get('id', test(here.show_id(),here.getId(),''));"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+                
+                <label for="id" i18n:translate="label_short_name">Short Name</label>
 
-                <div tal:condition="error_id">
-                    <tal:block i18n:translate="" content="error_id">Error</tal:block>
-                    <br />
+                <div class="formHelp" i18n:translate="help_shortname">
+                Should not contain spaces, underscores or mixed case. 
+                This will be part of the web address to this item.
                 </div>
-
+    
+                <div tal:content="error">Validation error output</div>
+    
                 <input type="text" 
                        name="id" 
-                       value="#"
-                       size="30" 
+                       value=""
+                       size="40"
                        tabindex=""
-                       onfocus="formtooltip('id_help',1)" 
-                       onblur="formtooltip('id_help',0)" 
                        tal:attributes="value id;
-                                       tabindex tabindex/next;" 
+                                       tabindex tabindex/next;"
                        />
-            </div>
-
-        </div>
-        <input type="hidden" 
-               name="id" 
-               tal:condition="python: not member.getProperty('visible_ids', '')"
-               tal:attributes="value python:request.get('id', here.getId())" 
-               />
-      
-        <div class="row"
-             tal:define="error_title errors/title|nothing;
-                         Title request/title|here/Title;"> 
-            <div class="label required">
-                <span i18n:translate="label_title">Title</span>
                 
-                <div id="title_help" 
-                     i18n:translate="help_title"
-                     class="help" 
-                     style="visibility:hidden">
-                Enter the title of the news item.
-                </div>
             </div>
-            
+
+            <input type="hidden" 
+                   name="id" 
+                   tal:condition="python:not member.getProperty('visible_ids', '')"
+                   tal:attributes="value python:request.get('id', here.getId())" 
+                   />
+          
             <div class="field"
-                  tal:attributes="class python:test(error_title, 'field error', 'field')" >
-
-                <div tal:condition="error_title">
-                    <tal:block i18n:translate="" content="error_title">Error</tal:block>
-                    <br />
-                </div>
-
+                 tal:define="error errors/title|nothing;
+                             Title request/title | here/Title;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+              
+                <label for="title" i18n:translate="label_title">Title</label>
+                
+                <span class="fieldRequired" title="Required">(Required)</span>
+                    
+                <div tal:content="error">Validation error output</div>
+    
                 <input type="text" 
                        name="title" 
-                       value="#" 
-                       size="30" 
+                       value="" 
+                       size="40" 
                        tabindex=""
-                       onfocus="formtooltip('title_help',1)" 
-                       onblur="formtooltip('title_help',0)" 
                        tal:attributes="value Title;
                                        tabindex tabindex/next;" 
                        />
-
+    
             </div>
-        </div>
+    
+            <div class="field"
+                 tal:define="description request/description | here/Description ">
 
-        <div class="row">
-            <div class="label">
-                <span i18n:translate="label_lead-in">Lead-in</span>
-                
-                <div id="leadin_help" 
-                     i18n:translate="help_lead-in"
-                     class="help" 
-                     style="visibility:hidden">
-                A short descriptive summary of the news. This will be what shows up on the news
-                page together with the headline and a link to the full news item.
+                <label for="description" i18n:translate="label_lead-in">Lead-in</label>
+                    
+                <div class="formHelp" i18n:translate="help_description">
+                Shows up on the news page along with the headline.
                 </div>
-            </div>
-            <div class="field" tal:define="description request/description | here/Description "> 
-                <textarea cols="40" 
+
+                <textarea cols="80" 
                           rows="5" 
                           tabindex=""
                           name="description"
-                          onfocus="formtooltip('leadin_help',1)" 
-                          onblur="formtooltip('leadin_help',0)"
                           tal:content="description"
                           tal:attributes="tabindex tabindex/next;"
                           >
                 Description 
                 </textarea>
             </div>
-        </div>
 
-        
-	    <div class="row"> 
-            <div class="label"> 
-                <span i18n:translate="label_body_text">Body text</span> 
-
-                <div id="body_help" 
-                     i18n:translate="help_body_text"
-                     class="help" 
-                     style="visibility:hidden">
-                The body text of the news item. 
+            <div class="field"
+                 tal:define="text python:request.get('text', getattr(here,'text',''));
+                             cooked_text python:request.get('text',getattr(here,'cooked_text',''))"> 
+         
+                <label for="text" i18n:translate="label_body_text">Body text</label> 
+    
+                <tal:editor define="inputname  string:text; 
+                                    formname   string:edit_form;
+                                    inputvalue text;
+                                    cooked_inputvalue cooked_text;
+                                    tabindex tabindex/next;">
+                   <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBox">
+                   The WYSIWYG code
+                   </div>
+                </tal:editor>
+    
+                <div metal:use-macro="here/wysiwyg_support/macros/textFormatSelector">
+                Format box, if needed    
                 </div>
+                
             </div>
-            <div class="field" tal:define="text python:request.get('text',getattr(here,'text',''));
-                                           cooked_text python:request.get('text',getattr(here,'cooked_text',''));">
-                <div tal:define="inputname  string:text;
-                                 formname   string:edit_form;
-                                 inputvalue text;
-                                 cooked_inputvalue cooked_text;
-                                 onfocus string:formtooltip('body_help',1);
-                                 onblur string:formtooltip('body_help',0);
-                                 tabindex tabindex/next;">
-                    <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBox">
-                    The WYSIWYG code
-                    </div>
-                </div>
+    
+            <div class="formControls"
+                 tal:define="process_creation request/process_creation|nothing;"> 
+                    <input class="context" 
+                           tabindex=""
+                           type="submit" 
+                           name="form.button.Save" 
+                           value="Save" 
+                           i18n:attributes="value"
+                           tal:attributes="tabindex tabindex/next;" /> 
+                           
+                    <input class="context" 
+                           tabindex=""
+                           type="submit" 
+                           name="form.button.Cancel" 
+                           value="Cancel" 
+                           i18n:attributes="value"
+                           tal:attributes="tabindex tabindex/next;" /> 
             </div>
-        </div>
+        </fieldset>
 
-        <div metal:use-macro="here/wysiwyg_support/macros/textFormatSelector">
-        Format box, if needed    
-        </div>
-	    
-
-        <div class="row">
-            <div class="label">&nbsp;</div>
-            <div class="field">
-                <input class="context" 
-                       tabindex=""
-                       type="submit" 
-                       name="form.button.Save" 
-                       value="Save"
-                       i18n:attributes="value"
-                       tal:attributes="tabindex tabindex/next;"
-                       /> 
-                <input class="context" 
-                       tabindex=""
-                       type="submit" 
-                       name="form.button.Cancel" 
-                       value="Cancel"
-                       i18n:attributes="value"
-                       tal:attributes="tabindex tabindex/next;"
-                       /> 
-            </div>
-        </div> 
         <input type="hidden" name="form.submitted" value="1" />        
 
     </form>

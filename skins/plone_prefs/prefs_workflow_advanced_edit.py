@@ -1,4 +1,4 @@
-## Script (Python) "change_workflow_settings"
+## Script (Python) "prefs_workflow_advanced_edit"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -16,4 +16,4 @@ RESPONSE =  request.RESPONSE
 
 for w in wf.keys():
     context.portal_workflow.setChainForPortalTypes((w,), wf[w])
-    return 'ok'
+return context.prefs_workflow_advanced()

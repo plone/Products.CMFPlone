@@ -9,7 +9,7 @@
 ##
 if obj is None:
     obj=context
-		
+
 parent = obj.inReplyTo()
 if parent is not None:
     talkback = context.portal_discussion.getDiscussionFor(parent)
@@ -18,5 +18,6 @@ else:
 
 talkback.deleteReply( obj.getId() )
 
+view = parent.getTypeInfo().getActionById('view')
 context.REQUEST['RESPONSE'].redirect( parent.absolute_url()
-         + '?portal_status_message=Reply+deleted' )
+         + '/%s?portal_status_message=Reply+deleted' % view )

@@ -4,28 +4,24 @@
 
 <body>
 
-  <div metal:fill-slot="main">
+<div metal:fill-slot="main">
+
+    <h1 class="documentFirstHeading">
+        <span i18n:translate="heading_link_to">Link to</span>
+        <a href="#" 
+           tal:attributes="href python:(container.portal_url.getPortalObject().absolute_url() + '/' + here.remote_url)"
+           tal:content="here/title_or_id">zope.org</a>
+    </h1>
 
     <div metal:use-macro="here/document_actions/macros/document_actions">
         Document actions (print, sendto etc)
     </div>
-    
-    <h1>
-        <span i18n:translate="heading_link_to">Link to</span>
-        <a href="#"
-         tal:attributes="href python:(container.portal_url.getPortalObject().absolute_url() + '/' + here.remote_url)"
-        tal:content="here/title_or_id">zope.org</a>
-    </h1>
 
-    <p>
-    <span i18n:translate="link_created_by">Created by</span>
-        <a href="#" tal:content="here/Creator">bob</a>.
-    <span i18n:translate="link_last_modified">Last modified:</span>
-        <span tal:define="DateTime python:modules['DateTime'].DateTime;"
-      				 tal:replace="python:DateTime(here.ModificationDate()).strftime('%m/%d/%Y %I:%M %p')">August 16, 2001 at 23:35:59</span>
-    </p>
+    <div metal:use-macro="here/document_byline/macros/byline">
+      Get the byline - contains details about author and modification date.
+    </div>
 
-  </div>
+</div>
 
 </body>
 

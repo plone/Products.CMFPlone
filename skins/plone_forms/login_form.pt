@@ -30,7 +30,11 @@ function cookiesEnabled() {
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="auth nocall:here/cookie_authentication;
+                 ac_name auth/name_cookie;
+                 ac_password auth/pw_cookie;
+                 ac_persist auth/persist_cookie;">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
@@ -58,105 +62,87 @@ to become a member.
 <script language="javascript">
 <!--
    if (cookiesEnabled && !cookiesEnabled()) {
-      document.writeln('<p><div align="center"><b><font color="red">Cookies must be enabled on your browser before you can sign in.</font></b><br><a href="enabling_cookies">How to enable cookies</a></div></p>');
+      document.writeln('<div class="message>Cookies must be enabled on your browser before you can sign in. <a href="enabling_cookies">How to enable cookies</a></div>');
    }
 //-->
 </script>
 
-<form class="group"
-      action="logged_in"
+<form action="logged_in"
       method="post">
 
-	<input type="hidden"
-         name="came_from"
-         value=""
-	       tal:attributes="value request/came_from|request/HTTP_REFERER" />
+    <fieldset>
 
-<span class="legend" i18n:translate="legend_account_details">Account details</span>
+        <legend i18n:translate="legend_account_details">Account details</legend>
 
-	<div class="row">
-			<div class="label">
-                <span i18n:translate="label_user_name">User Name</span>
-                <div id="user_name_help"
-                     i18n:translate="help_user_name"
-                     class="help"
-                     style="visibility:hidden">
-                Enter the user name you use on this site. If you haven't
-                got a user name yet, or have forgotten it, use the links at the
-                bottom of this form.
-                </div>
-            </div>
-
-			<div class="field">
-				<input type="text"
-                       name="__ac_name"
-                       size="15"
-                       tabindex=""
-                       onfocus="formtooltip('user_name_help',1)"
-                       onblur="formtooltip('user_name_help',0)"
-                       tal:attributes="value python:request.get('__ac_name', '');
-                                       tabindex tabindex/next;"
-                       />
-			</div>
-
-	</div>
-
-	<div class="row">
-        <div class="label">
-            <span i18n:translate="label_password">Password</span>
-            <div id="password_help"
-                 i18n:translate="help_password"
-                 class="help"
-                 style="visibility:hidden">
-            Enter your password. If you have forgotten it, use the
-            links at the bottom of this form to request it again.
-            </div>
-        </div>
+        <input type="hidden"
+            name="came_from"
+            value=""
+	    tal:attributes="value request/came_from|request/HTTP_REFERER" />
 
         <div class="field">
-            <input type="password"
-                   name="__ac_password"
+
+            <label i18n:translate="label_user_name"
+                   tal:attributes="for ac_name">User Name</label>
+
+            <div i18n:translate="help_user_name"
+                 class="formHelp">
+                If you haven't got an account, sign up via the links below.
+            </div>
+
+            <input type="text"
                    size="15"
                    tabindex=""
-                   onfocus="formtooltip('password_help',1)"
-                   onblur="formtooltip('password_help',0)"
-                   tal:attributes="tabindex tabindex/next;"
+                   tal:attributes="name ac_name;
+                                   id ac_name;
+                                   value python:request.get(ac_name, '');
+                                   tabindex tabindex/next;"
                    />
-        </div>
+
 	</div>
 
-    <div class="row">
-        <div class="label">
-                &nbsp;
-            <div id="remember_help"
-                 i18n:translate="help_remember_my_name"
-                 class="help"
-                 style="visibility:hidden">
-            Setting the 'Remember my name' option will create a cookie with your username.
-            When you log in later, your user name will already be filled in for you.
+	<div class="field">
+
+            <label i18n:translate="label_password"
+                   tal:attributes="for ac_password">Password</label>
+
+            <div i18n:translate="help_password"
+                 class="formHelp">
+                If you have forgotten your password, use the
+                links at the bottom of this form to request it again.
             </div>
-        </div>
+
+            <input type="password"
+                   size="15"
+                   tabindex=""
+                   tal:attributes="name ac_password;
+                                   id ac_password;
+                                   tabindex tabindex/next;"
+                   />
+	</div>
 
         <div class="field">
+
             <input type="checkbox"
-                   class="noborder"
-                   name="__ac_persistent"
+                   class="noborder formRememberName"
                    value="1"
                    checked="checked"
                    id="cb_remember"
                    tabindex=""
-                   onfocus="formtooltip('remember_help',1)"
-                   onblur="formtooltip('remember_help',0)"
-                   tal:attributes="tabindex tabindex/next;"
+                   tal:attributes="name ac_persist;
+                                   tabindex tabindex/next;"
                    />
 
             <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
-        </div>
-    </div>
 
-	<div class="row">
-    	<div class="label">&nbsp;</div>
-    	<div class="field">
+            <div i18n:translate="help_remember_my_name"
+                 class="formHelp">
+                When you check this, your user name will be filled in for you when you log in later.
+            </div>
+
+        </div>
+
+        <div class="formControls">
+
             <input class="context"
                    tabindex=""
                    type="submit"
@@ -165,6 +151,8 @@ to become a member.
                    i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;"
                    />
+
+        </div>
 
             <p i18n:translate="description_forgotten_your_password">
                 <strong>
@@ -190,11 +178,16 @@ to become a member.
                 </span>
             </p>
 
+    	    <p i18n:translate="check_caps_lock">
+    		Usernames and passwords are case sensitive, if you cannot log in - please check that you do not have the capslock key on.
+    	    </p>
+
             <p i18n:translate="remember_to_log_out">
                 Don't forget to log out or exit your browser when you're done.
             </p>
-    	</div>
-    </div>
+
+
+    </fieldset>
 
 </form>
 

@@ -20,7 +20,7 @@ resetpw=REQUEST.get('resetpassword', [])
 originals={}
 entered={}
 for key in REQUEST.keys():
-    if key.startswith('email_'):        
+    if key.startswith('email_'):
         email=REQUEST[key]
         if key.startswith('email_original_'):
             username=key[len('email_original_'):]
@@ -63,7 +63,7 @@ for userid in resetpw:
 #if remove user was checked
 if removed:
     acl_users.userFolderDelUsers(removed)
-        
+
 url='%s?%s' % (REQUEST.HTTP_REFERER,
                'portal_status_message=Changes+made.')
 return REQUEST.RESPONSE.redirect(url)

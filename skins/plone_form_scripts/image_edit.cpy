@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=precondition='', file='', id='', title=None, description=None
 ##title=Edit an image
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 original_id=context.getId()
 filename=getattr(file,'filename', '')
@@ -29,10 +29,12 @@ if not id:
 
 new_context = context.portal_factory.doCreate(context, id)
 
-new_context.plone_utils.contentEdit( new_context
-                                   , id=id
-                                   , description=description )
-new_context.edit( precondition=precondition
-                , file=file )
+new_context.plone_utils.contentEdit(new_context,
+                                    id=id,
+                                    title=title,
+                                    description=description)
 
-return state.set(context=new_context, portal_status_message='Image changes saved.')
+new_context.edit( precondition=precondition, file=file )
+
+return state.set(context=new_context,
+                 portal_status_message='Image changes saved.')

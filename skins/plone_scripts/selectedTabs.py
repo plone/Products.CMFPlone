@@ -10,18 +10,14 @@
 
 # we want to centalize where all tab selection is done
 # for now e will start off with the top tabs, 'portal_tabs'
+if obj is None:
+    obj = context
 
-tabs={}
-contentpath = None
 try:
-    # bad things can happen to context if an exception is thrown during traversal
-    if obj is None:
-        obj = context
     contentpath=context.portal_url.getRelativeContentPath(obj)
-except:
+    if contentpath:
+        return {'portal':contentpath[0]}
+except (Unauthorized, IndexError):
     pass
-if not contentpath:
-    tabs['portal']=default_tab
-else:
-    tabs['portal']=contentpath[0]
-return tabs
+
+return {'portal':default_tab}

@@ -1,0 +1,33 @@
+## Script (Python) "validate_effective_expiry_date"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind state=state
+##bind subpath=traverse_subpath
+##parameters=effective_date=None,expiration_date=None
+##title=Validates effective,expiration date
+##
+from DateTime import DateTime
+
+try:
+    if effective_date and effective_date!='None':
+        effective_date = DateTime(effective_date)
+except (AttributeError, KeyError):
+    state.setError('effective_date', 'Please enter a valid date and time.')
+    
+try:
+    if expiration_date and expiration_date != 'None':
+        expiration_date = DateTime(expiration_date)
+except (AttributeError, KeyError):
+    state.setError('expiration_date', 'Please enter a valid date and time.')
+
+#if effective_date and expiration_date:
+#    if effective_date.greaterThan(expiration_date):
+#        errors['expiration_date'] = 'The expiration date must occur after the effective date.'
+#        errors['effective_date'] = 'The effective date must occur before the expiration date.'
+
+if state.getErrors():
+    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+else:
+    return state

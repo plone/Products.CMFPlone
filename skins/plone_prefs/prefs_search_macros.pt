@@ -1,4 +1,7 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en-US"
+      lang="en-US"
+      i18n:domain="plone">
 	<head>
 		<title>User/Group Search Macro(s)</title>
 	</head>
@@ -57,7 +60,7 @@
             <tr tal:define="oddrow repeat/obj/odd"
 	        tal:attributes="class python:test(oddrow,'odd','even')">
 
-	      <td class="checkbox">
+	      <td class="listingCheckbox">
                 <input type="checkbox"
                        class="noborder notify"
                        name="add:list"

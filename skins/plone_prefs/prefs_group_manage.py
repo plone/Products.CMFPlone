@@ -11,7 +11,7 @@ REQUEST=context.REQUEST
 groupstool=context.portal_groups
 
 groups=[group[len('group_'):]
-        for group in REQUEST.keys() 
+        for group in REQUEST.keys()
         if group.startswith('group_')]
 
 for group in groups:

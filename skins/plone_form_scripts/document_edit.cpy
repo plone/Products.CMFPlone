@@ -3,10 +3,10 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=text_format, text, file='', SafetyBelt='', title='', description='', id=''
 ##title=Edit a document
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 filename=getattr(file,'filename', '')
 if file and filename:

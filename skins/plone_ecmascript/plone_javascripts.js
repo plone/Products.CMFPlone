@@ -1,7 +1,9 @@
 
 
 // Heads up! August 2003  - Geir Bækholt
-// This file now requires the javascript variable portal_url to be set in the plone_javascript_variables.js file.
+// This file now requires the javascript variable portal_url to be set 
+// in the plone_javascript_variables.js file. Any other variables from Plone
+// that you want to pass into these scripts should be placed there.
 
 
 // The calendar popup show/hide:
@@ -304,22 +306,37 @@ function scanforlinks(){
     // Quick utility function by Geir Bækholt
     // Scan all links in the document and set classes on them dependant on whether they point to the current site or are external links
     
-    content = document.getElementById('documentContent')
-    if (! content){return false}
+    contentarea = document.getElementById('content')
+    if (! contentarea){return false}
     
-    links = content.getElementsByTagName('a');
+    links = contentarea.getElementsByTagName('a');
     for (i=0; i < links.length; i++){      
         if (links[i].getAttribute('href')){
             var linkval = links[i].getAttribute('href')
+            
             // check if the link href is a relative link, or an absolute link to the current host.
-            if ((linkval.indexOf('http:') == -1)|| (linkval.indexOf(window.location.protocol+'//'+window.location.host)==0)){
-                // we are here because the link is internal to the site. Do nothing for now
-                // uncomment the next line for nice debugging alerts
-                // alert(linkval + 'is internal')
+            if (linkval.indexOf(window.location.protocol+'//'+window.location.host)==0){
+                // we are here because the link is an absolute pointer internal to our host
+                // do nothing
+            } else if (linkval.indexOf('http:') == -1){
+                // not a http-link. Possibly an internal relative link, but also possibly a mailto ot other snacks
+                // add tests for all relevant protocols as you like.
+                
+                protocols = ['mailto', 'ftp' , 'irc', 'callto']
+                // callto is a proprietary protocol to the SKYPE-application, but we happen to like it ;)
+                
+                for (p=0; p < protocols.length; p++){  
+                     if (linkval.indexOf(protocols[p]+':') != -1){
+                    // this link matches the protocol . add a classname protocol+link
+                    links[i].className = 'link-'+protocols[p]
+                    }
+                }
             }else{
-                links[i].className = 'external'
-                links[i].setAttribute('target','_blank')
                 // we are in here if the link points to somewhere else than our site.
+                if ( links[i].getElementsByTagName('img').length == 0 ){links[i].className = 'link-external'}
+                // if you want the external links to open in a new window, uncomment this:
+                // links[i].setAttribute('target','_blank')
+                
             }
         }
     }
@@ -344,13 +361,13 @@ function climb(node, word){
 function checkforhighlight(node,word) {
         ind = node.nodeValue.toLowerCase().indexOf(word.toLowerCase())
 		if (ind != -1) {
-            if (node.parentNode.className != "higligthedSearchTerm"){
+            if (node.parentNode.className != "highlightedSearchTerm"){
                 par = node.parentNode;
                 contents = node.nodeValue;
 			
                 // make 3 shiny new nodes
                 hiword = document.createElement("span");
-				hiword.className = "higligthedSearchTerm";
+				hiword.className = "highlightedSearchTerm";
 				hiword.appendChild(document.createTextNode(contents.substr(ind,word.length)));
 				
                 par.insertBefore(document.createTextNode(contents.substr(0,ind)),node);
@@ -368,7 +385,13 @@ function checkforhighlight(node,word) {
 function highlightSearchTerm() {
         // search-term-highlighter function --  Geir Bækholt
         query = window.location.search
-        query = decodeURI(query)
+        // _robert_ ie 5 does not have decodeURI 
+        if (typeof decodeURI != 'undefined'){
+            query = decodeURI(query)
+        }
+        else {
+            return false
+        }
         if (query){
             var qfinder = new RegExp()
             qfinder.compile("searchterm=(.*)","gi")
@@ -385,7 +408,7 @@ function highlightSearchTerm() {
                 queries = query.replace(/\+/g,' ').split(/\s+/)
                 
                 // make sure we start the right place and not higlight menuitems or breadcrumb
-                theContents = document.getElementById('documentContent');
+                theContents = document.getElementById('bodyContent');
                 for (q=0;q<queries.length;q++) {
                     climb(theContents,queries[q]);
                 }
@@ -395,4 +418,53 @@ function highlightSearchTerm() {
 if (window.addEventListener) window.addEventListener("load",highlightSearchTerm,false);
 else if (window.attachEvent) window.attachEvent("onload",highlightSearchTerm);
 
+<!--
 
+// ----------------------------------------------
+// StyleSwitcher functions written by Paul Sowden
+// http://www.idontsmoke.co.uk/ss/
+// - - - - - - - - - - - - - - - - - - - - - - -
+// For the details, visit ALA:
+// http://www.alistapart.com/stories/alternate/
+// ----------------------------------------------
+
+function setActiveStyleSheet(title, reset) {
+  var i, a, main;
+  for(i=0; (a = document.getElementsByTagName("link")[i]); i++) {
+    if(a.getAttribute("rel").indexOf("style") != -1 && a.getAttribute("title")) {
+      a.disabled = true;
+      if(a.getAttribute("title") == title) a.disabled = false;
+    }
+  }
+  if (reset == 1) {
+  createCookie("wstyle", title, 365);
+  }
+}
+
+function setStyle() {
+var style = readCookie("wstyle");
+if (style != null) {
+setActiveStyleSheet(style, 0);
+}
+}
+
+function createCookie(name,value,days) {
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime()+(days*24*60*60*1000));
+    var expires = "; expires="+date.toGMTString();
+  }
+  else expires = "";
+  document.cookie = name+"="+value+expires+"; path=/;";
+}
+
+function readCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}

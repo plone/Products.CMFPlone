@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:define-macro="content_views"
+     tal:omit-tag=""
+     tal:define="view_actions python:here.plonifyActions(template_id=template_id, actions=actions)">
+
+<h5 class="hiddenStructure" tal:condition="view_actions">Views</h5>
+
+<ul class="contentViews" 
+    i18n:domain="plone">
+
+    <tal:views repeat="action view_actions">
+    <li tal:define="selected action/selected|nothing;"
+        tal:attributes="id string:contentview-${action/id};
+                        class python:test(selected, 'selected', 'plain')">
+        <a class="" href=""
+           tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
+           i18n:attributes="accesskey">
+            <span tal:omit-tag="" i18n:translate="">
+                <span tal:replace="action/name">dummy</span>
+            </span>
+        </a>
+    </li>
+    </tal:views>
+
+</ul>
+
+</div>
+
+<div metal:define-macro="content_actions"
+     i18n:domain="plone"
+     class="contentActions"
+     tal:define="content_actions actions/object_actions|nothing;
+                 content_types python:here.sortObjects(here.allowedContentTypes());">
+
+    <h5 class="hiddenStructure" tal:condition="content_actions | content_types | wf_state">Actions</h5>
+
+    <ul tal:condition="content_actions" class="actionItems">
+    <tal:contentactions repeat="action content_actions">
+        <li tal:attributes="id string:contentaction-${action/id};">
+            <a class="" href=""
+               tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
+               i18n:attributes="accesskey" >
+                <img tal:define="actionid action/id;
+                                 icon python:aitool.renderActionIcon('content_actions', actionid, None);"
+                     tal:condition="icon"
+                     tal:replace="structure icon" />
+                <span tal:omit-tag="" i18n:translate="">
+                    <span tal:replace="action/name">dummy</span>
+                </span>
+            </a>
+        </li>
+    </tal:contentactions>
+    </ul>
+    
+    <div metal:use-macro="here/global_contentmenu/macros/contentMenu">
+      Insert Add Content and Publishing pulldown.
+    </div>
+
+    <img src=""
+         tal:define="locked portal_object/lock_icon.gif;
+                     lockable python:hasattr(here, 'wl_isLocked');"
+                     tal:condition="python:lockable and here.wl_isLocked()"
+                     tal:replace="structure python:locked.tag(title='Locked')" alt="Object locked" i18n:attributes="alt"/>
+
+</div>
+</body>
+</html>

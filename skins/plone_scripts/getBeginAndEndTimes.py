@@ -18,4 +18,3 @@ begin=DateTime(month+'/'+day+'/'+year+' 12:00:00AM')
 end=DateTime(month+'/'+day+'/'+year+' 11:59:59PM')
 
 return (begin, end)
-

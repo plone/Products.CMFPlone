@@ -17,11 +17,11 @@
 
     <form method="post" action="talkback">
 
-        <div class="box">
+        <div class="portlet">
 
             <h6 i18n:translate="box_comment_preview">Comment Preview</h6>
 
-            <div class="body">
+            <div class="portletBody">
 
                 <div class="content">
 

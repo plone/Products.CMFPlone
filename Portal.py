@@ -17,16 +17,20 @@ def listPolicies():
 
 def addPolicy(label, klass): custom_policies[label]=klass
 
-from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
+from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+from Products.PythonScripts.PythonScript import PythonScript
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName, registerIcon
-from Products.CMFDefault import Portal
+from Products.CMFDefault import Portal, DublinCore
 from Products.ExternalMethod import ExternalMethod
+from PloneFolder import OrderedContainer
 import Globals
 import string
 import os, sys, re
+
+from AccessControl import getSecurityManager
 
 __version__='1.1'
 
@@ -57,23 +61,66 @@ Thanks for using our product.
 "The Plone Team":http://plone.org/about/team
 """
 
-class PloneSite(CMFSite):
+member_indexhtml="""\
+member_search=context.restrictedTraverse('member_search_form')
+return member_search()
+"""
+
+factory_type_information = { 'id'             : 'Plone Root'
+  , 'meta_type'      : 'Plone Site'
+  , 'description'    : """ The portal_type for the root object in a Plone system."""
+  , 'icon'           : 'folder_icon.gif'
+  , 'product'        : 'CMFPlone'
+  , 'factory'        : 'manage_addSite'
+  , 'filter_content_types' : 0
+  , 'global_allow'   : 0
+  , 'immediate_view' : 'folder_edit_form'
+  , 'actions'        : ( { 'id'            : 'view'
+                         , 'name'          : 'View'
+                         , 'action': 'string:${object_url}'
+                         , 'permissions'   : (CMFCorePermissions.View,)
+                         , 'category'      : 'folder'
+                         }
+                       , { 'id'            : 'edit'
+                         , 'name'          : 'Properties'
+                         , 'action': 'string:${object_url}/folder_edit_form'
+                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
+                         , 'category'      : 'folder'
+                         }
+                       , { 'id'            : 'localroles'
+                         , 'name'          : 'Sharing'
+                         , 'action':
+                                  'string:${object_url}/folder_localrole_form'
+                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
+                         , 'category'      : 'folder'
+                         }
+                       )
+  }
+
+class PloneSite(CMFSite, OrderedContainer):
     """
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
     """
     meta_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
+    __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
+                     OrderedContainer.__implements__
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
-        return self.browserDefault(request)
+        return self.browserDefault()
+
+    def manage_beforeDelete(self, container, item):
+        """ Should send out an Event before Site is being deleted """
+        self.removal_inprogress=1
+        PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
 
 class PloneGenerator(Portal.PortalGenerator):
 
     klass = PloneSite
-            
+
     def customizePortalTypes(self, p):
         typesTool=getToolByName(p, 'portal_types')
         typesTool._delObject('Folder')
@@ -97,14 +144,14 @@ class PloneGenerator(Portal.PortalGenerator):
                 _actions=typeInfo._cloneActions()
                 for action in _actions:
                     if action.id=='edit':
-                        action.title='properties'
+                        action.title='Properties'
                 typeObj._actions=_actions
 
     def customizePortalOptions(self, p):
         p.manage_permission( CMFCorePermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
-        p.portal_skins.allow_any=1
+        p.portal_skins.allow_any=0 # Skin changing for users is turned off by default
 
         p.icon = 'misc_/CMFPlone/plone_icon'
 
@@ -127,6 +174,10 @@ class PloneGenerator(Portal.PortalGenerator):
         o.setTitle('Members')
         o.setDescription("Container for portal members' home directories")
 
+        o._setObject('index_html', PythonScript('index_html'))
+        index_html=o['index_html']
+        index_html.write(member_indexhtml)
+        index_html.ZPythonScript_setTitle('Member Search')
 
     def setupPloneWorkflow(self, p):
         wf_tool=p.portal_workflow
@@ -139,6 +190,11 @@ class PloneGenerator(Portal.PortalGenerator):
                                 , workflow_type='folder_workflow '+\
                                   '(Folder Workflow [Plone])')
         wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
+
+        #if the CMF has put the ancient 'default_workflow' workflow in
+        #portal_workflow we want to remove it.  It adds no value.
+        if 'default_workflow' in wf_tool.objectIds():
+            wf_tool.manage_delObjects('default_workflow')
 
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):
         path=[elem.strip() for elem in \
@@ -181,9 +237,9 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_form_scripts'
                     , 'plone_styles'
                     , 'plone_templates'
-                    , 'plone_3rdParty/CMFCollector'
+#                    , 'plone_3rdParty/CMFCollector'
                     , 'plone_3rdParty/CMFTopic'
-                    , 'plone_3rdParty/CMFCalendar'
+#                    , 'plone_3rdParty/CMFCalendar'
                     , 'plone_templates'
                     , 'plone_portlets'
                     , 'plone_prefs'
@@ -197,32 +253,36 @@ class PloneGenerator(Portal.PortalGenerator):
         path=','.join(path)
         sk_tool.addSkinSelection('Plone Default', path)
 
-        self.setupSecondarySkin(sk_tool, 'Plone Autumn',
-                                'plone_styles/autumn')
-        self.setupSecondarySkin(sk_tool, 'Plone Core',
-                                'plone_styles/core')
-        self.setupSecondarySkin(sk_tool, 'Plone Core Inverted',
-                                'plone_styles/core_inverted')
-        self.setupSecondarySkin(sk_tool, 'Plone Corporate',
-                                'plone_styles/corporate')
-        self.setupSecondarySkin(sk_tool, 'Plone Greensleeves',
-                                'plone_styles/greensleeves')
-        self.setupSecondarySkin(sk_tool, 'Plone Kitty',
-                                'plone_styles/kitty')
-        self.setupSecondarySkin(sk_tool, 'Plone Mozilla',
-                                'plone_styles/mozilla')
-        self.setupSecondarySkin(sk_tool, 'Plone Mozilla New',
-                                'plone_styles/mozilla_new')
-        self.setupSecondarySkin(sk_tool, 'Plone Prime',
-                                'plone_styles/prime')
-        self.setupSecondarySkin(sk_tool, 'Plone Zed',
-                                'plone_styles/zed')
+#  XXX removed these, since they are no longer shipping with Plone
+#
+#        self.setupSecondarySkin(sk_tool, 'Plone Autumn',
+#                                'plone_styles/autumn')
+#        self.setupSecondarySkin(sk_tool, 'Plone Core',
+#
+#        self.setupSecondarySkin(sk_tool, 'Plone Core Inverted',
+#                                'plone_styles/core_inverted')
+#        self.setupSecondarySkin(sk_tool, 'Plone Corporate',
+#                                'plone_styles/corporate')
+#        self.setupSecondarySkin(sk_tool, 'Plone Greensleeves',
+#                                'plone_styles/greensleeves')
+#        self.setupSecondarySkin(sk_tool, 'Plone Kitty',
+#                                'plone_styles/kitty')
+#        self.setupSecondarySkin(sk_tool, 'Plone Mozilla',
+#                                'plone_styles/mozilla')
+#        self.setupSecondarySkin(sk_tool, 'Plone Mozilla New',
+#                                'plone_styles/mozilla_new')
+#        self.setupSecondarySkin(sk_tool, 'Plone Prime',
+#                                'plone_styles/prime')
+#        self.setupSecondarySkin(sk_tool, 'Plone Zed',
+#                                'plone_styles/zed')
 
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
 
         sk_tool.request_varname='plone_skin'
 
     def setupForms(self, p):
+        """ This is being deprecated.  Please see CMFFormController """
+
         prop_tool = p.portal_properties
         prop_tool.manage_addPropertySheet('navigation_properties', \
                                           'Navigation Properties')
@@ -298,16 +358,15 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupPloneSkins(p)
         self.setupPortalContent(p)
         self.setupForms(p)
-        manage_addErrorLog(p)
 
         m = p.portal_migration
 
         # XXX we need to make this read version.txt
-        m.setInstanceVersion('1.1') #.1')
-        from migrations.plone1_1 import make_plone
+        m.setInstanceVersion('2.0-beta2') #.1')
+        from migrations.plone2_base import make_plone
         make_plone(p)
-        #we no longer use migrations to setupPlone in the generator
-        #m.upgrade(swallow_errors=0)
+        # we will be migrating from beta2 base
+        m.upgrade(swallow_errors=0)
 
     def setupTools(self, p):
         """Set up initial tools"""
@@ -315,6 +374,10 @@ class PloneGenerator(Portal.PortalGenerator):
         addCMFPloneTool = p.manage_addProduct['CMFPlone'].manage_addTool
         addCMFPloneTool(ToolNames.ActionsTool, None)
         addCMFPloneTool(ToolNames.CatalogTool, None)
+        #Add unwrapobjects boolean which will toggle whether or not
+        #the catalog needs to unwrap objects before indexing
+        p.portal_catalog._setProperty('unwrapobjects', 1, 'boolean')
+
         addCMFPloneTool(ToolNames.MemberDataTool, None)
         addCMFPloneTool(ToolNames.SkinsTool, None)
         addCMFPloneTool(ToolNames.TypesTool, None)

@@ -1,0 +1,51 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
+<!-- The events box -->
+
+<div metal:define-macro="portlet"
+     tal:define="results python:here.portal_catalog.searchResults( portal_type='Event'
+                                                                 , end=here.ZopeTime()
+                                                                 , end_usage='range:min'
+                                                                 , sort_on='start'
+                                                                 , review_state='published')[:5];"
+     tal:condition="python:test(results, 1, 0)">
+
+    <div class="portlet" id="portlet-events">
+
+        <h5 i18n:translate="box_events">Upcoming Events</h5>
+
+        <div class="portletBody">
+
+            <tal:block tal:repeat="obj results">
+
+                <div tal:define="oddrow repeat/obj/odd"
+                     tal:attributes="class python:test(oddrow, 'portletContent even', 'portletContent odd')">
+
+                    <a href=""
+                       tal:attributes="href obj/getURL;
+                                       title obj/Description">
+                        <img tal:replace="structure here/event_icon.gif" />
+                        <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Event </span>
+                    </a>
+
+                    <div class="portletDetails">
+                        <tal:location content="obj/location">Location</tal:location>, <br />
+                        <tal:date content="python:here.toPortalTime(obj.start)">July 7, 08:11</tal:date>
+                    </div>
+                </div>
+
+            </tal:block>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

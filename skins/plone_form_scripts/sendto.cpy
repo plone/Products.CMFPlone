@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Send an URL to a friend
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 REQUEST=context.REQUEST
 
 plone_utils=context.plone_utils
@@ -25,7 +25,7 @@ variables = { 'send_from_address' : REQUEST.send_from_address
             }
 try:
     plone_utils.sendto( variables )
-except:
+except: #XXX To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     return state.set(status='failure', portal_status_message=exception)
 

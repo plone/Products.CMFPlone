@@ -23,10 +23,10 @@ class MigrationTool( UniqueObject, SimpleItem):
     _needRecatalog = 0
     _needUpdateRole = 0
 
-    manage_options = ( 
-        { 'label' : 'Overview', 'action' : 'manage_overview' }, 
-        { 'label' : 'Migrate', 'action' : 'manage_migrate' }, 
-        { 'label' : 'Setup', 'action' : 'manage_setup' }, 
+    manage_options = (
+        { 'label' : 'Overview', 'action' : 'manage_overview' },
+        { 'label' : 'Migrate', 'action' : 'manage_migrate' },
+        { 'label' : 'Setup', 'action' : 'manage_setup' },
         )
 
     security = ClassSecurityInfo()
@@ -35,7 +35,7 @@ class MigrationTool( UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'manage_results')
     security.declareProtected(ManagePortal, 'manage_migrate')
     security.declareProtected(ManagePortal, 'manage_setup')
-    
+
     manage_migrate = DTMLFile('www/migrationRun', globals())
     manage_overview = DTMLFile('www/migrationTool', globals())
     manage_results = DTMLFile('www/migrationResults', globals())
@@ -51,12 +51,12 @@ class MigrationTool( UniqueObject, SimpleItem):
         if self.needUpgrading() \
            or self.needUpdateRole() \
            or self.needRecatalog():
-           icons = icons + ({
-                    'path':'misc_/PageTemplates/exclamation.gif',
-                    'alt':'Error',
-                    'title':'This Plone instance needs updating'
-                 },)
-        
+            icons = icons + ({
+                     'path':'misc_/PageTemplates/exclamation.gif',
+                     'alt':'Error',
+                     'title':'This Plone instance needs updating'
+                  },)
+
         return icons
 
     ##############################################################
@@ -90,7 +90,7 @@ class MigrationTool( UniqueObject, SimpleItem):
     def needUpgrading(self):
         """ Need upgrading? """
         return self.getInstanceVersion() != self.getFileSystemVersion()
-        
+
 
     security.declareProtected(ManagePortal, 'coreVersions')
     def coreVersions(self):
@@ -112,34 +112,29 @@ class MigrationTool( UniqueObject, SimpleItem):
         res = self.coreVersions().items()
         res.sort()
         return res
-   
+
     security.declareProtected(ManagePortal, 'needUpdateRole')
     def needUpdateRole(self):
         """ Do roles need to be updated? """
         return self._needUpdateRole
-    
+
     security.declareProtected(ManagePortal, 'needRecatalog')
     def needRecatalog(self):
         """ Does this thing now need recataloging? """
         return self._needRecatalog
-        
+
     ##############################################################
     # the setup widget registry
     # this is a whole bunch of wrappers
-    # Really an unprotected sub object 
+    # Really an unprotected sub object
     # declaration could do this...
-    
+
     def _getWidget(self, widget):
         """ We cant instantiate widgets at run time
         but can send all get calls through here... """
         _widget = _widgetRegistry[widget]
-        if isinstance(_widget, types.ClassType):
-            w = _widget(self.aq_parent, self)
-            _widgetRegistry[widget] = w
-            return w
-            
-        return _widget
-                
+        return _widget()
+
     security.declareProtected(ManagePortal, 'listWidgets')
     def listWidgets(self):
         """ List all the widgets """
@@ -149,7 +144,7 @@ class MigrationTool( UniqueObject, SimpleItem):
     def getDescription(self, widget):
         """ List all the widgets """
         return self._getWidget(widget).description
-    
+
     security.declareProtected(ManagePortal, 'listAvailable')
     def listAvailable(self, widget):
         """  List all the Available things """
@@ -159,47 +154,47 @@ class MigrationTool( UniqueObject, SimpleItem):
     def listInstalled(self, widget):
         """  List all the installed things """
         return self._getWidget(widget).installed()
-    
+
     security.declareProtected(ManagePortal, 'listNotInstalled')
     def listNotInstalled(self, widget):
         """ List all the not installed things """
         avail = self.listAvailable(widget)
         install = self.listInstalled(widget)
         return [ item for item in avail if item not in install ]
-   
-    security.declareProtected(ManagePortal, 'activeWidget')        
+
+    security.declareProtected(ManagePortal, 'activeWidget')
     def activeWidget(self, widget):
         """ Show the state """
         return self._getWidget(widget).active()
 
-    security.declareProtected(ManagePortal, 'setupWidget')        
+    security.declareProtected(ManagePortal, 'setupWidget')
     def setupWidget(self, widget):
         """ Show the state """
         return self._getWidget(widget).setup()
-                            
-    security.declareProtected(ManagePortal, 'alterItems')        
+
+    security.declareProtected(ManagePortal, 'alterItems')
     def alterItems(self, widget=None, items=[]):
         """ Figure out which items to install and which to uninstall """
         installed = self.listInstalled(widget)
-        
-        toAdd = [ item for item in items if item not in installed ] 
+
+        toAdd = [ item for item in items if item not in installed ]
         toDel = [ install for install in installed if install not in items ]
 
         out = []
         if toAdd: out += self.installItems(widget, toAdd)
         if toDel: out += self.uninstallItems(widget, toDel)
         return self.manage_results(self, out=out)
-        
+
     security.declareProtected(ManagePortal, 'installItems')
     def installItems(self, widget, items):
         """ Install the items """
         return self._getWidget(widget).addItems(items)
-                
+
     security.declareProtected(ManagePortal, 'uninstallItems')
     def uninstallItems(self, widget, items):
         """ Uninstall the items """
         return self._getWidget(widget).delItems(items)
-        
+
     ##############################################################
 
     security.declareProtected(ManagePortal, 'upgrade')
@@ -212,37 +207,49 @@ class MigrationTool( UniqueObject, SimpleItem):
 
         if dry_run:
             out.append(("Dry run selected.", zLOG.INFO))
-            
+
         # either get the forced upgrade instance or the current instance
         newv = getattr(REQUEST, "force_instance_version", self.getInstanceVersion())
-       
+
         out.append(("Starting the migration from version: %s" % newv, zLOG.INFO))
         while newv is not None:
             out.append(("Attempting to upgrade from: %s" % newv, zLOG.INFO))
             try:
-                newv = self._upgrade(newv)
+                newv, msgs = self._upgrade(newv)
+                if msgs:
+                    for msg in msgs:
+                        # if string make list
+                        if type(msg) == type(''):
+                            msg = [msg,]
+                        # if no status, add one
+                        if len(msg) == 1:
+                            msg.append(zLOG.INFO)
+                        out.append(msg)
                 if newv is not None:
                     out.append(("Upgrade to: %s, completed" % newv, zLOG.INFO))
                     self.setInstanceVersion(newv)
-                else:
-                    out.append(("Your ZODB and Filesystem Plone instances are up-to-date.", zLOG.INFO))
+
             except:
                 out.append(("Upgrade aborted", zLOG.ERROR))
+                out.append(("Error type: %s" % sys.exc_type, zLOG.ERROR))
+                out.append(("Error value: %s" % sys.exc_value, zLOG.ERROR))
                 for line in traceback.format_tb(sys.exc_traceback):
                     out.append((line, zLOG.ERROR))
-                    
+
                 # set newv to None
                 # to break the loop
                 newv = None
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)
                     raise
-                
+
         out.append(("End of upgrade path, migration has finished", zLOG.INFO))
-        
+
         if self.needUpgrading():
             out.append(("The upgrade path did NOT reach current version", zLOG.PROBLEM))
             out.append(("Migration has failed", zLOG.PROBLEM))
+        else:
+            out.append(("Your ZODB and Filesystem Plone instances are now up-to-date.", zLOG.INFO))
 
         # do this once all the changes have been done
         if self.needRecatalog():
@@ -266,37 +273,37 @@ class MigrationTool( UniqueObject, SimpleItem):
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)
                     raise
-                
+
         if dry_run:
             out.append(("Dry run selected, transaction aborted", zLOG.INFO))
             get_transaction().abort()
-    
+
         # log all this to the ZLOG
         for msg, sev in out: log(msg, severity=sev)
-        
+
         return self.manage_results(self, out=out)
-        
+
     ##############################################################
     # Private methods
-            
+
     def _check(self):
         """ Are we inside a Plone site?  Are we allowed? """
         if not hasattr(self,'portal_url'):
-            raise 'You must be in a Plone site to migrate.'      
+            raise 'You must be in a Plone site to migrate.'
 
     def _upgrade(self, version):
         version = version.lower()
-        if not _upgradePaths.has_key(version): 
-            return None
+        if not _upgradePaths.has_key(version):
+            return None, ("No upgrade path found from %s" % version,)
 
         newversion, function = _upgradePaths[version]
-        function(self.aq_parent)
-        return newversion
-    
-def registerUpgradePath(oldversion, newversion, function): 
+        res = function(self.aq_parent)
+        return newversion, res
+
+def registerUpgradePath(oldversion, newversion, function):
     """ Basic register func """
     _upgradePaths[oldversion.lower()] = [newversion.lower(), function]
-   
+
 def registerSetupWidget(widget):
     """ Basic register things """
     _widgetRegistry[widget.type] = widget

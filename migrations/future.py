@@ -5,4 +5,3 @@ def future(portal):
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm']
     safeEditProperty(props, 'default_page', default_values, 'lines')
-    

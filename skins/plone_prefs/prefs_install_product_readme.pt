@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="prefs_configlet_main"
+     i18n:domain="plone"
+     tal:define="errors python:request.get('errors', {})">
+
+    <h1 i18n:translate="heading_plone_setup_readme">Readme</h1>
+
+    <p i18n:translate="label_plone_setup_readme">
+    In this document you can find informations about <span tal:content="request/filereadme"></span> product
+    </p>
+<textarea rows="50" readonly="" tal:content="python:container.portal_quickinstaller.getProductFile(request['filereadme'])">
+  
+</textarea>
+   
+        <div class="row">
+            <div class="label">&nbsp;</div>
+            <div class="field">
+                <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="submit"
+                       value="Back" 
+                       onClick="window.back()"
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+        </div>
+        
+   
+</div>
+
+</body>
+</html>

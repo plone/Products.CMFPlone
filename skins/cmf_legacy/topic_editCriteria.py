@@ -32,4 +32,3 @@ message='Changes+saved.'
 RESPONSE.redirect('%s/topic_criteria_form?portal_status_message=%s' % (
     context.absolute_url(), message)
                   )
-

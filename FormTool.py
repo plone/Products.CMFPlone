@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.27 2003/07/31 01:35:02 plonista Exp $
+# $Id: FormTool.py,v 1.28.4.1 2003/09/29 12:21:13 dreamcatcher Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.27 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.28.4.1 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -22,7 +22,9 @@ from PloneUtilities import log as debug_log
 from NavigationTool import ScriptStatus
 
 validator_cache = {}  # a place to stash cached validators
-# (we don't want to persist them in the ZODB since that would make debugging a big pain)
+
+# (we don't want to persist them in the ZODB since that would make
+# debugging a big pain)
 
 debug = 0  # enable/disable logging
 
@@ -33,20 +35,28 @@ class FormTool(UniqueObject, SimpleItem):
     __implements__ = IFormTool,
 
     # special-purpose items used in the REQUEST
-    error_key = 'errors'                    # a dictionary used for storing form validation errors
-    form_submitted_key = 'form_submitted'   # supplies the name of the form submitted
-    id_key = 'id'                           # the id for the object being operated on (can be None)
+    # a dictionary used for storing form validation errors
+    error_key = 'errors'
+    # supplies the name of the form submitted
+    form_submitted_key = 'form_submitted'
+    # the id for the object being operated on (can be None)
+    id_key = 'id'
+
     validation_status_key = 'validation_status'
 
 
     def __before_publishing_traverse__(self, other, REQUEST):
-        # kill off everything in the traversal stack after the item after portal_form
-        stack = REQUEST.get('TraversalRequestNameStack', None)
-#        self.log('stack = ' + str(stack))
+
+        # kill off everything in the traversal stack after the item
+        # after portal_form
+
+        stack = REQUEST.get('TraversalRequestNameStack', [])
+        # self.log('stack = ' + str(stack))
         # get rid of extra portal_forms
-        while 'portal_form' in stack:
-            stack.remove('portal_form')
-        REQUEST.set('TraversalRequestNameStack', [stack[-1]])
+        if stack:
+            while 'portal_form' in stack:
+                stack.remove('portal_form')
+            REQUEST.set('TraversalRequestNameStack', [stack[-1]])
 
 
     def setValidators(self, form, validators=None):
@@ -88,8 +98,10 @@ class FormTool(UniqueObject, SimpleItem):
 
     def createForm(self):
         """Returns a CMFForm object"""
-        # CMFForm wraps Formulator.BasicForm and provides some convenience methods that
-        # make BasicForms easier to work with from external methods.
+        # CMFForm wraps Formulator.BasicForm and provides some
+        # convenience methods that make BasicForms easier to work with
+        # from external methods.
+
         form = CMFForm()
         return form.__of__(self)
 
@@ -107,17 +119,19 @@ class FormTool(UniqueObject, SimpleItem):
 
 
     def __bobo_traverse__(self, REQUEST, name):
-#        self.log('in bobo_traverse (%s)' % name)
-        # We intercept traversal when a form needs validation.  We insert a FormValidator object
-        # into the traversal stack which, when published, does the proper validation and then
-        # hands off to the navigation tool to determine the correct object to publish.
+        # self.log('in bobo_traverse (%s)' % name)
+        # We intercept traversal when a form needs validation.  We
+        # insert a FormValidator object into the traversal stack
+        # which, when published, does the proper validation and then
+        # hands off to the navigation tool to determine the correct
+        # object to publish.
 
         # see if we are handling validation for this form
         validators = self.getValidators(name)
 
         REQUEST = self.REQUEST
-        
-#        self.log('validators = ' + str(validators))
+
+        # self.log('validators = ' + str(validators))
         if validators is None:
 
             # make sure this is a normal REQUEST
@@ -146,26 +160,34 @@ class FormTool(UniqueObject, SimpleItem):
 
 
         # There are three potential points of entry to a form:
-        # 1) The form is accessed directly from a URL, e.g. http://plone/portal_form/link_edit:
-        #       In this case we have REQUEST.errors = None, REQUEST.form_submitted = None
-        # 2) The form is filled out and submitted.
-        #       In this case we have REQUEST.errors = None, REQUEST.form_submitted = 1
-        # 3) A form validation error occurs, and the form is invoked by the navigation tool
-        #       In this case we have REQUEST.errors != None, REQUEST.form_submitted = 1
+
+        # 1) The form is accessed directly from a URL,
+        #       e.g. http://plone/portal_form/link_edit: In this case
+        #       we have REQUEST.errors = None, REQUEST.form_submitted
+        #       = None
+
+        # 2) The form is filled out and submitted.  In this case we
+        # have REQUEST.errors = None, REQUEST.form_submitted = 1
+
+        # 3) A form validation error occurs, and the form is invoked
+        # by the navigation tool In this case we have REQUEST.errors
+        # != None, REQUEST.form_submitted = 1
         #
         # We only need to invoke the validators for case (2)
 
 
         # see if we need to invoke validation
         errors = REQUEST.get(self.error_key, None)
-        # Make sure errors is something generated by us, not something submitted via POST or GET
+        # Make sure errors is something generated by us, not something
+        # submitted via POST or GET
+
         if not type(errors) != type({}):
             errors = None
         form_submitted = REQUEST.get(FormTool.form_submitted_key, None)
 
-        # We wrap the object in the acquisition layer of the parent of the FormTool
-        # so that subsequent forms will operate on the FormTool's context and not
-        # on the FormTool.
+        # We wrap the object in the acquisition layer of the parent of
+        # the FormTool so that subsequent forms will operate on the
+        # FormTool's context and not on the FormTool.
         do_validate = form_submitted and not errors
 
         if not do_validate:
@@ -176,8 +198,9 @@ class FormTool(UniqueObject, SimpleItem):
             else:
                 return REQUEST.RESPONSE.notFoundError("%s\n" % (name))
 
-#        self.log('returning validator')
-        return FormValidator(name, validators, aq_parent(self)).__of__(aq_parent(self)) # wrap in acquisition layer
+            # self.log('returning validator')
+        validator = FormValidator(name, validators, aq_parent(self))
+        return validator.__of__(aq_parent(self)) # wrap in acquisition layer
 
 
     # DEPRECATED
@@ -208,9 +231,11 @@ InitializeClass(FormTool)
 
 class FormValidator(SimpleItem):
     """ """
-    # When a form needs validation, we publish a FormValidator object in place of the next form.
-    # The FormValidator calls a validator method on the variables in the REQUEST and then
-    # hands off to a page determined by the NavigationTool
+    # When a form needs validation, we publish a FormValidator object
+    # in place of the next form.  The FormValidator calls a validator
+    # method on the variables in the REQUEST and then hands off to a
+    # page determined by the NavigationTool
+
     security = ClassSecurityInfo()
 
     def __init__(self, form, validators, context):
@@ -218,7 +243,7 @@ class FormValidator(SimpleItem):
         self.validators = validators
         self.id = "Error" # This should only be seen if an error occurs
         self.title = None
-#        self.log("created validator")
+        # self.log("created validator")
 
     def __str__(self):
         return 'FormValidator, form=%s, validators=%s' % \
@@ -234,13 +259,16 @@ class FormValidator(SimpleItem):
             trace.append('Invoking validation')
             context = aq_parent(self)
             # invoke validation
-            
+
             (status, kwargs, trace) = self._validate(context, self.REQUEST, trace)
 
             (obj, kwargs) = context.portal_navigation.getNextObject(context, self.form, status, trace, **kwargs)
             kwargs['REQUEST'] = self.REQUEST
-            # Set the FormValidator's id and title to those of the published object
-            # so that breadcrumbs can extract an id and title from the traversal stack.
+
+            # Set the FormValidator's id and title to those of the
+            # published object so that breadcrumbs can extract an id
+            # and title from the traversal stack.
+
             if obj:
                 self.id = getattr(obj, 'id', None)
                 self.title = getattr(obj, 'title', None)
@@ -261,7 +289,8 @@ class FormValidator(SimpleItem):
         """
         try:
             errors = {}
-            status = 'success'  # default return value if the validator list is empty
+            # default return value if the validator list is empty
+            status = 'success'
             kwargs = {}
             for validator in self.validators:
                 trace.append('Invoking %s' % validator)
@@ -272,14 +301,20 @@ class FormValidator(SimpleItem):
                                        call_object, 1, missing_name, dont_publish_class,
                                        REQUEST, bind=1)
 
-                # The preferred return type for scripts will eventually be an object.
-                # Until then, preserve compatibility with 1.0 alpha 4
+                # The preferred return type for scripts will
+                # eventually be an object.  Until then, preserve
+                # compatibility with 1.0 alpha 4
+
                 if type(script_status) == type(()):
                     (status, errors, kwargs) = script_status
                     kwargs['errors'] = errors
                     script_status = ScriptStatus(status, kwargs, None)
+
                     # disable deprecation warning for now
-#                    log_deprecated('Validator \'%s\' uses a return signature that has been marked for deprecation.  Validators should return a ScriptStatus object.' % validator)
+                    # log_deprecated('Validator \'%s\' uses a return
+                    # signature that has been marked for deprecation.
+                    # Validators should return a ScriptStatus object.'
+                    # % validator)
 
                 status = script_status.status
                 kwargs = script_status.kwargs

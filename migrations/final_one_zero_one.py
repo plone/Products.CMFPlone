@@ -12,7 +12,7 @@ def onezeroone(portal):
            ('default.editSynProperties.success', 'url:folder_contents'),
            ('default.editSynProperties.failure', 'synPropertiesForm')
            )
-    
+
     for id, action in nav:
         if nav_props.hasProperty(id):
             nav_props._updateProperty(id, action)
@@ -32,14 +32,13 @@ def onezeroone(portal):
             a.action=Expression('string:${folder_url}/portal_form/synPropertiesForm')
     st._actions=st_actions
 
-            
+
 def registerMigrations():
     MigrationTool.registerUpgradePath(
-            '1.0', 
-            '1.0.1', 
+            '1.0',
+            '1.0.1',
             onezeroone
             )
 
 if __name__=='__main__':
     registerMigrations()
-

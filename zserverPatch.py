@@ -1,0 +1,17 @@
+from ZServer import zhttp_server
+from App.Common import package_home
+from ZServer import ZOPE_VERSION, ZSERVER_VERSION
+
+from os.path import join
+
+try:
+    file = join(package_home(globals()), 'version.txt')
+    PLONE_VERSION = open(file, 'r').read().strip()
+except IOError:
+    PLONE_VERSION = 'Unknown'
+
+zhttp_server.SERVER_IDENT = 'Zope/%s ZServer/%s Plone/%s' % (
+    ZOPE_VERSION,
+    ZSERVER_VERSION,
+    PLONE_VERSION
+    )

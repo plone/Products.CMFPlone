@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/prefs_main_template/macros/master">
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
 
 <tal:head metal:fill-slot="head_slot"
           tal:define="dummy python:request.set('disable_border',1)" />
@@ -21,7 +22,9 @@
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
     </tal:conditional>
 
-<div class="editable pageContent">
+<div class="configlet">
+
+<div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -43,7 +46,7 @@
     </div>        
     <!-- End of tabs -->
 
-    <div class="contentContent"
+    <div class="documentContent"
          tal:condition="not:group | nothing">
 
         <metal:block metal:use-macro="template/macros/props">
@@ -71,7 +74,7 @@
     
     </div>
     
-    <div class="contentContent"
+    <div class="documentContent"
          tal:condition="group | nothing">
     
         <metal:block metal:define-macro="props" tal:omit-tag="">
@@ -86,19 +89,17 @@
         use Roles for that - and let certain Groups have a particular role.
         </p>
     
-        <form class="group"
-              action=""
+        <form action=""
               name="groups"
               method="post"
               tal:attributes="action string:${here/portal_groups/absolute_url}"
               tal:define="targetobject gdtool;
                           targetGetProperty nocall:group/getProperty | nocall:here/returnNone;">
     
-            <span class="legend"
-                  i18n:translate="legend_group_properties">Group Properties</span>
+            <legend i18n:translate="link_group_properties">Group Properties</legend>
     
-            <div class="row" metal:define-slot="name">
-               <label for="addname">name</label>
+            <div class="field" metal:define-slot="name">
+               <label for="addname">Name</label>
                <div class="field">
                   <strong><span tal:content="group/getGroupName | string:" /></strong>
                </div>
@@ -190,7 +191,7 @@
                             </tal:values>
                         </select>
     
-                        <select name="multiple selection" multiple tal:condition="python:type in ('multiple selection',)"
+                        <select name="multiple selection" multiple="multiple" tal:condition="python:type in ('multiple selection',)"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}list:string;
                                                 size python:min(7, len(select_value));">
                             <tal:values repeat="option select_value">
@@ -218,6 +219,8 @@
     
     
     </div>
+
+</div>
 
 </div>
 

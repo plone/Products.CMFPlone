@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/prefs_main_template/macros/master">
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
 
 <tal:block metal:fill-slot="head_slot">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -17,7 +18,9 @@
 		takeaction string:prefs_user_membership_edit;"
      tal:condition="here/rejectAnonymous" >
 
-<div class="editable pageContent">
+<div class="configlet">
+
+<div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -41,7 +44,7 @@
     </div>        
     <!-- End of tabs -->
 
-    <div class="contentContent">
+    <div class="documentContent">
 
         <h1 i18n:translate="">Group Memberships for <span tal:replace="string:${member/getUserName}"/></h1>
     
@@ -86,7 +89,7 @@
                 </td>
     
     
-                <td class="checkbox">
+                <td class="listingCheckbox">
                     <input type="checkbox"
                            class="noborder notify"
                            name="delete:list"
@@ -105,6 +108,8 @@
     	  </metal:block>
     	</div>
     </div>
+
+</div>
 
 </div>
 

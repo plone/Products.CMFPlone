@@ -12,7 +12,7 @@
 # Folderish objects so that we can suppress content whose
 # id starts with a . - we need a method to do this.
 # Mainly because Portal.py inherients from PortalFolder
-# and not PloneFolder.  But there could many other 
+# and not PloneFolder.  But there could many other
 # instances of 3rd party products that do the same thing.
 # so here is the method.
 
@@ -23,4 +23,3 @@ except TypeError:
     #XXX Manually do suppression
     contents = [obj for obj in context.listFolderContents(contentFilter=contentFilter) if obj.getId()[:1]!='.']
 return contents
-

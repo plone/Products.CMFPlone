@@ -1,40 +1,147 @@
-Main Contributors:
- Vidar Andersen (blacktar) for original visual design and ambience.
+Founders
 
- Alexander Limi (limi) for XHTML/CSS wizardry, ZPT, translation files - and most 
- importantly - usability design.
+ Alan Runyan (runyaga) -- Python, ZPT guidance, and insistence.
+ "Runyaga LLC":http://www.runyaga.com
 
- Alan Runyan (runyaga) for Python, ZPT guidance, and insistence.
+ Alexander Limi (limi) -- XHTML/CSS wizardry, ZPT, translation files - 
+ and most importantly - usability design and user interface.
+ "Plone Solutions":http://www.plonesolutions.com
 
-The following people contributed to help iron out wrinkles, gave feedback and contributed code.
+ Vidar Andersen (blacktar) -- original visual design and ambience.
+ "Black Tar":http://www.blacktar.com
 
-Geir Bækholt (http://elvix.com) - Javascript, CSS tips
-Stian Søiland (http://stain.portveien.to) - CSS tips
-Helge Tesdal - code king
-Magnus Heino - python guru 
-Manfred Ackermann - persistent and faithful tester
-Andy Dawkins - Calendar and general Zopista 
-Ignacio Valdes - documentation, questions
-Zope Corporation for producing ZOPE and CMF (especially Tres Seaver, Shane Hathaway, and Andrew Sawyers)
-Steve Alexander - Helpful ZOPE Guru
-Lalo Martin - Zope Plumbing, PortalFactory, Translator Tool
-Kapil (hazmat) - Helpful ZOPE Guru
-Luis Lavena - Windows icons
-Sidnei De Silva - python guru
-David Harvey - python, ZPT, makes sures things dont fall through the cracks ;)
-Geoff Davis (plonista) - form validation refactorings, form_tool and deep insight
-Florent Guillaume (efge) - general helpfulness, CMF pointers and i18n Zope2.7 exploration
-Kevin MCKeown - q/a and testing
-Jonagustine Lim (jlim) - for organized testing
-Philipp Auersperg - kindly contributing the StatelessTreeNavigation http://www.bluedynamics.com/
-Maisa Fonseca (devgirl) - i18n work
+The Plone Team 
+ 
+  The following people contributed to help iron out wrinkles, gave feedback and 
+contributed code.
+
+  Geir Bækholt (elvix) -- Javascript, CSS 
+  - "Plone Solutions":http://www.plonesolutions.com
+  
+  Helge Tesdal (tesdal) -- Code king 
+  - "Plone Solutions":http://www.plonesolutions.com
+  
+  Andy McKay (andym) -- Windows installer, migrations, ZopeZen, chief cynic
+  - "ClearWind":http://www.clearwind.ca
+  
+  Zope Corporation -- Producing ZOPE and CMF (especially Tres Seaver, 
+  Shane Hathaway, and Andrew Sawyers) 
+  - "Zope Corporation":http://www.zope.com
+  
+  Philipp Auersperg (zwork) -- Navigation Tree and QuickInstaller 
+  - "BlueDynamics":http://www.bluedynamics.com
+  
+  Sidnei da Silva (dreamcatcher) -- Python guru 
+  - "Dreamcatching":http://dreamcatcher.homeunix.org
+  
+  Steve Alexander (SteveA) -- Helpful ZOPE Guru 
+  - "Cat-Box":http://www.cat-box.net/steve
+  
+  Lalo Martins (lalo) -- Zope Plumbing, PortalFactory, PTS 
+    - "Laranja":http://www.laranja.org
+  
+  Kapil Thangavelu (hazmat) -- Helpful ZOPE Guru
+  
+  Geoff Davis (plonista) -- FormController and deep insight
+  
+  Luis Lavena --  Windows icons
+  
+  Stian Søiland -- CSS tips
+  
+  Michael Zeltner (eaon) -- CSS wizardry, neverending patience and persistence
+  
+  Manfred Ackermann -- Persistent and faithful tester
+  
+  Andy Dawkins (andyd) -- Calendar and general Zopista 
+  
+  Ignacio Valdes -- Documentation, questions
+  
+  Magnus Heino (magnus) -- Python guru 
+  
+  David Harvey -- Python, ZPT, makes sures things dont fall through the cracks
+  
+  Florent Guillaume (efge) -- General helpfulness, CMF pointers and i18n
+  
+  Kevin McKeown -- QA and testing
+  
+  Jonagustine Lim (jlim) -- Organized testing
+  
+  Maisa Fonseca (devgirl) -- i18n work
+  
+  Godefroid Chapelle (__gotcha) -- Tools subclassing, i18n
+  - "BubbleNet":http://bubblenet.be
+  
+  Dieter Maurer -- Python/Zope omniscience and help around the bobosphere.
+  
+  Gregoire Weber -- Add-on components and adventuring into the realm of Editions.
+  
+  Stefan Holek (lurker) -- For the elegant unit testing framework.
+  
+  Paul Everitt (ev) -- PR, help, advice and enthusiasm 
+  - "Zope Europe":http://www.zope-europe.org
+  
+  Christian Heimes (Tiran) -- Bug hunting 'till dawn and small improvements.
+  
+  Michael Haubenwallner -- Small column hide script.
+
+Companies (in randomized order):
+
+  "Ingeniweb":http://www.ingeniweb.com -- 
+  Support, contributions and Press.  Maik Roeder, Kamon Ayeva, P.J. Grizel.
+
+  "Solution2U":http://www.solution2u.net --
+  i18n support, contributions, bug fixes and testing. Jodok Batlogg, Dominik 
+  Bartenstein
+
+  "Plone Solutions":http://www.plonesolutions.com --
+  Time and constant dedication of Alexander Limi, Helge Tesdal, Geir Bækholt.
+
+    
+  "4teamwork":http://www.4teamwork.com --
+  Sponsorship, UI work, and testing.  Bernard Buehlman and Pascal Habegger.
+
+  "RedCor":http://www.redcor.ch --
+  Sponsorship, testing, and contributions.  Robert Rotterman.
+    
+
+  "BlueDynamics":http://www.bluedynamics.com --
+  Purity of heart and soul in the open source.  Hosting the
+  best sprint we've attended in Goldegg Castle.  Philipp Auersperg is a core
+  member of the Plone team.  Robert Boulanger for practing eXtreme
+  Organization as well as pushing the community forward.  Gogo for comic
+  relief.
 
 
-#plone and #zope on irc.openprojects.net for insight and soapbox to preach
+  "Project01":http://www.project01.ch -- 
+  Bug fixes.  
 
-http://zopelabs.com/ for useful scripts 
+  "Ref/lab":http://www.reflab.com -- 
+  Reflow, bug fixes and workflow guruness. Vincenzo, Francisco, Lorenzo.
 
-Please help out the CMF and Plone community by becoming involved. 
-Check out http://www.plone.org/ for more information.
+  "x3ng":http://www.x3ng.com --
+  Good client work.
 
-NOTE: please email me if I left your name out - runyaga@thisbox.com
+  "Amaze":http://www.amaze.nl --
+  Giving people feedback on how to use Archetypes and providing ArchExamples.
+
+  "AbstractEdge":http://www.abstractedge.com --
+  Benjamin Saller, Jonah Bossewitch and their management for all the great 
+  contributions and open mindedness.
+
+  "Tyrell":http://www.tyrell.com --
+   Sponsoring Jim Roepcke's time.  
+
+  "gocept":http://www.gocept.com --
+  LinkChecking and Christian Theune's time.
+
+  "Netalley Networks":http://www.netalleynetworks.com -- 
+  Tom Croucher and Joseph Geldart for CSS, JS, Section 508 and WAI-AAA compliance.
+
+  #plone and #zope on irc.openprojects.net for insight and soapbox to preach from.
+
+  "ZopeLabs":http://zopelabs.com/ for useful scripts 
+
+  Please help out the Plone and CMF communities by becoming involved. 
+  Check out "The Plone Website":http://www.plone.org for more information.
+
+  NOTE: please email us if we left your name out - runyaga@thisbox.com

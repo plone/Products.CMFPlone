@@ -12,6 +12,7 @@ class IControlPanel(Interface):
                  , visible=1
                  , appId=None
                  , imageUrl=None
+                 , description=''
                  , REQUEST=None
                  ):
         """ Registration of a Configlet """
@@ -27,8 +28,7 @@ class IControlPanel(Interface):
 
     def getGroups():
         """ list of groups as dicts with id and title """
-        
-    def enumConfiglets(group=None,appId=None):
+
+    def enumConfiglets(group=None):
         """ lists the Configlets of a group, returns them as dicts by
             calling .getAction() on each of them """
-

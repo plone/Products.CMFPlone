@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <body>
 
@@ -13,9 +14,10 @@
       you are receiving this message in error, please send an e-mail to
       </p>
 
-      <a href="mailto:admin@here.com" title="E-mail Administrator"
+      <a href="mailto:admin@here.com" title="Email Administrator"
          tal:attributes="href string:mailto:${p_props/email_from_address}"
-         tal:content="p_props/email_from_name">Email Admin</a>.
+         tal:content="p_props/email_from_name"
+         i18n:attributes="title">Email Admin</a>.
    </div>
 </div>
 

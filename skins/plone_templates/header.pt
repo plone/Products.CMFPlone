@@ -1,5 +1,7 @@
-<html tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone" tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                   tabindex python:Iterator();">
+
 
 <head metal:define-macro="html_header"
       tal:define="global portal_url portal_url|here/portal_url;
@@ -18,9 +20,10 @@
                                                template_title )"
            tal:content="string:$portal_title - $here_title">Title of page</title>
 
-    <base href="" tal:attributes="href here/renderBase" />
+    <metal:block metal:define-slot="base" />
 
-
+    <meta name="generator" content="Plone - http://plone.org" />
+    
     <meta tal:condition="here/listMetaTags|nothing"
           tal:repeat="keyval here/listMetaTags"
           tal:attributes="name python:keyval[0];
@@ -38,6 +41,17 @@
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="screen"
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
+
+    <!-- Old style sheet from Plone 1.0, uncomment if you need to use the old styles. -->
+    <!--
+    <style type="text/css" media="screen"
+           tal:content="string: @import url($portal_url/ploneDeprecated.css?$current_skin);"></style>
+    -->
+    
+    <!-- Alternate style sheets for the bigger/smaller text switcher -->
+    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextLarge.css" title="Large Text" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextHuge.css" title="Huge Text" />
 
     <!-- Custom style sheet if available -->
     <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
@@ -62,7 +76,9 @@
     <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
     <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
     <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
-    <link rel="up" href="" title="Up one level" tal:attributes="href python:here.navigationParent(here, template.getId())" />
+    <link rel="up" href="" title="Up one level" 
+          tal:define="parent python:here.navigationParent(here, template.getId())"
+          tal:attributes="href python:test(parent, parent, '#')" />
     <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
     <link rel="author" href="" title="Author information" tal:attributes="href string:author" />
 
@@ -86,6 +102,10 @@
     </metal:block>
 
     <!-- Common Plone ECMAScripts -->
+
+    <!-- IE min- max-width support -->
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_minmax.js"></script>
      
     <!-- ECMAScript menu -->
     <script type="text/javascript"
@@ -95,7 +115,7 @@
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_inplace_calendar.js"></script>
 
-    <!-- Define dynamig server-side variables for javascripts in this one  -->
+    <!-- Define dynamic server-side variables for javascripts in this one  -->
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_javascript_variables.js"></script>
 

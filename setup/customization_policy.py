@@ -8,9 +8,9 @@ import traceback
 
 class CustomizationPolicySetup(SetupWidget):
     type = 'Customization Policy Setup'
-    single = 1   
+    single = 1
     description = """Sets up a customization policy, which configures
-the plone setup. The default site has already been run. <b>Please note</b> 
+the plone setup. The default site has already been run. <b>Please note</b>
 that uninstalling a policy is <i>not</i> supported at this time. Be careful
 before selecting this."""
 
@@ -19,7 +19,7 @@ before selecting this."""
         out.append(('Currently we have no way to remove customisation policies', ERROR))
         return out
 
-    def addItems(self, policy):   
+    def addItems(self, policy):
         assert len(policy) == 1, "There must only be one policy set at a time."
 
         out = []
@@ -27,14 +27,18 @@ before selecting this."""
         try:
             res = c.customize(self.portal)
             if res:
-                for line in res.split('\n'):
-                    out.append((line, INFO))
+                if isinstance(res, StringType):
+                    for line in res.split('\n'):
+                        out.append((line, INFO))
+                    else:
+                        out.extend(res)
+
             out.append(("The customisation policy has been applied", INFO))
         except:
             out.append(("An error has occured", INFO))
             for line in traceback.format_tb(sys.exc_traceback):
                 out.append((line, ERROR))
-                
+
         return out
 
     def installed(self):

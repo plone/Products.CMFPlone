@@ -26,4 +26,3 @@ msg = 'Portal skin updated'
 RESPONSE.redirect('prefs_portalskin_form?portal_status_message=' + msg)
 
 return
-
