@@ -61,7 +61,7 @@
                         Title
                         </h2>
         
-                        <p tal:content="structure python:test(result.Description, result.Description, '(No Description)')">
+                        <p tal:content="structure result/Description">
                         Description
                         </p>
     
