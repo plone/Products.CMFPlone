@@ -43,6 +43,9 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             'user@example.org',
             'user@host.example.org',
             'm@t.nu',
+            'USER@EXAMPLE.ORG',
+            'USER@HOST.EXAMPLE.ORG',
+            'USER@hoST.Example.Org',
 
             ## Some trickier ones, from RFC 822
             #'"A Name" user @ example',

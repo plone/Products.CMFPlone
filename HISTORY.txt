@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3447. Email address validation failed
+      for upper-case characters.
+      [rohrer]
+
     - Added border-collapse to the columns, so pixel/bitmap layouts that 
       depend on the columns having 0 margin will work automatically. This 
       is cleaner than the cellspacing="0" cellpadding="0" HTML approach
