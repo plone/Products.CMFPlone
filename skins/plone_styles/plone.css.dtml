@@ -264,6 +264,7 @@ div.siteActions {
     /* Logo properties */
     margin: &dtml-logoMargin;;
     padding: &dtml-logoPadding;;
+    display: block;
 }
 div.searchBox {
     /*searchbox style and positioning */
