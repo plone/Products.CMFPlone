@@ -8,20 +8,15 @@
 ##title=
 ##
 size=''
+if hasattr(obj, 'get_size'): 
+    size=obj.get_size()
 
-try:
-    if hasattr(obj, 'get_size'): 
-        size=obj.get_size()
-
-    if size:
+    if same_type(size, 0):
         if size<1024:
             return '1 K'
         elif size>1048576:
             return '%.02f M' % float(size/1048576.0)
         else:
             return str(int(size)/1024)+' K'
-
-except:
-     return size
 
 return size

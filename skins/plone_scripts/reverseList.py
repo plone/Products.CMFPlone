@@ -1,4 +1,4 @@
-## Script (Python) "reverseList.py $Revision: 1.1 $"
+## Script (Python) "reverseList.py $Revision: 1.1.1.2 $"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -13,7 +13,7 @@ myList=[]
 try:
     myList=list(aList)[:]
     myList.reverse()
-except:
-    pass #gulp!
+except TypeError:
+    pass
 
 return myList
