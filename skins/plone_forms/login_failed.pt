@@ -35,7 +35,7 @@
             tal:attributes="href string:mailto:${p_props/email_from_address}"
             tal:content="p_props/email_from_name">
             Email Admin
-            </a>.
+            </a>
             </p>
 
 	  </div>
