@@ -19,21 +19,34 @@
 
         <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
                            here.portal_membership.checkPermission('Add portal content', here)">
-            <p>
-            <span i18n:translate="description_no_default_folder">
+
+            <p i18n:translate="description_no_default_folder_create_new">
             This folder does not have a default page, therefore a list of items
             is shown instead.
             If you want to create a default page in this folder that will
-            replace the item listing,
-            </span>
-            <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document"
-                        i18n:translate="description_create_folder_click_here">click here.</a>
+            replace the item listing, click the button.
             </p> 
+            
+            <form action=""
+                  method="post"
+                  tal:attributes="action string:${here/absolute_url}/invokeFactory">
+                <input type="hidden" 
+                       name="id" 
+                       value="index_html"/>
+                <input type="hidden" 
+                       name="type_name" 
+                       value="Document"/>
+                <input class="standalone"
+                       type="submit"
+                       value="Create default document" 
+                       i18n:attributes="value"
+                       />
+            </form>         
         </div>
 
         <p>
             <a href="" 
-               tal:define="parent_url python:here.navigationParent(here, template.getId());"
+               tal:define="parent_url python:here.navigationParent(here, template.getId())"
                tal:attributes="href parent_url"
                i18n:translate="go_to_parent_url">
             Up one level

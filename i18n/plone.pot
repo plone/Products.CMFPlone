@@ -250,34 +250,6 @@ msgstr "Undo"
 msgid "back_to_where_you_came_from"
 msgstr "back to where you came from"
 
-#: from plone_forms/search.pt
-#.   <span omit-tag="">items</span>
-#: from plone_forms/search.pt
-#: from plone_forms/search.pt
-#: from plone_forms/search.pt
-msgid "batch_items"
-msgstr "items"
-
-#: from plone_3rdParty/CMFCollector/collector_macros.pt
-#.   <a tal:attributes="href python:
-#.                                        base+'&'+make_query(b_start=next.first)" href="NEXT BATCH">
-#.                 Next</a>
-#: from plone_forms/search.pt
-#.   <span omit-tag="">Next</span>
-#: from plone_forms/search.pt
-msgid "batch_next"
-msgstr "Next"
-
-#: from plone_3rdParty/CMFCollector/collector_macros.pt
-#.   <a tal:attributes="href python:
-#.                                        base+'&'+make_query(b_start=prev.first)" href="PREVIOUS BATCH">
-#.                  Previous</a>
-#: from plone_forms/search.pt
-#.   <span omit-tag="">Previous</span>
-#: from plone_forms/search.pt
-msgid "batch_previous"
-msgstr "Previous"
-
 #: from plone_templates/ui_slots/about_slot.pt
 #.   <th>About</th>
 msgid "box_about"
@@ -379,13 +351,6 @@ msgstr "Up one level"
 #.   <option value="">Choose Language</option>
 msgid "choose_language"
 msgstr "Choose Language"
-
-#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
-#.   <span>
-#.             Click ${here (tal attributes="href python: request.URL + '?do_cite=1'")} to cite the existing transcript.
-#.             </span>
-msgid "click_to_cite"
-msgstr "Click ${here} to cite the existing transcript."
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <span tal:condition="item/assigned_to|nothing">,
@@ -3705,4 +3670,25 @@ msgstr ""
 ##################################
 # End 17.11.2002 update          #
 ##################################
+
+
+##################################
+# Added in the 19.11.2002 update #
+##################################
+
+msgid "batch_previous_x_items"  
+msgstr "Previous ${number} items"
+
+msgid "batch_next_x_items"  
+msgstr "Next ${number} items"
+
+msgid "description_no_default_folder_create_new"
+msgstr "This folder does not have a default page, therefore a list of items is shown instead. If you want to create a default page in this folder that will replace the item listing, click the button."
+
+msgid "Create default document"
+msgstr ""
+
+#########################
+# End 19.11.2002 update #
+#########################
 

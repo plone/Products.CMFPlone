@@ -284,7 +284,6 @@
                         <br />	
                 		
                 		<span class="field"
-                          i18n:translate=""
                           tal:content="python:join(lrole[1], ', ')">
                 		Role, Another role
                 		</span>

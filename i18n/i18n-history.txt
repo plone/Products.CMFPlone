@@ -37,4 +37,32 @@ msgid "description_signed_out"
 Replaced with:
 msgid "description_logged_out"
 
+#####################
+# 19.11.2002 update #
+#####################
+
+Deleted:
+
+msgid "batch_items"
+msgid "batch_next"
+msgid "batch_previous"
+
+Replaced with:
+
+msgid "batch_previous_x_items"  
+msgstr "Previous ${number} items"
+
+msgid "batch_next_x_items"  
+msgstr "Next ${number} items"
+
+
+Deleted:
+msgid "click_to_cite"
+
+
+Deleted:
+msgid "description_no_default_folder"
+
+Replaced with:
+msgid "description_no_default_folder_create_new"
 

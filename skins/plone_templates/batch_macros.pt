@@ -18,9 +18,11 @@
         <a href=""
            tal:attributes="href python: '%s?%s' % (url , mq( request.form, b_start=p.first ))">
            &laquo;
-           <span i18n:translate="batch_previous" tal:omit-tag="">Previous</span>
-           <span tal:condition="python:p.length>1" tal:replace="p/length">n</span> 
-           <span tal:condition="python:p.length>1" i18n:translate="batch_items" tal:omit-tag="">items</span>
+           <span i18n:translate="batch_previous_x_items" tal:omit-tag="">
+               Previous
+               <span i18n:name="number" tal:replace="p/length">n</span> 
+               items
+           </span>
         </a>
     </span>
 
@@ -29,9 +31,11 @@
       tal:condition="n">
         <a href=""
            tal:attributes="href python: '%s?%s' % (url , mq( request.form, b_start=n.first ))">
-           <span i18n:translate="batch_next" tal:omit-tag="">Next</span>
-           <span tal:condition="python:n.length>1" tal:replace="n/length">n</span> 
-           <span tal:condition="python:n.length>1" i18n:translate="batch_items" tal:omit-tag="">items</span>
+           <span i18n:translate="batch_next_x_items" tal:omit-tag="">
+               Next
+               <span i18n:name="number" tal:replace="n/length">n</span> 
+               items
+           </span>
            &raquo;
         </a>
     </span>
@@ -56,7 +60,7 @@
            tal:content="page"
            tal:attributes="href python: '%s?%s' % (url,query)" >
         </a>
-        ..
+        ...
     </span>
     
     <!-- Pagelist with links to previous pages for quick navigation -->
@@ -93,7 +97,7 @@
     <span tal:repeat="linklist python:batch.navurls(request.form, batch.leapforward)"
           tal:condition="batch/leapforward" 
           tal:omit-tag="" >
-        ..
+        ...
         <a href=""
            tal:define="page python:linklist[0];
                        query python:linklist[1];"
@@ -109,9 +113,8 @@
         ...
         </span>
         <a href=""
-           i18n:translate="batch_last_page" 
            tal:attributes="href python: '%s?%s' % (url,batch.pageurl(request.form,batch.numpages));"
-           tal:content="batch/numpages">Last page</a>       
+           tal:content="batch/numpages">3457</a>       
     </span>
  
 </div>
