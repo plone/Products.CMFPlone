@@ -27,7 +27,7 @@
             File size
             </div>            
 
-            <span tal:condition="python:test(size, 0, 1)" i18n:translate="no_file_uploaded">
+            <span tal:condition="size" i18n:translate="no_file_uploaded">
               (No file has been uploaded)
             </span>
         </div>
