@@ -61,7 +61,7 @@ Header stuff
                                       global wf_actions actions/workflow;
                                       global folder_actions actions/folder;
                                       global local_actions python:actions.get('object_tabs', []);
-                                      global isFolder python:getattr(here,'isPrincipiaFolderish',0);" />
+                                      global isFolder python:test(here.getTypeInfo().getId() in here.portal_properties.use_folder_tabs,1,0);" />
 				      
                     <span tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 

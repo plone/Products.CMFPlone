@@ -1,5 +1,10 @@
 1.0 beta
     - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
+    - reconfig_form for site wide configuraiton has form validation, and exposes loads of configuration options
+    - change in main_template for portal_types to get object_tabs from folder/object has been pushed into a property on portal
+    - added 'use_folder_tabs' property on portal object.  portal_type ids that are listed will get folder_actions instead of
+      object_actions in main_template.
+    - fixed edit_topicCriteria (has debug code in it) added navprops entry and modified script to use getNextRequestFor
 
 1.0alpha2
 

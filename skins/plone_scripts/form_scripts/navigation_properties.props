@@ -22,6 +22,7 @@ folder.folder_edit.success:string="folder_contents"
 folder.folder_edit.failure:string=edit
 folder.reconfig.success:string="reconfig_form"
 folder.reconfig.failure:string="reconfig_form"
+topic.topic_editCriteria.success:string=criteria
 topic.topic_editTopic.success:string=view
 topic.topic_editTopic.failure:string=edit
 topic.folder_cut.success:string=subtopics

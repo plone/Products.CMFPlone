@@ -79,6 +79,8 @@ class PloneGenerator(Portal.PortalGenerator):
         p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
         p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
         p._setProperty('default_language', 'en', 'string')
+        p._setProperty('use_folder_tabs',('Folder',), 'lines')
+        
         
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
