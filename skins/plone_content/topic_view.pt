@@ -5,7 +5,10 @@
 <body>
 <div metal:fill-slot="main">
 
-<h2><span tal:replace="here/title">title</span> </h2>
+  <div class="contentHeader"
+       metal:use-macro="here/portal_boxes/macros/contentHeader">
+  content header
+ </div>
 
 <span tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
     <h4>Subtopics: </h4>
