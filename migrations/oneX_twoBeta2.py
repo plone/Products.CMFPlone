@@ -9,6 +9,7 @@ from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore import CachingPolicyManager
 from Products.CMFCore.DirectoryView import createDirectoryView, manage_listAvailableDirectories
+from Products.CMFCore.Expression import Expression
 
 from Products.CMFPlone.migrations.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
@@ -72,9 +73,33 @@ def doit(self):
     addDocumentActions(portal)
     addActionIcons(portal)
     addSiteActions(portal, portal)
-
+    #removePortalFormFromActions(portal)
     return "some templates in portal_skins/custom may have been renamed"
 
+def fixActionsOn(tool):
+    if not hasattr(tool.aq_explicit, '_cloneActions'):
+        return
+    actions=tool._cloneActions()
+    for a in actions:
+        _action=a.action.text.split('/')
+        if 'portal_form' in _action:
+            _action.remove('portal_form')
+        a.action=Expression('/'.join(_action))
+    tool._actions=tuple(actions)
+        
+def removePortalFormFromActions(portal):
+    at=getToolByName(portal, 'portal_actions')
+    aps=at.action_providers
+    for ap in aps:
+        tool=getToolByName(portal, ap)
+        fixActionsOn(tool)
+
+    tt=getToolByName(portal, 'portal_types')
+    for ptype in tt.objectValues():
+        try:
+            fixActionsOn(ptype)
+        except:
+            print 'fixActionsOn, ', ptype.getId(), 'failed. '
 def swap(self):
     return swapPortalRoot(self)
 
