@@ -65,7 +65,7 @@ Plone integration
 
 - code changes
 
-    - add a vertical offset of 1, so the calendar doesn't obscure (and
+    - add a vertical offset of 2, so the calendar doesn't obscure (and
       then autohide) the other date/time controls.
 
 Index: calendar.js
@@ -80,7 +80,7 @@ diff -u -r1.1.2.1 calendar.js
         var p = Calendar.getAbsolutePos(el);
         if (!opts || typeof opts != "string") {
 -               this.showAt(p.x, p.y + el.offsetHeight);
-+               this.showAt(p.x, p.y + el.offsetHeight + 1);
++               this.showAt(p.x, p.y + el.offsetHeight + 2);
                 return true;
         }
         this.element.style.display = "block";
