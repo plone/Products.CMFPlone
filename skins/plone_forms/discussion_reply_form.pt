@@ -8,13 +8,11 @@
           tal:define="dummy python:request.set('disable_border',1)"></tal:head>
 
 <div metal:fill-slot="main">
-    <script type="text/javascript" src="" tal:attributes="src here/vcXMLRPC.js/absolute_url"></script>
-    <script type="text/javascript" src="" tal:attributes="src here/stxPreview.js/absolute_url"></script>
 
     <h1 i18n:translate="heading_add_comment">Add Comment</h1>
 
     <p i18n:translate="description_add_comment">
-    You can add a comment by filling out the form below.
+    You can add a comment by filling out the form below. Plain text formatting.
     </p>
 
     <form class="group"
@@ -86,28 +84,6 @@
 
     </form>
 
-    <p i18n:translate="description_preview_comment">To see how the comment
-    will look before submitting it, click 'Preview Comment'.
-    </p>
-
-    <form class="group" onsubmit="return false;">
-        <span class="legend" i18n:translate="legend_preview">Preview</span>
-        <br />
-        <span id="previewComment"></span>
-        <br />
-
-        <input class="context"
-                       type="submit"
-                       value="Preview Comment"
-                       name=""
-                       tabindex=""
-                       onclick="GetPreview(document.edit_form.text.value, 'previewComment')"
-                       i18n:attributes="value"
-                       tal:define="hId here/getId"
-                       tal:attributes="name string:$hId/discussion_reply_preview:method;
-											                 tabindex tabindex/next;" />
-
-    </form>
 
 </div>
 
