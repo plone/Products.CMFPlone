@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Corrected some margins and padding, the content views and headline
+      was very asymmetrical. Thanks to Brent for notifying me about this.
+      She blinded me with science! ;)
+      [limi]
+
     - check_id script now rejects ids that are also catalog indices.
       [geoffd]
 
