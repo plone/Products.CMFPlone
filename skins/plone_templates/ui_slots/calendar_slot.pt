@@ -25,18 +25,18 @@
             </th>
 
         <tr tal:define="weekdays here/portal_calendar/getDays">
-          <span tal:repeat="weekday weekdays" tal:omit-tag="">
+          <metal:block tal:repeat="weekday weekdays" tal:omit-tag="">
             <td class="weekdays" tal:content="weekday">Su</td>
-          </span>
+          </metal:block>
         </tr>
 
             <tr tal:repeat="week weeks">
-              <span tal:define="days week" tal:omit-tag="">
-                <span tal:repeat="day days" tal:omit-tag="">
-                  <span tal:condition="day/event" tal:omit-tag="">
-                  <span tal:define="daynumber day/day;
-                                    datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
-                                    javascriptstring string:javascript:%sDay('%s');;">
+              <metal:block tal:define="days week" tal:omit-tag="">
+                <metal:block tal:repeat="day days" tal:omit-tag="">
+                  <metal:block tal:condition="day/event" tal:omit-tag="">
+                  <metal:block tal:define="daynumber day/day;
+                                           datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
+                                           javascriptstring string:javascript:%sDay('%s');;">
                   <td class="event"
                       tal:attributes="onMouseOut  python: javascriptstring % ('hide', datestring);
                                       onMouseOver python: javascriptstring % ('show', datestring);
@@ -51,15 +51,15 @@
                       </span>
                     </span>
                   </td>
-                  </span>
-                  </span>
+                  </metal:block>
+                  </metal:block>
                   <td tal:condition="not: day/event"
                                       tal:content="python: day['day'] or default"
                                       tal:attributes="class python:test(current.year()==year and current.month()==month and current.day()==int(day['day']), 'todaynoevent', '')">
                     &nbsp;
                   </td>
-                </span>
-              </span>
+                </metal:block>
+              </metal:block>
             </tr>
 
     </table>
