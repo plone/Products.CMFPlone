@@ -110,10 +110,10 @@ Home page area that contains the items created and collected by <span tal:replac
                                     <metal:block tal:repeat="type types">
                                         <option value="#"
                                                 tal:define="typetitle type/Title; typeid type/getId"
-                                                tal:content="string:${typetitle}s only"
+                                                i18n:translate=""
                                                 tal:attributes="value typeid;
                                                                 selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', '');"
-                                        >Filtered type</option>
+                                        ><span i18n:name="type" tal:content="string:${typetitle}"/>s only</option>
                                     </metal:block>
                                 </select>
                     
@@ -127,7 +127,7 @@ Home page area that contains the items created and collected by <span tal:replac
                             <select name="type_name" 
                                     tabindex=""
                                     tal:attributes="tabindex tabindex/next|nothing;">
-                                <option value="Select">Select</option>
+                                <option value="Select" i18n:translate="">Select</option>
                                 <metal:block tal:repeat="ctype allowedContentTypes"
                                              tal:define="global filterOut  python:['Favorite']">
                                 <option value="Document"
@@ -142,6 +142,7 @@ Home page area that contains the items created and collected by <span tal:replac
                                    name="folder_factories:method" 
                                    value="Add New Item"
                                    tabindex=""
+			           i18n:attributes="value"
                                    tal:attributes="tabindex tabindex/next|nothing;" 
                                    />
                         </metal:block>

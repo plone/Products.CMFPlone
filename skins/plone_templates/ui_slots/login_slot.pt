@@ -50,8 +50,8 @@
                         alt=">" 
                         border="0" 
                         tal:attributes="src string:$portal_url/linkTransparent.gif" 
-			i18n:translate=""/>
-                Forgot your password?
+			/>
+                <span tal:omit-tag="" i18n:translate="">Forgot your password?</span>
                 </a>
 
             </td>
@@ -67,8 +67,8 @@
                         alt=">" 
                         border="0" 
                         tal:attributes="src string:$portal_url/linkTransparent.gif" 
-			i18n:translate=""/>
-                New user?
+			/>
+                <span tal:omit-tag="" i18n:translate="">New user?</span>
                 </a>
 
             </td>

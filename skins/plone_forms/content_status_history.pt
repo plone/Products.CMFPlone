@@ -52,10 +52,11 @@
         <div class="row">
             <div class="label" i18n:translate="status">Status</div>
             <div class="field"
+                  i18n:translate=""
 	          tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
 	                      expiration_date python:test(here.expiration_date, here.expiration_date, '');
 	                      effective python:">
-	     This item is currently in the <strong tal:content="review_state">review_state;</strong> state
+	     This item is currently in the <strong i18n:name="review_state" tal:content="review_state">review_state;</strong> state
 	    <tal:block tal:condition="python: review_state == 'published'"
 	               tal:define="eff_date here/effective_date | nothing;
 	                           exp_date here/expiration_date | nothing;
@@ -63,9 +64,12 @@
 	                           before python:eff_date and (eff_date > now);
 	                           after python:exp_date and (exp_date < now);
 	                           effective python:not(before or after);">
-	        <span tal:condition="effective">and <strong>is effective.</strong></span>
-	        <span tal:condition="before">but is <strong>not yet</strong> effective.</span>
-	        <span tal:condition="after">but is <strong>no longer</strong> effective.</span>
+	        <span tal:condition="effective"
+                      i18n:translate="status_effective">and <strong>is effective.</strong></span>
+	        <span tal:condition="before"
+                      i18n:translate="status_not_effective">but is <strong>not yet</strong> effective.</span>
+	        <span tal:condition="after"
+                      i18n:translate="status_no_longer_effective">but is <strong>no longer</strong> effective.</span>
 	    </tal:block>
 	        </div>
         </div>
@@ -176,7 +180,7 @@
     
         <div class="row">
             <div class="label">
-            <span i18n:translate="comments">Comments</span>
+            <span i18n:translate="">Comments</span>
                 <div id="publishing_comments_help"
                      i18n:translate="publishing_comments_help" 
                      class="help" 
@@ -202,7 +206,7 @@
 
         <div class="row">
             <div class="label">
-            <span i18n:translate="change_status">Change status</span>
+            <span i18n:translate="">Change Status</span>
                 <div id="change_status_help"
                      i18n:translate="change_status_help"
                      class="help"

@@ -67,10 +67,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label required">
-                <span i18:id="title">Title</span>
+                <span i18:translate="">Title</span>
                 
                 <div id="title_help" 
-                     i18n:id="title_help"
+                     i18n:translate=""
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the folder.
@@ -99,10 +99,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="description">Description</span>
+                <span i18n:translate="">Description</span>
                 
                 <div id="description_help" 
-                     i18n:id="description_help"
+                     i18n:translate=""
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the folder. 
@@ -130,6 +130,7 @@
                        type="submit" 
                        tabindex=""
                        value="Save"
+                       i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next" 
                        />
             </div>
