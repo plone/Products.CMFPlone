@@ -1,4 +1,4 @@
-# $Id: FormTool.py,v 1.28.4.7 2004/01/27 14:32:52 runyaga Exp $
+# $Id: FormTool.py,v 1.28.4.8 2004/03/19 22:04:40 shh42 Exp $
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -20,6 +20,7 @@ from PloneUtilities import log_deprecated
 from interfaces.FormTool import IFormTool, ICMFForm
 from PloneUtilities import log as debug_log
 from NavigationTool import ScriptStatus
+from ZODB.POSException import ConflictError
 
 validator_cache = {}  # a place to stash cached validators
 
@@ -137,7 +138,7 @@ class FormTool(UniqueObject, SimpleItem):
                     return getattr(parent, name)
                 try:
                     return parent[name]
-                except:
+                except (KeyError, AttributeError):
                     pass
                 return REQUEST.RESPONSE.notFoundError(name)
             # no, this is a fake request issued by unrestrictedTraverse
@@ -146,7 +147,7 @@ class FormTool(UniqueObject, SimpleItem):
                     return getattr(self, name)
                 try:
                     return self[name]
-                except:
+                except (KeyError, AttributeError):
                     pass
                 raise KeyError, name
 
@@ -274,6 +275,8 @@ class FormValidator(SimpleItem):
                 self.title = getattr(obj, 'title', None)
             return apply(obj, (), kwargs)
 
+        except ConflictError:
+            raise
         except:
             nav = getToolByName(self, 'portal_navigation')
             nav.logTrace(trace)
@@ -383,6 +386,8 @@ class FormValidator(SimpleItem):
                     trace.append("\t context changed to '%s'" % str(context))
             trace.append('Validation returned (%s, %s)' % (status, str(kwargs)))
             return (status, kwargs, trace)
+        except ConflictError:
+            raise
         except:
             nav = getToolByName(self, 'portal_navigation')
             nav.logTrace(trace)
@@ -487,7 +492,7 @@ class CMFForm(BasicForm):
                 # get rid of the old key
                 try:
                     del REQUEST[key]
-                except:
+                except (KeyError, AttributeError):
                     pass
                 # move the old value to 'field_' + key
                 # if there is already a value at 'field_' + key,
@@ -520,11 +525,11 @@ class CMFForm(BasicForm):
                     REQUEST[key[6:]] = value
                     try:
                         del result[key[6:]]
-                    except:
+                    except (KeyError, AttributeError):
                         pass
                     try:
                         del REQUEST[key]
-                    except:
+                    except (KeyError, AttributeError):
                         pass
 
         return errors

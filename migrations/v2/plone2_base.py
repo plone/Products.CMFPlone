@@ -31,6 +31,7 @@ from Products.CMFCore import CachingPolicyManager
 from Products.CMFCore.CMFCorePermissions import ListFolderContents, SetOwnProperties, SetOwnPassword
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.TypesTool import FactoryTypeInformation
+from ZODB.POSException import ConflictError
 
 def make_plone(portal):
     typesTool = portal.portal_types
@@ -338,15 +339,19 @@ def setupCalendar(portal):
         addColumn = catalog._catalog.addColumn
     try:
         addIndex('start', 'FieldIndex')
+    except ConflictError: raise
     except: pass
     try:
         addIndex('end', 'FieldIndex')
+    except ConflictError: raise
     except: pass
     try:
         addColumn('start')
+    except ConflictError: raise
     except: pass
     try:
         addColumn('end')
+    except ConflictError: raise
     except: pass
     out.write('Added "start" and "end" field indexes and columns to '\
               'the portal_catalog\n')
@@ -376,6 +381,8 @@ def setupCalendar(portal):
                                 'Social Event', 'Work'),
             REQUEST=None,
             )
+    except ConflictError: 
+        raise
     except:
         pass
     qi = getToolByName(portal, 'portal_quickinstaller')

@@ -12,6 +12,7 @@ REQUEST=context.REQUEST
 
 from Products.CMFPlone import transaction_note
 from Products.CMFCore.utils import getToolByName
+from ZODB.POSException import ConflictError
 
 plone_utils=context.plone_utils
 site_properties=context.portal_properties.site_properties
@@ -34,6 +35,8 @@ variables = { 'send_from_address' : REQUEST.send_from_address
             }
 try:
     plone_utils.sendto( variables )
+except ConflictError:
+    raise
 except: #XXX To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     return state.set(status='failure', portal_status_message=exception)

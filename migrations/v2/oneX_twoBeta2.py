@@ -23,6 +23,7 @@ from portlet_migration import upgradeSlots2Portlets
 import plone2_base
 
 from Acquisition import aq_base
+from ZODB.POSException import ConflictError
 
 def oneX_twoBeta2(portal):
     """ Migrations from 1.0.x to 2.x """
@@ -150,6 +151,8 @@ def removePortalFormFromActions(portal):
     for ptype in tt.objectValues():
         try:
             fixActionsOn(ptype)
+        except ConflictError:
+            raise
         except:
             print 'fixActionsOn, ', ptype.getId(), 'failed. '
 

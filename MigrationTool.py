@@ -1,6 +1,7 @@
 from Globals import InitializeClass, DTMLFile, DevelopmentMode
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
+from ZODB.POSException import ConflictError
 
 from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.CMFCorePermissions import ManagePortal
@@ -258,6 +259,8 @@ class MigrationTool( UniqueObject, SimpleItem):
                     out.append(("Upgrade to: %s, completed" % newv, zLOG.INFO))
                     self.setInstanceVersion(newv)
 
+            except ConflictError:
+                raise
             except:
                 out.append(("Upgrade aborted", zLOG.ERROR))
                 out.append(("Error type: %s" % sys.exc_type, zLOG.ERROR))
@@ -290,6 +293,8 @@ class MigrationTool( UniqueObject, SimpleItem):
             try:
                 self.portal_catalog.refreshCatalog()
                 self._needRecatalog = 0
+            except ConflictError:
+                raise
             except:
                 out.append(("Exception was thrown while cataloging",
                             zLOG.ERROR))
@@ -302,6 +307,8 @@ class MigrationTool( UniqueObject, SimpleItem):
             try:
                 self.portal_workflow.updateRoleMappings()
                 self._needUpdateRole = 0
+            except ConflictError:
+                raise
             except:
                 out.append((("Exception was thrown while updating "
                              "role mappings"), zLOG.ERROR))

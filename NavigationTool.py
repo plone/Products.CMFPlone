@@ -1,4 +1,4 @@
-# $Id: NavigationTool.py,v 1.37 2003/09/14 17:33:29 dreamcatcher Exp $
+# $Id: NavigationTool.py,v 1.37.4.1 2004/03/19 22:04:40 shh42 Exp $
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -21,6 +21,7 @@ from urlparse import urlparse, urljoin
 import re
 import traceback
 import sys
+from ZODB.POSException import ConflictError
 
 from interfaces.NavigationController import INavigationController
 
@@ -65,6 +66,8 @@ class NavigationTool(UniqueObject, SimpleItem):
             (obj, kwargs) = self.getNextObject(context, script,
                                                status, trace, **kwargs)
             return apply(obj, (), {'REQUEST':context.REQUEST})
+        except ConflictError:
+            raise
         except:
             self.logTrace(trace)
             raise
@@ -114,6 +117,8 @@ class NavigationTool(UniqueObject, SimpleItem):
                                        trace, **kwargs)
             else:
                 raise KeyError('Unknown transition type %s' % transition_type)
+        except ConflictError:
+            raise
         except:
             self.logTrace(trace)
             raise
@@ -340,6 +345,8 @@ class NavigationTool(UniqueObject, SimpleItem):
 
             return self.getNextObject(new_context, script, status,
                                       trace, **kwargs)
+        except ConflictError:
+            raise
         except:
             self.logTrace(trace)
             raise
@@ -383,6 +390,8 @@ class NavigationTool(UniqueObject, SimpleItem):
                 trace.append(("_getUrl: url = %s, redirect = %s, context = %s"
                               ) % (str(url), str(redirect), str(context)))
                 return (context.restrictedTraverse(url), kwargs)
+        except ConflictError:
+            raise
         except:
             self.logTrace(trace)
             raise
@@ -400,6 +409,8 @@ class NavigationTool(UniqueObject, SimpleItem):
                    context.REQUEST.URL.find('portal_form') != -1:
                 next_action = next_action[len('portal_form/'):]
             return self._getUrl(context, next_action, redirect, trace, **kwargs)
+        except ConflictError:
+            raise
         except:
             self.logTrace(trace)
             raise

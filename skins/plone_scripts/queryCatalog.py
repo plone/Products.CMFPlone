@@ -7,6 +7,8 @@
 ##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText']
 ##title=wraps the portal_catalog with a rules qualified query
 ##
+from ZODB.POSException import ConflictError
+
 results=[]
 catalog=context.portal_catalog
 indexes=catalog.indexes()
@@ -25,9 +27,10 @@ def quotequery(s):
         return s
     try:
         terms = s.split()
+    except ConflictError:
+        raise
     except:
         return s
-    terms = s.split()
     tokens = ('OR', 'AND', 'NOT')
     s_tokens = ('OR', 'AND')
     check = (0, -1)

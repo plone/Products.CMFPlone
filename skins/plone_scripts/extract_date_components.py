@@ -10,10 +10,13 @@
 # this script extracts %Y %m %d %H %M from a given date string
 
 from DateTime import DateTime
+from ZODB.POSException import ConflictError
 
 try:
     date = DateTime(date)
-except: #Combination of string/instances can be raised. catach all.
+except ConflictError:
+    raise
+except: #Combination of string/instances can be raised. catch all.
     pass
 
 try:

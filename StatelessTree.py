@@ -5,6 +5,7 @@ from AccessControl import Unauthorized, getSecurityManager
 
 from StatelessTreeNav import StatelessTreeBuilder
 from Products.CMFCore.utils import getToolByName
+from ZODB.POSException import ConflictError
 
 def constructNavigationTreeViewBuilder(self, **kwargs):
     """ """
@@ -84,6 +85,8 @@ class NavigationTreeViewBuilder(SimpleItem):
                 return 0
             if end_pub and now > end_pub:
                 return 0
+        except ConflictError:
+            raise
         except:
             return 0
         return 1
@@ -108,7 +111,7 @@ class NavigationTreeViewBuilder(SimpleItem):
             if self.showMyUserFolderOnly and obj == portal.portal_membership.getMembersFolder():
                 try:
                     return [getattr(obj,user.getId())]
-                except:
+                except (KeyError, AttributeError):
                     return []
 
             # to traverse through Portal Topics
@@ -142,7 +145,9 @@ class NavigationTreeViewBuilder(SimpleItem):
                 try:
                     if r.meta_type not in self.metaTypesNotToList and r.id not in self.idsNotToList:
                         rs.append(r)
-                except :
+                except ConflictError:
+                    raise
+                except:
                     pass
             res=rs
 
@@ -156,10 +161,14 @@ class NavigationTreeViewBuilder(SimpleItem):
 
             try:
                 res.sort(self._navtree_cmp) #if sorting fails - never mind, it shall not break nav
+            except ConflictError:
+                raise
             except:
                 pass
             return res
-        except :
+        except ConflictError:
+            raise
+        except:
             return []
 
 

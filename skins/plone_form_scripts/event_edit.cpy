@@ -9,6 +9,8 @@
 ##title=Edit an event
 ##
 
+from ZODB.POSException import ConflictError
+
 # if there is no id specified, keep the current one
 if not id:
     id = context.getId()
@@ -46,6 +48,8 @@ try:
     new_context.plone_utils.contentEdit( new_context
                                        , id=id
                                        , description=description )
+except ConflictError:
+    raise
 except: #XXX DateTime and contentEdit() has many things that could go wrong - catch all.
     return state.set(portal_status_message='Error saving event.', new_status='failure')
 

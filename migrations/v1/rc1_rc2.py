@@ -3,6 +3,7 @@ from Products.CMFPlone.Portal import PloneGenerator
 from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
+from ZODB.POSException import ConflictError
 
 def rc1rc2(portal):
     """ Upgrade from Plone 1.0 RC1 to RC2 """
@@ -35,6 +36,8 @@ def rc1rc2(portal):
         s_props._delProperty('validate_email')
         s_props._delProperty('email_from_address')
         s_props._delProperty('email_from_name')
+    except ConflictError:
+        raise
     except:
         pass #XXX its easier
 
