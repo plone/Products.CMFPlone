@@ -243,7 +243,7 @@
                       i18n:translate="label_choose_mime">
                 Choose MIME-type
               </option>
-              <option tal:repeat="mimetype here/plone_utils/availableMIMETypes"
+              <option tal:repeat="mimetype putils/availableMIMETypes"
                       tal:attributes="value python:mimetype;
                       selected python:test(format == mimetype, 'selected', None);"
                       tal:content="mimetype" />

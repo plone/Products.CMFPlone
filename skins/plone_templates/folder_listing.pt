@@ -35,7 +35,7 @@
                 <dt tal:define="url python:obj.absolute_url()+test(obj.isPrincipiaFolderish,'/','')">
                 <a href="#" tal:attributes="href url">
                         <img src="#" 
-                                        tal:attributes="src string:${here/portal_url}/${obj/getIcon};alt here/title" />
+                                        tal:attributes="src string:${utool}/${obj/getIcon};alt here/title" />
                 </a>
 
                 <a href="#" tal:condition="python: obj.portal_type not in ['Link', 'Image']"

@@ -113,7 +113,7 @@
     </div>
 
     <div metal:define-macro="calendarDatePickerBox" tal:define="
-	 portal_url here/portal_url;
+	 portal_url utool;
 	 tabindex tabindex/next|tabindex|nothing;
 	 input_id string:${formname}_${inputname}_${tabindex};
 	 values   python:here.date_components_support(inputvalue);

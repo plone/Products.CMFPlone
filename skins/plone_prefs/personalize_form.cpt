@@ -267,7 +267,7 @@
             </div>
     
             <div class="field"
-                 tal:define="portrait here/portal_membership/getPersonalPortrait;">
+                 tal:define="portrait mtool/getPersonalPortrait;">
     
                 <label for="portrait" i18n:translate="label_portrait">Portrait</label>
     

@@ -8,10 +8,10 @@ Content-Type: text/plain; charset=<span tal:replace="here/portal_properties/site
 
 
 <div i18n:translate="sendto_mailtemplate_body" tal:omit-tag="">
-This link is sent to you from <span i18n:name="portal_url" tal:omit-tag="" tal:content="here/portal_url" />
+This link is sent to you from <span i18n:name="portal_url" tal:omit-tag="" tal:content="utool" />
 
 You are receiving this mail because someone read a page at
-<span i18n:name="portal_title" tal:omit-tag="" tal:content="here/portal_url/Title" />
+<span i18n:name="portal_title" tal:omit-tag="" tal:content="utool/Title" />
 and thought it might interest you.
 
 It is sent by <span i18n:name="from_address" tal:omit-tag="" tal:content="request/send_from_address | options/send_from_address"

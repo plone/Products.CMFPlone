@@ -12,7 +12,7 @@ the community.
 Description:
 <span i18n:name="description" tal:omit-tag="" tal:content="here/description" />
 
-Visit us at <span i18n:name="portal_url" tal:omit-tag="" tal:content="here/portal_url" />
+Visit us at <span i18n:name="portal_url" tal:omit-tag="" tal:content="utool" />
 
 Your login name and password are:
 

@@ -46,7 +46,7 @@
             <td>
             <a href="#"
                tal:attributes="href string:${match/getURL}/view" >
-               <img src="#" tal:attributes="src string:${here/portal_url}/${match/getIcon}" />
+               <img src="#" tal:attributes="src string:${utool}/${match/getIcon}" />
                <span tal:replace="match/Title|match/id">Title or id</span>
             </a>
             </td>

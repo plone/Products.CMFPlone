@@ -53,7 +53,7 @@
                You may be running web filtering software that
                disables cookies.  If so, you will need to configure the
                software so that it enables you to accept cookies from</span>
-               <span tal:replace="here/portal_url"/></li>
+               <span tal:replace="utool"/></li>
                <li i18n:translate="description_still_failure_reason2">
                Your computer may be behind a firewall or proxy server
                that prevents cookies from being sent to or from your browser.

@@ -141,7 +141,7 @@
 
 
                  <span tal:condition="exists:here/link_tree"
-                 tal:define="start_url string:${here/portal_url}/link_tree">
+                 tal:define="start_url string:${utool}/link_tree">
                  <a href="" onclick="javascript:window.open('url','title', 'width=200,height=200,menubar=no,toolbar=no,scrollbars=no,resizable=yes').focus();return true;"
                  tal:attributes="href start_url;
                  onclick string:window.open('$start_url','Link','width=200,height=200,resizable=yes').focus();; return false;;">

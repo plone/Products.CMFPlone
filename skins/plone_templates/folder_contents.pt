@@ -14,7 +14,6 @@
 <div metal:fill-slot="main"
      tal:define="standalone python:1;
                  folder_contents python:here.getFolderContents(suppressHiddenFiles=1);
-                 mtool mtool|here/portal_membership;
                  myfolder python:here.absolute_url()==mtool.getHomeUrl();
                  num_types python: len(allowedSortedContentTypes)">
                  
@@ -236,13 +235,13 @@
                                title="Move item up"
                                i18n:attributes="title"
                                tal:attributes="href string:${here/absolute_url}/folder_position?position=up&amp;id=${item/getId}"
-                            ><img tal:replace="structure here/portal_url/arrowUp.gif" /></a>
+                            ><img tal:replace="structure utool/arrowUp.gif" /></a>
                             &nbsp;
                             <a href=""
                                title="Move item down"
                                i18n:attributes="title"
                                tal:attributes="href string:${here/absolute_url}/folder_position?position=down&amp;id=${item/getId}"
-                            ><img tal:replace="structure here/portal_url/arrowDown.gif" /></a>
+                            ><img tal:replace="structure utool/arrowDown.gif" /></a>
                         </td>
                     </tr>
                 </metal:block>

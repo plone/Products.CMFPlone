@@ -12,7 +12,7 @@
      tal:condition="isAnon">
 
     <div class="portlet" 
-         tal:define="portal_url portal_url|here/portal_url;
+         tal:define="portal_url portal_url|utool;
                      auth nocall:here/cookie_authentication;
                      ac_name auth/name_cookie;
                      ac_password auth/pw_cookie;

@@ -28,7 +28,7 @@
                    tal:attributes="value member/getUserName" />
 
             <div class="portalMessage"
-                 tal:condition="here/portal_membership/isAnonymousUser">
+                 tal:condition="mtool/isAnonymousUser">
 
                 <img tal:replace="structure here/info.gif"/>
 
