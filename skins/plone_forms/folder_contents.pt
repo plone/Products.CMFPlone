@@ -189,9 +189,8 @@
                 <select id="filter_selection" 
                         name="filter_by_Type:list" 
                         onChange="submitFilterAction()"
-                        tabindex=""
+                        tabindex="9999"
                         tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" 
-                        tal:attributes="tabindex tabindex/next;"
                         >
     
                     <option value="#" 
