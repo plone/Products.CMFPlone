@@ -119,6 +119,46 @@
         </a>
     </li>
 
+    <tal:templateMixin define="iface_tool portal/portal_interface;
+                               isTemplateMixin python:iface_tool.objectImplements(here, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');
+                               field python:here.getField('layout');
+                               vocab python:field.Vocabulary(here);"
+         condition="python:isTemplateMixin and len(vocab) > 1">
+    <li>
+    <b tal:content="vocab"/>
+        <div class="menuPosition">
+            <a href="#"
+               title="Choose default view"
+               onclick="return buttonClick(event, 'templateMenu');"
+               onmouseover="buttonMouseover(event, 'templateMenu');"
+               i18n:attributes="title">
+               <span i18n:translate="label_choose_template">Display</span></a>
+
+            <ul class="actionMenu" id="templateMenu"
+                onmouseover="menuMouseover(event)"
+                tal:define="check string:&bull;;">
+
+              <tal:block repeat="item vocab">
+                <li tal:define="value item;
+                                display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
+                                
+                    <a href="#" 
+                       onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                       tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
+                       i18n:attributes="title"
+                       tal:attributes="href python:here.absolute_url()+'/selectViewTemplate?templateId='+value;
+                                       title display">
+                        <span tal:replace="structure check"/>
+                        <tal:title i18n:translate=""
+                                   tal:content="display">Template id</tal:title>
+                    </a>
+                </li>
+              </tal:block>
+            </ul>
+        </div>
+    </li>
+    </tal:templateMixin>
+
 </ul>
 
 </metal:menubarmacro>
