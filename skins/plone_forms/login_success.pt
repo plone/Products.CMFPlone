@@ -27,14 +27,16 @@
 
 <div metal:fill-slot="main">
 
-    <div tal:define="p_props here/portal_properties/site_properties;
-                     member here/portal_membership/getAuthenticatedMember;">
-		
-            <div tal:condition="python: not(member.login_time == here.ZopeTime('2000/01/01') and here.validate_email)">
+    <div tal:define="DateTime python:modules['DateTime'].DateTime;
+                     Batch python:modules['Products.CMFPlone'].Batch;">
+            <div tal:define="login_time python:member.getProperty('login_time', DateTime());
+                     begin_time python:here.ZopeTime('2000/01/01');
+                     validate_email here/validate_email;"
+                     tal:condition="python: not(login_time == begin_time and validate_email)">
                 <metal:block tal:on-error="nothing"
-		                     tal:define="d_reg python: member.setProperties(last_login_time=member.login_time); 
-                                         ereg python: member.setProperties(login_time=here.ZopeTime());
-                                         global actions python: here.portal_actions.listFilteredActionsFor(here);">
+		             tal:define="d_reg python: member.setProperties(last_login_time=login_time); 
+                                 ereg python: member.setProperties(login_time=here.ZopeTime());
+                                 global actions here/portal_actions/listFilteredActionsFor;">
                 </metal:block>
 				
                 <div tal:define="came_from request/came_from|nothing" tal:condition="came_from">
@@ -76,9 +78,12 @@
                 </p>
 
                 <tal:block
-                 tal:define="results python:container.portal_catalog(modified=member.last_login_time, modified_usage='range:min', sort_on='modified',sort_order='reverse',review_state='published');
-                             Batch python:modules['Products.CMFPlone'].Batch;
-                             DateTime python:modules['DateTime'].DateTime;
+                 tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
+                             results python:here.portal_catalog(modified=last_login_time, 
+                                                                modified_usage='range:min',
+                                                                sort_on='modified',
+                                                                sort_order='reverse',
+                                                                review_state='published');
                              b_start python:request.get('b_start',0);">
                     
                     <form name="searchresults" action="" method="post" tal:condition="results"

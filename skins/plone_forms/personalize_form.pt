@@ -22,7 +22,9 @@
     <h1 i18n:translate="heading_my_preferences">My Preferences</h1>
 
     <p> 
-        <a href="password_form" i18n:translate="description_click_to_change_password">Click here to change your password.</a> 
+        <a href="password_form" i18n:translate="description_click_to_change_password">
+        Click here to change your password.
+        </a> 
     </p>
       
   
@@ -40,7 +42,7 @@
 
             <div class="row"
                  tal:define="error_fullname errors/fullname | nothing;
-                             fullname python:request.get('fullname', member.getProperty('fullname'));">
+                             fullname python:request.get('fullname', member.getProperty('fullname', ''));">
                 
                 <div class="label">
                     <span i18n:translate="label_full_name">Full name</span>
@@ -76,7 +78,7 @@
 		
             <div class="row"
                  tal:define="error_email errors/email | nothing;
-                             email python:request.get('email', member.getProperty('email'));">
+                             email python:request.get('email', member.getProperty('email',''));">
                 
                 <div class="label required">
                     <span i18n:translate="label_email">E-mail</span>
@@ -123,7 +125,8 @@
                     </div>
                 </div>
                 <div class="field"
-                     tal:define="wysiwyg_editor python:request.get('wysiwyg_editor', member.wysiwyg_editor)">
+                     tal:define="wysiwyg_editor python:request.get('wysiwyg_editor', 
+                                                                   member.getProperty('wysiwyg_editor',''))">
                      <select name="wysiwyg_editor"
                              onfocus="formtooltip('wysiwyg_editor_help',1)"
                              onblur="formtooltip('wysiwyg_editor_help',0)"
@@ -165,7 +168,8 @@
                     </div>                
                 </div>
                 <div class="field"
-		                 tal:define="listed python:request.get('listed', member.listed);
+		                 tal:define="listed python:request.get('listed', 
+                                                                       member.getProperty('listed',''));
                                  tabindex tabindex/next;">
                     <input type="radio" 
                            class="noborder" 
@@ -237,7 +241,8 @@
                     </div>                
                 </div>
                 <div class="field"
-                     tal:define="formtooltips python:request.get('formtooltips', member.formtooltips);
+                     tal:define="formtooltips python:request.get('formtooltips', 
+                                                                 member.getProperty('formtooltips',''));
                      tabindex tabindex/next;"> 
                     <input type="radio" 
                            class="noborder" 
@@ -312,7 +317,8 @@
                     </div>                
                 </div>
                 <div class="field"
-           	         tal:define="visible_ids python:request.get('visible_ids', member.visible_ids);
+           	         tal:define="visible_ids python:request.get('visible_ids', 
+                                                                    member.getProperty('visible_ids',''));
                                  tabindex tabindex/next;"> 
                     <input type="radio" 
                            class="noborder" 
