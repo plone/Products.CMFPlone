@@ -102,7 +102,11 @@
                        size="20" 
                        name="" 
                        value=""
-                       tal:attributes="name string:email-${username};
+                       tal:attributes="name string:email_entered_$username;
+                                       value email" />
+                <input type="hidden"
+                       name="email_original_username"
+                       tal:attributes="name string:email_original_$username;
                                        value email" />
 
             </td>
@@ -137,9 +141,9 @@
             <td class="checkbox">
                 <input type="checkbox"
                        class="noborder"
-                       name="newpassword:list"
+                       name="resetpassword:list"
                        value="value"
-                       tal:attributes="value string:newpassword-${username}" />
+                       tal:attributes="value username" />
             </td>
             
             <td class="checkbox">
@@ -147,7 +151,7 @@
                        class="noborder notify"
                        name="delete:list"
                        value="value"
-                       tal:attributes="value string:${username}" />
+                       tal:attributes="value username" />
             </td>
             
             </metal:block>
@@ -158,7 +162,7 @@
         <input class="context"
                tabindex="" 
                type="submit" 
-               name="some_method:method" 
+               name="prefs_user_manage:method" 
                value="Apply Changes"
                tal:attributes="tabindex tabindex/next;"
                />

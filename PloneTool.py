@@ -36,6 +36,14 @@ class PloneTool (UniqueObject, SimpleItem):
     plone_tool = 1
     field_prefix = 'field_' # Formulator prefixes for forms
 
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'setMemberProperties')
+    def setMemberProperties(self, member, **properties):
+        membership=getToolByName(self, 'portal_membership')
+        if hasattr(member, 'getId'):
+            member=member.getId()
+        user=membership.getMemberById(member)
+        user.setMemberProperties(properties)
+
     security.declarePublic('sendto')
     def sendto( self, variables = {} ):
         """Sends a link of a page to someone
