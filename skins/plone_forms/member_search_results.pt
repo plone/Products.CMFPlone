@@ -19,7 +19,7 @@
        tal:define="results python:here.portal_membership.searchForMembers(request);
                    Batch python:modules['Products.CMFPlone'].Batch;
                    DateTime python:modules['DateTime'].DateTime;
-                   b_size python:30;b_start python:0;b_start request/b_start | b_start;">
+                   b_size python:20;b_start python:0;b_start request/b_start | b_start;">
     
     <h1 i18n:translate="heading_search_results">Search results</h1>
                  
@@ -36,38 +36,25 @@
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-        <!-- Search results -->
-        
-        <table class="listing"
-               id="sortable"
-               border="1"
-               tal:condition="here/contentValues">
-        
-            <thead>
-                <tr>
-                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_user_name">User name</span>&nbsp;</th>
-                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_email">Email</span>&nbsp;</th>
-                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_roles">Roles</span>&nbsp;</th>
-                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_last_login_time">Last login</span>&nbsp;</th>
-                </tr>
-            </thead>
-
-            <tbody>
-	        <metal:block tal:repeat="result batch">
-                <tr class="even" 
-		            tal:define="oddrow repeat/result/odd;" 
-		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
-                    <td tal:define="name result/getUserName">
-                       <a tal:attributes="href string:member_edit_form?member=${name}" 
-                          tal:content="name" /></td>
-                    <td tal:content="structure string:${result/email}&nbsp;">Email</td>
-                    <td><span tal:repeat="role result/getRoles" tal:omit-tag="">
-                       <span tal:condition="python:role!='Authenticated'" tal:content="string:$role " tal:omit-tag="">Roles</span></span></td>
-                    <td tal:content="python:here.toPortalTime(result.last_login_time)">Last login</td>
-                </tr>
-		</metal:block>
-            </tbody>
-        </table>
+        <div>
+        <metal:block tal:repeat="result batch">
+            <span class="card" tal:define="name result/getUserName;
+                                           home python:container.portal_membership.getHomeUrl(name, verifyPermission=1);
+                                           portrait python: here.portal_membership.getPersonalPortrait(name);"> 
+                <a href="#" tal:attributes="href home">                    
+                    <img src="defaultUser.gif" 
+                         alt="" 
+                         border="0" 
+                         width="75" 
+                         height="100" 
+                         tal:attributes="src portrait/absolute_url" />
+                    <br />  
+                    <span tal:content="name"> member id</span>
+                </a>
+                <br />	
+            </span>
+        </metal:block>
+        </div>
 
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
