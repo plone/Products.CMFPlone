@@ -10,7 +10,7 @@
                  ac_persist auth/persist_cookie;">
 
 <tal:admin tal:condition="python: checkPermission('Manage users', portal)" >
-   <span tal:define="dummy python:request.RESPONSE.redirect(portal_url + 'prefs_users_overview?portal_status_message=New+user+added')" />
+   <span tal:define="dummy python:request.RESPONSE.redirect(portal_url + '/prefs_users_overview?portal_status_message=New+user+added')" />
 </tal:admin>
 
 <div tal:define="ve site_properties/validate_email">
