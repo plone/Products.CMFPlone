@@ -140,6 +140,7 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_3rdParty/CMFTopic'
                     , 'plone_calendar'
                     , 'plone_templates/ui_slots'
+                    , 'plone_wysiwyg'
                     ):
             try:
                 path.insert( path.index( 'custom')+1, plonedir )

@@ -41,6 +41,14 @@ class DefaultCustomizationPolicy:
                              , CMFCorePermissions.ModifyPortalContent
                              , 'object' )
 
+        #change all Metadata labels to Properties for usability
+        for t in tt.objectValues():
+            _actions=t._cloneActions()
+            for a in _actions:
+                if a.get('id','')=='metadata':
+                    a['name']='Properties'
+            t._actions=_actions
+        
         #add custom Plone actions
         at=getToolByName(portal, 'portal_actions')
         at.addAction('index_html','Welcome','portal_url','', 'View', 'portal_tabs')
