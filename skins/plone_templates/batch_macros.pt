@@ -39,7 +39,6 @@
     <!-- Link to first -->
     <span tal:condition="python: 1 not in batch.navlist">
         <a href="" 
-           i18n:translate="batch_first_page"
            tal:attributes="href python: '%s?%s' % (url, batch.pageurl(request.form,1));">1</a> 
         <span tal:condition="python: 2 not in (batch.prevlist or batch.leapback)"
               tal:omit-tag="">

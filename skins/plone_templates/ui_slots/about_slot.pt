@@ -13,18 +13,11 @@
     <span class="boxTitle" i18n:translate="box_about">About</span>
 
     <div class="box">
-        <div class="content odd">
-            <img src="img/icons/folder.gif" alt=""
-                      tal:attributes="src python:portal_url + '/' + here.getIcon(relative_to_portal=1);
-                      alt here/meta_type;" 
-             />&nbsp;<span tal:omit-tag="" tal:content="python:here.getTypeInfo().Title()" i18n:translate="">Object type</span>
-        </div>
-        
-        <div class="content even"
+        <div class="content odd"
              tal:define="creator here/Creator;
                          creator_home python:container.portal_membership.getHomeUrl(creator);">
                          
-            <strong i18n:translate="box_created_by">Created&nbsp;by:</strong> <br />
+            <strong i18n:translate="box_created_by">Created by</strong> <br />
             <img tal:replace="structure here/user.gif" />            
             
             <a href="#" tal:condition="creator_home"
@@ -36,8 +29,15 @@
 
         </div>
     
+        <div class="content even">
+            <img src="" alt=""
+                      tal:attributes="src python:portal_url + '/' + here.getIcon(relative_to_portal=1);
+                      alt here/meta_type;" 
+             />&nbsp;<span tal:omit-tag="" tal:content="python:here.getTypeInfo().Title()" i18n:translate="">Object type</span>
+        </div>
+        
         <div class="content odd">
-            <strong i18n:translate="box_last_modified">Last&nbsp;modified:</strong> <br />
+            <strong i18n:translate="box_last_modified">Last modified</strong> <br />
             <span tal:replace="python:here.toPortalTime(here.ModificationDate())">
             August 16, 2001 at 23:35:59
             </span>
@@ -47,7 +47,7 @@
     	     tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state', '')"
     	     tal:condition="review_state">
         
-            <strong>Status:</strong> <br />
+            <strong>Status</strong> <br />
         
             <span class="private"
                   tal:content="review_state"

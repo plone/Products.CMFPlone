@@ -412,7 +412,7 @@
                        tabindex="" 
                        type="submit" 
                        name="submit" 
-                       value="Save Settings"
+                       value="Save"
                        i18n:attributes="value" 
                        tal:attributes="tabindex tabindex/next;"
                        />

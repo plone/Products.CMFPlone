@@ -415,7 +415,7 @@
                     <input class="context"
                            tabindex="" 
                            type="submit" 
-                           value="Apply" 
+                           value="Save" 
                            i18n:attributes="value"
                            tal:attributes="tabindex tabindex/next;" 
                            />

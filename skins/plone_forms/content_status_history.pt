@@ -245,7 +245,7 @@
                 <input class="context"
                        type="submit"
                        name="workflow_action_submit" 
-                       value="Apply"
+                       value="Save"
                        i18n:attributes="value" 
                        tal:attributes="tabindex tabindex/next;" />
             </div>

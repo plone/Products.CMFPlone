@@ -12,7 +12,7 @@
      tal:omit-tag=""
      tal:condition="here/portal_membership/isAnonymousUser">
 
-    <span class="boxTitle" i18n:translate="box_sign_in">Sign in</span>
+    <span class="boxTitle" i18n:translate="box_sign_in">Log in</span>
 
     <div class="box" tal:define="portal_url here/portal_url">
 

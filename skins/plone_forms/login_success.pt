@@ -51,7 +51,7 @@
                 <p>
                 [<a i18n:translate="back_to_where_you_came_from" 
                     href="" 
-                    tal:attributes="href request/HTTP_REFERER">back to where you came from</a>]
+                    tal:attributes="href request/HTTP_REFERER">Back to where you came from</a>]
                 </p>
                 
                 <p i18n:translate="description_logged_in_explain">
