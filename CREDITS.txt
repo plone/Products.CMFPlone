@@ -21,8 +21,8 @@ contributed code.
   Helge Tesdal (tesdal) -- Code king 
   - "Plone Solutions":http://www.plonesolutions.com
   
-  Andy McKay (andym) -- Windows installer, Zope Zen 
-  - "ClearWind LLC":http://www.clearwind.ca
+  Andy McKay (andym) -- Windows installer, migrations, ZopeZen, chief cynic
+  - "ClearWind":http://www.clearwind.ca
   
   Zope Corporation -- Producing ZOPE and CMF (especially Tres Seaver, 
   Shane Hathaway, and Andrew Sawyers) 
