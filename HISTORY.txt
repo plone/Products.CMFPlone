@@ -1,30 +1,48 @@
 CHANGES
 
 Plone 1.0.2
+
+    - Fixed behaviour of the definition list and pre tags in presentation
+      mode. [limi]
+
     - tabindex can now be used in left/right_slot too.
+
     - Breadcrumbs and form validation error messages are now translated
-    - Added javascript to warn people that they have cookies disabled before they try to log in.
-    - Added graceful handling of logins when cookies aren't enabled.  You now get an error message
-      that says something to the effect of "You weren't successful logging in because you don't have
-      cookies enabled"
+
+    - Added javascript to warn people that they have cookies disabled before 
+      they try to log in.
+
     - Added a page that walks people through the process of enabling cookies.
-    - Fixed up the code that sends users on to their destination when they log in.
-    - When you are logged in and visit a page for which you don't have sufficient privileges, you now 
-      get a message that says "you have insufficient privileges to view this page" rather than a login
+
+    - Fixed up the code that sends users on to their destination when they log 
+      in.
+
+    - When you are logged in and visit a page for which you don't have 
+      sufficient privileges, you now get a message that says "you have 
+      insufficient privileges to view this page" rather than a login
       prompt. 
+
     - Removed "(No Description)" string in news.pt
+
     - creates an object to hold customization policy results, if any.
+
     - The IE6 fix for invisible text was broken, should work now.
+
     - Added translation to field 'type' in folder_listing table. Replaced
       'n/a' with '&nbsp' to work like folder_contents
+
     - Only show "Add Comment" button if discussion is allowed, and user
       has permission to reply to item.
+
     - added on-error for search results when path('here/%s'%result.getIcon) 
-    raises a AttributeError
-    - making less assumptions in Portal/Customization Policy for migrations of very old Plones
-      and imported nested_scopes in Portal.py
+      raises a AttributeError
+
+    - making less assumptions in Portal/Customization Policy for migrations of 
+      very old Plones and imported nested_scopes in Portal.py
+
     - visual tidy up of main_template and header and try to see if variables
       have been declared before blindly re-initing them.
+
     - removed the setHeader() in header
 
 Plone 1.0.1 - Mira Calix release
