@@ -30,6 +30,52 @@
         These users have privileges here:
     </p>
 
+  
+    <fieldset tal:define="iroles python:here.plone_utils.getInheritedLocalRoles(here); 
+                          username python:here.portal_membership.getAuthenticatedMember().getUserName();"
+              tal:condition="iroles">
+        <legend i18n:translate="limi">
+            Acquired roles
+        </legend>
+
+        <table class="listing" summary="Acquired roles">
+            <thead>
+            <tr>
+                <th i18n:translate="label_user_group_name">User/Group name</th>
+                <th i18n:translate="label_type">Type</th>
+                <th i18n:translate="label_roles">Role(s)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr tal:repeat="irole iroles">
+                <td tal:content="python:irole[0]">
+                    groupname
+                </td>
+
+                <td tal:condition="python:irole[2]=='group'"
+                    i18n:translate="label_group">
+                    Group
+                </td>
+                <td tal:condition="python:irole[2]=='user'"
+                    i18n:translate="label_user">
+                    User
+                </td>
+
+                <td>
+                <tal:block tal:repeat="role python:irole[1]">
+                    <span i18n:translate=""
+                          tal:content="role"
+                          tal:omit-tag="">Role</span>
+                    <span tal:condition="not: repeat/role/end"
+                          tal:omit-tag="">, </span>
+                </tal:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </fieldset>
+
     <form method="post"
           name="deleterole"
           action="folder_localrole_edit"
