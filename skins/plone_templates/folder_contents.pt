@@ -234,7 +234,8 @@
     </form>
 
     <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
-                       here.portal_membership.checkPermission('Add portal content', here)">
+                        here.portal_membership.checkPermission('Add portal content', here) and
+						here.getTypeInfo().allowType('Document')">
 
         <p i18n:translate="description_no_default_folder_create_new">
         This folder does not have a default page, therefore a list of items
