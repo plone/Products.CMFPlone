@@ -8,7 +8,8 @@
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="size python:here.getObjSize(here)">
 
     <div class="contentHeader">
     <h1 tal:content="here/title_or_id">Title or id</h1>
@@ -25,12 +26,11 @@
             <div class="label" i18n:translate="label_size">Size</div>
 
             <div class="field" 
-                  tal:define="size python:here.getObjSize(here)"
                   tal:content="size">                        
             File size
             </div>            
 
-            <span tal:condition="python:test(here.size, 0, 1)" i18n:translate="no_file_uploaded">
+            <span tal:condition="python:test(size, 0, 1)" i18n:translate="no_file_uploaded">
               (No file has been uploaded)
             </span>
         </div>

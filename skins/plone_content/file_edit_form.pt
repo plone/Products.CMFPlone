@@ -165,7 +165,7 @@
                        />
                 <br />
                 <span i18n:translate="no_file_uploaded"
-                      tal:define="file_size here/size|nothing"
+                      tal:define="file_size python:here.getObjSize(here)"
                       tal:condition="python:test(file_size, 0, 1)">
                   (No file has been uploaded yet)
                 </span>
