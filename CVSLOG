@@ -1,3 +1,31 @@
+2004-03-13 01:21  limi
+
+	* skins/plone_content/metadata_edit_form.cpt (Plone-2_0-branch):
+	  "effective date", not "effectuation date". No re-translation
+	  needed. :)
+
+2004-03-12 18:29  shh42
+
+	* ActionsTool.py, HISTORY.txt, INSTALL.txt, LICENSE.ZPL,
+	  MigrationTool.py, PloneFolder.py, version.txt,
+	  Extensions/package_plone.py, Extensions/setupSite.py,
+	  migrations/__init__.py, migrations/migration_util.py,
+	  migrations/v2/release_candidates.py,
+	  skins/plone_scripts/isExpired.py,
+	  skins/plone_scripts/showEditableBorder.py,
+	  skins/plone_scripts/translate.py,
+	  skins/plone_templates/colophon.pt,
+	  skins/plone_templates/footer.pt: Merge Plone-2_0-branch to HEAD
+
+2004-03-12 17:36  zopezen
+
+	* Extensions/setupSite.py (Plone-2_0-branch): Fix command line
+	  arguements in setupSite
+
+2004-03-12 05:04  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-12 03:30  limi
 
 	* MigrationTool.py (Plone-2_0-branch): Changed wording so that a
