@@ -8,7 +8,6 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
-from AccessControl.SecurityManagement import newSecurityManager
 
 def sortTuple(t):
     l = list(t)
@@ -59,10 +58,9 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
         self.membership.addMember('user2', 'secret', ['Member'], [])
         member = self.membership.getMemberById('user2')
-        user = member.getUser()
         
         # assume identify of new user
-        newSecurityManager(None, user)
+        self.login('user2')
 
         temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         # make sure user is owner of temporary object
