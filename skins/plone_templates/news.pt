@@ -76,9 +76,11 @@
                             <li tal:attributes="class python: test(has_replies, 'visualCommentAlign link-comment','visualCommentAlign');"
                                 tal:define="talkback python: portal_discussion.getDiscussionFor(resultObject);
                                             has_replies python: talkback.hasReplies(resultObject);">
-                                <a href="" tal:attributes="href string:${resulturl}#comments;">
-
-                                    <span tal:replace="python: talkback.replyCount(resultObject)" />
+                                <a href="" 
+                                   tal:define="reply_count python:talkback.replyCount(resultObject)"
+                                   tal:condition="reply_count"
+                                   tal:attributes="href string:${resulturl}#comments;">
+                                    <span tal:replace="python: reply_count" />
                                     <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
 
                                 </a>
