@@ -6,9 +6,7 @@
 <body>
 
 <tal:head metal:fill-slot="head_slot"
-          tal:define="dummy python:request.set('disable_border',1)">
-    Disables tabs and content border
-</tal:head>
+          tal:define="dummy python:request.set('disable_border',1)"></tal:head>
 
 <div metal:fill-slot="main">
 
