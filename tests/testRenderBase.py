@@ -9,8 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-import base64
-
 
 class TestRenderBase(PloneTestCase.FunctionalTestCase):
 
