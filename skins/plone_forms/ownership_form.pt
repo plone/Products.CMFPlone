@@ -30,7 +30,7 @@
                 <span i18n:translate="label_new_owner">New owner</span>
             
                 <div id="id_help" 
-                     i18:translate="id_help"
+                     i18n:translate="id_help"
                      class="help" 
                      style="visibility:hidden">
                 Changes the ownership of the current object.
@@ -55,7 +55,7 @@
             <div class="label required">
                 <span i18n:translate="label_subobjects">Subobjects</span>
                 <div id="id_recurse"
-                     i18:translate="help_subobjects"
+                     i18n:translate="help_subobjects"
                      class="help"
                      style="visibility:hidden">
                 Changes all the contained objects if selected.

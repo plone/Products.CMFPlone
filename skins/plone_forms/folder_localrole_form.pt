@@ -129,7 +129,7 @@
        		  <h1>
                 <span i18n:translate="heading_assign_localrole">Assign local roles to folder
       			    <span tal:content="here/title_or_id" i18n:name="folder">title</span>
-		</span>
+            		</span>
       			</h1>
       			
       			<p i18n:translate="description_assign_localrole">

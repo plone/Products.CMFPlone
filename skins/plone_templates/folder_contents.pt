@@ -36,12 +36,12 @@
     
                 <h1 class="folderName" tal:condition="python:user.getUserName()==here.getId()">
                 <img tal:replace="structure here/folder.gif" /> 
-                <span i18n:translate="heading_my_folder" omit-tag="">My Folder</span>
+                <span i18n:translate="heading_my_folder" tal:omit-tag="">My Folder</span>
                 </h1> 
                 
                 <h1 tal:condition="python: user.getUserName()!=here.getId()">
                 <img tal:replace="structure here/folder.gif" /> 
-                <span tal:content="here/title_or_id" omit-tag="">Directory Id</span>
+                <span tal:content="here/title_or_id" tal:omit-tag="">Directory Id</span>
                 </h1> 
    
             </div>

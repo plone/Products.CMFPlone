@@ -8,7 +8,7 @@
 
 <body>
 
-    <span metal:fill-slot="main">
+    <div metal:fill-slot="main">
 
         <div class="contentHeader">
         <h1 tal:content="here/title_or_id">Title or id</h1>
@@ -22,7 +22,7 @@
                     tal:content="here/remote_url">remote url</a>
         </p>            
 
-    </span>
+    </div>
 
 </body>
 

@@ -337,7 +337,8 @@
                           onblur="formtooltip('contributors_help',0)"
                           tal:attributes="tabindex tabindex/next;"
                           tal:define="contributors request/contributors | here/Contributors;"
-                          ><span tal:replace="python:'\n'.join(contributors)">contributor</span></textarea>
+                          tal:content="python:'\n'.join(contributors)"
+                          >contributors</textarea>
             </div>
         </div>
 

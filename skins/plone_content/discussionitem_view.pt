@@ -22,7 +22,7 @@
          tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
 
         <div>
-            <span i18n:translate="description_above_in_comment_thread" omit-tag="">Above in this comment thread:</span> 
+            <span i18n:translate="description_above_in_comment_thread" tal:omit-tag="">Above in this comment thread:</span> 
             <span tal:replace="structure here/aboveInThread"></span>
         </div>
 

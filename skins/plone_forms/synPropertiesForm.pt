@@ -83,7 +83,7 @@
                     <div class="label">
                     <span i18n:translate="label_syndication_update_period">Update Period</span>
                     <div id="update_period_help" 
-                         i18:translate="help_syndication_update_period"
+                         i18n:translate="help_syndication_update_period"
                          class="help" 
                          style="visibility:hidden">
                     Controls how often the channel is updated.
@@ -112,7 +112,7 @@
                 <div class="label">
                     <span i18n:translate="label_syndication_update_frequency">Update Frequency</span>
                     <div id="update_frequency_help" 
-                         i18:translate="help_syndication_update_frequency"
+                         i18n:translate="help_syndication_update_frequency"
                          class="help" 
                          style="visibility:hidden">
                     Controls the frequency of the updates. For example, if you want it to update every second week,
@@ -139,7 +139,7 @@
                     <span i18n:translate="label_syndication_update_base">Update Base</span>
 
                     <div id="update_base_help" 
-                         i18:translate="help_syndication_update_base"
+                         i18n:translate="help_syndication_update_base"
                          class="help" 
                          style="visibility:hidden">
                     This is the date the updater starts counting from. 
@@ -162,7 +162,7 @@
                     <span i18n:translate="label_syndication_max_items">Maximum Items</span>
                     
                     <div id="max_items_help" 
-                         i18:translate="help_syndication_max_items"
+                         i18n:translate="help_syndication_max_items"
                          class="help" 
                          style="visibility:hidden">
                     Maximum number of items that will be syndicated. 
