@@ -57,6 +57,9 @@ def setupPrivatePloneWorkflow(wf):
     for sdef in wf.states.objectValues():
         sdef.setProperties( transitions=tuple(sdef.transitions)+('publicize',) )
     
+    sdef=wf.states.private
+    sdef.setProperties( transitions=tuple(sdef.transitions)+('publish',) )
+
 def createPrivatePloneWorkflow(id):
     ob=DCWorkflowDefinition(id)
     setupPrivatePloneWorkflow(ob)
