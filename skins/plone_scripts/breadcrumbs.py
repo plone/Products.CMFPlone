@@ -7,78 +7,53 @@
 ##parameters=obj=None
 ##title=used to make the breadcrumbs in the pathbar
 ##
-
 if obj is None:
     obj=context
-    
+
+# some variables
 relative_ids = context.portal_url.getRelativeContentPath(obj)
 published = context.REQUEST.get('PUBLISHED', None)
 published_id = None
 checkPermission=context.portal_membership.checkPermission
+dont_show = ['talkback',] # objects we wont show
+o=context.portal_url.getPortalObject()
 
 if published is not None and hasattr(published, 'getId'):
     published_id = published.getId()
 
 currentlyViewingFolderContents = (published_id == 'folder_contents')
-
-o=context.portal_url.getPortalObject()
-
-#XXX WHY IS THIS HERE?
-# add the initial breadcrumb: the home directory
-#if currentlyViewingFolderContents and \
-#    context.portal_membership.checkPermission('List folder contents', o):
-#    path_seq = ( (homeDirectoryName, o.absolute_url()+'/folder_contents'), )
-#else:
-#    path_seq = ( (homeDirectoryName, o.absolute_url()), )
-
-
-
-
-
 path_seq = []
-view = None
 
 # add breadcrumbs for directories between the root and the published object
-for id in relative_ids:
-    try:
-        o=o.restrictedTraverse(id)
-        if o.getId() in ('talkback', ): # I'm sorry ;(
-            raise 'talkbacks would clutter our precious breadcrumbs'
-        if o.isPrincipiaFolderish and currentlyViewingFolderContents and \
-          checkPermission('List folder contents', o):
-            path_seq.append( ( o.title_or_id(), 
-                               o.absolute_url()+'/folder_contents') )
-        else:
-            # see if the object on the stack has a view action
-            # XXX this seems expensive
-            try:
-                view = o.getTypeInfo().getActionById('view')
-            except:
-                view = None
-            if o.getId() != 'index_html':
-                if view:
-                    path_seq.append( ( o.title_or_id(),
-                                       o.absolute_url()+'/' + view ) )
-                else:
-                    path_seq.append( ( o.title_or_id(), 
-                                       o.absolute_url() ) )
-    except:
-        pass # XXX gulp! this usually occurs when trying to traverse 
-             # into talkback objects
+for id in relative_ids:    
+    # this is much faster than restrictedTraverse and makes some sense,
+    # if the user can't access the contents information, getattr() will fail
+    # and hiding the breadcrumb because they dont have access? urk
+    # o = getattr(o, id)
+    o = context.restrictedTraverse(id)
+    if id in dont_show: # I'm sorry ;(
+        # talkbacks would clutter our precious breadcrumbs
+        continue
+        
+    if o.isPrincipiaFolderish and \
+      currentlyViewingFolderContents and \
+      checkPermission('List folder contents', o):
+        path_seq.append( ( o.title_or_id(), o.absolute_url()+'/folder_contents') )
+    else:
+        # we assume in search results everything has a view
+        # and if every object is derived from PortalObject, it
+        # must have a method called view, so I think its pretty
+        # safe to make this assumption, and adds a speed increase
+        if id != 'index_html':
+            path_seq.append( ( o.title_or_id(), o.absolute_url()+'/view' ) )
 
 # if the published object was not added to breadcrumbs above and
 #    it is not a view template, add a breadcrumb for it
 
-if published != o and not currentlyViewingFolderContents \
-  and published_id != view and published_id != 'index_html':
-    try:
-        url = published.absolute_url()
-        try:
-            url = url + published.getTypeInfo().getActionById('view')
-        except:
-            pass
+if published != o and not \
+    currentlyViewingFolderContents and \
+    published_id not in  ('view', 'index_html'):
+        url = published.absolute_url() + '/view'
         path_seq.append( (published.title_or_id(), url) )
-    except:
-        pass
 
 return path_seq
