@@ -1,3 +1,66 @@
+2003-12-05 20:16  zopezen
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): Untested, but no
+	  import errors ;) Just a general clean up of this, looks like most
+	  of it is just fine.
+
+2003-12-05 19:58  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch):
+	  'contentActions' bars without content show up as they should now
+
+2003-12-05 18:30  eaon
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_styles/ploneIEFixes.css.dtml,
+	  plone_styles/ploneTextLarge.css,
+	  plone_templates/global_searchbox.pt,
+	  plone_templates/main_template.pt (Plone-2_0-branch): back to
+	  semantic structure, site actions don't move anymore,
+	  hiddenStructure reworked, globalnav border on moz for win shows
+	  up again
+
+2003-12-05 07:55  limi
+
+	* skins/cmf_legacy/itemRSS.dtml (Plone-2_0-branch): Checked in fix
+	  for non-quoted entities in RSS. Bug 2074.
+
+2003-12-05 07:48  limi
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_templates/global_contentmenu.pt,
+	  plone_templates/global_contentviews.pt (Plone-2_0-branch): Styled
+	  the one-item add link, styled the lock section and added an
+	  actionSingular class.
+
+2003-12-05 07:18  runyaga
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  fixed the single value cotnentmenu entry
+
+2003-12-05 07:14  runyaga
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  only show 'add new $foo' if there is only 1 item in the
+	  contentmenu
+
+2003-12-05 06:48  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Underlines
+	  to byline links.
+
+2003-12-05 06:02  limi
+
+	* skins/: plone_images/search_icon.gif,
+	  plone_styles/plone.css.dtml,
+	  plone_templates/global_siteactions.pt,
+	  plone_templates/main_template.pt (Plone-2_0-branch): Visual
+	  tweaks.
+
+2003-12-05 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-05 04:02  limi
 
 	* skins/plone_forms/: enabling_cookies.pt, login_form.pt
