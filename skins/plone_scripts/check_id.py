@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=id=None,required=0,alternative_id=None
+##parameters=id=None,required=0,alternative_id=None,contained_by=None
 ##title=Check an id's validity
 #
 # Test an id to make sure it is valid.
@@ -63,31 +63,28 @@ else:
 
 # perform the actual check
 if checkForCollision:
-    #XXX We may need to pass in a container parameter since its unclear where
-    # we are trying to add the object with the id in question.  check_id is usually
-    # called by validate_id or similar functions which test whether a new id is
-    # ok for a given object. For such a use case this is fine, but if we call
-    # check_id BEFORE we add a new object with the folder to which we want to
-    # add the new object as context, this does the wrong thing.
-    container = context.getParentNode()
+    # handles two use cases:
+    # 1. object has not yet been created and we don't know where it will be
+    # 2. object has been created and checking validity of id within container
+    if not contained_by:
+        contained_by = context.getParentNode()
 
-    if hasattr(container, 'objectIds'):
+    if hasattr(contained_by, 'objectIds'):
         try:
-            if id in container.objectIds():
+            if id in contained_by.objectIds():
                 return 'There is already an item named \'%s\' in this folder.' % id
         except Unauthorized:
             pass  # ignore if we don't have permission
-    if hasattr(container, 'checkIdAvailable'):
+    if hasattr(contained_by, 'checkIdAvailable'):
         try:
-            if not container.checkIdAvailable(id):
+            if not contained_by.checkIdAvailable(id):
                 return '\'%s\' is reserved.' % id
             else:
                 return
         except Unauthorized:
             pass # ignore if we don't have permission
-    if hasattr(container, 'checkValidId'):
+    if hasattr(contained_by, 'checkValidId'):
         try:
-            container.checkValidId(id)
+            contained_by.checkValidId(id)
         except BadRequestException:
             return '\'%s\' is reserved.' % id
-
