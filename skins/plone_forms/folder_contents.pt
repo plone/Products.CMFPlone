@@ -29,7 +29,7 @@
 
 
     <form name="folderContentsForm"
-          method="post"
+          method="GET"
           action="folder_object"
           tal:attributes="action here/absolute_url"
           tal:define="global folder_contents python:here.listFolderContents( contentFilter=filter ); 
@@ -165,12 +165,12 @@
 
             Show:
 
-            <select name="filter_by_Type:list" onChange="submitFilterAction()"
+            <select id="filter_selection" name="filter_by_Type:list" onChange="submitFilterAction()"
                     tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" >
 
                 <option value="#" 
                         tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
-                All objects
+                All items
                 </option>  
 
                 <option value="#"
