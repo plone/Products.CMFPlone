@@ -32,12 +32,12 @@ class PloneTool (UniqueObject, SimpleItem):
         """
         if not variables: return
         mail_text = self.sendto_template( self
-                                        , variables['send_from_address']
-                                        , variables['send_to_address']
-                                        , variables['url']
-                                        , variables['title']
-                                        , variables['description']
-                                        , variables['comment']
+                                        , send_from_address = variables['send_from_address']
+                                        , send_to_address = variables['send_to_address']
+                                        , url = variables['url']
+                                        , title = variables['title']
+                                        , description = variables['description']
+                                        , comment = variables['comment']
                                         )
         host = self.MailHost
         host.send( mail_text )

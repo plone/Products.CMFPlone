@@ -22,8 +22,10 @@ for wlist_map_sequence in wf_wlist_map.values():
 
         for result in catalog.searchResults(catalog_vars):
             o = result.getObject()
-            if context.portal_membership.checkPermission(permission, o) and \
-                o.absolute_url() not in [a.absolute_url() for a in avail_objs] :
+            if o is not None and \
+            context.portal_membership.checkPermission(permission, o) \
+            and o.absolute_url() not in \
+            [a.absolute_url() for a in avail_objs] :
                 avail_objs.append(o)
 
 return context.sort_modified_ascending(avail_objs)

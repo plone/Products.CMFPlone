@@ -31,19 +31,23 @@ class PropertiesTool(Folder, BaseTool):
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ add a new PropertySheet """
         o=SimpleItemWithProperties(id, title)
-        self._setObject(id, o)
-        o=self._getOb(id)
-        o.title=title
+        #self._setObject(id, o)
+        #o=self._getOb(id)
 
         # copy the propertysheet values onto the new instance
         if propertysheet is not None:
             if not hasattr(propertysheet, 'propertyIds'):
                 raise TypeError, 'propertysheet needs to be a PropertyManager'
+
             for property in propertysheet.propertyMap():
                 pid=property.get('id')
                 ptype=property.get('type')
                 pvalue=propertysheet.getProperty(pid)
-                o._setProperty(pid, pvalue, ptype)
+                if not hasattr(o, pid):
+                    o._setProperty(pid, pvalue, ptype)
+                
+        self._setObject(id, o)
+
             
     def manage_addPropertySheet(self, id, title='', propertysheet=None, REQUEST=None):
         """ adds a instance of a Property Sheet 

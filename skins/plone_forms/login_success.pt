@@ -29,7 +29,7 @@
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
-    <div tal:define="p_props here/portal_properties/site_propeties;
+    <div tal:define="p_props here/portal_properties/site_properties;
                      member here/portal_membership/getAuthenticatedMember;">
 		
             <div tal:condition="python: not(member.login_time == here.ZopeTime('2000/01/01') and here.validate_email)">

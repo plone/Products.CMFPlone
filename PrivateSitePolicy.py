@@ -39,6 +39,9 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
         wf_tool.doActionFor(portal,'show',comment='The portal object itself must be visible')
         portal.index_html.manage_permission('View', ('Anonymous', 'Authenticated') )
 
+        wf_tool.doActionFor(portal,'show',comment='The portal object itself must be visible')
+        portal.index_html.manage_permission('View', ('Anonymous', 'Authenticated') )
+
         portal.manage_permission(AddPortalMember,('Manager',))
         pa_tool=getToolByName(portal,'portal_actions')
 

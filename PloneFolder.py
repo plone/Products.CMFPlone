@@ -11,6 +11,7 @@ from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo, Un
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base
 from Globals import InitializeClass
+from webdav.WriteLockInterface import WriteLockInterface
 
 from PloneUtilities import log
 
@@ -61,7 +62,8 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     meta_type = 'Plone Folder' 
     security=ClassSecurityInfo()
     
-    __implements__ = DefaultDublinCoreImpl.__implements__ , 
+    __implements__ = (DefaultDublinCoreImpl.__implements__ ,
+                      WriteLockInterface)
 
     manage_options = Folder.manage_options + \
                      CMFCatalogAware.manage_options

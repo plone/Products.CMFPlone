@@ -17,9 +17,12 @@ class WorkflowTool( BaseTool ):
     # Refactor me, my maker was tired
     def flattenTransitions(self, objs, container=None): 
         """ this is really hokey - hold on!!"""
-        if hasattr(objs, 'startswith'): return ()
-        transitions=()
+        if hasattr(objs, 'startswith'): 
+            return ()
+
+        transitions=[]
         t_names=[]
+
         if container is None:
             container = self
         for o in [getattr(container, oid, None) for oid in objs]:
@@ -31,23 +34,25 @@ class WorkflowTool( BaseTool ):
             if trans:
                 for t in trans:                   
                    if t['name'] not in t_names:
-                      transitions+=(t,)
+                      transitions.append(t)
                       t_names.append(t['name'])
-        return transitions
+
+        return tuple(transitions[:])
     
     security.declarePublic('getTransitionsFor')
     def getTransitionsFor(self, obj=None, container=None, REQUEST=None):	
-        wf_tool=getToolByName(self, 'portal_workflow')
         if type(obj)==type([]):
             return self.flattenTransitions(objs=obj, container=container)
         else:
             obj=obj
+
         wfs=()
-        avail_trans=()
+        avail_trans=[]
         objstate=None
+
         try:
-            objstate=wf_tool.getInfoFor(obj, 'review_state')
-            wfs=wf_tool.getWorkflowsFor(obj)
+            objstate=self.getInfoFor(obj, 'review_state')
+            wfs=self.getWorkflowsFor(obj)
         except WorkflowException, e:
             return avail_trans
 
@@ -62,22 +67,21 @@ class WorkflowTool( BaseTool ):
                     t['title']=trans.title
                     t['id']=trans.id
                     t['name']=trans.actbox_name
-                    avail_trans+=(t, )
-        return avail_trans
+                    avail_trans.append(t)
+        return tuple(avail_trans[:])
 
     def workflows_in_use(self):
         """ gathers all the available workflow chains (sequence of workflow ids, ).  """
         in_use = []
-        wf_tool = getToolByName(self, 'portal_workflow')
         types_tool = getToolByName(self, 'portal_types')
 
-        in_use.append( wf_tool._default_chain )
+        in_use.append( self._default_chain )
 
-        if wf_tool._chains_by_type:
-            for chain in wf_tool._chains_by_type.values():
+        if self._chains_by_type:
+            for chain in self._chains_by_type.values():
                 in_use.append(chain)
         
-        return in_use  
+        return tuple(in_use[:])
 
     security.declarePublic('getWorklists') 
     def getWorklists(self):
@@ -90,12 +94,11 @@ class WorkflowTool( BaseTool ):
             (worklist)id, guard (Guard instance), guard_permissions (permission of Guard instance), 
             catalog_vars (mapping), actbox_name (actions box label), and actbox_url (actions box url)
         """   
-        wf_tool=getToolByName(self, 'portal_workflow')
         wf_with_wlists = {}    
         for id in [workflow for seq in self.workflows_in_use() for workflow in seq]:
             # the above list incomprehension merely _flattens_ nested sequences into 1 sequence
 
-            wf=wf_tool.getWorkflowById(id)
+            wf=self.getWorkflowById(id)
             if hasattr(wf, 'worklists'):
                 wlists = []
                 for worklist in wf.worklists._objects:
@@ -111,23 +114,6 @@ class WorkflowTool( BaseTool ):
                 wf_with_wlists[id]=wlists 
 
         return wf_with_wlists
-
-    def testGettingWorklists(self):
-        """ careful with this.. it can hose the ZODB """
-        wf_tool=getToolByName(self, 'portal_workflow')
-        if not hasattr(wf_tool, 'getWorklists'):
-            wf_tool.getWorklists = getWorklists
-            log('wf_tool doenst have Worklists!')
-        else:
-            del(wf_tool.getWorklists)
-            
-            log('wf_tool has getWorklists!')
-
-        for wflow_id, wlist_seq in wf_tool.getWorklists(self).items():
-            for wlist in wlist_seq:
-                log(wlist)
-                permission=wlist['guard'].getPermissionsText()
-                log ('permission for ' + wlist['id'] + ' is ' + permission)  
 
 InitializeClass(WorkflowTool)
 

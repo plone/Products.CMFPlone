@@ -128,8 +128,8 @@ class PloneGenerator(Portal.PortalGenerator):
         wf_tool.setDefaultChain('plone_workflow')
 
         wf_tool.manage_addWorkflow( id='folder_workflow'
-                                  , workflow_type='folder_workflow '+\
-                                    '(Folder Workflow [Plone])')
+                                , workflow_type='folder_workflow '+\
+                                  '(Folder Workflow [Plone])')
         wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
 
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):        

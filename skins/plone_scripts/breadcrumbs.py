@@ -8,7 +8,7 @@
 ##title=used to make the breadcrumbs in the pathbar
 ##
 
-homeDirectoryName = 'home'
+homeDirectoryName = 'Home'
 
 if obj is None:
     obj=context
@@ -68,3 +68,4 @@ if published != o and not currentlyViewingFolderContents and published_id != vie
     except:
         pass
 
+return path_seq

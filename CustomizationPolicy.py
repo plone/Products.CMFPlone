@@ -215,9 +215,12 @@ class DefaultCustomizationPolicy:
 
         #customize memberdata tool
         md=getToolByName(portal, 'portal_memberdata')
-        md._setProperty('formtooltips', '1', 'boolean')
-        md._setProperty('visible_ids', '1', 'boolean')
-        md._setProperty('wysiwyg_editor', '', 'string')
+        if not hasattr(md,'formtooltips'):
+            md._setProperty('formtooltips', '1', 'boolean')
+        if not hasattr(md,'visible_ids'):            
+            md._setProperty('visible_ids', '1', 'boolean')
+        if not hasattr(md,'wysiwyg_editor'):
+            md._setProperty('wysiwyg_editor', '', 'string')
 
         #customize membership tool
         mt=getToolByName(portal, 'portal_membership')
@@ -253,12 +256,13 @@ class DefaultCustomizationPolicy:
         mt._actions=new_actions
         
         #customized the registration tool
-        rt=getToolByName(portal, 'portal_registration')
-        rt_actions=rt._cloneActions()
-        for a in rt_actions:
-            if a.id=='join':
-                a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
-        rt._actions=rt_actions
+        if hasattr(portal, 'portal_registration'):
+            rt=getToolByName(portal, 'portal_registration')
+            rt_actions=rt._cloneActions()
+            for a in rt_actions:
+                if a.id=='join':
+                    a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
+            rt._actions=rt_actions
 	
         pp=getToolByName(portal, 'portal_properties')
         pp_actions=pp._cloneActions()

@@ -11,8 +11,8 @@ import os
 import sys
 import zLOG
 
-def log(message,summary='',severity=0):
-    zLOG.LOG('Plone Database Init',severity,summary,message)
+def log(message, summary='', severity=0):
+    zLOG.LOG('Plone Database Init', severity, summary, message)
 
 from ConfigParser import ConfigParser
 
@@ -34,7 +34,7 @@ def go(app):
         # oh dear
         out.append('Database init failed miserably [%s, %s]' % _get_error())
 
-    log('\n'.join(out))
+    log('\n'.join(out)+'\n')
 
 def _get_error():
     type, value = sys.exc_info()[:2]

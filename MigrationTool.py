@@ -20,7 +20,7 @@ class MigrationTool( UniqueObject, SimpleItem):
 
     security = ClassSecurityInfo()
     security.declareProtected(ManagePortal, 'manage_overview')
-    manage_overview = DTMLFile('tool_forms/migrationTool', globals())
+    manage_overview = DTMLFile('www/migrationTool', globals())
 
     security.declareProtected(ManagePortal, 'getInstanceVersion')
     def getInstanceVersion(self):

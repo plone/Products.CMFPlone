@@ -44,10 +44,10 @@
          tal:define="TITLELEN python: 150;
                      split nocall: modules/string/split;
                      TRUNCDESCR python: 150;
-                     global artifacts
-                            python: [i for i in here.objectValues()
-                                       if i.getId()
-                                         != 'Collector Issue Transcript']">
+                     global artifacts 
+                            python:[i for i in here.objectValues() 
+                                      if i.getTypeInfo().getId() != 'Collector Issue Transcript']">
+
         <h1 i18n:translate="">
             Issue <span tal:replace="here/id" i18n:name="id">ID</span> of
             <a href="" i18n:name="collector_link" i18n:translate="collector_link"

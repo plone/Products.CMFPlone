@@ -142,7 +142,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             navprops._setProperty(transition, destination)
 
 
-    security.declarePrivate('removeTransitionFor')
+    security.declarePrivate('removeTransitionFrom')
     def removeTransitionFrom(self, content, script=None, status=None):
         """ removes everything regarding a content/script combination """
         property_tool = getattr(self, 'portal_properties')
