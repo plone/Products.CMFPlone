@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <body>
 
@@ -46,7 +45,7 @@
 
         </div>
     
-        <div tal:condition="python:test(err_type=='NotFound', 0, 1)" i18n:translate="site_error_details">
+        <div tal:condition="python:test(err_type=='NotFound', 0, 1)">
         
         <h1 i18n:translate="heading_site_error">Site error</h1>
         

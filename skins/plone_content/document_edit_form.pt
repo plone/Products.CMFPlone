@@ -215,7 +215,7 @@
 	         tal:define="error_file errors/file|nothing;"> 
             
             <div class="label">
-                <span i18n:translate="label_upload_contents_optional">Upload contents (optional)
+                <span i18n:translate="label_upload_contents_optional">Upload contents (optional)</span>
                 <div id="upload_help" 
                      i18n:translate="help_upload_text"
                      class="help" 
