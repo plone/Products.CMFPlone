@@ -9,7 +9,7 @@
 ##
 REQUEST=context.REQUEST
 
-errors=context.portal_form_validateion.validate(context, 'validate_registration')
+errors=context.portal_form_validation.validate(context, 'validate_registration')
 if errors:
     return context.join_form( context, REQUEST)
 

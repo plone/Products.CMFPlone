@@ -8,6 +8,10 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore
 from types import TupleType
 
+from zLOG import LOG, INFO
+def log(summary='', text=''):
+    LOG('Plone Debug', INFO, summary, text)
+
 class PloneTool (UniqueObject, SimpleItem):
     id = 'plone_utils'
     meta_type= 'Plone Utility Tool'
@@ -135,6 +139,40 @@ class PloneTool (UniqueObject, SimpleItem):
 	except: #XXX ick
             pass 
         return wfs
+
+    def getNavigationTransistion(self, context, action, status):
+        navprops = getattr(self, 'navigation_properties')
+        fixedTypeName = '.'.join(context.getTypeInfo().Title().lower().split(' '))
+        navTransition = fixedTypeName+'.'+action+'.'+status
+	log(navTransition)
+        return getattr(navprops.aq_explicit, navTransition, None)
+
+    security.declarePublic('getNextPageFor')
+    def getNextPageFor(self, context, action, status, **kwargs):
+        """ given a object, action_id and status we can fetch the next action
+	    for this object 
+        """
+        action_id=self.getNavigationTransistion(context,action,status)
+        next_action=context.getTypeInfo().getActionById(action_id)
+        if next_action is not None:
+            return context.restrictedTraverse(next_action)
+ 
+        raise Exception, 'Argh! could not find the transition, ' + navTransition
+            
+    security.declarePublic('getNextRequestFor')
+    def getNextRequestFor(self, context, action, status, **kwargs):
+        """ takes object, action, and status and returns a RESPONSE redirect """
+        action_id=self.getNavigationTransistion(context,action,status)
+        log('getNextREquestfor' + str(context) + str(action) + str(status)+str(action_id))
+        next_id,next_action='',''
+        if action_id:
+            next_action=context.getTypeInfo().getActionById(action_id)
+	
+	if next_action:
+            to_url='%s/%s?%s' % ( context.absolute_url()
+                                , next_action
+                                , '' )
+            return self.REQUEST.RESPONSE.redirect(to_url)
 
 InitializeClass(PloneTool)
 

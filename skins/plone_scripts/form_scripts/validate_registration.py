@@ -13,8 +13,8 @@ validator.addField('username', 'String', required=1)
 validator.addField('email', 'Email')
 if not context.portal_properties.validate_email:
     # if we are validating email we aren't letting people pick their own passwords.
-    form.addField('password', 'Password', required=1)
-    form.addField('confirm', 'Password', required=1)
+    validator.addField('password', 'Password', required=1)
+    validator.addField('confirm', 'Password', required=1)
 errors=validator.validate(REQUEST)
 
 password, confirm = REQUEST.get('password', ''), REQUEST.get('confirm', '')

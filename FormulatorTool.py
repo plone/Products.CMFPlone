@@ -48,19 +48,19 @@ class FormulatorTool (UniqueObject, SimpleItem):
         if not type(errors) == type({}):
             errors = {}
         # do some basic id validation
-        id = context.REQUEST.get('id')
-        if bad_id(id):
+        id = self.REQUEST.get('id', None)
+        if id and bad_id(id):
             errors['id'] = messages['illegal_id']
-        else:
+        elif id:
             if context.getId() != id:
                 if id in context.getParentNode().objectIds():
                     errors['id'] = messages['id_exists']
 
         # set a status message indicating errors
         if errors:
-            context.REQUEST.set('portal_status_message', messages['error_exists'])
+            self.REQUEST.set('portal_status_message', messages['error_exists'])
 
-        context.REQUEST.set('errors', errors)
+        self.REQUEST.set('errors', errors)
         return errors
 
     security.declarePublic('createForm') # ( CMFCorePermissions.AddPortalContent, 'createForm' )

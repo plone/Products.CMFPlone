@@ -1,0 +1,4 @@
+newsitem.newsitem_edit.success:string=view
+newsitem.newsitem_edit.failure:string=edit
+link.link_edit.success:string=view
+link.link_edit.failure:string=edit

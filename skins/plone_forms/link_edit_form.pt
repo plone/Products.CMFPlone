@@ -49,7 +49,8 @@
             <div class="field"
                   tal:attributes="class python:test(error_id, 'field error', 'field')" >
 
-                <div tal:replace="error_id" />
+                <div tal:condition="error_id"
+		     tal:replace="structure string:$error_id <br />" />
 
                 <input type="text" 
                        name="id" 
@@ -80,7 +81,8 @@
             <div class="field"
                   tal:attributes="class python:test(error_title, 'field error', 'field')" >
 
-                <div tal:replace="error_title" />
+                <div tal:condition="error_title"
+		     tal:replace="structure string:$error_title <br />" />
 
                 <input type="text" 
                        name="title" 
@@ -136,7 +138,8 @@
             
             <div tal:attributes="class python:test(error_remote_url, 'field error', 'field')" >
 
-                <div tal:replace="error_remote_url" />
+                <div tal:condition="error_remote_url"
+		     tal:replace="structure string: $error_remote_url <br />" />
 
                 <input type="text" 
                        name="remote_url"
@@ -156,8 +159,8 @@
                 <input class="context"
                        tabindex="5" 
                        type="submit" 
-                       name="Change Link" 
-                       value="Save" />
+                       name="save" 
+                       value="save" />
             </div>
         </div>
         
