@@ -164,7 +164,13 @@ class NavigationTreeViewBuilder(SimpleItem):
 
 
     def _navtree_cmp(self, a,b):
-        for field, order in self.sortCriteria:
+        for cs in self.sortCriteria:
+            c=cs.split(',')
+            field=c[0]
+            if len(c)==2:
+                order=c[1]
+            else:
+                order='asc'
             if hasattr(a,field) and hasattr(b,field):
                 aval=getattr(a,field)
                 if callable(aval): aval = aval()
