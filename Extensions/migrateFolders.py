@@ -14,20 +14,25 @@ def migrateFolders(self):
 
     def migrate(f):
 	target=None
-        if f.isPrincipiaFolderish and f.meta_type in (folder_types):
+        if f.meta_type in (folder_types):
 	   id, tmp_id = f.getId(), 'tmp__'+f.getId()
 	   parent=f.aq_parent
-	   if not hasattr(parent, 'portal_type'): return
+	   if not hasattr(parent, 'portal_type'): 
+               return
 	   parent.invokeFactory(id=tmp_id, type_name='Folder')
-	   src,target=getattr(parent, f.getId()), getattr(parent, tmp_id)
+	   src, target=getattr(parent, id), getattr(parent, tmp_id)
 	   target.manage_pasteObjects( src.manage_copyObjects( src.objectIds()))
 	   parent.manage_delObjects(id)
 	   parent.manage_renameObjects( (tmp_id, ), (id, ) )
 	for o in target.objectValues(folder_types):
-	       migrate(o)
-	       
-    for f in root.objectValues(folder_types):
-        migrate(f)
+            migrate(o)
+
+    if getattr(self, 'meta_type', '')=='CMF Site':
+        for f in self.objectValues(folder_types):
+            migrate(f)
+    else:
+        for f in root.objectValues(folder_types):
+            migrate(f)
 
     #take off syndication tab if its on Folder Type
     folder_type = getToolByName(self, 'portal_types').getTypeInfo('Folder')
