@@ -86,7 +86,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not self.validateSingleEmailAddress(mfrom):
             raise ValueError, 'The "from" email address did not validate'
         
-        if not self.validateSingleEmailAddress(mto):
+        if not self.validateEmailAddresses(to):
             raise ValueError, 'The "to" email address did not validate'
         
         host = self.MailHost
