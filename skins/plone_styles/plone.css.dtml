@@ -223,6 +223,9 @@ pre {
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
 }
+.pre a {
+    text-decoration: underline;
+}
 .netscape4 {
     display: none;
 }
@@ -1010,22 +1013,22 @@ ul.configlets li a {
 */
 
 .link-external {
-    background: White url(<dtml-var portal_url>/link_icon.gif) 0px 1px no-repeat;
+    background: transparent url(<dtml-var portal_url>/link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-mailto {
-    background: White url(<dtml-var portal_url>/mail_icon.gif) 0px 1px no-repeat;
+    background: transparent url(<dtml-var portal_url>/mail_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-ftp {
-    background: White url(<dtml-var portal_url>/file_icon.gif) 0px 1px no-repeat;
+    background: transparent url(<dtml-var portal_url>/file_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-irc {
-    background: White url(<dtml-var portal_url>/discussionitem_icon.gif) 0px 1px no-repeat;
+    background: transparent url(<dtml-var portal_url>/discussionitem_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
