@@ -28,16 +28,18 @@ if subjects:
                                    , sort_order = 'reverse'  ):
         url=o.getURL()
         if url == abs_url: continue # s/b if o is obj but fails
-        rurl = o.getRemoteUrl
+        rurl = o.getRemoteUrl # getRemoteUrl is index as getRemoteUrl
         title=''
         if o.Title:
             title=o.Title
         else:
             title=o.getId #getId() is indexed as the getId property
 
-        lnk = {'title':title
-               ,'url':url
-               ,'icon':o.getIcon}
+        lnk = {'title' : title,
+               'url'  : url,
+               'rurl' : rurl,
+               'icon' : o.getIcon,
+              }
         if rurl and not rurl.startswith(portal_url): #we need UIDs
             remote.append(lnk)
         else:
