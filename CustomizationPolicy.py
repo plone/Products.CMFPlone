@@ -43,7 +43,7 @@ class DefaultCustomizationPolicy:
         actions_tool=getToolByName(portal, 'portal_actions')
         actions=actions_tool._cloneActions()
         for action in actions:
-                if action.id=='publishing':
+                if action.id=='content_status_history':
                     action.action=Expression('string:${object_url}/portal_form/content_status_history')
         actions_tool._actions=tuple(actions)
 
@@ -78,11 +78,6 @@ class DefaultCustomizationPolicy:
                              , CMFCorePermissions.ModifyPortalContent
                              , 'object' )
                              
-        #the new plone actions are prefix with 'portal_form/'  this
-        #ensures a special proxy object shadows content objects and
-        #they can participate in validation/navigation
-        self.plonify_typeActions(portal)
-        
         #change all Metadata labels to Properties for usability
         for t in tt.objectValues():
             _actions=t._cloneActions()
@@ -167,3 +162,8 @@ class DefaultCustomizationPolicy:
                 a.title='Plone Setup'
         pp._actions=pp_actions
 
+        #the new plone actions are prefix with 'portal_form/'  this
+        #ensures a special proxy object shadows content objects and
+        #they can participate in validation/navigation
+        self.plonify_typeActions(portal)
+                                

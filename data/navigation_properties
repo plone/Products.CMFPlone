@@ -65,5 +65,5 @@ default.metadata_edit_form.success = script:metadata_edit
 default.metadata_edit_form.failure = metadata_edit_form
 default.content_status_modify.success = action:view
 default.content_status_modify.failure = action:publishing
-default.content_status_history.success = action:view
-default.content_status_history.failure = action:publishing
+default.content_status_history.success = script:content_status_modify
+default.content_status_history.failure = content_status_history
