@@ -16,22 +16,22 @@
       tal:attributes="action here/absolute_url"
       tal:define="batch python:Batch(here.listSubtopics(), 5000, int(b_start), orphan=0)">
 
-<table metal:use-macro="here/folder_contents/macros/folder_listing">
+  <metal:block tal:condition="batch">
+    <table metal:use-macro="here/folder_contents/macros/folder_listing">
+    this is a sortable table that is shared with folder_contents
+    </table>
+  </metal:block>
 
-</table>
-
-<table class="FormLayout" tal:define="subtopics here/listSubtopics">
-
-<tal:block tal:repeat="button actions/folder_buttons|nothing">
-            <input class="context"
-                   type="submit"
-                   name="folder_rename_form:method" 
-                   value="Rename"
-                   tal:condition="python:len(batch) or (here.cb_dataValid and button['id'] == 'paste')"
-                   tal:attributes="value button/name; name button/url;" />
-</tal:block>
-
-</table>
+  <table class="FormLayout" tal:define="subtopics here/listSubtopics">
+    <tal:block tal:repeat="button actions/folder_buttons|nothing">
+                <input class="context"
+                       type="submit"
+                       name="folder_rename_form:method" 
+                       value="Rename"
+                       tal:condition="python:len(batch) or (here.cb_dataValid and button['id'] == 'paste')"
+                       tal:attributes="value button/name; name button/url;" />
+    </tal:block>
+  </table>
 </form>
 
 <form action="topic_addSubtopic" method="get">
