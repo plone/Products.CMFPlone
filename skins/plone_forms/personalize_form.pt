@@ -8,6 +8,7 @@
 <div class="document">
 
 <div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {})"
      tal:condition="here/rejectAnonymous" >
 
     
@@ -29,14 +30,18 @@
         
             <span class="legend">Member Details</span>
 		
-            <div class="row">
-                <span class="label">Email address</span>
-                <span class="field"> 
+            <div class="row"
+	         tal:define="error_email errors/email | nothing;
+                             email request/email|member/email;">
+                <span class="label required">Email address</span>
+                <span class="field" tal:attributes="class python:test(error_email, 'field error', 'field')"> 
+                    <div tal:condition="error_email" 
+                         tal:replace="structure string:$error_email <br />" />					  
                     <input type="text" 
-                           name="email" 
+                           name="field_email" 
                            size="25"
                            value="member.email html_quote"
-                           tal:attributes="value member/email" />
+                           tal:attributes="value email" />
                 </span>
                 <span class="info">
                 Enter your new email address here, if you want to change it.

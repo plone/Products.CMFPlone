@@ -5,6 +5,11 @@
 REQUEST=context.REQUEST
 portrait_id='MyPortrait'
 
+errors=context.validate_personalize()
+if errors:
+    edit_form=getattr(context, 'personalize_form')
+    return edit_form()
+    
 try:
     context.portal_registration.setProperties(REQUEST)
 except: #CMF1.3 below
