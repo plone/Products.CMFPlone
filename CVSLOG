@@ -1,3 +1,23 @@
+2003-12-25 14:14  shh42
+
+	* PloneFolder.py (Plone-2_0-branch): Fixed conflicting security
+	  declarations for manage_copyObjects.
+	  http://plone.org/collector/2216
+
+2003-12-25 05:09  lalo
+
+	* skins/plone_ecmascript/plone_menu.js.dtml (Plone-2_0-branch):
+	  accidentally found a workaround for collector issue 2182!
+
+2003-12-25 05:06  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2003-12-25 05:04  lalo
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  accidentally found a workaround for collector issue 2182!
+
 2003-12-24 08:15  vinsci
 
 	* skins/plone_3rdParty/jscalendar/README-Plone (Plone-2_0-branch):
