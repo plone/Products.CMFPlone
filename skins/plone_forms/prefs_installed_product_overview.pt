@@ -9,10 +9,10 @@
 	   
 <div metal:fill-slot="main" i18n:domain="plone">
 
-<h1 tal:content="string:Status of Product ${here/id}"> Installed Product  </h1>
+<h1 tal:content="string:Status of Product ${here/id}"> Installed Product </h1>
 
 
-<table border>
+<table class="listing">
     <tr tal:repeat="entry python:['Types','Skins','Actions','PortalObjects','Workflows','Slots']">
         <th tal:content="entry"></th>
         <td>
@@ -39,7 +39,6 @@
     
 </table>
 
-<hr>
 <h2>Transcript</h2>
 
 <span tal:content="structure python:here.getTranscriptAsText().replace('\n','<br>')">
