@@ -88,7 +88,7 @@ factory_type_information = { 'id'             : 'Plone Root'
                          , 'category'      : 'folder'
                          }
                        , { 'id'            : 'edit'
-                         , 'name'          : 'Properties'
+                         , 'name'          : 'Edit'
                          , 'action': 'string:${object_url}/folder_edit_form'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)
                          , 'category'      : 'folder'
