@@ -11,7 +11,9 @@
 <div metal:fill-slot="main"
      tal:define="errors python:request.get('errors', {});
                 Batch python:modules['ZTUtils'].Batch;
-                b_start python:request.get('b_start',0);"
+                b_start python:request.get('b_start',0);
+                acl_users here/acl_users;
+                portal_roles mtool/getPortalRoles;"
      tal:condition="here/rejectAnonymous" >
 	
     <h1 i18n:translate="">Groups Management</h1>
@@ -25,8 +27,9 @@
     <form action=""
           name="groups"
           method="post"
+          tal:condition="python:hasattr(acl_users,'getGroupNames')"
           tal:attributes="action here/absolute_url"
-          tal:define="groups python:Batch(here.acl_users.getGroupNames(), 25, int(b_start), orphan=1)">
+          tal:define="groups python:Batch(acl_users.getGroupNames(), 25, int(b_start), orphan=1)">
 
        <input class="standalone add"
               tabindex=""
@@ -50,29 +53,32 @@
                
             <tr>
                 <th rowspan="2">Group name</th>
-                <th colspan="3">Roles</th>
+                <th colspan="3" 
+                    tal:attributes="colspan python:len(portal_roles)">Roles</th>
                 <th rowspan="2">Remove Group</th>
             </tr>
             <tr>
-                <th>Manager</th>
-                <th>Member</th>
-                <th>Reviewer</th>
+                <tal:header repeat="portal_role portal_roles">
+                <th tal:content="portal_role">Role</th>
+                </tal:header>
             </tr>
             
-            <metal:block tal:repeat="this_group groups">
-            
-            <tr tal:define="oddrow repeat/this_group/odd"
+            <metal:block 
+                         tal:repeat="this_group python:[acl_users.getGroup(group) for group in groups]">
+
+            <tr 
+                tal:define="oddrow repeat/this_group/odd"
                  tal:attributes="class python:test(oddrow,'odd','even')">
             
-            <metal:block tal:define="roles python: ['Member', 'Reviewer'];
-                                     groupname python: ('Tech', 'Finance')">
+            <metal:block tal:define="roles python:['this'];
+                                     groupname python:this_group">
          
             <td>
                 <a href="XXX_prefs_group_management_individual_form">
                    
                     <img src=""
                          tal:replace="structure portal/group.gif" />&nbsp;<span 
-                         tal:replace="groupname">group name</span>
+                         tal:replace="python:groupname.getUserName()[len('group_'):]">group name</span>
                 </a>
             </td>
             
@@ -80,36 +86,26 @@
             <!-- XXX - Somebody has to make this iterate over the available
                        roles and show the correct roles for a group - and make it capable of
                        writing them back -->
-            <td class="checkbox">
+
+            <td class="checkbox" 
+                tal:define="group_roles python:this_group.getRoles();"
+                tal:repeat="portal_role portal_roles">
+            
                 <input type="checkbox" 
                        class="noborder"
                        name="name"
                        value="Manager"
-                       tal:attributes="checked string:checked" />
+                       tal:attributes="name string:$this_group:list;
+                                       value portal_role;
+                                       checked python:test(portal_role in group_roles, 'checked' ,'');" />
             </td>
             
-            <td class="checkbox">
-                <input type="checkbox"
-                       class="noborder"
-                       name="name"
-                       value="Member"
-                       tal:attributes="checked string:checked" />
-            </td>
-            
-            <td class="checkbox">
-                <input type="checkbox"
-                       class="noborder"
-                       name="name" 
-                       value="Reviewer"
-                       tal:attributes="checked string:checked" />
-            </td>
-          
             <td class="checkbox">
                 <input type="checkbox"
                        class="noborder notify"
                        name="delete:list"
                        value="value"
-                       tal:attributes="value groupname" />
+                       tal:attributes="value python:groupname" />
             </td>
             
             </metal:block>
@@ -120,7 +116,7 @@
         <input class="context"
                tabindex="" 
                type="submit" 
-               name="prefs_user_manage:method" 
+               name="prefs_group_manage:method" 
                value="Save Changes"
                tal:attributes="tabindex tabindex/next;"
                />
