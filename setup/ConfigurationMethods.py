@@ -163,7 +163,6 @@ def modifySkins(self, portal):
     
     # this should be run through the skins setup widget :)
     st=getToolByName(portal, 'portal_skins')
-    tt=getToolByName(portal, 'portal_types')
     skins_map=st._getSelections()
     if skins_map.has_key('No CSS'):
         del skins_map['No CSS']
@@ -173,11 +172,13 @@ def modifySkins(self, portal):
         del skins_map['Basic']
     st.selections=skins_map
     
-    for t in tt.objectValues():
+    types=getToolByName(portal, 'portal_types')
+    for t in types.objectValues():
         _actions=t._cloneActions()
         for a in _actions:
             if a.id == 'metadata':
-                a.name = 'Properties'
+                a.name = 'Properties'   #1.3
+                a.title = 'Properties'  #1.4
         t._actions=_actions
             
 def addNewActions(self, portal):
