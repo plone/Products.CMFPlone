@@ -277,8 +277,9 @@
 
         <table class="listing nosort" summary="Review History"
                i18n:attributes="summary"
-               tal:define="review_history python:wtool.getInfoFor(here, 'review_history', [])"
-               tal:condition="python:[review for review in review_history if review.get('action','')]">
+               tal:define="review_history python:wtool.getInfoFor(here, 'review_history', []);
+                                review_history python:[review for review in review_history if review.get('action','')]"
+               tal:condition="review_history">
 
           <tr>
             <th i18n:translate="listingheader_action">Action</th>
