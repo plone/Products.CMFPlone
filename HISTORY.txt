@@ -1,6 +1,6 @@
 CHANGES
 Plone 1.1
-    - Replaced "(No Description)" string from news.pt 
+    - Removed "(No Description)" string from news.pt 
     - creates an object to hold customization policy output, if any.
     - Added translation to field 'type' in folder_listing table. Replaced
       'n/a' with '&nbsp' to work like folder_contents
