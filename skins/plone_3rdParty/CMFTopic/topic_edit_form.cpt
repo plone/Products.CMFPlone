@@ -7,6 +7,7 @@
 
 <div metal:fill-slot="main"
      tal:define="errors options/state/getErrors;">
+<span tal:replace="errors" />
     <h1 i18n:translate="heading_edit_item">
     Edit
         <span i18n:name="itemtype">
@@ -181,7 +182,7 @@
         <input type="hidden" name="form.submitted" value="1" />
 
     </form>
-
+<span tal:replace="structure request" />
 </div>
 
 </body>

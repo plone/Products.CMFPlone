@@ -2,7 +2,7 @@
 title=View Event
 
 [validators]
-validators..Save=validate_id,validate_event_edit
+validators..Save=validate_id,validate_title,validate_start_end_date,validate_event_edit
 validators..Cancel=
 
 [actions]

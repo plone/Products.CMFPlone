@@ -5,7 +5,7 @@ title=edit form
 View=0:Authenticated
 
 [validators]
-validators..Save=validate_id,validate_document_edit
+validators..Save=validate_id,validate_title,validate_document_edit
 validators..Cancel=
 
 [actions]

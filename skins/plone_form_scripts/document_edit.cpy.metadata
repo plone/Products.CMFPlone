@@ -1,5 +1,5 @@
 [validators]
-validators=validate_id, validate_document_edit
+validators=validate_id,validate_title,validate_document_edit
 
 [actions]
 action.failure=redirect_to_action:string:edit

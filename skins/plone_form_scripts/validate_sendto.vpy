@@ -5,16 +5,13 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=send_to_address='',send_from_address=''
 ##title=validates the email adresses
-REQUEST=context.REQUEST
+if not send_to_address:
+    state.setError('send_to_address', 'Please submit an email address.', 'email_required')
 
-validator = context.portal_form.createForm()
-validator.addField('send_to_address'  , 'Email', required=1, required_not_found='Please submit an email address.')
-validator.addField('send_from_address', 'Email', required=1, required_not_found='Please submit an email address.')
-errors = validator.validate(REQUEST, REQUEST.get('errors', None))
-for fieldid, error in errors.items():
-    state.setError(fieldid, error)
+if not send_from_address:
+    state.setError('send_from_address', 'Please submit an email address.', 'email_required')
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message='Please correct the indicated errors.')

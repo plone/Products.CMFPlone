@@ -2,7 +2,7 @@
 title=Preference settings
 
 [validators]
-validators..Save=validate_personalize
+validators..Save=validate_emailaddr,validate_personalize
 validators..Cancel=
 
 [actions]

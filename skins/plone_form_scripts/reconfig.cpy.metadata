@@ -1,5 +1,5 @@
 [validators]
-validators = validate_reconfig
+validators = validate_title
 
 [actions]
 action.failure=traverse_to:string:reconfig_form

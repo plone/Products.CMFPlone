@@ -2,7 +2,7 @@
 title=Edit Folder
 
 [validators]
-validators..Save=validate_id, validate_folder_edit
+validators..Save=validate_id,validate_title,validate_folder_edit
 validators..Cancel=
 
 [actions]

@@ -9,11 +9,9 @@
 ##title=handles the workflow transitions of objects
 ##
 
-for k in context.REQUEST.keys():
-   context.plone_log(str(k)+':' + str(context.REQUEST.get(k,None)))
-context.plone_log(str(args))
-new_context = context.portal_factory.doCreate(context)
 contentEditSuccess=0
+
+new_context = context.portal_factory.doCreate(context)
 portal_workflow=new_context.portal_workflow
 current_state=portal_workflow.getInfoFor(new_context, 'review_state')
 

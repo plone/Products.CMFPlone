@@ -5,16 +5,12 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=remote_url=''
 ##title=Validate link_edit_form contents
 ##
 
-validator = context.portal_form.createForm()
-validator.addField('title', 'String', required=1)
-validator.addField('remote_url', 'String', required=1)
-errors = validator.validate(context.REQUEST)
-for fieldid, error in errors.items():
-    state.setError(fieldid, error, new_status='failure')
+if not remote_url:
+    state.setError('remote_url', 'Input is required but no input given', 'invalid_url')
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message='Please correct the indicated errors.')

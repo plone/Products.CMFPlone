@@ -5,39 +5,41 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=username='',email='',password='',confirm=''
 ##title=validates the Registration of a User
 
-REQUEST=context.REQUEST
+reg_tool=context.portal_registration
+def missing(field):
+    state.setError(field, 'Input is required but no input given.', 'input_required')
+def nomatch(field):
+    state.setError(field, 'Passwords do not match.', 'nomatch_password')
+def minlimit(field):
+    state.setError(field, 'Passwords must contain at least 5 letters.', 'min_password')
 
-validator = context.portal_form.createForm()
-validator.addField('username', 'String', required=1)
-validator.addField('email', 'Email')
+if not username:
+    missing('username')
+if not email:
+    missing('email')
+
 properties = context.portal_properties.site_properties
 if not properties.validate_email:
-    # if we are validating email we aren't letting people pick their own passwords.
-    validator.addField('password', 'Password', required=1)
-    validator.addField('confirm', 'Password', required=1)
-errors = validator.validate(REQUEST)
-for fieldid, error in errors.items():
-    state.setError(fieldid, error)
+     if password!=confirm:
+         nomatch('password')
+         nomatch('confirm')
 
-password, confirm = REQUEST.get('password', ''), REQUEST.get('confirm', '')
+     if not password:
+         missing('password')
+     if not confirm:
+         missing('confirm')
 
-#manual validation ;(
-if not properties.validate_email:
-    if password!=confirm:
-        state.setError('password', 'Passwords do not match.')
-        state.setError('confirm', 'Passwords do not match.')
-    if not state.getError('password') and len(password) < 5:
-        state.setError('password', 'Passwords must contain at least 5 letters.')
-        state.setError('confirm', 'Passwords must contain at least 5 letters.')
+     if not state.getError('password') and len(password) < 5:
+         minlimit('password')
+         minlimit('confirm')
 
-try:
-    if REQUEST.get('username') and not context.portal_registration.isMemberIdAllowed(REQUEST.get('username')):
-        state.setError('username', 'The login name you selected is already in use or is not valid. Please choose another.')
-except:
-    state.setError('username', context.plone_utils.exceptionString())
+if not state.getError('username') and not reg_tool.isMemberIdAllowed(username):
+    state.setError('username',
+                   'The login name you selected is already in use or is not valid. Please choose another.',
+                   'username_invalid' )
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message='Please correct the indicated errors.')

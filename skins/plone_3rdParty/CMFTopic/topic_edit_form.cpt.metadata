@@ -5,7 +5,7 @@ View:0:Authenticated
 title=Edit Topic
 
 [validators]
-validators..Save=validate_id,validate_topic_edit
+validators..Save=validate_id,validate_title,validate_topic_edit
 validators..Cancel=
 
 [actions]
