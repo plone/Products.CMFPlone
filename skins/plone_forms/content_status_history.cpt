@@ -3,20 +3,20 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 <head metal:fill-slot="head_slot">
-    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0')" />
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0'); dummy python:request.set('enable_border',1);" />
+ 
 </head>
 <body>
 
 <!--
      NOTE: This form does two things.  It will allow you to publish multiple files (recursively)
      and it will allow for you to publish a specific piece of content.  This flexibility comes with
-     some minor complexity.  How we tell is if we have a list of 'ids' in the REQUEST to be published
+     some complexity.  How we tell is if we have a list of 'ids' in the REQUEST to be published
 -->
 
 <div metal:fill-slot="main"
       tal:define="errors options/state/getErrors;
-                  review_state wf_state;
-                  review_history python:here.portal_workflow.getInfoFor(here, 'review_history')">
+                  review_state wf_state;" >
 
     <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
 
@@ -218,7 +218,7 @@
                            >Transition Name</label>
                     <br />
 
-                <tal:block define="global transitions python:here.portal_workflow.getTransitionsFor(target, here)"
+                <tal:block define="global transitions python:wtool.getTransitionsFor(target, here)"
                            repeat="transition transitions">
                     <input class="noborder"
                            id=""
@@ -283,7 +283,9 @@
 
     <div tal:condition="not: request/ids|nothing">
 
-        <table class="listing nosort" tal:condition="python:[review for review in review_history if review.get('action','')]">
+        <table class="listing nosort" 
+               tal:define="review_history python:wtool.getInfoFor(here, 'review_history', [])">
+               tal:condition="python:[review for review in review_history if review.get('action','')]">
 
             <tr>
                 <th i18n:translate="listingheader_action">Action</th>
