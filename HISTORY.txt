@@ -3,6 +3,11 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.0.1 - Jello
+    - improvement to Customization policy:
+      In a customization policy class you can now provide an optional method 'getPloneGenerator',
+      where you can return a different PloneGenerator than the default one
+      Affected files: Portal.py, CustomizationPolicy.py, interfaces/CustomizationPolicy.py
+      [zwork]
 
     - Fixed http://plone.org/collector/2973. Try to avoid brain.getObject() to
       speed up plone.
