@@ -52,11 +52,11 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
             ['sub1', 'foo', 'sub3'])
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestPloneFolder))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestPloneFolder))
-        return suite

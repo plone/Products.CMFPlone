@@ -249,12 +249,12 @@ class TestAcquisitionMethods(RestrictedPythonTest):
         self.checkUnauthorized('print context.aq_acquire')
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestSecurityDeclarations))
+    suite.addTest(makeSuite(TestAcquisitionMethods))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestSecurityDeclarations))
-        suite.addTest(makeSuite(TestAcquisitionMethods))
-        return suite

@@ -490,11 +490,11 @@ class TestDefaultWorkflow(PloneTestCase.PloneTestCase):
         self.failUnless(self.catalog(id='doc'))
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestDefaultWorkflow))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestDefaultWorkflow))
-        return suite

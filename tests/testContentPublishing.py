@@ -122,11 +122,11 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.failUnless(lyrics.Format()=='application/msword')
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestContentPublishing))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestContentPublishing))
-        return suite

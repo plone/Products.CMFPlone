@@ -131,11 +131,11 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.assertRaises(Unauthorized, self.folder.restrictedTraverse, 'doc')
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestUserFolder))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestUserFolder))
-        return suite

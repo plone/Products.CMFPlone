@@ -187,14 +187,14 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
         self.folder.topic.topic_view()
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestQueryCatalog))
+    suite.addTest(makeSuite(TestQueryCatalogQuoting))
+    suite.addTest(makeSuite(TestQueryCatalogParseError))
+    suite.addTest(makeSuite(TestSearchForms))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestQueryCatalog))
-        suite.addTest(makeSuite(TestQueryCatalogQuoting))
-        suite.addTest(makeSuite(TestQueryCatalogParseError))
-        suite.addTest(makeSuite(TestSearchForms))
-        return suite

@@ -174,12 +174,12 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.failUnless(g.has_role('Member'))
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestGroupDataTool))
+    suite.addTest(makeSuite(TestGroupData))
+    return suite
+
 if __name__ == '__main__':
-    framework(verbosity=1)
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestGroupDataTool))
-        suite.addTest(makeSuite(TestGroupData))
-        return suite
+    framework()

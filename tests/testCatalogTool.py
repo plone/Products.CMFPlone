@@ -182,14 +182,14 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         self.failUnless(hasattr(self.app, 'foo'))
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestCatalogTool))
+    suite.addTest(makeSuite(TestCatalogSearch))
+    suite.addTest(makeSuite(TestFolderCataloging))
+    suite.addTest(makeSuite(TestCatalogBugs))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestCatalogTool))
-        suite.addTest(makeSuite(TestCatalogSearch))
-        suite.addTest(makeSuite(TestFolderCataloging))
-        suite.addTest(makeSuite(TestCatalogBugs))
-        return suite

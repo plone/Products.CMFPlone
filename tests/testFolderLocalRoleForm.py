@@ -46,11 +46,11 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         self.folder.folder_localrole_form()
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestFolderLocalRole))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestFolderLocalRole))
-        return suite

@@ -405,16 +405,16 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.getDefault(), (self.ob, ['FrontPage']))
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestContentTypeScripts))
+    suite.addTest(makeSuite(TestEditShortName))
+    suite.addTest(makeSuite(TestEditFileKeepsMimeType))
+    suite.addTest(makeSuite(TestFileExtensions))
+    suite.addTest(makeSuite(TestGetObjSize))
+    suite.addTest(makeSuite(TestDefaultPage))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestContentTypeScripts))
-        suite.addTest(makeSuite(TestEditShortName))
-        suite.addTest(makeSuite(TestEditFileKeepsMimeType))
-        suite.addTest(makeSuite(TestFileExtensions))
-        suite.addTest(makeSuite(TestGetObjSize))
-        suite.addTest(makeSuite(TestDefaultPage))
-        return suite

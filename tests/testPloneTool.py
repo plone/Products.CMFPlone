@@ -92,12 +92,12 @@ class TestExceptionsImport(ZopeTestCase.ZopeTestCase):
         self.assertRaises(ImportError, self.ps)
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestPloneTool))
+    suite.addTest(makeSuite(TestExceptionsImport))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestPloneTool))
-        suite.addTest(makeSuite(TestExceptionsImport))
-        return suite
