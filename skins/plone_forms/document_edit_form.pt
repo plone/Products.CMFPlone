@@ -18,7 +18,7 @@
     <form class="group"
           name="edit_form"
           action="document_edit" 
-          method="get" 
+          method="POST" 
           enctype="multipart/form-data" >
 
         <span class="legend">Document Details</span>    

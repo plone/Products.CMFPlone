@@ -28,7 +28,7 @@ Header stuff
             </td>
             
             <td class="main" 
-                tal:define="show_border python:here.showEditableBorder();">
+                tal:define="show_border python:here.showEditableBorder(template_id=template.getId());">
 
                 <metal:block metal:define-slot="super" tal:condition="show_border">
                     
