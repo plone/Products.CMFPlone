@@ -4,7 +4,7 @@
       tal:define="history here/getWorkflowHistory;">
    <tal:history tal:condition="history"> 				 
         <fieldset id="history" class="collapsible collapsed">
-        <legend>bla</legend>
+        <legend>Workflow History</legend>
             <table class="listing nosort">
                 <tr>
                   <th i18n:translate="listingheader_action">Action</th>
