@@ -201,6 +201,8 @@ def manage_addSite(self, id, title='Portal', description='',
     if listPolicies() and custom_policy:
         o=custom_policies[custom_policy]
         o.customize(p)
+    #after customizations refresh the catalog
+    p.portal_catalog.refreshCatalog()
     if RESPONSE is not None:
         RESPONSE.redirect(p.absolute_url())
         
