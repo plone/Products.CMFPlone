@@ -24,7 +24,7 @@ if subjects:
                                    , sort_order = 'reverse'  ):
         url=o.getURL()
         title=''
-        if url.find(obj.absolute_url())==-1: #we need UIDs
+        if url != obj.absolute_url(): #we need UIDs
             if o.Title:
                 title=o.Title
             else:
