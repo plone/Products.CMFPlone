@@ -1,4 +1,4 @@
-<span tal:omit-tag="">
+<span tal:omit-tag="" i18n:domain="plone">
 To: <span tal:replace="options/member/email" />
 From: &quot;<span tal:replace="here/email_from_name" />&quot; &lt;<span tal:replace="here/email_from_address" />&gt;
 Subject: <span i18n:translate="mailtemplate_registered_portal_membership_info" tal:omit-tag="">Portal Membership Information</span>
