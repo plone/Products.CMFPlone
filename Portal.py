@@ -53,6 +53,7 @@ class PloneSite(CMFSite):
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
     """
+    meta_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
 
     def __browser_default__(self, request):
