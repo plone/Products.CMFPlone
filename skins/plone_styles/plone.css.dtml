@@ -1256,6 +1256,16 @@ ol.visualNoMarker {
 .syndicated {
     color: #008000;
 }
+
+/* Sitemap styling */
+
+.portal-sitemap {
+    list-style: none;
+    list-style-image: none;
+    margin: 0;
+    font-size: 90%;
+}
+
 .role-Member {
     
 }
