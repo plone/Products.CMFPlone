@@ -244,13 +244,10 @@ class OrderedContainer(Folder):
 InitializeClass(OrderedContainer)
 
 
-class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
-    meta_type = 'Plone Folder'
-
+class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     security=ClassSecurityInfo()
 
-    __implements__ =  OrderedContainer.__implements__ + \
-                      DefaultDublinCoreImpl.__implements__ + \
+    __implements__ =  DefaultDublinCoreImpl.__implements__ + \
                       (SkinnedFolder.__implements__,WriteLockInterface)
 
     manage_options = Folder.manage_options + \
@@ -293,7 +290,7 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
                                         portal_status_message='Folder added')
 
     manage_addFolder = manage_addPloneFolder
-    manage_renameObject = OrderedContainer.manage_renameObject
+    manage_renameObject = SkinnedFolder.manage_renameObject
 
     security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
     def manage_delObjects(self, ids=[], REQUEST=None):
@@ -352,6 +349,16 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
             except (Unauthorized, 'Unauthorized'):
                 pass
         return l
+
+InitializeClass(BasePloneFolder)
+
+class PloneFolder( BasePloneFolder, OrderedContainer ):
+    meta_type = 'Plone Folder'
+    
+    __implements__ = BasePloneFolder.__implements__ + \
+                     OrderedContainer.__implements__
+
+    manage_renameObject = OrderedContainer.manage_renameObject
 
 InitializeClass(PloneFolder)
 

@@ -58,7 +58,7 @@ from Products.CMFPlone.NavigationTool import NavigationTool, Redirector
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.PloneContent import PloneContent
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfiglet
-from Products.CMFPlone.PloneFolder import OrderedContainer, PloneFolder
+from Products.CMFPlone.PloneFolder import OrderedContainer, BasePloneFolder, PloneFolder
 from Products.CMFPlone.PloneTool import PloneTool
 from Products.CMFPlone.Portal import PloneSite, PloneGenerator
 from Products.CMFPlone.PrivateSitePolicy import PrivateSitePolicy
@@ -196,7 +196,7 @@ testClasses = [
     # (Batch, ()), # has no __implements__
     (PloneContent, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),
-    (OrderedContainer, ()), (PloneFolder, ()),
+    (OrderedContainer, ()), (BasePloneFolder, ()), (PloneFolder, ()),
     (PloneTool, ()),
     (PloneSite, ()), # (PloneGenerator, ()), # PloneGenerator has no __implements__
     (PrivateSitePolicy, ()),

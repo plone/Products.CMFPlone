@@ -1,7 +1,7 @@
 from Acquisition import aq_base, aq_inner
 from ComputedAttribute import ComputedAttribute
 from Globals import InitializeClass
-from PloneFolder import PloneFolder, ReplaceableWrapper
+from PloneFolder import BasePloneFolder, ReplaceableWrapper
 from PloneFolder import factory_type_information as PloneFolder_fti
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 
@@ -13,26 +13,30 @@ factory_type_information.update( {'id':'Large Plone Folder',
                                   'factory':'addLargePloneFolder',
                                   'global_allow':0} )
 
-class LargePloneFolder(BTreeFolder2Base, PloneFolder):
+class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
     meta_type='Large Plone Folder'
+
+    # BTreeFolder2Base has no __implements__
+    __implements__ = BasePloneFolder.__implements__
+    
 
     def __init__(self, id, title=''):
         BTreeFolder2Base.__init__(self, id)
-        PloneFolder.__init__(self, id, title)
+        BasePloneFolder.__init__(self, id, title)
         self.id=id
         self.title=title
 
     # as per CMFBTreeFolder.py
     def _checkId(self, id, allow_dup=0):
-        PloneFolder._checkId(self, id, allow_dup)
+        BasePloneFolder._checkId(self, id, allow_dup)
         BTreeFolder2Base._checkId(self, id, allow_dup)
 
-    manage_renameObject = PloneFolder.inheritedAttribute('manage_renameObject')
+    manage_renameObject = BasePloneFolder.inheritedAttribute('manage_renameObject')
 
     # this works around a problem that makes empty folders
     # evaluate to false in boolean tests, like:
     # tal:condition="python: someFolder and someFolder.someMethod(...)"
-    __len__ = PloneFolder.__len__
+    __len__ = BasePloneFolder.__len__
 
 
     def index_html(self):
@@ -40,7 +44,7 @@ class LargePloneFolder(BTreeFolder2Base, PloneFolder):
         btree folders don't store objects as attributes, the implementation of index_html
         method in plone folder assumes this and by virtue of its being invoked looked in
         the parent container. we override here to check the btree data structs, and then
-        perform the same lookup as PloneFolder if we don't find it.       
+        perform the same lookup as BasePloneFolder if we don't find it.       
         """
         _target = self.get('index_html')
         if _target is not None:
