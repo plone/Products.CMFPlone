@@ -19,7 +19,7 @@
         <div class="body">
 
             <select name="language" onChange="document.cookie='user_language=' + this.options[this.selectedIndex].value + ';path=/'; window.location.reload()"
-                    style="width: 175px">
+                    style="width: 175px" alt="Language">
 
                 <tal:block tal:repeat="lang plone_langs">
                     <option value=""
