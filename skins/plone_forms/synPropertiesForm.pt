@@ -9,10 +9,6 @@
 <div metal:fill-slot="main"
      tal:define="syndicateInfo here/syndication_information | nothing">
 
-    <div metal:use-macro="here/header/macros/portal_message">
-    Message box
-    </div>
-
     <h1>Syndication Properties</h1>
     
     <p>
