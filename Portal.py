@@ -34,6 +34,7 @@ from Products.CMFCore.utils import getToolByName, registerIcon
 from Products.CMFDefault import Portal, DublinCore
 from Products.ExternalMethod import ExternalMethod
 from Products.CMFPlone.PloneFolder import OrderedContainer
+from Products.CMFPlone.PloneFolder import VerifyObjectPasteFix
 import Globals
 import string
 import os, sys, re
@@ -98,7 +99,7 @@ factory_type_information = { 'id'             : 'Plone Root'
                        )
   }
 
-class PloneSite(CMFSite, OrderedContainer):
+class PloneSite(VerifyObjectPasteFix, CMFSite, OrderedContainer):
     """
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.

@@ -20,6 +20,7 @@ from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
 from types import StringType
+from ExtensionClass import Base
 
 # this import can change with Zope 2.7 to
 try:
@@ -89,6 +90,101 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                 )
                              }
 
+class VerifyObjectPasteFix(Base):
+    """This class is mixed-in to BasePloneFolder and PloneSite
+       to fix http://plone.org/collector/2183. 
+
+       _verifyObjectPaste() should deny pasting if the content type 
+       at hand is not allowed in the container.
+    """
+
+    security = ClassSecurityInfo()
+
+    def _verifyObjectPaste(self, object, validate_src=1):
+        # XXX This is just an extension of a copy of the 
+        # _verifyObjectPaste code from CMFCore's PortalFolder. 
+        # Actually the missing check whether a content type is allowed 
+        # to be pasted into another is a bug in CMFCore/PortalFolder.py.
+        # Once this is corrected in CMFCore one can safely
+        # remove this method (done probably in CMF 1.5).
+        # http://plone.org/collector/2183
+
+        # This assists the version in OFS.CopySupport.
+        # It enables the clipboard to function correctly
+        # with objects created by a multi-factory.
+        securityChecksDone = 0
+        if (hasattr(object, '__factory_meta_type__') and
+            hasattr(self, 'all_meta_types')):
+            mt = object.__factory_meta_type__
+            method_name=None
+            permission_name = None
+            meta_types = self.all_meta_types
+            if callable(meta_types): meta_types = meta_types()
+            for d in meta_types:
+                if d['name']==mt:
+                    method_name=d['action']
+                    permission_name = d.get('permission', None)
+                    break
+
+            if permission_name is not None:
+                if _checkPermission(permission_name,self):
+                    if not validate_src:
+                        # We don't want to check the object on the clipboard
+                        securityChecksDone = 1
+                    else:
+                        try: parent = aq_parent(aq_inner(object))
+                        except: parent = None
+                        if getSecurityManager().validate(None, parent,
+                                                         None, object):
+                            # validation succeeded
+                            securityChecksDone = 1
+                        else:
+                            raise 'Unauthorized', object.getId()
+                else:
+                    raise 'Unauthorized', permission_name
+            #
+            # Old validation for objects that may not have registered 
+            # themselves in the proper fashion.
+            #
+            elif method_name is not None:
+                meth=self.unrestrictedTraverse(method_name)
+                if hasattr(meth, 'im_self'):
+                    parent = meth.im_self
+                else:
+                    try:    parent = aq_parent(aq_inner(meth))
+                    except: parent = None
+                if getSecurityManager().validate(None, parent, None, meth):
+                    # Ensure the user is allowed to access the object on the
+                    # clipboard.
+                    if not validate_src:
+                        securityChecksDone = 1
+                    else:
+                        try: parent = aq_parent(aq_inner(object))
+                        except: parent = None
+                        if getSecurityManager().validate(None, parent,
+                                                         None, object):
+                            securityChecksDone = 1
+                        else:
+                            id = object.getId()
+                            raise 'Unauthorized', id
+                else:
+                    raise 'Unauthorized', method_name
+        
+        # call OFS's _verifyObjectPaste if necessary
+        if not securityChecksDone:
+            PortalFolder.inheritedAttribute(
+                '_verifyObjectPaste')(self, object, validate_src)
+        
+        # check if CMF content type is allowed to be pasted
+        type_name = getattr(aq_base(object), 'portal_type', None)
+        if type_name is not None:
+            pt = getToolByName(self, 'portal_types')
+            myType = pt.getTypeInfo(self)
+            if myType is not None and not myType.allowType(type_name):
+                raise ValueError, \
+                      "Disallowed to paste subobject type '%s'." % type_name
+
+InitializeClass(VerifyObjectPasteFix)
 
 #Portions of this class was copy/pasted from the OFS.Folder.OrderedFolder from
 #Zope2.7.  This class is licensed under the ZPL 2.0 as stated here:
@@ -97,6 +193,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 #This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
 
 class OrderedContainer(Folder):
+    """Folder with subobject ordering support"""
   
     if hasZopeOrderedSupport:
         # got the IOrderedContainer interface from zope 2.7, too
@@ -239,7 +336,6 @@ class OrderedContainer(Folder):
 
     # here the implementing of IOrderedContainer ends
 
-
     def manage_renameObject(self, id, new_id, REQUEST=None):
         " "
         objidx = self.getObjectPosition(id)
@@ -251,8 +347,10 @@ class OrderedContainer(Folder):
 
 InitializeClass(OrderedContainer)
 
+class BasePloneFolder( VerifyObjectPasteFix, SkinnedFolder, DefaultDublinCoreImpl ):
+    """Implements basic Plone folder functionality except ordering support.
+    """
 
-class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     security=ClassSecurityInfo()
 
     __implements__ =  DefaultDublinCoreImpl.__implements__ + \
