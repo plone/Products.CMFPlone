@@ -1,4 +1,4 @@
-from Acquisition import aq_base, aq_inner
+from Acquisition import aq_base, aq_inner, aq_parent
 from ComputedAttribute import ComputedAttribute
 from Globals import InitializeClass
 from PloneFolder import BasePloneFolder, ReplaceableWrapper

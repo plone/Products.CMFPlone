@@ -125,7 +125,7 @@ def _migrate(portal, toolid, name, attrs):
     tool = getToolByName(portal, toolid)
     for attr in attrs:
             setattr(tool, attr, aq_base(getattr(aq_base(orig), attr)))
-    return orig
+    return aq_base(orig)
 
 def moveOldTemplates(portal):
     #attempt to move old templates out the wway

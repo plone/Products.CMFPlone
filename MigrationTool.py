@@ -17,6 +17,8 @@ _upgradePaths = {}
 _widgetRegistry = {}
 
 class MigrationTool( UniqueObject, SimpleItem):
+    """Handles migrations between Plone releases"""
+
     id = 'portal_migration'
     meta_type = 'Plone Migration Tool'
 
