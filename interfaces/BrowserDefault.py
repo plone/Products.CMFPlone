@@ -92,10 +92,3 @@ class ISelectableBrowserDefault(IBrowserDefault):
         """
         Get the layouts registered for this object.
         """
-
-    def getTemplateFor(layout, default='base_view'):
-        """
-        Resolve the given layout to a page template object. If the layout
-        cannot be found, fall back on the default_view set as a class attribute.
-        If this is not found, fall back on the id supplied as 'default'.
-        """

@@ -1,5 +1,5 @@
 ## Script (Python) "getSelectableViews"
-##title=Get the view templates available from TemplateMixin on the context, if there is more than one
+##title=Get the view templates available from BrowserDefaultMixin on the context, if there is more than one
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -18,4 +18,9 @@ if not itool.objectImplements(context, INTERFACE):
 if not context.canSetLayout():
     return None
 
-return context.getAvailableLayouts()
+layouts = context.getAvailableLayouts()
+
+if len(layouts) > 1:
+    return layouts
+else:
+    return None

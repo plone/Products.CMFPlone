@@ -7,11 +7,11 @@
 ##bind subpath=traverse_subpath
 ##title=Set the options for constraining addable types on a per-folder basis
 
-enableAddRestrictions = context.REQUEST.get('enableAddRestrictions', [])
+constrainTypesMode = context.REQUEST.get('constrainTypesMode', [])
 locallyAllowedTypes = context.REQUEST.get('locallyAllowedTypes', [])
 immediatelyAddableTypes = context.REQUEST.get('immediatelyAddableTypes', [])
 
-context.setEnableAddRestrictions(enableAddRestrictions)
+context.setConstrainTypesMode(constrainTypesMode)
 context.setLocallyAllowedTypes(locallyAllowedTypes)
 context.setImmediatelyAddableTypes(immediatelyAddableTypes)
 

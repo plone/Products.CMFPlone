@@ -675,8 +675,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         
         # Explicitly look at IBrowserDefault
         if IBrowserDefault.isImplementedBy(parent):
-           page = parent.getDefaultPage()
-            if page and page == obj.getId()
+            page = parent.getDefaultPage()
+            if page and page == obj.getId():
                 return True
 
         # Look for default_page on the object
@@ -690,7 +690,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # And also filter out empty strings
         pages = filter(None, pages)
         for page in pages:
-            if page == obj.getId()
+            if page == obj.getId():
                 return True
 
         utool = getToolByName(self, 'portal_url')

@@ -7,19 +7,11 @@
 ##parameters=
 ##title=Find out if the context supports per-instance addable type restriction 
 
-# XXX: This may eventually move to Archetypes core
-ICONSTRAINTYPESMIXIN = 'Products.ATContentTypes.interfaces.IConstrainTypes'
-MODIFY_TYPE_CONSTRAINTS = "ATContentTypes: Modify constrain types"
-
+INTERFACE = 'Products.CMFPlone.interfaces.ConstrainTypes.ISelectableConstrainTypes'
 from Products.CMFCore.utils import getToolByName
 
 itool = getToolByName(context, 'portal_interface')
-if not itool.objectImplements(context, ICONSTRAINTYPESMIXIN):
+if not itool.objectImplements(context, INTERFACE):
     return False
 
-mtool = getToolByName(context, 'portal_membership')
-user = mtool.getAuthenticatedMember()
-if not user.has_permission(MODIFY_TYPE_CONSTRAINTS, context):
-    return False
-
-return True
+return context.canSetConstrainTypes()

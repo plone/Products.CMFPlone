@@ -7,11 +7,18 @@
 ##parameters=allowedTypes
 ##title=Return a list of the content type ftis filtered by getImmediatelyAddableTypes(), if available.
 
-try:
-    # Find this by acquisition - classes may wish to implement it themselves
-    # without all of ConstrainTypesMixin, and they may wish to 
-    immediateIds = context.getImmediatelyAddableTypes()
-    return [ctype for ctype in allowedTypes if ctype.getId() in immediateIds]
-except AttributeError:
-    # If we don't have the immediately addable types, fall back on all types
+INTERFACE = "Products.CMFPlone.interfaces.ConstrainTypes.IConstrainTypes"
+
+from Products.CMFCore.utils import getToolByName
+itool = getToolByName(context, 'portal_interface')
+
+folder = context
+if not folder.isPrincipiaFolderish:
+    folder = context.aq_inner.aq_parent
+
+if not itool.objectImplements(folder, INTERFACE):
     return allowedTypes
+
+immediateIds = folder.getImmediatelyAddableTypes()
+return [ctype for ctype in allowedTypes if ctype.getId() in immediateIds]
+

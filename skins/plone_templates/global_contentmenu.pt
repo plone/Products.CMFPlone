@@ -69,10 +69,11 @@
                      menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
                      numAllowed   python:len(allowedTypes);
                      numMenu      python:len(menuTypes);    
-                     showAdd      python:numAllowed > 1;
+                     showSettings folder/canConstrainTypes;
+                     showAdd      python:numAllowed >= 1 or showSettings;
                      showMore     python:numAllowed > numMenu;
-                     showMenu     python:showMore or numMenu > 1;
-                     showSettings here/canConstrainTypes;"
+                     showMenu     python:showMore or showSettings or numMenu > 1;
+                     "
              condition="showAdd">
 
     <tal:dropdown tal:condition="showMenu">
@@ -160,10 +161,11 @@
                                isContextDefaultPage         here/isDefaultPageInFolder;
                                parentHasActions             python:parentVocab or canSelectDefaultFolderPage;
                                contextHasActions            python:contextVocab or canSelectDefaultContextPage;
-                               dimMenu python:not ((context.isPrincipiaFolderish and not contextHasIndexHtml) or 
-                                                   (isContextDefaultPage and not folderHasIndexHtml));"
+                               dimMenu python:(context.isPrincipiaFolderish and contextHasIndexHtml) or 
+                                              (isContextDefaultPage and folderHasIndexHtml);"
                         condition="python:(isContextDefaultPage and parentHasActions) or
                                            contextHasActions">
+
         <li>
         
             <div class="menuPosition"
@@ -237,8 +239,7 @@
 
                     <!-- Context Views menu -->
                     <tal:contextViews define="vocab contextVocab;
-                                             actualLayout context/getLayout|nothing;
-                                             selectedLayout python:test(isContextDefaultPage, '', actualLayout)"
+                                             selectedLayout context/getLayout|nothing;"
                                      condition="python:vocab">
                                      
                     <tal:layouts repeat="layout vocab">
@@ -254,7 +255,7 @@
                         <a href="#"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            tal:condition="python:value!=selectedLayout"
-                           tal:attributes="href string:${folder/absolute_url}/selectViewTemplate?templateId=$value;
+                           tal:attributes="href string:${context/absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
                            i18n:attributes="title">
                             <tal:title i18n:translate=""
@@ -263,7 +264,7 @@
                     </li>
                     </tal:layouts>
 
-                    <tal:block condition="canSelectDefaultFolderPage">
+                    <tal:block condition="canSelectDefaultContextPage">
                         <li tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
                                onMouseUp="if (activeButton != null) resetButton(activeButton);"

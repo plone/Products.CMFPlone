@@ -36,7 +36,6 @@
 
     <tal:warning tal:condition="not:iscontainer">
         <div class="portalMessage" style="background-color:rgb(255,191,191)">
-            <img tal:replace="structure here/info.gif" />
             <span style="font-weight:normal" i18n:translate="local_role_warning"><strong>Attention!</strong> You are setting the sharing permissions for a <strong tal:content="here/portal_type"/>.
             if you want to set the permissions for its containing folder, click 
             <a href="" tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a>
