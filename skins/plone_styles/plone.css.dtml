@@ -1,6 +1,6 @@
 /*
 ** Plone style sheet for CSS2-capable browsers.
-** Copyright Alexander Limi, 2002 - http://limi.net
+** Copyright Alexander Limi, 2001-2003 - http://limi.net
 **
 ** Thanks to Geir Bækholt, Stian Søiland for input and guidance.
 **
@@ -424,6 +424,12 @@ ul#contentTabs li {
     padding: 0 1em;
     z-index: 2;
 }
+
+#documentContent {
+    /* Fix for IE6 disappearing float bug */
+    height: 100%;
+}
+
 div.document, div.editableDocument {
     background: &dtml-mainBackground;;
     font: <dtml-var contentFont>;
