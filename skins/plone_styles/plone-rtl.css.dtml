@@ -23,11 +23,13 @@ ol {
  
 #portal-siteactions {
     float: left;
+    padding: 3px 0 3px 2em;    
 }
 
 #portal-searchbox {
     padding: 0 0 0 2em;
     float: left;
+    clear: left;
 }
 
 #portal-globalnav {
@@ -49,8 +51,8 @@ ol {
  
 #portal-personaltools li {
     background: transparent url(&dtml-portal_url;/linkOpaque.gif) center right no-repeat;
-    padding-right: 8px;
-    margin-right: 1em;
+    padding-right: 5px;
+    margin-left: 1em;
 }
 
 .contentViews {
