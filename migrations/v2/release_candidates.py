@@ -4,6 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setup.ConfigurationMethods import correctFolderContentsAction
 from Products.CMFCore.Expression import Expression
 from Acquisition import aq_base
+from oneX_twoBeta2 import addPloneTableless
 from plone2_base import addCatalogIndexes
 
 _permMap = {
@@ -137,6 +138,9 @@ def rc5_final(portal):
     return out
 
 def addTablelessSkin(portal):
+    # to be shure that we have a plone_tableless directory view
+    from oneX_twoBeta2 import addPloneTableless
+    addPloneTableless(portal)
     st = getToolByName(portal, 'portal_skins')
     defaultName = 'Plone Default'
     tablelessName = 'Plone Tableless'
