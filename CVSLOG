@@ -1,3 +1,39 @@
+2004-02-13 15:15  buehlmann
+
+	* skins/plone_scripts/contentbar_status_modify.py
+	  (Plone-2_0-branch): this script is no longer needed.
+	  contentbar_menu calls content_status_modify directly
+
+2004-02-13 15:08  plonista
+
+	* skins/: plone_scripts/showEditableBorder.py,
+	  plone_templates/global_contentmenu.pt,
+	  plone_templates/global_defines.pt,
+	  plone_templates/global_personalbar.pt,
+	  plone_templates/main_template.pt
+	  (Plone-2_0-microoptimizations-branch): More micro-optimizations!
+
+2004-02-13 11:43  buehlmann
+
+	* skins/plone_form_scripts/content_status_modify.cpy
+	  (Plone-2_0-branch): fix for 2546. the effective date is no longer
+	  overwritten using the quick publish button. if an object has an
+	  empty effective date, the current date is set as effective date.
+
+2004-02-13 08:13  jimroepcke
+
+	* skins/plone_scripts/getFolderListingFolderContents.py
+	  (Plone-2_0-branch): support non-PloneFolder folderish objects
+
+2004-02-13 08:03  jimroepcke
+
+	* PloneFolder.py (Plone-2_0-branch): should not have changed the
+	  permission on listFolderContents
+
+2004-02-13 04:53  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-13 03:40  zopezen
 
 	* skins/: plone_portlets/portlet_related.pt,
