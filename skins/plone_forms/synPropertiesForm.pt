@@ -151,6 +151,7 @@
                     <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                         calendar popup
                     </div>
+                </div>
             </div>
     
             <div class="row">
