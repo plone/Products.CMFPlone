@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.1 - unknown - unknown - unreleased
 
+    -  PLIP-78: "Display" menu to select default view
+
+      - Enable TemplateMixin and fix its UI
+
+      - Add a "display" drop-down where these can be chosen
+
+      - Ghost this out when editing
+
+      - On folderish items, an option "select item" - shows browser, select default_page.
+
     - added 2 new knob to jscalendar: 
 
       - show_hm: show hour and minute dropbox or not 
