@@ -1,29 +1,17 @@
-
 from Products.CMFPlone import MigrationTool
-import final_one_zero_one, rc2_final, rc1_rc2, beta3_rc1, beta2_beta3 
-import one01_one02, one02_one03
 
-import upg_1_0_1_to_1_1
+import one03_one04
+import one02_one03
+import one01_one02
+import final_one_zero_one
+import oneX_twoBeta2
+
+def null(portal):
+    """ This is a null migration, use it when nothing happens """
+    pass
 
 def registerMigrations():
     # so the basic concepts is you put  a bunch of migrations is here
-
-                                       
-    MigrationTool.registerUpgradePath( '1.0beta2',
-                                       '1.0beta3',
-                                       beta2_beta3.twothree )
-
-    MigrationTool.registerUpgradePath( '1.0beta3',
-                                       '1.0rc1',
-                                       beta3_rc1.threerc1 )
-    
-    MigrationTool.registerUpgradePath( '1.0rc1',
-                                       '1.0rc2',
-                                       rc1_rc2.rc1rc2 )
-                                       
-    MigrationTool.registerUpgradePath( '1.0rc2',
-                                       '1.0',
-                                       rc2_final.rc2Final )
 
     MigrationTool.registerUpgradePath( '1.0',
                                        '1.0.1',
@@ -38,5 +26,17 @@ def registerMigrations():
                                        one02_one03.onezerothree )
 
     MigrationTool.registerUpgradePath( '1.0.3',
-                                       '1.1',
-                                       upg_1_0_1_to_1_1.upg_1_0_1_to_1_1 )
+                                       '1.0.4',
+                                       one03_one04.onezerofour )
+
+    MigrationTool.registerUpgradePath( '1.0.4',
+                                       '1.0.5',
+                                       null )
+
+    MigrationTool.registerUpgradePath( '1.0.5',
+                                       '2.0-beta2',
+                                       oneX_twoBeta2.oneX_twoBeta2)
+    
+#   MigrationTool.registerUpgradePath( '2.0-beta2',
+#                                      '2.0-beta3',
+#                                      null)

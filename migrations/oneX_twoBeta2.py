@@ -10,8 +10,8 @@ from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore import CachingPolicyManager
 
-def upg_1_0_1_to_1_1(portal):
-    """ Migrations from 1.0.1 to 1.1 """
+def oneX_twoBeta2(portal):
+    """ Migrations from 1.0.x to 2.x """
     #create the QuickInstaller
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
