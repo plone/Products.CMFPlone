@@ -51,7 +51,7 @@
        <input class="standalone add"
               tabindex=""
               type="submit"
-              name=""
+              name="prefs_group_detail:method"
               value="Add New Group"
               tal:attributes="tabindex tabindex/next;"
               />

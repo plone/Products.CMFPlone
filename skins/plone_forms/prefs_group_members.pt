@@ -33,7 +33,7 @@
     <a class="selected"         
        href=""
        tal:attributes="href here/absolute_url"
-    >Members</a>
+    >Group Members</a>
 </div>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
@@ -71,7 +71,7 @@ Code listing users in this group:
        <input class="standalone add"
               tabindex=""
               type="submit"
-              name="portal_form/join_form:method"
+              name="prefs_user_group_search_form:method"
               value="Add Users or Groups to this Group"
               tal:attributes="tabindex tabindex/next;"
               />

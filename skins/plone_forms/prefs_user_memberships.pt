@@ -42,8 +42,10 @@
 
 <!-- Again, dead code below, should reuse existing Group listing -->    
 
-       <input class="standalone add" tabindex="30003"
-              type="submit" name="" value="Add New Group Membership" />
+       <input class="standalone add"
+              type="submit" 
+              name="prefs_user_group_search_form" 
+              value="Add New Group Membership" />
 
                
 
