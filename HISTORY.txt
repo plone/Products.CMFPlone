@@ -4,6 +4,21 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Made the column style sheet only apply to Screen, not Print/Presentation/
+      Handheld.
+      [limi]
+    
+    - Massively simplified the print style sheet, should work much better in all
+      browsers now.
+      [limi]
+          
+    - Moved ploneCustom to be the last of the CSS declarations, so you can easily
+      do Print/Presentation/Handheld customizations in the ploneCustom.css now.
+      [limi]
+                
+    - Fixed Presentation stryle sheet to not show the site actions.
+      [limi]
+                      
     - More Google tweaking. Factored out the page title to a separate
       script and switched the order of the elements.
       [limi][tesdal]

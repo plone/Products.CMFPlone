@@ -35,7 +35,7 @@
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
 
     <!-- Column style sheet. -->
-    <style type="text/css" media="all" tal:condition="exists: portal/ploneColumns.css"
+    <style type="text/css" media="screen" tal:condition="exists: portal/ploneColumns.css"
            tal:content="structure string:<!-- @import url($portal_url/ploneColumns.css); -->">
     </style>
 
@@ -55,11 +55,6 @@
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextLarge.css" title="Large Text" />
 
-    <!-- Custom style sheet if available -->
-    <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
-           tal:content="structure string:<!-- @import url($portal_url/ploneCustom.css); -->">
-    </style>
-
     <!-- Style sheet used for printing -->
     <link rel="stylesheet" type="text/css" media="print" href=""
           tal:attributes="href string:$portal_url/plonePrint.css" />
@@ -74,6 +69,12 @@
            tal:content="string:@import url($portal_url/ploneIEFixes.css);">
     </style>
     <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
+
+
+    <!-- Custom style sheet if available -->
+    <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
+           tal:content="structure string:<!-- @import url($portal_url/ploneCustom.css); -->">
+    </style>
 
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
