@@ -101,6 +101,7 @@ class PloneGenerator(Portal.PortalGenerator):
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
         p.invokeFactory('Folder', 'Members')
+        p.portal_catalog.unindexObject(p.Members) #unindex Members folder
         p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
                                                                 , 'Member list'
                                                                 , '<dtml-return roster>')
@@ -277,8 +278,9 @@ def manage_addSite(self, id, title='Portal', description='',
     if listPolicies() and custom_policy:
         o=custom_policies[custom_policy]
         o.customize(p)
-    #after customizations refresh the catalog
-    p.portal_catalog.refreshCatalog()
+
+    p.portal_catalog.refreshCatalog() #after customizations refresh the catalog
+
     if RESPONSE is not None:
         RESPONSE.redirect(p.absolute_url())
         
