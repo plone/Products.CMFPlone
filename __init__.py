@@ -2,7 +2,7 @@ cmfplone_globals=globals()
 
 from Products.CMFCore import DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
-import MembershipTool, FormulatorTool, CalendarTool, TranslatorTool
+import MembershipTool, FormulatorTool, TranslatorTool
 import PloneFolder, Portal
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
@@ -46,7 +46,6 @@ ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
 
 tools = ( MembershipTool.MembershipTool
         , FormulatorTool.FormulatorTool 
-        , CalendarTool.CalendarTool
 	, TranslatorTool.TranslatorTool )
 
 contentClasses = ( PloneFolder.PloneFolder , )
