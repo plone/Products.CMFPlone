@@ -1,3 +1,4 @@
+<html>
 <ul metal:define-macro="content_tabs"
      id="contentTabs" 
      i18n:domain="plone"
@@ -29,10 +30,12 @@
          tal:define="locked portal_object/lock_icon.gif;
                      lockable python:hasattr(here, 'wl_isLocked');"
                      tal:condition="python:lockable and here.wl_isLocked()"
-                     tal:replace="structure python:locked.tag(title='Locked')" alt="Object locked" />
+                     tal:replace="structure python:locked.tag(title='Locked')" alt="Object locked" i18n:attributes="alt"/>
 
     <span class="expired"
-          tal:condition="python:here.isExpired(here)">
-    (expired)
+          tal:condition="python:here.isExpired(here)"
+          i18n:translate="time_expired">
+    expired
     </span>
 </div>
+</html>

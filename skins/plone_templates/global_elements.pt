@@ -19,7 +19,7 @@
     <form name="searchform"
           action="search"
           tal:attributes="action string:${portal_url}/search" >
-        <label for="searchGadget" class="hiddenlabel" >Search</label><input id="searchGadget"
+        <label for="searchGadget" class="hiddenlabel" i18n:translate="">Search</label><input id="searchGadget"
                name="SearchableText"
                type="text"
                size="20"
@@ -27,7 +27,7 @@
                alt="Search"
 	       title="Search"
 	       accesskey="accesskeys-search"
-	       i18n:attributes="alt accesskey"
+	       i18n:attributes="alt accesskey title"
 	       tal:attributes="value request/SearchableText|nothing;
                                tabindex tabindex/next" class="visibility:visible" />
         <input class="context searchButton"
@@ -55,7 +55,7 @@
      tal:define="portal_tabs actions/portal_tabs|nothing;
                  selected_tabs python:here.selectedTabs(template.getId(), here);
                  selected_portal_tab selected_tabs/portal;" >
-    <h5 class="hiddenstructure">Sections</h5>
+    <h5 class="hiddenstructure" i18n:translate="heading_sections">Sections</h5>
     <ul id="portalTabs">
        <tal:tabs tal:repeat="tab portal_tabs">
        <li tal:attributes="id string:portaltab-${tab/id};
@@ -80,7 +80,7 @@
                   mtool mtool|here/portal_membership;
                   display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];"
       tal:omit-tag="" >
-<h5 class="hiddenstructure">Personal tools</h5>
+<h5 class="hiddenstructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 <ul id="personalBar">
     <li id="personalBar-user" tal:condition="not: isAnon"><a href=""
         tal:omit-tag="not: mtool/getHomeFolder"
