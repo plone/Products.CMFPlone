@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello - Released 4. May 2004
 
+    - Added a email address validator to the Plone tool and validate the email
+      addresses for the send to feature.
+      [tiran]
+
     - Some templates were broken with Zope 2.6. Fixed by adding a
       surrounding metal:block with i18n:domain='plone' around colophon
       and footer.
