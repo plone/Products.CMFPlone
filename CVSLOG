@@ -1,3 +1,105 @@
+2004-01-08 01:42  runyaga
+
+	* skins/plone_portlets/actions_slot.pt: move removals
+
+2004-01-08 01:40  runyaga
+
+	* skins/: cmf_legacy/clearCookie.py, cmf_legacy/filterCookie.py,
+	  cmf_legacy/truncID.py, cmf_legacy/unauthRedirect.py,
+	  plone_ecmascript/plone_inplace_calendar.js.pt,
+	  plone_ecmascript/plone_minmax.js,
+	  plone_ecmascript/plone_minmax.js.metadata,
+	  plone_ecmascript/stxPreview.js,
+	  plone_ecmascript/stxPreview.js.metadata,
+	  plone_forms/password_form.pt,
+	  plone_forms/password_form.pt.metadata,
+	  plone_forms/personalize_form.cpt,
+	  plone_forms/personalize_form.cpt.metadata,
+	  plone_images/mail_icon.gif.properties,
+	  plone_images/search_icon.png, plone_scripts/createObject.cpy,
+	  plone_scripts/logged_in.py, plone_scripts/logout.cpy,
+	  plone_templates/global_contentviews.pt: trying to get HEAD back
+	  into a sane state
+
+2004-01-08 00:41  runyaga
+
+	* skins/plone_templates/registered_notify_template.pt: un fucking
+
+2004-01-08 00:38  runyaga
+
+	* skins/plone_form_scripts/portrait_delete.cpy: recommitting
+	  portlets to HEAD.  unfucking what I did ruthlessly
+
+2004-01-08 00:07  shh42
+
+	* CustomizationPolicy.py, MemberDataTool.py, PloneFolder.py,
+	  zserverPatch.py, Extensions/setupSite.py, docs/REQUIREMENTS.txt,
+	  migrations/__init__.py, migrations/final_one_zero_one.py,
+	  migrations/one01_one02.py, migrations/one02_one03.py,
+	  migrations/one03_one04.py, migrations/oneX_twoBeta2.py,
+	  migrations/plone2_base.py, migrations/rc1_rc2.py,
+	  migrations/rc2_final.py, migrations/twoBeta2_twoBeta3.py,
+	  migrations/upg_1_0_1_to_1_1.py, migrations/v2/__init__.py,
+	  migrations/v2/release_candidates.py,
+	  setup/ConfigurationMethods.py, tests/testFolderWorkflow.py,
+	  tests/testGroupDataTool.py, tests/testGroupsTool.py,
+	  tests/testInterfaces.py, tests/testMembershipTool.py: Fixing HEAD
+	  part one. Everything except skins/ is now in sync with
+	  Plone-2_0-branch.
+
+2004-01-07 21:32  shh42
+
+	* Portal.py (Plone-2_0-branch): Backport fix for #2292 from HEAD -
+	  Plone Site object does not need a sharing tab.
+
+2004-01-07 20:29  limi
+
+	* skins/plone_images/: edit.gif, extedit_icon.gif, pencil_icon.gif:
+	  Committing pencil images to HEAD.
+
+2004-01-07 20:22  limi
+
+	* skins/plone_images/: edit.gif, extedit_icon.gif, pencil_icon.gif
+	  (Plone-2_0-branch): Making the pencil look more like a pencil ;)
+
+2004-01-07 19:37  runyaga
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): add
+	  release candiatges
+
+2004-01-07 18:57  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): remove
+	  condition
+
+2004-01-07 18:51  runyaga
+
+	* migrations/: __init__.py, v2/__init__.py (Plone-2_0-branch):
+	  placeholder migrations from rc2->rc3 and rc3->final
+
+2004-01-07 18:15  shh42
+
+	* ChangeLog, INSTALL.txt (Plone-2_0-branch): Fix a typo in
+	  INSTALL.txt and remove the unmaintained 500k (!) ChangeLog.
+
+2004-01-07 17:19  runyaga
+
+	* Portal.py: fix for 2292 - Plone Site object does not need a
+	  sharing tab.	all sharing tabs are available via portal_actions.
+	  Also there is no state for Plone Site by default.  Up to you to
+	  attach worklfow to it.
+
+2004-01-07 06:27  jimroepcke
+
+	* skins/: plone_scripts/getBodyTagClass.py,
+	  plone_templates/global_bodytag.pt,
+	  plone_templates/main_template.pt: make the body tag and/or its
+	  class customizable to enable a variety of css design patterns
+
+2004-01-07 05:04  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-07 02:43  shh42
 
 	* tests/PloneTestCase.py: What we need to fake is not a script but
