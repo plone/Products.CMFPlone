@@ -1,10 +1,13 @@
-<div i18n:domain="plone" tal:omit-tag=""
+<div i18n:domain="plone" 
+     tal:omit-tag=""
+     tal:define="charset site_properties/default_charset|string:utf-8;
+                 dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)"
 >Date: <span tal:define="now python:modules['DateTime'].DateTime()"
-             tal:replace="now/rfc822" />
+              tal:replace="now/rfc822" />
 To: <span tal:replace="request/send_to_address | options/send_to_address" />
 From: <span tal:replace="request/send_from_address | options/send_from_address" />
 Subject: <span tal:replace="options/title | here/Title" />
-Content-Type: text/plain; charset=<span tal:replace="here/portal_properties/site_properties/default_charset" />
+Content-Type: text/plain; charset=<span tal:replace="charset" />
 
 
 <div i18n:translate="sendto_mailtemplate_body" tal:omit-tag="">
