@@ -1,3 +1,26 @@
+2003-11-16 04:23  eaon
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_templates/global_contentviews.pt (Plone-2_0-branch):
+	  content actions and views have explaining headings now
+	  (accessibility) - not i18nified ! :/
+
+2003-11-15 14:41  vinsci
+
+	* skins/plone_forms/: content_status_history.cpt,
+	  folder_localrole_form.pt, history_form.pt (vinsci-i18n-prepare):
+	  Add msgid:s (this is on the vinsci-i18n-prepare branch).
+
+2003-11-15 07:41  zopezen
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): No idea whats
+	  really going on, someone should look at this. But a quick syntax
+	  error fix on the way to bed...
+
+2003-11-15 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-14 21:42  limi
 
 	* skins/: plone_styles/plone.css.dtml, plone_images/phone_icon.gif
