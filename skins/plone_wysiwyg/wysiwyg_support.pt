@@ -3,27 +3,12 @@
 
 <html>
 
-<!-- wysiwyg default widget -->
+<!-- wysiwyg default widget, this is overridden by other editors -->
 <div metal:define-macro="wysiwygEditorBox">
 
- <comment tal:condition="nothing"
-           tal:replace="nothing" >
-
-            This template relies on the presence of an 'inputname' variable,
-            which contains the name of the element whose value should be
-            altered when the calendar returns a result.
-            Similarly it requires a 'formname' variable - the name
-            of the form in which this input element resides.
-            Also it should be provided with inputvalue which is the
-            current or default value for the field.
-            onfocus and/or onblur are setup as attributes if availabe.
-            tabindex is setup is provided.
-
-  </comment>
-
   <textarea cols="80"
-            rows="15"
-            tabindex="3"
+            rows="25"
+            tabindex=""
             name="description"
             tal:content="inputvalue"
             tal:attributes="name inputname;
@@ -31,45 +16,66 @@
                             onfocus onfocus|nothing;
                             onblur onblur|nothing;
                             tabindex tabindex|nothing;"></textarea>
-
-       <br />
-       <a href="" 
-          tal:define="pps python:modules['Products.PythonScripts.standard'];
-                      editor python:here.portal_membership.getAuthenticatedMember().wysiwyg_editor;
-                      wysiwyg python:test(editor and (editor!='None'), editor, 'None');
-                      contentpath python:pps.url_quote(here.portal_url.getRelativeUrl(here));
-                      url2editor string:${here/portal_url}/$wysiwyg/wysiwyg_popup?inputname=$inputname&amp;formname=$formname&amp;contentpath=$contentpath&amp;method=CookedBody;"
-          tal:condition="python:test(wysiwyg!='None', 1, 0)"
-          tal:attributes="onclick string:window.open('$url2editor','editor','dependent=yes,width=520,height=500,screenX=200,screenY=300,titlebar=yes');; return false">
-       <img tal:replace="structure here/edit.gif" />
-       </a>
-
 </div>
 
-<div metal:define-macro="wysiwygEditorBoxPopup"
-     class="container"
-     tal:define="DateTime python:modules['DateTime'].DateTime;">     
 
-<script language="javascript" type="text/javascript">
-function fnInit() {
-    editor=document.getElementById('xsEditor');
-    editor.insertHTML('this is a test');
-}
-</script>
+<div metal:define-macro="textFormatSelector"
+     class="row">
+    <div class="label">
+        <span i18n:translate="label_format">Format</span>
+        <div id="format_help"
+             i18n:translate="help_format" 
+             class="help" 
+             style="visibility:hidden">
+        Select which format you want to type the contents of this
+        document in. If you are unsure of which format to use, just
+        select Plain Text and type the document as you usually
+        do.
+        </div>
+    </div>
+   <div class="field"
+         tal:define="tabindex tabindex/next;
+                     text_format python:request.get('text_format', getattr(here,'text_format','structured-text'))">	
+        <input class="noborder" 
+               type="radio" 
+               name="text_format"
+               value="structured-text" 
+               tabindex=""
+               id="cb_structuredtext"
+               onfocus="formtooltip('format_help',1)" 
+               onblur="formtooltip('format_help',0)" 
+               tal:attributes="checked python:test(text_format=='structured-text', 1, '');
+                               tabindex tabindex;" 
+               />
+        <label for="cb_structuredtext" i18n:translate="structured_text">Structured Text</label> <br />
 
-<xs:XsDhtmlEditor id="xsEditor"
-                  content=""
-                  fontList="Times New Roman,Arial,Georgia" 
-                  fontSizeDefault="small" 
-                  onSave="returndate(xsEditor.content);" 
-                  replaceTags="<strong>,<b>"
-                  tal:define="pps python:modules['Products.PythonScripts.standard'];
-                              global contentpath request/contentpath;
-                              global content python:here.portal_url.getPortalObject().restrictedTraverse(contentpath);
-                              global content_path string:here/$contentpath/${request/method};
-                              renderedContent python:path(content_path);"
-                  tal:attributes="content renderedContent" />
-     
-</div> 
+        <input class="noborder" 
+               type="radio" 
+               name="text_format" 
+               value="html" 
+               tabindex=""
+               id="cb_html"
+               tal:attributes="checked python:test(text_format=='html', 1, '');
+                               tabindex tabindex;" 
+               onfocus="formtooltip('format_help',1)" 
+               onblur="formtooltip('format_help',0)" 
+               />	
+        <label for="cb_html" i18n:translate="html">HTML</label> <br />
+
+        <input class="noborder" 
+               type="radio" 
+               name="text_format"
+               value="plain" 
+               tabindex=""
+               id="cb_plain"
+               tal:attributes="checked python:test(text_format=='plain', 1, '');
+                               tabindex tabindex;" 
+               onfocus="formtooltip('format_help',1)" 
+               onblur="formtooltip('format_help',0)" 
+               />
+        <label for="cb_plain" i18n:translate="plain_text">Plain Text</label>
+    </div>
+</div>
+
 
 <html>
