@@ -1,4 +1,5 @@
 from Products.CMFCore.utils import _verifyActionPermissions
+from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFCore.CMFCorePermissions import View, ManageProperties, ListFolderContents
 from Products.CMFCore.CMFCorePermissions import AddPortalFolders, AddPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
@@ -50,8 +51,6 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                            ,
                            )
 
-
-#DefaultSkinnedFolder = SkinnedFolder
 class PloneFolder ( SkinnedFolder ):
     meta_type = 'Plone Folder' 
     security=ClassSecurityInfo()
@@ -66,8 +65,10 @@ class PloneFolder ( SkinnedFolder ):
         else:
              return view()
 
+    security.declareProtected( CMFCorePermissions.View, 'view' )    
     view = __call__
-    
+    index_html = None
+
     security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """ adds a new PloneFolder """
@@ -76,7 +77,7 @@ class PloneFolder ( SkinnedFolder ):
 	if REQUEST is not None:
             return self.folder_contents(self, REQUEST, portal_status_message='Folder added')
        
-    security.declareProtected( ListFolderContents, 'listFolderContents')   
+    security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): # XXX
         """
         Hook around 'contentValues' to let 'folder_contents'
@@ -100,13 +101,14 @@ class PloneFolder ( SkinnedFolder ):
 
 def _getViewFor(obj, view='view', default=None):
     ti = obj.getTypeInfo()
+    #import pdb; pdb.set_trace()
     if ti is not None:
         actions = ti.getActions()
         for action in actions:
             if action.get('id', None) == default:
                 default=action
             if action.get('id', None) == view:
-                if _verifyActionPermissions(obj, action) and not(action['action']==''):
+                if _verifyActionPermissions(obj, action) and action['action']!='':
                     return obj.restrictedTraverse(action['action'])
 
         # not Best Effort(tm) just yet
@@ -116,9 +118,9 @@ def _getViewFor(obj, view='view', default=None):
 
         # "view" action is not present or not allowed.
         # Find something that's allowed.
-        for action in actions:
-            if _verifyActionPermissions(obj, action) and not(action['action']==''):
-                return obj.restrictedTraverse(action['action'])
+        #for action in actions:
+        #    if _verifyActionPermissions(obj, action)  and action.get('action','')!='':
+        #        return obj.restrictedTraverse(action['action'])
         raise 'Unauthorized', ('No accessible views available for %s' %
                                string.join(obj.getPhysicalPath(), '/'))
     else:

@@ -3,7 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US" metal:define-macro="master">
 
-<metal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here)" />
+<metal:block tal:define="global folderishView python: template.getId() in ('folder_listing', 'folder_contents')" 
+             tal:condition="folderishView">
+    <tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(container)" />
+</metal:block>
+<metal:block tal:condition="not: folderishView">
+    <tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here)" />
+</metal:block>
 
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="head_slot">
