@@ -238,7 +238,6 @@ i18n:translate="">Title</span> <img src="arrowUp.gif" alt="Sort" height="6" widt
                    tabindex=""
                    tal:condition="python:folder_contents or (here.cb_dataValid and button['id'] == 'paste')"
 		   	       i18n:attributes="value"
-			       i18n:translate=""
 		               tal:attributes="value button/name; 
                                    name button/url;
                                    tabindex tabindex/next;" />
