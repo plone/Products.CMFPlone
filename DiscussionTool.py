@@ -1,4 +1,4 @@
-from Products.CMFCore.DiscussionTool import DiscussionTool as BaseTool
+from Products.CMFDefault.DiscussionTool import DiscussionTool as BaseTool
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
