@@ -67,7 +67,7 @@ def _installSkins(plone, skinList):
         directory_id = 'plone_styles/' + skin[6:].replace(' ', '_').lower()
         path = [elem.strip() for elem in skin_tool.getSkinPath('Plone Default').split(',')]
         path.insert(path.index('custom')+1, directory_id)
-        skin_tool.addSkinSelection(skin_title, ','.join(path))
+        skin_tool.addSkinSelection(skin, ','.join(path))
 
 def _installLocalizer(plone):
     out.append('Installing Localizer')
