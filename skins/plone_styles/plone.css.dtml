@@ -16,13 +16,13 @@
 **
 */
 
-/* <dtml-with stylesheet_properties> (do not remove this :) */
+/* <dtml-with base_properties> (do not remove this :) */
 
 /* The basic elements: */
 body {
-    font: <dtml-var mainFont>;
-    background: &dtml-mainBackground;;
-    color: &dtml-mainFontColor;;
+    font: &dtml-fontBaseSize; <dtml-var fontFamily>;
+    background-color: &dtml-backgroundColor;;
+    color: &dtml-fontColor;;
     margin: 0;
     padding: 0;
 }
@@ -34,7 +34,7 @@ table {
 
 a {
     text-decoration: none;
-    color: &dtml-mainLinkColor;;
+    color: &dtml-linkColor;;
     background-color: transparent;
 }
 img {
@@ -50,32 +50,33 @@ p a {
     text-decoration: underline;
 }
 p a:visited {
-    color: &dtml-contentLinkVisitedColor;;
+    color: &dtml-linkVisitedColor;;
     background-color: transparent;
 }
 p a:active {
-    color: &dtml-contentLinkActiveColor;;
+    color: &dtml-linkActiveColor;;
     background-color: transparent;
 }
 p img {
-    border: &dtml-contentImageBorder;;
+    border: 0;
     margin: 0;
 }
 
 hr {
-    height: 1px;
-    color: &dtml-mainTabBorderColorSelected;;
+    height: &dtml-borderWidth;;
+    color: &dtml-globalBorderColor;;
     background-color: transparent;
 }
 
 
 h1, h2, h3, h4, h5, h6 {
-    color: &dtml-headingFontColor;;
+    color: &dtml-fontColor;;
     background-color: transparent;
-    font: <dtml-var headingFont>;
+    font-family: <dtml-var headingFontFamily>;
+    font-size: &dtml-headingFontBaseSize;;
     margin: 0;
     padding-top: 0.5em;
-    border-bottom: 1px solid &dtml-mainTabBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 h1 a,
@@ -84,37 +85,37 @@ h3 a,
 h4 a,
 h5 a,
 h6 a {
-    color: &dtml-headingFontColor; ! important; 
+    color: &dtml-fontColor; ! important; 
 }
 
 h1 {
-    font-size: &dtml-headingSize1;;
+    font-size: 160%;
 }
 
 h2 {
-    font-size: &dtml-headingSize2;;
+    font-size: 150%;
 }
 
 h3 {
-    font-size: &dtml-headingSize3;;
+    font-size: 140%;
     border-bottom: none;
     font-weight: bold;
 }
 
 h4 {
-    font-size: &dtml-headingSize4;;
+    font-size: 120%;
     border-bottom: none;
     font-weight: bold;
 }
 
 h5 {
-    font-size: &dtml-headingSize5;;
+    font-size: 100%;
     border-bottom: none;
     font-weight: bold;
 }
 
 h6 {
-    font-size: &dtml-headingSize6;;
+    font-size: 80%;
     border-bottom: none;
     font-weight: bold;
 }
@@ -156,16 +157,16 @@ dd a {
 
 dd.link a {
     text-decoration: none;
-    color: &dtml-mainFontColor;;
+    color: &dtml-fontColor;;
 }
 
 fieldset {
-    border: &dtml-groupBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 2em 0em 1em 0em;
     padding: 1em 0em;
 }
 legend {
-    background: &dtml-mainBackground;;
+    background: &dtml-backgroundColor;;
     padding: 0.5em;
 }
 
@@ -174,29 +175,27 @@ form {
     margin: 0;
 }
 textarea {
-    border: &dtml-inputBorder;;  
-    color: &dtml-mainFontColor;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
+    color: &dtml-fontColor;;
     background-color: white;
     width: 98%;
     padding: 0.1em;
 }
 input {
     visibility: visible;
-    font: <dtml-var inputFont>;
-    border: &dtml-inputBorder;;  
-    color: &dtml-mainFontColor;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
+    color: &dtml-fontColor;;
     background-color: white;
     vertical-align: middle;
     padding: 0.1em;
 }
 select {
-    font: <dtml-var inputFont>;
-    border: &dtml-inputBorder;;  
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
     vertical-align: top;
 }
 abbr, acronym, .explain {
-    border-bottom: 1px dotted &dtml-mainFontColor;;
-    color: &dtml-mainFontColor;;
+    border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;
+    color: &dtml-fontColor;;
     background-color: transparent;
     cursor: help;
 }
@@ -212,15 +211,15 @@ blockquote {
 }
 code {
     font-size: 120%;
-    color: &dtml-mainFontColor;;
-    background-color: &dtml-preBackground;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
 }
 pre {
     font-size: 120%;
     padding: 1em;
-    border: &dtml-preBorder;;
-    color: &dtml-mainFontColor;;
-    background-color: &dtml-preBackground;;
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
 }
 .netscape4 {
     display: none;
@@ -246,9 +245,8 @@ pre {
 
 #top {
     /* Top section */
-    background: &dtml-topBackground;;
-    margin: &dtml-topMargin;;
-    padding: &dtml-topPadding;;
+    margin: 0;
+    padding: 0;
 }
 #siteActions {
     float: right;
@@ -258,10 +256,10 @@ pre {
 /* Logo properties */
  
 #logo {
-    background: url(<dtml-var portal_url>/logo.jpg) no-repeat;
+    background: url(<dtml-var portal_url>/<dtml-var logoName>) no-repeat;
     border: 0;
-    margin: &dtml-logoMargin;;
-    padding: &dtml-logoPadding;;
+    margin: 0.75em 0em 0.5em 1.5em;
+    padding: 0;
 }
 #logo a {
     display: block;
@@ -280,26 +278,25 @@ pre {
 #searchBox {
     /*searchbox style and positioning */
     background-color: transparent;
-    color: &dtml-searchFontColor;;
     clear: right;
     float: right;
-    margin: &dtml-searchMargin;;
-    padding: &dtml-searchPadding;;
+    margin: -4em 0em 0em 0em;
+    padding: 0em 2em 0em 0em;
     text-align: right;
     text-transform: &dtml-textTransform;;
     width: 30%;
 }
 input.searchButton {
     font-size: 100% ! important;
-    margin-bottom: 1px ! important;
+    margin-bottom: &dtml-borderWidth; ! important;
 }
 #portalTabs {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
-    background: &dtml-mainTabBackdrop;;
+    background-color: transparent;
     border-collapse: collapse;
-    border-bottom-color: &dtml-mainTabBorderColorSelected;;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
     padding: 0.5em 0em 0em 2em;
     white-space: nowrap;
     list-style: none;
@@ -312,12 +309,11 @@ input.searchButton {
 }
 #portalTabs li a {
     /* The normal, unselected tabs. They are all links */
-    background: &dtml-mainTabBackgroundNotSelected;;
-    border-color: &dtml-mainTabBorderColor;;
-    border-width: 1px; 
-    border-style: solid solid none solid;
-    color: &dtml-mainTabFontColor;;
-    font-weight: &dtml-mainTabFontWeight;;
+    background-color: transparent;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;; 
+    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
+    color: &dtml-globalFontColor;;
     height: auto;
     margin-right: 0.5em;
     padding: 0em 2em;
@@ -326,26 +322,25 @@ input.searchButton {
 }
 #portalTabs li.selected a {
     /* The selected tab. There's only one of this */
-    background: &dtml-mainTabBackground;;
-    border: 1px solid &dtml-mainTabBorderColorSelected;;
-    border-bottom: &dtml-mainTabBackground; 1px solid;
-    color: &dtml-mainTabFontColorSelected;;
-    font-weight: &dtml-mainTabFontWeight;;
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-globalBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
+    color: &dtml-globalFontColor;;
 }
 #portalTabs li a:hover {
-    background: &dtml-mainTabBackground;;
-    border-color: &dtml-mainTabBorderColorSelected;;
-    border-bottom-color: &dtml-mainTabBackground;;
-    color: &dtml-mainTabFontColorSelected;;
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-bottom-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
 }
 #personalBar {
     /* Bar with personalized menu (user preferences, favorites etc) */
-    background: &dtml-mainTabBackground;;
-    border-bottom-color: &dtml-mainTabBorderColorSelected;;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    background-color: &dtml-globalBackgroundColor;;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
     line-height: 1.2em;
-    color: &dtml-mainFontColor;;
+    color: &dtml-fontColor;;
     padding: 0em 3em 0em 3em;
     margin: 0;
     text-align: right;
@@ -361,7 +356,7 @@ input.searchButton {
 }
 
 #personalBar .notLoggedIn {
-    color: &dtml-mainFontColor;;
+    color: &dtml-fontColor;;
     padding: 0;
     background: transparent;
 } /* Used on all descriptions relevant to those not logged in */
@@ -369,22 +364,21 @@ input.searchButton {
 #personalBar li {
     background: transparent url(<dtml-var portal_url>/linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
-    color: &dtml-mainTabFontColorSelected;;
-    font-weight: &dtml-mainTabFontWeight;;
+    color: &dtml-globalFontColor;;
     margin-left: 1em;
 }
 #personalBar li a {
     text-decoration: none;
-    color: &dtml-mainTabFontColorSelected;;
+    color: &dtml-globalFontColor;;
 }
 .caseSensitive {
     text-transform: none;
 }
 #pathBar {
     /* The path bar, including breadcrumbs and add to favorites */
-    border-bottom-color: &dtml-mainTabBorderColorSelected;;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
     padding-left: 2em;
     padding-right: 2em;
     text-transform: &dtml-textTransform;;
@@ -397,7 +391,7 @@ input.searchButton {
     vertical-align: bottom;
 }
 .contentViews {
-    background: &dtml-contentTabBackdrop;;
+    background-color: transparent;
     border-collapse: collapse;
     padding-left: 1em;
     line-height: normal;
@@ -405,7 +399,7 @@ input.searchButton {
     margin-left: 0;
     /* white-space: nowrap; */
     list-style: none;
-    border: &dtml-contentTabBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     border-top-width: 0px;
     border-left-width: 0px;
     border-right-width: 0px;
@@ -414,11 +408,10 @@ input.searchButton {
     display: inline;
 }
 .contentViews li a {
-    background: &dtml-contentTabBackgroundNotSelected;;
-    border: &dtml-contentTabBorder;;
-    border-style: solid solid solid solid;
-    color: &dtml-contentTabFontColor;;
-    font-weight: &dtml-contentTabFontWeight;;
+    background-color: transparent;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-style: &dtml-borderStyle;;
+    color: &dtml-contentViewFontColor;;
     height: auto;
     margin-right: 0.5em;
     padding: 0em 2em;
@@ -428,21 +421,20 @@ input.searchButton {
     z-index: 1;
 }
 .contentViews .selected a {
-    background: &dtml-contentTabBackground;;
-    border-bottom: &dtml-contentTabBackground; 1px solid;
-    color: &dtml-contentTabFontColorSelected;;
-    font-weight: &dtml-contentTabFontWeight;;
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-bottom: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
+    color: &dtml-contentViewFontColor;;
 }
 .contentViews li a:hover {
-    background-color: &dtml-contentTabBackground;;
-    color: &dtml-contentTabFontColorSelected;;
+    background-color: &dtml-contentViewBackgroundColor;;
+    color: &dtml-contentViewFontColor;;
 }
 .contentActions {
     border-collapse: collapse;
-    background: &dtml-contentTabBackground;;
-    border-left: &dtml-contentTabBorder;;
-    border-right: &dtml-contentTabBorder;;
-    color: &dtml-contentTabFontColor;;
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    color: &dtml-contentViewFontColor;;
     text-align: right;
     text-transform: &dtml-textTransform;;
     padding: 0 1em;
@@ -451,19 +443,19 @@ input.searchButton {
 
 .contentActions a {
     text-decoration: none;
-    color: &dtml-contentTabFontColor;
+    color: &dtml-contentViewFontColor;
 }
 
 .contentActions ul {
-    background: &dtml-contentTabBackdrop;;
+    background-color: transparent;
     border: none;
     line-height: 1.2em;
     list-style: none;
     display: inline;
 }
 .contentActions ul li {
-    border: &dtml-contentTabBorder;;
-    border-style: none none none solid;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-style: none none none &dtml-borderStyle;;
     display: inline;
     padding: 0 1em;
     margin: 0;
@@ -479,14 +471,13 @@ input.searchButton {
 }
 
 .contentContent {
-    font: <dtml-var contentFont>;
+    font-size: 110%;
     padding: 0em 1em 2em 1em ! important;
-    background: &dtml-mainBackground;;
+    background: &dtml-backgroundColor;;
 }
 
 .editable .contentContent {
-    background: &dtml-contentBackground; ! important;
-    border: &dtml-contentTabBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0;
 }
 .documentActions {
@@ -494,16 +485,17 @@ input.searchButton {
     margin-top: 1.5em;
 }
 .message {
-    background: &dtml-messageBackground;;
-    border: &dtml-messageBorder;;
-    color: &dtml-mainFontColor;;
-    font: <dtml-var messageFont>;
+    background-color: &dtml-notifyBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    color: &dtml-fontColor;;
+    font-size: 80%;
+    font-weight: bold;
     margin: 2em 0em 1em 0em;
     padding: 0.5em 1em;
     vertical-align: middle;
 }
 .message a {
-    color: &dtml-mainFontColor;;
+    color: &dtml-fontColor;;
     text-decoration: underline;
 }
 .title {
@@ -511,7 +503,7 @@ input.searchButton {
 }
 .description {
     /* The summary text describing the document */
-    font: <dtml-var descriptionFont>;
+    font-weight: bold;
     display: block;
     margin: 1em 0em;
     line-height: 1.5em;
@@ -521,13 +513,12 @@ input.searchButton {
     font-size: 80%;
     clear: both;
     font-weight: normal;
-    color: #999999;
+    color: &dtml-discreetColor;;
 }
 #footer {
-    background: &dtml-footerBackground;;
-    border-top: &dtml-footerBorder;;
-    border-bottom: &dtml-footerBorder;;
-    color: &dtml-mainFontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     float: none;
     margin: 2em 0em 1em 0em;
     padding: 0.5em 0em 1em 0em;
@@ -535,7 +526,6 @@ input.searchButton {
 }
 
 #colophon {
-    color: &dtml-mainFontColor;;
     float: none;
     margin: 0em 0em 2em 0em;
     padding: 0.5em 0em 1em 0em;
@@ -556,41 +546,35 @@ input.searchButton {
 
 .standalone,
 .editable * .standalone {
-    background: &dtml-standaloneButtonBackground;;
-    color: &dtml-standaloneButtonFontColor;;
+    background: &dtml-globalBackgroundColor; url(linkOpaque.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: 80%;
-    font-weight: &dtml-buttonWeight;;
     margin-bottom: 1em;
-    padding: &dtml-standaloneButtonPadding;;
+    padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
 .context,
 .editable * .context {
-    background: &dtml-contextButtonBackground;;
-    color: &dtml-contextButtonFontColor;;
+    background: transparent url(linkTransparent.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: 80%;
-    font-weight: &dtml-buttonWeight;;
     margin-bottom: 1em;
-    padding: &dtml-contextButtonPadding;;
+    padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
 .destructive,
 .editable * .destructive {
-    background: &dtml-destructiveButtonBackground;;
-    border: &dtml-destructiveButtonBorder;;  
-    color: &dtml-destructiveButtonFontColor;;
+    background: &dtml-notifyBackgroundColor; url(linkTransparent.gif) 9px 1px no-repeat;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
     cursor: pointer;
     font-size: 80%;
-    font-weight: &dtml-buttonWeight;;
     margin-bottom: 1em;
-    padding: &dtml-destructiveButtonPadding;;
+    padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
 .noborder,
 .editable * .noborder {
-    border: &dtml-noBorder;;
+    border: none;
     margin: 0;
     background-color: transparent;
 }
@@ -601,7 +585,7 @@ input.searchButton {
 }
 .notify,
 .editable * .notify {
-    border: &dtml-destructiveButtonBorder;;  
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
 }
 .row {
     min-height: 4em;
@@ -609,12 +593,12 @@ input.searchButton {
     position: relative;
 }
 .group {
-    border: &dtml-groupBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em 1em 0em;
     padding: 0em 1em;
 }
 .legend {
-    background: &dtml-contentBackground;;
+    background: &dtml-backgroundColor;;
     font-size: 80%;
     padding: 0.5em;
     position : relative;
@@ -625,8 +609,8 @@ input.searchButton {
     margin-top: 0.2em;
 }
 .help {
-    background-color: #FFFFE1; 
-    border: 1px solid black; 
+    background-color: &dtml-helpBackgroundColor;; 
+    border: &dtml-borderWidth; &dtml-borderStyle; black; 
     font-size: 80%;
     font-weight: normal;
     line-height: normal;
@@ -639,51 +623,48 @@ input.searchButton {
 }
 .error {
     /* Class for error indication in forms */
-    background: &dtml-messageBackground;;
-    border: &dtml-messageBorder;;
+    background-color: &dtml-notifyBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1em;
     margin: 0;
     width: 68% !important;
 }
 .required {
     /* Used in addition to class "label" on required elements */
-    background: &dtml-requiredField;;
-    background-position: left;
+    background: url(required.gif) left no-repeat;
     padding-left: 8px;
 }
 
 /* javascript menu (contentbar) */
 
-.menuBar {
+ul.menuBar {
     padding: 0;
     margin: 0;
     margin-bottom: 1px;
-    color: &dtml-mainFontColor;;
+    color: &dtml-fontColor;;
 }
-.menuBar,
-.menuBar .menuButton {
+ul.menuBar, ul.menuBar li.menuButton {
     margin: 0;
     padding: 0;
     display: inline;
     list-style: none;
 }
 
-.menuBar .menuButton {
-    border: &dtml-contentTabBorder;;
-    border-style: none none none solid;
+ul.menuBar li.menuButton {
+    border-color: &dtml-contentViewBorderColor;;
+    border-style: none none none &dtml-borderStyle;;
+    border-width: &dtml-borderWidth;
 } 
-
 /*  border-style: solid none solid solid; */
-
-.menuBar .menuButton .menuIndicator {
-    color: &dtml-mainFontColor;;
+ul.menuBar li.menuButton .menuIndicator {
+    color: &dtml-fontColor;;
 }
 
-.menuBar .menuButton a {
+ul.menuBar li.menuButton a {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: center right;
-    color: &dtml-contentTabFontColorSelected;;
+    color: &dtml-contentViewFontColor;;
     cursor: pointer;
     text-decoration: none;
     z-index: 4;
@@ -692,10 +673,12 @@ input.searchButton {
     text-transform: &dtml-textTransform;;
 }
 
-.menu {
-    background: &dtml-contentTabBackground;;
-    border: &dtml-contentTabBorder;;
-    color: &dtml-contentTabFontColor;;
+ul.menu {
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-style: &dtml-borderStyle;;
+    border-color: &dtml-contentViewBorderColor;;
+    border-width: &dtml-borderWidth;;
+    color: &dtml-contentViewFontColor;;
     text-transform: &dtml-textTransform;;
     position: absolute;
     top: 0px;
@@ -707,45 +690,43 @@ input.searchButton {
     width: auto;
     margin: 0;
     padding: 0;
-    border-top: &dtml-contentTabBackground; 1px solid;
+    border-top: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
 }
-.menu, .menu li {
-    background: &dtml-contentTabBackground;;
+ul.menu, ul.menu li {
+    background: &dtml-contentViewBackgroundColor;;
     list-style: none;
     margin: 0;
     padding: 0;
     border-collapse: collapse;
 }
-.menu li {
+ul.menu li {
     margin: 0;
     padding: 0;
     border: none;
 }
-.menu .menuItem a {
-    color: &dtml-contentTabFontColorSelected;;
+ul.menu li.menuItem a {
+    color: &dtml-contentViewFontColor;;
     background-image: none ! important;
     display: block;
     margin: 0;
     padding: 0;
     text-transform: none ! important;
     text-decoration: none;
-    border: &dtml-contentTabBorder;;
-    border-color: &dtml-contentTabBackground;
 }
-.menu .menuItem a:hover {
-    background-color: &dtml-contentTabFontColor;;
+ul.menu li.menuItem a:hover {
+    background-color: &dtml-contentViewBorderColor;;
     color: White;
 }
-.menu .menuSep {
-    border-top: 1px solid &dtml-contentTabFontColor;;
+ul.menu li.menuSep {
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
 .card,
 .portrait {
-    background: &dtml-mainTabBackground;;
-    border-color: &dtml-mainTabBorderColor;;
-    border-width: 1px;
-    border-style: solid;
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;;
+    border-style: &dtml-borderStyle;;
     margin: 1em;
     padding: 1em;
     text-align: center;
@@ -755,64 +736,64 @@ input.searchButton {
 .stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
     border-collapse: collapse;
-    border-left: &dtml-listingBorder;;
-    border-bottom: &dtml-listingBorder;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     font-size: 80%;
     margin: 1em 0em 1em 0em;
 }
 .listing th,
 .stx table th {
-    background: &dtml-listingHeaderBackground;;
-    border-top: &dtml-listingBorder;;
-    border-bottom: &dtml-listingBorder;;
-    border-right: &dtml-listingBorder;;
-    color: &dtml-listingHeaderFontColor;;
+    background: &dtml-globalBackgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     font-weight: normal;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
     white-space: nowrap;
 }
 .listing .top {
-    border-left: 1px solid &dtml-contentBackground;;
-    border-top: 1px solid &dtml-contentBackground; ! important;
-    border-right: 1px solid &dtml-contentBackground; ! important;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
     text-align: right ! important;
     padding: 0em 0em 1em 0em;
 }
 .listing .odd {
     /*every second line should be shaded */
-    background: &dtml-listingOddBackground;;
+    background-color: &dtml-oddRowBackgroundColor;;
 }
 .listing .even {
-    background: &dtml-listingEvenBackground;;
+    background-color: &dtml-evenRowBackgroundColor;;
 }
 .listing .checkbox {
     text-align: center;
 }
 .listing td,
 .stx table td {
-    border-right: &dtml-listingBorder;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0em 1em;
     text-align: left;
 }
 .listing a:hover {
-    text-decoration: &dtml-listingLinkHover;;
+    text-decoration: underline;
 }
 .listing img {
     vertical-align: middle;
 }
 
+ul.configlets {
+    margin: 0;
+}
+
 ul.configlets li {
     list-style: none;
-    color: &dtml-standaloneButtonFontColor;;
     cursor: pointer;
-    font-weight: &dtml-buttonWeight;;
     margin-bottom: 1em;
-    padding: &dtml-standaloneButtonPadding;;
     text-transform: &dtml-textTransform;;
-    font: <dtml-var inputFont>;
-    border: &dtml-inputBorder;;  
-    color: &dtml-mainFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;  
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-fontColor;;
     vertical-align: middle;
     padding: 0.1em;
     text-align: center;
@@ -821,7 +802,6 @@ ul.configlets li {
 
 ul.configlets li a {
 	text-decoration: none;
-   color: &dtml-standaloneButtonFontColor;;
 }
 
 /* Additional STX workaround classes */
@@ -832,10 +812,10 @@ ul.configlets li a {
 }
 .stx table  /* stupid STX table workaround */
 {
-    border: &dtml-listingBorder; ! important;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; ! important;
 }
 .stx table td {
-    border-bottom: &dtml-listingBorder;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 .box {
@@ -849,10 +829,9 @@ ul.configlets li a {
     white-space: nowrap;
 }
 .box h5 { 
-    background: &dtml-boxHeaderBackground;;
-    border: &dtml-boxBorder;;
-    border-style: solid solid none solid;
-    color: &dtml-boxHeaderFontColor;;
+    background: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
     display: inline;
@@ -862,10 +841,9 @@ ul.configlets li a {
     white-space: nowrap;
 }
 .box h6 { 
-    background: &dtml-boxHeaderBackground;;
-    border: &dtml-boxBorder;;
-    border-style: solid solid none solid;
-    color: &dtml-boxHeaderFontColor;;
+    background: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
     display: block;
@@ -878,7 +856,7 @@ ul.configlets li a {
 .box .body {
     background: transparent;
     border-collapse: collapse;
-    border: &dtml-boxBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 .boxDetails {
     text-align: right;
@@ -895,7 +873,7 @@ ul.configlets li a {
 .box .close {
     float: right;
     text-transform: none;
-    border-left: &dtml-boxBorder;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0em 0.2em;
 }
 .box h1, 
@@ -906,21 +884,20 @@ ul.configlets li a {
     padding: 0;
 }
 .box .even {
-    background-color: &dtml-boxEvenBackground;;
+    background-color: &dtml-evenRowBackgroundColor;;
 }
 .box .odd {
-    background-color: &dtml-boxOddBackground;;
+    background-color: &dtml-oddRowBackgroundColor;;
 }
 .box input {
     font-size: 100%;
 }
 
 .comment {
-    background: &dtml-listingEvenBackground;; 
-    border: 1px dashed gray; 
+    background: &dtml-evenRowBackgroundColor;; 
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
     padding: 0 1em 0.5em 1em;
-    border-style: dashed;
-    color: gray;
+    color: &dtml-discreetColor;
 }
 
 .comment h1,
@@ -929,7 +906,7 @@ ul.configlets li a {
 .comment h4, 
 .comment h5,
 .comment h6 {
-    border-bottom: 1px dashed gray;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
     color: gray;
 }
 
@@ -938,7 +915,7 @@ ul.configlets li a {
 	margin: 1em;
 }
 .currentNavItem {
-    color: &dtml-mainFontColor;;
+    color: &dtml-fontColor;;
     font-weight: bold;
 }
 .state-private {
@@ -948,7 +925,7 @@ ul.configlets li a {
     color: #74AE0B;
 }
 .state-pending {
-    color: #FFA500;
+    color: &dtml-notifyBorderColor;;
 }
 .state-expired {
     color: Red;
@@ -957,25 +934,25 @@ ul.configlets li a {
     color: #008000;
 }
 .even {
-    background-color: &dtml-evenRowBackground;;
+    background-color: &dtml-evenRowBackgroundColor;;
 }
 .odd {
-    background-color: &dtml-oddRowBackground;;
+    background-color: &dtml-oddRowBackgroundColor;;
 }
 .highlight {
-    background-color: &dtml-evenRowBackground;;
+    background-color: &dtml-evenRowBackgroundColor;;
 }
 
 .discreet {
-    color: #999999;
+    color: &dtml-discreetColor;;
     font-size: 80%;
 }
 
 .listingBar {
-    background: &dtml-mainTabBackground;;
-    border-color: &dtml-mainTabBorderColorSelected;;
-    border-style: solid;
-    border-width: 1px;
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle;;
+    border-width: &dtml-borderWidth;;
     padding: 0em 1em;
     text-align: center;
     text-transform: &dtml-textTransform;;
@@ -1037,8 +1014,8 @@ ul.configlets li a {
 .main .editable > * select:focus,
 .main .editable > * input:focus,
 .main .editable > * textarea:focus {
-    border-color: #FFA500; 
-    border-width: 1px;
+    border-color: &dtml-notifyBorderColor;; 
+    border-width: &dtml-borderWidth;;
 }
 .overflow pre {
     overflow: auto;
@@ -1048,9 +1025,9 @@ ul.configlets li a {
 ** Calendar elements - used in the calendar rendering 
 */
 
-.day_plone {
-    background-color: #FFFFBB;
-    border: 1px solid Black;
+.dayPopup {
+    background-color: &dtml-helpBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; Black;
     padding: 0.2em;
     position: absolute;
     visibility: hidden;
@@ -1062,19 +1039,17 @@ ul.configlets li a {
 }
 
 .calendar {
-    border: &dtml-boxBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em;
 }
 .calendar a {
     text-decoration: none;
-    color: &dtml-boxLinkColor;;
 }
 .calendar a:hover {
     text-decoration: none;
 }
 .calendar th {
-    background-color: &dtml-boxHeaderBackground;;
-    color: &dtml-boxHeaderFontColor;;
+    background-color: &dtml-globalBackgroundColor;;
     font-weight: bold;
     text-align: center;
     padding: 2px;
@@ -1086,29 +1061,29 @@ ul.configlets li a {
     padding: 2px;
 }
 .calendar .weekdays td {
-    background-color: &dtml-boxHeaderBackground;;
-    border: &dtml-boxBorder;;
-    border-style: solid none;
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; none;
     text-align: center;
     padding: 2px;
 }
 .calendar .event {
-    background-color: &dtml-boxHeaderBackground;;
+    background-color: &dtml-globalBackgroundColor;;
     font-weight: bold;
 }
 .calendar .todayevent {
-    background-color: &dtml-boxHeaderBackground;;
-    border: &dtml-boxHighlight;;
+    background-color: &dtml-globalBackgroundColor;;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
     font-weight: bold;
 }
 .calendar .todaynoevent {
     border-collapse: collapse;
-    border: &dtml-boxHighlight;;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
 
-/* for highlighting of serchTerms */
+/* for highlighting of search terms */
 
-.higligthedSearchTerm {
+.highlightedSearchTerm {
    background-color: #feff82;
 }
 
@@ -1118,7 +1093,7 @@ ul.configlets li a {
 .inplacecalendar {
   position: relative;
   display: none;
-  border: 1px solid;
+  border: &dtml-borderWidth; &dtml-borderStyle;;
   border-color: #fff #000 #000 #fff;
   font-size: 11px;
   cursor: default;
@@ -1128,7 +1103,7 @@ ul.configlets li a {
 }
 
 .inplacecalendar table {
-  border: 1px solid;
+  border: &dtml-borderWidth; solid;
   border-color: #fff #000 #000 #fff;
   font-size: 11px;
   cursor: default;
@@ -1144,7 +1119,7 @@ ul.configlets li a {
   padding: 1px;
   border: 1px solid;
   border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
-  background: &dtml-boxHeaderBackground;;
+  background: &dtml-globalBackgroundColor;;
 }
 
 .inplacecalendar thead .title { /* This holds the current "month, year" */
@@ -1166,7 +1141,7 @@ ul.configlets li a {
   border-bottom: 1px solid ButtonShadow;
   padding: 2px;
   text-align: center;
-  background: &dtml-boxHeaderBackground;;
+  background: &dtml-globalBackgroundColor;;
   color: ButtonText;
 }
 
@@ -1196,7 +1171,7 @@ ul.configlets li a {
 .inplacecalendar table .wn {
   padding: 2px 3px 2px 2px;
   border-right: 1px solid ButtonShadow;
-  background: &dtml-boxHeaderBackground;;
+  background: &dtml-globalBackgroundColor;;
   color: ButtonText;
 }
 
@@ -1251,7 +1226,7 @@ ul.configlets li a {
 }
 
 .inplacecalendar tfoot .ttip { /* Tooltip (status bar) cell <TD> */
-  background: &dtml-boxHeaderBackground;;
+  background: &dtml-globalBackgroundColor;;
   padding: 1px;
   border: 1px solid;
   border-color: ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;

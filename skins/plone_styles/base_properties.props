@@ -1,0 +1,39 @@
+plone_skin:string=Plone Default
+
+logoName:string=logo.jpg
+
+fontFamily:string="Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif
+fontBaseSize:string=0.7em
+fontColor:string=Black
+
+backgroundColor:string=White
+
+linkColor:string=#436976
+linkActiveColor:string=Red
+linkVisitedColor:string=Purple
+
+borderWidth:string=1px
+borderStyle:string=solid
+borderStyleAnnotations:string=dashed
+
+globalBorderColor:string=#8cacbb
+globalBackgroundColor:string=#dee7ec
+globalFontColor:string=#436976
+
+headingFontFamily:string="Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif
+headingFontBaseSize:string=100%
+
+contentViewBorderColor:string=#74ae0b
+contentViewBackgroundColor:string=#cde2a7
+contentViewFontColor:string=#578308
+
+textTransform:string=lowercase
+
+evenRowBackgroundColor:string=#f7f9fa
+oddRowBackgroundColor:string=transparent
+
+notifyBorderColor:string=#ffa500
+notifyBackgroundColor:string=#ffce7b
+
+discreetColor:string=#999999
+helpBackgroundColor:string=#ffffe1

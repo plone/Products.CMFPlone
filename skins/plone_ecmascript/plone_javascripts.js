@@ -1,7 +1,9 @@
 
 
 // Heads up! August 2003  - Geir Bækholt
-// This file now requires the javascript variable portal_url to be set in the plone_javascript_variables.js file.
+// This file now requires the javascript variable portal_url to be set 
+// in the plone_javascript_variables.js file. Any other variables from Plone
+// that you want to pass into these scripts should be placed there.
 
 
 // The calendar popup show/hide:
@@ -358,13 +360,13 @@ function climb(node, word){
 function checkforhighlight(node,word) {
         ind = node.nodeValue.toLowerCase().indexOf(word.toLowerCase())
 		if (ind != -1) {
-            if (node.parentNode.className != "higligthedSearchTerm"){
+            if (node.parentNode.className != "highlightedSearchTerm"){
                 par = node.parentNode;
                 contents = node.nodeValue;
 			
                 // make 3 shiny new nodes
                 hiword = document.createElement("span");
-				hiword.className = "higligthedSearchTerm";
+				hiword.className = "highlightedSearchTerm";
 				hiword.appendChild(document.createTextNode(contents.substr(ind,word.length)));
 				
                 par.insertBefore(document.createTextNode(contents.substr(0,ind)),node);

@@ -5,7 +5,7 @@
 */
 
 /* Do not remove this, it's required to get the variables needed to render the CSS
-<dtml-with stylesheet_properties>
+<dtml-with base_properties>
 */
 
 /* Don't remove this either, this is a CSS trick to hide things from all browsers 

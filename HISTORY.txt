@@ -6,6 +6,14 @@ Plone 2.0 - Fyuti
 
     Beta 3
 
+    - Deprecated stylesheet_properties for the new base_properties in the CSS.
+      This one is much more flexible, clean and reusable, but note that if your
+      site relied a lot on the old stylesheet_properties file, you will have to 
+      move the attributes to the new file. The reason for renaming it was to not
+      cause errors when upgrading. It will reset your color choices, though.
+      The new properties are documented in ploneCustom.css.
+      [limi]
+
     - Removed the CMFWiki and CMFCollector skins from Plone core.
       **NOTE:** You need to add the correct skin paths if you are using 
       these products, they are no longer installed by default. The skins

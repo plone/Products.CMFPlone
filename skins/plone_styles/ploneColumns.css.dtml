@@ -4,7 +4,7 @@
 **
 */
 
-/* <dtml-with stylesheet_properties> */
+/* <dtml-with base_properties> */
 
 body {
     min-width: 58em;

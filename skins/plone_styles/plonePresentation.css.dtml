@@ -14,11 +14,11 @@
 **
 */
 
-/* <dtml-with stylesheet_properties> (do not remove this :) */
+/* <dtml-with base_properties> (do not remove this :) */
 
 body {
     background: White url(<dtml-var portal_url>/logo.jpg) no-repeat fixed 95% 95%;
-    font: <dtml-var mainFont>;
+    font-family: <dtml-var fontFamily>;
     font-size: 50px !important;
     color: Black;
     margin: 0;
@@ -28,9 +28,9 @@ body {
 h1 {
     font-size: 50px !important;
     background: &dtml-mainTabBackground;;
-    border-color: &dtml-mainTabBorderColorSelected;;
+    border-color: &dtml-globalBorderColor;;
     border-style: solid;
-    border-width: 1px;
+    border-width: &dtml-borderWidth;;
     padding-top: 0em;
     padding-left: 0.5em;
     padding-right: 0.5em;
@@ -80,7 +80,7 @@ pre {
     font-size: 25px;
     padding: 0.5em;
     font-weight: bold;
-    border: &dtml-preBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 div.top,
@@ -136,7 +136,7 @@ div#columns div#main-left div.main * {
 
 table.listing,
 table.listing td {
-    border: 1pt solid black;
+    border: 1pt &dtml-borderStyle; black;
     border-collapse: collapse;
 }
 
