@@ -15,6 +15,7 @@
 </div>
 
 <div metal:define-macro="content_bar"
+     i18n:domain="plone"
      id="contentBar">
 
     <img src=""
