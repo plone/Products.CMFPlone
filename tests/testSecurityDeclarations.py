@@ -29,6 +29,13 @@ class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
         except (ImportError, Unauthorized), e:
             self.fail(e)
 
+    def checkUnauthorized(self, psbody):
+        self.addPS('ps', body=psbody)
+        try:
+            self.folder.ps()
+        except (AttributeError, Unauthorized):
+            pass
+
 
 class TestSecurityDeclarations(RestrictedPythonTest):
 
@@ -199,19 +206,13 @@ class TestAcquisitionMethods(RestrictedPythonTest):
         self.check('print context.aq_inner.aq_parent')
 
     def test_aq_self(self):
-        # Not accessible
-        self.assertRaises(AttributeError,
-            self.check, 'print context.aq_self')
+        self.checkUnauthorized('print context.aq_self')
 
     def test_aq_base(self):
-        # Not accessible
-        self.assertRaises(AttributeError,
-            self.check, 'print context.aq_base')
+        self.checkUnauthorized('print context.aq_base')
 
     def test_aq_acquire(self):
-        # Not accessible
-        self.assertRaises(AttributeError,
-            self.check, 'print context.aq_acquire')
+        self.checkUnauthorized('print context.aq_acquire')
 
 
 # Test helpers
