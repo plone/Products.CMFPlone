@@ -15,6 +15,11 @@ from AccessControl import Unauthorized
 
 class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
 
+    # NOTE: This testcase is a bit hairy. Security declarations
+    # "stick" once a module has been imported into the restricted
+    # environment. Therefore the tests are not truly independent.
+    # Be careful when adding new tests to this class.
+
     def addPS(self, id, params='', body=''):
         factory = self.folder.manage_addProduct['PythonScripts']
         factory.manage_addPythonScript(id)
