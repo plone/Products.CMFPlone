@@ -189,7 +189,7 @@ class PloneGenerator(Portal.PortalGenerator):
         members = getattr(p , 'Members')
         members.setTitle('Members')
         members.setDescription("Container for portal members' home directories")
-        catalog.unindexObject(members) #unindex Members folder
+        ##catalog.unindexObject(members) #unindex Members folder
 
         # add index_html to portal root
         p.invokeFactory('Document', 'index_html')

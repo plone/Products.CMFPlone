@@ -50,8 +50,11 @@
         <br />
         Another way to control the visibility of an item is with its
         <strong>effective date</strong>. An item is not publicly
-        available before its effective date, <em>even if its status is
-        <strong>published</strong></em>.
+        searchable before its effective date, <em>even if its status is
+        <strong>published</strong></em>.  This will prevent the item
+        from showing up in portlets (or any other templates fed by catalog
+        queries), although the item will still be available if accessed 
+        directly via URL.
       </p>
 
       <form id="edit_form"

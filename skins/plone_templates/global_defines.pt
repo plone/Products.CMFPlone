@@ -12,6 +12,7 @@
         global putils nocall:portal/plone_utils;
         global wtool nocall:portal/portal_workflow;
         global ifacetool nocall:portal/portal_interface | nothing;
+        global syntool nocall:portal/portal_syndication;
         global portal_title portal_object/Title;
         global object_title here/Title;
         global member mtool/getAuthenticatedMember;

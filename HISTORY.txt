@@ -2,7 +2,38 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - (TBA) - (Unreleased)
+Plone 2.1 - Ms. Bumblebee - Alpha1 - Released March 12, 2005 
+
+    - No longer uncatalog the Members folder on installation so that the new
+      NavTreePortlet (not included) works out of the box.
+      [stefan]
+
+    - Changed PloneTool.availableMIMETypes to use the MimetypesRegistry to
+      return a list of mimetype names.
+      [tiran]
+
+    - Fixed discussion_reply.cpy to use portal_discussion.getDiscussionFor(obj)
+      instead of accessing the talkback object directly.
+      [tiran]
+
+    - Now using CookedBody instead of EditableBody in news.pt
+      [tiran]
+
+    - Merged Plone 2.1-atct branch. Plone now uses and requires
+      Archetypes 1.3 and ATContentTypes.
+      [stefan]
+
+    - Removed the debian directory.
+      [stefan]
+
+    - Slight text edits in content_status_history template to more
+      accurately reflect the influence of the effective and expiration
+      dates.
+      [rafrombrc]
+
+    - Added support for Firefox Live RSS Bookmark. RSS enabled objects
+      will show the RSS button in firefox. Search results too.
+      [batlogg]
 
     - Fixed wrong i18n output encoding when create member area. We must set
       correct 'content-type' header to make PTS work when call translate.
@@ -23,7 +54,8 @@ Plone 2.1 - (TBA) - (Unreleased)
 
     - Moved the setting of login_time and last_login_time out of the
       (not always reached) login_success.pt and login_password.pt templates
-      and into the (always executed) logged_in.py script. [rafrombrc]
+      and into the (always executed) logged_in.py script.
+      [rafrombrc]
 
     - Permission settings were not being correctly copied to temp
       folder because we were using 'self' instead of 'intended_parent'

@@ -74,7 +74,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testMembersFolderMetaType(self):
         # Members folder should have meta_type 'Large Plone Folder'
         members = self.membership.getMembersFolder()
-        self.assertEqual(members.meta_type, 'Large Plone Folder')
+        #self.assertEqual(members.meta_type, 'Large Plone Folder')
+        self.assertEqual(members.meta_type, 'ATBTreeFolder')
 
     def testMembersFolderPortalType(self):
         # Members folder should have portal_type 'Large Plone Folder'
@@ -113,6 +114,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             count += 1
         self.failUnless(j < i)
 
+    def testFolderHasFolderListingAction(self):
+        # Folders should have a 'folderlisting' action
+        topic = self.types.getTypeInfo('Folder')
+        for action in topic._cloneActions():
+            if action.id == 'folderlisting':
+                break
+        else:
+            self.fail("Folder has no 'folderlisting' action")
+
     def testTopicHasFolderListingAction(self):
         # Topics should have a 'folderlisting' action
         topic = self.types.getTypeInfo('Topic')
@@ -126,7 +136,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Is it ok to remove the imagePatch? Probably not as we
         # don't want the border attribute ...
         self.folder.invokeFactory('Image', id='foo', file=dummy.Image())
-        endswith = ' alt="" title="" longdesc="" height="16" width="16" />'
+        endswith = ' alt="" title="" height="16" width="16" />'
         self.assertEqual(self.folder.foo.tag()[-len(endswith):], endswith)
 
     def testNoPortalFormTool(self):
@@ -157,7 +167,8 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testMembersIndexHtml(self):
         # index_html for Members folder should be a Page Template
         members = self.members
-        self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
+        #self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
+        self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         self.failUnless(hasattr(aq_base(members), 'index_html'))
         # getitem works
         self.assertEqual(aq_base(members)['index_html'].meta_type, 'Page Template')
@@ -175,7 +186,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         # special treatment of 'index_html' in the PloneFolder base class and
         # got fixed by hazmat.
         members = self.members
-        self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
+        self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         #self.assertEqual(members.index_html.meta_type, 'Document')
         self.assertEqual(members.index_html.meta_type, 'Page Template')
 

@@ -3,11 +3,17 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
+<metal:block metal:fill-slot="head_slot">
+    <link rel="alternate" title="RSS 1.0" type="application/rss+xml"
+          tal:condition="request/SearchableText|nothing"
+          tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}"/>
+</metal:block>
+
 <metal:block fill-slot="top_slot"
              tal:define="dummy python:request.set('disable_border',1)" />
 
 <div metal:fill-slot="main"
-       tal:define="results python:here.queryCatalog(REQUEST=request);
+     tal:define="results python:here.queryCatalog(REQUEST=request);
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;

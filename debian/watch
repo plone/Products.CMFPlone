@@ -1,5 +1,0 @@
-# watch control file for uscan
-version=2
-# Site										Version	Script
-http://heanet.dl.sourceforge.net/sourceforge/plone/PloneBase-(.*)\.tar\.gz	debian uupdate
-http://umn.dl.sourceforge.net/sourceforge/plone/PloneBase-(.*)\.tar\.gz		debian uupdate

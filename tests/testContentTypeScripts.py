@@ -181,6 +181,23 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.folder.image.image_edit(title='')
         self.assertEqual(self.folder.image.Title(), '')
  
+    def testAddToFavorites(self):
+        # Ugh, addFavorite traverses to remote_url, so make sure it can.
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', id='bar')
+        self.portal.bar.invokeFactory('Document', id='baz.html')
+        self.setRoles(['Member'])
+        # back to normal
+        self.failIf('Favorites' in self.folder.objectIds())
+        self.portal.bar['baz.html'].addtoFavorites()
+        self.failUnless('Favorites' in self.folder.objectIds())
+        favorite = self.folder.Favorites.objectValues()[0]
+        self.assertEqual(favorite.getRemoteUrl(),
+                         '%s/bar/baz.html' % self.portal.portal_url())
+        # Make sure the script created AT types
+        self.assertEqual(self.folder.Favorites.meta_type, 'ATFolder')
+        self.assertEqual(favorite.meta_type, 'ATFavorite')
+
 
 class TestEditShortName(PloneTestCase.PloneTestCase):
     # Test fix for http://plone.org/collector/2246
@@ -216,7 +233,7 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
 
     def testFileEditString(self):
         self.folder.file.file_edit(file='foo')
-        self.assertEqual(str(self.folder.file), 'foo')
+        self.assertEqual(str(self.folder.file.getFile()), 'foo')
 
     def testImageEditString(self):
         self.folder.image.image_edit(file=dummy.GIF)
@@ -245,7 +262,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
 
     def testFileMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
-        self.assertEqual(self.folder.file.content_type, 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
 
     def testImageMimeType(self):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
@@ -255,7 +272,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.folder.file.file_edit(title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
-        self.assertEqual(self.folder.file.content_type, 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
 
     def testImageEditKeepsMimeType(self):
         self.folder.image.image_edit(title='Foo')
@@ -267,7 +284,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         get_transaction().commit(1) # make rename work
         self.folder.file.file_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'application/pdf')
-        self.assertEqual(self.folder.foo.content_type, 'application/pdf')
+        self.assertEqual(self.folder.foo.getFile().content_type, 'application/pdf')
 
     def testImageRenameKeepsMimeType(self):
         get_transaction().commit(1) # make rename work
@@ -363,13 +380,12 @@ class TestImagePatch(PloneTestCase.PloneTestCase):
         from Products.CMFPlone.patches.imagePatch import tag
         kw = {'_title':'some title',
               '_alt':'alt tag',
-              '_longdesc':'stupid longdesc',
               'height':100,
               'width':100}
         # Wrap object so that ComputedAttribute gets executed.
         self.ob = dummy.ImageComputedProps(**kw).__of__(self.folder)
 
-        endswith = ('alt="alt tag" title="some title" longdesc="stupid longdesc" '
+        endswith = ('alt="alt tag" title="some title" '
                     'height="100" width="100" />')
         self.assertEqual(tag(self.ob)[-len(endswith):], endswith)
 

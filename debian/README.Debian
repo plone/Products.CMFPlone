@@ -1,7 +1,0 @@
-zope-cmfplone for Debian
-------------------------
-
-To create a plone site go to the zope management interface (ZMI) and select 
-"Plone Site" from the drop down menu on the right side.
-
- -- Christian Heimes <heimes@faho.rwth-aachen.de>, Fri, 23 Jan 2004 23:53:51 +0100

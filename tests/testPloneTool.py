@@ -110,23 +110,68 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('File', id='file')
         self.folder.file.edit(file=dummy.File('foo.zip'))
         self.assertEqual(self.folder.file.Format(), 'application/zip')
-        self.assertEqual(self.folder.file.content_type, 'application/zip')
+        self.assertEqual(self.folder.file.getFile().content_type, 'application/zip')
         # Changing the format should be reflected in content_type property
         self.utils.editMetadata(self.folder.file, format='image/gif')
         self.assertEqual(self.folder.file.Format(), 'image/gif')
-        self.assertEqual(self.folder.file.content_type, 'image/gif')
+        self.assertEqual(self.folder.file.getFile().content_type, 'image/gif')
 
     def testEditFormatMetadataOfImage(self):
         # Test fix for http://plone.org/collector/1323
         # Fixed in CMFDefault.Image, not Plone.
         self.folder.invokeFactory('Image', id='image')
-        self.folder.image.edit(file=dummy.File('foo.zip'))
+        self.folder.image.edit(file=dummy.Image('foo.zip'))
         self.assertEqual(self.folder.image.Format(), 'application/zip')
-        self.assertEqual(self.folder.image.content_type, 'application/zip')
+        self.assertEqual(self.folder.image.getImage().content_type, 'application/zip')
         # Changing the format should be reflected in content_type property
         self.utils.editMetadata(self.folder.image, format='image/gif')
         self.assertEqual(self.folder.image.Format(), 'image/gif')
-        self.assertEqual(self.folder.image.content_type, 'image/gif')
+        self.assertEqual(self.folder.image.getImage().content_type, 'image/gif')
+
+    def testNormalizeISO(self):
+        self.assertEqual(self.utils.normalizeISO(u"\xe6"), 'e')
+        self.assertEqual(self.utils.normalizeISO(u"a"), 'a')
+        self.assertEqual(self.utils.normalizeISO(u"\u9ad8"), '9ad8')
+
+    def testTitleToNormalizedIdPunctuation(self):
+        # Punctuation and spacing is removed and replaced by '-'
+        self.assertEqual(self.utils.titleToNormalizedId("a string with spaces"),
+                         'a-string-with-spaces')
+        self.assertEqual(self.utils.titleToNormalizedId("p.u,n;c(t)u!a@t#i$o%n"),
+                         'p-u-n-c-t-u-a-t-i-o-n')
+
+    def testTitleToNormalizedIdLower(self):
+        # Strings are lowercased
+        self.assertEqual(self.utils.titleToNormalizedId("UppERcaSE"), 'uppercase')
+
+    def testTitleToNormalizedIdStrip(self):
+        # Punctuation and spaces are trimmed, multiples reduced to 1
+        self.assertEqual(self.utils.titleToNormalizedId(" a string    "),
+                         'a-string')
+        self.assertEqual(self.utils.titleToNormalizedId(">here's another!"),
+                         'here-s-another')
+        self.assertEqual(self.utils.titleToNormalizedId("one with !@#$!@#$ stuff in the middle"),
+                         'one-with-stuff-in-the-middle')
+
+    def testTitleToNormalizedIdFileExtensions(self):
+        # If there is something that looks like a file extensions
+        # it will be preserved.
+        self.assertEqual(self.utils.titleToNormalizedId("this is a file.gif"),
+                         'this-is-a-file.gif')
+        self.assertEqual(self.utils.titleToNormalizedId("this is. also. a file.html"),
+                         'this-is-also-a-file.html')
+
+    def testTitleToNormalizedIdAccents(self):
+        # European accented chars will be transliterated to rough ASCII equivalents
+        self.assertEqual(self.utils.titleToNormalizedId(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5"),
+                         'eksempel-eoa-norsk-eoa')
+
+    def testTitleToNormalizedIdHex(self):
+        # Everything that can't be transliterated will be hex'd
+        self.assertEqual(self.utils.titleToNormalizedId(u"\u9ad8\u8054\u5408 Chinese"),
+                         '9ad880545408-chinese')
+        self.assertEqual(self.utils.titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean"),
+                         'c774bbf8c9f1-korean')
 
 
 class TestEditMetadata(PloneTestCase.PloneTestCase):
@@ -181,22 +226,22 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Contributors(), ())
 
     def testSetFormat(self):
-        self.assertEqual(self.doc.Format(), 'text/plain')
-        self.assertEqual(self.doc.text_format, 'structured-text')
-        self.utils.editMetadata(self.doc, format='text/html')
         self.assertEqual(self.doc.Format(), 'text/html')
-        self.assertEqual(self.doc.text_format, 'html')
+        self.assertEqual(self.doc.text_format, 'text/html')
+        self.utils.editMetadata(self.doc, format='text/x-rst')
+        self.assertEqual(self.doc.Format(), 'text/x-rst')
+        self.assertEqual(self.doc.text_format, 'text/x-rst')
 
     def testClearFormat(self):
-        self.utils.editMetadata(self.doc, format='text/html')
-        self.assertEqual(self.doc.Format(), 'text/html')
-        self.assertEqual(self.doc.text_format, 'html')
+        self.utils.editMetadata(self.doc, format='text/x-rst')
+        self.assertEqual(self.doc.Format(), 'text/x-rst')
+        self.assertEqual(self.doc.text_format, 'text/x-rst')
         self.utils.editMetadata(self.doc, format='')
-        self.assertEqual(self.doc.Format(), 'text/plain')
-        self.assertEqual(self.doc.text_format, 'structured-text')
+        self.assertEqual(self.doc.Format(), 'text/html')
+        self.assertEqual(self.doc.text_format, 'text/html')
 
     def testSetLanguage(self):
-        self.assertEqual(self.doc.Language(), '')
+        self.assertEqual(self.doc.Language(), 'en')
         self.utils.editMetadata(self.doc, language='de')
         self.assertEqual(self.doc.Language(), 'de')
 
@@ -378,7 +423,7 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
         self.utils.editMetadata(self.doc)
         # XXX: Note that language, format, and rights do not 
         #      receive the Formulator treatment.
-        self.assertEqual(self.doc.Language(), '')
+        self.assertEqual(self.doc.Language(), 'en')
 
 
 def test_suite():

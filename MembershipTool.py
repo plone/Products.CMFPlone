@@ -346,7 +346,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
             for group in groups:
                 for member in group.getGroupMembers():
-                    if member not in g_members:
+                    if member not in g_members and not groups_tool.isGroup(member):
                         g_members.append(member)
             g_userids = map(lambda x: x.getMemberId(), g_members)
         if groupname and not g_userids:

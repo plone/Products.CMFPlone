@@ -38,7 +38,7 @@
                  tal:define="resultObject result/getObject;
                              creator result/Creator;
                              resulturl resultObject/absolute_url;
-                             has_body resultObject/EditableBody">
+                             has_body resultObject/CookedBody">
 
                 <h2>
                     <a href="/view" 

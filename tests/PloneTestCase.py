@@ -19,11 +19,23 @@ ZopeTestCase.installProduct('ZCTextIndex')
 if ZopeTestCase.hasProduct('TextIndexNG2'):
     ZopeTestCase.installProduct('TextIndexNG2')
 ZopeTestCase.installProduct('SecureMailHost')
+if ZopeTestCase.hasProduct('ExternalEditor'):
+    ZopeTestCase.installProduct('ExternalEditor')
 ZopeTestCase.installProduct('CMFPlone')
 ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('PageTemplates', quiet=1)
 ZopeTestCase.installProduct('PythonScripts', quiet=1)
 ZopeTestCase.installProduct('ExternalMethod', quiet=1)
+
+# Archetypes/ATContentTypes dependencies
+ZopeTestCase.installProduct('Archetypes')
+ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
+ZopeTestCase.installProduct('PortalTransforms', quiet=1)
+ZopeTestCase.installProduct('ATReferenceBrowserWidget', quiet=1)
+ZopeTestCase.installProduct('ATContentTypes')
+
+# Install sessioning
+ZopeTestCase.utils.setupCoreSessions()
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
@@ -153,7 +165,7 @@ def optimize():
     # Don't setup Plone content (besides Members folder)
     def setupPortalContent(self, p):
         p.invokeFactory('Large Plone Folder', id='Members')
-        p.portal_catalog.unindexObject(p.Members)
+        ##p.portal_catalog.unindexObject(p.Members)
     PloneGenerator.setupPortalContent = setupPortalContent
 
 

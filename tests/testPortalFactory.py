@@ -28,15 +28,15 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
 
     def testTraverse(self):
         temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.assertEqual(temp_doc.meta_type, 'Document')
+        self.assertEqual(temp_doc.meta_type, 'ATDocument')
         self.assertEqual(temp_doc.getId(), 'tmp_id')
 
     def testTraverseTwiceByDifferentContentTypes(self):
         temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.assertEqual(temp_doc.meta_type, 'Document')
+        self.assertEqual(temp_doc.meta_type, 'ATDocument')
         self.assertEqual(temp_doc.getId(), 'tmp_id')
         temp_img = self.folder.restrictedTraverse('portal_factory/Image/tmp_id_image')
-        self.assertEqual(temp_img.meta_type, 'Portal Image')
+        self.assertEqual(temp_img.meta_type, 'ATImage')
         self.assertEqual(temp_img.getId(), 'tmp_id_image')
 
     def testTempFolderLocalRoles(self):
@@ -161,7 +161,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # The redirect URL should contain the factory parts
         body = response.getBody()
         self.failUnless(body.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(body.endswith('/document_edit_form'))
+        self.failUnless(body.endswith('/atct_edit'))
 
         # Perform the redirect
         edit_form_path = body[len(self.app.REQUEST.SERVER_URL):]
@@ -180,7 +180,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
         # The redirect URL should contain the factory parts
         body = response.getBody()
         self.failUnless(body.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(body.endswith('/document_edit_form'))
+        self.failUnless(body.endswith('/atct_edit'))
 
         # Perform the redirect
         edit_form_path = body[len(self.app.REQUEST.SERVER_URL):]
@@ -211,7 +211,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
             self.basic_auth)
 
         self.assertEqual(response.getStatus(), 302) # Redirect to document_view
-        self.failUnless(response.getBody().startswith(self.folder_url+'/foo/document_view'))
+        self.failUnless(response.getBody().startswith(self.folder_url+'/foo/view'))
 
         self.failUnless('foo' in self.folder.objectIds())
         self.assertEqual(self.folder.foo.Title(), 'Foo')
