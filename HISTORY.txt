@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - http://plone.org/collector/472.  empty discussions
+      Discussion now uses CMFFormController and subject/body are required fields now
+      [mrtopf]
+
     - Portal.py/SkinsTool.py: Removed monkey patch that renamed the skin request var to
       plone_skin and moved request_varname to our SkinsTool
       [tiran]
