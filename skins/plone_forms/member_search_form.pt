@@ -86,7 +86,7 @@
                  <label i18n:translate="legend_group"> Group </label>
 
                  <div class="formHelp" i18n:translate="help_search_group"> 
-                 Return memebrs in the selected group.
+                 Return members in the selected group.
                  </div>
 
                  <select name="groupname">
