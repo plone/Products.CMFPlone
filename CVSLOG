@@ -1,3 +1,28 @@
+2004-01-15 04:15  vinsci
+
+	* skins/plone_content/discussionitem_view.pt (Plone-2_0-branch):
+	  First small step of issue 2269.
+
+2004-01-15 03:50  zopezen
+
+	* skins/plone_scripts/browserDefault.py (Plone-2_0-branch): Error
+	  msg typo
+
+2004-01-15 01:23  dpunktnpunkt
+
+	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch):
+	  Proper msgid
+
+2004-01-14 22:10  dannybloe
+
+	* skins/cmf_legacy/: RSS.dtml, rssBody.dtml (Plone-2_0-branch),
+	  RSS.dtml, rssBody.dtml: These two files got lost somewhere. This
+	  closes issue 2102, 2224 (not sure about 2263)
+
+2004-01-14 05:02  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-14 01:43  dpunktnpunkt
 
 	* skins/plone_prefs/prefs_user_details.pt (Plone-2_0-branch):
