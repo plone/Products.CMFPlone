@@ -1,4 +1,11 @@
 ## Script (Python) "setProperties"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=keep_entries,copy_to_zlog,ignored_exceptions
+##title=
 ##
 request=context.REQUEST
 
