@@ -23,15 +23,3 @@ def threerc1(portal):
 
     if not portal.portal_memberdata.hasProperty('fullname'):
        portal.portal_memberdata.manage_addProperty('fullname', '', 'string')
-
-def registerMigrations():
-    # so the basic concepts is you put a bunch of migrations is here
-    MigrationTool.registerUpgradePath(
-            '1.0beta3', 
-            '1.0RC1', 
-            threerc1
-            )
-
-if __name__=='__main__':
-    registerMigrations()
-

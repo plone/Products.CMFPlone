@@ -30,14 +30,3 @@ def rc2Final(portal):
     nav_props = portal.portal_properties.navigation_properties
     nav_props._updateProperty('default.content_status_modify.failure', 
         'content_status_history')
-
-def registerMigrations():
-    MigrationTool.registerUpgradePath(
-            '1.0RC2', 
-            '1.0', 
-            rc2Final
-            )
-
-if __name__=='__main__':
-    registerMigrations()
-

@@ -35,15 +35,3 @@ def onezeroone(portal):
         if a.id=='syndication':
             a.action=Expression('string:${folder_url}/portal_form/synPropertiesForm')
     st._actions=st_actions
-
-            
-def registerMigrations():
-    MigrationTool.registerUpgradePath(
-            '1.0', 
-            '1.0.1', 
-            onezeroone
-            )
-
-if __name__=='__main__':
-    registerMigrations()
-

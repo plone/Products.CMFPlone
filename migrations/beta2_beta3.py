@@ -96,17 +96,4 @@ def twothree(portal):
     nav_tool.addTransitionFor('default', 'register', 'failure', 'join_form')
     
 
-def registerMigrations():
-    # so the basic concepts is you put a bunch of migrations is here
-    MigrationTool.registerUpgradePath(
-            '1.0beta2', 
-            '1.0beta3', 
-            twothree
-            )
-    # it will run through them all until its upto date
-    # etc
-    # MigrationTool.registerUpgradePath('1.0beta3', '1.0beta4', beta3two4)
-
-if __name__=='__main__':
-    registerMigrations()
 

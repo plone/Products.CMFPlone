@@ -39,16 +39,3 @@ def rc1rc2(portal):
     except:
         pass #XXX its easier
 	
-   
-
-def registerMigrations():
-    # so the basic concepts is you put a bunch of migrations is here
-    MigrationTool.registerUpgradePath(
-            '1.0RC1', 
-            '1.0RC2', 
-            rc1rc2
-            )
-
-if __name__=='__main__':
-    registerMigrations()
-
