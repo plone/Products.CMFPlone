@@ -92,7 +92,7 @@ def normalize_tabs(self):
                                     , title='Publishing'
                                     , category='local_tabs'
                                     , permissions='View'
-                                    , condition=Expression("python: member and hasattr(object, 'workflow_history')")
+                                    , condition=Expression("member")
 	                           , action=Expression("string: ${object_url}/content_status_history"))
 	return (welcome, members, news, search, publishing)
 			      
