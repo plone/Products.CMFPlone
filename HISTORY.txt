@@ -4,7 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - unreleased
 
-    - added 2 new knob to jscalendar: 
+    - Use 'structure' in sendto_template.pt. Email text don't need any transforms.
+      [panjunyong]
+
+    - added some knobs to jscalendar: 
 
       - show_hm: show hour and minute dropbox or not 
 
