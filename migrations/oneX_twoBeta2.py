@@ -112,6 +112,9 @@ def swapPortalRoot(portal):
         if not portal.hasProperty(propid):
             portal.manage_addProperty(propid, old.getProperty(propid), prop['type'])
 
+    #copy Roles
+    portal.__ac_roles__=old.__ac_roles__
+
     #copy Security settings
     for permission in [perm for perm in dir(portal) if perm.endswith('_Permission')]:
         setattr(portal, permission, getattr(old, permission))
