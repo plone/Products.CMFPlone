@@ -187,10 +187,12 @@
                                                         item.absolute_url()+'/folder_contents',
                                                         item.absolute_url()+'/'+action);">
 
-                            <a href="#" tal:attributes="href url">
+                            <a href="#" tal:attributes="href url; title item/Description;">
 
                                 <img tal:define="icon python:item.getIcon(1); iconObject python:getattr(here,icon)"
-                                     tal:attributes="src string:$portal_url/$icon; alt iconObject/title_or_id"
+                                     tal:attributes="src string:$portal_url/$icon; 
+                                                     alt iconObject/title_or_id;
+                                                     title item/id"
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
 
@@ -226,10 +228,14 @@
                         </td>
                         <td tal:condition="python:isOrderable and hasModifyPortalContentPermission">
                             <a href=""
+                               title="Move item up"
+                               i18n:attributes="title"
                                tal:attributes="href string:${here/absolute_url}/folder_position?position=up&amp;id=${item/getId}"
                             ><img tal:replace="structure here/portal_url/arrowUp.gif" /></a>
                             &nbsp;
                             <a href=""
+                               title="Move item down"
+                               i18n:attributes="title"
                                tal:attributes="href string:${here/absolute_url}/folder_position?position=down&amp;id=${item/getId}"
                             ><img tal:replace="structure here/portal_url/arrowDown.gif" /></a>
                         </td>
