@@ -78,7 +78,7 @@ class CalendarTool (UniqueObject, SimpleItem):
         last_date=DateTime(str(month)+'/'+str(last_day)+'/'+str(year))
     
         query=self.portal_catalog(Type='Event',
-                                  review_state='published'	                          
+                                  review_state='published',	                          
                                   start=(first_date, last_date),
                                   start_usage='range:min:max',
                                   sort_on='start')
@@ -91,7 +91,7 @@ class CalendarTool (UniqueObject, SimpleItem):
 
         # if you look at calendar_slot you can see how to do this in 1 query - runyaga
         query+=self.portal_catalog(Type='Event',
-	                           review_state='published'
+	                           review_state='published',
                                    end=(first_date, last_date),
                                    end_usage='range:min:max',
                                    sort_on='end')
