@@ -211,7 +211,7 @@ div.editableDocument {
     background: &dtml-contentBackground;;
     border: &dtml-contentTabBorder;;
     margin: 0em 0em 2em 0em;
-    padding: 2em 1em;
+    padding: 2em;
 }
 
 div.message {
