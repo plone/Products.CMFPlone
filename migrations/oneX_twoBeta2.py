@@ -131,6 +131,8 @@ def swapPortalRoot(portal):
     portal._setPortalTypeName('Plone Site')
     portal.portal_workflow._chains_by_type['Plone Site']=()
 
+    #lastly give it new icon
+    portal.icon='misc_/CMFPlone/tool.gif'
     return portal 
 
 
