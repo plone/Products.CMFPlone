@@ -366,8 +366,12 @@ ul#personalBar li#personalBar-user {
     padding-left: 15px;
 }
 
-.notLoggedIn {} /* Used on all descriptions relevant to those not logged in */
-    
+#personalBar .notLoggedIn {
+    color: &dtml-mainFontColor;;
+    padding: 0;
+    background: transparent;
+} /* Used on all descriptions relevant to those not logged in */
+ 
 ul#personalBar li {
     background: transparent url(<dtml-var portal_url>/linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
@@ -550,7 +554,7 @@ div#colophon ul li a {
 */
 
 input.standalone,
-div.editableDocument > * input.standalone {
+div.editableDocument * input.standalone {
     background: &dtml-standaloneButtonBackground;;
     color: &dtml-standaloneButtonFontColor;;
     cursor: pointer;
@@ -561,7 +565,7 @@ div.editableDocument > * input.standalone {
     text-transform: &dtml-textTransform;;
 }
 input.context,
-div.editableDocument > * input.context {
+div.editableDocument * input.context {
     background: &dtml-contextButtonBackground;;
     color: &dtml-contextButtonFontColor;;
     cursor: pointer;
@@ -572,7 +576,7 @@ div.editableDocument > * input.context {
     text-transform: &dtml-textTransform;;
 }
 input.destructive,
-div.editableDocument > * input.destructive {
+div.editableDocument * input.destructive {
     background: &dtml-destructiveButtonBackground;;
     border: &dtml-destructiveButtonBorder;;  
     color: &dtml-destructiveButtonFontColor;;
@@ -584,18 +588,18 @@ div.editableDocument > * input.destructive {
     text-transform: &dtml-textTransform;;
 }
 input.noborder,
-div.editableDocument > * input.noborder {
+div.editableDocument * input.noborder {
     border: &dtml-noBorder;;
     margin: 0;
     background-color: transparent;
 }
 input.add,
-div.editableDocument > * input.add {
+div.editableDocument * input.add {
 }
 input.quickSearch {
 }
 input.notify,
-div.editableDocument > * input.notify {
+div.editableDocument * input.notify {
     border: &dtml-destructiveButtonBorder;;  
 }
 div.row {
@@ -911,6 +915,9 @@ div.label {
     display: inline;
     padding-right: 0.5em;
 }
+
+.notLoggedIn {} /* Used on all descriptions relevant to those not logged in */
+
 div.editableDocument > * select,
 div.editableDocument > * input,
 div.editableDocument > * textarea {
