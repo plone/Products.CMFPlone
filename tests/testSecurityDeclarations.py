@@ -15,7 +15,6 @@ from OFS.SimpleItem import SimpleItem
 from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
 from Products.ZCTextIndex.ParseTree import ParseError
-from DateTime.DateTime import DateTimeError
 
 
 class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
@@ -229,24 +228,29 @@ except ParseError: pass
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
-    def testImport_DateTimeError(self):
-        self.check('from DateTime.DateTime import DateTimeError')
+    try:
+        from DateTime.DateTime import DateTimeError
+    except ImportError:
+        pass
+    else:
+        def testImport_DateTimeError(self):
+            self.check('from DateTime.DateTime import DateTimeError')
 
-    def testAccess_DateTimeError(self):
-        self.check('import DateTime.DateTime;'
-                   'print DateTime.DateTime.DateTimeError')
+        def testAccess_DateTimeError(self):
+            self.check('import DateTime.DateTime;'
+                       'print DateTime.DateTime.DateTimeError')
 
-    def testCatch_DateTimeErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseDateTimeError', dummy.Raiser(DateTimeError))
-        try:
-            self.check('''
+        def testCatch_DateTimeErrorRaisedByPythonModule(self):
+            self.folder._setObject('raiseDateTimeError', dummy.Raiser(DateTimeError))
+            try:
+                self.check('''
 from DateTime.DateTime import DateTimeError
 try: context.raiseDateTimeError()
 except DateTimeError: pass
 ''')
-        except Exception, e:
-            self.fail('Failed to catch: %s %s (module %s)' %
-                      (e.__class__.__name__, e, e.__module__))
+            except Exception, e:
+                self.fail('Failed to catch: %s %s (module %s)' %
+                          (e.__class__.__name__, e, e.__module__))
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):
