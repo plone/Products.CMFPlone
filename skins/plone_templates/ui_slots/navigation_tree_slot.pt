@@ -1,0 +1,91 @@
+<table metal:define-macro="navigationBox"
+       i18n:domain="plone"
+       tal:define="isContainer here/isPrincipiaFolderish|nothing;
+                   tree python:here.navigation_tree_builder(here);
+
+                   parent_url python:here.navigationParent(here, template.getId());
+                   siblings here/navigationCurrent;
+                   showOtherNav python:0;
+                   showNav python:0;
+		   listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
+		   notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
+		   editorView python:test(listContentsPermission and notFolderContents, 1, 0);"
+       tal:condition="python:test(siblings or editorView or parent_url , 1, 0)"
+       class="box"
+       summary="Navigation"
+       cellpadding="0"
+       cellspacing="0">
+
+    <thead>
+        <tr><th i18n:translate="">Navigation</th><th class="empty">&nbsp;</th></tr>
+    </thead>
+
+    <tbody>
+
+        <tr class="odd" tal:condition="siblings">
+            <td colspan="2">
+            <div>
+                <div tal:repeat="te tree">
+                   <tal:block tal:define="iscurrent python:test(te['object'].getId()==here.getId(), 1, 0);
+                                           sibling python:te['object'];
+                                           stdCommand python:test(template.getId()=='folder_contents' and  sibling.isPrincipiaFolderish , 'folder_contents', 'view');
+                                           
+                                             sibling_title python:'&nbsp;;'.join(te['object'].title_or_id()[:18].split(' '));"
+                   ><span tal:repeat="x python:range( te['level']-1)" tal:omit-tag="">&nbsp;</span
+                   ><a href="#" class="plain"
+                       tal:condition="not: iscurrent"
+                       tal:define="url string:${sibling/absolute_url}/${stdCommand}"
+                       tal:attributes="href url">
+                   <img tal:replace="structure here/folder_icon.gif" 
+                    />&nbsp;<tal:block tal:content="structure sibling_title" />
+                    </a>
+                    <tal:block tal:condition="iscurrent">
+                    <span class="even">
+                   <img tal:replace="structure here/folder_icon_highlighted.gif" 
+                   />&nbsp;<strong 
+                               tal:content="structure sibling_title">
+                               Current content id
+                               </strong>
+                    </span>
+                    </tal:block>
+                    </tal:block>
+                </div>
+            </div>
+            </td>
+        </tr>
+
+        <tr class="even"
+            tal:condition="editorView">
+            <td colspan="2"
+                tal:condition="notFolderContents">
+
+               <a href="folder_contents"
+                  tal:condition="here/isPrincipiaFolderish">
+                   <img tal:replace="structure here/linkTransparent.gif" />
+                  <span i18n:translate="">Editor view</span>
+               </a>
+               
+               <a href="../folder_contents"
+                  tal:condition="not: here/isPrincipiaFolderish" 
+                  tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents">
+                   <img tal:replace="structure here/linkTransparent.gif" />
+                  <span i18n:translate="">Editor view</span>
+               </a>
+            </td>
+        </tr>
+
+        <tr class="odd"
+            tal:condition="not: notFolderContents">
+            <td colspan="2" >
+                <a href="">
+                   <img tal:replace="structure here/linkTransparent.gif" />
+                <span i18n:translate="">Ordinary view</span>
+                </a>
+            </td>
+        </tr>
+    
+
+
+    </tbody>
+
+</table>

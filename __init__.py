@@ -7,6 +7,7 @@ import MembershipTool, FormulatorTool, PloneTool, WorkflowTool, NavigationTool, 
 import PloneFolder, Portal
 import CustomizationPolicy,PrivateSitePolicy
 import sys
+import StatelessTreeNav
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 

@@ -332,6 +332,14 @@ div.spacer {
     color: Red;
 }
 
+.even {
+    background-color: &dtml-evenRowBackground;;
+}
+
+.odd {
+    background-color: &dtml-oddRowBackground;;
+}
+
 
 div.listingBar {
     background: &dtml-mainTabBackground;;
