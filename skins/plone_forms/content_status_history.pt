@@ -56,7 +56,6 @@
 	        <span tal:condition="after">but is <strong>no longer</strong> effective.</span>
 	    </tal:block>
 	    </span>
-            <span class="info"></span>
         </div>
     
     </div>
@@ -73,6 +72,15 @@
         <div class="row">
             <span class="label">
               Effective Date
+              <div id="effective_date_help"
+                       i18n:id="effective_date_help"
+                       class="help"
+                       style="visibility:hidden">
+              The date when the document will be visible when it's published. This way, you can
+              publish a document in advance, but it will not be visible before this date.  If no date is select
+              the document will be effective immediately.
+              </div>
+																	   
             </span>
             <span class="field">
                 <div tal:define="inputname  string:effective_date; 
@@ -83,16 +91,18 @@
                   </div>
                 </div>
             </span>
-            <span class="info">
-            The date when the document will be visible when it's published. This way, you can 
-            publish a document in advance, but it will not be visible before this date.  If no date is select 
-            the document will be effective immediately.
-            </span>
         </div>
         
         <div class="row">
             <span class="label">
               Expiration Date
+	      <div id="expiration_date_help"
+                       i18n:id="expiration_date_help"
+                       class="help"
+                       style="visibility:hidden">
+              The date when the document expires. This will automatically make the document
+	      invisible for others at the given date. If no date as selected it will never expire.		  
+              </div>
             </span>
             <span class="field">
                 <div tal:define="inputname  string:expiration_date; 
@@ -103,10 +113,6 @@
                   </div>
                 </div>
             
-            </span>
-            <span class="info">
-            The date when the document expires. This will automatically make the document
-            invisible for others at the given date. If no date as selected it will never expire.
             </span>
         </div>
     
