@@ -26,11 +26,13 @@ if REQUEST.get('__cp', None) is not None:
 
 # if we weren't called from something that set 'came_from' or if HTTP_REFERER
 # is the 'logged_out' page, return the default 'login_success' form
-if came_from is None or \
-   came_from.endswith('logged_out') or \
-   came_from.endswith('mail_password') or \
-   came_from.endswith('member_search_results') or \
-   came_from.endswith('login_form'):
+if came_from is not None:
+    template_id = came_from.split('?')[0].split('/')[-1]
+if not came_from or \
+   template_id.endswith('logged_out') or \
+   template_id.endswith('mail_password') or \
+   template_id.endswith('member_search_results') or \
+   template_id.endswith('login_form'):
     login_success = '%s/%s' % (context.portal_url(), 'login_success')
 
 if isAnonymous:

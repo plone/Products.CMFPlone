@@ -35,7 +35,7 @@ PLONE_CEILING=DateTime(2021,0) # 2020-12-31
 def month_names():
     names={}
     for x in range(1,13):
-        faux=DateTime('%s/1/02'%str(x))
+        faux=DateTime(2004, x, 1)
         names[x]=faux.Month()
     return names
 

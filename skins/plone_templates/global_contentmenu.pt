@@ -24,7 +24,7 @@
     </li>
 
 
-    <li tal:condition="transitions">
+    <li class="actionPlural" tal:condition="transitions">
 
         <div class="menuPosition">
             <ul class="actionMenu"

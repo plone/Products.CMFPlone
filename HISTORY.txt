@@ -4,21 +4,64 @@ Changelog for Plone
 
 Plone 2.1-beta1 - Warp - Released (no date yet)
 
+    - Consolidated all monkey patches in the 'patches' sub-package.
+      [stefan]
+
+    - SearchableText, Title, and Description now use TextIndexNG2 if installed.
+      All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
+      not installed. Note that in Plone 2.0 Title and Description used to be plain 
+      TextIndexes.
+      [ajung]
+
+    - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it 
+      should be and will be revised. See http://plone.org/collector/2461.
+      [db] [batlogg]
+
+    - getObjSize() now accepts second (optional) size argument to allow formatting
+      of arbitrary sizes.
+      [andym]
+
+Plone 2.0.4 - (no name yet) - Released (no date yet)
+
+    - Fixed http://plone.org/collector/3329. Results of breadcrumbs.py 
+      are no longer translated in global_pathbar.pt.
+      [stefan]
+
+    - Fixed http://plone.org/collector/3332: hide the
+      portal_siteactions from the print stylesheet
+      [bmh]
+
+    - http://plone.org/collector/3334.  Added a break statement to the
+      javascript for checking link protocols
+      [bmh]
+
+    - Fixed http://plone.org/collector/3325 and related. Plone calendar got
+      confused when "datetime-format international" was set in zope.conf.
+      [stefan]
+
+    - login_form broke with Zope 2.7.2 because of stricter XHMTL parsing.
+      [stefan]
+
+    - Fixed came_from testing when there is a query string (logged_in.py).
+      [geoffd]
+
+    - Corrected some margins and padding, the content views and headline
+      was very asymmetrical. Thanks to Brent for notifying me about this.
+      She blinded me with science! ;)
+      [limi]
+
     - check_id script now rejects ids that are also catalog indices.
       [geoffd]
 
-    - Fixed portal_factory passthrough problem reported in 
-      http://plone.org/collector/3243.  Also portal_factory now logs 
-      exceptions during object creation (some were being swallowed 
-      higher up) (fix for http://plone.org/collector/3148).  
+    - Fixed portal_factory passthrough problem reported in
+      http://plone.org/collector/3243.  Also portal_factory now logs
+      exceptions during object creation (some were being swallowed
+      higher up) (fix for http://plone.org/collector/3148).
       [geoffd]
 
     - Added enableHTTPCompression script and enabled HTTP compression for
       HTML, CSS, and JavaScript.
       [tiran]
-
-    - Consolidated all monkey patches in the 'patches' sub-package.
-      [stefan]
 
     - Fixed http://plone.org/collector/3240 and related issues.
       Metadata elements like description and keywords (subject) could 
@@ -53,6 +96,9 @@ Plone 2.1-beta1 - Warp - Released (no date yet)
         font-weight: bold;
         color: &dtml-fontColor;;
         }
+        
+    - Nav tree now displays Description for its items as a tooltip.
+      [limi]
 
     - Changed the behaviour of the site-wide actions (currently
       only used for text size) - so if you use or have a custom
@@ -100,20 +146,6 @@ Plone 2.1-beta1 - Warp - Released (no date yet)
       for an example. This is the recommended location for language
       switchers.
       [limi]
-
-    - SearchableText, Title, and Description now use TextIndexNG2 if installed.
-      All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
-      not installed. Note that in Plone 2.0 Title and Description used to be plain 
-      TextIndexes.
-      [ajung]
-
-    - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it 
-      should be and will be revised. See http://plone.org/collector/2461.
-      [db, batlogg]
-
-    - getObjSize() now accepts second (optional) size argument to allow formatting
-      of arbitrary sizes.
-      [andym]
 
 Plone 2.0.3 - Noname - Released 20. May 2004
 

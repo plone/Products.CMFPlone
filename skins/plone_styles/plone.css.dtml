@@ -85,6 +85,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding-top: 0.5em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    text-shadow: #999999 0.2em 0.2em 3px;
 }
 
 h1 a,
@@ -458,7 +459,7 @@ del {
     border-collapse: collapse;
     padding-left: 1em;
     line-height: normal;
-    margin-top: 1em;
+    margin-top: 2.1em;
     margin-left: 0;
     /* white-space: nowrap; */
     list-style: none;
@@ -609,7 +610,7 @@ del {
 }
  
 #content {
-    padding: 0 1em;
+    padding: 0.139em 1em 0 1em;
     margin: 0em 0em 2em 0em;
 }
 
@@ -660,10 +661,6 @@ del {
     margin: 0 1em 0 0;
 }
 
-#content {
-    padding-top: 1em !important;
-}
-
 .documentEditable {
     padding: 0em 2em 1em 2em !important;
 }
@@ -682,6 +679,9 @@ del {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0;
 }
+
+
+
 .documentActions {
     margin: -1.5em 0 2em 0;
 }
@@ -1060,6 +1060,7 @@ ol.visualNoMarker {
     border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
+    text-shadow: none;
     display: inline;
     font-size: 1em;
     height: 1em;
@@ -1072,6 +1073,7 @@ ol.visualNoMarker {
     border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
+    text-shadow: none;
     display: block;
     font-size: 1em;
     height: 1.2em;

@@ -30,17 +30,17 @@
 	      <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
 	    </th>
 	    <th colspan="5"
-		tal:define="date string:$month/1/$year;">
+		tal:define="date python:DateTime(int(year), int(month), 1);">
 	      <span i18n:translate="" tal:omit-tag="">
 		<span i18n:name="monthname">
 		  <span i18n:translate=""
-			tal:define="monthstring python:DateTime(date).strftime('%B').capitalize();"
+			tal:define="monthstring python:date.strftime('%B').capitalize();"
 			tal:attributes="id string:calendar-month-$monthstring"
 			tal:content="string:$monthstring"
 		  id="calendar-month-month">&nbsp;</span>
 		</span>
 		<span i18n:name="year"
-		      tal:define="year python:DateTime(date).year()"
+		      tal:define="year python:date.year()"
 		      tal:content="string:$year"
 		      tal:attributes="id string:calendar-year-$year;"
 		id="calendar-year">&nbsp;</span>
@@ -68,7 +68,7 @@
 		    class       python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todayevent', 'event')">
 		  <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=daynumber, month=month, year=year)" tal:omit-tag="">
 		    <span tal:define="begin python:DateTime(begEndTimes[0].timeTime()+86400).ISO();
-			  end python:DateTime(begEndTimes[1].strftime('%m/%d/%y')).ISO();
+			  end python:DateTime(begEndTimes[1].strftime('%Y/%m/%d')).ISO();
 			  pss python:modules['Products'].PythonScripts.standard" tal:omit-tag="">
 		      <a href="" tal:attributes="href python:utool()+'/search?review_state=published&amp;start.query:record:date=%s&amp;start.range:record=max&amp;end.query:record:date=%s&amp;end.range:record=min'%(pss.url_quote(begin),pss.url_quote(end))">
 			<span tal:replace="python: daynumber or default">&nbsp;</span>

@@ -393,7 +393,8 @@ function scanforlinks(){
                      if (linkval.indexOf(protocols[p]+':') == 0){
                     // this link matches the protocol . add a classname protocol+link
                     //links[i].className = 'link-'+protocols[p]
-                    wrapNode(links[i], 'span', 'link-'+protocols[p])
+                        wrapNode(links[i], 'span', 'link-'+protocols[p])
+                        break;
                     }
                 }
             }else{

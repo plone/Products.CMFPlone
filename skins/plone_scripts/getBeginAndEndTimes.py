@@ -1,4 +1,4 @@
-## Script (Python) "getPreviousMonth"
+## Script (Python) "getBeginAndEndTimes"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -8,13 +8,11 @@
 ##title=
 ##
 
-from DateTime import DateTime
+day=int(day)
+month=int(month)
+year=int(year)
 
-day=str(day)
-month=str(month)
-year=str(year)
-
-begin=DateTime(month+'/'+day+'/'+year+' 12:00:00AM')
-end=DateTime(month+'/'+day+'/'+year+' 11:59:59PM')
+begin=DateTime('%d-%02d-%02d 00:00:00' % (year, month, day))
+end=DateTime('%d-%02d-%02d 23:59:59' % (year, month, day))
 
 return (begin, end)

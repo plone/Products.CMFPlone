@@ -32,15 +32,10 @@
                tal:condition="python:not is_last"
                tal:attributes="href python:crumb[1]"
                tal:content="python:crumb[0]"
-               i18n:translate=""
-	       accesskey="accesskeys-breadcrumbs"
-	       i18n:attributes="accesskey" >
-                       crumb
-             </a>
+	       accesskey="accesskeys-breadcrumbs">crumb</a>
             <span class="breadcrumbSeparator" tal:condition="not: is_last"> &raquo; </span>
             <span tal:condition="is_last"
-                  tal:content="python:crumb[0]"
-                  i18n:translate="">crumb</span>
+                  tal:content="python:crumb[0]">crumb</span>
          </tal:last>
     </span>
 </div>

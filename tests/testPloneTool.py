@@ -101,8 +101,8 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             self.failIf(val(address), '%s should fail' % address)
 
     def testEditFormatMetadataOfFile(self):
-        # Test workaround for http://plone.org/collector/1323
-        # Also see setFormatPatch.py
+        # Test fix for http://plone.org/collector/1323
+        # Fixed in CMFDefault.File, not Plone.
         self.folder.invokeFactory('File', id='file')
         self.folder.file.edit(file=dummy.File('foo.zip'))
         self.assertEqual(self.folder.file.Format(), 'application/zip')
@@ -113,8 +113,8 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.file.content_type, 'image/gif')
 
     def testEditFormatMetadataOfImage(self):
-        # Test workaround for http://plone.org/collector/1323
-        # Also see setFormatPatch.py
+        # Test fix for http://plone.org/collector/1323
+        # Fixed in CMFDefault.Image, not Plone.
         self.folder.invokeFactory('Image', id='image')
         self.folder.image.edit(file=dummy.File('foo.zip'))
         self.assertEqual(self.folder.image.Format(), 'application/zip')
@@ -123,18 +123,6 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.utils.editMetadata(self.folder.image, format='image/gif')
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.content_type, 'image/gif')
-
-    def testEditFormatMetadataOfLink(self):
-        # Test workaround for http://plone.org/collector/1323
-        # Also see setFormatPatch.py
-        self.folder.invokeFactory('Link', id='link')
-        # Links don't have a content_type property!
-        self.failIf(self.folder.link.hasProperty('content_type'))
-        self.assertEqual(self.folder.link.Format(), 'text/url')
-        # Changing the format should not create the property
-        self.utils.editMetadata(self.folder.link, format='text/html')
-        self.failIf(self.folder.link.hasProperty('content_type'))
-        self.assertEqual(self.folder.link.Format(), 'text/html')
 
 
 class TestEditMetadata(PloneTestCase.PloneTestCase):
@@ -251,7 +239,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.ExpirationDate(), 'None')
         self.assertEqual(self.doc.expiration_date, None)
 
-    # Test special cases of tuplization (and tuplification)
+    # Test special cases of tuplification
 
     def testTuplifySubject_1(self):
         self.utils.editMetadata(self.doc, subject=['Foo', 'Bar', 'Baz'])
@@ -259,14 +247,14 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         
     def testTuplifySubject_2(self):
         self.utils.editMetadata(self.doc, subject=['Foo', '', 'Bar', 'Baz'])
-        # Note that empty entries are allowed
-        self.assertEqual(self.doc.Subject(), ('Foo', '', 'Bar', 'Baz'))
+        # Note that empty entries are filtered
+        self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
 
     def testTuplifySubject_3(self):
-        self.utils.editMetadata(self.doc, subject='Foo Bar Baz')
-        # XXX: CMFDefault.utils.tuplize() is probably borked
+        self.utils.editMetadata(self.doc, subject='Foo, Bar, Baz')
+        # XXX: Wishful thinking
         #self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
-        self.assertEqual(self.doc.Subject(), ('F','o','o','','B','a','r','','B','a','z'))
+        self.assertEqual(self.doc.Subject(), ('F','o','o',',','','B','a','r',',','','B','a','z'))
         
     def testTuplifyContributors_1(self):
         self.utils.editMetadata(self.doc, contributors=['Foo', 'Bar', 'Baz'])
@@ -278,10 +266,10 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
 
     def testTuplifyContributors_3(self):
-        self.utils.editMetadata(self.doc, contributors='Foo Bar Baz')
-        # XXX: Our own tuplify() doesn't pretend to care about strings anyway
+        self.utils.editMetadata(self.doc, contributors='Foo; Bar; Baz')
+        # XXX: Wishful thinking
         #self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
-        self.assertEqual(self.doc.Contributors(), ('F','o','o','','B','a','r','','B','a','z'))
+        self.assertEqual(self.doc.Contributors(), ('F','o','o',';','','B','a','r',';','','B','a','z'))
         
 
 class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
