@@ -214,21 +214,21 @@ def addDocumentActions(portal):
 
     at.addAction('extedit',
                  'Edit this file in an external application (Requires Zope ExternalEditor installed)',
-                 'string:${object_url}/external_edit',
+                 'string:$object_url/external_edit',
                  "python: hasattr(portal.portal_properties.site_properties, 'ext_editor') and portal.portal_properties.site_properties.ext_editor and object.absolute_url() != portal_url",
                  'Modify portal content',
                  'document_actions')
 
     at.addAction('rss',
                  'RSS feed of this folder\'s contents',
-                 'string:${object_url}/RSS',
+                 'string:$object_url/RSS',
                  'python:portal.portal_syndication.isSyndicationAllowed(object)',
                  'View',
                  'document_actions')
 
     at.addAction('sendto',
                  'Send this page to somebody',
-                 'string:${object_url}/sendto_form',
+                 'string:$object_url/sendto_form',
                  "python:test(hasattr(portal.portal_properties.site_properties, 'allow_sendto') and portal.portal_properties.site_properties.allow_sendto, 1, 0)",
                  'View',
                  'document_actions')
@@ -407,7 +407,7 @@ def addStateActionToTypes(portal):
     for ptype in typesTool.objectValues():
         ptype.addAction('content_status_history',
                  name='State',
-                 action='string:${object_url}/content_status_history',
+                 action='string:$object_url/content_status_history',
                  condition='python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())',
                  permission='View',
                  category='object_tabs' )
