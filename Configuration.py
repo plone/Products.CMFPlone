@@ -173,7 +173,7 @@ class OriginalConfiguration:
                     action.action=Expression('string:${portal_url}/portal_form/join_form')
         actions_tool._actions=tuple(actions)
 
-registerConfiguration(('1.1','1.2','1.3'), OriginalConfiguration)
+registerConfiguration(('1.1','1.2','1.3','1.3.1'), OriginalConfiguration)
 
 class OneFourConfiguration(OriginalConfiguration):
     _methods=_methods+('plonify_typeActions',)
