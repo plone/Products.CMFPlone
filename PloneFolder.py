@@ -1,6 +1,6 @@
 from Products.CMFCore.utils import _verifyActionPermissions
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
-from AccessControl import Permissions
+from AccessControl import Permissions, getSecurityManager
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base
 from Globals import InitializeClass
@@ -71,6 +71,27 @@ class PloneFolder ( DefaultSkinnedFolder ):
              return view()
 
     view = __call__
+
+    def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): # XXX
+        """
+        Hook around 'contentValues' to let 'folder_contents'
+        be protected.  Duplicating skip_unauthorized behavior of dtml-in.
+
+	we also do not wanat to show objects that begin with a .
+        """
+        items = self.contentValues(filter=contentFilter)
+        l = []
+        for obj in items:
+            id = obj.getId()
+            v = obj
+            try:
+                if id[0]=='.' and suppressHiddenFiles:
+                    raise 'Unauthorized'
+                if getSecurityManager().validate(self, self, id, v):
+                    l.append(obj)
+            except "Unauthorized":
+                pass
+        return l
 
 def _getViewFor(obj, view='view', default=None):
     ti = obj.getTypeInfo()

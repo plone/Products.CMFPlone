@@ -58,8 +58,8 @@
   
   <form name="folderContentsForm" method="get"
         tal:attributes="action here/absolute_url"
-        tal:define="global folder_contents python:here.listFolderContents( contentFilter=filter); 
-	            	b_start python:request.get('b_start', 0);
+        tal:define="global folder_contents python:here.listFolderContents( contentFilter=filter, suppressHiddenFiles=1); 
+                    b_start python:request.get('b_start', 0);
                     results python:here.sortObjectValues(folder_contents);
                     global DateTime python:modules['DateTime'].DateTime;
                     Batch python:modules['ZTUtils'].Batch;
@@ -140,7 +140,7 @@
       <metal:block tal:repeat="item batch"> 
       <tr 
           tal:define="oddrow repeat/item/odd;
-                      actions python:here.portal_actions.listFilteredActionsFor(item);"
+                      actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(item));"
           tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
         <td>
           <input type="checkbox" class="noborder" name="ids:list" id="#"
@@ -162,13 +162,19 @@
           </a> <span class="expired"
                      tal:condition="python:container.isExpired(item)">expired</span> 
         </td>
-        <td tal:content="item/Type">folder</td>
+
+        <td tal:content="item/Type">
+        folder
+        </td>
 				
         <td tal:define="size python:here.getObjSize(item)"
-				    tal:content="structure python:test(size, size, '&nbsp;')">size</td>
+	    tal:content="structure python:test(size, size, '&nbsp;')">
+        size
+        </td>
 						
         <td tal:content="python:here.toPortalTime(item.ModificationDate())">
-						08/19/2001 03:01 AM </td>
+        08/19/2001 03:01 AM 
+        </td>
 					
         <td class="private"
             tal:define="review_state python:container.portal_workflow.getInfoFor(item, 'review_state', '')"
