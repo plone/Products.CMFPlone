@@ -278,7 +278,9 @@
                 </div>
                 
                 <div class="field"
-		     tal:define="skinvar here/portal_skins/getRequestVarname"> 
+		     tal:define="skinvar python:request.get(here.portal_skins.getRequestVarname(), '');
+                         skindefault here/portal_skins/getDefaultSkin;
+                         skincurrent python:test(skinvar, skinvar, skindefault);"> 
                     <select name="portal_skin"
                             tabindex="3"
                             onfocus="formtooltip('skin_help',1)" 
@@ -286,7 +288,7 @@
                     <option value="#"
                             tal:repeat="skin container/portal_skins/getSkinSelections"
                             tal:attributes="value skin;
-                            selected python:test(request.get(skinvar, '')==skin, 'selected', '');"
+                            selected python:test(skincurrent==skin, 'selected', '');"
                             tal:content="skin">Plone</option>
                     </select>
                 </div>
