@@ -2,12 +2,10 @@ import dependencies
 
 from Products.CMFPlone import MigrationTool #:wort registerSetupWidget
 from languages import LocalizerLanguageSetup
-from skins import SkinsSetup
 from customization_policy import CustomizationPolicySetup
 from ConfigurationMethods import GeneralSetup
 
 MigrationTool.registerSetupWidget(LocalizerLanguageSetup)
-MigrationTool.registerSetupWidget(SkinsSetup)
 MigrationTool.registerSetupWidget(CustomizationPolicySetup)
 MigrationTool.registerSetupWidget(GeneralSetup)
 
