@@ -20,8 +20,8 @@
        i18n:translate="link_workflow_default">Default workflow configuration</a>
   </li>
   <li class="">
-    <a href="prefs_advanced_workflow_form"
-       i18n:translate="">Advanced</a>
+    <a href="prefs_workflow_advanced"
+       i18n:translate="link_workflow_advanced">Advanced</a>
   </li>
 </ul>
 <div id="contentBar">&nbsp;</div>

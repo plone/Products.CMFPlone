@@ -48,35 +48,6 @@ if cmfcore:
     if x < [1,4,2]:
         log("Plone requires CMF 1.4.2 or later.  Your version: %s" % CMF_VERSION)
 
-cmfcore = 0
-try:
-    import Products.CMFCore
-    cmfcore = 1
-except ImportError:
-    log("CMFCore not found.  Please download the CMF from http://cmf.zope.org/download")
-
-
-# check the CMF version
-if cmfcore:
-    from Products.CMFCore import cmfcore_globals
-    from App.Common import package_home
-    from os.path import join
-
-    major_minor = 0.0
-    try:
-        file = join(package_home(cmfcore_globals), 'version.txt')
-        CMF_VERSION = open(file, 'r').read().strip()
-    except IOError:
-        CMF_VERSION = 'Unknown'
-
-    match = re.compile(r'\d+\.\d+').search(CMF_VERSION)
-    if match:
-        b,e = match.span()
-        major_minor = float(CMF_VERSION[b:e])
-        
-    if major_minor < 1.4:
-        log("Plone requires CMF 1.4 or later.  Your version: %s" % CMF_VERSION)
-
 try:
     import Products.CMFQuickInstallerTool
 except ImportError:

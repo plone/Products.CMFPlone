@@ -140,6 +140,11 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         # and return None for users defined outside of the portal.
         self.assertEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
 
+    def testGetCandidateLocalRoles(self):                                                                
+        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner',))                
+        self.setRoles(['Member', 'Reviewer'])                                                            
+        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner', 'Reviewer'))     
+
 
 # Fake upload object
 
@@ -148,7 +153,6 @@ class Portrait:
     def seek(*args): pass
     def tell(*args): return 0
     def read(*args): return 'bar'
-
 
 if __name__ == '__main__':
     framework()

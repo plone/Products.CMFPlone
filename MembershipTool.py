@@ -159,20 +159,21 @@ class MembershipTool(BaseTool):
             # Create Member's home page.
             # go get the home page text from the skin
             member_object=self.getMemberById(member_id)
-            DEFAULT_MEMBER_CONTENT = self.homePageText(member=member_object)
-            addDocument( f
-                       , 'index_html'
-                       , member_id+"'s Home Page"
-                       , member_id+"'s front page"
-                       , "structured-text"
-                       , DEFAULT_MEMBER_CONTENT
-                       )
 
-            f.index_html._setPortalTypeName( 'Document' )
-            # Overcome an apparent catalog bug.
-            f.index_html.reindexObject()
-            wftool = getToolByName( f, 'portal_workflow' )
-            wftool.notifyCreated( f.index_html )
+            if hasattr(self, 'homePageText'):
+                DEFAULT_MEMBER_CONTENT = self.homePageText(member=member_object)
+                addDocument( f
+                           , 'index_html'
+                           , member_id+"'s Home Page"
+                           , member_id+"'s front page"
+                           , "structured-text"
+                           , DEFAULT_MEMBER_CONTENT 
+                           )
+                f.index_html._setPortalTypeName( 'Document' )
+                # Overcome an apparent catalog bug.
+                f.index_html.reindexObject()
+                wftool = getToolByName( f, 'portal_workflow' )
+                wftool.notifyCreated( f.index_html )
             #XXX the above is copy/pasted from CMFDefault.MembershipTool only because
             #its not using invokeFactory('Folder') -- FIX IT!
 
@@ -181,8 +182,8 @@ class MembershipTool(BaseTool):
             member_folder.description = 'Home page area that contains the items created and ' \
                                         + 'collected by %s' % member_id
 
-            member_folder.manage_addPloneFolder('.personal', 'Personal Items')
-            personal=getattr(member_folder, '.personal')
+            member_folder.manage_addPloneFolder(self.personal_id, 'Personal Items')
+            personal=getattr(member_folder, self.personal_id)
             personal.description = "contains personal workarea items for %s" % member_id
             personal.changeOwnership(user)
             personal.manage_setLocalRoles(member_id, ['Owner'])
@@ -310,20 +311,6 @@ class MembershipTool(BaseTool):
             self.credentialsChanged(password)
         else:
             raise 'Bad Request', 'Not logged in.'
-
-    security.declareProtected(View, 'getCandidateLocalRoles')
-    def getCandidateLocalRoles( self, obj ):
-        """ What local roles can I assign? """
-        member = self.getAuthenticatedMember()
-
-        if 'Manager' in member.getRoles():
-            return self.getPortalRoles()
-        else:
-            member_roles = list( member.getRolesInContext( obj ) )
-            if 'Member' in member_roles:
-                del member_roles[member_roles.index( 'Member')]
-
-        return tuple( member_roles )
 
 MembershipTool.__doc__ = BaseTool.__doc__
 

@@ -1,8 +1,7 @@
 #
 # PloneTestCase
 #
-
-# $Id: PloneTestCase.py,v 1.9.2.12 2003/11/14 09:58:38 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.10 2003/11/18 10:59:18 longsleep Exp $
 
 from Testing import ZopeTestCase
 
