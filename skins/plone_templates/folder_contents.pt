@@ -15,7 +15,8 @@
      tal:define="standalone python:1;
                  folder_contents python:here.getFolderContents(suppressHiddenFiles=1);
                  myfolder python: here_url==mtool.getHomeUrl();
-                 num_types python: len(allowedSortedContentTypes)">
+                 contentTypes python: here.hasAllowedTypes(); 
+                 num_types python: len(contentTypes)">
                  
     <form name="folderContentsForm"
           method="post"
@@ -73,8 +74,7 @@
             </tal:contentTypes>
 
             <div tal:condition="standalone|nothing"
-                 tal:define="types allowedSortedContentTypes;
-                             filterOut here/getNotAddableTypes;">
+                tal:define="types contentTypes">
 
                 <!-- Add Item pulldown -->
                 <label for="select_add_item">
@@ -91,7 +91,6 @@
                     <metal:block tal:repeat="ctype types">
                     <option value="Document"
                             tal:define="Id ctype/getId"
-                            tal:condition="python:Id not in filterOut"
                             tal:attributes="value ctype/getId"
                             tal:content="ctype/Title"
                             i18n:translate="">Document</option>
