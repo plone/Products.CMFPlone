@@ -1,3 +1,12 @@
+2004-03-10 17:58  zopezen
+
+	* skins/plone_templates/footer.pt (Plone-2_0-branch): Update to
+	  Alan's new company
+
+2004-03-10 05:04  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-09 12:10  limi
 
 	* skins/plone_templates/colophon.pt (Plone-2_0-branch): Updated the
