@@ -1,7 +1,7 @@
 /*
 ** Tableless Column Layout for CSS2 capable Browsers
-** Based on http://www.positioniseverything.net/ordered-floats.html from Big John.
-**
+** Based on http://www.positioniseverything.net/ordered-floats.html by Big John.
+** Fixed width modifications by Tonico Strasser (http://www.webproducer.at).
 */
 
 /* <dtml-with base_properties> */
