@@ -10,7 +10,7 @@
 ##
 
 from Products.CMFPlone import transaction_note
-ids=context.REQUEST.get('ids', None)
+ids=context.REQUEST.get('ids', [])
 titles=[]
 titles_and_ids=[]
 
