@@ -3,8 +3,7 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 <body>
 <div metal:fill-slot="main">
 
@@ -19,22 +18,8 @@ You will receive an email shortly containing your password
     and instructions on how to activate your membership. 
 </p>
 
-<p tal:condition="nothing|python:not(ve)"> 
-    <span i18n:translate="description_you_can_log_on_now">You can log on immediately by clicking</span>
-    <a href=""
-     tal:define="pss modules/Products.PythonScripts.standard; 
-	               uname request/username; 
-		       username python:pss.url_quote(uname);
-		       pword request/password; 
-		       password python:pss.url_quote(pword);
-		       cfrom request/came_from;
-		       came_from python:pss.url_quote(cfrom);"
-	   tal:attributes="href python: here.portal_url() + '/logged_in?__ac_name=' + username + '&__ac_password=' + password"  
-       i18n:translate="description_you_can_log_on_now_here">here</a>.
-</p>       
-
 <p tal:condition="python:not(ve)"> 
-    <span i18n:translate="description_you_can_log_on_now">You can log on immediately by clicking</span>       
+    <span i18n:translate="description_you_can_log_on_now">Click the button to sign in immediately.</span>       
     <form action=""
           method="post"
           tal:define="username request/username; 
@@ -49,8 +34,11 @@ You will receive an email shortly containing your password
                name="__ac_password"
                value=""
                tal:attributes="value password;" />
-        <input type="submit"
-               value="here" />
+        <input class="standalone"
+               type="submit"
+               value="Sign in" 
+               i18n:attributes="value"
+               />
     </form>         
 </p>
 
