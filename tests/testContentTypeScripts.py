@@ -31,6 +31,8 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.discussion = self.portal.portal_discussion
         self.member = self.portal.portal_membership.getAuthenticatedMember()
         self.request = self.app.REQUEST
+        # Don't pay for catalog maintenance
+        self.portal.manage_delObjects('portal_catalog')
 
     def getPermissionsOfRole(self, role):
         perms = self.portal.permissionsOfRole(role)
