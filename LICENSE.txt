@@ -1,6 +1,6 @@
   The Plone Content Management System is a customization of the 
   Content Management Framework(CMF) and the ZOPE Application Server.  
-  Copyright  2001-2002 George A. Runyan Jr., Alexander Limi and Vidar Andersen.
+  Copyright  2001-2003 George A. Runyan Jr., Alexander Limi and Vidar Andersen.
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
