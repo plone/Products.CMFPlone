@@ -9,7 +9,7 @@ def register(context, app_state):
     addPolicy('Default Plone', DefaultCustomizationPolicy())
     
 class DefaultCustomizationPolicy:
-    """ should implement customization API which really means customize method"""
+    """ Customizes various actions on CMF tools """
     __implements__ = ICustomizationPolicy
 
     def customize(self, portal):
