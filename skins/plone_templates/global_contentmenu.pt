@@ -132,11 +132,21 @@
         <li>
         
             <div class="menuPosition">
+                
+                <span title="Delete or rename the index_html item to gain full control over how this folder is displayed."
+                   i18n:attributes="title"
+                   class="disabled"
+                   tal:condition="hasIndexHtml">
+                    <span i18n:translate="label_disabled_display_menu">Display</span>
+                </span>
+                
+                
                 <a href="#"
                    title="Choose default view"
                    onclick="return buttonClick(event, 'templateMenu');"
                    onmouseover="buttonMouseover(event, 'templateMenu');"
-                   i18n:attributes="title">
+                   i18n:attributes="title"
+                   tal:condition="not:hasIndexHtml">
                     <span i18n:translate="label_choose_template">Display</span>
                 </a>
 
@@ -147,7 +157,7 @@
                     <tal:parentViews define="vocab parentVocab;
                                              actualLayout folder/getLayout|nothing;
                                              selectCondition canSelectDefaultFolderPage;"
-                                     condition="vocab">
+                                     condition="python:vocab and isContextDefaultPage">
                     <tal:layouts repeat="layout vocab">
                     <li tal:define="value layout;
                                     display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
@@ -179,6 +189,41 @@
                     </li>
                     </tal:parentViews>
 
+                    <!-- Context Views menu -->
+                    <tal:contextViews define="vocab contextVocab;
+                                             actualLayout here/getLayout|nothing;
+                                             selectCondition canSelectDefaultContextPage;"
+                                     condition="vocab">
+                    <tal:layouts repeat="layout vocab">
+                    <li tal:define="value layout;
+                                    display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
+                        <!--XXX style attribute has to be changed to a css class in following tag  -->
+                        <span style="white-space:nowrap;"
+                              tal:condition="python:value==actualLayout"
+                              i18n:translate=""
+                              tal:content="display">Template id</span>
+                        <a href="#"
+                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                           tal:condition="python:value!=actualLayout"
+                           tal:attributes="href string:${here/absolute_url}/selectViewTemplate?templateId=$value;
+                                           title display"
+                           i18n:attributes="title">
+                            <tal:title i18n:translate=""
+                                 tal:content="display">Template id</tal:title>
+                        </a>
+                    </li>
+                    </tal:layouts>
+
+                    <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
+                    <li tal:condition="selectCondition">
+                        <a title="Select Default Page" href="#"
+                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                           tal:attributes="href string:${here/absolute_url}/select_default_page;"
+                           i18n:attributes="title">
+                             Select...
+                        </a>
+                    </li>
+                    </tal:contextViews>
 
 
             </ul>
