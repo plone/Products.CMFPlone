@@ -52,10 +52,13 @@ class FormTool(UniqueObject, SimpleItem):
         property_tool = getattr(self, 'portal_properties')
         form_props = getattr(property_tool, 'form_properties')
         validators = form_props.getProperty(form, None)
-        if validators:
-            return validators.strip().split(',')
-        else:
+        self.log('getValidators: %s' % validators)
+        if validators is None:
             return None
+        validators = validators.strip()
+        if validators == '':
+            return []
+        return validators.split(',')
 
 
     # expose ObjectManager's bad_id test to skin scripts
@@ -93,6 +96,7 @@ class FormTool(UniqueObject, SimpleItem):
 
         # see if we are handling validation for this form
         validators = self.getValidators(name)
+        self.log('VALIDATORS = %s' % (validators))
         if validators is None:
             # no -- do normal traversal
             target = getattr(aq_parent(self), name, None)
@@ -205,7 +209,6 @@ class FormValidator(SimpleItem):
         errors = {}
         status = 'success'  # default return value if the validator list is empty
         for validator in self.validators:
-            
             self.log('calling validator [%s]' % (str(validator)))
             v = getattr(context, validator)
             (status, errors, message) = mapply(v, REQUEST.args, REQUEST,
