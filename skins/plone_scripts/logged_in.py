@@ -48,7 +48,7 @@ if isAnonymous:
 
 member = membership_tool.getAuthenticatedMember()
 
-if member.getProperty('login_time', None) == '2000/01/01' and properties_tool.validate_email:
+if str(member.getProperty('login_time', None)) == '2000/01/01' and context.validate_email:
     return context.restrictedTraverse(login_changepassword)()
 
 return context.restrictedTraverse(login_success)()
