@@ -45,6 +45,8 @@
 
                 <table class="listing"
                        id="sortable"
+                       summary=""
+                       i18n:attributes="summary legend_logexception"
                        tal:condition="entries">
                     <thead>
                         <tr>
