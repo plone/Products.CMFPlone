@@ -34,7 +34,7 @@
     <fieldset tal:define="iroles python:here.plone_utils.getInheritedLocalRoles(here); 
                           username python:here.portal_membership.getAuthenticatedMember().getUserName();"
               tal:condition="iroles">
-        <legend i18n:translate="limi">
+        <legend i18n:translate="legend_acquired_roles">
             Acquired roles
         </legend>
 
