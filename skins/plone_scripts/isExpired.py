@@ -16,6 +16,8 @@ if hasattr(content, 'ExpirationDate'):
 try:
     if expiry and DateTime(expiry).isPast():
         return 1
+except 'TimeError':
+    pass
 except IndexError:
     pass #Could convert value to DateTime
 
