@@ -124,7 +124,7 @@
                                field python:here.getField('layout');
                                vocab python:field.Vocabulary(here);"
          condition="python:isTemplateMixin and len(vocab) > 1">
-    <li>
+    <li tal:define="fieldvalue here/getLayout">
         <div class="menuPosition">
             <a href="#"
                title="Choose default view"
@@ -140,14 +140,18 @@
               <tal:block repeat="item vocab">
                 <li tal:define="value item;
                                 display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
-                                
+                    <!--XXX style has to be changed to a css class in next tag-->
+                    <span style="white-space: nowrap;"
+                          tal:condition="python:value==fieldvalue"
+                          i18n:translate=""
+                          tal:content="display">Template id</span>
                     <a href="#" 
                        onMouseUp="if (activeButton != null) resetButton(activeButton);"
                        tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
                        i18n:attributes="title"
                        tal:attributes="href python:here.absolute_url()+'/selectViewTemplate?templateId='+value;
-                                       title display">
-                        <span tal:replace="structure check"/>
+                                       title display"
+                       tal:condition="python:value!=fieldvalue">
                         <tal:title i18n:translate=""
                                    tal:content="display">Template id</tal:title>
                     </a>
