@@ -1070,6 +1070,14 @@ ul.configlets li a {
     margin /**/: -1px 0 0 0;
     width: 0;
 }
+
+.contentViews .hiddenStructure,
+.contentActions .hiddenStructure {
+    position: absolute;
+    top: -200px;
+    left: -200px;
+}
+
 .visualClear {
     display: block;
     clear: both;

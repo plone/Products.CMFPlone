@@ -2,10 +2,15 @@
       i18n:domain="plone">
 
 <body>
-<ul metal:define-macro="content_views"
-     class="contentViews" 
-     i18n:domain="plone"
+
+<div metal:define-macro="content_views"
+     tal:omit-tag=""
      tal:define="view_actions python:here.plonifyActions(template_id=template_id, actions=actions)">
+
+<h5 class="hiddenStructure" tal:condition="view_actions">Views</h5>
+
+<ul class="contentViews" 
+    i18n:domain="plone">
 
     <tal:views repeat="action view_actions">
     <li tal:define="selected action/selected|nothing;"
@@ -23,10 +28,15 @@
 
 </ul>
 
+</div>
+
 <div metal:define-macro="content_actions"
      i18n:domain="plone"
      class="contentActions"
-     tal:define="content_actions actions/object_actions|nothing;">
+     tal:define="content_actions actions/object_actions|nothing;
+                 content_types python:here.sortObjects(here.allowedContentTypes());">
+
+    <h5 class="hiddenStructure" tal:condition="python: content_actions or content_types or wfstate">Actions</h5>
 
     <ul tal:condition="content_actions" class="actionItems">
     <tal:contentactions repeat="action content_actions">
