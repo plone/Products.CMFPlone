@@ -47,6 +47,7 @@ def initialize(context):
     ModuleSecurityInfo('zLOG').declarePublic('LOG')
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
+    ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('localized_time')
     allow_module('Products.CMFPlone.PloneUtilites')
     
     import StatelessTreeNav

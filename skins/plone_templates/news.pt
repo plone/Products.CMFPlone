@@ -13,17 +13,18 @@
                  b_start python:request.get('b_start',0);">
 
 
-    <h1 i18n:translate="heading_news">News</h1>
-
-    <div i18n:translate="description_news" id="description">The latest news, sorted in reverse chronological order.</div>
+    <h1 i18n:translate="heading_news" style="margin-bottom: 10px">News</h1>
 
     <form name="searchresults" action="" method="post" tal:condition="results"
                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 
-        <metal:block tal:repeat="result batch">
+        <metal:block tal:repeat="result batch"
+                     tal:define="localized_time python: modules['Products.CMFPlone.PloneUtilities'].localized_time;
+                                 home_url python: here.portal_membership.getHomeUrl">
 
             <tal:block
-             tal:define="resultObject result/getObject">
+             tal:define="resultObject result/getObject;
+                         creator result/Creator">
 
             <div class="portlet">
 
@@ -35,17 +36,17 @@
                     <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span>
 
                     <a href=""
-                       tal:attributes="href python:here.portal_membership.getHomeUrl(result.Creator)">
+                       tal:attributes="href python: home_url(creator)">
 
                         <img tal:replace="structure here/user.gif" />
 
-                        <span tal:replace="result/Creator" >
+                        <span tal:replace="creator" >
                         Author
                         </span>
 
                     </a>
 
-                  - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python:container.toPortalTime(result.modified)" />
+                  - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python: localized_time(result.modified, context=here)" />
 
                 </h6>
 
@@ -63,7 +64,7 @@
 
                         <p>
                             <span style="float: right"
-                                  tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).objectIds() ), 1, 0)">
+                                  tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).hasReplies(resultObject) ), 1, 0)">
                                 <img tal:replace="structure here/discussionitem_icon.gif" />
                                 <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)">
                                      <a href=""
