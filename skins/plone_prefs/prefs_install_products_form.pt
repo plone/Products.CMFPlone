@@ -13,7 +13,7 @@
     <h2 i18n:translate="heading_install_products_available"> Products available for install </h2>
     <form action="installProducts" tal:attributes="action python:QI.absolute_url()+'/installProducts'" method="POST">
 
-        <table>
+        <table >
             <tr tal:repeat="product QI/listInstallableProducts">
                 <td><input class="noborder"
                            type="checkbox"
@@ -21,12 +21,13 @@
                            tal:attributes="value product/id"
                            /></td>
                 <td tal:content="product/id">product name</td>
-    <td tal:define="pid product/id" tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">  
-                    (<a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">README</a>)
+    <td tal:define="pid product/id" >  
+                    <span tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">(<a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">README</a>)</span>
                   </td> 
                 <td><a tal:condition="product/hasError" tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">
                         <img  src="/misc_/PageTemplates/exclamation.gif"></a>
                 </td>
+                <td tal:content="python:QI.getProductVersion(product['id'])"> </td>
             </tr>
         </table>
         <input class="context"
@@ -39,9 +40,9 @@
     <h2 i18n:translate="heading_install_products_installed"> Installed products </h2>
     <form action="uninstallProducts" tal:attributes="action python:QI.absolute_url()" method="POST">
 
-        <table>
+        <table >
             <tal:block tal:repeat="product QI/listInstalledProducts">
-                <tr tal:condition="not: product/isHidden" >
+                <tr tal:define="prodver python:QI.getProductVersion(product['id'])" tal:condition="python: not product['isHidden'] and not product['isLocked']" >
                     <td><input class="noborder"
                                type="checkbox"
                                name="products:list" tal:attributes="value product/id"
@@ -54,6 +55,14 @@
                              i18n:translate="link_install_products_log">Install log</a>)
     
                     </td>
+                    <td tal:content="product/installedVersion" >product version
+                    </td>
+                    <td tal:condition="python:QI.isProductAvailable(product['id'])"> 
+                         <a tal:condition="python:prodver != product['installedVersion']" 
+                            tal:attributes="href string:${QI/absolute_url}/reinstallProducts?products=${product/id}"
+                            i18n:translate=""> this product is outdated, click here to reinstall </a>
+                    </td>
+                    <td tal:condition="python:not QI.isProductAvailable(product['id'])"> <font color="#ff0000"  >removed from Products folder</font></td>
                 </tr>
             </tal:block>
         </table>
