@@ -17,6 +17,10 @@ from Products.GroupUserFolder.GroupsTool import GroupsTool
 
 default_user = PloneTestCase.default_user
 
+def sortTuple(t):
+    l = list(t)
+    l.sort()
+    return tuple(l)
 
 class TestGroupsTool(PloneTestCase.PloneTestCase):
 
@@ -53,7 +57,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo', '', [], [])
         self.groups.editGroup('foo', 'secret', ['Reviewer'], ['foo.com'])
         g = self.groups.getGroupById('foo')
-        self.assertEqual(g.getRoles(), ('Authenticated', 'Reviewer'))
+        self.assertEqual(sortTuple(g.getRoles()), ('Authenticated', 'Reviewer'))
         self.assertEqual(g.getDomains(), ('foo.com',))
         self.assertEqual(g.getGroup()._getPassword(), 'secret')
 

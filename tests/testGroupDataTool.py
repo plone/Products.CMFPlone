@@ -17,6 +17,10 @@ from Products.GroupUserFolder.GroupsTool import GroupsTool
 
 default_user = PloneTestCase.default_user
 
+def sortTuple(t):
+    l = list(t)
+    l.sort()
+    return tuple(l)
 
 class TestGroupDataTool(PloneTestCase.PloneTestCase):
 
@@ -150,13 +154,13 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.assertEqual(g.getRoles(), ('Authenticated',))
         self.acl_users._updateGroup(g.getId(), roles=['Member'])
         g = self.groups.getGroupById('foo')
-        self.assertEqual(g.getRoles(), ('Authenticated', 'Member'))
+        self.assertEqual(sortTuple(g.getRoles()), ('Authenticated', 'Member'))
 
     def testGetRolesInContext(self):
         g = self.groups.getGroupById('foo')
         self.assertEqual(g.getRolesInContext(self.folder), ('Authenticated',))
         self.folder.manage_setLocalRoles(g.getId(), ['Owner'])
-        self.assertEqual(g.getRolesInContext(self.folder), ('Authenticated', 'Owner'))
+        self.assertEqual(sortTuple(g.getRolesInContext(self.folder)), ('Authenticated', 'Owner'))
 
     def testGetDomains(self):
         g = self.groups.getGroupById('foo')

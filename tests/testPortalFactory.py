@@ -9,6 +9,10 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+def sortTuple(t):
+    l = list(t)
+    l.sort()
+    return tuple(l)
 
 class TestPortalFactory(PloneTestCase.PloneTestCase):
 
@@ -32,15 +36,15 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory(id='folder2', type_name='Folder')
         self.folder.folder2.manage_addLocalRoles('user2', ('Reviewer',))
 
-        self.assertEqual(member.getRolesInContext(self.folder),
+        self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Foo', 'Member'))
 
         temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.assertEqual(member.getRolesInContext(temp_object), 
+        self.assertEqual(sortTuple(member.getRolesInContext(temp_object)), 
                          ('Authenticated', 'Foo', 'Member'))
 
         temp_object2 = self.folder.folder2.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.assertEqual(member.getRolesInContext(temp_object2), 
+        self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)), 
                          ('Authenticated', 'Foo', 'Member', 'Reviewer'))
 
 
