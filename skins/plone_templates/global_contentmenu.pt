@@ -53,7 +53,7 @@
                  width="16" 
                  height="16" 
                  tal:attributes="src string:$portal_url/${portaltype/getIcon}"/>
-            <span tal:omit-tag="" i18n:translate="Add New ${type}">Add new
+            <span tal:omit-tag="" i18n:translate="Add ${type}">Add 
                 <tal:title i18n:name="type"
                            tal:content="portaltype/Title">Title</tal:title>
             </span>
