@@ -389,8 +389,13 @@ Plone 1.1 - Fyuti
     - added CMFDefault variables to main_template.pt and moving to use alot of 
       the variables declared in main_template else where in PageTemplates
 
-    - items listed in folder_contents generatd urls pointing to immediate_view (type information)
-    
+    - items listed in folder_contents generatd urls pointing to immediate_view
+      (type information)
+
+    - not addable portal types are returned by the getNotAddableTypes
+      script which can be customized to filter out types based on user
+      or context. [philikon]
+
 Plone 1.0.2 - Vert Release
 
     - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)

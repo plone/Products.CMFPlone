@@ -21,7 +21,7 @@
 	</p>
 
   <div class="group" metal:define-macro="addlist"
-       tal:define="filterOut python:['Favorite'];
+       tal:define="filterOut here/getNotAddableTypes;
                    create_id id | nothing;
                    id_query string:&amp;id=$create_id;
                    query python:test(create_id, id_query, '');">
