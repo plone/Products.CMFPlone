@@ -16,7 +16,9 @@
                    showNav python:0;
                    listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
-                   editorView python:test(listContentsPermission and notFolderContents, 1, 0);"
+                   editorView python:test(listContentsPermission and notFolderContents, 1, 0);
+                   croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
+                   "
                    tal:on-error="structure string:<!--Error in Navigation!!-->"
                    >
 
@@ -42,7 +44,7 @@
                                                test(sibling.isPrincipiaFolderish,'','view'));
                                            
                                        
-                                       sibling_title python:'&nbsp;;'.join(te['object'].title_or_id()[:18].split(' '));"
+                                       sibling_title python:'&nbsp;;'.join(te['object'].title_or_id()[:croppingLength].split(' '));"
                                        tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                        >
                            
