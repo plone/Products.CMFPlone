@@ -93,11 +93,12 @@ table.calendar td.holiday {
 
 table.calendar td.todayevent {
     background-color: #DEE7EC;
-    border: 2px solid #CF6060;
+    border: 2px solid #FFA500;
     font-weight: bold;
 }
 
 table.calendar td.todaynoevent {
     border-collapse: collapse;
-    border: 2px solid #CF6060;
+    border: 2px solid #FFA500;
 }
+

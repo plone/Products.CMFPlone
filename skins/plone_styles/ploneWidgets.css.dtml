@@ -1,6 +1,6 @@
 <dtml-call "REQUEST.set('content/type', 'text/css')">
 
-<dtml-call setupTestREQUEST>
+<dtml-call CSSValues>
 
 /*
  * Plone Widgets CSS v1
@@ -17,7 +17,6 @@
  *
  * TODO: table.listing, 
  *       table.box
- *       error class looks awful, plone.org is ok. WTF? :)
  *
  */
 
@@ -48,7 +47,7 @@ div.rowOdd {
     position : relative;
     top: -1.7em;
     left: 1em;
-    background-color : white;
+    background: &dtml-mainBackground;;
     padding: 0.5em;
 }
 
@@ -58,7 +57,7 @@ input.standalone {
     cursor: pointer;
     font-weight: normal;
     padding: &dtml-standaloneButtonPadding;;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 input.context {
@@ -66,7 +65,7 @@ input.context {
     cursor: pointer;
     font-weight: normal;
     padding: &dtml-contextButtonPadding;;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 input.noborder {
@@ -89,16 +88,16 @@ input.noborder {
 .label {
     float: left;
     font-weight: bold;
-    padding-bottom: 1em 0em;
+    padding: 1em 0em;
     text-align: right;
     width: 15%;
 }
 
 .field {
     float: left;
-    padding-bottom: 1em 0em 1em 1em;
+    padding: 1em 0em 1em 1em;
     text-align: left;
-    width: 35%;
+    width: 45%;
 }
 
 .info {
@@ -106,7 +105,7 @@ input.noborder {
     float: right;
     padding: 1em;
     text-align: left;
-    width: 35%;
+    width: 30%;
 }
 
 span.card {
@@ -134,114 +133,89 @@ span.right {
 table.listing {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
     border-collapse: collapse;
-    border-color: #8CACBB;
-    border-style: none none solid solid;
-    border-width: 1px;
-    font-size: 100%;
-    margin-bottom: 1em;
-    margin-top: 1em;
+    border-left: &dtml-listingBorder;;
+    border-bottom: &dtml-listingBorder;;
+    margin: 1em 0em 1em 0em;
 }
 
 table.listing th {
-    background-color: #DEE7EC;
-    border-color: #8CACBB;
-    border-style: solid solid solid none;
-    border-width: 1px;
-    color: #000000;
+    background: &dtml-listingHeaderBackground;;
+    border-top: &dtml-listingBorder;;
+    border-bottom: &dtml-listingBorder;;
+    border-right: &dtml-listingBorder;;
     font-weight: normal;
-    padding-left: 1em;
-    padding-right: 1em;
-    text-transform: lowercase;
-}
-
-table.listing th.empty {
-    background-color: #FFFFFF;
-    border-color: #8CACBB;
-    border-style: none none solid none;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
 }
 
 table.listing tr.odd {
     /*every second line should be shaded */
-    background-color: #F7F9FA;
+    background: &dtml-listingOddBackground;;
 }
 
 table.listing tr.even {
-    background-color: transparent;
+    background: &dtml-listingEvenBackground;;
 }
 
 table.listing td {
-    border-color: #8CACBB;
-    border-style: none solid none none;
-    border-width: 1px;
-    font-weight: normal;
-    padding-left: 1em;
-    padding-right: 1em;
-    vertical-align: baseline;
+    border-right: &dtml-listingBorder;;
+    padding: 0em 1em;
 }
 
 table.listing a:hover {
-    text-decoration: underline;
+    text-decoration: &dtml-listingLinkHover;;
 }
 
 table.box {
     /* The Plone Box(tm) (Navigation, Related etc) */
     background: transparent;
     border-collapse: collapse;
-    border-color: #8CACBB;
-    border-style: none none solid solid;
-    border-width: 1px;
-    color: #000000;
-    margin-bottom: 2em;
+    border-bottom: &dtml-boxBorder;;
+    border-left: &dtml-boxBorder;;
+    margin: 0em 0em 2em 0em;
 }
 
 table.box th {
-    background-color: #DEE7EC;
-    border-color: #8CACBB;
-    border-style: solid solid solid none;
-    border-width: 1px;
-    color: #436976;
+    background: &dtml-boxHeaderBackground;;
+    border-top: &dtml-boxBorder;;
+    border-bottom: &dtml-boxBorder;;
+    border-right: &dtml-boxBorder;;
     font-weight: normal;
-    padding-left: 1em;
-    padding-right: 1em;
+    padding: 0em 1em;
     text-align: left;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 table.box th.empty {
-    background-color: #FFFFFF;
-    border-color: #8CACBB;
-    border-style: none none solid none;
+    background-color: transparent;
+    border: none;
+    border-bottom: &dtml-boxBorder;;
 }
 
 table.box tr.odd {
     /*every second line should be shaded */
-    background-color: #F7F9FA;
+    background: &dtml-boxOddBackground;;
 }
 
 table.box tr.even {
-    background-color: transparent;
+    background-color: &dtml-boxEvenBackground;;
 }
 
 table.box td {
-    border-color: #8CACBB;
-    border-style: none solid none none;
-    border-width: 1px;
-    font-weight: normal;
+    border-right: &dtml-boxBorder;;
     padding: 1em;
 }
 
 div.boxDetails {
-    /*the line that contains the date and other info */
+    /*the line that contains the date for news and other info */
     text-align: right;
 }
 
 table.box a {
     /* special format for links inside boxes - adds link image and displays the link as a block (which in this case means the text will not float under the link image, plus the whole thing is clickable) */
-    background-image: url(&dtml-portal_url;/plone_images/linkTransparent.gif);
-    background-position: -0.5em 0px;
-    background-repeat: no-repeat;
+    background: &dtml-boxLinkBackground;;
     display: block;
-    padding-left: 1.5em;
+    padding: 0em 0em 0em 1.5em;
     vertical-align: top;
 }
 
@@ -249,14 +223,13 @@ table.box a.comment {
     /* special link for comments - default behavior is to display the discussion icon next to the link */
     background-image: url(&dtml-portal_url;/plone_images/discussion.gif);
     background-position: 0px 0px;
-    padding-bottom: 0.5em;
-    padding-left: 2em;
+    padding-bottom: 0em 0em 0.5em 2em;
 }
 
 table.box a.plain {
     /* use this if you need plain links without images */
     background-image: none;
-    padding-left: 0;
+    padding: 0;
 }
 
 span.folderName {
@@ -284,6 +257,7 @@ span.folderName {
 .expired {
     color: Red;
 }
+
 
 
 

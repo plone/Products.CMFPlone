@@ -1,6 +1,6 @@
 <dtml-call "REQUEST.set('content/type', 'text/css')">
 
-<dtml-call setupTestREQUEST>
+<dtml-call CSSValues>
 
 /*
  * Plone Basic CSS v1
@@ -152,6 +152,7 @@ pre {
 /* This hides elements necessary for getting Netscape 4.x to look better. Mostly strategically placed hr tags and &middot;'s */
     display: none;
 }
+
 
 
 

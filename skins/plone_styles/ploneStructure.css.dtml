@@ -1,6 +1,6 @@
 <dtml-call "REQUEST.set('content/type', 'text/css')">
 
-<dtml-call setupTestREQUEST>
+<dtml-call CSSValues>
 
 /*
  * Plone Structure CSS v1
@@ -43,7 +43,7 @@ div.searchBox {
     margin: &dtml-searchMargin;;
     padding: &dtml-searchPadding;;
     text-align: right;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 input.searchGadget {
@@ -64,7 +64,7 @@ div.tabs a {
     color: &dtml-mainTabLinkColor;;
     margin-right: 0.5em;
     padding: 0em 2em;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 div.tabs a.selected {
@@ -83,7 +83,7 @@ div.personalBar {
     border-bottom: &dtml-mainTabBorder;;
     padding-right: 2em;
     text-align: right;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 div.pathBar {
@@ -91,22 +91,22 @@ div.pathBar {
     border-bottom: &dtml-mainTabBorder;;
     padding-left: 2em;
     padding-right: 2em;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 .breadcrumbs {
     float: left;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 .addFavorite {
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 .clock {
     /* The portal time indicator */
     float: right;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
     white-space: nowrap;
 }
 
@@ -140,6 +140,7 @@ table.columns td.right {
 
 div.contentTabs {
     /* Local Plone Tabs(tm), used in the content display */
+    background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
     border-bottom: &dtml-contentTabBorder;;
     padding-left: 1em;
@@ -152,7 +153,7 @@ div.contentTabs a {
     color: &dtml-contentTabLinkColor;;
     margin-right: 0.5em;
     padding: 0em 2em;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 div.contentTabs a.selected {
@@ -170,11 +171,12 @@ div.contentBar {
     border-left: &dtml-contentTabBorder;;
     border-right: &dtml-contentTabBorder;;
     text-align: right;
-    text-transform: lowercase;
+    text-transform: &dtml-textTransform;;
 }
 
 div.document {
     /* The document class encloses the object content when editing is not permitted */
+    background: &dtml-contentBackground;;
     margin: 0;
     margin-bottom: 2em;
     padding: 2em;
@@ -183,6 +185,7 @@ div.document {
 
 div.editableDocument {
     /* The class surrounding content when editing is permitted */
+    background: &dtml-contentBackground;;
     border: &dtml-contentTabBorder;;
     margin: 0em 0em 2em 0em;
     padding: 1em 2em 2em 2em;
@@ -215,6 +218,7 @@ div.message {
     padding: 0.5em 0em 1em 0em;
     text-align: center;
 }
+
 
 
 

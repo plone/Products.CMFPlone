@@ -1,16 +1,13 @@
-## Script (Python) "setupTestREQUEST"
+## Script (Python) "CSSValues"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=setups a faux REQUEST for alex to test
+##title=CSS Presets
 ##
 REQUEST=context.REQUEST
-
-# if this is here, I can checkin via SF :)
-
 
 # Main
 REQUEST.set('mainFont', '10px Verdana, Helvetica, Arial, sans-serif')
@@ -26,7 +23,7 @@ REQUEST.set('mainTabBackdrop', 'transparent')
 REQUEST.set('mainTabLinkColor', '#436976')
 
 # Headlines
-REQUEST.set('headingFont', '10px normal')
+REQUEST.set('headingFont', '10px Verdana, Helvetica, Arial, sans-serif')
 REQUEST.set('headingSize1', '240%')
 REQUEST.set('headingSize2', '200%')
 REQUEST.set('headingSize3', '160%')
@@ -38,16 +35,19 @@ REQUEST.set('headingSize6', '110%')
 REQUEST.set('descriptionFont', 'bold 120% Verdana, Helvetica, Arial, sans-serif')
 
 # Content
-REQUEST.set('contentFont', '120%')
-REQUEST.set('contentBackground', 'dummy')
+REQUEST.set('contentFont', '12px Verdana, Helvetica, Arial, sans-serif')
+REQUEST.set('contentBackground', 'transparent')
 REQUEST.set('contentImageBorder', '1px solid black')
+REQUEST.set('contentLinkActiveColor', 'red')
+REQUEST.set('contentVisitedColor', 'purple')
+
 # add contentLinkVisited etc? Yes!
 
 # Content Tabs
 REQUEST.set('contentTabBorder', '1px solid #74AE0B')
 REQUEST.set('contentTabBackground', '#CDE2A7')
 REQUEST.set('contentTabBackgroundNotSelected', 'transparent')
-REQUEST.set('contentTabBackdrop', 'dummy')
+REQUEST.set('contentTabBackdrop', 'transparent')
 REQUEST.set('contentTabLinkColor', '#578308')
 
 
@@ -62,25 +62,36 @@ REQUEST.set('messageBackground', '#FFCE7B')
 REQUEST.set('messageBorder', '1px solid #FFA500')
 
 # Special
-REQUEST.set('textTransform', 'dummy')
+REQUEST.set('textTransform', 'lowercase')
 REQUEST.set('noBorder', 'none') # should be 1px solid #8cacbb in Mozilla
 REQUEST.set('evenRowBackground', '#F7F9FA')
 REQUEST.set('oddRowBackground', 'transparent')
 REQUEST.set('groupBorder', '1px solid #8cacbb')
-REQUEST.set('requiredField', 'url(plone_images/required.gif) 1em no-repeat')
+REQUEST.set('requiredField', 'url(required.gif) 1em no-repeat')
 
 # Input gadgets 
 REQUEST.set('inputFont', 'bold 10px Verdana, Helvetica, Arial, sans-serif')
 REQUEST.set('inputBorder', '1px solid #8cacbb')
 
 # Buttons
-REQUEST.set('contextButtonBackground', 'transparent url(plone_images/linkTransparent.gif) left no-repeat')
+REQUEST.set('contextButtonBackground', 'transparent url(linkTransparent.gif) left no-repeat')
 REQUEST.set('contextButtonPadding', '1px 1px 1px 15px')
-REQUEST.set('standaloneButtonBackground', '#DEE7EC url(plone_images/linkOpaque.gif) left no-repeat')
+REQUEST.set('standaloneButtonBackground', '#DEE7EC url(linkOpaque.gif) left no-repeat')
 REQUEST.set('standaloneButtonPadding', '1px 1px 1px 15px')
 
+# Boxes
+REQUEST.set('boxBorder', '1px solid #8CACBB')
+REQUEST.set('boxHeaderBackground', '#DEE7EC')
+REQUEST.set('boxLinkBackground', 'url(linkTransparent.gif) -0.5em 0px no-repeat')
+REQUEST.set('boxEvenBackground', '#F7F9FA')
+REQUEST.set('boxOddBackground', 'transparent')
 
-
+# Content listing
+REQUEST.set('listingBorder', '1px solid #8CACBB')
+REQUEST.set('listingHeaderBackground', '#DEE7EC')
+REQUEST.set('listingLinkHover', 'underline')
+REQUEST.set('listingEvenBackground', '#F7F9FA')
+REQUEST.set('listingOddBackground', 'transparent')
 
 
 # Top 
