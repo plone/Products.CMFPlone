@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Fixed http://plone.org/collector/3329. Results of breadcrumbs.py 
+      are no longer translated in global_pathbar.pt.
+      [stefan]
+
     - Fixed http://plone.org/collector/3332: hide the
       portal_siteactions from the print stylesheet
       [bmh]
