@@ -12,14 +12,6 @@ from Products.CMFPlone.tests import PloneTestCase
 default_user = PloneTestCase.default_user
 
 
-# Fake upload object
-class Portrait:
-    filename = 'foo.gif'
-    def seek(*args): pass
-    def tell(*args): return 0
-    def read(*args): return 'bar'
-
-
 class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -141,12 +133,21 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.failUnless(memberfolder, 'wrapUser failed to create memberarea')
 
 
+# Fake upload object
+
+class Portrait:
+    filename = 'foo.gif'
+    def seek(*args): pass
+    def tell(*args): return 0
+    def read(*args): return 'bar'
+
+
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
+    from unittest import TestSuite, makeSuite
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestMembershipTool))
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestMembershipTool))
         return suite
 

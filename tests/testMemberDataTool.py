@@ -9,16 +9,8 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-default_user = PloneTestCase.default_user
-
-
 from OFS.Image import Image
-# Fake upload object
-class Portrait:
-    filename = 'foo.gif'
-    def seek(*args): pass
-    def tell(*args): return 0
-    def read(*args): return 'bar'
+default_user = PloneTestCase.default_user
 
 
 class TestMemberDataTool(PloneTestCase.PloneTestCase):
@@ -44,12 +36,21 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.memberdata.portraits.objectIds()), 1)
 
 
+# Fake upload object
+
+class Portrait:
+    filename = 'foo.gif'
+    def seek(*args): pass
+    def tell(*args): return 0
+    def read(*args): return 'bar'
+
+
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
+    from unittest import TestSuite, makeSuite
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestMemberDataTool))
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestMemberDataTool))
         return suite
 
