@@ -84,26 +84,26 @@ class DefaultCustomizationPolicy:
                                , 0 )
      
     def assignTitles(self, portal):
-        titles={'portal_actions':'defines custom tabs and buttons',
-         'portal_membership':'encapsulates membership policy',
-         'portal_memberdata':'defines available properties on Members',
-         'portal_undo':'defines actions and functionality related to undo',
-         'portal_types':'defines Python Products in the CMF',
-         'plone_utils':'utility methods in PloneTool.py',
-         'portal_navigation':'coordinating portal_form and nav_props',
-         'portal_metadata':'assign metadata, like keywords i.e. Subject',
-         'portal_migration':'handles migrations of Plone versions',
-         'portal_registration':'encapsulated registration policy',
-         'portal_skins':'controls the behavior of skins i.e. search order',
-         'portal_syndication':'enable RSS for folders',
-         'portal_workflow':'contains workflow definitions for system',
-         'portal_url':'methods to anchor you to root of CMF Site',
-         'portal_form':'used with templates to do validation and navigation',
-         'portal_discussion':'how discussions are stored by default on conent',
-         'portal_catalog':'indexes all content in the site',
-         'portal_form_validation':'*deprecated*',
-         'portal_factory':'ensures a content object is created',
-         'portal_calendar':'controls how events are shown'
+        titles={'portal_actions':'Contains custom tabs and buttons',
+         'portal_membership':'Handles membership policies',
+         'portal_memberdata':'Handles the available properties on Members',
+         'portal_undo':'Defines actions and functionality related to undo',
+         'portal_types':'Controls the available Content Types in your portal',
+         'plone_utils':'Various Plone Utility methods',
+         'portal_navigation':'Responsible for redirecting to the right page in forms',
+         'portal_metadata':'Controls metadata - like keywords, copyrights etc',
+         'portal_migration':'Handles migrations to newer Plone versions',
+         'portal_registration':'Handles registration of new users',
+         'portal_skins':'Controls skin behaviour (search order etc)',
+         'portal_syndication':'Generates RSS for folders',
+         'portal_workflow':'Contains workflow definitions for your portal',
+         'portal_url':'Methods to anchor you to the root of your Plone site',
+         'portal_form':'Used together with templates to do validation and navigation',
+         'portal_discussion':'Controls how discussions are stored by default on content',
+         'portal_catalog':'Indexes all content in the site',
+         'portal_form_validation':'Deprecated, not in use',
+         'portal_factory':'Responsible for the creation of content objects',
+         'portal_calendar':'Controls how Events are shown'
          }
 
         for o in portal.objectValues():
