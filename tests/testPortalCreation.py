@@ -11,13 +11,16 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
 
+from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        # The portal has already been set up, so there 
-        # is little to do. :-|
         self.membership = self.portal.portal_membership
+        self.members = self.membership.getMembersFolder()
+        # Fake the Members folder contents
+        self.members._setObject('index_html', ZopePageTemplate('index_html'))
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -29,7 +32,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def testMembersIndexHtml(self):
         # index_html for Members folder should be a Page Template
-        members = self.membership.getMembersFolder()
+        members = self.members
         self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
         self.failUnless(hasattr(aq_base(members), 'index_html'))
         # getitem works
@@ -47,7 +50,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # portal instead of returning the local Page Template. This was due to
         # special treatment of 'index_html' in the PloneFolder base class and
         # got fixed by hazmat.
-        members = self.membership.getMembersFolder()
+        members = self.members
         self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
         #self.assertEqual(members.index_html.meta_type, 'Document')
         self.assertEqual(members.index_html.meta_type, 'Page Template')
