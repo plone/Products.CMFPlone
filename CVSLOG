@@ -1,3 +1,130 @@
+2003-12-24 01:17  pupq
+
+	* FormTool.py (Plone-2_0-branch): getToolByName requires context as
+	  first argument.
+
+2003-12-23 19:33  zopezen
+
+	* Portal.py, setup/ConfigurationMethods.py (Plone-2_0-branch): Set
+	  the plone version back to 2.0beta2 so that migrations will occur.
+	  Please do not change this unless you know why you are trying to
+	  change it.
+
+	  Removed the spurious checkin for adding in the action *again*
+	  which is not needed.
+
+2003-12-23 19:05  vinsci
+
+	* skins/plone_3rdParty/jscalendar/: README-Plone,
+	  calendar-blue.css, calendar-brown.css, calendar-green.css,
+	  calendar-system.css, calendar-win2k-1.css, calendar-win2k-2.css,
+	  calendar-win2k-cold-1.css, calendar-win2k-cold-2.css
+	  (Plone-2_0-branch): Override plone.css' style sheet. This closes
+	  issue 1628.
+
+2003-12-23 16:16  vinsci
+
+	* skins/plone_3rdParty/jscalendar/README-Plone (Plone-2_0-branch):
+	  Document that calendar_stripped.js also needs to be patched when
+	  upgrading jscalendar to a new version.
+
+2003-12-23 16:07  vinsci
+
+	* skins/plone_3rdParty/jscalendar/calendar_stripped.js
+	  (Plone-2_0-branch): Apply the +2 offset, same as for calendar.js
+
+2003-12-23 15:39  vinsci
+
+	* skins/plone_templates/header.pt (Plone-2_0-branch): jscalendar
+	  fix.
+
+2003-12-23 15:32  vinsci
+
+	* skins/plone_portlets/calendar_slot.pt (Plone-2_0-branch):
+	  jscalendar fixes.
+
+2003-12-23 15:29  vinsci
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch): A
+	  bunch of jscalendar fixes.
+
+2003-12-23 15:09  dannybloe
+
+	* PloneTool.py (Plone-2_0-branch): Fixed a bug in
+	  getInheritedLocalRoles. Altered security for this function (issue
+	  2203)
+
+2003-12-23 12:23  vinsci
+
+	* skins/plone_3rdParty/jscalendar/: README-Plone, calendar.js
+	  (Plone-2_0-branch): Opera needs an extra pixel to not hide the
+	  other controls.
+
+2003-12-23 11:26  shh42
+
+	* tests/testGroupsTool.py (Plone-2_0-branch): Add some more tests
+	  for the groups tool. Don't forget to cvs up GRUF!
+
+2003-12-23 11:20  vinsci
+
+	* skins/plone_3rdParty/jscalendar/: README-Plone, calendar.js
+	  (Plone-2_0-branch): Show popup one pixel further down, in order
+	  to avoid obscuring (and thus autohiding) other date/time
+	  selection controls. Update README-Plone, document the patch.
+
+2003-12-23 10:29  ajung
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): for
+	  folderish objects it does not make sense to provide the size
+	  parameter
+
+2003-12-23 10:27  ajung
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  skins/plone_templates/folder_contents.pt
+
+2003-12-23 07:02  vinsci
+
+	* skins/plone_portlets/portlet_language.pt (Plone-2_0-branch): Typo
+	  fix.
+
+2003-12-23 05:35  gerry_kirk
+
+	* skins/plone_prefs/: prefs_groups_overview.pt,
+	  prefs_users_overview.pt (Plone-2_0-branch): divided add and
+	  search into two forms, so that pressing Enter in search box does
+	  a search instead of invoking Add
+
+2003-12-23 05:06  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2003-12-23 05:03  vinsci
+
+	* skins/plone_3rdParty/jscalendar/: README-Plone,
+	  calendar-af.js.metadata, calendar-blue.css.metadata,
+	  calendar-br.js.metadata, calendar-brown.css.metadata,
+	  calendar-ca.js.metadata, calendar-cs-win.js.metadata,
+	  calendar-da.js.metadata, calendar-de.js.metadata,
+	  calendar-du.js.metadata, calendar-el.js.metadata,
+	  calendar-en.js.metadata, calendar-es.js.metadata,
+	  calendar-fr.js.metadata, calendar-green.css.metadata,
+	  calendar-hr-utf8.js.metadata, calendar-hr.js.metadata,
+	  calendar-hu.js.metadata, calendar-it.js.metadata,
+	  calendar-jp.js.metadata, calendar-nl.js.metadata,
+	  calendar-no.js.metadata, calendar-pl.js.metadata,
+	  calendar-pt.js.metadata, calendar-ro.js.metadata,
+	  calendar-ru.js.metadata, calendar-setup.js.metadata,
+	  calendar-setup_stripped.js.metadata, calendar-sk.js.metadata,
+	  calendar-sp.js.metadata, calendar-sv.js.metadata,
+	  calendar-system.css.metadata, calendar-tr.js.metadata,
+	  calendar-win2k-1.css.metadata, calendar-win2k-2.css.metadata,
+	  calendar-win2k-cold-1.css.metadata,
+	  calendar-win2k-cold-2.css.metadata, calendar-zh.js.metadata,
+	  calendar.js.metadata, calendar_stripped.js.metadata
+	  (Plone-2_0-branch): Update README-Plone. Add .metadata to all
+	  relevant files for caching.
+
 2003-12-23 04:28  gerry_kirk
 
 	* setup/ConfigurationMethods.py (Plone-2_0-branch): plone setup
