@@ -1,5 +1,6 @@
 CHANGES
 Plone 1.1
+    - Wrapped catalog() in queryCatalog.py in try/except. catalog() may return an exception, and we don't want to expose that to the user.
     - content_status_history (state tab) form now displays
       the current state in the state list.  This is a usability
       decision. All options should have a default state. Now

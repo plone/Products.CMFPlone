@@ -25,5 +25,8 @@ if notRawIndexFields:
             query.update({k:REQUEST.get(k)})
 
 if query:
-    results=catalog(query)
+    try:
+        results=catalog(query)
+    except:
+        pass
 return results
