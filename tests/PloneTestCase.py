@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.14 2004/01/07 00:39:36 runyaga Exp $
+# $Id: PloneTestCase.py,v 1.15 2004/01/07 01:43:24 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -79,6 +79,10 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         uf = self.app.acl_users
         user = uf.getUserById(portal_owner).__of__(uf)
         newSecurityManager(None, user)
+
+
+class FunctionalTestCase(ZopeTestCase.Functional, PloneTestCase):
+    '''Convenience class for functional unit testing'''
 
 
 def setupPloneSite(app=None, id=portal_name, quiet=0):
