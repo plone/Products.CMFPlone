@@ -74,9 +74,8 @@
                 </span>
 
                 <span class="expired"
-                      tal:condition="python:here.isExpired(here)"
-                      i18n:translate="time_expired">
-                (expired)
+                      tal:condition="python:here.isExpired(here)">
+                (<span tal:omit-tag="" i18n:translate="time_expired">expired</span>)
                 </span>
 
             </div>
