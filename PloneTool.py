@@ -189,6 +189,9 @@ class PloneTool (UniqueObject, SimpleItem):
         if action_id is None:
             navTransition='%s.%s.%s' % ('default',action,status)
             action_id = getattr(navprops.aq_explicit, navTransition, None)
+        if action_id is None:
+            navTransition='%s.%s.%s' % ('default','default',status)
+            action_id = getattr(navprops.aq_explicit, navTransition, '')
         return self._transitionSubstitute(action_id, self.REQUEST)
 
     security.declarePublic('getNextPageFor')
