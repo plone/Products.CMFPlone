@@ -144,23 +144,23 @@
                 Return items of a specific type.
                 </div>
     
-                <tal:tabindex define="tabindex tabindex/next">
-                <input type="checkbox"
-                       onclick="javascript:toggleSelect(this, 'portal_type:list', true);"
-                       name="pt_toggle"
-                       value="#"
-                       id="pt_toggle"
-                       class="noborder"
-                       tabindex=""
-                       checked="checked"
-                       tal:attributes="tabindex tabindex;"/>
-                <label for=""
-                       i18n:translate="label_toggle"
-                       tal:attributes="for string:pt_toggle"
-                       >Toggle
-                </label>
+                <span class="optionsToggle" tal:define="tabindex tabindex/next">
+                    <input type="checkbox"
+                           onclick="javascript:toggleSelect(this, 'portal_type:list', true);"
+                           name="pt_toggle"
+                           value="#"
+                           id="pt_toggle"
+                           class="noborder"
+                           tabindex=""
+                           checked="checked"
+                           tal:attributes="tabindex tabindex;"/>
+                    <label for=""
+                           i18n:translate="label_toggle"
+                           tal:attributes="for string:pt_toggle"
+                           >Select All/None
+                    </label>
+                </span>
                 <br />
-                </tal:tabindex>
                 <tal:contenttypes repeat="type python:portal_types.listContentTypes()">
                     <tal:tabindex define="tabindex tabindex/next">
                     <input type="checkbox"
@@ -219,7 +219,7 @@
                 in certain states, select them from this list.
                 </div>
     
-                <tal:tabindex define="tabindex tabindex/next">
+                <span class="optionsToggle" tal:define="tabindex tabindex/next">
                 <input type="checkbox"
                        onclick="javascript:toggleSelect(this, 'review_state', true);"
                        name="rs_toggle"
@@ -232,10 +232,10 @@
                 <label for=""
                        i18n:translate="label_toggle"
                        tal:attributes="for string:rs_toggle"
-                       >Toggle
+                       >Select All/None
                 </label>
                 <br />
-                </tal:tabindex>
+                </span>
                 <tal:states tal:repeat="state python:portal.portal_catalog.uniqueValuesFor('review_state')">
                     <metal:block tal:define="tabindex tabindex/next">
                     <input type="checkbox"

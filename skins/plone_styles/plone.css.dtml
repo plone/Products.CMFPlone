@@ -1257,6 +1257,14 @@ ul.configletDetails li label {
     padding-right: 0.5em;
 }
 
+.optionsToggle {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: normal !important;
+    font-size: &dtml-fontSmallSize;;
+}
+
 .portalNotLoggedIn {} /* Used on all descriptions relevant to those not logged in */
 
 #portal-column-content fieldset > * input:focus,
