@@ -63,13 +63,6 @@
                value="Uninstall"
                name="uninstallProducts:method"
                />
-        <input class="context"
-               type="submit"
-               i18n:attributes="value"
-               value="Reinstall"
-               name="reinstallProducts:method"
-               tal:condition="python:QI.getProductFile('CMFQuickInstallerTool','version.txt') >= '1.4'"
-               />
     </form>
 </div>
 
