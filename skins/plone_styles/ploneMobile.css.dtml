@@ -353,6 +353,7 @@ label {
 .hiddenStructure,
 #portal-logo,
 #portal-searchbox,
+#portal-siteactions,
 #portal-column-one,
 #portal-column-two,
 .addFavorite,
