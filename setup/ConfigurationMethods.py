@@ -177,10 +177,10 @@ def correctFolderContentsAction(actionTool):
         if action.id=='folderContents':
             action.name=action.title='Contents'
             if action.condition.text.find('folder is not object') != -1:
-                action.condition=Expression('python:member and folder is not object')
+                action.condition=Expression('python:member and folder is not object and object.displayContentsTab()')
                 action.permissions=(CMFCorePermissions.ListFolderContents,)
             elif action.condition.text.find('folder is object') != -1:
-                action.condition=Expression('python: portal.displayContentsTab()')
+                action.condition=Expression('python: folder.displayContentsTab()')
     actionTool._actions=_actions
     
 
@@ -246,7 +246,8 @@ def modifySkins(self, portal):
                 a.title = 'Sharing'
             if a.id == 'content_status_history':
                 a.visible = 0
-        t._actions=_actions
+        #in 2.0 teh Sharing tab is on portal_actions ActionProvider
+        t._actions=[a for a in _actions if a.id!='local_roles']
 
 def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')
