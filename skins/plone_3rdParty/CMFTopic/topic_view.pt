@@ -7,14 +7,12 @@
 
 <div metal:fill-slot="main">
 
-
     <h1 tal:content="structure here/title_or_id">
-    Title or id
+        Title or id
     </h1>
 
-    <div id="description"
-         tal:content="structure here/Description">
-    description
+    <div class="documentDescription" tal:content="structure here/Description">
+        description
     </div>
 
     <metal:block tal:define="

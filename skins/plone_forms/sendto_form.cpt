@@ -12,8 +12,8 @@
 
     <h1 i18n:translate="heading_send_page_to">Send this page to somebody</h1>
     
-    <div id="description" i18n:translate="description_send_page_to">
-    Fill in the email address of your friend to send an email with the address.
+    <div class="documentDescription" i18n:translate="description_send_page_to">
+        Fill in the email address of your friend to send an email with the address.
     </div>
 
 
