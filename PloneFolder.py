@@ -157,9 +157,9 @@ def addPloneFolder( self, id, title='', description='', REQUEST=None ):
 
 #--- Helper function that can figure out what 'view' action to return
 def _getViewFor(obj, view='view', default=None):
+
     ti = obj.getTypeInfo()
     context = getActionContext(obj)
-
     if ti is not None:
         actions = ti.listActions()
         for action in actions:
@@ -167,15 +167,23 @@ def _getViewFor(obj, view='view', default=None):
             if _action.get('id', None) == default:
                 default=action
             if _action.get('id', None) == view:
-                if _verifyActionPermissions(obj, action) and _action['url']!='':
-                    computed_action = obj.restrictedTraverse(_action['url'])
+                target=_action['url']
+                if target.startswith('/'):
+                    target = target[1:]
+                if _verifyActionPermissions(obj, action) and target!='':
+                    __traceback_info__ = ( ti.getId(), target )
+                    computed_action = obj.restrictedTraverse(target)
                     if computed_action is not None:
                         return computed_action
 
         if default is not None:
             _action = default.getAction(context)
             if _verifyActionPermissions(obj, default):
-                return obj.restrictedTraverse(_action['url'])
+                target=_action['url']
+                if target.startswith('/'):
+                    target = target[1:]
+                __traceback_info__ = ( ti.getId(), target )
+                return obj.restrictedTraverse(target)
 
         # "view" action is not present or not allowed.
         # Find something that's allowed.
