@@ -1,5 +1,5 @@
 #
-# Skeleton Plone test. A full-blown Plone portal is set up.
+# Skeleton PloneTestCase
 #
 
 import os, sys

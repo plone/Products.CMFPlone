@@ -1,5 +1,5 @@
 #
-# Skeleton ZopeTestCase. Nothing CMF/Plone specific is set up.
+# Skeleton ZopeTestCase
 #
 
 import os, sys
