@@ -121,7 +121,7 @@
 
 
 
-    <tal:templateMixin define="hasFolderIndexHtml folder/hasIndexHtml;
+    <tal:templateMixin define="hasIndexHtml context/hasIndexHtml;
                                parentVocab folder/getSelectableViews;
                                contextVocab here/getSelectableViews;
                                canSelectDefaultFolderPage folder/canSelectDefaultPage;
@@ -130,6 +130,7 @@
                         condition="python:parentVocab or contextVocab or canSelectDefaultFolderPage or canSelectDefaultContextPage">
 
         <li>
+        
             <div class="menuPosition">
                 <a href="#"
                    title="Choose default view"
@@ -143,9 +144,8 @@
                     onmouseover="menuMouseover(event)">
 
                     <!-- Parent Views menu -->
-                    <tal:parentViews define="object folder;
-                                             vocab parentVocab;
-                                             actualLayout object/getLayout|nothing;
+                    <tal:parentViews define="vocab parentVocab;
+                                             actualLayout folder/getLayout|nothing;
                                              selectCondition canSelectDefaultFolderPage;"
                                      condition="vocab">
                     <tal:layouts repeat="layout vocab">
@@ -159,7 +159,7 @@
                         <a href="#"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            tal:condition="python:value!=actualLayout"
-                           tal:attributes="href string:${object.absolute_url}/selectViewTemplate?templateId=$value;
+                           tal:attributes="href string:${folder/absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
                            i18n:attributes="title">
                             <tal:title i18n:translate=""
@@ -172,7 +172,7 @@
                     <li tal:condition="selectCondition">
                         <a title="Select Default Page" href="#"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                           tal:attributes="href string:${object/absolute_url}/select_default_page;"
+                           tal:attributes="href string:${folder/absolute_url}/select_default_page;"
                            i18n:attributes="title">
                              Select...
                         </a>
