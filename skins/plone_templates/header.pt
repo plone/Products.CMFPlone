@@ -35,12 +35,6 @@
     <style type="text/css" media="all" tal:condition="exists: portal/ploneColumns.css"
            tal:content="string:@import url($portal_url/ploneColumns.css);"></style>
     
-    <!-- Internet Explorer CSS Fixes -->
-    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
-    <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
-           tal:content="string:@import url($portal_url/ploneIEFixes.css);"></style>
-    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
-
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="screen"
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
@@ -57,10 +51,14 @@
     <link rel="stylesheet" type="text/css" media="projection" href=""
           tal:attributes="href string:$portal_url/plonePresentation.css" />
 
+    <!-- Internet Explorer CSS Fixes -->
+    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
+    <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
+           tal:content="string:@import url($portal_url/ploneIEFixes.css);"></style>
+    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
+
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
-    <!-- Accessibility rel links, show up in Opera (and Mozilla if you have the plugin)  -->
-    <link rel="home" href="" title="Front Page" tal:attributes="href string:$portal_url" />
     <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
     <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
     <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
