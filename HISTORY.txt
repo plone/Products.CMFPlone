@@ -4,8 +4,8 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
-    - Portal.py: Removed monkey patch that renamed the skin request var to
-      plone_skin. Now it's portal_skin again.
+    - Portal.py/SkinsTool.py: Removed monkey patch that renamed the skin request var to
+      plone_skin and moved request_varname to our SkinsTool
       [tiran]
       
     - Fixed http://plone.org/collector/2583. Disable submit button when item is

@@ -16,6 +16,9 @@ class SkinsTool(PloneBaseTool, BaseTool):
     meta_type = ToolNames.SkinsTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/skins_icon.gif'
+
+    default_skin = ''
+    request_varname = 'plone_skin'
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 

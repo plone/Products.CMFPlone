@@ -297,8 +297,6 @@ class PloneGenerator(Portal.PortalGenerator):
 
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
 
-        sk_tool.request_varname='plone_skin'
-
     def setupForms(self, p):
         """ This is being deprecated.  Please see CMFFormController """
 
