@@ -9,7 +9,7 @@
 <div metal:define-macro="relatedBox"
      tal:define="localContent here/navigationLocalRelated;
                  remoteContent here/navigationRemoteResources;"
-     tal:condition="python:test(localContent or remoteContent, 1, 0)" >
+     tal:condition="localContent | remoteContent" >
     <div class="portlet">
     <div class="padding">
         <h5 i18n:translate="box_related">Related</h5>

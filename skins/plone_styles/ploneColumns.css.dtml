@@ -1,13 +1,14 @@
 /*
 ** Tableless Column Layout for CSS2 capable Browsers
 ** Based on http://www.positioniseverything.net/ordered-floats.html by Big John.
-** Fixed width modifications by Tonico Strasser (http://www.webproducer.at).
+** Fixed width modifications by Tonico Strasser (http://www.webproducer.at) and
+** Michael Zeltner (http://niij.org).
 */
 
 /* <dtml-with base_properties> */
 
 body {
-    min-width: 58em;
+    min-width: <dtml-var portalMinWidth missing="70em">;
 }
 #portal-columns {
     width: auto;
@@ -16,28 +17,27 @@ body {
 #visual-column-wrapper {
     float: left;
     width: 100%;
-    margin-right: -17em;
+    margin-right: -<dtml-var columnTwoWidth missing="16em">;
 }
 #portal-column-content {
     width: 100%;
     float: right;
-    margin-left: -1em;
+    margin-left: -<dtml-var columnOneWidth missing="16em">;
 }
 
 #portal-column-content #content {
-    margin: 0 17em;
+    margin: 0 <dtml-var columnTwoWidth missing="16em"> 0 <dtml-var columnOneWidth missing="16em">;
 }
 
 #portal-column-one {
     float: left;
-    margin-right: -16em;
-    width: 17em;
+    width: <dtml-var columnOneWidth missing="16em">;
     overflow: hidden;
 }
 
 #portal-column-two {
     float: right;
-    width: 17em;
+    width: <dtml-var columnTwoWidth missing="16em">;
     overflow: hidden;
 }
 
@@ -60,11 +60,11 @@ body {
 }
 
 .visualColumnHideOne #portal-column-content #content {
-    margin: 0 17em 0 0;
+    margin: 0 <dtml-var columnTwoWidth missing="16em"> 0 0;
 }
 
 .visualColumnHideTwo #portal-column-content #content {
-    margin: 0 0 0 17em;
+    margin: 0 0 0 <dtml-var columnOneWidth missing="16em">;
 }
 
 /* </dtml-with> */

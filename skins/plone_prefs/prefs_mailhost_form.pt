@@ -14,8 +14,15 @@
 
     <h1 i18n:translate="heading_mail_setup">Mail Setup</h1>
 
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="">
+    Up to Plone Setup
+    </a>
+
     <p i18n:translate="description_mail_setup">
-        Mail setup for this portal.
+        Mail setup for Plone.
     </p>
 
     <form action=""
@@ -34,10 +41,11 @@
     
                 <label i18n:translate="label_smtp_server">SMTP server</label>
     
-                <div class="formHelp" id="smtp_server_help">
-                This is the address of your local SMTP (outgoing
-                mail) server. Usually "localhost", unless you use an
-                external server to send mail.
+                <div class="formHelp" id="smtp_server_help"
+                     i18n:translate="help_smtp_server">
+                The address of your local SMTP (outgoing
+                e-mail) server. Usually "localhost", unless you use an
+                external server to send e-mail.
                 </div>
     
                 <div tal:content="error">Validation error output</div>
@@ -58,8 +66,8 @@
                 <label i18n:translate="label_smtp_server">SMTP port</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_port">
-                This is the port of your local SMTP (outgoing
-                mail) server. Usually "25".
+                The port of your local SMTP (outgoing
+                e-mail) server. Usually "25".
                 </div>
 
                 <div tal:content="error">Validation error output</div>

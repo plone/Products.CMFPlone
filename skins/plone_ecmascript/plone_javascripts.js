@@ -261,39 +261,77 @@ function submitFilterAction() {
 }
     
 
-// Functions for selecting all checkboxes in folder_contents view
+// Functions for selecting all checkboxes in folder_contents/search_form view
 
-isSelected = false;
-
-function selectAll() {
-  checkboxes = document.getElementsByName('ids:list');
-  for (i = 0; i < checkboxes.length; i++)
-    checkboxes[i].checked = true ;
-  isSelected = true;
-  return isSelected;
+function selectAll(id, formName) {
+  // get the elements. if formName is p rovided, get the elements inside the form
+  if (formName==null) {
+     checkboxes = document.getElementsByName(id)
+     for (i = 0; i < checkboxes.length; i++)
+         checkboxes[i].checked = true ;
+  } else {
+     for (i=0; i<document.forms[formName].elements.length;i++)
+	 {
+	   if (document.forms[formName].elements[i].name==id) 
+            document.forms[formName].elements[i].checked=true;
+	  }
+  }
 }
 
-function deselectAll() {
-  checkboxes = document.getElementsByName('ids:list');
-  for (i = 0; i < checkboxes.length; i++)
-    checkboxes[i].checked = false ;
-  isSelected = false;
-  return isSelected;
+function deselectAll(id, formName) {
+  if (formName==null) {
+     checkboxes = document.getElementsByName(id)
+     for (i = 0; i < checkboxes.length; i++)
+         checkboxes[i].checked = false ;
+  } else {
+     for (i=0; i<document.forms[formName].elements.length;i++)
+	 {
+	   if (document.forms[formName].elements[i].name==id) 
+            document.forms[formName].elements[i].checked=false;
+	  }
+  }
 }
 
-function toggleSelect(selectbutton) {
-  if (isSelected == false) {
+function toggleSelect(selectbutton, id, initialState, formName) {
+  // required selectbutton: you can pass any object that will function as a toggle
+  // optional id: id of the the group of checkboxes that needs to be toggled (default=ids:list
+  // optional initialState: initial state of the group. (default=false)
+  //   e.g. folder_contents is false, search_form=true because the item boxes
+  //   are checked initially.
+  // optional formName: name of the form in which the boxes reside, use this if there are more
+  //   forms on the page with boxes with the same name
+
+  id=id || 'ids:list'  // defaults to ids:list, this is the most common usage
+
+  if (selectbutton.isSelected==null)
+  {
+      initialState=initialState || false;
+	  selectbutton.isSelected=initialState;
+  }
+  
+  // create and use a property on the button itself so you don't have to 
+  // use a global variable and we can have as much groups on a page as we like.
+  if (selectbutton.isSelected == false) {
     selectbutton.setAttribute('src', portal_url + '/select_none_icon.gif');
-    return selectAll();
+    selectbutton.isSelected=true;
+    return selectAll(id, formName);
   }
   else {
     selectbutton.setAttribute('src',portal_url + '/select_all_icon.gif');
-    return deselectAll();
+    selectbutton.isSelected=false;
+    return deselectAll(id, formName);
   }
 }
 
 
-
+function wrapNode(node, wrappertype, wrapperclass){
+    // utility function to wrap a node "node" in an arbitrary element of type "wrappertype" , with a class of "wrapperclass"
+    wrapper = document.createElement(wrappertype)
+    wrapper.className = wrapperclass;
+    innerNode = node.parentNode.replaceChild(wrapper,node);
+    wrapper.appendChild(innerNode)
+}
+    
 
 // script for detecting external links.
 // sets their target-attribute to _blank , and adds a class external
@@ -311,31 +349,36 @@ function scanforlinks(){
     
     links = contentarea.getElementsByTagName('a');
     for (i=0; i < links.length; i++){      
-        if (links[i].getAttribute('href')){
+        if ((links[i].getAttribute('href'))&&(links[i].className.indexOf('link-plain')==-1 )){
             var linkval = links[i].getAttribute('href')
-            
             // check if the link href is a relative link, or an absolute link to the current host.
             if (linkval.indexOf(window.location.protocol+'//'+window.location.host)==0){
                 // we are here because the link is an absolute pointer internal to our host
                 // do nothing
-            } else if (linkval.indexOf('http:') == -1){
+            } else if (linkval.indexOf('http:') != 0){
                 // not a http-link. Possibly an internal relative link, but also possibly a mailto ot other snacks
                 // add tests for all relevant protocols as you like.
                 
-                protocols = ['mailto', 'ftp' , 'irc', 'callto']
-                // callto is a proprietary protocol to the SKYPE-application, but we happen to like it ;)
+                protocols = ['mailto', 'ftp' , 'irc', 'h323', 'sip', 'callto', 'https']
+                // h323, sip and callto are internet telephony VoIP protocols
                 
                 for (p=0; p < protocols.length; p++){  
-                     if (linkval.indexOf(protocols[p]+':') != -1){
+                     if (linkval.indexOf(protocols[p]+':') == 0){
                     // this link matches the protocol . add a classname protocol+link
-                    links[i].className = 'link-'+protocols[p]
+                    //links[i].className = 'link-'+protocols[p]
+                    wrapNode(links[i], 'span', 'link-'+protocols[p])
                     }
                 }
             }else{
                 // we are in here if the link points to somewhere else than our site.
-                if ( links[i].getElementsByTagName('img').length == 0 ){links[i].className = 'link-external'}
-                // if you want the external links to open in a new window, uncomment this:
-                // links[i].setAttribute('target','_blank')
+                if ( links[i].getElementsByTagName('img').length == 0 ){
+                    //links[i].className = 'link-external'
+                    wrapNode(links[i], 'span', 'link-external')
+                    //links[i].setAttribute('target','_blank')
+                    }
+                
+                
+                
                 
             }
         }
@@ -382,6 +425,30 @@ function checkforhighlight(node,word) {
 }
 
 
+function correctPREformatting(){
+        // small utility thing to correct formatting for PRE-elements and some others
+        // thanks to Michael Zeltner for CSS-guruness and research ;) 
+        contentarea = document.getElementById('content')
+        if (! contentarea){return false}
+        
+        pres = contentarea.getElementsByTagName('pre');
+        for (i=0;i<pres.length;i++){
+           wrapNode(pres[i],'div','visualOverflow')
+		}
+               
+        tables = contentarea.getElementsByTagName('table');
+        for (i=0;i<tables.length;i++){
+           if (tables[i].className=="listing"){
+           wrapNode(tables[i],'div','visualOverflow')
+		   }
+        }
+        
+}
+// if (window.addEventListener) window.addEventListener("load",correctPREformatting,false);
+// else if (window.attachEvent) window.attachEvent("onload",correctPREformatting);
+
+
+
 function highlightSearchTerm() {
         // search-term-highlighter function --  Geir Bækholt
         query = window.location.search
@@ -418,7 +485,6 @@ function highlightSearchTerm() {
 if (window.addEventListener) window.addEventListener("load",highlightSearchTerm,false);
 else if (window.attachEvent) window.attachEvent("onload",highlightSearchTerm);
 
-<!--
 
 // ----------------------------------------------
 // StyleSwitcher functions written by Paul Sowden
@@ -467,4 +533,121 @@ function readCookie(name) {
     if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
   }
   return null;
+}
+
+if (window.addEventListener) window.addEventListener("load",setStyle,false);
+else if (window.attachEvent) window.attachEvent("onload",setStyle);
+
+// jscalendar glue -- Leonard Norrgård <vinsci@*>
+// This function gets called when the user clicks on some date.
+function onJsCalendarDateUpdate(cal) {
+    var year   = cal.params.input_id_year;
+    var month  = cal.params.input_id_month;
+    var day    = cal.params.input_id_day;
+    // var hour   = cal.params.input_id_hour;
+    // var minute = cal.params.input_id_minute;
+
+    // cal.params.inputField.value = cal.date.print('%Y/%m/%d %H:%M'); // doesn't work in Opera, don't use time now
+    //cal.params.inputField.value = cal.date.print('%Y/%m/%d'); // doesn't work in Opera
+    var daystr = '' + cal.date.getDate();
+    if (daystr.length == 1)
+    	daystr = '0' + daystr;
+    var monthstr = '' + (cal.date.getMonth()+1);
+    if (monthstr.length == 1)
+	monthstr = '0' + monthstr;
+    cal.params.inputField.value = '' + cal.date.getFullYear() + '/' + monthstr + '/' + daystr
+
+    year.value  = cal.params.inputField.value.substring(0,4);
+    month.value = cal.params.inputField.value.substring(5,7);
+    day.value   = cal.params.inputField.value.substring(8,10);
+    // hour.value  = cal.params.inputField.value.substring(11,13);
+    // minute.value= cal.params.inputField.value.substring(14,16);
+}
+
+// this funtion updates a hidden date filed with the current values of the widgets
+function update_date_field(field,year,month,day,hour,minute) {
+    var field  = document.getElementById(field);
+    var date   = document.getElementById(date);
+    var year   = document.getElementById(year);
+    var month  = document.getElementById(month);
+    var day    = document.getElementById(day);
+    var hour   = document.getElementById(hour);
+    var minute = document.getElementById(minute);
+    if (year.value > 0) {
+	field.value = year.value + "-" + month.value + "-" + day.value + " " + hour.options[hour.selectedIndex].value + ":" + minute.options[minute.selectedIndex].value;
+    } else {
+	field.value = '';
+    }
+}
+
+function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month, input_id_day, input_id_hour, input_id_minute, yearStart, yearEnd) {
+    // do what jscalendar-x.y.z/calendar-setup.js:Calendar.setup would do
+    var input_id_anchor = document.getElementById(input_id_anchor);
+    var input_id = document.getElementById(input_id);
+    var input_id_year = document.getElementById(input_id_year);
+    var input_id_month = document.getElementById(input_id_month);
+    var input_id_day = document.getElementById(input_id_day);
+    // var input_id_hour = document.getElementById(input_id_hour);
+    // var input_id_minute = document.getElementById(input_id_minute);
+    var format = 'y/mm/dd';
+
+    var dateEl = input_id;
+    var mustCreate = false;
+    var cal = window.calendar;
+
+    var params = {
+	'range' : [yearStart, yearEnd],
+	inputField : input_id,
+        input_id_year : input_id_year,
+	input_id_month: input_id_month,
+	input_id_day  : input_id_day
+	// input_id_hour : input_id_hour,
+	// input_id_minute: input_id_minute
+    };
+
+    function param_default(pname, def) { if (typeof params[pname] == "undefined") { params[pname] = def; } };
+
+    param_default("inputField",     null);
+    param_default("displayArea",    null);
+    param_default("button",         null);
+    param_default("eventName",      "click");
+    param_default("ifFormat",       "%Y/%m/%d");
+    param_default("daFormat",       "%Y/%m/%d");
+    param_default("singleClick",    true);
+    param_default("disableFunc",    null);
+    param_default("dateStatusFunc", params["disableFunc"]); // takes precedence if both are defined
+    param_default("mondayFirst",    true);
+    param_default("align",          "Bl");
+    param_default("range",          [1900, 2999]);
+    param_default("weekNumbers",    true);
+    param_default("flat",           null);
+    param_default("flatCallback",   null);
+    param_default("onSelect",       null);
+    param_default("onClose",        null);
+    param_default("onUpdate",       null);
+    param_default("date",           null);
+    param_default("showsTime",      false);
+    param_default("timeFormat",     "24");
+
+    if (!window.calendar) {
+	window.calendar = cal = new Calendar(true, //params.mondayFirst,
+	     null,
+	     onJsCalendarDateUpdate,
+	     function(cal) { cal.hide(); });
+	cal.time24 = true;
+	cal.weekNumbers = true;
+	mustCreate = true;
+    } else {
+	cal.hide();
+    }
+    cal.setRange(yearStart,yearEnd);
+    cal.params = params;
+    cal.setDateStatusHandler(null);
+    cal.setDateFormat(format);
+    if (mustCreate)
+	cal.create();
+    cal.parseDate(dateEl.value || dateEl.innerHTML);
+    cal.refresh();
+    cal.showAtElement(input_id_anchor, null);
+    return false;
 }

@@ -1,0 +1,4 @@
+
+[default]
+title=RSS Feed
+cache=HTTPCache

@@ -8,7 +8,7 @@
 
 <body>
 <div metal:fill-slot="main"
-     tal:define="is_manager python:test(here.portal_membership.checkPermission('Manage portal', here), 1, 0);">
+     tal:define="is_manager python: checkPermission('Manage portal', here)">
 
     <h1 i18n:translate="heading_member_search">Search for members</h1>
 

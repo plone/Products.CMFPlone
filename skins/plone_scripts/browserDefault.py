@@ -7,6 +7,8 @@
 ##parameters=
 ##title=Set Browser Default
 ##
+# we need to catch this later
+from AccessControl import Unauthorized
 
 # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
 # and then requests that object, for example for: /, with verb PROPFIND
@@ -40,8 +42,11 @@ if pages:
         # _robert_ I do not know why
         # but Authenticated is sometimes Anonymous and then
         # a private folder bombs with insufficent privileges
-        ids = context.objectIds()
-    except: #XXX FIX ME! I SHOULD NOT CATCH ALL!
+        ids = list(context.objectIds())
+    except Unauthorized:
+        context.plone_log("browserDefault Script (Python)",
+        'User was not authorized to get the contentIds for the folder, "%s"' \
+         % context.absolute_url())
         ids =[]
     for page in pages:
         if page in ids:
@@ -55,5 +60,7 @@ try:
         act = act[1:]
     return context, [act]
 except: #XXX FIX ME! I SHOULD NOT CATCH ALL!
-    # if all else fails, fall back to /folder_listing
+    context.plone_log("browserDefault Script (Python)",
+    'Total failure getting the folderlisting action for the folder, "%s"' \
+    % context.absolute_url())
     return context, ['folder_listing']

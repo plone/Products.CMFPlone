@@ -9,6 +9,7 @@
 <body>
 <div metal:fill-slot="main" id="content-news"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
+                 results python:[r for r in results if r.getObject()];
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start python:request.get('b_start',0);
                  usericon_imgtag here/user.gif;
@@ -24,75 +25,65 @@
                      tal:define="localized_time python: modules['Products.CMFPlone.PloneUtilities'].localized_time;
                                  home_url python: here.portal_membership.getHomeUrl">
 
-            <tal:block
-             tal:define="resultObject result/getObject;
-                         creator result/Creator">
+            <div class="newsItem"
+                  tal:define="resultObject result/getObject;
+                              creator result/Creator">
 
-            <div class="portlet">
+                <div class="newsContent"
+                     tal:define="resulturl resultObject/absolute_url">
 
-                <h6>
-                    <img src="" style="border: 0"
-                         tal:attributes="src result/getIcon;
-                                         alt result/Type" />
+                    <h2 tal:content="result/Title">
+                        Title
+                    </h2>
 
-                    <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span>
+                    <p tal:content="structure result/Description">
+                        Description
+                    </p>
 
-                    <a href=""
-                       tal:attributes="href python: home_url(creator)">
+                    <ul tal:define="is_discussable python: portal_discussion.isDiscussionAllowedFor(resultObject);">
+                        <li>
+                            <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
+                                Read More
+                            </a>
+                        </li>
 
-                        <img tal:replace="structure usericon_imgtag" />
+                        <tal:discussable condition="is_discussable">
+                        <li tal:attributes="class python: test(has_replies, 'visualCommentAlign link-comment','visualCommentAlign');"
+                            tal:define="talkback python: portal_discussion.getDiscussionFor(resultObject);
+                                        has_replies python: talkback.hasReplies(resultObject);">
+                            <a href="" 
+                               tal:define="reply_count python:talkback.replyCount(resultObject)"
+                               tal:condition="reply_count"
+                               tal:attributes="href string:${resulturl}#comments;">
+                                <span tal:replace="python: reply_count" />
+                                <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
 
-                        <span tal:replace="creator">
-                            Author
-                        </span>
-
-                    </a>
-
-                  - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python: localized_time(result.modified, context=here)" />
-
-                </h6>
-
-                <div class="portletBody">
-                    <div class="portletContent"
-                         tal:define="resulturl resultObject/absolute_url">
-
-                        <h2 tal:content="result/Title">
-                            Title
-                        </h2>
-
-                        <p tal:content="structure result/Description">
-                            Description
-                        </p>
-
-
-                        <ul tal:define="is_discussable python: portal_discussion.isDiscussionAllowedFor(resultObject);">
-                            <li>
-                                <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
-                                    Read More
-                                </a>
-                            </li>
-
-                            <tal:discussable condition="is_discussable">
-                            <li tal:attributes="class python: test(has_replies, 'visualCommentAlign link-comment','visualCommentAlign');"
-                                tal:define="talkback python: portal_discussion.getDiscussionFor(resultObject);
-                                            has_replies python: talkback.hasReplies(resultObject);">
-                                <a href="" tal:attributes="href string:${resulturl}#comments;">
-
-                                    <span tal:replace="python: talkback.replyCount(resultObject)" />
-                                    <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
-
-                                </a>
-                            </li>
-                            </tal:discussable>
-                        </ul>
-
-                    </div>
+                            </a>
+                        </li>
+                        </tal:discussable>
+                    </ul>
 
                 </div>
 
-            </div>
+                <ul class="newsAbout">
+                    <li class="visualIconNewsItem">
+                        <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span>
 
-            </tal:block>
+                        <span class="link-user">
+                            <a href=""
+                               tal:attributes="href python: home_url(creator)" 
+                               tal:content="creator">
+                                Author
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span tal:omit-tag="" i18n:translate="label_published">Published</span>:
+                        <span tal:replace="python: localized_time(result.modified, context=here)" />
+                    </li>
+                </ul>
+
+            </div>
 
         </metal:block>
 

@@ -4,7 +4,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Acquisition import aq_get
-
+from AccessControl import Permissions
 from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
 
 from zLOG import INFO, ERROR
@@ -93,7 +93,7 @@ def installExternalEditor(self, portal):
             if ctype.getId() not in exclude:
                 ctype.addAction( 'external_edit',
                                 name='External Edit',
-                                action='external_edit',
+                                action='string:$object_url/external_edit',
                                 condition='',
                                 permission=CMFCorePermissions.ModifyPortalContent,
                                 category='object',
@@ -151,8 +151,7 @@ def modifyActionProviders(self, portal):
     _actions=mt._cloneActions()
     for action in _actions:
         if action.id=='configPortal':
-            action.title='Plone Setup'
-            action.category='user'
+            action.visible=0
     mt._actions=_actions
 
     ut=getToolByName(portal, 'portal_undo')
@@ -163,16 +162,7 @@ def modifyActionProviders(self, portal):
     ut._actions=_actions
 
     at=getToolByName(portal, 'portal_actions')
-    _actions=at._cloneActions()
-    for action in _actions:
-        if action.id=='folderContents':
-            action.title='Contents'
-            action.name='Contents'
-    at._actions=_actions
-
-    # Remove the portal_workflow from the actionproviders
-    # Since we have the 'review_slot'
-    #at.deleteActionProvider('portal_workflow')
+    correctFolderContentsAction(at)
 
     dt=getToolByName(portal, 'portal_discussion')
     _actions=dt._cloneActions()
@@ -180,6 +170,19 @@ def modifyActionProviders(self, portal):
         if action.id=='reply':
             action.visible=0
     dt._actions=_actions
+
+def correctFolderContentsAction(actionTool):
+    _actions=actionTool._cloneActions()
+    for action in _actions:
+        if action.id=='folderContents':
+            action.name=action.title='Contents'
+            if action.condition.text.find('folder is not object') != -1:
+                action.condition=Expression('python:member and folder is not object and object.displayContentsTab()')
+                action.permissions=(CMFCorePermissions.ListFolderContents,)
+            elif action.condition.text.find('folder is object') != -1:
+                action.condition=Expression('python: folder.displayContentsTab()')
+    actionTool._actions=_actions
+    
 
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
@@ -198,7 +201,7 @@ def modifyMembershipTool(self, portal):
             a.title='Log out'
         if a.id=='preferences':
             a.title='My Preferences'
-            #a.action=Expression('string:${portal_url}/personalize_form')
+            a.action=Expression('string:${portal_url}/plone_memberprefs_panel')
             new_actions.insert(0, a)
         elif a.id in ('addFavorite', 'favorites'):
             a.visible=0
@@ -243,7 +246,8 @@ def modifySkins(self, portal):
                 a.title = 'Sharing'
             if a.id == 'content_status_history':
                 a.visible = 0
-        t._actions=_actions
+        #in 2.0 teh Sharing tab is on portal_actions ActionProvider
+        t._actions=[a for a in _actions if a.id!='local_roles']
 
 def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')
@@ -277,38 +281,44 @@ def addNewActions(self, portal):
                  name='Rename',
                  action='string:folder_rename_form:method',
                  condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=CMFCorePermissions.AddPortalContent,
                  category='folder_buttons')
     at.addAction('cut',
                  name='Cut',
                  action='string:folder_cut:method',
-                 condition='',
+                 condition='python:portal.portal_membership.checkPermission("Delete objects", object)',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
     at.addAction('copy',
                  name='Copy',
                  action='string:folder_copy:method',
-                 condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 condition='python:portal.portal_membership.checkPermission("%s", object)' % Permissions.copy_or_move,
+                 permission=Permissions.view_management_screens,
                  category='folder_buttons')
     at.addAction('paste',
                  name='Paste',
                  action='string:folder_paste:method',
                  condition='folder/cb_dataValid',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=CMFCorePermissions.AddPortalContent,
                  category='folder_buttons')
     at.addAction('delete',
                  name='Delete',
                  action='string:folder_delete:method',
                  condition='',
-                 permission=CMFCorePermissions.ModifyPortalContent,
+                 permission=Permissions.delete_objects,
                  category='folder_buttons')
     at.addAction('change_state',
                  name='Change State',
                  action='string:content_status_history:method',
-                 condition='',
+                 condition='python:portal.portal_workflow.getTransitionsFor(object)',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
+    at.addAction('local_roles',
+                 name='Sharing',
+                 action="string:${object_url}/folder_localrole_form",
+                 condition='',
+                 permission='Manage properties',
+                 category='object')
 
 def addSiteActions(self, portal):
     # site_actions which have icons associated with them as well
@@ -321,13 +331,13 @@ def addSiteActions(self, portal):
                  condition='',
                  permission=CMFCorePermissions.View,
                  category="site_actions")
-    at.addAction('normal_text', 
+    at.addAction('normal_text',
                  name='Normal Text',
                  action="string:javascript:setActiveStyleSheet('', 1);",
                  condition='',
                  permission=CMFCorePermissions.View,
                  category="site_actions")
-    at.addAction('large_text', 
+    at.addAction('large_text',
                  name='Large Text',
                  action="string:javascript:setActiveStyleSheet('Large Text', 1);",
                  condition='',
@@ -346,7 +356,7 @@ def addSiteActions(self, portal):
                      'large_text',
                      'textsize_large.gif',
                      'Large Text')
-                 
+
 functions = {
     'addSiteProperties': addSiteProperties,
     'setupDefaultLeftRightSlots': setupDefaultLeftRightSlots,
@@ -382,8 +392,7 @@ these functions do not have a uninstall function."""
     def addItems(self, fns):
         out = []
         for fn in fns:
-            portal=getToolByName(self, 'portal_url').getPortalObject()
-            functions[fn](self, portal)
+            functions[fn](self, self.portal)
             out.append(('Function %s has been applied' % fn, INFO))
         return out
 

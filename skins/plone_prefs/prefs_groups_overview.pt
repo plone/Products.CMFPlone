@@ -13,9 +13,8 @@
      tal:define="errors python:request.get('errors', {});
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
-                b_size python:2;
-                portal_roles mtool/getPortalRoles;"
-     tal:condition="here/rejectAnonymous" >
+                b_size python:20;
+                portal_roles mtool/getPortalRoles;">
 
 <div class="configlet">
 
@@ -43,45 +42,52 @@
 
     <div class="documentContent">
 
-        <h1 i18n:translate="heading_groups_management">Groups Management</h1>
+        <h1 i18n:translate="heading_groups_overview">Groups Overview</h1>
     
-        <form action=""
-              name="groups"
-              method="post"
-              tal:attributes="action here/absolute_url"
-    	  tal:define="searchstring request/searchstring | nothing;
-                          groups python:here.prefs_user_group_search(searchstring, 'groups');
-                          batch python:Batch(groups, b_size, int(b_start), orphan=1)">
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/plone_control_panel"
+           i18n:translate="">
+        Up to Plone Setup
+        </a>
+
     
         <p i18n:translate="description_groups_management">
-          Groups are logical collections of users, like departments and
-          business units.  They are not directly related to permissions on
+          Groups are logical collections of users, such as departments and
+          business units. Groups are not directly related to permissions on
           a global level, you normally use Roles for that - and let
           certain Groups have a particular role.
         </p>
     
-     <!--   <input tabindex=""
-               type="text"
-               name="addname"
-               value=""
-               tal:attributes="tabindex tabindex/next;"
-               />-->
-    
-       <input class="standalone add"
-              tabindex=""
-              type="submit"
-              name="prefs_group_details:method"
-              value="Add New Group"
-              tal:attributes="tabindex tabindex/next;"
-              i18n:attributes="value"
-              />
-    
-	      <tal:block tal:condition="groups">
+        <form action=""
+              name="groups_add"
+              method="post"
+              tal:attributes="action here/absolute_url">
+
+	       <input class="standalone add"
+	              tabindex=""
+	              type="submit"
+	              name="prefs_group_details:method"
+	              value="Add New Group"
+	              tal:attributes="tabindex tabindex/next;"
+	              i18n:attributes="value"
+	              />
+
+        </form>
+        
+        <form action=""
+              name="groups_search"
+              method="post"
+              tal:attributes="action here/absolute_url"
+              tal:define="searchstring request/searchstring | nothing;
+                          groups python:here.prefs_user_group_search(searchstring, 'groups');
+                          batch python:Batch(groups, b_size, int(b_start), orphan=1)">
+
             <table class="listing">
                    
                 <tr>
                     <th colspan="6">
-                        <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
+                        <span tal:omit-tag="" i18n:translate="label_quick_search">Group Search</span>:
                         <input class="quickSearch"
                                tabindex=""
                                type="text"
@@ -93,6 +99,7 @@
                     
                         <input type="hidden" name="searchonly" value="groups" />
                         <input type="submit"
+                               class="searchButton"
                                name="prefs_user_group_search_form"
                                value="Search"
                                tabindex=""
@@ -159,17 +166,18 @@
             </tal:block>
             </table>
     
+	  <p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
+
     	  <div metal:use-macro="here/batch_macros/macros/navigation" />
     
             <input class="context"
                    tabindex=""
                    type="submit"
                    name="prefs_group_manage:method"
-                   value="Save"
+                   value="Apply Changes"
                    tal:attributes="tabindex tabindex/next;"
                    i18n:attributes="value"
                    />
-	      </tal:block>
         </form>
     
         <h1 i18n:translate="heading_roles_management">Roles Management</h1>
@@ -182,8 +190,11 @@
           combine to make up a Group.
         </p>
         
-        <p>Currently, if you want to add a new role, you'll have to use the 
-        Zope Management Interface.</p>
+        <p i18n:translate="description_roles_zmi">
+        Currently, if you want to add a new role, you must use the 
+        Zope Management Interface, as adding roles is considered a
+        development task.
+        </p>
     
     </div>
 

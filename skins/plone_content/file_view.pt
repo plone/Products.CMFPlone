@@ -23,7 +23,7 @@
 
     <p>
         <a href=""
-           tal:attributes="href here/absolute_url">
+           tal:attributes="href string:${here/absolute_url}/download">
             <img src="" tal:attributes="src string:${portal_url}/file_icon.gif" alt="" />
             <tal:block i18n:translate="label_click_to_get_file">
             Click here to get the file

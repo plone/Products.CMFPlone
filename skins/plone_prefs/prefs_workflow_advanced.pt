@@ -18,11 +18,11 @@
 <ul id="contentTabs">
   <li class="">
     <a href="prefs_workflow_basic"
-       i18n:translate="link_workflow_default">Workflow Configuration</a>
+       i18n:translate="label_workflow_default">Workflow Configuration</a>
   </li>
   <li class="selected">
     <a href="prefs_workflow_advanced"
-       i18n:translate="label_advanced">Advanced</a>
+       i18n:translate="label_workflow_advanced">Advanced</a>
   </li>
 </ul>
 <div id="contentBar">&nbsp;</div>
@@ -47,13 +47,13 @@
           action="prefs_workflow_advanced_edit" 
           method="post">
 
-        <fieldset>
+        <fieldset tal:define="allowedContentTypes allowedSortedContentTypes|here/allowedContentTypes">
 
-        <legend>Content types</legend>
+        <legend i18n:translate="legend_contenttypes">Content types</legend>
 
 
             <div class="field"
-                tal:repeat="ctype here/allowedContentTypes"
+                tal:repeat="ctype allowedContentTypes"
                 tal:define="Title ctype/Title;
                             Id ctype/getId;
                             current_wf python:wtool.getChainForPortalType(Id)[0]">

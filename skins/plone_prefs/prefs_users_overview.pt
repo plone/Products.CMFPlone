@@ -14,8 +14,7 @@
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size python:15;
-                acl_users here/acl_users;"
-    tal:condition="here/rejectAnonymous" >
+                acl_users here/acl_users;">
 
 <div class="configlet">
 
@@ -43,61 +42,72 @@
 
     <div class="documentContent">
 
-        <h1 i18n:translate="heading_user_management">User Management</h1>
+        <h1 i18n:translate="heading_users_overview">Users Overview</h1>
 
-        <form action=""
-            name="users"
-            method="post"
-            tal:attributes="action here/absolute_url"
-        tal:define="searchstring request/searchstring | nothing;
-                        portal_users python:here.prefs_user_group_search(searchstring, 'users');
-                        batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/plone_control_panel"
+           i18n:translate="">
+        Up to Plone Setup
+        </a>
 
         <p i18n:translate="description_user_management">
-        Click the User Name to see and change the details of a specific
-        user, or click the envelope to send a mail. You can edit the
-        and e-mail address and remove users directly from this
-        form. You can also access the user registration form to add new
-        users.
+        Click the user's name to see and change the details of a specific
+        user. Click the envelope icon to send a mail to the user. 
+        You can also edit 
+        the e-mail addresses, and add/remove users.
         </p>
 
+        <form action=""
+            name="users_add"
+            method="post"
+            tal:attributes="action here/absolute_url">
+
+	        <input class="standalone add"
+	                tabindex=""
+	                type="submit"
+	                name="join_form:method"
+	                value="Add New User"
+	                i18n:attributes="value"
+	                tal:attributes="tabindex tabindex/next;"
+	                tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+	                />
+	
+	        <input class="standalone add"
+	                tabindex=""
+	                type="submit"
+	                name="createMember:method"
+	                value="Add New User"
+	                i18n:attributes="value"
+	                tal:attributes="tabindex tabindex/next;"
+	                tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+	                />
+        </form>
+        
+        <form action=""
+              name="users_search"
+              method="post"
+              tal:attributes="action here/absolute_url"
+              tal:define="searchstring request/searchstring | nothing;
+                          portal_users python:here.prefs_user_group_search(searchstring, 'users');
+                          batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
+
         <input type="hidden" value="1" name="came_from_prefs" />
-        <input class="standalone add"
-                tabindex=""
-                type="submit"
-                name="join_form:method"
-                value="Add New User"
-                i18n:attributes="value"
-                tal:attributes="tabindex tabindex/next;"
-                tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
-                />
-
-        <input class="standalone add"
-                tabindex=""
-                type="submit"
-                name="createMember:method"
-                value="Add New User"
-                i18n:attributes="value"
-                tal:attributes="tabindex tabindex/next;"
-                tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
-                />
-
-        <tal:block tal:condition="portal_users">
             <table class="listing">
                 <tr>
                     <th colspan="4">
-                        <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
-                        <input class="quickSearch"
-                            tabindex=""
-                            type="text"
-                            name="searchstring"
-                            value=""
-                            tal:attributes="value searchstring;
-                                    tabindex tabindex/next;"
+                        <span tal:omit-tag="" i18n:translate="label_quick_search">User Search</span>:
+                        <input tabindex=""
+                               type="text"
+                               name="searchstring"
+                               value=""
+                               tal:attributes="value searchstring;
+                                               tabindex tabindex/next;"
                             />
 
                         <input type="hidden" name="searchonly" value="users" />
                         <input type="submit"
+                            class="searchButton"
                             name="prefs_user_group_search_form"
                             value="Search"
                             tabindex=""
@@ -124,10 +134,6 @@
                                     fullname python: this_user.getProperty('fullname')">
 
                     <td>
-                        <!--input type="hidden"
-                            name="name"
-                            value=""
-                            tal:attributes="name string:roles-${username}:list; value roles" / -->
 
                         <a href="XXX_prefs_user_details"
                             tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$username">
@@ -144,16 +150,13 @@
 
                     <td tal:define="email python: this_user.getProperty('email')">
                         <a href="#"
-                        tal:attributes="href string:mailto:${email}">
-                        <img src=""
-                            tal:attributes="src string:${portal_url}/mail_icon.gif"
-                            alt=""
-                            title="Send a mail to this user"
-                            i18n:attributes="title"
-                            />
-                        </a>
+                           class="link-plain"
+                           tal:attributes="href string:mailto:${email}"
+                           title="Send a mail to this user"
+                           i18n:attributes="title"
+                           ><img tal:replace="structure here/mail_icon.gif" /></a>
                         <input type="text"
-                            size="20"
+                            size="15"
                             name=""
                             value=""
                             tal:attributes="name string:email_entered_$username;
@@ -186,17 +189,20 @@
             </tal:block>
         </table>
 
+	<p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
+
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-            <input class="context"
-                tabindex=""
-                type="submit"
-                name="prefs_user_manage:method"
-                value="Apply Changes"
-                i18n:attributes="value"
-                tal:attributes="tabindex tabindex/next;"
-                />
-        </tal:block>
+        <input class="context"
+		tabindex=""
+		type="submit"
+		name="prefs_user_manage:method"
+		value="Apply Changes"
+		i18n:attributes="value"
+		tal:attributes="tabindex tabindex/next;"
+		tal:condition="batch" 
+		/>
+
         </form>
 
     </div>

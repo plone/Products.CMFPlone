@@ -9,7 +9,7 @@ from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation, oai
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.TypesTool import TypeInformation
-from Products.CMFCore.CMFCorePermissions import ManagePortal, SetOwnProperties, SetOwnPassword
+from Products.CMFCore.CMFCorePermissions import ManagePortal, SetOwnProperties, SetOwnPassword, View
 from Products.CMFCore.utils import _checkPermission, _dtmldir, getToolByName, SimpleItemWithProperties, UniqueObject
 
 from Products.CMFCore.interfaces.portal_actions import portal_actions as IActionsTool
@@ -43,7 +43,7 @@ default_configlets = (
      'action':'string:${portal_url}/prefs_install_products_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/product_icon.gif'},
+     'imageUrl':'product_icon.gif'},
 
     {'id':'PloneReconfig',
      'appId':'Plone',
@@ -51,7 +51,7 @@ default_configlets = (
      'action':'string:${portal_url}/reconfig_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/logoIcon.gif'},
+     'imageUrl':'logoIcon.gif'},
 
     {'id':'UsersGroups',
      'appId':'UsersGroups',
@@ -59,15 +59,24 @@ default_configlets = (
      'action':'string:${portal_url}/prefs_users_overview',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/group.gif'},
+     'imageUrl':'group.gif'},
+
+    {'id':'UsersGroups2',
+     'appId':'UsersGroups',
+     'name':'Users and Groups Administration',
+     'action':'string:${portal_url}/prefs_groups_overview',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'visible' : 0,
+     'imageUrl':'group.gif'},
 
     {'id':'MemberPrefs',
      'appId':'Plone',
-     'name':'Plone Preferences',
+     'name':'Personal Preferences',
      'action':'string:${portal_url}/personalize_form',
      'category':'Member',
      'permission': SetOwnProperties,
-     'imageUrl':'plone_images/user.gif'},
+     'imageUrl':'user.gif'},
 
     {'id':'MemberPassword',
      'appId':'Plone',
@@ -75,7 +84,7 @@ default_configlets = (
      'action':'string:${portal_url}/password_form',
      'category':'Member',
      'permission': SetOwnPassword,
-     'imageUrl':'plone_images/lock_icon.gif'},
+     'imageUrl':'lock_icon.gif'},
 
 #    {'id':'WorkflowPrefs',
 #     'appId':'Plone',
@@ -83,7 +92,7 @@ default_configlets = (
 #     'action':'string:${portal_url}/prefs_workflow_basic',
 #     'category':'Plone',
 #     'permission': ManagePortal,
-#     'imageUrl':'plone_images/site_icon.gif'},
+#     'imageUrl':'site_icon.gif'},
 
     {'id':'MailHost',
      'appId':'MailHost',
@@ -91,7 +100,7 @@ default_configlets = (
      'action':'string:${portal_url}/prefs_mailhost_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/mail_icon.gif'},
+     'imageUrl':'mail_icon.gif'},
 
     {'id':'PortalSkin',
      'appId':'PortalSkin',
@@ -99,7 +108,7 @@ default_configlets = (
      'action':'string:${portal_url}/prefs_portalskin_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/skins_icon.gif'},
+     'imageUrl':'skins_icon.gif'},
 
 #    {'id':'Syndication',
 #     'appId':'Syndication',
@@ -107,7 +116,7 @@ default_configlets = (
 #     'action':'string:${portal_url}/prefs_syndication_form',
 #     'category':'Plone',
 #     'permission': ManagePortal,
-#     'imageUrl':'plone_images/site_icon.gif'},
+#     'imageUrl':'site_icon.gif'},
 
     {'id':'errorLog',
      'appId':'ErrorLog',
@@ -115,7 +124,7 @@ default_configlets = (
      'action':'string:${portal_url}/prefs_error_log_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/error_log_icon.gif'},
+     'imageUrl':'error_log_icon.gif'},
 
 #   {'id':'PortalProperties',
 #     'appId':'PortalProperties',
@@ -123,7 +132,7 @@ default_configlets = (
 #     'action':'string:${portal_url}/prefs_portal_properties_list',
 #     'category':'Plone',
 #     'permission': ManagePortal,
-#     'imageUrl':'plone_images/site_icon.gif'},
+#     'imageUrl':'site_icon.gif'},
 
     {
         'id':'ZMI',
@@ -132,7 +141,8 @@ default_configlets = (
         'action':'string:${portal_url}/manage_main',
         'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/zope_icon.gif'},
+     'imageUrl':'zope_icon.gif'},
+
 
 )
 
@@ -180,7 +190,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
     def getGroupIds(self,category=''):
         return [g.split('|')[1] for g in self.groups if category=='' or g.split('|')[0]==category]
 
-    security.declareProtected( SetOwnProperties, 'getGroups' )
+    security.declareProtected( View, 'getGroups' )
     def getGroups(self,category=''):
         return [{'id':g.split('|')[1],'title':g.split('|')[2]} for g in self.groups if category=='' or g.split('|')[0]==category]
 

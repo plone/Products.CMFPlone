@@ -27,7 +27,7 @@
     <div class="stx"
          tal:condition="len_text"
          tal:omit-tag="python:here.text_format != 'structured-text'">
-        <div tal:replace="structure here/CookedBody" />
+        <div tal:replace="structure python:here.CookedBody(stx_level=2)" />
     </div>
 
     <div metal:use-macro="here/document_byline/macros/byline">

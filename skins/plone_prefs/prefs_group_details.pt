@@ -57,9 +57,10 @@
     
         <metal:name metal:fill-slot="name">
             <div class="row">
-               <label for="addname">name</label>
+               <label for="addname" i18n:translate="label_name">Name</label>
                <div class="field">
                    <input type="text" name="addname" value="groupname"
+                          id="addname"
                                  tal:attributes="value group/getGroupName | string:"/>
                </div>
             </div>
@@ -80,11 +81,16 @@
         <metal:block metal:define-macro="props" tal:omit-tag="">
     
         <h1 i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
-            Edit Group Properties for
-            <span tal:replace="group/getGroupName | default"
-                  i18n:name="groupname">#unavailable#</span>
+               Edit Group Properties for <span tal:replace="group/getGroupName | default" i18n:name="groupname">#unavailable#</span>
         </h1>
     
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/prefs_groups_overview"
+           i18n:translate="">
+        Up to Groups Overview
+        </a>
+
         <p i18n:translate="description_edit_groupproperties">
         Groups are logical collections of users, like departments and business units.
         They are not directly related to permissions on a global level, you normally
@@ -101,11 +107,11 @@
             <legend i18n:translate="link_group_properties">Group Properties</legend>
     
             <div class="field" metal:define-slot="name">
-               <label for="addname">Name</label>
+               <label for="addname" i18n:translate="label_name">Name</label>
                <div class="field">
                   <strong><span tal:content="group/getGroupName | string:" /></strong>
                </div>
-               <input type="hidden" name="groupname" value="groupname"
+               <input type="hidden" name="groupname" value="groupname" id="groupname"
                              tal:attributes="value group/getGroupName | string: "/>
             </div>
     
@@ -214,7 +220,8 @@
             <input class="context"
                    type="submit"
                    name="prefs_group_edit:method"
-                   value="Save" />
+                   value="Save"
+                   i18n:attributes="value" />
         </form>
     
         </metal:block>

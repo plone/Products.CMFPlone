@@ -7,6 +7,7 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
 class QuickInstallerTool(BaseTool):
+    """ A tool to ease installing/uninstalling all sorts of products """
 
     meta_type = ToolNames.QuickInstallerTool
     security = ClassSecurityInfo()

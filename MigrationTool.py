@@ -11,12 +11,14 @@ import sys
 import types
 
 def log(message,summary='',severity=0):
-    zLOG.LOG('Plone: ',severity, summary, message)
+    zLOG.LOG('Plone: ', severity, summary, message)
 
 _upgradePaths = {}
 _widgetRegistry = {}
 
 class MigrationTool( UniqueObject, SimpleItem):
+    """Handles migrations between Plone releases"""
+
     id = 'portal_migration'
     meta_type = 'Plone Migration Tool'
 
@@ -133,7 +135,8 @@ class MigrationTool( UniqueObject, SimpleItem):
         """ We cant instantiate widgets at run time
         but can send all get calls through here... """
         _widget = _widgetRegistry[widget]
-        return _widget()
+        obj = getToolByName(self, 'portal_url').getPortalObject()
+        return _widget(obj)
 
     security.declareProtected(ManagePortal, 'listWidgets')
     def listWidgets(self):
@@ -209,9 +212,11 @@ class MigrationTool( UniqueObject, SimpleItem):
             out.append(("Dry run selected.", zLOG.INFO))
 
         # either get the forced upgrade instance or the current instance
-        newv = getattr(REQUEST, "force_instance_version", self.getInstanceVersion())
+        newv = getattr(REQUEST, "force_instance_version",
+                       self.getInstanceVersion())
 
-        out.append(("Starting the migration from version: %s" % newv, zLOG.INFO))
+        out.append(("Starting the migration from "
+                    "version: %s" % newv, zLOG.INFO))
         while newv is not None:
             out.append(("Attempting to upgrade from: %s" % newv, zLOG.INFO))
             try:
@@ -246,10 +251,12 @@ class MigrationTool( UniqueObject, SimpleItem):
         out.append(("End of upgrade path, migration has finished", zLOG.INFO))
 
         if self.needUpgrading():
-            out.append(("The upgrade path did NOT reach current version", zLOG.PROBLEM))
+            out.append((("The upgrade path did NOT reach "
+                        "current version"), zLOG.PROBLEM))
             out.append(("Migration has failed", zLOG.PROBLEM))
         else:
-            out.append(("Your ZODB and Filesystem Plone instances are now up-to-date.", zLOG.INFO))
+            out.append((("Your ZODB and Filesystem Plone "
+                         "instances are now up-to-date."), zLOG.INFO))
 
         # do this once all the changes have been done
         if self.needRecatalog():
@@ -257,7 +264,8 @@ class MigrationTool( UniqueObject, SimpleItem):
                 self.portal_catalog.refreshCatalog()
                 self._needRecatalog = 0
             except:
-                out.append(("Exception was thrown while cataloging", zLOG.ERROR))
+                out.append(("Exception was thrown while cataloging",
+                            zLOG.ERROR))
                 out += traceback.format_tb(sys.exc_traceback)
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)
@@ -268,7 +276,8 @@ class MigrationTool( UniqueObject, SimpleItem):
                 self.portal_workflow.updateRoleMappings()
                 self._needUpdateRole = 0
             except:
-                out.append(("Exception was thrown while updating role mappings", zLOG.ERROR))
+                out.append((("Exception was thrown while updating "
+                             "role mappings"), zLOG.ERROR))
                 out += traceback.format_tb(sys.exc_traceback)
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)

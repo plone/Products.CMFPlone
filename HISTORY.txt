@@ -4,6 +4,87 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+    RC3
+
+    - WARNING: Some changes had to be made permission-wise to make the default 
+      behaviour make sense. It was very inconsistent in 1.0, and we decided to do 
+      a partial clean-up so it behaves better in 2.0. Read this and make the 
+      necessary changes to your application, especially if you use the List Folder
+      Contents permission in special ways. The following changes were made:
+    
+      - 'folder_listing' is not governed by the List Folder Contents permission 
+        anymore, which is the correct behaviour. The best way to think of 
+        'folder_listing' is as an alternative 'View', *not* as an alternative 
+        'folder_contents'. 'folder_contents' is for editing and manipulating the 
+        contents of a folder, not for viewing.
+    
+      - 'folder_listing' is now always available, *but* checks for permissions, 
+        and hides content you don't have the permissions to see.
+    
+      - You still can't access a 'private' object, so it's still protected, no 
+        change there.
+    
+      - The one potential problem is that it's possible to see the ID of an object
+        - this is because of the way CMF and Zope does it however - and you have 
+        to know the exact method call to do this. It will never give you anything 
+        but the ID though, so we don't view this as a big problem.
+    
+      - 'visible' content is also visible to anonymous users. This was the 
+        original intent of the state, but was broken in 1.0. However, if you 
+        depend on this behaviour, you should note that it has changes, and make 
+        your own custom workflow for this.
+    
+      - Finally, this thing needs to be tested properly, so please help out by
+        installing third-party applications and see if they are affected in a
+        negative way by this change. Report any problems in the Collector.
+
+    - checkPermission is exposed in global_defines.  We check to see if you
+      can Modify portal content in folder_contents to determine whether or not
+      to show the external editor icon.  Changes references to
+      portal_membship.checkPermission to use the global checkPermission reference
+
+    - Do not show order column if you can not Modify portal content for
+      folder.  
+
+    - [FEATURE] Added 'sharing' action for all nonFolderish types in portal_types
+      If you have a problem with this bring it up w/ alex or dannyb
+
+    - If you have any object actions besides 'view' you will not get the
+      greenborder.  before we suppressed if it was 'view' or 'folderContents'
+   
+    - Permissions changes.  The folder_buttons, copy,paste,rename,delete,cut
+      were protected by CMFCorePermission.ModifyPortalContent which is
+      incorrect.  Moved it to AccessControl.Permissions.copy_or_move.  I am
+      not sure that is correct either because all permissions checking for
+      folder_buttons is done at the folder level.  If we want to be more
+      fine grain (show a delete button if we have access to any content to
+      delete) we will need to execute a condition (script) for all content.
+      This could be prohibitively expensive.  Changes made in
+      CMFPlone/setup/ConfigurationMethods.py
+
+      - It was possible to delete something out of a folder even if you
+      did not have 'Delete objects' permission.  If you 'cut' a object
+      from one folder and pasted it into another.  So we put an extra
+      condition on 'cut', python:portal.portal_membership.checkPermission(
+      'Delete objects', object)
+
+      - XXX We should wipe out all actions and reinstall them that are
+      regarding the 'folder_buttons' category
+
+      - This is in regards to issue, #1985
+
+      - Declared manage_copyObjects on PloneFolder.PloneFolder protected
+      by 'Copy or Move' instead of 'Modify portal content'
+
+    - moved CMFPlone/migrations files into CMFPlone/migrations/v1 or v2
+    modules.   Although this is not a permenant solution.  It will work
+    well enough.
+
+    - allowedContentTypes is a expensive call.  made this global inside of
+      plone_templates/global_contentviews.pt and its reused throughout the
+      global_contentXXXX and folder_contents.  This should make the experience
+      a tad snappier
+
     RC2 
 
     - Renamed portal_control_panel_actions to 'portal_controlpanel' and made

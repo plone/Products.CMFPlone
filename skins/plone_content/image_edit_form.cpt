@@ -2,165 +2,173 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
-	
-<body>
 
-<div metal:fill-slot="main" 
-     tal:define="errors options/state/getErrors">
+  <body>
 
-    <h1 i18n:translate="heading_edit_item">
-    Edit
+    <div metal:fill-slot="main"
+         tal:define="errors options/state/getErrors">
+
+      <h1 i18n:translate="heading_edit_item">
+        Edit
         <span i18n:name="itemtype">
-              <span i18n:translate=""         
-                    tal:content="python:here.getTypeInfo().Title()" 
-                    tal:omit-tag="">Item type</span>
-        </span> 
-    </h1>
-    
-    <p i18n:translate="description_edit_image">
-    Using this form, you can enter details about the image, and upload 
-    an image if required.
-    </p> 
-    
-    <form name="edit_form"
-          action="." 
-          method="post" 
-          enctype="multipart/form-data"
-          tal:attributes="action string:${here/getId}/${template/getId}" >
-        
+          <span i18n:translate=""
+                tal:content="python:here.getTypeInfo().Title()"
+          tal:omit-tag="">Item type</span>
+        </span>
+      </h1>
+
+      <p i18n:translate="description_edit_image">
+        Using this form, you can enter details about the image, and upload
+        an image if required.
+      </p>
+
+      <form name="edit_form"
+            action="."
+            method="post"
+            enctype="multipart/form-data"
+            tal:attributes="action string:${here/getId}/${template/getId}" >
+
         <fieldset>
-    
-            <legend i18n:translate="legend_image_details">Image Details</legend>
-          
-            <div class="field" 
-                 tal:condition="python:member.getProperty('visible_ids', None)"
-                 tal:define="error errors/id | nothing;
-                             id python:request.get('id', test(here.show_id(),here.getId(),''));"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
-                
-                <label for="id" i18n:translate="label_short_name">Short Name</label>
 
-                <div class="formHelp" i18n:translate="help_shortname">
-                Should not contain spaces, underscores or mixed case. 
-                This will be part of the web address to this item.
-                </div>
-    
-                <div tal:content="error">Validation error output</div>
-    
-                <input type="text" 
-                       name="id" 
-                       value=""
-                       size="40"
-                       tabindex=""
-                       tal:attributes="value id;
-                                       tabindex tabindex/next;"
-                       />
-                
+          <legend i18n:translate="legend_image_details">Image Details</legend>
+
+          <div class="field"
+               tal:condition="python:member.getProperty('visible_ids', None)"
+               tal:define="error errors/id | nothing;
+               id python:request.get('id', test(here.show_id(),here.getId(),''));"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="id" i18n:translate="label_short_name">Short Name</label>
+
+            <div class="formHelp" i18n:translate="help_shortname">
+              Should not contain spaces, underscores or mixed case.
+              Short Name is part of the image's web address.
             </div>
 
-            <input type="hidden" 
-                   name="id" 
-                   tal:condition="python:not member.getProperty('visible_ids', '')"
-                   tal:attributes="value python:request.get('id', here.getId())" 
+            <div tal:content="error">Validation error output</div>
+
+            <input type="text"
+                   id="id"
+                   name="id"
+                   value=""
+                   size="40"
+                   tabindex=""
+                   tal:attributes="value id;
+                   tabindex tabindex/next;"
                    />
-          
-            <div class="field"
-                 tal:define="error errors/title|nothing;
-                             Title request/title | here/Title;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
-              
-                <label for="title" i18n:translate="label_title">Title</label>
-                
-                <span class="fieldRequired" title="Required">(Required)</span>
-                    
-                <div tal:content="error">Validation error output</div>
-    
-                <input type="text" 
-                       name="title" 
-                       value="" 
-                       size="40" 
-                       tabindex=""
-                       tal:attributes="value Title;
-                                       tabindex tabindex/next;" 
-                       />
-    
-            </div>
-    
-            <div class="field"
-                 tal:define="description request/description | here/Description ">
 
-                <label for="description" i18n:translate="label_description">Description</label>
-                    
-                <div class="formHelp" i18n:translate="help_description">
-                A brief description of the item. 
-                </div>
+          </div>
 
-                <textarea cols="80" 
-                          rows="5" 
-                          tabindex=""
-                          name="description"
-                          tal:content="description"
-                          tal:attributes="tabindex tabindex/next;"
-                          >
-                Description 
-                </textarea>
-            </div>
+          <input type="hidden"
+                 name="id"
+                 tal:condition="python:not member.getProperty('visible_ids', '')"
+                 tal:attributes="value python:request.get('id', here.getId())"
+                 />
 
-            <div class="field"
-                 tal:define="error errors/file|nothing;
-                             file request/file | here/file | nothing;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
-                
-                <label i18n:translate="label_image">Image</label>
+          <div class="field"
+               tal:define="error errors/title|nothing;
+               Title request/title | here/Title;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <span class="fieldRequired" title="Required">(Required)</span>
+            <label for="title" i18n:translate="label_title">Title</label>
 
-                <div class="formHelp" i18n:translate="help_image">
-                Select the image to be added by clicking the 'Browse' button.
-                </div>
-                    
-                <div tal:content="error">Validation error output</div>
-                  
-                    
-                <input type="file" 
-                       name="file" 
-                       size="30" 
-                       tabindex="" 
-                       tal:attributes="tabindex tabindex/next;"
-                       />
-                    
-                <div i18n:translate="no_file_uploaded"
-                      tal:define="file_size here/size|nothing"
-                      tal:condition="python:test(file_size, 0, 1)">
-                   (No image has been uploaded yet)
-                </div>
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+            i18n:translate="label_required">(Required)</span>
+
+            <div tal:content="error">Validation error output</div>
+
+            <input type="text"
+                   id="title"
+                   name="title"
+                   value=""
+                   size="40"
+                   tabindex=""
+                   tal:attributes="value Title;
+                   tabindex tabindex/next;"
+                   />
+
+          </div>
+
+          <div class="field"
+               tal:define="description request/description | here/Description ">
+
+            <label for="description" i18n:translate="label_description">Description</label>
+
+            <div class="formHelp" i18n:translate="help_description">
+              A brief description of the image.
             </div>
 
-            <div class="formControls"
-                 tal:define="process_creation request/process_creation|nothing;"> 
-                    <input class="context" 
-                           tabindex=""
-                           type="submit" 
-                           name="form.button.Save" 
-                           value="Save" 
-                           i18n:attributes="value"
-                           tal:attributes="tabindex tabindex/next;" /> 
-                           
-                    <input class="context" 
-                           tabindex=""
-                           type="submit" 
-                           name="form.button.Cancel" 
-                           value="Cancel" 
-                           i18n:attributes="value"
-                           tal:attributes="tabindex tabindex/next;" /> 
+            <textarea cols="80"
+                      rows="5"
+                      tabindex=""
+                      id="description"
+                      name="description"
+                      tal:content="description"
+                      tal:attributes="tabindex tabindex/next;"
+                      >
+              Description
+            </textarea>
+          </div>
+
+          <div class="field"
+               tal:define="error errors/file|nothing;
+               file request/file | here/file | nothing;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
+
+            <label for="file" i18n:translate="label_image">Image</label>
+
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+            i18n:translate="label_required">(Required)</span>
+
+            <div class="formHelp" i18n:translate="help_image">
+              Select the image to be added by clicking the 'Browse' button.
             </div>
+
+            <div tal:content="error">Validation error output</div>
+
+
+            <input type="file"
+                   id="file"
+                   name="file"
+                   size="30"
+                   tabindex=""
+                   tal:attributes="tabindex tabindex/next;"
+                   />
+
+            <div i18n:translate="no_file_uploaded"
+                 tal:define="file_size here/size|nothing"
+                 tal:condition="python:test(file_size, 0, 1)">
+              (No image has been uploaded yet)
+            </div>
+          </div>
+
+          <div class="formControls"
+               tal:define="process_creation request/process_creation|nothing;">
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Save"
+                   value="Save"
+                   i18n:attributes="value"
+                   tal:attributes="tabindex tabindex/next;" />
+
+            <input class="standalone"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Cancel"
+                   value="Cancel"
+                   i18n:attributes="value"
+                   tal:attributes="tabindex tabindex/next;" />
+          </div>
         </fieldset>
-        
+
         <input type="hidden" name="form.submitted" value="1" />
 
-    </form>
+      </form>
 
-</div>
+    </div>
 
-</body>
+  </body>
 </html>

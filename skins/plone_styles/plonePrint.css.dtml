@@ -14,7 +14,7 @@
 **
 */
 
-/* Thanks to alistapart.com for useful extras */
+/* Thanks to A List Apart (http://alistapart.com/) for useful extras */
 
 body {
     background: White;
@@ -44,7 +44,7 @@ div.documentActions,
 .netscape4,
 #portal-footer,
 #portal-colophon,
-input
+input,
 .skipnav {
     /* Hides all the elements irrelevant for presentations */
     display: none;
@@ -81,7 +81,7 @@ h1, h2, h3, h4, h5, h6
     font-weight: bold;
 }
 
-p, #description {
+p, .documentDescription {
     margin: 1em 0 ! important;
     line-height: 1.2em;    
 }
@@ -96,40 +96,36 @@ pre {
 
 table.listing,
 table.listing td {
-	border: 1pt solid black;
+    border: 1pt solid black;
     border-collapse: collapse;
 }
 
 a {
-    color: Black ! important;
-}
-
-a.external {
-    background: none;
-    padding: 0;
+    color: Black !important;
+    padding: 0 !important
 }
 
 a:link, a:visited {
-	color: #520;
-	background: transparent;
-	text-decoration: underline;
-	}
+    color: #520;
+    background: transparent;
+    text-decoration: underline;
+}
 
-div.document a:link:after, 
-div.document a:visited:after {
+#content a:link:after, 
+#content a:visited:after {
    content: " ( " attr(href) " ) ";
 }
 
-div#portal-columns div#visual-column-wrapper,
-div#portal-columns div#visual-column-wrapper div#portal-column-content {
-    width: 100%;
+#visual-portal-wrapper {
+    width: 100% !important;
+    min-width: 0 !important;
 }
 
-div#portal-columns div#visual-column-wrapper div#portal-column-content {
-    padding: 0;
-    margin: 0;
+#portal-column-content {
+    margin: 0 !important;
 }
 
-div#portal-columns div#visual-column-wrapper div#portal-column-content * {
-    text-align: left;
+#portal-column-content #content {
+    padding: 1em;
+    margin: 0 !important;
 }

@@ -9,6 +9,7 @@ def setupFolderWorkflow(wf):
     wf.permissions+=(CMFCorePermissions.ListFolderContents, )
     wf.states.published.permission_roles[CMFCorePermissions.ListFolderContents]=['Anonymous',]
     wf.states.published.permission_roles[CMFCorePermissions.ModifyPortalContent]=('Manager', 'Owner')
+    wf.states.visible.permission_roles[CMFCorePermissions.ListFolderContents]=('Manager', 'Owner', 'Member')
     wf.states.private.permission_roles[CMFCorePermissions.ListFolderContents]=('Manager', 'Owner')
     wf.states.deleteStates( ('pending', ) )
     state_priv=wf.states['private']

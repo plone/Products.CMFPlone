@@ -8,19 +8,16 @@
                  getIconFor nocall:putils/getIconFor"
      tal:condition="site_actions">
     
-    <tal:actions repeat="saction site_actions">
-
-        <a href="" 
+    <tal:actions repeat="saction site_actions"><a 
+           href="" 
            i18n:attributes="title"
            tal:attributes="href saction/url;
                            style string:background: url($portal_url/$icon);
                            title title;"
            tal:define="title saction/name;
                        icon python:getIconFor('site_actions', saction['id'], None)"
-           tal:condition="icon"></a>
-            
-    </tal:actions>
-    
+           tal:condition="icon"
+           ></a></tal:actions>
 </div>
 </body>
 </html>

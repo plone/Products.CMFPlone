@@ -32,7 +32,7 @@
 
                 <img tal:replace="structure here/info.gif"/>
 
-                <span>
+                <span i18n:translate="legend_note_reply_anonymous">
                     Note: you are not logged in.  You may optionally enter your username
                     and password below.  If you don't enter your username and
                     password below, this comment will be posted as the 'Anonymous User'.
@@ -45,9 +45,11 @@
                     <label for="username" i18n:translate="label_name">Name</label>
 
                     <input name="username"
+                           id="username"
                            value="" alt="Username" title="Name"
                            size="40"
                            tabindex=""
+                           i18n:attributes="title"
                            tal:attributes="tabindex tabindex/next;" />
 
                 </div>
@@ -57,10 +59,12 @@
                     <label for="password" i18n:translate="label_password">Password</label>
 
                     <input type="password"
+                           id="password"
                            name="password"
                            tabindex=""
                            value="" alt="Password" title="Password"
                            size="40"
+                           i18n:attributes="title"
                            tal:attributes="tabindex tabindex/next;" />
 
                 </div>
@@ -73,6 +77,7 @@
                 <label for="title" i18n:translate="label_subject">Subject</label>
 
                 <input name="title"
+                       id="title"
                        value=""
                        size="40"
                        tabindex=""
@@ -86,6 +91,7 @@
                 <label for="text" i18n:translate="label_body_text">Body text</label>
 
                 <textarea name="text"
+                          id="text"
                           cols="40"
                           rows="8"
                           tabindex=""

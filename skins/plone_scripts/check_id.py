@@ -41,7 +41,7 @@ if not id:
     id = context.getId()
 
 # do basic id validation
-if not context.portal_form.good_id(id):
+if not context.plone_utils.good_id(id):
     # id is bad
     return '\'%s\' is not a legal name.' % id
 
@@ -55,8 +55,12 @@ else:
 
 # perform the actual check
 if checkForCollision:
-    #XXX We need to rethink this.  The problem is when you are looking at a View on a 
-    #    Folderish object.  
+    #XXX We may need to pass in a container parameter since its unclear where
+    # we are trying to add the object with the id in question.  check_id is usually
+    # called by validate_id or similar functions which test whether a new id is 
+    # ok for a given object. For such a use case this is fine, but if we call 
+    # check_id BEFORE we add a new object with the folder to which we want to 
+    # add the new object as context, this does the wrong thing.
     container = context.getParentNode()
 
     if hasattr(container, 'objectIds'):

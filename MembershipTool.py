@@ -7,7 +7,7 @@ from Products.CMFPlone import ToolNames
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
 
 default_portrait = 'defaultUser.gif'
@@ -96,85 +96,68 @@ class MembershipTool(BaseTool):
             membertool._setPortrait(portrait, member_id)
 
 
-    def createMemberarea(self, member_id=''):
+    def createMemberarea(self, member_id=None):
         """
-        since we arent using PortalFolders and invokeFactory will not work
-        we must do all of this ourself. ;(
+        Create a member area for 'member_id' or the authenticated user.
         """
-
-        # do not create member_area for groups
-        #if member_id in self.portal_groups.listGroupIds():
-        #    return
-
-        parent = self.aq_inner.aq_parent
-        members =  self.getMembersFolder()
+        members = self.getMembersFolder()
 
         if not member_id:
             # member_id is optional (see CMFCore.interfaces.portal_membership:
-            #     Create a member area for 'member_id' or authenticated user.
+            #     Create a member area for 'member_id' or authenticated user.)
             portal_membership = getToolByName(self, 'portal_membership')
             member = portal_membership.getAuthenticatedMember()
-            member_id = member.id
-
-        if members is None:
-            parent.manage_addPloneFolder(id=self.membersfolder_id, title='Members')
-            members =  self.getMembersFolder()
-            if members:
-                # XXX This is the same code as in Portal.py
-                members._setProperty('right_slots', (), 'lines')
-
-                portal_catalog = getToolByName( self, 'portal_catalog' )
-                portal_catalog.unindexObject(members) #unindex Members folder
-                members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html',
-                                                                       'Member list',
-                                                                       '<dtml-return member_search_form>')
-                members._setPortalTypeName( 'Folder' )
-                members.setTitle('Members')
-                members.setDescription("Container for portal members' home directories")
+            member_id = member.getId()
 
         if hasattr(members, 'aq_explicit'):
             members=members.aq_explicit
 
         if members is not None and not hasattr(members, member_id):
             f_title = "%s's Home" % member_id
-            try:
-                addPloneFolder(members, id=member_id, title=f_title)
-            except:
-                members.manage_addPloneFolder(id=member_id, title=f_title)
+            members.manage_addPloneFolder(id=member_id, title=f_title)
             f=getattr(members, member_id)
-            # Grant ownership to Member
+            
             acl_users = self.__getPUS()
             user = acl_users.getUser(member_id)
+
             if user is not None:
                 user= user.__of__(acl_users)
             else:
                 from AccessControl import getSecurityManager
                 user= getSecurityManager().getUser()
                 # check that we do not do something wrong
-                if user.getUserName() != member_id:
+                if user.getId() != member_id:
                     raise NotImplementedError, \
                         'cannot get user for member area creation'
+
+            # Grant Ownership and Owner role to Member
             f.changeOwnership(user)
+            f.__ac_local_roles__ = None
             f.manage_setLocalRoles(member_id, ['Owner'])
+
             # Create Member's home page.
-            # go get the home page text from the skin
-            member_object=self.getMemberById(member_id)
+            # Go get the home page text from the skin
             if hasattr(self, 'homePageText'):
+                member_object = self.getMemberById(member_id)
                 DEFAULT_MEMBER_CONTENT = self.homePageText(member=member_object)
                 addDocument( f
                            , 'index_html'
                            , member_id+"'s Home Page"
                            , member_id+"'s front page"
                            , "structured-text"
-                           , DEFAULT_MEMBER_CONTENT 
+                           , DEFAULT_MEMBER_CONTENT
                            )
                 f.index_html._setPortalTypeName( 'Document' )
+                # Grant Ownership and Owner role to Member
+                f.index_html.changeOwnership(user)
+                f.index_html.__ac_local_roles__ = None
+                f.index_html.manage_setLocalRoles(member_id, ['Owner'])
                 # Overcome an apparent catalog bug.
                 f.index_html.reindexObject()
-                wftool = getToolByName( f, 'portal_workflow' )
+                wftool = getToolByName( self, 'portal_workflow' )
                 wftool.notifyCreated( f.index_html )
-            #XXX the above is copy/pasted from CMFDefault.MembershipTool only because
-            #its not using invokeFactory('Folder') -- FIX IT!
+
+            #XXX The above was more or less copied from CMFDefault.MembershipTool
 
             #XXX Below is what really is Plone customizations
             member_folder=self.getHomeFolder(member_id)
@@ -184,17 +167,20 @@ class MembershipTool(BaseTool):
             member_folder.manage_addPloneFolder(self.personal_id, 'Personal Items')
             personal=getattr(member_folder, self.personal_id)
             personal.description = "contains personal workarea items for %s" % member_id
+            # Grant Ownership and Owner role to Member
             personal.changeOwnership(user)
+            personal.__ac_local_roles__ = None
             personal.manage_setLocalRoles(member_id, ['Owner'])
-
+            # Don't add .personal folders to catalog
             catalog = getToolByName(self, 'portal_catalog')
-            catalog.unindexObject(personal) #dont add .personal folders to catalog
+            catalog.unindexObject(personal)
 
             # Hook to allow doing other things after memberarea creation.
             notify_script = getattr(member_folder, 'notifyMemberAreaCreated', None)
 
             if notify_script is not None:
                 notify_script()
+
 
     # deal with ridiculous API change in CMF
     security.declarePublic('createMemberArea')
@@ -250,19 +236,19 @@ class MembershipTool(BaseTool):
         res = []
         portal = self.portal_url.getPortalObject()
 
-        for user in self.listMembers():
+        for member in self.listMembers():
             #user = md.wrapUser(u)
-            u = user.getUser()
-            if not (user.listed or is_manager):
+            u = member.getUser()
+            if not (member.listed or is_manager):
                 continue
             if name:
-                if (u.getUserName().lower().find(name) == -1) and (user.fullname.lower().find(name) == -1):
+                if (u.getUserName().lower().find(name) == -1) and (member.fullname.lower().find(name) == -1):
                     continue
             if email:
-                if user.email.lower().find(email) == -1:
+                if member.email.lower().find(email) == -1:
                     continue
             if roles:
-                user_roles = user.getRoles()
+                user_roles = member.getRoles()
                 found = 0
                 for r in roles:
                     if r in user_roles:
@@ -271,10 +257,9 @@ class MembershipTool(BaseTool):
                 if not found:
                     continue
             if last_login_time:
-                if user.last_login_time < last_login_time:
+                if member.last_login_time < last_login_time:
                     continue
-            res.append(user)
-
+            res.append(member)
         return res
 
     def testCurrentPassword(self, password, username=None):
@@ -283,16 +268,37 @@ class MembershipTool(BaseTool):
         REQUEST=getattr(self, 'REQUEST', {})
         if username is None:
             username=self.getAuthenticatedMember().getUserName()
-        return portal.acl_users.authenticate(username, password, REQUEST)
+        acl_users = self._findUsersAclHome(username)
+        if not acl_users:
+            return 0
+        return acl_users.authenticate(username, password, REQUEST)
+
+
+    def _findUsersAclHome(self, userid):
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        acl_users=portal.acl_users
+        parent = acl_users
+        while parent:
+            if acl_users.aq_explicit.getUserById(userid, None) is not None:
+                break
+            parent = aq_parent(aq_inner(parent)).aq_parent
+            acl_users = getattr(parent, 'acl_users')
+        if parent:
+            return acl_users
+        else:
+            return None
 
     security.declareProtected(SetOwnPassword, 'setPassword')
     def setPassword(self, password, domains=None):
         '''Allows the authenticated member to set his/her own password.
         '''
         registration = getToolByName(self, 'portal_registration', None)
-        acl_users = self.acl_users
         if not self.isAnonymousUser():
             member = self.getAuthenticatedMember()
+            acl_users = self._findUsersAclHome(member.getUserName())#self.acl_users
+            if not acl_users:
+                # should not possibly ever happen
+                raise 'Bad Request', 'did not find current user in any user folder'
             if registration:
                 failMessage = registration.testPasswordValidity(password)
                 if failMessage is not None:
@@ -310,6 +316,21 @@ class MembershipTool(BaseTool):
             self.credentialsChanged(password)
         else:
             raise 'Bad Request', 'Not logged in.'
+
+    # XXX: The implementation in CMFCore is superior
+    #security.declareProtected(View, 'getCandidateLocalRoles')
+    #def getCandidateLocalRoles( self, obj ):
+    #    """ What local roles can I assign? """
+    #    member = self.getAuthenticatedMember()
+    #
+    #    if 'Manager' in member.getRoles():
+    #        return self.getPortalRoles()
+    #    else:
+    #        member_roles = list( member.getRolesInContext( obj ) )
+    #        if 'Member' in member_roles:
+    #            del member_roles[member_roles.index( 'Member')]
+    #
+    #    return tuple( member_roles )
 
 MembershipTool.__doc__ = BaseTool.__doc__
 

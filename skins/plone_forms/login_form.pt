@@ -6,7 +6,7 @@
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
 </tal:block>
 
-<script language="javascript" metal:fill-slot="javascript_head_slot">
+<script type="text/javascript" metal:fill-slot="javascript_head_slot">
 <!--
 function cookiesEnabled() {
     // set test cookie
@@ -39,12 +39,12 @@ function cookiesEnabled() {
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
 <p i18n:translate="description_sign_in">
-To access this part of the site, you need to log in with your username and password.
+To access this part of the site, you need to log in with your user name and password.
 </p>
 
 <p i18n:translate="description_no_account"
    tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
-   tal:condition="python: join and here.portal_membership.checkPermission('Add portal member', here)">
+   tal:condition="python: join and checkPermission('Add portal member', here)">
 
 If you do not have an account here, head over to the
 
@@ -59,10 +59,10 @@ If you do not have an account here, head over to the
 to become a member.
 </p>
 
-<script language="javascript">
+<script type="text/javascript">
 <!--
    if (cookiesEnabled && !cookiesEnabled()) {
-      document.writeln('<div class="message>Cookies must be enabled on your browser before you can sign in. <a href="enabling_cookies">How to enable cookies</a></div>');
+      document.writeln('<div class="portalMessage"><img src="info.gif">Cookies are not enabled. You can not log in if they are turned off. <a href="enabling_cookies">How to enable cookies</a>.</div>');
    }
 //-->
 </script>
@@ -84,9 +84,9 @@ to become a member.
             <label i18n:translate="label_user_name"
                    tal:attributes="for ac_name">User Name</label>
 
-            <div i18n:translate="help_user_name"
+            <div i18n:translate="help_user_name_caps"
                  class="formHelp">
-                If you haven't got an account, sign up via the links below.
+    		User names are case sensitive, make sure the caps lock key is not enabled.
             </div>
 
             <input type="text"
@@ -105,10 +105,11 @@ to become a member.
             <label i18n:translate="label_password"
                    tal:attributes="for ac_password">Password</label>
 
-            <div i18n:translate="help_password"
+            <div i18n:translate="help_capslock_password_retrieval"
                  class="formHelp">
-                If you have forgotten your password, use the
-                links at the bottom of this form to request it again.
+                Case sensitive, make sure caps lock is not enabled.
+                If you have forgotten your password,
+                <a href="mail_password_form">click here to retrieve it</a>.
             </div>
 
             <input type="password"
@@ -136,7 +137,7 @@ to become a member.
 
             <div i18n:translate="help_remember_my_name"
                  class="formHelp">
-                When you check this, your user name will be filled in for you when you log in later.
+                Check this to have your user name filled in automatically when you log in later.
             </div>
 
         </div>
@@ -154,37 +155,10 @@ to become a member.
 
         </div>
 
-            <p i18n:translate="description_forgotten_your_password">
-                <strong>
-                Forgotten your password?
-                </strong>
 
-                <span i18n:name="click_here">
-                    <a href="mail_password_form" i18n:translate="description_forgotten_your_password_linktext">
-                    Click here
-                    </a>
-                </span>
-                to have it mailed to you.
-
-            </p>
-
-            <p>
-                <strong i18n:translate="label_trouble_logging_in">
-                Having trouble logging in?
-                </strong>
-
-                <span i18n:translate="description_trouble_logging_in">
-                Make sure to <a href="enabling_cookies">enable cookies</a> in your web browser.
-                </span>
-            </p>
-
-    	    <p i18n:translate="check_caps_lock">
-    		Usernames and passwords are case sensitive, if you cannot log in - please check that you do not have the capslock key on.
-    	    </p>
-
-            <p i18n:translate="remember_to_log_out">
-                Don't forget to log out or exit your browser when you're done.
-            </p>
+        <p i18n:translate="remember_to_log_out">
+            Please log out or exit your browser when you're done.
+        </p>
 
 
     </fieldset>

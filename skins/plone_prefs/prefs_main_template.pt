@@ -9,21 +9,8 @@
 
 <body>
 
-<div metal:fill-slot="main" tal:condition="here/rejectAnonymous"  >
+<div metal:fill-slot="main">
 
-<tal:parent
-    tal:define="parent python: here.controlPanelParentUrl(template.getId())">
-    <small tal:condition="parent">
-        <a href="" 
-            tal:attributes="href string:${portal_url}/${parent}">
-        <img src="site_icon.gif"
-            alt="" 
-            tal:attributes="src string:${portal_url}/site_icon.gif" />
-        Back to Panel
-        </a>
-    </small>
-</tal:parent>
-    
 <metal:bodytext metal:define-slot="prefs_configlet_main" tal:content="nothing">
 Here comes the content of a normal configlet
 </metal:bodytext>

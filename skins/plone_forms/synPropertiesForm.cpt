@@ -153,7 +153,9 @@
 
                 <label i18n:translate="label_syndication_max_items">Maximum Items</label>
     
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_syndication_max_items">
                 Maximum number of items that will be syndicated.

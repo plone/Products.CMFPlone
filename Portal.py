@@ -8,14 +8,20 @@ from Products.CMFPlone import LargePloneFolder
 from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDefault import Document
 
-def listPolicies():
+def listPolicies(creation=1):
     """ Float default plone to the top """
-    keys = custom_policies.keys()
-    del keys[keys.index('Default Plone')]
-    keys.insert(0, 'Default Plone')
-    return keys
+    names=[]
+    for name, klass in custom_policies.items():
+        available=getattr(klass, 'availableAtConstruction', None)
+        if creation and available:
+            names.append(name)
 
-def addPolicy(label, klass): custom_policies[label]=klass
+    default=names.pop(names.index('Default Plone'))
+    names.insert(0, default)
+    return names
+
+def addPolicy(label, klass):
+    custom_policies[label]=klass
 
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from Products.PythonScripts.PythonScript import PythonScript
@@ -30,7 +36,7 @@ import Globals
 import string
 import os, sys, re
 
-from AccessControl import getSecurityManager
+from AccessControl import getSecurityManager, ClassSecurityInfo
 
 __version__='1.1'
 
@@ -102,7 +108,8 @@ class PloneSite(CMFSite, OrderedContainer):
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
     """
-    meta_type = 'Plone Site'
+    security=ClassSecurityInfo()
+    meta_type = portal_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__
@@ -110,12 +117,23 @@ class PloneSite(CMFSite, OrderedContainer):
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
-        return self.browserDefault()
+        try:
+            return self.browserDefault()
+        except AttributeError:
+            skins = getToolByName(self, "portal_skins")
+            default = skins.default_skin
+            if not default: default = "None"
+            msg = """The Script (Python) object browserDefault could
+not be found in your skins path. Your current default skin is "%s", go to
+portal_skins tool and set the correct default skin.""" % default
+            raise AttributeError, msg
 
     def manage_beforeDelete(self, container, item):
         """ Should send out an Event before Site is being deleted """
         self.removal_inprogress=1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
+
+Globals.InitializeClass(PloneSite)
 
 class PloneGenerator(Portal.PortalGenerator):
 
@@ -362,8 +380,8 @@ class PloneGenerator(Portal.PortalGenerator):
         m = p.portal_migration
 
         # XXX we need to make this read version.txt
-        m.setInstanceVersion('2.0-beta2') #.1')
-        from migrations.plone2_base import make_plone
+        m.setInstanceVersion('2.0-beta2')
+        from migrations.v2.plone2_base import make_plone
         make_plone(p)
         # we will be migrating from beta2 base
         m.upgrade(swallow_errors=0)

@@ -19,7 +19,7 @@ for o in obj.contentValues('Link'):
     try:
         listing.append( (o.title_or_id(),
                          o.getRemoteUrl()) )
-    except (Unauthorized,AttributeError):                         
+    except (Unauthorized,AttributeError):
         pass
 
 return listing

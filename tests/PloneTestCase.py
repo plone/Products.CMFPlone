@@ -1,7 +1,7 @@
 #
 # PloneTestCase
 #
-# $Id: PloneTestCase.py,v 1.12 2003/12/02 23:47:52 runyaga Exp $
+# $Id: PloneTestCase.py,v 1.9.2.14 2004/01/06 22:15:59 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -27,15 +27,18 @@ from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
 import time
 
-portal_name  = 'portal'
+portal_name = 'portal'
 portal_owner = 'portal_owner'
 default_user = ZopeTestCase.user_name
-
 
 class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def getPortal(self):
         '''Returns the portal object.'''
+        # XXX: Hack. Need to fake a script so that URL1 is 
+        # available in the REQUEST. This should be handled
+        # by ZTC if possible.
+        self.app.REQUEST._script = [portal_name]
         return self.app[portal_name]
 
     def createMemberarea(self, member_id):
@@ -76,7 +79,6 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         user = uf.getUserById(portal_owner).__of__(uf)
         newSecurityManager(None, user)
 
-
 def setupPloneSite(app=None, id=portal_name, quiet=0):
     '''Creates a Plone site.'''
     if not hasattr(aq_base(app), id):
@@ -114,16 +116,18 @@ def optimize():
         ps = getToolByName(p, 'portal_skins')
         ps.manage_addFolder(id='custom')
         ps.addSkinSelection('Basic', 'custom')
-    from Products.CMFDefault.Portal import PortalGenerator
-    PortalGenerator.setupDefaultSkins = setupDefaultSkins
-    # Don't setup Plone content (besides members folder)
+    from Products.CMFPlone.Portal import PloneGenerator
+    PloneGenerator.setupDefaultSkins = setupDefaultSkins
+    # Don't setup default Members folder
+    def setupMembersFolder(self, p):
+        pass
+    PloneGenerator.setupMembersFolder = setupMembersFolder
+    # Don't setup Plone content (besides Members folder)
     def setupPortalContent(self, p):
         from Products.CMFPlone.LargePloneFolder import addLargePloneFolder
-        p.manage_delObjects('Members')
         addLargePloneFolder(p, 'Members')
         p.portal_catalog.unindexObject(p.Members)
         p.Members._setPortalType = 'Folder'
-    from Products.CMFPlone.Portal import PloneGenerator
     PloneGenerator.setupPortalContent = setupPortalContent
 
 

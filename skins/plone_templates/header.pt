@@ -6,8 +6,7 @@
 <head metal:define-macro="html_header"
       tal:define="global portal_url portal_url|here/portal_url;
                   ztu ztu|modules/ZTUtils;
-                  skinrequest python:request.get(here.portal_skins.getRequestVarname(), '');
-                  current_skin python:ztu.make_query(skin=skinrequest)">
+                  skinrequest python:request.get(here.portal_skins.getRequestVarname(), '');">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
           tal:define="charset site_properties/default_charset|string:utf-8"
           tal:attributes="content string:text/html;;charset=${charset}" />
@@ -40,13 +39,12 @@
     
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="screen"
-           tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
+           tal:content="string: @import url($portal_url/plone.css);"></style>
 
-    <!-- Old style sheet from Plone 1.0, uncomment if you need to use the old styles. -->
-    <!--
+    <!-- Old style sheet from Plone 1.0, remove tal:condition="nothing" if you need to use the old styles. -->
     <style type="text/css" media="screen"
-           tal:content="string: @import url($portal_url/ploneDeprecated.css?$current_skin);"></style>
-    -->
+           tal:condition="nothing"
+           tal:content="string: @import url($portal_url/ploneDeprecated.css);"></style>
     
     <!-- Alternate style sheets for the bigger/smaller text switcher -->
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
@@ -66,16 +64,19 @@
           tal:attributes="href string:$portal_url/plonePresentation.css" />
 
     <!-- Internet Explorer CSS Fixes -->
-    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
+    <tal:iefixstart replace="structure string:&lt;!--[if IE]&gt;" />
     <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
            tal:content="string:@import url($portal_url/ploneIEFixes.css);"></style>
-    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
+    <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
 
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
     <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
-    <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
-    <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
+
+    <tal:comment tal:replace="nothing">
+       <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
+       <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
+    </tal:comment>
     <link rel="up" href="" title="Up one level" 
           tal:define="parent python:here.navigationParent(here, template.getId())"
           tal:attributes="href python:test(parent, parent, '#')" />
@@ -103,17 +104,25 @@
 
     <!-- Common Plone ECMAScripts -->
 
-    <!-- IE min- max-width support -->
+    <!-- IE min-width support -->
+    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
     <script type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_minmax.js"></script>
+            tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
+    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
+
      
     <!-- ECMAScript menu -->
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_menu.js"></script>
 
     <!-- ECMAScript calendar -->
+    <style type="text/css" media="all"
+	    tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
     <script type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_inplace_calendar.js"></script>
+	    tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" charset="iso-8859-1"
+	    tal:condition="exists: portal/jscalendar/calendar-en.js"
+	    tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
 
     <!-- Define dynamic server-side variables for javascripts in this one  -->
     <script type="text/javascript"

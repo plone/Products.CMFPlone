@@ -13,29 +13,25 @@
      i18n:domain="plone"
      tal:define="errors python:request.get('errors', {})">
 
-    <h1 i18n:translate="heading_plone_setup_readme">Readme</h1>
+    <h1 i18n:translate="">
+    Description of <tal:product content="request/filereadme" i18n:name="productname">Product Name</tal:product>
+    </h1>
 
-    <p i18n:translate="label_plone_setup_readme">
-    In this document you can find informations about <span tal:content="request/filereadme"></span> product
-    </p>
-<textarea rows="50" readonly="" tal:content="python:container.portal_quickinstaller.getProductFile(request['filereadme'])">
-  
-</textarea>
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/prefs_install_products_form"
+       i18n:translate="">
+    Back to Add/Remove Products
+    </a>
    
-        <div class="row">
-            <div class="label">&nbsp;</div>
-            <div class="field">
-                <input class="context"
-                       tabindex=""
-                       type="submit"
-                       name="submit"
-                       value="Back" 
-                       onClick="window.back()"
-                       i18n:attributes="value"
-                       tal:attributes="tabindex tabindex/next;"
-                       />
-            </div>
-        </div>
+    <div class="stx" tal:content="structure python:modules['Products.CMFCore.utils'].format_stx(container.portal_quickinstaller.getProductFile(request['filereadme']))" />
+
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/prefs_install_products_form"
+       i18n:translate="">
+    Back to Add/Remove Products
+    </a>
         
    
 </div>

@@ -11,7 +11,8 @@
   Add Plone Site
   </div>
 
-<form action="manage_addSite" method="POST">
+<form action="manage_addSite" method="POST"
+      tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies()">
     <div class="form-help">
     Enter an ID and click the button below to create a new Plone site.
     </div>
@@ -40,33 +41,37 @@
     <textarea name="description" cols="60" rows="10"
      style="width: 95%"></textarea>
 
-     
-    <input type="hidden" name="custom_policy" value="Default Plone">
-<!-- Currently runs the default policy, feel free to re-enable this pulldown if you are developing 
-     policies and need a good way of testing them. Remember to remove the hidden variable above. :)
-     
+    <input type="hidden" name="custom_policy" value="Default Plone"
+           tal:condition="python:len(policies)==1" />
+
+  <!--
+    If you want to have your customization policy to show up, the class needs
+    an boolean attribute: availableAtConstruction
+   -->
+<tal:custpolicy condition="python:len(policies)>1">
     <div class="form-label">
     Customisation policy setup
     </div>
-    <span tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies()">
       <select name="custom_policy">
         <tal:block tal:repeat="policy policies">
-	<option tal:attributes="name policy" tal:content="policy"> Custom Policy </option>
-	</tal:block>
+        <option tal:attributes="name policy" tal:content="policy"> Custom Policy </option>
+        </tal:block>
       </select>
-    </span>
    
     <p>
-    <b>Please note:</b> the customisation policy setup is the type of site you would
-    like to make, you can run this later and see other configuration options in portal_migration if
-    you wish.
+    (A Customisation Policy is a pre-defined type of site, normally set up as
+     as a certain combination of settings and add-on products. You can normally
+     not revert this to a Default Plone site without a lot of work, so make sure
+     the policy you select is the correct one.) 
     </p>
--->    
+</tal:custpolicy>
     
     <div class="form-element">
     <input class="form-element" type="submit" name="submit" 
      value=" Add Plone Site " />
     </div>
+
+  </form>
 
   </body>
 </html>

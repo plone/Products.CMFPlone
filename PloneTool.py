@@ -20,6 +20,7 @@ from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFPlone import ToolNames
 
 from OFS.SimpleItem import SimpleItem
+from OFS.ObjectManager import bad_id
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo, Unauthorized
 from StatelessTree import constructNavigationTreeViewBuilder, \
@@ -162,7 +163,8 @@ class PloneTool(UniqueObject, SimpleItem):
             # UTF-8 is the only reasonable choice, as using unicode means
             # that Latin-1 is probably not enough.
             msg = msg.encode('utf-8')
-        get_transaction().note(msg)
+        if not get_transaction().description:
+            get_transaction().note(msg)
 
     security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):
@@ -307,8 +309,20 @@ class PloneTool(UniqueObject, SimpleItem):
         catalog_tool=getToolByName(self, 'portal_catalog')
         object.changeOwnership(user, recursive)
 
+        # get rid of all other owners
+        owners = object.users_with_local_role('Owner')
+        for o in owners:
+            roles = list(object.get_local_roles_for_userid(o))
+            roles.remove('Owner')
+            if roles:
+                object.manage_setLocalRoles(o, roles)
+            else:
+                object.manage_delLocalRoles([o])
+
         #FIX for 1750
-        object.manage_setLocalRoles( user.getUserName(), ['Owner'] )
+        roles = list(object.get_local_roles_for_userid(user.getUserName()))
+        roles.append('Owner')
+        object.manage_setLocalRoles( user.getUserName(), roles )
 
         catalog_tool.reindexObject(object)
         if recursive:
@@ -388,5 +402,44 @@ class PloneTool(UniqueObject, SimpleItem):
                          bottomLevel=bottomLevel  )
         ctx_tree_builder=t_builder.__of__(self)
         return ctx_tree_builder()
+
+    # expose ObjectManager's bad_id test to skin scripts
+    security.declarePublic('good_id')
+    def good_id(self, id):
+        m = bad_id(id)
+        if m is not None:
+            return 0
+        return 1
+
+    # returns the acquired local roles 
+    security.declarePublic('getInheritedLocalRoles')
+    def getInheritedLocalRoles(self, here):
+        portal = here.portal_url.getPortalObject()
+        result=()
+        cont=1
+        if portal != here:
+            parent = here.aq_parent
+            while cont:   
+                userroles = parent.acl_users.getLocalRolesForDisplay(parent)
+                for user, roles, type, name in userroles:
+                    # find user in result
+                    found=0
+                    for user2, roles2, type2, name2 in result:
+                        if user2==user:
+                            # check which roles must be added to roles2
+                            for role in roles:
+                                if not role in roles2:
+                                    roles2=roles2+(role,)
+                            found=1
+                            break
+                    if found==0:
+                        # add it to result
+                        result=result + ((user, roles, type, name),)
+                if parent==portal:
+                    cont=0
+                else:
+                    parent=parent.aq_parent
+    
+        return result
 
 InitializeClass(PloneTool)

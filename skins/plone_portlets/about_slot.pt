@@ -27,7 +27,8 @@
                              creator_home python:mtool.getHomeUrl(creator);">
 
                 <strong i18n:translate="box_created_by">Created by</strong> <br />
-                <img tal:replace="structure here/user.gif" alt="user: " />
+                <img tal:replace="structure here/user.gif" alt=""
+                     tal:attributes="alt creator"/>
 
                 <a href="#" tal:condition="creator_home"
                             tal:attributes="href creator_home"
@@ -48,7 +49,8 @@
                          <img tal:define="locked portal_object/lock_icon.gif;
                                           lockable python:hasattr(here, 'wl_isLocked');"
                               tal:condition="python:lockable and here.wl_isLocked()"
-                              tal:replace="structure python:locked.tag(title='Locked')" alt="Object locked" />
+                              tal:replace="structure python:locked.tag(title='Locked')" alt="Object locked"
+                              i18n:attributes="alt" />
             </div>
 
             <div class="portletContent odd">
@@ -72,7 +74,8 @@
                 </span>
 
                 <span class="expired"
-        		      tal:condition="python:here.isExpired(here)">
+                      tal:condition="python:here.isExpired(here)"
+                      i18n:translate="time_expired">
                 (expired)
                 </span>
 

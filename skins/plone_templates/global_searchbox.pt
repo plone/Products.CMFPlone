@@ -8,7 +8,8 @@
     <form name="searchform"
           action="search"
           tal:attributes="action string:${portal_url}/search" >
-        <label for="searchGadget" class="hiddenLabel" i18n:translate="text_search">Search</label><input id="searchGadget"
+        <label for="searchGadget" class="hiddenStructure" i18n:translate="text_search">Search</label>
+        <input id="searchGadget"
                name="SearchableText"
                type="text"
                size="20"

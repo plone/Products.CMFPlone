@@ -14,6 +14,13 @@
 
     <h1 i18n:translate="heading_skin_setup">Skin Setup</h1>
 
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="">
+    Up to Plone Setup
+    </a>
+
     <p i18n:translate="description_skin_setup">
         Settings that affect the portal's look and template usage.
     </p>
@@ -56,10 +63,11 @@
                        tal:define="allowany here/portal_skins/getAllowAny"
                        tal:attributes="checked python:test(allowany, 'checked', '')" />
 
-                <label i18n:translate="label_skin_flexibility" for="cb_allow_any">Skin flexibility</label>
+                <label i18n:translate="label_skin_flexibility" for="cb_allow_any">Allow users to select skins</label>
                 
                 <div class="formHelp" i18n:translate="help_skin_flexibility">
-                    Allow users to select skins.
+                    If checked, each user can select a skin from his
+                    preferences panel.
                 </div>
 
             </div>
@@ -73,10 +81,10 @@
                      tal:define="cookiepers here/portal_skins/getCookiePersistence"
                      tal:attributes="checked python:test(cookiepers, 'checked', '')" />
 
-                <label i18n:translate="label_cookie_persistence" for="cb_cookie">Skin Cookie persistence</label>
+                <label i18n:translate="label_cookie_persistence" for="cb_cookie">Make skin cookie persist indefinitely</label>
                 
                 <div class="formHelp" i18n:translate="help_cookie_persistence">
-                    Make skin cookie persist indefinitely.
+                    If checked, the skin cookie will never expire.
                 </div>
 
             </div>

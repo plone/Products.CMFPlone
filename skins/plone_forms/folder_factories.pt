@@ -26,11 +26,11 @@
                      id_query string:&amp;id=$create_id;
                      query python:test(create_id, id_query, '');">
                    
-        <fieldset>
+        <fieldset tal:define="allowedContentTypes allowedSortedContentTypes|here/allowedContentTypes">
 
             <legend i18n:translate="legend_items_available">Items Available</legend>
 
-            <tal:types tal:repeat="ctype here/allowedContentTypes">
+            <tal:types tal:repeat="ctype allowedContentTypes">
 
             <div class="field" tal:define="pss modules/Products/PythonScripts/standard; Title ctype/Title; Id ctype/getId"
                                tal:condition="python:test(Id not in filterOut, 1, 0)">

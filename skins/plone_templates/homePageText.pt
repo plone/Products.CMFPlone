@@ -3,12 +3,12 @@
 Home page for <span tal:condition="nocall:member|nothing"
                     tal:replace="member/getUserName" />
 
-  This page was automatically created for you when
+  This page was automatically created when
   you joined the community or when your account
   was created. You are encouraged to customize
   this page to your tastes.
 
   To change the content just select the "Edit"
-  tab located directly on top of this page.
+  tab located directly at the top of this page.
 
 </metal:membercontent>

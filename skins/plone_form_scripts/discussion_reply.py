@@ -46,6 +46,9 @@ portal_discussion=context.portal_discussion
 if hasattr(portal_discussion.aq_explicit, 'cookReply'):
     portal_discussion.cookReply(reply, text_format='plain')
 
+from Products.CMFPlone import transaction_note
+transaction_note('Added comment to %s at %s' % (context.title_or_id(), context.absolute_url()))
+
 p = context.aq_parent
 target = '%s/%s' % (p.absolute_url(),p.getTypeInfo().getActionById('view'))
 return req.RESPONSE.redirect(target)

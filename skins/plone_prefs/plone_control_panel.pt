@@ -29,7 +29,8 @@
 
             <li tal:repeat="configlet configlets">
                 <a href=""
-                   tal:attributes="href configlet/url">
+                   tal:attributes="href configlet/url"
+                   tal:condition="configlet/visible">
                     <img tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
                                          alt configlet/description"
                          i18n:attributes="alt"

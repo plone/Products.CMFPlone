@@ -6,42 +6,117 @@
 
 <div metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
 
-<h1 tal:content="string:Status of Product ${here/id}"> Installed Product </h1>
+    <h1 i18n:translate="heading_install_log_for">
+     Install log for 
+     <span tal:content="here/id" i18n:name="productname">
+     Product Name
+     </span>
+    </h1>
 
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/prefs_install_products_form"
+       i18n:translate="">
+    Back to Add/Remove Products
+    </a>
 
-<table class="listing">
-    <tr tal:repeat="entry python:['Types','Skins','Actions','PortalObjects','Workflows','Slots']">
-        <th tal:content="entry"></th>
-        <td>
-            <table>
-                <tr tal:repeat="r python:getattr(here,'get'+entry)()">
-                    <td tal:content="r">entry</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+    <dl>
+        
+        <dt i18n:translate="label_status">Status</dt>
+        <dd tal:content="here/getStatus">Some status</dd>
+        
+        <dt tal:condition="here/hasError" 
+         i18n:translate="label_error">Error</dt>
+        <dd tal:condition="here/hasError">
+            <img tal:replace="structure here/error_icon.gif" />
+            
+            <tal:errormsg i18n:translate="error_installed_product">
+            There were Errors during install, check Transcript
+            </tal:errormsg>
+        </dd>
+     
 
-    <tr>
-        <th i18n:translate="label_status"> Status </th><td tal:content="here/getStatus"> status </td>
-    </tr>
+        <tal:exists condition="here/getTypes">
+        <dt>Types</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="type here/getTypes"
+                    tal:content="type">
+                Type
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
 
-    <tr tal:condition="here/hasError">
-        <th i18n:translate="text_error">Error</th>
-        <td tal:condition="here/hasError">
-            <img src="/misc_/PageTemplates/exclamation.gif" />
-            <span omit-tag=""
-                  i18n:translate="error_installed_product">There were Errors during install, check Transcript</span>
-        </td>
-    </tr>
+        <tal:exists condition="here/getSkins">
+        <dt>Skins</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="skin here/getSkins"
+                    tal:content="skin">
+                Skin
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+        
+        <tal:exists condition="here/getActions">
+        <dt>Actions</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="action here/getActions"
+                    tal:content="action">
+                Action
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+        
+        <tal:exists condition="here/getPortalObjects">
+        <dt>Portal Objects</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="object here/getPortalObjects"
+                    tal:content="object">
+                Object
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+        
+        <tal:exists condition="here/getWorkflows">
+        <dt>Workflows</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="wf here/getWorkflows"
+                    tal:content="wf">
+                Workflow
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
+        
+        <tal:exists condition="here/getSlots">
+        <dt>Portlets</dt>
+        <dd>
+            <ul>
+                <li tal:repeat="portlet here/getSlots"
+                    tal:content="portlet">
+                Portlet
+                </li>
+            </ul>
+        </dd>
+        </tal:exists>
 
+    </dl>
 
-</table>
-
-<h2 i18n:translate="heading_installed_transcript">Transcript</h2>
-
-<span tal:content="structure python:here.getTranscriptAsText().replace('\n','&lt;br/&gt;')">
-</span>
+    <h2 i18n:translate="heading_installed_transcript">Transcript</h2>
+    
+    <pre tal:content="structure python:here.getTranscriptAsText().replace('\n','&lt;br/&gt;')">
+    Issue transcript.
+    </pre>
 
 </div>
+
 </body>
 </html>

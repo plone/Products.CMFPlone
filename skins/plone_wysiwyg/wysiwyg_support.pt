@@ -1,8 +1,8 @@
 <html i18n:domain="plone">
 
 <!-- wysiwyg default widget, this is overridden by other editors -->
-<div metal:define-macro="wysiwygEditorBox">
 
+<div metal:define-macro="wysiwygEditorBox">
   <textarea cols="80"
             rows="25"
             tabindex=""
@@ -12,7 +12,9 @@
                             id inputname;
                             onfocus onfocus|nothing;
                             onblur onblur|nothing;
-                            tabindex tabindex|nothing;"></textarea>
+                            tabindex tabindex|nothing;
+                            rows rows|default;
+                            cols cols|default;"></textarea>
 </div>
 
 
@@ -20,11 +22,11 @@
      class="field"
      tal:define="tabindex tabindex/next;
                      text_format python:request.get('text_format', getattr(here,'text_format','structured-text'))">
-     
+
     <label for="text_format" i18n:translate="label_format">Format</label>
 
     <div class="formHelp" i18n:translate="help_format">
-    If you are unsure of which format to use, just select Plain 
+    If you are unsure of which format to use, just select Plain
     Text and type the document as you usually do.
     </div>
 

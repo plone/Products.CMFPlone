@@ -255,9 +255,11 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     # fix permissions set by CopySupport.py
     __ac_permissions__=(
         ('Modify portal content',
-         ('manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjects',
+         ('manage_cutObjects', 'manage_pasteObjects',
           'manage_renameForm', 'manage_renameObject', 'manage_renameObjects',)),
         )
+
+    security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
     def __init__(self, id, title=''):
         DefaultDublinCoreImpl.__init__(self)
@@ -306,9 +308,18 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         SkinnedFolder.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def __browser_default__(self, request):
-        """ Set default so we can return whatever we want instead of
-        index_html """
-        return self.browserDefault()
+        """ Set default so we can return whatever we want instead
+        of index_html """
+        try:
+            return self.browserDefault()
+        except AttributeError:
+            skins = getToolByName(self, "portal_skins")
+            default = skins.default_skin
+            if not default: default = "[None]"
+            msg = """The Script (Python) object browserDefault could
+not be found in your skins path. Your current default skin is "%s", go to
+portal_skins tool and set the correct default skin.""" % default
+            raise AttributeError, msg
 
     security.declarePublic('contentValues')
     def contentValues(self,
@@ -329,28 +340,53 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
-        Hook around 'contentValues' to let 'folder_contents'
-        be protected.  Duplicating skip_unauthorized behavior of dtml-in.
-
-        In the world of Plone we do not want to show objects that begin with a .
-        So we have added a simply check.  We probably dont want to raise an
-        Exception as much as we want to not show it.
-
+        Optionally you can suppress "hidden" files, or files that begin with .
         """
+        contents=SkinnedFolder.listFolderContents(self, 
+                                                  spec=spec, 
+                                                  contentFilter=contentFilter)
+        if suppressHiddenFiles:
+            contents=[obj for obj in contents if obj.getId()[:1]!='.']
+   
+        return contents
 
-        items = self.contentValues(spec=spec, filter=contentFilter)
-        l = []
-        for obj in items:
-            id = obj.getId()
-            v = obj
-            try:
-                if suppressHiddenFiles and id[:1]=='.':
-                    raise Unauthorized(id, v)
-                if getSecurityManager().validate(self, self, id, v):
-                    l.append(obj)
-            except (Unauthorized, 'Unauthorized'):
-                pass
-        return l
+    # Override CMFCore's invokeFactory to return the id returned by the
+    # factory in case the factory modifies the id
+    security.declareProtected(AddPortalContent, 'invokeFactory')
+    def invokeFactory( self
+                     , type_name
+                     , id
+                     , RESPONSE=None
+                     , *args
+                     , **kw
+                     ):
+        '''Invokes the portal_types tool.'''
+        pt = getToolByName( self, 'portal_types' )
+        myType = pt.getTypeInfo(self)
+
+        if myType is not None:
+            if not myType.allowType( type_name ):
+                raise ValueError, 'Disallowed subobject type: %s' % type_name
+
+        new_id = apply( pt.constructContent
+             , (type_name, self, id, RESPONSE) + args
+             , kw
+             )
+        if new_id is None or new_id == '':
+            new_id = id
+        return new_id
+
+InitializeClass(BasePloneFolder)
+
+class PloneFolder( BasePloneFolder, OrderedContainer ):
+    """ A Plone Folder """
+    meta_type = 'Plone Folder'
+    security=ClassSecurityInfo()
+    __implements__ = BasePloneFolder.__implements__ + \
+                     OrderedContainer.__implements__
+
+    manage_renameObject = OrderedContainer.manage_renameObject
+    security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
 InitializeClass(BasePloneFolder)
 

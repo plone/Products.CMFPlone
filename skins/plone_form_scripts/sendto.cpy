@@ -10,6 +10,8 @@
 ##
 REQUEST=context.REQUEST
 
+from Products.CMFPlone import transaction_note
+
 plone_utils=context.plone_utils
 site_properties=context.portal_properties.site_properties
 
@@ -28,5 +30,8 @@ try:
 except: #XXX To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     return state.set(status='failure', portal_status_message=exception)
+
+tmsg='Sent page %s to %s' % (context.absolute_url(), REQUEST.send_to_address)
+transaction_note(tmsg)
 
 return state.set(portal_status_message='Mail sent.')

@@ -99,7 +99,10 @@ function buttonClick(event, menuId) {
     if (browser.isIE){
         button = window.event.srcElement;
     }else{
-        button = event.currentTarget;
+        if (event)
+          button = event.currentTarget;
+        else
+          return false;
     }
     // Blur focus from the link to remove that annoying outline.
     

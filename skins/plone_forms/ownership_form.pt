@@ -23,7 +23,9 @@
             <div class="field">
                 <label i18n:translate="label_new_owner">New owner</label>
                 
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
         
                 <div class="formHelp" i18n:translate="id_help">
                 Changes the ownership of the current object.

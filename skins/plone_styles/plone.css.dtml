@@ -1,10 +1,14 @@
 /*
 ** Plone style sheet for CSS2-capable browsers.
-** Copyright Alexander Limi (http://www.plonesolutions.com),
-** Joe Geldart & Tom Croucher (http://www.netalleynetworks.com),
-** Michael Zeltner (http://niij.org) 2001-2003.
 **
-** Thanks to Geir Bækholt, Stian Søiland for input and guidance.
+** Copyright Alexander Limi - http://www.plonesolutions.com
+**
+** Additional Plone 2 work:
+** Joe Geldart & Tom Croucher - http://www.netalleynetworks.com
+** Michael Zeltner - http://niij.org
+** Geir Bækholt - http://www.plonesolutions.com
+**
+** All you guys rock :)
 **
 ** Style sheet documentation can be found at http://plone.org/documentation
 **
@@ -45,7 +49,6 @@ img {
 }
 p {
     margin: 0.5em 0em 1em 0em;
-    text-align: left;
     line-height: 1.5em;
 }
 p a {
@@ -227,6 +230,7 @@ pre {
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
+    overflow: auto;
 }
 .pre a {
     text-decoration: underline;
@@ -243,12 +247,19 @@ pre {
 ** Structural Elements
 */
 
+#visual-portal-wrapper {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+
 /* Logo properties */
  
 #portal-logo {
     background: url(<dtml-var portal_url>/<dtml-var logoName>) no-repeat;
     border: 0;
-    margin: 0.75em 0em 0.5em 1.5em;
+    margin: 0.75em 0em 0.75em 1.5em;
     padding: 0;
 }
 #portal-logo a {
@@ -281,9 +292,13 @@ pre {
     padding: 0;
 }
 #portal-siteactions {
-    float: right;
-    margin: -5.5em 2em 0 0;
+    position: absolute;
+    top: 11px;
+    right: 16px;
     width: 54px;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
 }
 
 #portal-siteactions a {
@@ -296,25 +311,19 @@ pre {
     overflow: hidden;
 }
 
+/* searchbox style and positioning */
 #portal-searchbox {
-    /*searchbox style and positioning */
+    position: absolute;
+    top: 45px;
+    right: 1.5em;
     background-color: transparent;
-    clear: right;
-    float: right;
-    margin: -3.5em 0 0 0;
-    padding: 0 2em 0 0;
+    margin: 0;
+    padding: 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
-    width: 30%;
-}
-input.searchButton {
-    font-size: 100%;
-    margin-bottom: &dtml-borderWidth; ! important;
-    background: transparent url(search_icon.png) 7px 1px no-repeat;
-    cursor: pointer;
-    padding: 1px 1px 1px 15px;
-    text-transform: &dtml-textTransform;;
-
+    width: 50%;
+    white-space: nowrap;
+    z-index: 2;
 }
 #portal-globalnav {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
@@ -323,7 +332,7 @@ input.searchButton {
     border-bottom-color: &dtml-globalBorderColor;;
     border-bottom-style: &dtml-borderStyle;;
     border-bottom-width: &dtml-borderWidth;;
-    padding: 0.5em 0em 0em 2em;
+    padding: 0em 0em 0em 2em;
     white-space: nowrap;
     list-style: none;
     margin: 0;
@@ -373,9 +382,6 @@ input.searchButton {
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
-#portal-personaltools li {
-    display: inline;
-}
 #portal-personaltools .portalUser {
     background: transparent url(<dtml-var portal_url>/user.gif) center left no-repeat;
     padding-left: 15px;
@@ -385,6 +391,7 @@ input.searchButton {
     color: &dtml-fontColor;;
     padding: 0;
     background: transparent;
+    background-image: none;
 } /* Used on all descriptions relevant to those not logged in */
  
 #portal-personaltools li {
@@ -392,6 +399,7 @@ input.searchButton {
     padding-left: 8px;
     color: &dtml-globalFontColor;;
     margin-left: 1em;
+    display: inline;
 }
 #portal-personaltools li a {
     text-decoration: none;
@@ -466,6 +474,7 @@ input.searchButton {
     text-transform: &dtml-textTransform;;
     padding: 0 1em;
     z-index: 2;
+    height: 1.2em;
 }
 
 .contentActions ul,
@@ -491,6 +500,10 @@ input.searchButton {
     z-index: 4;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0 0 0 1em;
+}
+
+.actionSingular {
+    background-image: none !important;
 }
 
 .actionItems li {
@@ -556,17 +569,47 @@ input.searchButton {
     margin-bottom: 1em;
 }
 
-#content-news .portlet {
-    margin-bottom: 1.5em;
+.newsItem {
+    margin-bottom: 2.5em;
 }
 
-#content-news .portlet ul,
-#content-news .portlet li {
+.newsContent {
+    padding: 0 1em 1em 1em;
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations;  &dtml-globalBorderColor;;
+}
+
+.newsContent ul,
+.newsContent li {
     display: block; 
     list-style: none;
     list-style-image: none;
     margin: 0;
     padding: 0;
+}
+
+.newsAbout {
+    display: block;
+    color: &dtml-discreetColor;;
+    padding: 0;
+    margin: 0;
+    float: right;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    list-style-image: none;
+}
+
+.newsAbout li {
+    font-size: &dtml-fontSmallSize;;
+    text-align: right;
+    float: none;
+    display: inline;
+    margin: 0;
+}
+
+.newsAbout li a {
+    text-decoration: none;
 }
 
 .documentEditable {
@@ -631,6 +674,10 @@ input.searchButton {
     font-weight: normal;
     color: &dtml-discreetColor;;
 }
+.documentByLine a {
+    text-decoration: underline;
+}
+
 #portal-footer {
     background-color: &dtml-globalBackgroundColor;;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -688,6 +735,15 @@ input.searchButton {
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
+input.searchButton {
+    font-size: 100%;
+    margin-bottom: &dtml-borderWidth; ! important;
+    background: &dtml-backgroundColor; url(search_icon.gif) 2px 1px no-repeat;
+    cursor: pointer;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+
+}
 .noborder,
 .documentEditable * .noborder {
     border: none;
@@ -731,6 +787,10 @@ input.searchButton {
     font-size: 90%;
     color: &dtml-discreetColor;;
     margin: 0 0 0.2em 0;
+}
+
+.formHelp a {
+    text-decoration: underline;
 }
 
 .formHelp:hover {
@@ -795,7 +855,6 @@ input.searchButton {
     font-weight: normal;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
-    white-space: nowrap;
 }
 .listing .top {
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
@@ -840,6 +899,30 @@ ul.configlets li {
 ul.configlets li a {
 	text-decoration: none;
 }
+
+ul.configlets li label {
+    font-weight: bold;
+}
+
+ul.configletDetails {
+    margin: 0em 1em 1em 4em;
+    list-style-image: none;
+    list-style: none;
+}
+
+ul.configletDetails li {
+    margin-bottom: 1em;
+    display: inline;
+}
+
+ul.configletDetails li a {
+	text-decoration: none;
+}
+
+ul.configletDetails li label {
+    font-weight: bold;
+}
+
 
 /* Additional STX workaround classes */
 .stx table p /* stupid STX table workaround */
@@ -930,11 +1013,20 @@ ul.configlets li a {
     font-size: 100%;
 }
 
+.portlet ul,
+.portlet li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    list-style-image: none;
+    line-height: 1em;
+}
+
 .comment {
     background: &dtml-evenRowBackgroundColor;; 
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
     padding: 0 1em 0.5em 1em;
-    color: &dtml-discreetColor;
+    margin-bottom: 1em;
 }
 
 .comment h1,
@@ -944,7 +1036,11 @@ ul.configlets li a {
 .comment h5,
 .comment h6 {
     border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
-    color: gray;
+    font-weight: normal;
+}
+
+.commentBody {
+    margin: 0 1em 1em 1em;
 }
 
 .visualCommentAlign {
@@ -1039,8 +1135,30 @@ ul.configlets li a {
 ** Accessibility and visual enhancement elements 
 */
 
+.link-plain {
+    background-image: none;
+    padding: 0;
+}
+
+.link-parent {
+    display: block;
+    background: transparent url("<dtml-var portal_url>/arrowUp.gif") 4px 5px no-repeat;
+    padding: 1px 0px 1px 16px;
+    font-size: &dtml-fontSmallSize;;
+}
+
+.link-user {
+    background: transparent url("<dtml-var portal_url>/user.gif") 0 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
 .link-external {
     background: transparent url("<dtml-var portal_url>/link_icon.gif") 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-https {
+    background: transparent url("<dtml-var portal_url>/lock_icon.gif") 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
@@ -1071,16 +1189,14 @@ ul.configlets li a {
 
 .hiddenStructure {
     display: block;
-    background: none;
+    background: transparent;
     background-image: none; /* safari bug */
     border: none;
-    height: 0px !important;
-    height /**/: 1px;
+    height: 1px;
     overflow: hidden;
     padding: 0;
-    margin: 0 !important;
-    margin /**/: -1px 0 0 0;
-    width: 0;
+    margin: -1px 0 0 -1px;
+    width: 1px;
 }
 
 .contentViews .hiddenStructure,
@@ -1095,7 +1211,15 @@ ul.configlets li a {
     clear: both;
 }
 .hiddenLabel {
-    visibility: hidden;
+    display: block;
+    background: transparent;
+    background-image: none; /* safari bug */
+    border: none;
+    height: 1px;
+    overflow: hidden;
+    padding: 0;
+    margin: -1px 0 0 -1px;
+    width: 1px;
 }
 .label {
     font-weight: bold;
@@ -1105,14 +1229,21 @@ ul.configlets li a {
 
 .portalNotLoggedIn {} /* Used on all descriptions relevant to those not logged in */
 
-#portal-column-content fieldset > * select:focus,
 #portal-column-content fieldset > * input:focus,
 #portal-column-content fieldset > * textarea:focus {
     border-color: &dtml-notifyBorderColor;; 
     border-width: &dtml-borderWidth;;
 }
+
 .visualOverflow {
     overflow: auto;
+    margin: 0 0 1em 0;
+}
+
+.visualOverflow pre,
+.visualOverflow table,
+.visualOverflow img {
+    margin: 0;
 }
 
 /*
@@ -1132,45 +1263,45 @@ ul.configlets li a {
     font-weight: bold;
 }
 
-.calendar {
+.ploneCalendar {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em;
 }
-.calendar a {
+.ploneCalendar a {
     text-decoration: none;
 }
-.calendar a:hover {
+.ploneCalendar a:hover {
     text-decoration: none;
 }
-.calendar th {
+.ploneCalendar th {
     background-color: &dtml-globalBackgroundColor;;
     font-weight: bold;
     text-align: center;
     padding: 2px;
 }
-.calendar td {
+.ploneCalendar td {
     background-color: transparent;
     width: 1.5em;
     text-align: right;
     padding: 2px;
 }
-.calendar .weekdays td {
+.ploneCalendar .weekdays td {
     background-color: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-style: &dtml-borderStyle; none;
     text-align: center;
     padding: 2px;
 }
-.calendar .event {
+.ploneCalendar .event {
     background-color: &dtml-globalBackgroundColor;;
     font-weight: bold;
 }
-.calendar .todayevent {
+.ploneCalendar .todayevent {
     background-color: &dtml-globalBackgroundColor;;
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
     font-weight: bold;
 }
-.calendar .todaynoevent {
+.ploneCalendar .todaynoevent {
     border-collapse: collapse;
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
@@ -1180,202 +1311,5 @@ ul.configlets li a {
 .highlightedSearchTerm {
    background-color: #feff82;
 }
-
-
-/* javascript date selector */
-
-.inplacecalendar {
-  position: relative;
-  display: none;
-  border: &dtml-borderWidth; &dtml-borderStyle;;
-  border-color: #fff #000 #000 #fff;
-  font-size: 11px;
-  cursor: default;
-  background: Window;
-  color: WindowText;
-  font-family: tahoma,verdana,sans-serif;
-}
-
-.inplacecalendar table {
-  border: &dtml-borderWidth; solid;
-  border-color: #fff #000 #000 #fff;
-  font-size: 11px;
-  cursor: default;
-  background: Window;
-  color: WindowText;
-  font-family: tahoma,verdana,sans-serif;
-}
-
-/* Header part -- contains navigation buttons and day names. */
-
-.inplacecalendar .button { /* "<<", "<", ">", ">>" buttons have this class */
-  text-align: center;
-  padding: 1px;
-  border: 1px solid;
-  border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
-  background: &dtml-globalBackgroundColor;;
-}
-
-.inplacecalendar thead .title { /* This holds the current "month, year" */
-  font-weight: bold;
-  padding: 1px;
-  border: 1px solid #000;
-  background: ActiveCaption;
-  color: CaptionText;
-  text-align: center;
-}
-
-.inplacecalendar thead .headrow { /* Row <TR> containing navigation buttons */
-}
-
-.inplacecalendar thead .daynames { /* Row <TR> containing the day names */
-}
-
-.inplacecalendar thead .name { /* Cells <TD> containing the day names */
-  border-bottom: 1px solid ButtonShadow;
-  padding: 2px;
-  text-align: center;
-  background: &dtml-globalBackgroundColor;;
-  color: ButtonText;
-}
-
-.inplacecalendar thead .weekend { /* How a weekend day name shows in header */
-  color: #f00;
-}
-
-.inplacecalendar thead .hilite { /* How do the buttons in header appear when hover */
-  border-width: 2px;
-  padding: 0px;
-}
-
-.inplacecalendar thead .active { /* Active (pressed) buttons in header */
-  border-width: 1px;
-  padding: 2px 0px 0px 2px;
-  border-color: ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;
-}
-
-/* The body part -- contains all the days in month. */
-
-.inplacecalendar tbody .day { /* Cells <TD> containing month days dates */
-  width: 2em;
-  text-align: right;
-  padding: 2px 4px 2px 2px;
-}
-
-.inplacecalendar table .wn {
-  padding: 2px 3px 2px 2px;
-  border-right: 1px solid ButtonShadow;
-  background: &dtml-globalBackgroundColor;;
-  color: ButtonText;
-}
-
-.inplacecalendar tbody .rowhilite td {
-  background: #eee;
-  color: #000;
-}
-
-.inplacecalendar tbody td.hilite { /* Hovered cells <TD> */
-  padding: 1px 3px 1px 1px;
-  border-top: 1px solid #fff;
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #fff;
-}
-
-.inplacecalendar tbody td.active { /* Active (pressed) cells <TD> */
-  padding: 2px 2px 0px 2px;
-  border: 1px solid;
-  border-color: ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;
-}
-
-.inplacecalendar tbody td.selected { /* Cell showing selected date */
-  font-weight: bold;
-  border: 1px solid;
-  border-color: ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;
-  padding: 2px 2px 0px 2px;
-}
-
-.inplacecalendar tbody td.weekend { /* Cells showing weekend days */
-  color: #f00;
-}
-
-.inplacecalendar tbody td.today { /* Cell showing today date */
-  font-weight: bold;
-  color: #00f;
-}
-
-.inplacecalendar tbody td.disabled { color: GrayText; }
-
-.inplacecalendar tbody .emptycell { /* Empty cells (the best is to hide them) */
-  visibility: hidden;
-}
-
-.inplacecalendar tbody .emptyrow { /* Empty row (some months need less than 6 rows) */
-  display: none;
-}
-
-/* The footer part -- status bar and "Close" button */
-
-.inplacecalendar tfoot .footrow { /* The <TR> in footer (only one right now) */
-}
-
-.inplacecalendar tfoot .ttip { /* Tooltip (status bar) cell <TD> */
-  background: &dtml-globalBackgroundColor;;
-  padding: 1px;
-  border: 1px solid;
-  border-color: ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;
-  color: ButtonText;
-  text-align: center;
-}
-
-.inplacecalendar tfoot .hilite { /* Hover style for buttons in footer */
-  border-top: 1px solid #fff;
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
-  border-left: 1px solid #fff;
-  padding: 1px;
-  background: #e4e0d8;
-}
-
-.inplacecalendar tfoot .active { /* Active (pressed) style for buttons in footer */
-  padding: 2px 0px 0px 2px;
-  border-top: 1px solid #000;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-  border-left: 1px solid #000;
-}
-
-/* Combo boxes (menus that display months/years for direct selection) */
-
-.combo {
-  position: absolute;
-  display: none;
-  width: 4em;
-  top: 0px;
-  left: 0px;
-  cursor: default;
-  border: 1px solid;
-  border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
-  background: Menu;
-  color: MenuText;
-  font-size: smaller;
-  padding: 1px;
-}
-
-.combo .label {
-  text-align: center;
-  padding: 1px;
-}
-
-.combo .active {
-  padding: 0px;
-  border: 1px solid #000;
-}
-
-.combo .hilite {
-  background: Highlight;
-  color: HighlightText;
-}
-
 
 /* </dtml-with> */

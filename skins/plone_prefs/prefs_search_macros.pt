@@ -3,7 +3,7 @@
       lang="en-US"
       i18n:domain="plone">
 	<head>
-		<title>User/Group Search Macro(s)</title>
+		<title tal:condition="nothing">User/Group Search Macro(s)</title>
 	</head>
 	<body>
 
@@ -24,7 +24,7 @@
 	
         <table class="listing">
 	  <tr>
-	    <th colspan="6">
+	    <th colspan="2">
 	      <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
                     <input class="quickSearch"
                            tabindex=""
@@ -37,6 +37,7 @@
                 
                     <input type="hidden" name="searchonly" value="groups" />
                     <input type="submit"
+                           class="searchButton"
                            name="prefs_user_group_search_form"
                            value="Search"
                            tabindex=""
@@ -47,12 +48,19 @@
 	    </th>
 	  </tr>
 	  <tr>
-	    <th tal:condition="takeaction | nothing">&nbsp;</th>
+	    <th tal:condition="takeaction | nothing">
+            <input class="noborder"
+                   type="checkbox"
+                   src="select_all_icon.gif"
+                   name="selectButton"
+                   title="Select all items"
+                   onClick="toggleSelect(this, 'add:list');"
+                   tal:attributes="src string:$portal_url/select_all_icon.gif"
+                   alt="Select all items"
+                   i18n:attributes="title alt"/>
+            </th>
+            
 	    <th i18n:translate="listingheader_group_name">Name</th>
-	  </tr>
-
-	  <tr tal:condition="not:batch">
-	    <td colspan="6">No matches</td>
 	  </tr>
 
 	  <tal:block repeat="obj batch">
@@ -62,7 +70,7 @@
 
 	      <td class="listingCheckbox">
                 <input type="checkbox"
-                       class="noborder notify"
+                       class="noborder"
                        name="add:list"
                        value="value"
 		       tal:attributes="value obj/getGroupId | obj/getId" />
@@ -73,7 +81,7 @@
 		  <img src="group.gif" />
 		  <a href="" tal:attributes="href string:prefs_group_details?groupname=${obj/getGroupName}"
 			tal:content="obj/getGroupName | default"
-                        i18n:translate="label_groupname_not_available">
+                        i18n:translate="link_groupname_not_available">
 			groupname not available
 		  </a>
 		</tal:block>
@@ -81,7 +89,7 @@
 		  <img src="user.gif" />
 		  <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
 			tal:content="obj/getUserName | default"
-                        i18n:translate="label_username_not_available">
+                        i18n:translate="link_username_not_available">
 			username not available
 		  </a>
 		</tal:block>
@@ -89,6 +97,8 @@
 	    </tr>
 	  </tal:block>
         </table>
+
+	<p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
 
 	<div metal:use-macro="here/batch_macros/macros/navigation" />
 	

@@ -3,7 +3,9 @@
       i18n:domain="plone">
 
 <tal:head metal:fill-slot="head_slot"
-          tal:define="dummy python:request.set('disable_border',1)"></tal:head>
+          tal:define="dummy python:request.set('disable_border',1)">
+    <meta name="robots" content="noindex,follow" />
+</tal:head>
 
 <body>          
           
@@ -33,7 +35,9 @@
                  
                 <label for="send_to_address" i18n:translate="label_send_to_mail">Send to</label>
         
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
         
                 <div class="formHelp" i18n:translate="help_send_to_mail">
                 The e-mail address to send this link to.
@@ -42,6 +46,7 @@
                 <div tal:content="error">Validation error output</div>
         
                 <input type="text"
+                       id="send_to_address"
                        name="send_to_address"
                        size="25"
                        tabindex=""
@@ -56,7 +61,9 @@
                  
                 <label for="send_from_address" i18n:translate="label_send_from">From</label>
         
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
         
                 <div class="formHelp" i18n:translate="help_send_from">
                 Your email address.
@@ -65,6 +72,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text"
+                       id="send_from_address"
                        name="send_from_address"
                        size="25"
                        tabindex=""

@@ -14,6 +14,7 @@ except:
 
 from zLOG import INFO, ERROR
 from SetupBase import SetupWidget
+from Products.CMFCore.utils import getToolByName
 
 class LocalizerLanguageSetup(SetupWidget):
     lName = 'Localizer'
@@ -46,15 +47,13 @@ if you have these products installed into you must run the setup method to have 
         else: return 1
 
     def setup(self):
-        portal = self.portal
-
         out = []
         out.append(('Installing Localizer', INFO))
 
-        if self.lName not in portal.objectIds():
+        if self.lName not in self.portal.objectIds():
             manage_addLocalizer(portal, self.lName, 'en')
 
-        if self.tName not in portal.objectIds():
+        if self.tName not in self.portal.objectIds():
             portal.manage_addProduct['TranslationService'].addPlacefulTranslationService(self.tName)
 
         tObj = portal._getOb(self.tName)

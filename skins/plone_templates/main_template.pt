@@ -45,7 +45,8 @@
 
 <div id="portal-top" i18n:domain="plone">
 
-    <a href="#documentContent" class="hiddenStructure">Skip to content.</a>
+    <a href="#documentContent" class="hiddenStructure"
+       i18n:translate="label_skiptocontent">Skip to content.</a>
 
     <a metal:use-macro="here/global_logo/macros/portal_logo">
         The portal logo, linked to the portal root
@@ -137,6 +138,7 @@
                 <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
                     This instruction gets the portlets (boxes) for the left column.
                 </metal:leftportlets>
+                &nbsp;
             </div>
         </div>
         <!-- end of the left (by default at least) column -->
@@ -148,9 +150,10 @@
     <div id="portal-column-two"
         tal:condition="slots_mapping/right">
         <div class="visualPadding">
-        <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
-            This instruction gets the portlets (boxes) for the right column.
-        </metal:rightportlets>
+            <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
+                This instruction gets the portlets (boxes) for the right column.
+            </metal:rightportlets>
+            &nbsp;
         </div>
     </div>
     <!-- end of the right (by default at least) column -->

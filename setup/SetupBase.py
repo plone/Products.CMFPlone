@@ -1,12 +1,10 @@
-from Acquisition import Implicit
-
-class SetupWidget(Implicit):
-    meta_type = 'Plone Migration Tool'
-    description = 'Some nice description'
-
+class SetupWidget:
     # if single is set to one, then we will
     # show radio buttons rather than check boxes
     single = 0
+
+    def __init__(self, portal):
+        self.portal = portal
 
     #####################################################
     # To be overridden

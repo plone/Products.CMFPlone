@@ -1,4 +1,4 @@
-## Script (Python) "clearCookie.py $Revision: 1.3 $"
+## Script (Python) "clearCookie.py $Revision: 1.1.4.1 $"
 ##parameters=
 ##title=clear browser cookie
 ##
