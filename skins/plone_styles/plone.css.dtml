@@ -643,6 +643,7 @@ table.listing tr.even {
 
 table.listing td,
 div.stx table td {
+    border: none;
     border-right: &dtml-listingBorder;;
     padding: 0em 1em;
     text-align: left;
