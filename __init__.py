@@ -1,7 +1,7 @@
 cmfplone_globals=globals()
 custom_policies={} #stores the registered Policies
 
-from Products.CMFCore import DirectoryView, utils
+from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
 import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
 import PloneFolder, Portal
@@ -56,7 +56,8 @@ ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
 tools = ( MembershipTool.MembershipTool
         , FormulatorTool.FormulatorTool 
         , PloneTool.PloneTool
-        , WorkflowTool.WorkflowTool )
+        , WorkflowTool.WorkflowTool
+        , CachingPolicyManager.CachingPolicyManager )
 
 contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )

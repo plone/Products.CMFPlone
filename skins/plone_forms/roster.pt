@@ -4,7 +4,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
-	
+
+  <metal:block fill-slot="base">
+    <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+               tal:replace="nothing">
+    Disable the green border
+    </tal:block>    
+  </metal:block>
+
 <body>
     <div metal:fill-slot="main"
           tal:define="members python:container.portal_membership.getRoster();
@@ -12,7 +19,7 @@
                       Batch python:modules['ZTUtils'].Batch;
                       DateTime python:modules['DateTime'].DateTime;
                       b_start python:request.get('b_start', 0);">
-	
+    
         <h1 i18n:translate="">Member Listing</h1>
 		
 		<p i18n:translate=""> Here is a list of the members that are visible. </p>
