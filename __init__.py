@@ -79,7 +79,7 @@ DirectoryView.registerDirectory('skins', cmfplone_globals)
 this_module = sys.modules[ __name__ ]
 z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
 
-misc_ = {'plone_icon': Globals.ImageFile(path.join('skins','plone_images','site_icon.gif'), cmfplone_globals)}
+misc_ = {'plone_icon': Globals.ImageFile(path.join('skins','plone_images','logoIcon.gif'), cmfplone_globals)}
 
 def initialize(context):
     utils.initializeBasesPhase2( z_bases, context )    
