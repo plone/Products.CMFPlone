@@ -4,7 +4,20 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
-    - Major refactoring of the visual rendering of the nav tree.
+    - Changed the visual rendering of the nav tree. It now uses CSS instead 
+      of fixed values wherever possible. [limi]
+      If you want the old look back, put the following in your
+      ploneCustom.css::
+      
+        .currentNavItem,
+        #portlet-navigation-tree a:hover {
+        background-color: transparent;
+        border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+        }
+        .currentNavItem {
+        font-weight: bold;
+        color: &dtml-fontColor;;
+        }
 
     - Changed the behaviour of the site-wide actions (currently
       only used for text size) - so if you use or have a custom

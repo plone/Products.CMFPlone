@@ -1154,6 +1154,16 @@ ol.visualNoMarker {
 
 /* Navigation tree styling */
 
+.navIcon,
+.navIconRoot {
+    position: relative;
+    right: 20px;
+}
+
+.navItemText {
+    margin-left: -20px;
+}
+
 .navRootItem,
 .navItem {
     margin: 0 0 0.2em 0;
