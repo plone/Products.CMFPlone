@@ -736,6 +736,10 @@ input.searchButton {
     margin: 0 0 0.2em 0;
 }
 
+.formHelp a {
+    text-decoration: underline;
+}
+
 .formHelp:hover {
     color: &dtml-fontColor;;
     cursor: default;

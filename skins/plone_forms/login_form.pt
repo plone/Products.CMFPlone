@@ -88,9 +88,9 @@ to become a member.
             <label i18n:translate="label_user_name"
                    tal:attributes="for ac_name">User Name</label>
 
-            <div i18n:translate="help_user_name"
+            <div i18n:translate="help_user_name_caps"
                  class="formHelp">
-                If you haven't got an account, sign up via the links below.
+    		Usernames and passwords are case sensitive, make sure the caps lock key is not enabled.
             </div>
 
             <input type="text"
@@ -109,10 +109,10 @@ to become a member.
             <label i18n:translate="label_password"
                    tal:attributes="for ac_password">Password</label>
 
-            <div i18n:translate="help_password"
+            <div i18n:translate="help_password_retrieval"
                  class="formHelp">
-                If you have forgotten your password, use the
-                links at the bottom of this form to request it again.
+                If you have forgotten your password,
+                <a href="mail_password_form">click here to retrieve it again</a>.
             </div>
 
             <input type="password"
@@ -140,7 +140,7 @@ to become a member.
 
             <div i18n:translate="help_remember_my_name"
                  class="formHelp">
-                When you check this, your user name will be filled in for you when you log in later.
+                If you check this, your user name will be filled in for you when you log in later.
             </div>
 
         </div>
@@ -158,37 +158,20 @@ to become a member.
 
         </div>
 
-            <p i18n:translate="description_forgotten_your_password">
-                <strong>
-                Forgotten your password?
-                </strong>
+        <p>
+            <strong i18n:translate="label_trouble_logging_in">
+            Having trouble logging in?
+            </strong>
 
-                <span i18n:name="click_here">
-                    <a href="mail_password_form" i18n:translate="description_forgotten_your_password_linktext">
-                    Click here
-                    </a>
-                </span>
-                to have it mailed to you.
+            <span i18n:translate="description_trouble_logging_in">
+            Make sure to <a href="enabling_cookies">enable cookies</a> in your web browser.
+            </span>
+        </p>
 
-            </p>
 
-            <p>
-                <strong i18n:translate="label_trouble_logging_in">
-                Having trouble logging in?
-                </strong>
-
-                <span i18n:translate="description_trouble_logging_in">
-                Make sure to <a href="enabling_cookies">enable cookies</a> in your web browser.
-                </span>
-            </p>
-
-    	    <p i18n:translate="check_caps_lock">
-    		Usernames and passwords are case sensitive, if you cannot log in - please check that you do not have the capslock key on.
-    	    </p>
-
-            <p i18n:translate="remember_to_log_out">
-                Don't forget to log out or exit your browser when you're done.
-            </p>
+        <p i18n:translate="remember_to_log_out">
+            Don't forget to log out or exit your browser when you're done.
+        </p>
 
 
     </fieldset>
