@@ -22,7 +22,10 @@ class File:
     def tell(*args): return 0
     def read(*args): return 'file_contents'
 
-
+#XXX NOTE
+#    document,link and newsitem edit's are not validated
+#    so we must now pass in fields that the validators need
+#    such as title on a favorite's link_edit
 class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -52,7 +55,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testDocumentEdit(self):
         self.folder.invokeFactory('Document', id='doc')
-        self.folder.doc.document_edit('plain', 'data')
+        self.folder.doc.document_edit('plain', 'data', title='test')
         self.assertEqual(self.folder.doc.EditableBody(), 'data')
 
     def testEventEdit(self):
@@ -66,7 +69,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testFavoriteEdit(self):
         self.folder.invokeFactory('Favorite', id='favorite')
-        self.folder.favorite.link_edit('bar/baz.html')
+        self.folder.favorite.link_edit('bar/baz.html', title='favorite')
         self.assertEqual(self.folder.favorite.getRemoteUrl(),
                          '%s/bar/baz.html' % self.portal.portal_url())
 
@@ -94,12 +97,12 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testLinkEdit(self):
         self.folder.invokeFactory('Link', id='link')
-        self.folder.link.link_edit('http://foo.com')
+        self.folder.link.link_edit('http://foo.com', title='test')
         self.assertEqual(self.folder.link.getRemoteUrl(), 'http://foo.com')
 
     def testNewsItemEdit(self):
         self.folder.invokeFactory('News Item', id='newsitem')
-        self.folder.newsitem.newsitem_edit('data', 'plain')
+        self.folder.newsitem.newsitem_edit('data', 'plain', title='test news')
         self.assertEqual(self.folder.newsitem.EditableBody(), 'data')
 
     def testTopicEditTopic(self):

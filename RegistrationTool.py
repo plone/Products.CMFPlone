@@ -1,5 +1,6 @@
 import random
 import md5
+import re
 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
@@ -38,6 +39,7 @@ class RegistrationTool(BaseTool):
     plone_tool = 1
     md5key = None
     _v_md5base = None
+    email_regex="""^([0-9a-z_&.+-]+!)*[0-9a-z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,3}|([0-9]{1,3}\.){3}[0-9]{1,3})$"""
 
     def __init__(self):
         if hasattr(BaseTool, '__init__'):
@@ -78,6 +80,14 @@ class RegistrationTool(BaseTool):
             for i in range(0, length):
                 password += password_chars[ord(d[i]) % nchars]
             return password
+
+    security.declarePublic('isValidEmail')
+    def isValidEmail(self, email):
+        """ checks for valid email """
+        pattern = re.compile(self.email_regex)
+        if pattern.search(email.lower()) == None:
+            return 0
+        return 1
 
     security.declarePublic('generatePassword')
     def generatePassword(self):
