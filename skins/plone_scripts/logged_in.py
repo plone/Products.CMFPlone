@@ -62,7 +62,7 @@ if  ( str(member.getProperty('login_time', None)) == '2000/01/01' and
 membership_tool.createMemberArea()
 
 qs = context.create_query_string(REQUEST.get('QUERY_STRING', ''),
-                                 portal_status_message="You're logged in now")
+                                 portal_status_message="Welcome! You are now logged in.")
 return REQUEST.RESPONSE.redirect('%s?%s' % (login_success, qs))
 
 
