@@ -201,7 +201,7 @@
             <div class="field">
                 <span tal:repeat="type python:container.portal_types.listContentTypes()">
                     <input type="checkbox" 
-                           name="porta_type:list" 
+                           name="portal_type:list" 
                            value="#"
                            class="noborder"
                            checked="checked"
