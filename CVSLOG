@@ -1,3 +1,83 @@
+2004-02-28 00:58  shh42
+
+	* tests/testQueryCatalog.py (Plone-2_0-branch): Fixed a test bug.
+	  First argument to setPermissions must be a list.
+
+2004-02-27 22:58  tesdal
+
+	* skins/plone_scripts/my_worklist.py (Plone-2_0-branch):
+	  getRolesInContext is expensive, call ones and compare to the
+	  static roles list.
+
+2004-02-27 21:24  plonista
+
+	* skins/plone_templates/default_error_message.pt: Only show
+	  extended error message to people with Manage portal privilege
+
+2004-02-27 21:22  plonista
+
+	* PloneTool.py, skins/plone_templates/default_error_message.pt:
+	  Kinder, gentler error messages that hopefully will foster better
+	  bug reporting.  This is a bit experimental and ideally should be
+	  factored out into a separate product since it links to stuff on
+	  plone.org.
+
+2004-02-27 19:30  tesdal
+
+	* tests/: testFolderLocalRoleForm.py, testGroupDataTool.py,
+	  testGroupsTool.py, testPortalFactory.py (Plone-2_0-branch): The
+	  order of the user roles is not significant.
+
+2004-02-27 06:19  runyaga
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): fix for
+	  issue 2556 after someone tests it they can uncomment it
+
+2004-02-27 03:00  achilles_
+
+	* skins/plone_templates/rssBody.pt (Plone-2_0-branch):
+	  Added rssBody.pt as PageTemplate version of
+	  cmf_legacy/rssBody.dtml and cmf_legacy/itemRSS.dtml
+
+	  Fixes #2728
+
+2004-02-27 02:37  achilles_
+
+	* skins/plone_templates/rssBody.pt:
+	  Added rssBody.pt as PageTemplated version of
+	  cmf_legacy/rssBody.dtml and cmf_legacy/itemRss.dtml Fixes #2728
+
+2004-02-26 22:20  batlogg
+
+	* skins/plone_prefs/prefs_search_macros.pt (Plone-2_0-branch):
+	  fixes #2409 "consistent use of Group name"
+
+2004-02-26 22:05  batlogg
+
+	* skins/plone_prefs/prefs_mailhost_form.pt (Plone-2_0-branch):
+	  Outgoing Mail Server (SMTP) is even the best expression for
+	  mailhost :]
+
+2004-02-26 21:57  batlogg
+
+	* skins/plone_prefs/prefs_mailhost_form.pt (Plone-2_0-branch):
+	  fixes #2406, legend "smtp server" is better than "mailhost"
+
+2004-02-26 21:37  batlogg
+
+	* skins/plone_templates/sendto_template.pt (Plone-2_0-branch):
+	  fixed #1271, charset of mails is the same as in
+	  portal_properties. it took longer than expected to test as PTS
+	  bugs had to be fixed first :) thanks tiran.
+
+2004-02-26 19:49  shh42
+
+	* tests/framework.py (Plone-2_0-branch): Upgrade framework.py
+
+2004-02-26 04:48  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-25 21:38  shh42
 
 	* tests/testInterfaces.py (Plone-2_0-branch): Don't run interface
