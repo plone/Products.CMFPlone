@@ -59,7 +59,7 @@
     
             <div class="content even"
                  tal:condition="not: notFolderContents">
-                <a href="">
+                <a href=".">
                     
                     <img tal:replace="structure here/linkTransparent.gif" />
                     
