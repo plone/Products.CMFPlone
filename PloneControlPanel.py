@@ -63,7 +63,7 @@ default_configlets = (
 
     {'id':'MemberPrefs',
      'appId':'Plone',
-     'name':'Plone Preferences',
+     'name':'Personal Preferences',
      'action':'string:${portal_url}/personalize_form',
      'category':'Member',
      'permission': SetOwnProperties,
