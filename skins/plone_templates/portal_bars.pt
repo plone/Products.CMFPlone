@@ -2,35 +2,58 @@
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <div class="personalBar" metal:define-macro="personalBar"
-     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here)); portal_url here/portal_url;">
+     tal:define="portal_url here/portal_url;
+                 actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here)); 
+                 my_stuff python:[ua for ua in actions['user'] if ua.get('id','')=='mystuff'];	
+		 undo python:[ga for ga in actions['global'] if ga.get('id', '')=='undo'];
+		 my_prefs python:[ua for ua in actions['user'] if ua.get('id', '')=='preferences'];
+		 portal_prefs python:[ga for ga in actions['global'] if ga.get('id', '')=='configportal'];
+		 logout python:test(here.portal_membership.isAnonymousUser(), None, portal_url+'/logout');">
 
     &nbsp;
-     
     <a href=""
-       tal:define="mystuff python:here.getActionUrlById('my stuff', actions['user']);"
-       tal:condition="mystuff" tal:attributes="href mystuff"><img src="img/user.gif" alt="User" border="0" tal:attributes="src string:$portal_url/user.gif" />&nbsp;<div
-       tal:replace="user/getUserName">john</div></a>
+       tal:condition="my_stuff"
+       tal:attributes="href python:my_stuff[0]['url']">
+         <img src="img/user.gif" alt="User" 
+	      border="0" 
+	      tal:attributes="src string:$portal_url/user.gif" /> &nbsp;
+	      <span tal:replace="user/getUserName">john</span>
+    </a>
 
     <a href=""
-       tal:define="mystuff python:here.getActionUrlById('my stuff', actions['user']);"
-       tal:condition="mystuff" tal:attributes="href string:$mystuff"><img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>My&nbsp;Stuff</a>
+       tal:condition="my_stuff" 
+       tal:attributes="href python:my_stuff[0]['url']">
+         <img src="img/linkOpaque.gif" alt="&gt;" 
+	      border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>
+	      My&nbsp;Stuff 
+    </a>
 
     <a href=""
-       tal:define="undo python:here.getActionUrlById('undo', actions['global']);"
-       tal:condition="undo" tal:attributes="href undo"><img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif" />Undo&nbsp;History</a>
+       tal:condition="undo" 
+       tal:attributes="href python:undo[0]['url']">
+         <img src="img/linkOpaque.gif" alt="&gt;" border="0"  
+	      tal:attributes="src string:$portal_url/linkOpaque.gif" />Undo&nbsp;History
+    </a>
 
     <a href=""
-       tal:define="prefs python:here.getActionUrlById('preferences', actions['user']);"
-       tal:condition="prefs" tal:attributes="href prefs"><img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif" />My&nbsp;Preferences</a>
+       tal:condition="my_prefs" 
+       tal:attributes="href python:my_prefs[0]['url']">
+         <img src="img/linkOpaque.gif" alt="&gt;" border="0"  
+	      tal:attributes="src string:$portal_url/linkOpaque.gif" />My&nbsp;Preferences
+    </a>
 
     <a href=""
-       tal:define="reconfig python:here.getActionUrlById('reconfigure portal', actions['global']);"
-       tal:condition="reconfig"
-       tal:attributes="href reconfig"> <img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>CMF&nbsp;Setup</a>
+       tal:condition="portal_prefs"
+       tal:attributes="href python:portal_prefs[0]['url']"> 
+         <img src="img/linkOpaque.gif" alt="&gt;" border="0"  
+	      tal:attributes="src string:$portal_url/linkOpaque.gif"/>CMF&nbsp;Setup
+    </a>
 
     <a href=""
-       tal:define="logout python:here.getActionUrlById('log out', actions['user']);"
-       tal:condition="logout" tal:attributes="href logout"> <img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>Sign Out</a> 
+       tal:condition="logout" 
+       tal:attributes="href logout">
+         <img src="img/linkOpaque.gif" alt="&gt;" border="0"  
+	      tal:attributes="src string:$portal_url/linkOpaque.gif"/>Sign Out</a> 
 
 </div>
 

@@ -5,7 +5,12 @@
           
 <div class="tabs" 
      metal:define-macro="portal_tabs"
-     tal:define="portal_url here/portal_url">
+     tal:define="portal_url here/portal_url;
+                 news python:request.get('news',  here.portal_catalog.searchResults( meta_type='News Item'
+                                                                                   , sort_on='Date'
+                                                                                   , sort_order='reverse'
+                                                                                   , review_state='published'));
+		 dummy python:test(request.get('news', 0), request.set('news', news), 0);">
      
         <a href=""
            tal:attributes="href portal_url;
@@ -19,7 +24,8 @@
     	
         <a href="#"
            tal:attributes="href string:$portal_url/recent_news;
-		   class python:test(template.getId()=='recent_news', 'selected', 'plain')">
+	   class python:test(template.getId()=='recent_news', 'selected', 'plain')"
+           tal:condition="request/news" >
          News</a> <span class="netscape4">&middot;</span>
 						   
 	    <a href="search_form"
