@@ -129,7 +129,7 @@ to become a member.
                    type="submit" 
                    name="submit" 
                    value="Log in" 
-                   i18n:translate=""
+                   i18n:translate="value"
                    tal:attributes="tabindex tabindex/next;" 
                    />
 
