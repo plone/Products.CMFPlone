@@ -1,31 +1,3 @@
-<dtml-let last_modified="_.DateTime()-14"
-          expires="_.DateTime()+7" >
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/javascript' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
-</dtml-let>
-
-// Fix for bug in IE6.0 float handling, we refresh the body and description
-// content, as it sometimes disappears due to a bug.
-// More information on this: http://www.zeldman.com/daily/0103d.shtml#redesign2
-
-if (document.all && window.attachEvent) window.attachEvent("onload", fixWinIE);
-function fixWinIE() {
-    try {
-        document.getElementById('documentContent').style.display = 'block';
-    } catch(er) {}
-
-    try {
-        document.getElementById('bodyContent').style.display = 'block';
-    } catch(er) {}
-
-    try {
-        document.getElementById('description').style.display = 'block';
-    } catch(er) {}
-}
-
-
 // The calendar popup show/hide:
 
     function showDay(date) {

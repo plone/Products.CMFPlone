@@ -1,11 +1,3 @@
-<dtml-let last_modified="_.DateTime()-14"
-          expires="_.DateTime()+7" >
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/javascript' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
-</dtml-let>
-
 // Tooltip-like help pop-ups used in forms
 
   function formtooltip(el,flag){

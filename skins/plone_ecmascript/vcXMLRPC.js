@@ -1,4 +1,3 @@
-<dtml-call "REQUEST.RESPONSE.setHeader('Content-Type','text/javascript')">
 //
 //    Copyright (C) 2000, 2001, 2002  Virtual Cowboys info@virtualcowboys.nl
 //		
@@ -625,4 +624,4 @@ isIE55 = (ver.indexOf("MSIE 5.5") != -1) ? 1 : 0;
 
 isOTHER = (!isNS && !isIE) ? 1 : 0;
 
-if(isOTHER) alert("Sorry your browser doesn't support the features of vcXMLRPC");
+if(isOTHER) alert("Sorry, your browser doesn't support the features of vcXMLRPC");

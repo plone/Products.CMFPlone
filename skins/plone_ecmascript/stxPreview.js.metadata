@@ -1,0 +1,3 @@
+[default]
+title = Plone Structured Text Preview Javascript
+cache = HTTPCache
