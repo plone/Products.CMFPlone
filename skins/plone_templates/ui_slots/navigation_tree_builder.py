@@ -20,59 +20,61 @@ parentMetaTypesNotToQuery=[]
 
 #default function that finds the children out of a folderish object
 def childFinder(obj,folderishOnly=1):
-    if obj.meta_type in parentMetaTypesNotToQuery:
-        return []
-    
-    # shall all Members be listed or just myself!
-    if showMyUserFolderOnly and obj.id=='Members':
-        try:
-            return [getattr(obj,obj.REQUEST['AUTHENTICATED_USER'].getId())]
-        except:
+    try:
+        if obj.meta_type in parentMetaTypesNotToQuery:
             return []
+        
+        # shall all Members be listed or just myself!
+        if showMyUserFolderOnly and obj.id=='Members':
+            try:
+                return [getattr(obj,obj.REQUEST['AUTHENTICATED_USER'].getId())]
+            except:
+                return []
+        
+        if obj.meta_type == 'Portal Topic':
+            # to traverse through Portal Topics
+            cat = getToolByName( obj, 'portal_catalog' )
+            
+            #folderishOnly=0 #in order to view all topic results in the tree 
     
-##    if folderishOnly:
-##        return obj.objectValues(['Plone Folder'])
-##    else:
-##        return obj.objectValues()
-    
-    if obj.meta_type == 'Portal Topic':
-        # to traverse through Portal Topics
-        cat = getToolByName( obj, 'portal_catalog' )
-        
-        #folderishOnly=0 #in order to view all topic results in the tree 
-
-        res=obj.listFolderContents()
-        subs=obj.queryCatalog()
-        
-        # get the objects out of the cat results
-        for s in subs:
-            o=context.restrictedTraverse(cat.getpath(s.data_record_id_))
-            res.append(wrap_obj(o,obj))
-        
-    else:    
-        #traversal to all 'CMFish' folders
-        if hasattr(obj.aq_explicit,'listFolderContents'):
             res=obj.listFolderContents()
-        else:
-            #and all other *CMF* folders
-            res=obj.contentValues()
+            subs=obj.queryCatalog()
+            
+            # get the objects out of the cat results
+            for s in subs:
+                try:
+                    o=context.restrictedTraverse(cat.getpath(s.data_record_id_))
+                    res.append(wrap_obj(o,obj))
+                except:
+                    pass
+            
+        else:    
+            #traversal to all 'CMFish' folders
+            if hasattr(obj.aq_explicit,'listFolderContents'):
+                res=obj.listFolderContents()
+            else:
+                #and all other *CMF* folders
+                res=obj.contentValues()
+        
+        res = filter (lambda x:x.meta_type not in metaTypesNotToList,res)
     
-    res = filter (lambda x:x.meta_type not in metaTypesNotToList,res)
-
-    # if wanted just keep folderish objects
-    if folderishOnly:
-        objs=filter(lambda x: hasattr(x.aq_explicit,'isPrincipiaFolderish') and x.aq_explicit.isPrincipiaFolderish,res)
-        perm = 'List folder contents' #XXX should be imported
-        permChk = context.portal_membership.checkPermission
-        return [o for o in objs if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
-    else:
-        return res
+        # if wanted just keep folderish objects
+        if folderishOnly:
+            objs=filter(lambda x: hasattr(x.aq_explicit,'isPrincipiaFolderish') and x.aq_explicit.isPrincipiaFolderish,res)
+            perm = 'List folder contents' #XXX should be imported
+            permChk = context.portal_membership.checkPermission
+            return [o for o in objs if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
+        else:
+            return res
+    
+    except:
+        return []
 
 tb=StatelessTreeBuilder(context,childFinder=childFinder,
         includeTop=1, #if set, the top object itself is included in the tree
         showFolderishSiblingsOnly=1, #in the hierarchy above the leaf object
                                      #just folders should be displayed
-        showFolderishChildrenOnly=1, #list only folders below the leaf object
+        showFolderishChildrenOnly=0, #list only folders below the leaf object
         showNonFolderishObject=0)    #if the leaf object is not a folder 
                                      #and showFolderishChildrenOnly the leaf is
                                      # displayed in any case, but not its siblings
