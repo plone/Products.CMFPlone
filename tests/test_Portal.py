@@ -1,7 +1,7 @@
 """ 
 Unittests for a PloneSite.
 
-$Id: test_Portal.py,v 1.1.2.1 2002/10/07 14:34:19 dreamcatcher Exp $
+$Id: test_Portal.py,v 1.2 2002/10/07 14:50:37 dreamcatcher Exp $
 """
 
 import unittest
@@ -29,7 +29,8 @@ class PloneSiteTests( SecurityRequestTest ):
 
         site = self.root.testsite
         # catalog should have one entry, for index_html or frontpage
-        self.assertEqual( len( site.portal_catalog ), 1 )
+        # and another for /Members
+        self.assertEqual( len( site.portal_catalog ), 2 )
 
     def test_MetadataCataloguing( self ):
 
@@ -45,7 +46,8 @@ class PloneSiteTests( SecurityRequestTest ):
 
         # at this point catalog should have one entry, for index_html
         # or frontpage
-        self.assertEqual( len( catalog ), 1 )
+        # and another for /Members
+        self.assertEqual( len( catalog ), 2 )
 
         for portal_type in portal_types:
 
@@ -55,14 +57,14 @@ class PloneSiteTests( SecurityRequestTest ):
             self.assertEqual( len( catalog ), 2 )
 
             # keys()[0] is the Plone Site frontpage or index_html document
-            rid = catalog._catalog.paths.keys()[1]
+            rid = catalog._catalog.paths.keys()[2]
             self.assertEqual( _getMetadata( catalog, rid ), 'Foo' )
 
             doc.editMetadata( title='Bar' )
             self.assertEqual( _getMetadata( catalog, rid ), 'Bar' )
 
             site._delObject( doc.getId() )
-            self.assertEqual( len( catalog ), 1 )
+            self.assertEqual( len( catalog ), 2 )
 
     def test_DocumentEditCataloguing( self ):
 
@@ -74,7 +76,8 @@ class PloneSiteTests( SecurityRequestTest ):
                                , title='Foo' )
 
         # keys()[0] is the Plone Site frontpage or index_html document
-        rid = catalog._catalog.paths.keys()[1]
+        # keys()[1] is /Members
+        rid = catalog._catalog.paths.keys()[2]
 
         doc.setTitle( 'Bar' )   # doesn't reindex
         self.assertEqual( _getMetadata( catalog, rid ), 'Foo' )
@@ -94,7 +97,7 @@ class PloneSiteTests( SecurityRequestTest ):
                                , title='Foo' )
 
         # keys()[0] is the Plone Site frontpage or index_html document
-        rid = catalog._catalog.paths.keys()[1]
+        rid = catalog._catalog.paths.keys()[2]
 
         doc.setTitle( 'Bar' )   # doesn't reindex
         self.assertEqual( _getMetadata( catalog, rid ), 'Foo' )
@@ -112,7 +115,7 @@ class PloneSiteTests( SecurityRequestTest ):
                                , title='Foo' )
 
         # keys()[0] is the Plone Site frontpage or index_html document
-        rid = catalog._catalog.paths.keys()[1]
+        rid = catalog._catalog.paths.keys()[2]
 
         doc.setTitle( 'Bar' )   # doesn't reindex
         self.assertEqual( _getMetadata( catalog, rid ), 'Foo' )
@@ -130,7 +133,7 @@ class PloneSiteTests( SecurityRequestTest ):
                                , title='Foo' )
 
         # keys()[0] is the Plone Site frontpage or index_html document
-        rid = catalog._catalog.paths.keys()[1]
+        rid = catalog._catalog.paths.keys()[2]
 
         doc.setTitle( 'Bar' )   # doesn't reindex
         self.assertEqual( _getMetadata( catalog, rid ), 'Foo' )
@@ -148,7 +151,7 @@ class PloneSiteTests( SecurityRequestTest ):
                                , title='Foo' )
 
         # keys()[0] is the Plone Site frontpage or index_html document
-        rid = catalog._catalog.paths.keys()[1]
+        rid = catalog._catalog.paths.keys()[2]
 
         doc.setTitle( 'Bar' )   # doesn't reindex
         self.assertEqual( _getMetadata( catalog, rid ), 'Foo' )
