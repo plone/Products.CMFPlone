@@ -106,7 +106,7 @@
                 <textarea cols="40" 
                           rows="5" 
                           tabindex="3"
-                          name="description"
+                          name="field_description"
                           tal:content="description"
                           onfocus="formtooltip('leadin_help',1)" 
                           onblur="formtooltip('leadin_help',0)"

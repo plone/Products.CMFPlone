@@ -23,7 +23,6 @@ if hasattr(context, 'extended_edit'):
         return response
 
 #XXX need to call edit after metadata edit or format will be reset to context's text_format
-
 context.edit( text 
             , description
             , text_format )
