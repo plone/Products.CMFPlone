@@ -218,9 +218,16 @@ class PloneControlPanel(PloneBaseTool, UniqueObject,
     security.declareProtected( SetOwnProperties, 'enumConfiglets' )
     def enumConfiglets(self,group=None):
         portal=getToolByName(self,'portal_url').getPortalObject()
+        mtool = getToolByName(self,'portal_membership')
         context=createExprContext(self,portal,self)
-        res = [a.getAction(context) for a in self.listActions()
-               if a.category==group and a.testCondition(context)]
+        res = []
+        for a in self.listActions():
+            verified = 0
+            for permission in a.permissions:
+                if _checkPermission(permission, portal):
+                    verified = 1
+            if verified and a.category==group and a.testCondition(context):
+                res.append(a.getAction(context))
         res.sort(lambda a,b:cmp(a['name'],b['name']))
         return res
 
