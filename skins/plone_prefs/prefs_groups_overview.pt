@@ -41,7 +41,9 @@
           name="groups"
           method="post"
           tal:attributes="action here/absolute_url"
-          tal:define="groups python:Batch(here.portal_groups.listGroups(), 25, int(b_start), orphan=1)">
+	  tal:define="searchstring request/searchstring | nothing;
+                      groups python:here.prefs_user_group_search(searchstring, 'groups');
+                      batch python:Batch(groups, 25, int(b_start), orphan=1)">
 
     <p i18n:translate="description_groups_management">
       Groups are logical collections of users, like departments and
@@ -66,8 +68,7 @@
           i18n:attributes="value"
           />
 
-        <table class="listing"
-               tal:condition="groups">
+        <table class="listing">
                
             <tr>
                 <th colspan="6">
@@ -77,16 +78,18 @@
                            type="text"
                            name="searchstring"
                            value=""
-                           tal:attributes="tabindex tabindex/next;"
+                           tal:attributes="value searchstring;
+		                           tabindex tabindex/next;"
                            />
                 
                     <input type="hidden" name="searchonly" value="groups" />
                     <input type="submit"
-                           name="prefs_user_group_search_form:method"
+                           name="prefs_user_group_search_form"
                            value="Search"
                            tabindex=""
                            i18n:attributes="value"
-                           tal:attributes="tabindex tabindex/next;" />
+                           tal:attributes="name string:${template/id}:method;
+		                           tabindex tabindex/next;" />
 
                 </th>
             </tr>
@@ -104,7 +107,11 @@
                 </tal:header>
             </tr>
 
-            <tal:block repeat="this_group groups">
+	    <tr tal:condition="not:batch">
+	      <td colspan="6">No matches</td>
+	    </tr>
+
+            <tal:block tal:condition="batch" repeat="this_group batch">
 
             <tr
                 tal:define="oddrow repeat/this_group/odd"
