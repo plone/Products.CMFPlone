@@ -7,6 +7,9 @@
     This PageTemplate is being deprecated.  We have moved all 
     macros to their own PageTemplates in portal_templates/ui_slots.  
     Eventually this PageTemplate will be gone.
+    
+    (This stuff is apparently still used in the calendar pop-up 
+     - Alexander Limi, 2002-08-16)
 
     the calendar UI widget can be found in plone_templates/ui_slots/calendar_slot
 
@@ -36,9 +39,9 @@
                                    onblur onblur|nothing;
                                    tabindex tabindex|nothing" />
 
-  <a href="" tal:attributes="onclick string:window.open('calendar_popup?inputname=${inputname}&formname=${formname}','cal','dependent=yes,width=180,height=160,screenX=200,screenY=300,titlebar=yes');; return false">
-    <img src="popup_calendar.gif"
-         tal:attributes="src string:${here/portal_url}/popup_calendar.gif" />
+  <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?inputname=${inputname}&formname=${formname}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
+    <img src="" alt="Calendar pop-up"
+         tal:attributes="src string:$portal_url/popup_calendar.gif">
   </a>
 
 
@@ -62,7 +65,7 @@
                 <a href="" tal:attributes="href python:'%s&month:int=%d&year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
             </th>
             <th colspan="5" tal:define="date string:$month/1/$year">
-              <span tal:replace="python:DateTime(date).Month()"/> - <span tal:replace="python:DateTime(date).year()"/>
+              <span tal:replace="python:DateTime(date).Month()"/> <span tal:replace="python:DateTime(date).year()"/>
             </th>
         
             <th>

@@ -42,7 +42,7 @@ div.day {
 }
 
 div.date {
-/* deprecate? */
+    font-weight: bold;
 }
 
   

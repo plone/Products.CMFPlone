@@ -165,13 +165,14 @@ input {
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
     background-color: white;
-    margin: 0;
+    vertical-align: middle;
+    margin-bottom: 1px; /* IE bug fix */
 }
 
 select {
     font: &dtml-inputFont;;
     border: &dtml-inputBorder;;  
-    margin: 0;
+    vertical-align: middle;
 }
 
 abbr, acronym, .explain {

@@ -64,21 +64,6 @@
 
     </table>
 
-    <comment tal:condition="nothing">
-<!-- This style section has to be created dynamically, it's responsible
-                 for offsetting the different yellow boxes. The algorithm is
-                 illustrated in the comments of the first one. -->
-
-    <!-- This how the positions get calculated
-
-          #day20010411 {
-              position: absolute;
-              top: 10em;  /* (2 + (2 * row)) em */
-              left: 7em; /* (3 + (column*2)) em */
-          }
-    -->
-
-    </comment>
 
     <!-- The sticky notes -->
     <span tal:repeat="week weeks" tal:omit-tag="">
