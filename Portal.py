@@ -247,7 +247,6 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_scripts'
                     , 'plone_form_scripts'
                     , 'plone_styles'
-                    , 'plone_templates'
 #                    , 'plone_3rdParty/CMFCollector'
                     , 'plone_3rdParty/CMFTopic'
 #                    , 'plone_3rdParty/CMFCalendar'
@@ -256,10 +255,11 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_prefs'
                     , 'plone_wysiwyg'
                     , 'plone_ecmascript' ):
-            try:
-                path.insert( path.index( 'custom')+1, plonedir )
-            except ValueError:
-                path.append( plonedir )
+            if plonedir not in path:
+                try:
+                    path.insert( path.index( 'custom')+1, plonedir )
+                except ValueError:
+                    path.append( plonedir )
 
         path=','.join(path)
         sk_tool.addSkinSelection('Plone Default', path)
