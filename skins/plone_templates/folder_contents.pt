@@ -19,7 +19,7 @@
           action="folder_object"
           tal:attributes="action here/absolute_url"
           tal:define="b_start python:request.get('b_start', 0);
-                      results python:here.sortObjects(folder_contents);
+                      results folder_contents;
                       Batch python:modules['Products.CMFPlone'].Batch;
                       batch python:Batch(results, 100, int(b_start), orphan=0);">
 
