@@ -31,7 +31,7 @@ function fixwidth() {
         ruler2.style.height="1px"
         ruler2.style.visibility="hidden";
         ruler2.style.clear="both"
-        document.body.appendChild(ruler2)       
+        el.appendChild(ruler2)       
         
         rulersCreated=1
     }
