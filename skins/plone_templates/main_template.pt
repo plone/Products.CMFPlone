@@ -89,8 +89,7 @@
 
         <!-- start of main content block -->
         <div id="portal-column-content"
-             tal:define="global is_editable python:here.showEditableBorder( template_id=template_id , actions=actions );
-             tabindex python:Iterator(pos=0)">
+             tal:define="tabindex python:Iterator(pos=0)">
 
             <div id="content" tal:attributes="class python:test(is_editable,'documentEditable','')">
 
