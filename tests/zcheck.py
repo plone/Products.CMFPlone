@@ -1,5 +1,7 @@
 #
-# Runs the ZChecker on all skins in this instance
+# To run the ZChecker on all skins in this instance type
+#
+#   $ python zcheck.py
 #
 
 import os, sys
