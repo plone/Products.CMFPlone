@@ -223,4 +223,13 @@ class MembershipTool( BaseTool ):
 
         return res
 
+    def testCurrentPassword(self, password, username=None):
+        """ test to see if password is current """
+        portal=getToolByName(self, 'portal_url').getPortalObject()
+        REQUEST=getattr(self, 'REQUEST', {})
+        if username is None:
+            username=self.getAuthenticatedMember().getUserName()
+        return portal.acl_users.authenticate(username, password, REQUEST)
+
+
 InitializeClass(MembershipTool)

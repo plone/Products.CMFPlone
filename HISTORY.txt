@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Changing your password now requires you enter your current password.
+      Also changed the 'change_password' script id to 'plone_change_password'
+      to lessen likelihood of clash (we clashed with gruf)
+
     - all the previous migrations have been rolled into 1 migration method
       make_plone and removed ancient cruft (alpha/early betas)
 
