@@ -82,7 +82,6 @@
                 tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
                 />
 
-        <tal:block tal:condition="portal_users">
             <table class="listing">
                 <tr>
                     <th colspan="4">
@@ -183,17 +182,18 @@
             </tal:block>
         </table>
 
+	<p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
+
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-            <input class="context"
-                tabindex=""
-                type="submit"
-                name="prefs_user_manage:method"
-                value="Apply Changes"
-                i18n:attributes="value"
-                tal:attributes="tabindex tabindex/next;"
-                />
-        </tal:block>
+        <input class="context"
+		tabindex=""
+		type="submit"
+		name="prefs_user_manage:method"
+		value="Apply Changes"
+		i18n:attributes="value"
+		tal:attributes="tabindex tabindex/next;"
+		/>
         </form>
 
     </div>

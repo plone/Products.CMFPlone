@@ -76,7 +76,6 @@
               i18n:attributes="value"
               />
     
-	      <tal:block tal:condition="groups">
             <table class="listing">
                    
                 <tr>
@@ -160,6 +159,8 @@
             </tal:block>
             </table>
     
+	  <p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
+
     	  <div metal:use-macro="here/batch_macros/macros/navigation" />
     
             <input class="context"
@@ -170,7 +171,6 @@
                    tal:attributes="tabindex tabindex/next;"
                    i18n:attributes="value"
                    />
-	      </tal:block>
         </form>
     
         <h1 i18n:translate="heading_roles_management">Roles Management</h1>
