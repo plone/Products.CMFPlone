@@ -641,7 +641,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             raise 'Unauthorized' 
 
         # Set local role status
-        gruf = getToolByName( self, 'portal_url' ).acl_users
+        gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
         gruf._acquireLocalRoles(obj, status)   # We perform our own security check
 
         # Reindex the whole stuff.
@@ -652,7 +652,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """GRUF IS REQUIRED FOR THIS TO WORK.
         Return Local Role acquisition blocking status. True if normal, false if blocked.
         """
-        gruf = getToolByName( self, 'portal_url' ).acl_users
+        gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
         return gruf.isLocalRoleAcquired(obj, )
 
 InitializeClass(PloneTool)
