@@ -28,7 +28,7 @@
     <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css);"></style>
 
     <!-- Custom style sheet if available -->
-    <style type="text/css" media="all" tal:condition="here/ploneCustom.css | nothing" tal:content="string:@import url(${here/portal_url}/ploneCustom.css);"></style>
+    <style type="text/css" media="all" tal:condition="exists: here/ploneCustom.css" tal:content="string:@import url(${here/portal_url}/ploneCustom.css);"></style>
     
     <!-- Style sheet used for printing -->
     <link rel="stylesheet" type="text/css" media="print" href="" tal:attributes="href string:$portal_url/plonePrint.css" />
