@@ -361,20 +361,20 @@ table.columns {
 table.columns td.left {
     vertical-align: top;
     width: 15%;
-    padding: 2em 1em 1em 2em;
+    padding: 2em 0em 1em 2em;
 }
 
 table.columns td.main {
     vertical-align: top;
-    padding: 0em 1em 1em 1em;
+    padding: 0em 2em 1em 2em;
     margin: 0;
-    width: 70%;
+
 }
 
 table.columns td.right {
     vertical-align: top;
     width: 15%;
-    padding: 2em 2em 1em 1em;
+    padding: 2em 2em 1em 0em;
 }
 
 #contentTabs {
@@ -713,6 +713,7 @@ div.box h2,
 div.box h3, 
 div.box h4 {
     margin: 0;
+    padding: 0;
 }
 
 
