@@ -43,7 +43,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             trace.append('Looking up transition for %s.%s.%s' % (context, script, status))
             (transition_type, transition) = self.getNavigationTransition(context, script, status)
             trace.append('Found transition: %s, %s' % (transition_type, transition))
-            self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
+#            self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
 
             if transition_type == 'action':
                 return self._dispatchAction(context, transition, trace, **kwargs)
@@ -203,7 +203,7 @@ class NavigationTool (UniqueObject, SimpleItem):
                 if transition is None:
                     raise KeyError, "Unable to find navigation transition for %s.%s.%s" % (self._getContentFrom(context), script, status)
 
-        self.log("getting transition %s.%s.%s, found [%s]\n" % (context, script, status, str(transition)))
+#        self.log("getting transition %s.%s.%s, found [%s]\n" % (context, script, status, str(transition)))
         
         transition = self._transitionSubstitute(transition, self.REQUEST)
         return self._parseTransition(transition)
@@ -224,7 +224,7 @@ class NavigationTool (UniqueObject, SimpleItem):
                 page = page[0:queryIndex]
 
             trace.append("dispatchPage: page = " + str(page) + ", context = " + str(context))
-            self.log("page = " + str(page) + ", context = " + str(context), '_dispatchPage')
+#            self.log("page = " + str(page) + ", context = " + str(context), '_dispatchPage')
             return apply(context.restrictedTraverse(page), (context, context.REQUEST), kwargs)
         except Exception, e:
             raise NavigationError(e, trace)
@@ -232,7 +232,7 @@ class NavigationTool (UniqueObject, SimpleItem):
 
     def _dispatchScript(self, context, script, trace, **kwargs):
         try:
-            self.log('calling ' + script, '_dispatchScript')
+#            self.log('calling ' + script, '_dispatchScript')
 
             request = {}
             for key in self.REQUEST.keys():
@@ -246,7 +246,7 @@ class NavigationTool (UniqueObject, SimpleItem):
                 mapply(script_object, self.REQUEST.args, request,
                             call_object, 1, missing_name, dont_publish_class,
                             self.REQUEST, bind=1)
-            self.log('status = %s, context = %s, kwargs = %s' % (str(status), str(context), str(kwargs)), '_dispatchScript')
+#            self.log('status = %s, context = %s, kwargs = %s' % (str(status), str(context), str(kwargs)), '_dispatchScript')
             return self.getNext(context, script, status, trace, **kwargs)
         except Exception, e:
             raise NavigationError(e, trace)
@@ -255,7 +255,7 @@ class NavigationTool (UniqueObject, SimpleItem):
     def _dispatchRedirect(self, context, url, trace, **kwargs):
         try:
             url = self._addUrlArgs(url, kwargs)
-            self.log('url = ' + str(url), '_dispatchRedirect')
+#            self.log('url = ' + str(url), '_dispatchRedirect')
             trace.append('dispatchRedirect: url = %s' % (str(url)))
             return self.REQUEST.RESPONSE.redirect(url)
         except Exception, e:
@@ -266,7 +266,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         try:
             next_action = context.getTypeInfo().getActionById(action_id)
             url = self._addUrlArgs(next_action, kwargs)
-            self.log('url = ' + str(url), '_dispatchAction')
+#            self.log('url = ' + str(url), '_dispatchAction')
             trace.append('dispatchAction: url = %s' % (str(url)))
             return self.REQUEST.RESPONSE.redirect('%s/%s' % (context.absolute_url(), url))
         except Exception, e:

@@ -75,7 +75,7 @@ class FactoryTool(UniqueObject, SimpleItem):
                 return getattr(self.getParentNode(), name)
 
             # object does not exist in parent context -- return a PendingCreate
-            self.log('returning PendingCreate(%s, %s)' % (name, type_name), '__bobo_traverse__')
+#            self.log('returning PendingCreate(%s, %s)' % (name, type_name), '__bobo_traverse__')
 
             type_info = self.portal_types.getTypeInfo(type_name)
             return PendingCreate(name, type_info).__of__(aq_parent(self))  # wrap in acquisition layer
@@ -88,7 +88,7 @@ class FactoryTool(UniqueObject, SimpleItem):
         path.reverse()
         # lop off the final type_name string and replace with an automatically generated ID
         url = REQUEST.URL[:REQUEST.URL.rfind('/')] + '/' + self._generateId(type_name) + '/' + '/'.join(path)
-        self.log("url = " + url)
+#        self.log("url = " + url)
         return Relocator(url).__of__(aq_parent(self))  # wrap in acquisition layer so that Relocator has access to REQUEST
 
 
@@ -160,7 +160,7 @@ class PendingCreate(SimpleItem):
 
 
     def invokeFactory(self, id, *args, **kw):
-        self.log('invoking factory')
+#        self.log('invoking factory')
         container = self.getParentNode()
         container.invokeFactory(self._type_info.getId(), id, *args, **kw)
         return getattr(container, id)
@@ -195,7 +195,7 @@ class Relocator(Implicit):
     security.declarePublic('__call__')
     def __call__(self, REQUEST, **kw):
         """ """
-        self.log("redirecting to %s" % (self.url))
+#        self.log("redirecting to %s" % (self.url))
         return self.REQUEST.RESPONSE.redirect(self.url)
 
 

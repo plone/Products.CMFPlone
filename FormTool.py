@@ -58,7 +58,7 @@ class FormTool(UniqueObject, SimpleItem):
         property_tool = getattr(self, 'portal_properties')
         form_props = getattr(property_tool, 'form_properties')
         validators = form_props.getProperty(form, None)
-        self.log('getValidators: %s' % validators)
+#        self.log('getValidators: %s' % validators)
         if validators is None:
             return None
         validators = validators.strip()
@@ -105,10 +105,10 @@ class FormTool(UniqueObject, SimpleItem):
         if validators is None:
             # no -- do normal traversal
             target = getattr(aq_parent(self), name, None)
-            if name.endswith('.js'):
-                self.log('name: %s, target: <Javascript>, context: %s' % (name, str(aq_parent(self))), '__bobo_traverse__')
-            else:
-                self.log('name: %s, target: %s, context: %s' % (name, target, str(aq_parent(self))), '__bobo_traverse__')
+#            if name.endswith('.js'):
+#                self.log('name: %s, target: <Javascript>, context: %s' % (name, str(aq_parent(self))), '__bobo_traverse__')
+#            else:
+#                self.log('name: %s, target: %s, context: %s' % (name, target, str(aq_parent(self))), '__bobo_traverse__')
             if target:
                 return target
             else:
@@ -130,15 +130,15 @@ class FormTool(UniqueObject, SimpleItem):
         if not type(errors) != type({}):
             errors = None
         form_submitted = REQUEST.get(FormTool.form_submitted_key, None)
-        self.log('errors = '+str(errors) + ', form_submitted = ' + str(form_submitted), '__bobo_traverse__')
+#        self.log('errors = '+str(errors) + ', form_submitted = ' + str(form_submitted), '__bobo_traverse__')
 
         # We wrap the object in the acquisition layer of the parent of the FormTool
         # so that subsequent forms will operate on the FormTool's context and not
         # on the FormTool.
         do_validate = form_submitted and not errors
-        self.log('returning FormValidator(%s,%s,%s)' % (name, validators, do_validate), '__bobo_traverse__')
-        self.log(REQUEST.URL)
-        self.log(aq_parent(self))
+#        self.log('returning FormValidator(%s,%s,%s)' % (name, validators, do_validate), '__bobo_traverse__')
+#        self.log(REQUEST.URL)
+#        self.log(aq_parent(self))
         return FormValidator(name, validators, do_validate).__of__(aq_parent(self)) # wrap in acquisition layer
 
 
@@ -179,15 +179,11 @@ class FormValidator(SimpleItem):
         self.do_validate = do_validate
 
 
-    def __bobo_traverse__(self, REQUEST, name):
-        """ """
-        self.log('inside __bobo_traverse of FormValidator' )
-
     security.declarePublic('__call__')
     def __call__(self, REQUEST, **kw):
         """ """
         trace = ['\n']
-        self.log('validator[%s] = \'%s\'' % (self.form, self.validators), '__call__')
+#        self.log('validator[%s] = \'%s\'' % (self.form, self.validators), '__call__')
 
         try:
             if self.do_validate:
@@ -195,12 +191,12 @@ class FormValidator(SimpleItem):
                 context = self.aq_parent
                 # invoke validation
                 (status, kwargs, trace) = self._validate(context, REQUEST, trace)
-                self.log('invoking validation, status = %s, kwargs = %s' % (status, kwargs))
+#                self.log('invoking validation, status = %s, kwargs = %s' % (status, kwargs))
 
                 return context.portal_navigation.getNext(context, self.form, status, trace, **kwargs)
             else:
                 trace.append('No validation needed.  Going to %s.%s' % (str(aq_parent(self)), self.form))
-                self.log('going to %s.%s' % (str(aq_parent(self)), self.form))
+#                self.log('going to %s.%s' % (str(aq_parent(self)), self.form))
                 target = getattr(aq_parent(self), self.form, None)
                 return target(REQUEST, **kw)
         except NavigationError:
@@ -222,7 +218,7 @@ class FormValidator(SimpleItem):
             kwargs = {}
             for validator in self.validators:
                 trace.append('Invoking %s' % validator)
-                self.log('calling validator [%s]' % (str(validator)))
+#                self.log('calling validator [%s]' % (str(validator)))
                 v = getattr(context, validator)
                 (status, errors, kwargs) = mapply(v, REQUEST.args, REQUEST,
                                 call_object, 1, missing_name, dont_publish_class,
