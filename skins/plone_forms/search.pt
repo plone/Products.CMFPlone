@@ -7,7 +7,7 @@
 <body>
 
 <div metal:fill-slot="main"
-       tal:define="results python:container.portal_catalog(request);
+       tal:define="results python:here.queryCatalog();
                  Batch python:modules['ZTUtils'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;">

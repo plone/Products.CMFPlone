@@ -61,10 +61,6 @@
                   tal:define="contentSubjects here/Subject;
                               usedSubjects python:here.portal_catalog.uniqueValuesFor('Subject');">
             
-                <textarea name="Subject:lines" rows="3" cols="25"><span tal:repeat="subject contentSubjects" tal:replace="python:subject+'\n'">Subject of the item</span></textarea>
-                
-                <br />
-                
                 <select name="Subject:list" size="7" multiple="multiple">
                     <option value="#"
                             tal:repeat="subject usedSubjects"
@@ -117,9 +113,7 @@
                     </select>
                 
                 </span>
-            
-                <input type="hidden" name="created_usage" value="range:min" />  
-            
+                <input type="hidden" name="created_usage" value="range:min" /> 
             </span>
 		
             <span class="info">
