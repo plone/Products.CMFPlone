@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - added support for Firefox Live RSS Bookmark. RSS enabled objects
+      will show the RSS button in firefox. Search results too.
+      [batlogg]
+
     - Fixed wrong i18n output encoding when create member area. We must set
       correct 'content-type' header to make PTS work when call translate.
       [panjunyong]
