@@ -146,7 +146,6 @@ def addMemberdata(self, portal):
     if not hasattr(md, 'error_log_update'):
         safeEditProperty(md, 'error_log_update', 0.0, 'float')
 
-
 def modifyActionProviders(self, portal):
     mt=getToolByName(portal, 'portal_properties')
     _actions=mt._cloneActions()
@@ -311,6 +310,43 @@ def addNewActions(self, portal):
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
 
+def addSiteActions(self, portal):
+    # site_actions which have icons associated with them as well
+    at=getToolByName(portal, 'portal_actions')
+    ai=getToolByName(portal, 'portal_actionicons')
+
+    at.addAction('small_text',
+                 name='Small Text',
+                 action="string:javascript:setActiveStyleSheet('Small Text', 1);",
+                 condition='',
+                 permission=CMFCorePermissions.View,
+                 category="site_actions")
+    at.addAction('normal_text', 
+                 name='Normal Text',
+                 action="string:javascript:setActiveStyleSheet('', 1);",
+                 condition='',
+                 permission=CMFCorePermissions.View,
+                 category="site_actions")
+    at.addAction('large_text', 
+                 name='Large Text',
+                 action="string:javascript:setActiveStyleSheet('Large Text', 1);",
+                 condition='',
+                 permission=CMFCorePermissions.View,
+                 category="site_actions")
+
+    ai.addActionIcon('site_actions',
+                     'small_text',
+                     'textsize_small.gif',
+                     'Small Text')
+    ai.addActionIcon('site_actions',
+                     'normal_text',
+                     'textsize_normal.gif',
+                     'Normal Text')
+    ai.addActionIcon('site_actions',
+                     'large_text',
+                     'textsize_large.gif',
+                     'Large Text')
+                 
 functions = {
     'addSiteProperties': addSiteProperties,
     'setupDefaultLeftRightSlots': setupDefaultLeftRightSlots,
@@ -324,7 +360,8 @@ functions = {
     'installPortalTools': installPortalTools,
     'modifyAuthentication': modifyAuthentication,
     'modifyActionProviders': modifyActionProviders,
-    'addErrorLog':addErrorLog
+    'addErrorLog':addErrorLog,
+    'addSiteActions':addSiteActions,
     }
 
 class GeneralSetup(SetupWidget):

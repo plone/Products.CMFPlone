@@ -6,6 +6,13 @@ Plone 2.0 - Fyuti
 
     RC2 
 
+    - Add 'site_actions' category to portal_actions.  This includes:
+      Small, Normal, Large text links.  This was added in
+      setup/ConfigurationMethods.py addSiteActions.  We add 3 actions to
+      portal_actions and 3 icons to portal_actionicons.  NOTE:  We want
+      to cache the icons in the plone_utils.getIconFor -- this is a problem.
+      If you change an icon it will not take effect until you restart zope.
+
     - Now in setup/ConfigurationMethods.py where the left/right_slots for the 
       portal root are created have been changed.  It is quite sensible.  We
       are removing the terminology of 'slots'.  We are moving towards the prefered
