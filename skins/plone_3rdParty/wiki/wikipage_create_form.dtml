@@ -19,7 +19,7 @@
   </dtml-if noedit>
 
   <form method="POST"
-        action="wikipage_create_handler"
+        action="&dtml-getId;wikipage_create_handler"
         enctype="multipart/form-data">
   <input type=hidden name=page value="&dtml-page;">
 
