@@ -41,6 +41,8 @@
 
 <body onload="setStyle();">
 
+<div id="visual-portal-wrapper">
+
 <div id="portal-top" i18n:domain="plone">
 
     <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
@@ -165,6 +167,7 @@
   the site. Typically "powered by" buttons, standards, tools used.
 </div>
 
+</div>
 
 </body>
 </html>
