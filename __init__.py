@@ -1,9 +1,7 @@
 from Products.CMFCore import DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
-import MembershipTool, FormulatorTool, CalendarTool
+import MembershipTool, FormulatorTool, CalendarTool, TranslatorTool
 import PloneFolder, PortalFactory
-
-from StringIO import StringIO
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
@@ -24,7 +22,7 @@ def allow_class(Class):
     from Globals import InitializeClass 
     InitializeClass(Class)
 
-allow_class(StringIO)
+#allow_class(ColorPreset)
 
 ModuleSecurityInfo('Products.Formulator').declarePublic('StringField','EmailField')
 ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
@@ -41,7 +39,8 @@ except: from Products.CMFCore import FSPageTemplate
 
 tools = ( MembershipTool.MembershipTool
         , FormulatorTool.FormulatorTool 
-        , CalendarTool.CalendarTool )
+        , CalendarTool.CalendarTool
+	, TranslatorTool.TranslatorTool )
 
 contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )
