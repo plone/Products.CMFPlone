@@ -24,12 +24,13 @@
 
     <span class="legend" i18n:translate="">Criteria Details</span>
 
-    <span tal:define="criteria here/listCriteria;">
-        <span tal:repeat="criterion criteria">
-            <span tal:define="editform string:criterion/${criterion/getEditForm};"
-                  tal:replace="structure python:path(editform)" />
-        </span>
-    </span>
+    <metal:block tal:define="criteria here/listCriteria;">
+        <metal:block tal:repeat="criterion criteria">
+            <metal:block tal:define="editform string:criterion/${criterion/getEditForm}/macros/${criterion/getEditForm};">
+                  <span metal:use-macro="python:path(editform)" />
+            </metal:block>
+        </metal:block>
+    </metal:block>
 
 
     <div class="row">

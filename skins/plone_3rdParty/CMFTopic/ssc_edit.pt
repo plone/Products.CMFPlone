@@ -1,4 +1,7 @@
-<div class="row">
+<div class="row"
+     metal:define-macro="ssc_edit"
+     tal:define="criterionid criterion/getId | here/getId;"
+     >
 
     <div class="label">
         <input class="noborder"
@@ -6,12 +9,13 @@
                value="" 
                name="criterion_ids:list" 
                id=""
-               tal:attributes="value here/getId; id string:cb_${here/getId}"
+               tal:attributes="value criterionid; 
+                               id string:cb_${criterionid}"
                />
         
         <label for=""
-               tal:attributes="for string:cb_${here/getId}">
-            <span tal:content="here/Field">Field</span>
+               tal:attributes="for string:cb_${criterionid}">
+            <span tal:content="criterion/Field | here/Field">Field</span>
             is
         </label>
         
@@ -19,8 +23,8 @@
              i18n:translate=""
              class="help" 
              style="visibility:hidden"
-             tal:content="here/Description"
-             tal:attributes="id string:${here/getId}_help;"
+             tal:content="criterion/Description | here/Description"
+             tal:attributes="id string:${criterionid}_help;"
              >
         String
         </div>
@@ -28,7 +32,7 @@
         <input type="hidden" 
                name="criteria.id:records" 
                value=""
-               tal:attributes="value here/getId"
+               tal:attributes="value criterionid"
                />
     </div>
         
@@ -38,9 +42,9 @@
                name="criteria.value:records"
                value="" 
                size="40"
-               tal:attributes="value here/value | nothing; 
-                               onfocus string:formtooltip('${here/getId}_help',1);
-                               onblur  string:formtooltip('${here/getId}_help',0);
+               tal:attributes="value criterion/value | here/value | nothing; 
+                               onfocus string:formtooltip('${criterionid}_help',1);
+                               onblur  string:formtooltip('${criterionid}_help',0);
                                tabindex tabindex/next|nothing;"
                />
     </div>

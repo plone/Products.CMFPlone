@@ -1,4 +1,7 @@
-<div class="row">
+<div class="row"
+     metal:define-macro="sort_edit"
+     tal:define="criterionid criterion/getId | here/getId;"
+     >
 
     <div class="label">
         <input class="noborder"
@@ -6,12 +9,13 @@
                value="" 
                name="criterion_ids:list" 
                id=""
-               tal:attributes="value here/getId; id string:cb_${here/getId}" 
+               tal:attributes="value criterionid; 
+                               id string:cb_${criterionid}" 
                />
 
         <label for=""
-               tal:attributes="for string:cb_${here/getId}">
-            <span tal:content="here/Field">Field</span>
+               tal:attributes="for string:cb_${criterionid}">
+            <span tal:content="criterion/Field | here/Field">Field</span>
             is
         </label>
 
@@ -19,8 +23,8 @@
              i18n:translate=""
              class="help" 
              style="visibility:hidden"
-             tal:content="here/Description"
-             tal:attributes="id string:${here/getId}_help;"
+             tal:content="criterion/Description | here/Description"
+             tal:attributes="id string:${criterionid}_help;"
              >
         List
         </div>
@@ -28,11 +32,13 @@
         <input type="hidden" 
                name="criteria.id:records" 
                value="" 
-               tal:attributes="value here/getId" />
+               tal:attributes="value criterionid" />
         
     </div>
     
-    <div class="field">
+    <div class="field"
+         tal:define="creversed criterion/reversed | here/reversed;"
+         >
         
         <input type="hidden" 
                name="criteria.reversed::int:default:records" 
@@ -43,15 +49,15 @@
                type="radio" 
                name="criteria.reversed:records" 
                value=""
-               tal:attributes="checked not:here/reversed;
-                               id string:${here/getId}_ascending;
-                               onfocus string:formtooltip('${here/getId}_help',1);
-                               onblur  string:formtooltip('${here/getId}_help',0);
+               tal:attributes="checked not:creversed;
+                               id string:${criterionid}_ascending;
+                               onfocus string:formtooltip('${criterionid}_help',1);
+                               onblur  string:formtooltip('${criterionid}_help',0);
                                tabindex tabindex/next|nothing;"
                />
                
         <label for=""
-               tal:attributes="for string:${here/getId}_ascending;">
+               tal:attributes="for string:${criterionid}_ascending;">
             Sorted in ascending order
         </label>
         
@@ -61,15 +67,15 @@
                type="radio" 
                name="criteria.reversed:records" 
                value="1"
-               tal:attributes="checked here/reversed;
-                               id string:${here/getId}_descending;
-                               onfocus string:formtooltip('${here/getId}_help',1);
-                               onblur  string:formtooltip('${here/getId}_help',0);
+               tal:attributes="checked creversed;
+                               id string:${criterionid}_descending;
+                               onfocus string:formtooltip('${criterionid}_help',1);
+                               onblur  string:formtooltip('${criterionid}_help',0);
                                tabindex tabindex/next|nothing;"
                />
 
         <label for=""
-               tal:attributes="for string:${here/getId}_descending;">
+               tal:attributes="for string:${criterionid}_descending;">
             Sorted in descending order
         </label>
 
