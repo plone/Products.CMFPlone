@@ -8,7 +8,7 @@ from cgi import parse_qs
 
 from zLOG import LOG, INFO, WARNING
 
-from Acquisition import aq_inner, aq_parent
+from Acquisition import aq_base, aq_inner, aq_parent
 from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
@@ -446,5 +446,65 @@ class PloneTool(UniqueObject, SimpleItem):
                     parent=parent.aq_parent
     
         return result
+
+    security.declarePublic('browserDefault')
+    def browserDefault(self, obj):
+        """Set default so we can return whatever we want instead of index_html"""
+##        import pdb;pdb.set_trace()
+        # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
+        # and then requests that object, for example for: /, with verb PROPFIND
+        # means acquire PROPFIND from the folder and call it
+        # its all very odd and WebDAV'y
+        request = getattr(self, 'REQUEST', None)
+        if request and request.has_key('REQUEST_METHOD'):
+            if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
+                return self, [request['REQUEST_METHOD']]
+        # now back to normal
+        
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+
+        # The list of ids where we look for default
+        ids = {}
+        # For BTreeFolders we just use the has_key, otherwise build a dict
+        if hasattr(aq_base(obj), 'has_key'):
+            ids = obj
+        else:
+            for id in obj.objectIds():
+                ids[id] = 1
+
+        # Look for default_page on the object
+        pages = getattr(aq_base(obj), 'default_page', [])
+        for page in pages:
+            if ids.has_key(page):
+                return obj, [page]
+        # we look for the default_page in the skins aswell.
+        for page in pages:
+            if hasattr(portal.portal_skins, page):
+                return obj, [page]        
+
+        # Try the default sitewide default_page setting
+        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
+            if ids.has_key(page):
+                return obj, [page]
+
+        # No luck, let's look for hardcoded defaults
+        default_pages = ['index_html', ]
+        for page in default_pages:
+            if ids.has_key(page):
+                return obj, [page]
+
+        # what if the page isnt found?
+        try:
+            # look for a type action called "folderlisting"
+            act = obj.getTypeInfo().getActionById('folderlisting')
+            if act.startswith('/'):
+                act = act[1:]
+            return obj, [act]
+        except: #XXX FIX ME! I SHOULD NOT CATCH ALL!
+            portal.plone_log("plone_utils.browserDefault",
+            'Total failure getting the folderlisting action for the folder, "%s"' \
+            % obj.absolute_url())
+            return obj, ['folder_listing']
+
 
 InitializeClass(PloneTool)

@@ -110,16 +110,7 @@ class PloneSite(CMFSite, OrderedContainer):
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
-        try:
-            return self.browserDefault()
-        except AttributeError:
-            skins = getToolByName(self, "portal_skins")
-            default = skins.default_skin
-            if not default: default = "None"
-            msg = """The Script (Python) object browserDefault could
-not be found in your skins path. Your current default skin is "%s", go to
-portal_skins tool and set the correct default skin.""" % default
-            raise AttributeError, msg
+        return getToolByName(self, 'plone_utils').browserDefault(self)
 
     def manage_beforeDelete(self, container, item):
         """ Should send out an Event before Site is being deleted """

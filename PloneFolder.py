@@ -312,21 +312,7 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
-        try:
-            return self.browserDefault()
-        except Unauthorized:
-            # Temporary hack, try index_html or folder_listing
-            if 'index_html' in list(self.objectIds()):
-                return self, ['index_html']
-            return self,['folder_listing']
-        except AttributeError:
-            skins = getToolByName(self, "portal_skins")
-            default = skins.default_skin
-            if not default: default = "[None]"
-            msg = """The Script (Python) object browserDefault could
-not be found in your skins path. Your current default skin is "%s", go to
-portal_skins tool and set the correct default skin.""" % default
-            raise AttributeError, msg
+        return getToolByName(self, 'plone_utils').browserDefault(self)
 
     security.declarePublic('contentValues')
     def contentValues(self,
