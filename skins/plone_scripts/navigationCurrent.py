@@ -29,7 +29,6 @@ for o in folder.listFolderContents():
        if checkPermission('List folder contents', o):
            listing.append(o)
    else:
-       if o.getId() != context.getId():
-           listing.append(o)
+       listing.append(o)
 
 return listing

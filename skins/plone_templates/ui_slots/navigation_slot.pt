@@ -30,10 +30,12 @@
             <div>
                 <strong i18n:translate="">Other items</strong> <br />
                 <div tal:repeat="sibling siblings">
+                    <metal:block tal:define="iscurrent python:test(sibling.getId()==here.getId(), 1, 0);
+                                             sibling_title python:'&nbsp;;'.join(sibling.title_or_id()[:18].split(' '));">
                     <a href="#" class="plain"
-                     tal:define="url string:${sibling/absolute_url}/view;
-                                 sibling_title python:'&nbsp;;'.join(sibling.title_or_id()[:18].split(' '));"
-                     tal:attributes="href url">
+                       tal:condition="not: iscurrent"
+                       tal:define="url string:${sibling/absolute_url}/view"
+                       tal:attributes="href url">
                         <img src="" 
                              height="16" 
                              width="16" 
@@ -42,6 +44,16 @@
                              tal:attributes="src string:$portal_url/${sibling/getIcon};
                                              alt sibling/Title;" />&nbsp;<tal:block tal:content="structure sibling_title" />
                     </a>
+                    <tal:block tal:condition="iscurrent">
+                      <img src=""
+                           height="16"
+                           border="0"
+                           tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" />&nbsp;<strong 
+                               tal:content="structure sibling_title">
+                               Current content id
+                               </strong>
+                    </tal:block>
+                    </metal:block>
                 </div>
             </div>
             </td>
