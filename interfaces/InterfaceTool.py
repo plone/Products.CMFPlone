@@ -7,12 +7,12 @@ class IInterfaceTool(Interface):
 
     id = Attribute('id', 'Must be set to "portal_interface"')
 
-    def objectImplements(self, obj, dotted_name):
+    def objectImplements(obj, dotted_name):
         """ Asserts if an object implements a given interface """
 
-    def classImplements(self, obj, dotted_name):
+    def classImplements(obj, dotted_name):
         """ Asserts if an object's class implements a given interface """
 
-    def namesAndDescriptions(self, dotted_name, all=0):
+    def namesAndDescriptions(dotted_name, all=0):
         """ Returns a list of pairs (name, description) for a given
         interface"""

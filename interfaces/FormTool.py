@@ -11,7 +11,7 @@ class ICMFForm(Interface):
             fieldType String == StringField
         """
 
-    def validate(self, REQUEST, errors=None):
+    def validate(REQUEST, errors=None):
         """ Iterates through the fields on the Form object and validates them.
             Errors can be passed in and will be appended to the errors dictionary.
             We will also strip the prefix of 'field_' in the REQUEST.form dictionary.
