@@ -30,7 +30,7 @@ def setupNavTreePropertySheet(prop_tool):
     p._setProperty('sortCriteria', ['isPrincipiaFolderish,desc','title_or_id,asc']  , 'lines')
     p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')
     p._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
-    p._setProperty('croppingLength',18,'int')
+    p._setProperty('croppingLength',256,'int')
     p._setProperty('forceParentsInBatch',0,'boolean')
     p._setProperty('skipIndex_html',1,'boolean')
     p._setProperty('rolesSeeContentsView', ['Manager','Reviewer','Owner'] , 'lines')
