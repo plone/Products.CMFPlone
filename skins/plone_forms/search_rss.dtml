@@ -7,7 +7,7 @@
   xmlns="http://purl.org/rss/1.0/"
 >
 <dtml-let 
-    start="REQUEST.get('b_start', 0)"
+    start="int(REQUEST.get('b_start', 0))"
     end="REQUEST.get('b_end', start+30)"
     results="queryCatalog()[start:end]">
 <channel rdf:about="<dtml-var absolute_url>">
