@@ -3,6 +3,8 @@ from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
 
 from AccessControl import User
+from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import noSecurityManager
 from App.Extensions import getObject
 from App.Common import package_home
 
@@ -13,8 +15,6 @@ import os
 import sys
 import zLOG
 
-DEBUG = 0
-
 def log(message, summary='', severity=0):
     zLOG.LOG('Plone Database Init', severity, summary, message)
 
@@ -22,11 +22,20 @@ from ConfigParser import ConfigParser
 
 # grab the old initilalize...
 old_initialize = OFS.Application.initialize
-global out
+
+def patch():
+    # patch away!
+    OFS.Application.initialize = go
 
 def go(app):
     """ Initialize the ZODB with Plone """
     old_initialize(app)
+
+    # wrap the application in a fake request.  the codepath takes us through
+    # some DTML stuff that expects to be able to acquire a REQUEST
+    from Testing import makerequest
+    app = makerequest.makerequest(app)
+
     out = []
     # make sure that anything we have done so
     # far is committed, in case anything goes 
@@ -37,15 +46,17 @@ def go(app):
     # stop the creation of the db
     # that would truly suck
     try: 
-        _go(app)
+        out = _go(app)
     except:
         # if anything went wrong do an abort
         get_transaction().abort()
-        out.append('Database init failed miserably [%s, %s]' % _get_error())
-
-    if DEBUG and out:
-        # only log if we have something to say
-        # and are in DEBUG mode
+        zLOG.LOG(
+            'Plone Database Init',
+            zLOG.ERROR,
+            'Database init failed',
+            error=sys.exc_info(),
+            )
+    else:
         log('\n'.join(out)+'\n')
 
 def _get_error():
@@ -53,6 +64,7 @@ def _get_error():
     return str(type), str(value)
 
 def _go(app):
+    out = []
     filename = 'plone.ini'
     filename = os.path.join(package_home(globals()), filename)
 
@@ -64,7 +76,7 @@ def _go(app):
         fh.close()
     except IOError: 
         # no file found
-        return
+        return out
 
     # read the config file and find a million excuses
     # why we shouldnt do this...
@@ -77,21 +89,21 @@ def _go(app):
     except ConfigParser.NoSectionError:
         # no section name databaseSetup
         out.append("NoSectionError when parsing config file")
-        return
+        return out
     except AttributeError:
         # no attribute named 
         out.append("AttributeError when parsing config file")
-        return
+        return out
 
     # ok if create in that file is set to 0, then we dont continue
     if not create:
         out.append("Config file found, but create set to 0")
-        return
+        return out
 
     oids = app.objectIds()
 
     # these are the two set elements...
-    eid = 'accessRule.py'
+    eid = 'accessRule'
     sid = 'SiteRoot'
 
     # 1. Create the admin user given the access file
@@ -115,26 +127,28 @@ def _go(app):
         out.append("Adding admin user failed [%s, %s]" %  _get_error())
 
     # 2 .now get that user, it could be that one already exists
-    user = acl_users.getUser('admin').__of__(acl_users)
-    if not user:
-        out.append("Getting user failed [%s, %s]" %  _get_error())
-    else:
+    user = acl_users.getUser('admin')
+    if user:
+        user = user.__of__(acl_users)
+        newSecurityManager(None, user)
         out.append("Gotten the admin user")
+    else:
+        out.append("Getting user failed [%s, %s]" %  _get_error())
 
     # 3. now create the access rule
     if eid not in oids:
         # this is the actual access rule
         out.append("Added external method")
         manage_addExternalMethod(app, 
-                                                  eid, 
-                                                  'Plone Access Rule', 
-                                                  'accessRule', 
-                                                  'accessRule')
+                                 eid, 
+                                 'Plone Access Rule', 
+                                 'CMFPlone.%s' % eid, 
+                                 '%s' % eid)
         # this sets the access rule
         out.append("Set as access rule")
-        manage_addAccessRule(app, eid)
-        if user:
-            getattr(app, eid).changeOwnership(user)
+##         manage_addAccessRule(app, eid)
+##         if user:
+##             getattr(app, eid).changeOwnership(user)
 
     # 4. actually add in Plone
     if pid not in oids:
@@ -164,15 +178,17 @@ def _go(app):
             getattr(plone, sid).changeOwnership(user)
   
     # 6. add in products
-    ids = [ x['id'] for x in plone.portal_quickinstaller.listInstallableProducts(skipInstalled=1) ]
+    qit = plone.portal_quickinstaller
+    
+    ids = [ x['id'] for x in qit.listInstallableProducts(skipInstalled=1) ]
     qit.installProducts(ids)
     
     # 6.1 patch up the products
     # CMF Collector is a very bad product
     # import workflow
-    plone.portal_workflow.manage_importObject('collector_issue_workflow.zexp')
-    cbt = plone.portal_workflow._chains_by_type
-    cbt['Collector Issue'] = ('collector_issue_workflow',)
+    #plone.portal_workflow.manage_importObject('collector_issue_workflow.zexp')
+    #cbt = plone.portal_workflow._chains_by_type
+    #cbt['Collector Issue'] = ('collector_issue_workflow',)
 
     # 7. add in skins
     # go and install the skins...
@@ -190,8 +206,8 @@ def _go(app):
     # Sigh, ok now CMFCollector should be in the path
 
     # 8. add in the languages
-    sk = plone.portal_migration._getWidget('Localizer Language Setup')
-    sk.addItems(sk.available())       
+#    sk = plone.portal_migration._getWidget('Localizer Language Setup')
+#    sk.addItems(sk.available())       
     
     # 9. commit
     get_transaction().commit()
@@ -202,7 +218,7 @@ def _go(app):
     cfg.write(fh)
     out.append("Changed config file, set create = 0")
     fh.close()
+    noSecurityManager()
     out.append("Finished")
+    return out
 
-# patch away!
-OFS.Application.initialize = go

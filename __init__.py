@@ -28,9 +28,8 @@ def transaction_note(note):
     T.note(str(note))
 
 # this patches OFS.Application 
-# and so must be outside a function
-# so it is run on the import of CMFPlone
 import PloneInitialize
+PloneInitialize.patch()
 
 def initialize(context):
 
