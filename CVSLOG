@@ -1,3 +1,24 @@
+2004-04-27 14:17  tesdal
+
+	* FormTool.py (Plone-2_0-branch): Added missing docstring.
+
+2004-04-27 06:52  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): "I
+	  said do you know where the Wild Roses grow?, so sweet, scarlet
+	  and free?"
+
+	  well you wouldnt think tooling would implement them wl_Lockable
+	  interface; but install CMFMember and BAM!  There ya go it.
+	  Membership and Members as content.
+
+	  cant believe I'm listening to music that Kylie Minogue is singing
+	  on.
+
+2004-04-27 06:17  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-27 00:02  shh42
 
 	* HISTORY.txt (Plone-2_0-branch): Update Jello's HISTORY.
