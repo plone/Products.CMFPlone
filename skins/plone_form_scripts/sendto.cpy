@@ -10,6 +10,8 @@
 ##
 REQUEST=context.REQUEST
 
+from Products.CMFPlone import transaction_note
+
 plone_utils=context.plone_utils
 site_properties=context.portal_properties.site_properties
 
