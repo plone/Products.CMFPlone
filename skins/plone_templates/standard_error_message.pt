@@ -92,17 +92,6 @@
                     </div>
                 </div>        
                 
-                <div class="row" tal:condition="options/error_tb">
-                    <div class="label">
-                    Python Traceback
-                    </div>
-            
-                    <p><pre i18n:name="error_tb"
-                         tal:content="options/error_tb">
-                    The rendered error traceback
-                    </pre></p>
-                </div>        
-                
             </div>
         
         </div>
