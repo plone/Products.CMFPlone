@@ -159,6 +159,7 @@ div.message {
 .description {
     /* The summary text describing the document */
     font: &dtml-descriptionFont;;
+    display: block;
 }
 
 .footer {

@@ -6,50 +6,43 @@
 	
 <body>
 
-<span metal:fill-slot="main">
+<div metal:fill-slot="main">
 
     <div class="contentHeader"
          metal:use-macro="here/portal_boxes/macros/contentHeader">
     content header
     </div>
    
+    <img tal:condition="here/size"
+         src="#" 
+         tal:attributes="src here/absolute_url" />
+
+        
     <span class="description" tal:content="structure here/Description">
     Description
     </span>
 
-    <div class="group">
-        <span class="legend">Image details</span>
-
+    <small>
+    Size:
+        <span tal:define="size python:here.getObjSize(here)"
+              tal:content="size">                        
+        File size
+        </span>            
         
-        <div class="row">
-            <span class="label">Size</span>
-            <span class="field" 
-                  tal:define="size python:here.getObjSize(here)"
-                  tal:content="size">                        
-            File size
-            </span>            
-            <span class="info" tal:condition="python:test(here.size, 0, 1)">
-              (No file has been uploaded)
-            </span>
-        </div>
+        <span tal:condition="python:test(here.size, 0, 1)">
+          (No file has been uploaded)
+        </span>
         
-        <div class="row">
-            <span class="label">File type</span>
-            <span class="field" tal:content="here/content_type">
-            Content type
-            </span>
-        </div>    
+        -
+        
+        Content type:
+        <span tal:content="here/content_type">
+        Content type
+        </span>
     
-        <div class="row">
-            <span class="label"></span>
-            <span class="field" tal:condition="here/size">
-                <img src="#" tal:attributes="src here/absolute_url" />
-            </span>
-        </div>
-
-    </div>
-
-</span>
+    </small>
+    
+</div>
 
 </body>
 </html>
