@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=id=None,type_name=None,script_id
+##parameters=id=None,type_name=None,script_id=None
 ##title=
 ##
 from DateTime import DateTime
