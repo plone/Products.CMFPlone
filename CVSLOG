@@ -1,3 +1,182 @@
+2004-04-17 01:25  shh42
+
+	* HISTORY.txt (Plone-2_0-branch): Note fix for
+	  http://plone.org/collector/2980.
+
+2004-04-17 00:33  shh42
+
+	* skins/plone_form_scripts/register.cpy (Plone-2_0-branch): Defuse
+	  another (fairly) bare except.
+
+2004-04-17 00:09  shh42
+
+	* HISTORY.txt (Plone-2_0-branch): Fixed
+	  http://plone.org/collector/2998.
+
+2004-04-17 00:02  shh42
+
+	* skins/plone_scripts/breadcrumbs.py (Plone-2_0-branch): Fix for
+	  http://plone.org/collector/2998. The types tool has its own
+	  getTypeInfo method, but with a different signature.
+
+2004-04-16 23:11  elvix
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  Small javascript fixes and clean-ups. Finally getting to use
+	  "region-content" : no more search-term-highlighting in the
+	  tabs...  also fixes for bugs 2691, 2663 and 3001
+
+2004-04-16 22:55  elvix
+
+	* skins/: plone_tableless/main_template.pt,
+	  plone_templates/main_template.pt (Plone-2_0-branch): added new
+	  id="region-content" to main template. Now we will finally be able
+	  to sort out all those old javascript bugs.
+
+2004-04-16 22:07  dreamcatcher
+
+	* skins/plone_templates/global_contentviews.pt (Plone-2_0-branch):
+	  Cleanup a bit
+
+2004-04-16 21:57  shh42
+
+	* tests/testRegistrationTool.py (Plone-2_0-branch): Add two tests
+	  so I can safely close http://plone.org/collector/3000
+
+2004-04-16 21:46  limi
+
+	* skins/plone_images/info_icon.gif (Plone-2_0-branch): Pixel
+	  pushin'
+
+2004-04-16 21:23  limi
+
+	* ActionIconsTool.py, ActionsTool.py,
+	  skins/plone_images/confirm_icon.gif,
+	  skins/plone_images/delete_icon.gif (Plone-2_0-branch): Changing
+	  Action/ActionIcons tool icon. Hope dreamcatcher is more happy
+	  about these. ;)
+
+2004-04-16 21:16  dreamcatcher
+
+	* HISTORY.txt (Plone-2_0-branch): Remove whitespace
+
+2004-04-16 21:09  dreamcatcher
+
+	* HISTORY.txt (Plone-2_0-branch): Add note to history about
+	  fallback icon path to CMFPlone.
+
+2004-04-16 21:02  dreamcatcher
+
+	* GroupsTool.py, PloneUtilities.py (Plone-2_0-branch): Ok, lets be
+	  serious here. This is Plone, not Mother's Joan house.
+
+	  Fix the case where a user-defined tool inheriting from a Plone
+	  tool and not overriding 'toolicon' would get the default icon
+	  because the path could not be found. This happened because the
+	  toolicon attribute holds paths relative to CMFPlone dir.
+
+2004-04-16 20:51  zopezen
+
+	* HISTORY.txt (Plone-2_0-branch): Note base tool and icon changes
+
+2004-04-16 20:23  zopezen
+
+	* PloneUtilities.py (Plone-2_0-branch): Clean up the PloneUtilities
+	  ToolInit a bit.
+
+	  It wraps a function, rather than override it, hence no need to
+	  copy and paste code.
+
+	  It will also fail gracefully if a tool is not found and log a
+	  message.
+
+2004-04-16 20:10  tiran
+
+	* interfaces/: FactoryTool.py, FormTool.py, InterfaceTool.py,
+	  PloneControlPanel.py (Plone-2_0-branch): Tool interfaces are
+	  implementing IPloneBaseTool
+
+2004-04-16 20:06  tiran
+
+	* ActionIconsTool.py, ActionsTool.py, CalendarTool.py,
+	  CatalogTool.py, DiscussionTool.py, FactoryTool.py, FormTool.py,
+	  GroupDataTool.py, GroupsTool.py, InterfaceTool.py,
+	  MemberDataTool.py, MembershipTool.py, MetadataTool.py,
+	  MigrationTool.py, PloneBaseTool.py, PloneControlPanel.py,
+	  PloneTool.py, PropertiesTool.py, QuickInstallerTool.py,
+	  RegistrationTool.py, SkinsTool.py, SyndicationTool.py,
+	  TypesTool.py, URLTool.py, UndoTool.py, WorkflowTool.py,
+	  interfaces/PloneBaseTool.py (Plone-2_0-branch): Added
+	  PloneBaseTool + IPloneBaseTool interface subclass every tool from
+	  PloneBaseTool and implement the base tool marker interface
+
+2004-04-16 19:52  dtremea
+
+	* FactoryTool.py (Plone-2_0-branch): Fixed the bug stated by the
+	  test. Added support for keeping data on Archetypes add reference
+	  (thanks to Andre Camargo).
+
+2004-04-16 19:51  limi
+
+	* skins/plone_images/pencil_icon.gif (Plone-2_0-branch): Re-adding.
+
+2004-04-16 19:50  dtremea
+
+	* tests/testPortalFactory.py (Plone-2_0-branch): Added a test to
+	  check for meta_type from temp objects (thanks to Andre Camargo).
+
+2004-04-16 19:48  limi
+
+	* skins/plone_images/pencil_icon.gif (Plone-2_0-branch): Trying to
+	  remove and re-add the icon, it seems it was added as non-binary
+	  long time ago.
+
+2004-04-16 19:21  tiran
+
+	* setup/dependencies.py (Plone-2_0-branch): added missing spaces
+
+2004-04-16 19:12  limi
+
+	* ActionIconsTool.py, ActionsTool.py, CalendarTool.py,
+	  CatalogTool.py, DiscussionTool.py, FactoryTool.py, FormTool.py,
+	  GroupDataTool.py, MemberDataTool.py, MembershipTool.py,
+	  MetadataTool.py, MigrationTool.py, NavigationTool.py,
+	  PloneControlPanel.py, PloneTool.py, PropertiesTool.py,
+	  QuickInstallerTool.py, RegistrationTool.py, SkinsTool.py,
+	  SyndicationTool.py, TypesTool.py, URLTool.py, UndoTool.py,
+	  WorkflowTool.py, skins/plone_images/action_icon.gif,
+	  skins/plone_images/add_icon.gif,
+	  skins/plone_images/form_icon.gif,
+	  skins/plone_images/info_icon.gif,
+	  skins/plone_images/undo_icon.gif (Plone-2_0-branch): Adding icons
+	  for all tools. No more tool blindness :)
+
+2004-04-16 16:38  tesdal
+
+	* GroupsTool.py, PloneUtilities.py, __init__.py (Plone-2_0-branch):
+	  Fixed the retarded tool icon override hack by Andy.  Extended the
+	  ToolInit from CMFCore to check the tool classes for a 'toolicon'
+	  variable and use that instead of the default icon if it is
+	  present. You can define toolicon paths relative to the product
+	  root, like 'skins/portal_images/group.gif'.
+
+2004-04-16 12:01  dannybloe
+
+	* PloneBatch.py (Plone-2_0-branch): Modified opt() and removed the
+	  try/except constructs because they tend to give weird results
+	  sometimes with LazyCat objects. Replaced them with proper bound
+	  checks. Also fixed some problems with orphans. All seems to work
+	  now.
+
+2004-04-16 11:03  k_vertigo
+
+	* skins/plone_prefs/reconfig_form.cpt (Plone-2_0-branch):  - play
+	  better with vhost setups
+
+2004-04-16 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-15 22:14  tiran
 
 	* PloneFolder.py, interfaces/OrderedContainer.py
