@@ -86,6 +86,7 @@
      i18n:domain="plone"
      tal:define="portal_url portal_url|here/portal_url;
                  ztu ztu|modules/ZTUtils;
+                 tabindex tabindex|options/tabindex;
                  current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
 
      <tal:block tal:condition="not: actions|nothing">

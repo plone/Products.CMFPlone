@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
@@ -16,19 +16,21 @@
 <dtml-call "REQUEST.set('local_actions', actions.get('object_tabs', []))">
 <dtml-call "REQUEST.set('isFolder', getTypeInfo().getId() in site_properties.use_folder_tabs)">
 <dtml-call "REQUEST.set('template_id', URL0.split('/')[-1])">
-<dtml-call "REQUEST.set('slots_mapping', prepare_slots())"> 
+<dtml-call "REQUEST.set('slots_mapping', prepare_slots())">
 <dtml-call "REQUEST.set('show_border', showEditableBorder( template_id=template_id, actions=actions ))">
-  
+<dtml-call "REQUEST.set('tabindex',  makeIterator(pos=30000))">
+
 <dtml-var "macro_renderer(template='here/header', macro='html_header')" >
-  
+
 <body>
 
-  <dtml-var "macro_renderer(template='here/header', macro='portal_header' )" >
+  <dtml-var "macro_renderer(template='here/header',
+    macro='portal_header', tabindex=tabindex )" >
 
   <table class="columns">
-  
+
         <tbody>
-            
+
             <tr>
 
                 <dtml-var "macro_renderer(template='here/main_template', macro='left_column', slots_mapping=slots_mapping, site_properties=site_properties, portal_url=portal_url)" >
@@ -37,22 +39,22 @@
 
                     <dtml-if show_border>
                       <dtml-var "macro_renderer(template='here/main_template', macro='contentTabs', actions=actions, show_border=show_border, template_id=template_id, isFolder=isFolder, folder_actions=folder_actions, obj_actions=obj_actions, local_actions=local_actions)" >
-                        
+
                       <div id="contentBar">
 			&nbsp;
 		      </div>
 
 		      <dtml-call "REQUEST.set('document_class', 'editableDocument')">
                     </dtml-if>
- 
+
                    <div class="<dtml-var "REQUEST.get('document_class', 'document')">">
 
                     <dtml-var "macro_renderer(template='here/header', macro='portal_message')" >
-			  
+
                     <dtml-var "macro_renderer(template='here/main_template', macro='documentActions')" >
 
                         <dtml-comment>
-                        
+
                         this is where your content will start.  so you must remember to close:
                            * this div
                            * this td
