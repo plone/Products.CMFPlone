@@ -29,8 +29,7 @@
                       tal:attributes="action string:$portal_url/logged_in">
 
                     <input type="hidden" name="came_from" value=""
-                           tal:condition="python:request.get('came_from', '')"
-                           tal:attributes="value request/came_from;
+                           tal:attributes="value request/URL;
                                            tabindex tabindex/next" />
 
                     <label for="ac_name" tal:attributes="for ac_name"> 
