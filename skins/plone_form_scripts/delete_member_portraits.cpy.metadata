@@ -1,0 +1,6 @@
+[validators]
+validators = validate_member_portraits
+
+[actions]
+action.failure=traverse_to:string:prefs_member_portraits_form
+action.success=redirect_to:string:plone_control_panel

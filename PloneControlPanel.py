@@ -134,6 +134,15 @@ default_configlets = (
      'permission': ManagePortal,
      'imageUrl':'plone_images/zope_icon.gif'},
 
+    {'id':'memberPortraits',
+     'appId':'Plone',
+     'name':'Member Portraits',
+     'action':'string:${portal_url}/prefs_member_portraits_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/user.gif'},
+
+
 )
 
 

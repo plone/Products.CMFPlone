@@ -1,0 +1,14 @@
+[default]
+title=Member portraits
+
+[security]
+View=0:Authenticated
+
+[validators]
+validators..Save=validate_member_portraits
+validators..Cancel=
+
+[actions]
+action.success..Save=traverse_to:string:delete_member_portraits
+action.success..Cancel=redirect_to:string:prefs_member_portraits_form
+action.failure=traverse_to:string:prefs_member_portraits_form
