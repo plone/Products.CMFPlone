@@ -31,6 +31,10 @@ class MembershipTool(BaseTool):
     default_portrait = 'defaultUser.gif'
     security = ClassSecurityInfo()
 
+    #XXX I'm not quite sure why getPortalRoles is declared 'Managed'
+    #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
+    security.declareProtected(View, 'getPortalRoles')
+
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
         returns the Portait for a member_id

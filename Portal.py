@@ -18,6 +18,7 @@ def listPolicies():
 def addPolicy(label, klass): custom_policies[label]=klass
 
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
+from Products.PythonScripts.PythonScript import PythonScript
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
@@ -58,6 +59,11 @@ Please contribute your experiences at the "Plone website":http://www.plone.org
 Thanks for using our product.
 
 "The Plone Team":http://plone.org/about/team
+"""
+
+member_indexhtml="""\
+member_search=context.restrictedTraverse('member_search_form')
+return member_search()
 """
 
 factory_type_information = { 'id'             : 'Plone Root'
@@ -168,10 +174,10 @@ class PloneGenerator(Portal.PortalGenerator):
         o.setTitle('Members')
         o.setDescription("Container for portal members' home directories")
 
-        member_search=p.portal_skins.plone_forms.member_search_form.read()
-        o._setObject('index_html', ZopePageTemplate('index_html', member_search))
+        o._setObject('index_html', PythonScript('index_html'))
         index_html=o['index_html']
-        index_html.pt_setTitle('Member Search')
+        index_html.write(member_indexhtml)
+        index_html.ZPythonScript_setTitle('Member Search')
 
     def setupPloneWorkflow(self, p):
         wf_tool=p.portal_workflow

@@ -22,9 +22,9 @@ if qs:
             else:
                 k, v = tmp[0], ''
             L.append((k,v))
-
-for k,v in kw.items():
-    L.append((k, url_quote_plus(v)))
+else:
+    for k,v in kw.items():
+        L.append((k, url_quote_plus(v)))
 
 # separate k/v pairs with &amp; (dont blame me, see the RFC)
 new = '&amp;'.join([ '%s=%s' % (k, v) for k, v in L ])
