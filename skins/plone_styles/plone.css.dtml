@@ -727,6 +727,12 @@ input.searchButton {
     font-weight: bold;
 }
 
+.fieldRequired {
+    background: url("<dtml-var portal_url>/required.gif") center left no-repeat;
+    padding: 0 0 0 8px;
+    color: &dtml-backgroundColor;;
+} 
+
 .formHelp {
     font-size: 90%;
     color: &dtml-discreetColor;;
@@ -745,6 +751,10 @@ input.searchButton {
     margin: 0;
     width: 68% !important;
 }
+
+.error .fieldRequired {
+   color: &dtml-notifyBackgroundColor;;
+} 
 
 .card {
     background-color: &dtml-globalBackgroundColor;;
