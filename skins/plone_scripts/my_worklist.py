@@ -44,7 +44,7 @@ for wlist_map_sequence in wf_wlist_map.values():
                        and [p for p in permissions if checkPermission(p, o)]) \
                   and (not roles \
                        or  roles \
-                       and [role for role in roles if role in user.getRolesInContext(o)]):
+                       and [role for role in user.getRolesInContext(o) if role in roles]):
                     avail_objs[o.absolute_url()] = o
 
 avail_objs = avail_objs.values()
