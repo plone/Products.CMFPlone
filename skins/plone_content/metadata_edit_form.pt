@@ -9,7 +9,8 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+     tal:define="errors python:request.get('errors', {});
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
     <h1 i18n:translate="heading_edit_properties">Edit Properties</h1>
@@ -47,7 +48,10 @@
             </div>
             
             <div class="field">
-	        <metal:block tal:define="val here/isDiscussable;
+	        <metal:block tal:define="val request/allowDiscussion | here/isDiscussable;
+                                   val python:test(val=='default',None,val);
+                                   val python:test(val=='off',0,val);
+                                   val python:test(val=='on',1,val);
                                    tabindex tabindex/next;">
                 <input class="noborder" 
                        type="radio" 
@@ -179,7 +183,8 @@
                       onfocus="formtooltip('keywords_help',1)" 
                       onblur="formtooltip('keywords_help',0)"
                       tal:attributes="tabindex tabindex/next;"
-                      ><span tal:repeat="subject here/Subject" tal:replace="python:str(subject)+'\n'"/></textarea>&nbsp;
+                      tal:define="subject request/subject | here/Subject;"
+                      ><span tal:repeat="subject subject" tal:replace="python:str(subject)+'\n'"/></textarea>&nbsp;
                     </td></tr>
                 </table>
 
@@ -187,7 +192,8 @@
 
         </div>         
 
-        <div class="row">
+        <div class="row"
+             tal:define="error errors/effective_date | nothing;">
             <div class="label">
                 <span i18n:translate="label_effective_date">Effective Date</span>
 
@@ -203,17 +209,22 @@
             <div class="field"
 	               tal:define="inputname  string:effective_date;
                              formname   string:edit_form;
+                             formvalue  request/effective_date | nothing;
                              inputvalue python:test(here.effective_date, here.effective_date, 'None');
+                             inputvalue python:test(formvalue,formvalue,inputvalue);
                              onfocus string:formtooltip('effective_date_help',1);
                              onblur string:formtooltip('effective_date_help',0);
-                             tabindex tabindex/next;" >
+                             tabindex tabindex/next;" 
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+                <div tal:replace="error" />
                 <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                 </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row"
+             tal:define="error errors/expiration_date | nothing;">
             <div class="label">
                 <span i18n:translate="label_expiration_date">Expiration Date</span>
                 <div id="expiration_date_help" 
@@ -228,10 +239,14 @@
             <div class="field"
 	         tal:define="inputname  string:expiration_date;
                              formname   string:edit_form;
+                             formvalue  request/expiration_date | nothing;
                              inputvalue python:test(here.expiration_date, here.expiration_date, 'None');
+                             inputvalue python:test(formvalue,formvalue,inputvalue);
                              onfocus string:formtooltip('expiration_date_help',1);
                              onblur string:formtooltip('expiration_date_help',0);
-                             tabindex tabindex/next;" >
+                             tabindex tabindex/next;" 
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+                <div tal:replace="error" />
                 <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                 </div>
@@ -252,16 +267,15 @@
             
             <div class="field">
                 <select name="format" 
-			                  value=""
 			                  tabindex="" 
 			                  onfocus="formtooltip('format_help',1)" 
 			                  onblur="formtooltip('format_help',0)"
-			                  tal:attributes="value here/Format;
-                                        tabindex tabindex/next;">
+			                  tal:attributes="tabindex tabindex/next;"
+                        tal:define="format request/format | here/Format;">
 	            <option value="">Choose MIME-type</option> 
                     <option tal:repeat="mimetype here/plone_utils/availableMIMETypes"
                             tal:attributes="value python:mimetype;
-                                            selected python:test(here.Format() == mimetype, 'selected', '');"
+                                            selected python:test(format == mimetype, 'selected', '');"
                             tal:content="mimetype" />
                 </select>
             </div>
@@ -269,7 +283,8 @@
 
         <div class="row"
              tal:define="def_language here/portal_properties/default_language;
-                         sel_language python:test(here.Language(), here.Language(), def_language);">
+                         sel_language python:test(here.Language(), here.Language(), def_language);
+                         sel_language python:request.get('language',sel_language)">
             <div class="label">
                 <span i18n:translate="label_language">Language</span>
                 <div id="language_help" 
@@ -284,11 +299,9 @@
                 <!-- ISO-639-2 language selector for Plone -->
                 <select name="language" 
                         tabindex=""
-                        value=""
                         onfocus="formtooltip('language_help',1)" 
                         onblur="formtooltip('language_help',0)"
-                        tal:attributes="value here/Language;
-                                        tabindex tabindex/next;"
+                        tal:attributes="tabindex tabindex/next;"
                         >
                     <option value="" i18n:translate="choose_language">Choose Language</option> 
 	            <option tal:repeat="language here/availableLanguages" 
@@ -318,7 +331,7 @@
                        tabindex=""
                        onfocus="formtooltip('rights_help',1)" 
                        onblur="formtooltip('rights_help',0)"
-                       tal:attributes="value here/Rights;
+                       tal:attributes="value request/rights | here/Rights;
                                        tabindex tabindex/next;"
                        />
             </div>
@@ -344,7 +357,8 @@
                           onfocus="formtooltip('contributors_help',1)" 
                           onblur="formtooltip('contributors_help',0)"
                           tal:attributes="tabindex tabindex/next;"
-                          ><span tal:repeat="contributor here/Contributors" tal:replace="python:contributor+'\n'">contributor</span></textarea>
+                          tal:define="contributors request/contributors | here/Contributors;"
+                          ><span tal:repeat="contributor contributors" tal:replace="python:contributor+'\n'">contributor</span></textarea>
             </div>
         </div>
 
