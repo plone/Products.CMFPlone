@@ -22,7 +22,9 @@ if failMessage:
 member = mt.getAuthenticatedMember()
 mt.setPassword(password, domains)
 mt.credentialsChanged(password)
-context.REQUEST.set('portal_status_message', 'Password changed.')
-return context.personalize_form(context,
-                                context.REQUEST,
-                                portal_status_message='Password changed.')
+
+url='%s/%s?portal_status_message=%s' % ( context.absolute_url()
+                                      , 'personalize_form'
+                                      , 'Password+changed.' )
+
+return context.REQUEST.RESPONSE.redirect(url)
