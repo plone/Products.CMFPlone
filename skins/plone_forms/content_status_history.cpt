@@ -38,7 +38,7 @@
           name="edit_form"
           method="post"
           action="content_status_modify"
-          tal:define="self_publish python:test(request.get('ids', None), 1, 0)"
+          tal:define="self_publish not:request/ids|nothing"
           tal:attributes="action string:${template/getId}">
 
         <span class="legend" i18n:translate="legend_publishing_details">Publishing Details</span>
@@ -254,14 +254,14 @@
                        value="Save"
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
-                       tal:condition="python:self_publish"/>
+                       tal:condition="not:request/ids|nothing"/>
                 <input class="context"
                        type="submit"
                        name="form.button.FolderPublish"
                        value="Save"
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
-                       tal:condition="python:not self_publish"/>
+                       tal:condition="request/ids|nothing"/>
                 <input class="context"
                        type="submit"
                        name="form.button.Cancel"

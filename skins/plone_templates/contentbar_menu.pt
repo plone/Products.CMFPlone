@@ -51,7 +51,7 @@
             </tal:block>
             <li class="menuItem menuSep">
                 <a href="#" 
-                   tal:attributes="href string:${here/absolute_url}/portal_form/content_status_history"
+                   tal:attributes="href string:${here/absolute_url}/content_status_history"
                    i18n:translate="">Advanced</a>
             </li>
         </ul>
