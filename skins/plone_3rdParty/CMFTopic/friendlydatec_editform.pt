@@ -14,11 +14,13 @@
             is
         </label>
                     
-        <div id="date_criterion_help" 
-             i18n:id="date_criterion_help"
+        <div id="" 
+             i18n:translate=""
              class="help" 
              style="visibility:hidden"
-             tal:content="here/Description">
+             tal:content="here/Description"
+             tal:attributes="id string:${here/getId}_help;"
+             >
         Date
         </div>
             
@@ -32,26 +34,28 @@
     
     <div class="field">
         <select name="criteria.operation:records"
-                onfocus="formtooltip('date_criterion_help',1)" 
-                onblur="formtooltip('date_criterion_help',0)">
+                tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
+                                onblur  string:formtooltip('${here/getId}_help',0);"
+                >
                 
             <option value="min"
                     tal:attributes="selected python:here.operation=='min'"
-            >More than</option>
+            >more than</option>
             
             <option value="max"
                     tal:attributes="selected python:here.operation=='max'"
-            >Less than</option>
+            >less than</option>
              
             <option value="within_day"
                     tal:attributes="selected python:here.operation=='within_day'"
-            >Within</option>
+            >within</option>
         </select>
         
         <select name="criteria.value:records"
                 tal:define="dateoptions here/defaultDateOptions"
-                onfocus="formtooltip('date_criterion_help',1)" 
-                onblur="formtooltip('date_criterion_help',0)">
+                tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
+                                onblur  string:formtooltip('${here/getId}_help',0);"
+                >
 
             <option value=""
                     tal:repeat="doption dateoptions"
@@ -62,8 +66,9 @@
         </select>
         
         <select name="criteria.daterange:records"
-                onfocus="formtooltip('date_criterion_help',1)" 
-                onblur="formtooltip('date_criterion_help',0)">
+                tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
+                                onblur  string:formtooltip('${here/getId}_help',0);"
+                >
 
             <option value="old"
                     tal:attributes="selected python:here.daterange == 'old'"

@@ -12,11 +12,13 @@
             <span tal:content="here/Field">Field</span> <br />
         </label>
         
-        <div id="list_criterion_help" 
-             i18n:id="list_criterion_help"
+        <div id="" 
+             i18n:translate=""
              class="help" 
              style="visibility:hidden"
-             tal:content="here/Description">
+             tal:content="here/Description"
+             tal:attributes="id string:${here/getId}_help;"
+             >
         List
         </div>
 
@@ -29,9 +31,10 @@
     
     <div class="field">        
 
-        <select name="criteria.operator:records">
-            <option value=""
-                    tal:attributes="selected not: here/operator">None</option>
+        <select name="criteria.operator:records"
+                tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
+                                onblur  string:formtooltip('${here/getId}_help',0);"
+        >
             <option value="or"
                     tal:attributes="selected python:here.operator == 'or'">matches one of the following</option>
             <option value="and" 
@@ -44,8 +47,8 @@
                   rows="5" 
                   cols="40"
                   tal:content="python:modules['string'].join(here.value, '\n')"
-                  onfocus="formtooltip('list_criterion_help',1)" 
-                  onblur="formtooltip('list_criterion_help',0)"
+                  tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
+                                  onblur  string:formtooltip('${here/getId}_help',0);"
         ></textarea>
         
     

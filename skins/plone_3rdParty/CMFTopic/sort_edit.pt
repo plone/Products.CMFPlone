@@ -12,14 +12,16 @@
         <label for=""
                tal:attributes="for string:cb_${here/getId}">
             <span tal:content="here/Field">Field</span>
-            is sorted
+            is
         </label>
 
-        <div id="sort_criterion_help" 
-             i18n:id="sort_criterion_help"
+        <div id="" 
+             i18n:translate=""
              class="help" 
              style="visibility:hidden"
-             tal:content="here/Description">
+             tal:content="here/Description"
+             tal:attributes="id string:${here/getId}_help;"
+             >
         List
         </div>
 
@@ -36,30 +38,38 @@
                name="criteria.reversed::int:default:records" 
                value="0"
                />
-
-        <!-- XXX when someone has time to make it a drop down
-        <select name="checkbox"
-                name="criteria.reversed:records"
-                onfocus="formtooltip('sort_criterion_help',1)"
-                onblur="formtooltip('sort_criterion_help',0)" >
-           
-            <option value="0">in ascending order</option>
-
-            <option value="yes" 
-                    tal:attributes="selected python:test(here.reversed, 'selected', '')">
-                     in reverse order </option>
-                    
-        </select> -->
         
         <input class="noborder"
-               type="checkbox" 
+               type="radio" 
+               name="criteria.reversed:records" 
+               value=""
+               tal:attributes="checked not:here/reversed;
+                               id string:${here/getId}_ascending;
+                               onfocus string:formtooltip('${here/getId}_help',1);
+                               onblur  string:formtooltip('${here/getId}_help',0);"
+               />
+               
+        <label for=""
+               tal:attributes="for string:${here/getId}_ascending;">
+            Sorted in ascending order
+        </label>
+        
+        <br />
+        
+        <input class="noborder"
+               type="radio" 
                name="criteria.reversed:records" 
                value="1"
-               tal:attributes="checked here/reversed"
-               onfocus="formtooltip('sort_criterion_help',1)" 
-               onblur="formtooltip('sort_criterion_help',0)"
+               tal:attributes="checked here/reversed;
+                               id string:${here/getId}_descending;
+                               onfocus string:formtooltip('${here/getId}_help',1);
+                               onblur  string:formtooltip('${here/getId}_help',0);"
                />
-        Sort in reverse order
+
+        <label for=""
+               tal:attributes="for string:${here/getId}_descending;">
+            Sorted in descending order
+        </label>
 
     </div>
 
