@@ -27,8 +27,12 @@ before selecting this."""
         try:
             res = c.customize(self.portal)
             if res:
-                for line in res.split('\n'):
-                    out.append((line, INFO))
+                if isinstance(res, StringType):
+                    for line in res.split('\n'):
+                        out.append((line, INFO))
+                    else:
+                        out.extend(res)
+                
             out.append(("The customisation policy has been applied", INFO))
         except:
             out.append(("An error has occured", INFO))
