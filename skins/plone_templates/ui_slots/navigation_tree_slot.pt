@@ -38,9 +38,7 @@
                         <a href="folder_contents"
                            tal:condition="here/isPrincipiaFolderish">
                         
-                            <img tal:replace="structure here/linkTransparent.gif" />
-                            
-                            <span i18n:translate="box_contents_view">Switch to Contents view</span>
+                            <img tal:replace="structure here/linkTransparent.gif" />&nbsp;<span i18n:translate="box_contents_view">Switch to Contents view</span>
                         </a>
                                
                         <a href="../folder_contents"
@@ -49,9 +47,7 @@
                            tal:on-error="structure string:aq_parent not allowed!"
                            >
                 
-                            <img tal:replace="structure here/linkTransparent.gif" />
-                    
-                            <span i18n:translate="box_contents_view">Switch to Contents view</span>
+                            <img tal:replace="structure here/linkTransparent.gif" />&nbsp;<span i18n:translate="box_contents_view">Switch to Contents view</span>
                         </a>
                     </div>
                 </div>
@@ -61,9 +57,7 @@
                  tal:condition="not: notFolderContents">
                 <a href=".">
                     
-                    <img tal:replace="structure here/linkTransparent.gif" />
-                    
-                    <span i18n:translate="box_item_view">Switch to Item view</span>
+                    <img tal:replace="structure here/linkTransparent.gif" />&nbsp;<span i18n:translate="box_item_view">Switch to Item view</span>
                 </a>
             </div>
     
@@ -102,10 +96,7 @@
                 
                             <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
                                  tal:on-error="structure here/site_icon.gif"
-                                    />
-                            
-                            <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
-                            <span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                                    />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
                         </a>
                         
                         <a href="" 
@@ -114,9 +105,7 @@
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');">
                            
-                            <img tal:replace="structure here/site_icon.gif" />
-                            <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
-                            <span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                            <img tal:replace="structure here/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
                         </a>
                     </span>
                 </div>
