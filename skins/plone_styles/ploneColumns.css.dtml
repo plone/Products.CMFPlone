@@ -22,6 +22,7 @@
 #portal-column-content {
     width: 100%;
     float: right;
+    margin-left: -16em;
 }
 
 #portal-column-content #content {
@@ -30,7 +31,6 @@
 
 #portal-column-one {
     float: left;
-    margin-right: -16em;
     width: 16em;
     overflow: hidden;
 }
