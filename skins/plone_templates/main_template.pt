@@ -77,6 +77,7 @@ Header stuff
 	                     tal:define="slots_mapping options/slots_mapping|slots_mapping|nothing;
 	                                 site_properties options/site_properties|site_properties|nothing;
 	                                 portal_url options/portal_url|portal_url|nothing;
+				         actions options/actions|actions|nothing;
                                          Iterator python:modules['Products.CMFPlone'].IndexIterator;
                                          tabindex python:Iterator(pos=10000);"
 	                     tal:condition="slots_mapping/left|nothing">

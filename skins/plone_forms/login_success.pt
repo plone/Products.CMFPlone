@@ -76,6 +76,7 @@
                 </p>
 
                 <tal:block
+                 tal:condition="not:p_props/show_published_on_login|nothing"
                  tal:define="results python:container.portal_catalog(modified=member.last_login_time, modified_usage='range:min', sort_on='modified',sort_order='reverse',review_state='published');
                              Batch python:modules['Products.CMFPlone'].Batch;
                              DateTime python:modules['DateTime'].DateTime;
@@ -111,12 +112,13 @@
                                              height="16"
                                              width="16"
                                              alt="dummy"
+                                             tal:condition="python:here.restrictedTraverse(result.getIcon, None)"
                                              tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a 
                                         href="#" tal:attributes="href url"
                                         tal:content="result/Title|result/id" />
                                     </td>      
                                     <td i18n:translate="" tal:content="result/Type">Type</td>      
-                                    <td tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>                                    <td tal:content="result/Creator">Author</td>      
+                                    <td tal:on-error="string:" tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>                                    <td tal:content="result/Creator">Author</td>      
                                     <td tal:content="result/Description">Description</td>      
                                 </tr>
                                 </tal:block>

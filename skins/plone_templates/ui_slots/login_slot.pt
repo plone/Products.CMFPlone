@@ -60,7 +60,7 @@
             </div>
 
             <div class="content odd"
-                tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
+                tal:define="join python:actions and [a['url'] for a in actions.get('user', []) if a['id']=='join']"
                 tal:condition="python:test(join and hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
           
                 <a href="" tal:attributes="href python:join.pop()">
