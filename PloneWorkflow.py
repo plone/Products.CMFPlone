@@ -41,7 +41,7 @@ def setupPrivatePloneWorkflow(wf):
     wf.states.addState('public')
     sdef=wf.states.public
     sdef.setProperties( title='Publicly available'
-                        , transitions=('publish', 'reject', 'retract') )
+                        , transitions=('publish', 'reject', 'retract', 'hide') )
     sdef.setPermission(View, 1, ('Anonymous', 'Authenticated'))
     sdef.setPermission(AccessContentsInformation, 1, \
                        ('Anonymous', 'Authenticated'))
@@ -55,9 +55,7 @@ def setupPrivatePloneWorkflow(wf):
                         , props={'guard_permissions':ModifyPortalContent
                                  ,'guard_roles':'Owner;Manager'} )        
     for sdef in wf.states.objectValues():
-        if sdef.id != 'public':
-            sdef.setProperties( transitions=tuple(sdef.transitions)+\
-                                ('publicize',) )
+        sdef.setProperties( transitions=tuple(sdef.transitions)+('publicize',) )
     
 def createPrivatePloneWorkflow(id):
     ob=DCWorkflowDefinition(id)
@@ -66,6 +64,8 @@ def createPrivatePloneWorkflow(id):
     ob.setProperties(title='Private Workflow [Plone]')
     return ob
 
-addWorkflowFactory( createPrivatePloneWorkflow, id='private_plone_workflow'
-                  , title='Private Workflow [Plone]')	   
+addWorkflowFactory( createPrivatePloneWorkflow, 
+                    id='private_plone_workflow',
+                    title='Private Workflow [Plone]' )	   
+
 

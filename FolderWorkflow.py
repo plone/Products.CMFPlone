@@ -40,7 +40,7 @@ def setupPrivateFolderWorkflow(wf):
     wf.states.addState('public')
     sdef=wf.states.public
     sdef.setProperties( title='Publicly available'
-                      , transitions=('published', 'reject', 'retract') ) 
+                      , transitions=('reject', 'retract', 'hide') ) 
     sdef.setPermission( CMFCorePermissions.View, 1, ('Anonymous', 'Authenticated') )
     sdef.setPermission( CMFCorePermissions.AccessContentsInformation, 1, ('Anonymous', 'Authenticated') )
     sdef.setPermission( CMFCorePermissions.ListFolderContents, 1, ('Anonymous', 'Authenticated') )
@@ -54,9 +54,7 @@ def setupPrivateFolderWorkflow(wf):
                       , props={'guard_permissions':CMFCorePermissions.ModifyPortalContent
                               ,'guard_roles':'Owner;Manager'} )                                  
     for sdef in wf.states.objectValues():
-        if sdef.id != 'public':
-            sdef.setProperties( transitions=tuple(sdef.transitions)+\
-    ('publicize',) )
+        sdef.setProperties( transitions=tuple(sdef.transitions)+('publicize',) )
             
 
 def createPrivateFolderWorkflow(id):
@@ -65,6 +63,7 @@ def createPrivateFolderWorkflow(id):
     ob.setProperties(title='Private Folder Workflow [Plone]')
     return ob
 
-addWorkflowFactory( createPrivateFolderWorkflow, id='private_folder_workflow'
-                  , title='Private Folder Workflow [Plone]')	   
+addWorkflowFactory( createPrivateFolderWorkflow, 
+                    id='private_folder_workflow',
+                    title='Private Folder Workflow [Plone]' )
 
