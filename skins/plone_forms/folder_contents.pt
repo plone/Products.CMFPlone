@@ -25,9 +25,6 @@
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
-    <span tal:replace="python:user.getUserName()">user</span>
-    <span tal:content="python:user.getUserName()">user</span>
-
     <form name="folderContentsForm"
           method="post"
           action="folder_object"
