@@ -297,6 +297,7 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
         self.folder[self.image_id].image_edit(id='barney', file=dummy.File())
         self.failUnless('barney.gif' in self.folder.objectIds())
 
+
 class DummySize:
 
     __allow_access_to_unprotected_subobjects__ = 1
@@ -309,6 +310,7 @@ class DummySize:
 
     def set_size(self, size):
         self.size = size
+
 
 class TestGetObjSize(PloneTestCase.PloneTestCase):
 
@@ -344,6 +346,7 @@ class TestGetObjSize(PloneTestCase.PloneTestCase):
         size = self.getSize()
         self.assertEquals(size, '1.1 GB')
 
+
 class DummyDefaultPage:
 
     __allow_access_to_unprotected_subobjects__ = 1
@@ -352,12 +355,13 @@ class DummyDefaultPage:
         self.keys = keys
         self.set_default(default_page)
 
-    def set_default(self, default, has_key=True):
+    def set_default(self, default, has_key=1):
         self.default_page = default
         self.hk = has_key
 
     def has_key(self, key):
         return self.hk or key in self.keys
+
 
 class TestDefaultPage(PloneTestCase.PloneTestCase):
 
@@ -381,7 +385,7 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
 
     def testDefaultPageStringNotExist(self):
         # Test for https://plone.org/collector/2671
-        self.ob.set_default('test', False)
+        self.ob.set_default('test', 0)
         self.assertEquals(self.getDefault(), (self.ob, ['index_html']))
 
     def testDefaultPageSequenceExist(self):
@@ -391,7 +395,7 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
 
     def testDefaultPageSequenceNotExist(self):
         # Test for https://plone.org/collector/2671
-        self.ob.set_default(['test'], False)
+        self.ob.set_default(['test'], 0)
         self.assertEquals(self.getDefault(), (self.ob, ['index_html']))
         self.ob.keys = ['index.html']
         self.assertEquals(self.getDefault(), (self.ob, ['index.html']))
@@ -399,6 +403,7 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.getDefault(), (self.ob, ['index.htm']))
         self.ob.keys = ['FrontPage']
         self.assertEquals(self.getDefault(), (self.ob, ['FrontPage']))
+
 
 if __name__ == '__main__':
     framework()
