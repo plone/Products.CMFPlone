@@ -9,6 +9,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore import CachingPolicyManager
+from plone2_base import setupExtEditor
 
 def oneX_twoBeta2(portal):
     """ Migrations from 1.0.x to 2.x """
@@ -50,6 +51,9 @@ def oneX_twoBeta2(portal):
     #Support for cropping descriptions in search results
     safeEditProperty(props,'search_results_description_length',160,'int')
     safeEditProperty(props,'ellipsis','...','string')
+    
+    #Set ext_editor property in site_properties
+    setupExtEditor(portal) 
 
 def upgradePortalFactory(portal):
     site_props = portal.portal_properties.site_properties
@@ -144,7 +148,7 @@ def addDocumentActions(portal):
     at.addAction('extedit',
                  'Edit this file in an external application (Requires Zope ExternalEditor installed)',
                  'string:${object_url}/external_edit',
-                 'python: object.absolute_url() != portal_url',
+                 "python: hasattr(portal.portal_properties.site_properties, 'ext_editor') and portal.portal_properties.site_properties.ext_editor and object.absolute_url() != portal_url", 
                  'Modify portal content',
                  'document_actions')
 

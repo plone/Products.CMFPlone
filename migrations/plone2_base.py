@@ -89,6 +89,9 @@ def make_plone(portal):
 
     #Set a portal_type on the root Plone Site
     makePortalRootPortalType(portal)
+    
+    #Set ext_editor property in site_properties
+    setupExtEditor(portal)
 
 def addFormController(portal):
     qi=getToolByName(portal,'portal_quickinstaller')
@@ -208,7 +211,7 @@ def addDocumentActions(portal):
     at.addAction('extedit',
                  'Edit this file in an external application (Requires Zope ExternalEditor installed)',
                  'string:${object_url}/external_edit',
-                 'python: object.absolute_url() != portal_url',
+                 "python: hasattr(portal.portal_properties.site_properties, 'ext_editor') and portal.portal_properties.site_properties.ext_editor and object.absolute_url() != portal_url",
                  'Modify portal content',
                  'document_actions')
 
@@ -408,3 +411,14 @@ def addStateActionToTypes(portal):
                  permission='View',
                  category='object_tabs' )
 
+def setupExtEditor(portal):
+    """ sets the ext_editor property in site properties if the ext editor is available"""
+    site_props = portal.portal_properties.site_properties 
+    # try to import the external editor class
+    try:
+        from Products.ExternalEditor.ExternalEditor import ExternalEditor
+    except ImportError:
+        # not available
+        safeEditProperty(site_props, 'ext_editor', 0, 'boolean')
+    else:
+        safeEditProperty(site_props, 'ext_editor', 1, 'boolean')
