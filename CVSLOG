@@ -1,3 +1,71 @@
+2004-03-05 02:59  zworkb
+
+	* skins/plone_prefs/plone_memberprefs_panel.pt (Plone-2_0-branch):
+	  fixed bug #2804 (member preference actions ignore the visible
+	  flag)
+
+2004-03-05 00:52  runyaga
+
+	* imagePatch.py (Plone-2_0-branch): you need to have __doc__
+	  strings on methods, people.  please give Paul Winkler credit for
+	  finding this
+
+2004-03-04 23:54  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Updated history.
+
+2004-03-04 20:48  eaon
+
+	* skins/plone_tableless/colophon.pt (Plone-2_0-branch): updating
+	  tableless colophon
+
+2004-03-04 20:38  plonista
+
+	* skins/plone_scripts/breadcrumbs.py (Plone-2_0-branch): Removed
+	  debug code, got rid of reassignment of context.
+
+2004-03-04 20:02  plonista
+
+	* HISTORY.txt, skins/plone_scripts/breadcrumbs.py
+	  (Plone-2_0-branch): breadcrumbs.py had bugs in which (1) a
+	  terminal object was sometimes displayed twice, and (2) terminal
+	  non-content non-view objects (e.g. page templates) were not
+	  displayed at all.  The bugs have been fixed and breadcrumbs.py
+	  has been refactored a bit to make the source easier to understand
+	  and maintain
+
+2004-03-04 19:47  limi
+
+	* skins/plone_templates/colophon.pt (Plone-2_0-branch): Removed the
+	  Any Browser button, since people obviously can't read the page in
+	  the link.
+
+2004-03-04 19:26  shh42
+
+	* tests/testContentTypeScripts.py (Plone-2_0-branch): Added two
+	  more tests for http://plone.org/collector/2792
+
+2004-03-04 18:31  shh42
+
+	* tests/testPloneFolder.py (Plone-2_0-branch): Added two tests
+	  covering http://plone.org/collector/2796
+
+2004-03-04 17:22  shh42
+
+	* tests/testContentTypeScripts.py (Plone-2_0-branch): Added tests
+	  covering http://plone.org/collector/2792
+
+2004-03-04 14:02  tesdal
+
+	* skins/plone_scripts/queryCatalog.py, tests/testQueryCatalog.py
+	  (Plone-2_0-branch): Fixed a bug where empty search always would
+	  return the entire catalog instead of nothing regardless of the
+	  show_all argument.
+
+2004-03-04 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-03 22:50  limi
 
 	* skins/plone_forms/join_form.cpt (Plone-2_0-branch): Removed stray
