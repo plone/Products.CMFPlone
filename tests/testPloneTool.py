@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 default_user = PloneTestCase.default_user
 
@@ -36,7 +37,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Test workaround for http://plone.org/collector/1323
         # Also see setFormatPatch.py
         self.folder.invokeFactory('File', id='file')
-        self.folder.file.edit(file=FakeUpload())
+        self.folder.file.edit(file=dummy.File('foo.zip'))
         self.assertEqual(self.folder.file.Format(), 'application/zip')
         self.assertEqual(self.folder.file.content_type, 'application/zip')
         # Changing the format should be reflected in content_type
@@ -48,7 +49,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Test workaround for http://plone.org/collector/1323
         # Also see setFormatPatch.py
         self.folder.invokeFactory('Image', id='image')
-        self.folder.image.edit(file=FakeUpload())
+        self.folder.image.edit(file=dummy.File('foo.zip'))
         self.assertEqual(self.folder.image.Format(), 'application/zip')
         self.assertEqual(self.folder.image.content_type, 'application/zip')
         # Changing the format should be reflected in content_type
@@ -89,15 +90,6 @@ class TestExceptionsImport(ZopeTestCase.ZopeTestCase):
         # PythonScripts can NOT import from zExceptions
         self.ps.ZPythonScript_edit('', 'from zExceptions import Unauthorized')
         self.assertRaises(ImportError, self.ps)
-
-
-# Fake upload object
-
-class FakeUpload:
-    filename = 'foo.zip'
-    def seek(*args): pass
-    def tell(*args): return 1
-    def read(*args): return 'bar'
 
 
 if __name__ == '__main__':

@@ -131,6 +131,7 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
         expected = {}
         self.assertEqual(self.folder.queryCatalog(request, show_all=1), expected)
 
+
 AddPortalTopics = 'Add portal topics'
 
 class TestSearchForms(PloneTestCase.PloneTestCase):

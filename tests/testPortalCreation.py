@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from OFS.SimpleItem import SimpleItem
@@ -91,20 +92,10 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testManageBeforeDeleteIsCalledRecursively(self):
         # When the portal is deleted, all subobject should have
         # their manage_beforeDelete hook called. Fixed by geoffd.
-        self.folder._setObject('dummy', DummyObject())
-        self.dummy = self.folder.dummy
+        self.folder._setObject('foo', dummy.Item())
+        self.foo = self.folder.foo
         self.app._delObject(PloneTestCase.portal_name)
-        self.assertEqual(self.dummy.mbd_called, 1)
-
-
-# Test helpers
-
-class DummyObject(SimpleItem):
-    mbd_called = 0
-    def __init__(self, id='dummy'):
-        self.id = id
-    def manage_beforeDelete(self, item, container):
-        self.mbd_called = 1
+        self.failUnless(self.foo.manage_before_delete_called)
 
 
 if __name__ == '__main__':

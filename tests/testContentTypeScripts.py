@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 AddPortalTopics = 'Add portal topics'
 from DateTime import DateTime
@@ -98,22 +99,22 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.favorite.Title(), 'Foo')
 
     def testFileCreate(self):
-        self.folder.invokeFactory('File', id='file', file=File())
-        self.assertEqual(str(self.folder.file), 'upload_data')
+        self.folder.invokeFactory('File', id='file', file=dummy.File())
+        self.assertEqual(str(self.folder.file), 'file data')
 
     def testFileEdit(self):
         self.folder.invokeFactory('File', id='file')
-        self.folder.file.file_edit(file=File())
-        self.assertEqual(str(self.folder.file), 'upload_data')
+        self.folder.file.file_edit(file=dummy.File())
+        self.assertEqual(str(self.folder.file), 'file data')
 
     def testImageCreate(self):
-        self.folder.invokeFactory('Image', id='image', file=File())
-        self.assertEqual(str(self.folder.image.data), 'upload_data')
+        self.folder.invokeFactory('Image', id='image', file=dummy.File())
+        self.assertEqual(str(self.folder.image.data), 'file data')
 
     def testImageEdit(self):
         self.folder.invokeFactory('Image', id='image')
-        self.folder.image.image_edit(file=File())
-        self.assertEqual(str(self.folder.image.data), 'upload_data')
+        self.folder.image.image_edit(file=dummy.File())
+        self.assertEqual(str(self.folder.image.data), 'file data')
 
     def testFolderCreate(self):
         self.folder.invokeFactory('Folder', id='folder', title='Foo', description='Bar')
@@ -178,32 +179,32 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
     # Short name should be editable without specifying a file.
 
     def afterSetUp(self):
-        self.folder.invokeFactory('File', id='file', file=File())
-        self.folder.invokeFactory('Image', id='image', file=File())
+        self.folder.invokeFactory('File', id='file', file=dummy.File())
+        self.folder.invokeFactory('Image', id='image', file=dummy.File())
 
     def testFileEditNone(self):
         self.folder.file.file_edit(file=None, title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.file), 'upload_data')
+        self.assertEqual(str(self.folder.file), 'file data')
 
     def testImageEditNone(self):
         self.folder.image.image_edit(file=None, title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.image.data), 'upload_data')
+        self.assertEqual(str(self.folder.image.data), 'file data')
 
     def testFileEditEmptyString(self):
         self.folder.file.file_edit(file='', title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.file), 'upload_data')
+        self.assertEqual(str(self.folder.file), 'file data')
 
     def testImageEditEmptyString(self):
         self.folder.image.image_edit(file='', title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.image.data), 'upload_data')
+        self.assertEqual(str(self.folder.image.data), 'file data')
 
     def testFileEditString(self):
         self.folder.file.file_edit(file='foo')
@@ -230,9 +231,9 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         
     def afterSetUp(self):
         self.folder.invokeFactory('File', id='file')
-        self.folder.file.file_edit(file=File('foo.pdf'))
+        self.folder.file.file_edit(file=dummy.File('foo.pdf'))
         self.folder.invokeFactory('Image', id='image')
-        self.folder.image.image_edit(file=File('foo.tiff'))
+        self.folder.image.image_edit(file=dummy.File('foo.tiff'))
 
     def testFileMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
@@ -267,17 +268,34 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.foo.content_type, 'image/tiff')
 
 
-# Fake upload object
+class TestFileExtensions(PloneTestCase.PloneTestCase):
 
-class File:
-    __allow_access_to_unprotected_subobjects__ = 1
-    filename = 'foo.gif'
-    def __init__(self, filename=None): 
-        if filename is not None:
-            self.filename = filename
-    def seek(*args): pass
-    def tell(*args): return 1
-    def read(*args): return 'upload_data'
+    file_id = 'File.2001-01-01.12345'
+    image_id = 'Image.2001-01-01.12345'
+
+    def afterSetUp(self):
+        self.folder.invokeFactory('File', id=self.file_id)
+        self.folder.invokeFactory('Image', id=self.image_id)
+
+    def testUploadFile(self):
+        get_transaction().commit(1) # make rename work
+        self.folder[self.file_id].file_edit(file=dummy.File('fred.gif'))
+        self.failUnless('fred.gif' in self.folder.objectIds())
+
+    def testUploadImage(self):
+        get_transaction().commit(1) # make rename work
+        self.folder[self.image_id].image_edit(file=dummy.File('fred.gif'))
+        self.failUnless('fred.gif' in self.folder.objectIds())
+
+    def DISABLED_testFileRenameKeepsExtension(self):
+        get_transaction().commit(1) # make rename work
+        self.folder[self.file_id].file_edit(id='barney', file=dummy.File())
+        self.failUnless('barney.gif' in self.folder.objectIds())
+
+    def DISABLED_testImageRenameKeepsExtension(self):
+        get_transaction().commit(1) # make rename work
+        self.folder[self.image_id].image_edit(id='barney', file=dummy.File())
+        self.failUnless('barney.gif' in self.folder.objectIds())
 
 
 if __name__ == '__main__':
@@ -289,4 +307,5 @@ else:
         suite.addTest(makeSuite(TestContentTypeScripts))
         suite.addTest(makeSuite(TestEditShortName))
         suite.addTest(makeSuite(TestEditFileKeepsMimeType))
+        suite.addTest(makeSuite(TestFileExtensions))
         return suite
