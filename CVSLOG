@@ -1,3 +1,87 @@
+2004-05-01 22:36  limi
+
+	* skins/: plone_images/colophon_wai-aa.gif,
+	  plone_templates/colophon.pt (Plone-2_0-branch): We're not AAA
+	  just yet. :)
+
+2004-05-01 22:26  shh42
+
+	* tests/testMembershipTool.py (Plone-2_0-branch): Default member
+	  pages no longer have a description.
+
+2004-05-01 22:23  limi
+
+	* skins/: plone_images/colophon_anybrowser.png,
+	  plone_styles/plone.css.dtml, plone_templates/colophon.pt
+	  (Plone-2_0-branch): Return of the image-based colophon. ;)
+
+2004-05-01 22:02  limi
+
+	* skins/plone_forms/search.pt (Plone-2_0-branch): Added check for
+	  existence of the relevance ranking variable, and did some
+	  accessibility and layout fixes.
+
+2004-05-01 21:43  limi
+
+	* HISTORY.txt, skins/plone_templates/global_defines.pt,
+	  skins/plone_templates/main_template.pt (Plone-2_0-branch):	 -
+	  Added a new variable 'current_page_url' to 'global_defines'.
+	  Since it's
+		pretty much impossible to get the correct URL to the
+	  current page once
+		you're inside CMF base tag and Zope and a VHM, I added this
+	  convenience variable.
+		For those who are curious, here's how it looks:
+		'current_page_url
+		Easy, eh? Updated the Plone templates to use this variable
+	  instead. Use this if you need a variable to use with HTML
+	  anchors.
+	  request/VIRTUAL_URL|string:${request/SERVER_URL}${request/PATH_TR
+	  ANSLATED}'
+
+2004-05-01 18:30  limi
+
+	* HISTORY.txt, MembershipTool.py, skins/plone_forms/registered.pt,
+	  skins/plone_templates/homePageText.pt (Plone-2_0-branch):	-
+	  Default text on member pages are now disabled, since it just
+	  pollutes the
+		search results. You can insert the default text in
+	  'homePageText.pt' like
+		before, the only difference is that it's disabled by
+	  default, and uses
+		Plone's built-in mechanism to show relevant help text if
+	  you're the owner
+		of the document instead.
+
+	      - Some minor cleanups of the HTML in the registration
+	  process.
+
+2004-05-01 15:47  limi
+
+	* HISTORY.txt, skins/plone_forms/search.pt (Plone-2_0-branch):
+	  Added scoring details + i18n information in the search results.
+	  Thanks to Andrew Veitch for the suggestion.
+
+2004-05-01 15:09  shh42
+
+	* tests/: testActionIconsTool.py, testActionsTool.py,
+	  testCatalogTool.py, testContentPublishing.py,
+	  testContentSecurity.py, testContentTypeScripts.py,
+	  testCutPasteSecurity.py, testDefaultWorkflow.py,
+	  testFolderLocalRoleForm.py, testFolderWorkflow.py,
+	  testGroupDataTool.py, testGroupsTool.py, testInterfaceTool.py,
+	  testMemberDataTool.py, testMembershipTool.py, testPloneFolder.py,
+	  testPloneTestCase.py, testPloneTool.py, testPortalFactory.py,
+	  testQueryCatalog.py, testQuickInstallerTool.py,
+	  testRegistrationTool.py, testSecurityDeclarations.py,
+	  testUserFolderBasics.py (Plone-2_0-branch): Spring cleaning: This
+	  should make it harder to forget to add a TestCase to the
+	  test_suite().
+
+2004-05-01 06:19  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-30 16:54  shh42
 
 	* tests/: testSkeletonPloneTest.py, testSkeletonZopeTest.py
