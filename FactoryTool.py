@@ -41,8 +41,7 @@ class FactoryTool(UniqueObject, SimpleItem):
             return getattr(aq_parent(self), name)
 
         self.log('returning PendingCreate(%s)' % type_name, '__bobo_traverse__')
-#        return PendingCreate(name, REQUEST.URL+'/'+name).__of__(self)  # wrap in acquisition layer
-        return PendingCreate(name, REQUEST.URL+'/'+name).__of__(aq_parent(self))  # wrap in acquisition layer
+        return PendingCreate(type_name).__of__(aq_parent(self))  # wrap in acquisition layer
 
 
     security.declarePublic('log')
@@ -58,35 +57,22 @@ class FactoryTool(UniqueObject, SimpleItem):
 
 InitializeClass(FactoryTool)
 
+
 class PendingCreate(SimpleItem):
     """ """
     meta_type= 'Object With Creation Pending'
     security = ClassSecurityInfo()
 
-    def __init__(self, type, base):
+    def __init__(self, type):
         now = DateTime()
-        self.id = type.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%M%S')
+        self.id = type.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%H%M%S')
         self._type = type
         self.Title = ''
-        self._base = base
 
     security.declarePublic('getPendingCreateType')
     def getPendingCreateType(self):
         """ """
         return self._type
-
-#    def __bobo_traverse__(self, REQUEST, name):
-#        """ """
-#        target = getattr(self, name, None)
-#        if name.endswith('.js'):
-#            self.log('name: ' + name + ' target: <Javascript>', '__bobo_traverse__')
-#        else:
-#            self.log('name: ' + name + ' target: ' + str(target), '__bobo_traverse__')
-#        return target
-##        if hasattr(target, '__class__') and target.__class__ in [FormTool.FormTool, FormToolFormValidator]:
-##            return target
-##        else:
-##            return getattr(aq_parent(self), name, None)
 
 
     def invokeFactory(self, id, *args, **kw):
@@ -106,3 +92,5 @@ class PendingCreate(SimpleItem):
         if loc:
             prefix = prefix + '. ' + str(loc)
         sys.stdout.write(prefix+': '+str(msg)+'\n')
+
+InitializeClass(PendingCreate)
