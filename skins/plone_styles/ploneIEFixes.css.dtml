@@ -12,7 +12,7 @@
 }
 
 input {
-        margin-bottom: 1px; /* bug fix */
+    margin-bottom: 1px; /* bug fix */
 }
 
 table.listing td.top {

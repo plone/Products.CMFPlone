@@ -248,6 +248,9 @@ pre {
 */
 
 #visual-portal-wrapper {
+    position: relative;
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -256,7 +259,7 @@ pre {
 #portal-logo {
     background: url(<dtml-var portal_url>/<dtml-var logoName>) no-repeat;
     border: 0;
-    margin: 0.75em 0em 0.5em 1.5em;
+    margin: 0.75em 0em 0.75em 1.5em;
     padding: 0;
 }
 #portal-logo a {
@@ -289,8 +292,13 @@ pre {
     padding: 0;
 }
 #portal-siteactions {
-    margin: 0.5em 1em;
-    float: right;
+    position: absolute;
+    top: 11px;
+    right: 16px;
+    width: 54px;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
 }
 
 #portal-siteactions a {
@@ -303,17 +311,19 @@ pre {
     overflow: hidden;
 }
 
+/* searchbox style and positioning */
 #portal-searchbox {
-    /*searchbox style and positioning */
+    position: absolute;
+    top: 45px;
+    right: 1.5em;
     background-color: transparent;
-    clear: right;
-    float: right;
-    margin: -3em 0 0 0;
-    padding: 0 2em 0 0;
+    margin: 0;
+    padding: 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
-    width: 30%;
-    white-space: nowrap;
+    width: 50%;
+    whitespace: no-wrap;
+    z-index: 2;
 }
 #portal-globalnav {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
@@ -322,7 +332,7 @@ pre {
     border-bottom-color: &dtml-globalBorderColor;;
     border-bottom-style: &dtml-borderStyle;;
     border-bottom-width: &dtml-borderWidth;;
-    padding: 0.5em 0em 0em 2em;
+    padding: 0em 0em 0em 2em;
     white-space: nowrap;
     list-style: none;
     margin: 0;
@@ -1104,16 +1114,14 @@ ul.configlets li a {
 
 .hiddenStructure {
     display: block;
-    background: none;
+    background: transparent;
     background-image: none; /* safari bug */
     border: none;
-    height: 0px !important;
-    height /**/: 1px;
+    height: 1px;
     overflow: hidden;
     padding: 0;
-    margin: 0 !important;
-    margin /**/: -1px 0 0 0;
-    width: 0;
+    margin: -1px 0 0 -1px;
+    width: 1px;
 }
 
 .contentViews .hiddenStructure,
