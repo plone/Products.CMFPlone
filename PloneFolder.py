@@ -1,4 +1,5 @@
-from zExceptions import NotFound
+try: from zExceptions import NotFound
+except ImportError: NotFound = 'NotFound' # Zope < 2.7
 from Products.CMFCore.utils import _verifyActionPermissions, \
      getToolByName, getActionContext
 from Products.CMFCore.Skinnable import SkinnableObjectManager
@@ -183,7 +184,7 @@ class OrderedContainer(Folder):
         if om: # only 1 in list if any
             return om[0]
 
-        raise NotFound('Object %s was not found'%str(id))
+        raise NotFound, 'Object %s was not found' % str(id)
 
     security.declareProtected(ModifyPortalContent, 'moveObjectsUp')
     def moveObjectsUp(self, ids, delta=1, RESPONSE=None):
