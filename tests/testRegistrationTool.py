@@ -37,8 +37,8 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.registration = self.portal.portal_registration
 
-    def testMD5Base(self):
-        # Verify that if the _v_md5base attribute is missing things
+    def testMD5BaseAttribute(self):
+        # Verify that if the _v_md5base attribute is missing, things
         # fall back to the class attribute and its default value.
         self.registration._md5base()
         self.failIfEqual(self.registration._v_md5base, None)
@@ -50,12 +50,25 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         self.assertEqual(len(pw), 6)
 
     def testGetDeterministicPassword(self):
-        # I am not qualified to write this test, geoffd?
-        s = 'some hash'
-        pw = self.registration.getPassword(6, s)
+        salt = 'foo'
+        pw = self.registration.getPassword(6, salt)
         self.assertEqual(len(pw), 6)
-        # Now what qualities should the pw have?
-        # ...
+        # Passing in the same length and salt should give the same 
+        # result, every time.
+        self.assertEqual(pw, self.registration.getPassword(6, salt))
+        self.assertEqual(pw, self.registration.getPassword(6, salt))
+        # These should fail
+        self.failIfEqual(pw, self.registration.getPassword(7, salt))
+        self.failIfEqual(pw, self.registration.getPassword(6, salt+'x'))
+
+    def testGeneratePassword(self):
+        pw = self.registration.generatePassword()
+        self.assertEqual(len(pw), 6)
+
+    def testGenerateResetCode(self):
+        salt = 'foo'
+        rc = self.registration.generateResetCode(salt)
+        self.assertEqual(rc, self.registration.generateResetCode(salt))
 
  
 if __name__ == '__main__':
