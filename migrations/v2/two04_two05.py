@@ -30,7 +30,7 @@ def replaceFolderPropertiesWithEdit(portal, out):
             action.title='Edit'
     typeObj._actions=_actions
 
-    out.append("Renamed folder 'properties' tab to 'edit'.")
+    out.append("Renamed Folder 'properties' tab to 'edit'.")
     return out
 
 def interchangeEditAndSharing(portal, out):
