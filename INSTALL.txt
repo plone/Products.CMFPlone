@@ -152,9 +152,10 @@ mproved docs:
 1. Install Zope and start it, and check it's running.
 
   ***************************************************************************** 
-  * If you want to run Plone on FreeBSD with Python 2.1.3, you'll need to     *
-  * up the thread stack size or else Zope will repeatedly crash!              *
-  * http://zettai.net/Members/george/python213FreeBSDPlone.blog               *
+  * If you want to run Plone on FreeBSD, you'll need to up the thread stack   *
+  * size of your python interpretor or else Zope will repeatedly crash!       *
+  * Compile python with 'make WANT_HUGE_STACK_SIZE=yes' or use the compiler   *
+  * option CFLAG: -DTHREAD_STACK_SIZE=0x100000                                *
   ***************************************************************************** 
 ------------------------------------------------------------------------------- 
 
