@@ -106,12 +106,12 @@ def installExternalEditor(self, portal):
 def assignTitles(self, portal):
     titles={'portal_actions':'Contains custom tabs and buttons',
      'portal_membership':'Handles membership policies',
-     'portal_memberdata':'Handles the available properties on Members',
+     'portal_memberdata':'Handles the available properties on members',
      'portal_undo':'Defines actions and functionality related to undo',
-     'portal_types':'Controls the available Content Types in your portal',
-     'plone_utils':'Various Plone Utility methods',
+     'portal_types':'Controls the available content types in your portal',
+     'plone_utils':'Various utility methods',
      'portal_navigation':'Responsible for redirecting to the right page in forms (deprecated, use FormController)',
-     'portal_metadata':'Controls metadata - like keywords, copyrights etc',
+     'portal_metadata':'Controls metadata like keywords, copyrights, etc',
      'portal_migration':'Handles migrations to newer Plone versions',
      'portal_registration':'Handles registration of new users',
      'portal_skins':'Controls skin behaviour (search order etc)',
@@ -119,12 +119,16 @@ def assignTitles(self, portal):
      'portal_workflow':'Contains workflow definitions for your portal',
      'portal_url':'Methods to anchor you to the root of your Plone site',
      'portal_form':'Used together with templates to do validation and navigation (deprecated, use FormController)',
-     'portal_discussion':'Controls how discussions are stored by default on content',
+     'portal_discussion':'Controls how discussions are stored',
      'portal_catalog':'Indexes all content in the site',
      'portal_form_validation':'Deprecated, not in use',
      'portal_factory':'Responsible for the creation of content objects',
-     'portal_calendar':'Controls how Events are shown',
-     'portal_quickinstaller':'Allows to Install/Uninstall products'
+     'portal_calendar':'Controls how events are shown',
+     'portal_quickinstaller':'Allows to install/uninstall products',
+     'portal_interface':'Allows to query object interfaces',
+     'portal_actionicons':'Associates actions with icons',
+     'portal_groupdata':'Handles properties on groups',
+     'portal_groups':'Handles group related functionality',
      }
 
     for oid in portal.objectIds():
