@@ -69,7 +69,7 @@ class NavigationTreeViewBuilder(SimpleItem):
         try:
             if workflow_tool.getInfoFor(o,'review_state','') != 'published':
                 return 0        
-            now = DateTime()
+            now     = DateTime()
             start_pub = getattr(o,'effective_date',None)
             end_pub   = getattr(o,'expiration_date',None)            
             if start_pub and start_pub > now:
@@ -90,8 +90,8 @@ class NavigationTreeViewBuilder(SimpleItem):
         
         # the 'important' users may see unpublished content
         # who can see unpublished content may also see hidden files
-        showHiddenFiles = user.has_role(self.rolesSeeHiddenContent,obj)
-        showUnpublishedContent = user.has_role(self.rolesSeeUnpublishedContent,obj)
+        showHiddenFiles = user.has_role(self.rolesSeeHiddenContent or [],obj)
+        showUnpublishedContent = user.has_role(self.rolesSeeUnpublishedContent or [] ,obj)
         
         try:
             if obj.meta_type in self.parentMetaTypesNotToQuery:
