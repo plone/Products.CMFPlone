@@ -1,6 +1,8 @@
 CHANGES
 
 Plone 1.0.2
+ 
+    - added vcXMLRPC lib
 
     - Fixed behaviour of the definition list and pre tags in presentation
       mode. [limi]
