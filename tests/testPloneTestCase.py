@@ -40,21 +40,21 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.folder.new, 'retract')
         self.assertEqual(self.workflow.getInfoFor(self.folder.new, 'review_state'), 'visible')
 
-    def testGetterSkinScript(self):
-        self.folder.invokeFactory('Document', id='new', title='foo')
-        self.assertEqual(self.folder.new.TitleOrId(), 'foo')
-
-    def testSetterSkinScript(self):
-        self.folder.invokeFactory('Document', id='new')
-        self.assertEqual(self.folder.new.EditableBody(), '')
-        self.folder.new.document_edit('plain', 'data', title='test')
-        self.assertEqual(self.folder.new.EditableBody(), 'data')                                                     
-            
     def testEditDocument(self):
         self.folder.invokeFactory('Document', id='new')
         self.assertEqual(self.folder.new.EditableBody(), '')
         self.folder.new.edit('plain', 'data', file='', safety_belt='')
         self.assertEqual(self.folder.new.EditableBody(), 'data')
+
+    def testGetterSkinScript(self):
+        self.folder.invokeFactory('Document', id='new', title='Foo')
+        self.assertEqual(self.folder.new.TitleOrId(), 'Foo')
+
+    def testSetterSkinScript(self):
+        self.folder.invokeFactory('Document', id='new')
+        self.assertEqual(self.folder.new.EditableBody(), '')
+        self.folder.new.document_edit('plain', 'data', title='Foo')
+        self.assertEqual(self.folder.new.EditableBody(), 'data')                                                     
 
 
 if __name__ == '__main__':

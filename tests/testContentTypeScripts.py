@@ -22,17 +22,18 @@ class File:
     def tell(*args): return 0
     def read(*args): return 'file_contents'
 
+
 #XXX NOTE
-#    document,link and newsitem edit's are not validated
-#    so we must now pass in fields that the validators need
+#    document, link, and newsitem edit's are now validated
+#    so we must pass in fields that the validators need
 #    such as title on a favorite's link_edit
+
 class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         perms = self.getPermissionsOfRole('Member')
         self.setPermissions(perms + [AddPortalTopics], 'Member')
         self.discussion = self.portal.portal_discussion
-        self.member = self.portal.portal_membership.getAuthenticatedMember()
         self.request = self.app.REQUEST
         # Don't pay for catalog maintenance
         self.portal.manage_delObjects('portal_catalog')
@@ -47,15 +48,15 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.discussion.overrideDiscussionFor(self.folder.doc, 1)
         self.discussion.getDiscussionFor(self.folder.doc)
         # Now test it
-        self.folder.doc.talkback.discussion_reply('Foo', 'Blah', self.member)
+        self.folder.doc.talkback.discussion_reply('Foo', 'blah')
         talkback = self.discussion.getDiscussionFor(self.folder.doc)
         reply = talkback.objectValues()[0]
         self.assertEqual(reply.Title(), 'Foo')
-        self.assertEqual(reply.EditableBody(), 'Blah')
+        self.assertEqual(reply.EditableBody(), 'blah')
 
     def testDocumentEdit(self):
         self.folder.invokeFactory('Document', id='doc')
-        self.folder.doc.document_edit('plain', 'data', title='test')
+        self.folder.doc.document_edit('plain', 'data', title='Foo')
         self.assertEqual(self.folder.doc.EditableBody(), 'data')
 
     def testEventEdit(self):
@@ -69,7 +70,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testFavoriteEdit(self):
         self.folder.invokeFactory('Favorite', id='favorite')
-        self.folder.favorite.link_edit('bar/baz.html', title='favorite')
+        self.folder.favorite.link_edit('bar/baz.html', title='Foo')
         self.assertEqual(self.folder.favorite.getRemoteUrl(),
                          '%s/bar/baz.html' % self.portal.portal_url())
 
@@ -78,31 +79,31 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.folder.file.file_edit(file=File())
         self.assertEqual(str(self.folder.file), 'file_contents')
 
+    def testImageEdit(self):
+        self.folder.invokeFactory('Image', id='image')
+        self.folder.image.image_edit(file=File())
+        self.assertEqual(str(self.folder.image.data), 'file_contents')
+
     def testFolderEdit(self):
         self.folder.invokeFactory('Folder', id='folder')
         self.folder.folder.folder_edit('Foo', 'Bar')
         self.assertEqual(self.folder.folder.Title(), 'Foo')
         self.assertEqual(self.folder.folder.Description(), 'Bar')
 
-    def testImageEdit(self):
-        self.folder.invokeFactory('Image', id='image')
-        self.folder.image.image_edit(file=File())
-        self.assertEqual(str(self.folder.image.data), 'file_contents')
-
     def testLargePloneFolderEdit(self):
-        LargePloneFolder.addLargePloneFolder(self.folder, 'lpf')
+        LargePloneFolder.addLargePloneFolder(self.folder, id='lpf')
         self.folder.lpf.folder_edit('Foo', 'Bar')
         self.assertEqual(self.folder.lpf.Title(), 'Foo')
         self.assertEqual(self.folder.lpf.Description(), 'Bar')
 
     def testLinkEdit(self):
         self.folder.invokeFactory('Link', id='link')
-        self.folder.link.link_edit('http://foo.com', title='test')
+        self.folder.link.link_edit('http://foo.com', title='Foo')
         self.assertEqual(self.folder.link.getRemoteUrl(), 'http://foo.com')
 
     def testNewsItemEdit(self):
         self.folder.invokeFactory('News Item', id='newsitem')
-        self.folder.newsitem.newsitem_edit('data', 'plain', title='test news')
+        self.folder.newsitem.newsitem_edit('data', 'plain', title='Foo')
         self.assertEqual(self.folder.newsitem.EditableBody(), 'data')
 
     def testTopicEditTopic(self):
