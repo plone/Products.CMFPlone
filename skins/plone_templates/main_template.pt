@@ -48,8 +48,7 @@ Header stuff
                 <metal:block metal:define-slot="super"
 		             tal:condition="show_border" >
                 
-                <div class="contentTabs" metal:define-macro="contentTabs"
-                     tal:define="obj_type python:here.getTypeInfo().id;">
+                <div class="contentTabs" metal:define-macro="contentTabs">
    
                     <tal:block tal:condition="not:actions|nothing">
                         <comment tal:define="global actions here/portal_actions/listFilteredActionsFor"
@@ -60,11 +59,11 @@ Header stuff
                     
                     <span tal:define="global obj_actions actions/object;
                                       global wf_actions actions/workflow;
-				      global folder_actions actions/folder;
-				      global local_actions python:actions.get('object_tabs', []);
-				      global isFolder python:test(obj_type=='Folder',1,0);" />
+                                      global folder_actions actions/folder;
+                                      global local_actions python:actions.get('object_tabs', []);
+                                      global isFolder python:getattr(here,'isPrincipiaFolderish',0);" />
 				      
-                    <span tal:repeat="action python:test(obj_type=='Folder', folder_actions+local_actions, obj_actions+local_actions)">
+                    <span tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');
 			                   href action/url;"> 
