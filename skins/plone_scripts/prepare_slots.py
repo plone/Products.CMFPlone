@@ -22,6 +22,18 @@ left_slots=getattr(context,'left_slots', [])
 right_slots=getattr(context,'right_slots', [])
 item_action_slots=getattr(context,'item_action_slots', [])
 
+#check if the *_slots attributes are callable so that they can be overridden
+#by methods or python scripts
+
+if callable(left_slots):
+    left_slots=left_slots()
+
+if callable(right_slots):
+    right_slots=right_slots()
+
+if callable(item_action_slots):
+    item_action_slots=item_action_slots()
+
 for slot in [lslot for lslot in left_slots if lslot]:
     if slot.find('/macros/')!=-1:
         slots['left'].append( (slot, 1) )
