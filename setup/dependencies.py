@@ -23,6 +23,12 @@ except ImportError:
     log("ExternalEditor not found.  If you want the external edit functionality, please download it from http://www.zope.org/Members/Caseman/ExternalEditor")
 
 try:
+    import Products.Epoz
+except ImportError:
+    log("Epoz not found.  It is strongly recommended if you want WYSIWYG capabilities in Plone. You can download it from http://www.zope.org/Members/mjablonski/Epoz/")
+
+
+try:
     import Products.GroupUserFolder
 except ImportError:
     log("GroupUserFolder not found. Please download it from http://sf.net/projects/collective")
