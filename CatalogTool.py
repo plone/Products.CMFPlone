@@ -1,13 +1,27 @@
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
+from Products.CMFCore.utils import _getAuthenticatedUser, _checkPermission
+from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
+from Acquisition import aq_base
 from Globals import InitializeClass
+from DateTime import DateTime
 
 class CatalogTool(BaseTool):
 
     meta_type = ToolNames.CatalogTool
     security = ClassSecurityInfo()
+    unwrap_objects = 0
 
+    def catalogObject(self, object, uid, threshold=None, idxs=[]):
+        """ 
+        Unwraps the acquisition from an object before it is cataloged. 
+        """
+        if self.unwrap_objects:
+            object=aq_base(object)
+
+        BaseTool.catalogObject(self, object, uid, threshold=None, idxs=[])
+        
     def manage_afterAdd(self, item, container):
 
         if item is self:
@@ -54,7 +68,7 @@ class CatalogTool(BaseTool):
                 kw[ 'effective_usage'] = 'range:max'
                 kw[ 'expires_usage'  ] = 'range:min'
 
-        results = apply(ZCatalog.searchResults, (self, REQUEST), kw)
+        results = apply(BaseTool.searchResults, (self, REQUEST), kw)
         # _robert_ instead of kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers( user )
         return [ s for s in results if user.has_permission('View', s.getObject()) ]
 
