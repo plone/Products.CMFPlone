@@ -200,6 +200,7 @@ ul.configletDetails {
  
 .link-external {
     padding: 1px 16px 1px 0;
+    background-position: top right;
 }
  
  .link-https {
