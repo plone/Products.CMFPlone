@@ -1,0 +1,5 @@
+[default]
+title=User Memberships
+
+[security]
+View=0:Authenticated

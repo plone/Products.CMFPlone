@@ -1,0 +1,15 @@
+[default]
+title=syndication form
+
+[validators]
+validators=
+validators..enableSyndication=
+validators..disableSyndication=
+validators..Save=validate_synPropertiesForm
+
+[actions]
+action.success=traverse_to:string:editSynPropertiesForm
+action.success..enableSyndication=traverse_to:string:enableSyndication
+action.success..disableSyndication=traverse_to:string:disableSyndication
+action.success..Save=traverse_to:string:editSynProperties
+action.failure=traverse_to:string:synPropertiesForm

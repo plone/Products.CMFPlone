@@ -1,0 +1,6 @@
+[actions]
+action.success=redirect_to:string:folder_contents
+action.success_no_edit=redirect_to:string:folder_contents
+action.failure=redirect_to:string:folder_contents
+action.success.Topic=redirect_to_action:string:subtopics
+action.failure.Topic=redirect_to_action:string:subtopics

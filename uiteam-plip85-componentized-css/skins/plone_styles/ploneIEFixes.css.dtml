@@ -1,0 +1,97 @@
+/*
+** Stylesheet with Internet Explorer-specific workarounds.
+*/
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> */
+
+* html #portal-columns {
+  width: 100%;
+}
+* html*#portal-columns {
+    width: auto;
+}
+
+/* Fix for IE float bug */
+* html .visualIEFloatFix {
+    float: left;
+    clear: both;
+    width: 99%;
+}
+
+
+input {
+    margin-bottom: 1px; /* bug fix */
+}
+
+table.listing td.top {
+    /* insane IE row bug workaround */
+    position: relative;
+    left: -1px;
+    top: -1px;
+}
+
+div#portal-columns div.portlet {
+    text-align: left;
+}
+div#portal-columns div#portal-column-one,
+div#portal-columns div#portal-column-two {
+    overflow: hidden;
+}
+
+textarea {
+    width: 97%;
+}
+
+.visualOverflow {
+    width: 88%;
+}
+
+.hiddenStructure { /* This is necessary to eliminate the 1px high object in
+                      the document flow in place of .hiddenStructure block objects */
+    position: absolute;
+}
+
+body { /* These work in IE only, changes the look of the scrollbar + textareas */
+    scrollbar-base-color: &dtml-globalBackgroundColor;;
+    scrollbar-highlight-color: &dtml-globalBackgroundColor;;
+    scrollbar-track-color: &dtml-evenRowBackgroundColor;;
+    scrollbar-darkshadow-color: &dtml-evenRowBackgroundColor;;
+    scrollbar-3dlight-color: &dtml-globalBorderColor;;
+    scrollbar-shadow-color: &dtml-globalBorderColor;;
+    scrollbar-arrow-color: &dtml-globalFontColor;;
+}
+
+/* 
+** Fix for IE6 diseappearing float bug and
+** Nonexistant Class for fixing IE5.0
+**  
+** Do not change anything here, this
+** could cause IE 5.0 and/or 6.0 woes.
+**
+** It must be the last defintion, otherwise
+** the rest of the stylesheet will be commented
+** out for IE 5.0.
+*/
+
+.fakeclass {content:"\"/*"}
+
+#content,
+#content p,
+.comment,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.documentDescription,
+.portalMessage,
+.link-parent,
+#documentContent dl,
+#documentContent ul,
+#documentContent ol,
+{
+    height: 100%;
+}
+
+/* </dtml-with> */

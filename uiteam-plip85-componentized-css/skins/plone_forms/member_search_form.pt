@@ -1,0 +1,149 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+<div metal:fill-slot="main"
+     tal:define="is_manager python: checkPermission('Manage portal', here)">
+
+    <h1 i18n:translate="heading_member_search">Search for members</h1>
+
+    <p i18n:translate="description_member_search">
+    This search form enables you to find members by specifying one or more
+    search criteria.
+    </p>
+
+  	<form action="member_search_results"
+          method="post"
+          name="search"
+          tal:define="DateTime python:modules['DateTime'].DateTime">
+
+        <fieldset>
+            <legend i18n:translate="legend_member_search_criteria">Member Search Criteria</legend>
+    
+            <div class="field">
+                <label i18n:translate="label_name">Name</label>
+                
+                <div class="formHelp" i18n:translate="help_search_name">
+                Return members with login names containing this value.
+                </div>
+    
+                <input type="text"
+                       name="name"
+                       size="25"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+    
+            <div class="field">
+                <label i18n:translate="label_email">E-mail</label>
+                
+                <div class="formHelp" i18n:translate="help_search_email">
+                Return members with email addresses containing this value.
+                </div>
+                
+                <input type="text"
+                       name="email"
+                       size="25"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+    
+    
+            <div class="field">
+                <label i18n:translate="label_last_logged_in">Last logged in</label>
+                
+                <div class="formHelp" i18n:translate="help_search_last_logged_in">
+                Return members who have logged in since yesterday, last week, etc.
+                </div>
+    
+                <tal:datetime define="today python:DateTime().earliestTime()">
+                    <select name="last_login_time.query:record:date"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;"
+                            tal:define="yesterday python:(today-1).Date();
+                                        lastweek python:(today-7).Date();
+                                        lastmonth python:(today-31).Date();
+                                        ever string:1970/02/01 00:00:00 GMT;">
+                        <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday"> Yesterday </option>
+                        <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week"> Last week </option>
+                        <option value="#" tal:attributes="value lastmonth" i18n:translate="time_last_month"> Last month </option>
+                        <option value="#" tal:attributes="value ever" selected="selected" i18n:translate="time_ever"> Ever </option>
+                    </select>
+                </tal:datetime>
+                <input type="hidden" name="last_login_time.range:record" value="min" />
+            </div>
+    
+            <tal:condition condition="python:checkPermission('View Groups', portal)">
+            <div class="field"
+                 tal:define="grouplist gtool/listGroups"
+                 tal:condition="grouplist">
+                 <label i18n:translate="legend_group"> Group </label>
+
+                 <div class="formHelp" i18n:translate="help_search_group"> 
+                 Return members in the selected group.
+                 </div>
+
+                 <select name="groupname">
+                     <option value="" i18n:translate="search_any_group"> Any Group </option>
+                     <option tal:repeat="group grouplist"
+                             tal:attributes="value group/getGroupName"
+                             tal:content="group/title_or_id">group name</option>
+                 </select>
+            </div>
+            </tal:condition>
+
+            <div class="field" 
+                 tal:condition="is_manager"
+                 tal:define="memberRoles request/roles|nothing;
+                             portalRoles python:here.portal_membership.getPortalRoles()">
+    
+                <label i18n:translate="label_roles">Role(s)</label>
+    
+                <div class="formHelp" i18n:translate="help_search_roles">
+                Return members with all of the selected roles.
+                </div>
+    
+                <metal:role tal:repeat="role portalRoles">
+                <metal:tabindex tal:define="tabindex tabindex/next">
+                    <input name="roles:list"
+                           type="checkbox"
+                           class="noborder"
+                           tabindex=""
+                           tal:attributes="tabindex tabindex;
+                                           value role;
+                                           id string:roles_${tabindex}"
+                           />
+                    <label for=""
+                           i18n:translate=""
+                           tal:attributes="for string:roles_${tabindex}"
+                           tal:content="role"
+                           />
+                    <br />
+                </metal:tabindex>
+                </metal:role>
+            </div>
+    
+            <div class="formControls">
+                <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="submit"
+                       value="Search"
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+
+</body>
+</html>

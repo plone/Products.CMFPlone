@@ -1,0 +1,14 @@
+[default]
+title=Edit News Item
+
+[security]
+View=0:Authenticated
+
+[validators]
+validators=validate_id,validate_newsitem_edit
+validators..Cancel=
+
+[actions]
+action.success=traverse_to:string:newsitem_edit
+action.success..Cancel=redirect_to_action:string:view
+action.failure=traverse_to:string:newsitem_edit_form

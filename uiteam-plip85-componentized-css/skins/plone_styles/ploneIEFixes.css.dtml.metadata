@@ -1,0 +1,3 @@
+[default]
+title = Plone IE Fixes CSS
+cache = HTTPCache

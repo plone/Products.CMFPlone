@@ -1,0 +1,9 @@
+[default]
+title=Send this page to somebody
+
+[validators]
+validators=validate_sendto
+
+[actions]
+action.success=traverse_to:string:sendto
+action.failure=traverse_to:string:sendto_form

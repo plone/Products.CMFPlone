@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      i18n:domain="plone">
+
+<body>
+
+<!-- THE PORTAL LOGO DEFINITION -->
+<h1 id="portal-logo" metal:define-macro="portal_logo">
+    <a href="/"
+       tal:attributes="href portal_url"
+       tal:define="portal_title portal_properties/title;"
+       tal:content="string:$portal_title">
+        Plone
+    </a>
+</h1>
+
+
+</body>
+</html>

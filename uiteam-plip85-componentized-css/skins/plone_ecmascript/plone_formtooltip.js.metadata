@@ -1,0 +1,3 @@
+[default]
+title = Plone Tooltip Pop-up Javascript
+cache = HTTPCache

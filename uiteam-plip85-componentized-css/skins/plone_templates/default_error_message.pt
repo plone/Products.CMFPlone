@@ -1,0 +1,98 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<div metal:fill-slot="main"
+     tal:define="global err_type options/error_type|nothing;
+                 global err_message options/error_message|nothing;
+                 global err_tb options/error_tb|nothing;
+                 global err_value options/error_value|nothing;
+                 global err_traceback options/error_traceback|nothing;">
+
+        <div tal:condition="python:err_type=='NotFound'">
+
+            <h1 i18n:translate="heading_site_error_apologies">Our apologies...</h1>
+
+            <p i18n:translate="description_site_error_does_not_exist">
+            The item you requested does not exist on this server or cannot be served.
+            </p>
+
+            <p i18n:translate="description_site_error_double_check_or_search">
+            Please double check the web address or use the search function on this page to find what you are looking for.
+            </p>
+
+            <p i18n:translate="description_site_error_mail_admin">
+            If you know you have the correct web address but are encountering an error, please
+            send a mail to the administrator of this site.
+            </p>
+
+            <a href="" 
+               tal:replace="structure python: here.spamProtect(site_properties.email_from_address)">
+               example@mail.com
+            </a>
+
+            <p i18n:translate="description_site_error_thank_you">
+            Thank you.
+            </p>
+
+            <code>
+            404 Not Found
+            </code>
+
+        </div>
+
+        <div tal:condition="python: err_type!='NotFound'">
+
+            <h1 i18n:translate="heading_site_error">Site error</h1>
+    
+            <p i18n:translate="description_site_error">
+            This site encountered an error trying to fulfill your request.
+            The errors were:
+            </p>
+    
+            <dl>
+                <dt i18n:translate="label_error_type">
+                Error Type
+                </dt>
+        
+                <dd i18n:translate="" tal:content="structure err_type">
+                The rendered error type
+                </dd>
+    
+                <tal:error condition="err_message">
+                <dt i18n:translate="label_error_message">
+                Error Message
+                </dt>
+    
+                <dd i18n:translate="" tal:content="structure err_message|nothing">
+                The rendered error message
+                </dd>
+                </tal:error>
+    
+                <tal:value condition="python:test(err_value and (err_value != err_message), 1, 0)">
+                <dt i18n:translate="label_error_value">
+                Error Value
+                </dt>
+    
+                <dd i18n:translate="" tal:content="structure err_value">
+                The rendered error value
+                </dd>
+                </tal:value>
+    
+                <dt i18n:translate="label_error_time">
+                Request made at
+                </dt>
+    
+                <dd tal:content="here/ZopeTime">
+                The time the error was encountered
+                </dd>
+            </dl>
+
+        </div>
+</div>
+
+</html>

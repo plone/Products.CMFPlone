@@ -1,0 +1,3 @@
+[default]
+title = Plone Print CSS
+cache = HTTPCache

@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:fill-slot="main">
+    <tal:main-macro metal:define-macro="main">
+        <h1 class="documentFirstHeading">
+            <span i18n:translate="heading_link_to">Link to</span>
+            <a href="#" 
+               tal:attributes="href here/getRemoteUrl"
+               tal:content="here/title_or_id">zope.org</a>
+        </h1>
+    
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+    
+        <div metal:use-macro="here/document_byline/macros/byline">
+          Get the byline - contains details about author and modification date.
+        </div>
+    </tal:main-macro>
+</div>
+
+</body>
+
+</html>
+
