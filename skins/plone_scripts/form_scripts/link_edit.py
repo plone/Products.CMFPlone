@@ -21,6 +21,6 @@ context.plone_utils.contentEdit( context
 
 qst='?portal_status_message=Link+changed.'
 
-return REQUEST.RESPONSE.redirect( context.absolute_url()
-                                  + '/link_view'
-                                  + qst )
+return context.REQUEST.RESPONSE.redirect( context.absolute_url()
+                                          + '/link_view'
+                                          + qst )
