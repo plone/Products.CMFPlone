@@ -138,7 +138,7 @@ class PloneGenerator(Portal.PortalGenerator):
                 _actions=typeInfo._cloneActions()
                 for action in _actions:
                     if action.id=='edit':
-                        action.title='properties'
+                        action.title='Properties'
                 typeObj._actions=_actions
 
     def customizePortalOptions(self, p):
