@@ -28,16 +28,16 @@
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
-        <li class="selected">
-        <a href=""
-           tal:attributes="href string:${template/id}?groupname=${groupname}"
-           i18n:translate="label_group_properties">Group Properties</a>
-        </li>
-            
         <li class="">
             <a href=""
                tal:attributes="href string:prefs_group_members?groupname=${groupname}"
                i18n:translate="label_group_members">Group Members</a>
+        </li>
+
+        <li class="selected">
+        <a href=""
+           tal:attributes="href string:${template/id}?groupname=${groupname}"
+           i18n:translate="label_group_properties">Group Properties</a>
         </li>
     </ul>
     
@@ -173,7 +173,7 @@
                             cols="35"
                             tal:condition="python: type in ('text', 'utext')"
                             tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
-                            tal:content="python: '\n'.join(propertyvalue)">some data</textarea>
+                            tal:content="propertyvalue">some data</textarea>
     
                     <textarea name="lines and ulines"
                             rows="6"

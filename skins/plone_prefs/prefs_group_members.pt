@@ -31,18 +31,18 @@
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
-        <li class="">
-            <a href=""
-               tal:attributes="href string:prefs_group_details?groupname=${groupname}"
-               i18n:translate="label_group_properties"
-            >Group Properties</a>
-        </li>
-            
         <li class="selected">
             <a href=""
                tal:attributes="href string:${template/id}?groupname=${groupname}"
                i18n:translate="label_group_members"
             >Group Members</a>
+        </li>
+
+        <li class="">
+            <a href=""
+               tal:attributes="href string:prefs_group_details?groupname=${groupname}"
+               i18n:translate="label_group_properties"
+            >Group Properties</a>
         </li>
     </ul>
     
