@@ -79,7 +79,7 @@ def normalize_tabs(self):
 	search=ActionInformation( 'search_form'
 	                        , title='Search'
 				, category='global_tabs'
-				, permissions='View'
+				, permissions=('Viewa',)
 				, action=Expression('string: $portal_url/search_form'))
 	publishing=ActionInformation( 'content_status_history'
                                     , title='Publishing'
@@ -91,9 +91,6 @@ def normalize_tabs(self):
 			      
     #make 'syndication' tab unvisible
     st=getToolByName(self, 'portal_actions')
-    for a in st._actions:
-        if a.id=='folderContents':
-            a.id='folder_contents'
     for globaltab in global_tabs():
         st._actions.append(globaltab)
     st._p_changed=1
