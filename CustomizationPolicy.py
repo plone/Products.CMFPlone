@@ -6,8 +6,6 @@ import Configuration
 class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """
     __implements__ = ICustomizationPolicy
-    def __init__(self): 
-        pass
         
     def customize(self, portal):
         configklass=Configuration.getCurrentConfiguration()
