@@ -312,3 +312,38 @@ function toggleSelect(selectbutton) {
     return deselectAll();
   }
 }
+
+
+
+
+// script for detecting external links.
+// sets their target-attribute to _blank , and adds a class external
+
+function scanforlinks(){
+    // secure against really old DOMs 
+    
+    if (!document.getElementsByTagName){return false}
+    
+    // Quick utility function by Geir Bækholt
+    // Scan all links in the document and set classes on them dependant on whether they point to the current site or are external links
+    
+    content = document.getElementById('bodyContent')
+    links = content.getElementsByTagName('a');
+    for (i=0; i < links.length; i++){      
+        if (links[i].getAttribute('href')){
+            var linkval = links[i].getAttribute('href')
+            // check if the link href is a relative link, or an absolute link to the current host.
+            if ((linkval.indexOf('http:') == -1)|| (linkval.indexOf(window.location.protocol+'//'+window.location.host)==0)){
+                // we are here because the link is internal to the site. Do nothing for now
+                // uncomment the next line for nice debugging alerts
+                // alert(linkval + 'is internal')
+            }else{
+                links[i].className = 'external'
+                links[i].setAttribute('target','_blank')
+                // we are in here if the link points to somewhere else than our site.
+            }
+        }
+    }
+}
+if (window.addEventListener) window.addEventListener("load",scanforlinks,false);
+else if (window.attachEvent) window.attachEvent("onload",scanforlinks);
