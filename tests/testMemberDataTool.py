@@ -9,7 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-_user_name = ZopeTestCase._user_name
+default_user = PloneTestCase.default_user
 
 
 from OFS.Image import Image
@@ -27,19 +27,19 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
         self.memberdata = self.portal.portal_memberdata
 
     def testSetPortrait(self):
-        self.memberdata._setPortrait(Image(id=_user_name, file=Portrait(), title=''), _user_name)
-        self.assertEqual(self.memberdata._getPortrait(_user_name).getId(), _user_name)
-        self.assertEqual(self.memberdata._getPortrait(_user_name).meta_type, 'Image')
+        self.memberdata._setPortrait(Image(id=default_user, file=Portrait(), title=''), default_user)
+        self.assertEqual(self.memberdata._getPortrait(default_user).getId(), default_user)
+        self.assertEqual(self.memberdata._getPortrait(default_user).meta_type, 'Image')
 
     def testDeletePortrait(self):
-        self.memberdata._setPortrait(Image(id=_user_name, file=Portrait(), title=''), _user_name)
-        self.memberdata._deletePortrait(_user_name)
-        self.assertEqual(self.memberdata._getPortrait(_user_name), None)
+        self.memberdata._setPortrait(Image(id=default_user, file=Portrait(), title=''), default_user)
+        self.memberdata._deletePortrait(default_user)
+        self.assertEqual(self.memberdata._getPortrait(default_user), None)
 
     def testPruneMemberDataContents(self):
         # Only test what is not already tested elswhere
-        self.memberdata._setPortrait(Image(id=_user_name, file=Portrait(), title=''), _user_name)
-        self.memberdata._setPortrait(Image(id=_user_name, file=Portrait(), title=''), 'dummy')
+        self.memberdata._setPortrait(Image(id=default_user, file=Portrait(), title=''), default_user)
+        self.memberdata._setPortrait(Image(id=default_user, file=Portrait(), title=''), 'dummy')
         self.memberdata.pruneMemberDataContents()
         self.assertEqual(len(self.memberdata.portraits.objectIds()), 1)
 

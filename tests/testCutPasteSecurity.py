@@ -13,8 +13,6 @@ from AccessControl import Unauthorized, getSecurityManager
 from OFS.CopySupport import CopyError
 from Acquisition import aq_base
 
-_user_name = ZopeTestCase._user_name
-
 
 class TestContentSecurity(PloneTestCase.PloneTestCase):
 

@@ -12,8 +12,6 @@ from Products.CMFPlone.tests import PloneTestCase
 from AccessControl import Unauthorized
 from Acquisition import aq_base
 
-_user_name = ZopeTestCase._user_name
-
 
 class TestContentSecurity(PloneTestCase.PloneTestCase):
 

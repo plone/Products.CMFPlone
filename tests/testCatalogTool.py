@@ -12,7 +12,7 @@ from Products.CMFPlone.tests import PloneTestCase
 from Acquisition import aq_base
 from Globals import REPLACEABLE
 
-user1 = ZopeTestCase._user_name
+user1 = PloneTestCase.default_user
 user2 = 'u2'
 group2 = 'g2'
 

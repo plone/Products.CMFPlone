@@ -17,7 +17,7 @@ from Products.CMFCore.CMFCorePermissions import View
 from Products.CMFCore.CMFCorePermissions import ModifyPortalContent
 from Products.CMFCalendar.EventPermissions import ChangeEvents
 
-default_user = ZopeTestCase._user_name
+default_user = PloneTestCase.default_user
 
 
 class TestDefaultWorkflow(PloneTestCase.PloneTestCase):

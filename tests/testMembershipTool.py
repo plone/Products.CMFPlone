@@ -9,7 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-_user_name = ZopeTestCase._user_name
+default_user = PloneTestCase.default_user
 
 
 # Fake upload object
@@ -29,47 +29,47 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         # Should return the .personal folder
         personal = getattr(self.folder, self.membership.personal_id, None)
         self.failIfEqual(personal, None)
-        self.assertEqual(self.membership.getPersonalFolder(_user_name), personal)
+        self.assertEqual(self.membership.getPersonalFolder(default_user), personal)
          
     def testGetPersonalFolderIfMissing(self):
         # Should return None as the .personal folder is missing
         self.folder._delObject(self.membership.personal_id)
-        self.assertEqual(self.membership.getPersonalFolder(_user_name), None)
+        self.assertEqual(self.membership.getPersonalFolder(default_user), None)
 
     def testGetPersonalFolderIfNoHome(self):
         # Should return None as the user has no home folder
         members = self.membership.getMembersFolder()
-        members._delObject(_user_name)
-        self.assertEqual(self.membership.getPersonalFolder(_user_name), None)
+        members._delObject(default_user)
+        self.assertEqual(self.membership.getPersonalFolder(default_user), None)
 
     def testGetPersonalPortrait(self):
         # Should return the default portrait
-        self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), 'defaultUser.gif')
+        self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), 'defaultUser.gif')
 
     def testChangeMemberPortrait(self):
         # Should change the portrait image
-        self.membership.changeMemberPortrait(Portrait(), _user_name)
-        self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), _user_name)
-        self.assertEqual(self.membership.getPersonalPortrait(_user_name).meta_type, 'Image')
+        self.membership.changeMemberPortrait(Portrait(), default_user)
+        self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), default_user)
+        self.assertEqual(self.membership.getPersonalPortrait(default_user).meta_type, 'Image')
 
     def testDeletePersonalPortrait(self):
         # Should delete the portrait image
-        self.membership.changeMemberPortrait(Portrait(), _user_name)
-        self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), _user_name)
-        self.membership.deletePersonalPortrait(_user_name)
-        self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), 'defaultUser.gif')
+        self.membership.changeMemberPortrait(Portrait(), default_user)
+        self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), default_user)
+        self.membership.deletePersonalPortrait(default_user)
+        self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), 'defaultUser.gif')
 
     def testGetPersonalPortraitWithoutPassingId(self):
         # Should return the logged in users portrait if no id is given
-        self.membership.changeMemberPortrait(Portrait(), _user_name)
-        self.assertEqual(self.membership.getPersonalPortrait().getId(), _user_name)
+        self.membership.changeMemberPortrait(Portrait(), default_user)
+        self.assertEqual(self.membership.getPersonalPortrait().getId(), default_user)
         self.assertEqual(self.membership.getPersonalPortrait().meta_type, 'Image')
 
     def testListMembers(self):
         # Should return the members list
         members = self.membership.listMembers()
         self.assertEqual(len(members), 1)
-        self.assertEqual(members[0].getId(), _user_name)
+        self.assertEqual(members[0].getId(), default_user)
 
     def testListMembersSkipsGroups(self):
         # Should only return real members, not groups
@@ -78,13 +78,13 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(uf.getUserNames()), 3)
         members = self.membership.listMembers()
         self.assertEqual(len(members), 1)
-        self.assertEqual(members[0].getId(), _user_name)
+        self.assertEqual(members[0].getId(), default_user)
 
     def testListMemberIds(self):
         # Should return the members ids list
         memberids = self.membership.listMemberIds()
         self.assertEqual(len(memberids), 1)
-        self.assertEqual(memberids[0], _user_name)
+        self.assertEqual(memberids[0], default_user)
 
     def testListMemberIdsSkipsGroups(self):
         # Should only return real members, not groups
@@ -93,7 +93,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(uf.getUserNames()), 3)
         memberids = self.membership.listMemberIds()
         self.assertEqual(len(memberids), 1)
-        self.assertEqual(memberids[0], _user_name)
+        self.assertEqual(memberids[0], default_user)
 
     def testCurrentPassword(self):
         # Password checking should work
@@ -125,10 +125,10 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         groups.groupWorkspacesCreationFlag = 0
         groups.addGroup(group2, None, [], [])
         group = groups.getGroupById(group2)
-        group.addMember(_user_name)
-        ugroups = self.portal.acl_users.getUserById(_user_name).getGroups()
+        group.addMember(default_user)
+        ugroups = self.portal.acl_users.getUserById(default_user).getGroups()
         self.membership.setPassword('geheim')
-        self.failUnless(self.portal.acl_users.getUserById(_user_name).getGroups() == ugroups)
+        self.failUnless(self.portal.acl_users.getUserById(default_user).getGroups() == ugroups)
 
     def testWrapUserCreatesMemberarea(self):
         # This test serves to trip us up should this ever change
