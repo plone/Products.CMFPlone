@@ -126,7 +126,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Is it ok to remove the imagePatch? Probably not as we
         # don't want the border attribute ...
         self.folder.invokeFactory('Image', id='foo', file=dummy.Image())
-        endswith = ' alt="" title="" longdesc="" height="16" width="16" />'
+        endswith = ' alt="" title="" height="16" width="16" />'
         self.assertEqual(self.folder.foo.tag()[-len(endswith):], endswith)
 
     def testNoPortalFormTool(self):
