@@ -29,6 +29,9 @@ def allow_class(Class):
     from Globals import InitializeClass 
     InitializeClass(Class)
 
+from PloneUtilities import IndexIterator
+allow_class(IndexIterator)
+
 from StringIO import StringIO
 allow_class(StringIO)
 

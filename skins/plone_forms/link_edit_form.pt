@@ -8,8 +8,10 @@
 <body>
 
 <div metal:fill-slot="main" 
-     tal:define="errors python:request.get('errors', {})">
-    
+     tal:define="errors python:request.get('errors', {});
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+		 tabindex python:Iterator();">
+        
     <h1 i18n:translate="">Edit Link item</h1>
     
     <p i18n:translate="">
@@ -53,7 +55,7 @@
                        name="field_id" 
                        value="#"
                        size="30" 
-                       tal:attributes="value id" 
+                       tal:attributes="value id;tabindex tabindex/next" 
                        tabindex="1"
                        onfocus="formtooltip('id_help',1)" 
                        onblur="formtooltip('id_help',0)" />
@@ -85,7 +87,7 @@
                        value="#" 
                        size="30" 
                        tabindex="2"
-                       tal:attributes="value Title" 
+                       tal:attributes="value Title;tabindex tabindex/next" 
                        onfocus="formtooltip('title_help',1)" 
                        onblur="formtooltip('title_help',0)" />
 
@@ -109,6 +111,7 @@
                           tabindex="3"
                           name="field_description"
                           tal:content="description"
+			  tal:attributes="tabindex tabindex/next"
                           onfocus="formtooltip('description_help',1)" 
                           onblur="formtooltip('description_help',0)">
                 Description 
@@ -140,7 +143,7 @@
                        size="30"
                        value="#"
                        tabindex="4"
-                       tal:attributes="value remote_url" 
+                       tal:attributes="value remote_url;tabindex tabindex/next" 
                        onfocus="formtooltip('url_help',1)" 
                        onblur="formtooltip('url_help',0)" 
                        />
