@@ -12,6 +12,8 @@ Plone 1.0 rc2
          Then it's just the usual:
          <div class="even content">
          etc.
+      (Remember that you will need to do a Ctrl-F5 (force refresh) to make use 
+       of the new CSS file - normally it is cached for a day or two)
     - Added skin variable to end of CSS file name, avoids caching problems when 
       switching skins on the fly.
     - Added several new skins. Plone now contains the skins:
