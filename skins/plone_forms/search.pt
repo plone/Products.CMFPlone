@@ -67,7 +67,7 @@
                          alt="dummy"
                          tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a 
                     href="#" tal:attributes="href url"
-                    tal:content="result/Title|result/id" />
+                    tal:content="python:result.Title or result.getId" />
                     </td>
                     <td tal:content="result/Creator">Author </td>
                     <td tal:content="result/ModificationDate">Modification Date</td>
