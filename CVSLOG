@@ -1,3 +1,26 @@
+2004-01-26 03:48  zworkb
+
+	* skins/plone_templates/main_template.pt (Plone-2_0-branch): close
+	  #2344 although is_editable is defined in global_defines.pt by
+	  calling 'showEditableBorder' this variable gets assigned before a
+	  template has the chance to set the 'disable_border' in REQUEST.
+	  evaluating 'showEditableBorder' inside main_template fixes this
+	  problem
+
+2004-01-25 23:01  eaon
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): removed unused
+	  definition
+
+2004-01-25 17:15  dpunktnpunkt
+
+	* MembershipTool.py (Plone-2_0-branch): Made folder description
+	  translatable.
+
+2004-01-25 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-25 01:35  shh42
 
 	* skins/plone_forms/roster.pt (Plone-2_0-branch): Fixed a TAL
