@@ -987,12 +987,12 @@ input.searchButton {
 /* Vertical addition class */
 
 .vertical th {
-    padding: 0.25em 0.5em;
+    padding: 0.5em;
 }
 
 .vertical td {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    padding: 0.25em 0.5em;
+    padding: 0.5em;
 }
 
 
