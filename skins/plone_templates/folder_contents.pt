@@ -21,8 +21,7 @@
           method="post"
           action="folder_object"
           tal:attributes="action here_url"
-          tal:define="b_start python:request.get('b_start', 0);
-                      batch python:here.batchedFolderContents(suppressHiddenFiles=1);">
+          tal:define="batch python:here.batchedFolderContents(suppressHiddenFiles=1);">
 
 
         <h1>
