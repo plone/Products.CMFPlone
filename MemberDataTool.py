@@ -4,7 +4,6 @@ from Products.CMFCore.MemberDataTool import MemberData as BaseData
 from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from BTrees.OOBTree import OOBTree
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool

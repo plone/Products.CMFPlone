@@ -2,8 +2,6 @@ import random
 import md5
 import re
 
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore import CMFCorePermissions
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
 from Products.CMFPlone import ToolNames
 

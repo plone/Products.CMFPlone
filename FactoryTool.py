@@ -1,10 +1,8 @@
-import os, sys
+import os
 import urllib
 import Globals
-from DateTime import DateTime
 from AccessControl import Owned, ClassSecurityInfo, getSecurityManager
-from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
-from OFS.ObjectManager import ObjectManager
+from Acquisition import aq_parent, aq_base, aq_inner, aq_get
 from OFS.SimpleItem import SimpleItem
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from ZPublisher.mapply import mapply
@@ -12,7 +10,6 @@ from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
-from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 

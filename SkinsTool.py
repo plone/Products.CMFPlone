@@ -2,7 +2,6 @@ from Products.CMFCore.SkinsTool import SkinsTool as BaseTool
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from Products.CMFCore import DirectoryView
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 _skincache = {}

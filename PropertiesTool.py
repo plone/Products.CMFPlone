@@ -1,8 +1,6 @@
 from ComputedAttribute import ComputedAttribute
 from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
-from Products.CMFCore.ActionInformation import ActionInformation
-from Products.CMFCore.Expression import Expression
 from Products.CMFCore.CMFCorePermissions import ManagePortal
 from Products.CMFDefault.PropertiesTool import PropertiesTool as BaseTool
 from Products.CMFPlone import ToolNames

@@ -1,5 +1,5 @@
 from interface import Interface, Attribute
-from Products.CMFCore.interfaces.portal_properties import portal_properties
+#from Products.CMFCore.interfaces.portal_properties import portal_properties
 
 #class IPropertiesTool(portal_properties):
 class IPropertiesTool(Interface):

@@ -41,7 +41,7 @@ def initialize(context):
     # For test authors (and people who use parts of Plone only)
     # it does speed up import *significantly*.
 
-    from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
+    from AccessControl import ModuleSecurityInfo
     from AccessControl import allow_module, allow_class, allow_type
 
     ModuleSecurityInfo('zLOG').declarePublic('LOG')

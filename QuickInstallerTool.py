@@ -1,4 +1,3 @@
-from Products.CMFQuickInstallerTool import AlreadyInstalled
 from Products.CMFQuickInstallerTool.QuickInstallerTool \
    import QuickInstallerTool as BaseTool
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool

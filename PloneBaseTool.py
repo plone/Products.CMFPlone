@@ -1,7 +1,5 @@
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Acquisition import aq_base, aq_inner, aq_parent
-from Products.CMFPlone import ToolNames
 from Products.CMFPlone.interfaces.PloneBaseTool import IPloneBaseTool
 
 class PloneBaseTool:

@@ -1,11 +1,6 @@
-from Products.CMFCore.utils import _verifyActionPermissions, \
-      getToolByName, getActionContext, _checkPermission
-from Products.CMFCore.CMFCorePermissions import View, ManageProperties, \
-     ListFolderContents, AccessContentsInformation
-from Products.CMFCore.CMFCorePermissions import AddPortalFolders, \
-     AddPortalContent, ModifyPortalContent
-from AccessControl import Permissions, getSecurityManager, \
-     ClassSecurityInfo, Unauthorized
+from Products.CMFCore.utils import getToolByName, _checkPermission
+from Products.CMFCore import CMFCorePermissions
+from AccessControl import getSecurityManager
 from Acquisition import aq_base, aq_inner, aq_parent
 
 #Portions of this function were copy/pasted from CMFCore.PortalFolder of

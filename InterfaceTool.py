@@ -1,16 +1,14 @@
-import sys
-from types import ClassType, ModuleType
-from zLOG import LOG, INFO, WARNING
-from Products.CMFPlone.interfaces.interface import Interface, Attribute
+from types import ModuleType
+from zLOG import LOG, INFO
+from Products.CMFPlone.interfaces.interface import Interface
 from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool
-from Acquisition import aq_inner, aq_parent, aq_base
-from Products.CMFCore.utils import UniqueObject, getToolByName
+from Acquisition import aq_base
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 def log(summary='', text='', log_level=INFO):

@@ -1,26 +1,19 @@
 try: from zExceptions import NotFound
 except ImportError: NotFound = 'NotFound' # Zope < 2.7
 from Products.CMFCore.utils import _verifyActionPermissions, \
-     getToolByName, getActionContext, _checkPermission
-from Products.CMFCore.Skinnable import SkinnableObjectManager
+     getToolByName, getActionContext
 from OFS.Folder import Folder
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
-from Products.CMFCore.CMFCorePermissions import View, ManageProperties, \
-     ListFolderContents, AccessContentsInformation
-from Products.CMFCore.CMFCorePermissions import AddPortalFolders, \
-     AddPortalContent, ModifyPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
-from Products.CMFCore.interfaces.DublinCore import DublinCore as IDublinCore
-from Products.CMFCore.interfaces.Contentish import Contentish as IContentish
-from AccessControl import Permissions, getSecurityManager, \
-     ClassSecurityInfo, Unauthorized
+#from Products.CMFCore.interfaces.DublinCore import DublinCore as IDublinCore
+#from Products.CMFCore.interfaces.Contentish import Contentish as IContentish
+from AccessControl import Permissions, ClassSecurityInfo, Unauthorized
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
 from types import StringType
-from ExtensionClass import Base
 from DocumentTemplate.sequence import sort
 
 # this import can change with Zope 2.7 to
@@ -32,12 +25,8 @@ except ImportError:
 # atm its safer defining an own
 from interfaces.OrderedContainer import IOrderedContainer
 
-# from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
-
-from OFS.ObjectManager import REPLACEABLE, BeforeDeleteException
+from OFS.ObjectManager import REPLACEABLE
 from ComputedAttribute import ComputedAttribute
-
-from PloneUtilities import log
 
 class ReplaceableWrapper:
     """ A wrapper around an object to make it replaceable """
@@ -109,7 +98,7 @@ class OrderedContainer(Folder):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(ModifyPortalContent, 'moveObject')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObject')
     def moveObject(self, id, position):
         obj_idx  = self.getObjectPosition(id)
         if obj_idx == position:
@@ -126,7 +115,7 @@ class OrderedContainer(Folder):
     # if plone sometime depends on zope 2.7 it should be replaced by mixing in
     # the 2.7 specific class OSF.OrderedContainer.OrderedContainer
 
-    security.declareProtected(ModifyPortalContent, 'moveObjectsByDelta')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsByDelta')
     def moveObjectsByDelta(self, ids, delta, subset_ids=None):
         """ Move specified sub-objects by delta.
         """
@@ -183,7 +172,7 @@ class OrderedContainer(Folder):
         cmf_meta_types = ttool.listContentTypes(by_metatype=1)
         return [obj['id'] for obj in objs if obj['meta_type'] in cmf_meta_types ]
 
-    security.declareProtected(ModifyPortalContent, 'getObjectPosition')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'getObjectPosition')
     def getObjectPosition(self, id):
 
         objs = list(self._objects)
@@ -194,42 +183,42 @@ class OrderedContainer(Folder):
 
         raise NotFound, 'Object %s was not found' % str(id)
 
-    security.declareProtected(ModifyPortalContent, 'moveObjectsUp')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsUp')
     def moveObjectsUp(self, ids, delta=1, RESPONSE=None):
         """ Move an object up """
         self.moveObjectsByDelta(ids, -delta)
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(ModifyPortalContent, 'moveObjectsDown')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsDown')
     def moveObjectsDown(self, ids, delta=1, RESPONSE=None):
         """ move an object down """
         self.moveObjectsByDelta(ids, delta)
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(ModifyPortalContent, 'moveObjectsToTop')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsToTop')
     def moveObjectsToTop(self, ids, RESPONSE=None):
         """ move an object to the top """
         self.moveObjectsByDelta( ids, -len(self._objects) )
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(ModifyPortalContent, 'moveObjectsToBottom')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsToBottom')
     def moveObjectsToBottom(self, ids, RESPONSE=None):
         """ move an object to the bottom """
         self.moveObjectsByDelta( ids, len(self._objects) )
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(ModifyPortalContent, 'moveObjectToPosition')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectToPosition')
     def moveObjectToPosition(self, id, position):
         """ Move specified object to absolute position.
         """
         delta = position - self.getObjectPosition(id)
         return self.moveObjectsByDelta(id, delta)
 
-    security.declareProtected(ModifyPortalContent, 'orderObjects')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'orderObjects')
     def orderObjects(self, key, reverse=None):
         """ Order sub-objects by key and direction.
         """
@@ -292,7 +281,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
 
     index_html = ComputedAttribute(index_html, 1)
 
-    security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
+    security.declareProtected(CMFCorePermissions.AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """ adds a new PloneFolder """
         ob=PloneFolder(id, title)
@@ -339,7 +328,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
 
         return values
 
-    security.declareProtected( ListFolderContents, 'listFolderContents')
+    security.declareProtected(CMFCorePermissions.ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
         Optionally you can suppress "hidden" files, or files that begin with .
@@ -352,7 +341,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
 
         return contents
 
-    security.declareProtected( AccessContentsInformation, 'folderlistingFolderContents')
+    security.declareProtected(CMFCorePermissions.AccessContentsInformation, 'folderlistingFolderContents')
     def folderlistingFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
         Calls listFolderContents in protected only by ACI so that folder_listing
@@ -362,7 +351,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
 
     # Override CMFCore's invokeFactory to return the id returned by the
     # factory in case the factory modifies the id
-    security.declareProtected(AddPortalContent, 'invokeFactory')
+    security.declareProtected(CMFCorePermissions.AddPortalContent, 'invokeFactory')
     def invokeFactory( self
                      , type_name
                      , id
@@ -403,7 +392,6 @@ def safe_cmp(x, y):
     if callable(y): y=y()
     return cmp(x,y)
 
-manage_addPloneFolder=PloneFolder.manage_addPloneFolder
 def addPloneFolder( self, id, title='', description='', REQUEST=None ):
     """ adds a Plone Folder """
     sf = PloneFolder(id, title=title)

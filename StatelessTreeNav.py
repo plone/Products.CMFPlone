@@ -1,8 +1,6 @@
 # Stateless Tree Navigation for Plone
 # (c) Philipp Auersperg phil@bluedynamics.com 10.09.2002
 
-import string
-from Globals import HTML
 from AccessControl import ClassSecurityInfo,ModuleSecurityInfo,allow_class,allow_module
 from ZODB.POSException import ConflictError
 
@@ -104,7 +102,6 @@ class StatelessTreeBuilder:
         They are used in menus.
         """
 
-        import string
 
         res=[]
         count=0

@@ -5,7 +5,6 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_base
 from Globals import InitializeClass
-from DateTime import DateTime
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 class CatalogTool(PloneBaseTool, BaseTool):
