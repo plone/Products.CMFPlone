@@ -64,9 +64,9 @@ def initialize(context):
     # For content_status_modify
     from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted, \
          WorkflowException
-    ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectMoved')
-    ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectDeleted')
-    ModuleSecurityInfo('WorkflowCore').declarePublic('WorkflowException')
+    ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('ObjectMoved')
+    ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('ObjectDeleted')
+    ModuleSecurityInfo('Products.CMFCore.WorkflowCore').declarePublic('WorkflowException')
     allow_class(ObjectMoved)
     allow_class(ObjectDeleted)
     allow_class(WorkflowException)
@@ -83,14 +83,18 @@ def initialize(context):
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
     ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
 
-    ModuleSecurityInfo('Products.Formulator').declarePublic('StringField', 'EmailField')
-    ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
-
-    # make unauthorized importable ttw
+    # make Unauthorized importable ttw
     ModuleSecurityInfo('AccessControl').declarePublic('Unauthorized')
+
+    # make ConflictError importable ttw
+    ModuleSecurityInfo('ZODB.POSException').declarePublic('ConflictError')
 
     # make base_hasattr importable ttw
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
+
+    # Formulator
+    ModuleSecurityInfo('Products.Formulator').declarePublic('StringField', 'EmailField')
+    ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
 
     from Products.Formulator.StandardFields import StringField, EmailField
     from Products.Formulator.Form import FormValidationError, BasicForm
