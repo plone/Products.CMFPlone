@@ -58,7 +58,7 @@ def copyZopeAttributes(old,new):
     if hasattr(old, 'workflow_history'):
         new.workflow_history=PersistentMapping()
         new.workflow_history.__dict__=old.workflow_history.__dict__
-    new.__dict__=old.__dict__        
+    new.__dict__.update(old.__dict__)
 
 def migrate_portal(self, id):
     """ migrates a Pre-1.0 Plone to Plone 1.0 compliance """
