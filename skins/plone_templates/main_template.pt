@@ -83,7 +83,7 @@ Header stuff
             <td class="left" metal:define-macro="left_column"
 	                     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator; tabindex python:Iterator(pos=10000);" 
 	                     tal:condition="slots_mapping/left|nothing">
-                <metal:block tal:repeat="slot slots_mapping/left|slots_mapping/left">
+                <metal:block tal:repeat="slot slots_mapping/left">
                 <tal:block tal:define="global pathexpr python:slot[0];
                                        global usemacro python:slot[1]"
                            tal:condition="usemacro">
