@@ -59,6 +59,29 @@ def twothree(portal):
     if 'enable_navigation_logging' not in _ids:
         p._setProperty('enable_navigation_logging', 0, 'boolean')
     # /adding
+    #below was added thanks to interra issue #659
+    if 'email_from_address' not in _ids:
+        p._setProperty('email_from_address', '', 'string')
+    if 'email_from_name' not in _ids:
+        p._setProperty('email_from_name', '', 'string')
+    if 'validate_email' not in _ids:
+        p._setProperty('validate_email', 0, 'boolean')
+    if 'allowAnonymousViewAbout' not in _ids:
+        p._setProperty('allowAnonymousViewAbout', 1, 'boolean')
+    if 'localTimeFormat' not in _ids:
+        p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
+    if 'localLongTimeFormat' not in _ids:
+        p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
+    if 'default_language' not in _ids:
+        p._setProperty('default_language', 'en', 'string')
+    if 'default_charset' not in _ids:
+        p._setProperty('default_charset', 'iso-8859-1', 'string')
+    if 'use_folder_tabs' not in _ids:
+        p._setProperty('use_folder_tabs', ['Folder',], 'lines')
+    if 'ext_editor' not in _ids:
+        p._setProperty('ext_editor', 0, 'boolean')
+    if 'available_editors' not in _ids:
+        p._setProperty('available_editors', [], 'lines')
 
     #adding navigation properties
     nav_tool=portal.portal_navigation
