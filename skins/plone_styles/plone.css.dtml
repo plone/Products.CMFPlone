@@ -1146,7 +1146,6 @@ ul.configlets li a {
 
 .portalNotLoggedIn {} /* Used on all descriptions relevant to those not logged in */
 
-#portal-column-content fieldset > * select:focus,
 #portal-column-content fieldset > * input:focus,
 #portal-column-content fieldset > * textarea:focus {
     border-color: &dtml-notifyBorderColor;; 
