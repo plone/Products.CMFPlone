@@ -1,6 +1,6 @@
-# $Id: NavigationTool.py,v 1.27 2002/09/11 21:48:52 plonista Exp $
+# $Id: NavigationTool.py,v 1.28 2002/09/11 22:04:11 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
-__version__ = "$Revision: 1.27 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.28 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -55,13 +55,13 @@ class NavigationTool (UniqueObject, SimpleItem):
             self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
 
             if transition_type == 'action':
-                return self._dispatchAction(context, transition, trace, **kwargs)
+                return self._dispatchAction(context, transition, trace, kwargs)
             elif transition_type == 'url':
-                return self._dispatchUrl(context, transition, trace, **kwargs)
+                return self._dispatchUrl(context, transition, trace, kwargs)
             elif transition_type == 'script':
-                return self._dispatchScript(context, transition, trace, **kwargs)
+                return self._dispatchScript(context, transition, trace, kwargs)
             else:
-                return self._dispatchPage(context, transition, trace, **kwargs)
+                return self._dispatchPage(context, transition, trace, kwargs)
         except NavigationError:
             raise
         except Exception, e:
