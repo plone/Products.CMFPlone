@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Added new Plone Powered icon and a few RSS ones. I don't
+      know who the original author of the Powered button is, 
+      but thanks! :)
+      [limi]
+
+    - Removed CustomizationPolicy pulldown from ZMI. You can 
+      still enable it by uncommenting the code if you are
+      developing CustomizationPolicies.
+      [limi]
+
     - There is a new version of portal_factory in 1.1.   
       It lets you create objects which, if you don't save them, 
       don't get created in the ZODB. If you want a type to be 
