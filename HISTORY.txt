@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3385 - tableless skin wasn't updated
+      to the new header structure, causing the site actions to be positioned
+      wrongly. This is an update to main_template for the people using
+      tableless, please update your sites accordingly. Full explanation in
+      the URL above.
+      [limi]
+
     - Fixed http://plone.org/collector/3429 - the section class was missing
       from the tableless skin.
       [limi]
