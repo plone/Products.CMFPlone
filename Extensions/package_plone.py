@@ -11,12 +11,19 @@ releasename='CMFPlone-%s' % release
 releasetar='CMFPlone-%s.tar.gz' % release
 releasezip='CMFPlone-%s.zip' % release
 
+corename='PloneBase-%s' % release
+coretar='PloneBase-%s.tar.gz' % release
+corezip='PloneBase-%s.zip' % release
+
 # cleans pyc, pyo, temp files, CVS files and compiled po files
 sh_clean = """find . -name *.py[co] -or -name *~ -or -name ~* -or -name CVS -or \
                      -name .#* -or -name .cvsignore -or -name *.mo| xargs rm -rf"""
 
+assert len(os.listdir('i18n')) > 1, "Ensure the i18n files from the sf project are placed into the i18n directory"                     
+                     
 # remove old stuff, create new directory
 os.system("cd ..; rm -rf %s %s %s" % (releasetar, releasezip, releasename))
+os.system("cd ..; rm -rf %s %s" % (coretar, corezip))
 os.system("cd .. ; mkdir %s" % releasename)
 
 # copy products
@@ -36,3 +43,12 @@ os.system("cd .. ; tar -f %s -czv %s " % ( releasetar
 # make zip
 os.system("cd .. ; zip -r %s %s" % (releasezip
                                     , releasename ))
+
+# build PloneCore tarball
+# make tar.gz
+os.system("cd ../%s ; tar -f %s -czv %s; mv %s .. " % ( releasename, coretar
+                                     , "CMFPlone", coretar ) )
+
+# make zip                                     
+os.system("cd ../%s ; zip -r %s %s; mv %s .. " % ( releasename, corezip
+                                     , "CMFPlone", corezip ) )                   
