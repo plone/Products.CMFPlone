@@ -10,6 +10,7 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
+from Products.CMFPlone import ToolNames
 
 
 class TestCatalogTool(PloneTestCase.PloneTestCase):
@@ -26,6 +27,17 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         # SearchableText index should be a ZCTextIndex
         self.assertEqual(self.catalog.Indexes['SearchableText'].__class__.__name__,
                          'ZCTextIndex')
+
+    def testManageAfterAddIfLexiconExists(self):
+        # Should be able to copy/paste a portal containing 
+        # a catalog tool. Triggers manage_afterAdd of portal_catalog
+        # thereby exposing a bug which is now going to be fixed.
+        from AccessControl.SecurityManagement import newSecurityManager
+        user = self.app.acl_users.getUserById('PloneTestCase').__of__(self.app.acl_users)
+        newSecurityManager(None, user)
+        cb = self.app.manage_copyObjects(['portal'])
+        self.app.manage_pasteObjects(cb)
+        self.failUnless(hasattr(self.app, 'copy_of_portal'))
 
     
 if __name__ == '__main__':
