@@ -13,6 +13,7 @@ from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
+from webdav.NullResource import NullResource
 from types import StringType
 from DocumentTemplate.sequence import sort
 
@@ -276,12 +277,20 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
 
     def index_html(self):
         """ Acquire if not present. """
+        request = getattr(self, 'REQUEST', None)
+        if request and request.has_key('REQUEST_METHOD'):
+            if (request.maybe_webdav_client and
+                request['REQUEST_METHOD'] in  ['PUT']):
+                # Very likely a WebDAV client trying to create something
+                return ReplaceableWrapper(NullResource(self, 'index_html'))
+        # Acquire from parent
         _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
         return ReplaceableWrapper(aq_base(_target).__of__(self))
 
     index_html = ComputedAttribute(index_html, 1)
 
-    security.declareProtected(CMFCorePermissions.AddPortalFolders, 'manage_addPloneFolder')
+    security.declareProtected(CMFCorePermissions.AddPortalFolders,
+                              'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """ adds a new PloneFolder """
         ob=PloneFolder(id, title)
