@@ -124,15 +124,31 @@ class OrderedContainer(Folder):
         if type(ids) is StringType:
             ids = (ids,)
         min_position = 0
-        objects = list(self._objects)
+        #objects = list(self._objects)
+        obj_visible = []
+        obj_hidden =[]
         obj_dict = {}
-        for obj in self._objects:
-            obj_dict[ obj['id'] ] = obj
+
+        types_tool = getToolByName(self, 'portal_types')
+        types=types_tool.listContentTypes(by_metatype=1)
+        
+        for obj in self._objects:            
+            # sort out in portal visible and invisible objects in 2 lists
+            print obj
+            try:
+                types.index(obj['meta_type'])
+            except ValueError:
+                obj_hidden.append(obj)
+            else:
+                obj_dict[ obj['id'] ] = obj
+                obj_visible.append(obj)
+
+                                
         # unify moving direction
         if delta > 0:
             ids = list(ids)
             ids.reverse()
-            objects.reverse()
+            obj_visible.reverse()
         counter = 0
 
         for id in ids:
@@ -141,19 +157,19 @@ class OrderedContainer(Folder):
             except KeyError:
                 raise ValueError('The object with the id "%s" does not exist.'
                                  % id)
-            old_position = objects.index(object)
+            old_position = obj_visible.index(object)
             new_position = max( old_position - abs(delta), min_position )
             if new_position == min_position:
                 min_position += 1
             if not old_position == new_position:
-                objects.remove(object)
-                objects.insert(new_position, object)
+                obj_visible.remove(object)
+                obj_visible.insert(new_position, object)
                 counter += 1
 
         if counter > 0:
             if delta > 0:
-                objects.reverse()
-            self._objects = tuple(objects)
+                obj_visible.reverse()
+            self._objects = tuple(obj_hidden + obj_visible)
 
         return counter
 
