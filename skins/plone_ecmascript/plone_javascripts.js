@@ -340,7 +340,7 @@ function scanforlinks(){
                 // not a http-link. Possibly an internal relative link, but also possibly a mailto ot other snacks
                 // add tests for all relevant protocols as you like.
                 
-                protocols = ['mailto', 'ftp' , 'irc', 'callto']
+                protocols = ['mailto', 'ftp' , 'irc', 'callto', 'https']
                 // callto is a proprietary protocol to the SKYPE-application, but we happen to like it ;)
                 
                 for (p=0; p < protocols.length; p++){  

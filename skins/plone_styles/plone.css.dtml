@@ -1088,6 +1088,11 @@ ul.configlets li a {
     padding: 1px 0px 1px 16px;
 }
 
+.link-https {
+    background: transparent url("<dtml-var portal_url>/lock_icon.gif") 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
 .link-mailto {
     background: transparent url("<dtml-var portal_url>/mail_icon.gif") 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
