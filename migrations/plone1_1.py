@@ -107,8 +107,6 @@ def addNavigationProperties(portal):
     nav_tool.addTransitionFor('default','folder_rename_form','failure','folder_rename_form')
     nav_tool.addTransitionFor('default','folder_rename_form','success','script:folder_rename')
     nav_tool.addTransitionFor('default','register','failure','join_form')
-    #rc1-rc2
-    nav_tool.addTransitionFor('default','personalize_form','success','personalize_form')
     #rc2-1.0
     nav_tool.addTransitionFor('default','content_status_modify','failure','content_status_history')
     #1.0->1.0.1
