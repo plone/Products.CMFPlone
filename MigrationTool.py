@@ -6,6 +6,8 @@ from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.CMFCorePermissions import ManagePortal
 
 import zLOG
+import traceback
+import sys
 
 def log(message,summary='',severity=0):
     zLOG.LOG('Plone: ',severity,summary,message)
@@ -52,43 +54,44 @@ class MigrationTool( UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'upgrade')
     def upgrade(self, REQUEST=None):
         """ perform the upgrade """
-        out = getattr(REQUEST, 'RESPONSE', None)
-        if out is None:
-            # FIXME - perhaps zLOG?
-            import StringIO
-            out = StringIO.StringIO()
-        newv = None
-        if getattr(REQUEST, 'yes_I_am_very_sure', None):
-            newv = getattr(REQUEST, "force_instance_version", None)
-        if newv is None:
-            newv = self.getInstanceVersion()
+        # keep it simple
+        out = []
+        
+        # either get the forced upgrade instance or the current instance
+        newv = getattr(REQUEST, "force_instance_version", self.getInstanceVersion())
+       
+        out.append("Starting the migration from version: %s" % newv)
         while newv is not None:
-            out.write('upgrading from ' + repr(newv))
+            out.append("Attempting to upgrade from: %s" % newv)
             try:
                 newv = self._upgrade(newv)
+                if newv is not None:
+                    out.append("Upgrade to: %s, completed" % newv)
+                    self.setInstanceVersion(newv)
+                
             except:
-                import traceback
-                out.write(' - ERROR!\n')
-                traceback.print_exc(file=out)
-                raise
-            if newv is not None:
-                out.write(' to %s: ok\n' % repr(newv))
-            self.setInstanceVersion(newv)
-        out.write(' - hit end of upgrade path\n')
+                out.append('ERROR:')
+                out += traceback.format_tb(sys.exc_traceback)
+                out.append("Upgrade aborted")
+                # set newv to None
+                # to break the loop
+                newv = None
+                
+        out.append("End of upgrade path")
         
         if self.needUpgrading():
-            out.write('PROBLEM: upgrade path did NOT reach current version\nMIGRATION FAILED')
-        else:
-            out.write('ok, this is the current version.\nMigration completed successfuly')
+            out.append("PROBLEM: The uppgrade path did NOT reach current version")
+            out.append("Migration has failed")
 
         # do this once all the changes have been done
         self.portal_catalog.refreshCatalog()
         self.portal_workflow.updateRoleMappings()
+        return '\n'.join(out)
         
 
     def _upgrade(self, version):
         if not _upgradePaths.has_key(version): 
-            log('No upgrade path found for version "%s"\n' % version)
+#            log('No upgrade path found for version "%s"\n' % version)
             return None
 
         newversion, function = _upgradePaths[version]

@@ -8,22 +8,16 @@
 
 <p>
 <dtml-if needUpgrading>
-Your Plone instance is out of date. Select "migrate" to migrate to the latest version.
+Your Plone instance is out of date. Click <a href="upgrade">here</a> to migrate to the latest version.
 <dtml-else>
-Your Plone instance is up to date. <b>However</b> if you have just installed a new beta and / 
-or just added this tool we may not be to reliably tell this. If you select "migrate" it will migrate and should
-not do any harm to a standard Plone.
+Your Plone instance is up to date. 
 </dtml-if>
 </p>
 
-<p>[ <a href="upgrade">Migrate</a> ] </p>
-
-<hr width="90%" />
-
 <form action="upgrade">
-If, however, you're <strong>absolutely</strong> sure your instance is not
-&dtml-getInstanceVersion;, choose the correct version below and click "force
-migrate": <br />
+<p>
+If, however, you're <strong>absolutely</strong> sure your instance is not &dtml-getInstanceVersion;, choose the correct version below and click "force migrate":
+</p>
 
 <select name="force_instance_version">
   <dtml-in knownVersions sort>
@@ -31,11 +25,8 @@ migrate": <br />
   </dtml-in>
 </select><br />
 
-<input id="confirm" name="yes_I_am_very_sure" type="checkbox" />
-<label for="confirm">I am very sure that I know what I'm doing and I'm aware
-that I may break my Plone site if I'm wrong</label><br />
-
-<input type="submit" value="force migrate" />
+<p><b>Note:</b> please ensure you have a backup of you Plone site prior to performing this and be aware you may break your site if you have the wrong version.</p>
+<input type="submit" value="Force migrate"/>
 
 </form>
 
