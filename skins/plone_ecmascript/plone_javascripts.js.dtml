@@ -6,16 +6,6 @@
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
 </dtml-let>
 
-// Fix for bug in IE6.0 float handling (don't ask, don't tell ;)
-
-if (document.all && window.attachEvent) window.attachEvent("onload", fixWinIE);
-function fixWinIE() {
-    try {
-        document.getElementById('content').style.display = 'block';
-    } catch(er) {}
-}
-
-
 // The calendar popup show/hide:
 
     function showDay(date) {
