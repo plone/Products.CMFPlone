@@ -1,3 +1,5 @@
+import os
+
 from Acquisition import aq_base
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
@@ -6,6 +8,11 @@ def two05_alpha1(portal):
     """2.0.5 -> 2.1-alpha1
     """
     out = []
+    
+    # ATCT is not installed when SUPPRESS_ATCT_INSTALLATION is set to YES
+    # It's required for some unit tests in ATCT [tiran]
+    suppress_atct = bool(os.environ.get('SUPPRESS_ATCT_INSTALLATION', None)
+                         == 'YES')
 
     # Install SecureMailHost
     replaceMailHost(portal, out)
@@ -18,15 +25,18 @@ def two05_alpha1(portal):
     deletePropertySheet(portal, out, 'form_properties')
     deletePropertySheet(portal, out, 'navigation_properties')
 
-    # Install Archetypes and ATCT
+    # Install Archetypes
     installArchetypes(portal, out)
-    installATContentTypes(portal, out)
+    
+    # install ATContentTypes
+    if not suppress_atct:
+        installATContentTypes(portal, out)
 
-    # XXX: Hack
-    patchATCTMigration()
+        # XXX: Hack
+        patchATCTMigration()
 
-    # Switch over to ATCT
-    migrateToATCT(portal, out)
+        # Switch over to ATCT
+        migrateToATCT(portal, out)
 
     return out
 
@@ -35,6 +45,9 @@ def replaceMailHost(portal, out):
     """Replaces the mailhost with a secure mail host."""
     id = 'MailHost'
     oldmh = getattr(aq_base(portal), id)
+    if oldmh.meta_type == 'Secure Mail Host':
+        out.append('Secure Mail Host already installed')
+        return
     title = oldmh.title
     smtp_host = oldmh.smtp_host
     smtp_port = oldmh.smtp_port

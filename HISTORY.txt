@@ -2,9 +2,17 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone unknown
+Plone 2.1 - unknown - unknown - unreleased
+ 
+    - Don't install SecureMailHost if already installed.
+      [tiran]
 
-    - Use images in plone_tabless\colophon.pt just like the one in 
+    - Added 'SUPPRESS_ATCT_INSTALLATION' environment var check before ATCT
+      installation. It can be set to 'YES' in order to suppress the installation
+      of ATContentTypes at portal creation time for e.g. migration tests.
+      [tiran]
+
+    - Use images in plone_tabless/colophon.pt just like the one in 
       plone_templates.
       [panjunyong]
 
