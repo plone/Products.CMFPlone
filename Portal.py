@@ -96,8 +96,8 @@ class PloneSite(CMFSite, OrderedContainer):
     """
     meta_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
-    __implements__ = ( DublinCore.DefaultDublinCoreImpl.__implements__,
-                       OrderedContainer.__implements__ )
+    __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
+                     OrderedContainer.__implements__ 
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead

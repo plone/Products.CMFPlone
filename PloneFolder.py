@@ -249,10 +249,9 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
 
     security=ClassSecurityInfo()
 
-    __implements__ = (SkinnedFolder.__implements__ ,
-                      OrderedContainer.__implements__,
-                      DefaultDublinCoreImpl.__implements__ ,
-                      WriteLockInterface)
+    __implements__ =  OrderedContainer.__implements__ + \
+                      DefaultDublinCoreImpl.__implements__ + \
+                      (SkinnedFolder.__implements__,WriteLockInterface)
 
     manage_options = Folder.manage_options + \
                      CMFCatalogAware.manage_options
