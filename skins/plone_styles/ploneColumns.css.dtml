@@ -52,9 +52,6 @@ body {
 #portal-column-two .visualPadding {
     padding: 2em 2em 1em 0em;
 }
-#portal-columns .portlet .visualPadding {
-    padding: 0;
-}
 
 /* hide columns */
 

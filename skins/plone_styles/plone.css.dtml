@@ -543,8 +543,13 @@ input.searchButton {
     margin-bottom: 1.5em;
 }
 
-#content-news .portletContent {
-    padding: 1em 1em 0em 1em;
+#content-news .portlet ul,
+#content-news .portlet li {
+    display: block; 
+    list-style: none;
+    list-style-image: none;
+    margin: 0;
+    padding: 0;
 }
 
 .documentEditable {
@@ -970,8 +975,9 @@ ul.configlets li a {
 }
 
 .visualCommentAlign {
+    display: block;
     float: right;
-    margin-top: -1.5em;
+    margin-top: -1.5em !important;
 }
 
 .spacer {
@@ -1085,7 +1091,7 @@ ul.configlets li a {
 
 .link-comment {
     background: transparent url("<dtml-var portal_url>/discussionitem_icon.gif") center left no-repeat;
-    padding: 1px 0px 1px 16px;
+    padding: 1px 0px 1px 16px !important;
 }
 
 .hiddenStructure {
@@ -1104,10 +1110,6 @@ ul.configlets li a {
 .visualClear {
     display: block;
     clear: both;
-    height: 0px !important;
-    height /**/: 1px;
-    margin: 0;
-    margin: -1px 0 0 0;
 }
 .hiddenLabel {
     visibility: hidden;

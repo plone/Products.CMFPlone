@@ -42,8 +42,8 @@
 
                         <img tal:replace="structure usericon_imgtag" />
 
-                        <span tal:replace="creator" >
-                        Author
+                        <span tal:replace="creator">
+                            Author
                         </span>
 
                     </a>
@@ -65,27 +65,26 @@
                         </p>
 
 
-                        <p>
+                        <ul tal:define="is_discussable python: portal_discussion.isDiscussionAllowedFor(resultObject);">
+                            <li>
+                                <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
+                                    Read More
+                                </a>
+                            </li>
 
-                            <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
-                                Read More
-                            </a>
+                            <tal:discussable condition="is_discussable">
+                            <li tal:attributes="class python: test(has_replies, 'visualCommentAlign link-comment','visualCommentAlign');"
+                                tal:define="talkback python: portal_discussion.getDiscussionFor(resultObject);
+                                            has_replies python: talkback.hasReplies(resultObject);">
+                                <a href="" tal:attributes="href string:${resulturl}#comments;">
 
-                            <tal:discuss define="is_discussable python: portal_discussion.isDiscussionAllowedFor(resultObject);"
-                                         condition="is_discussable">
-                            <a href=""
-                               tal:attributes="href string:${resulturl}#comments;
-                                               class python: test(has_replies, 'visualCommentAlign link-comment','visualCommentAlign');"
-                               tal:define="talkback python: portal_discussion.getDiscussionFor(resultObject);
-                                           has_replies python: talkback.hasReplies(resultObject);">
+                                    <span tal:replace="python: talkback.replyCount(resultObject)" />
+                                    <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
 
-                                <span tal:replace="python: talkback.replyCount(resultObject)" />
-                                <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
-
-                            </a>
-                            </tal:discuss>
-
-                        </p>
+                                </a>
+                            </li>
+                            </tal:discussable>
+                        </ul>
 
 
                     </div>
@@ -97,10 +96,6 @@
             </tal:block>
 
         </metal:block>
-
-        <div class="spacer">
-            &nbsp;
-        </div>
 
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
