@@ -72,8 +72,7 @@
                      showSettings folder/canConstrainTypes;
                      showAdd      python:numAllowed >= 1 or showSettings;
                      showMore     python:numAllowed > numMenu;
-                     showMenu     python:showMore or showSettings or numMenu > 1;
-                     "
+                     showMenu     python:showMore or showSettings or numMenu > 1"
              condition="showAdd">
 
     <tal:dropdown tal:condition="showMenu">
