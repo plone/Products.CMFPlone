@@ -1267,13 +1267,13 @@ ul.portal-sitemap {
     border: none;
 }
 
-.portal-sitemap ul {
+.portal-sitemap .portletNavigationLevel1 {
     padding-left: 1em;
     border-left: 0.5em solid &dtml-globalBorderColor;;
     margin: 0 0 0 0.7em;
 }
 
-.portal-sitemap ul ul {
+.portal-sitemap .portletNavigationLevel2 {
     padding-left: 1em;
     border-left: 0.5em solid &dtml-globalBackgroundColor;;
 }
