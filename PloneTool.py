@@ -8,6 +8,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore
 from types import TupleType
 from urllib import urlencode
+from cgi import parse_qs
 import re
 
 from zLOG import LOG, INFO
@@ -196,6 +197,18 @@ class PloneTool (UniqueObject, SimpleItem):
             for this object 
         """
         action_id=self.getNavigationTransistion(context,action,status)
+        # If any query parameters have been specified in the transition,
+        # stick them into the request before calling getActionById()
+        queryIndex = action_id.find('?')
+        if queryIndex:
+            query = parse_qs(action_id[queryIndex+1:])
+            for key in query.keys():
+                if len(query[key]) == 1:
+                    self.REQUEST[key] = query[key][0]
+                else:
+                    self.REQUEST[key] = query[key]
+            action_id = action_id[0:queryIndex]
+        log('action='+action_id+', query='+str(query))
         next_action=context.getTypeInfo().getActionById(action_id)
         if next_action is not None:
             return context.restrictedTraverse(next_action)
@@ -204,15 +217,21 @@ class PloneTool (UniqueObject, SimpleItem):
     security.declarePublic('getNextRequestFor')
     def getNextRequestFor(self, context, action, status, **kwargs):
         """ takes object, action, and status and returns a RESPONSE redirect """
-        url_params=urlencode(kwargs)
         action_id=self.getNavigationTransistion(context,action,status) ###
+        if action_id.find('?') >= 0:
+            separator = '&'
+        else:
+            separator = '?'
+            
+        url_params=urlencode(kwargs)
         redirect=None
         try:
             action_id=context.getTypeInfo().getActionById(action_id)
         except: # XXX because ActionTool doesnt throw ActionNotFound exception ;(
             pass
-        return self.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
+        return self.REQUEST.RESPONSE.redirect( '%s/%s%s%s' % ( context.absolute_url()
                                                             , action_id
+                                                            , separator
                                                             , url_params) )
 InitializeClass(PloneTool)
 
