@@ -1,14 +1,26 @@
 /* 
 ** Plone style sheet for Netscape 4 and other non-CSS2-compatible browsers.
-** Alexander Limi, 2002 - http://limi.net
-**
+** Copyright Alexander Limi, 2002-2003 - http://www.plonesolutions.com
+** Please reuse whatever you find useful here, and credit where credit is due :)
 */
 
-/*
+/* Do not remove this, it's required to get the variables needed to render the CSS
 <dtml-with stylesheet_properties>
 */
 
-/* Columns for Netscape 4 */
+
+/* Don't remove this either, this is a CSS trick to hide things from all browsers 
+   that are not Netscape 4 - aka. Fabrice's Inversion (google it :) 
+   Any standards-compliant browser will ignore the styles below, unless you insert
+   a comment in them (which you shouldn't do).
+   */
+
+/*/*//*/ 
+
+
+span.testclass {
+    color: green;
+}
 
 #columns{
 }
@@ -34,11 +46,10 @@
     padding: 0.5em 2em 1em 2em;
 }
 
-/* Basic Elements */
-body, td, th, div, span, table { /*font: <dtml-var mainFont>*/ }
+body, td, th, div, span, table { font-family: <dtml-var mainFont> }
 body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; font: <dtml-var mainFont>; }
 a { text-decoration: none; color: &dtml-mainLinkColor;; }
-p { /*font: <dtml-var mainFont>*/ }
+p { font: <dtml-var mainFont> }
 p a { text-decoration: underline; }
 p img { border: &dtml-contentImageBorder;; }
 hr { margin:0; padding: 0; }
@@ -51,7 +62,6 @@ abbr, acronym, .explain { cursor: help; }
 code { }
 pre { padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
 
-/* Structural elements */
 
 #portalTabs li, #personalbar li, #contentTabs li {
   display: inline;
@@ -66,10 +76,6 @@ ul#portalTabs a.selected { background: &dtml-mainTabBackground;; color: &dtml-ma
 ul#personalBar { text-align: right; margin: 0; }
 ul#personalBar a{ font-weight: &dtml-mainTabFontWeight;; }
 div#pathBar { padding: 0 0 0 1em; margin: 0;}
-table.columns { width: 100%; }
-table.columns td.left { vertical-align: top; padding-top: 2em; width: 15%; }
-table.columns td.main { vertical-align: top; padding-top: 2em; width: 70%; }
-table.columns td.right { vertical-align: top; padding-top: 2em; width: 15%; }
 #contentTabs { padding: 0;}
 #contentTabs a { background: &dtml-contentTabBackgroundNotSelected;; color: &dtml-contentTabFontColor;; font-weight: &dtml-contentTabFontWeight;; }
 #contentTabs a.selected { background: &dtml-contentTabBackground;; color: &dtml-contentTabFontColorSelected;; font-weight: &dtml-contentTabFontWeight;; }
@@ -78,10 +84,9 @@ table.columns td.right { vertical-align: top; padding-top: 2em; width: 15%; }
 #document { background: &dtml-contentBackground;; }
 #editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
 div.message { background: &dtml-messageBackground;; font: <dtml-var messageFont>; padding: 0.5em 1em; vertical-align: middle; }
-#description { /*font: <dtml-var mainFont>;*/ display: block; }
+#description { font: <dtml-var mainFont>; display: block; }
 div#footer { float: none; padding: 0em 0em 0em 0em; text-align: center; }
 
-/* Widgets */
 div.row {  }
 div.rowEven {  }
 div.rowOdd {  }
@@ -125,7 +130,6 @@ div.spacer { }
 .syndicated { color: #008000; }
 .expired { color: Red; }
 
-/* Calendar elements */
 div.day { background-color: #FFFFBB; }
 div.date { font-weight: bold; }
 table.calendar { border: &dtml-boxBorder;; text-align: right; }
@@ -141,9 +145,12 @@ table.calendar td.holiday { background-color: #CF6060; border: 1px solid #8CACBB
 table.calendar td.todayevent { background-color: &dtml-boxHeaderBackground;; border: &dtml-boxHighlight;; font-weight: bold; }
 table.calendar td.todaynoevent { border-collapse: collapse; border: 2px solid #FFA500; }
 
+/* End of Fabrice's Inversion: */
+
+/* */
 
    
-/*
+/* End of the variable inclusion
 </dtml-with>
 */
 
