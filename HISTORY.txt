@@ -1,6 +1,8 @@
 CHANGES
 
 Plone 1.0
+    - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
+    - modified condition of 'state' action in portal_actions so that DTML objects work
     - Removed old Xopus files
     - Removed XSDHTML editor, all editors should be add-ons and not in core 
       Plone
