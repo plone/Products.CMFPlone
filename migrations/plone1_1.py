@@ -90,7 +90,7 @@ def make_plone(portal):
 
 def addFormController(portal):
     qi=getToolByName(portal,'portal_quickinstaller')
-    qi.installProduct('CMFFormController')
+    qi.installProduct('CMFFormController',locked=1)
 
 def addPortalFormValidators(portal):
     form_tool = portal.portal_form
@@ -194,7 +194,7 @@ def addGroupUserFolder(portal):
     get_transaction().commit(1)
 
     qi=getToolByName(portal, 'portal_quickinstaller')
-    qi.installProduct('GroupUserFolder')
+    qi.installProduct('GroupUserFolder',locked=1)
     addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
     if 'portal_groups' not in portal.objectIds():
         addPloneTool(ToolNames.GroupsTool)
