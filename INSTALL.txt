@@ -35,6 +35,10 @@ date, and have nice and funky pictures to go with them ;)
 - This means that installation of Plone was successful. Go to the front page, 
   and have a look at your new Plone site.
 
+- If you want to set up translations for your Plone site, there is documentation
+  available on plone.org in the Development section. Plone comes with a lot of
+  language files, have a look in the i18n directory.
+
 - Have fun, and don't forget to report any bugs or inconsistencies in the 
   "Plone Collector":http://plone.org 
 
