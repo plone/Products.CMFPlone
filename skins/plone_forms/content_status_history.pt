@@ -223,14 +223,41 @@
                  tal:define="tabindex tabindex/next;
                              error_workflow_action errors/workflow_action|nothing;
                              objs request/ids|nothing;
+                             review_state_label python:review_state[:1].upper()+review_state[1:];
                              target python:test(objs, objs, here);"
                  tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
                  
                 <div tal:condition="error_workflow_action"
-                     tal:replace="structure string:$error_workflow_action <br />" />
+                     tal:replace="structure string:<strong>$error_workflow_action</strong> <br />" />
                 
-                <metal:block tal:define="global transitions python:here.portal_workflow.getTransitionsFor(target, here)"
-                             tal:repeat="transition transitions">
+                    <span tal:replace="nothing">
+                    For usability we will want to signify what state we 
+                    are currently in. DCWorkflow only returns what t
+                    ransitions are available.  But we want to visually 
+                    represent what *state* we are currently in along with
+                    possible transitions.
+                    </span>
+                    
+                    <input class="noborder"
+                           id=""
+                           type="radio"
+                           name="workflow_action"
+                           title=""
+                           value=""
+                           onfocus="formtooltip('change_status_help',1)" 
+                           onblur="formtooltip('change_status_help',0)" 
+                           tal:attributes="value review_state;
+                                           title review_state;
+                                           checked python:test(request.get('workflow_action', review_state)==review_state,1,0);" />
+                    <label for=""
+                           i18n:translate=""
+                           tal:attributes="for review_state;"
+                           tal:content="review_state_label"
+                           >Transition Name</label>
+                    <br />
+                    
+                <tal:block define="global transitions python:here.portal_workflow.getTransitionsFor(target, here)"
+                           repeat="transition transitions">
                     <input class="noborder"
                            id=""
                            type="radio"
@@ -249,7 +276,7 @@
                            tal:content="transition/name"
                            >Transition Name</label>
                     <br />
-                </metal:block>
+                </tal:block>
 
             </div>
             

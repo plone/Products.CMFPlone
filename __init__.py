@@ -25,11 +25,15 @@ ModuleSecurityInfo('zLOG').declarePublic('INFO')
 ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
 
 # for content_status_modify
-from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted
+from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted, \
+  WorkflowException
+
 ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectMoved')
 ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectDeleted')
+ModuleSecurityInfo('WorkflowCore').declarePublic('WorkflowException')
 allow_class(ObjectMoved)
 allow_class(ObjectDeleted)
+allow_class(WorkflowException)
 
 #for form validation bits
 from PloneUtilities import IndexIterator

@@ -1,12 +1,10 @@
 CHANGES
-
-Plone 1.0.1
-    - Added "Dry run" option to portal_migration
-    - Syndication is now using portal_form.
-    - calendarDatePickerBox used tabindex instead of tabindex/next
-    - validation of expiration_date and effective_date in content_status_history was broken
-    - checkPermission was being traversed to in breadcrumbs, navigationXXX, and
-      my_worklist.  
+Plone 1.1
+    - content_status_history (state tab) form now displays
+      the current state in the state list.  This is a usability
+      decision. All options should have a default state. Now
+      the default is a NOOP, but will not error.  Exposed
+      WorkflowException to PythonScripts.
 
 Plone 1.0
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
