@@ -37,21 +37,19 @@
                   <span tal:define="daynumber day/day;
                                     datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
                                     javascriptstring string:javascript:%sDay('%s');;">
-
                   <td class="event"
                       tal:attributes="onMouseOut  python: javascriptstring % ('hide', datestring);
                                       onMouseOver python: javascriptstring % ('show', datestring);
                                       class       python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todayevent', 'event')">
                     <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=day['day'], month=month, year=year)" tal:omit-tag="">
-                      <span tal:define="begin python:begEndTimes[0].ISO();
-                                        end python:begEndTimes[1].ISO();
+                      <span tal:define="begin python:DateTime(begEndTimes[0].timeTime()+86400).ISO();
+                                        end python:DateTime(begEndTimes[1].strftime('%m/%d/%y')).ISO();
                                         pss python:modules['Products'].PythonScripts.standard" tal:omit-tag="">
                       <a href tal:attributes="href python:here.portal_url()+'/search?start:date=%s&start_usage=range:max&end:date=%s&end_usage=range:min'%(pss.url_quote(begin),pss.url_quote(end))">
                         <span tal:replace="python: day['day'] or default">&nbsp;</span>
                       </a>
                       </span>
                     </span>
-
                   </td>
                   </span>
                   </span>
