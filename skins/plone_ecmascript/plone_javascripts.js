@@ -678,8 +678,18 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
 
 
 
-
-
+function fullscreenMode() {
+    if (document.getElementById('portal-top').style.display == 'none') {
+        document.getElementById('portal-top').style.display = 'block';
+        document.getElementById('portal-column-one').style.display = 'block';
+        document.getElementById('portal-column-two').style.display = 'block';
+        }
+    else {
+        document.getElementById('portal-top').style.display = 'none';
+        document.getElementById('portal-column-one').style.display = 'none';
+        document.getElementById('portal-column-two').style.display = 'none';
+    }
+}
 
 
 // and finally : Mike Malloch's fixes for Internet Explorer 5 - 
