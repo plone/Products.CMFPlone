@@ -12,6 +12,7 @@
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start python:request.get('b_start',0);
                  usericon_imgtag here/user.gif;
+                 portal_discussion nocall:here/portal_discussion;
                  discussionitem_imgtag here/discussionitem_icon.gif">
 
 
@@ -67,11 +68,12 @@
 
                         <p>
                             <span style="float: right"
-                                  tal:define="is_discussable python: here.portal_discussion.isDiscussionAllowedFor(resultObject);
-                                              talkback python: here.portal_discussion.getDiscussionFor(resultObject);
-                                              has_replies python: is_discussable and talkback.hasReplies(resultObject)"
-                                  tal:condition="python: is_discussable and has_replies">
-                                <img tal:replace="structure discussionitem_imgtag" />
+                                  tal:define="is_discussable python: portal_discussion.isDiscussionAllowedFor(resultObject)"
+                                  tal:condition="is_discussable">
+                                <img tal:define="talkback python: portal_discussion.getDiscussionFor(resultObject);
+                                                 has_replies python: is_discussable and talkback.hasReplies(resultObject);"
+                                     tal:condition="python: talkback and has_replies"
+                                     tal:replace="structure discussionitem_imgtag" />
                                      <a href=""
                                         tal:attributes="href string:${resulturl}#comments">
                                         <span tal:replace="python: talkback.replyCount(resultObject)" /> <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
