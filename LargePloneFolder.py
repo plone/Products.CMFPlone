@@ -32,6 +32,7 @@ class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
         BTreeFolder2Base._checkId(self, id, allow_dup)
 
     manage_renameObject = BasePloneFolder.inheritedAttribute('manage_renameObject')
+    manage_delObjects = BasePloneFolder.inheritedAttribute('manage_delObjects')
 
     # this works around a problem that makes empty folders
     # evaluate to false in boolean tests, like:
