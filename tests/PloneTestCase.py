@@ -2,6 +2,8 @@
 # PloneTestCase
 #
 
+# $Id$
+
 from Testing import ZopeTestCase
 
 ZopeTestCase.installProduct('CMFCore')

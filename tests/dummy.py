@@ -4,7 +4,15 @@
 
 # $Id$
 
+import os
+
 from OFS.SimpleItem import SimpleItem
+from ZPublisher.HTTPRequest import FileUpload
+from Products.CMFPlone.tests import PACKAGE_HOME
+
+TEXT = 'file data'
+UTEXT = u'file data'
+GIF = open(os.path.join(PACKAGE_HOME, os.pardir, 'tool.gif')).read()
 
 
 class Dummy:
@@ -21,7 +29,6 @@ class Item(SimpleItem):
 
     id = 'dummy'
     meta_type = 'Dummy Item'
-    manage_before_delete_called = 0
 
     def __init__(self, id=None, title=None, **kw):
         self.__dict__.update(kw)
@@ -30,28 +37,41 @@ class Item(SimpleItem):
         if title is not None:
             self.title = title
 
+    manage_before_delete_called = 0
     def manage_beforeDelete(self, item, container):
         self.manage_before_delete_called = 1
 
 
-class File:
+class File(FileUpload):
     '''Dummy upload object 
-       Used to fake uploaded files and images.
+       Used to fake uploaded files.
     '''
 
     __allow_access_to_unprotected_subobjects__ = 1
-    filename = 'dummy.gif'
+    filename = 'dummy.txt'
+    data = TEXT
     headers = {}
 
-    def __init__(self, filename=None, headers=None):
+    def __init__(self, filename=None, data=None, headers=None):
         if filename is not None:
             self.filename = filename
+        if data is not None:
+            self.data = data
         if headers is not None:
             self.headers = headers
 
-    def seek(*args): pass
-    def tell(*args): return 1
-    def read(*args): return 'file data'
+    def seek(self, *args): pass
+    def tell(self, *args): return 1
+    def read(self, *args): return self.data
+
+
+class Image(File):
+    '''Dummy image upload object
+       Contains valid image data by default.
+    '''
+
+    filename = 'dummy.gif'
+    data = GIF
 
 
 class Error(Exception):
@@ -70,3 +90,29 @@ class Raiser(SimpleItem):
     def __call__(self, *args, **kw):
         raise self.exception 
 
+
+class SizedItem(Item):
+    '''Helper for getObjSize tests'''
+
+    size = 0
+
+    def set_size(self, size):
+        self.size = size
+
+    def get_size(self):
+        return self.size
+
+
+class DefaultPage(Item):
+    '''Helper for browserDefault tests'''
+
+    def __init__(self, default=['test'], keys=['index_html']):
+        self.keys = keys
+        self.set_default(default)
+
+    def set_default(self, default, has_key=0):
+        self.default_page = default
+        self._has_key = has_key
+
+    def has_key(self, key):
+        return self._has_key or key in self.keys

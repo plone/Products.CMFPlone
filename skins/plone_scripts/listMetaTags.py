@@ -71,7 +71,7 @@ else:
 try:
     expires = context.ExpirationDate()
 except AttributeError:
-    expires = None 
+    expires = None
 
 if expires and expires != 'None':
     expires = DateTime(expires)

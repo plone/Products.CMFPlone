@@ -663,9 +663,15 @@ del {
     padding: 0;
 }
 .documentActions {
-    float: right;
-    margin: -1.5em 0 0 0;
+    margin: -1.5em 0 2em 0;
 }
+
+.documentActions ul {
+    margin: 0 0 0.3em 0;
+    float: right;
+    clear: right;
+}
+
 
 .documentActions ul,
 .documentActions li {

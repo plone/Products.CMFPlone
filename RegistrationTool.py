@@ -104,6 +104,35 @@ class RegistrationTool(PloneBaseTool, BaseTool):
         same value for a given length and salt, every time."""
         return self.getPassword(length, salt)
 
+    security.declarePublic('mailPassword')
+    def mailPassword(self, forgotten_userid, REQUEST):
+        """ Wrapper around mailPassword """
+        membership = getToolByName(self, 'portal_membership')
+        utils = getToolByName(self, 'plone_utils')
+        member = membership.getMemberById(forgotten_userid)
+
+        if member and member.getProperty('email'):
+            # add the single email address
+            if not utils.validateSingleEmailAddress(member.getProperty('email')):
+                raise ValueError, 'The email address did not validate'
+
+        return BaseTool.mailPassword(self, forgotten_userid, REQUEST)
+
+    security.declarePublic('registeredNotify')
+    def registeredNotify(self, new_member_id):
+        """ Wrapper around registeredNotify """
+        membership = getToolByName( self, 'portal_membership' )
+        utils = getToolByName(self, 'plone_utils')
+        member = membership.getMemberById( new_member_id )
+
+        if member and member.getProperty('email'):
+            # add the single email address
+            if not utils.validateSingleEmailAddress(member.getProperty('email')):
+                raise ValueError, 'The email address did not validate'
+        
+        return BaseTool.registeredNotify(self, new_member_id)
+        
+        
 RegistrationTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(RegistrationTool)

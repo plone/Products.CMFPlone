@@ -37,16 +37,17 @@ for wlist_map_sequence in wf_wlist_map.values():
         if not skip and types:
             for result in catalog.searchResults(catalog_vars, portal_type=types):
                 o = result.getObject()
-                absurl = o.absolute_url()
-                if o is not None \
-                  and not avail_objs.has_key(absurl) \
-                  and (not permissions \
-                       or  permissions \
-                       and [p for p in permissions if checkPermission(p, o)]) \
-                  and (not roles \
-                       or  roles \
-                       and [role for role in user.getRolesInContext(o) if role in roles]):
-                    avail_objs[absurl] = o
+                if o:
+                    absurl = o.absolute_url()
+                    if o is not None \
+                      and not avail_objs.has_key(absurl) \
+                      and (not permissions \
+                           or  permissions \
+                           and [p for p in permissions if checkPermission(p, o)]) \
+                      and (not roles \
+                           or  roles \
+                           and [role for role in user.getRolesInContext(o) if role in roles]):
+                        avail_objs[absurl] = o
 
 avail_objs = avail_objs.values()
 avail_objs.sort(lambda x, y: cmp(x.modified(), y.modified()))

@@ -33,6 +33,20 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                           member_id, 'secret',
                           properties={'username': member_id, 'email': ''})
 
+    def testJoinAsExistingMemberRaisesValueError(self):
+        self.assertRaises(ValueError,
+                          self.registration.addMember,
+                          PloneTestCase.default_user, 'secret',
+                          properties={'username': 'Dr FooBar', 'email': 'foo@bar.com'})
+
+    def testJoinAsExistingNonMemberUserRaisesValueError(self):
+        # http://plone.org/collector/3221
+        self.portal.acl_users._doAddUser(member_id, 'secret', [], [])
+        self.assertRaises(ValueError,
+                          self.registration.addMember,
+                          member_id, 'secret',
+                          properties={'username': member_id, 'email': 'foo@bar.com'})
+        
     def testJoinWithoutPermissionRaisesUnauthorized(self):
         # http://plone.org/collector/3000
         self.portal.manage_permission(AddPortalMember, ['Manager'], acquire=0)
@@ -44,7 +58,7 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         self.portal.manage_permission(AddPortalMember, ['Manager'], acquire=0)
         self.app.REQUEST['username'] = member_id
         self.assertRaises(Unauthorized, self.portal.register)
-
+    
 
 class TestPasswordGeneration(PloneTestCase.PloneTestCase):
 
