@@ -172,6 +172,37 @@ class TestCatalogIndexing(PloneTestCase.PloneTestCase):
         self.assertEqual(brain.Title, 'Foo')
         self.assertEqual(brain.Description, 'Bar')
 
+    def testIndexTitleOnly(self):
+        # Indexing should only index the Title
+        #
+        # XXX: This does not work as expected. The object
+        # appears to be in the catalog but is not returned
+        # by searchResults()!?
+        #
+        self.catalog.indexObject(self.folder.doc, idxs=['Title'])
+        # The document is cataloged
+        path = self.catalog._CatalogTool__url(self.folder.doc)
+        self.failUnless(path in self.catalog._catalog.paths.values())
+        # But it is not returned when searching...
+        self.assertEqual(len(self.catalog(id='doc')), 0)
+        self.assertEqual(len(self.catalog(Title='Foo')), 0) # <-- Should be 1
+        self.assertEqual(len(self.catalog(Description='Bar')), 0)
+
+    def testIndexIdOnly(self):
+        # Indexing should only index the id
+        #
+        # XXX: Demonstrate that the behavior is independent
+        # of index type.
+        #
+        self.catalog.indexObject(self.folder.doc, idxs=['id'])
+        # The document is cataloged
+        path = self.catalog._CatalogTool__url(self.folder.doc)
+        self.failUnless(path in self.catalog._catalog.paths.values())
+        # But it is not returned when searching...
+        self.assertEqual(len(self.catalog(id='doc')), 0) # <-- Should be 1
+        self.assertEqual(len(self.catalog(Title='Foo')), 0)
+        self.assertEqual(len(self.catalog(Description='Bar')), 0)
+
 
 class TestCatalogSearching(PloneTestCase.PloneTestCase):
 
