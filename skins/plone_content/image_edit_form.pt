@@ -20,7 +20,7 @@
     </p> 
     
     <span tal:replace="nothing">
-    ##### SET THE FORM ACTION TO request/url FOR THE FORM_TOOL -- CUT AND PASTE INTO YOUR FORM ####
+    ##### SET THE FORM ACTION TO request/URL FOR PORTAL_FORM -- CUT AND PASTE INTO YOUR FORM ####
     </span>
     
     <form class="group"

@@ -73,3 +73,6 @@ default.folder_rename.success = url:folder_contents
 default.folder_rename.failure = url:folder_contents
 default.folder_publish.success = url:folder_contents
 default.folder_publish.failure = url:folder_contents
+default.join_form.success = script:register
+default.join_form.failure = join_form
+default.register.success = registered

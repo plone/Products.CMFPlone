@@ -47,6 +47,13 @@ class DefaultCustomizationPolicy:
                     action.action=Expression('string:${object_url}/portal_form/content_status_history')
         actions_tool._actions=tuple(actions)
 
+        actions_tool=getToolByName(portal, 'portal_registration')
+        actions=actions_tool._cloneActions()
+        for action in actions:
+                if action.id=='join':
+                    action.action=Expression('string:${portal_url}/portal_form/join_form')
+        actions_tool._actions=tuple(actions)
+
     def customize(self, portal):
         #make 'reply' tab unvisible
         dt=getToolByName(portal, 'portal_discussion') 

@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=validates teh Registration of a User
+##title=validates the Registration of a User
 REQUEST=context.REQUEST
 
 validator = context.portal_form.createForm()
@@ -17,7 +17,7 @@ if not context.portal_properties.validate_email:
     validator.addField('password', 'Password', required=1)
     validator.addField('confirm', 'Password', required=1)
 
-errors=validator.validate(REQUEST)
+errors = validator.validate(REQUEST, REQUEST.get('errors', None))
 password, confirm = REQUEST.get('password', ''), REQUEST.get('confirm', '')
 
 #manual validation ;(
@@ -27,11 +27,20 @@ if not context.portal_properties.validate_email:
     if not errors.get('password', None) and len(password) < 5:
         errors['password'] = errors['confirm'] = 'Passwords must contain at least 5 letters.'
 
-failMessage = context.portal_registration.testPropertiesValidity(REQUEST)
-if failMessage:
-    errors['username'] = failMessage
+#
+#
+#
+try:
+    failMessage = context.portal_registration.testPropertiesValidity(REQUEST)
+    if failMessage:
+        errors['username'] = failMessage
 
-if not context.portal_registration.isMemberIdAllowed(REQUEST.get('username')):
-    errors['username'] = 'This member id is invalid or already in use.'
+    if not context.portal_registration.isMemberIdAllowed(REQUEST.get('username')):
+        errors['username'] = 'This member id is invalid or already in use.'
+except:
+    errors['username'] = context.plone_utils.exc_info()
 
-return errors
+if errors:
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
+else:
+    return ('success', errors, {'portal_status_message':'You have been registered.'})

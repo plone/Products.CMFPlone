@@ -1,6 +1,6 @@
-# $Id: $
-# $Source: $
-__version__ = "$Revision: $"[11:-2] + " " + "$Name: $"[7:-2]
+# $Id: NavigationTool.py,v 1.26 2002/09/11 04:13:01 plonista Exp $
+# $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
+__version__ = "$Revision: 1.26 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -23,7 +23,7 @@ import sys
 
 from interfaces.NavigationController import INavigationController
 
-debug = 0  # enable/disable logging
+debug = 1  # enable/disable logging
 
 class NavigationTool (UniqueObject, SimpleItem):
     """ provides navigation related utilities """
@@ -415,7 +415,7 @@ class NavigationError(Exception):
     def __str__(self):
         global __version__
         return '<pre>' + str(self.exception) \
-                       + '\n\nNavigation trace: (version ' + __version__ + ')\n-----------------' \
+                       + '\n\nNavigation trace: (version ' + __version__.strip() + ')\n-----------------' \
                        + self.trace + self._helpfulHints() + '</pre>'
 
     def _helpfulHints(self):

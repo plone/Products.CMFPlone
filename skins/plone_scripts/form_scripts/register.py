@@ -9,10 +9,6 @@
 ##
 REQUEST=context.REQUEST
 
-errors=context.portal_form_validation.validate(context, 'validate_registration')
-if errors:
-    return context.join_form( context, REQUEST)
-
 portal_registration=context.portal_registration
 portal_properties=context.portal_properties
 
@@ -21,4 +17,4 @@ portal_registration.addMember(REQUEST['username'], password, properties=REQUEST)
 if portal_properties.validate_email or REQUEST.get('mail_me', 0):
     portal_registration.registeredNotify(REQUEST['username'])
 
-return context.registered( context, REQUEST )
+return ('success', context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Registered.')})

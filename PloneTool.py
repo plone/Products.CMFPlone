@@ -12,6 +12,7 @@ import urlparse
 from cgi import parse_qs
 
 import re
+import sys
 
 from zLOG import LOG, INFO, WARNING
 
@@ -205,6 +206,13 @@ class PloneTool (UniqueObject, SimpleItem):
     def urlparse(self, url):
         """ returns the pieces of url """
         return urlparse.urlparse(url)
+
+
+    # expose sys.exc_info() to scripts to allow extraction of
+    # information from untyped exceptions
+    def exc_info(self):
+        return sys.exc_info()[0]
+
 
 InitializeClass(PloneTool)
 

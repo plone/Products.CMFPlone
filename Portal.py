@@ -45,17 +45,7 @@ Thanks for using our product.
 class PloneGenerator(Portal.PortalGenerator):
 
     def customizePortalTypes(self, p):
-
         typesTool=getToolByName(p, 'portal_types')
-
-        # XXX BUGBUG FIXME - hack to make Links use the portal_form machinery
-        typeInfo = typesTool.getTypeInfo('Link')
-        for action in typeInfo.getActions():
-            if action.get('id', None) == 'edit':
-                link_edit_action = action
-                break
-        link_edit_action['action'] = 'portal_form/link_edit_form'
-
 
         typesToSkip=['Folder', 'Discussion Item', 'Topic']
         typesTool._delObject('Folder')
@@ -114,6 +104,7 @@ class PloneGenerator(Portal.PortalGenerator):
         o = p.Members
         o.setTitle('Members')
         o.setDescription("Container for portal members' home directories")
+        
         
     def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow
@@ -192,6 +183,7 @@ class PloneGenerator(Portal.PortalGenerator):
         form_tool.setValidators('metadata_edit_form', [])
         form_tool.setValidators('reconfig_form', ['validate_reconfig'])
         form_tool.setValidators('personalize_form', ['validate_personalize'])
+        form_tool.setValidators('join_form', ['validate_registration'])
 
         # grab the initial portal navigation properties from data/navigation_properties
         nav_tool = p.portal_navigation

@@ -58,8 +58,8 @@
             tal:condition="python:test(hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
             <td colspan="2">
 
-                <a href="join_form"
-		           tal:attributes="href string:$portal_url/join_form">
+                <a href="portal_form/join_form"
+		           tal:attributes="href string:$portal_url/portal_form/join_form">
                    <img tal:replace="structure here/linkTransparent.gif" 
 			/>
                 <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
