@@ -1,5 +1,0 @@
-<content>
-  <Title tal:content="here/Title">Title</Title>
-  <Description tal:content="here/Description">Description</Description>
-  <Text tal:content="here/CookedBody">Body</Text>
-</content>

@@ -14,6 +14,6 @@ aims to be *the* opensource out-of-the-box publishing system.
 
 Installation docs in INSTALL.txt
 Credits in CREDITS.txt
-History in History.txt
+History in HISTORY.txt
 License terms in LICENSE.txt
 

@@ -1,5 +1,7 @@
 CHANGES
 Plone 1.0 beta3
+    - Added all missing i18n strings, merged some strings to better facilitate translations to
+      Japanese, Chinese and Korean.
     - Renamed Plone XP skin to Plone Corporate to avoid confusion with a certain operating system ;)
       This will break your skinpath if you have it pointing to plone_styles/winxp, change it to
       plone_styles/corporate instead.

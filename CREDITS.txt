@@ -1,43 +1,40 @@
 Main Contributors:
- Vidar Andersen (blacktar) for original design and ambience
+ Vidar Andersen (blacktar) for original visual design and ambience.
 
- Alexander Limi (dracvl) for CSS/HTML wizardry, ZPT, and most importantly Usability guidance
+ Alexander Limi (limi) for XHTML/CSS wizardry, ZPT, translation files - and most 
+ importantly - usability design.
 
- Alan Runyan (runyaga) for Python, ZPT guidance, and insistence
+ Alan Runyan (runyaga) for Python, ZPT guidance, and insistence.
 
 The following people contributed to help iron out wrinkles, gave feedback and contributed code.
 
-Geir Bækholt (http://elvix.com) 
-Stian Søiland (http://stain.portveien.to) 
+Geir Bækholt (http://elvix.com) - Javascript, CSS tips
+Stian Søiland (http://stain.portveien.to) - CSS tips
+Helge Tesdal - code king
 Magnus Heino - python guru 
 Manfred Ackermann - persistent and faithful tester
 Andy Dawkins - Calendar and general Zopista 
-Ignacio Valdes - documetnation, questions
+Ignacio Valdes - documentation, questions
 Zope Corporation for producing ZOPE and CMF (especially Tres Seaver, Shane Hathaway, and Andrew Sawyers)
 Steve Alexander - Helpful ZOPE Guru
 Lalo Martin - Zope Plumbing, PortalFactory, Translator Tool
 Kapil (hazmat) - Helpful ZOPE Guru
-Luis Lavena - favicon
+Luis Lavena - Windows icons
 Sidnei De Silva - python guru
 David Harvey - python, ZPT, makes sures things dont fall through the cracks ;)
 Geoff Davis (plonista) - form validation refactorings, form_tool and deep insight
 Florent Guillaume (efge) - general helpfulness, CMF pointers and i18n Zope2.7 exploration
-
-Plone1.0alpha4
 Kevin MCKeown - q/a and testing
-
-
-Beta
 Jonagustine Lim (jlim) - for organized testing
 Philipp Auersperg - kindly contributing the StatelessTreeNavigation http://www.bluedynamics.com/
 Maisa Fonseca (devgirl) - i18n work
 
 
-#zope on irc.openprojects.net for insight and soapbox to preach
+#plone and #zope on irc.openprojects.net for insight and soapbox to preach
 
 http://zopelabs.com/ for useful scripts 
 
-please help out the CMF and Plone community by becoming involved. 
+Please help out the CMF and Plone community by becoming involved. 
 Check out http://www.plone.org/ for more information.
 
 NOTE: please email me if I left your name out - runyaga@thisbox.com

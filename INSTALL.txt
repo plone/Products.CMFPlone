@@ -3,28 +3,34 @@ date, and have nice and funky pictures to go with them ;)
 
 **Download the following:**
 
-- "Latest Zope":http://www.zope.org/Products (you need at least version 2.4, version 2.5 recommended)
+- "Latest Zope":http://www.zope.org/Products (you need at least version  2.5.1)
 
-- "Latest CMF":http://cmf.zope.org/download (you need at least version 1.2)
+- "Latest CMF":http://cmf.zope.org/download (you need at least version 1.3)
 
 - "Latest Plone":http://plone.org/download
 
-  - Plone comes with 3 Products that need to be installed in the Products directory: CMFPlone, DCWorkflow and Formulator.
+  - Plone comes with 3 Products that need to be installed in the Products 
+    directory: CMFPlone, DCWorkflow and Formulator.
 
 **The installation procedure:**
 
 - Install Zope (2.5.1 or later)
 
-- Unpack the CMF directories (CMFCore, CMFDefault etc) into your Products directory (CMF1.3b2 or later)
+- Unpack the CMF directories (CMFCore, CMFDefault etc) into your Products 
+  directory (CMF1.3 or later)
 
-- Unpack the Plone directory (CMFPlone) into your Products directory (also include the DCWorkflow and Formulator products)
+- Unpack the Plone directory (CMFPlone) into your Products directory 
+  (also include the DCWorkflow and Formulator products)
 
 - Start Zope
 
-- From /manage interface there should be a 'Select Type to Add' that says, Plone Site.  click on that, fill in information and voila!
+- From /manage interface there should be a 'Select Type to Add' that says
+  Plone Site.  click on that, fill in information and voilá!
 
-- This means that installation of Plone was successful. Go to the front page, and have a look at your new Plone site :)
+- This means that installation of Plone was successful. Go to the front page, 
+  and have a look at your new Plone site.
 
-- Have fun, and don't forget to report any bugs or inconsistencies in the "Skin Tracker.":http://www.zope.org/Members/runyaga/skinTracker 
+- Have fun, and don't forget to report any bugs or inconsistencies in the 
+  "Plone Collector":http://plone.org 
 
 Thank you for helping us improve Plone!
