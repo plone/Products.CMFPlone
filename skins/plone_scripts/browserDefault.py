@@ -23,6 +23,10 @@ pages = getattr(context, 'default_page', [])
 props = context.portal_properties.site_properties
 
 # Yeeha. Must be good at logic.
+#
+# if you have a list property default_page on the folder
+# it will use that property to determine the page, this means
+# you can override it on a folder basis
 pages = not pages and props.hasProperty('default_page') \
         and props.getProperty('default_page') or pages
 
