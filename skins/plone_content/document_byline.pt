@@ -23,6 +23,23 @@
 
     <br />
 
+    <tal:contrib condition="here/contributors">
+        <span i18n:translate="label_contributors">Contributors</span>:
+              
+        <span tal:replace="python: ', '.join(here.contributors)">Mary</span>
+
+        <br />
+    </tal:contrib>
+    
+    <tal:rights condition="here/rights">
+        <span i18n:translate="label_copyrights">Copyrights</span>:
+              
+        <span tal:replace="here/rights">NiceCorp Inc.</span>
+
+        <br />
+
+    </tal:rights>
+
     <span i18n:translate="box_last_modified">Last modified</span>
     <span tal:replace="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
     August 16, 2001 at 23:35:59
