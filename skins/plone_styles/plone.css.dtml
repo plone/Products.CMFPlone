@@ -312,17 +312,18 @@ del {
     border-collapse: collapse;
     white-space: nowrap;
     list-style: none;
-    margin: 4px 1em 0 0;
+    margin: 1px 1em 0 0;
     height: auto;
     line-height: normal;
     float: right;
+    padding: 3px;
 }
 #portal-siteactions li {
     display: inline;
 }
 #portal-siteactions li a {
     background-color: transparent;
-    border: 1px solid White;
+    border: 1px solid &dtml-backgroundColor;;
     color: &dtml-discreetColor;;
     height: auto;
     padding: 0.2em;
