@@ -251,8 +251,23 @@ def _go(app):
             value, type = _get_error()
             out.append("Failed to install %s, reason:" % (productId, value, type))
 
+    # CMF Collector is a very bad product
+    # import workflow
+    plone.portal_workflow.manage_importObject('collector_issue_workflow.zexp')
+    cbt = plone.portal_workflow._chains_by_type
+    cbt['Collector Issue'] = ('collector_issue_workflow',)
+
     # go and install the skins...
     _installSkins(plone, skinList)
+
+    # Plone is a bad product
+    skins = plone.portal_skins.getSkinSelections()
+    for skin in skins:
+        path = plone.portal_skins.getSkinPath(skin)
+        path = map(string.strip, string.split(path,','))
+        path.insert(1, 'plone_3rdParty/CMFCollector')
+        plone.portal_skins.addSkinSelection(skin, ','.join(path))
+    # Sigh, ok now CMFCollector should be in the path
 
     # go and install the translation service...
     if hasLocalizer:
