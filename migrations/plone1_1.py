@@ -199,7 +199,7 @@ def addDocumentActions(portal):
     at.addAction('extedit',
                  'Edit this file in an external application (Requires Zope ExternalEditor installed)',
                  'string:${object_url}/external_edit',
-                 '',
+                 'python: object.absolute_url() != portal_url',
                  'Modify portal content',
                  'document_actions')
 
