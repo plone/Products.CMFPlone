@@ -6,6 +6,11 @@ Plone 2.0 - Fyuti
 
     Beta 2
 
+    - added 'unwrapobjects' property to the CatalogTool PropertyManager
+      if this is True the catalog will unwrap the AcquisitionWrapper from
+      the object before indexing.  This was done because you could get
+      unexpected results if you had content with the same ID as a Index.
+      
     - added a Plone Site portal_type.  This portal_type is what the root
       of the Plone Site's _setPortalTypeName is set to.  This way the
       Folder permissions are manipulated separately from the root of 
