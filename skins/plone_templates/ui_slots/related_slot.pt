@@ -19,9 +19,9 @@
                 <span tal:repeat="related localContent">
                         <a href="" 
                            class="marker"
-                           tal:attributes="href string:${related/url}/view"><img src="" 
-                                                                                 border="0" 
-                                                                                 tal:attributes="src string:$portal_url/${related/icon}" /><span tal:replace="related/title">Object related by keyword</span></a><br />
+                           tal:attributes="href string:${related/url}/view">&nbsp;<img src="" 
+                                                                                       border="0" 
+                                                                                       tal:attributes="src string:$portal_url/${related/icon}" /><span tal:replace="related/title">Object related by keyword</span></a><br />
                 </span> 
             </td>
         </tr>
