@@ -13,7 +13,7 @@ date, and have nice and funky pictures to go with them ;)
 
   - "CMFQuickInstallerTool":http://sf.net/projects/collective
 
-  - "GroupUserFolder 1.32 or later":http://sf.net/projecst/collective
+  - "GroupUserFolder 1.32 or later":http://sf.net/projects/collective
  
   - "BTreeFolder2":http://cvs.zope.org/Products/BTreeFolder2/ (get tarball)
  
