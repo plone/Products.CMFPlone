@@ -33,7 +33,7 @@ h2 {
     font-size: 30px;	
 }
 
-p, dl {
+p, dl, ol, ul {
     font-size: 30px;
     text-align: left;
 }
@@ -68,7 +68,6 @@ input
 
 ul { 
     list-style-type: square;
-    font-size: 30px;
 }
 
 pre { 
