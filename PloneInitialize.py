@@ -103,7 +103,10 @@ def _go(app):
     oids = app.objectIds()
 
     # these are the two set elements...
-    eid = 'accessRule'
+    # (accessRule.py external method and SiteRoot)
+    eid = 'accessRule.py'
+    emod = 'CMFPlone.accessRule'
+    efn = 'accessRule'
     sid = 'SiteRoot'
 
     # 1. Create the admin user given the access file
@@ -142,13 +145,13 @@ def _go(app):
         manage_addExternalMethod(app, 
                                  eid, 
                                  'Plone Access Rule', 
-                                 'CMFPlone.%s' % eid, 
-                                 '%s' % eid)
+                                 emod, 
+                                 efn)
         # this sets the access rule
         out.append("Set as access rule")
-##         manage_addAccessRule(app, eid)
-##         if user:
-##             getattr(app, eid).changeOwnership(user)
+        manage_addAccessRule(app, eid)
+        # if user:
+        #     getattr(app, eid).changeOwnership(user)
 
     # 4. actually add in Plone
     if pid not in oids:
@@ -166,16 +169,16 @@ def _go(app):
                    validate_email=0,
                    custom_policy='Default Plone',
                    RESPONSE=None)
-        if user:
-            getattr(app, pid).changeOwnership(user, recursive=1)
+        # if user:
+        #     getattr(app, pid).changeOwnership(user, recursive=1)
 
     # 5. adding the site root in
     plone = getattr(app, pid)
     if sid not in plone.objectIds():
         out.append("Added Site Root")
         manage_addSiteRoot(plone)
-        if user:
-            getattr(plone, sid).changeOwnership(user)
+        # if user:
+        #     getattr(plone, sid).changeOwnership(user)
   
     # 6. add in products
     qit = plone.portal_quickinstaller
