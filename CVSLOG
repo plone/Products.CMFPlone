@@ -1,3 +1,66 @@
+2003-11-14 02:16  limi
+
+	* skins/plone_images/: discussionitem_icon.gif.metadata,
+	  document_icon.gif.metadata, error_log_icon.gif.metadata,
+	  event_icon.gif.metadata, favorite_icon.gif.metadata,
+	  file_icon.gif.metadata, folder.gif.metadata,
+	  folder_icon.gif.metadata, group.gif.metadata,
+	  image_icon.gif.metadata, info.gif.metadata,
+	  linkOpaque.gif.metadata, linkTransparent.gif.metadata,
+	  link_icon.gif.metadata, mail_icon.gif.metadata,
+	  newsitem_icon.gif.metadata, pdf_icon.gif.metadata,
+	  print_icon.gif.metadata, site_icon.gif.metadata,
+	  topic_icon.gif.metadata (Plone-2_0-branch): Changed "document
+	  icon" title to be "document" etc for all icons.
+
+2003-11-14 02:12  limi
+
+	* skins/: plone_forms/search.pt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): CSS changes to match the byline in search.
+
+2003-11-14 02:07  limi
+
+	* skins/plone_forms/search.pt (Plone-2_0-branch): Re-styled the
+	  search result to match the new Plone format.
+
+2003-11-14 01:26  limi
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_styles/ploneDeprecated.css.dtml, plone_templates/header.pt
+	  (Plone-2_0-branch): Added ploneDeprecated.css, you can uncomment
+	  it in the header to maintain compatibility with the old styles.
+
+2003-11-13 19:55  shh42
+
+	* tests/testMembershipTool.py (Plone-2_0-branch): Add a test to
+	  back up what I told spacedman on #plone ;)
+
+2003-11-13 19:54  vinsci
+
+	* skins/plone_form_scripts/event_edit.cpy (Plone-2_0-branch):
+	  Revert change from earlier today; the copying of day to year and
+	  vice versa seems to be an intentional workaround for a bug in
+	  CMFCalendar.
+
+2003-11-13 16:40  vinsci
+
+	* skins/plone_form_scripts/event_edit.cpy (Plone-2_0-branch): Copy
+	  year to year, day to day. Closes issue 1950. Thanks to gerrykirk
+	  -- well spotted!
+
+2003-11-13 06:23  runyaga
+
+	* Extensions/package_plone.py (Plone-2_0-branch): dereference
+	  symlinks
+
+2003-11-13 06:19  runyaga
+
+	* version.txt (Plone-2_0-branch): increment for RC1
+
+2003-11-13 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-13 00:40  eaon
 
 	* skins/: plone_styles/plone.css.dtml,
