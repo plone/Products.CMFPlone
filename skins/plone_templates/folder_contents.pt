@@ -65,18 +65,19 @@
 
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />
-            <metal:block metal:define-macro="folder_listing"
-                              tal:define="locked here/lock_icon.gif;
-                                          pencil_icon here/edit.gif;
-                                          use_folder_contents here/portal_properties/site_properties/use_folder_contents;
-                                          filterOut python:('Favorite',);
-                                          filterValues decodedFilter/keys | nothing;
-                                          types python:here.sortObjects(here.allowedContentTypes());
-                                          no_types python:len(types);
-                                          filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));
-                                          isExpired nocall:here/isExpired;
-                                          toPortalTime nocall:here/toPortalTime;
-                                          getObjSize nocall:here/getObjSize;">
+            <metal:block define-macro="folder_listing"
+                         tal:define="locked here/lock_icon.gif;
+                                     pencil_icon here/edit.gif;
+                                     use_folder_contents site_properties/use_folder_contents;
+                                     filterOut python:('Favorite',);
+                                     filterValues decodedFilter/keys | nothing;
+                                     types python:here.sortObjects(here.allowedContentTypes());
+                                     no_types python:len(types);
+                                     filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));
+                                     isExpired nocall:here/isExpired;
+                                     toPortalTime nocall:here/toPortalTime;
+                                     getObjSize nocall:here/getObjSize;
+                                     lock_tool here/portal_lock|nothing">
                                                                                                                                                                                                                                                                                                                                                     
             <table id="sortable"
                    class="listing"
@@ -198,19 +199,19 @@
                                 <img alt="" tal:attributes="src python:item.getIcon(1)" 
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
-                            <tal:block tal:condition="python:test(here.portal_properties.site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
+                            <tal:block tal:condition="python:test(site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
 
                             <a href="absolute_url/external_edit"
                                tal:attributes="href string:${item/absolute_url}/external_edit">
                                <img tal:replace="structure python:pencil_icon.tag(title='Edit with External Editor')" />
                              </a>
-                             
-                            <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
-                                 tal:condition="python:lockable and item.wl_isLocked()"
-                                 tal:replace="structure python:locked.tag(title='Locked')" />
-
+                                  
                             </tal:block>
-    
+                            
+                            <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
+                                 tal:condition="python:(lockable and item.wl_isLocked()) or (lock_tool and lock_tool.isLockedOut(item))"
+                                 tal:replace="structure python:locked.tag(title='Locked')" />
+                       
                           <span class="expired"
                                 tal:condition="python:isExpired(item)">expired</span>
                         </td>

@@ -5,6 +5,8 @@ Plone 1.1
       decision. All options should have a default state. Now
       the default is a NOOP, but will not error.  Exposed
       WorkflowException to PythonScripts.
+    - folder_contents will show lock if portal_lock isLockedOut returns True
+      also removed unnecessary traversal
 
 Plone 1.0
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
