@@ -37,7 +37,7 @@ messageFont:string=bold 100% Verdana, Helvetica, Arial, sans-serif
 messageBackground:string=#93BEE2
 messageBorder:string=1px solid #364970
 textTransform:string=lowercase
-noBorder:none
+noBorder:string=none
 evenRowBackground:string=#D8E7F3
 oddRowBackground:string=White
 groupBorder:string=1px solid #364970
