@@ -180,7 +180,7 @@ class PloneTool (UniqueObject, SimpleItem):
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'changeOwnershipOf')
     #security.declarePublic('changeOwnershipOf')
-    def changeOwnershipOf(self, object, owner):
+    def changeOwnershipOf(self, object, owner, recursive=0):
         """ changes the ownership of an object """
         membership=getToolByName(self, 'portal_membership')
         if owner not in membership.listMemberIds():
@@ -193,7 +193,7 @@ class PloneTool (UniqueObject, SimpleItem):
             from AccessControl import getSecurityManager
             user= getSecurityManager().getUser()
 
-        object.changeOwnership(user) 
+        object.changeOwnership(user, recursive) 
 
 InitializeClass(PloneTool)
 

@@ -39,7 +39,7 @@
             <div class="field">
                 <select name="userid"
                         onfocus="formtooltip('id_help',1)"
-                        nblur="formtooltip('id_help',0)" >
+                        onblur="formtooltip('id_help',0)" >
                    <tal:block tal:repeat="uid here/portal_membership/listMemberIds">
                      <option value="runyaga"
                              tal:attributes="value uid;
@@ -49,7 +49,25 @@
             </div>
 
         </div>
-      
+     
+        <div class="row">
+            <div class="label required">
+                <span i18n:id="id">Subobjects</span>
+                <div id="id_recurse"
+                     i18:id="id_recurse"
+                     class="help"
+                     style="visibility:hidden">
+                Changes all the contained sub objects.
+                </div>
+            </div>
+            <div class="field">
+                <input type="checkbox"
+                       name="subobjects"
+                       onfocus="formtooltip('id_recurse',1)"
+                       onblur="formtooltip('id_recurse',0)" />
+            </div>
+        </div>
+        
         <metal:block tal:replace="nothing">
         XXX Noah complained about Creator being Owner.  This should be fixed.  it causes nightmares when
             not persistenting the Creator info seperate from Owner().  If it ever gets fixed this will
