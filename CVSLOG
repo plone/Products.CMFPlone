@@ -1,3 +1,30 @@
+2004-05-12 00:57  limi
+
+	* README.txt (Plone-2_0-branch): Updated README
+
+2004-05-11 21:07  vinsci
+
+	* PloneTool.py (Plone-2_0-branch): Fix typo, cleanup. Nothin to see
+	  here, move on.
+
+2004-05-11 16:56  tesdal
+
+	* skins/plone_scripts/my_worklist.py, tests/testDefaultWorkflow.py
+	  (Plone-2_0-branch): The worklist needs getObject, as we need to
+	  filter roles and permissions. Can't checkPermission and
+	  getRolesInContext on catalog brains...
+
+2004-05-11 08:21  zopezen
+
+	* HISTORY.txt, version.txt, migrations/__init__.py
+	  (Plone-2_0-branch): Migrating to version 2.0.2, 2.0.1 has been
+	  released as was on May 4th, so moving content in HISTORY file
+	  into 2.0.2.
+
+2004-05-11 06:17  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-11 01:42  tiran
 
 	* tests/testPloneTool.py (Plone-2_0-branch): Added some more evil
