@@ -13,7 +13,7 @@
         <span i18n:name="itemtype">
           <span i18n:translate=""
                 tal:content="python:here.getTypeInfo().Title()"
-          tal:omit-tag="">Item type</span>
+                tal:omit-tag="">Item type</span>
         </span>
       </h1>
 
@@ -35,7 +35,7 @@
           <div class="field"
                tal:condition="python:member.getProperty('visible_ids', None)"
                tal:define="error errors/id | nothing;
-               id python:request.get('id', test(here.show_id(),here.getId(),''));"
+                           id python:request.get('id', test(here.show_id(),here.getId(),''));"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="id" i18n:translate="label_short_name">Short Name</label>
@@ -54,7 +54,7 @@
                    size="40"
                    tabindex=""
                    tal:attributes="value id;
-                   tabindex tabindex/next;"
+                                   tabindex tabindex/next;"
                    />
 
           </div>
@@ -67,26 +67,26 @@
 
           <div class="field"
                tal:define="error errors/title|nothing;
-               Title request/title | here/Title;"
+                           Title request/title | here/Title;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="title" i18n:translate="label_title">Title</label>
 
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title"
-            i18n:translate="label_required">(Required)</span>
+                  i18n:translate="label_required">(Required)</span>
 
-            <div tal:content="error">Validation error output</div>
+                  <div tal:content="error">Validation error output</div>
 
-            <input type="text"
-                   id="title"
-                   name="title"
-                   value=""
-                   size="40"
-                   tabindex=""
-                   tal:attributes="value Title;
-                   tabindex tabindex/next;"
-                   />
+                  <input type="text"
+                         id="title"
+                         name="title"
+                         value=""
+                         size="40"
+                         tabindex=""
+                         tal:attributes="value Title;
+                                         tabindex tabindex/next;"
+                         />
 
           </div>
 
@@ -105,7 +105,7 @@
                    value="location"
                    tabindex=""
                    tal:attributes="value python: request.get('location',getattr(here,'location',''));
-                   tabindex tabindex/next"
+                                   tabindex tabindex/next"
                    />
           </div>
 
@@ -124,7 +124,7 @@
                     size="6"
                     tal:attributes="tabindex tabindex/next;"
                     tal:define="contentSubject request/event_type | here/Subject;
-                    allowedSubjects python:here.portal_metadata.listAllowedSubjects(here)">
+                                allowedSubjects python:here.portal_metadata.listAllowedSubjects(here)">
 
               <option tal:replace="nothing">Event Type 1</option>
               <option tal:replace="nothing">Event Type 2</option>
@@ -132,7 +132,7 @@
               <option value="subj"
                       tal:repeat="subj allowedSubjects"
                       tal:attributes="value subj; selected python:subj in contentSubject and 1 or 0"
-              tal:content="subj">Event Type N</option>
+                      tal:content="subj">Event Type N</option>
             </select>
           </div>
 
@@ -172,65 +172,65 @@
                    value="event_url"
                    tabindex=""
                    tal:attributes="value python:request.get('event_url',getattr(here,'event_url',''));
-                   tabindex tabindex/next"
+                                   tabindex tabindex/next"
                    />
           </div>
 
           <div class="field"
                tal:define="here_start here/start|nothing;
-               start_date python:request.get('start_date', here_start);
-               error errors/start_date | nothing;"
+                           start_date python:request.get('start_date', here_start);
+                           error errors/start_date | nothing;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="start_date" i18n:translate="label_event_start">Event Starts</label>
 
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title"
-            i18n:translate="label_required">(Required)</span>
+                  i18n:translate="label_required">(Required)</span>
 
-            <div class="formHelp" i18n:translate="help_event_start">
-              Click the calendar icon to select a date or browse the calendar.
-            </div>
+                  <div class="formHelp" i18n:translate="help_event_start">
+                    Click the calendar icon to select a date or browse the calendar.
+                  </div>
 
-            <div tal:content="error">Validation error output</div>
+                  <div tal:content="error">Validation error output</div>
 
-            <div tal:define="inputname  string:start_date;
-                 formname   string:edit_form;
-                 inputvalue start_date;
-                 tabindex tabindex/next;">
-              <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
-                Get date selectors.
-              </div>
-            </div>
+                  <div tal:define="inputname  string:start_date;
+                                   formname   string:edit_form;
+                                   inputvalue start_date;
+                                   tabindex tabindex/next;">
+                    <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
+                      Get date selectors.
+                    </div>
+                  </div>
           </div>
 
           <div class="field"
                tal:define="here_end here/end|nothing;
-               end_date python:request.get('end_date', here_end);
-               error errors/end_date | nothing;"
+                           end_date python:request.get('end_date', here_end);
+                           error errors/end_date | nothing;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="end_date" i18n:translate="label_event_end">Event Ends</label>
 
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title"
-            i18n:translate="label_required">(Required)</span>
+                  i18n:translate="label_required">(Required)</span>
 
-            <div class="formHelp" i18n:translate="help_event_end">
-              Click the calendar icon to select a date or browse the calendar.
-            </div>
+                  <div class="formHelp" i18n:translate="help_event_end">
+                    Click the calendar icon to select a date or browse the calendar.
+                  </div>
 
-            <div tal:content="error">Validation error output</div>
+                  <div tal:content="error">Validation error output</div>
 
-            <div tal:define="inputname  string:end_date;
-                 formname   string:edit_form;
-                 inputvalue end_date;
-                 tabindex tabindex/next;">
+                  <div tal:define="inputname  string:end_date;
+                                   formname   string:edit_form;
+                                   inputvalue end_date;
+                                   tabindex tabindex/next;">
 
-              <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
-                a calendar, hopefully
-              </div>
-            </div>
+                    <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBox">
+                      a calendar, hopefully
+                    </div>
+                  </div>
 
           </div>
 
@@ -248,7 +248,7 @@
                    value=""
                    tabindex=""
                    tal:attributes="value python:request.get('contact_name',getattr(here,'contact_name',''));
-                   tabindex tabindex/next"
+                                   tabindex tabindex/next"
                    />
           </div>
 
@@ -267,7 +267,7 @@
                    value="contact_email"
                    tabindex=""
                    tal:attributes="value python:request.get('contact_email',getattr(here,'contact_email',''));
-                   tabindex tabindex/next"
+                                   tabindex tabindex/next"
                    />
           </div>
 
@@ -285,7 +285,7 @@
                    value="contact_phone"
                    tabindex=""
                    tal:attributes="value python:request.get('contact_phone',getattr(here,'contact_phone',''));
-                   tabindex tabindex/next"
+                                   tabindex tabindex/next"
                    />
           </div>
 

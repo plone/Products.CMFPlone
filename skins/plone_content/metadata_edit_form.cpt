@@ -3,9 +3,9 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-    <metal:border fill-slot="head_slot">
-      <tal:border define="dummy python:request.set('enable_border',1)" />
-    </metal:border>
+  <metal:border fill-slot="head_slot">
+    <tal:border define="dummy python:request.set('enable_border',1)" />
+  </metal:border>
 
   <body>
 
@@ -43,10 +43,10 @@
             </div>
 
             <metal:block tal:define="val request/allowDiscussion | python: here.portal_discussion.isDiscussionAllowedFor(here);
-                         val python:test(not hasattr(here,'allow_discussion'),None,val);
-                         val python:test(val=='off',0,val);
-                         val python:test(val=='on',1,val);
-                         tabindex tabindex/next;">
+                                     val python:test(not hasattr(here,'allow_discussion'),None,val);
+                                     val python:test(val=='off',0,val);
+                                     val python:test(val=='on',1,val);
+                                     tabindex tabindex/next;">
               <input class="noborder"
                      type="radio"
                      name="allowDiscussion"
@@ -54,7 +54,7 @@
                      tabindex=""
                      id="discussion_default"
                      tal:attributes="checked python:val is None;
-                     tabindex tabindex;"
+                                     tabindex tabindex;"
                      />
               <label for="discussion_default"
                      i18n:translate="label_discussion_default">
@@ -69,7 +69,7 @@
                      tabindex=""
                      id="discussion_on"
                      tal:attributes="checked python:test(val == 1, '1', None);
-                     tabindex tabindex;"
+                                     tabindex tabindex;"
                      />
               <label for="discussion_on"
                      i18n:translate="label_discussion_enabled">
@@ -84,7 +84,7 @@
                      tabindex=""
                      id="discussion_off"
                      tal:attributes="checked python:test(val == 0, '1', None);
-                     tabindex tabindex;"
+                                     tabindex tabindex;"
                      />
               <label for="discussion_off" i18n:translate="label_discussion_disabled">Disabled</label>
 
@@ -101,13 +101,13 @@
             </div>
 
             <div tal:define="global contentSubjects here/Subject;
-                 global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
-                 global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
-                 global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
-                 dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
+                             global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
+                             global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
+                             global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
+                             dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
 
               <tal:block tal:define="site_props here/portal_properties/site_properties;
-                         allowRolesToAddKeywords site_props/allowRolesToAddKeywords"
+                                     allowRolesToAddKeywords site_props/allowRolesToAddKeywords"
                          tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
 
                 <div style="width: 45%; float: right;">
@@ -151,7 +151,7 @@
                           tal:repeat="subject allowedSubjects"
                           tal:content="subject"
                           tal:attributes="value subject;
-                          selected python:test(subject in contentSubjects, 'selected', None)">
+                                          selected python:test(subject in contentSubjects, 'selected', None)">
                     an existing keyword
                   </option>
                 </select>
@@ -175,11 +175,11 @@
             </div>
 
             <div tal:define="inputname  string:effective_date;
-                 formname   string:edit_form;
-                 formvalue  request/effective_date | nothing;
-                 inputvalue python:test(here.effective_date, here.effective_date, '');
-                 inputvalue python:test(formvalue,formvalue,inputvalue);
-                 tabindex tabindex/next;"
+                             formname   string:edit_form;
+                             formvalue  request/effective_date | nothing;
+                             inputvalue python:test(here.effective_date, here.effective_date, '');
+                             inputvalue python:test(formvalue,formvalue,inputvalue);
+                             tabindex tabindex/next;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
               <div tal:content="error">Validation error output</div>
@@ -204,11 +204,11 @@
             </div>
 
             <div tal:define="inputname  string:expiration_date;
-                 formname   string:edit_form;
-                 formvalue  request/expiration_date | nothing;
-                 inputvalue python:test(here.expiration_date, here.expiration_date, '');
-                 inputvalue python:test(formvalue,formvalue,inputvalue);
-                 tabindex tabindex/next;"
+                             formname   string:edit_form;
+                             formvalue  request/expiration_date | nothing;
+                             inputvalue python:test(here.expiration_date, here.expiration_date, '');
+                             inputvalue python:test(formvalue,formvalue,inputvalue);
+                             tabindex tabindex/next;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
               <div tal:content="error">Validation error output</div>
@@ -241,15 +241,15 @@
               </option>
               <option tal:repeat="mimetype here/plone_utils/availableMIMETypes"
                       tal:attributes="value python:mimetype;
-                      selected python:test(format == mimetype, 'selected', None);"
+                                      selected python:test(format == mimetype, 'selected', None);"
                       tal:content="mimetype" />
             </select>
           </div>
 
           <div class="field"
                tal:define="def_language here/portal_properties/site_properties/default_language;
-               sel_language python:test(here.Language(), here.Language(), def_language);
-               sel_language python:request.get('language',sel_language)">
+                           sel_language python:test(here.Language(), here.Language(), def_language);
+                           sel_language python:request.get('language',sel_language)">
 
             <label for="language"
                    i18n:translate="label_language">
@@ -261,7 +261,7 @@
             </div>
 
             <div tal:define="available_languages python:list(here.availableLanguages());
-                 sorted python:available_languages.sort( lambda x, y: cmp(x[1],y[1]) )">
+                             sorted python:available_languages.sort( lambda x, y: cmp(x[1],y[1]) )">
               <!-- ISO-639-2 language selector for Plone -->
               <select name="language"
                       id="language"
@@ -274,7 +274,7 @@
                 </option>
                 <option tal:repeat="language available_languages"
                         tal:attributes="value python:language[0];
-                        selected python:test(sel_language == language[0], 'selected', None)"
+                                        selected python:test(sel_language == language[0], 'selected', None)"
                         tal:content="structure python:language[1]">
                   Language
                 </option>
@@ -299,7 +299,7 @@
                    value=""
                    tabindex=""
                    tal:attributes="value request/rights | here/Rights;
-                   tabindex tabindex/next;"
+                                   tabindex tabindex/next;"
                    />
           </div>
 
@@ -322,7 +322,7 @@
                       tal:attributes="tabindex tabindex/next;"
                       tal:define="contributors request/contributors | here/Contributors;"
                       tal:content="python:'\n'.join(contributors)"
-            >contributors</textarea>
+                      >contributors</textarea>
           </div>
 
           <div class="formControls"

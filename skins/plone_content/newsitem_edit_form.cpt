@@ -6,15 +6,15 @@
 
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors;
-         editor python:member.getProperty('wysiwyg_editor','None');
-         wysiwyg python:test(editor and (editor!='None'), editor, 'None');">
+                     editor python:member.getProperty('wysiwyg_editor','None');
+                     wysiwyg python:test(editor and (editor!='None'), editor, 'None');">
 
       <h1 i18n:translate="heading_edit_item">
         Edit
         <span i18n:name="itemtype">
           <span i18n:translate=""
                 tal:content="python:here.getTypeInfo().Title()"
-          tal:omit-tag="">Item type</span>
+                tal:omit-tag="">Item type</span>
         </span>
       </h1>
 
@@ -36,7 +36,7 @@
           <div class="field"
                tal:condition="python:member.getProperty('visible_ids', None)"
                tal:define="error errors/id | nothing;
-               id python:request.get('id', test(here.show_id(),here.getId(),''));"
+                           id python:request.get('id', test(here.show_id(),here.getId(),''));"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="id" i18n:translate="label_short_name">Short Name</label>
@@ -55,7 +55,7 @@
                    size="40"
                    tabindex=""
                    tal:attributes="value id;
-                   tabindex tabindex/next;"
+                                   tabindex tabindex/next;"
                    />
 
           </div>
@@ -68,26 +68,26 @@
 
           <div class="field"
                tal:define="error errors/title|nothing;
-               Title request/title | here/Title;"
+                           Title request/title | here/Title;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="title" i18n:translate="label_headline">Headline</label>
 
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title"
-            i18n:translate="label_required">(Required)</span>
+                  i18n:translate="label_required">(Required)</span>
 
-            <div tal:content="error">Validation error output</div>
+                  <div tal:content="error">Validation error output</div>
 
-            <input type="text"
-                   id="title"
-                   name="title"
-                   value=""
-                   size="40"
-                   tabindex=""
-                   tal:attributes="value Title;
-                   tabindex tabindex/next;"
-                   />
+                  <input type="text"
+                         id="title"
+                         name="title"
+                         value=""
+                         size="40"
+                         tabindex=""
+                         tal:attributes="value Title;
+                                         tabindex tabindex/next;"
+                         />
 
           </div>
 
@@ -114,15 +114,15 @@
 
           <div class="field"
                tal:define="text python:request.get('text', getattr(here,'text',''));
-               cooked_text python:request.get('text',getattr(here,'cooked_text',''))">
+                           cooked_text python:request.get('text',getattr(here,'cooked_text',''))">
 
             <label for="text" i18n:translate="label_body_text">Body text</label>
 
             <tal:editor define="inputname  string:text;
-                        formname   string:edit_form;
-                        inputvalue text;
-                        cooked_inputvalue cooked_text;
-                        tabindex tabindex/next;">
+                                formname   string:edit_form;
+                                inputvalue text;
+                                cooked_inputvalue cooked_text;
+                                tabindex tabindex/next;">
               <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBox">
                 The WYSIWYG code
               </div>
