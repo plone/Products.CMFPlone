@@ -21,9 +21,12 @@ if workflow_action!=current_state and not effective_date and context.EffectiveDa
 #plone_log('effective date ' + str(effective_date))
 
 def editContent(obj, effective, expiry):
-    new_context.plone_utils.contentEdit( obj,
-                                         effective_date=effective,
-                                         expiration_date=expiry)
+    kwargs = {}
+    if len(effective) > 5: # may contain the year
+        kwargs['effective_date'] = effective
+    if len(expiry) > 5: # may contain the year
+        kwargs['expiration_date'] = expiry
+    new_context.plone_utils.contentEdit( obj, **kwargs)
 
 #You can transition content but not have the permission to ModifyPortalContent
 try:
