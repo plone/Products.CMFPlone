@@ -125,16 +125,14 @@ def _getViewFor(obj, view='view', default=None):
         raise 'Not Found', ('Cannot find default view for "%s"' %
                             string.join(obj.getPhysicalPath(), '/'))
 
-addPloneFolder=manage_addPloneFolder=PloneFolder.manage_addPloneFolder
+manage_addPloneFolder=PloneFolder.manage_addPloneFolder
 
-#def addPloneFolder( self, id, title='', description='', REQUEST=None ):
-#    """
-#    """
-#    sf = PloneFolder( id, title )
-#    sf.description = description
-#    self._setObject( id, sf )
-#    sf = self._getOb( id )
-#    if REQUEST is not None:
-#        REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
+def addPloneFolder( self, id, title='', description='', REQUEST=None ):
+    """ adds a Plone Folder """
+    sf = PloneFolder( id, title=title)
+    sf.description=description
+    self._setObject( id, sf )
+    if REQUEST is not None:
+        REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
 
 InitializeClass(SkinnedFolder)
