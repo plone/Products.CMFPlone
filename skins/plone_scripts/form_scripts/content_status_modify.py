@@ -11,7 +11,7 @@ portal_workflow=context.portal_workflow
 current_state=portal_workflow.getInfoFor(context, 'review_state')
 
 if effective_date or expiration_date:
-    context.plone_utils.contentEdit( context
+    context.plone_utils.editMetadata( context
                                    , effective_date=effective_date
                                    , expiration_date=expiration_date )
 
