@@ -52,11 +52,12 @@ class MembershipTool( BaseTool ):
                 home.invokeFactory(id=self.personal_id, type_name='Folder')
                 personal=getattr(home, self.personal_id)
                 catalog.unindexObject(personal) #remove persona folder from catalog
-            if not hasattr(personal, self.portrait_id):
-                personal.invokeFactory(id=self.portrait_id, type_name='Image')
-                portrait_obj=getattr(personal, self.portrait_id, None)
-                portrait_obj.edit(file=portrait)
-                catalog.unindexObject(portrait_obj) #remove portrait image from catalog
+            if hasattr(personal, self.portrait_id):
+                personal.manage_delObjects(self.portrait_id)
+            personal.invokeFactory(id=self.portrait_id, type_name='Image')
+            portrait_obj=getattr(personal, self.portrait_id, None)
+            portrait_obj.edit(file=portrait)
+            catalog.unindexObject(portrait_obj) #remove portrait image from catalog
                 
     def createMemberarea(self, member_id):
         """

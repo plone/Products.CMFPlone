@@ -19,14 +19,25 @@ Lalo Martin - Zope Plumbing, PortalFactory, Translator Tool
 Kapil (hazmat) - Helpful ZOPE Guru
 Luis Lavena - favicon
 Sidnei De Silva - python guru
-David Harvey - python,ZPT,Makes sures things dont fall through the cracks ;)
+David Harvey - python, ZPT, makes sures things dont fall through the cracks ;)
 Geoff Davis (plonista) - form validation refactorings, form_tool and deep insight
+Florent Guillaume (efge) - general helpfulness, CMF pointers and i18n Zope2.7 exploration
 
 Plone1.0alpha4
 Kevin MCKeown - q/a and testing
 
 
+Beta
+Jonagustine Lim (jlim) - for organized testing
+Philipp Auersperg - kindly contributing the StatelessTreeNavigation http://www.bluedynamics.com/
+Maisa Fonseca (devgirl) - i18n work
+
+
 #zope on irc.openprojects.net for insight and soapbox to preach
-zopelabs.com for useful scripts 
-please help out the CMF and Plone community by becoming involved.  check out http://www.plone.org/ for more information
+
+http://zopelabs.com/ for useful scripts 
+
+please help out the CMF and Plone community by becoming involved. 
+Check out http://www.plone.org/ for more information.
+
 NOTE: please email me if I left your name out - runyaga@thisbox.com

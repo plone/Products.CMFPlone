@@ -34,11 +34,13 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
         wf_tool.doActionFor(portal,'show',comment='The portal object itelf but be visible')
         #wf_tool.doActionFor(portal.Members, 'show', comment='Members must be visible')
 
+        portal.index_html.manage_permission('View', ('Anonymous', 'Authenticated') )
+
         portal.manage_permission(AddPortalMember,('Manager',))
         #portal.manage_delObjects('portal_registration')
         pa_tool=getToolByName(portal,'portal_actions')
         #pa_tool.action_providers=tuple([ap for ap in pa_tool.action_providers if ap!='portal_registration'])
-     
+
         #only Members are allowed to see the default tabs
         actions=pa_tool._cloneActions()
         for a in actions:
