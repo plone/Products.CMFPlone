@@ -199,7 +199,7 @@
             <div class="field">
                 <span tal:define="objs request/ids|nothing;
                                   target python:request.get('ids',here.getId())">
-                <metal:block tal:define="global transitions python:here.getAvailableTransitions(obj=target)"
+                <metal:block tal:define="global transitions python:here.portal_workflow.getTransitionsFor(obj=target)"
                              tal:repeat="transition transitions">
                 <input class="context" 
                        type="submit" 

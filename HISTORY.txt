@@ -1,4 +1,8 @@
 1.0a - Boards of Canada Release:
+    - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
+    - specialized WorkflowTool and got rid of sloppy External Methods, getWorklists and getAvailableTransitions
+    - added a Utility object, plone_utils
+    - tooltips and ID boxes in edit_forms can be turned off in personal settings
     - Tres added _cloneActions to ActionProviderBase and co. API  and gave diff to CustomizationPolicy. All hail Tres!
     - created a CustomizationPolicy for alternate Customizations to be applied to Plone on site creation
       these can be seperate products that register with the Portal.addPolicy()

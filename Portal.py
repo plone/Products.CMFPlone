@@ -64,9 +64,11 @@ class PloneGenerator(Portal.PortalGenerator):
     def customizePortalOptions(self, p):
         mt='portal_membership'
         if hasattr(p, mt):
-            p.manage_delObjects(mt)
+            p.manage_delObjects( 'portal_membership' )
+	    p.manage_delObjects( 'portal_workflow' )
             addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
             addPloneTool('Plone Membership Tool', None)
+            addPloneTool('CMF Workflow Tool', None) 
             addPloneTool('CMF Formulator Tool', None)
             addPloneTool('Plone Utility Tool', None)
         p.portal_skins.default_skin='Plone Default'
@@ -86,12 +88,11 @@ class PloneGenerator(Portal.PortalGenerator):
         o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
         o.edit('structured-text', default_frontpage)
         
-    def setupPloneWorkflow(self, p):
+    def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow
         if 'plone_workflow' not in wf_tool.objectIds():
             wf_tool.manage_addWorkflow(id='plone_workflow', workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
-            wf_tool.setDefaultChain('plone_workflow')            
-            wf_tool.manage_delObjects('default_workflow')
+            wf_tool.setDefaultChain('plone_workflow')
             wf_tool.updateRoleMappings()
 
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):        
@@ -142,7 +143,7 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupPortalContent(p)
         self.setupPloneWorkflow(p)
         self.setupPloneSkins(p)
-        self.setupExternalMethods(p)
+        #self.setupExternalMethods(p) 
 	CalendarInstall.install(p)
         
     def create(self, parent, id, create_userfolder):
