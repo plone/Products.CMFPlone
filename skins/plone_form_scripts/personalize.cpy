@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=portrait=None
+##parameters=portrait=None, visible_ids=None, listed=None, REQUEST=None
 ##title=Personalization Handler.
 
 from Products.CMFPlone import transaction_note
@@ -18,6 +18,12 @@ context.portal_skins.updateSkinCookie()
 
 if member_context is None:
     member_context=context.portal_url.getPortalObject()
+
+if visible_ids is None and REQUEST is not None:    
+    REQUEST.set('visible_ids', 0)
+    
+if listed is None and REQUEST is not None:    
+    REQUEST.set('listed', 0)
 
 if (portrait and portrait.filename):
     context.portal_membership.changeMemberPortrait(portrait)
