@@ -11,7 +11,7 @@
                  userIsAnonymous isAnon;
                  hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
                  view_action python:hereTypeInfo.getActionById('view');
-                 isViewTemplate python:template_id==view_action;
+                 isViewTemplate python:template_id==view_action or view_action=='view';
                  ">
 
     <tal:allowed condition="python:isDiscussionAllowed and isViewTemplate">
