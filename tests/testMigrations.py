@@ -18,7 +18,8 @@ from Products.CMFPlone.migrations.v2_1.alphas import addFullScreenActionIcon
 from Products.CMFPlone.migrations.v2_1.alphas import addVisibleIdsSiteProperty
 from Products.CMFPlone.migrations.v2_1.alphas import deleteVisibleIdsMemberProperty
 from Products.CMFPlone.migrations.v2_1.alphas import switchPathIndex
-from Products.CMFPlone.migrations.v2_1.alphas import addGetFolderOrderIndex
+from Products.CMFPlone.migrations.v2_1.alphas import addGetObjPositionInParentIndex
+from Products.CMFPlone.migrations.v2_1.alphas import addGetObjSizeMetadata
 from Products.CMFPlone.migrations.v2_1.alphas import updateNavTreeProperties
 from Products.CMFPlone.migrations.v2_1.alphas import addSitemapAction
 from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog
@@ -222,25 +223,43 @@ class TestMigrations_v2_1(MigrationTest):
         index = self.catalog._catalog.getIndex('path')
         self.assertEqual(index.__class__.__name__, 'ExtendedPathIndex')
 
-    def testAddGetFolderOrderIndex(self):
-        # Should add getFolderOrder index
-        self.catalog.delIndex('getFolderOrder')
-        addGetFolderOrderIndex(self.portal, [])
-        index = self.catalog._catalog.getIndex('getFolderOrder')
+    def testAddGetObjPositionInParentIndex(self):
+        # Should add getObjPositionInParent index
+        self.catalog.delIndex('getObjPositionInParent')
+        addGetObjPositionInParentIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('getObjPositionInParent')
         self.assertEqual(index.__class__.__name__, 'FieldIndex')
 
-    def testAddGetFolderOrderIndexTwice(self):
+    def testAddGetObjPositionInParentIndexTwice(self):
         # Should not fail if migrated again
-        self.catalog.delIndex('getFolderOrder')
-        addGetFolderOrderIndex(self.portal, [])
-        addGetFolderOrderIndex(self.portal, [])
-        index = self.catalog._catalog.getIndex('getFolderOrder')
+        self.catalog.delIndex('getObjPositionInParent')
+        addGetObjPositionInParentIndex(self.portal, [])
+        addGetObjPositionInParentIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('getObjPositionInParent')
         self.assertEqual(index.__class__.__name__, 'FieldIndex')
 
-    def testAddGetFolderOrderIndexNoCatalog(self):
+    def testAddGetObjPositionInParentIndexNoCatalog(self):
         # Should not fail if portal_catalog is missing
         self.portal._delObject('portal_catalog')
-        addGetFolderOrderIndex(self.portal, [])
+        addGetObjPositionInParentIndex(self.portal, [])
+
+    def testAddGetObjSizeMetadata(self):
+        # Should add getObjSize to schema
+        self.catalog.delColumn('getObjSize')
+        addGetObjSizeMetadata(self.portal, [])
+        self.failUnless('getObjSize' in self.catalog.schema())
+
+    def testAddGetObjSizeMetadataTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delColumn('getObjSize')
+        addGetObjSizeMetadata(self.portal, [])
+        addGetObjSizeMetadata(self.portal, [])
+        self.failUnless('getObjSize' in self.catalog.schema())
+
+    def testAddGetObjSizeMetadataNoCatalog(self):
+        # Should not fail if catalog is missing
+        self.portal._delObject('portal_catalog')
+        addGetObjSizeMetadata(self.portal, [])
 
     def testUpdateNavTreeProperties(self):
         # Should add new navtree_properties

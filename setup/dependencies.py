@@ -192,3 +192,9 @@ except ImportError:
     log(("ATContentTypes not found. Please "
          "download it from http://sf.net/projects/collective"))
 
+try:
+    import Products.ExtendedPathIndex
+except ImportError:
+    log(("ExtendedPathIndex not found. "
+         "Please download it from http://sf.net/projects/collective"))
+

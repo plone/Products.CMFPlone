@@ -72,8 +72,19 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
 
     def testPathIsExtendedPathIndex(self):
         # Path index should be an ExtendedPathIndex
-        itype = self.catalog.Indexes['path'].__class__.__name__
-        self.assertEqual(itype, 'ExtendedPathIndex')
+        # path index should be an ExtendedPathIndex
+        self.assertEqual(self.catalog.Indexes['path'].__class__.__name__,
+                         'ExtendedPathIndex')
+
+    def testGetObjPositionInParentIsFieldIndex(self):
+        # getObjPositionInParent index should be a FieldIndex
+        # also see TestCatalogOrdering below
+        self.assertEqual(self.catalog.Indexes['getObjPositionInParent'].__class__.__name__,
+                         'FieldIndex')
+
+    def testGetObjSizeInSchema(self):
+        # getObjSize column should be in catalog schema
+        self.failUnless('getObjSize' in self.catalog.schema())
 
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):
@@ -315,6 +326,110 @@ class TestFolderCataloging(PloneTestCase.PloneTestCase):
         self.failIf(self.catalog(Title='Snooze'))
 
 
+class TestCatalogOrdering(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.loginPortalOwner()
+        self.catalog = self.portal.portal_catalog
+        self.folder.invokeFactory('Document', id='doc1', text='foo')
+        self.folder.invokeFactory('Document', id='doc2', text='bar')
+        self.folder.invokeFactory('Document', id='doc3', text='bloo')
+        self.folder.invokeFactory('Document', id='doc4', text='blee')
+
+    def testInitialOrder(self):
+        self.failUnlessEqual(self.folder.getObjectPosition('doc1'), 1)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc2'), 2)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc3'), 3)
+        self.failUnlessEqual(self.folder.getObjectPosition('doc4'), 4)
+
+    def testOrderIsUpdatedOnPloneFolderMoveByDelta(self):
+        self.folder.moveObjectsByDelta('doc1', 2)
+        folder_docs = self.catalog(Type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc2','doc3','doc1','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsUpdatedOnPloneFolderMoveObject(self):
+        self.folder.moveObject('doc3', 1)
+        folder_docs = self.catalog(Type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc3','doc1','doc2','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsFineWithObjectCreation(self):
+        self.folder.invokeFactory('Document', id='doc5', text='blam')
+        folder_docs = self.catalog(Type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','doc2','doc3','doc4','doc5']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsFineWithObjectDeletion(self):
+        self.folder.manage_delObjects(['doc3',])
+        folder_docs = self.catalog(Type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','doc2','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderIsFineWithObjectRenaming(self):
+
+        # I don't know why this is failing. manage_renameObjects throws an error
+        # that blames permissions or lack of support by the obj. The obj is a
+        # Plone Document, and the owner of doc2 is portal_owner. Harumph.
+
+        get_transaction().commit(1)
+
+        self.folder.manage_renameObjects(['doc2'], ['buzz'])
+        folder_docs = self.catalog(Type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        expected = ['doc1','buzz','doc3','doc4']
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testOrderAfterALotOfChanges(self):
+        # ['doc1','doc2','doc3','doc4']
+
+        self.folder.moveObjectsByDelta('doc1', 2)
+        # ['doc2','doc3','doc1','doc4']
+
+        self.folder.moveObject('doc3', 1)
+        # ['doc3','doc2','doc1','doc4']
+
+        self.folder.invokeFactory('Document', id='doc5', text='blam')
+        self.folder.invokeFactory('Document', id='doc6', text='blam')
+        self.folder.invokeFactory('Document', id='doc7', text='blam')
+        self.folder.invokeFactory('Document', id='doc8', text='blam')
+        # ['doc3','doc2','doc1','doc4','doc5','doc6','doc7','doc8',]
+
+        #self.folder.manage_renameObjects('Document', id='doc5', text='blam')
+
+        self.folder.manage_delObjects(['doc3','doc4','doc5','doc7'])
+        expected = ['doc2','doc1','doc6','doc8']
+
+        folder_docs = self.catalog(Type = 'Document',
+                                   path = self.folder.getPhysicalPath(),
+                                   sort_on = 'getObjPositionInParent')
+        self.failUnlessEqual([b.getId for b in folder_docs], expected)
+
+    def testAllObjectsHaveOrder(self):
+        #Make sure that a query with sort_on='getObjPositionInParent'
+        #returns the same number of results as one without, make sure
+        #the Members folder is in the catalog and has getObjPositionInParent
+        all_objs = self.catalog()
+        sorted_objs = self.catalog(sort_on='getObjPositionInParent')
+        self.failUnlessEqual(len(all_objs), len(sorted_objs))
+        
+        members = self.portal.Members
+        members_path = '/'.join(members.getPhysicalPath())
+        members_query = self.catalog(path=members_path)
+        members_sorted = self.catalog(path=members_path, sort_on = 'getObjPositionInParent')
+        self.failUnless(len(members_query))
+        self.failUnlessEqual(len(members_query),len(members_sorted))
+
+
 class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -430,6 +545,7 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogIndexing))
     suite.addTest(makeSuite(TestCatalogSearching))
     suite.addTest(makeSuite(TestFolderCataloging))
+    suite.addTest(makeSuite(TestCatalogOrdering))
     suite.addTest(makeSuite(TestCatalogBugs))
     suite.addTest(makeSuite(TestCatalogUnindexing))
     return suite

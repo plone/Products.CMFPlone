@@ -1,4 +1,4 @@
-## Script (Python) "getFolderOrder"
+## Script (Python) "getObjPositionInParent"
 ##bind container=container
 ##bind context=context
 ##bind namespace=

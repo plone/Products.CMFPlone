@@ -962,3 +962,4 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         return result
 
 InitializeClass(PloneTool)
+

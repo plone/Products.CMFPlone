@@ -295,7 +295,7 @@ class PloneGenerator(Portal.PortalGenerator):
 
         ntp=prop_tool.navtree_properties
         ntp._setProperty('typesToList', ['Folder','Large Plone Folder'], 'lines')
-        ntp._setProperty('sortAttribute', 'getFolderOrder', 'string')
+        ntp._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
         ntp._setProperty('sortOrder', 'asc', 'string')
         ntp._setProperty('sitemapDepth', 3, 'int')
         ntp._setProperty('includeTop', 1, 'boolean')

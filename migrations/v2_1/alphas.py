@@ -59,8 +59,11 @@ def alpha1_alpha2(portal):
     # Switch path index to ExtendedPathIndex
     reindex += switchPathIndex(portal, out)
 
-    # Add getFolderOrder index
-    reindex += addGetFolderOrderIndex(portal, out)
+    # Add getObjPositionInParent index
+    reindex += addGetObjPositionInParentIndex(portal, out)
+
+    # Add getObjSize support to catalog
+    reindex += addGetObjSizeMetadata(portal, out)
 
     # Update navtree_properties
     updateNavTreeProperties(portal, out)
@@ -221,26 +224,40 @@ def switchPathIndex(portal, out):
         catalog.addIndex('path', 'ExtendedPathIndex')
         out.append("Added ExtendedPathIndex 'path' to portal_catalog.")
         return 1 # Ask for reindexing
+    return 0
 
 
-def addGetFolderOrderIndex(portal, out):
-    """Adds the getFolderOrder FieldIndex."""
+def addGetObjPositionInParentIndex(portal, out):
+    """Adds the getObjPositionInParent FieldIndex."""
     catalog = getToolByName(portal, 'portal_catalog', None)
     if catalog is not None:
         try:
-            index = catalog._catalog.getIndex('getFolderOrder')
+            index = catalog._catalog.getIndex('getObjPositionInParent')
         except KeyError:
             pass
         else:
             indextype = index.__class__.__name__
             if indextype == 'FieldIndex':
                 return 0
-            catalog.delIndex('getFolderOrder')
-            out.append("Deleted %s 'getFolderOrder' from portal_catalog." % indextype)
+            catalog.delIndex('getObjPositionInParent')
+            out.append("Deleted %s 'getObjPositionInParent' from portal_catalog." % indextype)
 
-        catalog.addIndex('getFolderOrder', 'FieldIndex')
-        out.append("Added FieldIndex 'getFolderOrder' to portal_catalog.")
+        catalog.addIndex('getObjPositionInParent', 'FieldIndex')
+        out.append("Added FieldIndex 'getObjPositionInParent' to portal_catalog.")
         return 1 # Ask for reindexing
+    return 0
+
+
+def addGetObjSizeMetadata(portal, out):
+    """Adds getObjSize column to the catalog."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        if 'getObjSize' in catalog.schema():
+            return 0
+        catalog.addColumn('getObjSize')
+        out.append("Added 'getObjSize' metadata to portal_catalog.")
+        return 1 # Ask for reindexing
+    return 0
 
 
 def updateNavTreeProperties(portal, out):
@@ -255,7 +272,7 @@ def updateNavTreeProperties(portal, out):
         if propSheet is not None:
             if not propSheet.hasProperty('typesToList'):
                 propSheet._setProperty('typesToList', ['Folder', 'Large Plone Folder'], 'lines')
-                propSheet._setProperty('sortAttribute', 'getFolderOrder', 'string')
+                propSheet._setProperty('sortAttribute', 'getObjPositionInParent', 'string')
                 propSheet._setProperty('sortOrder', 'asc', 'string')
                 propSheet._setProperty('sitemapDepth', 3, 'int')
                 out.append('Updated navtree_properties.')

@@ -4,6 +4,25 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged uiteam-plip86-catalog-based-folder-listings r5865:HEAD into 2.1
+      branch. Plone's folder_contents and folder_listing templates now use
+      catalog results instead of traversal.
+      [stefan] [alecm] [_ender_] [whit537]
+
+    - Added macros to folder_contents that allow reuse of the entire content
+      area, including the definition of the content list.  Added slots and
+      variables that allow macro users to change the title of the page, the
+      columns displayed, and the type of content filtering and sorting
+      performed.
+      [alecm]
+
+    - Added slot to folder_listing that allows macro users to add custom
+      bylines for specific types.  Also, added the ability to set a limit (in
+      the request or containing template) on the number of items shown in a
+      listing, along with a customizable link to see more contents which
+      defaults to 'folder_contents'.
+      [alecm]
+
     - Merged uiteam-plip77-78-content-menu-browser-default-refactoring
       r6317:HEAD into 2.1 branch.
       [tiran]
@@ -28,7 +47,7 @@ Plone 2.1 - Plaid - (unreleased)
       [stefan]
 
     - Changed 'context.aq_explicit.getObjectPosition' to
-      'context.aq_inner.aq_explicit.getObjectPosition' in getFolderOrder.py
+      'context.aq_inner.aq_explicit.getObjectPosition' in getObjPositionInParent.py
       to guarantee that we don't acquire getObjectPosition.
       [rafrombrc]
 
