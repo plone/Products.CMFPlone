@@ -157,7 +157,7 @@ def addDocumentActions(portal):
 
     at.addAction('sendto',
                  'Send this page to somebody',
-                 'string:${object_url}/portal_form/sendto_form',
+                 'string:${object_url}/sendto_form',
                  "python:hasattr(portal.portal_properties.site_properties, 'allow_sendto')",
                  'View',
                  'document_actions')
