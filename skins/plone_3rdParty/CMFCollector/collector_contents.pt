@@ -11,6 +11,7 @@
   Template description: Batching view of the collector issues.
 </tal:block>
 
+<body>
 <metal:block fill-slot="base"> <tal:block tal:define="dummy python:request.set('enable_border',1)" /> </metal:block>
 
 <div metal:fill-slot="header"
