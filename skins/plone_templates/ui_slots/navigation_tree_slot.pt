@@ -41,27 +41,32 @@
                                        >
                            
                     <span tal:repeat="x python:range( te['indent'])" tal:omit-tag="">&nbsp;</span>
-                    
+                    <tal:block tal:condition="iscurrent">
+                       <strong>
+                    </tal:block>
                     <a href="" 
-                       tal:condition="python: not iscurrent and sibling.meta_type != 'CMF Site'"
+                       tal:condition="python: sibling.meta_type != 'CMF Site'"
                        tal:define="url string:${sibling/absolute_url}/${stdCommand}"
-                       tal:attributes="href url">
+                       tal:attributes="href url"
+                       class="plain">
             
                         <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
                              tal:on-error="structure here/site_icon.gif"
                                 />
                         
-                        <tal:block tal:content="structure sibling_title" />
+                        <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
+                        <strong tal:condition=" iscurrent" tal:content="structure sibling_title" />
                         
                     </a>
                     
                     <a href="" 
-                       tal:condition="python: not iscurrent and sibling.meta_type == 'CMF Site'"
+                       tal:condition="python: sibling.meta_type == 'CMF Site'"
                        tal:define="url string:${sibling/absolute_url}"
                        tal:attributes="href url">
                        
                         <img tal:replace="structure here/site_icon.gif" />
-                        <tal:block tal:content="structure sibling_title" />
+                        <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
+                        <strong tal:condition=" iscurrent" tal:content="structure sibling_title" />
                     </a>
                     
                     <div tal:condition="tree/prev">
@@ -70,28 +75,6 @@
                         </a>
                     </div>
     
-                    <tal:block tal:condition="python: iscurrent and sibling.meta_type != 'CMF Site'" tal:on-error="string:scheisse">
-                            <span class="highlight">
-                                
-                                <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
-                                     tal:on-error="structure here/folder_icon.gif" />
-                                
-                                <strong tal:content="structure sibling_title">
-                                Current content id
-                                </strong>
-                            </span>
-                    </tal:block>
-        
-                    <tal:block tal:condition="python: iscurrent and sibling.meta_type == 'CMF Site'" tal:on-error="string:scheisse">
-                            <span class="highlight">
-                                
-                            <img tal:replace="structure here/site_icon.gif" />
-                                
-                                <strong tal:content="structure sibling_title">
-                                Current content id
-                                </strong>
-                            </span>
-                    </tal:block>
         
                 </tal:block>
             </div>
