@@ -20,6 +20,7 @@ from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
 from Products.CMFPlone.setup.ConfigurationMethods import addSiteProperties
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 
+from Products.CMFCore import CachingPolicyManager
 from Products.CMFCore.CMFCorePermissions import ListFolderContents
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.TypesTool import FactoryTypeInformation
@@ -228,6 +229,8 @@ def addCacheAccelerators(portal):
     meta_type = RAMCacheManager.RAMCacheManager.meta_type
     if 'RAMCache' not in portal.objectIds(meta_type):
         RAMCacheManager.manage_addRAMCacheManager(portal, 'RAMCache')
+    if 'caching_policy_manager' not in portal.objectIds():
+        CachingPolicyManager.manage_addCachingPolicyManager(portal)
 
 def setupHelpSection(portal):
     # create and populate the 'plone_help' folder in the root of the plone

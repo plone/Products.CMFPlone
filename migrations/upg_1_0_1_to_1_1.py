@@ -1,4 +1,5 @@
 import os
+import string
 from migration_util import safeEditProperty
 from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCacheManager
 from Products.CMFDefault.Document import addDocument
@@ -7,6 +8,7 @@ from Products.CMFPlone import cmfplone_globals
 from Products.CMFCore.utils import getToolByName
 from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
 from Products.CMFCore.TypesTool import FactoryTypeInformation
+from Products.CMFCore import CachingPolicyManager
 
 def upg_1_0_1_to_1_1(portal):
     """ Migrations from 1.0.1 to 1.1 """
@@ -21,16 +23,6 @@ def upg_1_0_1_to_1_1(portal):
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
     addDocumentActions(portal)
-    
-    # trashcan, Maik
-    pm = portal.portal_membership
-    pm.addAction('mytrashcan',
-        'My Trashcan',
-        'string:${portal/portal_membership/getHomeUrl}/.trashcan/folder_contents',
-        'python:member and hasattr(portal.portal_membership.getHomeFolder(), ".trashcan")',
-        'View',
-        'user')
-        
     addActionIcons(portal)    
     addCacheAccelerators(portal)
    
@@ -39,6 +31,17 @@ def upg_1_0_1_to_1_1(portal):
 
     if 'portal_interface' not in portal.objectIds():
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
+
+    # add portal_prefs
+    skins = skinsTool.getSkinSelections()
+    for skin in skins:
+        path = skinsTool.getSkinPath(skin)
+        path = map(string.strip, string.split(path,','))
+        print path
+        if 'plone_prefs' not in path:
+            path.insert(path.index('plone_forms'), 'plone_prefs')
+            path = string.join(path, ', ')
+            skinsTool.addSkinSelection(skin, path)
 
     addControlPanel(portal)
     upgradePortalFactory(portal)
@@ -80,6 +83,9 @@ def addCacheAccelerators(portal):
     meta_type = RAMCacheManager.RAMCacheManager.meta_type
     if 'RAMCache' not in portal.objectIds(meta_type):
         RAMCacheManager.manage_addRAMCacheManager(portal, 'RAMCache')
+    if 'caching_policy_manager' not in portal.objectIds():
+        CachingPolicyManager.manage_addCachingPolicyManager(portal)
+        
 
 def addGroupUserFolder(portal):
     """ We _must_ commit() here.  Because the Portal does not really exist in
