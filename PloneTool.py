@@ -627,6 +627,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Look Archetypes' template mixin
         if ITemplateMixin.isImplementedBy(obj):
             pages = [obj.getLayout(),]
+            for page in pages:
+                if portal.unrestrictedTraverse(page, None):
+                    return obj, page.split('/')
 
         # what if the page isnt found?
         try:
@@ -642,6 +645,67 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             'Failed to get folderlisting action for folder "%s"' \
             % obj.absolute_url())
             return obj, ['folder_listing']
+            
+            
+    security.declarePublic('getDefaultPage')
+    def getDefaultPage(self, obj):
+        """Get the name of the default page in the folder. This may be
+        index_html, or a name set in default_page which is found. Returns None
+        if there is no default page set (or it does not exist).
+        """
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        wftool = getToolByName(self, 'portal_workflow')
+
+        # The list of ids where we look for default
+        ids = {}
+        
+        # For BTreeFolders we just use the has_key, otherwise build a dict
+        if hasattr(aq_base(obj), 'has_key'):
+            ids = obj
+        else:
+            for id in obj.objectIds():
+                ids[id] = 1
+
+        # Look for default_page on the object
+        pages = getattr(aq_base(obj), 'default_page', [])
+        
+        # Make sure we don't break if default_page is a
+        # string property instead of a sequence
+        if type(pages) in (StringType, UnicodeType):
+            pages = [pages]
+            
+        # And also filter out empty strings
+        pages = filter(None, pages)
+        for page in pages:
+            if ids.has_key(page):
+                return page
+                
+        # we look for the default_page in the portal and/or skins as well.
+        # Use path/to/template to reference an object or a skin.
+        for page in pages:
+            if portal.unrestrictedTraverse(page, None):
+                return page
+
+        # Try the default sitewide default_page setting
+        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
+            if ids.has_key(page):
+                return page
+
+        # No luck, let's look for hardcoded defaults
+        default_pages = ['index_html', ]
+        for page in default_pages:
+            if ids.has_key(page):
+                return page
+        
+        # Look Archetypes' template mixin
+        if ITemplateMixin.isImplementedBy(obj):
+            pages = [obj.getLayout(),]
+            for page in pages:
+                if portal.unrestrictedTraverse(page, None):
+                    return page
+        
+        return None
+        
 
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):
