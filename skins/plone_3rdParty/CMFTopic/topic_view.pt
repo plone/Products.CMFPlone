@@ -7,7 +7,7 @@
 
 <div metal:fill-slot="main">
 
-    <h1 tal:content="structure here/title_or_id">
+    <h1 tal:content="structure here/title_or_id" class="documentFirstHeading">
         Title or id
     </h1>
 

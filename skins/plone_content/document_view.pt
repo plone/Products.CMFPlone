@@ -7,7 +7,7 @@
 <metal:main fill-slot="main"
             tal:define="len_text python:len(here.text);">
 
-    <h1 tal:content="here/title_or_id">
+    <h1 tal:content="here/title_or_id" class="documentFirstHeading">
       Title or id
     </h1>
 

@@ -6,7 +6,7 @@
 
 <div metal:fill-slot="main">
 
-    <h1>
+    <h1 class="documentFirstHeading">
         <span i18n:translate="heading_link_to">Link to</span>
         <a href="#" 
            tal:attributes="href python:(container.portal_url.getPortalObject().absolute_url() + '/' + here.remote_url)"
