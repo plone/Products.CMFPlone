@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The Log in box -->
+<!-- The Prefs portlet -->
 
 <metal:portlet define-macro="portlet"
    tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_controlpanel');
@@ -25,6 +25,7 @@
         
                     <li tal:repeat="configlet configlets">
                         <a href=""
+                           style="display: block;"
                            tal:attributes="href configlet/url"
                            tal:condition="configlet/visible">
                             <img src="" alt="" tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
