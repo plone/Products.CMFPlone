@@ -1,0 +1,60 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:use-macro="container/main_template/macros/master">
+
+<body>
+<div metal:fill-slot="main"
+     tal:define="b_start python:request.get('b_start', 0)">
+
+<h1> Topic Subtopics: <span tal:replace="here/getId">Id</span> </h1>
+
+<form action="" method="post"
+      tal:attributes="action here/absolute_url"
+      tal:define="batch here/listSubtopics;
+                  contentTypes here/getAllowedTypes;">
+
+  <metal:block tal:condition="batch">
+    <metal:block use-macro="here/folder_contents/macros/folder_listing">
+    this is a sortable table that is shared with folder_contents
+    </metal:block>
+  </metal:block>
+
+  <table class="FormLayout" tal:define="subtopics here/listSubtopics">
+    <tr>
+      <td>
+    <tal:block tal:repeat="button actions/folder_buttons|nothing">
+                <input class="context"
+                       type="submit"
+                       name="folder_rename_form:method"
+                       value="Rename"
+                       tabindex=""
+                       tal:condition="python:len(batch) or (here.cb_dataValid and button['id'] == 'paste')"
+                       tal:attributes="value button/name;
+                                       name button/url;
+                                       tabindex tabindex/next;" />
+    </tal:block>
+      </td>
+    </tr>
+  </table>
+
+</form>
+
+<form action="topic_addSubtopic" method="get">
+<h2> Add subtopic: </h2>
+<p><strong>Id: </strong>
+<input type="text"
+       name="new_id"
+       size="30"
+       tabindex=""
+       tal:attributes="tabindex tabindex/next;"
+       /><br />
+<input type="submit"
+       value=" Add "
+       tabindex=""
+       tal:attributes="tabindex tabindex/next;"
+       /></p>
+</form>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/prefs_main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<!--
+we eventually might want to merge this form with personalize_form
+-->
+
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="userid python:request.get('userid', member.getId());
+                 member python:mtool.getMemberById(userid);
+                 errors python:request.get('errors', {})">
+
+<div class="configlet">
+
+<div class="documentEditable">
+
+    <!-- simulating views on the groups/user pages until we have real objects. -->
+    <ul class="contentViews">
+        <li class="selected">
+            <a href=""
+               tal:attributes="href string:${template/id}?userid=${userid}"
+               i18n:translate="label_user_properties">
+              User Properties
+            </a>
+        </li>
+            
+        <li class="">
+            <a href=""
+               tal:attributes="href string: prefs_user_memberships?userid=${userid}"
+               i18n:translate="label_group_memberships">
+              Group Memberships
+            </a>
+        </li>
+    </ul>
+    
+    <div class="contentActions">
+    &nbsp;
+    </div>        
+    <!-- End of tabs -->
+
+    <div class="documentContent">
+
+        <h1 i18n:translate="heading_prefs_user_details">
+          User Properties for
+          <tal:username replace="member/getId | default"
+                        i18n:name="username">username</tal:username>
+        </h1>
+    
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/prefs_users_overview"
+           i18n:translate="label_up_to_usersoverview">
+        Up to Users Overview
+        </a>
+
+        <p i18n:translate="label_change_member_properties">
+          Change member properties.
+        </p>
+    
+        <form class="group"
+              action=""
+              name="users"
+              method="post"
+              enctype="multipart/form-data"
+              tal:condition="user | nothing"
+              tal:attributes="href python:context.absolute_url()+'/'+template.id">
+          <input type="hidden" name="form.submitted" value="1" />
+          <fieldset>
+            <legend i18n:translate="legend_member_details">Member Details</legend>
+    
+            <input type="hidden" name="userid" value="username"
+                   tal:attributes="value member/getId" />
+    
+            <div class="field"
+                tal:define="error errors/fullname | nothing;
+                    fullname python:request.get('fullname', member.getProperty('fullname', ''));"
+                tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label i18n:translate="label_full_name">Full name</label>
+
+                <div tal:content="error">Validation error output</div>
+
+                <input type="text"
+                        name="fullname"
+                        size="25"
+                        tabindex=""
+                        value="member.fullname html_quote"
+                        tal:attributes="value fullname;
+                                        tabindex tabindex/next;"
+                        />
+
+            </div>
+    
+            <div class="field"
+                tal:define="error errors/email | nothing;
+                            email python:request.get('email', member.getProperty('email',''));"
+                tal:attributes="class python:test(error, 'field error', 'field')">
+
+                <label for="email" i18n:translate="label_email">E-mail</label>
+
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
+
+                <div tal:content="error">Validation error output</div>
+
+                <input type="text"
+                       id="email"
+                       name="email"
+                       size="25"
+                       tabindex=""
+                       value="member.email html_quote"
+                       tal:attributes="value email;
+                                       tabindex tabindex/next;"
+                       />
+
+            </div>
+    
+            <div class="field"
+                 tal:define="wysiwyg_editor python:request.get('wysiwyg_editor',
+                                                member.getProperty('wysiwyg_editor',''))">
+
+                <label for="wysiwyg_editor" i18n:translate="label_content_editor">Content editor</label>
+
+                <div class="formHelp" i18n:translate="help_content_editor">
+                Select the content editor that you would like to use.
+                Note that content editors often have specific browser
+                requirements.
+                </div>
+
+                <select name="wysiwyg_editor"
+                        id="wysiwyg_editor"
+                        tabindex=""
+                        tal:attributes="tabindex tabindex/next;">
+                        <tal:block tal:repeat="editor site_properties/available_editors">
+                        <option tal:condition="python:editor != 'None'"
+                                value="None"
+                                tal:attributes="value editor;
+                                                selected python:test(editor==wysiwyg_editor, 'selected', None);"
+                                tal:content="editor">
+                        WYSIWYG-editor
+                        </option>
+                        <option tal:condition="python:editor == 'None'"
+                                value="None"
+                                tal:attributes="value editor;
+                                                selected python:test(editor==wysiwyg_editor, 'selected', None);"
+                                tal:content="editor"
+                                i18n:translate="label_ordinary_content_editor">
+                        Ordinary Form-based Editor (works in all browsers)
+                        </option>
+    
+                        </tal:block>
+                </select>
+            </div>
+    
+            <div class="field"
+                 tal:define="listed python:request.get('listed', member.getProperty('listed',''));">
+                <input type="checkbox"
+                       class="noborder"
+                       name="listed"
+                       id="cb_listed"
+                       tal:attributes="tabindex tabindex/next;
+                                       checked python:test(listed, 'checked', None);"
+                       />
+
+                <label for="cb_listed" i18n:translate="label_listed_status">Listed in searches</label>
+
+                <div class="formHelp" i18n:translate="help_listed_search">
+                Determines if your user name is listed in member searches done on this site.
+                </div>
+
+            </div>
+
+            <div class="field"
+                     tal:define="visible_ids python:request.get('visible_ids', member.getProperty('visible_ids',''));">
+
+                <input type="checkbox"
+                       class="noborder"
+                       name="visible_ids"
+                       id="cb_invisible_ids"
+                       tal:attributes="tabindex tabindex/next;
+                                       checked python:test(visible_ids, 'checked', None);"
+                       />
+
+                <label for="cb_invisible_ids"
+                       i18n:translate="label_edit_short_names">Allow Editing of Short Names</label>
+
+                <div class="formHelp" i18n:translate="help_display_names">
+                Determines if Short Names (also known as IDs) are
+                changable when editing items. If Short Names
+                are not displayed, they will be generated automatically.
+                </div>
+
+            </div>
+
+            <div class="field"
+                 tal:define="portrait python:mtool.getPersonalPortrait(member.getId());">
+
+                <label for="portrait" i18n:translate="label_portrait">Portrait</label>
+
+                <img src="" alt=""
+                     height="100"
+                     width="75"
+                     style="border: 1px solid black; float: right;"
+                     tal:condition="portrait"
+                     tal:attributes="src portrait/absolute_url"
+                     />
+
+                <div class="formHelp" i18n:translate="help_portrait">
+                To add or change the portrait: click the "Browse" button;
+                select a picture of yourself. Recommended image size is 75
+                pixels wide by 100 pixels tall.
+                </div>
+
+                <input type="file"
+                       name="portrait"
+                       id="portrait"
+                       size="20"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+
+                <br />
+
+                <input class="noborder"
+                    tabindex=""
+                    type="checkbox"
+                    id="pdelete"
+                    value="Delete Portrait"
+                    name="delete_portrait"
+                    tal:attributes="tabindex tabindex/next;"
+                    />
+                <label for="pdelete" i18n:translate="label_delete_portrait">Delete Portrait</label>
+
+            </div>
+
+    
+            <div class="formControls">
+                    <input class="context"
+                        tabindex=""
+                        type="submit"
+                        value="Save"
+                        name="prefs_user_edit:method"
+                        i18n:attributes="value"
+                        tal:attributes="tabindex tabindex/next;"
+                        />
+            </div>
+          </fieldset>
+        </form>
+    
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
+

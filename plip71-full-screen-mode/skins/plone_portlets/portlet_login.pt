@@ -1,0 +1,121 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                  tabindex python:Iterator()">
+
+<!-- The Log in box -->
+
+<div metal:define-macro="portlet"
+     tal:omit-tag=""
+     tal:define="pageloc python: request.URL.split('/')[-1];
+                 okToShowHere python: not pageloc in ('login_form', 'join_form');
+                 auth nocall:here/cookie_authentication|nothing"
+     tal:condition="python: isAnon and okToShowHere">
+
+    <div class="portlet"
+         tal:condition="python: not auth"
+         id="portlet-login">
+        <h5 i18n:translate="box_sign_in">Log in</h5>
+        <div class="portletBody">
+            <div class="portletContent" i18n:translate="login_portlet_disabled">
+            Cookie authentication disabled.  Login portlet
+            not available.
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet"
+         tal:define="ac_name auth/name_cookie|nothing;
+                     ac_password auth/pw_cookie|nothing;
+                     ac_persist auth/persist_cookie|nothing;"
+         tal:condition="python: auth"
+         id="portlet-login">
+
+        <h5 i18n:translate="box_sign_in">Log in</h5>
+
+        <div class="portletBody">
+
+            <div class="portletContent odd">
+                <form action="logged_in"
+                      name="loginform"
+                      method="post"
+                      tal:attributes="action string:${utool}/logged_in">
+
+                    <input type="hidden" name="came_from" value=""
+                           tal:attributes="value request/URL;
+                                           tabindex tabindex/next" />
+
+                    <div class="field">
+                        <label for="__ac_name"
+                               i18n:translate="label_user_name">Name</label>
+                        <br />
+                        <input type="text" 
+                               size="10" 
+                               alt="Username" 
+                               accesskey="accesskeys-login" 
+                               tal:attributes="name ac_name; id ac_name;
+                                               value python:request.get(ac_name, ''); 
+                                               tabindex tabindex/next"
+                               i18n:attributes="alt" 
+                               />
+                    </div>
+                    
+                    <div class="field">
+                        <label for="__ac_password"
+                               i18n:translate="label_password">Password</label>
+                        <br />
+                        <input type="password"
+                               size="10" 
+                               alt="Password" 
+                               accesskey="accesskeys-login" 
+                               tal:attributes="name ac_password; id ac_password;
+                                               tabindex tabindex/next;" 
+                               i18n:attributes="alt accesskey" 
+                               />
+                    </div>
+                    
+                    <div class="formControls">
+                    
+                        <input class="context"
+                               type="submit"
+                               name="submit"
+                               value="Log in"
+                               alt="Log in"
+                               tal:attributes="tabindex tabindex/next"
+                               accesskey="accesskeys-login"
+                               i18n:attributes="value alt"
+                               />
+                    </div>
+                </form>
+            </div>
+
+            <div class="portletContent even">
+                <a href="mail_password_form"
+                   tal:attributes="href string:${utool}/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
+                   <tal:block replace="structure portal_object/info_icon.gif"/>
+                   <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
+                </a>
+            </div>
+
+            <div class="portletContent odd"
+                tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
+                tal:condition="python:test(join and hasattr(here,'portal_registration') and checkPermission('Add portal member', here), 1, 0)">
+
+                <a href="" tal:attributes="href python:join.pop()" accesskey="accesskeys-login" i18n:attributes="accesskey" >
+                    <tal:block replace="structure portal_object/user.gif"/>
+                    <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="auth nocall:here/cookie_authentication|nothing">
+
+<tal:admin tal:condition="python: checkPermission('Manage users', portal)" >
+   <span tal:define="dummy python:request.RESPONSE.redirect(portal_url + '/prefs_users_overview?portal_status_message=New+user+added')" />
+</tal:admin>
+
+<div tal:condition="python: not auth" i18n:translate="registered_disabled">
+   Cookie authentication has been disabled.
+</div>
+
+<div tal:define="ve site_properties/validate_email"
+     tal:condition="python: auth">
+
+<h1 i18n:translate="heading_welcome">Welcome!</h1>
+
+<p i18n:translate="description_you_are_registered"> You have been registered as a member. </p>
+
+<p tal:condition="ve" i18n:translate="description_you_will_get_password">
+You will receive an email shortly containing your password
+    and instructions on how to activate your membership.
+</p>
+
+<tal:block condition="python:not(ve)">
+    <p i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</p>
+    <form action=""
+          method="post"
+          tal:define="username request/username;
+                      password request/password;
+                      ac_name auth/name_cookie;
+                      ac_password auth/pw_cookie;
+                      ac_persist auth/persist_cookie;"
+          tal:attributes="action python:'%s/logged_in' % portal_url">
+        <input type="hidden"
+               name="came_from"
+               value=""
+               tal:attributes="value request/came_from|nothing;" />
+        <input type="hidden"
+               name="ac_name"
+               value=""
+               tal:attributes="name ac_name;
+                               value username;" />
+        <input type="hidden"
+               name="ac_password"
+               value=""
+               tal:attributes="name ac_password;
+                               value password;" />
+        <input class="standalone"
+               type="submit"
+               value="Log in"
+               i18n:attributes="value"
+               />
+    </form>
+</tal:block>
+
+</div>
+
+</div>
+</body>
+</html>

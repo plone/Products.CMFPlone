@@ -1,0 +1,3 @@
+[default]
+title = Global Plone variables that need to be accessible to the Javascripts
+cache = HTTPCache

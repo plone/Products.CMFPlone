@@ -1,0 +1,5 @@
+[default]
+title=Groups Management
+
+[security]
+View=0:Authenticated

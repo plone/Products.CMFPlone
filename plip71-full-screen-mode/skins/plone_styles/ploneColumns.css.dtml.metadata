@@ -1,0 +1,3 @@
+[default]
+title = Plone Tableless Layout CSS
+cache = HTTPCache

@@ -1,0 +1,3 @@
+[default]
+title = Plone RTL CSS
+cache = HTTPCache

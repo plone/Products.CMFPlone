@@ -1,0 +1,5 @@
+[default]
+title=User Management
+
+[security]
+View=0:Authenticated

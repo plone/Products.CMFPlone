@@ -1,0 +1,3 @@
+[default]
+title=Plone
+cache=HTTPCache

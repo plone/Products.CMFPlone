@@ -1,0 +1,137 @@
+<metal:block use-macro="here/global_defines/macros/defines" />
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      i18n:domain="plone">
+
+  <head metal:define-macro="html_header"
+        tal:define="skinrequest python:request.get(here.portal_skins.getRequestVarname(), '');">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
+          tal:define="charset site_properties/default_charset|string:utf-8"
+          tal:attributes="content string:text/html;;charset=${charset}" />
+
+    <title tal:define="portal_title portal_properties/title;
+                       page_title python:here.getPageTitle(here, template, portal_title)" >
+        <span tal:replace="page_title" />
+        &mdash;
+        <span tal:replace="portal_title" />
+    </title>
+
+    <metal:baseslot define-slot="base" />
+
+    <meta name="generator" content="Plone - http://plone.org" />
+
+    <meta tal:define="metatags here/listMetaTags|nothing"
+          tal:condition="metatags"
+          tal:repeat="keyval metatags"
+          tal:attributes="name python:keyval[0];
+                          content python:keyval[1];" />
+
+    <!-- Basic crude style for Netscape4.x - This can be removed
+         if you don't want the special NS4 look - it will still work,
+         just be plain text instead. Column layout for Netscape4.x included -->
+    <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
+
+    <!-- Column style sheet. -->
+    <style type="text/css" media="screen" tal:condition="exists: portal/ploneColumns.css"
+           tal:content="structure string:<!-- @import url($portal_url/ploneColumns.css); -->">
+    </style>
+
+    <!-- Main style sheets for CSS2 capable browsers -->
+    <style type="text/css" media="screen"
+           tal:content="structure string:<!-- @import url($portal_url/plone.css); -->">
+    </style>
+
+    <!-- RTL style sheet for right-to-left languages, only included if PTS
+         reports the language as such -->
+    <style type="text/css" media="screen" tal:condition="isRTL"
+           tal:content="structure string:<!-- @import url($portal_url/plone-rtl.css); -->">
+    </style>
+
+    <!-- Alternate style sheets for the bigger/smaller text switcher -->
+    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextLarge.css" title="Large Text" />
+
+    <!-- Style sheet used for printing -->
+    <link rel="stylesheet" type="text/css" media="print" href=""
+          tal:attributes="href string:$portal_url/plonePrint.css" />
+
+    <!-- Style sheet used for presentations (Opera is the only browser supporting this at the moment) -->
+    <link rel="stylesheet" type="text/css" media="projection" href=""
+          tal:attributes="href string:$portal_url/plonePresentation.css" />
+
+    <!-- Internet Explorer CSS Fixes -->
+    <tal:iefixstart replace="structure string:&lt;!--[if IE]&gt;" />
+    <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
+           tal:content="string:@import url($portal_url/ploneIEFixes.css);">
+    </style>
+    <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
+
+
+    <!-- Custom style sheet if available -->
+    <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
+           tal:content="structure string:<!-- @import url($portal_url/ploneCustom.css); -->">
+    </style>
+
+    <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
+
+    <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
+
+    <tal:fixme tal:replace="nothing">
+      <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
+      <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
+      <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
+      <link rel="author" href="" title="Author information" tal:attributes="href string:author" />
+    </tal:fixme>
+
+    <link rel="alternate" href="" title="RSS 1.0" type="application/rss+xml"  
+          tal:condition="python: syntool.isSyndicationAllowed(here)"
+          tal:attributes="href string:$here_url/RSS" />
+
+    <link rel="up" href="" title="Up one level"
+          tal:define="parent python:here.navigationParent(here, template_id)"
+          tal:condition="parent"
+          tal:attributes="href parent" />
+
+    <metal:block metal:define-slot="rel_slot" tal:replace="nothing">
+      Inserts rel links specified from a page.
+    </metal:block>
+
+    <!-- Disable IE6 image toolbar -->
+    <meta http-equiv="imagetoolbar" content="no" />
+
+    <metal:block metal:define-slot="css_slot" tal:replace="nothing">
+      Inserts CSS specified from a page.
+    </metal:block>
+
+    <metal:block metal:define-slot="head_slot" tal:replace="nothing">
+      Flexibility for published templates to inject stuff into the head tag.
+    </metal:block>
+
+    <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
+      Inserts javascript specified from a page.
+    </metal:block>
+
+    <!-- Common Plone ECMAScripts -->
+
+    <!-- Pull-down ECMAScript menu, only active if logged in -->
+    <script tal:condition="not: isAnon"
+            type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_menu.js">
+    </script>
+
+    <!-- Define dynamic server-side variables for javascripts in this one  -->
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_javascript_variables.js">
+    </script>
+
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_javascripts.js">
+    </script>
+
+  </head>
+
+  <body>
+  </body>
+
+</html>

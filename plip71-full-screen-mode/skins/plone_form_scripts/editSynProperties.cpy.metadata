@@ -1,0 +1,6 @@
+[validators]
+validators= validate_synPropertiesForm
+
+[actions]
+action.failure=traverse_to:string:synPropertiesForm
+action.success=redirect_to:string:folder_contents

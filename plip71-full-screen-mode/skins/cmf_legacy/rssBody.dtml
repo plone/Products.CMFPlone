@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<rdf:RDF 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns="http://purl.org/rss/1.0/"
+>
+<channel rdf:about="<dtml-var absolute_url>">
+  <title>&dtml-Title;</title>
+  <link>&dtml-portal_url;</link>
+  <description>
+    &dtml-Description;
+  </description>
+
+  <image rdf:resource="logo.png" />
+<sy:updatePeriod><dtml-var expr="portal_syndication.getUpdatePeriod(this())"></sy:updatePeriod>
+<sy:updateFrequency><dtml-var expr="portal_syndication.getUpdateFrequency(this())"></sy:updateFrequency>
+<sy:updateBase><dtml-var expr="portal_syndication.getHTML4UpdateBase(this())"></sy:updateBase>
+
+<dtml-comment>Start Items Elements</dtml-comment>
+  <items>
+    <rdf:Seq>
+<dtml-let max_items="portal_syndication.getMaxItems(this())">
+<dtml-in expr="portal_syndication.getSyndicatableContent(this())"
+         sort="getId" size="max_items" orphan="1" skip_unauthorized>
+ <dtml-let obj="_.getitem('sequence-item', 0 )">
+<rdf:li resource="<dtml-var absolute_url>" />
+
+ </dtml-let>
+</dtml-in>
+</dtml-let>
+   </rdf:Seq>
+  </items>
+</channel>
+<dtml-comment>End Items Elements</dtml-comment>
+
+<dtml-comment>Start Item Elements</dtml-comment>
+<dtml-let max_items="portal_syndication.getMaxItems(this())">
+<dtml-in expr="portal_syndication.getSyndicatableContent(this())"
+         sort="getId" size="max_items" orphan="1" skip_unauthorized>
+ <dtml-let obj="_.getitem('sequence-item', 0 )">
+<dtml-var expr="itemRSS(obj)">
+</dtml-let>
+</dtml-in>
+</dtml-let>
+<dtml-comment>End Item Elements</dtml-comment>
+</rdf:RDF>

@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+          tal:define="len_text python:len(here.text)">
+        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+            Title or id
+        </h1>
+    
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+    
+        <div class="documentDescription" tal:content="here/Description">
+            News summary
+        </div>
+    
+        <div tal:condition="here/image|nothing"
+             style="float:right; border: 1px solid black; margin: 0 0 1em 1em;">
+            <img tal:replace="structure here/image_thumb" />
+        </div>
+
+        <p tal:condition="python: not len_text and is_editable"
+           i18n:translate="no_body_text"
+           class="discreet">
+            This item does not have any body text, click the edit tab to change it.
+        </p>
+    
+        <div class="stx"
+             tal:condition="len_text"
+             tal:omit-tag="python:here.text_format != 'structured-text'">
+            <div tal:replace="structure python:here.CookedBody(stx_level=2)" />
+        </div>
+    
+        <div metal:use-macro="here/document_byline/macros/byline">
+            Get the byline - contains details about author and modification date.
+        </div>
+    </tal:main-macro>
+</div>
+
+</body>
+</html>
+

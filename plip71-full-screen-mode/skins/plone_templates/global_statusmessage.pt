@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      i18n:domain="plone">
+
+<body>
+
+<!-- THE STATUS MESSAGE DEFINITION -->
+<div class="portalMessage"
+         i18n:domain="plone"
+         metal:define-macro="portal_message"
+         tal:define="portal_message request/portal_status_message | nothing"
+         tal:condition="portal_message">
+        <tal:msg tal:content="portal_message" i18n:translate="">Portal Message</tal:msg>
+</div>
+
+
+</body>
+</html>

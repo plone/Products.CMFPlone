@@ -1,0 +1,43 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      i18n:domain="plone">
+
+<body>
+<div metal:define-macro="document_actions"
+     class="documentActions"
+     tal:define="document_actions actions/document_actions|nothing;
+                 getIconFor nocall:putils/getIconFor"
+     tal:condition="document_actions">
+
+    <h5 class="hiddenStructure">Document Actions</h5>
+
+    <ul>
+    <tal:actions repeat="daction document_actions">
+        <li>
+            <a href="" 
+               tal:attributes="href daction/url"
+               tal:define="title daction/name;
+                           icon python:getIconFor('plone', daction['id'], None)"
+               tal:condition="icon">
+            
+                <img i18n:attributes="title" src="" alt="" title=""
+                     height="16"
+                     width="16"
+                     tal:condition="icon"
+                     tal:attributes="src string:$portal_url/$icon;
+                                     title title;
+                                     alt title" />
+            </a>
+        </li>
+    </tal:actions>
+
+    </ul>
+
+    <tal:lang tal:condition="exists: here/global_languageselector">
+      <metal:lang use-macro="here/global_languageselector/macros/language">
+      Language selector
+      </metal:lang>
+    </tal:lang>
+
+</div>
+</body>
+</html>

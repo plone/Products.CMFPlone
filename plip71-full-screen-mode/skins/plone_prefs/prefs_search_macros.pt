@@ -1,0 +1,123 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      i18n:domain="plone">
+	<head>
+		<title tal:condition="nothing">User/Group Search Macro(s)</title>
+	</head>
+	<body>
+
+    <div metal:define-macro="user_group_search">
+      <form action=""
+          name="groups"
+          method="post"
+          tal:attributes="action here/absolute_url"
+	  tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+                      b_start request/b_start | python:0;
+                      b_size python:20;
+                      searchstring request/searchstring | nothing;
+	              searchonly searchonly | nothing;
+                      results python:here.prefs_user_group_search(searchstring, searchonly);
+                      batch python:Batch(results, b_size, int(b_start), orphan=1)">
+
+	<span metal:define-slot="hiddens" />
+	
+        <table class="listing" summary="Groups">
+	  <tr>
+	    <th colspan="2">
+	      <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
+                    <input class="quickSearch"
+                           tabindex=""
+                           type="text"
+                           name="searchstring"
+                           value=""
+                           tal:attributes="value searchstring;
+		                           tabindex tabindex/next;"
+                           />
+                
+                    <input type="hidden" name="searchonly" value="groups" />
+                    <input type="submit"
+                           class="searchButton"
+                           name="prefs_user_group_search_form"
+                           value="Search"
+                           tabindex=""
+                           i18n:attributes="value"
+                           tal:attributes="name string:${template/id}:method;
+		                           tabindex tabindex/next;" />
+
+	    </th>
+	  </tr>
+	  <tr>
+	    <th tal:condition="takeaction | nothing">
+            <input class="noborder"
+                   type="checkbox"
+                   src="select_all_icon.gif"
+                   name="selectButton"
+                   title="Select all items"
+                   onClick="toggleSelect(this, 'add:list');"
+                   tal:attributes="src string:$portal_url/select_all_icon.gif"
+                   alt="Select all items"
+                   i18n:attributes="title alt"/>
+            </th>
+            
+	    <th i18n:translate="listingheader_name">Group/User name</th>
+	  </tr>
+
+	  <tal:block repeat="obj batch">
+
+            <tr tal:define="oddrow repeat/obj/odd"
+	        tal:attributes="class python:test(oddrow,'odd','even')">
+
+	      <td class="listingCheckbox">
+                <input type="checkbox"
+                       class="noborder"
+                       name="add:list"
+                       value="value"
+		       tal:attributes="value obj/getGroupId | obj/getId" />
+	      </td>
+
+	      <td>
+		<tal:block tal:condition="obj/getGroupName | nothing">
+		  <img src="group.gif" alt="" />
+		  <a href="" tal:attributes="href string:prefs_group_details?groupname=${obj/getGroupName}"
+                        tal:content="obj/getGroupName | default">
+                        <span i18n:translate="link_groupname_not_available">
+                        groupname not available</span>
+                </a>
+		</tal:block>
+		<tal:block tal:condition="not:obj/getGroupName | nothing">
+		  <img src="user.gif" alt="" />
+		  <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
+                        tal:content="obj/getUserName | default">
+                        <span i18n:translate="link_username_not_available">
+                        username not available</span>
+                </a>
+		</tal:block>
+	      </td>
+	    </tr>
+	  </tal:block>
+        </table>
+
+	<p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
+
+    <input type="hidden" value="b_start" name="b_start" 
+           tal:attributes="value b_start"/>
+
+	<div metal:use-macro="here/batch_macros/macros/navigation" />
+	
+	<metal:block metal:define-slot="actions" >
+        <input class="context"
+               tabindex=""
+               type="submit"
+               name="addingaction"
+               value="Use Selected..."
+	       tal:condition="batch"
+               tal:attributes="tabindex tabindex/next;"
+               i18n:attributes="value" />
+	</metal:block>
+
+	<metal:block metal:define-slot="removables" />
+    </form>
+    </div>
+  </body>
+</html>

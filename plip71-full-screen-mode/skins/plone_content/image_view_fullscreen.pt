@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      i18n:domain="plone">
+
+<head>
+
+    <style type="text/css" media="screen">
+    body {
+        background-color: white; 
+        color: black; 
+        font-family: "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif; 
+        font-size: 69%;
+        style="text-align:center;"
+    }
+    
+    a {
+        display:block; 
+        margin: 0.5em; 
+        color: #436976; 
+        text-decoration: underline; 
+        line-height:1.5em;
+    }
+
+    img {
+        border: 1px solid black;
+    }
+
+    .visualWrapper {
+        text-align: center;
+    }
+
+    </style>
+
+</head>      
+
+<body>
+
+<div class="visualWrapper">
+    <a href=""
+       tal:attributes="href request/HTTP_REFERER"
+       tal:condition="request/HTTP_REFERER"
+       i18n:translate="">Back to site<br /><tal:block replace="structure here/tag" /></a>
+
+    <a href=""
+       tal:attributes="href here/portal_url"
+       tal:condition="not: request/HTTP_REFERER"
+       i18n:translate="">Home<br/><tal:block replace="structure here/tag" /></a>
+</div>    
+
+</body>
+</html>
+
