@@ -1,3 +1,20 @@
+2004-02-16 20:19  jimroepcke
+
+	* skins/: plone_tableless/main_template.pt,
+	  plone_templates/main_template.pt: re-enabled the global_bodytag
+	  template in main_templates which makes the body tag customizable
+	  to allow for CSS overrides based on the class (or id) of the body
+	  tag
+
+2004-02-16 19:19  dpunktnpunkt
+
+	* skins/plone_portlets/portlet_login.pt (Plone-2_0-branch): Added
+	  alt="Log in" attribute, fixing 2689.
+
+2004-02-16 04:52  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-15 05:06  longsleep
 
 	* CVSLOG: auto generated new changelog
