@@ -180,14 +180,15 @@ def initialize(context):
             )
 
     from Products.CMFCore import utils
+    from PloneUtilities import ToolInit
     import Portal
 
     z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
     utils.initializeBasesPhase2( z_bases, context )
 
-    utils.ToolInit('Plone Tool', tools=tools,
-                   product_name='CMFPlone', icon='tool.gif',
-                   ).initialize( context )
+    ToolInit('Plone Tool', tools=tools,
+             product_name='CMFPlone', icon='tool.gif',
+             ).initialize( context )
 
     utils.ContentInit( 'Plone Content'
                      , content_types=contentClasses
