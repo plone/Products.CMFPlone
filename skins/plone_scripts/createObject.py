@@ -11,10 +11,25 @@ from DateTime import DateTime
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 
+id=context.generateUniqueId(type_name)
+
+# XXX This needs to be moved out of createObject
+# its not generic really at all.  Basically
+# in Plone we will be moving to gdavis's CMFFormController
+if REQUEST.get('type', None) is not None and \
+  hasattr(context, 'portal_organization'):
+    #We are using Workspaces
+    type_name=REQUEST['type']
+    typeinfo=context.portal_types[type_name]
+    url='%s/portal_factory/%s/%s/%s' % (context.absolute_url(),
+                                        type_name,
+                                        id,
+                                        typeinfo.getActionById('edit')
+                                        )
+    return REQUEST.RESPONSE.redirect(url)
+    
 if type_name is None:
     raise Exception, 'Type name not specified'
-
-id=context.generateUniqueId(type_name)
 
 if type_name in context.portal_properties.site_properties.portal_factory_types:
     o = context.restrictedTraverse('portal_factory/' + type_name + '/' + id)
