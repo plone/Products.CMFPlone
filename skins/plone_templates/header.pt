@@ -102,9 +102,9 @@
 
     <!-- Common Plone ECMAScripts -->
 
-    <!-- IE min- max-width support -->
+    <!-- IE min-width support -->
     <script type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_minmax.js"></script>
+            tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
      
     <!-- ECMAScript menu -->
     <script type="text/javascript"
