@@ -101,7 +101,7 @@ def rc4_rc5(portal):
         _actions = typeobj._cloneActions()
         for action in _actions:
             if action.id=='local_roles':
-                id.title='Sharing'
+                action.title='Sharing'
         typeobj._actions = _actions
     out.append('Change local_roles label to Sharing')
     return out
