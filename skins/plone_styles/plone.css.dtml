@@ -518,7 +518,7 @@ pre {
     padding: 0 1em 0 0;
 }
 
-.actionMenu {
+.contentActions .actionMenu {
     visibility: hidden;
     z-index: 5;
     position: absolute;
