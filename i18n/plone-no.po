@@ -3718,6 +3718,12 @@ msgstr "endre innstillingene dine"
 msgid "description_logged_in"
 msgstr "Dette er første gangen du har logget inn hos ${here}."
 
+msgid "Plone setup changes have been saved."
+msgstr "Innstillingene ble lagret."
+
+msgid "description_copyright"
+msgstr "Plone er kopibeskyttet © 2000-${current_year} av ${limi}, ${runyaga}, ${blacktar}."
+
 ##################################
 # End 20.11.2002 update          #
 ##################################
