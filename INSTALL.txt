@@ -268,3 +268,4 @@ Have fun, and don't forget to report any bugs or inconsistencies in the
 Plone Collector (use the ErrorReporting product!): http://plone.org/collector 
  
 Thank you for using Plone!
+
