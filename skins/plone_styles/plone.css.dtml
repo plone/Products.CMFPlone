@@ -139,6 +139,10 @@ ol {
     padding:0;
 }
 
+ul a, ol a {
+    text-decoration: underline;
+}
+
 dl {
 }
 
@@ -586,9 +590,7 @@ span.card {
     width: 15%;
 }
 
-table.listing,
-table.columns td.main table  /* stupid STX table workaround */
-{
+table.listing {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
     border-collapse: collapse;
     border-left: &dtml-listingBorder;;
@@ -598,9 +600,7 @@ table.columns td.main table  /* stupid STX table workaround */
     clear: both;
 }
 
-table.listing th,
-table.columns td.main table th  /* stupid STX table workaround */
-{
+table.listing th {
     background: &dtml-listingHeaderBackground;;
     border-top: &dtml-listingBorder;;
     border-bottom: &dtml-listingBorder;;
@@ -633,9 +633,7 @@ table.listing tr.even {
     background: &dtml-listingEvenBackground;;
 }
 
-table.listing td,
-table.columns td.main table td /* stupid STX table workaround */
-{
+table.listing td {
     border-right: &dtml-listingBorder;;
     padding: 0em 1em;
     text-align: left;
@@ -649,16 +647,6 @@ table.listing img {
 	vertical-align: middle;
 }
 
-table.columns td.main table p /* stupid STX table workaround */
-{
-    margin: 0;
-    padding: 0;
-}
-
-table.columns td.main table  /* stupid STX table workaround */
-{
-    border-top: &dtml-listingBorder;;
-}
 
 table.box {
     background: transparent;
