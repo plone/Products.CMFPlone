@@ -113,7 +113,8 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     security.declareProtected( ManagePortal, 'unregisterConfiglet' )
     def unregisterConfiglet(self,id):
-        selection=[a for a in self.listActions() if a.id==id]
+        actids= [o.id for o in self.listActions()]
+        selection=[actids.index(a) for a in actids if a==id]
         self.deleteActions(selection)
 
     security.declareProtected( ManagePortal, 'unregisterApplication' )
