@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST, RESPONSE, acquireCriteria, id, title=None, description=None
+##parameters=acquireCriteria, id, title=None, description=None
 ##title=
 ##
 
