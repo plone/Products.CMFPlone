@@ -1,3 +1,5 @@
+# This module is deprecated, and will be removed in Plone 1.2. Not used.
+
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
