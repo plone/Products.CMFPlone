@@ -33,7 +33,7 @@ class IConstrainTypes(Interface):
         should be made most easily available.
         """
         
-    def getDefaultAddableTypes(types):
+    def getDefaultAddableTypes():
         """
         Return a list of FTIs which correspond to the list of FTIs available
         when the constraint mode = 0 (that is, the types addable without any
