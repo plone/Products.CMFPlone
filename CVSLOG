@@ -1,3 +1,48 @@
+2003-12-14 01:05  zopezen
+
+	* skins/plone_templates/header.pt (Plone-2_0-branch): Fix for 1873
+	  sitemap and help aren't done yet. At least the help isnt a 404,
+	  but there really isnt anything useful there yet.
+
+2003-12-14 00:51  zopezen
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): And migrate the
+	  actual properties whilst you are at it.
+
+2003-12-14 00:33  zopezen
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): It would be nice
+	  if we kept the properties of the portal_metadata I think
+
+2003-12-13 22:57  zopezen
+
+	* skins/plone_portlets/events_slot.pt (Plone-2_0-branch):
+	  correcting indentation error
+
+2003-12-13 22:35  zopezen
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): ...stupid cvs
+	  anyway I believe this is where the problem exists, its when the
+	  portal_skins gets deleted and recreated, so I'll add it in here
+	  to. Should be good now.
+
+2003-12-13 22:34  zopezen
+
+	* migrations/twoBeta2_twoBeta3.py (Plone-2_0-branch): On some sites
+	  at the end of migration you'll get an error on browserDefault.
+	  This is because for some reason portal skins has no default skin
+	  set and hence it cant find the script. This will
+
+2003-12-13 14:32  dreamcatcher
+
+	* MigrationTool.py, __init__.py, setup/SetupBase.py,
+	  setup/customization_policy.py, setup/dependencies.py
+	  (Plone-2_0-branch): Rewrapped some long lines
+
+2003-12-13 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-13 01:11  dpunktnpunkt
 
 	* skins/: plone_forms/content_status_history.cpt,
