@@ -5,6 +5,7 @@ from ZODB.POSException import ConflictError
 
 from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.CMFCorePermissions import ManagePortal
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 import zLOG
 import traceback
@@ -17,12 +18,14 @@ def log(message,summary='',severity=0):
 _upgradePaths = {}
 _widgetRegistry = {}
 
-class MigrationTool( UniqueObject, SimpleItem):
+class MigrationTool(PloneBaseTool, UniqueObject, SimpleItem):
     """Handles migrations between Plone releases"""
 
     id = 'portal_migration'
     meta_type = 'Plone Migration Tool'
     toolicon = 'skins/plone_images/site_icon.gif'
+
+    __implements__ = (PloneBaseTool.__implements__, SimpleItem.__implements__, )
 
     _needRecatalog = 0
     _needUpdateRole = 0

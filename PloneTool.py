@@ -27,6 +27,7 @@ from AccessControl import ClassSecurityInfo, Unauthorized
 from StatelessTree import constructNavigationTreeViewBuilder, \
      NavigationTreeViewBuilder as NTVB
 from ZODB.POSException import ConflictError
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 _marker = ()
 _icons = {}
@@ -34,7 +35,7 @@ _icons = {}
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
 
-class PloneTool(UniqueObject, SimpleItem):
+class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     id = 'plone_utils'
     meta_type= ToolNames.UtilsTool
@@ -42,6 +43,9 @@ class PloneTool(UniqueObject, SimpleItem):
     security = ClassSecurityInfo()
     plone_tool = 1
     field_prefix = 'field_' # Formulator prefixes for forms
+
+    __implements__ = (PloneBaseTool.__implements__,
+                      SimpleItem.__implements__, )
 
     security.declareProtected(CMFCorePermissions.ManagePortal,
                               'setMemberProperties')

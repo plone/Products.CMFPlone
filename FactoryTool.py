@@ -14,6 +14,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 
 # ##############################################################################
@@ -142,13 +143,15 @@ class TempFolder(TempFolderBase):
 
 
 # ##############################################################################
-class FactoryTool(UniqueObject, SimpleItem):
+class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ """
     id = 'portal_factory'
     meta_type= 'Plone Factory Tool'
     toolicon = 'skins/plone_images/add_icon.gif'
     security = ClassSecurityInfo()
     isPrincipiaFolderish = 0
+    
+    __implements__ = (PloneBaseTool.__implements__, SimpleItem.__implements__, )
 
     manage_options = ( ({'label':'Overview', 'action':'manage_overview'}, \
                         {'label':'Documentation', 'action':'manage_docs'}, \

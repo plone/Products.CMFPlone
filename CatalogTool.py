@@ -6,12 +6,15 @@ from AccessControl import ClassSecurityInfo
 from Acquisition import aq_base
 from Globals import InitializeClass
 from DateTime import DateTime
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
-class CatalogTool(BaseTool):
+class CatalogTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.CatalogTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/book_icon.gif'
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     def manage_afterAdd(self, item, container):
         # Makes sure the SearchableText index is a ZCTextIndex

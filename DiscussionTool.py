@@ -2,15 +2,18 @@ from Products.CMFDefault.DiscussionTool import DiscussionTool as BaseTool
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 from Products.CMFCore.utils import format_stx
 from DocumentTemplate.DT_Util import html_quote
 
-class DiscussionTool(BaseTool):
+class DiscussionTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.DiscussionTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/discussionitem_icon.gif'
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     security.declareProtected('Modify portal content', 'cookContent')
     def cookReply(self, reply, text_format=None):

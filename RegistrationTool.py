@@ -9,6 +9,7 @@ from Products.CMFPlone import ToolNames
 
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -32,12 +33,13 @@ password_chars = getValidPasswordChars()
 random.seed()
 
 
-class RegistrationTool(BaseTool):
+class RegistrationTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.RegistrationTool
     security = ClassSecurityInfo()
     toolicon = 'skins/plone_images/pencil_icon.gif'
     plone_tool = 1
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
     md5key = None
     _v_md5base = None
     email_regex="""^([0-9a-z_&.+-]+!)*[0-9a-z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,4}|([0-9]{1,3}\.){3}[0-9]{1,3})$"""

@@ -16,6 +16,7 @@ from Products.CMFCore.interfaces.portal_actions import portal_actions as IAction
 
 import ToolNames
 from interfaces.PloneControlPanel import IControlPanel
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 class PloneConfiglet(ActionInformation):
     def __init__(self,appId,**kwargs):
@@ -148,13 +149,18 @@ default_configlets = (
 
 
 
-class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManager):
+class PloneControlPanel(PloneBaseTool, UniqueObject, Folder, ActionProviderBase, PropertyManager):
     """
         Weave together the various sources of "actions" which are apropos
         to the current user and context.
     """
 
     __implements__ = (IControlPanel, ActionProviderBase.__implements__)
+
+    __implements__ = (PloneBaseTool.__implements__,
+                      IControlPanel,
+                      ActionProviderBase.__implements__,
+                      SimpleItem.__implements__, )
 
     security = ClassSecurityInfo()
 
