@@ -1,13 +1,10 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
-
 <body>
-
 <!-- This code is *really* messed up, and will be replaced in the next version of Plone. 
      Do not try to make sense of this.
 -->
-
 <div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
@@ -17,8 +14,7 @@
                    tree python:here.plone_utils.createNavigationTreeBuilder(portalObject,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;
-                   checkPerm python:here.portal_membership.checkPermission;
-                   listContentsPermission python:checkPerm('List folder contents', here);
+                   listContentsPermission python:checkPermission('List folder contents', here);
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
@@ -26,63 +22,48 @@
                    useFolderContents here/portal_properties/site_properties/use_folder_contents | python:['Folder'];
                    desc_ellipsis python:here.portal_properties.site_properties.ellipsis
                    "
-
                    >
-
     <div class="portlet" id="portlet-navigation-tree">
-
     <div>
-
         <h5 i18n:translate="box_navigation">Navigation</h5>
-
         <div class="portletBody">
             <div class="portletContent odd">
-
                 <div tal:condition="tree/prev">
                     <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
                         <span tal:replace="desc_ellipsis">...</span>
                     </a>
                 </div>
-
                 <div tal:repeat="te tree/list">
-
                     <span tal:define="iscurrent te/iscurrent | python:0;
                                       sibling python:te['object'];
                                       typeInfo sibling/getTypeInfo;
                                       stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'',typeInfo.getActionById('view')));
-                                      command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPerm('List folder contents',sibling) ,'',stdCommand);
+                                      command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPermission('List folder contents',sibling) ,'',stdCommand);
                                       title python:te['object'].title_or_id();
-                                      sibling_title python:' '.join(title[:croppingLength].split(' '));"
+                                      charset here/portal_properties/site_properties/default_charset|string:utf-8;
+                                      sibling_title python:' '.join( (unicode(title, charset)[:croppingLength]).encode(charset).split(' '));"
                                       tal:on-error="structure string:&lt;!--Error in Navigation loop!!--&gt;"
                                            >
-
-                        <tal:block tal:condition="iscurrent">
-                           <span class="currentNavItem"/>
-                        </tal:block>
                         <a href=""
                            tal:condition="python: sibling != portalObject"
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');
-                                           style python: 'margin-left: ' + str(te['indent']/2.0) + 'em';"
+                                           style python: 'padding-left: ' + str(te['indent']/2.0) + 'em;;' + 'display:block'; "
                                            accesskey="accesskeys-navigation"
-                                           i18n:attributes="accesskey"
-                           class="plain">
-
+                                           i18n:attributes="accesskey">
                             <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))"
                                  tal:on-error="structure here/site_icon.gif"
-                                    />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                                    />&nbsp;<span tal:condition="not: iscurrent" tal:content="sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="sibling_title" />
                         </a>
-
                         <a href=""
                            tal:condition="python: sibling == portalObject"
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
-                                           title python:test(title != sibling_title, title, '');"
+                                           title title;"
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
-
-                            <img tal:replace="structure portal/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure string:Home" />
+                            <img tal:replace="structure portal/site_icon.gif" />&nbsp;<span class="" tal:attributes="class python:test(iscurrent,'currentNavItem','')" i18n:translate="tabs_home">Home</span>
                         </a>
                     </span>
                 </div>
@@ -91,17 +72,10 @@
                         <span tal:replace="desc_ellipsis">...</span>
                     </a>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
-
 </div>
-
 </body>
-
 </html>
