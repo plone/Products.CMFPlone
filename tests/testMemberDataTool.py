@@ -36,7 +36,7 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
         assert self.pm._getPortrait(_user_name).meta_type == 'Image'
 
     def testPruneMemberDataContents(self):
-        # only test what is not allredy tested elswhere
+        # Only test what is not already tested elswhere
         self.pm._setPortrait(Image(id=_user_name, file=Portrait(), title=''), _user_name)
         self.pm._setPortrait(Image(id=_user_name, file=Portrait(), title=''), 'dummy')
         self.pm.pruneMemberDataContents()
