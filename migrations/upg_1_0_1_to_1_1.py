@@ -52,10 +52,10 @@ def upg_1_0_1_to_1_1(portal):
     actionicons.addActionIcon('plone', 'rss', 'xml.gif', 'Syndication')
     portal.portal_syndication.isAllowed=1 #turn syndication on
     # migrate to GRUF here
-    #portal.portal_quickinstaller.installProduct('GroupUserFolder')
-    #addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool
-    #addGRUFTool('CMF Groups Tool')
-    #addGRUFTool('CMF Group Data Tool')
+    portal.portal_quickinstaller.installProduct('GroupUserFolder')
+    addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool
+    addGRUFTool('CMF Groups Tool')
+    addGRUFTool('CMF Group Data Tool')
     # migrate to add simple workflow
     # create and populate the 'plone_help' folder in the root of the plone
     # the contents are STX files in CMFPlone/docs
