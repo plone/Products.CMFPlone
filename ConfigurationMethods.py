@@ -3,12 +3,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.Expression import Expression
 
-try:
-    from Products.CMFQuickInstallerTool import QuickInstallerTool
-except:
-    #QuickInstallerTool is an external Prod and therefore
-    #Plone should not (yet) be dependent on it
-    QuickInstallerTool = None
 
 def modifyAuthentication(self, portal):
     #set up cookie crumbler
@@ -17,8 +11,7 @@ def modifyAuthentication(self, portal):
 
 def installPortalTools(self,portal):
     ''' thats the place to install custom tools '''
-    if QuickInstallerTool and not 'portal_quickinstaller' in portal.objectIds():
-        portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
+    pass
 
 def addSiteProperties(self, portal):
     """ adds site_properties in portal_properties """

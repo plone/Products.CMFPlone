@@ -3,10 +3,16 @@ from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCache
 from Products.CMFDefault.Document import addDocument
 from Globals import package_home
 from Products.CMFPlone import cmfplone_globals
+from Products.CMFQuickInstallerTool import QuickInstallerTool
 import os
+
 
 def upg_1_0_1_to_1_1(portal):
     """ Migrations from 1.0.1 to 1.1 """
+
+    if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
+        portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
+    
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm']
     safeEditProperty(props, 'default_page', default_values, 'lines')
@@ -33,13 +39,8 @@ def upg_1_0_1_to_1_1(portal):
                  'View',
                  'document_actions')
 
-    #XXX FIX THIS
     #Install CMFActionIcons and Plone action icons
-    #portal.portal_quickinstaller.installProduct('CMFActionIcons')
-    #Quickinstaller wants lfet/right slots which we dont have as of yet
-    from Products.ExternalMethod.ExternalMethod import ExternalMethod
-    installmethod=ExternalMethod('tmp', 'tmp', 'CMFActionIcons.Install', 'install').__of__(portal)
-    installmethod()
+    portal.portal_quickinstaller.installProduct('CMFActionIcons')
     get_transaction().commit(1)
 
     actionicons=portal.portal_actionicons
