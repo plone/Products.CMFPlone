@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+   RC6, re-release
+
+    - breadcrumbs.py had bugs in which (1) a terminal object was sometimes 
+      displayed twice, and (2) terminal non-content non-view objects (e.g. page 
+      templates) were not displayed at all.  The bugs have been fixed and 
+      breadcrumbs.py has been refactored a bit to make the source easier to 
+      understand and maintain. [geoffd]
+
    RC6
 
     - Make portal more tolerant if admin removes cookie_authentication
