@@ -23,7 +23,7 @@
 
     <tbody>
 
-        <tr class="odd" tal:condition="siblings">
+        <tr class="odd">
             <td colspan="2">
             <div>
                 <div

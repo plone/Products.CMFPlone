@@ -36,8 +36,8 @@ def childFinder(obj,folderishOnly=1):
         if hasattr(obj.aq_explicit,'listFolderContents'):
             res=obj.listFolderContents()
         else:
-            #... and all other folders
-            res=obj.objectValues()
+            #and all other *CMF* folders
+            res=obj.contentValues()
 
     res = filter (lambda x:x.meta_type not in metaTypesNotToList,res)
 

@@ -15,12 +15,14 @@ o=context.portal_url.getPortalObject()
 if obj is None:
     obj=context
     
-relative_ids = context.portal_url.getRelativeContentPath( obj)
+relative_ids = context.portal_url.getRelativeContentPath(obj)
 template_id = context.REQUEST.get('PUBLISHED', None)
 
 if template_id and not relative_ids:
     path_seq = ( ( 'home', o.absolute_url() )
                , ( template_id.title_or_id(), o.absolute_url()+'/'+template_id.getId()) )
+    for k,v in context.REQUEST.items():
+        context.plone_debug( (k, v) )
     return path_seq
 
 if template_id is not None and \
