@@ -1,3 +1,38 @@
+2004-02-05 01:19  zopezen
+
+	* LICENSE.txt (Plone-2_0-branch): Update to 2004
+
+2004-02-04 15:58  gerry_kirk
+
+	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
+	  fixed linefeed problems reported in zope 2.7RC1 by doing a
+	  copy/paste to a new file
+
+2004-02-04 10:27  limi
+
+	* skins/plone_prefs/plone_memberprefs_panel.pt.metadata
+	  (Plone-2_0-branch): Added security settings and page title for
+	  the Member prefs panel.
+
+2004-02-04 05:28  tiran
+
+	* INSTALL.txt (Plone-2_0-branch): fixed some minor glitches
+
+2004-02-04 05:10  tiran
+
+	* INSTALL.txt (Plone-2_0-branch): If you want to run Plone on
+	  FreeBSD with Python 2.1.3, you'll need to up the thread stack
+	  size or else Zope will repeatedly crash
+
+2004-02-04 05:05  tiran
+
+	* INSTALL.txt (Plone-2_0-branch): updated INSTALL.txt added more
+	  products (including spam for my products *hehe*)
+
+2004-02-04 04:56  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-04 04:44  tiran
 
 	* skins/plone_scripts/getFolderContents.py (Plone-2_0-branch):
