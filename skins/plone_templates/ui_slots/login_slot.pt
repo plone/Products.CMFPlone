@@ -58,15 +58,13 @@
                    <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
                 </a>
             </div>
-    
+
             <div class="content odd"
-                tal:condition="python:test(hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
+                tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
+                tal:condition="python:test(join and hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
           
-                <a href="portal_form/join_form"
-                   tal:attributes="href string:$portal_url/portal_form/join_form">
-                    
+                <a href="" tal:attributes="href python:join.pop()">
                     <img tal:replace="structure here/linkTransparent.gif" />
-          
                     <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
                 </a>
     
