@@ -1,3 +1,12 @@
+2004-05-20 17:39  ajung
+
+	* skins/plone_scripts/listMetaTags.py (Plone-2_0-branch):
+	  backporting fix from HEAD for bad archetypes
+
+2004-05-20 06:15  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-19 17:44  pjgrizel
 
 	* MemberDataTool.py: Inhibated the new MemberData class while the
