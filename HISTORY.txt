@@ -1,5 +1,11 @@
 CHANGES
 
+Plone 1.0.4 - Zita Swoon Release
+
+    - Backported Print CSS fixes from HEAD. All browsers now print properly, 
+      apart from Mozilla, which still has some way to go before it understands
+      print CSS properly, it seems. Tested in IE and Opera 7.
+
 Plone 1.0.3 - Brazil Soundtrack
 
     - Fixed ERRATA in 1.0.2

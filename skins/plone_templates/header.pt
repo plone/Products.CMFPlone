@@ -31,7 +31,7 @@
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
 
     <!-- Main style sheets for CSS2 capable browsers -->
-    <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css?${current_skin});"></style>
+    <style type="text/css" media="screen" tal:content="string: @import url(${here/portal_url}/plone.css?${current_skin});"></style>
 
     <!-- Custom style sheet if available -->
     <style type="text/css" media="all" tal:condition="exists: here/ploneCustom.css" tal:content="string:@import url(${here/portal_url}/ploneCustom.css);"></style>

@@ -11,7 +11,7 @@
 body {
     background: White;
     font-family: Georgia, Garamond, Times, serif;
-    font-size: 10pt;
+    font-size: 11pt;
     color: Black;
     margin: 0;
     padding: 0;
@@ -31,7 +31,8 @@ div.documentActions,
 .help,
 .legend,
 div.message,
-input
+input,
+a.skipnav
 {
     display: none;
 }
@@ -42,37 +43,65 @@ ul {
 
 .editableDocument,
 .document,
-div.description,
-.group {
+#description,
+.group,
+p {
     background: transparent;
     border: none ! important;
     font-family: Georgia, Garamond, Times, serif;
-    font-size: 10pt;
+    font-size: 11pt;
     padding: 0;
     margin: 0;
+    text-align: left;
+}
+
+.byline {
+    font-family: Georgia, Garamond, Times, serif;
+}
+
+
+h1, h2, h3, h4, h5, h6
+{
+    border: none;
+    font-family: Georgia, Garamond, Times, serif;
+    font-weight: bold;
+}
+
+p, #description {
+    margin: 1em 0;
+    line-height: 1.2em;    
+}
+
+pre {
+    border: 1pt dashed black;
+    white-space: pre;
+    font-size: 8pt;
+    overflow: auto;
+    padding: 1em 0;
 }
 
 table.listing,
-table.listing td
- {
+table.listing td {
 	border: 1pt solid black;
     border-collapse: collapse;
+}
+
+a {
+    color: Black ! important;
+}
+
+a.external {
+    background: none;
+    padding: 0;
 }
 
 a:link, a:visited {
 	color: #520;
 	background: transparent;
-	font-weight: bold;
 	text-decoration: underline;
 	}
 
-pre {
-  white-space: normal;
-}
-
 div.document a:link:after, 
 div.document a:visited:after {
-   content: " (" attr(href) ") ";
-   font-size: 90%;
-   }
-
+   content: " ( " attr(href) " ) ";
+}
