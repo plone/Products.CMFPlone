@@ -41,13 +41,13 @@
                     Title
                     </a>
 
+                    <span class="discreet">
+                        by <span tal:replace="result/Creator"></span>,
+                        <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="result/modified" />
+                    </span>
                 </dt>
 
-                <div class="documentByLine">
-                    by <span tal:replace="result/Creator"></span>,
-                    <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="result/modified" />
-                </div>
-
+                
                 <dd class="link">
                     <a href="/view"
                        tal:content="structure result/Description"

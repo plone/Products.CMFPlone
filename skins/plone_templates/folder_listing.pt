@@ -52,7 +52,7 @@
                             tal:attributes="href obj/getRemoteUrl"
                             tal:content="obj/title_or_id" />
 
-                <span class="discreet" style="font-weight: normal"
+                <span class="discreet"
                       tal:condition="python: obj.portal_type == 'Event'">
     
                     &nbsp;
