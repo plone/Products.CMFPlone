@@ -2,7 +2,7 @@ import os, sys
 import urllib
 import Globals
 from DateTime import DateTime
-from AccessControl import ClassSecurityInfo
+from AccessControl import Owned, ClassSecurityInfo, getSecurityManager
 from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
 from OFS.ObjectManager import ObjectManager
 from OFS.SimpleItem import SimpleItem
@@ -42,7 +42,50 @@ class TempFolder(TempFolderBase):
 
         return path
 
+    # delegate local roles methods
+    def __ac_local_roles__(self):
+        return getattr(aq_parent(aq_parent(self)), '__ac_local_roles__', None)
+    
+    def has_local_roles(self):
+        return aq_parent(aq_parent(self)).has_local_roles()
 
+    def get_local_roles(self):
+        return aq_parent(aq_parent(self)).get_local_roles()
+
+    def users_with_local_role(self, role):
+        return aq_parent(aq_parent(self)).users_with_local_role(role)
+
+    def get_valid_userids(self):
+        return aq_parent(aq_parent(self)).get_valid_userids()
+
+    def get_local_roles_for_userid(self, userid):
+        return aq_parent(aq_parent(self)).get_local_roles_for_userid(userid)
+
+    def valid_roles(self):
+        return aq_parent(aq_parent(self)).valid_roles()
+
+    def validate_roles(self, roles):
+        return aq_parent(aq_parent(self)).validate_roles(roles)
+
+    def userdefined_roles(self):
+        return aq_parent(aq_parent(self)).userdefined_roles()
+
+    # delegate Owned methods
+    def owner_info(self):
+        return aq_parent(aq_parent(self)).owner_info()
+
+    def getOwner(self, info=0,
+                 aq_get=aq_get,
+                 UnownableOwner=Owned.UnownableOwner,
+                 getSecurityManager=getSecurityManager,
+                 ):
+        return aq_parent(aq_parent(self)).getOwner(info, aq_get, UnownableOwner, getSecurityManager)
+
+    def userCanTakeOwnership(self):
+        return aq_parent(aq_parent(self)).userCanTakeOwnership()
+    
+
+    # override __getitem__
     def __getitem__(self, id):
         if id in self.objectIds():
             return self._getOb(id).__of__(aq_parent(aq_parent(self)))
