@@ -5,8 +5,12 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="contentTypes python:here.sortObjects(here.allowedContentTypes());">
-    <li tal:condition="contentTypes">
+<ul tal:define="allowed here/allowedContentTypes;
+                size python:len(allowed);">
+
+    <tal:dropdown tal:condition="python: size>1">
+
+    <li tal:define="contentTypes python: here.sortObjects(allowed)">
         <a href="#"
            onclick="return buttonClick(event, 'objectMenu');"
            onmouseover="buttonMouseover(event, 'objectMenu');"
@@ -34,6 +38,13 @@
             </metal:block>
         </ul>
     </li>
+    </tal:dropdown>
+
+    <tal:singular tal:condition="python: size==1">
+        <a href="#" 
+           tal:define="portaltype python: allowed[0]"
+           tal:content="string: Add New $portaltype">Add New Foo</a>
+    </tal:singular>
 
     <li tal:define="review_state wf_state"
         tal:condition="review_state">
