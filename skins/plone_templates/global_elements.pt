@@ -43,6 +43,7 @@
 <a metal:define-macro="portal_logo"
    href="/"
    class="logo"
+   id="logo"
    tal:attributes="href portal_url"
    tal:define="logo portal/logo.jpg;
                uri logo/absolute_url" >
@@ -75,6 +76,7 @@
 
 <!-- THE PERSONAL BAR DEFINITION -->
 <div class="personalBar"
+     id="personalBar"
      metal:define-macro="personal_bar"
      tal:define="portal_url portal_url|here/portal_url;
                  user_actions user_actions|actions/user;
@@ -110,6 +112,7 @@
 <!-- THE PATHBAR (breadcrumbs) DEFINITION -->
 <div metal:define-macro="path_bar"
      class="pathBar"
+     id="pathBar"
      tal:define="breadcrumbs python:here.breadcrumbs(here);
                      portal_url portal_url|here/portal_url">
        <a href="#"

@@ -32,7 +32,7 @@
 
 <body>
 
-<div class="top" i18n:domain="plone">
+<div id="top" class="top" i18n:domain="plone">
 
     <a class="skipnav" 
        href="#documentContent">Skip to content</a>
@@ -69,10 +69,11 @@
 </div>
 
 <!-- The wrapper table. It contains the three columns. -->
-<table class="columns"><tbody><tr>
+<table id="columns" class="columns"><tbody><tr>
 
     <!-- start of the left (by default at least) column -->
     <td class="left"
+        id="left"
         tal:condition="slots_mapping/left">
         <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
         This instruction gets the portlets (boxes) for the left column.
@@ -127,6 +128,7 @@
 
     <!-- start of right (by default at least) column -->
     <td class="right"
+        id="right"
         tal:condition="slots_mapping/right">
         <div metal:use-macro="here/portlets_fetcher/macros/right_column">
         This instruction gets the portlets (boxes) for the right column.
@@ -137,7 +139,7 @@
 </tr></tbody></table>
 <!-- end column wrapper -->
 
-<div class="footer" metal:use-macro="here/footer/macros/portal_footer">
+<div class="footer" id="footer" metal:use-macro="here/footer/macros/portal_footer">
     Footer
 </div>
 
