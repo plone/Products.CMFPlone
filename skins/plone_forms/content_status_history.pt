@@ -104,7 +104,7 @@
     
         <div class="row">
             <input type="hidden" id="workflow_action" name="workflow_action" value="" />
-            <span class="label"></span>
+            <span class="label">&nbsp;</span>
     
             <span class="field"
                   tal:define="wf_actions actions/workflow;

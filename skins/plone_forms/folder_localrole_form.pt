@@ -165,8 +165,7 @@
     
     			<div class="row">
     			
-    				<span class="label">
-    				</span>
+    				<span class="label">&nbsp;</span>
     				
     				<span class="field">
     					<input class="context" type="submit" value="Perform Search" />
@@ -236,7 +235,7 @@
 
         	<div class="row">
         		
-        		<span class="label"></span>
+        		<span class="label">&nbsp;</span>
         		
         		<span class="field">
         			<input class="context" type="submit" value="Delete Selected Role(s)" />

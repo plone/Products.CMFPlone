@@ -33,6 +33,7 @@ input.standalone {
     font-weight: &dtml-buttonWeight;;
     padding: &dtml-standaloneButtonPadding;;
     text-transform: &dtml-textTransform;;
+    margin: 0em 0em 1em 0em;
 }
 
 input.context {
@@ -42,6 +43,7 @@ input.context {
     font-weight: &dtml-buttonWeight;;
     padding: &dtml-contextButtonPadding;;
     text-transform: &dtml-textTransform;;
+    margin: 0em 0em 1em 0em;
 }
 
 input.noborder {

@@ -91,7 +91,7 @@
         </div>
     
         <div class="row">
-            <span class="label"></span>
+            <span class="label">&nbsp;</span>
             <span class="field">
                 <input class="context" type="submit" value="Save">
             </span>

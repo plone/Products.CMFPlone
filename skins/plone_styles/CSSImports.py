@@ -15,14 +15,12 @@ output = r"""
 		@import "%s";
 		@import "%s";
 		@import "%s";
-		@import "%s";
     /*
 		@import "%s";
      */
   </style> """ % ( url + '/ploneBasic.css'
                  , url + '/ploneStructure.css'
                  , url + '/ploneWidgets.css'
-                 , url + '/ploneDeprecated.css'
                  , url + '/ploneCalendar.css'
                  , url + '/ploneForum.css' ) #ploneForum is commented out
 

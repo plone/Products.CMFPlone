@@ -1,8 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
+
 <body>
     <span metal:fill-slot="main"
           tal:define="transactions python:container.portal_undo.listUndoableTransactionsFor(here);
@@ -15,112 +17,113 @@
 	  method="POST"
           tal:condition="transactions"
           tal:define="batch python:Batch(transactions, 15, int(b_start), orphan=1)">
-				
-		<p>
-		This application's transactional feature allows you to easily undo changes
-		made to the application's settings or data. You can revert the application
-		to a &quot;snapshot&quot; of it's state at a previous point in time. 
-		</p>
 
-		<p>
-		Select one or more transactions below and then click on the &quot;Undo&quot;
-		button to undo the transactions.  Note that even though a transaction
-		is shown below, you will not be able to undo it if later transactions
-		modified objects that were modified by the transaction. 
-		</p>
+        <p>
+        This application's transactional feature allows you to easily undo changes
+        made to the application's settings or data. You can revert the application
+        to a &quot;snapshot&quot; of it's state at a previous point in time. 
+        </p>
 
-	 <input class="context" type="submit" name="undo:method" value="Undo">
+        <p>
+        Select one or more transactions below and then click on the &quot;Undo&quot;
+        button to undo the transactions.  Note that even though a transaction
+        is shown below, you will not be able to undo it if later transactions
+        modified objects that were modified by the transaction. 
+        </p>
+
+
+        <div class="listingBar">
+            <span class="previous"
+                  tal:define="p batch/previous | nothing"
+                  tal:condition="p"> 
+    
+                <a href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
+                &laquo;&nbsp;Newer&nbsp;transactions
+                </a>
+    
+            </span>
+    
+            <span class="next"
+                  tal:define="n batch/next | nothing"
+                  tal:condition="n">
+    
+                <a href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
+                Older&nbsp;transactions&nbsp;&raquo;
+                </a>
+            </span>
+        </div>
  
 
-<table class="listing" summary="Undo history" cellpadding="0" cellspacing="0"> <!-- Sorry about the cellpadding/cellspacing values, Netscape 4 and 6 have bugs in the table code -->
+        <table class="listing" summary="Undo history" cellpadding="0" cellspacing="0"> <!-- Sorry about the cellpadding/cellspacing values, Netscape 4 and 6 have bugs in the table code -->
+        
+            <thead>
+                <tr>
+                    <th>Undo</th>
+                    <th>Affected Item</th>
+                    <th>Action performed</th>
+                    <th>Performed by</th>
+                    <th>Date and time</th>
+                </tr>
+            </thead>
+        
+            <tbody>
+                <metal:block tal:repeat="trx batch">
+                    <tr class="even" 
+                        tal:define="oddrow repeat/trx/odd;"
+                        tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+                        
+                        <td>
+                            <input type="checkbox"
+                                    class="noborder"
+                                    name="transaction_info:list" value=""
+                                    tal:attributes="value python:trx['id']">
+                        </td>
+            
+                        <td>
+                        Title
+                        </td>
+                        	
+                        <td tal:content="python:trx['description']">
+                        Action performed
+                        </td>
+            
+                        <td tal:content="python:trx['user_name']">
+                        username
+                        </td>
+            
+                        <td tal:content="python:trx['time']"> 
+                        date/time 
+                        </td>
+                    </tr>
+                </metal:block>
+            </tbody>
+        </table>
 
-	<thead>
-		<tr>
-			<th colspan="2">Actions that can be undone</th>
+        <input class="context" type="submit" name="undo:method" value="Undo" />
 
-		</tr>
-	</thead>
-
-	<tfoot>
-		<tr>
-		<th colspan="2">
-			<table class="positioning">
-			<tr>
-				<td class="left">
-                	<span tal:define="p batch/previous | nothing"
-                	 	   tal:condition="p"> 
-                	
-                		<a href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
-                		&laquo;&nbsp;Newer&nbsp;transactions
-                		</a>
-                	
-                	</span>
-
-				</td>
-
-				<td class="right">
-					<span class="right" tal:define="n batch/next | nothing"
-							tal:condition="n">
-
-        			<a href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
-        			Older&nbsp;transactions&nbsp;&raquo;
-        			</a>
-	
-					</span>
-				</td>
-
-			</tr>
-			</table>
-		</th>
-		</tr>
-	</tfoot>	
-
-	<tbody>
-		<tr tal:repeat="trx batch">
-			<td>
-    			<input type="checkbox"
-						class="noborder"
-        				name="transaction_info:list" value=""
-        				tal:attributes="value python:trx['id']">
-			</td>
-			
-			<td>	
-				<strong>Action:</strong>
-    			<span tal:replace="python:trx['description']">
-    			description
-    			</span>
-    			
-				<br />
-				
-    			<strong>Performed by:</strong>    
-    			<span tal:replace="python:trx['user_name']">
-    			username
-    			</span>
-    			
-				<br />
-				
-    			<strong>At:</strong>
-    			<span tal:replace="python:trx['time']"> 
-				date/time 
-				</span>
-				
-				<br />
-				
-				&nbsp;
-				
-			</td>
-		</tr>
-
-		
-
-	</tbody>
-	
-</table>
-
-     <input class="context" type="submit" name="undo:method" value="Undo">
+        <div class="listingBar">
+            <span class="previous"
+                  tal:define="p batch/previous | nothing"
+                  tal:condition="p"> 
+    
+                <a href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
+                &laquo;&nbsp;Newer&nbsp;transactions
+                </a>
+    
+            </span>
+    
+            <span class="next"
+                  tal:define="n batch/next | nothing"
+                  tal:condition="n">
+    
+                <a href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
+                Older&nbsp;transactions&nbsp;&raquo;
+                </a>
+            </span>
+        </div>
 
 </form>
-		 
+ 
 </span>
 
 </body>
