@@ -144,9 +144,8 @@ class PloneTool (UniqueObject, SimpleItem):
         #    Someone please look into this.  We should probably catch the exception (think its Tuple error)
         #    instead of swallowing all exceptions.
         try:
-            if DublinCore.isImplementedBy(obj):
-                apply(self.editMetadata, (obj,), kwargs)
-        except: 
+            apply(self.editMetadata, (obj,), kwargs)
+        except AttributeError:
             pass
         
         if kwargs.get('id', None) is not None: 
@@ -273,6 +272,7 @@ class PloneTool (UniqueObject, SimpleItem):
 
         catalog_tool=getToolByName(self, 'portal_catalog')
         object.changeOwnership(user, recursive)
+
         catalog_tool.reindexObject(object)
         if recursive:
             _path=getToolByName(self, 'portal_url').getRelativeContentURL(object)

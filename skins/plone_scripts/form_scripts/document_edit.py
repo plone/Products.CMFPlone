@@ -28,6 +28,7 @@ new_context.edit( text_format
                 , text
                 , file
                 , safety_belt=SafetyBelt )
+
 new_context.plone_utils.contentEdit( new_context
                                    , id=id
                                    , title=title
