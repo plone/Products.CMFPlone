@@ -13,7 +13,6 @@ context.edit( text
 	    , text_format )
 
 REQUEST.set('title', field_title)
-
 REQUEST.set('portal_status_message', 'News+Item+changed.')
 qst='portal_status_message=News+Item+changed.'
 if hasattr(context, 'extended_edit'):
@@ -22,8 +21,11 @@ if hasattr(context, 'extended_edit'):
     if response:
         return response
 
-target_action = context.getTypeInfo().getActionById( 'view' )
+id = REQUEST.get( 'field_id'
+                , REQUEST.get('id', ''))
+context.rename_object(redirect=0, id=id)
 
+target_action = context.getTypeInfo().getActionById( 'view' )
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                                 , target_action
                                                 , qst

@@ -7,7 +7,6 @@
 ##parameters=field_remote_url, field_title=None, field_description=None, subject=None
 ##title=Edit a link
 ##
-#assume we didnt find http:// - add it
 
 REQUEST=context.REQUEST
 remote_url=field_remote_url
@@ -30,5 +29,9 @@ if hasattr(context, 'extended_edit'):
     response=edit_hook(redirect=0)
     if response:
         return response
- 
-REQUEST.RESPONSE.redirect( context.absolute_url() + '/link_view' + qst )
+id = REQUEST.get( 'field_id'
+                , REQUEST.get('id', ''))
+		
+context.rename_object(redirect=0, id=id)
+
+return REQUEST.RESPONSE.redirect( context.absolute_url() + '/link_view' + qst )
