@@ -282,6 +282,9 @@ class StatelessTreeBuilder:
                     act = 1
                     continue
 
+                if (self.skipIndex_html and sibling.getId()=='index_html') or sibling.getId()=='talkback':
+                    continue
+
                 if (act == 1) :
                     itemcounter = itemcounter + 1
                     lv = self.getLevel(sibling)
