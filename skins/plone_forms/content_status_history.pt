@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
+      i18n:domain="plone"
 >
 <body>
 
@@ -50,7 +50,7 @@
         <span class="legend">Status</span>
     
         <div class="row">
-            <div class="label" i18n:id="status">Status</div>
+            <div class="label" i18n:translate="status">Status</div>
             <div class="field"
 	          tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
 	                      expiration_date python:test(here.expiration_date, here.expiration_date, '');
@@ -83,7 +83,7 @@
         <span class="legend" i18n:translate="">Publishing Details</span>
 
         <div class="row" tal:condition="request/ids|nothing">
-            <div class="label" i18n:id="affected_content">Affected content</div>
+            <div class="label" i18n:translate="affected_content">Affected content</div>
             <div class="field"
                  tal:define="Batch python:modules['ZTUtils'].Batch;
 		             physical_path python:'/'.join(here.getPhysicalPath());
@@ -100,9 +100,9 @@
         <div class="row"
 	     tal:condition="folders_in_publishing|nothing">
 	   <div class="label">
-	     <span i18n:id="subfolders">Subfolders</span>
+	     <span i18n:translate="subfolders">Subfolders</span>
 	     <div id="include_subfolders_help" 
-	          i18n:id="include_subfolders_help"
+	          i18n:translate="include_subfolders_help"
 	          class="help" 
 	          style="visibility:hidden">
 	          If checked, will attempt to publish all content in subfolders.
@@ -119,15 +119,15 @@
 	            checked="checked" 
               tal:attributes="tabindex tabindex/next;"
               />
-	     <label for="include_subfolders" i18n:id="include_subfolders">Include subfolders</label>
+	     <label for="include_subfolders" i18n:translate="include_subfolders">Include subfolders</label>
            </div>
    	</div>
 
         <div class="row">
             <div class="label">
-              <span i18n:id="effective_date">Effective Date</span>
+              <span i18n:translate="effective_date">Effective Date</span>
                 <div id="effective_date_help"
-                     i18n:id="effective_date_help" 
+                     i18n:translate="effective_date_help" 
                      class="help" 
                      style="visibility:hidden">
                 The date when the document will be visible when it's published. This way, you can 
@@ -151,9 +151,9 @@
 
         <div class="row">
             <div class="label">
-              <span i18n:id="expiration_date">Expiration Date</span>
+              <span i18n:translate="expiration_date">Expiration Date</span>
                 <div id="expiration_date_help"
-                     i18n:id="expiration_date_help" 
+                     i18n:translate="expiration_date_help" 
                      class="help" 
                      style="visibility:hidden">
                 The date when the document expires. This will automatically make the document
@@ -176,9 +176,9 @@
     
         <div class="row">
             <div class="label">
-            <span i18n:id="comments">Comments</span>
+            <span i18n:translate="comments">Comments</span>
                 <div id="publishing_comments_help"
-                     i18n:id="publishing_comments_help" 
+                     i18n:translate="publishing_comments_help" 
                      class="help" 
                      style="visibility:hidden">
                 Enter a short description or some comments to be added

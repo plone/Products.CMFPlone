@@ -48,7 +48,8 @@ Header stuff
                 <metal:block metal:define-slot="super"
 		             tal:condition="show_border" >
                 
-                <div class="contentTabs" metal:define-macro="contentTabs">
+                <div class="contentTabs" metal:define-macro="contentTabs"
+                     i18n:domain="plone">
    
                     <tal:block tal:condition="not:actions|nothing">
                         <comment tal:define="global actions here/portal_actions/listFilteredActionsFor"
@@ -67,7 +68,7 @@ Header stuff
                         <a class="" href="" 
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');
 			                   href action/url;"> 
-                            <span tal:replace="action/name">Publishing</span>
+                            <span tal:replace="action/name" i18n:translate="">Publishing</span>
                         </a> 
                         <span class="netscape4">&middot;</span>
                     </span>

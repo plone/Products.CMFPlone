@@ -69,6 +69,7 @@
 </head>
 
 <div metal:define-macro="portal_header"
+     i18n:domain="plone"
      tal:define="portal_url here/portal_url" >
 
      <tal:block tal:condition="not: actions|nothing">     
@@ -123,7 +124,7 @@
             <a href="" class=""
                tal:attributes="href tab/url;
                                class python:test(compare_id==tab['id'], 'selected', 'plain')">
-                <span tal:replace="structure tab/name">Welcome</span>
+                <span tal:content="tab/name" i18n:translate="">Welcome</span>
             </a>
             
             <span class="netscape4">&middot;</span>
@@ -148,7 +149,7 @@
                 <span tal:replace="user/getUserName">john</span>
             </a>
 
-            <span tal:condition="here/portal_membership/isAnonymousUser">you are not logged in</span>
+            <span tal:condition="here/portal_membership/isAnonymousUser" i18n:translate="">you are not logged in</span>
 
             <metal:block tal:repeat="action python:display_actions">
             <a href=""
@@ -158,7 +159,7 @@
                      border="0"
                      tal:attributes="src string:$portal_url/linkOpaque.gif" />
                 
-                <span tal:replace="action/name">My&nbsp;Stuff</span>
+                <span tal:replace="action/name" i18n:translate="">My&nbsp;Stuff</span>
             </a>
             </metal:block>
         </div>
@@ -182,9 +183,8 @@
                      border="0"
                      tal:attributes="src string:$portal_url/addFavorite.gif" />
             </a>
-
-            You are here: 
-
+	    <span tal:omit-tag="" i18n:translate="">You are here:</span>
+	    
             <span tal:repeat="crumb breadcrumbs">
 
                 <span tal:define="global is_last repeat/crumb/end"

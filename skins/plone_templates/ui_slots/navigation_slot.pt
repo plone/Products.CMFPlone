@@ -1,4 +1,5 @@
 <table metal:define-macro="navigationBox"
+       i18n:domain="plone"
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
                    parent_url python:here.navigationParent(here, template.getId());
                    siblings here/navigationCurrent;
@@ -14,7 +15,7 @@
        cellspacing="0">
 
     <thead>
-        <tr><th>Navigation</th><th class="empty">&nbsp;</th></tr>
+        <tr><th i18n:translate="">Navigation</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
     <tbody>
@@ -27,7 +28,7 @@
         <tr class="even" tal:condition="siblings">
             <td colspan="2">
             <div>
-                <strong>Other items</strong> <br />
+                <strong i18n:translate="">Other items</strong> <br />
                 <div tal:repeat="sibling siblings">
                     <a href="#" class="plain"
                      tal:define="url string:${sibling/absolute_url}/view;
@@ -53,7 +54,8 @@
                     <img src="dummy.gif" 
                          alt=">" 
                          border="0" 
-                         tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                         tal:attributes="src string:$portal_url/linkTransparent.gif" 
+			 i18n:translate=""/>
                    Up one level</a>
             </td>
         </tr>
@@ -67,8 +69,9 @@
                   tal:condition="here/isPrincipiaFolderish">
                    <img src="" 
                         alt=">" 
-                        border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                        border="0"
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
+			i18n:translate=""/>
                   Editor view
                </a>
                
@@ -78,7 +81,8 @@
                    <img src="dummy.gif" 
                         alt=">" 
                         border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
+			i18n:translate=""/>
                   Editor view
                </a>
             </td>
@@ -91,7 +95,8 @@
                    <img src="" 
                         alt=">" 
                         border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
+			i18n:translate=""/>
                 Ordinary view
                 </a>
             </td>

@@ -2,10 +2,11 @@
 
 <table metal:define-macro="aboutBox"
        class="box"
-       summary="About" cellpadding="0" cellspacing="0">
+       summary="About" cellpadding="0" cellspacing="0"
+       i18n:domain="plone">
 
     <thead>
-        <tr><th>About</th><th class="empty">&nbsp;</th></tr>
+        <tr><th i18n:translate="About">About</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
     <tbody>
@@ -14,14 +15,16 @@
 
             <img src="img/icons/folder.gif" alt=""
                  tal:attributes="src python:portal_url + '/' + here.getIcon(relative_to_portal=1);
-                 alt here/meta_type;" />&nbsp;<span tal:replace="python:here.getTypeInfo().Title()">Object type</span>
+                 alt here/meta_type;" 
+		 />&nbsp;<span
+tal:replace="python:here.getTypeInfo().Title()">Object type</span>
             </td>
         </tr>
 
         <tr class="even">
             <td colspan="2">
 
-            <strong>Created&nbsp;by:</strong> <br />
+            <strong i18n:translate="">Created&nbsp;by:</strong> <br />
             <img src="dummy.gif" alt="User" 
 		         border="0" 
 		         tal:attributes="src string:$portal_url/user.gif" />
@@ -32,7 +35,7 @@
 
         <tr class="odd">
             <td colspan="2">
-                <strong>Last&nbsp;modified:</strong> <br />
+                <strong i18n:translate="">Last&nbsp;modified:</strong> <br />
                 <span tal:replace="python:here.toPortalTime(here.ModificationDate())">
                 August 16, 2001 at 23:35:59
                 </span>
@@ -46,10 +49,12 @@
                 <strong>Status:</strong> <br />
                 <span class="private"
                       tal:content="review_state"
-                      tal:attributes="class review_state">
+                      tal:attributes="class review_state"
+		      i18n:translate="">
                 </span>
 
-                <span class="expired" tal:condition="python:container.isExpired(here)">
+                <span class="expired"
+		tal:condition="python:container.isExpired(here)">
                 (expired)
                 </span>
 

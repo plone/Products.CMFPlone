@@ -13,6 +13,7 @@
 <body>
 
 <div metal:fill-slot="main"
+     i18n:domain="plone"
      tal:define="dummy here/filterCookie;
                  folderfilter python:request.get('folderfilter', '');
                  global decodedFilter python:here.decodeFolderFilter(folderfilter);
@@ -41,8 +42,9 @@
             <div class="title"> 
     
                 <img src="folder.gif" alt="Folder" tal:attributes="src string:$portal_url/folder.gif" /> 
-    
-                <span class="folderName" tal:condition="python: user.getUserName()==here.getId()">
+
+                <span class="folderName" tal:condition="python:
+user.getUserName()==here.getId()" i18n:translate="">
                 My Stuff
                 </span> 
                 
@@ -53,13 +55,13 @@
                 <tal:block tal:define="parent_url python:here.navigationParent(here, template.getId());"
 		           tal:condition="parent_url">
                 (<a href="" 
-                   tal:attributes="href parent_url">Up one level</a>)
+                   tal:attributes="href parent_url" i18n:translate="">Up one level</a>)
                 </tal:block>
 
             </div>
     
             <metal:block tal:condition="not: folder_contents">
-            <p>
+            <p i18n:translate="">
             This folder has no visible items. To add content, press the "Add New Item" button,
             or paste content from another location.
             </p>						    
@@ -93,7 +95,9 @@
                                         >
                     
                                     <option value="#" 
-                                            tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
+                                            tal:attributes="selected
+					    python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');"
+					    i18n:translate="">
                                     Show All Items
                                     </option>  
                                     <metal:block tal:repeat="type types">
@@ -147,11 +151,12 @@
                                                  title="Select all items"
                                                  onClick="toggleSelect(this); return false;"
                                                  /></th>
-                        <th>Title <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
-                        <th>Type </th>
-                        <th>Size </th>
-                        <th>Modified </th>
-                        <th>Status </th>
+                        <th><span tal:omit-tag=""
+i18n:translate="">Title</span> <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                        <th i18n:translate="">Type </th>
+                        <th i18n:translate="">Size </th>
+                        <th i18n:translate="">Modified </th>
+                        <th i18n:translate="">Status </th>
                     </tr>
                     </metal:block>
                 </thead>
@@ -215,7 +220,8 @@
                         <td class="private"
                             tal:define="review_state python:container.portal_workflow.getInfoFor(item, 'review_state', '')"
                             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
-                            tal:attributes="class python:test(review_state, review_state, 'private')">&nbsp;
+                            tal:attributes="class python:test(review_state, review_state, 'private')"
+			    i18n:translate="">&nbsp;
                         </td>
                     </tr>
                 </metal:block>
@@ -231,6 +237,8 @@
 		               value="" 
                    tabindex=""
                    tal:condition="python:folder_contents or (here.cb_dataValid and button['id'] == 'paste')"
+		   	       i18n:attributes="value"
+			       i18n:translate=""
 		               tal:attributes="value button/name; 
                                    name button/url;
                                    tabindex tabindex/next;" />

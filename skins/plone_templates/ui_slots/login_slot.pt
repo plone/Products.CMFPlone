@@ -3,10 +3,11 @@
 <table metal:define-macro="loginBox"
        class="box" cellpadding="0" cellspacing="0"
        summary="Login"
+       i18n:domain="plone"
        tal:condition="here/portal_membership/isAnonymousUser" >
 
     <thead>
-        <tr><th>Sign in</th><th class="empty">&nbsp;</th></tr>
+        <tr><th i18n:translate="">Sign in</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
     <tbody tal:define="portal_url here/portal_url">
@@ -20,20 +21,21 @@
                        tal:condition="python:request.get('came_from', '')"
                        tal:attributes="value request/came_from" />
 
-                    <strong>Name:</strong> <br />
+                    <strong i18n:attributes="">Name:</strong> <br />
                     <input type="text" name="__ac_name" size="10"
                                          tal:attributes="value python:request.get('__ac_name', '')" />
 
                     <br />
 
-                    <strong>Password:</strong>  <br />
+                    <strong i18n:translate="">Password:</strong>  <br />
                     <input type="password" name="__ac_password" size="10" />
 
                     <br />
                     &nbsp;
                     <br />
 
-                    <input class="context" type="submit" name="submit" value="Sign in" />
+                    <input class="context" type="submit" name="submit"
+		    value="Sign in" i18n:attributes="value"/>
 
                 </form>
 
@@ -47,7 +49,8 @@
                    <img src="" 
                         alt=">" 
                         border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
+			i18n:translate=""/>
                 Forgot your password?
                 </a>
 
@@ -63,7 +66,8 @@
                    <img src="" 
                         alt=">" 
                         border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
+			i18n:translate=""/>
                 New user?
                 </a>
 

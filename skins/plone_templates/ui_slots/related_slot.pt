@@ -1,19 +1,20 @@
 <!-- The default Related Items box -->
 
 <table metal:define-macro="relatedBox"
+       i18n:domain=""
        tal:define="localContent here/navigationLocalRelated;
                        remoteContent here/navigationRemoteResources;"
        tal:condition="python:test(localContent or remoteContent, 1, 0)"
        class="box" summary="Related Items" cellpadding="0" cellspacing="0">
 
     <thead>
-        <tr><th>Related</th><th class="empty">&nbsp;</th></tr>
+        <tr><th i18n:translate="">Related</th><th class="empty">&nbsp;</th></tr>
     </thead>
     <!-- runyaga: need code that shows related items by keyword in top row, links in same folder in bottom row -->
     <tbody >
         <tr class="odd">
             <td colspan="2">
-                <strong tal:condition="localContent">Local resources</strong>
+                <strong tal:condition="localContent" i18n:translate="">Local resources</strong>
 
                 <span tal:repeat="content localContent">
                         <a href=""
@@ -27,7 +28,7 @@
         </tr>
         <tr class="even" tal:condition="remoteContent">
             <td colspan="2">
-            <strong>External links</strong>
+            <strong i18n:translate="">External links</strong>
             <span tal:repeat="o remoteContent">
                     <a href=""
                        class="marker" 
