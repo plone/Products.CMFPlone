@@ -6,6 +6,38 @@ Plone 2.0 - Fyuti
 
     RC3
 
+    - WARNING: Some changes had to be made permission-wise to make the default 
+      behaviour make sense. It was very inconsistent in 1.0, and we decided to do 
+      a partial clean-up so it behaves better in 2.0. Read this and make the 
+      necessary changes to your application, especially if you use the List Folder
+      Contents permission in special ways. The following changes were made:
+    
+      - 'folder_listing' is not governed by the List Folder Contents permission 
+        anymore, which is the correct behaviour. The best way to think of 
+        'folder_listing' is as an alternative 'View', *not* as an alternative 
+        'folder_contents'. 'folder_contents' is for editing and manipulating the 
+        contents of a folder, not for viewing.
+    
+      - 'folder_listing' is now always available, *but* checks for permissions, 
+        and hides content you don't have the permissions to see.
+    
+      - You still can't access a 'private' object, so it's still protected, no 
+        change there.
+    
+      - The one potential problem is that it's possible to see the ID of an object
+        - this is because of the way CMF and Zope does it however - and you have 
+        to know the exact method call to do this. It will never give you anything 
+        but the ID though, so we don't view this as a big problem.
+    
+      - 'visible' content is also visible to anonymous users. This was the 
+        original intent of the state, but was broken in 1.0. However, if you 
+        depend on this behaviour, you should note that it has changes, and make 
+        your own custom workflow for this.
+    
+      - Finally, this thing needs to be tested properly, so please help out by
+        installing third-party applications and see if they are affected in a
+        negative way by this change. Report any problems in the Collector.
+
     - checkPermission is exposed in global_defines.  We check to see if you
       can Modify portal content in folder_contents to determine whether or not
       to show the external editor icon.  Changes references to
