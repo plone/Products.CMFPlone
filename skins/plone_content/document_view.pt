@@ -4,14 +4,6 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
-
-<metal:block metal:fill-slot="base"
-             tal:define="default_view python:test(here.getId()=='index_html',1,0);">
-  <base href="#" 
-        tal:condition="default_view"
-        tal:attributes="href python:here.portal_url()+'/'+'/'.join( here.portal_url.getRelativeContentPath(here))" />
-</metal:block>
-
 <body>
 
 <div metal:fill-slot="main"

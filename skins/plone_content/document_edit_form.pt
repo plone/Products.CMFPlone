@@ -149,10 +149,12 @@
                     The body text of the document. 
                     </div>
                 </div>
-                <div class="field" tal:define="text python:request.get('text', getattr(here,'text',''))">
+                <div class="field" tal:define="text python:request.get('text', getattr(here,'text',''));
+                                               cooked_text python:request.get('text', getattr(here,'cooked_text',''))">
                     <div tal:define="inputname  string:text; 
                                      formname   string:edit_form;
                                      inputvalue text;
+                                     cooked_inputvalue cooked_text;
                                      onfocus string:formtooltip('body_help',1);
                                      onblur string:formtooltip('body_help',0);
                                      tabindex tabindex/next;">
