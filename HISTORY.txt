@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Ms. Bumblebee - (Unreleased)
 
+    - Changed PloneTool.availableMIMETypes to use the MimetypesRegistry to
+      return a list of mimetype names.
+      [tiran]
+
     - Fixed discussion_reply.cpy to use portal_discussion.getDiscussionFor(obj)
       instead of accessing the talkback object directly.
       [tiran]

@@ -303,17 +303,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declarePublic('availableMIMETypes')
     def availableMIMETypes(self):
-        """ Return a map of mimetypes """
-        # This should probably be done in a more efficent way.
-        import mimetypes
-
-        result = []
-        for mimetype in mimetypes.types_map.values():
-            if not mimetype in result:
-                result.append(mimetype)
-
-        result.sort()
-        return result
+        """Return a map of mimetypes
+        
+        Requires mimetype registry from Archetypes 1.3
+        """
+        mtr = getToolByName(self, 'mimetypes_registry')
+        return mtr.list_mimetypes()
 
     security.declareProtected(CMFCorePermissions.View, 'getWorkflowChainFor')
     def getWorkflowChainFor(self, object):
