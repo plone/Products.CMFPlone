@@ -137,7 +137,7 @@
                    tal:attributes="tabindex tabindex/next;"
                    />
 
-            <div i18n:translate="no_file_uploaded"
+            <div i18n:translate="no_image_uploaded"
                  tal:define="file_size here/size|nothing"
                  tal:condition="python:test(file_size, 0, 1)">
               (No image has been uploaded yet)
