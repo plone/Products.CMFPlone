@@ -241,6 +241,12 @@ def install_PloneSkins(self, out):
         out.write( "\n Extra Configuration unable to Complete\n "  )
 
     try:
+        skinstool.request_varname='plone_skin'
+	out.write('\n skin request variable changed to plone_skin\n')
+    except:
+        out.write(' request varaiable could not be changed \n')
+
+    try:
         populatePortalWithContent(self, out)
     except:
         out.write( 'could not populate plone root with default content\n' )
