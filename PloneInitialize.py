@@ -2,6 +2,13 @@ from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
 from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
+try:
+    from Products.Localizer.Localizer import manage_addLocalizer
+    from Products.Localizer.MessageCatalog import manage_addMessageCatalog
+    hasLocalizer = 1
+except ImportError:
+    hasLocalizer = 0
+
 from AccessControl import User
 
 from App.Extensions import getObject
@@ -10,6 +17,8 @@ import OFS
 import os
 import sys
 import zLOG
+
+DEBUG = 0
 
 def log(message, summary='', severity=0):
     zLOG.LOG('Plone Database Init', severity, summary, message)
@@ -34,13 +43,40 @@ def go(app):
         # oh dear
         out.append('Database init failed miserably [%s, %s]' % _get_error())
 
-    if out:
+    if DEBUG and out:
         # only log if we have something to say
+        # and are in DEBUG mode
         log('\n'.join(out)+'\n')
 
 def _get_error():
     type, value = sys.exc_info()[:2]
     return str(type), str(value)
+
+def _installLocalizer(plone):
+    out.append('Installing Localizer')
+
+    lName = 'Localizer'
+    tName = 'translation_service'
+    
+    if not plone.objectIds(lName):
+        # add localizer
+        manage_addLocalizer(plone, lName, 'en')
+        
+    if not tName in plone.objectIds():
+        # add a translation_service
+        plone.manage_addProduct['TranslationService'].addPlacefulTranslationService(tName)
+
+    tObj = plone._getOb(tName)
+    lObj = plone._getOb(lName)
+    # ok so now we should have valid localizer
+    # and translation service objects...
+
+    manage_addMessageCatalog(lObj, 'Plone', 'Plone Message Catalog', 'en')
+    
+    # TODO add in the languages
+    # add in languages...
+    tObj.manage_setDomainInfo(None, path_0='%s/Plone' % lName)    
+    # set the translation_service to the localizer...
 
 def _go(app):
     filename = 'plone.ini'
@@ -164,6 +200,10 @@ def _go(app):
         except:
             value, type = _get_error()
             out.append("Failed to install %s, reason:" % (productId, value, type))
+
+    # go and install the translation service...
+    if hasLocalizer:
+        _installLocalizer(plone)
 
     get_transaction().commit()
 
