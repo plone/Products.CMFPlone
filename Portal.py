@@ -105,8 +105,6 @@ class PloneGenerator(Portal.PortalGenerator):
 
         addPloneTool('Plone Membership Tool', None)
         addPloneTool('CMF Workflow Tool', None)
-        if not exists('portal_form_validation'):
-            addPloneTool('CMF Formulator Tool', None)
         if not exists('plone_utils'):
             addPloneTool('Plone Utility Tool', None)
         if not exists('portal_navigation'):
