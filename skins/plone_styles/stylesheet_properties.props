@@ -72,6 +72,7 @@ logoMargin:string=0
 logoPadding:string=1em 0em 1em 2em
 searchMargin:string=3em 0em 0em 0em
 searchPadding:string=0em 2em 0em 0em
+searchTextColor:string=Black
 footerBackground:string=#DEE7EC
 footerBorder:string=1px solid #8CACBB
 leftColumnWidth:string=14%
