@@ -207,7 +207,7 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_prefs'
                     , 'plone_wysiwyg'
                     , 'plone_ecmascript'
-                    ):
+                    , 'cmf_legacy' ):
             try:
                 path.insert( path.index( 'custom')+1, plonedir )
             except ValueError:
