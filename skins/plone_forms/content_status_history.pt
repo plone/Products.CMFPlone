@@ -201,7 +201,15 @@
         </div>
 
         <div class="row">
-            <div class="label">Change status</div>
+            <div class="label">
+            <span i18n:translate="change_status">Change status</span>
+                <div id="change_status_help"
+                     i18n:translate="change_status_help"
+                     class="help"
+                     style="visibility:hidden">
+                Select the new state for the selected documents.
+                </div>
+            </div>
     
             <div class="field"
                  tal:define="tabindex tabindex/next;">
@@ -210,13 +218,19 @@
                 <metal:block tal:define="global transitions python:here.portal_workflow.getTransitionsFor(target)"
                              tal:repeat="transition transitions">
                 <input class="noborder"
+                       id=""
                        type="radio"
                        name="workflow_action" 
                        title="" 
-                       value="" 
+                       value=""
+                       onfocus="formtooltip('change_status_help',1)" 
+                       onblur="formtooltip('change_status_help',0)" 
                        tal:attributes="value transition/id;
+                                       id    transition/id;
                                        title transition/name;" />
-                <span tal:content="transition/name">Name of the transition</span>
+                <label for=""
+                       tal:attributes="for transition/id;"
+                       tal:content="transition/name">Name of the transition</label>
                 <br />
                 </metal:block>
                 </span>
