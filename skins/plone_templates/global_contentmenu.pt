@@ -131,14 +131,7 @@
                                showMenu python:(context is folder and not contextHasIndexHtml) or 
                                                (isContextDefaultPage and not folderHasIndexHtml);
                                "
-                        condition="python:parentVocab or contextVocab or canSelectDefaultFolderPage or canSelectDefaultContextPage">
-
-        <li>
-        <span tal:replace="python:(isContextDefaultPage and not folderHasIndexHtml)"/>
-        <span tal:replace="folderHasIndexHtml"/>
-        
-        </li>
-        
+                        condition="python:parentVocab or contextVocab or canSelectDefaultFolderPage or canSelectDefaultContextPage">        
         <li>
         
             <div class="menuPosition">
