@@ -125,7 +125,9 @@ class PloneSite(CMFSite, OrderedContainer):
         if properties is not None:
             site_properties = getattr(properties, 'site_properties', None)
             if site_properties is not None:
-                return site_properties.getProperty('default_charset', 'utf-8')
+                getProperty = getattr(site_properties, 'getProperty', None)
+                if getProperty is not None:
+                    return getProperty('default_charset', 'utf-8')
         return 'utf-8'
 
     from ComputedAttribute import ComputedAttribute
