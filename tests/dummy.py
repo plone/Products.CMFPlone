@@ -8,7 +8,10 @@ import os
 
 from OFS.SimpleItem import SimpleItem
 from ZPublisher.HTTPRequest import FileUpload
-from Products.CMFPlone.tests import PACKAGE_HOME
+
+from Globals import package_home
+from Products.CMFPlone.tests import GLOBALS
+PACKAGE_HOME = package_home(GLOBALS)
 
 TEXT = 'file data'
 UTEXT = u'file data'
