@@ -382,9 +382,6 @@ pre {
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
-#portal-personaltools li {
-    display: inline;
-}
 #portal-personaltools .portalUser {
     background: transparent url(<dtml-var portal_url>/user.gif) center left no-repeat;
     padding-left: 15px;
@@ -402,6 +399,7 @@ pre {
     padding-left: 8px;
     color: &dtml-globalFontColor;;
     margin-left: 1em;
+    display: inline;
 }
 #portal-personaltools li a {
     text-decoration: none;
