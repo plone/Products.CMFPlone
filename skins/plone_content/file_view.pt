@@ -46,7 +46,7 @@
 	          action=""
 		  method="GET"
 		  target="top"
-                  tal:attributes="action here/getId"> 
+                  tal:attributes="action string:${here/getId}/download"> 
                 <input class="standalone" 
                        type="submit" 
                        value="Download file" 
@@ -62,7 +62,6 @@
 	      <pre tal:content="here/data">
 	      </pre>
 	    </span>
-	    <span class="info">&nbsp;</span>
 	</div>
 	
     </div>
