@@ -199,7 +199,6 @@
         </div>
 
         <div class="row">
-            <input type="hidden" id="workflow_action" name="workflow_action" value="" />
             <div class="label">&nbsp;</div>
     
             <div class="field">
@@ -207,13 +206,17 @@
                                   target python:test(objs, objs, here)">
                 <metal:block tal:define="global transitions python:here.portal_workflow.getTransitionsFor(target)"
                              tal:repeat="transition transitions">
-                <input class="context" 
-                       type="submit" 
-                       value="action" 
-                       onclick="javascript:document.getElementById('workflow_action').value='show';"
+                <input class="context"
+                       type="submit"
+                       name="workflow_action" 
+                       title="" 
+                       value="" 
+                       onclick=""
                        tal:define="action transition/id; name transition/name;"
-                       tal:attributes="value name;
-                                       onclick string:javascript:document.getElementById('workflow_action').value='$action';;" />
+                       tal:attributes="value action;
+                                       title name;
+                                       tabindex tabindex/next;
+                                       onclick string:javascript:this.value='$action';;" />
                 </metal:block>
                 </span>
 
@@ -222,6 +225,16 @@
         </div>
 
     </form>
+
+<!-- Script for improving usability for state changing buttons -->
+<script language="JavaScript" type="text/javascript">
+<!--
+buttons = document.getElementsByName('workflow_action');
+for ( i=0; button = buttons.item(i); i++) {
+    button.value = button.title;
+}
+//-->
+</script>
 
     <div tal:condition="not: request/ids|nothing">
         
