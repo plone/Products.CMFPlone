@@ -10,7 +10,7 @@
        i18n:domain="plone"
        tal:omit-tag=""
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
-                   navBatchStart request/navBatchStart | python:0;
+                   navBatchStart request/navBatchStart | python:None;
                    tree python:here.navigation_tree_builder(root,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;
@@ -18,6 +18,7 @@
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
+                   rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['manager','Reviewer','Owner']
                    "
                    tal:on-error="structure string:<!--Error in Navigation!!-->"
                    >
@@ -29,7 +30,7 @@
         <div class="content odd">
                  
             <div tal:condition="tree/prev">
-                <a tal:attributes="href string:${request/URL}?navbatchstart=${tree/prevBatchStart}">
+                <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
                     <span i18n:translate="">...</span>
                 </a>
             </div>
@@ -64,7 +65,6 @@
                         
                         <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
                         <strong tal:condition=" iscurrent" tal:content="structure sibling_title" />
-                        
                     </a>
                     
                     <a href="" 
@@ -76,6 +76,7 @@
                         <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
                         <strong tal:condition=" iscurrent" tal:content="structure sibling_title" />
                     </a>
+
                 </tal:block>
             </div>
             <div tal:condition="tree/next">
@@ -86,34 +87,34 @@
     
         </div>
             
-                    
-    
-        <div class="content even"
-             tal:condition="editorView">
-        
-            <div tal:condition="notFolderContents">
+        <tal:block tal:condition="python:request['AUTHENTICATED_USER'].has_role(rolesSeeContentsView, here)">
+            <div class="content even"
+                 tal:condition="editorView">
             
-                <a href="folder_contents"
-                   tal:condition="here/isPrincipiaFolderish">
+                <div tal:condition="notFolderContents">
                 
-                    <img tal:replace="structure here/linkTransparent.gif" />
+                    <a href="folder_contents"
+                       tal:condition="here/isPrincipiaFolderish">
                     
-                    <span i18n:translate="box_contents_view">Switch to Contents view</span>
-                </a>
-                       
-                <a href="../folder_contents"
-                   tal:condition="not: here/isPrincipiaFolderish" 
-                   tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
-                   tal:on-error="structure string:aq_parent not allowed!"
-                   >
-        
-                    <img tal:replace="structure here/linkTransparent.gif" />
+                        <img tal:replace="structure here/linkTransparent.gif" />
+                        
+                        <span i18n:translate="box_contents_view">Switch to Contents view</span>
+                    </a>
+                           
+                    <a href="../folder_contents"
+                       tal:condition="not: here/isPrincipiaFolderish" 
+                       tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
+                       tal:on-error="structure string:aq_parent not allowed!"
+                       >
             
-                    <span i18n:translate="box_contents_view">Switch to Contents view</span>
-                </a>
+                        <img tal:replace="structure here/linkTransparent.gif" />
+                
+                        <span i18n:translate="box_contents_view">Switch to Contents view</span>
+                    </a>
+                </div>
             </div>
-        </div>
-     
+        </tal:block>
+
         <div class="content even"
              tal:condition="not: notFolderContents">
             <a href="">

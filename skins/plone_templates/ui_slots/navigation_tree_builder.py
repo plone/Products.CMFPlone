@@ -1,5 +1,5 @@
 ## Script (Python) "navigation_tree_builder"
-##parameters=tree_root,navBatchStart=0,showMyUserFolderOnly=None,includeTop=None,showFolderishSiblingsOnly=None,showFolderishChildrenOnly=None,showNonFolderishObject=None,topLevel=None,batchSize=None,showTopicResults=None,rolesSeeUnpublishedContent=None,sortCriteria=None,metaTypesNotToList=None,parentMetaTypesNotToQuery=None
+##parameters=tree_root,navBatchStart=None,showMyUserFolderOnly=None,includeTop=None,showFolderishSiblingsOnly=None,showFolderishChildrenOnly=None,showNonFolderishObject=None,topLevel=None,batchSize=None,showTopicResults=None,rolesSeeUnpublishedContent=None,sortCriteria=None,metaTypesNotToList=None,parentMetaTypesNotToQuery=None,forceParentsInBatch=None,skipIndex_html=None
 ##title=Standard Tree
 ##
 #Stateless Tree Navigation
@@ -13,6 +13,10 @@ from Products.CMFCore.utils import getToolByName
 props=getToolByName(context,'portal_properties')
 if hasattr(props,'navtree_properties'):
     props=props.navtree_properties
+
+#if navtree_properties are available locally, lets take them from here
+if hasattr(context,'navtree_properties'):
+    props=context.navtree_properties
 
 # show only the userFolder I am browsing and my own one
 if showMyUserFolderOnly is None:
@@ -61,6 +65,15 @@ if parentMetaTypesNotToQuery is None:
 # put in here the meta_types not to be listed
 if sortCriteria is None:
     sortCriteria=getattr(props, 'sortCriteria', [('isPrincipiaFolderish','desc'),('Title','asc')])
+
+#should batches that start at a deeper level have the parents
+#prepended
+if forceParentsInBatch is None:
+    forceParentsInBatch=getattr(props, 'forceParentsInBatch', 0)
+
+#skip index_html
+if skipIndex_html is None:
+    skipIndex_html=getattr(props, 'skipIndex_html', 1)
 
 # go through sortCriteria and check that each line is not a string 
 # if it is make a duple out of it (necessary because a lines-property contains strings)
@@ -185,7 +198,7 @@ def childFinder(obj,folderishOnly=1):
             res = [o for o in objs if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
 
         if not user.has_role(rolesSeeUnpublishedContent,obj):  # the 'important' users may see unpublished content
-            res = [o for o in res if checkPublished(o)]
+            res = [o for o in res if checkPublished(o) ]
         
     
         try:res.sort(cmp) #if sorting fails - never mind, it shall not break nav
@@ -200,11 +213,18 @@ tb=StatelessTreeBuilder(context,topObject=tree_root,childFinder=childFinder,
         showFolderishChildrenOnly=showFolderishChildrenOnly, 
         showNonFolderishObject=showNonFolderishObject,    
         topLevel=topLevel,
+        forceParentsInBatch=forceParentsInBatch,
+        skipIndex_html=skipIndex_html,
         )
 
+if navBatchStart is None:
+    batchStart=None
+else:
+    batchStart=int(navBatchStart)
+    
 res=tb.buildFlatMenuStructure(
     batchSize=batchSize, 
-    batchStart=int(navBatchStart) #from where to start? is called automatically by the .pt
+    batchStart=batchStart #from where to start? is called automatically by the .pt
     )
 
 for r in res['list']:
