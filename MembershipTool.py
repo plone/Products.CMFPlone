@@ -175,13 +175,13 @@ class MembershipTool( BaseTool ):
             dict = REQUEST
         else:
             dict = kw
-        
+
         name = dict.get('name', None)
         email = dict.get('email', None)
         roles = dict.get('roles', None)
         last_login_time = dict.get('last_login_time', None)
         is_manager = self.checkPermission('Manage portal', self)
-            
+
         if name:
             name = name.strip().lower()
         if not name:
@@ -193,12 +193,13 @@ class MembershipTool( BaseTool ):
 
 
         md = self.portal_memberdata
-        
+
         res = []
         portal = self.portal_url.getPortalObject()
-        for u in portal.acl_users.getUsers():
-            user = md.wrapUser(u)
-            if not (user.listed or is_manager):
+        for user in portal.portal_membership.listMembers():
+            #user = md.wrapUser(u)
+	    u = user.getUser()
+	    if not (user.listed or is_manager):
                 continue
             if name:
                 if (u.getUserName().lower().find(name) == -1) and (user.fullname.lower().find(name) == -1):

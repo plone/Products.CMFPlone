@@ -32,9 +32,9 @@
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
 
-<div class="document editable">    
-	
-    <h1 i18n:translate="">User Properties for <span tal:replace="user/getId"/></h1>
+<div class="document editable">
+
+    <h1 i18n:translate="">User Properties for <span tal:replace="user/getId | default">#unavailable#</span></h1>
 
     <p i18n:translate="">
     Change member properties.
@@ -44,12 +44,12 @@
           action=""
           name="users"
           method="post"
-          tal:condition="user"
+          tal:condition="user | nothing"
           tal:attributes="action string:${here/portal_memberdata/absolute_url}"
           tal:define="portal_users python: here.portal_membership.listMembers();
                       batch python:Batch(portal_users, 25, int(b_start), orphan=1);
                       targetobject mdata;
-                      targetGetProperty nocall:user/getProperty;">
+                      targetGetProperty nocall:user/getProperty | nothing;">
 
         <span class="legend">User Properties</span>
 

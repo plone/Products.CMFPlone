@@ -14,17 +14,19 @@
                 mdata here/portal_memberdata;
                 errors python:request.get('errors', {});
                 Batch python:modules['ZTUtils'].Batch;
-                b_start python:request.get('b_start',0);"
+                b_start python:request.get('b_start',0);
+		searchonly string:groups;
+		takeaction string:prefs_user_membership_edit;"
      tal:condition="here/rejectAnonymous" >
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<div id="contentTabs"> 
-    <a class="" 
+<div id="contentTabs">
+    <a class=""
        href=""
        tal:attributes="href string: prefs_user_details?userid=${userid}"
     >User</a>
-    <a class="selected"         
+    <a class="selected"
        href=""
        tal:attributes="href string:${template/id}?userid=${userid}"
     >Group Membership</a>
@@ -32,51 +34,56 @@
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
 
-<div class="document editable">    
-	
+<div class="document editable">
+
     <h1 i18n:translate="">Group Membership for <span tal:replace="string: ${user/getId}"/></h1>
 
-    <p i18n:translate="">
-    This user is a member of the following groups:
-    </p>
+    <h3 i18n:translate="">
+    Search for Groups to Join
+    </h3>
 
-    <form action=""
-          name="groups"
-          method="post"
-          tal:attributes="action here/absolute_url">
+    <div metal:use-macro="here/prefs_search_macros/macros/search">
+         <span metal:fill-slot="hiddens">
 
+        <input type="hidden" name="userid" value="userid"
+		tal:attributes="value user/getId" />
 
-       <input class="standalone add"
-              type="submit" 
-              name="prefs_user_group_search_form" 
-              value="Add New Group Membership" />
+	 </span>
+    </div>
 
-        <input type="hidden" name="userid" value="userid" 
-               tal:attributes="value user/getId" />
-               
+    <div metal:use-macro="here/prefs_search_macros/macros/display">
+         <span metal:fill-slot="hiddens">
 
-        <table class="listing">
-               
+        <input type="hidden" name="userid" value="userid"
+		tal:attributes="value user/getId" />
+
+	 </span>
+
+      <div metal:fill-slot="removables">
+        <h3 i18n:translate="">
+        Current Group Memberships
+        </h3>
+
+	<table class="listing">
+
             <tr>
 	      <th>Group name</th>
 	      <th>Remove Group</th>
             </tr>
 
 	  <tr tal:repeat="groupid user/getGroups" class="odd">
-<!-- FIXME: the memberdata tool ought to wrap the groups for us so we -->
-<!-- don't need to do this -->
 	      <tal:block tal:define="group python:here.portal_groups.getGroupById(groupid);
 		                     groupname group/getGroupName">
             <td>
                 <a href="prefs_group_details"
                    tal:attributes="href string:prefs_group_details?groupname=$groupname">
 		    <img src=""
-                         tal:replace="structure portal/group.gif" />&nbsp;<span 
+                         tal:replace="structure portal/group.gif" />&nbsp;<span
                          tal:replace="groupname">group name</span>
                 </a>
             </td>
-            
-            
+
+
             <td class="checkbox">
                 <input type="checkbox"
                        class="noborder notify"
@@ -85,15 +92,17 @@
             </td>
             </tal:block>
         </tr>
-        
+
         </table>
 
         <input class="destructive"
                type="submit"
-               name="prefs_user_membership_edit:method"
+               name="deleteaction"
                value="Remove selected groups" />
-	</form>
-<!-- End dead code -->
+	  </div>
+
+	</div>
+
       </div>
     </div>
   </body>

@@ -34,6 +34,31 @@
 
     <h1 i18n:translate="">User Management</h1>
 
+    <form action=""
+          name="users"
+          method="post"
+          tal:attributes="action here/absolute_url"
+          tal:define="portal_users python: here.portal_membership.listMembers();
+                      batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
+
+    <!-- jcc says: this is my solution to a confusing situation. There are other solutions, but this and the add form should not
+           be adjacent visually. Do we even need a quicksearch? -->
+    QuickSearch:
+    <input class="quickSearch"
+              tabindex=""
+              type="text"
+              name="searchstring"
+              value=""
+              tal:attributes="tabindex tabindex/next;"
+              />
+    <input type="hidden" name="searchonly" value="users" />
+    <input type="submit"
+    		 class="context"
+		 name="prefs_user_group_search_form:method"
+		 value="Search"
+		 tabindex=""
+    		 tal:attributes="tabindex tabindex/next;" />
+
     <p i18n:translate="">
     Click the User Name to see and change the details of a specific user, or click 
     the envelope to send a mail. You can edit the roles and e-mail address
@@ -43,12 +68,6 @@
     particular user.
     </p>
 
-    <form action=""
-          name="users"
-          method="post"
-          tal:attributes="action here/absolute_url"
-          tal:define="portal_users python: here.portal_membership.listMembers();
-                      batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
 
        <input class="standalone add"
               tabindex=""
@@ -57,15 +76,6 @@
               value="Add New User"
               tal:attributes="tabindex tabindex/next;"
               />
-
-       <input class="quickSearch"
-              tabindex=""
-              type="text"
-              name=""
-              value="Quick Search"
-              tal:attributes="tabindex tabindex/next;"
-              />
-               
 
         <table class="listing"
                tal:condition="portal_users">
@@ -76,16 +86,15 @@
                 <th>Reset<br />Password</th>
                 <th>Remove user</th>
             </tr>
-            
+
             <tal:comment replace="nothing">
-            Unfortunately alot of this stuff is tied to the GroupUserFolder.  Things like getUsers()
-            will return both groups and users 8-( - so you have to do alot of filtered like the below not:
+            We don't filter anymore because Membership tool should be doing this for us.
             </tal:comment>
 
             <tal:comment replace="nothing">
             pjgrizel->limi: GRUF already has several API methods to return the results you'd like to have:
               - getPureUsers() behaves like getUsers() but returns no groups
-              - userobject.isGroup() method returns true if userobject is a group, then you can avoid 
+              - userobject.isGroup() method returns true if userobject is a group, then you can avoid
                the hazardous "getGroupPrefix()" stuff.
               Seems like it's time to document the whole GRUF API ! :-)
             </tal:comment>

@@ -34,17 +34,35 @@
 
     <h1 i18n:translate="">Groups Management</h1>
 
-    <p i18n:translate="">
-    Groups are logical collections of users, like departments and business units.
-    They are not directly related to permissions on a global level, you normally
-    use Roles for that - and let certain Groups have a particular role.
-    </p>
-
     <form action=""
           name="groups"
           method="post"
           tal:attributes="action here/absolute_url"
           tal:define="groups python:Batch(here.portal_groups.listGroups(), 25, int(b_start), orphan=1)">
+
+    <!-- jcc says: this is my solution to a confusing situation. There are other solutions, but this and the add form should not
+           be adjacent visually. Do we even need a quicksearch? -->
+    QuickSearch:
+    <input class="quickSearch"
+                 tabindex=""
+                 type="text"
+                 name="searchstring"
+                 value=""
+                 tal:attributes="tabindex tabindex/next;"
+                 />
+    <input type="hidden" name="searchonly" value="groups" />
+    <input type="submit"
+    		 class="context"
+		 name="prefs_user_group_search_form:method"
+		 value="Search"
+		 tabindex=""
+    		 tal:attributes="tabindex tabindex/next;" />
+
+    <p i18n:translate="">
+    Groups are logical collections of users, like departments and business units.
+    They are not directly related to permissions on a global level, you normally
+    use Roles for that - and let certain Groups have a particular role.
+    </p>
 
 	<input
 		tabindex=""
@@ -54,26 +72,13 @@
 		tal:attributes="tabindex tabindex/next;"
 		/>
 
-       <input class="standalone add"
+       <input class="context add"
               tabindex=""
               type="submit"
               name="prefs_group_add:method"
               value="Add New Group"
               tal:attributes="tabindex tabindex/next;"
               />
-
-	<!-- jcc says: this is confusing. I think quicksearch should right-aligned. There are other solutions, but these two should not
-	be adjacent visually. -->
-
-<!-- jcc: hiding until it actually works
-       <input class="quickSearch"
-              tabindex=""
-              type="text"
-              name=""
-              value="Quick Search"
-              tal:attributes="tabindex tabindex/next;"
-              />
--->
 
         <table class="listing"
                tal:condition="groups">

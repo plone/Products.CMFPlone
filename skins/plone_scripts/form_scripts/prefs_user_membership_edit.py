@@ -10,13 +10,13 @@
 REQUEST=context.REQUEST
 
 delete = REQUEST.get('delete', [])
-
 for groupname in delete:
     group = context.portal_groups.getGroupById(groupname)
     group.removeMember(userid)
 
-REFERER=REQUEST.HTTP_REFERER
-if REFERER.find('portal_status_message')!=-1:
-    REFERER=REFERER[:REFERER.find('portal_status_message')]
-url='%s&%s' % (REFERER, 'portal_status_message= ' + `delete` + ' removed')
-return REQUEST.RESPONSE.redirect(url)
+add = REQUEST.get('id', [])
+for groupname in add:
+    group = context.portal_groups.getGroupById(groupname)
+    group.addMember(userid)
+
+return container.prefs_user_memberships()

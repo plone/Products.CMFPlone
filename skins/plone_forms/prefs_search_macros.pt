@@ -1,32 +1,22 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-      lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+<html>
+	<head>
+		<title>User/Group Search Macro(s)</title>
+	<head>
+	<body>
 
-<tal:block metal:fill-slot="head_slot">
-   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
-</tal:block>
-
-<body>
-
-<div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {});
-                Batch python:modules['ZTUtils'].Batch;
-                b_start python:request.get('b_start',0);
-		searchonly request/searchonly | nothing;
+<div metal:define-macro="search">
+<form action=""
+          name="groupsearch"
+          method="post"
+          tal:attributes="action string:${request/URL}"
+	  tal:define="b2_start python:request.get('b_start',0);
 		searchstring request/searchstring | nothing;
-		searchfor request/searchonly | request/searching | nothing;"
-     tal:condition="here/rejectAnonymous" >
+		searchfor searchonly | request/searching | nothing;">
 
-    <h1 i18n:translate="">Search for Users and Groups</h1>
-
-    <p i18n:translate="">
-    Search for the users or groups you want to locate (blank search returns all),
-    and select the ones you want to add.
-    </p>
-
-    <form action=""
-          name="users"
-          method="post">
+	<span metal:define-slot="hiddens">
+        <input type="hidden" name="userid" value="userid"
+		tal:attributes="value user/getId" />
+        </span>
 
         Show me
 
@@ -38,48 +28,58 @@
             <option value="users"> Users </option>
             <option value="groups"> Groups </option>
         </select>
-	<input type="hidden" name="searchonly"
-		tal:condition="python: here.prefs_valid_search_restriction(searchonly)"
-		tal:attributes="value request/searchonly" />
 	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="">users</span>
 	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="">groups</span>
 
-        containing
+        with names containing
 
         <input tabindex=""
                type="text"
                name="searchstring"
                value=""
-               tal:attributes="tabindex tabindex/next;"
-               />
-
+               tal:attributes="tabindex tabindex/next;" />
         <input class="context"
                tabindex=""
                type="submit"
-               name="prefs_user_group_search:method"
+               name="search"
                value="Search"
-               tal:attributes="tabindex tabindex/next;"
-               />
+               tal:attributes="tabindex tabindex/next;" />
+</form>
 
+</div>
 
-        <h2>Returned results</h2>
+<div metal:define-macro="display">
+
+<form action=""
+          name="groupsearch"
+          method="post"
+          tal:attributes="action takeaction"
+	  tal:define="b2_start python:request.get('b_start',0);
+		searchstring request/searchstring | nothing;
+		searchfor searchonly | request/searching | nothing;">
+
+	<span metal:define-slot="hiddens">
+        <input type="hidden" name="userid" value="userid"
+		tal:attributes="value user/getId" />
+        </span>
+	
+        <h4>Candidates</h4>
 	Search string: <span tal:content="request/searchstring | default">none specified</span>
-	<!--restricted by <span tal:replace="searchfor"/>-->
         <table class="listing"
                id="sortable"
-	       tal:define="searchresults python:Batch(here.prefs_user_group_search(searchstring, searchfor), 25, int(b_start), orphan=1)">
+	       tal:condition="exists:request/searchstring"
+	       tal:define="searchresults python:Batch(here.prefs_user_group_search(searchstring, searchfor), 25, int(b2_start), orphan=1)">
 
             <tr>
-                <th tal:condition="request/takeaction | nothing">&nbsp;</th>
+                <th tal:condition="takeaction | nothing">&nbsp;</th>
                 <th>Name</th>
                 <th>Type</th>
             </tr>
 
 	    <tr class="odd"
 		tal:repeat="usergroup searchresults"
-		tal:attributes="classex python:test(repeat['usergroup'].even, 'even', 'odd');
-			class repeat/usergroup/odd">
-                <td tal:condition="request/takeaction | nothing">
+		tal:attributes="class python:repeat['usergroup'].even and 'even' or 'odd';">
+                <td tal:condition="takeaction | nothing">
                 <input class="noborder"
 			type="checkbox"
 			selected="selected"
@@ -109,30 +109,20 @@
 
         </table>
 
-	<input type="hidden" name="userid" value=""
-		tal:condition="request/userid | nothing"
-		tal:attributes="value request/userid" />
-	<input type="hidden" name="groupname" value=""
-		tal:condition="request/groupname | nothing"
-		tal:attributes="value request/groupname" />
-	<input type="hidden" name="takeaction" value=""
-		tal:condition="request/takeaction | nothing"
-		tal:attributes="value request/takeaction" />
-
+	<tal:hide condition="takeaction | nothing">
         <input class="context"
                tabindex=""
                type="submit"
-               name="prefs_user_manage:method"
+               name="addingaction"
                value="Use Selected..."
-	       tal:condition="request/takeaction | nothing"
-               tal:attributes="tabindex tabindex/next;
-	       				name string:${request/takeaction}:method"
-               />
+	       tal:condition="exists:request/searchstring"
+               tal:attributes="tabindex tabindex/next;" />
+	</tal:hide>
 
-    </form>
+	<div metal:define-slot="removables" />
+
+</form>
 
 </div>
-
-</body>
+	</body>
 </html>
-

@@ -9,13 +9,16 @@
 
 <div metal:fill-slot="main"
      tal:define="errors python:request.get('errors', {});
-                 acl_users here/acl_users;
-                 portal_roles mtool/getPortalRoles;
-                 gtool here/portal_groups;
-                 gdtool here/portal_groupdata;
-                 groupname request/groupname|nothing;
-                 grouproles python:request.set('grouproles', []);
-                 group python:gtool.getGroupById(groupname)">
+                portal_roles mtool/getPortalRoles;
+                Batch python:modules['ZTUtils'].Batch;
+                b_start python:request.get('b_start',0);
+                gtool here/portal_groups;
+                gdtool here/portal_groupdata;
+                groupname request/groupname|nothing;
+                grouproles python:request.set('grouproles', []);
+                group python:gtool.getGroupById(groupname);
+		searchonly string:users;
+		takeaction string:prefs_group_members_edit;">
 
     <tal:conditional condition="group">
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
@@ -44,42 +47,43 @@
     You can add or remove users from this particular group here. Note that this
     doesn't actually delete the user, it is only removed from this group.
     </p>
-    
-    <form action=""
-          name="groups"
-          method="post"
-          tal:attributes="action here/absolute_url">
 
 
-	  <input type="hidden" name="groupname" value="groupname"
-               tal:attributes="value group/getGroupName" />
+    <h3 i18n:translate="">
+    Search for New Group Members
+    </h3>
 
-       <input class="standalone add"
-              tabindex=""
-              type="submit"
-              name="prefs_user_group_search_form:method"
-              value="Add Users to this Group"
-              tal:attributes="tabindex tabindex/next;"
-              />
+    <div metal:use-macro="here/prefs_search_macros/macros/search">
+         <span metal:fill-slot="hiddens">
 
-       <input class="quickSearch"
-              tabindex=""
-              type="text"
-              name=""
-              value="Quick Search"
-              tal:attributes="tabindex tabindex/next;"
-              />
-               
+         <input type="hidden" name="groupname" value="groupname"
+		tal:attributes="value group/getGroupName" />
 
-<!-- start of dead code - should list Groups on top (if any), then individual users.-->
+	 </span>
+    </div>
+
+    <div metal:use-macro="here/prefs_search_macros/macros/display">
+         <span metal:fill-slot="hiddens">
+
+         <input type="hidden" name="groupname" value="groupname"
+		tal:attributes="value group/getGroupName" />
+
+	 </span>
+
+      <div metal:fill-slot="removables">
+
+        <h3 i18n:translate="">
+        Current Group Members
+        </h3>
+
        <table class="listing">
-               
+
             <tr>
                 <th>User name</th>
                 <th>E-mail Address</th>
                 <th>Remove user</th>
             </tr>
-            
+
             <tal:block tal:repeat="this_user group/getGroupMembers">
             <tr tal:define="oddrow repeat/this_user/odd"
                 tal:attributes="class python:test(oddrow,'odd','even')">
@@ -89,22 +93,22 @@
                 <td>
                     <a tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$username">
                      <img src=""
-                         tal:replace="structure portal/user.gif" />&nbsp;<span 
+                         tal:replace="structure portal/user.gif" />&nbsp;<span
                          tal:replace="username">username</span>
-                    
+
                     (<span tal:replace="fullname">Full Name</span>)
 
                     </a>
                 </td>
 		  <td tal:define="email python: this_user.getProperty('email')">
 		    <a href="#" tal:attributes="href string:mailto:${email}">
-		      
+
                 <img src=""
-                     tal:replace="structure portal/mail_icon.gif" />   
+                     tal:replace="structure portal/mail_icon.gif" />
 		      <span tal:replace="email" />
                 </a>
 
-		    
+
             </td>
 
                 <td class="checkbox">
@@ -117,15 +121,13 @@
 	    </tal:block>
         </table>
 
-
-<!-- end dead code -->
-
         <input class="destructive"
-               type="submit" 
-               name="prefs_group_members_edit:method" 
+               type="submit"
+               name="prefs_group_members_edit:method"
                value="Delete selected users" />
+	  </div>
 
-    </form>
+	</div>
 
 </div>
     

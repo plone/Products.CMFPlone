@@ -38,7 +38,7 @@
     
 <div class="document editable">    
 
-    <h1 i18n:translate="">Edit Group Properties for <span tal:replace="group/getGroupName"/></h1>
+    <h1 i18n:translate="">Edit Group Properties for <span tal:replace="group/getGroupName | default">#unavailable#</span></h1>
 
     <p i18n:translate="">
     Groups are logical collections of users, like departments and business units.
@@ -50,15 +50,15 @@
           action=""
           name="groups"
           method="post"
-          tal:condition="group"
+          tal:condition="group | nothing"
           tal:attributes="action string:${here/portal_groups/absolute_url}"
           tal:define="targetobject gdtool;
-                      targetGetProperty nocall:group/getProperty;">
+                      targetGetProperty nocall:group/getProperty | nothing;">
 
         <span class="legend">Group Properties</span>
 
         <input type="hidden" name="groupname" value="groupname"
-               tal:attributes="value group/getGroupName" />
+               tal:attributes="value group/getGroupName | nothing"/>
 
          <tal:set tal:condition="targetobject/management_page_charset|nothing"
                   tal:define="dummy python:request.set('management_page_charset_tag','')" />
@@ -69,26 +69,26 @@
          </tal:set>
 
         <tal:properties repeat="property targetobject/propertyMap">
-        
+
           <div class="row">
 
-          <label for="value" 
+          <label for="value"
                  tal:define="global id property/id;
                              global type property/type;
                              global propertyvalue python:targetGetProperty(id, None);"
                  tal:attributes="for id"
                  tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
 
-          
+
               <div class="field"
                    tal:define="propertyitem python:targetobject.getProperty(id)"
                tal:condition="python:'w' in property.get('mode', 'awd')">
-               
+
                <input type="text" name="id" size="35"
                       tal:condition="python:type in ('int', 'long')"
                       tal:attributes="name string:$id:$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
-           
+
                <input type="text" name="id" size="35"
                       tal:condition="python:type in ('float','date')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
