@@ -1,4 +1,5 @@
 from Products.CMFPlone import MigrationTool
+from Products.CMFCore.Expression import Expression
 
 def rc2Final(portal):
     """ Upgrade from Plone 1.0 RC2 to Final"""
@@ -11,6 +12,18 @@ def rc2Final(portal):
     if 'XSDHTMLEditor' in e:
         e[e.index('XSDHTMLEditor')] = 'Visual Editor'
         p._setProperty('available_editors', e)
+
+    #update State action in portal_actions so that DTML Documents work.
+    #XXX We really need to put the 'State' action on individual portal_type definitions
+    #    The reason being is that its really *lazy* and hackish to define it as a global
+    #    across all types.  Things like CMFCollector dont work w/ this workflow.
+    at = portal.portal_actions
+    actions = at._cloneActions()
+    for action in actions:
+        if action.id=='content_status_modify':
+            statexpr=Expression('python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())')
+            action.condition=statexpr
+    at._actions = tuple(actions)
 
 def registerMigrations():
     MigrationTool.registerUpgradePath(

@@ -179,7 +179,7 @@ class DefaultCustomizationPolicy:
         at.addAction( 'content_status_history'
                     , 'State'
                     , 'string:${object_url}/content_status_history'
-                    , 'python:portal.portal_workflow.getTransitionsFor(object, object.getParentNode())'
+                    , 'python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())'
                     , 'View'
                     , 'object_tabs' )
         at.addAction( 'change_ownership', 'Ownership', 'string:${object_url}/ownership_form', '', CMFCorePermissions.ManagePortal, 'object_tabs', 0)
