@@ -30,6 +30,17 @@
         
         <br/>
 
+        <div align="right">
+             <a href="" tal:attributes="href string:${here/absolute_url}/search_rss?${request/QUERY_STRING}">
+                <img
+                  i18n:attributes="title"
+                  tal:attributes="src string:$portal_url/xml.gif"
+                  src="xml.gif"
+                  alt="RSS Feed"
+                  title="RSS Feed of this search results" />
+             </a>
+        </div>
+
         <!-- Search results -->
         
         <table class="listing"

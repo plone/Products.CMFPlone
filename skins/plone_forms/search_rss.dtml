@@ -1,0 +1,27 @@
+<dtml-call "REQUEST.set('Content-Type', 'text/xml')"><?xml version="1.0"?>
+
+<rdf:RDF 
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns="http://purl.org/rss/1.0/"
+>
+<channel rdf:about="<dtml-var absolute_url>">
+  <title>&dtml-Title;</title>
+  <link>&dtml-portal_url;</link>
+  <description>
+    &dtml-Description;
+  </description>
+
+  <image rdf:resource="logo.png" />
+<rdf:li resource="<dtml-var absolute_url>" />
+
+</channel>
+<dtml-comment>End Items Elements</dtml-comment>
+
+<dtml-comment>Start Item Elements</dtml-comment>
+  <dtml-in queryCatalog prefix="obj">
+    <dtml-var expr="itemRSS(obj_item)">
+  </dtml-in>
+<dtml-comment>End Item Elements</dtml-comment>
+</rdf:RDF>

@@ -27,7 +27,7 @@
   
   	<form class="group"
           action="search" 
-          method="post" 
+          method="get" 
           name="search" 
           tal:define="DateTime python:modules['DateTime'].DateTime">
 
