@@ -8,19 +8,19 @@
 <body>
 
 	   
-<div metal:fill-slot="main" i18n:domain="plone">
+<div metal:fill-slot="main" i18n:domain="plone" tal:define="QI python:here.portal_url.getPortalObject().portal_quickinstaller">
     <h2> Products available for install </h2>
-    <form action="installProducts" tal:attributes="action python:here.absolute_url()+'/installProducts'" method="POST">
+    <form action="installProducts" tal:attributes="action python:QI.absolute_url()+'/installProducts'" method="POST">
     
         <table>
-            <tr tal:repeat="product here/listInstallableProducts">
+            <tr tal:repeat="product QI/listInstallableProducts">
                 <td><input class="noborder"
                            type=checkbox 
                            name=products:list 
                            tal:attributes="value product/id"
                            /></td>
                 <td tal:content="product/id">product name</td>
-                <td><a tal:condition="product/hasError" tal:attributes="href string:${product/id}/prefs_installed_product_overview">
+                <td><a tal:condition="product/hasError" tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">
                         <img  src="/misc_/PageTemplates/exclamation.gif"></a>
                 </td>
             </tr>
@@ -33,16 +33,16 @@
     </form>
 
     <h2> Installed products </h2>
-    <form action="uninstallProducts" method="POST">
+    <form action="uninstallProducts" tal:attributes="action python:QI.absolute_url()+'/uninstallProducts'" method="POST">
     
         <table>
-            <tr tal:repeat="product here/listInstalledProducts">
+            <tr tal:repeat="product QI/listInstalledProducts">
                 <td><input class="noborder"
                            type=checkbox 
                            name=products:list tal:attributes="value product/id"
                            /></td>
                 <td>
-                     <a tal:attributes="href string:${product/id}/prefs_installed_product_overview" tal:content="product/id" >product name</a></td>
+                     <a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview" tal:content="product/id" >product name</a></td>
             </tr>
         </table>
         <input class="context"
