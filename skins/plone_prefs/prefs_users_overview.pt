@@ -44,14 +44,6 @@
 
         <h1 i18n:translate="heading_users_overview">Users Overview</h1>
 
-        <form action=""
-            name="users"
-            method="post"
-            tal:attributes="action here/absolute_url"
-        tal:define="searchstring request/searchstring | nothing;
-                        portal_users python:here.prefs_user_group_search(searchstring, 'users');
-                        batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
-
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/plone_control_panel"
@@ -66,25 +58,39 @@
         the e-mail addresses, and add/remove users.
         </p>
 
-        <input class="standalone add"
-                tabindex=""
-                type="submit"
-                name="join_form:method"
-                value="Add New User"
-                i18n:attributes="value"
-                tal:attributes="tabindex tabindex/next;"
-                tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
-                />
+        <form action=""
+            name="users_add"
+            method="post"
+            tal:attributes="action here/absolute_url">
 
-        <input class="standalone add"
-                tabindex=""
-                type="submit"
-                name="createMember:method"
-                value="Add New User"
-                i18n:attributes="value"
-                tal:attributes="tabindex tabindex/next;"
-                tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
-                />
+	        <input class="standalone add"
+	                tabindex=""
+	                type="submit"
+	                name="join_form:method"
+	                value="Add New User"
+	                i18n:attributes="value"
+	                tal:attributes="tabindex tabindex/next;"
+	                tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+	                />
+	
+	        <input class="standalone add"
+	                tabindex=""
+	                type="submit"
+	                name="createMember:method"
+	                value="Add New User"
+	                i18n:attributes="value"
+	                tal:attributes="tabindex tabindex/next;"
+	                tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+	                />
+        </form>
+        
+        <form action=""
+              name="users_search"
+              method="post"
+              tal:attributes="action here/absolute_url"
+              tal:define="searchstring request/searchstring | nothing;
+                          portal_users python:here.prefs_user_group_search(searchstring, 'users');
+                          batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
 
         <input type="hidden" value="1" name="came_from_prefs" />
             <table class="listing">

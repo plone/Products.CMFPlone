@@ -51,13 +51,6 @@
         Up to Plone Setup
         </a>
 
-        <form action=""
-              name="groups"
-              method="post"
-              tal:attributes="action here/absolute_url"
-    	  tal:define="searchstring request/searchstring | nothing;
-                          groups python:here.prefs_user_group_search(searchstring, 'groups');
-                          batch python:Batch(groups, b_size, int(b_start), orphan=1)">
     
         <p i18n:translate="description_groups_management">
           Groups are logical collections of users, such as departments and
@@ -66,14 +59,29 @@
           certain Groups have a particular role.
         </p>
     
-       <input class="standalone add"
-              tabindex=""
-              type="submit"
-              name="prefs_group_details:method"
-              value="Add New Group"
-              tal:attributes="tabindex tabindex/next;"
-              i18n:attributes="value"
-              />
+        <form action=""
+              name="groups_add"
+              method="post"
+              tal:attributes="action here/absolute_url">
+
+	       <input class="standalone add"
+	              tabindex=""
+	              type="submit"
+	              name="prefs_group_details:method"
+	              value="Add New Group"
+	              tal:attributes="tabindex tabindex/next;"
+	              i18n:attributes="value"
+	              />
+
+        </form>
+        
+        <form action=""
+              name="groups_search"
+              method="post"
+              tal:attributes="action here/absolute_url"
+              tal:define="searchstring request/searchstring | nothing;
+                          groups python:here.prefs_user_group_search(searchstring, 'groups');
+                          batch python:Batch(groups, b_size, int(b_start), orphan=1)">
 
             <table class="listing">
                    
