@@ -8,9 +8,10 @@
 ##title=Validates a folder edit_form contents
 ##
 validator = context.portal_form_validation.createForm()
+
 validator.addField('id', 'String', required=1)
 validator.addField('title', 'String', required=1)
 errors=validator.validate(context.REQUEST)
 if errors:
     return ('failure', errors, 'Please correct the indicated errors.')
-return ('success', errors, portal_status_message='Your folder propeties have been saved.')
+return ('success', errors, 'Your folder propeties have been saved.')

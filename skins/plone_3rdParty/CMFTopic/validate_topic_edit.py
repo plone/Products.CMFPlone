@@ -13,5 +13,5 @@ validator.addField('title', 'String', required=1)
 errors=validator.validate(context.REQUEST)
 if errors:
     return ('failure', errors, 'Please correct the indicated errors.')
-return ('success', errors, None)
+return ('success', errors, 'Your changes to Topic have been saved.')
 

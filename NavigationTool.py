@@ -77,7 +77,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         navprops = getattr(property_tool, 'navigation_properties') #propertymanager that holds data
 
         content=self._getContentFrom(content)
-        status = self._normalize(status)
+        status = self._normalize(status, lower=1)
         script = self._normalize(script)
 
         if status not in self._availableStatus():
@@ -265,11 +265,13 @@ class NavigationTool (UniqueObject, SimpleItem):
         return base+separator+url_params 
 
 
-    def _normalize(self, st):
+    def _normalize(self, st, lower=0):
         if st is None:
             return None
-        return st.lower().replace(' ', '')
-
+        st=st.replace(' ', '')        
+        if lower:
+            return st.lower()
+        return st
 
     def _availableStatus(self):
         return ('success', 'failure')
