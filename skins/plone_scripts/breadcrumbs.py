@@ -77,16 +77,17 @@ currentlyViewingFolderContents = (published_id in ['folder_contents',
                                                    'folderContents'])
 path_seq = []
 
+start = context
 if obj is not None:
-    context = obj
+    start = obj
 
 first_item = 1
-if published != context and published_id:
+if published != start and published_id:
     current = published
-    parent = context
+    parent = start
     id = published_id
 else:
-    current = context
+    current = start
     parent = get_parent(current, portal)
     id = None
     if hasattr(current, 'getId'):
@@ -158,5 +159,4 @@ path_seq.reverse()
 # If the published object was not added to breadcrumbs above and
 #    it is not a view template, add a breadcrumb for it
 
-context.plone_log(path_seq)
 return path_seq
