@@ -59,6 +59,7 @@
                            type="submit"
                            name="submit"
                            value="Log in"
+                           alt="Log in"
                            tal:attributes="tabindex tabindex/next"
                            accesskey="accesskeys-login"
 			   i18n:attributes="value alt"
