@@ -269,7 +269,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             if hasattr(obj, 'getId') and callable(getattr(obj, 'getId')):
                 obj_id = obj.getId()
             else:
-                obj_id = getattr(id, 'id', None)
+                obj_id = getattr(obj, 'id', None)
             if obj_id is None:
                 raise Exception  # XXX - FIXME
             if not id:
