@@ -9,6 +9,7 @@
 
 from Products.CMFPlone import transaction_note
 #portrait_id='MyPortrait'
+state = context.portal_form_controller.getState(script, is_validator=0)
 
 member=context.portal_membership.getAuthenticatedMember()
 member.setProperties(context.REQUEST)
@@ -24,4 +25,4 @@ if (portrait and portrait.filename):
 tmsg=member.getUserName()+' personalized their settings.'
 transaction_note(tmsg)
 
-return ('success',  member_context, {'portal_status_message':'Your personal settings have been saved.'})
+return state.set(portal_status_message='Your personal settings have been saved.')
