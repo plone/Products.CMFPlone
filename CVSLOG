@@ -1,3 +1,28 @@
+2003-10-29 16:20  bmh
+
+	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
+	  Don't display groups table if there are no groups
+
+2003-10-29 15:11  limi
+
+	* skins/plone_forms/join_form.cpt (Plone-2_0-branch): Made the send
+	  password text independent of user or admin usage.
+
+2003-10-29 13:11  eaon
+
+	* skins/: plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_user_details.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): fixed wrong width of user control panel and
+	  input font-family
+
+2003-10-29 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-10-28 22:15  shh42
 
 	* tests/testPortalCreation.py (Plone-2_0-branch): Create default
