@@ -268,9 +268,10 @@ def manage_addSite(self, id, title='Portal', description='',
     gen.setupDefaultProperties(p, title, description,
                                email_from_address, email_from_name,
                                validate_email)
+    customization_policy=None
     if listPolicies() and custom_policy:
-        o=custom_policies[custom_policy]
-        o.customize(p)
+        customization_policy=custom_policies[custom_policy]
+        customization_policy.customize(p)
     
     # reindex catalog and workflow settings
     p.portal_catalog.refreshCatalog()     
