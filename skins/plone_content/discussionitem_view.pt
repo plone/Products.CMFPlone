@@ -16,8 +16,7 @@
 
     <h1 i18n:translate="heading_comment">Comment</h1>
 
-    <div tal:condition="here/talkback|nothing"
-         tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
+    <div tal:condition="here/talkback|nothing">
 
         <div>
             <span i18n:translate="description_above_in_comment_thread" tal:omit-tag="">Above in this comment thread:</span> 
@@ -41,7 +40,7 @@
                     <span i18n:translate="posted_on">at</span> 
                     <span tal:replace="python: here.toPortalTime(here.modified())">8/23/2001 12:40:44 PM</span>
         
-                    <p tal:content="structure python:stx(here.text)">
+                    <p tal:content="structure here/CookedBody">
         		    This is the body text of the comment. 
         		    </p>
         
