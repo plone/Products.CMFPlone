@@ -87,11 +87,11 @@
             <div tal:attributes="class python:test(is_editable,'editable pageContent','pageContent')">
 
                 <metal:ifborder tal:condition="is_editable" >
-                    <div metal:use-macro="here/view_tabs/macros/content_views">
+                    <div metal:use-macro="here/global_contentviews/macros/content_views">
                         The content views (View, Edit, Properties, Workflow)
                     </div>
 
-                    <div metal:use-macro="here/view_tabs/macros/content_actions">
+                    <div metal:use-macro="here/global_contentviews/macros/content_actions">
                         The content bar
                     </div>
                 </metal:ifborder>

@@ -446,19 +446,25 @@ ul.contentViews li {
     padding: 0 1em;
     z-index: 2;
 }
+
+.contentActions a {
+    text-decoration: none;
+    color: &dtml-contentTabFontColor;
+}
+
 .contentActions ul {
     background: &dtml-contentTabBackdrop;;
     border: none;
-    padding-left: 1em;
     line-height: 1.2em;
-    margin-right: 1em;
-    /* white-space: nowrap; */
     list-style: none;
     display: inline;
 }
-.contentActions ul.contentActions li {
+.contentActions ul li {
+    border: &dtml-contentTabBorder;;
+    border-style: solid none solid solid;
     display: inline;
-    margin-right: 1em;
+    padding: 0 1em;
+    margin: 0;
 }
 
 .pageContent {
@@ -647,6 +653,8 @@ div.help {
 /* javascript menu (contentbar) */
 
 ul.menuBar {
+    padding: 0;
+    margin: 0;
     margin-bottom: 1px;
     color: &dtml-mainFontColor;;
 }
@@ -658,7 +666,8 @@ ul.menuBar, ul.menuBar li.menuButton {
 }
 
 ul.menuBar li.menuButton {
-    border-left: 1px dashed &dtml-contentTabFontColor;;
+    border: &dtml-contentTabBorder;;
+    border-style: solid none solid solid;
 } 
 
 ul.menuBar li.menuButton .menuIndicator {
@@ -677,8 +686,7 @@ ul.menuBar li.menuButton a {
     padding: 0 1em;
     text-transform: &dtml-textTransform;;
 }
-ul.menuBar li.menuButton a:hover {
-}
+
 ul.menu {
     background: &dtml-contentTabBackground;;
     border: &dtml-contentTabBorder;;
@@ -706,14 +714,15 @@ ul.menu, ul.menu li {
 ul.menu li {
     margin: 0;
     padding: 0;
-    text-transform: none;
+    border: none;
 }
 ul.menu li.menuItem a {
     color: &dtml-contentTabFontColorSelected;;
+    background-image: none ! important;
     display: block;
-    background: &dtml-contentTabBackground;;
     margin: 0;
     padding: 0;
+    text-transform: none ! important;
     text-decoration: none;
     border: &dtml-contentTabBorder;;
     border-color: &dtml-contentTabBackground;

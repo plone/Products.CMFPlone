@@ -28,7 +28,7 @@
      class="contentActions"
      tal:define="content_actions actions/object_actions|nothing;">
 
-    <ul class="contentActions">
+    <ul>
     <tal:contentactions repeat="action content_actions">
     <li tal:attributes="id string:contentaction-${action/id};">
         <a class="" href=""
@@ -42,9 +42,9 @@
     </tal:contentactions>
     </ul>
     
-    &nbsp;
-
-    <span metal:use-macro="here/contentbar_menu/macros/contentbarMenu" />
+    <div metal:use-macro="here/global_contentmenu/macros/contentMenu">
+      Insert Add Content and Publishing pulldown.
+    </div>
 
     <img src=""
          tal:define="locked portal_object/lock_icon.gif;

@@ -3,7 +3,7 @@
 
 <body>
 
-<metal:menubarmacro define-macro="contentbarMenu">
+<metal:menubarmacro define-macro="contentMenu">
 
 <ul class="menuBar">
     <li class="menuButton">
