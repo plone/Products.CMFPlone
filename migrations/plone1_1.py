@@ -12,6 +12,7 @@
 # upg_1_0_1_to_1_1
 
 from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCacheManager
+from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 
 from Products.CMFDefault.Document import addDocument
 from Globals import package_home
@@ -83,6 +84,9 @@ def make_plone(portal):
 
     #Add Form Controller - yay for features!
     addFormController(portal)
+
+    #Set a portal_type on the root Plone Site
+    makePortalRootPortalType(portal)
 
 def addFormController(portal):
     qi=getToolByName(portal,'portal_quickinstaller')
@@ -370,6 +374,26 @@ def addActionIcons(portal):
     ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
     qi=getToolByName(portal, 'portal_quickinstaller')
     qi.notifyInstalled('CMFActionIcons')
+
+def makePortalRootPortalType(portal):
+    """ The root portal object needs to have its own portal_type.
+        By default in CMF the root is of 'Folder' type which can
+        cause problems when you need finer grain workflow settings
+        and update your workflow settings it will change the 
+        portal root (since its a folder).  
+    """
+    #make Portal portal_type
+    #import pdb; pdb.set_trace()
+    portal.portal_types.manage_addTypeInformation(FactoryTypeInformation.meta_type,
+                                                  id='Plone Site',
+                                                  typeinfo_name='CMFPlone: Plone Site')
+
+    portal._setPortalTypeName('Plone Site')
+    #remove all workflow settings from the Portal type
+    portal.portal_workflow._chains_by_type['Plone Site']=()
+    sprops=portal.portal_properties.site_properties
+    use_folder_tabs=sprops.getProperty('use_folder_tabs')
+    sprops._updateProperty('use_folder_tabs', use_folder_tabs+('Plone Site',))
 
 def addStateActionToTypes(portal):
     """ Deprecated.  We are now using a drop-down box on the contentBar """

@@ -6,6 +6,24 @@ Plone 2.0 - Fyuti
 
     Beta 2
 
+    - added a Plone Site portal_type.  This portal_type is what the root
+      of the Plone Site's _setPortalTypeName is set to.  This way the
+      Folder permissions are manipulated separately from the root of 
+      the Portal.  What became a major problem in "private" sites was
+      having a different policy set in the Permissions tab but then
+      someone "Updating Permissions" from the workflow tool which would
+      reset the permission on the root of your site!  This is added to
+      migrations.  
+
+        - If you only allow 'Authenticated' to 'View' the portal root
+        when you login you authenticate but get a 'Insufficient Privs'
+        page.
+
+        - It seems you can not logout ;-( -- maybe you logout but 
+        before redirection you dont have 'View' permissions and the
+        exception rollsback the logout?
+
+
     - personalBar (mystuff, preferences, undo, logout) now no longer uses
       'global' actions.  This was causing worklist 'pending XXX (N)' in
       the personalBar.  Which is not i18nable and breaks semantics of

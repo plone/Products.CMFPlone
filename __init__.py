@@ -101,11 +101,12 @@ def initialize(context):
     from Products.CMFCore import DirectoryView
     DirectoryView.registerDirectory('skins', cmfplone_globals)
 
-    import PloneFolder, PloneWorkflow, FolderWorkflow
+    import PloneFolder, PloneWorkflow, FolderWorkflow, Portal
 
     contentClasses = ( PloneFolder.PloneFolder , )
     contentConstructors = ( PloneFolder.addPloneFolder, )
-    ftis = (PloneFolder.factory_type_information, )
+    ftis = ( PloneFolder.factory_type_information, 
+             Portal.factory_type_information, )
 
     try:
         import LargePloneFolder

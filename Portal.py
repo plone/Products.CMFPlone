@@ -58,6 +58,37 @@ Thanks for using our product.
 "The Plone Team":http://plone.org/about/team
 """
 
+factory_type_information = { 'id'             : 'Plone Root'
+  , 'meta_type'      : 'Plone Site'
+  , 'description'    : """ The portal_type for the root object in a Plone system."""
+  , 'icon'           : 'folder_icon.gif'
+  , 'product'        : 'CMFPlone'
+  , 'factory'        : 'manage_addSite'
+  , 'filter_content_types' : 0
+  , 'global_allow'   : 0
+  , 'immediate_view' : 'folder_edit_form'
+  , 'actions'        : ( { 'id'            : 'view'
+                         , 'name'          : 'View'
+                         , 'action': 'string:${object_url}'
+                         , 'permissions'   : (CMFCorePermissions.View,)
+                         , 'category'      : 'folder'
+                         }
+                       , { 'id'            : 'edit'
+                         , 'name'          : 'Properties'
+                         , 'action': 'string:${object_url}/folder_edit_form'
+                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
+                         , 'category'      : 'folder'
+                         }
+                       , { 'id'            : 'localroles'
+                         , 'name'          : 'Sharing'
+                         , 'action':
+                                  'string:${object_url}/folder_localrole_form'
+                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
+                         , 'category'      : 'folder'
+                         }
+                       )
+  }
+
 class PloneSite(CMFSite, OrderedContainer):
     """
     Make PloneSite subclass CMFSite and add some methods.
@@ -226,6 +257,8 @@ class PloneGenerator(Portal.PortalGenerator):
         sk_tool.request_varname='plone_skin'
 
     def setupForms(self, p):
+        """ This is being deprecated.  Please see CMFFormController """
+
         prop_tool = p.portal_properties
         prop_tool.manage_addPropertySheet('navigation_properties', \
                                           'Navigation Properties')
