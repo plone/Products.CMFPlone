@@ -6,7 +6,7 @@
 # beta3_rc1
 # rc1_rc2
 # rc2_final
-# final_one_zero_one 
+# final_one_zero_one
 # one01_one02
 # one02_one03
 # upg_1_0_1_to_1_1
@@ -54,9 +54,9 @@ def make_plone(portal):
     #1.0.2->1.0.3
     site_props=portal.portal_properties.site_properties
     safeEditProperty(site_props,'invalid_ids',('actions',),'lines')
-    
+
     #1.1 Configuration
-    #This is used by PloneFolders to pick the default object to render 
+    #This is used by PloneFolders to pick the default object to render
     #used by browserDefault and is similiar to index files in apache
     default_pages = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(site_props,'default_page',default_pages,'lines')
@@ -70,7 +70,7 @@ def make_plone(portal):
         manage_addTool=portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool
         manage_addTool('CMF QuickInstaller Tool')
 
-    addGroupUserFolder(portal)  
+    addGroupUserFolder(portal)
     portal.portal_syndication.isAllowed=1
     addDocumentActions(portal)
     addActionIcons(portal)
@@ -83,7 +83,7 @@ def make_plone(portal):
     addControlPanel(portal)
     upgradePortalFactory(portal)
     portal.portal_quickinstaller.installProduct('CMFCalendar')
-    
+
     #Add State tabs to portal_types individually instead of globally
     addStateActionToTypes(portal)
 
@@ -121,7 +121,7 @@ def addNavigationProperties(portal):
     nav_tool.addTransitionFor('default','editSynProperties','failure','synPropertiesForm')
     #1.1
     nav_tool.addTransitionFor('default','reconfig','success','url:plone_control_panel')
-    
+
 def extendSiteProperties(portal):
     #beta3-rc1
     props = portal.portal_properties.site_properties
@@ -136,7 +136,7 @@ def addDefaultPloneSkins(portal):
     from Products.CMFPlone.Portal import PloneGenerator
     pg=PloneGenerator()
     sk_tool=getToolByName(portal, 'portal_skins')
-    
+
     setup_skins=pg.setupSecondarySkin
     setup_skins(sk_tool, 'Plone Core',          'plone_styles/core')
     setup_skins(sk_tool, 'Plone Corporate',     'plone_styles/corporate')

@@ -14,7 +14,7 @@ if hasattr(content, 'ExpirationDate'):
     expiry=content.ExpirationDate()
 
 try:
-    if DateTime(expiry).isPast():
+    if expiry and DateTime(expiry).isPast():
         return 1
 except IndexError:
     pass #Could convert value to DateTime
