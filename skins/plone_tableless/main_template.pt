@@ -9,11 +9,11 @@
 
 <head metal:use-macro="here/header/macros/html_header">
 
-    <metal:baseslot define-slot="base">
-      <metal:fillbase fill-slot="base">
-        <base href="" tal:attributes="href here/renderBase" />
-      </metal:fillbase>
-    </metal:baseslot>
+    <metal:fillbase fill-slot="base">
+        <metal:baseslot define-slot="base">
+            <base href="" tal:attributes="href here/renderBase" />
+        </metal:baseslot>
+    </metal:fillbase>
 
     <metal:headslot fill-slot="head_slot"
                tal:define="language here/Language;

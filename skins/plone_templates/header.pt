@@ -18,7 +18,7 @@
                                                template_title )"
            tal:content="string:$portal_title - $here_title">Title of page</title>
 
-    <metal:block metal:define-slot="base" />
+    <metal:baseslot define-slot="base" />
 
     <meta name="generator" content="Plone - http://plone.org" />
     
