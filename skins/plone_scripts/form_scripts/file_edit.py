@@ -7,7 +7,7 @@
 ##parameters=precondition='', field_file='', field_id='', title=None, description=None, file_data=''
 ##title=Edit a file
 ##
-from Products.CMFPlone import StringIO
+from StringIO import StringIO
 REQUEST=context.REQUEST
 
 if not field_id:
