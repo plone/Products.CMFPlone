@@ -314,7 +314,7 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             return self.browserDefault()
         except Unauthorized:
             # Temporary hack, try index_html or folder_listing
-            if hasattr(aq_base(self), 'index_html'):
+            if 'index_html' in list(self.objectIds()):
                 return self, ['index_html']
             return self,['folder_listing']
         except AttributeError:
