@@ -1,0 +1,16 @@
+<item rdf:about="<dtml-var Identifier>">
+<title><dtml-var Title></title>
+<link><dtml-var Identifier></link>
+<description>
+<dtml-var Description>
+</description>
+<dc:publisher><dtml-var Publisher></dc:publisher>
+<dc:creator><dtml-var Creator></dc:creator>
+<dc:rights><dtml-var Rights></dc:rights>
+<dtml-in Subject>
+<dc:subject>
+<dtml-var sequence-item>
+</dc:subject>
+</dtml-in>
+<dc:date><dtml-var ModificationDate></dc:date>
+</item>
