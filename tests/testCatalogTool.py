@@ -86,7 +86,7 @@ class TestCatalogSearch(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='testdocument', text='nonsense')
         self.workflow.doActionFor(self.folder.testdocument, 'hide', comment='')
 
-    def test_listAllowedRolesAndUsers(self):
+    def testListAllowedRolesAndUsers(self):
         # should add group to list of allowed users
         uf = self.portal.acl_users
         uf._doAddUser(user2, 'secret', (), (), (), )

@@ -52,9 +52,10 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), _user_name)
         self.assertEqual(self.membership.getPersonalPortrait(_user_name).meta_type, 'Image')
 
-    def testdeletePersonalPortrait(self):
-        # Should change the portrait image
+    def testDeletePersonalPortrait(self):
+        # Should delete the portrait image
         self.membership.changeMemberPortrait(Portrait(), _user_name)
+        self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), _user_name)
         self.membership.deletePersonalPortrait(_user_name)
         self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), 'defaultUser.gif')
 
