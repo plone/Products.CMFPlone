@@ -28,8 +28,8 @@
 
 <!-- runyaga: Can this be made to work here?            
             <a href="mailto:admin@here.com" title="Email Administrator"
-               tal:attributes="href string:mailto:${p_props/email_from_address}"
-               tal:content="p_props/email_from_name">
+               tal:attributes="href string:mailto:${here/portal_properties/email_from_address}"
+               tal:content="string:${here/portal_properties/email_from_address}">
             Email Admin
             </a>.
 -->
