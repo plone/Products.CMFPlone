@@ -335,12 +335,12 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         """
         Optionally you can suppress "hidden" files, or files that begin with .
         """
-        contents=SkinnedFolder.listFolderContents(self, 
-                                                  spec=spec, 
+        contents=SkinnedFolder.listFolderContents(self,
+                                                  spec=spec,
                                                   contentFilter=contentFilter)
         if suppressHiddenFiles:
             contents=[obj for obj in contents if obj.getId()[:1]!='.']
-   
+
         return contents
 
     security.declareProtected( AccessContentsInformation, 'folderlistingFolderContents')

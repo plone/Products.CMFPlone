@@ -51,7 +51,7 @@ def oneX_twoBeta2(portal):
     addLinesToProperty(props, 'use_folder_tabs', 'Plone Site')
     if props.hasProperty('portal_factory_types'):
         props._delProperty('portal_factory_types')
-    
+
     out.append("Turning on syndication")
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
@@ -122,7 +122,7 @@ def oneX_twoBeta2(portal):
     if removed:
         out.append(("Removing deprecated translation service. Plone 2 is using the PlacelessTranslationService for translation. Your old translation data is still stored in the Localizer.", zLOG.WARNING))
     out.append('Adding plone tableless directory view')
-    addPloneTableless(portal)    
+    addPloneTableless(portal)
     return out
 
 def doit(self):
@@ -220,7 +220,7 @@ def migrateTools(portal):
 def migrateNavTree(portal):
     pp=getToolByName(portal,'portal_properties')
     p = getattr(pp , 'navtree_properties', None)
-    
+
     if not p:
         setupNavTreePropertySheet(pp)
 
@@ -243,7 +243,7 @@ def migrateNavTree(portal):
     addLinesToProperty(p, 'metaTypesNotToList', 'TempFolder')
     addLinesToProperty(p, 'parentMetaTypesNotToQuery', 'TempFolder')
     safeEditProperty(p, 'croppingLength', 256, 'int')
-    
+
 
 def migrateMemberdataTool(portal):
     orig_md = getToolByName(portal, 'portal_memberdata')
@@ -446,14 +446,14 @@ def updateNavigationProperties(portal):
 def deprFsViews(portal):
     st = getToolByName(portal, 'portal_skins')
     fsViewIds = ['Images', 'actionicons', 'calendar', 'content', 'control',
-        'generic', 'no_css', 'nouvelle', 'topic', 'zpt_calendar', 'zpt_content', 
-        'zpt_control', 'zpt_generic', 'zpt_topic', 
+        'generic', 'no_css', 'nouvelle', 'topic', 'zpt_calendar', 'zpt_content',
+        'zpt_control', 'zpt_generic', 'zpt_topic',
         ]
     for fsViewId in fsViewIds:
         view = getattr(st, fsViewId, None)
         if view:
             view.title += 'Deprecated, can safely be deleted'
-        
+
     for skin in st.getSkinSelections():
         oldpath = st.getSkinPath(skin)
         oldpath = [p.strip() for p in oldpath.split(',')]
@@ -466,16 +466,16 @@ def deprFsViews(portal):
         newpath.extend(deprpath)
         # remove all plone_styles/ subdirs
         newpath = [ p for p in newpath if not p.startswith('plone_styles/') ]
-        
+
         path = ','.join(newpath)
         st.addSkinSelection(skin, path)
-        
+
 def removeOldSkins(portal):
     st = getToolByName(portal, 'portal_skins')
     st.default_skin = 'Plone Default'
     removed = []
     skins = ['Plone Autumn', 'Plone Core', 'Plone Core Inverted',
-             'Plone Corporate', 'Plone Greensleeves', 'Plone Kitty', 
+             'Plone Corporate', 'Plone Greensleeves', 'Plone Kitty',
              'Plone Mozilla', 'Plone Mozilla New', 'Plone Prime',
              'Plone Zed', ]
     skinList = st._getSelections()
@@ -516,7 +516,7 @@ def addPloneTableless(portal):
     st = getToolByName(portal, 'portal_skins')
     if not hasattr(aq_base(st), 'plone_tableless'):
         _newDV(st, 'plone_tableless')
-            
+
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
     MigrationTool.registerUpgradePath('1.0.2','1.1alpha2',upg_1_0_1_to_1_1)

@@ -38,11 +38,11 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
                          ('Authenticated', 'Foo', 'Member'))
 
         temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.assertEqual(sortTuple(member.getRolesInContext(temp_object)), 
+        self.assertEqual(sortTuple(member.getRolesInContext(temp_object)),
                          ('Authenticated', 'Foo', 'Member'))
 
         temp_object2 = self.folder.folder2.restrictedTraverse('portal_factory/Document/tmp_id')
-        self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)), 
+        self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)),
                          ('Authenticated', 'Foo', 'Member', 'Reviewer'))
 
 

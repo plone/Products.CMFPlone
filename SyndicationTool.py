@@ -7,7 +7,7 @@ from Globals import InitializeClass
 actions = tuple(BaseTool._actions)
 for a in actions:
     if a.id == 'syndication':
-        a.condition=Expression(text='python: folder is object and portal.portal_syndication.isSiteSyndicationAllowed()') 
+        a.condition=Expression(text='python: folder is object and portal.portal_syndication.isSiteSyndicationAllowed()')
 
 class SyndicationTool(BaseTool):
 

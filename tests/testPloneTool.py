@@ -59,7 +59,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
     def testEditFormatMetadataOfDocument(self):
         # Test workaround for http://plone.org/collector/1323
         # Also see setFormatPatch.py
-        self.folder.invokeFactory('Document', id='doc', 
+        self.folder.invokeFactory('Document', id='doc',
                                   text_format='text/plain', text='foo')
         # Documents don't have a content_type property!
         self.failIf(self.folder.doc.hasProperty('content_type'))
@@ -84,7 +84,7 @@ class TestExceptionsImport(ZopeTestCase.ZopeTestCase):
         # PythonScripts can import from AccessControl
         self.ps.ZPythonScript_edit('', 'from AccessControl import Unauthorized')
         self.ps()
-        
+
     def testImportzExceptionsUnauthorizedInPythonScript(self):
         # PythonScripts can NOT import from zExceptions
         self.ps.ZPythonScript_edit('', 'from zExceptions import Unauthorized')

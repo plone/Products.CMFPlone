@@ -104,7 +104,7 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(user.getUserName(), default_user)
 
     def testNotValidateWithoutAuth(self):
-        user = self.uf.validate(self.app.REQUEST, '', ['role1']) 
+        user = self.uf.validate(self.app.REQUEST, '', ['role1'])
         self.assertEqual(user, None)
 
     def testValidateWithoutRoles(self):
@@ -113,11 +113,11 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(user.getUserName(), default_user)
 
     def testNotValidateWithEmptyRoles(self):
-        user = self.uf.validate(self.app.REQUEST, self.basic, []) 
+        user = self.uf.validate(self.app.REQUEST, self.basic, [])
         self.assertEqual(user, None)
 
     def testNotValidateWithoutWrongRoles(self):
-        user = self.uf.validate(self.app.REQUEST, self.basic, ['Manager']) 
+        user = self.uf.validate(self.app.REQUEST, self.basic, ['Manager'])
         self.assertEqual(user, None)
 
     def testAllowAccessToUser(self):

@@ -48,7 +48,7 @@ class ActionIconsTool(BaseTool):
                         , priority=0
                         ):
         """ update ActionIcons and remove cache entry """
-        BaseTool.updateActionIcon(self, category, action_id, icon_expr, 
+        BaseTool.updateActionIcon(self, category, action_id, icon_expr,
                                   title, priority)
         removeAICacheEntry(category, action_id)
 
@@ -56,7 +56,7 @@ class ActionIconsTool(BaseTool):
         """ remove ActionIcon and remove cache entry """
         BaseTool.removeActionIcon(self, category, action_id)
         removeAICacheEntry(category, action_id)
-    
+
     def clearActionIcons( self ):
         """ clear ActionIcons and cache entries """
         BaseTool.clearActionIcons(self)
@@ -79,7 +79,7 @@ class ActionIconsTool(BaseTool):
         """ remove ActionIcons from ZMI and remove cache entry """
         BaseTool.manage_removeActionIcon(self, category, action_id, REQUEST)
         removeAICacheEntry(category, action_id)
-            
+
 ActionIconsTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(ActionIconsTool)

@@ -51,8 +51,8 @@ def twoBeta2_twoBeta3(portal):
                 'user',
                 1),
     out.append("Adding a link for plone setup to the users prefs")
-    
+
     return out
-        
+
 if __name__=='__main__':
     registerMigrations()

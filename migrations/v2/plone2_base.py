@@ -423,7 +423,7 @@ def makePortalRootPortalType(portal):
     portal.manage_permission(ListFolderContents, ('Manager', 'Owner'), acquire=1)
     portal.manage_permission(SetOwnProperties,('Manager','Authenticated'))
     portal.manage_permission(SetOwnPassword,('Manager','Authenticated'))
-    
+
 def addActionsToPortalTypes(portal):
     """ Deprecated.  We are now using a drop-down box on the contentBar """
     typesTool=portal.portal_types

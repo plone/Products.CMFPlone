@@ -9,4 +9,3 @@
 ##
 # Deprecated script
 return context.plone_utils.browserDefault(context)
-

@@ -34,7 +34,7 @@ if subjects:
             title=o.Title
         else:
             title=o.getId #getId() is indexed as the getId property
-            
+
         lnk = {'title':title
                ,'url':url
                ,'icon':o.getIcon}

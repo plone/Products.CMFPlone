@@ -19,7 +19,7 @@ url_tool = getToolByName(context, 'portal_url')
 # required for login into a not migrated plone1 site
 try:
     iface_tool = getToolByName(context, 'portal_interface')
-except AttributeError:    
+except AttributeError:
     iface_tool = None
 
 published = context.REQUEST.get('PUBLISHED', None)

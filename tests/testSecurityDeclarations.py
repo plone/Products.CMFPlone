@@ -1,5 +1,5 @@
 #
-# Tests the security declarations Plone makes on resources 
+# Tests the security declarations Plone makes on resources
 # for access by restricted code (aka PythonScripts)
 #
 
@@ -27,7 +27,7 @@ class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
 
     def check(self, psbody):
         self.addPS('ps', body=psbody)
-        try: 
+        try:
             self.folder.ps()
         except (ImportError, Unauthorized), e:
             self.fail(e)
@@ -36,7 +36,7 @@ class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
         self.check('from zLOG import LOG')
 
     def testAccess_LOG(self):
-        self.check('import zLOG;' 
+        self.check('import zLOG;'
                    'print zLOG.LOG')
 
     def testImport_INFO(self):
@@ -48,7 +48,7 @@ class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
 
     def testImport_translate_wrapper(self):
         self.check('from Products.CMFPlone.PloneUtilities import translate_wrapper')
-        
+
     def testAccess_translate_wrapper(self):
         self.check('import Products.CMFPlone.PloneUtilities;'
                    'print Products.CMFPlone.PloneUtilities.translate_wrapper')

@@ -16,7 +16,7 @@ try:
     parent = context.aq_parent
 except Unauthorized:
     parent = None
-    
+
 show = 1
 #We only want to show the 'contents' tab under the following conditions:
 # - If you can DO SOMETHING in a folder_contents view. i.e.

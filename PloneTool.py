@@ -417,7 +417,7 @@ class PloneTool(UniqueObject, SimpleItem):
             return 0
         return 1
 
-    # returns the acquired local roles 
+    # returns the acquired local roles
     security.declarePublic('getInheritedLocalRoles')
     def getInheritedLocalRoles(self, here):
         portal = here.portal_url.getPortalObject()
@@ -425,7 +425,7 @@ class PloneTool(UniqueObject, SimpleItem):
         cont=1
         if portal != here:
             parent = here.aq_parent
-            while cont:   
+            while cont:
                 userroles = parent.acl_users.getLocalRolesForDisplay(parent)
                 for user, roles, type, name in userroles:
                     # find user in result
@@ -445,7 +445,7 @@ class PloneTool(UniqueObject, SimpleItem):
                     cont=0
                 else:
                     parent=parent.aq_parent
-    
+
         return result
 
     security.declarePublic('browserDefault')
@@ -461,7 +461,7 @@ class PloneTool(UniqueObject, SimpleItem):
             if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
                 return self, [request['REQUEST_METHOD']]
         # now back to normal
-        
+
         portal = getToolByName(self, 'portal_url').getPortalObject()
 
         # The list of ids where we look for default
@@ -481,7 +481,7 @@ class PloneTool(UniqueObject, SimpleItem):
         # we look for the default_page in the skins aswell.
         for page in pages:
             if hasattr(portal.portal_skins, page):
-                return obj, [page]        
+                return obj, [page]
 
         # Try the default sitewide default_page setting
         for page in portal.portal_properties.site_properties.getProperty('default_page', []):

@@ -63,7 +63,7 @@ if hasattr(membership_tool, 'createMemberArea'):
 # I'm not quite sure where QUERY_STRING is supposed to be.
 # What we will do is say if REFERER startswith REQUEST['came_from']
 # then lets use that instead of came_from. REFERER contains the URL
-# args.  
+# args.
 
 qs = context.create_query_string(
     REQUEST.get('QUERY_STRING', ''),
