@@ -42,6 +42,11 @@
     <style type="text/css" media="screen"
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
 
+    <!-- Alternate style sheets for the bigger/smaller text switcher -->
+    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextLarge.css" title="Large Text" />
+    <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextHuge.css" title="Huge Text" />
+
     <!-- Custom style sheet if available -->
     <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
            tal:content="string:@import url($portal_url/ploneCustom.css);"></style>

@@ -258,6 +258,7 @@ pre {
 }
 #portal-siteactions {
     float: right;
+    /* These should actually be in pixels, to avoid bouncing around */
     margin: 1em 1em 0.5em 1em;
 }
 

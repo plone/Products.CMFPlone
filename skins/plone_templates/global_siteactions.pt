@@ -14,7 +14,7 @@
         <a href="" 
            tal:attributes="href saction/url"
            tal:define="title saction/name;
-                       icon python:getIconFor('site', saction['id'], None)"
+                       icon python:getIconFor('site_actions', saction['id'], None)"
            tal:condition="icon">
             
             <img i18n:attributes="title" title="#"

@@ -39,7 +39,7 @@
     </metal:javascriptslot>
 </head>
 
-<body>
+<body onload="setStyle();">
 
 <div id="portal-top" i18n:domain="plone">
 
