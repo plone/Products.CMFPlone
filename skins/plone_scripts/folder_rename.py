@@ -22,10 +22,16 @@ for id in new_ids:
         o.setTitle(new_title)
     x=x+1
     
-if not new_ids: 
-    return REQUEST.RESPONSE.redirect(context.absolute_url() + '/folder_contents?portal_status_message=No+Item(s)+Marked+For+Renaming.')
-
+if not new_ids:
+    return context.plone_utils.getNextRequestFor( context
+                                                , script.getId()
+                                                , 'failure'
+                                                , portal_status_message='No Item(s) Marked For Renaming' )
+                                                
 context.manage_renameObjects(REQUEST['ids'], REQUEST['new_ids'], REQUEST)
 transaction_note( str(REQUEST['ids']) + 'have been renamed' )
 
-return REQUEST.RESPONSE.redirect(context.absolute_url() + '/folder_contents?portal_status_message=Item(s)+Renamed.')
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'success'
+                                            , portal_status_message='Item(s) Renamed' )
