@@ -279,7 +279,7 @@
 <span tal:repeat="it here/importances|nothing" tal:replace="it"></span></textarea>
             </div>
             <span i18n:translate="help_collector_selections">
-        (Fill in the alternatives for issue categorization)
+        Fill in the alternatives for issue categorization.
         </span>
         </div>
     </div>
