@@ -31,13 +31,13 @@
         <li class="selected">
         <a href=""
            tal:attributes="href string:${template/id}?groupname=${groupname}"
-           i18n:translate="">Group Properties</a>
+           i18n:translate="label_group_properties">Group Properties</a>
         </li>
             
         <li class="">
             <a href=""
                tal:attributes="href string:prefs_group_members?groupname=${groupname}"
-               i18n:translate="">Group Members</a>
+               i18n:translate="label_group_members">Group Members</a>
         </li>
     </ul>
     
@@ -52,7 +52,7 @@
         <metal:block metal:use-macro="template/macros/props">
     
         <metal:title metal:fill-slot="title">
-          <h1 i18n:translate="">Create a Group</h1>
+          <h1 i18n:translate="heading_create_group">Create a Group</h1>
         </metal:title>
     
         <metal:name metal:fill-slot="name">
@@ -69,7 +69,7 @@
         <p i18n:translate="label_no_group_specified">No group was specified.</p>
     
         <p><a href="prefs_groups_overview"
-              i18n:translate="link_find_group">Find a group here</a></p>
+              i18n:translate="label_find_group">Find a group here</a></p>
     
         </metal:block>
     
@@ -80,11 +80,11 @@
     
         <metal:block metal:define-macro="props" tal:omit-tag="">
     
-        <h1 i18n:translate="" metal:define-slot="title">
-               Edit Group Properties for <span tal:replace="group/getGroupName | default">#unavailable#</span>
+        <h1 i18n:translate="heading_edit_groupproperties" metal:define-slot="title">
+               Edit Group Properties for <span tal:replace="group/getGroupName | default" i18n:name="groupname">#unavailable#</span>
         </h1>
     
-        <p i18n:translate="">
+        <p i18n:translate="description_edit_groupproperties">
         Groups are logical collections of users, like departments and business units.
         They are not directly related to permissions on a global level, you normally
         use Roles for that - and let certain Groups have a particular role.

@@ -18,9 +18,9 @@
         searchfor request/searchonly | request/searching | nothing;"
     tal:condition="here/rejectAnonymous" >
 
-    <h1 i18n:translate="">Search for Users and Groups</h1>
+    <h1 i18n:translate="heading_search_usersandgroups">Search for Users and Groups</h1>
 
-    <p i18n:translate="">
+    <p i18n:translate="description_search_usersandgroups">
     Search for the users or groups you want to locate (blank search returns all),
     and select the ones you want to add.
     </p>
@@ -35,16 +35,16 @@
                 tabindex=""
                 tal:attributes="tabindex tabindex/next;"
                 tal:condition="python: not here.prefs_valid_search_restriction(searchonly)">
-            <option value="both" i18n:translate="">Users and groups</option>
-            <option value="users" i18n:translate="">Users</option>
-            <option value="groups" i18n:translate="">Groups</option>
+            <option value="both" i18n:translate="label_usersandgroups">Users and groups</option>
+            <option value="users" i18n:translate="label_users">Users</option>
+            <option value="groups" i18n:translate="label_groups">Groups</option>
         </select>
         <input type="hidden" name="searchonly"
             tal:condition="python: here.prefs_valid_search_restriction(searchonly)"
             tal:attributes="value request/searchonly" />
-        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="" i18n:translate="">Users</span>
+        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" tal:omit-tag="" i18n:translate="label_users">Users</span>
         <input type="hidden" name="restrict" tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])" value="users" />
-        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="" i18n:translate="">Groups</span>
+        <span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" tal:omit-tag="" i18n:translate="label_groups">Groups</span>
         <input type="hidden" name="restrict" tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])" value="groups" />
         <input type="hidden" name="restrict" tal:condition="python: not here.prefs_valid_search_restriction(searchonly)" value="" />
 
@@ -111,9 +111,9 @@
                 </td>
 
                 <td tal:condition="not:usergroup/getGroupName | nothing"
-                    i18n:translate="">User</td>
+                    i18n:translate="text_user">User</td>
                 <td tal:condition="usergroup/getGroupName | nothing"
-                    i18n:translate="">Group</td>
+                    i18n:translate="text_group">Group</td>
             </tr>
 
         </table>

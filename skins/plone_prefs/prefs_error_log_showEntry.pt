@@ -1,6 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <tal:block metal:fill-slot="head_slot">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -19,7 +20,7 @@
             <div tal:define="entry python:here.error_log.getLogEntryById(request.get('id'))">
 
                 <em tal:condition="not:entry">
-                    <span i18n:translate=""> The specified log entry was not found.  It may have expired.</span>
+                    <span i18n:translate="text_errlog_notfound"> The specified log entry was not found.  It may have expired.</span>
                 </em>
 
                 <div tal:condition="entry">

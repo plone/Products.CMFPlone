@@ -18,11 +18,11 @@
 <ul id="contentTabs">
   <li class="">
     <a href="prefs_workflow_basic"
-       i18n:translate="link_workflow_default">Workflow Configuration</a>
+       i18n:translate="label_workflow_default">Workflow Configuration</a>
   </li>
   <li class="selected">
     <a href="prefs_workflow_advanced"
-       i18n:translate="link_workflow_advanced">Advanced</a>
+       i18n:translate="label_workflow_advanced">Advanced</a>
   </li>
 </ul>
 <div id="contentBar">&nbsp;</div>
@@ -36,9 +36,9 @@
                                " />
      </metal:block>
 
-    <h1 i18n:translate="">Select workflow</h1>
+    <h1 i18n:translate="heading_select_workflow">Select workflow</h1>
 
-    <p i18n:translate="">
+    <p i18n:translate="description_select_workflow">
         Select the type of workflow you want for each different content type.
     </p>
 

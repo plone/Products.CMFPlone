@@ -26,13 +26,13 @@
         <li class="selected">
         <a href=""
         tal:attributes="href string:${template/id}"
-        i18n:translate="">Users</a>
+        i18n:translate="label_users">Users</a>
         </li>
 
         <li class="">
         <a href=""
         tal:attributes="href string: prefs_groups_overview"
-        i18n:translate="">Groups</a>
+        i18n:translate="label_groups">Groups</a>
         </li>
     </ul>
 

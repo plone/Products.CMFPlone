@@ -60,9 +60,9 @@
                     <td tal:condition="python:QI.isProductAvailable(product['id'])"> 
                          <a tal:condition="python:prodver != product['installedVersion']" 
                             tal:attributes="href string:${QI/absolute_url}/reinstallProducts?products=${product/id}"
-                            i18n:translate="text_product_outdated"> this product is outdated, click here to reinstall </a>
+                            i18n:translate="label_outdated_product_reinstall"> this product is outdated, click here to reinstall </a>
                     </td>
-                    <td tal:condition="python:not QI.isProductAvailable(product['id'])"> <font color="#ff0000" i18n:translate="text_product_removed" >removed from Products folder</font></td>
+                    <td tal:condition="python:not QI.isProductAvailable(product['id'])"> <font color="#ff0000" i18n:translate="text_product_unavailable" >removed from Products folder</font></td>
                 </tr>
             </tal:block>
         </table>

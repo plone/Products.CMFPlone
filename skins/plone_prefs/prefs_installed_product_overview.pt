@@ -26,7 +26,7 @@
     </tr>
 
     <tr tal:condition="here/hasError">
-        <th i18n:translate="">Error</th>
+        <th i18n:translate="text_error">Error</th>
         <td tal:condition="here/hasError">
             <img src="/misc_/PageTemplates/exclamation.gif" />
             <span omit-tag=""
