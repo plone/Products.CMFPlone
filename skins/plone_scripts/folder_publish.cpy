@@ -26,7 +26,21 @@ for id in ids:
     o = getattr(context, id)
     try:
         if o.isPrincipiaFolderish and include_subfolders:
-            workflow.doActionFor(o, workflow_action, comment=comment)
+            # call the script to do the workflow action
+            # catch it if there is not workflow action for this object
+            # but continu with subobjects.
+            # Since we can have mixed portal_type objects it can occure
+            # quite easily that the workflow_action doesn't work for some objects
+            # but we need to keep on going.
+            try:
+                o.content_status_modify( workflow_action,
+                                         comment,
+                                         effective_date=effective_date,
+                                         expiration_date=expiration_date )
+            except:
+                # skip this object but continue with sub-objects.
+                pass          
+            
             o.folder_publish( workflow_action, 
                               o.objectIds(), 
                               comment=comment, 
