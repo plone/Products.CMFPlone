@@ -10,14 +10,6 @@
     
                 <td class="right">
             
-                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='loginBox')" >
-
-                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='review_box')" >
-            
-                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='favoritesBox')" >
-            
-                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='calendarBox')" >
-                            
                 </td>
             
             </tr>

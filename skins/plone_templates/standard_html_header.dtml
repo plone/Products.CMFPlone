@@ -17,15 +17,9 @@
     
                 <td class="left">
                    
-                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='navigationBox')" >
+                    <dtml-var "macro_renderer(template='here/main_left_column', macro='column')" >
 
-                    <dtml-if "not portal_membership.isAnonymousUser() or portal_properties.allowAnonymousViewAbout">
-                      <dtml-var "macro_renderer(template='here/portal_boxes', macro='aboutBox')" >
-                    </dtml-if>
-                     
-                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='relatedBox')" >
-                     
-                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='newsBox')">
+		    <dtml-var "macro_renderer(template='here/main_right_column', macro='column')" >
             
                 </td>
                 
@@ -33,13 +27,12 @@
                 <td class="main" >
 
                     <dtml-let actions="portal_actions.listFilteredActionsFor(this())"
-                              show_border="(not portal_membership.isAnonymousUser() and ( actions.get('workflow', None) or portal_membership.checkPermission('Modify portal content', this()) ) )">
+                              show_border="showEditableBorder()">
 
                     <dtml-if show_border>
                         <dtml-var "macro_renderer(template='here/portal_tabs', macro='contentTabs')" >
                         
                         <dtml-var "macro_renderer(template='here/portal_bars', macro='contentBar')" >
-
                     </dtml-if>
  
                     </dtml-let>
