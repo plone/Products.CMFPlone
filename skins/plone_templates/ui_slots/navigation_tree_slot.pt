@@ -92,7 +92,7 @@
                                
                         <span tal:repeat="x python:range( te['indent'])" tal:omit-tag="">&nbsp;</span>
                         <tal:block tal:condition="iscurrent">
-                           <strong>
+                           <span class="currentNavItem">
                         </tal:block>
                         <a href="" 
                            tal:condition="python: sibling.meta_type != 'CMF Site'"
@@ -106,7 +106,7 @@
                                     />
                             
                             <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
-                            <strong tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                            <span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
                         </a>
                         
                         <a href="" 
@@ -117,7 +117,7 @@
                            
                             <img tal:replace="structure here/site_icon.gif" />
                             <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
-                            <strong tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                            <span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
                         </a>
     
                     </tal:block>

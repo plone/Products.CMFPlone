@@ -722,6 +722,11 @@ div.spacer {
 	margin: 1em;
 }
 
+.currentNavItem {
+    color: &dtml-mainFontColor;;
+    font-weight: bold;
+}
+
 .private {
     color: Black;
 }
