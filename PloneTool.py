@@ -49,6 +49,7 @@ def _getaddresses(fieldvalues):
     return a.addresslist
 
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
+    """Various utility methods."""
 
     id = 'plone_utils'
     meta_type= ToolNames.UtilsTool
