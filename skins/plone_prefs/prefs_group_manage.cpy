@@ -22,5 +22,5 @@ for group in groups:
 delete=REQUEST.get('delete',[])
 groupstool.removeGroups(delete)
 
-portal_status_message="Changes made"
+portal_status_message="Changes made."
 return state.set(portal_status_message=portal_status_message)
