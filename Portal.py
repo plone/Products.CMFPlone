@@ -8,6 +8,9 @@ from Products.CMFPlone import LargePloneFolder
 from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDefault import Document
 
+from Products.CMFCore.Skinnable import superGetAttr, _marker
+from Acquisition import aq_base
+
 def listPolicies(creation=1):
     """ Float default plone to the top """
     names=[]
@@ -125,6 +128,73 @@ portal_skins tool and set the correct default skin.""" % default
         """ Should send out an Event before Site is being deleted """
         self.removal_inprogress=1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
+
+
+    # The methods below override Skinnable to speed up skin object resolution.
+    # One big change: the custom folder now behaves like FSDirectoryViews in 
+    # that if you are not in debug mode and you add or delete an object from
+    # custom, the addition/deletion will not be noticed by the skin resolver.
+    # 
+    # CAUTION: if you delete a skin object from custom while this optimization
+    # is running and you are not in debug mode, you need to restart Zope or 
+    # arrange to call _invalidateHitCache!
+
+    security.declarePublic('changeSkin')
+    def changeSkin(self, skinname):
+        '''Change the current skin.
+        
+        Can be called manually, allowing the user to change
+        skins in the middle of a request.
+        '''
+        self._v_skindata = None
+        skinobj = self.getSkin(skinname)
+        if skinobj is not None:
+            if self.REQUEST.RESPONSE.debug_mode:
+                ignore, resolve = ({},{})
+            else:
+                ignore, resolve = self._getHitCache(skinname)
+            self._v_skindata = (self.REQUEST, skinobj, ignore, resolve)
+
+
+    def _getHitCache(self, skinname):
+        if getattr(self, '_v_hitcache', None) is None:
+            self._v_hitcache = {}
+        if not self._v_hitcache.has_key(skinname):
+            self._v_hitcache[skinname] = ({},{})
+        return self._v_hitcache[skinname]
+
+
+    def _invalidateHitCache(self):
+        self._v_hitcache = {}
+        
+
+    def __getattr__(self, name):
+        '''
+        Looks for the name in an object with wrappers that only reach
+        up to the root skins folder.  
+        
+        This should be fast, flexible, and predictable.
+        '''
+        if not name.startswith('_') and not name.startswith('aq_'):
+            sd = self._v_skindata
+            if sd is not None:
+                request, ob, ignore, resolve = sd
+                if not ignore.has_key(name):
+                    if resolve.has_key(name):
+                        return resolve[name]
+                    subob = getattr(ob, name, _marker)
+                    if subob is not _marker:
+                        # Return it in context of self, forgetting
+                        # its location and acting as if it were located
+                        # in self.
+                        retval = aq_base(subob)
+                        resolve[name] = retval
+                        return retval
+                    else:
+                        ignore[name] = 1
+        if superGetAttr is None:
+            raise AttributeError, name
+        return superGetAttr(self, name)
 
 Globals.InitializeClass(PloneSite)
 
