@@ -13,14 +13,14 @@ plone_utils=context.plone_utils
 if not send_to_address:
     state.setError('send_to_address', 'Please submit an email address.', 'email_required')
 
-if not plone_utils.validateEmailAddress(send_to_address):
-    state.setError('send_to_address', 'Please submit an valid email address.', 'email_required')
+if not plone_utils.validateEmailAddresses(send_to_address):
+    state.setError('send_to_address', 'Please submit a valid email address.', 'email_required')
 
 if not send_from_address:
     state.setError('send_from_address', 'Please submit an email address.', 'email_required')
 
-if not plone_utils.validateEmailAddress(send_from_address):
-    state.setError('send_from_address', 'Please submit an valid email address.', 'email_required')
+if not plone_utils.validateSingleEmailAddress(send_from_address):
+    state.setError('send_from_address', 'Please submit a valid email address.', 'email_required')
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
