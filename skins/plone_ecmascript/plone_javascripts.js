@@ -485,7 +485,6 @@ function highlightSearchTerm() {
 if (window.addEventListener) window.addEventListener("load",highlightSearchTerm,false);
 else if (window.attachEvent) window.attachEvent("onload",highlightSearchTerm);
 
-<!--
 
 // ----------------------------------------------
 // StyleSwitcher functions written by Paul Sowden
