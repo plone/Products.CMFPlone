@@ -2,7 +2,7 @@
 <h2 tal:define="manage_tabs_message options/manage_tabs_message | nothing"
     tal:replace="structure here/manage_tabs">Tabs</h2>
 
-<h3> <code>Factory Tool</code> Tool </h3>
+<h3> <code>Factory Tool</code> </h3>
 
 <p>This tool is used to enable users to edit new objects without having to
 first create new objects in the ZODB.  The factory tool gives this functionality

@@ -237,10 +237,6 @@ def addDocumentActions(portal):
                  'document_actions')
 
 def upgradePortalFactory(portal):
-    site_props = portal.portal_properties.site_properties
-    if not hasattr(site_props,'portal_factory_types'):
-        site_props._setProperty('portal_factory_types',('',), 'lines')
-
     typesTool = getToolByName(portal, 'portal_types')
     # add temporary folder type for portal_factory
     if not hasattr(typesTool, 'TempFolder'):

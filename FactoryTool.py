@@ -1,6 +1,6 @@
-import sys
+import os, sys
 import urllib
-from Globals import InitializeClass
+import Globals
 from DateTime import DateTime
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
@@ -8,9 +8,10 @@ from OFS.ObjectManager import ObjectManager
 from OFS.SimpleItem import SimpleItem
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from ZPublisher.mapply import mapply
+from Products.CMFPlone import cmfplone_globals
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore import CMFCorePermissions
-from Products.CMFCore.utils import UniqueObject, getToolByName
+from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 
@@ -62,7 +63,9 @@ class FactoryTool(UniqueObject, SimpleItem):
     security = ClassSecurityInfo()
     isPrincipiaFolderish = 0
 
-    manage_options = ( ({'label':'Overview', 'action':'manage_overview'},) +
+    manage_options = ( ({'label':'Overview', 'action':'manage_overview'}, \
+                        {'label':'Documentation', 'action':'manage_docs'}, \
+                        {'label':'Factory Types', 'action':'manage_portal_factory_types'},) +
                        SimpleItem.manage_options)
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_overview')
@@ -70,7 +73,52 @@ class FactoryTool(UniqueObject, SimpleItem):
     manage_overview.__name__ = 'manage_overview'
     manage_overview._need__name__ = 0
 
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_portal_factory_types')
+    manage_portal_factory_types = PageTemplateFile(os.path.join('www', 'portal_factory_manage_types'), globals())
+    manage_portal_factory_types.__name__ = 'manage_portal_factory_types'
+    manage_portal_factory_types._need__name__ = 0
+
     manage_main = manage_overview
+
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_docs')
+    manage_docs = PageTemplateFile(os.path.join('www','portal_factory_manage_docs'), globals())
+    manage_docs.__name__ = 'manage_docs'
+
+    wwwpath = os.path.join(Globals.package_home(cmfplone_globals), 'www')
+    f = open(os.path.join(wwwpath, 'portal_factory_docs.stx'), 'r')
+    _docs = f.read()
+    f.close()
+    _docs = format_stx(_docs)
+
+    security.declarePublic('docs')
+    def docs(self):
+        """Returns FactoryTool docs formatted as HTML"""
+        return self._docs
+
+    
+    def getFactoryTypes(self):
+        if not hasattr(self, '_factory_types'):
+            self._factory_types = {}
+        return self._factory_types
+
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_setPortalFactoryTypes')
+    def manage_setPortalFactoryTypes(self, REQUEST=None, listOfTypeIds=None):
+        if listOfTypeIds is not None:
+            dict = {}
+            for l in listOfTypeIds:
+                dict[l] = 1
+        elif REQUEST is not None:
+            dict = REQUEST.form
+        if dict is None:
+            dict = {}
+        self._factory_types = {}
+        types_tool = getToolByName(self, 'portal_types')
+        for t in types_tool.listContentTypes():
+            if dict.has_key(t):
+                self._factory_types[t] = 1
+        self._p_changed = 1
+        if REQUEST:
+            REQUEST.RESPONSE.redirect('manage_main')
 
 
     def doCreate(self, obj, id=None, **kw):
@@ -236,4 +284,4 @@ class FactoryTool(UniqueObject, SimpleItem):
             return getattr(self, name)
         return self.getTempFolder(name)
 
-InitializeClass(FactoryTool)
+Globals.InitializeClass(FactoryTool)
