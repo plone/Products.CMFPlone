@@ -1,3 +1,141 @@
+2003-11-12 01:22  runyaga
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): news template
+	  was broken if News Items did not allow discussions.. fixed
+
+2003-11-12 01:21  tiran
+
+	* Portal.py (Plone-2_0-branch): and added a comment why
+
+2003-11-12 01:20  tiran
+
+	* Portal.py (Plone-2_0-branch): fixed #1597 (Skin changing for
+	  users should be turned off by default)
+
+2003-11-12 01:02  eaon
+
+	* skins/plone_content/metadata_edit_form.cpt (Plone-2_0-branch):
+	  select field should be in the next row and not inline
+
+2003-11-12 00:58  tiran
+
+	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch): fixed
+	  #1845 (older_listing no content message)
+
+2003-11-12 00:55  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): fixed #1908
+
+2003-11-12 00:48  dpunktnpunkt
+
+	* skins/: plone_forms/ownership_form.pt,
+	  plone_portlets/navigation_tree_slot.pt,
+	  plone_portlets/portlet_navigation.pt (Plone-2_0-branch): Fixes
+	  #1917
+
+2003-11-12 00:46  runyaga
+
+	* skins/plone_portlets/login_slot.pt (Plone-2_0-branch): return to
+	  XHTML compliance
+
+2003-11-12 00:41  eaon
+
+	* skins/: plone_3rdParty/CMFTopic/topic_view.pt,
+	  plone_forms/sendto_form.cpt, plone_prefs/plone_control_panel.pt,
+	  plone_templates/folder_listing.pt,
+	  plone_templates/recently_published.pt (Plone-2_0-branch): fixed
+	  #1901
+
+2003-11-12 00:38  runyaga
+
+	* MembershipTool.py, Portal.py,
+	  skins/plone_scripts/create_query_string.py (Plone-2_0-branch): we
+	  use to copy member_search_form into Members.	Now we create a
+	  PytonScript which traverses to that form and returns the results.
+
+	  CMFCore.MembershipTool.getPortalRoles (which we use) was
+	  protected by Manage permissions.  I dont see any reason for this.
+	   Who cares what Roles we have.
+
+	  create_query_string was missing an else which made things show up
+	  twice if a qs was passedin.
+
+2003-11-12 00:30  tiran
+
+	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch):
+	  fixed typo bug #1896
+
+2003-11-12 00:28  tiran
+
+	* skins/plone_prefs/reconfig_form.cpt (Plone-2_0-branch): fixed
+	  typo bug #1899
+
+2003-11-12 00:24  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): fixed
+	  margin for nested .fields
+
+2003-11-12 00:23  tiran
+
+	* skins/plone_scripts/controlPanelParentUrl.py (Plone-2_0-branch):
+	  fixed #1913
+
+2003-11-12 00:17  tiran
+
+	* skins/: plone_content/event_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_prefs/prefs_portalskin_form.pt,
+	  plone_prefs/prefs_syndication_form.pt,
+	  plone_scripts/navigationRemoteResources.py (Plone-2_0-branch):
+	  fixed #1916 and #1920
+
+2003-11-12 00:17  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): added the
+	  red required dot for the forms
+
+2003-11-11 23:59  tiran
+
+	* interfaces/PloneControlPanel.py (Plone-2_0-branch): configlets
+	  have a description
+
+2003-11-11 23:44  runyaga
+
+	* skins/plone_form_scripts/image_edit.cpy (Plone-2_0-branch):
+	  Resolve Issue 1927
+
+2003-11-11 23:35  runyaga
+
+	* skins/: plone_form_scripts/validate_folder_edit.vpy,
+	  plone_form_scripts/validate_folder_rename.vpy,
+	  plone_forms/folder_rename_form.cpt, plone_scripts/check_id.py,
+	  plone_scripts/folder_rename.cpy (Plone-2_0-branch): Resolve Issue
+	  1933
+
+2003-11-11 22:03  eaon
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_styles/ploneIEFixes.css.dtml,
+	  plone_templates/main_template.pt (Plone-2_0-branch): added 'Skip
+	  to content.' again - fixed #portal-top gap bug - screenreader
+	  compatible .hiddenStructure
+
+2003-11-11 11:27  tesdal
+
+	* PloneUtilities.py (Plone-2_0-branch): Import IntType before using
+	  it.
+
+2003-11-11 05:09  chrism
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): Speed up news
+	  page rendering by another 25% by aliasing lookups and reworking
+	  the method by which we find out whether discussion items have
+	  replies.
+
+2003-11-11 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-10 23:31  dreamcatcher
 
 	* setup/ConfigurationMethods.py, setup/SetupBase.py,
