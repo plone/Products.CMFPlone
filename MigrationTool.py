@@ -58,9 +58,9 @@ class MigrationTool( UniqueObject, SimpleItem):
         if out is None:
             # FIXME - perhaps zLOG?
             import StringIO
-            out = StringIO.StringIO
+            out = StringIO.StringIO()
         newv = None
-        if REQUEST.get("yes_I_am_very_sure", None):
+        if getattr(REQUEST, 'yes_I_am_very_sure', None):
             newv = REQUEST.get("force_instance_version", None)
         if newv is None:
             newv = self.getInstanceVersion()
