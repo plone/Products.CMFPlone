@@ -53,7 +53,17 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
       of arbitrary sizes.
       [andym]
 
-Plone 2.0.5 - Backed Up Willie - RC2 - Released November 26, 2004
+Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
+
+    - Allow migrations to and from release candidates to finish. This was
+      borked in RC2.
+      [stefan]
+
+    - Fixed http://plone.org/collector/3629 - Migration failed if 'Topic'
+      portal type was missing or otherwise broken.
+      [stefan]
+
+   RC2 - Released November 26, 2004
 
     - Fixed http://plone.org/collector/3612 - listFilteredActionsFor of
       ActionsTool now ignores missing or broken action providers.
