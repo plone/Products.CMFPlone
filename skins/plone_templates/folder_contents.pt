@@ -171,7 +171,9 @@
                                   item_title_or_id item/title_or_id;
                                   item_typeinfo item/getTypeInfo;
                                   arrowUp portal/arrowUp.gif;
-                                  arrowDown portal/arrowDown.gif;"
+                                  arrowDown portal/arrowDown.gif;
+                                  browserDefaultResult here/browserDefault;
+                                  isBrowserDefault python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0]"
                       tal:attributes="class python:test(oddrow, 'even', 'odd')" >
 
                     <td>
@@ -196,7 +198,7 @@
                         <img tal:attributes="src item/getIcon;
                                              alt item_typeinfo/Title; 
                                              title item_typeinfo/Title;"
-                             />&nbsp;<span tal:replace="item/title_or_id">Title</span>
+                             />&nbsp;<strong tal:omit-tag="python:not isBrowserDefault"><span tal:replace="item/title_or_id">Title</span></strong>
                       </a>
 
                       <a href="absolute_url/external_edit"
