@@ -4,7 +4,7 @@
 <body>
 
 <!-- THE SEARCHBOX DEFINITION -->
-<div id="portal-searchBox" metal:define-macro="quick_search">
+<div id="portal-searchbox" metal:define-macro="quick_search">
     <form name="searchform"
           action="search"
           tal:attributes="action string:${portal_url}/search" >
