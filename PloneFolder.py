@@ -72,7 +72,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 
     security=ClassSecurityInfo()
 
-    __implements__ = (IContentish,
+    __implements__ = (SkinnedFolder.__implements__ ,
                       DefaultDublinCoreImpl.__implements__ ,
                       WriteLockInterface)
 

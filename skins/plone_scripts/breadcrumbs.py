@@ -8,7 +8,7 @@
 ##title=used to make the breadcrumbs in the pathbar
 ##
 from Products.CMFCore.utils import getToolByName
-contentish = "Products.CMFCore.interfaces.Contentish.Contentish"
+dynamic_type = "Products.CMFCore.interfaces.Dynamic.DynamicType"
 
 if obj is None:
     obj=context
@@ -40,7 +40,7 @@ for id in relative_ids:
         # talkbacks would clutter our precious breadcrumbs
         continue
 
-    if not iface_tool.objectImplements(obj, contentish):
+    if not iface_tool.objectImplements(obj, dynamic_type):
         continue
 
     if o.isPrincipiaFolderish and \
@@ -63,7 +63,7 @@ for id in relative_ids:
 # it would not be accessible from here.
 
 if published != o and  \
-   iface_tool.objectImplements(published, contentish) and not \
+   iface_tool.objectImplements(published, dynamic_type) and not \
     currentlyViewingFolderContents and \
     published_id not in  ('view', 'index_html') and \
     hasattr(published, 'title_or_id'):
