@@ -34,6 +34,16 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog.Indexes['SearchableText'].__class__.__name__,
                          'ZCTextIndex')
 
+    def testDescriptionIsTextIndex(self):
+        # Description index should be a TextIndex
+        self.assertEqual(self.catalog.Indexes['Description'].__class__.__name__,
+                         'TextIndex')
+
+    def testTitleIsTextIndex(self):
+        # Title index should be a TextIndex
+        self.assertEqual(self.catalog.Indexes['Title'].__class__.__name__,
+                         'TextIndex')
+
 
 class TestCatalogSearch(PloneTestCase.PloneTestCase):
 
