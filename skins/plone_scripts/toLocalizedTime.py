@@ -38,14 +38,14 @@ if dateFormat == None or dateFormat == '':
 
     try:
         localized_time=DateTime(str(time)).strftime(format)
-    except IndexError:
+    except (KeyError, AttributeError, IndexError):
         pass 
     return localized_time
 
 # extract parts from date
 try:
     time = DateTime(time)
-except:
+except (AttributeError, KeyError, IndexError):
     pass
 
 # extract date parts from DateTime object

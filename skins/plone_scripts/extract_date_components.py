@@ -9,37 +9,43 @@
 ##
 # this script extracts %Y %m %d %H %M from a given date string
 
+from DateTime import DateTime
+
 try:
   date = DateTime(date)
-except:
+except (TypeError,AttributeError,IndexError):
   pass
 
 try:
   day = date.strftime('%d');
-except:
+except AttributeError:
   day = '00'
+
 try:
   month = date.strftime('%m');
-except:
+except AttributeError:
   month = '00'
+
 try:
   year = date.strftime('%Y');
-except:
+except AttributeError:
   year = '00'
 
 try:
   hour = date.strftime('%H');
-except:
+except AttributeError:
   hour = '00'
   
 try:
   minute = date.strftime('%M');
-except:
+except AttributeError:
   minute = '00'
 
 try:
   ampm = date.strftime('%p');
-except:
+except AttributeError:
   ampm = '00'
 
-return {'year':year,'month':month,'day':day, 'hour':hour, 'minute':minute, 'ampm':ampm}
+return {'year':year, 'month':month,
+        'day':day, 'hour':hour,
+        'minute':minute, 'ampm':ampm}

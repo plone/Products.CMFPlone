@@ -6,9 +6,10 @@
 ##bind subpath=traverse_subpath
 ##title=Undo transactions
 ##parameters=
-
+from AccessControl import Unauthorized
 request=context.REQUEST
 trxs=context.portal_undo.listUndoableTransactionsFor(context)
+
 if trxs:
     tran_id = trxs[0]['id']
     context.portal_undo.undo(context, (tran_id,) )
@@ -24,7 +25,7 @@ if '?' in came_from:
 
 try:
     o = context.portal_url.getPortalObject().restrictedTraverse(path)
-except:
+except (Unauthorized,KeyError):
     came_from=context.portal_url()
 
 return request.RESPONSE.redirect( '%s?%s' % ( came_from

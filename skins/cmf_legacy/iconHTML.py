@@ -13,13 +13,13 @@ try:
 except KeyError:
     try:
         iconURL=_['icon']
-    except:
+    except KeyError:
         iconURL=''
 
 if iconURL:
     try:
         Type = context.Type()
-    except:
+    except AttributeError:
         Type=''
     return '<img src="%s" align="left" alt="%s" border="0"/>' % (iconURL,
                                                                  Type)

@@ -44,7 +44,7 @@ try:
     new_context.plone_utils.contentEdit( new_context
                                        , id=id
                                        , description=description )
-except:
+except: #XXX DateTime and contentEdit() has many things that could go wrong - catch all.
     return state.set(portal_status_message='Error saving event.', new_status='failure')
 
 return state.set(context=new_context, portal_status_message='Event changes saved.')

@@ -13,13 +13,13 @@ from DateTime import DateTime
 try:
     if effective_date and effective_date!='None':
         effective_date = DateTime(effective_date)
-except:
+except (AttributeError, KeyError):
     state.setError('effective_date', 'Please enter a valid date and time.')
     
 try:
     if expiration_date and expiration_date != 'None':
         expiration_date = DateTime(expiration_date)
-except:
+except (AttributeError, KeyError):
     state.setError('expiration_date', 'Please enter a valid date and time.')
 
 #if effective_date and expiration_date:

@@ -41,7 +41,7 @@ if pages:
         # but Authenticated is sometimes Anonymous and then
         # a private folder bombs with insufficent privileges
         ids = context.objectIds()
-    except:
+    except: #XXX FIX ME! I SHOULD NOT CATCH ALL!
         ids =[]
     for page in pages:
         if page in ids:
@@ -54,6 +54,6 @@ try:
     if act.startswith('/'):
         act = act[1:]
     return context, [act]
-except:
+except: #XXX FIX ME! I SHOULD NOT CATCH ALL!
     # if all else fails, fall back to /folder_listing
     return context, ['folder_listing']

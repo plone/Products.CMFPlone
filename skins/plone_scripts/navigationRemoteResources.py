@@ -7,6 +7,7 @@
 ##parameters=obj=None
 ##title=encapsulates the related box
 ##
+from AccessControl import Unauthorized
 listing=[]
 
 if obj is None:    
@@ -18,7 +19,7 @@ try:
     for o in obj.contentValues('Link'):
         listing.append( (o.title_or_id(),
                          o.getRemoteUrl()) )
-except: 
+except (Unauthorized,AttributeError): 
     pass
     
 return listing

@@ -32,7 +32,7 @@ for x in range(0, len(new_ids)):
 
     try:
         resp=check_id(newid)
-    except:
+    except: #XXX Upon calling check_id various exceptions can be raised.  catch all exceptions.
         resp='An error occurred validating new id'
 
     if resp is not None:

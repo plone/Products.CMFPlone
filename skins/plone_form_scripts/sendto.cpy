@@ -25,7 +25,7 @@ variables = { 'send_from_address' : REQUEST.send_from_address
             }
 try:
     plone_utils.sendto( variables )
-except:
+except: #XXX To many things could possibly go wrong. So we catch all.
     exception = context.plone_utils.exceptionString()
     return state.set(status='failure', portal_status_message=exception)
 
