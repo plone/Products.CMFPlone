@@ -20,7 +20,7 @@ except ImportError:
 try:
     import Products.ExternalEditor
 except ImportError:
-    log("ExternalEditor not found.  Please download it from http://www.zope.org/Members/Caseman/ExternalEditor")
+    log("ExternalEditor not found.  If you want the external edit functionality, please download it from http://www.zope.org/Members/Caseman/ExternalEditor")
 
 try:
     import Products.GroupUserFolder
