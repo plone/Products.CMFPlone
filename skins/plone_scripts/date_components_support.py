@@ -18,11 +18,6 @@ from DateTime import DateTime
 empty={'id':'----', 'value':None, 'selected':None}
 empty_selected={'id':'----', 'value':None, 'selected':'selected'}
 
-#Get portal year range
-site_properties = context.portal_properties.site_properties
-min_year = site_properties.min_year
-max_year = site_properties.max_year
-
 default=0
 years=[]
 days=[]
@@ -67,6 +62,11 @@ if date.equalTo(CEILING):
     date = PLONE_CEILING
 
 year=int(date.strftime('%Y'))
+
+#Get portal year range
+site_properties = context.portal_properties.site_properties
+min_year = site_properties.getProperty('min_year', year - 5)
+max_year = site_properties.getProperty('max_year', year + 6)
 
 #if default:
 #    years.append(empty_selected)
