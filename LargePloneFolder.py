@@ -54,7 +54,7 @@ class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
         _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
         return ReplaceableWrapper(aq_base(_target).__of__(self))
 
-    index_html = ComputedAttribute(index_html)
+    index_html = ComputedAttribute(index_html, 1)
 
 InitializeClass(LargePloneFolder)
 
