@@ -48,6 +48,7 @@ from __future__ import nested_scopes
 from Products.CMFCore.utils import getToolByName
 from cStringIO import StringIO
 from Products.CMFCore.CMFCorePermissions import ModifyPortalContent
+from ZODB.PersistentMapping import PersistentMapping
 
 def changeOwnershipOf(self, object, owner):
     """ changes the ownership of an object """
