@@ -10,7 +10,7 @@
 
 if (document.all && window.attachEvent) window.attachEvent("onload", fixWinIE);
 function fixWinIE() {
-       document.all.main.style.display = 'block';
+       document.all.content.style.display = 'block';
 }
 
 
