@@ -52,19 +52,20 @@
     
         <tbody>
         <metal:block tal:repeat="match batch">
-            <tr class="even" 
-        tal:define="oddrow repeat/match/odd" 
-        tal:attributes="class python:test(oddrow, 'even', 'odd')" >
-                <td>
-        <img src="#" tal:attributes="src string:${here/portal_url}/${match/getIcon}" />
+        <tr class="even" 
+            tal:define="oddrow repeat/match/odd" 
+            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+        <td>                
         <a href="#" 
-           tal:attributes="href string:${match/getURL}/view"
-           tal:content="match/title_or_id" />
-                </td>   
-                <td tal:content="match/Type">Type</td>
-                <td tal:content="match/ModificationDate">Modification Date</td>
-                <td tal:content="match/Description">Description</td>
-            </tr>
+           tal:attributes="href string:${match/getURL}/view" >
+           <img src="#" tal:attributes="src string:${here/portal_url}/${match/getIcon}" />
+           <span tal:replace="match/Title|match/id">Title or id</span>
+        </a>
+        </td>   
+        <td tal:content="match/Type">Type</td>
+        <td tal:content="match/ModificationDate">Modification Date</td>
+        <td tal:content="match/Description">Description</td>
+        </tr>
         </metal:block>
         </tbody>
     </table>
