@@ -105,10 +105,8 @@ while current and current is not portal:
         try:
             parent = current.getParentNode()
             if parent.isPrincipiaFolderish:
-                browser_default = getattr(parent, 'browserDefault', None)
-                if browser_default and callable(browser_default):
-                    if current.getId() in browser_default()[1]:
-                        continue
+                if current.getId() in portal.plone_utils.browserDefault(parent)[1]:
+                    continue
         except Unauthorized:
             if current.getId() in ['index_html', 'folder_listing']:
                 continue

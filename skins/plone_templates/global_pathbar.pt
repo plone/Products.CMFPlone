@@ -22,7 +22,7 @@
             <a i18n:translate="tabs_home" tal:attributes="href python:breadcrumbs[0][1]">Home</a>
             <span class="breadcrumbSeparator">&raquo;</span>
     </span>
-    <span tal:condition="not: breadcrumbs" i18n:translate="tabs_home" tal:omit-tag="">
+    <span tal:condition="python:len(breadcrumbs)==1" i18n:translate="tabs_home" tal:omit-tag="">
         Home
     </span>
     <span tal:repeat="crumb python:breadcrumbs[1:]">
