@@ -10,6 +10,8 @@
     <base href="http://yoursite/folder/content/template_id" 
           tal:attributes="href string:${here/absolute_url}/${template/getId}" />
 
+    <metal:block define-slot="base" />
+    
     <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support  
          it. Site will still be viewable, but look a bit stripped :) --> 
     <link rel="Stylesheet" type="text/css" href="dummy" 
