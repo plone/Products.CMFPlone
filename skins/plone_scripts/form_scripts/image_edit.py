@@ -13,7 +13,7 @@ if errors:
     form=getattr( context, context.getTypeInfo().getActionById( 'edit' ) )
     return form()
 
-filename=getattr(field_file,'filename', '')
+filename=id=getattr(field_file,'filename', '')
 if field_file and filename:
     id=filename[max( string.rfind(filename, '/')
                    , string.rfind(filename, '\\')
@@ -27,7 +27,7 @@ context.edit(
      file=field_file)
 
 context.plone_utils.contentEdit(context,
-                                id=field_id,
+                                id=id,
                                 description=description)
 
 qst='portal_status_message=Image+changed.'
