@@ -1,10 +1,12 @@
-# $Id: FormTool.py,v 1.28 2003/09/14 17:45:35 morphex Exp $
+# $Id: FormTool.py,v 1.28.4.1 2003/09/29 12:21:13 dreamcatcher Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.28 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.28.4.1 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
 from Products.CMFCore.utils import UniqueObject
+from Products.CMFFormController.ValidationError import ValidationError
+from Products.CMFFormController.ControllerState import ControllerState
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
@@ -294,31 +296,75 @@ class FormValidator(SimpleItem):
             kwargs = {}
             for validator in self.validators:
                 trace.append('Invoking %s' % validator)
-                v = getattr(context, validator, None)
+                v = context.restrictedTraverse(validator, default=None)
                 if v is None:
                     raise KeyError("Unable to find validator '%s' in context '%s'.  Check your skins path." % (validator, str(context)))
-                script_status = mapply(v, REQUEST.args, REQUEST,
-                                       call_object, 1, missing_name, dont_publish_class,
-                                       REQUEST, bind=1)
 
-                # The preferred return type for scripts will
-                # eventually be an object.  Until then, preserve
-                # compatibility with 1.0 alpha 4
+                # handle CMFFormController validators properly
+                if getattr(v, 'is_validator', 0):
+                    # get a controller_state object and populate it
+                    controller_state = getToolByName('portal_form_controller').getState(context, 1)
+                    controller_state.setStatus(REQUEST.get('validation_status', 'success'))
+                    controller_state.setErrors(REQUEST.get('errors', {}))
+                    # XXX this is a bit of a hack -- lots of REQUEST keys could be 
+                    # controller_state kwargs, but we don't know which ones.  
+                    # portal_status_message is a common one.
+                    msg = REQUEST.get('portal_status_message', None)
+                    if msg:
+                        controller_state.setKwargs({'portal_status_message':msg})
+                    REQUEST.set('controller_state', controller_state)
+                    if controller_state.hasValidated(validator):
+                        continue
+                    try:
+                        controller_state = mapply(v, REQUEST.args, REQUEST,
+                                                  call_object, 1, missing_name, dont_publish_class,
+                                                  REQUEST, bind=1)
+                        controller_state._addValidator(validator)
+                    except ValidationError, e:
+                        # if a validator raises a ValidatorException, execution of
+                        # validators is halted and the controller_state is set to
+                        # the controller_state embedded in the exception
+                        controller_state = e.controller_state
+                        state_class = getattr(controller_state, '__class__', None)
+                        if state_class != ControllerState:
+                            raise Exception, 'Bad ValidationError state (type = %s)' % str(state_class)
+                        status = controller_state.getStatus()
+                        kwargs = controller_state.getKwargs()
+                        kwargs['errors'] = controller_state.getErrors()
+                        new_context = controller_state.getContext()
+                        break
+                    state_class = getattr(controller_state, '__class__', None)
+                    if state_class != ControllerState:
+                        raise Exception, 'Bad validator return type from validator %s (%s)' % (str(v), str(state_class))
 
-                if type(script_status) == type(()):
-                    (status, errors, kwargs) = script_status
-                    kwargs['errors'] = errors
-                    script_status = ScriptStatus(status, kwargs, None)
+                    status = controller_state.getStatus()
+                    kwargs = controller_state.getKwargs()
+                    kwargs['errors'] = controller_state.getErrors()
+                    new_context = controller_state.getContext()
 
-                    # disable deprecation warning for now
-                    # log_deprecated('Validator \'%s\' uses a return
-                    # signature that has been marked for deprecation.
-                    # Validators should return a ScriptStatus object.'
-                    # % validator)
-
-                status = script_status.status
-                kwargs = script_status.kwargs
-                new_context = script_status.new_context
+                else:
+                    script_status = mapply(v, REQUEST.args, REQUEST,
+                                           call_object, 1, missing_name, dont_publish_class,
+                                           REQUEST, bind=1)
+    
+                    # The preferred return type for scripts will
+                    # eventually be an object.  Until then, preserve
+                    # compatibility with 1.0 alpha 4
+    
+                    if type(script_status) == type(()):
+                        (status, errors, kwargs) = script_status
+                        kwargs['errors'] = errors
+                        script_status = ScriptStatus(status, kwargs, None)
+    
+                        # disable deprecation warning for now
+                        # log_deprecated('Validator \'%s\' uses a return
+                        # signature that has been marked for deprecation.
+                        # Validators should return a ScriptStatus object.'
+                        # % validator)
+    
+                    status = script_status.status
+                    kwargs = script_status.kwargs
+                    new_context = script_status.new_context
 
                 self.REQUEST.set('validation_status', status)
                 for key in kwargs.keys():
