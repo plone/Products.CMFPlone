@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Added enableHTTPCompression script and enabled http compression for
+      html, css and javascript [tiran]
+
     - Fixed http://plone.org/collector/3240 and related issues.
       Metadata elements like description and keywords (subject) could 
       not be cleared.

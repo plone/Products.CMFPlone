@@ -5,6 +5,7 @@
 // in the plone_javascript_variables.js file. Any other variables from Plone
 // that you want to pass into these scripts should be placed there.
 
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, js=1)"> (this is for http compression) */
 
 function registerPloneFunction(func){
     // registers a function to fire onload. 

@@ -1,6 +1,7 @@
 /* Deprecated CSS elements - do not depend on these, they will disappear in
    the next version of Plone. They are here for backwards compatibility only. */
 
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with stylesheet_properties> (do not remove this :) */
 a.skipnav{visibility:hidden;position:absolute;}
 div listingBar img{vertical-align:middle;}
