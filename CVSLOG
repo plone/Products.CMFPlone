@@ -1,3 +1,32 @@
+2003-12-16 20:40  zopezen
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): Sigh, preserve
+	  the lookup property when you redo the actual migration otherwise
+	  no user can ever actually change any of the actionicons ttw and
+	  none of the icons work.
+
+2003-12-16 19:44  dreamcatcher
+
+	* LargePloneFolder.py, MigrationTool.py,
+	  migrations/oneX_twoBeta2.py (Plone-2_0-branch): Missing import, a
+	  docstring for Zope HEAD and strip an acquisition wrapper for good
+
+2003-12-16 19:05  zopezen
+
+	* PloneFolder.py, Portal.py, skins/plone_scripts/browserDefault.py
+	  (Plone-2_0-branch): Remove one of those bare excepts in
+	  browserDefault and make very verbose error messages about the
+	  browserDefault AttributeError and the folder listing bugs.
+
+2003-12-16 09:28  limi
+
+	* MembershipTool.py (Plone-1_0): Fix for Collector issue #1878,
+	  Plone 1.0.x.
+
+2003-12-16 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-16 03:58  vinsci
 
 	* CREDITS.txt (Plone-2_0-branch): Applied random.seed() and
