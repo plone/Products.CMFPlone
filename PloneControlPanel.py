@@ -117,10 +117,21 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
         selection=[actids.index(a) for a in actids if a==id]
         self.deleteActions(selection)
 
+        actionicons=getToolByName(self,'portal_actionicons')
+        if actionicons.queryActionInfo('controlpanel', id, None):
+            actionicons.removeActionIcon('controlpanel', id)
+
+
     security.declareProtected( ManagePortal, 'unregisterApplication' )
     def unregisterApplication(self,appId):
-        selection=[a for a in self.listActions() if a.appId==appId]
+        acts=list(self.listActions())
+        selection=[acts.index(a) for a in acts if a.appId==appId]
         self.deleteActions(selection)
+
+        actionicons=getToolByName(self,'portal_actionicons')
+        for a in acts:
+            if a.appId == appId and actionicons.queryActionInfo('controlpanel', a.id, None):
+                actionicons.removeActionIcon('controlpanel', a.id)
         
         
         
