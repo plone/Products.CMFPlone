@@ -1,6 +1,6 @@
-# $Id: NavigationTool.py,v 1.29 2002/10/17 00:41:20 zopezen Exp $
+# $Id: NavigationTool.py,v 1.30 2002/10/17 00:48:12 zopezen Exp $
 # $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
-__version__ = "$Revision: 1.29 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.30 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -55,13 +55,13 @@ class NavigationTool (UniqueObject, SimpleItem):
             self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
 
             if transition_type == 'action':
-                return self._dispatchAction(context, transition, trace, kwargs)
+                return self._dispatchAction(context, transition, trace, **kwargs)
             elif transition_type == 'url':
-                return self._dispatchUrl(context, transition, trace, kwargs)
+                return self._dispatchUrl(context, transition, trace, **kwargs)
             elif transition_type == 'script':
-                return self._dispatchScript(context, transition, trace, kwargs)
+                return self._dispatchScript(context, transition, trace, **kwargs)
             else:
-                return self._dispatchPage(context, transition, trace, kwargs)
+                return self._dispatchPage(context, transition, trace, **kwargs)
         except NavigationError:
             raise
         except Exception, e:
@@ -274,7 +274,7 @@ class NavigationTool (UniqueObject, SimpleItem):
                 new_context = context
             self.log('status = %s, new_context = %s, kwargs = %s' % (str(status), str(new_context), str(kwargs)), '_dispatchScript')
 
-            return self.getNext(new_context, script, status, trace, kwargs)
+            return self.getNext(new_context, script, status, trace, **kwargs)
         except NavigationError:
             raise
         except Exception, e:
