@@ -9,6 +9,7 @@ def two05_alpha1(portal):
     """
     out = []
     
+    # XXX: Must get rid of this!
     # ATCT is not installed when SUPPRESS_ATCT_INSTALLATION is set to YES
     # It's required for some unit tests in ATCT [tiran]
     suppress_atct = bool(os.environ.get('SUPPRESS_ATCT_INSTALLATION', None)
@@ -28,12 +29,9 @@ def two05_alpha1(portal):
     # Install Archetypes
     installArchetypes(portal, out)
     
-    # install ATContentTypes
+    # Install ATContentTypes
     if not suppress_atct:
         installATContentTypes(portal, out)
-
-        # XXX: Hack
-        patchATCTMigration()
 
         # Switch over to ATCT
         migrateToATCT(portal, out)
@@ -100,62 +98,4 @@ def migrateToATCT(portal, out):
         switchCMF2ATCT(skip_rename=True)
     get_transaction().commit(1)
     #out.append('Switched portal to ATContentTypes.')
-
-
-# XXX: Hack! Will go away once ATCT 1.0 is ready
-try:
-
-    from Products.ATContentTypes.migration.common import unrestricted_rename
-    def patchATCTMigration(): pass
-
-except ImportError:
-    # ATCT 0.2
-
-    # Temporarily cribbed from ATCT 1.0. Thanks Tiran ;-)
-    def unrestricted_rename(self, id, new_id):
-        """Rename a particular sub-object
-
-        Copied from OFS.CopySupport
-
-        Less strict version of manage_renameObject:
-            * no write lock check
-            * no verify object check from PortalFolder so it's allowed to rename
-              even unallowed portal types inside a folder
-        """
-        try: self._checkId(new_id)
-        except: raise CopyError, MessageDialog(
-                      title='Invalid Id',
-                      message=sys.exc_info()[1],
-                      action ='manage_main')
-        ob=self._getOb(id)
-        #!#if ob.wl_isLocked():
-        #!#    raise ResourceLockedError, 'Object "%s" is locked via WebDAV' % ob.getId()
-        if not ob.cb_isMoveable():
-            raise CopyError, eNotSupported % escape(id)
-        #!#self._verifyObjectPaste(ob)
-        #!#CopyContainer._verifyObjectPaste(self, ob)
-        try:    ob._notifyOfCopyTo(self, op=1)
-        except: raise CopyError, MessageDialog(
-                      title='Rename Error',
-                      message=sys.exc_info()[1],
-                      action ='manage_main')
-        self._delObject(id)
-        ob = aq_base(ob)
-        ob._setId(new_id)
-
-        # Note - because a rename always keeps the same context, we
-        # can just leave the ownership info unchanged.
-        self._setObject(new_id, ob, set_owner=0)
-        ob = self._getOb(new_id)
-        ob._postCopy(self, op=1)
-
-        #!#if REQUEST is not None:
-        #!#    return self.manage_main(self, REQUEST, update_menu=1)
-        return None
-
-    def patchATCTMigration():
-        def renameOld(self):
-            unrestricted_rename(self.parent, self.orig_id, self.old_id)
-        from Products.ATContentTypes.migration.Migrator import ItemMigrationMixin
-        ItemMigrationMixin.renameOld = renameOld
 
