@@ -4,6 +4,8 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
+
     - Fixed behaviour of the definition list and pre tags in presentation
       mode. [limi]
 

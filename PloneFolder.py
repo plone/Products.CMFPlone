@@ -67,6 +67,13 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 
     manage_options = Folder.manage_options + \
                      CMFCatalogAware.manage_options
+
+    # fix permissions set by CopySupport.py
+    __ac_permissions__=(
+        ('Modify portal content',
+         ('manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjects',
+          'manage_renameForm', 'manage_renameObject', 'manage_renameObjects',)),
+        )
     
     def __init__(self, id, title=''):
         DefaultDublinCoreImpl.__init__(self)
