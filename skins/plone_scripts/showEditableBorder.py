@@ -10,8 +10,14 @@
 actions=container.portal_actions.listFilteredActionsFor(context)
 wf_actions=actions.get('workflow', ())
 obj_actions=actions.get('object', ())
+folder_actions=actions.get('folder', ())
 
 # no special cases; just check if we have tabs to show
 # listFilteredActionsFor does all the rest for us
 
-return wf_actions or len(obj_actions) > 1
+show_border = wf_actions or len(obj_actions) > 1
+
+if template_id=='folder_contents' and container.portal_membership.checkPermission( 'List folder contents', context):
+    show_border = 1
+   
+return show_border
