@@ -1,7 +1,11 @@
+    - Added tree navigation from Philipp Auersperg and made it the default
+      navigation device. Thanks!
     - Fixed #245, there can now be more than one sortable table on a page.
       Use class listing to make it sortable, class nosort to avoid sorting.
-    - CustomizationPolicy was not saving changes to personal_form/addtofavorites in new_actions now things work as Expected
-    - moved getPersonalFolder/getPersonalPortrait to portal_membership tool instead of FSPythonScripts
+    - CustomizationPolicy was not saving changes to personal_form/addtofavorites 
+      in new_actions now things work as Expected
+    - moved getPersonalFolder/getPersonalPortrait to portal_membership tool 
+      instead of FSPythonScripts
     - Cleaned out all old javascript, consolidated everything into one file,
       this makes the whole thing more caching-friendly. You can also sort
       any table on any page by putting id="sortable" in the <table> tag.
@@ -10,19 +14,26 @@
       to their skinpath. New sites will work fine.
     - The *big* i18n branch was merged into main Plone, breaks the existing 
       translation files, (none of who are complete at the moment anyway)
-      but is much more future-proof. We have this change in as early as possible,
-      and it makes everything much easier to manage from here on.
+      but is much more future-proof. We have this change in as early as 
+      possible, and it makes everything much easier to manage from here on.
       to have a much better control over i18n in the future. 
-    - subjects(keywords) in metadata tool were being saved with null property.. automatically relating items
-    - filtering was broke changed folder_contents had filter_by_Type where CMF1.3 now uses filter_by_portal_type 
-      this required changed to folder_contents and filterTypes - only 2 lines of code to change ;) - thanks Florrent!
-    - topic has been changed to to make the icon clickable, it now uses title or id of the catalog brain
-    - related box now has <br /> seperating elements and will not show related items that dont have a title - thanks kpm!
-      added icons, sort by Type and changed up navigationLocal and only shows published items - thanks Raphael Volz!
-    - MembershipTool.changeMemberPortrait() method added and removed from personazlize
+    - subjects(keywords) in metadata tool were being saved with null property.. 
+      automatically relating items
+    - filtering was broke changed folder_contents had filter_by_Type where 
+      CMF1.3 now uses filter_by_portal_type   this required changed to 
+      folder_contents and filterTypes - only 2 lines of code to change ;) - 
+      thanks Florrent!
+    - topic has been changed to to make the icon clickable, it now uses title or 
+      id of the catalog brain
+    - related box now has <br /> seperating elements and will not show related 
+      items that dont have a title - thanks kpm!
+      added icons, sort by Type and changed up navigationLocal and only shows 
+      published items - thanks Raphael Volz!
+    - MembershipTool.changeMemberPortrait() method added and removed from 
+      personalize_form
     - added MIGRATION documentation
     - calendar_slot will only search for items with review_state=published
-    - width/height are correctly being calculated for all icons (limi fixed this)
+    - width/height are correctly being calculated for all icons (limi fixed)
     - added validator for content_status_modify and if folder_publish 
       is used for mass publishing it will redirect back to folder_contents
       asking for publishing action if none is supplied
@@ -31,14 +42,18 @@
     - Issue 266 fixed - topic_view now says 'no results found'
     - Issue 288 fixed - favorites slot needed <br />
     - removed CSSImports and inlined @imports into <style tal:content="string">
-      put Content-Language to use here.Language() or portal_properties.default_language
-      changed 'My Stuff' to 'My Folder' 
-      moved edit_forms in with content
-      moved event_xxxx into plone_3rdParty/CMFCalendar for consitency
-      Issue 204 fixed
-    - Sigve Tjora fixed the migration machinery - incredible job! CMFPlone/Extensions/migration.py
-      Alan fixed it so Ownership is carried over properly and reindexes newsite after migration
-    - portal_status_message is shown when a object is created, type_name has been created.
+    - put Content-Language to use here.Language() or 
+    - portal_properties.default_language
+    - changed 'My Stuff' to 'My Folder' 
+    - moved edit_forms in with content
+    - moved event_xxxx into plone_3rdParty/CMFCalendar for consitency
+    - Issue 204 fixed
+    - Sigve Tjora fixed the migration machinery - incredible job! 
+      CMFPlone/Extensions/migration.py
+      Alan fixed it so Ownership is carried over properly and reindexes newsite 
+      after migration
+    - portal_status_message is shown when a object is created, type_name has 
+      been created.
     - Ownership form is wired up but is not visible by default
     - added quick_undo script, one step undo.  not visible by default
     - removed the download tab on File view since we have a button
@@ -47,26 +62,33 @@
       thanks ronnix for pointing this out.
       We do this by adding properties on the filesystem i.e.
       search.pt.properties to give search the title=Search results
-    - <shiver> added more logic to breadcrumbs so you can see templates i.e. search tab will show
+    - <shiver> added more logic to breadcrumbs so you can see templates i.e. 
+      search tab will show
       home >> search form - fixes issue 211 </shiver>
 
 1.0 alpha4
     - publishing now works without javascript. #202
-    - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will need updating if migrate)
+    - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will 
+      need updating if migrate)
     - add ownership_form (so you can change ownership)
-    - Private plone sites now keep their portal_registration tool, resolving #243, #250.
-    - Anonymous users do not have Add portal member permission in private plone sites anymore.
+    - Private plone sites now keep their portal_registration tool, resolving #
+      243, #250.
+    - Anonymous users do not have Add portal member permission in private plone 
+      sites anymore.
     - Members folder is no longer cataloged upon reincarnation as a Plone Folder
-    - formtooltips for anonymous users are defaulted to portal_memberdata setting
-    - fixed FreeBSD segfault problem in forms caused by IndexIterator inheriting from ZTUtils.Iterator
+    - formtooltips for anonymous user are defaulted to portal_memberdata setting
+    - fixed FreeBSD segfault problem in forms caused by IndexIterator inheriting
+      from ZTUtils.Iterator
     - Issue 236 resolves - verified by Michael Dietrich 
-    - search_form changed to use portal_type instead of Type thanks to Buehlmann and JeffK
+    - search_form changed to use portal_type instead of Type thanks to Buehlmann
+      and JeffK
     - moved all content forms to portal_form machinery
     - 'editor view' wasnt going to the parent to list folder_contents
     - added personazlie_form/reconfig_form to portal_from machinery
-    - when you changed password it was forwarding rather than redirecting to personalize_form and losing
-      the portal_form proxy
-    - portal_status_messages have been added for all the validate_xxx and xxx_edit forms
+    - when you changed password it was forwarding rather than redirecting to
+      personalize_form and losing the portal_form proxy
+    - portal_status_messages have been added for all the validate_xxx and 
+      xxx_edit forms
     - news form now has links to Creators homepage
     - first cut at a migration script look Extensions/migration.py
     - many more changes 
@@ -76,92 +98,138 @@
     - if your object didnt have a title in a topic it wouldnt show the id
     
 1.0 alpha3
-    - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
-    - reconfig_form for site wide configuraiton has form validation, and exposes loads of configuration options
-    - change in main_template for portal_types to get object_tabs from folder/object has been pushed into a property on portal
-    - added 'use_folder_tabs' property on portal object.  portal_type ids that are listed will get folder_actions instead of
+    - removed tabs, request.set('disable_border',1) from: news, roster, search, 
+      and search_form
+    - reconfig_form for site wide configuraiton has form validation, and exposes 
+      loads of configuration options
+    - change in main_template for portal_types to get object_tabs from 
+      folder/object has been pushed into a property on portal
+    - added 'use_folder_tabs' property on portal object.  portal_type ids that 
+      are listed will get folder_actions instead of
       object_actions in main_template.
-    - fixed edit_topicCriteria (has debug code in it) added navprops entry and modified script to use getNextRequestFor
+    - fixed edit_topicCriteria (has debug code in it) added navprops entry and 
+      modified script to use getNextRequestFor
     - Members now have default Title/Description Issue 206
-    - if Casey's incredible ExternalEditor application is installed in ZOPE the CustomizationPolicy will integrate it into Plone
+    - if Casey's incredible ExternalEditor application is installed in ZOPE the 
+      CustomizationPolicy will integrate it into Plone
       this is the ext_editor boolean property on the Portal Object
     - portal_factory tool has been added - Geoff Davis (freakin brilliant)
-      this exists to smooth over the fact that you can have empty orphaned objects if someone leaves after they
-      create a object but before they 'save' changes.  this tool will create a proxy object that does not exist
+      this exists to smooth over the fact that you can have empty orphaned 
+      objects if someone leaves after they
+      create a object but before they 'save' changes.  this tool will create a 
+      proxy object that does not exist
       in the ZODB and the form will be rendered against this proxy object.  
     - portal_form tool has been added - Geoff Davis (what a great idea!)
-      this co-ordinates the instance, portal_navigation and the edit forms and acts like a 'Controller'
-    - portal_properties has been extended to now be a container - Alan and Geoff Davis
-    - tabindex is now being used to generate the tabindex numbers for all fields - thanks to Helge!!
-    - Topic interface has been completely skinned - cheers to Helga/Alex duo!
+      this co-ordinates the instance, portal_navigation and the edit forms and 
+      acts like a 'Controller'
+    - portal_properties has been extended to now be a container - Alan and Geoff
+      Davis
+    - tabindex is now being used to generate the tabindex numbers for all fields
+      - thanks to Helge!!
+    - Topic interface has been completely skinned - cheers to Helge/Alex duo!
     - if event data isnt set it now shows back up in the form - helge
     - integrated XSDHTMLEditor and a way to add other "popup" editor boxes
     - publishing tab will not show up for anonymous #224
     - added more options in 'plone setup' form
-    - new Portal wide Property, 'use_folder_tabs' needs to know what Types are considered 'Folders' so it shows
-      folder tabs and not object tabs.  Wiki/Collector are examples of folderish objects that we dont want to see
+    - new Portal wide Property, 'use_folder_tabs' needs to know what Types are 
+      considered 'Folders' so it shows
+      folder tabs and not object tabs.  Wiki/Collector are examples of folderish 
+      objects that we dont want to see
       folder tabs for.
-    - Issues resolves: 206, 214, 173, 229, 106, 180 (removed CANCEL for now), 198, 233 and others
-    - 'select all' column has been added to folder_contents and general folder_contents refactoring
+    - Issues resolves: 206, 214, 173, 229, 106, 180 (removed CANCEL for now), 
+      198, 233 and others
+    - 'select all' column has been added to folder_contents and general 
+      folder_contents refactoring
     - you can now specify a Default Language for the Portal
 
 1.0alpha2
 
-    - Added localLongTimeFormat, set to '%Y-%m-%d %I:%M %p' by default. Used by Events.
-    - Publish tabs now appear on all content types if they have available tranistions
-    - conifigurable tabs and buttons have change:
+    - Added localLongTimeFormat, set to '%Y-%m-%d %I:%M %p' by default. Used by 
+      Events.
+    - Publish tabs now appear on all content types if they have available 
+      tranistions
+    - configurable tabs and buttons have change:
         - local_buttons (in folder_contents form) is now folder_buttons
-	- local_tabs (on all pages that showborder) are now object_tabs
-	- global_tabs (at the top of the page) are now portal_tabs
+	    - local_tabs (on all pages that showborder) are now object_tabs
+	    - global_tabs (at the top of the page) are now portal_tabs
     - change status ('mass publishing') now works as expected
     - personalize_form was reseting values on form validation failure
-    - on the rename form you can now change the id and title (maybe the id should be optional)
+    - on the rename form you can now change the id and title (maybe the id 
+      should be optional)
     - the way forms interacted with editing scripts has changed:
-        - form validation has been refactored (basiclly the only thing you need in validate_xxx.py)
-	- the actual editing scripts call plone_utils.getNextXXXXFor() to get the next screen to goto 
-	- look at plone_scripts/form_scripts/navigation_properties.props if you want to change this.
+        - form validation has been refactored (basiclly the only thing you need 
+          in validate_xxx.py)
+	- the actual editing scripts call plone_utils.getNextXXXXFor() to get the 
+      next screen to goto 
+	- look at plone_scripts/form_scripts/navigation_properties.props if you want
+      to change this.
     - bad id's will not escape the validation machinery
-    - if you want to disable registration, unregister the registration tool from portal_actions and then remove it
-    - added small IndexIterator utility class (PloneUtilities.IndexIterator), we should use this for tabindexs
-    - metadata_edit_form now has mimetypes/languages boxes that work, also popup calendar works now as well
-    - some python scripts did not have context namespaces bound to them (on the filesystem)
-    -  __init__.py files that declard modules in folders if had 0 bytes made winzip unhappy
-    - folder_contents will no longer show empty dropdown/add new item button or (up one level) if they are not usable
-    - on Plone site creation we now add another workflow defnition, folder_workflow which is bound to Folder types.
-    - instead of having a Document as index_html, we use a PageTemplate that fills out the master macro and renders
-      the CookedBody() of the old index_html, now affectionally called 'frontpage'
-    - added a Navigator Controller.  navigational_properties.props is how you customize the various page transitions
+    - if you want to disable registration, unregister the registration tool from
+      portal_actions and then remove it
+    - added small IndexIterator utility class (PloneUtilities.IndexIterator), we
+      should use this for tabindexs
+    - metadata_edit_form now has mimetypes/languages boxes that work, also popup
+      calendar works now as well
+    - some python scripts did not have context namespaces bound to them (on the 
+      filesystem)
+    -  __init__.py files that declard modules in folders if had 0 bytes made 
+      winzip unhappy
+    - folder_contents will no longer show empty dropdown/add new item button or 
+      (up one level) if they are not usable
+    - on Plone site creation we now add another workflow defnition, 
+      folder_workflow which is bound to Folder types.
+    - instead of having a Document as index_html, we use a PageTemplate that 
+      fills out the master macro and renders
+      the CookedBody() of the old index_html, now affectionally called 
+      'frontpage'
+    - added a Navigator Controller.  navigational_properties.props is how you 
+      customize the various page transitions
       - everything has been (should be) wired up to the new machinery
-    - view_source.py has been added to Extensions. use it by http://site/object/view_source?template_id=$id
-      - create external method, id=view_source, module=CMFPlone.view_source, function=getObjectSource
-    - topics have been skinned.  subtopics now share their listing/management of subtopics with folder_contents
-    - removed 'my workspace' (not visible action) until CMFWorkspaces and friends land   
-    - undo form now will return you to where you were when you went to the undo form 
-    - added a PrivateSiteCustomizationPolicy that makes a plone site "private" (preconfigures workflow's) -- you will still need to 
-    customize the header to get rid of the search_form tal:condition="not: here/portal_membership/isAnonymousUser"
+    - view_source.py has been added to Extensions. use it by 
+      http://site/object/view_source?template_id=$id
+      - create external method, id=view_source, module=CMFPlone.view_source, 
+        function=getObjectSource
+    - topics have been skinned.  subtopics now share their listing/management of
+      subtopics with folder_contents
+    - removed 'my workspace' (not visible action) until CMFWorkspaces and 
+      friends land   
+    - undo form now will return you to where you were when you went to the undo 
+      form 
+    - added a PrivateSiteCustomizationPolicy that makes a plone site "private" 
+      (preconfigures workflow's) -- you will still need to 
+      customize the header to get rid of the search_form 
+      tal:condition="not: here/portal_membership/isAnonymousUser"
     - added metadata tab to Event contentType in DefaultCustomizationPolicy 
     - fixed issue 163
     - metadata tab is now labeled Properties
     - added XSDHTMLEditor to document form for trial before 1.0
 
 1.0a - Boards of Canada Release:
-    - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
-    - specialized WorkflowTool and got rid of sloppy External Methods, getWorklists and getAvailableTransitions
+    - refactored how edit scripts work.  lots of heavy lifting is now done in 
+      plone_utils.editContent()
+    - specialized WorkflowTool and got rid of sloppy External Methods, 
+      getWorklists and getAvailableTransitions
     - added a Utility object, plone_utils
     - tooltips and ID boxes in edit_forms can be turned off in personal settings
-    - Tres added _cloneActions to ActionProviderBase and co. API  and gave diff to CustomizationPolicy. All hail Tres!
-    - created a CustomizationPolicy for alternate Customizations to be applied to Plone on site creation
+    - Tres added _cloneActions to ActionProviderBase and co. API  and gave diff 
+      to CustomizationPolicy. All hail Tres!
+    - created a CustomizationPolicy for alternate Customizations to be applied 
+      to Plone on site creation
       these can be seperate products that register with the Portal.addPolicy()
-    - all forms were majorly refactored: popup help boxes were added, i18n namespaces were used, general html cleanup
-    - license changed to GPL, companies can get Plone licensed under BSD - they will need to contact Plone Industries
+    - all forms were majorly refactored: popup help boxes were added, i18n 
+      namespaces were used, general html cleanup
+    - license changed to GPL, companies can get Plone licensed under BSD - they
+      will need to contact Plone Industries
     - added transaction notes (exposed on the undo form)
     - added form validation to password_form
     - renamed recent_news to news
     - removed duplicate content_xxxx_forms (publishing forms)
-    - consolidated the content_status_history and content_publishing_history into content_status_history (bad name)
+    - consolidated the content_status_history and content_publishing_history 
+      into content_status_history (bad name)
       which can publish 1 object or multiple objects.
     - folder_contents now uses actions whose cataegories are local_buttons
-    - fullname was not being used.  we took it out on personalize form and register form (you can add this back)
+    - fullname was not being used.  we took it out on personalize form and 
+      register form (you can add this back)
     - metadata_edit_form Discussionabiltiy is now radio boxes not dropdown
     - issue #30 - autogenerated passwords only partially being honored
     - issue #58 resolved
@@ -170,116 +238,170 @@
     - issue #51 resolved
     
 0.9.9 - Bola Release:
-    - Replaced all references to TextColor with FontColor, added headingFontColor property
+    - Replaced all references to TextColor with FontColor, added 
+      headingFontColor property
     - New undo page
     - New search results page   
     - All CSS and most HTML validate according to W3C's validators
-    - fixed up MembershipTool which will add a homepage which will partcipate in workflow
-    - added a FormulatorTool (portal_form_validation) which is a *thin* wrapper around Formulator and exposes
-      minimal amounts of functionality.  I didnt know about CMFFormsTool when I did this (cmf.zope.org not doing its job)
-      so I will have to take another look at whether or not we should go with this more advanced component. 
-    - in CSS we have: class="label required" now, and "field error" if a error has occurred.
-    - added validation for all xxx_edit_forms, look in plone_scripts/validate_xxxxxx
+    - fixed up MembershipTool which will add a homepage which will partcipate 
+      in workflow
+    - added a FormulatorTool (portal_form_validation) which is a *thin* wrapper 
+      around Formulator and exposes
+      minimal amounts of functionality.  I didnt know about CMFFormsTool when I 
+      did this (cmf.zope.org not doing its job)
+      so I will have to take another look at whether or not we should go with 
+      this more advanced component. 
+    - in CSS we have: class="label required" now, and "field error" if a error 
+      has occurred.
+    - added validation for all xxx_edit_forms, look in 
+      plone_scripts/validate_xxxxxx
     - removed plone_images/img, all images are now in plone_images
-        WARNING: you should always specify the full url to the image or caching will not occur. ${here/portal_url}/image.gif
-        You want to cache as many images on the client side (or in caches in front of your ZOPE) as possible.
-    - navigateXXXX scripts were fixed (thanks to AndyD) which were causing some authentication errors
-    - seperated form specific scripts into plone_form_scripts (this includes validation scripts)
-    - file_view when you download no longers puts trailing 0's and uploaded file and image views
+        WARNING: you should always specify the full url to the image or caching 
+        will not occur. ${here/portal_url}/image.gif
+        You want to cache as many images on the client side (or in caches in 
+        front of your ZOPE) as possible.
+    - navigateXXXX scripts were fixed (thanks to AndyD) which were causing some 
+      authentication errors
+    - seperated form specific scripts into plone_form_scripts (this includes 
+      validation scripts)
+    - file_view when you download no longers puts trailing 0's and uploaded file
+      and image views
     - file and images will change id's to the uploaded file (strip extension).
-      if you -specify- an id, like all other objects the file will be renamed to this id regardless of uploaded file
+      if you -specify- an id, like all other objects the file will be renamed to
+      this id regardless of uploaded file
       there is no validation on file and images
-    - fixed folder_edit (renaming was broke) also added validation - if you specify a id, the title is not mandatory.
-      we dont want people to have autogenerated ID's in the folder_contents listing
+    - fixed folder_edit (renaming was broke) also added validation - if you 
+      specify a id, the title is not mandatory.
+      we dont want people to have autogenerated ID's in the folder_contents 
+      listing
     - plone_calendar added - thanks to AndyD
         calendar now works out of the box (after running installation script)
     - fixed ordinary view and 'up one level'.    
     - ability to remove MyPortrait
-    - put absolute paths in for stylehseets (in the @imports we do that in a script, CSSImports.py)
-    - all stylesheets now send back RESPONSE headers that promote caching on clients
-    - in Install/Upgrade we set a property, allowAnonymousViewAbout which toggles whether or not anonymous users
-        should see a content's about box.  by default it is turned off. content_template was impacted        
-    - navigation works nicely if you are logged in. you can 'go up one level' to the root URL and then gets it folder_contents
-        should promote people to put content in-place.
-    - join_form is now validated using portal_form_validation, we need people to review this code!
+    - put absolute paths in for stylehseets (in the @imports we do that in a 
+      script, CSSImports.py)
+    - all stylesheets now send back RESPONSE headers that promote caching on 
+      clients
+    - in Install/Upgrade we set a property, allowAnonymousViewAbout which 
+      toggles whether or not anonymous users
+      should see a content's about box.  by default it is turned off. 
+      content_template was impacted        
+    - navigation works nicely if you are logged in. you can 'go up one level' 
+      to the root URL and then gets it folder_contents
+      should promote people to put content in-place.
+    - join_form is now validated using portal_form_validation, we need people 
+      to review this code!
     - Plone Folder is now the default Folder type inside a portal.  
-        - if there is no index_html defined it will display Directory Listing (like Apache) 
+        - if there is no index_html defined it will display Directory Listing 
+          (like Apache) 
           - folder_listing.pt uses Access Contents Information permission
         - if index_html it renders that
-        - currently old folders are not converted to the Plone Folders in a website.  we need to migration script to do this.
-    - CSS can now be manipulated by CSSValues.py, dont need to customize to the CSS themselves. This means you can keep your colors even if we change the CSS files.
-    - individual objects can be toggled discussionable in their metadata edit forms (taken from CMF1.2 metadata form)
+        - currently old folders are not converted to the Plone Folders in a 
+          website.  we need to migration script to do this.
+    - CSS can now be manipulated by CSSValues.py, dont need to customize to the 
+      CSS themselves. This means you can keep your colors even if we change the 
+      CSS files.
+    - individual objects can be toggled discussionable in their metadata edit 
+      forms (taken from CMF1.2 metadata form)
     - discussions attached to a object use structured-text
-    - from folder_contents you can now publish multiple objects if you have permission
-    - join_box doesnt show up if anonymous doenst have access to add portal member
+    - from folder_contents you can now publish multiple objects if you have 
+      permission
+    - join_box doesnt show up if anonymous doenst have access to add portal 
+      member
     - Netscape 4.x graceful degrading added. It has its own CSS files.
-    - review_box shows all content that matches any worklist where you qualify -- NOTE: this means DCWorkflow has now become -required- and you should use worklists to assign items to people.  
-    - if you are in multiple worklists, you will not get duplicate entries in review list in your UI ;)
+    - review_box shows all content that matches any worklist where you qualify 
+      NOTE: this means DCWorkflow has now become -required- and you should use 
+      worklists to assign items to people.  
+    - if you are in multiple worklists, you will not get duplicate entries in 
+      review list in your UI ;)
     - took out unused getObject() calls in search.pt 
-    - Changed ALL pages to use main_template as their template, instead of the previous two portal_template and content_template.
-      This means we are compatible with all existing CMF Products, although they can break our look a wee bit if they are coded
+    - Changed ALL pages to use main_template as their template, instead of the 
+      previous two portal_template and content_template.
+      This means we are compatible with all existing CMF Products, although 
+      they can break our look a wee bit if they are coded
       badly, which a lot of Products unfortunately are.
     - Added new method to deal with CSS values - stylesheet_properties.props
-    - standard_html_header/footer are now in place for backwards compatibility. thanks Evan Simpson!
+    - standard_html_header/footer are now in place for backwards compatibility. 
+      thanks Evan Simpson!
     - Collector and Wiki have been minimally skinned (plone_3rdParty)
     - added default content to the root of Plone, index_html
-    - moved most of the boxes into plone_ui_slots (trying to lighten portal_boxes), added FSDirectoryView for ui_slots
-    - you can now create a Plone site by simply 'Add Plone Site' from inside the ZMI (thanks Lalo!)
+    - moved most of the boxes into plone_ui_slots (trying to lighten 
+      portal_boxes), added FSDirectoryView for ui_slots
+    - you can now create a Plone site by simply 'Add Plone Site' from inside 
+      the ZMI (thanks Lalo!)
     - suppressed empty comment history in content_status_history
     - Calendar slot works as Expected (only published events show up)
     - rejected content status no longer redirects to a search page
-    - if you upload a binary into a Document object, form validation gripes [useability issue]
+    - if you upload a binary into a Document object, form validation gripes 
+      [useability issue]
     - CMFTopics pretty much work, there is a bit more work to do.
-    - personalize.py and other CMF1.3 issues have been resolved (setting a member properties API has changed in 1.2->1.3)
-    - showEditableBorder has gone through quite a bit of changes.. still is wrong
+    - personalize.py and other CMF1.3 issues have been resolved (setting a 
+      member properties API has changed in 1.2->1.3)
+    - showEditableBorder has gone through quite a bit of changes.. still is 
+      wrong
     - Comments have been modified - they are still unuseable ;(
-    - Lucas Marshall pointed out a javascript error in the calendar slot on MacOS and a fix 8)
+    - Lucas Marshall pointed out a javascript error in the calendar slot on 
+      MacOS and a fix 8)
     - News items can now use structured-text in the edit_form
     - my_worklist works correctly and sorts in ascending order for modified
     - you can now edit text of File objects who has text content_type
     - added StringIO string access
-    - added 'change status' button that allows mass publishing of folder contents
+    - added 'change status' button that allows mass publishing of folder 
+      contents
     - refactored filesystem directory view skin structure 
       - plone_scripts contains scrips and supporting form_scripts
       - plone_templates containers site wide templates and supporting ui_slots
       - plone_styles container default style and optional plone_themes
-    - base href is now compatible with how other CMF Products work.  This means you can use other CMFProducts out of hte box (hopefully ;)
+    - base href is now compatible with how other CMF Products work.  This 
+      means you can use other CMFProducts out of hte box (hopefully ;)
     - beginnings of workspace
-    - moved back to 2 column layout (CMFPlone/Extensions/Upgrade.py migrate2ColumnLayout function)
-    - no longer have to go to folder_factories to create a certain type, can do it from folder_contents
+    - moved back to 2 column layout (CMFPlone/Extensions/Upgrade.py 
+      migrate2ColumnLayout function)
+    - no longer have to go to folder_factories to create a certain type, 
+      can do it from folder_contents
     - many more changes and cleanups
 
 0.9.8 - Ulrich Schnauss Release:
     - renaming of objects 
     - more mozilla enhancements
     - calendar support code was optimized (AndyD) 
-    - on Memberarea creation creates a .personal folder for Portrait and future private items (by convention)
+    - on Memberarea creation creates a .personal folder for Portrait and 
+      future private items (by convention)
     - fixed it so that http:// isnt always added to link's remote_url
     - other things I forgot ;'(
 
 0.9.5 - 1/31/02:
-    - enormous overhaul of entire UI.  UI now works with Mozilla.  Install script installs skins
+    - enormous overhaul of entire UI.  UI now works with Mozilla.  
+      Install script installs skins
       navigation boxes work (left hand side)
     - worked out most deadends
     - some security calls have been put in place
-    - navigation is much nicer and lends itself to more real-world use of CMF as filesystem/document sharing
-    - some cleaning up of code, lots of inefficiencies remaining (like listFolderContents)
+    - navigation is much nicer and lends itself to more real-world use of CMF as
+      filesystem/document sharing
+    - some cleaning up of code, lots of inefficiencies remaining (
+      like listFolderContents)
       breadcrumbs overhauled
     - comments have been changed, still more to go before 1.0
-    - some visual queues exist for users (green border around objects which can be edited)
-    - plone can now be skinned *entirely* using CSS and overriding the /img folder
-        NOTE: you will need to have copies of all the images in your /img folder
-    - system should never prompt someone for Username/password if they are logged in
-      all xxx_edit scripts return back to objects view 
+    - some visual queues exist for users (green border around objects which 
+      can be edited)
+    - plone can now be skinned *entirely* using CSS and overriding the /img 
+      folder
+      NOTE: you will need to have copies of all the images in your /img folder
+    - system should never prompt someone for Username/password if they are 
+      logged in all xxx_edit scripts return back to objects view 
     - changing ID works in xxx_edit_form
-    - you can now customize your 'portrait' in /Members/roster by doing the following:
+    - you can now customize your 'portrait' in /Members/roster by doing the 
+      following:
       - create a folder, .personal in your home folder
       - create a image in .personal called MyPortrait
       - publishing your /Members/xxx/.personal/MyPortrait image
-    - folder_contents now sort (case insensitive) alphabetically by default, no more 'pagination' in batches of 10
+    - folder_contents now sort (case insensitive) alphabetically by default, 
+      no more 'pagination' in batches of 10
     - added current server time in the top right corner ;)
-    - content_status_history has been simplified -- still hardcoded transitions ;( 
-    - BSD license added (not final license, as will require some non-visual (?) attribution)  
+    - content_status_history has been simplified -- still hardcoded 
+      transitions ;( 
+    - BSD license added (not final license, as will require some non-visual (?) 
+      attribution)  
 
 0.9:
     - load of fixes, too many to even attempt to keep track of ;)
@@ -294,5 +416,6 @@
 
 0.5:
   - fixed search form up
-  - fixed folder_contents (not have an extended_edit, since we muck w/ metadata alot)
+  - fixed folder_contents (not have an extended_edit, since we muck w/ metadata
+    alot)
  

@@ -5,9 +5,11 @@
       Tree-based Navigation
     </div>
 
+<!--
     <div metal:use-macro="here/navigation_slot/macros/navigationBox">
       Old Navigation
     </div>
+-->
 
     <div tal:condition="python:test(not here.portal_membership.isAnonymousUser() or 
                                     here.portal_properties.allowAnonymousViewAbout, 1, 0)">
