@@ -2,7 +2,17 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.0.3 - Noname
+Plone 2.0.4 - (no name yet) - Released (no date yet)
+
+    - Added a simple check for the existence of the template 
+      'global_languageselector' - this will allow the different
+      multilingual implementations to hook into the area just below
+      the documentActions to display language switchers. Macro name
+      should be 'language' inside the template. See PloneLanguageTool
+      for an example. This is the recommended location for language
+      switchers.
+
+Plone 2.0.3 - Noname - Released 20. May 2004
 
     - Login portlet wasn't using the 'label' tag, corrected.
 
@@ -18,7 +28,7 @@ Plone 2.0.3 - Noname
       of the search term in simple searchs.
       [azy]
 
-Plone 2.0.2 - Hicks
+Plone 2.0.2 - Hicks - Released 13. May 2004
 
     - Added the 'listingNext' and 'listingPrevious' class for the batch 
       navigator. The old span.next/previous will still work, but are 

@@ -1,6 +1,7 @@
 <metal:page define-macro="master"><metal:doctype define-slot="doctype"><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"></metal:doctype>
 <metal:block define-slot="top_slot" />
 <metal:block use-macro="here/global_defines/macros/defines" />
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
@@ -48,7 +49,7 @@
 
         <a class="hiddenStructure"
            tal:attributes="href string:${current_page_url}#documentContent"
-           i18n:translate="label_skiptocontent">Skip to content.</a>
+           i18n:translate="label_skiptocontent">Skip to content</a>
 
            <a metal:use-macro="here/global_logo/macros/portal_logo">
              The portal logo, linked to the portal root
