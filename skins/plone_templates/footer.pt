@@ -9,7 +9,7 @@
 Plone and its visual design is Copyright &copy; 2000-<span i18n:name="current_year" tal:define="now modules/DateTime/DateTime" tal:content="now/year" />
 by
 <span i18n:name="limi"><a href="http://www.plonesolutions.com">Alexander Limi</a></span>,
-<span i18n:name="runyaga"><a href="http://www.enfoldtechnology.com">Alan Runyan</a></span>,
+<span i18n:name="runyaga"><a href="http://www.enfoldsystems.com">Alan Runyan</a></span>,
 <span i18n:name="blacktar"><a href="http://blacktar.com">Vidar Andersen</a></span>.
 </span>
 
