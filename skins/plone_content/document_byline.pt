@@ -25,19 +25,11 @@
 
     <tal:contrib condition="here/Contributors">
         <span i18n:translate="label_contributors">Contributors</span>:
-              
-        <span tal:replace="python: ', '.join(here.Contributors)">Mary</span>
-
-        <br />
+        <span tal:replace="python: ', '.join(here.Contributors())">Mary</span> <br />
     </tal:contrib>
     
     <tal:rights condition="here/Rights">
-        <span i18n:translate="label_copyrights">Copyrights</span>:
-              
-        <span tal:replace="here/Rights">NiceCorp Inc.</span>
-
-        <br />
-
+        <span tal:replace="here/Rights">Copyleft NiceCorp Inc.</span> <br />
     </tal:rights>
 
     <span i18n:translate="box_last_modified">Last modified</span>
