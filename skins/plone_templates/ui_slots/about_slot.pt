@@ -47,7 +47,7 @@
     	     tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state', '')"
     	     tal:condition="review_state">
         
-            <strong>Status</strong> <br />
+            <strong i18n:translate="label_state">State</strong> <br />
         
             <span class="private"
                   tal:content="review_state"
