@@ -44,8 +44,10 @@
                        tal:attributes="value id" />
             </span>
             <span class="info">
-            Enter the ID of the image. If you don't know what this means, 
-            just leave it at the supplied value.
+            Enter the ID of the image. This is the part that will show up as part
+            of the web address. This should be short, descriptive
+            and preferrably not contain spaces, underscores or mixed case. Example:
+            "expense-graph-2002"
             </span>
         </div>
         
@@ -62,6 +64,7 @@
                 <input type="text" 
                        name="field_title" 
                        value="#" 
+                       size="25"
                        tal:attributes="value Title" />
 
             </span>

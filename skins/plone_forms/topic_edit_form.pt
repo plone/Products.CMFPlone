@@ -36,8 +36,10 @@
                       tal:attributes="value id" />
               </span>
               <span class="info">
-              Enter the ID of the topic. If you don't know what this means,
-              just leave it at the supplied value.
+            Enter the ID of the topic. This is the part that will show up as part
+            of the web address. This should be short, descriptive
+            and preferrably not contain spaces, underscores or mixed case. Example:
+            "list-all-reports"
              </span>
         </div>
 

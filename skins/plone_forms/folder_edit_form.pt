@@ -51,8 +51,10 @@
                                        readonly python:test(readonly, 'readonly', '');" />
             </span>
             <span class="info">
-            Enter the ID of the folder. If you don't know what this means, 
-            just leave it at the supplied value.
+            Enter the ID of the folder. This is the part that will show up as part
+            of the web address. This should be short, descriptive
+            and preferrably not contain spaces, underscores or mixed case. Example:
+            "my-pictures"
             </span>
         </div>
         
@@ -69,6 +71,7 @@
                 <input type="text" 
                        name="field_title" 
                        value="#" 
+                       size="25"
                        tal:attributes="value Title" />
 
             </span>
