@@ -1,5 +1,5 @@
 from Products.CMFActionIcons.ActionIconsTool import ActionIconsTool as BaseTool
-from Products.CMFActionIcons.permissions import View, ManageSite
+from Products.CMFActionIcons.permissions import View
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
