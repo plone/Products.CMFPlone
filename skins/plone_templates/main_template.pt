@@ -27,9 +27,9 @@
   <metal:block metal:fill-slot="base">
     <metal:block metal:define-slot="base">
        <base href=""
-             tal:condition="here/isPrincipiaFolderish|nothing"
+             tal:condition="here/aq_explicit/isPrincipiaFolderish|nothing"
              tal:attributes="href python:here.absolute_url()+'/'" />
-       <metal:block tal:condition="not:here/isPrincipiaFolderish|nothing">
+       <metal:block tal:condition="not:here/aq_explicit/isPrincipiaFolderish|nothing">
           <base href=""
                 tal:define="path python:'/'.join(here.portal_url.getRelativeContentPath(here)[:-1])"
                 tal:attributes="href python:here.portal_url()+'/'+path+test(len(path)>0,'/','')" />
