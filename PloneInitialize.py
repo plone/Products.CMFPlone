@@ -26,7 +26,7 @@ old_initialize = OFS.Application.initialize
 def go(app):
     """ Initialize the ZODB with Plone """
     old_initialize(app)
-
+    out = []
     # nothing no error at all should
     # stop the creation of the db
     # that would truly suck
