@@ -1,6 +1,7 @@
 x.x
 
     - Added localLongTimeFormat, set to '%Y-%m-%d %I:%M %p' by default. Used by Events.
+    - Publish tabs now appear on all content types if they have available tranistions
 
 1.0a - Boards of Canada Release:
     - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
