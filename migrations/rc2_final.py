@@ -3,7 +3,7 @@ from Products.CMFPlone import MigrationTool
 def rc2Final(portal):
     """ Upgrade from Plone 1.0 RC2 to Final"""
 
-    p = portal.portal_properties
+    p = portal.portal_properties.site_properties
     e = getattr(p, 'available_editors', [])
 
     # if there is the old editor in there,
