@@ -1,3 +1,122 @@
+2003-10-28 03:37  tiran
+
+	* MembershipTool.py (Plone-2_0-branch): createMemberarea: member_id
+	  is optional (see CMFCore.interfaces.portal_membership: Create a
+	  member area for 'member_id' or authenticated user.
+
+2003-10-28 03:29  tiran
+
+	* LargePloneFolder.py, PloneFolder.py, tests/testInterfaces.py
+	  (Plone-2_0-branch): fixed #1832: disable orderable feature for
+	  LargePloneFolder
+
+2003-10-28 02:34  runyaga
+
+	* skins/: plone_forms/login_password.pt, plone_scripts/logged_in.py
+	  (Plone-2_0-branch): issue 1439
+
+2003-10-28 02:02  runyaga
+
+	* skins/: plone_form_scripts/content_status_modify.cpy,
+	  plone_scripts/date_components_support.py (Plone-2_0-branch):
+	  issue 1743 resolved
+
+2003-10-28 01:46  runyaga
+
+	* skins/: plone_form_scripts/content_status_modify.cpy,
+	  plone_scripts/contentbar_status_modify.py (Plone-2_0-branch):
+	  attempt to clean up nd fix 1743
+
+2003-10-28 00:06  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): use
+	  the state-expired class instead of 'expired'
+
+2003-10-28 00:03  runyaga
+
+	* skins/plone_scripts/date_components_support.py
+	  (Plone-2_0-branch): calendar works now!
+
+2003-10-28 00:01  jok2
+
+	* skins/plone_prefs/prefs_groups_overview.pt.metadata
+	  (Plone-2_0-branch): correct typo in previous commit
+
+2003-10-27 23:54  jok2
+
+	* skins/plone_prefs/prefs_groups_overview.pt.metadata
+	  (Plone-2_0-branch): Add .metadata for prefs_groups_overview.pt.
+	  Also test if cvs commit works.
+
+2003-10-27 21:45  buehlmann
+
+	* skins/plone_scripts/toLocalizedTime.py (Plone-2_0-branch): we
+	  just try in line 38 to transform 'time' to a DateTime if it's a
+	  string. A TypeError may be raised. If so, we assume that time is
+	  already a DateTime and pass on.
+
+2003-10-27 21:33  tiran
+
+	* tests/testInterfaces.py (Plone-2_0-branch): renamed some methods
+	  added support for testing instances
+
+2003-10-27 21:22  k_vertigo
+
+	* PloneInitialize.py (Plone-2_0-branch): I'm not sure who came up
+	  with patching OFS.App but that was a seriously *bad* idea. please
+	  discuss this on the plone-dev list.
+
+2003-10-27 21:16  redcor
+
+	* skins/plone_prefs/reconfig_form.cpt (Plone-2_0-branch): issue
+	  1616. Dein Wunsch ist mein Befehl!
+
+2003-10-27 14:53  tesdal
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): Fixed a bug
+	  that resulted in duplicate actions.
+
+2003-10-27 13:15  limi
+
+	* skins/plone_styles/: plonePresentation.css.dtml,
+	  plonePrint.css.dtml (Plone-2_0-branch): Some old variables from
+	  stylesheet_properties were left. Removed.
+
+2003-10-27 07:49  runyaga
+
+	* skins/: plone_portlets/calendar_slot.pt,
+	  plone_scripts/date_components_support.py (Plone-2_0-branch): Bob
+	  commands you to scream 'Python 2.3' - NOW! this was such a PITA
+	  because of DateTime's crappy API.  This still does not work -
+	  100% Bernard needs to look at it.
+
+	    - The calendar_slot is *much* cleaner
+
+	    - We can get rid of the extract_date_components.py (let bernard
+	  do that)
+
+	    - Added a much more flexible date_componenets_support.py file
+	  which is
+	    a good example of 'best practices' (dont mind the DateTime
+	  mess) of working
+	    with ZPT from Python Script.
+
+2003-10-27 07:11  runyaga
+
+	* skins/plone_scripts/date_components_support.py
+	  (Plone-2_0-branch): support script for fancy calendar_popup if I
+	  check in the new calendar_slot thigns will no longer work waiting
+	  for bernard to commit to fixing the rest before I check in
+
+2003-10-27 05:20  runyaga
+
+	* skins/plone_portlets/login_slot.pt (Plone-2_0-branch): fix the
+	  tabindex for login_slot w/ the login_form
+
+2003-10-27 05:12  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-10-27 01:13  chrism
 
 	* skins/plone_form_scripts/discussion_reply.py (Plone-2_0-branch):
