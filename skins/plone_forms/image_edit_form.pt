@@ -40,10 +40,10 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:id="id">Short Name</span>
+                <span i18n:translate="">Short Name</span>
             
                 <div id="id_help" 
-                     i18:id="id_help"
+                     i18:translate="id_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the Short Name of the image. This is the part that will show up as part
@@ -76,10 +76,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label">
-                <span i18:id="title">Title</span>
+                <span i18:translate="title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:id="title_help"
+                     i18n:translate="title_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the image.
@@ -107,10 +107,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="description">Description</span>
+                <span i18n:translate="description">Description</span>
                 
                 <div id="description_help" 
-                     i18n:id="description_help"
+                     i18n:translate="description_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the image. 
@@ -135,9 +135,9 @@
                          file request/file | here/file | nothing;">
             
             <div class="label required">
-                <span i18n:id="image">Image</span>
+                <span i18n:translate="image">Image</span>
                 <div id="image_help" 
-                     i18n:id="image_help"
+                     i18n:translate="image_help"
                      class="help" 
                      style="visibility:hidden">
                 Select the image to be added by clicking the "Browse" button.

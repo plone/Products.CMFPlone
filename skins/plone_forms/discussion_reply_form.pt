@@ -30,7 +30,7 @@
     
         <div class="row">
         
-            <div class="label" i18n:id="subject">
+            <div class="label" i18n:translate="">
             Subject
             </div>
             
@@ -47,7 +47,7 @@
 
         <div class="row">
         
-            <div class="label" i18n:id="body_text">
+            <div class="label" i18n:translate="">
             Body text
             </div>
             

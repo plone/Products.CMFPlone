@@ -39,7 +39,7 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:id="id">Short Name</span>
+                <span i18n:translate="">Short Name</span>
             
                 <div id="id_help" 
                      i18:id="id_help"
@@ -76,7 +76,7 @@
                 <span i18:id="title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:id="title_help"
+                     i18n:translate="title_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the topic.
@@ -102,10 +102,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="description">Description</span>
+                <span i18n:translate="">Description</span>
                 
                 <div id="description_help" 
-                     i18n:id="description_help"
+                     i18n:translate="description_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the topic. 
@@ -127,9 +127,9 @@
 
         <div class="row">
 	        <div class="label">
-                <span i18n:id="acquire_criteria">Inherit Criteria</span>
+                <span i18n:translate="">Inherit Criteria</span>
                 <div id="acquire_criteria_help"
-                     i18n:id="acquire_criteria_help" 
+                     i18n:translate="acquire_criteria_help" 
                      class="help" 
                      style="visibility:hidden">
                 Toggles inheritance of criteria. For example, if you

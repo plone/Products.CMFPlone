@@ -58,9 +58,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="allow_discussion">Allow Discussion</span>
+                <span i18n:translate="allow_discussion">Allow Discussion</span>
                 <div id="allow_discussion_help" 
-                     i18n:id="allow_discussion_help"
+                     i18n:translate="allow_discussion_help"
                      class="help" 
                      style="visibility:hidden">
                 Specifies whether discussion items and comments can be
@@ -83,7 +83,7 @@
 		                   tal:attributes="checked python: val == None;
                                        tabindex tabindex;"
                        />
-                <label for="discussion_default" i18n:id="discussion_default">Default</label> <br />
+                <label for="discussion_default" i18n:translate="discussion_default">Default</label> <br />
 
                 <input class="noborder" 
                        type="radio" 
@@ -96,7 +96,7 @@
                        tal:attributes="checked python: val == 1;
                                        tabindex tabindex;"
                        />
-                <label for="discussion_on" i18n:id="discussion_on">On</label> <br />
+                <label for="discussion_on" i18n:translate="discussion_on">On</label> <br />
 
                 <input class="noborder" 
                        type="radio" 
@@ -109,7 +109,7 @@
                        tal:attributes="checked python: val == 0;
                                        tabindex tabindex;"
                        />
-                <label for="discussion_off" i18n:id="discussion_off">Off</label>
+                <label for="discussion_off" i18n:translate="discussion_off">Off</label>
                        
                        
 	        </metal:block>
@@ -118,10 +118,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="keywords">Keywords</span>
+                <span i18n:translate="keywords">Keywords</span>
     
                 <div id="keywords_help" 
-                     i18n:id="keywords_help"
+                     i18n:translate="keywords_help"
                      class="help" 
                      style="visibility:hidden">
                 Here you add the relevant keywords that describe this item. You can either 
@@ -209,10 +209,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="effective_date">Effective Date</span>
+                <span i18n:translate="effective_date">Effective Date</span>
 
                 <div id="effective_date_help" 
-                     i18n:id="effective_date_help"
+                     i18n:translate="effective_date_help"
                      class="help" 
                      style="visibility:hidden">
                 The date when the document will be visible when it's published. This way, you can 
@@ -235,9 +235,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="expiration_date">Expiration Date</span>
+                <span i18n:translate="expiration_date">Expiration Date</span>
                 <div id="expiration_date_help" 
-                     i18n:id="expiration_date_help"
+                     i18n:translate="expiration_date_help"
                      class="help" 
                      style="visibility:hidden">
                 The date when the document expires. This will automatically make the document
@@ -260,10 +260,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="format">Format</span>
+                <span i18n:translate="format">Format</span>
                 
                 <div id="format_help" 
-                     i18n:id="format_help"
+                     i18n:translate="format_help"
                      class="help" 
                      style="visibility:hidden">
                 The MIME-type of the document. If you don't know what this does, just leave it :)<br /> Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
@@ -291,9 +291,9 @@
              tal:define="def_language here/portal_properties/default_language;
                          sel_language python:test(here.Language(), here.Language(), def_language);">
             <div class="label">
-                <span i18n:id="language">Language</span>
+                <span i18n:translate="language">Language</span>
                 <div id="language_help" 
-                     i18n:id="language_help"
+                     i18n:translate="language_help"
                      class="help" 
                      style="visibility:hidden">
                 The language the document is written in, indicated
@@ -321,9 +321,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="rights">Rights</span>
+                <span i18n:translate="rights">Rights</span>
                 <div id="rights_help" 
-                     i18n:id="rights_help"
+                     i18n:translate="rights_help"
                      class="help" 
                      style="visibility:hidden">
                 Copyright information on the item.
@@ -346,9 +346,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="contributors">Contributors</span>
+                <span i18n:translate="contributors">Contributors</span>
                 <div id="contributors_help" 
-                     i18n:id="contributors_help"
+                     i18n:translate="contributors_help"
                      class="help" 
                      style="visibility:hidden">
                 The names of people that have contributed to this item.

@@ -100,9 +100,9 @@
                
                     <div class="row">
                         <div class="label">
-                            <span i18n:id="new_password">New password</span>
+                            <span i18n:translate="new_password">New password</span>
                             <div id="new_password_help"
-                                 i18n:id="new_password_help" 
+                                 i18n:translate="new_password_help" 
                                  class="help" 
                                  style="visibility:hidden">
                             Enter your new password. Minimum 5 characters.
@@ -123,9 +123,9 @@
             
                     <div class="row">
                         <div class="label">
-                            <span i18n:id="confirm_password">Confirm password</span>
+                            <span i18n:translate="confirm_password">Confirm password</span>
                             <div id="confirm_password_help" 
-                                 i18n:id="confirm_password_help"
+                                 i18n:translate="confirm_password_help"
                                  class="help" 
                                  style="visibility:hidden">
                             Re-enter the password. Make sure the passwords are identical.

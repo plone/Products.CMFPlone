@@ -38,10 +38,10 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:id="id">Short Name</span>
+                <span i18n:translate="">Short Name</span>
             
                 <div id="id_help" 
-                     i18:id="id_help"
+                     i18:translate="id_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the Short Name of the file. This is the part that will show up as part
@@ -74,10 +74,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label">
-                <span i18:id="title">Title</span>
+                <span i18:translate="title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:id="title_help"
+                     i18n:translate="title_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the file.
@@ -105,10 +105,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="description">Description</span>
+                <span i18n:translate="description">Description</span>
                 
                 <div id="description_help" 
-                     i18n:id="description_help"
+                     i18n:translate="description_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the file. 
@@ -134,9 +134,9 @@
                          file request/file | here/file | nothing;">
             
             <div class="label required">
-                <span i18n:id="file">File</span>
+                <span i18n:translate="file">File</span>
                 <div id="file_help" 
-                     i18n:id="file_help"
+                     i18n:translate="file_help"
                      class="help" 
                      style="visibility:hidden">
                 Select the file to be added by clicking the "Browse" button.
@@ -166,10 +166,10 @@
             tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
             
             <div class="label">
-                <span i18n:id="edit_contents">Edit Contents</span>
+                <span i18n:translate="edit_contents">Edit Contents</span>
 
                 <div id="edit_contents_help" 
-                     i18n:id="edit_contents_help"
+                     i18n:translate="edit_contents_help"
                      class="help" 
                      style="visibility:hidden">
                 This file is a text file, and you can edit its

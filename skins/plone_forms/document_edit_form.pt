@@ -39,10 +39,10 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:id="id">Short Name</span>
+                <span i18n:translate="">Short Name</span>
             
                 <div id="id_help" 
-                     i18:id="id_help"
+                     i18:translate="id_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the Short Name of the document. This is the part that will show up as part
@@ -75,10 +75,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label required">
-                <span i18:id="title">Title</span>
+                <span i18:translate="">Title</span>
                 
                 <div id="title_help" 
-                     i18n:id="title_help"
+                     i18n:translate="title_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the document.
@@ -107,10 +107,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="description">Description</span>
+                <span i18n:translate="">Description</span>
                 
                 <div id="description_help" 
-                     i18n:id="description_help"
+                     i18n:translate="description_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the document. 
@@ -133,10 +133,10 @@
       
 	    <div class="row"> 
             <div class="label"> 
-                <span i18n:id="body_text">Body text</span> 
+                <span i18n:translate="">Body text</span> 
 
                 <div id="body_help" 
-                     i18n:id="body_help"
+                     i18n:translate="body_help"
                      class="help" 
                      style="visibility:hidden">
                 The body text of the document. 
@@ -158,9 +158,9 @@
 
 	    <div class="row">
             <div class="label">
-                <span i18n:id="format">Format</span>
+                <span i18n:translate="">Format</span>
                 <div id="format_help"
-                     i18n:id="format_help" 
+                     i18n:translate="format_help" 
                      class="help" 
                      style="visibility:hidden">
                 Select which format you want to type the contents of this
@@ -182,7 +182,7 @@
                        tal:attributes="checked python:test(here.text_format=='structured-text', 1, 0);
                                        tabindex tabindex;" 
                        />
-                <label for="cb_structuredtext" i18n:id="structured_text">Structured Text</label> <br />
+                <label for="cb_structuredtext" i18n:translate="structured_text">Structured Text</label> <br />
 		
                 <input class="noborder" 
                        type="radio" 
@@ -195,7 +195,7 @@
                        onfocus="formtooltip('format_help',1)" 
                        onblur="formtooltip('format_help',0)" 
                        />	
-                <label for="cb_html" i18n:id="html">HTML</label> <br />
+                <label for="cb_html" i18n:translate="html">HTML</label> <br />
 			
                 <input class="noborder" 
                        type="radio" 
@@ -208,7 +208,7 @@
                        onfocus="formtooltip('format_help',1)" 
                        onblur="formtooltip('format_help',0)" 
                        />
-                <label for="cb_plain" i18n:id="plain_text">Plain Text</label>
+                <label for="cb_plain" i18n:translate="plain_text">Plain Text</label>
             </div>
 	    </div>
 
@@ -216,9 +216,9 @@
 	         tal:define="error_file errors/file|nothing;"> 
             
             <div class="label">
-                <span i18n:id="upload_contents">Upload contents (optional)
+                <span i18n:translate="upload_contents">Upload contents (optional)
                 <div id="upload_help" 
-                     i18n:id="upload_help"
+                     i18n:translate="upload_help"
                      class="help" 
                      style="visibility:hidden">
                 This feature can be used if you already have the document 

@@ -36,10 +36,10 @@
 	                 id python:request.get('id', here.getId());">
 			 
             <div class="label required">
-                <span i18n:id="id">Short Name</span>
+                <span i18n:translate="">Short Name</span>
             
                 <div id="id_help" 
-                     i18:id="id_help"
+                     i18:translate="id_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the Short Name of the event. This is the part that will show up as part
@@ -68,9 +68,9 @@
                          Title request/title | here/Title;"> 
 
             <div class="label required">
-            <span i18n:id="event_title">Event Title</span>
+            <span i18n:translate="event_title">Event Title</span>
                 <div id="title_help" 
-                     i18n:id="title_help"
+                     i18n:translate="title_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of this event. 
@@ -99,9 +99,9 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:id="event_location">Event Location</span>
+                <span i18n:translate="event_location">Event Location</span>
                 <div id="event_location_help" 
-                     i18n:id="event_location_help"
+                     i18n:translate="event_location_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the location where the event will take place. 
@@ -123,9 +123,9 @@
                
         <div class="row"> 
             <div class="label">
-                <span i18n:id="event_type">Event Type</span>
+                <span i18n:translate="event_type">Event Type</span>
                 <div id="event_type_help" 
-                     i18n:id="event_type_help"
+                     i18n:translate="event_type_help"
                      class="help" 
                      style="visibility:hidden">
                 Select the type of event. Multiple event types possible.
@@ -156,10 +156,10 @@
                
         <div class="row">
             <div class="label">
-                <span i18n:id="event_description">Event Description</span>
+                <span i18n:translate="event_description">Event Description</span>
                 
                 <div id="event_description_help" 
-                     i18n:id="event_description_help"
+                     i18n:translate="event_description_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the event. 
@@ -182,10 +182,10 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:id="event_url">Event URL</span>
+                <span i18n:translate="event_url">Event URL</span>
                 
                 <div id="event_url_help" 
-                     i18n:id="event_url_help"
+                     i18n:translate="event_url_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the optional web address of a page containing more info about
@@ -211,9 +211,9 @@
              tal:define="start_date python:request.get('start_date', here.toPortalTime(here.start(), long_format=1));
                          error_start_date errors/start_date | nothing;">
             <div class="label">
-              <span i18n:id="start_date">Event Starts</span>
+              <span i18n:translate="start_date">Event Starts</span>
                 <div id="start_date_help"
-                     i18n:id="start_date_help" 
+                     i18n:translate="start_date_help" 
                      class="help" 
                      style="visibility:hidden">
                      Enter the starting date and time,
@@ -242,9 +242,9 @@
              tal:define="end_date python:request.get('end_date', here.toPortalTime(here.end(), long_format=1));
                          error_end_date errors/end_date | nothing;">
             <div class="label">
-              <span i18n:id="end_date">Event Ends</span>
+              <span i18n:translate="end_date">Event Ends</span>
                 <div id="end_date_help"
-                     i18n:id="end_date_help" 
+                     i18n:translate="end_date_help" 
                      class="help" 
                      style="visibility:hidden">
                      Enter the ending date and time,
@@ -271,10 +271,10 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:id="contact_name">Contact Name</span>
+                <span i18n:translate="contact_name">Contact Name</span>
                 
                 <div id="contact_name_help" 
-                     i18n:id="contact_name_help"
+                     i18n:translate="contact_name_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter a contact person or organization for the event.
@@ -297,10 +297,10 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:id="contact_email">Contact E-mail</span>
+                <span i18n:translate="contact_email">Contact E-mail</span>
                 
                 <div id="contact_email_help" 
-                     i18n:id="contact_email_help"
+                     i18n:translate="contact_email_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter an e-mail address to use for information regarding
@@ -324,10 +324,10 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:id="contact_phone">Contact Phone</span>
+                <span i18n:translate="contact_phone">Contact Phone</span>
                 
                 <div id="contact_phone_help" 
-                     i18n:id="contact_phone_help"
+                     i18n:translate="contact_phone_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the phone number to call for information and/or

@@ -34,7 +34,7 @@
                      id python:request.get('id', here.getId());"> 
         <div class="label required">
         
-            <span i18n:id="id">ID</span>
+            <span i18n:translate="id">ID</span>
         
             <div id="id_help" 
                  i18:id="id_help"

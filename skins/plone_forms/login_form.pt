@@ -44,9 +44,9 @@ If you do not have an account here, head over to the <a href="join_form">registr
 	
 	<div class="row">
 			<div class="label">
-                <span i18n:id="user_name">User Name</span>
+                <span i18n:translate="user_name">User Name</span>
                 <div id="user_name_help" 
-                     i18n:id="user_name_help"
+                     i18n:translate="user_name_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the user name you use on this site. If you haven't
@@ -71,9 +71,9 @@ If you do not have an account here, head over to the <a href="join_form">registr
 
 	<div class="row">
         <div class="label">
-            <span i18n:id="password">Password</span> 
+            <span i18n:translate="password">Password</span> 
             <div id="password_help" 
-                 i18n:id="password_help"
+                 i18n:translate="password_help"
                  class="help" 
                  style="visibility:hidden">
             Enter your password. If you have forgotten it, use the
@@ -97,7 +97,7 @@ If you do not have an account here, head over to the <a href="join_form">registr
         <div class="label">
                 &nbsp;
             <div id="remember_help" 
-                 i18n:id="remember_help"
+                 i18n:translate="remember_help"
                  class="help" 
                  style="visibility:hidden">
             Setting the 'Remember my name' option will bake a cookie with your username.
@@ -118,7 +118,7 @@ If you do not have an account here, head over to the <a href="join_form">registr
                    tal:attributes="tabindex tabindex/next;" 
                    />
 
-            <label for="cb_remember" i18n:id="remember">Remember my name.</label>
+            <label for="cb_remember" i18n:translate="remember">Remember my name.</label>
         </div>
     </div>
 	

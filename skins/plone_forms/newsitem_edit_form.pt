@@ -38,10 +38,10 @@
 	  id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:id="id">Short Name</span>
+                <span i18n:translate="id">Short Name</span>
             
                 <div id="id_help" 
-                     i18:id="id_help"
+                     i18:translate="id_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the Short Name of the document. This is the part that will show up as part
@@ -75,10 +75,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label required">
-                <span i18:id="title">Title</span>
+                <span i18:translate="title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:id="title_help"
+                     i18n:translate="title_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the news item.
@@ -107,10 +107,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="leadin">Lead-in</span>
+                <span i18n:translate="leadin">Lead-in</span>
                 
                 <div id="leadin_help" 
-                     i18n:id="leadin_help"
+                     i18n:translate="leadin_help"
                      class="help" 
                      style="visibility:hidden">
                 A short descriptive summary of the news. This will be what shows up on the news
@@ -135,10 +135,10 @@
         
 	    <div class="row"> 
             <div class="label"> 
-                <span i18n:id="body_text">Body text</span> 
+                <span i18n:translate="body_text">Body text</span> 
 
                 <div id="body_help" 
-                     i18n:id="body_help"
+                     i18n:translate="body_help"
                      class="help" 
                      style="visibility:hidden">
                 The body text of the news item. 
@@ -159,9 +159,9 @@
 
 	    <div class="row">
             <div class="label">
-                <span i18n:id="format">Format</span>
+                <span i18n:translate="format">Format</span>
                 <div id="format_help"
-                     i18n:id="format_help" 
+                     i18n:translate="format_help" 
                      class="help" 
                      style="visibility:hidden">
                 Select which format you want to type the contents of this
@@ -183,7 +183,7 @@
                        tal:attributes="checked python:test(here.text_format=='structured-text', 1, 0);
                                        tabindex tabindex;" 
                        />
-                <label for="cb_structuredtext" i18n:id="structured_text">Structured Text</label> <br />
+                <label for="cb_structuredtext" i18n:translate="structured_text">Structured Text</label> <br />
 		
                 <input class="noborder" 
                        type="radio" 
@@ -196,7 +196,7 @@
                        tal:attributes="checked python:test(here.text_format=='html', 1, 0);
                                        tabindex tabindex;" 
                        />	
-                <label for="cb_html" i18n:id="html">HTML</label> <br />
+                <label for="cb_html" i18n:translate="html">HTML</label> <br />
 			
                 <input class="noborder" 
                        type="radio" 
@@ -209,7 +209,7 @@
                        tal:attributes="checked python:test(here.text_format=='plain', 1, 0);
                                        tabindex tabindex;" 
                        />
-                <label for="cb_plain" i18n:id="plain_text">Plain Text</label>
+                <label for="cb_plain" i18n:translate="plain_text">Plain Text</label>
             </div>
 	    </div>
 

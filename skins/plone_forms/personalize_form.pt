@@ -47,10 +47,10 @@
                              email request/email|member/email;">
                 
                 <div class="label required">
-                    <span i18n:id="new_email">New e-mail <br /> address</span>
+                    <span i18n:translate="new_email">New e-mail <br /> address</span>
 
                     <div id="new_email_help"
-                         i18n:id="new_email_help" 
+                         i18n:translate="new_email_help" 
                          class="help" 
                          style="visibility:hidden">
                     Enter your new e-mail address here, if you want to change it.
@@ -78,10 +78,10 @@
 
             <div class="row">
                 <div class="label">
-                    <span i18n:id="wysiwyg_editor">WYSIWYG editor</span>
+                    <span i18n:translate="wysiwyg_editor">WYSIWYG editor</span>
                     
                     <div id="wysiwyg_editor_help"
-                         i18n:id="wysiwyg_editor_help"
+                         i18n:translate="wysiwyg_editor_help"
                          class="help"
                          style="visibility:hidden">
                     Select the editor that you would like to use for editing
@@ -110,10 +110,10 @@
              
             <div class="row">
                 <div class="label">
-                    <span i18n:id="listed_status">Listed status</span>
+                    <span i18n:translate="listed_status">Listed status</span>
 
                     <div id="listed_status_help"
-                         i18n:id="listed_status_help" 
+                         i18n:translate="listed_status_help" 
                          class="help" 
                          style="visibility:hidden">
                     Select whether you want to be listed on the public membership listing
@@ -184,10 +184,10 @@
 
             <div class="row">
                 <div class="label">
-                    <span i18n:id="formtooltips_status">Display form tooltips</span>
+                    <span i18n:translate="formtooltips_status">Display form tooltips</span>
 
                     <div id="formtooltips_help"
-                         i18n:id="formtooltips_help" 
+                         i18n:translate="formtooltips_help" 
                          class="help" 
                          style="visibility:hidden">
                     Select whether you want form tooltips to be displayed.
@@ -257,10 +257,10 @@
 
             <div class="row">
                 <div class="label">
-                    <span i18n:id="visible_ids_status">Display content ids</span>
+                    <span i18n:translate="visible_ids_status">Display content ids</span>
 
                     <div id="visible_ids_help"
-                         i18n:id="visible_ids_help" 
+                         i18n:translate="visible_ids_help" 
                          class="help" 
                          style="visibility:hidden">
                     Select whether you want ids to be visible when editing contents.
@@ -332,9 +332,9 @@
                  tal:condition="here/portal_skins/allow_any">
                 
                 <div class="label">
-                    <span i18n:id="skin">Skin</span>
+                    <span i18n:translate="skin">Skin</span>
                     <div id="skin_help"
-                         i18n:id="skin_help" 
+                         i18n:translate="skin_help" 
                          class="help" 
                          style="visibility:hidden">
                     Here you choose the appearance of the site. Several styles are available,
@@ -366,9 +366,9 @@
                              home python:container.portal_membership.getHomeUrl(member.getId())"
                  tal:condition="home">
                 <div class="label">
-                    <span i18n:id="portrait">Portrait</span>
+                    <span i18n:translate="portrait">Portrait</span>
                     <div id="portrait_help"
-                         i18n:id="portrait_help" 
+                         i18n:translate="portrait_help" 
                          class="help" 
                          style="visibility:hidden">
                     To add a new portrait, click the <strong>Browse</strong> button and select

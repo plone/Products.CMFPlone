@@ -41,9 +41,9 @@
 			 
         <div class="row">
             <div class="label">
-                <span i18n:id="text">Text</span>
+                <span i18n:translate="text">Text</span>
                 <div id="text_search_help"
-                     i18n:id="text_search_help" 
+                     i18n:translate="text_search_help" 
                      class="help" 
                      style="visibility:hidden">
                 For a simple text search, enter your search term
@@ -68,9 +68,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="title">Title</span>
+                <span i18n:translate="title">Title</span>
                 <div id="title_search_help"
-                     i18n:id="title_search_help" 
+                     i18n:translate="title_search_help" 
                      class="help" 
                      style="visibility:hidden">
                 Return items matching this title.
@@ -91,9 +91,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="keywords">Keywords</span>
+                <span i18n:translate="keywords">Keywords</span>
                 <div id="keywords_search_help"
-                     i18n:id="keywords_search_help" 
+                     i18n:translate="keywords_search_help" 
                      class="help" 
                      style="visibility:hidden">
                 Return items matching one or more of these subjects.
@@ -125,10 +125,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="description">Description</span>
+                <span i18n:translate="description">Description</span>
 
                 <div id="description_search_help"
-                     i18n:id="description_search_help" 
+                     i18n:translate="description_search_help" 
                      class="help" 
                      style="visibility:hidden">
                 Return items matching this description.
@@ -151,9 +151,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="new_items_since">New items since</span>
+                <span i18n:translate="new_items_since">New items since</span>
                 <div id="new_items_since_search_help"
-                     i18n:id="new_items_since_search_help" 
+                     i18n:translate="new_items_since_search_help" 
                      class="help" 
                      style="visibility:hidden">
                 Return items added since you were last logged on, the last week, etc.
@@ -189,9 +189,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="item_type">Item type</span>
+                <span i18n:translate="item_type">Item type</span>
                 <div id="item_type_search_help"
-                     i18n:id="item_type_search_help" 
+                     i18n:translate="item_type_search_help" 
                      class="help" 
                      style="visibility:hidden">
                 Return items of a specific type.
@@ -220,9 +220,9 @@
 	
         <div class="row">
             <div class="label">
-                <span i18n:id="author">Author</span>
+                <span i18n:translate="author">Author</span>
                 <div id="author_search_help"
-                     i18n:id="author_search_help" 
+                     i18n:translate="author_search_help" 
                      class="help" 
                      style="visibility:hidden">
                 Return items created by a particular person.
@@ -247,9 +247,9 @@
              tal:condition="python: container.portal_membership.checkPermission('Review portal content', here)">
         
             <div class="label">
-                <span i18n:id="review_status">Review status</span>
+                <span i18n:translate="review_status">Review status</span>
                 <div id="review_status_search_help"
-                     i18n:id="review_status_search_help" 
+                     i18n:translate="review_status_search_help" 
                      class="help" 
                      style="visibility:hidden">
                 As a reviewer, you may search for items based on their

@@ -64,10 +64,10 @@
         
             <thead>
                 <tr>
-                    <th i18n:id="title">Title</th>
-                    <th i18n:id="author">Author</th>
-                    <th i18n:id="last_modified">Last Modified</th>
-                    <th i18n:id="description">Description</th>
+                    <th i18n:translate="title">Title</th>
+                    <th i18n:translate="author">Author</th>
+                    <th i18n:translate="last_modified">Last Modified</th>
+                    <th i18n:translate="description">Description</th>
                 </tr>
             </thead>
 

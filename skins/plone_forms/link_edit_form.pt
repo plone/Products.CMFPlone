@@ -38,10 +38,10 @@
                                           'visibility:hidden;;position:absolute;;left:0;;top:0', '')" >
             <div class="label required">
             
-                <span i18n:id="id">Short Name</span>
+                <span i18n:translate="">Short Name</span>
             
                 <div id="id_help" 
-                     i18:id="id_help"
+                     i18:translate="id_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the Short Name of the document. This is the part that will show up as part
@@ -75,10 +75,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title | nothing;"> 
             <div class="label required">
-                <span i18:id="title">Title</span>
+                <span i18:translate="title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:id="title_help"
+                     i18n:translate="title_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the document.
@@ -107,10 +107,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:id="description">Description</span>
+                <span i18n:translate="description">Description</span>
                 
                 <div id="description_help" 
-                     i18n:id="description_help"
+                     i18n:translate="description_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the document. 
@@ -135,9 +135,9 @@
                          remote_url request/remote_url | here/remote_url | nothing;">
             
             <div class="label required">
-                <span i18n:id="url">URL</span>
+                <span i18n:translate="url">URL</span>
                 <div id="url_help" 
-                     i18n:id="url_help"
+                     i18n:translate="url_help"
                      class="help" 
                      style="visibility:hidden">
                 The address of the location. Prefix is optional; if not

@@ -32,7 +32,7 @@
 
             <div class="label required">
             
-                <span i18n:id="id">Short Name</span>
+                <span i18n:translate="">Short Name</span>
             
                 <div id="id_help" 
                      i18:id="id_help"

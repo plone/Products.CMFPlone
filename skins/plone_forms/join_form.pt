@@ -40,9 +40,9 @@
                          username request/username | nothing;" >
             
             <div class="label required">
-                <span i18n:id="user_name">User name</span>
+                <span i18n:translate="user_name">User name</span>
                 <div id="user_name_help" 
-                     i18n:id="user_name_help"
+                     i18n:translate="user_name_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the user name you want, usually something like
@@ -76,9 +76,9 @@
                          email request/email | nothing;" >
 
             <div class="label required">
-                <span i18n:id="email">E-mail</span>
+                <span i18n:translate="email">E-mail</span>
                 <div id="email_help" 
-                     i18n:id="email_help"
+                     i18n:translate="email_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter your email address. This is necessary in case you lose your
@@ -112,9 +112,9 @@
                          password request/password | nothing;" >
 
             <div class="label required">
-                <span i18n:id="password">Password</span>
+                <span i18n:translate="password">Password</span>
                 <div id="password_help" 
-                     i18n:id="password_help"
+                     i18n:translate="password_help"
                      class="help" 
                      style="visibility:hidden">
                 Enter the password you want. Minimum 5 characters.
@@ -146,9 +146,9 @@
                          confirm request/confirm | nothing;" >
                          
             <div class="label required">
-                <span i18n:id="confirm_password">Confirm <br />Password</span>
+                <span i18n:translate="confirm_password">Confirm <br />Password</span>
                 <div id="confirm_password_help" 
-                     i18n:id="confirm_password_help"
+                     i18n:translate="confirm_password_help"
                      class="help" 
                      style="visibility:hidden">
                 Re-enter the password. Make sure the passwords are identical.
@@ -175,9 +175,9 @@
         <div class="row" tal:condition="not: allowEnterPassword" tal:define="mail_me request/mail_me|nothing">
                         
             <div class="label">
-                <span i18n:id="mail_password">Mail Password?</span>
+                <span i18n:translate="mail_password">Mail Password?</span>
                 <div id="mail_password_help" 
-                     i18n:id="mail_password_help"
+                     i18n:translate="mail_password_help"
                      class="help" 
                      style="visibility:hidden">
                 Check this box to have your password 

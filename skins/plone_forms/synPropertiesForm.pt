@@ -86,9 +86,9 @@
 
                 <div class="row">
                     <div class="label">
-                    <span i18n:id="update_period">Update Period</span>
+                    <span i18n:translate="update_period">Update Period</span>
                     <div id="update_period_help" 
-                         i18:id="update_period_help"
+                         i18:translate="update_period_help"
                          class="help" 
                          style="visibility:hidden">
                     Controls how often the channel is updated.
@@ -115,12 +115,12 @@
 
             <div class="row">
                 <div class="label">
-                    <span i18n:id="update_frequency">Update Frequency</span>
+                    <span i18n:translate="">Update Frequency</span>
                     <div id="update_frequency_help" 
-                         i18:id="update_frequency_help"
+                         i18:translate="update_frequency_help"
                          class="help" 
                          style="visibility:hidden">
-                    Controls the frequency of the updates. For example, if you wnat it to update every second week,
+                    Controls the frequency of the updates. For example, if you want it to update every second week,
                     select "weekly" above, and "2" here.
                     </div>
                 </div>
@@ -141,10 +141,10 @@
             <div class="row">
 			
                 <div class="label">
-                    <span i18n:id="update_base">Update Base</span>
+                    <span i18n:translate="">Update Base</span>
 
                     <div id="update_base_help" 
-                         i18:id="update_base_help"
+                         i18:translate="update_base_help"
                          class="help" 
                          style="visibility:hidden">
                     This is the date the updater starts counting from. 
@@ -164,10 +164,10 @@
     
             <div class="row">
                 <div class="label">
-                    <span i18n:id="max_items">Maximum Items</span>
+                    <span i18n:translate="">Maximum Items</span>
                     
                     <div id="max_items_help" 
-                         i18:id="max_items_help"
+                         i18:translate="max_items_help"
                          class="help" 
                          style="visibility:hidden">
                     Maximum number of items that will be syndicated. 
