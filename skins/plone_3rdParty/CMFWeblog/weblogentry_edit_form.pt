@@ -14,7 +14,7 @@
 >
 
  <input type="hidden" name="SafetyBelt" value=""
-        tal:attributes="value here/SafetyBelt">
+        tal:attributes="value here/SafetyBelt" />
 
 <table class="FormLayout">
  <tr>
@@ -47,7 +47,7 @@
  <tr>
   <th> Upload </th>
   <td>
-   <input type="file" name="file" size="25">
+   <input type="file" name="file" size="25" />
   </td>
  </tr>
 
@@ -62,8 +62,8 @@
  <tr>
   <td> <br> </td>
   <td>
-    <input type="submit" name="choice" value=" Change ">
-    <input type="submit" name="choice" value=" Change and View ">
+    <input type="submit" name="choice" value=" Change " />
+    <input type="submit" name="choice" value=" Change and View " />
   </td>
  </tr>
 </table>

@@ -198,7 +198,7 @@
                        name="participation:string" 
                        value="staff"
                        tal:attributes="checked python: here.participation
-                                                       == 'staff'">
+                                                       == 'staff'" />
                   <span i18n:translate="label_collector_staff">
           Staff
 
@@ -213,7 +213,7 @@
                        name="participation:string"
                        value="authenticated"
                        tal:attributes="checked python: here.participation
-                                                       == 'authenticated'">
+                                                       == 'authenticated'" />
                   <span i18n:translate="label_collector_authenticated">
           Authenticated
 
@@ -227,7 +227,7 @@
                        name="participation:string" 
                        value="anyone"
                        tal:attributes="checked python: here.participation
-                                                       == 'anyone'">
+                                                       == 'anyone'" />
                   <span i18n:translate="label_collector_anyone">
           Anyone
 

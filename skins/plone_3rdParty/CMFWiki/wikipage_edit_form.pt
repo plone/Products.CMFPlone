@@ -64,7 +64,7 @@
                      class="context"
                      name="edit"
                      value="Save"
-              >
+              />
              <p>Log Message</p>
 
                <textarea wrap="soft" name="log"

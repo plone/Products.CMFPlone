@@ -193,7 +193,7 @@
           tal:define="uniquevals python:
                                  here.get_internal_catalog().uniqueValuesFor;
                       ordered nocall: here/collector_ordered_traits">
-      <input type="hidden" name="searching" value="yep">
+      <input type="hidden" name="searching" value="yep" />
 
       <span class="legend" i18n:translate="legend_search_for_issues">Search for issues</span>
 
@@ -203,7 +203,7 @@
           <div class="field">
              <input type="text" name="SearchableText" size="40"
                     value="TEXT"
-                    tal:attributes="value request/SearchableText|nothing">
+                    tal:attributes="value request/SearchableText|nothing" />
           </div>
       </div>
 

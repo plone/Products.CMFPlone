@@ -41,7 +41,7 @@
           method="post"
           tal:condition="python:not syndicateInfo">
         
-        <input type="hidden" name="isAllowed:int" value="1"> 
+        <input type="hidden" name="isAllowed:int" value="1" /> 
 
         <input class="standalone" 
                type="submit" 

@@ -214,7 +214,7 @@
                       onblur="formtooltip('event_url_help',0)"
                       tal:attributes="value python:request.get('event_url',getattr(here,'event_url',''));
                                       tabindex tabindex/next"
-                      >
+                      />
 
             </div>
         </div>
@@ -382,7 +382,7 @@
             </div>
         </div>
         
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>
 

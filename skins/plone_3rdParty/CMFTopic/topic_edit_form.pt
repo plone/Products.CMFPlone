@@ -153,11 +153,11 @@
                         tabindex="4"
                         onfocus="formtooltip('acquire_criteria_help',1)" 
                         onblur="formtooltip('acquire_criteria_help',0)" 
-                        tal:attributes="checked python:here.acquireCriteria and 'checked' or ''">
+                        tal:attributes="checked python:here.acquireCriteria and 'checked' or ''" />
                  
                  <input type="hidden"
                         name="acquireCriteria:default"
-                        value="">
+                        value="" />
             </div>
 	    </div>
          
@@ -175,7 +175,7 @@
             </div>
         </div>
    
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>
 

@@ -57,7 +57,7 @@
                    i18n:attributes="value"
                    />
 
-            <input type="hidden" name=":default_action" value="editCriteria">
+            <input type="hidden" name=":default_action" value="editCriteria" />
         
         </div>
 

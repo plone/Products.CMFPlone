@@ -53,7 +53,7 @@
                   value="referrer"
                   tal:attributes="value link/pageid;
                                   checked link/isparent;
-                                  disabled python: not mover">
+                                  disabled python: not mover" />
       </td>
       <td> <a href="../thispage"
               tal:attributes="href python: '%s/%s' % (here.wiki_base_url(),
@@ -65,8 +65,8 @@
     
      <tr tal:condition="mover">
       <td colspan="2" align="left">
-        <input type="submit" class="context" value="Re-parent">
-        <input type="reset"  class="standalone" value="Reset Form">
+        <input type="submit" class="context" value="Re-parent" />
+        <input type="reset"  class="standalone" value="Reset Form" />
       </td>
      </tr>
     </table>

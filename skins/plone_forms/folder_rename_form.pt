@@ -37,7 +37,7 @@
           tal:attributes="action python:here.portal_form_url(template.id);"
           tal:condition="items">
 
-        <input type="hidden" name="form_submitted" tal:attributes="value template/id">
+        <input type="hidden" name="form_submitted" tal:attributes="value template/id" />
 
         <div class="group"
              tal:repeat="item items">
@@ -107,7 +107,7 @@
             
             <div class="field">
                 <input type="hidden" name="here" value=""
-                       tal:attributes="value here/absolute_url">
+                       tal:attributes="value here/absolute_url" />
                 <input class="context" 
                        type="submit" 
                        value="Rename All"

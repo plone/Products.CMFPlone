@@ -144,7 +144,7 @@
                            tal:attributes="tabindex tabindex;
                                            value role;
                                            id string:roles_${tabindex}" 
-                           >
+                           />
                     <label for=""
                            i18n:translate=""
                            tal:attributes="for string:roles_${tabindex}"

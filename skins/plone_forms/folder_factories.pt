@@ -59,7 +59,7 @@
                       <input name="type_name" 
                              type="hidden" 
                              value="" 
-                             tal:attributes="value Id">
+                             tal:attributes="value Id" />
                       <input name="id" 
                              type="hidden" 
                              value="" 

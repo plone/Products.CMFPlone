@@ -186,7 +186,7 @@
                        /> 
             </div>       
         </div>
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
        
     </form>
 

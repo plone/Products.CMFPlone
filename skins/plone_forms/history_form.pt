@@ -24,7 +24,7 @@
          </div>
 
          <div tal:condition="history" tal:repeat="version history">
-             <input type="checkbox" value="&dtml-key;" name="keys:list" tal:attributes="value version/key">
+             <input type="checkbox" value="&dtml-key;" name="keys:list" tal:attributes="value version/key" />
              <a href="#" tal:attributes="href string:${here/absolute_url}/HistoricalRevisions/${version/key}">
                <span tal:replace="version/time"/>
                <span tal:condition="version/user_name" tal:replace="string:(${version/user_name})"/>
