@@ -4,8 +4,17 @@ Changelog for Plone
 
 Plone 2.1-beta1 - Warp - Released (no date yet)
 
+    - check_id script now rejects ids that are also catalog indices.
+      [geoffd]
+
+    - Fixed portal_factory passthrough problem reported in 
+      http://plone.org/collector/3243.  Also portal_factory now logs 
+      exceptions during object creation (some were being swallowed 
+      higher up) (fix for http://plone.org/collector/3148).  
+      [geoffd]
+
     - Added enableHTTPCompression script and enabled http compression for
-      html, css and javascript 
+      HTML, CSS, and JavaScript.
       [tiran]
 
     - Consolidated all monkey patches in the 'patches' sub-package.

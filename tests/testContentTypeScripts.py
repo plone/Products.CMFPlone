@@ -27,8 +27,6 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.setPermissions(perms + [AddPortalTopics], 'Member')
         self.discussion = self.portal.portal_discussion
         self.request = self.app.REQUEST
-        # Don't pay for catalog maintenance
-        self.portal.manage_delObjects('portal_catalog')
 
     def getPermissionsOfRole(self, role):
         perms = self.portal.permissionsOfRole(role)
