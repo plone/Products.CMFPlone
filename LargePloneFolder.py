@@ -23,7 +23,9 @@ class LargePloneFolder(BTreeFolder2Base, PloneFolder):
     def _checkId(self, id, allow_dup=0):
         PloneFolder._checkId(self, id, allow_dup)
         BTreeFolder2Base._checkId(self, id, allow_dup)
-    
+
+    manage_renameObject = PloneFolder.inheritedAttribute('manage_renameObject')
+
     # this works around a problem that makes empty folders
     # evaluate to false in boolean tests, like:
     # tal:condition="python: someFolder and someFolder.someMethod(...)"
