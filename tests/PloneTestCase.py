@@ -31,11 +31,12 @@ ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 ZopeTestCase.installProduct('Archetypes')
 ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
-ZopeTestCase.installProduct('ATReferenceBrowserWidget', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
+ZopeTestCase.installProduct('ATReferenceBrowserWidget')
 
-# Install sessioning
+# Install sessions and error_log
 ZopeTestCase.utils.setupCoreSessions()
+ZopeTestCase.utils.setupSiteErrorLog()
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
