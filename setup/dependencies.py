@@ -20,12 +20,12 @@ except ImportError:
 try:
     import Products.ExternalEditor
 except ImportError:
-    log("ExternalEditor not found.  If you want the external edit functionality, please download it from http://www.zope.org/Members/Caseman/ExternalEditor")
+    log("ExternalEditor not found.  If you want the external edit functionality, please download it from http://www.zope.org/Members/Caseman/ExternalEditor", severity=zLOG.INFO)
 
 try:
     import Products.Epoz
 except ImportError:
-    log("Epoz not found.  It is strongly recommended if you want WYSIWYG capabilities in Plone. You can download it from http://www.zope.org/Members/mjablonski/Epoz/")
+    log("Epoz not found.  If you want WYSIWYG capabilities in Plone, you can download it from http://www.zope.org/Members/mjablonski/Epoz/", severity=zLOG.INFO)
 
 
 try:
