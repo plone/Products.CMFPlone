@@ -187,10 +187,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             raise 'Unauthorized'    # FIXME: Some scripts rely on this being string?
 
         REQUEST=self.REQUEST
+        pfx = self.field_prefix
 
         def getfield(request, name, default=None):
-            name = '%s%s' % (self.field_prefix, name)
-            return request.form.get(name, default)
+            return request.form.get(pfx+name, default)
 
         def tuplify(value):
             return tuple(filter(None, value))
