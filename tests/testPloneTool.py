@@ -425,6 +425,44 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
         #      receive the Formulator treatment.
         self.assertEqual(self.doc.Language(), 'en')
 
+class TestNavTree(PloneTestCase.PloneTestCase):
+    """Tests for the new navigation tree and sitemap"""
+    
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+     
+    def testCreateNavTree(self):
+        self.loginPortalOwner()
+        self.portal.invokeFactory('Document','doc1')
+        self.portal.invokeFactory('Document','doc2')
+        self.portal.invokeFactory('Document','doc3')
+        self.portal.invokeFactory('Folder','folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        folder1.invokeFactory('Document','doc11')
+        folder1.invokeFactory('Document','doc12')
+        folder1.invokeFactory('Document','doc13')
+        self.portal.invokeFactory('Folder','folder2')
+        folder2 = getattr(self.portal, 'folder2')
+        folder2.invokeFactory('Document','doc21')
+        folder2.invokeFactory('Document','doc22')
+        folder2.invokeFactory('Document','doc23')
+        res = self.utils.createNavTree(self.portal)
+
+        self.failUnless(res)
+        self.assertEqual( res.keys() , ['children']) 
+
+        # With the context set to folder2 it should return a dict with
+        # currentItem set to True
+        res2 = self.utils.createNavTree(self.portal.folder2)
+
+        self.failUnless(res2)
+        self.assertEqual( res2['children'][1]['currentItem'] , True) 
+
+        self.logout()    
+
+    def testCreateSitemap(self):
+        tree = self.utils.createSitemap(self.portal)
+        self.assertEqual( tree , {}) 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -433,6 +471,7 @@ def test_suite():
     suite.addTest(makeSuite(TestEditMetadata))
     suite.addTest(makeSuite(TestEditMetadataIndependence))
     suite.addTest(makeSuite(TestFormulatorFields))
+    suite.addTest(makeSuite(TestNavTree))
     return suite
 
 if __name__ == '__main__':
