@@ -122,7 +122,7 @@
                               global allowedSubjects python:list(allowedSubjects);
                               dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
 
-                    <span>Existing keywords</span>
+                    <span i18n:translate="label_existing_keywords">Existing keywords</span>
                     <br />
                         <select id="predefined_subjects"
                                 name="predefined_subjects" 
@@ -133,7 +133,7 @@
                                 onblur="formtooltip('keywords_help',0)"
                                 tal:attributes="tabindex tabindex/next;">
                         <option value="#" tal:repeat="subject allowedSubjects"
-                                tal:content="subject" tal:attributes="value subject"> # </option>                                
+                                tal:content="subject" tal:attributes="value subject"> an existing keyword </option>                                
                         </select>
                         
                         <br />
