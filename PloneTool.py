@@ -57,7 +57,7 @@ class PloneTool(UniqueObject, SimpleItem):
         host = self.MailHost
         host.send( mail_text )
 
-    security.declarePublic('editMetadata')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'editMetadata')
     def editMetadata( self
                      , obj
                      , allowDiscussion=None
@@ -160,7 +160,7 @@ class PloneTool(UniqueObject, SimpleItem):
             msg = msg.encode('utf-8')
         get_transaction().note(msg)
 
-    security.declarePublic('contentEdit')
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'contentEdit')
     def contentEdit(self, obj, **kwargs):
         """ encapsulates how the editing of content occurs """
 

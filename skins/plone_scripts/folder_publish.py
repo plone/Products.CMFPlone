@@ -30,13 +30,19 @@ for id in ids:
     try:
         if o.isPrincipiaFolderish and include_subfolders:
             workflow.doActionFor(o, workflow_action, comment=comment)
-            o.folder_publish(workflow_action, o.objectIds(), comment=comment, \
-                 include_subfolders=include_subfolders, effective_date=effective_date, \
-                 expiration_date=expiration_date)       
+            o.folder_publish(workflow_action, 
+                             o.objectIds(), 
+                             comment=comment, 
+                             include_subfolders=include_subfolders, 
+                             effective_date=effective_date,
+                             expiration_date=expiration_date)       
         else:
+            plone_utils.contentEdit(o, effective_date=effective_date,
+                                    expiration_date=expiration_date)
             workflow.doActionFor(o, workflow_action, comment=comment)
             success[id]=comment
-        plone_utils.contentEdit(o, effective_date=effective_date, expiration_date=expiration_date)
+        plone_utils.contentEdit(o, effective_date=effective_date, 
+                                expiration_date=expiration_date)
     except Exception, e:
         failed[id]=e
 
