@@ -16,10 +16,18 @@ div.top,
 td.left,
 td.right,
 .contentTabs,
+.contentBar,
 .footer,
 .help
+
 {
     display: none;
+}
+
+.editableDocument {
+    border-width: 0;
+    padding: 0;
+    margin: 0;
 }
 
 table.listing,
