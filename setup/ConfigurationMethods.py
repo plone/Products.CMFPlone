@@ -93,7 +93,7 @@ def installExternalEditor(self, portal):
             if ctype.getId() not in exclude:
                 ctype.addAction( 'external_edit',
                                 name='External Edit',
-                                action='external_edit',
+                                action=Expression('string:$object_url/external_edit'),
                                 condition='',
                                 permission=CMFCorePermissions.ModifyPortalContent,
                                 category='object',
