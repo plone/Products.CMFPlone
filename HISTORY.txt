@@ -98,7 +98,7 @@
     - FormTool had typo
     - removed old CMF skins in portal_skins
     - if your object didnt have a title in a topic it wouldnt show the id
-    - content_status_modify wasnt using editMetadata and wasnt guaranteed to 
+    - Issue 345 - content_status_modify wasnt using editMetadata and wasnt guaranteed to 
       set the effective/expiration date - FIXED.  and minor aethetic cleanups to boot
     
 1.0 alpha3
