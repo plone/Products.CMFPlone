@@ -188,6 +188,9 @@ class PloneGenerator(Portal.PortalGenerator):
         form_tool = p.portal_form
         form_tool.setValidator('link_edit_form', 'validate_link_edit')
         
+        #XXX Yikes! I know this shows off the API but it would be much more practical to
+        #move this into the filesystem.  I added a arg on manage_addPropertySheet that
+        #given a propertysheet will copy the values into the new one.  
         nav_tool = p.portal_navigation
         nav_tool.addTransitionFor('Link', 'link_edit_form', 'failure', 'link_edit_form')
         nav_tool.addTransitionFor('Link', 'link_edit_form', 'success', 'script:link_edit')

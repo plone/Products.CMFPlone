@@ -1,4 +1,4 @@
-1.0 beta
+1.0 alpha3
     - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
     - reconfig_form for site wide configuraiton has form validation, and exposes loads of configuration options
     - change in main_template for portal_types to get object_tabs from folder/object has been pushed into a property on portal
@@ -7,6 +7,26 @@
     - fixed edit_topicCriteria (has debug code in it) added navprops entry and modified script to use getNextRequestFor
     - Members now have default Title/Description Issue 206
     - if Casey's incredible ExternalEditor application is installed in ZOPE the CustomizationPolicy will integrate it into Plone
+      this is the ext_editor boolean property on the Portal Object
+    - portal_factory tool has been added - Geoff Davis (freakin brilliant)
+      this exists to smooth over the fact that you can have empty orphaned objects if someone leaves after they
+      create a object but before they 'save' changes.  this tool will create a proxy object that does not exist
+      in the ZODB and the form will be rendered against this proxy object.  
+    - portal_form tool has been added - Geoff Davis (what a great idea!)
+      this co-ordinates the instance, portal_navigation and the edit forms and acts like a 'Controller'
+    - portal_properties has been extended to now be a container - Alan and Geoff Davis
+    - tabindex is now being used to generate the tabindex numbers for all fields - thanks to Helge!!
+    - Topic interface has been completely skinned - cheers to Helga/Alex duo!
+    - if event data isnt set it now shows back up in the form - helge
+    - integrated XSDHTMLEditor and a way to add other "popup" editor boxes
+    - publishing tab will not show up for anonymous #224
+    - added more options in 'plone setup' form
+    - new Portal wide Property, 'use_folder_tabs' needs to know what Types are considered 'Folders' so it shows
+      folder tabs and not object tabs.  Wiki/Collector are examples of folderish objects that we dont want to see
+      folder tabs for.
+    - Issues resolves: 206, 214, 173, 229, 106, 180 (removed CANCEL for now), 198, 233 and others
+    - 'select all' column has been added to folder_contents and general folder_contents refactoring
+    - you can now specify a Default Language for the Portal
 
 1.0alpha2
 

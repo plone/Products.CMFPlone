@@ -13,7 +13,7 @@ from cgi import parse_qs
 import re
 from FactoryTool import PendingCreate
 
-debug = 1  # enable/disable logging
+debug = 0  # enable/disable logging
 
 class NavigationTool (UniqueObject, SimpleItem):
     """ provides navigation related utilities """

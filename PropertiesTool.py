@@ -22,11 +22,26 @@ class PropertiesTool(Folder, BaseTool):
 
     manage_addPropertySheetForm = PageTemplateFile('www/addPropertySheet',globals())
 
-    def manage_addPropertySheet(self, id, title='', REQUEST=None):
-        """ adds a instance of a Property Sheet """
+    def manage_addPropertySheet(self, id, title='', propertysheet=None, REQUEST=None):
+        """ adds a instance of a Property Sheet 
+            if handed a propertysheet put the
+            properties into new propertysheet.
+        """
         o=SimpleItemWithProperties(id, title)
         self._setObject(id, o)
-        setattr(o, 'title', title)
+        o=self._getOb(id)
+        o.title=title
+
+        # copy the propertysheet values onto the new instance
+        if propertysheet is not None:
+            if not hasattr(propertysheet, 'propertyIds'):
+                raise TypeError, 'propertysheet needs to be a PropertyManager'
+            for property in propertysheet.propertyMap():
+                pid=property.get('id')
+                ptype=property.get('type')
+                pvalue=property.getProperty(pid)
+                o._setProperty(pid, pvalue, ptype)
+            
         if REQUEST is not None:
             return self.manage_main()
 
@@ -50,6 +65,8 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
         'manage_changePropertyTypes',
         )
 
+#XXX Why is the below commented out?  Can we remove it? 
+#
 #    def manage_propertiesForm(self, REQUEST, *args, **kw):
 #        'An override that makes the schema fixed.'
 #        my_kw = kw.copy()

@@ -14,7 +14,7 @@ from OFS.ObjectManager import bad_id
 validator_cache = {}  # a place to stash cached validators
 # (we don't want to persist them in the ZODB since that would make debugging a big pain)
 
-debug = 1  # enable/disable logging
+debug = 0  # enable/disable logging
 
 class FormTool(UniqueObject, SimpleItem):
     id = 'portal_form'
