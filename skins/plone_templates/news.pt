@@ -84,7 +84,7 @@
  	  </form>
           
           <div class="row" tal:condition="not: results">
-            No news have been posted.
+            No news has been posted.
           </div>		
  
   </div>
