@@ -349,13 +349,13 @@ function scanforlinks(){
     
     links = contentarea.getElementsByTagName('a');
     for (i=0; i < links.length; i++){      
-        if (links[i].getAttribute('href')){
+        if ((links[i].getAttribute('href'))&&(links[i].className.indexOf('link-plain')==-1 )){
             var linkval = links[i].getAttribute('href')
             // check if the link href is a relative link, or an absolute link to the current host.
             if (linkval.indexOf(window.location.protocol+'//'+window.location.host)==0){
                 // we are here because the link is an absolute pointer internal to our host
                 // do nothing
-            } else if (linkval.indexOf('http:') == -1){
+            } else if (linkval.indexOf('http:') != 0){
                 // not a http-link. Possibly an internal relative link, but also possibly a mailto ot other snacks
                 // add tests for all relevant protocols as you like.
                 
@@ -363,7 +363,7 @@ function scanforlinks(){
                 // h323, sip and callto are internet telephony VoIP protocols
                 
                 for (p=0; p < protocols.length; p++){  
-                     if (linkval.indexOf(protocols[p]+':') != -1){
+                     if (linkval.indexOf(protocols[p]+':') == 0){
                     // this link matches the protocol . add a classname protocol+link
                     //links[i].className = 'link-'+protocols[p]
                     wrapNode(links[i], 'span', 'link-'+protocols[p])
