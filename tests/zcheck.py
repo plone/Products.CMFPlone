@@ -13,11 +13,6 @@ from Products.CMFPlone.tests import PloneTestCase
 
 ZopeTestCase.installProduct('ZChecker')
 
-# Create a Plone site in the test (demo-) storage
-app = ZopeTestCase.app()
-PloneTestCase.setupPloneSite(app, id='portal')
-ZopeTestCase.close(app)
-
 
 class TestSkins(PloneTestCase.PloneTestCase):
 

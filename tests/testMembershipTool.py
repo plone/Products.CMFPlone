@@ -9,11 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-# Create a Plone site in the test (demo-) storage
-app = ZopeTestCase.app()
-PloneTestCase.setupPloneSite(app, id='portal')
-ZopeTestCase.close(app)
-
 _user_name = ZopeTestCase._user_name
 
 
@@ -28,45 +23,45 @@ class Portrait:
 class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.pm = self.portal.portal_membership
+        self.membership = self.portal.portal_membership
 
     def testGetPersonalFolder(self):
         '''Should return the .personal folder'''
-        personal = getattr(self.folder, self.pm.personal_id, None)
+        personal = getattr(self.folder, self.membership.personal_id, None)
         assert personal is not None
-        assert self.pm.getPersonalFolder(_user_name) == personal
+        assert self.membership.getPersonalFolder(_user_name) == personal
          
     def testGetPersonalFolderIfMissing(self):
         '''Should return None as the .personal folder is missing'''
-        self.folder._delObject(self.pm.personal_id)
-        assert self.pm.getPersonalFolder(_user_name) is None       
+        self.folder._delObject(self.membership.personal_id)
+        assert self.membership.getPersonalFolder(_user_name) is None       
 
     def testGetPersonalFolderIfNoHome(self):
         '''Should return None as the user has no home folder'''
-        members = self.pm.getMembersFolder()
+        members = self.membership.getMembersFolder()
         members._delObject(_user_name)
-        assert self.pm.getPersonalFolder(_user_name) is None       
+        assert self.membership.getPersonalFolder(_user_name) is None       
 
     def testGetPersonalPortrait(self):
         '''Should return the default portrait'''
-        assert self.pm.getPersonalPortrait(_user_name).getId() == 'defaultUser.gif'
+        assert self.membership.getPersonalPortrait(_user_name).getId() == 'defaultUser.gif'
 
     def testChangeMemberPortrait(self):
         '''Should change the portrait image'''
-        self.pm.changeMemberPortrait(Portrait(), _user_name)
-        assert self.pm.getPersonalPortrait(_user_name).getId() == _user_name
-        assert self.pm.getPersonalPortrait(_user_name).meta_type == 'Image'
+        self.membership.changeMemberPortrait(Portrait(), _user_name)
+        assert self.membership.getPersonalPortrait(_user_name).getId() == _user_name
+        assert self.membership.getPersonalPortrait(_user_name).meta_type == 'Image'
 
     def testGetPersonalPortraitUsesRequestVar(self):
         '''Should use the request var if member_id is not given'''
-        self.pm.changeMemberPortrait(Portrait(), 'user_2')
-        assert self.pm.getPersonalPortrait(None).getId() == 'defaultUser.gif'
+        self.membership.changeMemberPortrait(Portrait(), 'user_2')
+        assert self.membership.getPersonalPortrait(None).getId() == 'defaultUser.gif'
         self.app.REQUEST['userid'] = 'user_2'
-        assert self.pm.getPersonalPortrait(None).getId() == 'user_2'
+        assert self.membership.getPersonalPortrait(None).getId() == 'user_2'
 
     def testListMembers(self):
         '''Should return the members list'''
-        members = self.pm.listMembers()
+        members = self.membership.listMembers()
         assert len(members) == 1
         assert members[0].getId() == _user_name
 
@@ -75,25 +70,25 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         uf = self.portal.acl_users
         uf.changeOrCreateGroups(new_groups=['Foo', 'Bar'])
         assert len(uf.getUserNames()) == 3
-        members = self.pm.listMembers()
+        members = self.membership.listMembers()
         assert len(members) == 1
         assert members[0].getId() == _user_name
 
     def testCurrentPassword(self):
         '''Password checking should work'''
-        assert self.pm.testCurrentPassword('secret')
-        assert not self.pm.testCurrentPassword('geheim')
+        assert self.membership.testCurrentPassword('secret')
+        assert not self.membership.testCurrentPassword('geheim')
 
     def testSetPassword(self):
         '''Password should be changed'''
-        self.pm.setPassword('geheim')
-        assert self.pm.testCurrentPassword('geheim')
+        self.membership.setPassword('geheim')
+        assert self.membership.testCurrentPassword('geheim')
 
     def testSetPasswordIfAnonymous(self):
         '''Anonymous should not be able to change password'''
         self.logout()
         try:
-            self.pm.setPassword('geheim')
+            self.membership.setPassword('geheim')
         except:
             # Bl**dy string exceptions
             import sys; e, v, tb = sys.exc_info(); del tb

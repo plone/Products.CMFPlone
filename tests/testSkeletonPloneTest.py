@@ -11,11 +11,6 @@ from Products.CMFPlone.tests import PloneTestCase
 
 ZopeTestCase.installProduct('SomeProduct')
 
-# Create a Plone site in the test (demo-) storage
-app = ZopeTestCase.app()
-PloneTestCase.setupPloneSite(app, id='portal')
-ZopeTestCase.close(app)
-
 
 class TestSomeProduct(PloneTestCase.PloneTestCase):
 

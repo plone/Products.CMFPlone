@@ -38,6 +38,12 @@ def setupPloneSite(app, id='portal', quiet=0):
         if not quiet: ZopeTestCase._print('done (%.3fs)\n' % (time.time()-_start,))
 
 
+# Create a Plone site in the test (demo-) storage
+app = ZopeTestCase.app()
+setupPloneSite(app, id='portal')
+ZopeTestCase.close(app)
+
+
 class PloneTestCase(ZopeTestCase.PortalTestCase):
     pass
 

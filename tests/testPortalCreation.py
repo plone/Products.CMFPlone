@@ -9,11 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-# Creates a Plone site in the test (demo-) storage
-app = ZopeTestCase.app()
-PloneTestCase.setupPloneSite(app, id='portal')
-ZopeTestCase.close(app)
-
 
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 

@@ -9,11 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-# Set up a portal
-app = ZopeTestCase.app()
-PloneTestCase.setupPloneSite(app, id='portal')
-ZopeTestCase.close(app)
-
 
 class TestPloneTestCase(PloneTestCase.PloneTestCase):
 

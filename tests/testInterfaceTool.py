@@ -11,11 +11,6 @@ from Products.CMFPlone.tests import PloneTestCase
 
 import unittest
 
-# Create a Plone site in the test (demo-) storage
-app = ZopeTestCase.app()
-PloneTestCase.setupPloneSite(app, id='portal')
-ZopeTestCase.close(app)
-
 
 from Products.CMFCore.interfaces.DublinCore import DublinCore
 from Products.CMFCore.interfaces.Contentish import Contentish
@@ -68,36 +63,36 @@ class TestInterfaceFinder(unittest.TestCase):
 class TestInterfaceTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.pi = self.portal.portal_interface
+        self.interface = self.portal.portal_interface
 
     def testContentImplements(self):
         content = PortalContent()
-        self.failUnless(self.pi.objectImplements(content, getDottedName(Contentish)))
+        self.failUnless(self.interface.objectImplements(content, getDottedName(Contentish)))
 
     def testDocumentImplements(self):
         document = Document(id='foo')
-        self.failUnless(self.pi.objectImplements(document, getDottedName(Contentish)))
-        self.failUnless(self.pi.objectImplements(document, getDottedName(DublinCore)))
+        self.failUnless(self.interface.objectImplements(document, getDottedName(Contentish)))
+        self.failUnless(self.interface.objectImplements(document, getDottedName(DublinCore)))
                        
     def testDCImplements(self):
         dc = DefaultDublinCoreImpl()
-        self.failUnless(self.pi.objectImplements(dc, getDottedName(DublinCore)))
+        self.failUnless(self.interface.objectImplements(dc, getDottedName(DublinCore)))
 
     def testAImplements(self):
         a = A()
-        self.failUnless(self.pi.objectImplements(a, getDottedName(Contentish)))
-        self.failUnless(self.pi.objectImplements(a, getDottedName(DublinCore)))
-        self.failIf(self.pi.objectImplements(a, getDottedName(MyPortalContent)))
+        self.failUnless(self.interface.objectImplements(a, getDottedName(Contentish)))
+        self.failUnless(self.interface.objectImplements(a, getDottedName(DublinCore)))
+        self.failIf(self.interface.objectImplements(a, getDottedName(MyPortalContent)))
 
     def testBImplements(self):
         b = B()
-        self.failUnless(self.pi.objectImplements(b, getDottedName(Contentish)))
-        self.failUnless(self.pi.objectImplements(b, getDottedName(DublinCore)))
-        self.failUnless(self.pi.objectImplements(b, getDottedName(MyPortalContent)))
+        self.failUnless(self.interface.objectImplements(b, getDottedName(Contentish)))
+        self.failUnless(self.interface.objectImplements(b, getDottedName(DublinCore)))
+        self.failUnless(self.interface.objectImplements(b, getDottedName(MyPortalContent)))
 
     def testNamesAndDescriptions(self):
         from Products.CMFPlone.interfaces.InterfaceTool import IInterfaceTool
-        nd = self.pi.namesAndDescriptions(getDottedName(IInterfaceTool))
+        nd = self.interface.namesAndDescriptions(getDottedName(IInterfaceTool))
         nd2 = IInterfaceTool.namesAndDescriptions()
         nd2 = [(n, d.getDoc()) for n, d in nd2]
         self.assertEquals(nd, nd2)
