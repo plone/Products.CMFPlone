@@ -1,7 +1,4 @@
-try:
-    from __future__ import nested_scopes
-except:
-    pass
+from __future__ import nested_scopes
     
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
