@@ -48,10 +48,11 @@
                                name="products:list" tal:attributes="value product/id"
                                tal:condition="not: product/isLocked"
                                /></td>
-                    <td>
-                         <span tal:content="product/id" >product name</span>
-    
-                         (<a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview"
+                    <td tal:define="pid product/id">
+                        <span tal:condition="python:not container.portal_quickinstaller.getProductFile(pid)" tal:content="pid">product</span>
+                        <a tal:condition="python:container.portal_quickinstaller.getProductFile(pid)" tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}" tal:content="pid">product</a>
+                    
+                        (<a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview"
                              i18n:translate="link_install_products_log">Install log</a>)
     
                     </td>
