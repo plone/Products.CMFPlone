@@ -11,13 +11,18 @@
 
 from Products.CMFPlone import transaction_note
 ids=context.REQUEST.get('ids', None)
+titles=[]
 
 status='failure'
 message='Please select one or more items to delete.'
 
+for id in ids:
+    obj=context.restrictedTraverse(id)
+    titles.append(obj.title_or_id())
+
 if ids:
     status='success'
-    message=', '.join(ids)+' has been deleted.'
+    message=', '.join(titles)+' has been deleted.'
     transaction_note(message)
     context.manage_delObjects(ids)
 
