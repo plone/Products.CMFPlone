@@ -43,7 +43,8 @@ def oneX_twoBeta2(portal):
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(props, 'default_page', default_values, 'lines')
-    safeEditProperty(props, 'allow_sendto', 1, 'boolean')
+    if props.hasProperty('allow_sendto'):
+        props._delProperty('allow_sendto')
     addLinesToProperty(props, 'use_folder_tabs', 'Plone Site')
     if props.hasProperty('portal_factory_types'):
         props._delProperty('portal_factory_types')
@@ -400,7 +401,7 @@ def addDocumentActions(portal):
     at.addAction('sendto',
                  'Send this page to somebody',
                  'string:$object_url/portal_form/sendto_form',
-                 "python:hasattr(portal.portal_properties.site_properties, 'allow_sendto')",
+                 '',
                  'View',
                  'document_actions')
 

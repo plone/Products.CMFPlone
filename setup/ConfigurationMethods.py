@@ -56,8 +56,6 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
     if not hasattr(p, 'auth_cookie_length'):
         safeEditProperty(p, 'auth_cookie_length', 0, 'int')
-    if not hasattr(p,'allow_sendto'):
-        safeEditProperty(p, 'allow_sendto', 1, 'boolean')
 
 
 def setupDefaultLeftRightSlots(self, portal):
