@@ -19,6 +19,7 @@ Lalo Martin - Zope Plumbing, PortalFactory, Translator Tool
 Kapil (hazmat) - Helpful ZOPE Guru
 Luis Lavena - favicon
 David Harvey - python,ZPT,Makes sures things dont fall through the cracks ;)
+Geoff Davis (plonista) - form validation refactorings
 
 #zope on irc.openprojects.net for insight and soapbox to preach
 zopelabs.com for useful scripts 
