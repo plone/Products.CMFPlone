@@ -71,7 +71,7 @@
         
             <thead>
                 <tr>
-                    <thz i18n:translate="listingheader_undo">Undo</th>
+                    <th i18n:translate="listingheader_undo">Undo</th>
                     <th i18n:translate="listingheader_affected_item">Affected Item</th>
                     <th i18n:translate="listingheader_action_performed">Action performed</th>
                     <th i18n:translate="listingheader_performed_by">Performed by</th>
