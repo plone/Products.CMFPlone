@@ -1,3 +1,185 @@
+2004-03-02 03:05  runyaga
+
+	* HISTORY.txt, skins/plone_forms/failsafe_login.pt,
+	  skins/plone_forms/login_form.pt, skins/plone_forms/registered.pt,
+	  skins/plone_portlets/portlet_login.pt,
+	  skins/plone_scripts/logout.cpy (Plone-2_0-branch): fix for
+	  http://article.gmane.org/gmane.comp.web.zope.plone.user/13868
+	  site will not longer break horribly if you remove
+	  cookie_authentication.  I actually use this on some of my sites -
+	  so its in my interest to fix
+
+2004-03-02 02:43  zopezen
+
+	* tests/zcheck.py (Plone-2_0-branch): fix typo
+
+2004-03-02 02:30  zopezen
+
+	* tests/zcheck.py (Plone-2_0-branch): As per lurkers request,
+	  ignore rssBody in zcheck. Will only happen if you have a cvs co
+	  of zchecker.
+
+2004-03-02 02:02  shh42
+
+	* __init__.py, tests/testSecurityDeclarations.py
+	  (Plone-2_0-branch): It all started when I wanted to make
+	  ConflictError importable TTW for my upcoming bare-except-geddon
+	  (2.0.1). Then I went to write some tests, found a bug, and had to
+	  fix it. WorkflowException was not importable by restricted code.
+
+2004-03-02 01:27  plonista
+
+	* MigrationTool.py (Plone-2_0-branch): Added utility method used
+	  for better error reporting
+
+2004-03-02 00:00  limi
+
+	* HISTORY.txt (Plone-2_0-branch): history formatting fixes
+
+2004-03-01 23:38  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Making the instructions on how to
+	  use top_slot more concise and explicit.
+
+2004-03-01 23:10  bitranch
+
+	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
+	  revert last change; all related content must be published (blame
+	  limi ;) )
+
+2004-03-01 22:52  shh42
+
+	* PloneTool.py (Plone-2_0-branch): Fixed missing import of
+	  WorkflowException
+
+2004-03-01 20:47  bitranch
+
+	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
+	  remove review_state from query -- allow catalog to take care of
+	  content permissions. fixes latest 2760
+
+2004-03-01 16:27  tesdal
+
+	* PloneFolder.py, PloneTool.py, Portal.py,
+	  skins/plone_scripts/browserDefault.py (Plone-2_0-branch):
+	  http://plone.org/collector/2485 http://plone.org/collector/2502
+	  Moved browserDefault to PloneTool, as it is run before the user
+	  is authenticated.
+
+2004-03-01 15:44  plonista
+
+	* skins/plone_3rdParty/CMFTopic/topic_subtopics_form.pt
+	  (Plone-2_0-branch): Fix for 2647 courtesy of rafael
+
+2004-03-01 15:41  plonista
+
+	* skins/plone_forms/sendto_form.cpt (Plone-2_0-branch): Fixing zpt
+	  breakage
+
+2004-03-01 13:48  plonista
+
+	* skins/: plone_forms/content_status_history.cpt,
+	  plone_forms/folder_rename_form.cpt, plone_forms/undo_form.pt,
+	  plone_prefs/password_form.pt, plone_prefs/personalize_form.cpt,
+	  plone_prefs/plone_control_panel.pt,
+	  plone_prefs/plone_memberprefs_panel.pt,
+	  plone_prefs/prefs_error_log_form.pt,
+	  plone_prefs/prefs_error_log_showEntry.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_user_details.pt, plone_prefs/reconfig_form.cpt
+	  (Plone-2_0-branch): Fixed template breakage from top_slot
+	  addition
+
+2004-03-01 13:25  zworkb
+
+	* migrations/v2/plone2_base.py (Plone-2_0-branch): fixed bug #2630
+	  -> Authenticated may change personal settings & password
+
+2004-03-01 11:59  shh42
+
+	* MembershipTool.py (Plone-2_0-branch): Remove a stray debug print
+
+2004-03-01 09:26  runyaga
+
+	* HISTORY.txt, MembershipTool.py,
+	  skins/plone_content/discussionitem_view.pt,
+	  skins/plone_content/folder_edit_form.cpt,
+	  skins/plone_content/metadata_edit_form.cpt,
+	  skins/plone_forms/content_status_history.cpt,
+	  skins/plone_forms/discussion_reply_form.pt,
+	  skins/plone_forms/discussion_reply_preview.pt,
+	  skins/plone_forms/enabling_cookies.pt,
+	  skins/plone_forms/folder_localrole_form.pt,
+	  skins/plone_forms/folder_rename_form.cpt,
+	  skins/plone_forms/join_form.cpt, skins/plone_forms/logged_out.pt,
+	  skins/plone_forms/login_failed.pt,
+	  skins/plone_forms/login_form.pt,
+	  skins/plone_forms/login_form.pt.metadata,
+	  skins/plone_forms/login_password.pt,
+	  skins/plone_forms/login_success.pt,
+	  skins/plone_forms/member_search_form.pt,
+	  skins/plone_forms/member_search_results.pt,
+	  skins/plone_forms/roster.pt, skins/plone_forms/search.pt,
+	  skins/plone_forms/search_form.pt,
+	  skins/plone_forms/sendto_form.cpt,
+	  skins/plone_forms/undo_form.pt,
+	  skins/plone_prefs/password_form.pt,
+	  skins/plone_prefs/personalize_form.cpt,
+	  skins/plone_prefs/plone_control_panel.pt,
+	  skins/plone_prefs/plone_memberprefs_panel.pt,
+	  skins/plone_prefs/prefs_error_log_form.pt,
+	  skins/plone_prefs/prefs_error_log_showEntry.pt,
+	  skins/plone_prefs/prefs_group_details.pt,
+	  skins/plone_prefs/prefs_group_members.pt,
+	  skins/plone_prefs/prefs_groups_overview.pt,
+	  skins/plone_prefs/prefs_install_product_readme.pt,
+	  skins/plone_prefs/prefs_install_products_form.pt,
+	  skins/plone_prefs/prefs_mailhost_form.pt,
+	  skins/plone_prefs/prefs_main_template.pt,
+	  skins/plone_prefs/prefs_portal_properties.pt,
+	  skins/plone_prefs/prefs_portal_properties_list.pt,
+	  skins/plone_prefs/prefs_portalskin_form.pt,
+	  skins/plone_prefs/prefs_syndication_form.pt,
+	  skins/plone_prefs/prefs_user_details.pt,
+	  skins/plone_prefs/prefs_user_group_search_form.pt,
+	  skins/plone_prefs/prefs_user_memberships.pt,
+	  skins/plone_prefs/prefs_users_overview.pt,
+	  skins/plone_prefs/prefs_workflow_advanced.pt,
+	  skins/plone_prefs/prefs_workflow_basic.pt,
+	  skins/plone_prefs/reconfig_form.cpt,
+	  skins/plone_scripts/showEditableBorder.py,
+	  skins/plone_templates/default_error_message.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/main_template.pt,
+	  skins/plone_templates/news.pt,
+	  skins/plone_templates/recently_published.pt (Plone-2_0-branch):
+	  in the spirit of Magnasushi - here comes a new slot, top_slot.
+	  fix for bug 2769 (which I could not reproduce but others could
+	  for some reason).  This fixes the problem and adds something that
+	  I think is very handy.
+
+	  Here is the HISTORY entry,
+
+		You could not en/disable the green 'editable border'
+		because this was being done in the 'head_slot' which
+		corresponds to <head> in the document.	en/disabling
+		of the border is computed in global_defines.pt which
+		is the first macro used in main_template.  So introduced
+		another slot in main_template called "top_slot" which
+		occurs before global_defines.  I also suggest how to fix
+		this permanently in showEditableBorder.py.  We should
+		move this off to the .metadata file for the templates.
+
+2004-03-01 05:16  dtremea
+
+	* skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Fixed #2634: ('Anonymous User' in discussions: i18n). Bonus:
+	  whitespaces normalization.
+
+2004-03-01 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-01 01:33  bitranch
 
 	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
