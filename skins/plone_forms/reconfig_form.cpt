@@ -287,36 +287,6 @@
 
         </div>
 
-        <div class="row"
-            tal:define="default_skin request/default_skin | here/portal_skins/getDefaultSkin;
-                        error_default_skin errors/default_skin | nothing;">
-            <div class="label">
-               <span i18n:translate="label_default_look">Default Look</span>
-               <div id="skin_help"
-                    i18n:translate="help_default_look"
-                    class="help"
-                    style="visibility:hidden">
-               Specify the default site wide look to be used for users.
-               </div>
-            </div>
-            <div class="field">
-                <select name="default_skin"
-                        tabindex=""
-                        value=""
-                        onfocus="formtooltip('skin_help',1)"
-                        onblur="formtooltip('skin_help',0)"
-                        tal:attributes="value here/portal_skins/getDefaultSkin;
-                        tabindex tabindex/next;">
-                    <option value="#"
-                            i18n:translate=""
-                            tal:repeat="skin here/portal_skins/getSkinSelections"
-                            tal:attributes="value skin;
-                                            selected python:test(default_skin == skin, 'selected', None)"
-                            tal:content="structure skin" />
-                </select>
-            </div>
-        </div>
-
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_password_policy">Password policy</span>
