@@ -186,7 +186,7 @@ to become a member.
                 </strong> 
                 
                 <span i18n:translate="description_trouble_logging_in">
-                Make sure to <a href="enabling cookies">enable cookies</a> in your web browser. 
+                Make sure to <a href="enabling_cookies">enable cookies</a> in your web browser. 
                 </span>
             </p>
             
