@@ -408,7 +408,7 @@ function highlightSearchTerm() {
                 queries = query.replace(/\+/g,' ').split(/\s+/)
                 
                 // make sure we start the right place and not higlight menuitems or breadcrumb
-                theContents = document.getElementById('bodyContent');
+                theContents = document.getElementById('content');
                 for (q=0;q<queries.length;q++) {
                     climb(theContents,queries[q]);
                 }
@@ -421,8 +421,8 @@ else if (window.attachEvent) window.attachEvent("onload",highlightSearchTerm);
 <!--
 
 // ----------------------------------------------
-// StyleSwitcher functions written by Paul Sowden
-// http://www.idontsmoke.co.uk/ss/
+// StyleSwitcher functions written by Paul Sowden,
+// thanks!       http://www.idontsmoke.co.uk/ss/
 // - - - - - - - - - - - - - - - - - - - - - - -
 // For the details, visit ALA:
 // http://www.alistapart.com/stories/alternate/
