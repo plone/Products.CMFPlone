@@ -1,8 +1,7 @@
-When you create a Plone Site you are prompted
-to choose what sort of "Site" you would like.
-In technical terms we call these "CustomizationPolicies" 
-(for better or for worse).  By default there are
-two Customizations:
+Inside the Plone Setup you can choose what sort of "Site" 
+you would like.
+In technical terms we call these "CustomizationPolicies".
+By default there are two Customizations:
 
   * Default Plone - this is the base configuration.
 
@@ -32,9 +31,9 @@ two Customizations:
 There are other third party policies you can create!
 zopezen.org is another policy that you can download
 and install.  create a new plone site, select zopezen
-and viola! you will have zopezen.org system.
+and you will have zopezen.org system.
 
-We are really looking forward to have more people
+We are looking forward to have more people
 contribute CustomizationPolicies to ship with future
 Plone releases.  Or to offer the community as third
 party add-ons.  
