@@ -12,9 +12,6 @@
     </tal:block>
   </metal:block>
     
-
-<body>
-
 <div metal:fill-slot="main"
      tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='created',sort_order='reverse',review_state='published');
                  Batch python:modules['Products.CMFPlone'].Batch;
@@ -114,5 +111,4 @@
   </div>
 
   
-</body>
 </html>

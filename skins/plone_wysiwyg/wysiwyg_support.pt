@@ -57,7 +57,7 @@
      class="container"
      tal:define="DateTime python:modules['DateTime'].DateTime;">     
 
-<script language=javascript>
+<script language="javascript" type="text/javascript">
 function fnInit() {
     editor=document.getElementById('xsEditor');
     editor.insertHTML('this is a test');

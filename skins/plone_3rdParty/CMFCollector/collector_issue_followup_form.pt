@@ -17,7 +17,6 @@
   <tal:block tal:define="dummy python:request.set('enable_border',1)" />
 </metal:block>
 
-<body>
 
 <span tal:condition="nothing">
   Template description: Form for entering new issue actions.
@@ -164,5 +163,4 @@
 
 </div>
 
-</body>
 </html>

@@ -12,8 +12,6 @@
         </tal:block>
     </metal:block>
 
-<body>
-
 <div metal:fill-slot="main"
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
@@ -83,6 +81,5 @@
 
 <div metal:fill-slot="sub"> &nbsp; </div>
 
-</body>
 </html>
 

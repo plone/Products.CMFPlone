@@ -34,8 +34,7 @@
                                                           , first=b_start
                                                           , last=b_end
                                                           );
-                     b_more  python: len( batch ) >= b_size;
-                    ">
+                     b_more  python: len( batch ) >= b_size">
     
         <h1> 
             <span tal:replace="python: modules['string'].capitalize( mode )">Mode</span>

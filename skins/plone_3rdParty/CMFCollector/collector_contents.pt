@@ -7,11 +7,9 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<span tal:condition="nothing">
+<tal:block condition="nothing">
   Template description: Batching view of the collector issues.
-</span>
-
-<body>
+</tal:block>
 
 <metal:block fill-slot="base"> <tal:block tal:define="dummy python:request.set('enable_border',1)" /> </metal:block>
 

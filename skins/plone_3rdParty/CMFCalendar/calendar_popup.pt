@@ -8,7 +8,8 @@
   <head>
     <title>Calendar</title>
 
-    <script language="javascript" tal:content="python: here.getPopupScript(inputname=inputname, formname=formname)">
+    <script type="text/javascript" language="javascript" 
+            tal:content="python: here.getPopupScript(inputname=inputname, formname=formname)">
       
     </script>
 

@@ -9,7 +9,8 @@
   <head>
     <title>WYSIWYG Editor</title>
 
-    <script language="javascript" tal:content="python: here.getPopupScript(inputname=inputname, formname=formname)">
+    <script language="javascript" type="text/javascript"
+            tal:content="python: here.getPopupScript(inputname=inputname, formname=formname)">
       
     </script>
 

@@ -15,12 +15,14 @@
       tal:define="batch here/listSubtopics;">
 
   <metal:block tal:condition="batch">
-    <table metal:use-macro="here/folder_contents/macros/folder_listing">
+    <metal:block use-macro="here/folder_contents/macros/folder_listing">
     this is a sortable table that is shared with folder_contents
-    </table>
+    </metal:block>
   </metal:block>
 
   <table class="FormLayout" tal:define="subtopics here/listSubtopics">
+    <tr>
+      <td>
     <tal:block tal:repeat="button actions/folder_buttons|nothing">
                 <input class="context"
                        type="submit"
@@ -32,7 +34,10 @@
                                        name button/url;
                                        tabindex tabindex/next;" />
     </tal:block>
+      </td>
+    </tr>
   </table>
+  
 </form>
 
 <form action="topic_addSubtopic" method="get">

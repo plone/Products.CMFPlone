@@ -13,8 +13,6 @@
       </tal:block>
   </metal:block>
                                
-<body>
-
 <div metal:fill-slot="main"
        tal:define="results python:here.queryCatalog();
                  Batch python:modules['Products.CMFPlone'].Batch;
@@ -85,6 +83,5 @@
 </div>
 
 
-</body>
 </html>
 

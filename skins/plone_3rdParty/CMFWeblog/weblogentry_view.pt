@@ -1,8 +1,8 @@
 <html metal:use-macro="here/main_template/macros/master">
-  <span metal:fill-slot="base" tal:omit-tag="">
-    <base tal:attributes="href string:${here/aq_parent/absolute_url}/weblog/" />
-  </span>
-<body>
+
+<metal:block fill-slot="base">
+ <base tal:attributes="href string:${here/aq_parent/absolute_url}/weblog/" />
+</metal:block>
 
 <div metal:fill-slot="header" tal:define="t_s options/t_s | traverse_subpath;global blogdata python:here.portal_weblog.getMonthData(here.aq_parent,t_s); global postdate string:0">
     <br tal:replace="structure python: blogdata['calendar']" tal:condition="blogdata" />
@@ -11,10 +11,11 @@
 <div metal:fill-slot="main">
     <div id="blogs" tal:condition="blogdata">
         <div class="blogPost">
-            <a id=""
-               tal:attributes="id here/id">
-                <h1 class="postTitle" tal:condition="exists:here/Title" tal:content="here/Title">Blog Entry Title</h1>
-            </a>
+            <a id="" tal:attributes="id here/id">&nbsp;</a>
+            <h1 class="postTitle" tal:condition="exists:here/Title"
+                tal:content="here/Title">Blog Entry Title
+            </h1>
+
             <p tal:content="structure here/CookedBody">
             Posting text
             </p>
@@ -35,5 +36,4 @@
     </div>
 </div>
 
-</body>
 </html>

@@ -53,9 +53,12 @@
     </form>
 
 
-    <span tal:condition="python:container.portal_syndication.isSiteSyndicationAllowed()">
-
-        <span tal:condition="python:container.portal_syndication.isSyndicationAllowed(here)">
+    <tal:block condition="python:container.portal_syndication.isSyndicationAllowed(here)">
+    <form id="edit_form"
+          class="group"
+          action="editSynProperties"
+          name="syndication"
+          method="post">
 
             <div class="group">
                 <span class="legend" i18n:translate="legend_syndication_channel_details">Channel Details</span>
@@ -71,13 +74,7 @@
                 </div>
             </div>
 
-            <form id="edit_form"
-	          class="group"
-                  action="editSynProperties" 
-                  name="syndication" 
-                  method="post">
-
-                <span class="legend" i18n:translate="legend_syndication_details">Syndication Details</span>
+            <span class="legend" i18n:translate="legend_syndication_details">Syndication Details</span>
 
                 <div class="row">
                     <div class="label">
@@ -134,7 +131,6 @@
             </div>
 			
             <div class="row">
-			
                 <div class="label">
                     <span i18n:translate="label_syndication_update_base">Update Base</span>
 
@@ -147,7 +143,6 @@
                     make sure this starts on a Tuesday.
                     </div>
                 </div>
-				
                 <div class="field"
 		                 tal:define="inputname  string:updateBase;
                                  formname   string:edit_form;
@@ -155,7 +150,7 @@
                     <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                         calendar popup
                     </div>
-		</div>
+            </div>
     
             <div class="row">
                 <div class="label">
@@ -195,11 +190,10 @@
                 </div>
             </div>
 
-            </form>
+        </div>
+        </form>
 
-        </span>
-
- </span>
+    </tal:block>
 
 </div>
 

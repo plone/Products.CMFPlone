@@ -13,11 +13,9 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<span tal:condition="nothing">
+<tal:block tal:condition="nothing">
   Template description: Form for submitting new collector issues.
-</span>
-
-<body>
+</tal:block>
 
 <div metal:fill-slot="header">
 
@@ -150,7 +148,8 @@ as possible.
     <div class="row">
         <div class="label" i18n:translate="label_version_info">Version Info</div>
         <div class="field">
-            <textarea name="version_info" rows="3" cols="35"><span tal:replace="here/version_info_spiel"></span></textarea>
+            <textarea name="version_info" rows="3" cols="35"
+                      tal:content="here/version_info_spiel"></textarea>
         </div>
     </div>
     
@@ -218,5 +217,4 @@ as possible.
 
 </div>
 
-</body>
 </html>

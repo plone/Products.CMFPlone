@@ -12,8 +12,6 @@
         </tal:block>
     </metal:block>
 
-<body>
-
 <metal:block metal:fill-slot="main">	  
 
     <h1 i18n:translate="heading_comment">Comment</h1>
@@ -47,7 +45,7 @@
         		    This is the body text of the comment. 
         		    </p>
         
-                    <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                    <metal:block use-macro="here/viewThreadsAtBottom/macros/discussionView" />
                     
                     <form name="delete" 
                           action="" 
@@ -74,9 +72,6 @@
 <metal:block metal:fill-slot="sub">
 &nbsp;
 </metal:block>
-
-
-</body>
 
 </html>
 

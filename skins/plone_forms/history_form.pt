@@ -2,18 +2,18 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html metal:use-macro="here/main_template/macros/master" i18n:domain="plone">
-  <body>
    <div metal:fill-slot="main"
-        tal:define="HistoryBatchSize python:request.get('HistoryBatchSize',20);first_trx python:request.get('first_transaction',0); last_trx python:20;history here/manage_change_history|nothing;">
-    <form action="#" 
-          method="post"
-          tal:attributes="action here/absolute_url"
-          tal:condition="history" tal:define="history_length python:len(history)" >
-          <table width="100%" cellspacing="0" cellpadding="2" border="0">
-   <table>
-     <tr><td>
-    
-        
+        tal:define="HistoryBatchSize python:request.get('HistoryBatchSize',20);
+                    first_trx python:request.get('first_transaction',0); 
+                    last_trx python:20;history here/manage_change_history|nothing;">
+  <form action="#" 
+        method="post"
+        tal:attributes="action here/absolute_url"
+        tal:condition="history" tal:define="history_length python:len(history)" >
+
+  <table>
+     <tr>
+       <td>
          <div class="list-nav" tal:condition="first_trx" tal:define="next python:(first_trx*2-last_trx)">
            <a href="" tal:attributes="href string:${request/URL}?first_trx:int=$next&amp;last_trx:int=$first_trx&amp;HistoryBatchSize:int=$HistoryBatchSize"> &lt; Later Revisions</a>
          </div> 
@@ -24,39 +24,40 @@
          </div>
 
          <div tal:condition="history" tal:repeat="version history">
-             <input type="checkbox" value="&dtml-key;" name="keys:list" tal:attributes="value version/key" />
+             <input type="checkbox" value="" name="keys:list" tal:attributes="value version/key" />
              <a href="#" tal:attributes="href string:${here/absolute_url}/HistoricalRevisions/${version/key}">
-               <span tal:replace="version/time"/>
-               <span tal:condition="version/user_name" tal:replace="string:(${version/user_name})"/>
+               <span tal:replace="version/time" />
+               <span tal:condition="version/user_name" tal:replace="string:(${version/user_name})" />
              </a>
-             <span tal:replace="version/description"/>    
+             <span tal:replace="version/description" />    
              <br />
          </div>
-      </td></tr>
+       </td>
+     </tr>
       
-    <tr> <td>
-      <input class="context" 
-             type="submit"  
-             name="manage_customHistoryCopy:method" 
-             value="Copy to present"
-             i18n:attributes="value"
-             />
-      <input class="context" 
-             type="submit"  
-             name="manage_historicalComparison:method" 
-             value="Compare"
-             i18n:attributes="value"
-             />
-      </td> </tr>
+     <tr> 
+       <td>
+         <input class="context" 
+                type="submit"  
+                name="manage_customHistoryCopy:method" 
+                value="Copy to present"
+                i18n:attributes="value" />
+         <input class="context" 
+                type="submit"  
+                name="manage_historicalComparison:method" 
+                value="Compare"
+                i18n:attributes="value" />
+       </td> 
+     </tr>
   </table>
   </form>
+  
   <metal:block tal:condition="not: history">
   <h2>Historical not available</h2>
   This class does not support the historical interface.  The content must
   mix-in OFS.History.Historical
   </metal:block>
- </div>
 
-</body>
+ </div>
 </html>
 

@@ -78,19 +78,18 @@
                 <div style="white-space: nowrap;"
                      tal:repeat="te tree/list">
             
-                    <tal:block tal:define="iscurrent te/iscurrent | python:0;
-                                           sibling python:te['object'];
-                                           stdCommand python:test(template.getId()=='folder_contents' and  
-                                               sibling.isPrincipiaFolderish , 'folder_contents', 
-                                                   test(sibling.isPrincipiaFolderish,'','view'));
-                                               
-                                           
-                                           title python:te['object'].title_or_id();
-                                           sibling_title python:'&nbsp;;'.join(title[:croppingLength].split(' '));"
-                                           tal:on-error="structure string:<!--Error in Navigation loop!!-->"
+                    <span tal:define="iscurrent te/iscurrent | python:0;
+                                      sibling python:te['object'];
+                                      stdCommand python:test(template.getId()=='folder_contents' and  
+                                      sibling.isPrincipiaFolderish , 'folder_contents', 
+                                      test(sibling.isPrincipiaFolderish,'','view'));
+                                      title python:te['object'].title_or_id();
+                                      sibling_title python:'&nbsp;;'.join(title[:croppingLength].split(' '));"
+                                      tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                            >
                                
-                        <span tal:repeat="x python:range( te['indent'])" tal:omit-tag="">&nbsp;</span>
+                        <tal:block repeat="x python:range( te['indent'])">&nbsp;</tal:block>
+
                         <tal:block tal:condition="iscurrent">
                            <span class="currentNavItem">
                         </tal:block>
@@ -119,8 +118,7 @@
                             <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
                             <span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
                         </a>
-    
-                    </tal:block>
+                    </span>
                 </div>
                 <div tal:condition="tree/next">
                     <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">

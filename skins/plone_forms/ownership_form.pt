@@ -6,7 +6,6 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<body>
 <div metal:fill-slot="main">
         
     <h1 i18n:translate="heading_change_ownership">Change ownership</h1>
@@ -16,19 +15,16 @@
     another member easily from this form.  
     </p>
 
-        <form class="group"
-              action="change_ownership"
-              name="ownership_form" 
-              method="post">
+    <form class="group"
+          action="change_ownership"
+          name="ownership_form" 
+          method="post">
         
         <span class="legend" i18n:translate="legend_change_ownership">Change Ownership</span>
 
         <div class="row" >
-
             <div class="label required">
-            
                 <span i18n:translate="label_new_owner">New owner</span>
-            
                 <div id="id_help" 
                      i18n:translate="id_help"
                      class="help" 
@@ -36,7 +32,6 @@
                 Changes the ownership of the current object.
                 </div>
             </div>
-            
             <div class="field">
                 <select name="userid"
                         onfocus="formtooltip('id_help',1)"
@@ -47,8 +42,8 @@
                                              selected python:test(uid==here.Creator(), 'SELECTED', '');"
                              tal:content="uid">username</option>
                    </tal:block>
+                </select>
             </div>
-
         </div>
      
         <div class="row">
@@ -86,8 +81,8 @@
                        />
             </div>
         </div>
-
     </form>   
+
 </div>
-</body>
+
 </html>

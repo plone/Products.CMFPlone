@@ -12,13 +12,11 @@
         </tal:block>
     </metal:block>
 
-<body>
-
- 	 <div metal:fill-slot="main">
+<div metal:fill-slot="main">
    
 	 <h1 i18n:translate="heading_signed_out">You are now logged out</h1>
 	 
-     <div i18n:translate="description_logged_out" omit-tag="">
+     <div i18n:translate="description_logged_out" tal:omit-tag="">
     	 <p>
     	 We hope you enjoyed using our services. We look forward to seeing you again.
          </p>
@@ -31,7 +29,6 @@
     	 </p>
      </div>
 	 
-	</div>
+</div>
 	   
-</body>
 </html>

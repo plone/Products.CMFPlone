@@ -12,8 +12,6 @@
         </tal:block>
     </metal:block>
 
-<body>
-
 <div metal:fill-slot="main"
      tal:define="errors python:request.get('errors', {});
                  member python:here.portal_membership.getAuthenticatedMember();
@@ -157,5 +155,4 @@ Fill in the email address of your friend to send an email with the address.
 
 </div>
 		
-</body>
 </html>

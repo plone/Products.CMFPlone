@@ -197,7 +197,7 @@
           <td metal:define-slot="issue_uploads_slot"
               colspan="3">
             <table>
-              <div tal:repeat="item artifacts">
+              <tal:block repeat="item artifacts">
                 <tr>
                   <td tal:define="icon item/getIcon|item/icon|nothing;
                                   item_url python: item.absolute_url()
@@ -217,13 +217,12 @@
                                                   and '...')">
                     DESCRIPTION</span>
                 </td> </tr>
-              </div>
+              </tal:block>
             </table>
           </td>
         </tr>
 
-         <tr valign="middle">
-         </tr>
+        <tr valign="middle"><td>&nbsp;</td></tr>
 
        </table>
 

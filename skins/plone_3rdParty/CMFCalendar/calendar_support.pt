@@ -74,13 +74,13 @@
         </tr>
         
         <tr tal:define="weekdays here/portal_calendar/getDays">
-          <span tal:repeat="weekday weekdays" tal:omit-tag="">
+          <tal:block repeat="weekday weekdays">
             <td class="weekdays" tal:content="weekday">Su</td>
-          </span>
+          </tal:block>
         </tr>
             <tr tal:repeat="week weeks">
-              <span tal:define="days week" tal:omit-tag="">
-                <span tal:repeat="day days" tal:omit-tag="">
+              <tal:block define="days week">
+                <tal:block repeat="day days" tal:omit-tag="">
                   <td tal:condition="not: python: day">
                     &nbsp;
                   </td>
@@ -91,8 +91,8 @@
                       day number
                     </a>
                   </td>
-                </span>
-              </span>
+                </tal:block>
+              </tal:block>
             </tr>
     
     </table>

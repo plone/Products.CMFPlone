@@ -18,7 +18,7 @@ You will receive an email shortly containing your password
     and instructions on how to activate your membership. 
 </p>
 
-<p tal:condition="python:not(ve)"> 
+<tal:block condition="python:not(ve)"> 
     <span i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</span>       
     <form action=""
           method="post"
@@ -44,7 +44,7 @@ You will receive an email shortly containing your password
                i18n:attributes="value"
                />
     </form>         
-</p>
+</tal:block>
 
 </div>
 

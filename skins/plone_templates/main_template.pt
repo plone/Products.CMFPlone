@@ -3,12 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xml:lang="en-US"
       lang="en-US" 
-      metal:define-macro="master">
-
-<tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
-                       global site_properties here/portal_properties/site_properties;
-                       global ztu modules/ZTUtils;
-                       global current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(),None));" />
+      metal:define-macro="master"
+      tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
+                  global site_properties here/portal_properties/site_properties;                  global ztu modules/ZTUtils;
+                  global current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(),None));" >
 
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="base">

@@ -214,7 +214,7 @@
               tal:repeat="op here/regOps"
           >
            <textarea rows="2" cols="8"
-                     name="&dtml-op;-usernames:lines"
+                     name="usernames:lines"
                      tal:attributes="name python: '%s-usernames:lines' % op;
                                      readonly here/isRegSetter;
                                      onkeydown python: ( not here.isRegSetter()
