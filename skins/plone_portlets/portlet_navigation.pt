@@ -52,7 +52,8 @@
                                       stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'',typeInfo.getActionById('view')));
                                       command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPerm('List folder contents',sibling) ,'',stdCommand);
                                       title python:te['object'].title_or_id();
-                                      sibling_title python:' '.join(title[:croppingLength].split(' '));"
+                                      charset here/portal_properties/site_properties/default_charset|string:utf-8;
+                                      sibling_title python:' '.join( (unicode(title, charset)[:croppingLength]).encode(charset).split(' '));"
                                       tal:on-error="structure string:&lt;!--Error in Navigation loop!!--&gt;"
                                            >
 
