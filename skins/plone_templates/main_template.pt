@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US" metal:define-macro="master">
 
-<head metal:use-macro="here/header/macros/html_header"></head>
+<head metal:use-macro="here/header/macros/html_header">
+</head>
 
 <body>
 
@@ -46,7 +47,7 @@
                 
                 
                 <td class="main" 
-                    tal:define="actions python:here.portal_actions.listFilteredActionsFor(here);
+                    tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));
                                 show_border python:here.showEditableBorder( template.getId() );">
 
                     <metal:block metal:define-slot="super1"
