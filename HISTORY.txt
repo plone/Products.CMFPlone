@@ -1,6 +1,6 @@
 CHANGES
 
-Plone 1.0.2
+Plone 1.0.2 - Vert Release
 
     - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
 
