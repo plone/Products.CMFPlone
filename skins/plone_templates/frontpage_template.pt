@@ -7,15 +7,16 @@
 
   <div metal:fill-slot="left_column">
       <metal:block metal:use-macro="here/login_slot/macros/loginBox">
+      show login box if available
       </metal:block>
 
       <metal:block metal:use-macro="here/main_left_column/macros/column">
-      LEFT NAVIGATION COLUMN HERE
+      default left navigation column
       </metal:block>     
   </div>
   
   <div metal:fill-slot="main"
-       tal:content="structure python:here.portal_url.getPortalObject().frontpage.CookedBody()">
+       tal:content="structure here/frontpage/CookedBody">
   </div>
 
 </body>
