@@ -1,11 +1,11 @@
 ## Script (Python) "newsitem_edit"
-##parameters=text, text_format, field_title='', description='', choice=' Change ', subject=None, field_id=''
+##parameters=text, text_format, field_title='', field_description='', choice=' Change ', subject=None, field_id=''
 ##title=Edit a news item
 REQUEST=context.REQUEST
 if not field_id:
     field_id=context.getId()
     REQUEST.set('field_id', field_id)
-id = field_id
+id,description = field_id, field_description
 
 errors=context.validate_newsitem_edit()
 
@@ -22,7 +22,9 @@ if hasattr(context, 'extended_edit'):
     if response:
         return response
 
-context.edit( text  #XXX need to call edit after metadata edit or format will be reset to context's text_format
+#XXX need to call edit after metadata edit or format will be reset to context's text_format
+ 
+context.edit( text 
             , description
             , text_format )
 

@@ -41,7 +41,7 @@
 				last updated at <p tal:replace="python:container.toPortalTime(result.Date)"/> 
 						 
 				<p>
-   			    <strong tal:content="python:test(result.Description, result.Description, '(No Description)')">
+   			    <strong tal:content="structure python:test(result.Description, result.Description, '(No Description)')">
 					Description
 				</strong>
                 </p>
