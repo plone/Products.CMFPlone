@@ -4,19 +4,19 @@ Subject: <span i18n:translate="mailtemplate_registered_portal_membership_info" t
 Content-Type: text/plain; charset=<span tal:replace="here/portal_properties/site_properties/default_charset" />
 
 <div i18n:translate="mailtemplate_registered_body" tal:omit-tag="">
-You have been registered as a member of <span i18n:name="portal_name" tal:replace="python:here.portal_url.getPortalObject().Title()" />, which
+You have been registered as a member of <span i18n:name="portal_name" tal:omit-tag="" tal:content="python:here.portal_url.getPortalObject().Title()" />, which
 allows you to personalize your view of the website and participate in
 the community.
 
 Description:
-<span i18n:name="description" tal:replace="here/description" />
+<span i18n:name="description" tal:omit-tag="" tal:content="here/description" />
 
-Visit us at <span i18n:name="portal_url" tal:replace="here/portal_url" />
+Visit us at <span i18n:name="portal_url" tal:omit-tag="" tal:content="here/portal_url" />
 
 Your login name and password are:
 
-Login name : <span i18n:name="username" tal:replace="options/member" />
-Password   : <span i18n:name="password" tal:replace="options/password" />
+Login name : <span i18n:name="username" tal:omit-tag="" tal:content="options/member" />
+Password   : <span i18n:name="password" tal:omit-tag="" tal:content="options/password" />
 </div>
 --
 <span tal:replace="here/email_from_name" />

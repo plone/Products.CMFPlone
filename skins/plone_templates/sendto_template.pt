@@ -5,21 +5,21 @@ Subject: <span tal:replace="options/title | here/Title" />
 Content-Type: text/plain; charset=<span tal:replace="here/portal_properties/site_properties/default_charset" />
 
 <div i18n:translate="sendto_mailtemplate_body" tal:omit-tag="">
-This link is sent to you from <span i18n:name="portal_url" tal:replace="here/portal_url" />
+This link is sent to you from <span i18n:name="portal_url" tal:omit-tag="" tal:content="here/portal_url" />
 
 You are receiving this mail because someone read a page at 
-<span i18n:name="portal_title" tal:replace="here/portal_url/Title" /> 
+<span i18n:name="portal_title" tal:omit-tag="" tal:content="here/portal_url/Title" /> 
 and thought it might interest you.
 
-It is sent by <span i18n:name="from_address" tal:replace="request/send_from_address | options/send_from_address" 
+It is sent by <span i18n:name="from_address" tal:omit-tag="" tal:content="request/send_from_address | options/send_from_address" 
 /> with the following comment: 
-"<span i18n:name="comment" tal:replace="request/comment | options/comment | nothing" />"
+"<span i18n:name="comment" tal:omit-tag="" tal:content="request/comment | options/comment | nothing" />"
 
-<span i18n:name="document_title" tal:replace="options/title | here/Title" />
+<span i18n:name="document_title" tal:omit-tag="" tal:content="options/title | here/Title" />
 
-<span i18n:name="document_description" tal:replace="options/description | here/description" />
+<span i18n:name="document_description" tal:omit-tag="" tal:content="options/description | here/description" />
 
-<span i18n:name="document_url" tal:replace="options/url | here/absolute_url" />
+<span i18n:name="document_url" tal:omit-tag="" tal:content="options/url | here/absolute_url" />
 </div>
 --
 <span tal:replace="here/email_from_name" />
