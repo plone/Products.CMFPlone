@@ -158,11 +158,45 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.failUnless('fred' in self.folder.objectIds())
 
 
+class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
+    # Tests covering http://plone.org/collector/2792
+    # Editing a file should not change MIME type
+        
+    def afterSetUp(self):
+        self.folder.invokeFactory('File', id='file')
+        self.folder.file.file_edit(file=File('foo.pdf'))
+        self.folder.invokeFactory('Image', id='image')
+        self.folder.image.image_edit(file=File('foo.tiff'))
+
+    def testFileMimeType(self):
+        self.assertEqual(self.folder.file.Format(), 'application/pdf')
+        self.assertEqual(self.folder.file.content_type, 'application/pdf')
+
+    def testImageMimeType(self):
+        self.assertEqual(self.folder.image.Format(), 'image/tiff')
+        self.assertEqual(self.folder.image.content_type, 'image/tiff')
+
+    def testFileEditKeepsMimeType(self):
+        self.folder.file.file_edit(title='Foo')
+        self.assertEqual(self.folder.file.Title(), 'Foo')
+        self.assertEqual(self.folder.file.Format(), 'application/pdf')
+        self.assertEqual(self.folder.file.content_type, 'application/pdf')
+
+    def testImageEditKeepsMimeType(self):
+        self.folder.image.image_edit(title='Foo')
+        self.assertEqual(self.folder.image.Title(), 'Foo')
+        self.assertEqual(self.folder.image.Format(), 'image/tiff')
+        self.assertEqual(self.folder.image.content_type, 'image/tiff')
+
+
 # Fake upload object
 
 class File:
     __allow_access_to_unprotected_subobjects__ = 1
     filename = 'foo.gif'
+    def __init__(self, filename=None): 
+        if filename is not None:
+            self.filename = filename
     def seek(*args): pass
     def tell(*args): return 1
     def read(*args): return 'upload_data'
@@ -176,4 +210,5 @@ else:
         suite = TestSuite()
         suite.addTest(makeSuite(TestContentTypeScripts))
         suite.addTest(makeSuite(TestEditShortName))
+        suite.addTest(makeSuite(TestEditFileKeepsMimeType))
         return suite
