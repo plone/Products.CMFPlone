@@ -13,12 +13,13 @@ from AccessControl import User
 
 from App.Extensions import getObject
 
+import glob 
 import OFS
 import os
 import sys
 import zLOG
 
-DEBUG = 0
+DEBUG = 1
 
 def log(message, summary='', severity=0):
     zLOG.LOG('Plone Database Init', severity, summary, message)
@@ -27,6 +28,9 @@ from ConfigParser import ConfigParser
 
 # grab the old initilalize...
 old_initialize = OFS.Application.initialize
+
+# for i18n stuff
+i18nDir = os.path.join(INSTANCE_HOME, 'Products', 'i18n')
 
 out = []
 
@@ -68,15 +72,44 @@ def _installLocalizer(plone):
 
     tObj = plone._getOb(tName)
     lObj = plone._getOb(lName)
+
+    # nuke out the accept_path
+    lObj.accept_methods = 'accept_cookie'
+
     # ok so now we should have valid localizer
     # and translation service objects...
 
     manage_addMessageCatalog(lObj, 'Plone', 'Plone Message Catalog', 'en')
-    
-    # TODO add in the languages
-    # add in languages...
-    tObj.manage_setDomainInfo(None, path_0='%s/Plone' % lName)    
+    mObj = lObj.Plone
+
+    tObj.manage_setDomainInfo(None, path_0='%s/Plone' % lName) 
     # set the translation_service to the localizer...
+
+    # delete all languages, just in case, for 
+    # some reason im getting wierd ones
+    mObj.manage_delLanguages(languages=mObj._languages)
+
+    # add in languages
+    out.append('Reading .po files from %s' % i18nDir)
+    for file in glob.glob(os.path.join(i18nDir, '*.po')):
+        try:
+            out.append('Found file: %s' % file)
+            fn = os.path.basename(file)
+            lang = fn[6:-3]
+
+            # first add in the language
+            out.append('Adding language: %s' % lang)
+            mObj.manage_addLanguage(lang)
+
+            # then add in the file
+            out.append('Adding po file')
+            fh = open(file, 'rb')
+            mObj.manage_import(lang, fh)
+        except:
+            out.append('Failed to setup .po file for: %s' % file)
+
+    # set the default language to english
+    mObj.manage_changeDefaultLang(language='en')
 
 def _go(app):
     filename = 'plone.ini'
