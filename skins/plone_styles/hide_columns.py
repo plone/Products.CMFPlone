@@ -16,5 +16,5 @@ if column_right==[] and column_left==[]:
 if column_right!=[]and column_left==[]:
     return "visualColumnHideOne"
 if column_right==[]and column_left!=[]:
-    return "visualColumnHideOne"
-return "hidenone"
+    return "visualColumnHideTwo"
+return "visualColumnHideNone"
