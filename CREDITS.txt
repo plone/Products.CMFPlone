@@ -20,7 +20,7 @@ Kapil (hazmat) - Helpful ZOPE Guru
 Luis Lavena - favicon
 Sidnei De Silva - python guru
 David Harvey - python,ZPT,Makes sures things dont fall through the cracks ;)
-Geoff Davis (plonista) - form validation refactorings
+Geoff Davis (plonista) - form validation refactorings, form_tool and deep insight
 
 #zope on irc.openprojects.net for insight and soapbox to preach
 zopelabs.com for useful scripts 

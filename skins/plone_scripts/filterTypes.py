@@ -7,7 +7,6 @@
 ##parameters=filter
 ##title=
 ##
-if filter and filter.has_key('Type'):
+if same_type(filter, {}) and filter.has_key('Type'):
     return filter['Type']
-
 return []
