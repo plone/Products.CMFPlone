@@ -3,13 +3,20 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 <body>
-<div metal:fill-slot="main"
-     tal:define="auth nocall:here/cookie_authentication;
-                 ac_name auth/name_cookie;
-                 ac_password auth/pw_cookie;
-                 ac_persist auth/persist_cookie;">
 
-<div tal:define="ve site_properties/validate_email">
+<div metal:fill-slot="main"
+     tal:define="auth nocall:here/cookie_authentication|nothing">
+
+<tal:admin tal:condition="python: checkPermission('Manage users', portal)" >
+   <span tal:define="dummy python:request.RESPONSE.redirect(portal_url + '/prefs_users_overview?portal_status_message=New+user+added')" />
+</tal:admin>
+
+<div tal:condition="python: not auth" i18n:translate="registered_disabled">
+   Cookie authentication has been disabled.
+</div>
+
+<div tal:define="ve site_properties/validate_email"
+     tal:condition="python: auth">
 
 <h1 i18n:translate="heading_welcome">Welcome!</h1>
 
@@ -25,9 +32,11 @@ You will receive an email shortly containing your password
     <form action=""
           method="post"
           tal:define="username request/username;
-                      password request/password;"
-          tal:attributes="action python:'%s/logged_in' % portal_url"
-	        >
+                      password request/password;
+                      ac_name auth/name_cookie;
+                      ac_password auth/pw_cookie;
+                      ac_persist auth/persist_cookie;"
+          tal:attributes="action python:'%s/logged_in' % portal_url">
         <input type="hidden"
                name="came_from"
                value=""

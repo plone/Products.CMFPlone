@@ -1,11 +1,13 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-  <tal:head metal:fill-slot="head_slot"
-            tal:define="dummy python:request.set('disable_border',1)">
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+  <metal:head fill-slot="head_slot">
     <meta name="robots" content="noindex,follow" />
-  </tal:head>
+  </metal:head>
 
   <body>
 

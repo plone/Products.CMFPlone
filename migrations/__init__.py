@@ -49,3 +49,5 @@ def registerMigrations():
                                        v2.release_candidates.rc4_rc5)
     MigrationTool.registerUpgradePath( '2.0-rc5', '2.0',
                                        v2.release_candidates.rc5_final)
+    MigrationTool.registerUpgradePath( '2.0', '2.0-rc6',
+                                       v2.release_candidates.final_rc6)

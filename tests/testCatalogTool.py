@@ -61,6 +61,16 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
             self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
             self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
 
+    def testDescriptionIsTextIndex(self):
+        # Description index should be a TextIndex
+        self.assertEqual(self.catalog.Indexes['Description'].__class__.__name__,
+                         'TextIndex')
+
+    def testTitleIsTextIndex(self):
+        # Title index should be a TextIndex
+        self.assertEqual(self.catalog.Indexes['Title'].__class__.__name__,
+                         'TextIndex')
+
 
 class TestCatalogSearch(PloneTestCase.PloneTestCase):
 
@@ -142,8 +152,8 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework()
 else:
-    from unittest import TestSuite, makeSuite
     def test_suite():
+        from unittest import TestSuite, makeSuite
         suite = TestSuite()
         suite.addTest(makeSuite(TestCatalogTool))
         suite.addTest(makeSuite(TestCatalogSearch))

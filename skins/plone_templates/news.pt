@@ -1,11 +1,11 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-      lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-  <metal:block fill-slot="head_slot"
-               tal:define="dummy python:request.set('disable_border', 1)"
-               />
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border', 1)" />
+
 <body>
 <div metal:fill-slot="main" id="content-news"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');

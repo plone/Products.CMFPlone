@@ -1,11 +1,10 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-    lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    lang="en"
     metal:use-macro="here/prefs_main_template/macros/master"
     i18n:domain="plone">
 
-<tal:block metal:fill-slot="head_slot">
-<tal:block tal:define="dummy python:request.set('disable_border',1)" />
-</tal:block>
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
 
 <body>
 
@@ -95,7 +94,7 @@
         <input type="hidden" value="1" name="came_from_prefs" />
         <input type="hidden" value="b_start" name="b_start" 
                tal:attributes="value b_start"/>
-            <table class="listing">
+            <table class="listing" summary="User Listing">
                 <tr>
                     <th colspan="4">
                         <span tal:omit-tag="" i18n:translate="label_user_search">User Search</span>:

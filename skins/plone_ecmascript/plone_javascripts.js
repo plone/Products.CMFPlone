@@ -392,6 +392,7 @@ else if (window.attachEvent) window.attachEvent("onload",scanforlinks);
 
 function climb(node, word){
 	 // traverse childnodes
+    if (! node){return false}
     if (node.hasChildNodes) {
 		var i;
 		for (i=0;i<node.childNodes.length;i++) {
@@ -455,7 +456,7 @@ function highlightSearchTerm() {
         query = window.location.search
         // _robert_ ie 5 does not have decodeURI 
         if (typeof decodeURI != 'undefined'){
-            query = decodeURI(query)
+            query = decodeURI(unescape(query)) // thanks, Casper 
         }
         else {
             return false
@@ -476,7 +477,7 @@ function highlightSearchTerm() {
                 queries = query.replace(/\+/g,' ').split(/\s+/)
                 
                 // make sure we start the right place and not higlight menuitems or breadcrumb
-                theContents = document.getElementById('bodyContent');
+                theContents = document.getElementById('content');
                 for (q=0;q<queries.length;q++) {
                     climb(theContents,queries[q]);
                 }

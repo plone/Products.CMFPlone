@@ -27,6 +27,7 @@ if subjects:
                                    , sort_on = 'portal_type'
                                    , sort_order = 'reverse'  ):
         url=o.getURL()
+        if url == abs_url: continue # s/b if o is obj but fails
         rurl = o.getRemoteUrl
         title=''
         if o.Title:
@@ -37,9 +38,9 @@ if subjects:
         lnk = {'title':title
                ,'url':url
                ,'icon':o.getIcon}
-        if not rurl.startswith(portal_url): #we need UIDs
-            local.append(lnk)
-        else:
+        if rurl and not rurl.startswith(portal_url): #we need UIDs
             remote.append(lnk)
+        else:
+            local.append(lnk)
 
 return {'local':local, 'remote':remote}

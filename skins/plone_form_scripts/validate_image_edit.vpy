@@ -13,7 +13,7 @@ size = 0
 if file is None:
     filename=None
 else:
-    filename=getattr(file, 'filename')
+    filename=getattr(file, 'filename', None)
 
 if hasattr(context, 'get_size'):  # make sure things work with portal_factory
     size=context.get_size()

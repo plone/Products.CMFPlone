@@ -1,11 +1,10 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       lang="en"
       metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
 
-<tal:block metal:fill-slot="head_slot">
-   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
-</tal:block>
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
 
 <body>
 
@@ -54,8 +53,8 @@
                        tal:condition="python:obj.getPropertyType(id)=='boolean'" />
     
                 <textarea tal:attributes="name id;"
-                          tal:condition="python:obj.getPropertyType(id) in ('text','utext','lines','ulines')">
-<tal:block repeat="val python:obj.getProperty(id)"><span tal:replace="val" /></tal:block></textarea>
+                          tal:condition="python:obj.getPropertyType(id) in ('text','utext','lines','ulines')"
+                ><tal:block repeat="val python:obj.getProperty(id)"><tal:block replace="val" /></tal:block></textarea>
 
             </div>
 

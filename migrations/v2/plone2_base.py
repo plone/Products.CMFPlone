@@ -28,7 +28,7 @@ from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Products.CMFPlone import ToolNames
 
 from Products.CMFCore import CachingPolicyManager
-from Products.CMFCore.CMFCorePermissions import ListFolderContents
+from Products.CMFCore.CMFCorePermissions import ListFolderContents, SetOwnProperties, SetOwnPassword
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.TypesTool import FactoryTypeInformation
 
@@ -421,7 +421,9 @@ def makePortalRootPortalType(portal):
     # happenes because it starts out with a Folder's workflow.  We could fix this.
     # But I think we can change permission for now and then redo the portal cosntruction.
     portal.manage_permission(ListFolderContents, ('Manager', 'Owner'), acquire=1)
-
+    portal.manage_permission(SetOwnProperties,('Manager','Authenticated'))
+    portal.manage_permission(SetOwnPassword,('Manager','Authenticated'))
+    
 def addActionsToPortalTypes(portal):
     """ Deprecated.  We are now using a drop-down box on the contentBar """
     typesTool=portal.portal_types

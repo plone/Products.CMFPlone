@@ -1,13 +1,13 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
       i18n:domain="plone">
 
 <body>
 
 <!-- THE PERSONAL BAR DEFINITION -->
 
-<span metal:define-macro="personal_bar"
+<div metal:define-macro="personal_bar"
       tal:define="display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];"
-      tal:omit-tag="" >
+      tal:omit-tag="">
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
@@ -43,7 +43,7 @@
     </tal:actions>
 
 </ul>
-</span>
+</div>
 
 </body>
 </html>

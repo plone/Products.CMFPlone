@@ -15,7 +15,6 @@ if obj is not None:
     context = obj
 
 # Some variables
-factory_tool = context.portal_factory
 url_tool = getToolByName(context, 'portal_url')
 # required for login into a not migrated plone1 site
 try:
@@ -45,45 +44,48 @@ subpath = []
 
 #o = current = published or context
 o = current = context
+first_object = 1
 
 # Add breadcrumbs for directories between the root and the published object.
 while current and current is not portal:
-    # If the user doesn't have 'Access contents information'
-    # at some level, then it will append '...' to breadcrumbs
-    # and not present a link to that item.
-    current = o
-    try:
-        o = current.getParentNode()
-        # Try to access attribute to see if we have enough
-        # permissions to get info about this object.
-        getattr(o, 'meta_type', None)
-    except Unauthorized:
-        # It wasn't possible to get at the parent
-        # or at it's attributes. We probably dont
-        # have the required permissions, so let's
-        # try to skip this object on to the next one.
-        subpath = list(url_tool.getRelativeContentPath(current))[:-1]
-        while subpath:
-            try:
-                o = portal.restrictedTraverse(subpath)
-                # Try to access attribute to see if we have enough
-                # permissions to get info about this object.
-                getattr(o, 'meta_type', None)
-            except Unauthorized:
-                # Unable to get info. Use '...' for name
-                # and dont generate a link.
-                path_seq.append(('...', None))
-                subpath.pop()
-            else:
+    if not first_object:
+        # If the user doesn't have 'Access contents information'
+        # at some level, then it will append '...' to breadcrumbs
+        # and not present a link to that item.
+        try:
+            o = current.getParentNode()
+            # Try to access attribute to see if we have enough
+            # permissions to get info about this object.
+            getattr(o, 'meta_type', None)
+        except Unauthorized:
+            # It wasn't possible to get at the parent
+            # or at it's attributes. We probably dont
+            # have the required permissions, so let's
+            # try to skip this object on to the next one.
+            subpath = list(url_tool.getRelativeContentPath(current))[:-1]
+            while subpath:
+                try:
+                    o = portal.restrictedTraverse(subpath)
+                    # Try to access attribute to see if we have enough
+                    # permissions to get info about this object.
+                    getattr(o, 'meta_type', None)
+                except Unauthorized:
+                    # Unable to get info. Use '...' for name
+                    # and dont generate a link.
+                    path_seq.append(('...', None))
+                    subpath.pop()
+                else:
+                    break
+            if o is current:
+                # Uhm. We are still at the same object,
+                # so trying to get a parent failed. Break
+                # the loop.
                 break
-        if o is current:
-            # Uhm. We are still at the same object,
-            # so trying to get a parent failed. Break
-            # the loop.
-            break
+        current = o
+    else:
+        first_object = 0
 
     id = o.getId()
-
     if id in dont_show:
         continue
 
@@ -91,12 +93,23 @@ while current and current is not portal:
     if getattr(o, 'meta_type', None) in dont_show_metatypes:
         continue
 
-    # don't show links for temporary objects
-    if factory_tool.isTemporary(o):
+    # Content objects inherit from DynamicType (except for the portal itself)
+    # Make sure the object is either a content object or the portal
+    if current != portal and iface_tool and not iface_tool.objectImplements(o, dynamic_type):
         continue
 
-    if iface_tool and not iface_tool.objectImplements(o, dynamic_type):
-        continue
+    # Special treatment for the context object of the breadcrumb script:
+    # We don't want to show a crumb if the current object is the default
+    # view for a folder
+    if current == context:
+        try:
+            parent = current.getParentNode()
+            if parent.isPrincipiaFolderish:
+                if current.getId() in portal.plone_utils.browserDefault(parent)[1]:
+                    continue
+        except Unauthorized:
+            if current.getId() in ['index_html', 'folder_listing']:
+                continue
 
     url = o.absolute_url()
     title = o.title_or_id()
@@ -129,8 +142,5 @@ if published != o and iface_tool and \
     hasattr(published, 'title_or_id'):
     url = published.absolute_url() + '/view'
     path_seq.append( (published.title_or_id(), url) )
-
-elif currentlyViewingFolderContents:
-    path_seq.append( (published.getParentNode().title_or_id(), published.getParentNode().absolute_url()) )
 
 return path_seq

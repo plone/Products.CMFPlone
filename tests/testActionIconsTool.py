@@ -9,6 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+
 class TestActionIconsTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -47,11 +48,12 @@ class TestActionIconsTool(PloneTestCase.PloneTestCase):
                                                None)
         self.assertEqual(icon, None)
 
+
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestActionIconsTool))
+        from unittest import TestSuite, makeSuite
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestActionIconsTool))
         return suite

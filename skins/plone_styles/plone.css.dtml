@@ -251,7 +251,6 @@ pre {
 */
 
 #visual-portal-wrapper {
-    position: relative;
     margin: 0;
     padding: 0;
 }
@@ -464,7 +463,7 @@ pre {
 }
 
 /*
-** Javascript Content Action Menus
+** begin ECMAScript Content Action Menus
 */
 
 .contentActions {
@@ -478,7 +477,6 @@ pre {
     padding: 0 1em;
     z-index: 2;
     height: 1.2em;
-    font-size: 98%;
 }
 
 .contentActions ul,
@@ -498,13 +496,21 @@ pre {
     margin: 0;
 }
 .contentActions li {
-    background-image: url(&dtml-portal_url;/arrowDownAlternative.gif);
+    float: right;
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: center right;
     z-index: 4;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0 0 0 1em;
 }
+
+.menuPosition {
+    /*  The spec says we can't put this on an element with a float (although 
+        Opera is the only one that cares) and we need it in order to catch 
+        the position:absolute bubbling up */
+    position: relative;
+    }
 
 .actionSingular {
     background-image: none !important;
@@ -524,17 +530,19 @@ pre {
     visibility: hidden;
     z-index: 5;
     position: absolute;
-    left: -1.2em;
+    top: 0;
+    right: -1px;
     background: &dtml-contentViewBackgroundColor;;
-    width: auto;
+    overflow: hidden;
     height: auto;
     padding: 0;
-    margin: 0;
+    margin: 1.2em 0 0 0;
     border: &dtml-borderWidth; &dtml-contentViewBorderColor;;
     border-style: none &dtml-borderStyle; &dtml-borderStyle; &dtml-borderStyle;;
 }
 
 .actionMenu li {
+    float: none;
     background: none;
     display: inline;
     padding: 0;
@@ -559,6 +567,10 @@ pre {
     padding-top: 0.2em;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
+
+/*
+** end ECMAScript Content Action Menus
+*/
 
 .configlet .contentViews {
     font-size: 90%;
@@ -1255,6 +1267,14 @@ ul.configletDetails li label {
     font-weight: bold;
     display: inline;
     padding-right: 0.5em;
+}
+
+.optionsToggle {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: normal !important;
+    font-size: &dtml-fontSmallSize;;
 }
 
 .portalNotLoggedIn {} /* Used on all descriptions relevant to those not logged in */

@@ -1,11 +1,11 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<tal:block metal:fill-slot="head_slot">
-   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
-</tal:block>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
 
+<head>
 <script type="text/javascript" metal:fill-slot="javascript_head_slot">
 <!--
 function cookiesEnabled() {
@@ -27,14 +27,12 @@ function cookiesEnabled() {
 }
 //-->
 </script>
+</head>
 
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="auth nocall:here/cookie_authentication;
-                 ac_name auth/name_cookie;
-                 ac_password auth/pw_cookie;
-                 ac_persist auth/persist_cookie;">
+     tal:define="auth nocall:here/cookie_authentication|nothing">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
@@ -60,17 +58,24 @@ to become a member.
 </p>
 
 <script type="text/javascript">
-//<![CDATA[
+// <![CDATA[
    if (cookiesEnabled && !cookiesEnabled()) {
       document.writeln('<div class="portalMessage"><img src="info.gif">Cookies are not enabled. You can not log in if they are turned off. <a href="enabling_cookies">How to enable cookies</a>.</div>');
    }
-//]]>
+// ]]>
 </script>
 
-<form action="logged_in"
-      method="post">
+<div tal:condition="python: not auth" i18n:translate="login_form_disabled">
+    While cookie authentication is disabled, cookie-based login is not available.
+</div>
 
-    <fieldset>
+<form action="logged_in"
+      method="post"
+      tal:condition="python: auth">
+
+    <fieldset tal:define="ac_name auth/name_cookie;
+                          ac_password auth/pw_cookie;
+                          ac_persist auth/persist_cookie">
 
         <legend i18n:translate="legend_account_details">Account details</legend>
 

@@ -132,6 +132,23 @@ class MigrationTool( UniqueObject, SimpleItem):
         """ Does this thing now need recataloging? """
         return self._needRecatalog
 
+    security.declareProtected(ManagePortal,'getProductInfo')
+    def getProductInfo(self):
+        """Provide information about installed products for error reporting"""
+        zope_products = self.getPhysicalRoot().Control_Panel.Products.objectValues()
+        installed_products = getToolByName(self, 'portal_quickinstaller').listInstalledProducts(showHidden=1)
+        products = {}
+        for p in zope_products:
+            product_info = {'id':p.id, 'version':p.version}
+            for ip in installed_products:
+                if ip['id'] == p.id:
+                    product_info['status'] = ip['status']
+                    product_info['hasError'] = ip['hasError']
+                    product_info['installedVersion'] = ip['installedVersion']
+                    break
+            products[p.id] = product_info
+        return products
+    
     ##############################################################
     # the setup widget registry
     # this is a whole bunch of wrappers

@@ -74,9 +74,9 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestRegistrationTool))
-        suite.addTest(unittest.makeSuite(TestPasswordGeneration))
+        from unittest import TestSuite, makeSuite
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestRegistrationTool))
+        suite.addTest(makeSuite(TestPasswordGeneration))
         return suite

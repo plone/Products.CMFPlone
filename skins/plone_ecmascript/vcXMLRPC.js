@@ -623,5 +623,3 @@ isIE = (ver.indexOf("MSIE 5") != -1 || ver.indexOf("MSIE 6") != -1) ? 1 : 0;
 isIE55 = (ver.indexOf("MSIE 5.5") != -1) ? 1 : 0;
 
 isOTHER = (!isNS && !isIE) ? 1 : 0;
-
-if(isOTHER) alert("Sorry, your browser doesn't support the features of vcXMLRPC");

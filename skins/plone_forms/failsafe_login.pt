@@ -1,6 +1,6 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
       i18n:domain="plone">
-
+<head>
 <script type="text/javascript">
 <!--
 function cookiesEnabled() {
@@ -22,14 +22,11 @@ function cookiesEnabled() {
 }
 //-->
 </script>
+</head>
 
 <body>
 
-<div
-     tal:define="auth nocall:here/cookie_authentication;
-                 ac_name auth/name_cookie;
-                 ac_password auth/pw_cookie;
-                 ac_persist auth/persist_cookie;
+<div tal:define="auth nocall:here/cookie_authentication|nothing;
 		 Iterator python:modules['Products.CMFPlone'].IndexIterator;
 		 tabindex python:Iterator(pos=30000)">
 
@@ -59,15 +56,23 @@ to become a member.
 </tal:nojoin>
 
 <script type="text/javascript">
-//<![CDATA[
+// <![CDATA[
    if (cookiesEnabled && !cookiesEnabled()) {
       document.writeln('<div class="portalMessage"><img src="info.gif">Cookies are not enabled. You can not log in if they are turned off. <a href="enabling_cookies">How to enable cookies</a>.</div>');
    }
-//]]>
+// ]]>
 </script>
 
+<div condition="python:not auth" i18n:translate="failsafe_login_disabled">
+      This feature is not available while cookie authentication is disabled.
+</div>
+
 <form action="logged_in"
-      method="post">
+      method="post"
+      tal:condition="python: auth"
+      tal:define="ac_name auth/name_cookie|nothing;
+                  ac_password auth/pw_cookie|nothing;
+                  ac_persist auth/persist_cookie|nothing;">
 
     <fieldset>
 

@@ -36,6 +36,14 @@ class MembershipTool(BaseTool):
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
 
+    def getAuthenticatedMember(self):
+        """ """
+        _user=self.REQUEST.get('_portaluser', None)
+        if _user is None:
+            _user = BaseTool.getAuthenticatedMember(self)
+            self.REQUEST.set('_portaluser', _user)
+        return _user
+
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
         returns the Portait for a member_id
@@ -247,10 +255,11 @@ class MembershipTool(BaseTool):
             if not (member.listed or is_manager):
                 continue
             if name:
-                if (u.getUserName().lower().find(name) == -1) and (member.fullname.lower().find(name) == -1):
+                if (u.getUserName().lower().find(name) == -1 and 
+                    member.getProperty('fullname').lower().find(name) == -1):
                     continue
             if email:
-                if member.email.lower().find(email) == -1:
+                if member.getProperty('email').lower().find(email) == -1:
                     continue
             if roles:
                 user_roles = member.getRoles()

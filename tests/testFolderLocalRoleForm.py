@@ -14,6 +14,7 @@ def sortTuple(t):
     l.sort()
     return tuple(l)
 
+
 class TestFolderLocalRole(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -48,8 +49,8 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestFolderLocalRole))
+        from unittest import TestSuite, makeSuite
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestFolderLocalRole))
         return suite

@@ -88,7 +88,7 @@ factory_type_information = { 'id'             : 'Plone Root'
                          , 'category'      : 'folder'
                          }
                        , { 'id'            : 'edit'
-                         , 'name'          : 'Properties'
+                         , 'name'          : 'Edit'
                          , 'action': 'string:${object_url}/folder_edit_form'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)
                          , 'category'      : 'folder'
@@ -110,16 +110,7 @@ class PloneSite(CMFSite, OrderedContainer):
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
-        try:
-            return self.browserDefault()
-        except AttributeError:
-            skins = getToolByName(self, "portal_skins")
-            default = skins.default_skin
-            if not default: default = "None"
-            msg = """The Script (Python) object browserDefault could
-not be found in your skins path. Your current default skin is "%s", go to
-portal_skins tool and set the correct default skin.""" % default
-            raise AttributeError, msg
+        return getToolByName(self, 'plone_utils').browserDefault(self)
 
     def manage_beforeDelete(self, container, item):
         """ Should send out an Event before Site is being deleted """
@@ -200,7 +191,7 @@ class PloneGenerator(Portal.PortalGenerator):
         wf_tool.manage_addWorkflow( id='folder_workflow'
                                 , workflow_type='folder_workflow '+\
                                   '(Folder Workflow [Plone])')
-        wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
+        wf_tool.setChainForPortalTypes( ('Folder','Topic','Large Plone Folder'), 'folder_workflow')
 
         #if the CMF has put the ancient 'default_workflow' workflow in
         #portal_workflow we want to remove it.  It adds no value.

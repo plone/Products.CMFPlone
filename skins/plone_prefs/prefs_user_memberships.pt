@@ -1,11 +1,10 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-      lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
       metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
 
-<tal:block metal:fill-slot="head_slot">
-   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
-</tal:block>
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
 
 <body>
 
@@ -75,7 +74,7 @@
     	  <metal:block metal:fill-slot="removables">
     
     	<h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
-    	<table class="listing">
+    	<table class="listing" summary="Group Memberships Listing">
     
                 <tr>
     	      <th i18n:translate="listingheader_group_name">Group name</th>

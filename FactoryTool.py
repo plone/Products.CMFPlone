@@ -114,14 +114,25 @@ class TempFolder(TempFolderBase):
 
     # override __getitem__
     def __getitem__(self, id):
+        # Zope's inner acquisition chain for objects returned by __getitem__ will be
+        # portal -> portal_factory -> temporary_folder -> object
+        # What we really want is for the inner acquisition chain to be
+        # intended_parent_folder -> portal_factory -> temporary_folder -> object
+        # So we need to rewrap...
+        portal_factory = aq_parent(self)
+        intended_parent = aq_parent(portal_factory)
+        # rewrap portal_factory
+        portal_factory = aq_base(portal_factory).__of__(intended_parent)
+        # rewrap self
+        temp_folder = aq_base(self).__of__(portal_factory)
         if id in self.objectIds():
-            return self._getOb(id).__of__(aq_parent(aq_parent(self)))
+            return (aq_base(self._getOb(id)).__of__(temp_folder)).__of__(intended_parent)
         else:
             type_name = self.getId()
             self.invokeFactory(id=id, type_name=type_name)
-            obj = self._getOb(id).__of__(aq_parent(aq_parent(self)))
+            obj = self._getOb(id)
             obj.unindexObject()
-            return obj
+            return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
     # ignore rename requests since they don't do anything
     def manage_renameObject(self, id1, id2):

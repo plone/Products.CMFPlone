@@ -14,15 +14,6 @@ from DateTime import DateTime
 from Products.CMFPlone import LargePloneFolder
 
 
-# Fake upload object
-class File:
-    __allow_access_to_unprotected_subobjects__ = 1
-    filename = 'foo.gif'
-    def seek(*args): pass
-    def tell(*args): return 0
-    def read(*args): return 'file_contents'
-
-
 #XXX NOTE
 #    document, link, and newsitem edit's are now validated
 #    so we must pass in fields that the validators need
@@ -77,12 +68,12 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
     def testFileEdit(self):
         self.folder.invokeFactory('File', id='file')
         self.folder.file.file_edit(file=File())
-        self.assertEqual(str(self.folder.file), 'file_contents')
+        self.assertEqual(str(self.folder.file), 'upload_data')
 
     def testImageEdit(self):
         self.folder.invokeFactory('Image', id='image')
         self.folder.image.image_edit(file=File())
-        self.assertEqual(str(self.folder.image.data), 'file_contents')
+        self.assertEqual(str(self.folder.image.data), 'upload_data')
 
     def testFolderEdit(self):
         self.folder.invokeFactory('Folder', id='folder')
@@ -116,11 +107,73 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
     #    # TODO: Analyze that funky data structure
 
 
+class TestEditShortName(PloneTestCase.PloneTestCase):
+    # Test fix for http://plone.org/collector/2246
+    # Short name should be editable without specifying a file.
+
+    def afterSetUp(self):
+        self.folder.invokeFactory('File', id='file', file=File())
+        self.folder.invokeFactory('Image', id='image', file=File())
+
+    def testFileEditNone(self):
+        self.folder.file.file_edit(file=None, title='Foo')
+        self.assertEqual(self.folder.file.Title(), 'Foo')
+        # Data is not changed
+        self.assertEqual(str(self.folder.file), 'upload_data')
+
+    def testImageEditNone(self):
+        self.folder.image.image_edit(file=None, title='Foo')
+        self.assertEqual(self.folder.image.Title(), 'Foo')
+        # Data is not changed
+        self.assertEqual(str(self.folder.image.data), 'upload_data')
+
+    def testFileEditEmptyString(self):
+        self.folder.file.file_edit(file='', title='Foo')
+        self.assertEqual(self.folder.file.Title(), 'Foo')
+        # Data is not changed
+        self.assertEqual(str(self.folder.file), 'upload_data')
+
+    def testImageEditEmptyString(self):
+        self.folder.image.image_edit(file='', title='Foo')
+        self.assertEqual(self.folder.image.Title(), 'Foo')
+        # Data is not changed
+        self.assertEqual(str(self.folder.image.data), 'upload_data')
+
+    def testFileEditString(self):
+        self.folder.file.file_edit(file='foo')
+        self.assertEqual(str(self.folder.file), 'foo')
+
+    def testImageEditString(self):
+        self.folder.image.image_edit(file='foo')
+        self.assertEqual(str(self.folder.image.data), 'foo')
+
+    def testFileEditShortName(self):
+        get_transaction().commit(1) # make rename work
+        self.folder.file.file_edit(id='fred')
+        self.failUnless('fred' in self.folder.objectIds())
+
+    def testImageEditShortName(self):
+        get_transaction().commit(1) # make rename work
+        self.folder.image.image_edit(id='fred')
+        self.failUnless('fred' in self.folder.objectIds())
+
+
+# Fake upload object
+
+class File:
+    __allow_access_to_unprotected_subobjects__ = 1
+    filename = 'foo.gif'
+    def seek(*args): pass
+    def tell(*args): return 1
+    def read(*args): return 'upload_data'
+
+
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestContentTypeScripts))
+        from unittest import TestSuite, makeSuite
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestContentTypeScripts))
+        suite.addTest(makeSuite(TestEditShortName))
         return suite

@@ -134,8 +134,8 @@ class TestUserFolder(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestUserFolder))
+        from unittest import TestSuite, makeSuite
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestUserFolder))
         return suite

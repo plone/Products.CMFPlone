@@ -20,6 +20,8 @@ if delete_portrait:
 
 processed={}
 for id, property in context.portal_memberdata.propertyItems():
+    if id == 'last_login_time':
+        continue
     processed[id]=REQUEST.get(id, None)
 
 context.plone_utils.setMemberProperties(member, **processed)

@@ -11,6 +11,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 from AccessControl.User import nobody
 from Acquisition import aq_base
+from DateTime import DateTime
 
 default_user = PloneTestCase.default_user
 
@@ -379,6 +380,79 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
         self.failIf(catalog(Title='Personal Items'))
 
 
+class TestSearchForMembers(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.membership = self.portal.portal_membership
+        self.membership.memberareaCreationFlag = 0
+        self.memberdata = self.portal.portal_memberdata
+        # Don't let default_user disturb results
+        self.portal.acl_users._doDelUsers([default_user])
+        # Add some members
+        self.addMember('fred', 'Fred Flintstone', 'fred@bedrock.com', ['Member', 'Reviewer'], '2002-01-01')
+        self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
+        self.addMember('bambam', 'Bambam Rubble', 'bambam@bambam.net', ['Member'], '2003-12-31')
+        # MUST reset this
+        self.memberdata._v_temps = None
+
+    def addMember(self, username, fullname, email, roles, last_login_time):
+        self.membership.addMember(username, 'secret', roles, [])
+        member = self.membership.getMemberById(username)
+        member.setMemberProperties({'fullname': fullname, 'email': email, 
+                                    'last_login_time': DateTime(last_login_time),})
+
+    def testSearchByName(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(name='rubble')), 2)
+        self.assertEqual(len(search(name='stone')), 1)
+
+    def testSearchByEmail(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(email='bedrock')), 2)
+        self.assertEqual(len(search(email='bambam')), 1)
+
+    def testSearchByRoles(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(roles=['Member'])), 3)
+        self.assertEqual(len(search(roles=['Reviewer'])), 1)
+
+    def testSearchByLastLoginTime(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(last_login_time=DateTime('2002-01-01'))), 3)
+        self.assertEqual(len(search(last_login_time=DateTime('2003-01-01'))), 1)
+
+    def testSearchByNameAndEmail(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(name='rubble', email='bedrock')), 1)
+        self.assertEqual(len(search(name='bambam', email='bedrock')), 0)
+
+    def testSearchByNameAndRoles(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(name='fred', roles=['Reviewer'])), 1)
+        self.assertEqual(len(search(name='fred', roles=['Manager'])), 0)
+
+    def testSearchByNameAndLastLoginTime(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(name='rubble', last_login_time=DateTime('2002-01-01'))), 2)
+        self.assertEqual(len(search(name='flintstone', last_login_time=DateTime('2003-01-01'))), 0)
+
+    def testSearchByEmailAndRoles(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(email='fred', roles=['Reviewer'])), 1)
+        self.assertEqual(len(search(email='fred', roles=['Manager'])), 0)
+
+    def testSearchByEmailAndLastLoginTime(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(email='bedrock', last_login_time=DateTime('2002-01-01'))), 2)
+        self.assertEqual(len(search(email='bedrock', last_login_time=DateTime('2003-01-01'))), 0)
+
+    def testSearchByRolesAndLastLoginTime(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(roles=['Member'], last_login_time=DateTime('2002-01-01'))), 3)
+        self.assertEqual(len(search(roles=['Reviewer'], last_login_time=DateTime('2002-01-01'))), 1)
+        self.assertEqual(len(search(roles=['Member'], last_login_time=DateTime('2003-01-01'))), 1)
+
+
 # Fake upload object
 
 class Portrait:
@@ -393,10 +467,11 @@ class FooException: pass
 if __name__ == '__main__':
     framework()
 else:
-    from unittest import TestSuite, makeSuite
     def test_suite():
+        from unittest import TestSuite, makeSuite
         suite = TestSuite()
         suite.addTest(makeSuite(TestMembershipTool))
         suite.addTest(makeSuite(TestCreateMemberarea))
         suite.addTest(makeSuite(TestMemberareaSetup))
+        suite.addTest(makeSuite(TestSearchForMembers))
         return suite

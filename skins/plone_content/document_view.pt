@@ -1,5 +1,5 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-      lang="en-US"
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 <body>
@@ -20,13 +20,13 @@
             description
         </div>
     
-        <p tal:condition="not: len_text"
-           i18n:translate="no_body_text">
+        <p tal:condition="python: not len_text and is_editable"
+           i18n:translate="no_body_text"
+           class="discreet">
             This item does not have any body text, click the edit tab to change it.
         </p>
     
-        <div id="bodyContent"
-             class="stx"
+        <div class="stx"
              tal:condition="len_text"
              tal:attributes="class python:test(here.text_format=='structured-text', 'stx', 'plain')">
             <div tal:replace="structure python:here.CookedBody(stx_level=2)" />

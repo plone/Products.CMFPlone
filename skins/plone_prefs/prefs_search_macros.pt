@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en-US"
-      lang="en-US"
+      xml:lang="en"
+      lang="en"
       i18n:domain="plone">
 	<head>
 		<title tal:condition="nothing">User/Group Search Macro(s)</title>
@@ -22,7 +22,7 @@
 
 	<span metal:define-slot="hiddens" />
 	
-        <table class="listing">
+        <table class="listing" summary="Groups">
 	  <tr>
 	    <th colspan="2">
 	      <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:

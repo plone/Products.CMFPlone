@@ -155,6 +155,22 @@ def rc5_rc6(portal):
     removeTypesForcedFolderContents(portal)
     # changeCopyPermission(portal)
 
+def final_rc6(portal):
+    out = []
+    out.append('Assigning folder_workflow to Large Plone Folder')
+    fixupLargePloneFolderWorkflow(portal)
+    return out
+
+def fixupLargePloneFolderWorkflow(portal):
+    # Large Plone Folder should use folder_workflow
+    wf_tool = getToolByName(portal, 'portal_workflow') 
+    lpf_chain = list(wf_tool.getChainFor('Large Plone Folder'))
+    if 'plone_workflow' in lpf_chain:
+        lpf_chain.remove('plone_workflow')
+    if 'folder_workflow' not in lpf_chain:
+        lpf_chain.append('folder_workflow')
+    wf_tool.setChainForPortalTypes(('Large Plone Folder',), ', '.join(lpf_chain))
+
 def changeCopyPermission(portal):
     _actions = portal.portal_actions._cloneActions()
     for action in _actions:
