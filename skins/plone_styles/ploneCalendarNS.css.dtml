@@ -44,6 +44,7 @@ table.calendar a:hover {
 
 table.calendar th {
     background-color: &dtml-boxHeaderBackground;;
+    color: &dtml-boxHeaderTextColor;;
     font-weight: bold;
     text-align: center;
 }
