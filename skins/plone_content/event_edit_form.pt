@@ -221,7 +221,8 @@
 
         <div class="row"
              tal:define="here_start here/start|nothing;
-                         start_date python:request.get('start_date', here.toPortalTime(here_start, long_format=1));
+                         start_date python:request.get('start_date', here_start);
+                         start_date python:here.toPortalTime(start_date, long_format=1);
                          error_start_date errors/start_date | nothing;">
             <div class="label">
               <span i18n:translate="label_event_start">Event Starts</span>
@@ -253,7 +254,8 @@
 
         <div class="row"
              tal:define="here_end here/end|nothing;
-                         end_date python:request.get('end_date', here.toPortalTime(here_end, long_format=1));
+                         end_date python:request.get('end_date', here_end);
+                         end_date python:here.toPortalTime(end_date, long_format=1);
                          error_end_date errors/end_date | nothing;">
             <div class="label">
               <span i18n:translate="label_event_end">Event Ends</span>
