@@ -57,6 +57,8 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.portal.plone_utils.browserDefault(self.folder), 
                             (self.folder, ['atct_album_view']))
 
+class TestDefaultPageByName(PloneTestCase.PloneTestCase):
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()

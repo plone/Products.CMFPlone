@@ -128,11 +128,16 @@
                                canSelectDefaultFolderPage folder/canSelectDefaultPage;
                                canSelectDefaultContextPage here/canSelectDefaultPage;
                                isContextDefaultPage here/isDefaultPageInFolder;
-                               showMenu python:(not contextHasIndexHtml) or 
-                                               (isContextDefaultPage and not folderHasIndexHtml)"
+                               showMenu python:(context is folder and not contextHasIndexHtml) or 
+                                               (isContextDefaultPage and not folderHasIndexHtml);
+                               "
                         condition="python:parentVocab or contextVocab or canSelectDefaultFolderPage or canSelectDefaultContextPage">
 
-
+        <li>
+        <span tal:replace="python:(isContextDefaultPage and not folderHasIndexHtml)"/>
+        <span tal:replace="folderHasIndexHtml"/>
+        
+        </li>
         
         <li>
         
@@ -157,23 +162,24 @@
 
                 <ul class="actionMenu" id="templateMenu"
                     onmouseover="menuMouseover(event)">
-
+                    
                     <!-- Parent Views menu -->
                     <tal:parentViews define="vocab parentVocab;
                                              actualLayout folder/getLayout|nothing;
-                                             selectCondition canSelectDefaultFolderPage;"
+                                             selectedLayout python:test(isContextDefaultPage, '', actualLayout)"
                                      condition="python:vocab and isContextDefaultPage">
                     <tal:layouts repeat="layout vocab">
                     <li tal:define="value layout;
                                     display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
                         <!--XXX style attribute has to be changed to a css class in following tag  -->
                         <span style="white-space:nowrap;"
-                              tal:condition="python:value==actualLayout"
+                              tal:condition="python:value==selectedLayout"
                               i18n:translate=""
+                              class="selected"
                               tal:content="display">Template id</span>
                         <a href="#"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                           tal:condition="python:value!=actualLayout"
+                           tal:condition="python:value!=selectedLayout"
                            tal:attributes="href string:${folder/absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
                            i18n:attributes="title">
@@ -184,33 +190,47 @@
                     </tal:layouts>
 
                     <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
-                    <li tal:condition="selectCondition">
-                        <a title="Select Default Page" href="#"
-                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                           tal:attributes="href string:${folder/absolute_url}/select_default_page;"
-                           i18n:attributes="title">
-                             Select...
-                        </a>
-                    </li>
+                    <tal:block condition="canSelectDefaultFolderPage">
+                        <li tal:condition="python:selectedLayout != ''">
+                            <a title="Select default page" href="#" class="selected"
+                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                               tal:attributes="href string:${folder/absolute_url}/select_default_page;"
+                               i18n:attributes="title">
+                                 Select item...
+                            </a>
+                        </li>
+                        <li tal:condition="python:selectedLayout == ''">
+                            <a title="Change default page" href="#" class="selected"
+                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                               tal:attributes="href string:${folder/absolute_url}/select_default_page;"
+                               i18n:attributes="title">
+                                 Change item...
+                            </a>
+                        </li>
+                    </tal:block>
+                    
                     </tal:parentViews>
 
                     <!-- Context Views menu -->
                     <tal:contextViews define="vocab contextVocab;
-                                             actualLayout here/getLayout|nothing;
-                                             selectCondition canSelectDefaultContextPage;"
-                                     condition="vocab">
+                                             actualLayout context/getLayout|nothing;
+                                             selectedLayout python:test(isContextDefaultPage, '', actualLayout)"
+                                     condition="python:vocab">
+                                     
                     <tal:layouts repeat="layout vocab">
+                    
                     <li tal:define="value layout;
                                     display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
                         <!--XXX style attribute has to be changed to a css class in following tag  -->
                         <span style="white-space:nowrap;"
-                              tal:condition="python:value==actualLayout"
+                              tal:condition="python:value==selectedLayout"
                               i18n:translate=""
+                              class="selected"
                               tal:content="display">Template id</span>
                         <a href="#"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                           tal:condition="python:value!=actualLayout"
-                           tal:attributes="href string:${here/absolute_url}/selectViewTemplate?templateId=$value;
+                           tal:condition="python:value!=selectedLayout"
+                           tal:attributes="href string:${folder/absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
                            i18n:attributes="title">
                             <tal:title i18n:translate=""
@@ -220,16 +240,26 @@
                     </tal:layouts>
 
                     <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
-                    <li tal:condition="selectCondition">
-                        <a title="Select Default Page" href="#"
-                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                           tal:attributes="href string:${here/absolute_url}/select_default_page;"
-                           i18n:attributes="title">
-                             Select...
-                        </a>
-                    </li>
+                    <tal:block condition="canSelectDefaultFolderPage">
+                        <li tal:condition="python:selectedLayout != ''">
+                            <a title="Select default page" href="#" class="selected"
+                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                               tal:attributes="href string:${folder/absolute_url}/select_default_page;"
+                               i18n:attributes="title">
+                                 Select item...
+                            </a>
+                        </li>
+                        <li tal:condition="python:selectedLayout == ''">
+                            <a title="Change default page" href="#" class="selected"
+                               onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                               tal:attributes="href string:${folder/absolute_url}/select_default_page;"
+                               i18n:attributes="title">
+                                 Change item...
+                            </a>
+                        </li>
+                    </tal:block>
+                    
                     </tal:contextViews>
-
 
             </ul>
         </div>
