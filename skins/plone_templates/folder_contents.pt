@@ -72,7 +72,8 @@
 				     getInfoFor python:wtool.getInfoFor;
                                      iface_tool here/portal_interface;
                                      orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
-                                     isOrderable python:iface_tool.objectImplements(here, orderable_iface);">
+                                     isOrderable python:iface_tool.objectImplements(here, orderable_iface);
+                                     nosortclass python:test(isOrderable, 'nosort', '')">
 
             <table id="sortable"
                    class="listing"
@@ -135,17 +136,17 @@
 						 alt="Select all items"
                                                  i18n:attributes="title alt"
                                                  /></th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_title">Title</span>&nbsp;</th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_type">Type</span>&nbsp;</th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_size">Size</span>&nbsp;</th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_modified">Modified</span>&nbsp;</th>
-                        <th>&nbsp;<span tal:omit-tag=""
+                        <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_status">State</span>&nbsp;</th>
-                        <th tal:condition="isOrderable">&nbsp;<span tal:omit-tag=""
+                        <th class="nosort" tal:condition="isOrderable">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_order">order</span>&nbsp;</th>
                     </tr>
                     </metal:block>
