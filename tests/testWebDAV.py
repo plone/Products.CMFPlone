@@ -72,9 +72,8 @@ class TestDAVMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(doc.Rights(), '')
 
 
-class DavFunctionalTest(ZopeTestCase.Functional,
-                        PloneTestCase.PloneTestCase):
-    """A funcional test for WebDAV behavior"""
+class DavFunctionalTest(PloneTestCase.FunctionalTestCase):
+    """A functional test for WebDAV behavior"""
 
 
 def test_suite():
