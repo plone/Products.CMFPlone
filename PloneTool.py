@@ -23,7 +23,6 @@ from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from StatelessTree import NavigationTreeViewBuilder as NTVB
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 

@@ -5,7 +5,8 @@
 <div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
-       tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);">
+       tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);
+                   currentPath python:context.getPhysicalPath();">
     <div class="portlet" id="portlet-navigation-tree">
     <div>
         <h5 i18n:translate="box_navigation">Navigation</h5>
@@ -13,10 +14,17 @@
             <div class="portletContent odd">
 			     <ul class="portletNavigationTree portletNavigationLevel0">
 			
-			        <li class="portletNavigationTreeItem">
-			    <a tal:attributes="href string:$portal_url; 
-			                       style string:background-image: url($portal_url/site_icon.gif)">
-			    Home
+			        <li class="portletNavigationTreeItem"
+			            tal:condition="portal_properties/navtree_properties/includeTop">
+			    <a tal:attributes="href string:$portal_url;
+			                       title portal/Description;
+			                       style string:background-image: url($portal_url/site_icon.gif);
+			                       class python:test(context == portal, 'currentNavItem', '');"
+			                       accesskey="accesskeys-navigation"
+                                    i18n:attributes="accesskey">
+                     <span i18n:translate="tabs_home">
+                          Home
+                     </span>
 			    </a>
 			        </li>
 			        

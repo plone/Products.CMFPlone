@@ -67,7 +67,6 @@ from Products.CMFPlone.PropertiesTool import PropertiesTool, SimpleItemWithPrope
 from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
 from Products.CMFPlone.RegistrationTool import RegistrationTool
 from Products.CMFPlone.SkinsTool import SkinsTool
-from Products.CMFPlone.StatelessTree import NavigationTreeViewBuilder
 from Products.CMFPlone.SyndicationTool import SyndicationTool
 from Products.CMFPlone.TypesTool import TypesTool
 from Products.CMFPlone.UndoTool import UndoTool
@@ -210,7 +209,6 @@ testClasses = [
     (QuickInstallerTool, ()),
     (RegistrationTool, ()),
     (SkinsTool, ()),
-    (NavigationTreeViewBuilder, ()),
     (SyndicationTool, ()),
     (TypesTool, ()),
     (UndoTool, ()),
