@@ -36,6 +36,14 @@ class TempFolder(PortalFolder):
                 types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
             self.invokeFactory(id=id, type_name=type_name)
             obj = self._getOb(id).__of__(aq_parent(aq_parent(self)))
+
+            # give ownership to currently authenticated member if not anonymous
+            membership_tool = getToolByName(self, 'portal_membership')
+            if not membership_tool.isAnonymousUser():
+                member = membership_tool.getAuthenticatedMember()
+                obj.changeOwnership(member.getUser(), 1)
+                obj.manage_setLocalRoles(member.getUserName(), ['Owner'])
+
             obj.unindexObject()
             return obj
 
