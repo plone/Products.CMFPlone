@@ -6,7 +6,7 @@
 <metal:menubarmacro define-macro="contentMenu">
 
 <ul class="menuBar"
-    tal:define="contentTypes here/allowedContentTypes;">
+    tal:define="contentTypes python:here.sortObjects(here.allowedContentTypes());">
     <li class="menuButton"
         tal:condition="contentTypes">
         <a href="#"
