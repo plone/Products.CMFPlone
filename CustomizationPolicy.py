@@ -25,22 +25,6 @@ class DefaultCustomizationPolicy:
             
         p=getattr(portal.portal_properties, id)
         
-        #First we will deal with the CMF defaults.  This is ugly!
-        pid='email_from_address'
-        if not hasattr(p,pid):  
-            p._setProperty(pid, getattr(portal,pid,''), 'string')
-            if hasattr(portal, pid):
-                portal._delProperty(pid)    
-        pid='email_from_name'
-        if not hasattr(p,pid): 
-            p._setProperty(pid, getattr(portal,pid,''), 'string')
-            if hasattr(portal, pid):
-                portal._delProperty(pid)
-        pid='validate_email'
-        if not hasattr(p,pid): 
-            p._setProperty(pid, getattr(portal,pid,''), 'boolean')
-            if hasattr(portal, pid):
-                portal._delProperty(pid)
         #Now we add the lagniappe
         if not hasattr(p,'allowAnonymousViewAbout'): p._setProperty('allowAnonymousViewAbout', 1, 'boolean')
         if not hasattr(p,'localTimeFormat'): p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
@@ -51,8 +35,9 @@ class DefaultCustomizationPolicy:
         if not hasattr(p,'use_folder_contents'): p._setProperty('use_folder_contents',('Folder',), 'lines')
         if not hasattr(p,'ext_editor'): p._setProperty('ext_editor', ExtInstalled, 'boolean')
         if not hasattr(p, 'available_editors'): 
-            p._setProperty('available_editors', ('None', 'XSDHTMLEditor'), 'lines')
-    
+            p._setProperty('available_editors', ('None', ), 'lines')
+        if not hasattr(p, 'allowRolesToAddKeywords'): p._setProperty('allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
+
     def setupDefaultSlots(self, portal):
         """ sets up the slots on objectmanagers """
         #add the slots to the portal folder
@@ -83,26 +68,26 @@ class DefaultCustomizationPolicy:
                                , 0 )
      
     def assignTitles(self, portal):
-        titles={'portal_actions':'defines custom tabs and buttons',
-         'portal_membership':'encapsulates membership policy',
-         'portal_memberdata':'defines available properties on Members',
-         'portal_undo':'defines actions and functionality related to unfo',
-         'portal_types':'defines wired Python objects to CMF.',
-         'plone_utils':'utility methods in PloneTool.py',
-         'portal_navigation':'coordinating portal_form and nav_props',
-         'portal_metadata':'assign metadata, like keywords i.e. Subject',
-         'portal_migration':'handles migrations of Plone versions',
-         'portal_registration':'encapsulated registration policy',
-         'portal_skins':'controls the behavior of skins i.e. search order',
-         'portal_syndication':'enable RSS for folders',
-         'portal_workflow':'contains workflow definitions for system',
-         'portal_url':'methods to anchor you to root of CMF Site',
-         'portal_form':'used with templates to do validation and navigation',
-         'portal_discussion':'how discussions are stored by default on conent',
-         'portal_catalog':'indexes all content in the site',
-         'portal_form_validation':'*deprecated*',
-         'portal_factory':'ensures a content object is created',
-         'portal_calendar':'controls how events are shown'
+        titles={'portal_actions':'Contains custom tabs and buttons',
+         'portal_membership':'Handles membership policies',
+         'portal_memberdata':'Handles the available properties on Members',
+         'portal_undo':'Defines actions and functionality related to undo',
+         'portal_types':'Controls the available Content Types in your portal',
+         'plone_utils':'Various Plone Utility methods',
+         'portal_navigation':'Responsible for redirecting to the right page in forms',
+         'portal_metadata':'Controls metadata - like keywords, copyrights etc',
+         'portal_migration':'Handles migrations to newer Plone versions',
+         'portal_registration':'Handles registration of new users',
+         'portal_skins':'Controls skin behaviour (search order etc)',
+         'portal_syndication':'Generates RSS for folders',
+         'portal_workflow':'Contains workflow definitions for your portal',
+         'portal_url':'Methods to anchor you to the root of your Plone site',
+         'portal_form':'Used together with templates to do validation and navigation',
+         'portal_discussion':'Controls how discussions are stored by default on content',
+         'portal_catalog':'Indexes all content in the site',
+         'portal_form_validation':'Deprecated, not in use',
+         'portal_factory':'Responsible for the creation of content objects',
+         'portal_calendar':'Controls how Events are shown'
          }
 
         for o in portal.objectValues():
@@ -187,14 +172,14 @@ class DefaultCustomizationPolicy:
         at._actions=at_actions
 
         at.addAction('index_html','Welcome','portal_url','', 'View', 'portal_tabs')
-        at.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','portal_tabs')
-        at.addAction('news','News','string: $portal_url/news','','View', 'portal_tabs')	
-        at.addAction('search_form','Search','string: $portal_url/search_form','','View','portal_tabs')
+        at.addAction('Members','Members','string:$portal_url/Members','','View','portal_tabs')
+        at.addAction('news','News','string:$portal_url/news','','View', 'portal_tabs')	
+        at.addAction('search_form','Search','string:$portal_url/search_form','','View','portal_tabs')
 
         at.addAction( 'content_status_history'
-                    , 'Workflow'
+                    , 'State'
                     , 'string:${object_url}/content_status_history'
-                    , 'python:portal.portal_workflow.getTransitionsFor(object, object.getParentNode())'
+                    , 'python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())'
                     , 'View'
                     , 'object_tabs' )
         at.addAction( 'change_ownership', 'Ownership', 'string:${object_url}/ownership_form', '', CMFCorePermissions.ManagePortal, 'object_tabs', 0)
@@ -221,7 +206,13 @@ class DefaultCustomizationPolicy:
             md._setProperty('visible_ids', '1', 'boolean')
         if not hasattr(md,'wysiwyg_editor'):
             md._setProperty('wysiwyg_editor', '', 'string')
-
+        if not hasattr(md,'listed'):
+            md._setProperty('listed', '1', 'boolean')
+        else:
+            md._setPropValue('listed','1')
+        if not hasattr(md, 'fullname'):
+            md._setProperty('fullname', '', 'string')
+      
         #customize membership tool
         mt=getToolByName(portal, 'portal_membership')
         mt.addAction('myworkspace'

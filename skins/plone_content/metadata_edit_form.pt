@@ -110,87 +110,64 @@
                 keywords if possible, try to avoid adding new keywords that are essentially the 
                 same as the existing ones.
                 <br />
-                Each keyword must be on a separate line in the 'selected keywords' textbox.
+                You can deselect entries by keeping the Ctrl key depressed while clicking an entry.
                 <br />
-                Existing Keywords can be easily changed, but currently is all subjects 
+                Each keyword must be on a separate line in the 'New Keywords' textbox.
+                <br />
+                Existing Keywords can be easily changed, but currently is all keywords 
                 that have ever been used in the system.
                 </div>
             </div>
             <div class="field" 
                   tal:define="global contentSubjects here/Subject;
-                              global allowedSubjects python:here.unique(container.portal_metadata.listAllowedSubjects(here));
-                              global allowedSubjects python:list(allowedSubjects);
+                              global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
+                              global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
+                              global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
                               dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
 
-                <table>
-                    <tr><td>
-                    Existing keywords
-                    <br />
+                    <div style="width: 45%; float: left;">                              
+                        <span i18n:translate="label_existing_keywords">Existing keywords</span>
+                        <br />
                         <select id="predefined_subjects"
-                                name="predefined_subjects" 
-                                size="7" 
+                                name="predefined_subjects:list" 
+                                size="14" 
                                 multiple="multiple"
                                 tabindex=""
                                 onfocus="formtooltip('keywords_help',1)" 
                                 onblur="formtooltip('keywords_help',0)"
                                 tal:attributes="tabindex tabindex/next;">
-                        <option value="#" tal:repeat="subject allowedSubjects"
-                                tal:content="subject" tal:attributes="value subject"> # </option>                                
+                          <option value="#" tal:repeat="subject allowedSubjects"
+                                  tal:content="subject" tal:attributes="value subject;
+                                                                        selected python:test(subject in contentSubjects, 'selected', '')"> 
+                          an existing keyword 
+                          </option>                                
                         </select>
                         
-                        <br />
+                    </div>
+                        
+                    <tal:block tal:define="site_props here/portal_properties/site_properties;
+                                           allowRolesToAddKeywords site_props/allowRolesToAddKeywords"
+                               tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
+                          
+                        <div style="width: 45%; float: left;">                              
+    
+                            <span i18n:translate="label_new_keywords">New keywords</span>
+                            <br />
+                            <textarea id="entered_subjects"
+                              name="subject:lines" 
+                              rows="11" 
+                              cols="15" 
+                              wrap="off"
+                              tabindex=""
+                              onfocus="formtooltip('keywords_help',1)" 
+                              onblur="formtooltip('keywords_help',0)"
+                              tal:attributes="tabindex tabindex/next;"
+                              tal:define="subject python:request.get('subject',[])"
+                              tal:content="python:'\n'.join(subject)"
+                              >selected keywords</textarea>&nbsp;
 
-                        <input class="context" 
-                               type="submit" 
-                               name="add"
-                               tabindex="" 
-                               value="Add Selected &gt;"
-                               onclick="javascript:addSelectedKeywords();return false;"
-                               tal:attributes="tabindex tabindex/next;">
-
-                    <br />
-                    New keyword <br />
-                    <input type="text" 
-                           name="entered_keyword" 
-                           value="" 
-                           size="20"
-                           tabindex=""
-                           onfocus="formtooltip('keywords_help',1)" 
-                           onblur="formtooltip('keywords_help',0)"
-                           tal:attributes="tabindex tabindex/next;"
-                           /> 
-                    <br />
-                    <input class="context" 
-                           type="submit" 
-                           name="add" 
-                           tabindex=""
-                           value="Add New &gt;"
-                           onclick="javascript:addNewKeyword(document.edit_form.entered_keyword.value);return false;"
-                           tal:attributes="tabindex tabindex/next;"
-                           />
-                    </td>
-
-                    <td>
-                    <span i18n:translate="label_selected_keywords">
-                    Selected keywords
-                    </span>
-                    <br />
-                    <textarea id="entered_subjects"
-                      name="subject:lines" 
-                      rows="15" 
-                      cols="15" 
-                      wrap="off"
-                      tabindex=""
-                      onfocus="formtooltip('keywords_help',1)" 
-                      onblur="formtooltip('keywords_help',0)"
-                      tal:attributes="tabindex tabindex/next;"
-                      tal:define="subject request/subject | here/Subject;
-                                  string modules/string"
-                      tal:content="python:string.join(subject or [],'\n')"
-                      >selected keywords</textarea>&nbsp;
-                    </td></tr>
-                </table>
-
+                        </div>                    
+                    </tal:block>
             </div>
 
         </div>         
@@ -204,8 +181,8 @@
                      i18n:translate="help_effective_date"
                      class="help" 
                      style="visibility:hidden">
-                The date when the document will be visible when it's published. This way, you can 
-                publish a document in advance, but it will not be visible before this date.
+                The date when the item will be visible when it's published. This way, you can 
+                publish a item in advance, but it will not be visible before this date.
                 </div>
             </div>
             
@@ -234,7 +211,7 @@
                      i18n:translate="help_expiration_date"
                      class="help" 
                      style="visibility:hidden">
-                The date when the document expires. This will automatically make the document
+                The date when the item expires. This will automatically make the item
                 invisible for others at the given date.
                 </div>
             </div>
@@ -264,7 +241,7 @@
                      i18n:translate="help_format"
                      class="help" 
                      style="visibility:hidden">
-                The MIME-type of the document. If you don't know what this does, just leave it. <br /> Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
+                The MIME-type of the item. If you don't know what this does, just leave it. <br /> Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
                 </div>
             </div>
             
@@ -294,8 +271,7 @@
                      i18n:translate="help_language"
                      class="help" 
                      style="visibility:hidden">
-                The language the document is written in, indicated
-                by the ISO-639-2 code.
+                The language the item is written in.
                 </div>
             </div>
             <div class="field"
@@ -363,7 +339,8 @@
                           onblur="formtooltip('contributors_help',0)"
                           tal:attributes="tabindex tabindex/next;"
                           tal:define="contributors request/contributors | here/Contributors;"
-                          ><span tal:replace="python:'\n'.join(contributors)">contributor</span></textarea>
+                          tal:content="python:'\n'.join(contributors)"
+                          >contributors</textarea>
             </div>
         </div>
 
@@ -380,7 +357,7 @@
                        />
             </div>
         </div>	
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>
 

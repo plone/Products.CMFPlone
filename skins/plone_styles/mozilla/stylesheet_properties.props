@@ -33,7 +33,6 @@ contentTabBorder:string=1px solid #F7C768
 contentTabBackground:string=#F7C768
 contentTabBackgroundNotSelected:string=transparent
 contentTabBackdrop:string=transparent
-contentTabLinkColor:string=Black
 contentTabFontWeight:string=bold
 contentTabFontColor:string=Black
 contentTabFontColorSelected:string=Black
@@ -50,7 +49,7 @@ noBorder:string=none
 evenRowBackground:string=#FFFAF2
 oddRowBackground:string=transparent
 groupBorder:string=1px solid #C04735
-requiredField:string=url(required.gif) 1em no-repeat
+requiredField:string=url(required.gif) right no-repeat
 
 inputFont:string=bold 10px Verdana, Helvetica, Arial, sans-serif
 inputBorder:string=1px solid #C04735
@@ -62,6 +61,11 @@ contextButtonFontColor:string=Black
 standaloneButtonBackground:string=#C04735 url(linkOpaque.gif) left no-repeat
 standaloneButtonPadding:string=1px 1px 1px 15px
 standaloneButtonFontColor:string=White
+
+destructiveButtonBackground:string=#FFCE7B url(linkTransparent.gif) 9px 1px no-repeat
+destructiveButtonPadding:string=1px 1px 1px 15px
+destructiveButtonBorder:string=1px solid #FFA500
+destructiveButtonFontColor:string=Black
 
 buttonWeight:string=bold
 

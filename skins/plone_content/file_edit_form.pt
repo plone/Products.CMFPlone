@@ -10,7 +10,14 @@
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();" >
 
-    <h1 i18n:translate="heading_edit_file">Edit file</h1>
+    <h1 i18n:translate="heading_edit_item">
+    Edit
+        <span i18n:name="itemtype">
+              <span i18n:translate=""         
+                    tal:content="python:here.getTypeInfo().Title()" 
+                    tal:omit-tag="">Item type</span>
+        </span> 
+    </h1>
     
     <p i18n:translate="description_edit_file">
     Add the relevant details of the file to be added in the form below,
@@ -29,8 +36,8 @@
         <div class="row" 
              tal:condition="python: getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', None)"
              tal:define="error_id errors/id | nothing;
-                         id python:request.get('id', here.getId());"> 
-            <div class="label required">
+                         id python:request.get('id', test(here.show_id(),here.getId(),''));"> 
+            <div class="label">
             
                 <span i18n:translate="label_name">Name</span>
             
@@ -157,14 +164,17 @@
                        />
                 <br />
                 <span i18n:translate="no_file_uploaded"
-                      tal:condition="python:test(here.size, 0, 1)">
+                      tal:define="file_size here/size|nothing"
+                      tal:condition="python:test(file_size, 0, 1)">
                   (No file has been uploaded yet)
                 </span>
             </div>
         </div>
 
         <div class="row"
-            tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
+            tal:define="content_type python:here.content_type;
+                        content_type python:test(content_type==None,'',content_type);"
+            tal:condition="python:test(content_type.find('text')>-1, 1,0)">
             
             <div class="label">
                 <span i18n:translate="label_edit_contents">Edit Contents</span>
@@ -191,7 +201,6 @@
                           tal:attributes="tabindex tabindex/next"></textarea>
             </div>
         </div>
-
     
         <div class="row">
     
@@ -209,7 +218,7 @@
     
         </div>
         
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>
 

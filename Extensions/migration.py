@@ -1,3 +1,14 @@
+# WARNING: Deprecated
+# This script is to update old Plone sites before the release of beta 3 only
+# With beta 3 we added a migration tool that does most of this work, you
+# may use this for migrating alpha releases, but it is no longer supported
+# and may not work.
+#
+# Please see http://plone.org/documentation/book/2 for more information
+# on migration
+#
+# PROCEED AT YOUR OWN RISK
+#
 # Clean Migration machinery 
 # given a id of a portal in the container it will attempt to rename it
 # and create a new instance of Plone and then migrate the old data to

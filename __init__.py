@@ -2,7 +2,7 @@ cmfplone_globals=globals()
 custom_policies={} #stores the registered Policies
 import migrations
 from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
-from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
+from AccessControl import ModuleSecurityInfo, ClassSecurityInfo, allow_module, allow_class, allow_type
 import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
 import NavigationTool, FactoryTool, FormTool, PropertiesTool, MigrationTool
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
@@ -24,17 +24,14 @@ ModuleSecurityInfo('zLOG').declarePublic('LOG')
 ModuleSecurityInfo('zLOG').declarePublic('INFO')
 ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
 
-#for form validation bits
-def allow_class(Class): 
-    """Allow a class and all of its methods to be used from a 
-    restricted Script. The argument Class must be a class.""" 
-    Class._security = sec = ClassSecurityInfo() 
-    sec.declareObjectPublic() 
-    sec.setDefaultAccess(1) 
-    sec.apply(Class) 
-    from Globals import InitializeClass 
-    InitializeClass(Class)
+# for content_status_modify
+from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted
+ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectMoved')
+ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectDeleted')
+allow_class(ObjectMoved)
+allow_class(ObjectDeleted)
 
+#for form validation bits
 from PloneUtilities import IndexIterator
 allow_class(IndexIterator)
 
@@ -79,7 +76,7 @@ DirectoryView.registerDirectory('skins', cmfplone_globals)
 this_module = sys.modules[ __name__ ]
 z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
 
-misc_ = {'plone_icon': Globals.ImageFile(path.join('skins','plone_images','site_icon.gif'), cmfplone_globals)}
+misc_ = {'plone_icon': Globals.ImageFile(path.join('skins','plone_images','logoIcon.gif'), cmfplone_globals)}
 
 def initialize(context):
     utils.initializeBasesPhase2( z_bases, context )    
@@ -100,5 +97,4 @@ def initialize(context):
 import PloneInitialize
 
 # setup migrations
-import Migrations
-Migrations.registerMigrations()
+migrations.registerMigrations()

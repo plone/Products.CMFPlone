@@ -88,7 +88,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     def failIfLocked(self):
         """ failIfLocked is used for WEBDAV locking """
         plone=getToolByName(self, 'plone_utils')
-        log(self.absolute_url() + " failIfLocked called on Plone Folder" )
+        #log(self.absolute_url() + " failIfLocked called on Plone Folder" )
         return 0
     
     ### FIXME! SkinnedFolder Creator method doesnt work when creating
@@ -115,11 +115,15 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         return self.browserDefault(request)
 
     security.declareProtected( ListFolderContents, 'listFolderContents')
-    def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): # XXX
+    def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): 
         """
         Hook around 'contentValues' to let 'folder_contents'
         be protected.  Duplicating skip_unauthorized behavior of dtml-in.
-        we also do not wanat to show objects that begin with a .
+        
+        In the world of Plone we do not want to show objects that begin with a .
+        So we have added a simply check.  We probably dont want to raise an
+        Exception as much as we want to not show it.
+        
         """
 
         items = self.contentValues(spec=spec, filter=contentFilter)
@@ -128,7 +132,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             id = obj.getId()
             v = obj
             try:
-                if len(id) and id[0]=='.' and suppressHiddenFiles:
+                if suppressHiddenFiles and id[:1]=='.': 
                     raise Unauthorized(id, v)
                 if getSecurityManager().validate(self, self, id, v):
                     l.append(obj)

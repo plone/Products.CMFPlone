@@ -4,7 +4,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
-<body>
+
+    <metal:block fill-slot="base">
+        <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+                   tal:replace="nothing">
+        Disable the tabs
+        </tal:block>
+    </metal:block>
 
 <div metal:fill-slot="main"
      tal:define="errors python:request.get('errors', {});
@@ -12,27 +18,28 @@
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();" >
 
-<h1>Email page to friend</h1>
+<h1 i18n:translate="heading_send_page_to">Send this page to somebody</h1>
+
+<div class="description" i18n:translate="description_send_page_to">
+Fill in the email address of your friend to send an email with the address.
+</div>
 
 <div class="spacer" />
 
-<div class="boxTitle">Page summary</div>
-
 <div class="box">
 
-    <div class="content">
-        <h2 tal:content="here/Title">Heading</h2>
-        <p tal:content="here/description">
-        Description
-        </p>
+<h6 i18n:translate="box_page_summary">Page summary</h6>
+
+    <div class="body">
+        <div class="content odd">
+            <h2 tal:content="here/Title">Heading</h2>
+            <p tal:content="here/description">
+            Description
+            </p>
+        </div>
     </div>
     
 </div>
-
-    
-<p>
-Fill in the email address of your friend to send an email with the address.
-</p>
 
 <form class="group"
       name="sendto_form"
@@ -41,17 +48,17 @@ Fill in the email address of your friend to send an email with the address.
       enctype="multipart/form-data"
       tal:attributes="action python:here.portal_form_url(template.id)">
 
-    <span class="legend" i18n:translate="">Address info</span>
+    <span class="legend" i18n:translate="legend_address_info">Address info</span>
 	
     <div class="row"
          tal:define="error_send_to_address errors/send_to_address|nothing;">
 		    <div class="label required">
-            <span i18n:translate="">Send to email</span>
+            <span i18n:translate="label_send_to_mail">Send to (e-mail address)</span>
             <div id="send_to_address_help" 
-                 i18n:translate=""
+                 i18n:translate="help_send_to_mail"
                  class="help" 
                  style="visibility:hidden">
-            The email address to send this link to.
+            The e-mail address to send this link to.
             </div>
         </div>
 
@@ -77,9 +84,9 @@ Fill in the email address of your friend to send an email with the address.
     <div class="row"
          tal:define="error_send_from_address errors/send_from_address|nothing;">
         <div class="label required">
-            <span i18n:translate="">Email from</span> 
+            <span i18n:translate="label_send_from">From</span> 
             <div id="send_from_address_help" 
-                 i18n:translate=""
+                 i18n:translate="help_send_from"
                  class="help" 
                  style="visibility:hidden">
             Your email address.
@@ -106,10 +113,10 @@ Fill in the email address of your friend to send an email with the address.
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="">Your comment</span>
+                <span i18n:translate="label_comment">Comment</span>
                 
                 <div id="comment_help" 
-                     i18n:translate="help_comment"
+                     i18n:translate="help_comment_to_link"
                      class="help" 
                      style="visibility:hidden">
                 A comment to this link. 
@@ -139,7 +146,7 @@ Fill in the email address of your friend to send an email with the address.
                    type="submit" 
                    name="submit" 
                    value="Send" 
-                   i18n:translate=""
+                   i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;" 
                    />   
         </div>
@@ -149,5 +156,4 @@ Fill in the email address of your friend to send an email with the address.
 
 </div>
 		
-</body>
 </html>

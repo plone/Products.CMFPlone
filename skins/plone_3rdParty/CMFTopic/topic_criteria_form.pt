@@ -13,8 +13,10 @@
                  tabindex python:Iterator();">
 
 <h1> 
-    <span i18n:translate="heading_criteria_for">Criteria for</span>
-    <span tal:replace="here/getId" /> 
+    <span i18n:translate="heading_criteria_for" tal:omit-tag="">
+        Criteria for
+        <span i18n:name="title" tal:content="here/getId" tal:omit-tag="" /> 
+    </span>
 </h1>
 
 <form class="group" 
@@ -57,7 +59,7 @@
                    i18n:attributes="value"
                    />
 
-            <input type="hidden" name=":default_action" value="editCriteria">
+            <input type="hidden" name=":default_action" value="editCriteria" />
         
         </div>
 

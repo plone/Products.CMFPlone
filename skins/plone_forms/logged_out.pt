@@ -4,24 +4,31 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
-<body>
 
- 	 <div metal:fill-slot="main">
+    <metal:block fill-slot="base">
+        <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+                   tal:replace="nothing">
+        Disable the tabs
+        </tal:block>
+    </metal:block>
+
+<div metal:fill-slot="main">
    
-	 <h1 i18n:translate="heading_signed_out">You are now signed out</h1>
+	 <h1 i18n:translate="heading_signed_out">You are now logged out</h1>
 	 
-	 <p i18n:translate="description_signed_out">
-	 We hope you enjoyed using our services. We look forward to seeing you again.
-     </p>
+     <div i18n:translate="description_logged_out" tal:omit-tag="">
+    	 <p>
+    	 We hope you enjoyed using our services. We look forward to seeing you again.
+         </p>
+    	 
+         
+    	 <p>
+         Best Regards from the
+         <strong tal:content="python:container.portal_url.getPortalObject().Title()" i18n:name="portal_title">portal title</strong> 
+         team.
+    	 </p>
+     </div>
 	 
-     
-	 <p i18n:translate="">
-     Best Regards from the
-     <strong tal:content="python:container.portal_url.getPortalObject().Title()" i18n:name="portal_title">portal title</strong> 
-     team.
-	 </p>
-	 
-	</div>
+</div>
 	   
-</body>
 </html>

@@ -10,131 +10,113 @@
        i18n:domain="plone"
        tal:omit-tag=""
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
-                   navBatchStart request/navBatchStart | python:0;
+                   navBatchStart request/navBatchStart | python:None;
                    tree python:here.navigation_tree_builder(root,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;
                    listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
-                   editorView python:test(listContentsPermission and notFolderContents, 1, 0);"
+                   editorView python:test(listContentsPermission and notFolderContents, 1, 0);
+                   croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
+                   rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner']
+                   "
                    tal:on-error="structure string:<!--Error in Navigation!!-->"
                    >
 
-    <span class="boxTitle" i18n:translate="">Navigation</span>
-
     <div class="box">
 
-        <div class="content odd">
-                 
-            <div style="white-space: nowrap;"
-                 tal:repeat="te tree/list">
-        
-                <tal:block tal:define="iscurrent te/iscurrent | python:0;
-                                       sibling python:te['object'];
-                                       stdCommand python:test(template.getId()=='folder_contents' and  
-                                       sibling.isPrincipiaFolderish , 'folder_contents', '');
-                                       sibling_title python:'&nbsp;;'.join(te['object'].title_or_id()[:18].split(' '));"
-                                       tal:on-error="structure string:<!--Error in Navigation loop!!-->"
-                                       >
-                           
-                    <span tal:repeat="x python:range( te['indent'])" tal:omit-tag="">&nbsp;</span>
+        <h5 i18n:translate="box_navigation">Navigation</h5>
+
+        <div class="body">
+
+            <tal:block tal:condition="python:request['AUTHENTICATED_USER'].has_role(rolesSeeContentsView, here)">
+                <div class="content even"
+                     tal:condition="editorView">
+                
+                    <div tal:condition="notFolderContents">
                     
-                    <a href="" 
-                       tal:condition="python: not iscurrent and sibling.meta_type != 'CMF Site'"
-                       tal:define="url string:${sibling/absolute_url}/${stdCommand}"
-                       tal:attributes="href url">
-            
-                        <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
-                             tal:on-error="structure here/site_icon.gif"
-                                />
+                        <a href="folder_contents"
+                           tal:condition="here/isPrincipiaFolderish">
                         
-                        <tal:block tal:content="structure sibling_title" />
-                        
-                    </a>
-                    
-                    <a href="" 
-                       tal:condition="python: not iscurrent and sibling.meta_type == 'CMF Site'"
-                       tal:define="url string:${sibling/absolute_url}"
-                       tal:attributes="href url">
-                       
-                        <img tal:replace="structure here/site_icon.gif" />
-                        <tal:block tal:content="structure sibling_title" />
-                    </a>
-                    
-                    <div tal:condition="tree/prev">
-                        <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
-                            <span i18n:translate="">...</span>
+                            <img tal:replace="structure here/linkTransparent.gif" />&nbsp;<span i18n:translate="box_contents_view">Switch to Contents view</span>
+                        </a>
+                               
+                        <a href="../folder_contents"
+                           tal:condition="not: here/isPrincipiaFolderish" 
+                           tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
+                           tal:on-error="structure string:aq_parent not allowed!"
+                           >
+                
+                            <img tal:replace="structure here/linkTransparent.gif" />&nbsp;<span i18n:translate="box_contents_view">Switch to Contents view</span>
                         </a>
                     </div>
+                </div>
+            </tal:block>
     
-                    <tal:block tal:condition="python: iscurrent and sibling.meta_type != 'CMF Site'" tal:on-error="string:scheisse">
-                            <span class="highlight">
-                                
-                                <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
-                                     tal:on-error="structure here/folder_icon.gif" />
-                                
-                                <strong tal:content="structure sibling_title">
-                                Current content id
-                                </strong>
-                            </span>
-                    </tal:block>
-        
-                    <tal:block tal:condition="python: iscurrent and sibling.meta_type == 'CMF Site'" tal:on-error="string:scheisse">
-                            <span class="highlight">
-                                
-                            <img tal:replace="structure here/site_icon.gif" />
-                                
-                                <strong tal:content="structure sibling_title">
-                                Current content id
-                                </strong>
-                            </span>
-                    </tal:block>
-        
-                </tal:block>
-            </div>
-        </div>
-            
-        <div tal:condition="tree/next">
-            <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">
-                <span i18n:translate="">...</span>
-            </a>
-        </div>
+            <div class="content even"
+                 tal:condition="not: notFolderContents">
+                <a href=".">
                     
-    
-        <div class="content even"
-             tal:condition="editorView">
-        
-            <div tal:condition="notFolderContents">
-            
-                <a href="folder_contents"
-                   tal:condition="here/isPrincipiaFolderish">
-                
-                    <img tal:replace="structure here/linkTransparent.gif" />
-                    
-                    <span i18n:translate="box_contents_view">Switch to Contents view</span>
-                </a>
-                       
-                <a href="../folder_contents"
-                   tal:condition="not: here/isPrincipiaFolderish" 
-                   tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
-                   tal:on-error="structure string:aq_parent not allowed!"
-                   >
-        
-                    <img tal:replace="structure here/linkTransparent.gif" />
-            
-                    <span i18n:translate="box_contents_view">Switch to Contents view</span>
+                    <img tal:replace="structure here/linkTransparent.gif" />&nbsp;<span i18n:translate="box_item_view">Switch to Item view</span>
                 </a>
             </div>
-        </div>
-     
-        <div class="content even"
-             tal:condition="not: notFolderContents">
-            <a href="">
+    
+            <div class="content odd">
+                     
+                <div tal:condition="tree/prev">
+                    <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
+                        <span i18n:translate="">...</span>
+                    </a>
+                </div>
                 
-                <img tal:replace="structure here/linkTransparent.gif" />
+                <div style="white-space: nowrap;"
+                     tal:repeat="te tree/list">
+            
+                    <span tal:define="iscurrent te/iscurrent | python:0;
+                                      sibling python:te['object'];
+                                      stdCommand python:test(template.getId()=='folder_contents' and  
+                                      sibling.isPrincipiaFolderish , 'folder_contents', 
+                                      test(sibling.isPrincipiaFolderish,'','view'));
+                                      title python:te['object'].title_or_id();
+                                      sibling_title python:'&nbsp;;'.join(title[:croppingLength].split(' '));"
+                                      tal:on-error="structure string:<!--Error in Navigation loop!!-->"
+                                           >
+                               
+                        <tal:block repeat="x python:range( te['indent'])">&nbsp;</tal:block>
+
+                        <tal:block tal:condition="iscurrent">
+                           <span class="currentNavItem">
+                        </tal:block>
+                        <a href="" 
+                           tal:condition="python: sibling.meta_type != 'CMF Site'"
+                           tal:define="url string:${sibling/absolute_url}/${stdCommand}"
+                           tal:attributes="href url;
+                                           title python:test(title != sibling_title, title, '');"
+                           class="plain">
                 
-                <span i18n:translate="box_item_view">Switch to Item view</span>
-            </a>
+                            <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
+                                 tal:on-error="structure here/site_icon.gif"
+                                    />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                        </a>
+                        
+                        <a href="" 
+                           tal:condition="python: sibling.meta_type == 'CMF Site'"
+                           tal:define="url string:${sibling/absolute_url}/${stdCommand}"
+                           tal:attributes="href url;
+                                           title python:test(title != sibling_title, title, '');">
+                           
+                            <img tal:replace="structure here/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                        </a>
+                    </span>
+                </div>
+                <div tal:condition="tree/next">
+                    <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">
+                        <span i18n:translate="">...</span>
+                    </a>
+                </div>
+    
+            </div>
+
         </div>
 
     </div>

@@ -1,8 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<head metal:define-macro="html_header" 
-      tal:define="global portal_url here/portal_url">
+<head metal:define-macro="html_header"
+      tal:define="global portal_url here/portal_url;
+                  ztu modules/ZTUtils;
+                  current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
           tal:define="charset here/portal_properties/site_properties/default_charset|string:iso-8859-1"
           tal:attributes="content string:text/html;;charset=${charset}" />
@@ -20,15 +22,14 @@
           tal:attributes="name python:keyval[0];
                            content python:keyval[1];" />
 
-    <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support it. Site will still be viewable, but look a bit stripped. --> 
-<!--
+    <!-- Basic crude style for Netscape4.x - This can be removed if you don't want the special NS4 look - it will still work, just be plain text instead. -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
--->
+
     <!-- Main style sheets for CSS2 capable browsers -->
-    <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css);"></style>
+    <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css?${current_skin});"></style>
 
     <!-- Custom style sheet if available -->
-    <style type="text/css" media="all" tal:condition="here/ploneCustom.css | nothing" tal:content="string:@import url(${here/portal_url}/ploneCustom.css);"></style>
+    <style type="text/css" media="all" tal:condition="exists: here/ploneCustom.css" tal:content="string:@import url(${here/portal_url}/ploneCustom.css);"></style>
     
     <!-- Style sheet used for printing -->
     <link rel="stylesheet" type="text/css" media="print" href="" tal:attributes="href string:$portal_url/plonePrint.css" />
@@ -38,15 +39,22 @@
 
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
+    <link rel="home" href="" title="Front Page" tal:attributes="href string:$portal_url" />
+    <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
+
     <!-- Disable IE6 image toolbar -->
     <meta http-equiv="imagetoolbar" content="no" />
 
+    <metal:block metal:define-slot="css_slot" tal:replace="nothing">
+    Inserts CSS specified from a page.
+    </metal:block>
+    
     <metal:block metal:define-slot="head_slot" tal:replace="nothing">
-    Flexibility for published templates to inject stuff into HEADER
+    Flexibility for published templates to inject stuff into the head tag.
     </metal:block>
     
     <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
-    Inserted javascript
+    Inserts javascript specified from a page.
     </metal:block>
 
     <!-- Common Plone ECMAScripts -->
@@ -70,7 +78,9 @@
 
 <div metal:define-macro="portal_header"
      i18n:domain="plone"
-     tal:define="portal_url here/portal_url" >
+     tal:define="portal_url here/portal_url;
+                 ztu modules/ZTUtils;
+                 current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
 
      <tal:block tal:condition="not: actions|nothing">     
          <span tal:define="global actions here/portal_actions/listFilteredActionsFor"
@@ -78,11 +88,10 @@
              This is here just in case actions is not defined.  This would happen if you were calling from a DTML Document   
          </span>
      </tal:block>
-     
+
         <div class="top">
 
             <div class="searchBox">
-    
                 <form name="searchform" 
                       action="search"
                       tal:attributes="action string:${portal_url}/search" >
@@ -103,8 +112,15 @@
 
             <a href="/"
                tal:attributes="href portal_url" 
-               tal:define="logo here/logo.jpg">
-                <img tal:replace="structure python:logo.tag(css_class='logo')" />
+               tal:define="logo here/logo.jpg;
+                           uri logo/absolute_url" >
+                <img src="logo.jpg"
+                     class="logo"
+                     border="0"
+                     alt=""
+                     tal:attributes="width logo/width;
+                                     height logo/height;
+                                     src string:${logo/absolute_url}?$current_skin" />
             </a>
         </div>
 
@@ -157,8 +173,7 @@
         <div class="pathBar"
              metal:define-macro="pathBar"
              tal:define="breadcrumbs python:here.breadcrumbs(here);
-                         portal_url here/portal_url;"
-             tal:condition="breadcrumbs">
+                         portal_url here/portal_url;">
 
             <a href="#"
                tal:condition="here/portal_membership/getHomeFolder"
@@ -168,7 +183,15 @@
                 <img tal:replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')" />
             </a>
 	    <span tal:omit-tag="" i18n:translate="you_are_here">You are here:</span>
-	    
+	        <span tal:condition="breadcrumbs" tal:omit-tag="">
+                <a i18n:translate="tabs_home" tal:attributes="href portal_url">Home</a> 
+                <strong>&raquo;</strong>
+            </span>
+
+            <span tal:condition="not: breadcrumbs" i18n:translate="tabs_home" tal:omit-tag="">
+                Home
+            </span>
+            
             <span tal:repeat="crumb breadcrumbs">
 
                 <metal:block tal:define="global is_last repeat/crumb/end" />
@@ -190,6 +213,7 @@
     </div>
 
     <div class="message"
+         i18n:domain="plone" 
          metal:define-macro="portal_message" 
          tal:define="portal_message request/portal_status_message | nothing"
          tal:condition="portal_message"> 

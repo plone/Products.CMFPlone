@@ -1,4 +1,149 @@
 CHANGES
+
+Plone 1.0.1
+    - Syndication is now using portal_form.
+    - calendarDatePickerBox used tabindex instead of tabindex/next
+    - validation of expiration_date and effective_date in content_status_history was broken
+    - checkPermission was being traversed to in breadcrumbs, navigationXXX, and
+      my_worklist.  
+
+Plone 1.0
+    - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
+    - modified condition of 'state' action in portal_actions so that DTML objects work
+    - Removed old Xopus files
+    - Removed XSDHTML editor, all editors should be add-ons and not in core 
+      Plone
+    - Added more flexibility for add-on editors by moving format selector into
+      wysiwyg_support.pt
+    - Netscape 4 support is back.
+    - Fixed IE6's bad handling of floating elements - no more invisible text
+      on the pages that triggered this bug. This is done with a couple of lines
+      in Javascript - no HTML changes.
+    - fixed the content_status_modify.failure navigation to goto content_status_history instead of old action:publishing thanks to Robert Rotterman. NOTE:
+please do not submit bugs to sourceforge tracker.
+
+Plone 1.0 rc2
+    - removed the properties in site_properties that belong in the root
+      validate_email, email_from_name/addr
+    - added geoff davis's tidy_up.py and tidied up most PageTemplates
+    - Issue 787 submitted by Ronnix.  Fixes the appropriate place of email_from_address 
+    - now on a portal_workflow.doActionFor() we reindexObjectSecurity()
+      ! I think this is already done since we are using DCWorkflow !
+      specifically this was addressed by vlado Issue #442.  When a folder
+      has changed its permissions and should affect the security for its
+      children.
+    - migration machinery to add skins, change personalize_form to go back to personalize_form
+    - typo in portal_navigation default.folder_rename_form.success should be script:folder_rename
+      this typo was propagated throughout previous migration scripts and was also fixed.
+      thanks to flacoste for pointing this out.
+    - Rewrote the box code, thanks to interra for help with troubleshooting 
+      browser bugs. Any customized boxes will need a small update, essentially 
+      you need to do the following to make a box:
+      <div class="box">
+        <h5>Title</h5>
+        <div class="body">
+         Then it's just the usual:
+         <div class="even content">
+         etc.
+      (Remember that you will need to do a Ctrl-F5 (force refresh) to make use 
+       of the new CSS file - normally it is cached for a day or two)
+    - Added skin variable to end of CSS file name, avoids caching problems when 
+      switching skins on the fly.
+    - Added several new skins. Plone now contains the skins:
+      - Plone Autumn
+      - Plone Core
+      - Plone Core Inverted
+      - Plone Corporate
+      - Plone Default
+      - Plone Greensleeves
+      - Plone Kitty
+      - Plone Mozilla
+      - Plone Mozilla New
+      - Plone Prime
+      - Plone Zed
+      
+    - Fix for the printing problems which caused some text to disappear along the right edge.
+    - Added more i18n stuff, the calendar is now fully localized. 
+      **Remember that you need to run Zope without any special language 
+        settings for this to work**
+    - Search results now use the defined time format
+    - Added CSS workaround for STX tables, they now look like real 
+      Plone Tables(tm ;)
+    - Lots and lots of i18n updates
+      
+Plone 1.0 rc1
+    - added 'fullname' to portal_memberdata
+    - 'properties' forms (metadata_edit_form) no longer allows anyone to add keywords.  this is now
+      controlled in portal_properties/site_properties/allowRolesToAddKeywords
+    - Added code to ensure that content object ids do not collide with skin names or reserved ids.
+    - Added protocol parameter to portal_form_url script.  Fixes issue 593
+    - Made sure that the main portal types (file, image, document, event, link, newsitem, folder) all
+      work with portal_factory.  Cleaned up some minor edit form bugs and added some form titles where
+      they were missing.
+    - Fixed a bug in which uploading two files with the same name in the same folder caused an id
+      collision and dumped you into the ZMI.
+    - Made ids optional for the main portal types (file, image, document, event, link, newsitem, folder).
+      If no id is specified, uses the object's current id.  Fixes issue 66.
+    - Per the request of our usability guru, for items that can have their id set from a file name
+      (file, image, document) we show a blank id when the item is first created.
+    - add_ext_editor script was added.  If you have ExternalEditor installed and 
+      you run this script; it should configure your system to use it.
+    - tiny feature.. the filename will remain if your validation fails (not in IE)
+      Issue 597
+    - folder_publish now applied effective/expiration dates and will do so recurssively.
+      Fixes Issue 605.
+    - Added site_properties into beta2-beta3 migration script. Thanks interra Issue #659
+    - Added some navigation properties into the beta2-beta3 migration script that were missing.
+      Also put them into the newly created beta3-rc1 migration script for people who migrated
+      using the existing script.  Fixes Issue 600.
+    - Added a fallback for createObject navigation when the new object has no 'edit' action.
+      Fixes problems with installing CMFWiki and possibly other packages.
+    - refactored (only slightly) folder_contents.  Think I may have solved some leakage. 
+      In previous versions we got a reference to allowedContentTypes and then did a .sort() 
+      and it seemed ZPT was not cleaning up after itself. ;'( introduced sortObjects (was
+      sortObjectValues) and I think its "Doing The Right Thing"
+    - added lock icon to folder_contents (which automatically will show up in content_status_history)
+      and about_slot
+    - minor optimizations of folder_contents and folder_listing.  
+      lookup references to objects and then use them instead of repeating lookups.  its pretty
+      obvious looking at the table tag what has been defined before being used.  Just Good Practice(tm)
+
+Plone 1.0 beta3
+    - Added all missing i18n strings, merged some strings to better facilitate translations to
+      Japanese, Chinese and Korean.
+    - Renamed Plone XP skin to Plone Corporate to avoid confusion with a certain operating system ;)
+      This will break your skinpath if you have it pointing to plone_styles/winxp, change it to
+      plone_styles/corporate instead.
+    - Workflow modification so that Owners can see folder_buttons in Folders that they own.
+      Also moved over hardcoded Permissions to constants found in CMFCore.CMFCorePermissions
+      fixes Issue 557
+    - misspell in PloneWorkflow.py found by dc0e - thanks! fixes Issue 579
+    - the Portal object needs to be 'publicized'.  fixes Issue 569
+    - if form validaton fails for content_status_history keep dates and comments
+    - since CMFCalendar/Event.py uses a different set of Permissions, 'Change portal events'
+      we need to add this permission to the Workflow definitions and set the permissions
+      appropriately. fixes Issue 575
+    - removed a useless conditional check on search_form.pt thanks sspickle!
+    - Xopus technology preview has been checked in.  It only works on document_edit_forms currently.
+      Thanks to q42.nl for the revolutionary technology.  http://xopus.org/
+      !!WARNING!!: Careful if you use Mozilla, it swallows the first paragraph when you save at
+      the moment. Will be fixed in a later release, this is just to get a feel of how things will
+      work.
+    - turned on the 'SuppressHiddenFiles' in folder_contents and folder_listing.  
+      Now folders that begin with a . will not show up.  Ideally we would want this turned 
+      off if we were a Manager.  This is something people can customize themself.  
+      .personal should be for: Portrait, Personal Events, etc.  
+    - added getFolderContents which wraps listFolderContents for backwards compatibility
+      with PortalFolder.  Since it does not provide a suppressHiddenFiles arg we will
+      manually apply the suppression in the script.
+      navtree_builder has been modified as well so that we will not show these in the navigation tree
+    - added verifyPermission argument in MembershipTool.py according to Issue 551 thanks to mitja
+    - in PrivatePlonePolicy made Members folder 'published' so that navigation slot works for Members
+      I believe this resolves Issue 489
+
+    *NOTE*
+    We released a beta3 tarball and then decided to fix the above before a final beta3 tarball release
+
     - whether or not /folder_contents is appended to the url in folder_contents is now determined by site_properties/use_folder_contents
     - Issue #458 - portal_properties.site_properties is where all Plone/site-wide configuration data is now held
     - Moved changes from 1.2 to Portal.py to the migration
@@ -61,6 +206,7 @@ CHANGES
       that Members can still 'List folder contents' and get the folder_buttons (portal_actions)
       displayed in their home folder.  
       NOTE: at the end of CustomizationPolicies both catalog and workflow tool will be 'reindexed'
+    - file_view uses a href now instead of a input button
 
 Plone Beta 2
     - navigation slot/tree was made more resilient to exceptions thrown while traversing child nodes    

@@ -6,6 +6,14 @@
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
 </dtml-let>
 
+// Fix for bug in IE6.0 float handling (don't ask, don't tell ;)
+
+if (document.all && window.attachEvent) window.attachEvent("onload", fixWinIE);
+function fixWinIE() {
+       document.all.content.style.display = 'block';
+}
+
+
 // The calendar popup show/hide:
 
     function showDay(date) {
@@ -16,22 +24,6 @@
     function hideDay(date) {
         document.getElementById('day' + date).style.visibility = 'hidden';
         return true;
-    }
-
-// Keyword adding (used in metadata form)
-
-    function addSelectedKeywords() {
-        predefSubjects=document.getElementById('predefined_subjects');
-        for (var x=0; x<predefSubjects.length; x++) {
-            if (predefSubjects[x].selected) {
-                 addNewKeyword(predefSubjects[x].value);
-            }
-        }
-    }
-
-    function addNewKeyword(newWord) {
-        selSubjects=document.getElementById('entered_subjects');
-        selSubjects.value+=newWord+'\n'
     }
 
 // Focus on error or tabindex=1
@@ -145,7 +137,7 @@ function sort(e) {
         if (node.lastChild.nodeName == 'IMG')
         {
             lastindex = node.getElementsByTagName('img').length - 1;
-            node.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowBlank.gif');
+            node.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowBlank.gif');
         }
     }
     
@@ -156,7 +148,7 @@ function sort(e) {
         {
             //window.alert(node.childNodes.item(1).nodeValue;
             lastindex = node.getElementsByTagName('img').length -1;
-            node.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowUp.gif');
+            node.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowUp.gif');
             break;
         }
     }
@@ -182,7 +174,7 @@ function sort(e) {
         {
             a.reverse();
             lastindex = el.getElementsByTagName('img').length - 1;
-            el.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowDown.gif');
+            el.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowDown.gif');
         }
 
     }
@@ -201,37 +193,38 @@ function init(e) {
         // elements of class="nosort" should not be sorted
         var xre = new RegExp(/\bnosort\b/)
         if (re.exec(tbls[t].className) && !xre.exec(tbls[t].className))
-            {
-            var tablename = tbls[t].getAttribute('id')
-            var thead = document.getElementById(tablename).getElementsByTagName("thead").item(0);
-            var node;
-            // set up blank spaceholder gifs
-            blankarrow = document.createElement('img');
-            blankarrow.setAttribute('src','arrowBlank.gif');
-            blankarrow.setAttribute('height',6);
-            blankarrow.setAttribute('width',9);
-            // the first sortable column should get an arrow initially.
-            initialsort = false;
-            for (var i = 0; (node = thead.getElementsByTagName("th").item(i)); i++) {
-                // check that the columns does not have class="nosort"
-                if (!xre.exec(node.className)) {
-                    node.insertBefore(blankarrow.cloneNode(1), node.firstChild);
-                    if (!initialsort) {
-                        initialsort = true;
-                        uparrow = document.createElement('img');
-                        uparrow.setAttribute('src','arrowUp.gif');
-                        uparrow.setAttribute('height',6);
-                        uparrow.setAttribute('width',9);
-                        node.appendChild(uparrow);
-                        //node.getElementsByTagName('img').item(0).setAttribute('src','arrowUp.gif')
-                    } else {
-                        node.appendChild(blankarrow.cloneNode(1));
+        {
+            try {
+                var tablename = tbls[t].getAttribute('id');
+                var thead = document.getElementById(tablename).getElementsByTagName("thead").item(0);
+                var node;
+                // set up blank spaceholder gifs
+                blankarrow = document.createElement('img');
+                blankarrow.setAttribute('src','<dtml-var portal_url>/arrowBlank.gif');
+                blankarrow.setAttribute('height',6);
+                blankarrow.setAttribute('width',9);
+                // the first sortable column should get an arrow initially.
+                initialsort = false;
+                for (var i = 0; (node = thead.getElementsByTagName("th").item(i)); i++) {
+                    // check that the columns does not have class="nosort"
+                    if (!xre.exec(node.className)) {
+                        node.insertBefore(blankarrow.cloneNode(1), node.firstChild);
+                        if (!initialsort) {
+                            initialsort = true;
+                            uparrow = document.createElement('img');
+                            uparrow.setAttribute('src','<dtml-var portal_url>/arrowUp.gif');
+                            uparrow.setAttribute('height',6);
+                            uparrow.setAttribute('width',9);
+                            node.appendChild(uparrow);
+                        } else {
+                            node.appendChild(blankarrow.cloneNode(1));
+                        }
+    
+                        if (node.addEventListener) node.addEventListener("click",sort,false);
+                        else if (node.attachEvent) node.attachEvent("onclick",sort);
                     }
-
-                    if (node.addEventListener) node.addEventListener("click",sort,false);
-                    else if (node.attachEvent) node.attachEvent("onclick",sort);
                 }
-            }
+            } catch(er) {}
         }
     }
 }

@@ -13,8 +13,6 @@
       </tal:block>
   </metal:block>
                                
-<body>
-
 <div metal:fill-slot="main"
        tal:define="results python:here.queryCatalog();
                  Batch python:modules['Products.CMFPlone'].Batch;
@@ -27,14 +25,10 @@
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);">
 
         <strong> 
-        <span tal:replace="python:len(results)" /> 
-        <span i18n:translate="batch_x_items_matching_your_criteria">items matching your criteria</span>. 
+        <span i18n:translate="batch_x_items_matching_your_criteria"><span i18n:name="number" tal:content="python:len(results)">234</span> items matching your criteria.</span>
         </strong> 
         
         <br/>
-        
-        <!-- Navigation -->
-        <div metal:use-macro="here/batch_macros/macros/navigation" />
 
         <!-- Search results -->
         
@@ -67,10 +61,10 @@
                          alt="dummy"
                          tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a 
                     href="#" tal:attributes="href url"
-                    tal:content="result/Title|result/id" />
+                    tal:content="python:result.Title or result.getId" />
                     </td>
                     <td tal:content="result/Creator">Author </td>
-                    <td tal:content="result/ModificationDate">Modification Date</td>
+                    <td tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>
                     <td tal:content="result/Description"> Description </td>
                 </tr>
 		</metal:block>
@@ -89,6 +83,5 @@
 </div>
 
 
-</body>
 </html>
 

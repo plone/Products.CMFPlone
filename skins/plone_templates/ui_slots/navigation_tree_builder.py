@@ -1,5 +1,5 @@
 ## Script (Python) "navigation_tree_builder"
-##parameters=tree_root,navBatchStart=0,showMyUserFolderOnly=None,includeTop=None,showFolderishSiblingsOnly=None,showFolderishChildrenOnly=None,showNonFolderishObject=None,topLevel=None,batchSize=None,showTopicResults=None,rolesSeeUnpublishedContent=None,sortCriteria=None,metaTypesNotToList=None,parentMetaTypesNotToQuery=None
+##parameters=tree_root,navBatchStart=None,showMyUserFolderOnly=None,includeTop=None,showFolderishSiblingsOnly=None,showFolderishChildrenOnly=None,showNonFolderishObject=None,topLevel=None,batchSize=None,showTopicResults=None,rolesSeeUnpublishedContent=None,sortCriteria=None,metaTypesNotToList=None,parentMetaTypesNotToQuery=None,forceParentsInBatch=None,skipIndex_html=None,rolesSeeHiddenContent=None
 ##title=Standard Tree
 ##
 #Stateless Tree Navigation
@@ -14,65 +14,86 @@ props=getToolByName(context,'portal_properties')
 if hasattr(props,'navtree_properties'):
     props=props.navtree_properties
 
+#if navtree_properties are available locally, lets take them from here
+if hasattr(context,'navtree_properties'):
+    props=context.navtree_properties
+
 # show only the userFolder I am browsing and my own one
 if showMyUserFolderOnly is None:
-    showMyUserFolderOnly=getattr(props,'showMyUserFolderOnly',  1)
+    showMyUserFolderOnly=getattr(context,'tree_showMyUserFolderOnly',getattr(props,'showMyUserFolderOnly',  1))
 
 #if set, the top object itself is included in the tree
 if includeTop is None:
-    includeTop=getattr(props,'includeTop',  1)
+    includeTop=getattr(context,'tree_includeTop',getattr(props,'includeTop',  1))
 
 #in the hierarchy above the leaf object just folders should be displayed
 if showFolderishSiblingsOnly is None:
-    showFolderishSiblingsOnly=getattr(props,'showFolderishSiblingsOnly',  1)
+    showFolderishSiblingsOnly=getattr(context,'tree_showFolderishSiblingsOnly',getattr(props,'showFolderishSiblingsOnly',  1))
 
 if showFolderishChildrenOnly is None:
     #list only folders below the leaf object
-    showFolderishChildrenOnly=getattr(props,'showFolderishChildrenOnly',  0)
+    showFolderishChildrenOnly=getattr(context,'tree_showFolderishChildrenOnly',getattr(props,'showFolderishChildrenOnly',  0))
 
 if showNonFolderishObject is None:
     #if the leaf object is not a folder and showFolderishChildrenOnly the leaf is displayed in any case, but not its siblings
-    showNonFolderishObject=getattr(props,'showNonFolderishObject',  0)
+    showNonFolderishObject=getattr(context,'tree_showNonFolderishObject',getattr(props,'showNonFolderishObject',  0))
 
 if topLevel is None:
-    topLevel=getattr(props,'topLevel',  0)
+    topLevel=getattr(context,'tree_topLevel',getattr(props,'topLevel',  0))
 
 if batchSize is None:
     # how long should one batch be. per definition it stops not before the leaf object is reached
-    batchSize=getattr(props,'batchSize',  30)
+    batchSize=getattr(context,'tree_batchSize',getattr(props,'batchSize',  30))
 
 if showTopicResults is None:
     # show results of topics in the tree
-    showTopicResults=getattr(props,'showTopicResults',  1)
+    showTopicResults=getattr(context,'tree_showTopicResults',getattr(props,'showTopicResults',  1))
 
 if rolesSeeUnpublishedContent is None:
     # these (local) roles can see unpublished 
-    rolesSeeUnpublishedContent=getattr(props,'rolesSeeUnpublishedContent',  ['Manager','Reviewer','Owner'])
+    rolesSeeUnpublishedContent=getattr(context,'tree_rolesSeeUnpublishedContent',getattr(props,'rolesSeeUnpublishedContent',  ['Manager','Reviewer','Owner']))
 
 if metaTypesNotToList is None:
     # there is some VERY weird error with Collectors,
     # so I have to remove from the list
-    metaTypesNotToList=getattr(props,'metaTypesNotToList',  ['CMF Collector','CMF Collector Issue','CMF Collector Catalog'])
+    metaTypesNotToList=getattr(context,'tree_metaTypesNotToList',getattr(props,'metaTypesNotToList',  ['CMF Collector','CMF Collector Issue','CMF Collector Catalog']))
 
 if parentMetaTypesNotToQuery is None:
     # these types should not be queried for children
-    parentMetaTypesNotToQuery=getattr(props,'parentMetaTypesNotToQuery',  [])  
+    parentMetaTypesNotToQuery=getattr(context,'tree_parentMetaTypesNotToQuery',getattr(props,'parentMetaTypesNotToQuery',  []))
 
 # put in here the meta_types not to be listed
 if sortCriteria is None:
-    sortCriteria=getattr(props, 'sortCriteria', [('isPrincipiaFolderish','desc'),('Title','asc')])
+    sortCriteria=getattr(context,'tree_sortCriteria',getattr(props, 'sortCriteria', [('isPrincipiaFolderish','desc'),('Title','asc')]))
 
-if not same_type(sortCriteria, []):
-    criteria=[]
-    for c in sortCriteria:
+#should batches that start at a deeper level have the parents
+#prepended
+if forceParentsInBatch is None:
+    forceParentsInBatch=getattr(context,'tree_forceParentsInBatch',getattr(props, 'forceParentsInBatch', 0))
+
+#skip index_html
+if skipIndex_html is None:
+    skipIndex_html=getattr(context,'tree_skipIndex_html',getattr(props, 'skipIndex_html', 1))
+
+# these (local) roles can see hidden content (staring with '.')
+if rolesSeeHiddenContent is None:
+    rolesSeeHiddenContent=getattr(context,'tree_rolesSeeHiddenContent',getattr(props,'rolesSeeHiddenContent',  ['Manager',]))
+
+
+# go through sortCriteria and check that each line is not a string 
+# if it is make a duple out of it (necessary because a lines-property contains strings)
+# and sortcriteria should contain tuples as seen in the statement above
+
+criteria=[]
+for c in sortCriteria:
+    if same_type(c,'') or same_type(c,u''): # string -> duple
         if not c.strip(): continue #skip empty lines
         c=c.split(',')
         if len(c)==1: c[1]='asc'
 
-        criteria.append(c)
+    criteria.append(c)
 
-    sortCriteria = criteria
-
+sortCriteria = criteria
 
 workflow_tool=context.portal_workflow
 
@@ -97,18 +118,6 @@ def cmp(a,b):
                 return -1
             elif bval < aval:
                 return 1
-    return 0
-        
-    if a.isPrincipiaFolderish and not b.isPrincipiaFolderish:
-        return -1
-    elif b.isPrincipiaFolderish and not a.isPrincipiaFolderish:
-        return 1
-    
-    if a.Title < b.Title:
-        return -1
-    elif b.Title < a.Title:
-        return 1
-    
     return 0
 
 def checkPublished(o):
@@ -138,8 +147,11 @@ def checkPublished(o):
 #default function that finds the children out of a folderish object
 def childFinder(obj,folderishOnly=1):
     user=obj.REQUEST['AUTHENTICATED_USER']
+    # the 'important' users may see unpublished content
+    # who can see unpublished content may also see hidden files
+    showHiddenFiles = user.has_role(rolesSeeHiddenContent,obj)
+    showUnpublishedContent = user.has_role(rolesSeeUnpublishedContent,obj)
     try:
-
         if obj.meta_type in parentMetaTypesNotToQuery:
             return []
         
@@ -155,8 +167,8 @@ def childFinder(obj,folderishOnly=1):
             cat = getToolByName( obj, 'portal_catalog' )
             
             folderishOnly= not showTopicResults #in order to view all topic results in the tree 
-    
-            res=obj.listFolderContents()
+
+            res=obj.getFolderContents(suppressHiddenFiles=not showHiddenFiles)
             subs=obj.queryCatalog()
             
             # get the objects out of the cat results
@@ -170,7 +182,7 @@ def childFinder(obj,folderishOnly=1):
         else:    
             #traversal to all 'CMFish' folders
             if hasattr(obj.aq_explicit,'listFolderContents'):
-                res=obj.listFolderContents()
+                res=obj.getFolderContents(suppressHiddenFiles=not showHiddenFiles)
             else:
                 #and all other *CMF* folders
                 res=obj.contentValues()
@@ -193,8 +205,8 @@ def childFinder(obj,folderishOnly=1):
             permChk = context.portal_membership.checkPermission
             res = [o for o in objs if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
 
-        if not user.has_role(rolesSeeUnpublishedContent,obj):  # the 'important' users may see unpublished content
-            res = [o for o in res if checkPublished(o)]
+        if not showUnpublishedContent:  # the 'important' users may see unpublished content
+            res = [o for o in res if checkPublished(o) ]
         
     
         try:res.sort(cmp) #if sorting fails - never mind, it shall not break nav
@@ -209,11 +221,18 @@ tb=StatelessTreeBuilder(context,topObject=tree_root,childFinder=childFinder,
         showFolderishChildrenOnly=showFolderishChildrenOnly, 
         showNonFolderishObject=showNonFolderishObject,    
         topLevel=topLevel,
+        forceParentsInBatch=forceParentsInBatch,
+        skipIndex_html=skipIndex_html,
         )
 
+if navBatchStart is None:
+    batchStart=None
+else:
+    batchStart=int(navBatchStart)
+    
 res=tb.buildFlatMenuStructure(
     batchSize=batchSize, 
-    batchStart=int(navBatchStart) #from where to start? is called automatically by the .pt
+    batchStart=batchStart #from where to start? is called automatically by the .pt
     )
 
 for r in res['list']:

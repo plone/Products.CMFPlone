@@ -3,51 +3,45 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US">
-      
+
 <dtml-call "REQUEST.set('portal_url', portal_url())">
 
-
 <dtml-var "macro_renderer(template='here/header', macro='html_header')" >
-
+  
 <body>
 
-  <dtml-var "macro_renderer(template='here/header', macro='portal_header')" >
+  <dtml-var "macro_renderer(template='here/header', macro='portal_header' )" >
 
   <table class="columns">
   
         <tbody>
             
             <tr>
-    
-                <td class="left">
-                   
-                    <dtml-var "macro_renderer(template='here/main_left_column', macro='column')" >
 
-                </td>
-                
-                
+                <dtml-var "macro_renderer(template='here/main_template', macro='left_column', slots_mapping=prepare_slots())" >
+
                 <td class="main" >
 
                     <dtml-let actions="portal_actions.listFilteredActionsFor(this())"
                               show_border="showEditableBorder(this().getId(), actions=actions)">
 
                     <dtml-if show_border>
-                        <dtml-var "macro_renderer(template='here/main_template', macro='contentTabs')" >
+                      <dtml-var "macro_renderer(template='here/main_template', macro='contentTabs', actions=actions, show_border=show_border, template_id=URL0.split('/')[-1])" >
                         
-                        <div class="contentBar">
+                      <div id="contentBar">
 			&nbsp;
-			</div>
+		      </div>
+
+		      <dtml-call "REQUEST.set('document_class', 'editableDocument')">
                     </dtml-if>
  
-                    </dtml-let>
+                   <div class="<dtml-var "REQUEST.get('document_class', 'document')">">
 
-                    <dtml-if show_border> <dtml-call "REQUEST.set('class', 'editableDocument')">
-                    <dtml-else> <dtml-call "REQUEST.set('class', 'document')">
-                    </dtml-if>
+                    <dtml-var "macro_renderer(template='here/header', macro='portal_message')" >
+			  
+                    <dtml-var "macro_renderer(template='here/main_template', macro='documentActions')" >
 
-                    <div class="&dtml-class;" >
-            
-                        <dtml-var "macro_renderer(template='here/header', macro='portal_message')" >
+	       </dtml-let>
                         
                         <dtml-comment>
                         

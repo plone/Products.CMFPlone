@@ -29,12 +29,12 @@
                          id python:request.get('id', here.getId());
                          readonly python:test( here.portal_membership.getHomeUrl()==here.absolute_url(), 1, 0);" >
 
-            <div class="label required">
+            <div class="label">
             
                 <span i18n:translate="label_name">Name</span>
             
                 <div id="id_help" 
-                     i18:translate="help_name"
+                     i18n:translate="help_name"
                      class="help" 
                      style="visibility:hidden">
                 Enter the Short Name of the folder. This is the part that will show up as part
@@ -71,7 +71,7 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label required">
-                <span i18:translate="label_title">Title</span>
+                <span i18n:translate="label_title">Title</span>
                 
                 <div id="title_help" 
                      i18n:translate="help_title"

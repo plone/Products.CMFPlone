@@ -25,5 +25,11 @@ if o is None:
     raise Exception
 
 transaction_note(o.getTypeInfo().getId() + ' was created.')
-return context.portal_navigation.getNext(o, script.getId(), 'success',
+status = 'success'
+try:
+    edit_action = o.getTypeInfo().getActionById('edit')
+except TypeError:
+    status = 'success_no_edit'
+
+return context.portal_navigation.getNext(o, script.getId(), status,
                                          portal_status_message = type_name + ' has been created.')

@@ -1,4 +1,4 @@
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
 from Acquisition import aq_base
@@ -23,7 +23,7 @@ class MembershipTool( BaseTool ):
     portrait_id = 'MyPortrait'
     default_portrait = 'defaultUser.gif'
     
-    def getPersonalPortrait(self, member_id=None):
+    def getPersonalPortrait(self, member_id=None, verifyPermission=0):
         """
         returns the Portait for a member_id
         """
@@ -34,7 +34,8 @@ class MembershipTool( BaseTool ):
             portrait=getattr( personal
                             , self.portrait_id
                             , None )
-
+            if verifyPermission and not _checkPermission('View', portrait):
+                return None
         if portrait is None:
             portal = getToolByName(self, 'portal_url').getPortalObject()
             portrait = getattr(portal, default_portrait)
@@ -134,3 +135,59 @@ class MembershipTool( BaseTool ):
             
             catalog = getToolByName(self, 'portal_catalog')
             catalog.unindexObject(personal) #dont add .personal folders to catalog
+
+
+    # this should probably be in MemberDataTool.py
+    #security.declarePublic( 'searchForMembers' )
+    def searchForMembers( self, REQUEST=None, **kw ):
+        """ """
+        if REQUEST:
+            dict = REQUEST
+        else:
+            dict = kw
+        
+        name = dict.get('name', None)
+        email = dict.get('email', None)
+        roles = dict.get('roles', None)
+        last_login_time = dict.get('last_login_time', None)
+        is_manager = self.checkPermission('Manage portal', self)
+            
+        if name:
+            name = name.strip().lower()
+        if not name:
+            name = None
+        if email:
+            email = email.strip().lower()
+        if not email:
+            email = None
+
+
+        md = self.portal_memberdata
+        
+        res = []
+        portal = self.portal_url.getPortalObject()
+        for u in portal.acl_users.getUsers():
+            user = md.wrapUser(u)
+            if not (user.listed or is_manager):
+                continue
+            if name:
+                if (u.getUserName().lower().find(name) == -1) and (user.fullname.lower().find(name) == -1):
+                    continue
+            if email:
+                if user.email.lower().find(email) == -1:
+                    continue
+            if roles:
+                user_roles = user.getRoles()
+                found = 0
+                for r in roles:
+                    if r in user_roles:
+                        found = 1
+                        break
+                if not found:
+                    continue
+            if last_login_time:
+                if user.last_login_time < last_login_time:
+                    continue
+            res.append(user)
+
+        return res

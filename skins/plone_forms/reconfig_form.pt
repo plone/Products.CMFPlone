@@ -294,18 +294,20 @@
                </div>
             </div>
             <div class="field">
-		<select name="default_skin"
-			tabindex=""
-			value=""
-			onfocus="formtooltip('skin_help',1)"
-			onblur="formtooltip('skin_help',0)"
-			tal:attributes="value here/portal_skins/getDefaultSkin;
-					tabindex tabindex/next;">
-		   <option tal:repeat="skin here/portal_skins/getSkinSelections"
-			   tal:attributes="value skin;
-                               selected python:test(default_skin == skin, 'selected', '')"
-			   tal:content="structure skin" />
-		</select>
+                <select name="default_skin"
+                        tabindex=""
+                        value=""
+                        onfocus="formtooltip('skin_help',1)"
+                        onblur="formtooltip('skin_help',0)"
+                        tal:attributes="value here/portal_skins/getDefaultSkin;
+                        tabindex tabindex/next;">
+                    <option value="#"
+                            i18n:translate=""
+                            tal:repeat="skin here/portal_skins/getSkinSelections"
+                            tal:attributes="value skin;
+                                            selected python:test(default_skin == skin, 'selected', '')"
+                            tal:content="structure skin" />
+                </select>
             </div>
         </div>
         
@@ -361,13 +363,13 @@
         <div class="row"
              tal:condition="exists:site_properties/allow_sendto">
             <div class="label">
-                <span i18n:translate="label_form_help">Send URL to friends</span>
+                <span i18n:translate="label_allow_sendto">Enable 'Send this page to somebody' Feature</span>
 
                 <div id="allow_sendto_help"
                      i18n:translate="help_allow_sendto" 
                      class="help" 
                      style="visibility:hidden">
-                Select whether you want to enable the "Send URL to friends" feature.
+                Select whether you want to enable the 'Send this page to somebody' feature.
                 </div>                
             </div>
             <div class="field"
@@ -412,7 +414,7 @@
                        tabindex="" 
                        type="submit" 
                        name="submit" 
-                       value="Save Settings"
+                       value="Save"
                        i18n:attributes="value" 
                        tal:attributes="tabindex tabindex/next;"
                        />

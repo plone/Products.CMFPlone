@@ -161,7 +161,8 @@ class PendingCreate(SimpleItem):
 
 
     def invokeFactory(self, id, *args, **kw):
-#        self.log('invoking factory')
+        if id == None:
+            id = self.id
         container = self.getParentNode()
         container.invokeFactory(self._type_info.getId(), id, *args, **kw)
         return getattr(container, id)

@@ -42,7 +42,7 @@ Please contribute your experiences at the "Plone website":http://www.plone.org
 
 Thanks for using our product.
 
-"Plone":img:logoIcon.gif  "**The Plone Team**":http://plone.org/about/team
+"**The Plone Team**":http://plone.org/about/team
 """
 
 class PloneSite(CMFSite):
@@ -109,7 +109,7 @@ class PloneGenerator(Portal.PortalGenerator):
         p.portal_catalog.unindexObject(p.Members) #unindex Members folder
         p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
                                                                 , 'Member list'
-                                                                , '<dtml-return roster>')
+                                                                , '<dtml-return member_search_form>')
         p.Members._setPortalTypeName( 'Folder' )                                                               
         Document.addDocument(p, 'index_html')
         o = p.index_html
@@ -151,7 +151,6 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_scripts/form_scripts'
                     , 'plone_styles'
                     , 'plone_templates'
-                    , 'plone_3rdParty/XSDHTMLEditor'
                     , 'plone_3rdParty/CMFTopic'
                     , 'plone_3rdParty/CMFCalendar'
                     , 'plone_templates/ui_slots'
@@ -164,9 +163,18 @@ class PloneGenerator(Portal.PortalGenerator):
                 path.append( plonedir )
         path=','.join(path)
         sk_tool.addSkinSelection('Plone Default', path)
-        self.setupSecondarySkin(sk_tool, 'Plone Mozilla', \
-                                'plone_styles/mozilla')
-        self.setupSecondarySkin(sk_tool, 'Plone XP', 'plone_styles/winxp')
+
+        self.setupSecondarySkin(sk_tool, 'Plone Autumn',        'plone_styles/autumn')
+        self.setupSecondarySkin(sk_tool, 'Plone Core',          'plone_styles/core')
+        self.setupSecondarySkin(sk_tool, 'Plone Core Inverted', 'plone_styles/core_inverted')
+        self.setupSecondarySkin(sk_tool, 'Plone Corporate',     'plone_styles/corporate')
+        self.setupSecondarySkin(sk_tool, 'Plone Greensleeves',  'plone_styles/greensleeves')
+        self.setupSecondarySkin(sk_tool, 'Plone Kitty',         'plone_styles/kitty')
+        self.setupSecondarySkin(sk_tool, 'Plone Mozilla',       'plone_styles/mozilla')
+        self.setupSecondarySkin(sk_tool, 'Plone Mozilla New',   'plone_styles/mozilla_new')
+        self.setupSecondarySkin(sk_tool, 'Plone Prime',         'plone_styles/prime')
+        self.setupSecondarySkin(sk_tool, 'Plone Zed',           'plone_styles/zed')
+
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
         
         sk_tool.request_varname='plone_skin'
@@ -213,7 +221,7 @@ class PloneGenerator(Portal.PortalGenerator):
 
         # grab the initial portal navigation properties
         # from data/navigation_properties
-        nav_tool = p.portal_navigation
+        nav_tool = getToolByName(p, 'portal_navigation')
 
         # open and parse the file
         filename='navigation_properties'
@@ -272,9 +280,10 @@ def manage_addSite(self, id, title='Portal', description='',
     gen.setupDefaultProperties(p, title, description,
                                email_from_address, email_from_name,
                                validate_email)
+    customization_policy=None
     if listPolicies() and custom_policy:
-        o=custom_policies[custom_policy]
-        o.customize(p)
+        customization_policy=custom_policies[custom_policy]
+        customization_policy.customize(p)
     
     # reindex catalog and workflow settings
     p.portal_catalog.refreshCatalog()     

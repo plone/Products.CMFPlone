@@ -14,7 +14,7 @@
     the calendar UI widget can be found in plone_templates/ui_slots/calendar_slot
 
 <!-- calendar box picker -->        
-<div metal:define-macro="calendarDatePickerBox">
+<div metal:define-macro="calendarDatePickerBox" tal:define="portal_url here/portal_url">
 
  <comment tal:condition="nothing">
  
@@ -37,10 +37,11 @@
                                    value inputvalue;
                                    onfocus onfocus|nothing;
                                    onblur onblur|nothing;
-                                   tabindex tabindex|nothing" />
+                                   tabindex tabindex/next|nothing" 
+                                   />
 
-  <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?inputname=${inputname}&formname=${formname}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
-    <img tal:replace="structure here/popup_calendar.gif">
+  <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?inputname=${inputname}&amp;formname=${formname}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
+    <img tal:replace="structure here/popup_calendar.gif" />
   </a>
 
 
@@ -59,27 +60,29 @@
                  weeks python:here.portal_calendar.getWeeksList(month=month, year=year);">
 
     <table cellpadding="2" cellspacing="0" border="0" class="calendar" id="thecalendar">
-        <tr tal:define="calendarurl python:'%s?inputname=%s&formname=%s' % (path('template/absolute_url'),inputname,formname) ">
+        <tr tal:define="calendarurl python:'%s?inputname=%s&amp;formname=%s' % (path('template/absolute_url'),inputname,formname) ">
             <th>
-                <a href="" tal:attributes="href python:'%s&month:int=%d&year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
+                <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
             </th>
             <th colspan="5" tal:define="date string:$month/1/$year">
-              <span tal:replace="python:DateTime(date).Month()"/> <span tal:replace="python:DateTime(date).year()"/>
+              <span i18n:translate="" tal:omit-tag="">
+                <span tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag=""> <span i18n:name="year" tal:content="python:DateTime(date).year()" tal:omit-tag="" /> </span>
+              </span>
             </th>
         
             <th>
-                <a href="" tal:attributes="href python:'%s&month:int=%d&year:int=%d' % (calendarurl,nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
+                <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
             </th>
         </tr>
         
         <tr tal:define="weekdays here/portal_calendar/getDays">
-          <span tal:repeat="weekday weekdays" tal:omit-tag="">
-            <td class="weekdays" tal:content="weekday">Su</td>
-          </span>
+          <tal:block repeat="weekday weekdays">
+            <td class="weekdays" i18n:translate="" tal:content="weekday">Su</td>
+          </tal:block>
         </tr>
             <tr tal:repeat="week weeks">
-              <span tal:define="days week" tal:omit-tag="">
-                <span tal:repeat="day days" tal:omit-tag="">
+              <tal:block define="days week">
+                <tal:block repeat="day days" tal:omit-tag="">
                   <td tal:condition="not: python: day">
                     &nbsp;
                   </td>
@@ -90,8 +93,8 @@
                       day number
                     </a>
                   </td>
-                </span>
-              </span>
+                </tal:block>
+              </tal:block>
             </tr>
     
     </table>

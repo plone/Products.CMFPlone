@@ -13,6 +13,7 @@ from cgi import parse_qs
 
 import re
 import sys
+import traceback
 
 from zLOG import LOG, INFO, WARNING
 
@@ -103,20 +104,16 @@ class PloneTool (UniqueObject, SimpleItem):
                         , language=language
                         , rights=rights )
 
-    #XXX do we ever redirect?
-    def _renameObject(self, obj, redirect=0, id=''):
-        REQUEST=self.REQUEST
+    def _renameObject(self, obj, id):
         if not id:
+            REQUEST=self.REQUEST
             id = REQUEST.get('id', '')
             id = REQUEST.get(self.field_prefix+'id', '')
-        if id!=obj.getId():
+        if id != obj.getId():
             try:
-                context.manage_renameObjects( (obj.getId(),), (id,), REQUEST )
+                obj.getParentNode().manage_renameObject(obj.getId(), id)
             except: #XXX have to do this for Topics and maybe other folderish objects
-                obj.aq_parent.manage_renameObjects( (obj.getId(),), (id,), REQUEST)
-	if redirect:
-            status_msg='portal_status_message='+REQUEST.get( 'portal_status_message', 'Changes+have+been+Saved.')
-            return REQUEST.RESPONSE.redirect('%s/%s?%s' % ( REQUEST['URL2'], id, status_msg) )
+                obj.aq_parent.manage_renameObject(obj.getId(), id)
 
     def _makeTransactionNote(self, obj, msg=''):
         #XXX why not aq_parent()?
@@ -259,13 +256,22 @@ class PloneTool (UniqueObject, SimpleItem):
     # even if the thrown exception is a string and not a
     # subclass of Exception.
     def exceptionString(self):
-        s = sys.exc_info()
+        s = sys.exc_info()[:2]  # don't assign the traceback to s (otherwise will generate a circular reference)
         if s[0] == None:
             return None
         if type(s[0]) == type(''):
             return s[0]
         return str(s[1])
-        return sys.exc_info()[0]
+
+
+    # provide a way of dumping an exception to the log even if we
+    # catch it and otherwise ignore it
+    def logException(self):
+        """Dump an exception to the log"""
+        log(summary=self.exceptionString(),
+            text='\n'.join(traceback.format_exception(*sys.exc_info())),
+            log_level=WARNING)
+        
 
 InitializeClass(PloneTool)
 

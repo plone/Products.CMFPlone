@@ -3,7 +3,6 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
@@ -37,30 +36,30 @@
 
     <div class="row" tal:define="entries here/action_number">
 
-        <div class="boxTitle" i18n:translate="box_transcript_for_issue"> 
-            Transcript for Issue
-            <span tal:replace="here/id" i18n:name="id">ID</span>
-            (<span tal:replace="entries" i18n:name="num">7</span>
-
-             <tal:block condition="python:entries == 1">
-             <span i18n:name="listing_entry">
-             entry
-             </span>
-             </tal:block>
-             
-             <tal:block condition="python:entries != 1">
-             <span i18n:name="listing_entries">
-             entries
-             </span>
-             </tal:block>)
-        </div>
-
         <div class="box">
     
-            <div class="content" tal:content="structure here/CookedBody">
-                      TRANSCRIPT
-            </div>
+            <h6 i18n:translate="box_transcript_for_issue"> 
+                Transcript for Issue
+                <tal:block content="here/id" i18n:name="id">ID</tal:block>
+                (<tal:block content="entries" i18n:name="num">7</tal:block>
     
+                 <tal:block condition="python:entries == 1">
+                 <span i18n:name="listing_entry" i18n:translate="entry_singular">entry</span>
+                 <tal:block i18n:name="listing_entries"></tal:block>
+                 </tal:block>
+                 
+                 <tal:block condition="python:entries != 1">
+                 <tal:block i18n:name="listing_entry"></tal:block>
+                 <span i18n:name="listing_entries" i18n:translate="entries_plural">entries</span>
+                 </tal:block>)
+            </h6>
+
+            <div class="body">
+                <div class="content" tal:content="structure here/CookedBody">
+                          TRANSCRIPT
+                </div>
+            </div>
+                
         </div>
     </div>
         

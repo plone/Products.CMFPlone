@@ -11,9 +11,10 @@
 body {
     background: White;
     font-family: Georgia, Garamond, Times, serif;
-    font-size: 11pt;
+    font-size: 10pt;
     color: Black;
-    margin: 5%;
+    margin: 0;
+    padding: 0;
 }
 
 div.top,
@@ -23,12 +24,14 @@ div.top,
 .pathBar,
 td.left,
 td.right,
-.contentTabs,
-.contentBar,
+#contentTabs,
+#contentBar,
+div.documentActions,
 .footer,
 .help,
 .legend,
-div.message
+div.message,
+input
 {
     display: none;
 }
@@ -37,10 +40,14 @@ ul {
     list-style-image: none; 
 }
 
-div.editableDocument,
+.editableDocument,
+.document,
+div.description,
 .group {
     background: transparent;
     border: none;
+    font-family: Georgia, Garamond, Times, serif;
+    font-size: 10pt;
     padding: 0;
     margin: 0;
 }
@@ -58,6 +65,10 @@ a:link, a:visited {
 	font-weight: bold;
 	text-decoration: underline;
 	}
+
+pre {
+  white-space: normal;
+}
 
 div.document a:link:after, 
 div.document a:visited:after {

@@ -27,8 +27,7 @@
     <h1><span tal:replace="here/getId">PageID</span> contents</h1>
     
     <!-- this should really not depend on nesting coming back as HTML,
-      -- but I don't have time to fix it right now - chrism
-      -->
+         but I don't have time to fix it right now - chrism  -->
     <p tal:content="structure nesting"> Nesting goes here. </p>
     
     <h1><span tal:replace="here/getId">PageID</span> singletons</h1>

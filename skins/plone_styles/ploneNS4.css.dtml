@@ -19,29 +19,22 @@
 */
 
 /* Basic Elements */
-body, td, th, div, span { font: &dtml-mainFont;; }
+body, td, th, div, span, table { font-family: Verdana, Helvetica, sans-serif; }
 body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; }
 a { text-decoration: none; color: &dtml-mainLinkColor;; }
-table { font: &dtml-mainFont;; }
-p { font: &dtml-contentFont;; }
+p { font-family: Verdana, Helvetica, sans-serif; }
 p a { text-decoration: underline; }
 p img { border: &dtml-contentImageBorder;; }
 hr { margin:0; padding: 0; }
-h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;; font: &dtml-headingFont;; }
-h1 { font-size: 24px; }
-h2 { font-size: 20px; }
-h3 { font-size: 16px; }
-h4 { font-size: 14px; }
-h5 { font-size: 13px; }
-h6 { font-size: 12px; }
+h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;; }
 ul { list-style-image: url("bullet.gif"); }
 form { border: none; }
-textarea { font: &dtml-inputFont;; width: 100%; }
-input { font: &dtml-inputFont;; }
-select { font: &dtml-inputFont;; }
+textarea {  }
+input {  }
+select {  }
 abbr, acronym, .explain { border-bottom: 1px dotted &dtml-mainLinkColor;; cursor: help; }
-code { font-size: 12px; }
-pre { font-size: 12px; padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
+code { }
+pre { padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
 
 /* Structural elements */
 div.top { background: &dtml-topBackground;; width: 100%; }
@@ -64,7 +57,7 @@ div.contentBar {  }
 div.document { background: &dtml-contentBackground;; }
 div.editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
 div.message { background: &dtml-messageBackground;; font: &dtml-messageFont;; padding: 0.5em 1em; vertical-align: middle; }
-.description { font: bold 12px Verdana, Helvetica, Arial, sans-serif; display: block; }
+.description { font-family: Verdana, Helvetica, Arial, sans-serif; display: block; }
 .footer { clear: both; float: none; padding: 0em 0em 0em 0em; text-align: center; }
 
 /* Widgets */
@@ -90,11 +83,6 @@ table.listing tr.odd { background: &dtml-listingOddBackground;; }
 table.listing tr.even { background: &dtml-listingEvenBackground;; }
 table.listing td { padding: 0em 1em;}
 table.listing a:hover { text-decoration: &dtml-listingLinkHover;; }
-table.box { }
-table.box th { background: &dtml-boxHeaderBackground;; color: &dtml-boxHeaderFontColor;; font-weight: normal; padding: 0em 1em; text-align: left;}
-table.box th.empty { background: &dtml-mainBackground;; }
-table.box tr.odd { background: &dtml-boxOddBackground;; }
-table.box tr.even { background-color: &dtml-boxEvenBackground;; }
 div.boxDetails { text-align: right; }
 
 div.box {

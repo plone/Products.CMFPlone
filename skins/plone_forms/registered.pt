@@ -18,8 +18,8 @@ You will receive an email shortly containing your password
     and instructions on how to activate your membership. 
 </p>
 
-<p tal:condition="python:not(ve)"> 
-    <span i18n:translate="description_you_can_log_on_now">Click the button to sign in immediately.</span>       
+<tal:block condition="python:not(ve)"> 
+    <span i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</span>       
     <form action=""
           method="post"
           tal:define="username request/username; 
@@ -40,11 +40,11 @@ You will receive an email shortly containing your password
                tal:attributes="value password;" />
         <input class="standalone"
                type="submit"
-               value="Sign in" 
+               value="Log in" 
                i18n:attributes="value"
                />
     </form>         
-</p>
+</tal:block>
 
 </div>
 

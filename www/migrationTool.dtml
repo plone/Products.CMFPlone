@@ -8,14 +8,26 @@
 
 <p>
 <dtml-if needUpgrading>
-Your Plone instance is out of date. Select "migrate" to migrate to the latest version.
+Your Plone instance is out of date. Click <a href="upgrade">here</a> to migrate to the latest version.
 <dtml-else>
-Your Plone instance is up to date. <b>However</b> if you have just installed a new beta and / 
-or just added this tool we may not be to reliably tell this. If you select "migrate" it will migrate and should
-not do any harm to a standard Plone.
+Your Plone instance is up to date. 
 </dtml-if>
 </p>
 
-<p>[ <a href="upgrade">Migrate</a> ] </p>
+<form action="upgrade">
+<p>
+If, however, you're <strong>absolutely</strong> sure your instance is not &dtml-getInstanceVersion;, choose the correct version below and click "force migrate":
+</p>
+
+<select name="force_instance_version">
+  <dtml-in knownVersions sort>
+    <option>&dtml-sequence-item;</option>
+  </dtml-in>
+</select><br />
+
+<p><b>Note:</b> please ensure you have a backup of you Plone site prior to performing this and be aware you may break your site if you have the wrong version.</p>
+<input type="submit" value="Force migrate"/>
+
+</form>
 
 <dtml-var manage_page_footer>

@@ -3,7 +3,6 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
@@ -191,8 +190,8 @@
     <div class="row">
         <div class="label"> &nbsp; </div> 
         <div class="field">
-            <input class="context" type="submit" name="submit" value="Submit" i18n:attributes="value">
-            <input class="standalone" type="reset" name="reset" value="Reset" i18n:attributes="value">
+            <input class="context" type="submit" name="submit" value="Submit" i18n:attributes="value" />
+            <input class="standalone" type="reset" name="reset" value="Reset" i18n:attributes="value" />
         </div>
     </div>
 

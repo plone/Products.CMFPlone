@@ -4,16 +4,20 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=obj
+##parameters=content
 ##title=
 ##
-#only if an expirationDate is explicitly Past will this return true
-
 from DateTime import DateTime
+expiry=None
+
+if hasattr(content, 'ExpirationDate'):
+    expiry=content.ExpirationDate()
 
 try:
-    if DateTime(obj.ExpirationDate()).isPast():
+    if DateTime(expiry).isPast():
         return 1
-except: pass
+except IndexError:
+    pass #Could convert value to DateTime
 
 return 0
+

@@ -45,17 +45,13 @@
         <div class="row">
             <div class="label">&nbsp;</div>
             <div class="field">
-                <form name="download"
-                      action=""
-                      method="GET"
-                      target="top"
-                      tal:attributes="action string:${here/getId}/download"> 
-    
-                    <input class="standalone" 
-                           type="submit" 
-                           value="Download file" 
-                           i18n:attributes="value" />
-                </form>
+              <p>
+                <a href=""
+                   i18n:translate="label_click_to_get_file"
+                   tal:attributes="href here/absolute_url">
+                   Click here to get the file
+                </a>
+              </p>
             </div>
         </div>
     </div>

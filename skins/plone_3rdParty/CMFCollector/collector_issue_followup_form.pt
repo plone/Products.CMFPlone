@@ -9,7 +9,6 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
@@ -17,7 +16,6 @@
   <tal:block tal:define="dummy python:request.set('enable_border',1)" />
 </metal:block>
 
-<body>
 
 <span tal:condition="nothing">
   Template description: Form for entering new issue actions.
@@ -164,5 +162,4 @@
 
 </div>
 
-</body>
 </html>

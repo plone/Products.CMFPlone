@@ -92,9 +92,9 @@
 		 tal:attributes="action string:${here/getId}/wikipage_deleterename_handler">
     
            <input type="text" name="new_id" size="25"
-                  tal:attributes="value here/getId"> &nbsp;
+                  tal:attributes="value here/getId" /> &nbsp;
     
-           <input type="submit" name="Rename" value="Rename">
+           <input type="submit" name="Rename" value="Rename" />
     
            </form>
     
@@ -108,12 +108,12 @@
                  enctype="multipart/form-data"
 		 tal:attributes="action string:${here/getId}/wikipage_deleterename_handler">
     
-           <input type="hidden" name="confirm_delete:int:default" value="0">
+           <input type="hidden" name="confirm_delete:int:default" value="0" />
     
-           <input type="checkbox" name="confirm_delete:boolean">
+           <input type="checkbox" name="confirm_delete:boolean" />
                   Confirm delete &nbsp;
     
-           <input type="submit" name="Delete" value="Delete">
+           <input type="submit" name="Delete" value="Delete" />
     
            </form>
     
@@ -214,7 +214,7 @@
               tal:repeat="op here/regOps"
           >
            <textarea rows="2" cols="8"
-                     name="&dtml-op;-usernames:lines"
+                     name="usernames:lines"
                      tal:attributes="name python: '%s-usernames:lines' % op;
                                      readonly here/isRegSetter;
                                      onkeydown python: ( not here.isRegSetter()
@@ -241,7 +241,7 @@
                    name="propagate-op:default"
                    value="off"
                    tal:attributes="name python: 'propagate-%s:default' % op"
-            >
+            />
             <input type="checkbox"
                    name="propagate-op"
                    value="on"
@@ -252,7 +252,7 @@
                                                   or nothing
                                                      )
                                   "
-            >
+            />
            </td>
     
           </tr>
@@ -278,7 +278,7 @@
                                       disabled python: not here.isRegSetter();
                                       checked python: who == sub;
                                      "
-               >
+               />
                <span tal:replace="python: here.wikipage_owners_description( who )">
                   Owner description.  </span>
                <br>
@@ -298,7 +298,7 @@
                      name="regulate"
                      value="Set Regulations"
                      tal:attributes="value string:Set ${here/getId} Regulations"
-              >
+              />
             </td>
             <td colspan="2"><br></td>
           </tr>

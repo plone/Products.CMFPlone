@@ -39,9 +39,11 @@
                                          global actions python: here.portal_actions.listFilteredActionsFor(here);">
                 </metal:block>
 				
-                <div tal:condition="request/came_from | nothing ">
-                    <div tal:define="dummy python: request.RESPONSE.redirect(request.get('came_from'))">
-                    </div>
+                <div tal:condition="request/came_from | nothing">
+                    <div tal:define="came_from request/came_from;
+                                     not_allowed python:('login_form','logged_out','registered', 'join_form');
+                                     came_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);
+                                     dummy python: request.RESPONSE.redirect(came_from)" />
                 </div>
 
                 <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
@@ -49,7 +51,7 @@
                 <p>
                 [<a i18n:translate="back_to_where_you_came_from" 
                     href="" 
-                    tal:attributes="href request/HTTP_REFERER">back to where you came from</a>]
+                    tal:attributes="href request/HTTP_REFERER">Back to where you came from</a>]
                 </p>
                 
                 <p i18n:translate="description_logged_in_explain">
@@ -59,28 +61,28 @@
                 settings and your personal area.
                 </p>
                 
-                <p>
-                <span i18n:translate="description_newbie_pointers_1" tal:omit-tag="">
+                <p i18n:translate="description_newbie_pointers">
                 You might want to head over to
-                </span>
-
-                <a href="metadata_form" 
-                   i18n:translate="my_folder"
-                   tal:define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']"
-                   tal:condition="mystuff" tal:attributes="href python:mystuff.pop()"
-                   >My Folder</a>
                 
-                <span i18n:translate="description_newbie_pointers_2" tal:omit-tag="">
+                    <span i18n:name="your_folder">
+                        <a href="" 
+                           i18n:translate="description_newbie_pointers_yourfolder_link"
+                           tal:define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']"
+                           tal:condition="mystuff" tal:attributes="href python:mystuff.pop()"
+                           >your folder</a>
+                    </span>
+                                
                 and add some content, or
-                </span>
                  
-                <a href="metadata_form" 
-                   i18n:translate="description_newbie_pointers_3"
-                   tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
-                   tal:condition="prefs" tal:attributes="href python:prefs.pop()"
-                   >set up your Preferences</a>.
+                    <span i18n:name="set_up_your_preferences">
+                        <a href="" 
+                           i18n:translate="description_newbie_pointers_preferences_link"
+                           tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
+                           tal:condition="prefs" tal:attributes="href python:prefs.pop()"
+                           >set up your Preferences</a></span>.
+                
                 </p>
-		        
+
                 <tal:block
                  tal:define="results python:container.portal_catalog(modified=member.last_login_time, modified_usage='range:min', sort_on='modified',sort_order='reverse',review_state='published');
                              Batch python:modules['Products.CMFPlone'].Batch;
@@ -90,12 +92,18 @@
                     <form name="searchresults" action="" method="post" tal:condition="results"
                                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 
-                        <h1>Items published since your last login</h1>
+                        <h1 i18n:translate="heading_items_published_since_last_login">Items published since your last login</h1>
                         
                         <table class="listing" id="sortable">
                         
                             <thead>
-                                <tr><th>Title</th><th>Type</th><th>Modified</th><th>Author</th><th>Description</th></tr>
+                                <tr>
+                                    <th i18n:translate="listingheader_title">Title</th>
+                                    <th i18n:translate="listingheader_type">Type</th>
+                                    <th i18n:translate="listingheader_modified">Modified</th>
+                                    <th i18n:translate="listingheader_author">Author</th>
+                                    <th i18n:translate="listingheader_description">Description</th>
+                                </tr>
                             </thead>
                             
                             <tbody>
@@ -115,9 +123,8 @@
                                         href="#" tal:attributes="href url"
                                         tal:content="result/Title|result/id" />
                                     </td>      
-                                    <td tal:content="result/Type">Type</td>      
-                                    <td tal:content="result/ModificationDate">Modified</td>      
-                                    <td tal:content="result/Creator">Author</td>      
+                                    <td i18n:translate="" tal:content="result/Type">Type</td>      
+                                    <td tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>                                    <td tal:content="result/Creator">Author</td>      
                                     <td tal:content="result/Description">Description</td>      
                                 </tr>
                                 </tal:block>

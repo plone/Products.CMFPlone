@@ -18,16 +18,15 @@
                  global member here/portal_membership/getAuthenticatedMember;
                  standalone python:1;
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+                 tabindex python:Iterator();
+                 folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);">
 
     <form name="folderContentsForm"
           method="post"
           action="folder_object"
           tal:attributes="action here/absolute_url"
-          tal:define="global folder_contents python:here.listFolderContents( contentFilter=filter ); 
-                      b_start python:request.get('b_start', 0);
-                      results python:here.sortObjectValues(folder_contents);
-                      global DateTime python:modules['DateTime'].DateTime;
+          tal:define="b_start python:request.get('b_start', 0);
+                      results python:here.sortObjects(folder_contents);
                       Batch python:modules['Products.CMFPlone'].Batch;
                       batch python:Batch(results, 100, int(b_start), orphan=0);">
 
@@ -37,21 +36,14 @@
     
                 <h1 class="folderName" tal:condition="python:user.getUserName()==here.getId()">
                 <img tal:replace="structure here/folder.gif" /> 
-                <span i18n:translate="heading_my_folder" omit-tag="">My Folder</span>
+                <span i18n:translate="heading_my_folder" tal:omit-tag="">My Folder</span>
                 </h1> 
                 
                 <h1 tal:condition="python: user.getUserName()!=here.getId()">
                 <img tal:replace="structure here/folder.gif" /> 
-                <span tal:content="here/title_or_id" omit-tag="">Directory Id</span>
+                <span tal:content="here/title_or_id" tal:omit-tag="">Directory Id</span>
                 </h1> 
    
-<!--
-                <tal:block tal:define="parent_url python:here.navigationParent(here, template.getId());"
-		           tal:condition="parent_url">
-                (<a href="" 
-                   tal:attributes="href parent_url" i18n:translate="go_to_parent_url">Up one level</a>)
-                </tal:block>
--->
             </div>
     
             <metal:block tal:condition="not: folder_contents">
@@ -62,8 +54,8 @@
             </metal:block>
      
             <p tal:condition="python:user.getUserName()==here.getId()" 
-                  i18n:translate="">
-            Contains the items created and collected by <span tal:replace="python:user.getUserName()" i18n:name="name">User</span>
+                  i18n:translate="description_contains_items_by">
+            Contains the items created and collected by <tal:block content="python:user.getUserName()" i18n:name="name">User</tal:block>
             </p> 
 
             <p tal:content="structure here/Description"
@@ -73,53 +65,53 @@
 
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />
-            
+            <metal:block metal:define-macro="folder_listing"
+                              tal:define="locked here/lock_icon.gif;
+                                          pencil_icon here/edit.gif;
+                                          use_folder_contents here/portal_properties/site_properties/use_folder_contents;
+                                          filterOut python:('Favorite',);
+                                          filterValues decodedFilter/keys | nothing;
+                                          types python:here.sortObjects(here.allowedContentTypes());
+                                          no_types python:len(types);
+                                          filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));
+                                          isExpired nocall:here/isExpired;
+                                          toPortalTime nocall:here/toPortalTime;
+                                          getObjSize nocall:here/getObjSize;">
+                                                                                                                                                                                                                                                                                                                                                    
             <table id="sortable"
                    class="listing"
                    summary="Content listing"
-                   cellpadding="0" cellspacing="0"
-                   metal:define-macro="folder_listing">
+                   cellpadding="0" cellspacing="0">
                    
-                <thead >
+                <thead>
                     <tr tal:condition="standalone|nothing">
-                        <td class="top" colspan="6"
-                            tal:define="types python:here.allowedContentTypes();
-                                        dummy python:types.sort( lambda x,y: cmp(x.Title().lower(), y.Title().lower()) );
-                                        no_types python:len(types);" >
-
+                        <td class="top" colspan="6">
                             <!-- Filter pulldown -->
                             <tal:block tal:condition="no_types">
-                            <span style="float: left"
-                                  tal:define="filterValues decodedFilter/keys | nothing;"
-                                  tal:condition="python:here.listFolderContents() and types">
-                    
                                 <select id="filter_selection" 
                                         name="filter_by_portal_type:list" 
+                                        style="float: left"
                                         onChange="submitFilterAction()"
                                         tabindex=""
-                                        tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" 
-                                        tal:attributes="tabindex tabindex/next|nothing;"
-                                        >
-                    
+                                        tal:attributes="tabindex tabindex/next|nothing;">
                                     <option value="#" 
                                             tal:attributes="selected
-					    python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');"
-					    i18n:translate="label_show_all_items">
+                                            python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');"
+                                            i18n:translate="label_show_all_items">
                                     Show All Items
                                     </option>  
                                     <metal:block tal:repeat="type types">
                                         <option value="#"
                                                 tal:define="typetitle type/Title; typeid type/getId"
-                                                i18n:translate=""
+                                                i18n:translate="label_show_x_only"
                                                 tal:attributes="value typeid;
                                                                 selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', '');"
-                                        ><span i18n:name="type" tal:content="string:${typetitle}"/>s only</option>
+                                        ><span i18n:name="type"><span i18n:translate="" tal:content="string:${typetitle}" tal:omit-tag="" /></span>s only</option>
                                     </metal:block>
                                 </select>
                     
                                 <input type="hidden" name="filter_by_Subject:tokens" value="" />
                                 <!--you can filter by subject keywords by filling in this value-->
-                            </span>
                             </tal:block>
                             
                             <!-- Add Item pulldown -->
@@ -128,8 +120,7 @@
                                     tal:condition="python:test(no_types > 1, 1, 0)"
                                     tal:attributes="tabindex tabindex/next|nothing;">
                                 <option value="Select" i18n:translate="label_select">Select</option>
-                                <metal:block tal:repeat="ctype types"
-                                             tal:define="global filterOut  python:['Favorite']">
+                                <metal:block tal:repeat="ctype types">
                                 <option value="Document"
                                         tal:condition="python: ctype.getId() not in filterOut"
                                         tal:attributes="value ctype/getId"
@@ -156,14 +147,13 @@
                                                    value python:test( no_types == 1
                                                                     , 'Add New ' + types[0].Title()
                                                                     , 'Add New Item');" />
-            
                         </td>
                     </tr> 
 
                     <metal:block tal:condition="folder_contents|not:standalone|nothing">
                     <tr>
                         <th class="nosort"><input class="noborder" 
-                                                 type="image"
+                                                 type="checkbox"
                                                  src="select_all_icon.gif" 
                                                  name="selectButton"
                                                  title="Select all items"
@@ -187,8 +177,7 @@
                 <metal:block tal:condition="folder_contents|not:standalone|nothing">
                 <tbody>
                 <metal:block tal:repeat="item batch"> 
-                    <tr border="1"
-                        tal:define="oddrow repeat/item/odd"
+                    <tr tal:define="oddrow repeat/item/odd"
                         tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
     
                         <td>
@@ -201,44 +190,46 @@
                         </td>
     
                         <td tal:define="action python:item.getTypeInfo().getActionById('view');
-                                        use_folder_contents site_properties/use_folder_contents;
                                         url python:test(item.getTypeInfo().getId() in use_folder_contents, 
                                                         item.absolute_url()+'/folder_contents',
                                                         item.absolute_url()+'/'+action);"> 
     
                             <a href="#" tal:attributes="href url">
-                                <img tal:replace="structure python:path('here/%s' % item.getIcon(1))" 
+                                <img alt="" tal:attributes="src python:item.getIcon(1)" 
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
-                            <tal:block tal:condition="python:test(site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
+                            <tal:block tal:condition="python:test(here.portal_properties.site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
 
                             <a href="absolute_url/external_edit"
-                               tal:attributes="href string:${item/absolute_url}/external_edit"
-                               tal:define="edit here/edit.gif">
-                               
-                               <img tal:replace="structure python:edit.tag(title='Edit with External Editor')" />
+                               tal:attributes="href string:${item/absolute_url}/external_edit">
+                               <img tal:replace="structure python:pencil_icon.tag(title='Edit with External Editor')" />
                              </a>
+                             
+                            <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
+                                 tal:condition="python:lockable and item.wl_isLocked()"
+                                 tal:replace="structure python:locked.tag(title='Locked')" />
+
                             </tal:block>
     
                           <span class="expired"
-                                tal:condition="python:container.isExpired(item)">expired</span>
+                                tal:condition="python:isExpired(item)">expired</span>
                         </td>
     
                         <td i18n:translate="" tal:content="python:item.getTypeInfo().Title()">
                         folder
                         </td>
     
-                        <td tal:define="size python:here.getObjSize(item)"
+                        <td tal:define="size python:getObjSize(item)"
                             tal:content="structure python:test(size, size, '&nbsp;')">
                         size
                         </td>
     
-                        <td tal:content="python:here.toPortalTime(item.ModificationDate())">
+                        <td tal:content="python:toPortalTime(item.ModificationDate())">
                         08/19/2001 03:01 AM 
                         </td>
     
                         <td class="private"
-                            tal:define="review_state python:container.portal_workflow.getInfoFor(item, 'review_state', '')"
+                            tal:define="review_state python:here.portal_workflow.getInfoFor(item, 'review_state', '')"
                             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
                             tal:attributes="class python:test(review_state, review_state, 'private')"
                             i18n:translate="">&nbsp;
@@ -248,6 +239,7 @@
                 </tbody>
                 </metal:block> 
             </table>
+            </metal:block>
     
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />

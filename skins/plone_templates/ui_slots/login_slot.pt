@@ -12,60 +12,65 @@
      tal:omit-tag=""
      tal:condition="here/portal_membership/isAnonymousUser">
 
-    <span class="boxTitle" i18n:translate="box_sign_in">Sign in</span>
-
     <div class="box" tal:define="portal_url here/portal_url">
 
-        <div class="content odd">
-            <form action="logged_in"
-                  method="post"
-                  tal:attributes="action string:$portal_url/logged_in">
+        <h5 i18n:translate="box_sign_in">Log in</h5>
 
-                <input type="hidden" name="came_from" value=""
-                       tal:condition="python:request.get('came_from', '')"
-                       tal:attributes="value request/came_from" />
+        <div class="body">
+        
+            <div class="content odd">
+                <form action="logged_in"
+                      method="post"
+                      tal:attributes="action string:$portal_url/logged_in">
+    
+                    <input type="hidden" name="came_from" value=""
+                           tal:condition="python:request.get('came_from', '')"
+                           tal:attributes="value request/came_from" />
+    
+                    <strong i18n:translate="label_name">Name</strong> <br />
+                    <input type="text" name="__ac_name" size="12"
+                           tal:attributes="value python:request.get('__ac_name', '')" />
+    
+                    <br />
+    
+                    <strong i18n:translate="label_password">Password</strong>  <br />
+                    <input type="password" name="__ac_password" size="12" />
+    
+                    <br />
+                    &nbsp;
+                    <br />
+    
+                    <input class="context searchButton" 
+                           type="submit" 
+                           name="submit"
+                           value="Log in" 
+                           i18n:attributes="value"/>
+                </form>
+            </div>
+    
+            <div class="content even"> 
+                <a href="mail_password_form"
+                   tal:attributes="href string:$portal_url/mail_password_form">
+                   <img tal:replace="structure here/linkTransparent.gif" />
+                   <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
+                </a>
+            </div>
+    
+            <div class="content odd"
+                tal:condition="python:test(hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
+          
+                <a href="portal_form/join_form"
+                   tal:attributes="href string:$portal_url/portal_form/join_form">
+                    
+                    <img tal:replace="structure here/linkTransparent.gif" />
+          
+                    <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
+                </a>
+    
+            </div>
 
-                <strong i18n:translate="label_name">Name</strong> <br />
-                <input type="text" name="__ac_name" size="12"
-                       tal:attributes="value python:request.get('__ac_name', '')" />
-
-                <br />
-
-                <strong i18n:translate="label_password">Password</strong>  <br />
-                <input type="password" name="__ac_password" size="12" />
-
-                <br />
-                &nbsp;
-                <br />
-
-                <input class="context searchButton" 
-                       type="submit" 
-                       name="submit"
-                       value="Log in" 
-                       i18n:attributes="value"/>
-            </form>
         </div>
-
-        <div class="content even"> 
-            <a href="mail_password_form">
-               <img tal:replace="structure here/linkTransparent.gif" />
-               <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
-            </a>
-        </div>
-
-        <div class="content odd"
-            tal:condition="python:test(hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
-      
-            <a href="portal_form/join_form"
-               tal:attributes="href string:$portal_url/portal_form/join_form">
-                
-                <img tal:replace="structure here/linkTransparent.gif" />
-      
-                <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
-            </a>
-
-        </div>
-
+        
     </div>
 
 </div>

@@ -1,16 +1,19 @@
 /* 
 ** Plone style sheet for CSS2-capable browsers.
-** Alexander Limi, 2002 - http://limi.net
+** Copyright Alexander Limi, 2002 - http://limi.net
 **
 ** Thanks to Geir Bækholt, Stian Søiland for input and guidance.
 **
 ** Style sheet documentation can be found at http://plone.org/documentation
 **
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
 */
 
 
 /*
-**  Instructions to set caching headers. Inside comments area to play nicer with CSS editors.
+**  DTML instructions to set caching headers. Inside comments area to play nicer with CSS editors.
 **
 ** <dtml-let last_modified="_.DateTime()-14" expires="_.DateTime()+1" >
 **   <dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
@@ -95,8 +98,10 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
     color: &dtml-headingFontColor;;
+    clear: left;
     font: &dtml-headingFont;;
-    margin: 1em 0em 0em 0em;
+    margin: 0;
+    padding-top: 0.5em;
     border-bottom: 1px solid &dtml-mainTabBorderColor;;
 }
 
@@ -137,6 +142,10 @@ ol {
     padding:0;
 }
 
+ul a, ol a {
+    text-decoration: underline;
+}
+
 dl {
 }
 
@@ -171,7 +180,7 @@ textarea {
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
     background-color: white;
-    width: 93%;
+    width: 88%;
     padding: 0.1em;
 }
 
@@ -198,7 +207,17 @@ abbr, acronym, .explain {
     cursor: help;
 }
 
+q {
+    font-family: Times, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 120%;
+}
 
+blockquote {
+    font-family: Times, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 120%;
+}
 
 code {
     font-size: 120%;
@@ -271,6 +290,7 @@ div.tabs a {
     border-style: solid solid none solid;
     color: &dtml-mainTabFontColor;;
     font-weight: &dtml-mainTabFontWeight;;
+    height: 1.2em;
     margin-right: 0.5em;
     padding: 0em 2em;
     text-transform: &dtml-textTransform;;
@@ -341,20 +361,20 @@ table.columns {
 table.columns td.left {
     vertical-align: top;
     width: 15%;
-    padding: 2em 1em 1em 2em;
+    padding: 2em 0em 1em 2em;
 }
 
 table.columns td.main {
     vertical-align: top;
-    padding: 0em 1em 1em 1em;
+    padding: 0em 2em 1em 2em;
     margin: 0;
-    width: 70%;
+
 }
 
 table.columns td.right {
     vertical-align: top;
     width: 15%;
-    padding: 2em 2em 1em 1em;
+    padding: 2em 2em 1em 0em;
 }
 
 #contentTabs {
@@ -369,8 +389,10 @@ table.columns td.right {
 #contentTabs a {
     background: &dtml-contentTabBackgroundNotSelected;;
     border: &dtml-contentTabBorder;;
+    border-style: solid solid none solid;
     color: &dtml-contentTabFontColor;;
     font-weight: &dtml-contentTabFontWeight;;
+    height: 1.2em;
     margin-right: 0.5em;
     padding: 0em 2em;
     text-transform: &dtml-textTransform;;
@@ -398,7 +420,7 @@ table.columns td.right {
 }
 
 div.document {
-    background: &dtml-contentBackground;;
+    background: &dtml-mainBackground;;
     font: &dtml-contentFont;;
     padding: 0;
     margin: 0em 0em 2em 0em;
@@ -409,12 +431,12 @@ div.editableDocument {
     border: &dtml-contentTabBorder;;
     font: &dtml-contentFont;;
     margin: 0em 0em 2em 0em;
-    padding: 0em 2em 2em 2em;
+    padding: 0em 1em 2em 1em;
 }
 
 div.documentActions {
     float: right; 
-    margin-top: 2em;
+    margin-top: 1.5em;
 }
 
 div.message {
@@ -506,17 +528,18 @@ input.noborder {
 div.row {
     clear: both;
     min-height: 4em;
-    margin-top: 1em;
+    margin: 0em 0em 1em 0em;
     position: relative;
 }
 
 .group {
     border: &dtml-groupBorder;;
-    margin: 2em 0em 1em 0em;
+    margin: 1em 0em 1em 0em;
     padding: 0em 1em;
 }
 span.legend {
     background: &dtml-contentBackground;;
+    font-size: 80%;
     padding: 0.5em;
     position : relative;
     top: -0.8em;
@@ -542,6 +565,7 @@ div.help {
     text-align: left;
     position: absolute;
     left: -18em;
+    top: 1.5em;
     width: 16em;
     padding: 0.5em;
 }
@@ -573,8 +597,7 @@ span.card {
 }
 
 table.listing,
-table.columns td.main table  /* stupid STX table workaround */
-{
+div.stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
     border-collapse: collapse;
     border-left: &dtml-listingBorder;;
@@ -585,8 +608,7 @@ table.columns td.main table  /* stupid STX table workaround */
 }
 
 table.listing th,
-table.columns td.main table th  /* stupid STX table workaround */
-{
+div.stx table th {
     background: &dtml-listingHeaderBackground;;
     border-top: &dtml-listingBorder;;
     border-bottom: &dtml-listingBorder;;
@@ -620,8 +642,7 @@ table.listing tr.even {
 }
 
 table.listing td,
-table.columns td.main table td /* stupid STX table workaround */
-{
+div.stx table td {
     border-right: &dtml-listingBorder;;
     padding: 0em 1em;
     text-align: left;
@@ -635,82 +656,67 @@ table.listing img {
 	vertical-align: middle;
 }
 
-table.columns td.main table p /* stupid STX table workaround */
+/* Additional STX workaround classes */
+
+div.stx table p /* stupid STX table workaround */
 {
     margin: 0;
     padding: 0;
 }
 
-table.columns td.main table  /* stupid STX table workaround */
+div.stx table  /* stupid STX table workaround */
 {
-    border-top: &dtml-listingBorder;;
+    border: &dtml-listingBorder; ! important;
+}
+div.stx table td {
+    border-bottom: &dtml-listingBorder;;
 }
 
-table.box {
-    background: transparent;
-    border-collapse: collapse;
-    border-bottom: &dtml-boxBorder;;
-    border-left: &dtml-boxBorder;;
-    margin: 0;
-    margin-bottom: 2em;
-}
-
-table.box th {
-    background: &dtml-boxHeaderBackground;;
-    border-top: &dtml-boxBorder;;
-    border-bottom: &dtml-boxBorder;;
-    border-right: &dtml-boxBorder;;
-    color: &dtml-boxHeaderFontColor;;
-    font-weight: normal;
-    padding: 0em 1em;
-    text-align: left;
-    text-transform: &dtml-textTransform;;
-}
-
-table.box th.empty {
-    background-color: transparent;
-    border: none;
-    border-bottom: &dtml-boxBorder;;
-}
-
-table.box tr.odd {
-    background: &dtml-boxOddBackground;;
-}
-
-table.box tr.even {
-    background-color: &dtml-boxEvenBackground;;
-}
-
-table.box td {
-    border-right: &dtml-boxBorder;;
-    padding: 1em;
-}
-
-table.box img{
-	vertical-align: middle;
-}
 
 div.box {
-    background: transparent;
-    border-collapse: collapse;
-    border: &dtml-boxBorder;;
+    border: none;
     margin: 0em 0em 2em 0em;
     padding: 0;
 }
 
-.boxTitle {
+div.box h4 {
+    font-size: 1em;
+}
+
+div.box h5 { 
     background: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
     border-style: solid solid none solid;
     color: &dtml-boxHeaderFontColor;;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
+    display: inline;
+    font-size: 1em;
+    height: 1em;
+}
+
+div.box h6 { 
+    background: &dtml-boxHeaderBackground;;
+    border: &dtml-boxBorder;;
+    border-style: solid solid none solid;
+    color: &dtml-boxHeaderFontColor;;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: block;
+    font-size: 1em;
+    height: 1.2em;
+}
+
+
+div.box div.body {
+    background: transparent;
+    border-collapse: collapse;
+    border: &dtml-boxBorder;;
 }
 
 .boxDetails {
     text-align: right;
 }
-
 
 div.box .content {
     padding: 1em;
@@ -726,16 +732,31 @@ div.box a.close {
 div.box h1, 
 div.box h2, 
 div.box h3, 
-div.box h4, 
-div.box h5, 
-div.box h6 {
+div.box h4 {
     margin: 0;
+    padding: 0;
 }
 
+div.box .even {
+    background-color: &dtml-boxEvenBackground;;
+}
+
+div.box .odd {
+    background-color: &dtml-boxOddBackground;;
+}
+
+div.box .highlight {
+    background-color: &dtml-boxHighlight;;
+}
 
 
 div.spacer {
 	margin: 1em;
+}
+
+.currentNavItem {
+    color: &dtml-mainFontColor;;
+    font-weight: bold;
 }
 
 .private {
@@ -819,7 +840,7 @@ div.date {
   
 table.calendar {
     border: &dtml-boxBorder;;
-    margin: 0em 1em 1em 0em;
+    margin: 0em 1em 2em 0em;
     text-align: right;
 }
 

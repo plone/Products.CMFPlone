@@ -7,6 +7,5 @@
 ##parameters=
 ##title=http://cmf.zope.org/Members/tseaver/20020723_external_editor_available
 
-return context.REQUEST['RESPONSE'].redirect(
-    '%s/externalEdit_/%s' % ( context.aq_parent.absolute_url()
-                              , context.getId() ) )
+return context.REQUEST['RESPONSE'].redirect('%s/externalEdit_/%s' % \
+    (context.aq_parent.absolute_url(), context.getId()) )

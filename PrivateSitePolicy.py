@@ -36,11 +36,9 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
                                     , workflow_type='private_folder_workflow'+\
                                     ' (Private Folder Workflow [Plone])')
 
-        wf_tool.doActionFor(portal,'show',comment='The portal object itself must be visible')
-        portal.index_html.manage_permission('View', ('Anonymous', 'Authenticated') )
-
-        wf_tool.doActionFor(portal,'show',comment='The portal object itself must be visible')
-        portal.index_html.manage_permission('View', ('Anonymous', 'Authenticated') )
+        wf_tool.doActionFor(portal,'publicize', comment='The portal object itself must be visible')
+        wf_tool.doActionFor(portal.Members, 'publish', comment='Publish Members folder so navigation slot works')
+        wf_tool.doActionFor(portal.index_html, 'show', comment='The frontpage should be public also.')
 
         portal.manage_permission(AddPortalMember,('Manager',))
         pa_tool=getToolByName(portal,'portal_actions')
@@ -52,4 +50,9 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
                 a.condition=Expression('member')
         pa_tool._actions=actions
 
+        #remove the loginBox in left_slots
+        filtered_slots=[slot for slot in portal.left_slots if not slot.endswith('loginBox')]
+        portal.manage_changeProperties(left_slots=tuple(filtered_slots))
+        
+        portal.portal_properties.site_properties.manage_changeProperties(allowAnonymousViewAbout=0)
 

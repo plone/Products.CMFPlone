@@ -28,72 +28,89 @@
 
     <h1 i18n:translate="heading_rename_item">Rename item</h1>
 
-    <p i18n:translate="description_rename_item">To rename an item, enter the new name below.</p>
+    <p i18n:translate="description_rename_item">Each item has a Name and a Title, which you can change by entering the new details below.</p>
 
-    <form class="group"
-          name="folder_rename" 
+    <form name="folder_rename" 
           action="folder_rename" 
           method="post"
           tal:define="items request/ids|nothing; errors request/errors|nothing"
           tal:attributes="action python:here.portal_form_url(template.id);"
           tal:condition="items">
 
-        <input type="hidden" name="form_submitted" tal:attributes="value template/id">
-        <span class="legend" i18n:translate="legend_rename_details">Rename Details</span>
+        <input type="hidden" name="form_submitted" tal:attributes="value template/id" />
 
-        <tal:block tal:repeat="item items">
-        <tal:block tal:define="obj python:getattr(here, item)">
-
-        <div class="row"
-             tal:define="error python:errors and errors.get(item, None)">
-
-            <div class="label">
-            Name <br />
-            Title
-            </div>            
+        <div class="group"
+             tal:repeat="item items">
             
-            <div class="field" tal:attributes="class python:test(error, 'field error', 'field')">
-                <div tal:condition="error"
-                     tal:replace="structure string:$error <br />" />
-                <input type="hidden"
-                       name="ids:list"
-                       value="fav_999816073"
-                       tal:attributes="value item" />
-                <input type="text"
-                       name="new_ids:list"
-                       value="fav_999816073"
-                       size="30"
-                       tabindex=""
-                       tal:attributes="value item;
-                                       tabindex tabindex/next;"
-                       />
+            <tal:block tal:define="obj python:getattr(here, item)">
+
+            <span class="legend">
+            <span tal:replace="item" />
+            (<span tal:replace="obj/Title" />)
+            </span>
+        
+            <div class="row"
+                 tal:define="error python:errors and errors.get(item, None)">
+    
+                <div class="label" i18n:translate="label_new_name">
+                New Name
+                </div>            
                 
-                <br />
-                            
-                <input type="text"
-                       name="new_titles:list"
-                       value="title"
-                       size="30"
-                       tabindex=""
-                       tal:attributes="value obj/Title;
-                                       tabindex tabindex/next;" />
+                <div class="field" tal:attributes="class python:test(error, 'field error', 'field')">
+                    <div tal:condition="error"
+                         tal:replace="structure string:$error <br />" />
+                    <input type="hidden"
+                           name="ids:list"
+                           value="fav_999816073"
+                           tal:attributes="value item" />
+                    <input type="text"
+                           name="new_ids:list"
+                           value=""
+                           size="60"
+                           tabindex=""
+                           tal:attributes="value item;
+                                           tabindex tabindex/next;"
+                           />
+                    
+                </div>
             </div>
-	    
+            
+            <div class="row"
+                 tal:define="error python:errors and errors.get(item, None)">
+            
+                <div class="label" i18n:translate="label_new_title">
+                New Title
+                </div>
+                
+                <div class="field" tal:attributes="class python:test(error, 'field error', 'field')">
+                    <div tal:condition="error"
+                         tal:replace="structure string:$error <br />" />
+                    <input type="text"
+                           name="new_titles:list"
+                           value="title"
+                           size="60"
+                           tabindex=""
+                           tal:attributes="value obj/Title;
+                                           tabindex tabindex/next;" />
+                </div>
+    	    
+            </div>
+            
+        </tal:block>
+                
         </div>
         
-        </tal:block>
-        </tal:block>
-
+        
         <div class="row">
 
             <div class="label">&nbsp;</div>
             
             <div class="field">
                 <input type="hidden" name="here" value=""
-                       tal:attributes="value here/absolute_url">
+                       tal:attributes="value here/absolute_url" />
                 <input class="context" 
                        type="submit" 
-                       value="Rename"
+                       value="Rename All"
                        tabindex=""
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;" 

@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 <body>
 
     <div metal:fill-slot="main"
@@ -14,20 +15,22 @@
         </div>
 
         <span class="description" tal:content="here/Description"> 
-	    News summary 
-	    </span>
+            News summary 
+        </span>
 
         <p tal:condition="not: len_text"
            i18n:translate="no_body_text">
-          This document has yet to be written, click the edit button to write on document.
+        This item does not have any body text, click the edit tab to change it.
         </p>
-      
-        <p tal:condition="len_text"
-            tal:content="structure here/CookedBody">
-	  News body text
-        </p>
-        
-    </div>
 
+        <div class="stx"
+             tal:condition="len_text"
+             tal:omit-tag="python:here.text_format != 'structured-text'">
+            <div tal:replace="structure here/CookedBody" />
+        </div>
+
+    </div>
 </body>
+
 </html>
+

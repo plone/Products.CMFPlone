@@ -7,5 +7,5 @@ def onetwo(portal):
     pcontainer=portal.portal_properties
     # add navtree_properties
     if 'navtree_properties' not in pcontainer.objectIds():
-        setupNavTreePropertySheet(portal)
+        setupNavTreePropertySheet(pcontainer)
 

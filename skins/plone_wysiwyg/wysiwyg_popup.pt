@@ -1,36 +1,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-      lang="en-US" 
-      XMLNS:xs
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" 
+      xmlns:xs
       tal:define="inputname request/inputname;
-                  formname  request/formname">
+                  formname request/formname;
+                  site_properties here/portal_properties/site_properties;"
+      tal:attributes="lang site_properties/default_language|default;
+                      xml:lang site_properties/default_language|default;">
   <head>
     <title>WYSIWYG Editor</title>
 
-    <script language="javascript" tal:content="python: here.getPopupScript(inputname=inputname, formname=formname)">
+    <script language="javascript" type="text/javascript"
+            tal:content="python: here.getPopupScript(inputname=inputname, formname=formname)">
       
     </script>
-    <!-- Basic crude style for Netscape4.x and other CSS1 browsers - 
-           can be removed if you don't want to support those browsers
-           specifically. Site will still be viewable, but look a bit 
-           stripped :) --> 
-    <link rel="Stylesheet" type="text/css" href="ploneBasicNS.css" tal:attributes="href string:plone_styles/ploneBasicNS.css" />
-    <link rel="Stylesheet" type="text/css" href="ploneStructureNS.css" tal:attributes="href string:plone_styles/ploneStructureNS.css" />
-    <link rel="Stylesheet" type="text/css" href="ploneWidgetsNS.css" tal:attributes="href string:plone_styles/ploneWidgetsNS.css" />
-    <link rel="Stylesheet" type="text/css" href="ploneDeprecatedNS.css" tal:attributes="href string:plone_styles/ploneDeprecatedNS.css" />
 
     <!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
-    <style type="text/css" media="all"> 
-      @import "ploneBasic.css";
-      @import "ploneStructure.css";
-      @import "ploneWidgets.css";
-      @import "ploneDeprecated.css";
-      @import "ploneCalendar.css";
-    </style>
+    <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css);"></style>
 
-    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
+          tal:define="charset here/portal_properties/site_properties/default_charset|string:iso-8859-1"
+          tal:attributes="content string:text/html;;charset=${charset}" />
     
     <?import namespace="xs" implementation="XsDhtmlEditor.htc" />
     
@@ -38,7 +30,6 @@
   <body style="margin: 0, 0, 0, 0;">
     
     <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBoxPopup">
-      oo look it's a calendar :-)
     </div>
 
   </body>

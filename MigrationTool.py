@@ -6,6 +6,8 @@ from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.CMFCorePermissions import ManagePortal
 
 import zLOG
+import traceback
+import sys
 
 def log(message,summary='',severity=0):
     zLOG.LOG('Plone: ',severity,summary,message)
@@ -27,49 +29,90 @@ class MigrationTool( UniqueObject, SimpleItem):
         """ The version this instance of plone is on """
         if getattr(self, '_version', None) is None:
             self.setInstanceVersion(self.getFileSystemVersion())
-        return self._version
+        return self._version.lower()
 
     security.declareProtected(ManagePortal, 'setInstanceVersion')
     def setInstanceVersion(self, version):
         """ The version this instance of plone is on """
         self._version = version
 
+    security.declareProtected(ManagePortal, 'knownVersions')
+    def knownVersions(self):
+        """ All known version ids, except current one """
+        return _upgradePaths.keys()
+
     security.declareProtected(ManagePortal, 'getFileSystemVersion')
     def getFileSystemVersion(self):
         """ The version this instance of plone is on """
-        return self.Control_Panel.Products.CMFPlone.version
+        return self.Control_Panel.Products.CMFPlone.version.lower()
 
-    security.declareProtected(ManagePortal, 'setInstanceVersion')
+    security.declareProtected(ManagePortal, 'needUpgrading')
     def needUpgrading(self):
         """ Need upgrading? """
         return self.getInstanceVersion() != self.getFileSystemVersion()
 
+    def _check(self):
+        """ Are we inside a Plone site?  Are we allowed? """
+        if not hasattr(self,'portal_url'):
+            raise 'You must be in a Plone site to migrate.'
+        
     security.declareProtected(ManagePortal, 'upgrade')
     def upgrade(self, REQUEST=None):
         """ perform the upgrade """
-        newv = self.getInstanceVersion()
+        # keep it simple
+        out = []
+
+        self._check()
+        
+        # either get the forced upgrade instance or the current instance
+        newv = getattr(REQUEST, "force_instance_version", self.getInstanceVersion())
+       
+        out.append("Starting the migration from version: %s" % newv)
         while newv is not None:
-            newv = self._upgrade(newv)
-            self.setInstanceVersion(newv)
+            out.append("Attempting to upgrade from: %s" % newv)
+            try:
+                newv = self._upgrade(newv)
+                if newv is not None:
+                    out.append("Upgrade to: %s, completed" % newv)
+                    self.setInstanceVersion(newv)
+                
+            except:
+                out.append('ERROR:')
+                out += traceback.format_tb(sys.exc_traceback)
+                out.append("Upgrade aborted")
+                # set newv to None
+                # to break the loop
+                newv = None
+                
+        out.append("End of upgrade path")
+        
+        if self.needUpgrading():
+            out.append("PROBLEM: The uppgrade path did NOT reach current version")
+            out.append("Migration has failed")
 
         # do this once all the changes have been done
-        self.portal_catalog.refreshCatalog()
-        self.portal_workflow.updateRoleMappings()
+        try:
+            self.portal_catalog.refreshCatalog()
+            self.portal_workflow.updateRoleMappings()
+        except:
+            out.append("Exception was thrown while cataloging")
+            pass
+        return '\n'.join(out)
         
-        if REQUEST is not None:
-            return REQUEST.RESPONSE.redirect('manage_main')
 
     def _upgrade(self, version):
+        version = version.lower()
         if not _upgradePaths.has_key(version): 
-            log('No upgrade path found for version "%s"' % version)
+            #log('No upgrade path found for version "%s"\n' % version)
             return None
 
         newversion, function = _upgradePaths[version]
         function(self.aq_parent)
         return newversion
 
+
 def registerUpgradePath(oldversion, newversion, function): 
     """ Basic register func """
-    _upgradePaths[oldversion] = [newversion, function]
+    _upgradePaths[oldversion.lower()] = [newversion.lower(), function]
 
 InitializeClass(MigrationTool)

@@ -1,0 +1,46 @@
+/* Plone Zed changes */
+
+/*
+**  DTML instructions to set caching headers. Inside comments area to play nicer with CSS editors.
+**
+** <dtml-let last_modified="_.DateTime()-14" expires="_.DateTime()+1" >
+**   <dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
+**   <dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
+**   <dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+**   <dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
+** </dtml-let>
+*/
+/* <dtml-with stylesheet_properties> */
+
+div.tabs {
+    border-bottom-style: dotted;
+}
+
+div.tabs a {
+    border-style: dotted dotted none dotted;
+}
+
+div.tabs a.selected {
+    border: 1px dotted &dtml-mainTabBorderColorSelected;;
+    border-bottom: &dtml-mainTabBackground; 1px solid;
+}
+
+div.personalBar {
+    border-bottom-style: dotted;
+}
+
+div.pathBar {
+    border-bottom-style: dotted;
+}
+
+#contentTabs a {
+    border-style: dotted dotted none dotted;
+}
+    
+div.box h5,
+div.box h6 { 
+    border-style: dotted dotted none dotted;
+}
+    
+/* </dtml-with> */
+

@@ -4,30 +4,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
+
+<tal:block metal:fill-slot="base">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
 <body>
 
 <div metal:fill-slot="main"
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();" >
 
-<h1 i18n:translate="heading_sign_in">Please sign in</h1>
+<h1 i18n:translate="heading_sign_in">Please log in</h1>
 
 <p i18n:translate="description_sign_in">
-To access this part of the site, you need to sign in with your username and password.
+To access this part of the site, you need to log in with your username and password.
 </p>
 
-<p tal:condition="python: here.portal_membership.checkPermission('Add portal member', here)">
+<p i18n:translate="description_no_account"
+   tal:condition="python: here.portal_membership.checkPermission('Add portal member', here)">
 
-<span i18n:translate="description_no_account_1" tal:omit-tag="">
 If you do not have an account here, head over to the
-</span>
-<a href="portal_form/join_form" i18n:translate="description_no_account_2">
-registration form
-</a> 
-<span i18n:translate="description_no_account_3" tal:omit-tag="">
-to become a member.
+
+<span i18n:name="registration_form">
+    <a href="portal_form/join_form" i18n:translate="description_no_account_registration_linktext">
+        registration form
+    </a> 
 </span>
 
+to become a member.
 </p>
 
 <form class="group"
@@ -35,12 +40,9 @@ to become a member.
       method="post">
 
 	<input type="hidden" 
-           name="came_from" 
-           value=""
-           tal:define="global came_from request/came_from|request/HTTP_REFERER;
-                       not_allowed python:('login_form','logged_out','registered', 'join_form');
-                       corrected_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);"
-	       tal:attributes="value corrected_from" />
+         name="came_from" 
+         value=""
+	       tal:attributes="value request/came_from|request/HTTP_REFERER" />
 
 <span class="legend" i18n:translate="legend_account_details">Account details</span>
 	
@@ -103,7 +105,7 @@ to become a member.
                  class="help" 
                  style="visibility:hidden">
             Setting the 'Remember my name' option will create a cookie with your username.
-            When you sign in later, your user name will already be filled in for you.
+            When you log in later, your user name will already be filled in for you.
             </div>
         </div>
         
@@ -131,21 +133,22 @@ to become a member.
                    tabindex="" 
                    type="submit" 
                    name="submit" 
-                   value="Sign in" 
-                   i18n:translate=""
+                   value="Log in" 
+                   i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;" 
                    />
 
-            <p>
-                <strong i18n:translate="label_forgotten_your_password">
+            <p i18n:translate="description_forgotten_your_password">
+                <strong>
                 Forgotten your password?
                 </strong> 
                 
-                
-                <a href="mail_password_form" i18n:translate="forgotten_password_link_1">Click here</a> 
-                <span i18n:translate="forgotten_password_link_2">
-                to have it mailed to you.
+                <span i18n:name="click_here">
+                    <a href="mail_password_form" i18n:translate="description_forgotten_your_password_linktext">
+                    Click here
+                    </a> 
                 </span>
+                to have it mailed to you.
                 
             </p>
             
@@ -156,7 +159,7 @@ to become a member.
                 
                 <span i18n:translate="description_trouble_logging_in">
                 Make sure to enable cookies in your web browser. 
-                Don't forget to sign out or exit your browser when you're done.
+                Don't forget to log out or exit your browser when you're done.
                 </span>
             </p>
                         

@@ -16,34 +16,37 @@
        <!-- We don't show this box when we are editing a Topic
             This is because it would lead to infinite recursion -->
 
-    <span class="boxTitle" i18n:translate="box_navigation">Navigation</span>
-
     <div class="box" tal:define="navExpand python:request.SESSION.get('navExpand', results[0].Title)">
 
+        <h5 i18n:translate="box_navigation">Navigation</h5>
 
-        <div class="content">
-            <div tal:repeat="topic results">
-                <a href=""
-                   tal:attributes="href python:here.navigatorExpand.absolute_url()+'?topic='+pss.url_quote(topic.Title)"
-                   tal:content="topic/Title">I am a navigation box</a>
-                   
-                <div tal:define="obj python:topic.getObject()">
-                
-                    <div tal:omit-tag="" tal:repeat="item python:obj.queryCatalog()"
-                                          tal:condition="obj">
-                        <div tal:omit-tag="" tal:condition="python:item.Title and navExpand==topic.Title">
-                            <a href="#" tal:attributes="href python:item.getObject().absolute_url()"
-                                tal:content="item/Title"> </a>
-                        </div>
+        <div class="body">
+
+            <div class="content">
+                <div tal:repeat="topic results">
+                    <a href=""
+                       tal:attributes="href python:here.navigatorExpand.absolute_url()+'?topic='+pss.url_quote(topic.Title)"
+                       tal:content="topic/Title">I am a navigation box</a>
+                       
+                    <div tal:define="obj python:topic.getObject()">
                     
+                        <div tal:omit-tag="" tal:repeat="item python:obj.queryCatalog()"
+                                              tal:condition="obj">
+                            <div tal:omit-tag="" tal:condition="python:item.Title and navExpand==topic.Title">
+                                <a href="#" tal:attributes="href python:item.getObject().absolute_url()"
+                                    tal:content="item/Title"> </a>
+                            </div>
+                        
+                        </div>
+        
                     </div>
-    
+        
                 </div>
-    
+        
             </div>
-    
-        </div>
 
+        </div>    
+        
     </div>
             
 </div>

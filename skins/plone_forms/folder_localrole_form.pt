@@ -11,6 +11,8 @@
   <div metal:fill-slot="main"
        tal:define="join python:modules['string'].join;
                    Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                   Batch python:modules['Products.CMFPlone'].Batch;
+                   b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    search_submitted request/role_submit|nothing;
                    search_results python:test(search_submitted, here.portal_membership.searchMembers( search_param=request.get('search_param','')
@@ -29,17 +31,23 @@
 
 		    <p i18n:translate="description_localrole_select_member">Select one or more Members, and a role to assign.</p>
 	
+        <metal:block tal:define="batch python:Batch(search_results, b_size, int(b_start), orphan=3)">
+
 	      <form class="group"
               method="post" 
               name="change_type" 
               action="folder_localrole_edit"
               tal:attributes="action string:${here/absolute_url}/folder_localrole_edit" >
  		
+
             <span class="legend" i18n:translate="legend_available_members">Available Members</span>
                 
             <input type="hidden" name="change_type" value="add" />
+
+            <!-- Navigation -->
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
     		
-    		    <span class="card" tal:repeat="member search_results">
+    		    <span class="card" tal:repeat="member batch">
     				
                         <img src="defaultUser.gif" alt="Blank picture" border="0" width="75" height="100"
                              tal:attributes="src python:here.portal_membership.getPersonalPortrait(member['username']).absolute_url()" />
@@ -70,8 +78,10 @@
         		        
                 <span tal:condition="python:not member['email']">&nbsp;</span>
     		    </span>
-    		
-    		
+
+            <!-- Navigation -->
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
+
         		<div class="row">
         				
           			<div class="label" i18n:translate="label_localrole_to_assign">
@@ -83,6 +93,7 @@
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
                         <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
+                                tal:attributes="value lroles"
                                 tal:content="lroles"
                                 i18n:translate="">
                            Role name
@@ -108,20 +119,20 @@
         		
         		</div>			
 		
-		    </form>				
-
+		    </form>
+        </metal:block>				
 
     </metal:block>
 
 	
     <div>
-        <span tal:condition="python:test(not search_submitted or (search_submitted and not search_results), 1, 0)">
-       		  <h1>
-                <span i18n:translate="heading_assign_localrole">Assign local roles to folder
-      			    <span tal:content="here/title_or_id" i18n:name="folder">title</span>
-		</span>
-      			</h1>
-      			
+        <tal:block tal:condition="python:test(not search_submitted or (search_submitted and not search_results), 1, 0)">
+                <h1>
+       		    <tal:block i18n:translate="heading_assign_localrole">Assign local roles to folder
+                <tal:block tal:content="here/title_or_id" i18n:name="folder">title</tal:block>
+                </tal:block>
+                </h1>
+              
       			<p i18n:translate="description_assign_localrole">
       			A local role is a way of allowing other users into some or all of your
       			folders. These users can edit items, publish them - et cetera, depending
@@ -202,7 +213,7 @@
                   			
             </form>
 
-        </span>
+        </tal:block>
     
         <hr />
     
@@ -226,8 +237,8 @@
                 <span tal:content="here/title_or_id" i18n:name="folder">title</span>
             </span>
 
-            <input type="hidden" name="change_type" value="delete">
-            <input type="hidden" name="member_role" value="">
+            <input type="hidden" name="change_type" value="delete" />
+            <input type="hidden" name="member_role" value="" />
 
     	
             <div class="row">
@@ -272,12 +283,16 @@
                         </span>
                         
                         <br />	
+
+                    <span class="field">
+                        <tal:block tal:repeat="role python:lrole[1]">
+                        <span i18n:translate=""
+                              tal:content="role"
+                              tal:omit-tag="">Role</span><span tal:condition="not: repeat/role/end"
+                                                               tal:omit-tag="">, </span>
+                        </tal:block>
+                    </span>
                 		
-                		<span class="field"
-                          tal:replace="python:join(lrole[1], ', ')">
-                		_.string.join( _['sequence-item'], ', ')
-                		</span>
-            
                 </span>
 
             </div>

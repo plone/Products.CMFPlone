@@ -2,7 +2,6 @@
   <span metal:fill-slot="base" tal:omit-tag="">
     <base tal:attributes="href string:${here/absolute_url}/weblog/" />
   </span>
-<body>
 
 <div metal:fill-slot="header" tal:define="t_s options/t_s | traverse_subpath;global blogdata python:here.portal_weblog.getMonthData(here,t_s)">
     <div id="archives" tal:define="archives python:here.portal_weblog.getArchiveInfo(here)" tal:condition="blogdata/archiveinfo">
@@ -35,15 +34,16 @@
         
         <div tal:define="post_url python:here.portal_weblog.getObjectURL(blog)">
     
-            <a tal:attributes="id blog/id" id="postId">
+            <a tal:attributes="id blog/id" id="postId"> &nbsp; </a>
             <h2 class="postTitle" tal:condition="exists:blog/Title" tal:content="blog/Title"
-                tal:define="global postdate blog/created/day">Weblog Entry Title</h2>
-            </a>
+                tal:define="global postdate blog/created/day">
+            Weblog Entry Title
+            </h2>
         
-                   <p tal:define="postBody python:test(blog.Type=='Weblog Entry',blog.Description,None)"
-                        tal:content="structure python:postBody or blog.getObject().CookedBody()">
-                        Post from catalog or database goes here
-                   </p>
+            <p tal:define="postBody python:test(blog.Type=='Weblog Entry',blog.Description,None)"
+               tal:content="structure python:postBody or blog.getObject().CookedBody()">
+               Post from catalog or database goes here
+            </p>
         
                 <a tal:define="permaLink python:here.portal_weblog.makePermaLink(blog)"
                    tal:condition="permaLink" 
@@ -77,5 +77,4 @@
    
 </div>
 
-</body>
 </html>

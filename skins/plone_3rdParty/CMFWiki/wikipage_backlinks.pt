@@ -53,7 +53,7 @@
                   value="referrer"
                   tal:attributes="value link/pageid;
                                   checked link/isparent;
-                                  disabled python: not mover">
+                                  disabled python: not mover" />
       </td>
       <td> <a href="../thispage"
               tal:attributes="href python: '%s/%s' % (here.wiki_base_url(),
@@ -65,8 +65,8 @@
     
      <tr tal:condition="mover">
       <td colspan="2" align="left">
-        <input type="submit" class="context" value="Re-parent">
-        <input type="reset"  class="standalone" value="Reset Form">
+        <input type="submit" class="context" value="Re-parent" />
+        <input type="reset"  class="standalone" value="Reset Form" />
       </td>
      </tr>
     </table>
@@ -74,12 +74,17 @@
     
     <div tal:replace="nothing">
       No time for this right now, but this is broken - chrism
-      <p> <a name="nesting"><a href="../<dtml-var id>"><dtml-var id></a></a> nesting
+      <p>
+    <a href="" 
+       name="nesting"
+       tal:attributes="href string:../${here/getId}"
+       tal:content="here/getId"></a> nesting
     context in the Wiki folder, including offspring, ancestors, and siblings.
     (Branches are abbreviated with '...' elipses after the first time they're
     spelled out.)
     
-    <dtml-var expr="wiki_context(REQUEST, with_siblings=1)">
+    <span tal:replace="python:here.wiki_context(request, with_siblings=1)" />
+
     </div>
     
     

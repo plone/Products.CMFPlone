@@ -13,31 +13,36 @@
                  remoteContent here/navigationRemoteResources;"
      tal:condition="python:test(localContent or remoteContent, 1, 0)" >
 
-    <span class="boxTitle" i18n:translate="box_related">Related</span>
-    
     <div class="box">
-        <div class="content odd" tal:condition="localContent" >        
-            <strong i18n:translate="box_local_resources">Local resources</strong> 
-            <br />
-            
-            <div tal:repeat="related localContent">
-                    <a href="" 
-                       tal:attributes="href string:${related/url}/view">
-                       <img src="" 
-                            border="0" 
-                            tal:attributes="src string:$portal_url/${related/icon}" />
-                            &nbsp;<span tal:replace="related/title">Object related by keyword</span>
-                    </a>
-            </div> 
-        </div>
-      
-        <div class="content even" tal:condition="remoteContent">
-            <strong i18n:translate="box_external_links">External links</strong>
-            <div tal:repeat="o remoteContent">
-                    <a href=""
-                       tal:attributes="href python:o[1]" 
-                       tal:content="python:o[0]">Link object in same folder</a>
+
+        <h5 i18n:translate="box_related">Related</h5>
+    
+        <div class="body">
+
+            <div class="content odd" tal:condition="localContent" >        
+                <strong i18n:translate="box_local_resources">Local resources</strong> 
+                <br />
+                
+                <div tal:repeat="related localContent">
+                        <a href="" 
+                           tal:attributes="href string:${related/url}/view">
+                           <img src="" 
+                                border="0" 
+                                tal:attributes="src string:$portal_url/${related/icon}" />
+                                &nbsp;<span tal:replace="related/title">Object related by keyword</span>
+                        </a>
+                </div> 
             </div>
+          
+            <div class="content even" tal:condition="remoteContent">
+                <strong i18n:translate="box_external_links">External links</strong>
+                <div tal:repeat="o remoteContent">
+                        <a href=""
+                           tal:attributes="href python:o[1]" 
+                           tal:content="python:o[0]">Link object in same folder</a>
+                </div>
+            </div>
+
         </div>
 
     </div>

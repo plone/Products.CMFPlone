@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="base">
+      <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+                 tal:replace="nothing">
+      Disable the tabs
+      </tal:block>
+  </metal:block>
+                               
+<div metal:fill-slot="main"
+       tal:define="results python:here.portal_membership.searchForMembers(request);
+                   Batch python:modules['Products.CMFPlone'].Batch;
+                   DateTime python:modules['DateTime'].DateTime;
+                   b_size python:12;b_start python:0;b_start request/b_start | b_start;">
+    
+    <h1 i18n:translate="heading_search_results">Search results</h1>
+                 
+    <div tal:condition="results"
+          tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1)">
+
+        <strong> 
+        <span i18n:translate="batch_x_items_matching_your_criteria"><span i18n:name="number" tal:content="python:len(results)">234</span> items matching your criteria.</span>
+        </strong> 
+        
+        <br/>
+        
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+        <div>
+        <metal:block tal:repeat="result batch">
+            <span class="card" tal:define="name result/getUserName;
+                                           home python:container.portal_membership.getHomeUrl(name, verifyPermission=1);
+                                           portrait python: here.portal_membership.getPersonalPortrait(name);"> 
+                <a href="#" tal:attributes="href home">                    
+                    <img src="defaultUser.gif" 
+                         alt="" 
+                         border="0" 
+                         width="75" 
+                         height="100" 
+                         tal:attributes="src portrait/absolute_url" />
+                    <br />  
+                    <span tal:content="name"> member id</span>
+                </a>
+                <br />	
+            </span>
+        </metal:block>
+        </div>
+
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+    </div>
+    
+    <div tal:condition="not: results">
+        <p><strong i18n:translate="description_no_results_found">No results were found.</strong></p>
+    </div>		 
+
+</div>
+
+
+</html>
+

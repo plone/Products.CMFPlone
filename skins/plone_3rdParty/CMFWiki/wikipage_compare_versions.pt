@@ -11,7 +11,8 @@
   </div>
 </div>
 
-<span metal:fill-slot="main" tal:define="callresults python:here.history_compare_versions(request.get('keys',''));
+<metal:block fill-slot="main" 
+       tal:define="callresults python:here.history_compare_versions(request.get('keys',''));
           dt1 python:callresults[0];
           dt2 python:callresults[1];
           historyComparisonResults python:callresults[2];">
@@ -44,6 +45,6 @@ Changes to <span tal:replace="here/getId" /> as of
 This object does not provide comparison support.
 </p>
 
-</span>
+</metal:block>
 </body>
 </html>

@@ -8,6 +8,7 @@
 ##title=Publish objects from a folder
 ##
 from Products.CMFPlone import transaction_note
+plone_utils=context.plone_utils
 REQUEST=context.REQUEST
 workflow = context.portal_workflow
 failed = {}
@@ -29,10 +30,13 @@ for id in ids:
     try:
         if o.isPrincipiaFolderish and include_subfolders:
             workflow.doActionFor(o, workflow_action, comment=comment)
-            o.folder_publish(workflow_action, o.objectIds(), comment=comment, include_subfolders=include_subfolders)       
+            o.folder_publish(workflow_action, o.objectIds(), comment=comment, \
+                 include_subfolders=include_subfolders, effective_date=effective_date, \
+                 expiration_date=expiration_date)       
         else:
             workflow.doActionFor(o, workflow_action, comment=comment)
             success[id]=comment
+        plone_utils.contentEdit(o, effective_date=effective_date, expiration_date=expiration_date)
     except Exception, e:
         failed[id]=e
 

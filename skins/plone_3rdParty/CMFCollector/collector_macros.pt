@@ -3,7 +3,6 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
       i18n:domain="plone">
   <body>
 
@@ -49,12 +48,15 @@
                                       if i.getTypeInfo().getId() != 'Collector Issue Transcript']">
 
         <h1 i18n:translate="">
-            Issue <span tal:replace="here/id" i18n:name="id">ID</span> of
-            <a href="" i18n:name="collector_link" i18n:translate="collector_link"
-             tal:attributes="href python:here.aq_parent.absolute_url()">
-            <span tal:replace="here/aq_parent/Title"
-	    i18n:name="collector_title">COLLECTOR TITLE</span>
-            [<span tal:replace="here/abbrev|nothing" i18n:name="collector_abbrev" />]
+            Issue <tal:block content="here/id" i18n:name="id">ID</tal:block> of
+            <a href="" 
+               i18n:name="collector_link"
+               tal:attributes="href python:here.aq_parent.absolute_url()">
+                <span i18n:translate="collector_link">
+                    <tal:block content="here/aq_parent/Title"
+                          i18n:name="collector_title">COLLECTOR TITLE</tal:block>
+                    [<tal:block content="here/abbrev|nothing" i18n:name="collector_abbrev" />]
+                </span>
             </a>
         </h1>
         
@@ -62,7 +64,7 @@
 
 
          <tr>
-           <td align="right" i18n:translate="">Title:</td>
+           <td align="right"><tal:block i18n:translate="label_title">Title</tal:block>:</td>
            <td colspan="3" metal:define-slot="issue_title_slot">
              <strong>
                <span tal:replace="python: here.title[:TITLELEN]
@@ -75,7 +77,7 @@
          </tr>
 
          <tr>
-           <td align="right" i18n:translate="">Status:</td>
+           <td align="right"><tal:block i18n:translate="label_status">Status</tal:block>:</td>
            <td tal:define="statpair python: split(here.status(), '_');
                            base python: statpair[0];
                            paren python: len(statpair) > 1">
@@ -87,7 +89,7 @@
                 </span></span>
            </td>
 
-           <td align="right" i18n:translate="">Security related:</td> 
+           <td align="right"><tal:block i18n:translate="label_security_related">Security related</tal:block>:</td> 
            <td metal:define-slot="issue_security_slot">
              <span tal:condition="not: here/security_related" i18n:translate="">
                No
@@ -107,7 +109,7 @@
          </tr>
 
          <tr>
-           <td align="right" valign="top" i18n:translate="">Description:</td>
+           <td align="right" valign="top"><tal:block i18n:translate="label_description">Description</tal:block>:</td>
            <td colspan="3" metal:define-slot="issue_description_slot">
              <font color="gray">
                <span tal:replace="python: here.description[:TRUNCDESCR]
@@ -120,7 +122,7 @@
          </tr>
 
          <tr>
-           <td align="right" i18n:translate="">From:</td>
+           <td align="right"><tal:block i18n:translate="label_from">From</tal:block>:</td>
            <td NOWRAP>
               <span metal:define-slot="issue_from_slot"
                     tal:content="here/submitter_name">NAME</span>
@@ -141,8 +143,8 @@
              <em><span metal:define-slot="issue_submitter_id_slot"
                         tal:content="here/submitter_id">ID</span></em>
            </td>
-           <td align="right" i18n:translate="">
-             Last update:
+           <td align="right"><tal:block i18n:translate="label_last_update">
+             Last update</tal:block>:
            </td>
            <td tal:define="actions here/action_number">
              <code>
@@ -157,7 +159,7 @@
          </tr>
 
          <tr>
-           <td align="right" i18n:translate="">Topic/class:</td>
+           <td align="right"><tal:block i18n:translate="label_topic_class">Topic/class</tal:block>:</td>
            <td> <strong>
            <span metal:define-slot="issue_topic_slot"
                  tal:replace="here/topic">
@@ -165,7 +167,7 @@
             >CLASSIFICATION</span></span></metal:block>
              </strong>
            </td>
-           <td align="right" i18n:translate="">Importance:</td>
+           <td align="right"><tal:block i18n:translate="label_collector_importance">Importance</tal:block>:</td>
            <td metal:define-slot="issue_importance_slot">
              <span tal:omit-tag="" i18n:translate=""><span tal:replace="here/importance">
                IMPORTANCE
@@ -174,7 +176,7 @@
          </tr>
 
          <tr>
-           <td align="right" valign="top" i18n:translate="">Version info:</td>
+           <td align="right" valign="top"><tal:block i18n:translate="label_version_info">Version info</tal:block>:</td>
            <td valign="top"
 	       metal:define-slot="issue_version_info_slot"
                colspan="3"
@@ -185,7 +187,7 @@
          </tr>
 
          <tr tal:condition="here/assigned_to">
-           <td align="right" i18n:translate="">Assigned:</td>
+           <td align="right"><tal:block i18n:translate="label_assigned">Assigned</tal:block>:</td>
            <td colspan="3">
              <span tal:content="python: ', '.join(here.assigned_to())">
                SUPPORTERS</span>
@@ -193,11 +195,11 @@
          </tr>
 
         <tr tal:condition="artifacts">
-          <td align="right" valign="top" i18n:translate="">Uploads:</td>
+          <td align="right" valign="top"><tal:block i18n:translate="label_uploads">Uploads</tal:block>:</td>
           <td metal:define-slot="issue_uploads_slot"
               colspan="3">
             <table>
-              <div tal:repeat="item artifacts">
+              <tal:block repeat="item artifacts">
                 <tr>
                   <td tal:define="icon item/getIcon|item/icon|nothing;
                                   item_url python: item.absolute_url()
@@ -208,7 +210,7 @@
                         <img src="" alt="" border="0"
                              tal:attributes="src python: here.portal_url()
                                                          + '/' + icon;
-                                             alt item/Title|nothing"></a>
+                                             alt item/Title|nothing" /></a>
                     </span>                
                     <a href="ITEM URL" tal:attributes="href item_url"
                        tal:content="item/id">ITEM ID</a>
@@ -217,13 +219,12 @@
                                                   and '...')">
                     DESCRIPTION</span>
                 </td> </tr>
-              </div>
+              </tal:block>
             </table>
           </td>
         </tr>
 
-         <tr valign="middle">
-         </tr>
+        <tr valign="middle"><td>&nbsp;</td></tr>
 
        </table>
 

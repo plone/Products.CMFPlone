@@ -1,12 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" 
-      xml:lang="en-US"
-      lang="en-US" 
-      metal:define-macro="master">
-
-<tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
-                       global site_properties here/portal_properties/site_properties;" />
+      xml:lang="en"
+      lang="en" 
+      metal:define-macro="master"
+      tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
+                  global site_properties here/portal_properties/site_properties;
+                  global ztu modules/ZTUtils"
+      tal:attributes="lang site_properties/default_language|default;
+                      xml:lang site_properties/default_language|default;"
+      >
 
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="base">
@@ -26,6 +29,10 @@
     <metal:block metal:define-slot="head_slot" />
   </metal:block>
   
+  <metal:block fill-slot="css_slot">
+    <metal:block define-slot="css_slot" />
+  </metal:block>
+
   <metal:block metal:fill-slot="javascript_head_slot">
     <metal:block metal:define-slot="javascript_head_slot" />
   </metal:block>
@@ -39,14 +46,17 @@ Header stuff
 
 
 <table class="columns"
-       tal:define="slots_mapping here/prepare_slots;">
+       tal:define="slots_mapping options/slots_mapping|here/prepare_slots|nothing;">
 
     <tbody>
         <tr>
-            <td class="left">
-                <metal:block tal:repeat="slot slots_mapping/left">
+            <td class="left" metal:define-macro="left_column"
+	                     tal:condition="options/slots_mapping/left|slots_mapping/left|nothing">
+                <metal:block tal:repeat="slot options/slots_mapping/left|slots_mapping/left">
                 <tal:block tal:define="global pathexpr python:slot[0];
-                                       global usemacro python:slot[1];"
+                                       global usemacro python:slot[1];
+	                               site_properties here/portal_properties/site_properties;
+	                               portal_url here/portal_url;"
                            tal:condition="usemacro">
                     <metal:block metal:use-macro="python:path(pathexpr)" />
                 </tal:block>
@@ -64,26 +74,22 @@ Header stuff
                 <div id="contentTabs" metal:define-macro="contentTabs"
                      i18n:domain="plone">
    
-                    <tal:block tal:condition="not:actions|nothing">
-                        <comment tal:define="global actions here/portal_actions/listFilteredActionsFor"
-                                 tal:replace="nothing">
-                          In case we are called from DTML
-                        </comment>
-                    </tal:block>
-                    
-                    <span tal:define="global obj_actions actions/object;
-                                      global wf_actions actions/workflow;
-                                      global folder_actions actions/folder;
-                                      global local_actions python:actions.get('object_tabs', []);
-                                      global isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);" />
-				      
-                    <span tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
+                    <tal:block tal:define="global actions options/actions|actions|nothing;
+	                                   global obj_actions actions/object;
+                                           global wf_actions actions/workflow;
+                                           global folder_actions actions/folder;
+                                           global local_actions python:actions.get('object_tabs', []);
+	                                   site_properties here/portal_properties/site_properties;
+                                           global isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);
+	                                   global template_id options/template_id|template_id|template/getId|nothing;" />
+
+                    <tal:block tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
-                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');
-			                   href action/url;"> 
+                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template_id, 'selected', 'plain');
+			                   href action/url;">
                             <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
                         </a> 
-                    </span>
+                    </tal:block>
     
                 </div>
 
@@ -96,38 +102,47 @@ Header stuff
                 <div class="document"
                      tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
 
-                    <metal:block metal:use-macro="here/header/macros/portal_message">
-                    Message box
-                    </metal:block>
-        
-                    <div class="documentActions">
-                     
-                        <a href=""
-                           tal:condition="site_properties/allow_sendto | nothing"
-                           tal:attributes="href python:'%s/portal_form/sendto_form' % here.absolute_url()">
-                            <img src="mail_icon.gif" alt="Send to" title="Send this page to somebody" />
-                        </a>
+                    <div id="content">
 
-                        <a href="javascript:this.print();">
-                            <img src="print_icon.gif" alt="Print" title="Print this page" />
-                        </a>
+                        <metal:block metal:use-macro="here/header/macros/portal_message">
+                        Message box
+                        </metal:block>
+            
+                        <div class="documentActions"
+                             metal:define-macro="documentActions"
+                             tal:define="portal_url portal_url|here/portal_url">
+    
+                            <metal:block metal:define-slot="documentActions" tal:content="nothing">
+                            Document actions slot
+                            </metal:block>                     
+    
+                            <a href=""
+                               tal:condition="site_properties/allow_sendto | nothing"
+                               tal:attributes="href python:'%s/portal_form/sendto_form' % here.absolute_url()">
+                                <img i18n:attributes="title" tal:attributes="src string:$portal_url/mail_icon.gif" src="mail_icon.gif" alt="Send to" title="Send this page to somebody" />
+                            </a>
+    
+                            <a href="javascript:this.print();">
+                                <img i18n:attributes="title" tal:attributes="src string:$portal_url/print_icon.gif" src="print_icon.gif" alt="Print" title="Print this page" />
+                            </a>
+                        </div>
+    
+                        <metal:block metal:define-slot="header" tal:content="nothing">
+                        Header slot 
+                        </metal:block>
+    
+                        <metal:block metal:define-slot="main" tal:content="nothing">
+                        Page body text 
+                        </metal:block>
+            
+                        <metal:block metal:define-slot="sub">
+                        <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                        </metal:block> 
                     </div>
-
-                    <metal:block metal:define-slot="header" tal:content="nothing">
-                    Header slot 
-                    </metal:block>
-
-                    <metal:block metal:define-slot="main" tal:content="nothing">
-                    Page body text 
-                    </metal:block>
-        
-                    <metal:block metal:define-slot="sub">
-                    <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-                    </metal:block> 
                 </div>
             </td>
 
-            <td class="right">
+            <td class="right" tal:condition="slots_mapping/right">
                 <metal:block tal:repeat="slot slots_mapping/right">
                     <tal:block tal:define="global pathexpr python:slot[0];
                                            global usemacro python:slot[1];"

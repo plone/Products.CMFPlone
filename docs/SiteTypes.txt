@@ -1,0 +1,42 @@
+When you create a Plone Site you are prompted
+to choose what sort of "Site" you would like.
+In technical terms we call these "CustomizationPolicies" 
+(for better or for worse).  By default there are
+two Customizations:
+
+  * Default Plone - this is the base configuration.
+
+  * Private Plone - this is a customized Default Plone
+  which does not allow Anonymous users to view content
+  that has not been explicitly made publicly available,
+  or "publicized".
+
+    How does this work?  By default Plone uses DCWorkflow
+  which allows you to map states to content objects.
+  These states have an associated Permission mapping. When
+  transitioned this Permission mapping is applied to the
+  object.  So the only difference between a publicly
+  viewable and private content is its Permission setting. 
+
+    Also it pre-sets the configuration of several Folders
+  in the system.  Look at CMFPlone/PrivateSitePolicy.py
+  and you can read what the Policy is doing.  Its very
+  simple to read and you should get use to reading 
+  python source code (its very compact and legible - so
+  it doesnt take long to get use to it).  It publicizes
+  the Portal object, and publishes the Member folder.
+  As well as 'shows' the frontpage (index_html) in 
+  the root of your Portal.  Along with setting up a
+  new workflow and other configurations.
+  
+There are other third party policies you can create!
+zopezen.org is another policy that you can download
+and install.  create a new plone site, select zopezen
+and viola! you will have zopezen.org system.
+
+We are really looking forward to have more people
+contribute CustomizationPolicies to ship with future
+Plone releases.  Or to offer the community as third
+party add-ons.  
+
+

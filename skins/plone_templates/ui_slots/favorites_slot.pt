@@ -14,28 +14,32 @@
      tal:condition="folder"
      >
 
-    <span class="boxTitle" i18n:translate="box_my_favorites">My&nbsp;Favorites</span>
-
     <div class="box"
          tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);">
     
-        <div class="content odd" tal:condition="favorites">
+        <h5 i18n:translate="box_my_favorites">My Favorites</h5>
 
-            <span tal:repeat="o favorites">
-                <a class="marker"
-                   href=""
-                   tal:attributes="href o/getRemoteUrl" 
-                   tal:content="o/title_or_id">Favorite title</a>
-                <br />
-            </span>
-
-        </div>
+        <div class="body">
         
-        <div class="content even">
-            <a href="" 
-               class="marker" 
-               i18n:translate="box_organize_favorites"
-               tal:attributes="href string:${folder/absolute_url}/folder_contents">Organize Favorites</a>
+            <div class="content odd" tal:condition="favorites">
+    
+                <span tal:repeat="o favorites">
+                    <a class="marker"
+                       href=""
+                       tal:attributes="href o/getRemoteUrl" 
+                       tal:content="o/title_or_id">Favorite title</a>
+                    <br />
+                </span>
+    
+            </div>
+            
+            <div class="content even">
+                <a href="" 
+                   class="marker" 
+                   i18n:translate="box_organize_favorites"
+                   tal:attributes="href string:${folder/absolute_url}/folder_contents">Organize Favorites</a>
+            </div>
+
         </div>
     
     </div>   

@@ -4,6 +4,9 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
+<head metal:fill-slot="head_slot">
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0')" />
+</head>
 <body>
 
 <!-- 
@@ -42,10 +45,18 @@
         <div class="row">
             <div class="label" i18n:translate="label_status">Status</div>
             <div class="field"
-                 i18n:translate=""
                  tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
                              expiration_date python:test(here.expiration_date, here.expiration_date, '')">
-        This item is currently in the <strong i18n:name="review_state" i18n:translate="" tal:content="review_state">review_state;</strong> state
+        <span i18n:translate="label_current_state">
+            This item is currently in the 
+                <strong i18n:name="review_state">
+                    <span i18n:translate="" tal:content="review_state">
+                    review_state
+                    </span>
+                </strong>
+            state
+        </span>
+        
         <tal:block tal:condition="python: review_state == 'published'"
 	               tal:define="eff_date here/effective_date | nothing;
 	                           exp_date here/expiration_date | nothing;
@@ -115,25 +126,27 @@
            </div>
    	</div>
 
-        <div class="row">
+        <div class="row" tal:define="error errors/effective_date | nothing;">
             <div class="label">
               <span i18n:translate="label_effective_date">Effective Date</span>
                 <div id="effective_date_help"
                      i18n:translate="help_effective_date" 
                      class="help" 
                      style="visibility:hidden">
-                The date when the document will be visible when it's published. This way, you can 
-                publish a document in advance, but it will not be visible before this date.  If no date is selected
-                the document will be effective immediately.
+                The date when the item will be visible when it's published. This way, you can 
+                publish a item in advance, but it will not be visible before this date.  If no date is selected
+                the item will be effective immediately.
                 </div>
             </div>
             <div class="field">
                 <div tal:define="inputname  string:effective_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:test(here.EffectiveDate() and here.EffectiveDate()!='None', here.EffectiveDate(), '');
+                                 inputvalue python:test(here.EffectiveDate() and here.EffectiveDate()!='None', here.EffectiveDate(), request.get('effective_date', ''));
                                  onfocus string:formtooltip('effective_date_help',1);
                                  onblur string:formtooltip('effective_date_help',0);
-                                 tabindex tabindex/next;">
+                                 tabindex tabindex/next;"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+                  <div tal:replace="error" />
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     calendar pop-up
                   </div>
@@ -141,24 +154,26 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" tal:define="error errors/expiration_date | nothing;">
             <div class="label">
               <span i18n:translate="label_expiration_date">Expiration Date</span>
                 <div id="expiration_date_help"
                      i18n:translate="help_expiration_date" 
                      class="help" 
                      style="visibility:hidden">
-                The date when the document expires. This will automatically make the document
+                The date when the item expires. This will automatically make the item
                 invisible for others at the given date. If no date is chosen, it will never expire.
                 </div>
             </div>
             <div class="field">
                 <div tal:define="inputname  string:expiration_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:test(here.ExpirationDate() and here.ExpirationDate()!='None', here.ExpirationDate(), '');
+                                 inputvalue python:test(here.ExpirationDate() and here.ExpirationDate()!='None', here.ExpirationDate(), request.get('expiration_date', ''));
                                  onfocus string:formtooltip('expiration_date_help',1);
                                  onblur string:formtooltip('expiration_date_help',0);
-                                 tabindex tabindex/next;">
+                                 tabindex tabindex/next;"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+                  <div tal:replace="error" />
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     calendar pop-up
                   </div>
@@ -188,6 +203,7 @@
                           onfocus="formtooltip('publishing_comments_help',1)" 
                           onblur="formtooltip('publishing_comments_help',0)"
                           tal:attributes="tabindex tabindex/next;" 
+                          tal:content="request/comment|nothing"
                           ></textarea>
             </div>
         </div>
@@ -199,7 +215,7 @@
                      i18n:translate="help_change_status"
                      class="help"
                      style="visibility:hidden">
-                Select the new state for the selected documents.
+                Select the new state for the selected items.
                 </div>
             </div>
     
@@ -225,7 +241,8 @@
                            onblur="formtooltip('change_status_help',0)" 
                            tal:attributes="value transition/id;
                                            id    transition/id;
-                                           title transition/name;" />
+                                           title transition/name;
+                                           checked python:test(transition.get('id') == request.get('workflow_action', ''), 'checked', '')" />
                     <label for=""
                            i18n:translate=""
                            tal:attributes="for transition/id;"
@@ -245,7 +262,7 @@
                 <input class="context"
                        type="submit"
                        name="workflow_action_submit" 
-                       value="Apply"
+                       value="Save"
                        i18n:attributes="value" 
                        tal:attributes="tabindex tabindex/next;" />
             </div>
@@ -276,7 +293,7 @@
 	                        global odd repeat/items/odd; global rhComments items/comments;"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
                 tal:condition="items/action">
-                <td> 
+                <td i18n:translate=""> 
                 <span tal:replace="items/action" /> 
                 </td>
             
@@ -289,10 +306,10 @@
                 </td>
                 
                 <td>
-                  <span tal:replace="python: items['time'].strftime(site_properties.localTimeFormat)" />
+                  <span tal:replace="python: items['time'].strftime(container.portal_properties.site_properties.localTimeFormat)" />
                   <span tal:condition="items/effective_date|nothing">
-                  (<span i18n:translate="label_publishing_effective" omit-tag="">effective</span>: 
-                  <span tal:replace="python: items['effective_date'].strftime(site_properties.localTimeFormat)"></span>)
+                  (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>: 
+                  <span tal:replace="python: items['effective_date'].strftime(container.portal_properties.site_properties.localTimeFormat)"></span>)
                   </span>
                 </td>
               

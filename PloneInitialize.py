@@ -2,14 +2,26 @@ from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
 from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
+
+# add in message catalog stuff
+try:
+    from Products.Localizer.Localizer import manage_addLocalizer
+    from Products.Localizer.MessageCatalog import manage_addMessageCatalog
+    hasLocalizer = 1
+except ImportError:
+    hasLocalizer = 0
+
 from AccessControl import User
 
 from App.Extensions import getObject
 
+import glob 
 import OFS
 import os
 import sys
 import zLOG
+
+DEBUG = 0
 
 def log(message, summary='', severity=0):
     zLOG.LOG('Plone Database Init', severity, summary, message)
@@ -18,6 +30,9 @@ from ConfigParser import ConfigParser
 
 # grab the old initilalize...
 old_initialize = OFS.Application.initialize
+
+# for i18n stuff
+i18nDir = os.path.join(INSTANCE_HOME, 'Products', 'i18n')
 
 out = []
 
@@ -34,11 +49,83 @@ def go(app):
         # oh dear
         out.append('Database init failed miserably [%s, %s]' % _get_error())
 
-    log('\n'.join(out)+'\n')
+    if DEBUG and out:
+        # only log if we have something to say
+        # and are in DEBUG mode
+        log('\n'.join(out)+'\n')
 
 def _get_error():
     type, value = sys.exc_info()[:2]
     return str(type), str(value)
+
+def _installSkins(plone, skinList):
+    skin_tool = getattr(plone, 'portal_skins')
+
+   # ripped from Portal.py
+    for skin in skinList:
+        # cheeky fellow, this is bound to break at some point
+        directory_id = 'plone_styles/' + skin[6:].replace(' ', '_').lower()
+        path = [elem.strip() for elem in skin_tool.getSkinPath('Plone Default').split(',')]
+        path.insert(path.index('custom')+1, directory_id)
+        skin_tool.addSkinSelection(skin, ','.join(path))
+
+def _installLocalizer(plone):
+    out.append('Installing Localizer')
+
+    lName = 'Localizer'
+    tName = 'translation_service'
+    
+    if not plone.objectIds(lName):
+        # add localizer
+        manage_addLocalizer(plone, lName, 'en')
+        
+    if not tName in plone.objectIds():
+        # add a translation_service
+        plone.manage_addProduct['TranslationService'].addPlacefulTranslationService(tName)
+
+    tObj = plone._getOb(tName)
+    lObj = plone._getOb(lName)
+
+    # nuke out the accept_path
+    lObj.accept_methods = ['accept_cookie',]
+
+    # ok so now we should have valid localizer
+    # and translation service objects...
+
+    manage_addMessageCatalog(lObj, 'Plone', 'Plone Message Catalog', 'en')
+    mObj = lObj.Plone
+
+    tObj.manage_setDomainInfo(None, path_0='%s/Plone' % lName) 
+    # set the translation_service to the localizer...
+
+    # delete all languages, just in case, for 
+    # some reason im getting wierd ones
+    mObj.manage_delLanguages(languages=mObj._languages)
+
+    # add in languages
+    out.append('Reading .po files from %s' % i18nDir)
+    if os.path.exists(i18nDir):
+        for file in glob.glob(os.path.join(i18nDir, '*.po')):
+            try:
+                out.append('Found file: %s' % file)
+                fn = os.path.basename(file)
+                lang = fn[6:-3]
+
+                # first add in the language
+                out.append('Adding language: %s' % lang)
+                mObj.manage_addLanguage(lang)
+    
+                # then add in the file
+                out.append('Adding po file')
+                fh = open(file, 'rb')
+                mObj.manage_import(lang, fh)
+            except:
+                out.append('Failed to setup .po file for: %s' % file)
+    else:
+        out.append('No i18n directory found')
+
+    # set the default language to english
+    mObj.manage_changeDefaultLang(language='en')
 
 def _go(app):
     filename = 'plone.ini'
@@ -52,7 +139,6 @@ def _go(app):
         fh.close()
     except: 
         # no file found
-        out.append("No config file found, this is probably fine [%s, %s]" % _get_error())
         return
 
     # read the config file and find a million excuses
@@ -62,6 +148,7 @@ def _go(app):
         usernm  = cfg.get('databaseSetup', 'user')
         productList = cfg.get('databaseSetup', 'products').split(',')
         create = cfg.getint('databaseSetup', 'create')
+        skinList = cfg.get('databaseSetup', 'skins').split(',')
     except ConfigParser.NoSectionError:
         # no section name databaseSetup
         out.append("NoSectionError when parsing config file")
@@ -163,6 +250,13 @@ def _go(app):
         except:
             value, type = _get_error()
             out.append("Failed to install %s, reason:" % (productId, value, type))
+
+    # go and install the skins...
+    _installSkins(plone, skinList)
+
+    # go and install the translation service...
+    if hasLocalizer:
+        _installLocalizer(plone)
 
     get_transaction().commit()
 

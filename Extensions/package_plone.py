@@ -1,6 +1,6 @@
 import os
 
-release='1.0beta2'
+release='1.0.1'
 releasename='CMFPlone-%s' % release
 releasetar='CMFPlone%s.tar' % release
 
@@ -23,5 +23,4 @@ os.system("cd .. ; tar -cvf %s %s" % ( releasetar
                                      , releasename ) )
 os.system("cd .. ; gzip %s " % releasetar )
 
-#os.system("cd .. ; rm -rf " + releasename )
 

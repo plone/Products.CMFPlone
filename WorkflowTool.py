@@ -9,10 +9,18 @@ from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 
+from PloneUtilities import log
 class WorkflowTool( BaseTool ):
     security = ClassSecurityInfo()
     plone_tool = 1
 
+    security.declarePublic('doActionFor')
+    def doActionFor(self, ob, action, wf_id=None, *args, **kw):
+        """ it appears that objects are reindexed after they
+            are transitioned in DCWorkflow.  """
+        BaseTool.doActionFor(self, ob, action, wf_id, *args, **kw)
+        ob.reindexObjectSecurity() #Issue 442
+        
     #XXX this should not make it into 1.0 
     # Refactor me, my maker was tired
     def flattenTransitions(self, objs, container=None): 

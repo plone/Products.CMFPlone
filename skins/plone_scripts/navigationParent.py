@@ -11,6 +11,8 @@
 if obj is None: 
     obj=context
 
+checkPermission=context.portal_membership.checkPermission
+
 if obj.getId()=='index_html': #XXX hardcoded method name
     obj=obj.aq_parent         # we really want to know if this is a view or not.
 
@@ -24,7 +26,7 @@ relative_ids = context.portal_url.getRelativeContentPath(obj)
 if not relative_ids:
     return
     
-if not relative_ids and context.portal_membership.checkPermission('List folder contents', context):
+if not relative_ids and checkPermission('List folder contents', context):
     return context.absolute_url() + '/folder_contents'
 
 if relative_ids:
@@ -32,7 +34,7 @@ if relative_ids:
         parent=parent.aq_parent
     
     if parent.isPrincipiaFolderish and \
-       context.portal_membership.checkPermission('List folder contents', parent) and \
+       checkPermission('List folder contents', parent) and \
        templateId and templateId=='folder_contents':
         return parent.absolute_url() + '/folder_contents'
     else:

@@ -1,0 +1,100 @@
+plone_skin:string=Plone Core
+
+mainFont:string=65% Verdana, Helvetica, Arial, sans-serif
+mainBackground:string=#D6D6D6
+mainFontColor:string=#808080
+mainLinkColor:string=Black
+mainTabBorderColor:string=#A3A3A3
+mainTabBorderColorSelected:string=#A3A3A3
+mainTabBackground:string=#E5E5E5
+mainTabBackgroundNotSelected:string=White
+mainTabBackdrop:string=#BEBEBE
+mainTabFontWeight:string=normal
+mainTabFontColor:string=#808080
+mainTabFontColorSelected:string=#808080
+
+headingFont:string=100% Verdana, Helvetica, Arial, sans-serif
+headingFontColor:string=#808080
+headingSize1:string=160%
+headingSize2:string=150%
+headingSize3:string=140%
+headingSize4:string=120%
+headingSize5:string=100%
+headingSize6:string=80%
+
+descriptionFont:string=bold 100% Verdana, Helvetica, Arial, sans-serif
+
+contentFont:string=120% Verdana, Helvetica, Arial, sans-serif
+contentBackground:string=White
+contentImageBorder:string=0
+contentLinkActiveColor:string=Red
+contentLinkVisitedColor:string=Purple
+contentTabBorder:string=1px solid #A3A3A3
+contentTabBackground:string=#E5E5E5
+contentTabBackgroundNotSelected:string=White
+contentTabBackdrop:string=transparent
+contentTabFontWeight:string=normal
+contentTabFontColor:string=#808080
+contentTabFontColorSelected:string=#808080
+
+preBorder:string=1px solid #A3A3A3
+preBackground:string=#E5E5E5
+
+messageFont:string=bold 80% Verdana, Helvetica, Arial, sans-serif
+messageBackground:string=#E5E5E5
+messageBorder:string=1px solid #A3A3A3
+
+textTransform:string=lowercase
+noBorder:string=none
+evenRowBackground:string=#F8F8F8
+oddRowBackground:string=White
+groupBorder:string=1px solid #A3A3A3
+requiredField:string=url(required.gif) right no-repeat
+
+inputFont:string=bold 10px Verdana, Helvetica, Arial, sans-serif
+inputBorder:string=1px solid #A3A3A3
+
+contextButtonBackground:string=White url(linkTransparent.gif) 9px 1px no-repeat
+contextButtonPadding:string=1px 1px 1px 15px
+contextButtonFontColor:string=Black
+
+standaloneButtonBackground:string=#E5E5E5 url(linkOpaque.gif) 9px 1px no-repeat
+standaloneButtonPadding:string=1px 1px 1px 15px
+standaloneButtonFontColor:string=Black
+
+destructiveButtonBackground:string=#FFCE7B url(linkTransparent.gif) 9px 1px no-repeat
+destructiveButtonPadding:string=1px 1px 1px 15px
+destructiveButtonBorder:string=1px solid #FFA500
+destructiveButtonFontColor:string=Black
+
+buttonWeight:string=normal
+
+boxBorder:string=1px solid #A3A3A3
+boxHeaderBackground:string=#E5E5E5
+boxHeaderFontColor:string=#808080
+boxLinkBackground:string=url(linkTransparent.gif) -0.5em 0px no-repeat
+boxLinkColor:string=Black
+boxEvenBackground:string=#F8F8F8
+boxOddBackground:string=White
+boxHighlight:string=2px solid #FFCF7F
+
+listingBorder:string=1px solid #A3A3A3
+listingHeaderBackground:string=#E5E5E5
+listingHeaderFontColor:string=#808080
+listingLinkHover:string=underline
+listingEvenBackground:string=#F8F8F8
+listingOddBackground:string=White
+
+topBackground:string=#BEBEBE
+topMargin:string=0
+topPadding:string=0
+
+logoMargin:string=1em 0em 1em 2em
+logoPadding:string=0
+
+searchMargin:string=3em 0em 0em 0em
+searchPadding:string=0em 2em 0em 0em
+searchFontColor:string=#808080
+
+footerBackground:string=#E5E5E5
+footerBorder:string=1px solid #A3A3A3

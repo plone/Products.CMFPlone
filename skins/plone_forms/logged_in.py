@@ -9,7 +9,7 @@
 ##
 from DateTime import DateTime
 REQUEST=context.REQUEST
-properties_tool=context.portal_properties
+properties_tool=context.portal_properties.site_properties
 membership_tool=context.portal_membership
 
 isAnonymous = membership_tool.isAnonymousUser()
@@ -28,7 +28,7 @@ if pagetemplate is None and member.getProperty('login_time', None) == DateTime('
   and properties_tool.validate_email:
     pagetemplate=context.restrictedTraverse(login_changepassword)
 
-if pagetemplate is None and not(member.getProperty('login_time', None) == DateTime('2000/01/01') and properties_tool.validate_email):
+if pagetemplate is None and not(member.getProperty('login_time', None) == '2000/01/01' and properties_tool.validate_email):
     pagetemplate=context.restrictedTraverse(login_success)
 
 return pagetemplate()

@@ -34,8 +34,7 @@
                                                           , first=b_start
                                                           , last=b_end
                                                           );
-                     b_more  python: len( batch ) >= b_size;
-                    ">
+                     b_more  python: len( batch ) >= b_size">
     
         <h1> 
             <span tal:replace="python: modules['string'].capitalize( mode )">Mode</span>
@@ -182,13 +181,13 @@
             <input type="submit" 
                    class="context"
                    name="wikipage_compare_versions:method"
-                   value="Compare">
+                   value="Compare" />
             <span tal:condition="editor">
                  &nbsp; &nbsp;
                  <input type="submit" 
                         class="context" 
                         name="wikipage_copyhistory_handler:method"
-                        value="Copy to present">
+                        value="Copy to present" />
             </span>
 
 

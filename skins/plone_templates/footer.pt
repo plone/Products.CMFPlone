@@ -1,18 +1,43 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<div class="footer" metal:define-macro="portal_footer">
+<div class="footer" metal:define-macro="portal_footer" i18n:domain="plone"
+     tal:define="portal_url here/portal_url">
 
 <a href="http://plone.org">
 <img src="" 
      height="30"
      width="96"
+     border="0"
      alt="Powered by Plone"
      title="This site was built using the Plone Content Management System. Click for more information."
      tal:attributes="src string:$portal_url/plone_powered.gif" 
      i18n:attributes="alt title" />
 </a>
 
+<!-- 
+     
+     Please keep the Plone Powered button (or a textual link to us) if you use 
+     Plone on your site. It's a nice token of gratitude, and we appreciate your
+     help in promoting the Plone name. 
+     
+     Plone is powered by the combined forces of Zope and CMF, two absolutely
+     great systems made by Zope Corporation (http://zope.com) and they in turn
+     are based on the best programming language in the world - Python
+     (http://www.python.org). We owe these guys a lot, thanks for making Plone
+     possible!
+     
+ -->
+
+<br />
+
+<span i18n:translate="description_copyright" tal:omit-tag="">
+Plone is Copyright &copy; 2000-<span i18n:name="current_year" tal:define="now modules/DateTime/DateTime" tal:content="now/year" />
+by
+<span i18n:name="limi"><a href="http://limi.net">Alexander Limi</a></span>,
+<span i18n:name="runyaga"><a href="http://www.runyaga.com">Alan Runyan</a></span>,
+<span i18n:name="blacktar"><a href="http://blacktar.com">Vidar Andersen</a></span>.
+</span>
 
 <hr size="" class="netscape4" />
 

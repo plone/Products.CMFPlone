@@ -21,20 +21,25 @@
 
         <tr>
             <th>
-                <a href="#" tal:attributes="href python:'%s/?month:int=%d&year:int=%d' % (here.absolute_url(),prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
+                <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
             </th>
 
             <th colspan="5" tal:define="date string:$month/1/$year">
-              <span tal:replace="python:DateTime(date).strftime('%B').capitalize()"/> <span tal:replace="python:DateTime(date).year()"/>
+                <span i18n:translate="">
+                    <span i18n:name="monthname">
+                        <span i18n:translate="" tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag="" />
+                    </span>
+                    <span i18n:name="year" tal:content="python:DateTime(date).year()" tal:omit-tag=""/>
+                </span>
             </th>
 
             <th>
-                <a href="#" tal:attributes="href python:'%s/?month:int=%d&year:int=%d' % (here.absolute_url(),nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
+                <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
             </th>
 
         <tr tal:define="weekdays here/portal_calendar/getDays">
           <tal:block repeat="weekday weekdays">
-            <td class="weekdays" tal:content="weekday">Su</td>
+            <td class="weekdays" i18n:translate="" tal:content="weekday">Su</td>
           </tal:block>
         </tr>
 
@@ -44,14 +49,14 @@
                                    datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
                                    javascriptstring string:javascript:%sDay('%s');">
                   <td class="event" tal:condition="day/event"
-                      tal:attributes="onMouseOut  python: javascriptstring % ('hide', datestring);
-                                      onMouseOver python: javascriptstring % ('show', datestring);
+                      tal:attributes="onmouseout  python: javascriptstring % ('hide', datestring);
+                                      onmouseover python: javascriptstring % ('show', datestring);
                                       class       python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todayevent', 'event')">
                     <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=daynumber, month=month, year=year)" tal:omit-tag="">
                       <span tal:define="begin python:DateTime(begEndTimes[0].timeTime()+86400).ISO();
                                         end python:DateTime(begEndTimes[1].strftime('%m/%d/%y')).ISO();
                                         pss python:modules['Products'].PythonScripts.standard" tal:omit-tag="">
-                      <a href tal:attributes="href python:here.portal_url()+'/search?review_state=published&start:date=%s&start_usage=range:max&end:date=%s&end_usage=range:min'%(pss.url_quote(begin),pss.url_quote(end))">
+                      <a href tal:attributes="href python:here.portal_url()+'/search?review_state=published&amp;start:date=%s&amp;start_usage=range:max&amp;end:date=%s&amp;end_usage=range:min'%(pss.url_quote(begin),pss.url_quote(end))">
                         <span tal:replace="python: daynumber or default">&nbsp;</span>
                       </a>
                       </span>

@@ -9,21 +9,18 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<span tal:condition="nothing">
+<tal:block tal:condition="nothing">
   Template description: Form for submitting new collector issues.
-</span>
-
-<body>
+</tal:block>
 
 <div metal:fill-slot="header">
 
 <h1 i18n:translate="heading_add_new_issue_to">
-Add new issue to <span tal:condition="here/Title"
-tal:replace="here/Title" i18n:name="collector_title">TITLE</span>
+Add new issue to < tal:block content="here/title_or_id"
+i18n:name="collector_title">TITLE</tal:block>
 </h1>
 
 <div class="description" i18n:translate="description_add_new_issue">
@@ -60,7 +57,7 @@ as possible.
     <div class="row">
         <div class="label" i18n:translate="label_security">Security</div>
         <div class="field">
-            <input type=hidden name="security_related:boolean" value="">
+            <input type="hidden" name="security_related:boolean" value="" />
             <input class="noborder" 
                    type=checkbox 
                    name="security_related:boolean"
@@ -150,7 +147,8 @@ as possible.
     <div class="row">
         <div class="label" i18n:translate="label_version_info">Version Info</div>
         <div class="field">
-            <textarea name="version_info" rows="3" cols="35"><span tal:replace="here/version_info_spiel"></span></textarea>
+            <textarea name="version_info" rows="3" cols="35"
+                      tal:content="here/version_info_spiel"></textarea>
         </div>
     </div>
     
@@ -162,7 +160,7 @@ as possible.
     <div class="row">
          <div class="label" i18n:translate="label_description">Description</div>
          <div class="field">
-           <textarea name="description:text" rows="10" cols="55" i18n:translate="help_prefix_lines_with_whitespace">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
+           <textarea name="description:text" rows="10" cols="55" i18n:translate="help_prefix_lines_with_whitespace"></textarea>
          </div>
 
     </div>
@@ -193,8 +191,10 @@ as possible.
     <div class="row">
         <div class="label" i18n:translate="label_attachment_type_optional"> Attachment type (optional)</div>
         <div class="field">
-            <input class="noborder" type=radio name="filetype" value="File" checked /> File 
-            <input class="noborder" type=radio name="filetype" value="Image" /> Image
+            <input class="noborder" type=radio name="filetype" id="radio_file" value="File" checked />
+	    <label for="radio_file" i18n:translate="">File</label>
+            <input class="noborder" type=radio name="filetype" id="radio_image" value="Image" />
+	    <label for="radio_image" i18n:translate="">Image</label>
         </div>
     </div>
     
@@ -218,5 +218,4 @@ as possible.
 
 </div>
 
-</body>
 </html>
