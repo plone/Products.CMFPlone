@@ -42,8 +42,9 @@
           name="users"
           method="post"
           tal:attributes="action here/absolute_url"
-     tal:define="portal_users python: here.portal_membership.listMembers();
-                                      batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
+	  tal:define="searchstring request/searchstring | nothing;
+                      portal_users python:here.prefs_user_group_search(searchstring, 'users');
+                      batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
 
     <p i18n:translate="description_user_management">
       Click the User Name to see and change the details of a specific
@@ -73,16 +74,18 @@
                            type="text"
                            name="searchstring"
                            value=""
-                           tal:attributes="tabindex tabindex/next;"
+                           tal:attributes="value searchstring;
+		                           tabindex tabindex/next;"
                            />
                 
                     <input type="hidden" name="searchonly" value="users" />
                     <input type="submit"
-                           name="prefs_user_group_search_form:method"
+                           name="prefs_user_group_search_form"
                            value="Search"
                            tabindex=""
                            i18n:attributes="value"
-                           tal:attributes="tabindex tabindex/next;" />
+                           tal:attributes="name string:${template/id}:method;
+		                           tabindex tabindex/next;" />
 
                 </th>
             </tr>
@@ -93,14 +96,6 @@
                 <th i18n:translate="listingheader_reset_password">Reset Password</th>
                 <th i18n:translate="listingheader_remove_user">Remove user</th>
             </tr>
-
-            <tal:comment replace="nothing">
-            pjgrizel->limi: GRUF already has several API methods to return the results you'd like to have:
-              - getPureUsers() behaves like getUsers() but returns no groups
-              - userobject.isGroup() method returns true if userobject is a group, then you can avoid
-               the hazardous "getGroupPrefix()" stuff.
-              Seems like it's time to document the whole GRUF API ! :-)
-            </tal:comment>
 
             <tal:block repeat="this_user batch">
 
