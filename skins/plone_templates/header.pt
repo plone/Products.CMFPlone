@@ -126,12 +126,6 @@
 
 		</div>
 	
-		<!-- A tiny script to focus on the search gadget automatically 
-		<script language="JavaScript" type="text/javascript">
-			document.searchform.searchGadget.focus();
-		</script>
-	    -->
-			
 	<hr size="" class="netscape4" />
      
 <!-- NOTE:
@@ -158,8 +152,8 @@
 	         tal:attributes="href tab/url;
 		                 class python:test(compare_id==tab['id'], 'selected', 'plain')">
 	      <span tal:replace="tab/name">welcome</span>
-	      <span class="netscape4">&middot;</span>
 	      </a>
+	      <span class="netscape4">&middot;</span>
 	    </metal:block>
 	</div>
 	
