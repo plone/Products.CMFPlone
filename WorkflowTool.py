@@ -11,10 +11,25 @@ from Products.CMFCore import CMFCorePermissions
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from PloneUtilities import log
 
+try:
+    from Products.CMFEventService.Events import ContentAddEvent as AddEvent
+except:
+    AddEvent=None
+
 class WorkflowTool( BaseTool ):
     security = ClassSecurityInfo()
     plone_tool = 1
 
+    security.declarePrivate('notifyCreated')
+    def notifyCreated(self, ob):
+        """ after the object has been created lets send an event if possible """
+        BaseTool.notifyCreated(self, ob)
+
+        portal_events=getToolByName(self, 'portal_events', None)
+        if portal_events is not None and AddEvent:
+            event=AddEvent(ob, context=ob.aq_parent)
+            portal_events.publish(event)
+            
     security.declarePublic('doActionFor')
     def doActionFor(self, ob, action, wf_id=None, *args, **kw):
         """ it appears that objects are reindexed after they
