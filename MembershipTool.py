@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
 from Products.CMFPlone.PloneFolder import addPloneFolder
+from OFS.Image import Image
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Acquisition import aq_base
@@ -18,7 +19,7 @@ Default page for %s
   To change the content just click the 'edit'
   tab above.
 """
-        
+
 class MembershipTool( BaseTool ):
     """ Plone customized Membership Tool """
     meta_type='Plone Membership Tool'
@@ -27,20 +28,23 @@ class MembershipTool( BaseTool ):
     portrait_id = 'MyPortrait'
     default_portrait = 'defaultUser.gif'
     security = ClassSecurityInfo()
-    
+
     def getPersonalPortrait(self, member_id=None, verifyPermission=0):
         """
         returns the Portait for a member_id
         """
-        portrait=None
-        personal=self.getPersonalFolder(member_id)
+        membertool   = getToolByName(self, 'portal_memberdata')
 
-        if personal:
-            portrait=getattr( personal
-                            , self.portrait_id
-                            , None )
-            if verifyPermission and not _checkPermission('View', portrait):
-                return None
+        # what are we doing with that
+        #if verifyPermission and not _checkPermission('View', portrait):
+        #    return None
+        if not member_id:
+            member_id = self.REQUEST.get('userid')
+            
+        portrait = membertool._getPortrait(member_id)
+        if type(portrait) == type(''):
+            portrait = None
+        #portrait = None
         if portrait is None:
             portal = getToolByName(self, 'portal_url').getPortalObject()
             portrait = getattr(portal, default_portrait)
@@ -61,28 +65,17 @@ class MembershipTool( BaseTool ):
         return personal
 
     def changeMemberPortrait(self, portrait, member_id=None):
-        """ 
+        """
         given a portrait we will modify the users portrait
         we put this method here because we do not want
         .personal or portrait in the catalog
-
-        portraits are $MemberHomeFolder/.personal/MyPortrait
         """
         if portrait and portrait.filename:
-            catalog=getToolByName(self, 'portal_catalog')
-            personal=self.getPersonalFolder(member_id)
-            if not personal:
-                home=self.getHomeFolder(member_id)
-                home.invokeFactory(id=self.personal_id, type_name='Folder')
-                personal=getattr(home, self.personal_id)
-                catalog.unindexObject(personal) #remove persona folder from catalog
-            if hasattr(personal, self.portrait_id):
-                personal.manage_delObjects(self.portrait_id)
-            personal.invokeFactory(id=self.portrait_id, type_name='Image')
-            portrait_obj=getattr(personal, self.portrait_id, None)
-            portrait_obj.edit(file=portrait)
-            catalog.unindexObject(portrait_obj) #remove portrait image from catalog
-                
+            portrait = Image(id=member_id, file=portrait, title='')
+            membertool   = getToolByName(self, 'portal_memberdata')
+            membertool._setPortrait(portrait, member_id)
+
+
     def createMemberarea(self, member_id):
         """
         since we arent using PortalFolders and invokeFactory will not work
@@ -90,14 +83,14 @@ class MembershipTool( BaseTool ):
         """
         parent = self.aq_inner.aq_parent
         members =  self.getMembersFolder()
-       
+
         if members is None:
             parent.manage_addPloneFolder(id=self.membersfolder_id, title='Members')
             members =  self.getMembersFolder()
             if members:
-                # XXX This is the same code as in Portal.py 
+                # XXX This is the same code as in Portal.py
                 members._setProperty('right_slots', (), 'lines')
-                
+
                 portal_catalog = getToolByName( self, 'portal_catalog' )
                 portal_catalog.unindexObject(members) #unindex Members folder
                 members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html',
@@ -106,7 +99,7 @@ class MembershipTool( BaseTool ):
                 members._setPortalTypeName( 'Folder' )
                 members.setTitle('Members')
                 members.setDescription("Container for portal members' home directories")
-            
+
         if members is not None and not hasattr(members, member_id):
             f_title = "%s's Home" % member_id
             try:
@@ -154,13 +147,13 @@ class MembershipTool( BaseTool ):
             member_folder=self.getHomeFolder(member_id)
             member_folder.description = 'Home page area that contains the items created and ' \
                                         + 'collected by %s' % member_id
-        
+
             member_folder.manage_addPloneFolder('.personal', 'Personal Items')
             personal=getattr(member_folder, '.personal')
             personal.description = "contains personal workarea items for %s" % member_id
             personal.changeOwnership(user)
             personal.manage_setLocalRoles(member_id, ['Owner'])
-            
+
             catalog = getToolByName(self, 'portal_catalog')
             catalog.unindexObject(personal) #dont add .personal folders to catalog
 
@@ -169,6 +162,22 @@ class MembershipTool( BaseTool ):
 
             if notify_script is not None:
                 notify_script()
+
+
+    def listMembers(self):
+        '''Gets the list of all members.
+        '''
+        groups = []
+        # can we allways asume that there is a groups_tool
+        groups = self.portal_groups.listGroupIds()
+        members = BaseTool.listMembers(self)
+        result = []
+        for member in members:
+            if member.getUser().getUserName() in groups:
+                continue
+            result.append(member)
+        return result
+
 
     # this should probably be in MemberDataTool.py
     #security.declarePublic( 'searchForMembers' )
@@ -199,10 +208,11 @@ class MembershipTool( BaseTool ):
 
         res = []
         portal = self.portal_url.getPortalObject()
-        for user in portal.portal_membership.listMembers():
+
+        for user in self.listMembers():
             #user = md.wrapUser(u)
-	    u = user.getUser()
-	    if not (user.listed or is_manager):
+            u = user.getUser()
+            if not (user.listed or is_manager):
                 continue
             if name:
                 if (u.getUserName().lower().find(name) == -1) and (user.fullname.lower().find(name) == -1):
