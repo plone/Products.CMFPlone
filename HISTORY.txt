@@ -1,4 +1,9 @@
 CHANGES
+Plone 1.0 RC1
+    - Workflow modification so that Owners can see folder_buttons in Folders that they own.
+      Also moved over hardcoded Permissions to constants found in CMFCore.CMFCorePermissions
+      fixes Issue 557
+
 Plone 1.0 beta3
     - whether or not /folder_contents is appended to the url in folder_contents is now determined by site_properties/use_folder_contents
     - Issue #458 - portal_properties.site_properties is where all Plone/site-wide configuration data is now held

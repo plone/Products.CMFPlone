@@ -1,3 +1,5 @@
+from Products.CMFCore.CMFCorePermissions import ModifyPortalContent, View, \
+     AccessContentsInformation
 from Products.CMFCore.WorkflowTool import addWorkflowFactory
 from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
 from Products.DCWorkflow.Default import setupDefaultWorkflowRev2
@@ -19,26 +21,26 @@ def setupPrivatePloneWorkflow(wf):
     # default plone workflow plus some modifications
     setupDefaultPloneWorkflow(wf)
     wf.states.setInitialState(id='private')
-    wf.states.published.permission_roles['View'] = ('Member', \
+    wf.states.published.permission_roles[View] = ('Member', \
                                                     'Reviewer', 'Manager')
-    wf.states.visible.permission_roles['View'] = ('Member', \
+    wf.states.visible.permission_roles[View] = ('Member', \
                                                   'Reviewer', 'Manager')
 
     wf.states.addState('public')
     sdef=wf.states.public
     sdef.setProperties( title='Publicly available'
                         , transitions=('published', 'reject', 'retract') )
-    sdef.setPermission('View', 1, ('Anonymous', 'Authenticated'))
-    sdef.setPermission('Access contents information', 1, \
+    sdef.setPermission(View, 1, ('Anonymous', 'Authenticated'))
+    sdef.setPermission(AccessContentsInformation, 1, \
                        ('Anonymous', 'Authenticated'))
-    sdef.setPermission('Modify portal content', 1, ('Manager', ) )
+    sdef.setPermission(ModifyPortalContent, 1, ('Manager', ) )
     wf.transitions.addTransition('publicize')
     tdef = wf.transitions.publicize
     tdef.setProperties( title='Publicize content'
                         , new_state_id='public'
                         , actbox_name='Publicize'
                         , actbox_url='%(content_url)s/content_history_form'
-                        , props={'guard_permissions':'Modify portal content'
+                        , props={'guard_permissions':ModifyPortalContent
                                  ,'guard_roles':'Owner;Manager'} )        
     for sdef in wf.states.objectValues():
         if sdef.id != 'public':
