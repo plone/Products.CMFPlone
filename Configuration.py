@@ -215,7 +215,7 @@ class OneFourConfiguration(OriginalConfiguration):
                     action.id in ('edit', 'metadata'):
                     action.action=Expression(text='string:portal_form/'+exprtxt)
                 if action.id=='metadata':
-                    action.title='properties'
+                    action.title='Properties'
             ptype._actions=tuple(ptype_actions)
 
         actions_tool=getToolByName(portal, 'portal_actions')
