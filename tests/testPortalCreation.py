@@ -68,9 +68,9 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(members.meta_type, 'Large Plone Folder')
 
     def testMembersFolderPortalType(self):
-        # Members folder should have portal_type 'Folder'
+        # Members folder should have portal_type 'Large Plone Folder'
         members = self.membership.getMembersFolder()
-        self.assertEqual(members._getPortalTypeName(), 'Folder')
+        self.assertEqual(members._getPortalTypeName(), 'Large Plone Folder')
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
