@@ -127,9 +127,9 @@ def addDocumentActions(portal):
                  'document_actions')
 
 def registerMigrations():
-    MigrationTool.registerUpgradePath('1.0.1','1.1',upg_1_0_1_to_1_1)
-    MigrationTool.registerUpgradePath('1.0.2','1.1',upg_1_0_1_to_1_1)
-    MigrationTool.registerUpgradePath('1.0.3','1.1',upg_1_0_1_to_1_1)
+    MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
+    MigrationTool.registerUpgradePath('1.0.2','1.1alpha2',upg_1_0_1_to_1_1)
+    MigrationTool.registerUpgradePath('1.0.3','1.1alpha2',upg_1_0_1_to_1_1)
     
 if __name__=='__main__':
     registerMigrations()
