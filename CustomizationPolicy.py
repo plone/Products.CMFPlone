@@ -4,6 +4,15 @@ from Products.CMFPlone.Portal import addPolicy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
+
+
+try:
+    from Products.CMFQuickInstallerTool import QuickInstallerTool
+except:
+    #QuickInstallerTool is an external Prod and therefore
+    #Plone should not (yet) be dependent on it
+    QuickInstallerTool = None
+
 from interfaces.CustomizationPolicy import ICustomizationPolicy
 
 ExtInstalled=0
@@ -123,6 +132,13 @@ class DefaultCustomizationPolicy:
                 if action.id=='join':
                     action.action=Expression('string:${portal_url}/portal_form/join_form')
         actions_tool._actions=tuple(actions)
+        
+    def installPortalTools(self,portal):
+        ''' thats the place to install custom tools '''
+
+        if QuickInstallerTool and not 'portal_quickinstaller' in portal.objectIds():
+            portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
+        
 
     def customize(self, portal):
         #make 'reply' tab unvisible
@@ -131,6 +147,8 @@ class DefaultCustomizationPolicy:
         for a in dt_actions: 
             if a.id=='reply': a.visible=0
         dt._actions=dt_actions
+        
+        self.installPortalTools(portal)
 
         #make 'syndication' tab unvisible
         st=getToolByName(portal, 'portal_syndication')
