@@ -54,8 +54,7 @@
                     <form name="reply"
                          action="discussion_reply_form"
                          method="post"
-                                  style="display: inline;"
-                         tal:condition="python:getattr(here, 'isPortalContent', 0)"
+                         style="display: inline;"
                          tal:attributes="action string:${reply/absolute_url}/discussion_reply_form">
                          
                         <input class="standalone" 
