@@ -13,6 +13,7 @@ def installPortalTools(self,portal):
     ''' thats the place to install custom tools '''
     pass
 
+
 def addSiteProperties(self, portal):
     """ adds site_properties in portal_properties """
     id='site_properties'

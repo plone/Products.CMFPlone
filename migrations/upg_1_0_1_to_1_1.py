@@ -12,7 +12,7 @@ def upg_1_0_1_to_1_1(portal):
 
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
-    
+
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm']
     safeEditProperty(props, 'default_page', default_values, 'lines')

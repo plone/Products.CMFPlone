@@ -31,7 +31,7 @@ def getCMFVersion():
     _version=file.read()
     file.close()
     return _version.strip()
-    
+
 def registerConfiguration(versions, configuration):
     _versions=()
     if type(versions) is StringType:
@@ -64,7 +64,7 @@ class OriginalConfiguration:
                              , 'Metadata'
                              , 'metadata_edit_form'
                              , CMFCorePermissions.ModifyPortalContent
-                             , 'object' ) 
+                             , 'object' )
 
     def _installExternalEditor(self, portal):
         types_tool=getToolByName(self, 'portal_types')
@@ -193,7 +193,7 @@ class OneFourConfiguration(OriginalConfiguration):
 
     def installExternalEditor(self, portal):
         types_tool=getToolByName(portal, 'portal_types')
-        methods=('PUT', 'manage_FTPget') 
+        methods=('PUT', 'manage_FTPget')
         exclude=('Topic', 'Event', 'Folder')
         for ctype in types_tool.objectValues():
             if ctype.getId() not in exclude:
