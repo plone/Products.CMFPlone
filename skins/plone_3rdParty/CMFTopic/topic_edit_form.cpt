@@ -7,7 +7,7 @@
 
 <div metal:fill-slot="main"
      tal:define="errors options/state/getErrors;">
-<span tal:replace="errors" />
+
     <h1 i18n:translate="heading_edit_item">
     Edit
         <span i18n:name="itemtype">
@@ -36,7 +36,7 @@
                          id python:request.get('id', test(here.show_id(),here.getId(),''));">
             <div class="label required">
 
-                <span i18n:translate="label_name">Name</span>
+                <span i18n:translate="label_name">Short Name</span>
 
                 <div id="id_help"
                      i18n:translate="help_name"
@@ -182,7 +182,6 @@
         <input type="hidden" name="form.submitted" value="1" />
 
     </form>
-<span tal:replace="structure request" />
 </div>
 
 </body>
