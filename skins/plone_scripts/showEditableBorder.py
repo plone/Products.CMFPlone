@@ -7,19 +7,12 @@
 ##parameters=template_id
 ##title=returns whether or not current template displays *editable* border
 ##
-REQUEST=context.REQUEST
-membership=context.portal_membership
-
 actions=context.portal_actions.listFilteredActionsFor(context)
 anonymous=membership.isAnonymousUser()
-contextEditable=membership.checkPermission('Modify portal content', context) 
-isWorkflowable=actions.get('workflow', None)
+wf_actions=actions.get('workflow', ())
+obj_actions=actions.get('object', ())
 
-if anonymous and not contextEditable:
-    return 0
+# no special cases; just check if we have tabs to show
+# listFilteredActionsFor does all the rest for us
 
-if template_id=='folder_contents' or isWorkflowable :
-    return 1
-
-if contextEditable and context.getTypeInfo().Type()=='Topic':
-    return 1
+return wf_actions or len(wf_actions) > 1
