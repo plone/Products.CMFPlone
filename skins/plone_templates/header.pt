@@ -104,8 +104,9 @@
 
     <!-- Common Plone ECMAScripts -->
 
-    <!-- Pull-down ECMAScript menu -->
-    <script type="text/javascript"
+    <!-- Pull-down ECMAScript menu, only active if logged in -->
+    <script tal:condition="not: isAnon"
+            type="text/javascript"
             tal:attributes="src string:$portal_url/plone_menu.js"></script>
 
     <!-- Define dynamic server-side variables for javascripts in this one  -->
