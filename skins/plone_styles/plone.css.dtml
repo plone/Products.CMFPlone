@@ -287,6 +287,7 @@ div.tabs a {
     border-style: solid solid none solid;
     color: &dtml-mainTabFontColor;;
     font-weight: &dtml-mainTabFontWeight;;
+    height: 1.2em;
     margin-right: 0.5em;
     padding: 0em 2em;
     text-transform: &dtml-textTransform;;
@@ -387,6 +388,7 @@ table.columns td.right {
     border: &dtml-contentTabBorder;;
     color: &dtml-contentTabFontColor;;
     font-weight: &dtml-contentTabFontWeight;;
+    height: 1.2em;
     margin-right: 0.5em;
     padding: 0em 2em;
     text-transform: &dtml-textTransform;;
