@@ -60,6 +60,15 @@
           certain Groups have a particular role.
         </p>
     
+       <input class="standalone add"
+              tabindex=""
+              type="submit"
+              name="prefs_group_details:method"
+              value="Add New Group"
+              tal:attributes="tabindex tabindex/next;"
+              i18n:attributes="value"
+              />
+
             <table class="listing">
                    
                 <tr>
@@ -151,26 +160,10 @@
                    tabindex=""
                    type="submit"
                    name="prefs_group_manage:method"
-                   value="Save"
+                   value="Apply Changes"
                    tal:attributes="tabindex tabindex/next;"
                    i18n:attributes="value"
                    />
-     <!--   <input tabindex=""
-               type="text"
-               name="addname"
-               value=""
-               tal:attributes="tabindex tabindex/next;"
-               />-->
-    
-       <input class="standalone add"
-              tabindex=""
-              type="submit"
-              name="prefs_group_details:method"
-              value="Add New Group"
-              tal:attributes="tabindex tabindex/next;"
-              i18n:attributes="value"
-              />
-    
         </form>
     
         <h1 i18n:translate="heading_roles_management">Roles Management</h1>
