@@ -3,12 +3,9 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-  <metal:block fill-slot="base">
-    <tal:block tal:define="dummy python:request.set('disable_border', 1)"
-               tal:replace="nothing">
-    Disable the tabs
-    </tal:block>
-  </metal:block>
+  <metal:block fill-slot="head_slot"
+               tal:define="dummy python:request.set('disable_border', 1)" 
+               />
     
 <div metal:fill-slot="main"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
@@ -33,7 +30,8 @@
 
                 <h6>
                     <img src="" style="border: 0" 
-                         tal:attributes="src result/getIcon; alt result/Type; alt result/title" />
+                         tal:attributes="src result/getIcon; 
+                                         alt result/Type" />
                 
                     <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span> 
                 

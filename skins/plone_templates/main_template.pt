@@ -55,7 +55,8 @@
 <table class="columns"><tbody><tr>
 
     <!-- start of the left (by default at least) column -->
-    <td class="left">
+    <td class="left"
+        tal:condition="slots_mapping/left">
         <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
         This instruction gets the portlets (boxes) for the left column.
         </metal:leftportlets>
@@ -66,9 +67,7 @@
     <!-- start of main content block -->
     <td class="main"
         id="contentWrapper"
-         tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions );
-                     Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                     tabindex python:Iterator(pos=0);">
+         tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions )">
 
         <metal:ifborder tal:condition="show_border" >
             <div metal:use-macro="here/view_tabs/macros/content_tabs"></div>
@@ -105,7 +104,8 @@
     <!-- end of main content block -->
 
     <!-- start of right (by default at least) column -->
-    <td class="right">
+    <td class="right"
+        tal:condition="slots_mapping/right">
         <div metal:use-macro="here/portlets_fetcher/macros/right_column">
         This instruction gets the portlets (boxes) for the right column.
         </div>
