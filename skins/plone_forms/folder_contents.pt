@@ -71,10 +71,12 @@
                    class="listing"
                    summary="Content listing"
                    cellpadding="0" cellspacing="0"
+                   tal:define="folder_contents folder_contents|nothing;
+                               folderfilter folderfilter|nothing"
                    metal:define-macro="folder_listing">
-    
-                <thead>
-                    <tr>
+                   
+                <thead >
+                    <tr tal:condition="folderfilter">
                         <td class="top" colspan="6">
 
                             <!-- Filter pulldown -->
@@ -88,7 +90,7 @@
                                         onChange="submitFilterAction()"
                                         tabindex=""
                                         tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" 
-                                        tal:attributes="tabindex tabindex/next;"
+                                        tal:attributes="tabindex tabindex/next|nothing;"
                                         >
                     
                                     <option value="#" 
@@ -108,13 +110,13 @@
                                 <input type="hidden" name="filter_by_Subject:tokens" value="" />
                                 <!--you can filter by subject keywords by filling in this value-->
                             </span>
-
+                            
                         <metal:block tal:define="allowedContentTypes here/allowedContentTypes"
                             tal:condition="allowedContentTypes">
                             <!-- Add Item pulldown -->
                             <select name="type_name" 
                                     tabindex=""
-                                    tal:attributes="tabindex tabindex/next;">
+                                    tal:attributes="tabindex tabindex/next|nothing;">
                                 <option value="Select">Select</option>
                                 <metal:block tal:repeat="ctype allowedContentTypes"
                                              tal:define="global filterOut  python:['Favorite']">
@@ -130,7 +132,7 @@
                                    name="folder_factories:method" 
                                    value="Add New Item"
                                    tabindex=""
-                                   tal:attributes="tabindex tabindex/next;" 
+                                   tal:attributes="tabindex tabindex/next|nothing;" 
                                    />
                         </metal:block>
             
@@ -225,8 +227,8 @@
             <tal:block tal:repeat="button actions/folder_buttons|nothing">
             <input class="context" 
 	                 type="submit" 
-	                 name="folder_rename_form:method" 
-		               value="Rename" 
+	                 name="" 
+		               value="" 
                    tabindex=""
                    tal:condition="python:folder_contents or (here.cb_dataValid and button['id'] == 'paste')"
 		               tal:attributes="value button/name; 
