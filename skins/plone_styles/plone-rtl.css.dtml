@@ -87,6 +87,7 @@ ol {
 
 .documentActions ul {
     float: left;
+    clear: left;
 }
 
 .newsAbout {
@@ -110,6 +111,15 @@ ol {
 .productCredits {
     text-align: left;
 }
+
+.portalMessage,
+.system-message,  /* These two last ones are reST error indicators */
+#error-handling {
+    padding: 0.5em 3em 0.5em 1em;
+    background-position: 98% center ;
+
+}
+
  
 .standalone,
 .documentEditable * .standalone {
@@ -197,39 +207,23 @@ ul.configletDetails {
 
 .link-parent {
     padding: 1px 16px 1px 0;
+    background: transparent url(&dtml-portal_url;/arrowUp.gif) 100% 5px no-repeat;
 }
 
 .link-user {
     padding: 1px 16px 1px 0;
 }
- 
-.link-external {
-    padding: 1px 16px 1px 0;
-    background-position: top right;
-}
- 
- .link-https {
-    padding: 1px 16px 1px 0;
-}
- 
-.link-mailto {
-    padding: 1px 16px 1px 0;
-}
- 
-.link-news {
-    padding: 1px 16px 1px 0;
-}
- 
-.link-ftp {
-    padding: 1px 16px 1px 0;
-}
- 
-.link-irc {
-    padding: 1px 16px 1px 0;
-}
- 
+
+/* No way to get these to work with IE, it seems - suggestions welcome --limi */ 
+.link-external,
+.link-https,
+.link-mailto,
+.link-news,
+.link-ftp,
+.link-irc,
 .link-callto {
-    padding: 1px 16px 1px 0;
+    padding: 0;
+    background: none;
 }
 
 .link-comment {
