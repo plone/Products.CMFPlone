@@ -6,7 +6,7 @@ from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.CMFCorePermissions import View, ManageProperties, \
-     ListFolderContents
+     ListFolderContents, AccessContentsInformation
 from Products.CMFCore.CMFCorePermissions import AddPortalFolders, \
      AddPortalContent, ModifyPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
@@ -344,7 +344,7 @@ portal_skins tool and set the correct default skin.""" % default
 
         return values
 
-    security.declareProtected( ListFolderContents, 'listFolderContents')
+    security.declareProtected( AccessContentsInformation, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
         Optionally you can suppress "hidden" files, or files that begin with .
@@ -356,6 +356,14 @@ portal_skins tool and set the correct default skin.""" % default
             contents=[obj for obj in contents if obj.getId()[:1]!='.']
    
         return contents
+
+    security.declareProtected( AccessContentsInformation, 'folderlistingFolderContents')
+    def folderlistingFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
+        """
+        Calls listFolderContents in protected only by ACI so that folder_listing
+        can work without the List folder contents permission, as in CMFDefault
+        """
+        return self.listFolderContents(spec, contentFilter, suppressHiddenFiles)
 
     # Override CMFCore's invokeFactory to return the id returned by the
     # factory in case the factory modifies the id
