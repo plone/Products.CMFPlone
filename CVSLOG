@@ -1,3 +1,18 @@
+2004-05-05 18:18  tiran
+
+	* HISTORY.txt (Plone-2_0-branch): Updated history
+
+2004-05-05 17:50  tiran
+
+	* PloneTool.py, skins/plone_form_scripts/validate_sendto.vpy,
+	  tests/testPloneTool.py (Plone-2_0-branch): added
+	  validateEmailAddress to PloneTool Use it to validate the email
+	  address for the sendto feature to stop spam
+
+2004-05-05 06:19  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-05 03:06  dreamcatcher
 
 	* makefile.in, version.txt (Plone-2_0-branch): Small typo
