@@ -11,18 +11,20 @@
 .columns .right{
    width : 17%;
    float : right;   
-
 }
 
 .columns .main{
-   float : none;
-   width : 65%;
+   float:left;
+   width : 64%
 	}
 
 .columns .innermain{
    float : none;
    padding : 0 25px;
+   margin: 1px;
+
 }
+
 
 .columns .innermain a:link{
 }
