@@ -226,6 +226,8 @@ code {
     font-size: 120%;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
+    padding: 0 0.1em;
 }
 pre {
     font-size: 120%;

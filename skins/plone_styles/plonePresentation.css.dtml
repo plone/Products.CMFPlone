@@ -66,6 +66,15 @@ dl, ol, ul {
     margin-top: 0.5em;
 }
 
+dt {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-style: solid;
+    border-width: &dtml-borderWidth;;
+    display: inline;
+    padding-right: 0.5em;
+}
+
 li {
     margin: 0 0 0.5em 0;
 }
@@ -92,7 +101,20 @@ pre {
     font-size: 25px;
     padding: 0.5em;
     font-weight: bold;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
+}
+
+code {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyleAnnotations;;
+    border-width: &dtml-borderWidth;;
+    padding: 0.1em 0.25em;
+}
+
+a {
+    color: &dtml-linkColor; !important;
 }
 
 div.top,
