@@ -33,12 +33,12 @@ Installing Plone manually, step by step instructions.
 **REQUIREMENTS** 
  
   **MANDATORY** 
- 
-  - Zope 2.6.4 or 2.7.2
-     http://zope.org/Products/Zope/2.7.2
-     http://zope.org/Products/Zope/2.7.2/Zope-2.7.2.tgz
-     (Zope 2.7 requires Python 2.3.4 or higher, Zope 2.6 runs
-     with Python 2.1.3. We recommend 2.7, use 2.6 only if you
+
+  - Zope 2.6.4 or 2.7.3 (not 2.8)
+     http://zope.org/Products/Zope/2.7.3
+     http://zope.org/Products/Zope/2.7.3/Zope-2.7.3.tgz
+     (Zope 2.7 requires Python 2.3.4, Zope 2.6 runs with
+     Python 2.1.3. We recommend 2.7, use 2.6 only if you
      can't upgrade your Python.)
  
   - CMF 1.4.7 (not 1.5)
@@ -54,7 +54,7 @@ Installing Plone manually, step by step instructions.
   - Formulator 1.4.0 or later
      Included in the Plone tarball 
      http://www.zope.org/Members/infrae/Formulator 
-     http://zope.org/Members/infrae/Formulator/Formulator-1.6.1/Formulator-1.6.1.tgz 
+     http://zope.org/Members/infrae/Formulator/Formulator-1.6.2/Formulator-1.6.2.tgz 
  
   - CMFActionsIcons
      Included in the Plone tarball 
@@ -65,7 +65,7 @@ Installing Plone manually, step by step instructions.
      Included in the Plone tarball 
      http://sf.net/projects/collective 
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78893 
-     http://prdownloads.sourceforge.net/collective/CMFQuickInstallerTool-1.5.0.tgz?download 
+     http://prdownloads.sourceforge.net/collective/CMFQuickInstallerTool-1.5.1.tgz?download 
  
   - GroupUserFolder 2.0.1 (not 3.0)
      Included in the Plone tarball 
@@ -82,6 +82,7 @@ Installing Plone manually, step by step instructions.
      Included in the Plone tarball 
      http://sf.net/projects/collective 
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=90836 
+     http://prdownloads.sourceforge.net/collective/CMFFormController-1.0.4.tar.gz?download 
  
 ------------------------------------------------------------------------------- 
  
