@@ -8,7 +8,9 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore
 from types import TupleType, UnicodeType
 from urllib import urlencode
+import urlparse
 from cgi import parse_qs
+
 import re
 
 from zLOG import LOG, INFO, WARNING
@@ -198,6 +200,11 @@ class PloneTool (UniqueObject, SimpleItem):
             user= getSecurityManager().getUser()
 
         object.changeOwnership(user, recursive) 
+    
+    security.declarePublic('urlparse')
+    def urlparse(self, url):
+        """ returns the pieces of url """
+        return urlparse.urlparse(url)
 
 InitializeClass(PloneTool)
 
