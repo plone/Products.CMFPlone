@@ -359,8 +359,8 @@ function scanforlinks(){
                 // not a http-link. Possibly an internal relative link, but also possibly a mailto ot other snacks
                 // add tests for all relevant protocols as you like.
                 
-                protocols = ['mailto', 'ftp' , 'irc', 'callto', 'https']
-                // callto is a proprietary protocol to the Skype application, but we happen to like it ;)
+                protocols = ['mailto', 'ftp' , 'irc', 'h323', 'sip', 'callto', 'https']
+                // h323, sip and callto are internet telephony VoIP protocols
                 
                 for (p=0; p < protocols.length; p++){  
                      if (linkval.indexOf(protocols[p]+':') != -1){
@@ -538,3 +538,51 @@ function readCookie(name) {
 
 if (window.addEventListener) window.addEventListener("load",setStyle,false);
 else if (window.attachEvent) window.attachEvent("onload",setStyle);
+
+// jscalendar glue -- Leonard Norrgård <vinsci@*>
+function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month, input_id_day, input_id_hour, input_id_minute, format) {
+    // '${input_id}_year', '${input_id}', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', 'y/mm/dd'
+    // do what jscalendar-x.y.z/calendar-setup.js:Calendar.setup would do
+    var dateEl = input_id;
+    var dateFmt = format;
+    var mustCreate = false;
+    var cal = window.calendar;
+    if (!window.calendar) {
+	window.calendar = cal = new Calendar(true, //params.mondayFirst,
+	     null,
+	     null,
+	     function(cal) { cal.hide(); });
+	cal.showsTime = true;
+	cal.time24 = true;
+	cal.weekNumbers = true;
+	mustCreate = true;
+    } else {
+	cal.hide();
+    }
+    cal.setRange(1900,2999);
+    cal.params = {};
+    cal.setDateStatusHandler(null);
+    cal.setDateFormat(dateFmt);
+    if (mustCreate)
+	cal.create();
+    cal.parseDate(dateEl.value || dateEl.innerHTML);
+    cal.refresh();
+    cal.showAtElement(input_id_anchor, null);
+    return false;
+}
+
+// this funtion updates a hidden date filed with the current values of the widgets
+function update_date_field(field,year,month,day,hour,minute) {
+  var field  = document.getElementById(field);
+  var date   = document.getElementById(date);
+  var year   = document.getElementById(year);
+  var month  = document.getElementById(month);
+  var day    = document.getElementById(day);
+  var hour   = document.getElementById(hour);
+  var minute = document.getElementById(minute);
+  if (year.value > 0) {
+    field.value = year.value + "-" + month.value + "-" + day.value + " " + hour.options[hour.selectedIndex].value + ":" + minute.options[minute.selectedIndex].value;
+  } else {
+    field.value = '';
+  }
+}
