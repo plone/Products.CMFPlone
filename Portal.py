@@ -209,7 +209,7 @@ class PloneGenerator(Portal.PortalGenerator):
 
         # grab the initial portal navigation properties
         # from data/navigation_properties
-        nav_tool = p.portal_navigation
+        nav_tool = getToolByName(p, 'portal_navigation')
 
         # open and parse the file
         filename='navigation_properties'
