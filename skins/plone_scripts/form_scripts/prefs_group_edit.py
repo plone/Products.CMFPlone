@@ -18,8 +18,14 @@ assignedusers=REQUEST.get('users',[])
 domains=()
 
 if groupname not in groups:
-    acl_users.Groups.acl_users.userFolderAddUser(prefix+groupname, '', assignedroles, domains)
+    acl_users.Groups.acl_users.userFolderAddUser(groupname, '', (), domains)
 
+if assignedroles:
+    acl_users.Groups.acl_users.userFolderEditUser(groupname,
+                                                  None,
+                                                  tuple(assignedroles),
+                                                  domains)
+    
 for user in assignedusers:
     userobject=acl_users.getUser(user)
     if groupname not in userobject.getGroups():
@@ -49,11 +55,10 @@ if not assignedusers:
             #groupname was not found in user's Groups
             pass
             
-print REQUEST
-return printed
-
 REFERER=REQUEST.HTTP_REFERER
-statusmsg=REFERER.find('portal_status_message')
-url='%s&%s' % (REFERER[:REFERER.find('portal_status_message')],
-               'portal_status_message=Changes+made.')
+
+if REFERER.find('portal_status_message')!=-1:
+    REFERER=REFERER[:REFERER.find('portal_status_message')]
+    
+url='%s&%s' % (REFERER, 'portal_status_message=Changes+made.')
 return REQUEST.RESPONSE.redirect(url)
