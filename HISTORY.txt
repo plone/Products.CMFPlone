@@ -1,5 +1,7 @@
 CHANGES
 Plone 1.1
+    - Added translation to field 'type' in folder_listing table. Replaced
+      'n/a' with '&nbsp' to work like folder_contents
     - Only show "Add Comment" button if discussion is allowed, and user
       has permission to reply to item.
     - integrated browser_default, the default_page variable can be set in site properties
