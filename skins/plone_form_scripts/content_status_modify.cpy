@@ -8,6 +8,7 @@
 ##parameters=workflow_action=None, comment='', effective_date=None, expiration_date=None, *args
 ##title=handles the workflow transitions of objects
 ##
+from DateTime import DateTime
 
 contentEditSuccess=0
 plone_log=context.plone_log
@@ -22,9 +23,9 @@ if workflow_action!=current_state and not effective_date and context.EffectiveDa
 
 def editContent(obj, effective, expiry):
     kwargs = {}
-    if len(effective) > 5: # may contain the year
+    if effective and (isinstance(effective, DateTime) or len(effective) > 5): # may contain the year
         kwargs['effective_date'] = effective
-    if len(expiry) > 5: # may contain the year
+    if expiry and (isinstance(expiry, DateTime) or len(expiry) > 5): # may contain the year
         kwargs['expiration_date'] = expiry
     new_context.plone_utils.contentEdit( obj, **kwargs)
 
