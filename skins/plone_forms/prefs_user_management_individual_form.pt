@@ -60,9 +60,10 @@
                       tal:attributes="name string:$id:$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
 
-               <input type="checkbox" name="id"
+               <input type="checkbox" name="id" id="cb-checkbox"
                       tal:condition="python: type in ('boolean',)"
                       tal:attributes="name string:$id:$type;
+                                      id string:cb-$id;
                                       checked python:test(propertyvalue, 'checked', '')" />
 
                <textarea name="id" rows="6" cols="35"
