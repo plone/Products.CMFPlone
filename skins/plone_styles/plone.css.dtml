@@ -496,7 +496,7 @@ pre {
     margin: 0;
 }
 .contentActions li {
-    background-image: url(&dtml-portal_urli;/arrowDownAlternative.gif);
+    background-image: url(&dtml-portal_url;/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: center right;
     z-index: 4;

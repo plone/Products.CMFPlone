@@ -6,11 +6,7 @@
 <!-- THE PERSONAL BAR DEFINITION -->
 
 <span metal:define-macro="personal_bar"
-      tal:define="portal_url portal_url|here/portal_url;
-                  user_actions user_actions|actions/user;
-                  global_actions global_actions|actions/global;
-                  mtool mtool|here/portal_membership;
-                  display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];"
+      tal:define="display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];"
       tal:omit-tag="" >
 
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>

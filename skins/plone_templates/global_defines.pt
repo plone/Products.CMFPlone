@@ -29,7 +29,7 @@
         global actions options/actions|actions;
         global wf_actions workflow_actions;
         global isFolder python:here.getTypeInfo().getId() in site_properties.use_folder_tabs;
-        global template_id options/template_id|template_id|template/getId|nothing;
+        global template_id options/template_id | template/getId | nothing;
         global slots_mapping options/slots_mapping|here/prepare_slots|nothing;
         global Iterator python:modules['Products.CMFPlone'].IndexIterator;
         global tabindex python:Iterator(pos=30000);
