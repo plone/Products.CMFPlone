@@ -144,15 +144,16 @@
                 </div>
             </div>
             <div class="field" tal:define="text python:request.get('text', here.text)">
-                <textarea name="text:text" 
-                          rows="20" 
-                          cols="40" 
-                          tabindex=""
-                          onfocus="formtooltip('body_help',1)" 
-                          onblur="formtooltip('body_help',0)" 
-                          tal:content="text"
-                          tal:attributes="tabindex tabindex/next;"
-                          >Document text</textarea>
+                <div tal:define="inputname  string:text;
+                                 formname   string:edit_form;
+                                 inputvalue text;
+                                 onfocus string:formtooltip('body_help',1);
+                                 onblur string:formtooltip('body_help',0);
+                                 tabindex tabindex/next;">
+                    <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBox">
+                    The WYSIWYG code
+                    </div>
+                </div>
             </div>
         </div>
 
