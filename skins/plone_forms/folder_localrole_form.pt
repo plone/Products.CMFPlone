@@ -29,9 +29,9 @@
         These users have privileges here:
     </p>
 
-  
     <fieldset tal:define="iroles python:here.plone_utils.getInheritedLocalRoles(here);"
               tal:condition="iroles">
+
         <legend i18n:translate="legend_acquired_roles">
             Acquired roles
         </legend>
@@ -100,7 +100,7 @@
                        id="alr_toggle"
                        class="noborder"
                        tabindex=""
-                       tal:attributes="tabindex tabindex;"/>
+                       tal:attributes="tabindex tabindex/next;"/>
                 </th>
                 <th i18n:translate="label_user_group_name">User/Group name</th>
                 <th i18n:translate="label_type">Type</th>
@@ -210,7 +210,7 @@
                                id="alr_toggle"
                                class="noborder"
                                tabindex=""
-                               tal:attributes="tabindex tabindex;"/>
+                               tal:attributes="tabindex tabindex/next;"/>
                         </th>
                         <th i18n:translate="label_user_name">User Name</th>
                         <th i18n:translate="label_email_address">Email Address</th>
@@ -364,25 +364,25 @@
                        condition="grouplist">
 
           <h1 i18n:translate="heading_group_shares">Add sharing permissions to groups</h1>
-    
+
           <p i18n:translate="description_group_shares">
             Groups are a convenient way to share items to a common set of
             users. Select one or more groups, and a role to assign.
           </p>
-    
+
           <form method="post"
                 name="change_type_group"
                 action="folder_localrole_edit"
                 tal:attributes="action string:$here_url/folder_localrole_edit">
-    
+
             <fieldset>
-    
+
                     <legend i18n:translate="legend_available_groups">
                         Available Groups
                     </legend>
-    
+
                     <input type="hidden" name="change_type" value="add" />
-    
+
                     <table class="listing" summary="Available groups">
                     <thead>
                         <tr>
@@ -394,7 +394,7 @@
                                id="alr_toggle"
                                class="noborder"
                                tabindex=""
-                               tal:attributes="tabindex tabindex;"/>
+                               tal:attributes="tabindex tabindex/next;"/>
                         </th>
                         <th i18n:translate="listingheader_name">Name</th>
                         </tr>
@@ -421,13 +421,13 @@
                         </tr>
                     </tbody>
                     </table>
-    
+
                     <div class="field">
-    
+
                         <label for="group_member_role" i18n:translate="label_localrole_to_assign">
                             Role to assign
                         </label>
-    
+
                         <select name="member_role"
                                 id="group_member_role"
                                 tabindex=""
@@ -440,7 +440,7 @@
                             </option>
                         </select>
                     </div>
-    
+
                     <div class="submit">
                         <input class="context"
                             type="submit"
@@ -450,9 +450,9 @@
                             tal:attributes="tabindex tabindex/next;"
                             />
                     </div>
-    
+
                 </fieldset>
-    
+
             </form>
 
         </tal:groupshares>
@@ -460,10 +460,10 @@
       <div metal:use-macro="here/document_byline/macros/byline">
         Get the byline - contains details about author and modification date.
       </div>
-        
+
     </div>
 
-  </div> <!-- fill-slot -->
+  </div>
 
 </body>
 </html>
