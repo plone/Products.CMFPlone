@@ -1,3 +1,57 @@
+2004-01-30 21:11  shh42
+
+	* tests/: testUserFolderBasics.py (Plone-2_0-branch),
+	  testUserFolderBasics.py: Updated version of user folder tests to
+	  resemble those checked into Zope 2.6.4 and 2.7.0.  Also see
+	  http://zope.org/Collectors/Zope/1210
+
+2004-01-30 21:03  shh42
+
+	* tests/testMembershipTool.py: Shut up "DeprecationWarning:
+	  Owned.getOwner(1) is deprecated" on the HEAD as well.  There is
+	  still one warning, which is caused by CMFDefault.SkinnedFolder.
+
+2004-01-30 18:30  tiran
+
+	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch):
+	  added group data tool to global_defines changed some templates to
+	  use gtool and gdtool
+
+2004-01-30 18:27  tiran
+
+	* skins/: plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_templates/global_defines.pt (Plone-2_0-branch): added group
+	  data tool to global_defines changed some templates to use gtool
+	  and gdtool
+
+2004-01-30 18:18  tiran
+
+	* migrations/v2/plone2_base.py (Plone-2_0-branch): trying to fix
+	  the portal_groups problem
+
+2004-01-30 18:01  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): fix for #2536:
+	  Migration stops 1.0.4 to 2.0RC5
+
+2004-01-30 11:51  tesdal
+
+	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch):
+	  test method evaluates everything which kinda killed performance
+	  on this one
+
+2004-01-30 06:56  jimroepcke
+
+	* skins/plone_templates/global_pathbar.pt: removing my previous
+	  change, the action's url should really be the one changing
+	  because request/URL1 isn't a good choice
+
+2004-01-30 04:58  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-30 00:46  jimroepcke
 
 	* PloneFolder.py (Plone-2_0-branch): explicitly check for
