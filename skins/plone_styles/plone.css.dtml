@@ -1040,25 +1040,24 @@ table.calendar th {
     color: &dtml-boxHeaderFontColor;;
     font-weight: bold;
     text-align: center;
+    padding: 2px;
 }
 table.calendar td {
     background-color: transparent;
     width: 1.5em;
-    padding: 2px;
     text-align: right;
+    padding: 2px;
 }
-table.calendar td.weekdays {
+table.calendar tr.weekdays td {
     background-color: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
     border-style: solid none;
     text-align: center;
+    padding: 2px;
 }
 table.calendar td.event {
     background-color: &dtml-boxHeaderBackground;;
     font-weight: bold;
-}
-table.calendar td.noevent {
-    background-color: transparent;
 }
 table.calendar td.todayevent {
     background-color: &dtml-boxHeaderBackground;;
