@@ -37,7 +37,7 @@
   </head>
   <body>
     
-    <div metal:use-macro="here/portal_boxes/macros/calendarDatePickerBoxPopup">
+    <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBoxPopup">
       oo look it's a calendar :-)
     </div>
 

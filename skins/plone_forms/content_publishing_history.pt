@@ -92,7 +92,7 @@
                 <div tal:define="inputname  string:effective_date; 
                                  formname   string:edit_form;
                                  inputvalue string:">
-                  <div metal:use-macro="here/portal_boxes/macros/calendarDatePickerBox">
+                  <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
                 </div>
@@ -112,7 +112,7 @@
                 <div tal:define="inputname  string:expiration_date; 
                                  formname   string:edit_form;
                                  inputvalue string:">
-                  <div metal:use-macro="here/portal_boxes/macros/calendarDatePickerBox">
+                  <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
                 </div>

@@ -71,6 +71,7 @@
     - base href is now compatible with how other CMF Products work.  This means you can use other CMFProducts out of hte box (hopefully ;)
     - beginnings of workspace
     - moved back to 2 column layout (CMFPlone/Extensions/Upgrade.py migrate2ColumnLayout function)
+    - no longer have to go to folder_factories to create a certain type, can do it from folder_contents
     - many more changes and cleanups
 
 0.9.8 - Ulrich Schnauss Release:
