@@ -2,9 +2,9 @@
     tal:define="isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
                 hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
                 view_action python:hereTypeInfo.getActionById('view');
-                isViewTemplate python:test(template.getId()==view_action, 1, 0);"
-    tal:condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0) ">	
- 
+                isViewTemplate python:test(template.getId()==view_action, 1, 0);
+     ">
+    <div tal:condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0)">
     <metal:block tal:condition="isDiscussionAllowed"> 
       <tal tal:define="global discussion python:here.portal_discussion.getDiscussionFor(here)" />
     </metal:block>
@@ -85,4 +85,5 @@
 	</div>
     </div>
     
+</div>
 </div>

@@ -57,7 +57,6 @@
                        name=""
                        tabindex=""
                        tal:define="hId here/getId"
-                       tal:attributes="value"
         	           tal:attributes="name python: hId + '/discussion_reply_form:method';
                                        tabindex tabindex/next;">
                 
@@ -66,7 +65,6 @@
                         value="Add Comment" 
                         name="discussion_reply:method"
                         tabindex=""
-                        tal:attributes="value"
                         tal:attributes="tabindex tabindex/next;">
             </div>
         </div>
