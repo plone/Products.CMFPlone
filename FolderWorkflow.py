@@ -44,7 +44,7 @@ def setupPrivateFolderWorkflow(wf):
     sdef.setPermission( CMFCorePermissions.View, 1, ('Anonymous', 'Authenticated') )
     sdef.setPermission( CMFCorePermissions.AccessContentsInformation, 1, ('Anonymous', 'Authenticated') )
     sdef.setPermission( CMFCorePermissions.ListFolderContents, 1, ('Anonymous', 'Authenticated') )
-    sdef.setPermission( CMFCorePermissions.ModifyPortalContent, 1, ('Mangager', ) )
+    sdef.setPermission( CMFCorePermissions.ModifyPortalContent, 1, ('Manager', ) )
     wf.transitions.addTransition('publicize')
     tdef=wf.transitions.publicize
     tdef.setProperties( title='Publicize content'
