@@ -64,7 +64,6 @@
             </p>						    
             </metal:block>
      
-            <metal:block tal:condition="folder_contents">
      
             <p tal:content="structure here/Description"> description </p>
 
@@ -134,9 +133,11 @@
                                    tal:attributes="tabindex tabindex/next;" 
                                    />
                         </metal:block>
-                        
+            
                         </td>
                     </tr> 
+
+                    <metal:block tal:condition="folder_contents">
                     <tr>
                         <th name="nosort"><input class="noborder" 
                                                  type="image"
@@ -150,8 +151,10 @@
                         <th>Modified </th>
                         <th>Status </th>
                     </tr>
+                    </metal:block>
                 </thead>
-    
+
+                <metal:block tal:condition="folder_contents">
                 <tbody>
                 <metal:block tal:repeat="item batch"> 
                     <tr border="1"
@@ -214,10 +217,10 @@
                         </td>
                     </tr>
                 </metal:block>
-                </tbody> 
+                </tbody>
+                </metal:block> 
             </table>
     
-            </metal:block>
 
             <tal:block tal:repeat="button actions/folder_buttons|nothing">
             <input class="context" 
