@@ -95,6 +95,7 @@
 				     getInfoFor python:wtool.getInfoFor;
                                      iface_tool here/portal_interface;
                                      orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
+                                     hasModifyPortalContentPermission python:mtool.checkPermission('Modify portal content', here);
                                      isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                                      nosortclass python:test(isOrderable, 'nosort', '')">
 
@@ -174,7 +175,7 @@
                         i18n:translate="listingheader_modified">Modified</span>&nbsp;</th>
                         <th tal:attributes="class python:nosortclass">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_status">State</span>&nbsp;</th>
-                        <th class="nosort" tal:condition="isOrderable">&nbsp;<span tal:omit-tag=""
+                        <th class="nosort" tal:condition="python:isOrderable and hasModifyPortalContentPermission">&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_order">order</span>&nbsp;</th>
                     </tr>
                     </metal:block>
@@ -247,7 +248,7 @@
                             tal:attributes="class python:test(review_state, 'state-'+review_state, 'state-private')"
                             i18n:translate="">&nbsp;
                         </td>
-                        <td tal:condition="isOrderable">
+                        <td tal:condition="python:isOrderable and hasModifyPortalContentPermission">
                             <a href=""
                                tal:attributes="href string:${here/absolute_url}/folder_position?position=up&amp;id=${item/getId}"
                             ><img tal:replace="structure here/portal_url/arrowUp.gif" /></a>

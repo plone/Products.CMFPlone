@@ -6,6 +6,9 @@ Plone 2.0 - Fyuti
 
     RC3
 
+    - Do not show order column if you can not Modify portal content for
+      folder.  
+
     - [FEATURE] Added 'sharing' action for all nonFolderish types in portal_types
       If you have a problem with this bring it up w/ alex or dannyb
 
