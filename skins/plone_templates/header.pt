@@ -74,6 +74,19 @@
         document.getElementById('day' + date).style.visibility = 'hidden';
         return true;
       }
+
+      function formtooltip(el,flag){
+       elem = document.getElementById(el)
+     if (flag)
+        {
+          elem.style.visibility = 'visible';
+          }     
+     else{
+        elem.style.visibility = 'hidden'}
+      
+      }
+
+
       // -->
     </script>
 
@@ -231,5 +244,4 @@
     <img src="img/info.gif" alt="Portal information" tal:attributes="src string:$portal_url/plone_images/info.gif">
     <strong tal:content="portal_message">Object changed.</strong> 
 </div>
-
 
