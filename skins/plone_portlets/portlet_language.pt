@@ -28,7 +28,7 @@
                        tal:attributes="value lang;
                                        selected
 		      python:test(lang==current_lang, 'selected', None)"
-                       tal:content="python:PTS.getLanguageName(lang) or lang">Engrish</option>
+                       tal:content="python:PTS.getLanguageName(lang) or lang">English</option>
                 </tal:block>
 
             </select></label>

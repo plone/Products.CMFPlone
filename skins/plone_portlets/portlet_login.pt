@@ -29,14 +29,13 @@
                       tal:attributes="action string:$portal_url/logged_in">
 
                     <input type="hidden" name="came_from" value=""
-                           tal:condition="python:request.get('came_from', '')"
-                           tal:attributes="value request/came_from;
+                           tal:attributes="value request/URL;
                                            tabindex tabindex/next" />
 
                     <label for="ac_name" tal:attributes="for ac_name"> 
                       <strong i18n:translate="label_user_name">Name</strong> <br />
                       <input type="text" id="ac_name" name="ac_name" size="10" alt="Username" accesskey="accesskeys-login" 
-                             tal:attributes="name ac_name;
+                             tal:attributes="name ac_name; id ac_name;
                                              value python:request.get(ac_name, ''); 
                                              tabindex tabindex/next"
                              i18n:attributes="alt" />
@@ -47,7 +46,7 @@
                     <label for="ac_password" tal:attributes="for ac_password">
                       <strong i18n:translate="label_password">Password</strong>  <br />
                       <input type="password" id="ac_password" name="ac_password" size="10" alt="Password" accesskey="accesskeys-login" 
-                             tal:attributes="name ac_password;
+                             tal:attributes="name ac_password; id ac_password;
                                              tabindex tabindex/next;" 
                              i18n:attributes="alt accesskey" />
                     </label>
@@ -77,7 +76,7 @@
 
             <div class="portletContent odd"
                 tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
-                tal:condition="python:test(join and hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
+                tal:condition="python:test(join and hasattr(here,'portal_registration') and checkPermission('Add portal member', here), 1, 0)">
 
                 <a href="" tal:attributes="href python:join.pop()" accesskey="accesskeys-login" i18n:attributes="accesskey" >
                     <img tal:replace="structure portal_object/linkTransparent.gif" />

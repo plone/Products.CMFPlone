@@ -12,14 +12,16 @@
                  year python:request.get('year', DateTime().year());
                  prevMonthTime python:here.getPreviousMonth(month, year);
                  nextMonthTime python:here.getNextMonth(month, year);
-                 weeks python:here.portal_calendar.getEventsForCalendar(month=month, year=year);">
+                 weeks python:here.portal_calendar.getEventsForCalendar(month=month, year=year);
+                 anchor_url request/anchor_url | here/absolute_url;
+                 anchor_method request/anchor_method | template/getId;">
     <!-- The calendar, rendered as a table -->
 
-    <table cellspacing="0" class="calendar" id="thecalendar">
+    <table cellspacing="0" class="ploneCalendar" id="thePloneCalendar">
         <thead>
             <tr>
                 <th id="calendar-previous">
-                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
+                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
                 </th>
                 <th colspan="5"
                     tal:define="date string:$month/1/$year;">
@@ -39,7 +41,7 @@
                     </span>
                  </th>
                 <th id="calendar-next">
-                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
+                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
                 </th>
             </tr>
             <tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
@@ -86,21 +88,20 @@
 
 
     <!-- The sticky notes -->
-    <tal:block repeat="week weeks">
-      <tal:block repeat="day week">
-        <div class="day_plone"
+    <tal:week repeat="week weeks"><tal:day repeat="day week">
+        <div class="dayPopup"
              id="dummy"
              tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
              tal:condition="day/event">
              <div class="date" tal:content="python:here.toPortalTime('%d/%0.2d/%0.2d' % (year, month, day['day']))">
              2001-04-11
              </div>
-             <tal:block repeat="anevent day/eventslist">
+             <tal:event repeat="anevent day/eventslist">
              <div class="appointment" tal:content="python: here.getEventString(event=anevent)">an event</div>
-             </tal:block>
+             </tal:event>
         </div>
-      </tal:block>
-    </tal:block>
+      </tal:day>
+    </tal:week>
 
 </div>
 

@@ -8,7 +8,7 @@
 <div metal:define-macro="portlet"
      tal:define="localContent here/navigationLocalRelated;
                  remoteContent here/navigationRemoteResources;"
-     tal:condition="python:test(localContent or remoteContent, 1, 0)" >
+     tal:condition="localContent | remoteContent" >
 
     <div class="portlet">
 
