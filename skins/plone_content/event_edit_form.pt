@@ -245,7 +245,7 @@
                                  onfocus string:formtooltip('start_date_help',1);
                                  onblur string:formtooltip('start_date_help',0);
                                  tabindex tabindex/next;">
-                  <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                  <div metal:use-macro="here/ui_slots/calendar_slot/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
                 </div>
@@ -277,7 +277,7 @@
                                  onblur string:formtooltip('end_date_help',0);
                                  tabindex tabindex/next;">
 
-                  <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                  <div metal:use-macro="here/ui_slots/calendar_slot/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
                 </div>
