@@ -12,6 +12,9 @@ member=context.portal_membership.getMemberById(userid)
 
 context.plone_utils.setMemberProperties(member, **REQUEST.form)
 
+print REQUEST
+return printed
+
 REFERER=REQUEST.HTTP_REFERER
 statusmsg=REFERER.find('portal_status_message')
 url='%s&%s' % (REFERER[:REFERER.find('portal_status_message')],
