@@ -4,13 +4,18 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Polished up the datetime-picker widget.  Now provides default values
+      for month ('01') and day ('01').  Also new is the option to unset a
+      date by deselecting the year ('----').
+      Fixes http://plone.org/collector/2291
+      [stefan]
+
     - Made it so that headlines can't be obscured by the document action 
       icons anymore.
       [limi]
 
     - Made the check_id script work in the presence of incomplete 
       Plone sites and missing permissions.
-      [stefan]
 
     - Fixed ownership on objects created by portal_factory.  The
       changes to portal_factory in 2.0.4 fix problems with mapply, but 
