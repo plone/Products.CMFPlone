@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - Ms. Bumblebee - (Unreleased)
 
+    - Fixed discussion_reply.cpy to use portal_discussion.getDiscussionFor(obj)
+      instead of accessing the talkback object directly.
+      [tiran]
+
+    - Now using CookedBody instead of EditableBody in news.pt
+      [tiran]
+
     - Merged Plone 2.1-atct branch. Plone now uses and requires
       Archetypes 1.3 and ATContentTypes.
       [stefan]
