@@ -1,5 +1,7 @@
 from Products.CMFCore.utils import _verifyActionPermissions
 from Products.CMFCore.Skinnable import SkinnableObjectManager
+from OFS.Folder import Folder
+from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.CMFCorePermissions import View, ManageProperties, ListFolderContents
 from Products.CMFCore.CMFCorePermissions import AddPortalFolders, AddPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
@@ -55,6 +57,8 @@ class PloneFolder ( SkinnedFolder ):
     meta_type = 'Plone Folder' 
     security=ClassSecurityInfo()
 
+    manage_options = Folder.manage_options + \
+                     CMFCatalogAware.manage_options
     def __call__(self):
         '''
         Invokes the default view.
