@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.21 2002/09/11 04:13:01 plonista Exp $
+# $Id: FormTool.py,v 1.22 2002/09/12 15:18:16 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.21 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.22 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -190,8 +190,8 @@ class FormValidator(SimpleItem):
 
 
     def __str__(self):
-        return 'FormValidator, form=%s, validators=%s, do_validate=%s' % \
-               (self.form, str(self.validators), str(self.do_validate))
+        return 'FormValidator, form=%s, validators=%s' % \
+               (self.form, str(self.validators))
 
 
     security.declarePublic('__call__')
