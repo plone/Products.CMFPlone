@@ -1048,7 +1048,7 @@ ul.configlets li a {
 ** Calendar elements - used in the calendar rendering 
 */
 
-.day {
+.day_plone {
     background-color: #FFFFBB;
     border: 1px solid Black;
     padding: 0.2em;

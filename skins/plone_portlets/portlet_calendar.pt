@@ -88,7 +88,7 @@
     <!-- The sticky notes -->
     <tal:block repeat="week weeks">
       <tal:block repeat="day week">
-        <div class="day"
+        <div class="day_plone"
              id="dummy"
              tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
              tal:condition="day/event">
