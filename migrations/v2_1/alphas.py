@@ -36,7 +36,8 @@ def two05_alpha1(portal):
         installATContentTypes(portal, out)
 
         # Switch over to ATCT
-        migrateToATCT(portal, out)
+        #migrateToATCT(portal, out)
+        migrateToATCT10(portal, out)
 
     return out
 
@@ -121,7 +122,8 @@ def installATContentTypes(portal, out):
 
 
 def migrateToATCT(portal, out):
-    """Switches portal to ATContentTypes."""
+    """Switches portal to ATContentTypes.
+    """
     get_transaction().commit(1)
     migrateFromCMFtoATCT = portal.migrateFromCMFtoATCT
     switchCMF2ATCT = portal.switchCMF2ATCT
@@ -135,6 +137,13 @@ def migrateToATCT(portal, out):
     get_transaction().commit(1)
     #out.append('Switched portal to ATContentTypes.')
 
+def migrateToATCT10(portal, out):
+    """Switches portal to ATCT 1.0
+    """
+    get_transaction().commit(1)
+    tool = portal.portal_atct
+    tool.migrateToATCT()
+    get_transaction().commit(1)
 
 def addFullScreenAction(portal, out):
     """Adds the full screen mode action."""
