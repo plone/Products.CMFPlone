@@ -12,7 +12,7 @@ from random import random
 
 now=DateTime()
 prefix=''
-suffix='.html'
+suffix=''
 
 if type_name is not None:
     prefix = type_name.replace(' ', '_')+'.'
