@@ -41,6 +41,7 @@ ul {
 
 div.editableDocument,
 div.document,
+div.description,
 .group {
     background: transparent;
     border: none;
