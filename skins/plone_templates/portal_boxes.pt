@@ -317,8 +317,7 @@
         <tr class="odd">
             <td colspan="2">
                 <strong>Last&nbsp;modified:</strong> <br />
-                <span tal:define="DateTime python:modules['DateTime'].DateTime;"
-            	      tal:replace="python:DateTime(here.ModificationDate()).strftime('%d/%m %Y at %I:%M %p')">
+                <span tal:replace="python:here.toPortalTime(here.ModificationDate())">
                 August 16, 2001 at 23:35:59
                 </span>
             </td>
