@@ -1,3 +1,91 @@
+2003-11-30 03:01  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): dont ref
+	  attribute but get a list of roles
+
+2003-11-30 02:11  limi
+
+	* skins/plone_portlets/portlet_calendar.pt (Plone-2_0-branch):
+	  Calendar popups were missing correct class, removed some
+	  excessive whitespace.
+
+2003-11-30 01:57  eaon
+
+	* skins/plone_styles/base_properties.props (Plone-2_0-branch): font
+	  size fixed ...
+
+2003-11-30 01:39  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): migrate navtree
+
+2003-11-29 22:37  eaon
+
+	* skins/plone_styles/: base_properties.props, plone.css.dtml,
+	  ploneTextHuge.css, ploneTextLarge.css, ploneTextSmall.css
+	  (Plone-2_0-branch): whoops, mistakes
+
+2003-11-29 22:15  eaon
+
+	* skins/plone_styles/: base_properties.props, plone.css.dtml
+	  (Plone-2_0-branch): welcome back usable ie 5.0 - fixed position
+	  of the siteactions - made lists inside portlets look good
+
+2003-11-29 21:36  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): final do dads..
+	  you need to goto portal_skins/manage in ui and 'save skin cookie'
+	  .. not sure why
+
+2003-11-29 21:04  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): you want
+	  workflw_history not a copy of the old portal
+
+2003-11-29 19:11  dpunktnpunkt
+
+	* skins/: plone_forms/discussion_reply_form.pt,
+	  plone_forms/folder_localrole_form.pt,
+	  plone_forms/ownership_form.pt, plone_forms/search.pt,
+	  plone_portlets/about_slot.pt,
+	  plone_prefs/prefs_error_log_form.pt,
+	  plone_prefs/prefs_error_log_showEntry.pt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_install_products_form.pt,
+	  plone_prefs/prefs_mailhost_form.pt,
+	  plone_prefs/prefs_main_template.pt,
+	  plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_syndication_form.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_workflow_advanced.pt,
+	  plone_prefs/prefs_workflow_basic.pt,
+	  plone_templates/global_contentviews.pt,
+	  plone_templates/global_skinswitcher.pt,
+	  plone_templates/main_template.pt (Plone-2_0-branch): Added more
+	  missing ids. A lot to do still :(
+
+2003-11-29 16:46  dpunktnpunkt
+
+	* skins/: plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  plone_content/document_edit_form.cpt,
+	  plone_content/event_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/folder_edit_form.cpt,
+	  plone_content/image_edit_form.cpt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_content/newsitem_edit_form.cpt, plone_forms/join_form.cpt,
+	  plone_forms/personalize_form.cpt, plone_forms/sendto_form.cpt,
+	  plone_forms/synPropertiesForm.cpt,
+	  plone_prefs/prefs_member_portraits_form.cpt,
+	  plone_prefs/reconfig_form.cpt (Plone-2_0-branch): Added missing
+	  i18n attributes for forms.
+
+2003-11-29 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-28 05:12  longsleep
 
 	* CVSLOG: auto generated new changelog
