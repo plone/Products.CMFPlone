@@ -708,7 +708,7 @@ function update_date_field(field, year, month, day, hour, minute, ampm)
     }
 }
 
-function doMode(item, state) {
+function setDisplayMode(item, state) {
 // change the display prop of a div to none/block if the div exists
     if (document.getElementById(item) != null) {
         document.getElementById(item).style.display = state;
@@ -716,27 +716,27 @@ function doMode(item, state) {
 }
 
 function fullscreenMode() {
-// toggle the display prop of divs none/block    
+    // toggle the display prop of divs none/block    
 	if (document.getElementById('portal-top').style.display == 'none') {        
-	doMode('portal-top', 'block');
-        doMode('portal-column-one', 'block');
-        doMode('portal-column-two', 'block');
-// set cookie        
-	createCookie('fullscreenMode', '', 365);        
+	    setDisplayMode('portal-top', 'block');
+        setDisplayMode('portal-column-one', 'block');
+        setDisplayMode('portal-column-two', 'block');
+        // set cookie        
+	    createCookie('fullscreenMode', '');        
 	}    else {        
-	doMode('portal-top', 'none');
-        doMode('portal-column-one', 'none');
-        doMode('portal-column-two', 'none');        
-	createCookie('fullscreenMode', '1', 365);    
+	    setDisplayMode('portal-top', 'none');
+        setDisplayMode('portal-column-one', 'none');
+        setDisplayMode('portal-column-two', 'none');        
+	    createCookie('fullscreenMode', '1');    
 	}
 }
 
 function fullscreenModeLoad() {
 // based on cookie hide div
     	if (readCookie('fullscreenMode') == '1') {        
-	doMode('portal-top', 'none');
-        doMode('portal-column-one', 'none');
-        doMode('portal-column-two', 'none');    
+	    setDisplayMode('portal-top', 'none');
+        setDisplayMode('portal-column-one', 'none');
+        setDisplayMode('portal-column-two', 'none');    
 	}
 }
 
