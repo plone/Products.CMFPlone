@@ -4,10 +4,6 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
-    - Fixed http://plone.org/collector/2849 - displayContentsTab did not check
-      for 'List Folder contents' permission in the parent.
-      [stefan]
-
     - Fixed http://plone.org/collector/3472 - you can now declare portlets on a
       template. Thanks to acamargo for the patch.
       [limi]

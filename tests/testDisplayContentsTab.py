@@ -64,13 +64,21 @@ class TestDisplayContentsTab(PloneTestCase.PloneTestCase):
         self.parent.manage_permission(ModifyPortalContent, ['Member'], acquire=1)
         self.failUnless(self.folder.displayContentsTab())
 
-    def testNoListPermissionInParent(self):
+    def FUTURE_testNoListPermissionInParent(self):
         # If we do have ModifyPortalContent in the parent but not
         # ListFolderContents, we should *not* see the tab.
         self.folder.manage_permission(ModifyPortalContent, ['Manager'], acquire=0)
         self.parent.manage_permission(ModifyPortalContent, ['Member'], acquire=1)
         self.parent.manage_permission(ListFolderContents, ['Manager'], acquire=0)
         self.failIf(self.folder.displayContentsTab())
+
+    def testNoListPermissionInParent(self):
+        # If we do have ModifyPortalContent in the parent but not
+        # ListFolderContents, we *should* see the tab.
+        self.folder.manage_permission(ModifyPortalContent, ['Manager'], acquire=0)
+        self.parent.manage_permission(ModifyPortalContent, ['Member'], acquire=1)
+        self.parent.manage_permission(ListFolderContents, ['Manager'], acquire=0)
+        self.failUnless(self.folder.displayContentsTab())
 
     def testNoCopyPermissionInParent(self):
         # If we do have ModifyPortalContent in the parent but not

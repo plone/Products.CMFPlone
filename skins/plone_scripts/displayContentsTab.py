@@ -32,7 +32,7 @@ for permission in ('Copy or Move',
 
 if not show and parent is not None:
     for permission in ('Copy or Move',
-                       'List folder contents',
+                       #'List folder contents',
                        'Modify portal content'):
         if not checkPermission(permission, parent):
             return 0
