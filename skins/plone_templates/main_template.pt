@@ -81,8 +81,6 @@
         id="contentWrapper"
          tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions )">
 
-	<a name="documentContent" />
-
         <metal:ifborder tal:condition="show_border" >
             <div metal:use-macro="here/view_tabs/macros/content_tabs">
             The content tabs (View, Edit, Properties, Workflow)
@@ -96,6 +94,8 @@
 
         <div id="documentContent"
              tal:attributes="class python:test(show_border, 'editable document', 'document')">
+
+	    <a name="documentContent" />
 
             <div metal:use-macro="here/global_elements/macros/portal_message">
                 Portal status message
