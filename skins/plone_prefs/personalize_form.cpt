@@ -125,7 +125,6 @@
                 <input type="checkbox"
                        class="noborder"
                        name="listed"
-                       value=""
                        id="cb_listed"
                        tal:attributes="tabindex tabindex/next;
                                        checked python:test(listed, 'checked', None);"
