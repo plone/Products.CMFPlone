@@ -40,9 +40,11 @@ Header stuff
         <tr>
             <td class="left">
                 <metal:block define-slot="left_column">
-                  <metal:block use-macro="here/main_left_column/macros/column">
-                  Left Column boxes
-                  </metal:block>
+                  <tal:block tal:repeat="lslot here/left_slots">
+                    <metal:block use-macro="python:path(lslot)">
+                    Left Column boxes
+                    </metal:block>
+                  </tal:block>
                 </metal:block>
             </td>
             
@@ -106,6 +108,16 @@ Header stuff
                 </div>
             </td>
 
+            <td class="right"
+                tal:condition="here/right_slots">
+                <metal:block define-slot="right_column">
+                    <tal:block tal:repeat="rslot here/right_slots">
+                        <metal:block use-macro="python:path(rslot)">
+                        Right Column boxes
+                        </metal:block>
+                    </tal:block>
+                </metal:block>
+            </td>
         </tr>
     </tbody>
 </table>
