@@ -6,7 +6,7 @@
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
 </tal:block>
 
-<script language="javascript" metal:fill-slot="javascript_head_slot">
+<script type="text/javascript" metal:fill-slot="javascript_head_slot">
 <!--
 function cookiesEnabled() {
     // set test cookie
@@ -59,7 +59,7 @@ If you do not have an account here, head over to the
 to become a member.
 </p>
 
-<script language="javascript">
+<script type="text/javascript">
 <!--
    if (cookiesEnabled && !cookiesEnabled()) {
       document.writeln('<div class="message>Cookies must be enabled on your browser before you can sign in. <a href="enabling_cookies">How to enable cookies</a></div>');
