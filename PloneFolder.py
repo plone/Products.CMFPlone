@@ -1,7 +1,7 @@
 try: from zExceptions import NotFound
 except ImportError: NotFound = 'NotFound' # Zope < 2.7
 from Products.CMFCore.utils import _verifyActionPermissions, \
-     getToolByName, getActionContext
+     getToolByName, getActionContext, _checkPermission
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
