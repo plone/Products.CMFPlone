@@ -13,7 +13,7 @@ if file and filename:
     file.seek(0)
     headers = file.headers
     if headers['Content-Type'].find('text')==-1:
-        state.setError('file', 'This file is not text, To upload binary files create File content,')
+        state.setError('file', 'This file is not text. To upload binary files create File content.')
 
 if context.CreationDate() == context.ModificationDate() and filename:
     alternative_id = filename[max( string.rfind(filename, '/')
