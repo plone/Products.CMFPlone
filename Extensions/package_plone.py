@@ -25,6 +25,7 @@ os.system("cd .. ; cp -rf CMFQuickInstallerTool " + releasename)
 os.system("cd .. ; cp -rf BTreeFolder2 " + releasename)
 os.system("cd .. ; cp -rf GroupUserFolder " + releasename)
 os.system("cd .. ; cp -rf CMFFormController " + releasename)
+os.system("cd .. ; cp -rf i18n " + releasename)
 
 os.system("cd ../" + releasename+";" + sh_cleanmisc)
 os.system("cd ../" + releasename+";" + sh_cleanpyc)
