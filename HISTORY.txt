@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1-beta1 - (TBA) - Unreleased
 
+    - Removed headingFontBaseSize from base_properties and plone.css.dtml 
+      because it doesn't actually work and cost/benefit of implementation is too 
+      high.
+      [whit537]
+
     - Added utility javascript "nodeContained" to check if a node is contained
       in another node
       [elvix]    
