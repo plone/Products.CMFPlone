@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.6 2003/10/26 08:53:05 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.9.2.7 2003/10/28 19:19:01 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -14,7 +14,7 @@ ZopeTestCase.installProduct('DCWorkflow')
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
-ZopeTestCase.installProduct('Formulator')
+#ZopeTestCase.installProduct('Formulator')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 ZopeTestCase.installProduct('CMFPlone')
@@ -110,6 +110,15 @@ def optimize():
         ps.addSkinSelection('Basic', 'custom')
     from Products.CMFDefault.Portal import PortalGenerator
     PortalGenerator.setupDefaultSkins = setupDefaultSkins
+    # Don't setup Plone content (besides members folder)
+    def setupPortalContent(self, p):
+        from LargePloneFolder import addLargePloneFolder
+        p.manage_delObjects('Members')
+        addLargePloneFolder(p, 'Members')
+        p.portal_catalog.unindexObject(p.Members)
+        p.Members._setPortalType = 'Folder'
+    from Products.CMFPlone.Portal import PloneGenerator
+    PloneGenerator.setupPortalContent = setupPortalContent
 
 
 optimize()
