@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText']
+##parameters=REQUEST=None,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText']
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 results=[]
@@ -13,6 +13,9 @@ indexes=catalog.indexes()
 query={}
 show_query=show_all
 second_pass = {}
+
+if REQUEST is None:
+    REQUEST = context.REQUEST
 
 def quotestring(s):
     return '"%s"' % s
