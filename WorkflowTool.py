@@ -8,8 +8,9 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
-
+from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from PloneUtilities import log
+
 class WorkflowTool( BaseTool ):
     security = ClassSecurityInfo()
     plone_tool = 1
@@ -50,35 +51,29 @@ class WorkflowTool( BaseTool ):
         return tuple(transitions[:])
     
     security.declarePublic('getTransitionsFor')
-    def getTransitionsFor(self, obj=None, container=None, REQUEST=None):	
-        if type(obj)==type([]):
+    def getTransitionsFor(self, obj=None, container=None, REQUEST=None):
+        if type(obj) is type([]):
             return self.flattenTransitions(objs=obj, container=container)
-        else:
-            obj=obj
-
-        wfs=()
-        avail_trans=[]
-        objstate=None
-
-        try:
-            objstate=self.getInfoFor(obj, 'review_state')
-            wfs=self.getWorkflowsFor(obj)
-        except WorkflowException, e:
-            return avail_trans
-
-        for wf in wfs:
-            stdef=wf.states[objstate]
-            for tid in stdef.transitions:
-                if tid not in wf.transitions.objectIds(): #XXX sometimes getting submit
-                    break
-                trans=wf.transitions[tid]
-                if trans.getGuard().check(getSecurityManager(), wf, obj):
-                    t={}
-                    t['title']=trans.title
-                    t['id']=trans.id
-                    t['name']=trans.actbox_name
-                    avail_trans.append(t)
-        return tuple(avail_trans[:])
+        result = {}
+        chain = self.getChainFor(obj)
+        for wf_id in chain:
+            wf = self.getWorkflowById(wf_id)
+            if wf is not None:
+                sdef = wf._getWorkflowStateOf(obj)
+                if sdef is not None:
+                    for tid in sdef.transitions:
+                        tdef = wf.transitions.get(tid, None)
+                        if tdef is not None and \
+                           tdef.trigger_type == TRIGGER_USER_ACTION and \
+                           tdef.actbox_name and \
+                           wf._checkTransitionGuard(tdef, obj) and \
+                           not result.has_key(tdef.id):
+                            result[tdef.id] = {
+                                    'id': tdef.id,
+                                    'title': tdef.title,
+                                    'name': tdef.actbox_name
+                                    }
+        return tuple(result.values())
 
     def workflows_in_use(self):
         """ gathers all the available workflow chains (sequence of workflow ids, ).  """
