@@ -52,7 +52,7 @@ if pages:
         if page in ids:
             return context, [page]
     for page in pages:
-        if hasattr(context, page ):
+        if hasattr(context.portal_skins, page ):
             return context, [page]
 
 # what if the page isnt found?
