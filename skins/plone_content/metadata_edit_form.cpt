@@ -220,7 +220,7 @@
                              sel_language python:request.get('language',sel_language)">
     
                 <label for="language" i18n:translate="label_language">Language</label>
-                <div class="formHelp" id="language_help">
+                <div class="formHelp" id="language_help" i18n:translate="help_language">
                 The language of this item.
                 </div>
     
@@ -243,7 +243,7 @@
             <div class="field">
                 <label for="rights" i18n:translate="label_copyrights">Copyrights</label>
     
-                <div class="formHelp" id="rights_help">
+                <div class="formHelp" id="rights_help" i18n:translate="help_copyrights">
                 The copyrights on this item.
                 </div>
     

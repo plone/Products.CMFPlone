@@ -35,7 +35,9 @@
     
                 <label i18n:translate="label_portal_title">Portal title</label>
     
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_portal_title">
                 The title of your Plone portal.
@@ -98,7 +100,9 @@
     
                 <label i18n:translate="label_portal_from_address">Portal 'From' address</label>
     
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_portal_from_address">
                 When Plone generates mail, it uses this address

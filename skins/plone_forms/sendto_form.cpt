@@ -33,7 +33,9 @@
                  
                 <label for="send_to_address" i18n:translate="label_send_to_mail">Send to</label>
         
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
         
                 <div class="formHelp" i18n:translate="help_send_to_mail">
                 The e-mail address to send this link to.
@@ -56,7 +58,9 @@
                  
                 <label for="send_from_address" i18n:translate="label_send_from">From</label>
         
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
         
                 <div class="formHelp" i18n:translate="help_send_from">
                 Your email address.

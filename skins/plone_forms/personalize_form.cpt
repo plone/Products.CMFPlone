@@ -16,7 +16,7 @@
 
     <h1 i18n:translate="heading_my_preferences">My Preferences</h1>
 
-    <p>
+    <p i18n:translate="description_my_preferences">
     Your personal settings.
     </p>
 
@@ -57,7 +57,9 @@
     
                 <label for="email" i18n:translate="label_email">E-mail</label>
     
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
     
                 <div tal:content="error">Validation error output</div>
     

@@ -70,7 +70,9 @@
               
                 <label for="title" i18n:translate="label_title">Title</label>
                 
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
                     
                 <div tal:content="error">Validation error output</div>
     
@@ -112,7 +114,9 @@
     
                 <label for="uri" i18n:translate="label_url">URL</label>
                 
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_url">
                 Prefix is optional; if not provided, the link will be relative.

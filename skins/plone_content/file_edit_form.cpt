@@ -69,7 +69,9 @@
               
                 <label for="title" i18n:translate="label_title">Title</label>
                 
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
                     
                 <div tal:content="error">Validation error output</div>
     
@@ -111,7 +113,9 @@
                 
                 <label for="file" i18n:translate="label_file">File</label>
 
-                <span class="fieldRequired" title="Required">(Required)</span>
+                <span class="fieldRequired" title="Required"
+                      i18n:attributes="title"
+                      i18n:translate="label_required">(Required)</span>
 
                 <div class="formHelp" i18n:translate="help_file">
                 Select the file to be added by clicking the 'Browse' button.
