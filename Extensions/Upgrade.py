@@ -57,11 +57,21 @@ def normalize_tabs(self):
     #now lets get rid of folder_listing/folder_contents tabs for folder objects
     tt=getToolByName(self, 'portal_types')
     f_actions=tt['Folder']._actions
+    actions=[]
     for a in f_actions:
-        if a.get('id','') in ('foldercontents', 'folderlisting'):
+        if a.get('id','') in ('folderlisting', ):
             a['visible']=0
-    tt['Folder']._actions=f_actions
-    
+	if a.get('id','') != 'syndication': #syndication tab belongs on syndication tool
+            actions.append(a)
+    tt['Folder']._actions=actions
+ 
+    get_transaction().commit(1)
+    import time
+        return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
+
+    """
+    we really ought to take actions from portal_actions, unless they belong there
+    """
     #lets check actions tool for orphaned actions
     at=getToolByName(self, 'portal_actions')
     a_actions=at._actions
