@@ -314,6 +314,13 @@ del {
     z-index: 2;
 }
 
+#portal-siteactions,
+#portal-siteactions li {
+    display: inline;
+    list-style: none;
+    list-style-image: none;
+}
+
 #portal-siteactions a {
     display: block;
     float: left;

@@ -2,13 +2,13 @@
       i18n:domain="plone">
 
 <body>
-<div metal:define-macro="site_actions"
-     id="portal-siteactions"
-     tal:define="site_actions actions/site_actions|nothing;
-                 getIconFor nocall:putils/getIconFor"
-     tal:condition="site_actions">
+<ul metal:define-macro="site_actions"
+    id="portal-siteactions"
+    tal:define="site_actions actions/site_actions|nothing;
+                getIconFor nocall:putils/getIconFor"
+    tal:condition="site_actions">
     
-    <tal:actions repeat="saction site_actions"><a 
+    <li tal:repeat="saction site_actions"><a 
            href="" 
            i18n:attributes="title"
            tal:attributes="href saction/url;
@@ -17,8 +17,8 @@
            tal:define="title saction/name;
                        icon python:getIconFor('site_actions', saction['id'], None)"
            tal:condition="icon"
-           ></a></tal:actions>
+           >a</a></li>
     
-</div>
+</ul>
 </body>
 </html>
