@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Backported fixes for http://plone.org/collector/3253 from the trunk.
+      folder_paste should return better error messages.
+      [stefan]
+
     - Merged fixes from tiran-plip30 branch. Changed PloneGenerator and
       MembershipTool.createMemberarea() to always use portal-aware factory
       methods for creating content. Prerequesite for future integration

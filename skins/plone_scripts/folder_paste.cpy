@@ -9,6 +9,7 @@
 ##title=Paste objects into a folder
 ##
 
+from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
 
 msg='Copy or cut one or more items to paste.' 
@@ -21,8 +22,12 @@ if context.cb_dataValid:
         return state.set(portal_status_message='Item(s) pasted.')
     except ConflictError:
         raise
-    except: #pasteObjects throws a 'Copy Error' exception ;-(
-        msg='Paste could not find clipboard content'
+    except ValueError:
+        msg="Disallowed to paste item(s)."
+    except (Unauthorized, 'Unauthorized'):
+        msg="Unauthorized to paste item(s)."
+    except: # fallback
+        msg='Paste could not find clipboard content.'
 
 return state.set(status='failure', portal_status_message=msg)
 
