@@ -1,5 +1,7 @@
 from Products.CMFCore.CMFCorePermissions import ModifyPortalContent, View, \
      AccessContentsInformation
+from Products.CMFCalendar.EventPermissions import ChangeEvents
+
 from Products.CMFCore.WorkflowTool import addWorkflowFactory
 from Products.DCWorkflow.DCWorkflow import DCWorkflowDefinition
 from Products.DCWorkflow.Default import setupDefaultWorkflowRev2
@@ -8,10 +10,20 @@ def setupDefaultPloneWorkflow(wf):
     # nothing but a default DCWorkflow Rev 2 worflow
     setupDefaultWorkflowRev2(wf)
 
+def configureEventPermissions(wf):
+    """ Since events use a unique set of Permissions we 
+        need to add it to the workflow definition and make
+        it conform to other tranistions/states 
+    """
+    wf.permissions+=(ChangeEvents, )
+    wf.states.published.permission_roles[ChangeEvents]=('Manager',)
+    wf.states.pending.permission_roles[ChangeEvents]=('Manager', 'Reviewer')
+
 def createDefaultPloneWorkflow(id):
     ob=DCWorkflowDefinition(id)
     setupDefaultPloneWorkflow(ob)
     ob.setProperties(title='Default Workflow [Plone]')
+    configureEventPermissions(ob)
     return ob
 
 addWorkflowFactory( createDefaultPloneWorkflow, id='plone_workflow'
@@ -50,6 +62,7 @@ def setupPrivatePloneWorkflow(wf):
 def createPrivatePloneWorkflow(id):
     ob=DCWorkflowDefinition(id)
     setupPrivatePloneWorkflow(ob)
+    configureEventPermissions(ob)
     ob.setProperties(title='Private Workflow [Plone]')
     return ob
 
