@@ -60,7 +60,8 @@ li {
 
 p {
     /* This hides evertything that is a normal paragraph, so you can write 
-    presentations with additional notes that only show up in print/web */
+    presentations with additional notes that only show up in print/web.
+    If you want normal paragraphs to show up, remove this selector. */
     display: none;
 }
 
