@@ -22,9 +22,7 @@ context.plone_utils.contentEdit( context
                                , id=id
                                , description=description)
 
-message='portal_status_message=News+Item+changed.'
-
 return context.plone_utils.getNextRequestFor( context
                                             , script.getId()
                                             , 'success'
-                                            , portal_status_message='News item changed.')
+                                            , portal_status_message='News item changed.' )
