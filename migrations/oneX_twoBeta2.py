@@ -136,7 +136,7 @@ def moveOldTemplates(portal):
             st.custom.manage_renameObjects([id], ['premigration_'+id])
 
 def migrateTools(portal):
-    _migrate(portal, 'portal_actionicons', ToolNames.ActionIconsTool, ['_icons'])
+    _migrate(portal, 'portal_actionicons', ToolNames.ActionIconsTool, ['_icons','_lookup'])
     _migrate(portal, 'portal_actions', ToolNames.ActionsTool, ['_actions', 'action_providers'])
     _migrate(portal, 'portal_calendar', ToolNames.CalendarTool, [])
     _migrate(portal, 'portal_registration', ToolNames.RegistrationTool, ['_actions'])
