@@ -64,6 +64,22 @@ def upg_1_0_1_to_1_1(portal):
 
     # migrate to add simple workflow
 
+    # create and populate the 'plone_help' folder in the root of the plone
+    # the contents are STX files in CMFPlone/docs
+    if 'plone_help' not in portal.objectIds():
+        portal.invokeFactory(type_name='Folder', id='plone_help')
+        plone_help=portal.plone_help
+        docs_path=os.path.join(package_home(cmfplone_globals), 'docs')
+
+        for filename in os.listdir(docs_path):
+            _path=os.path.join(docs_path, filename)
+            if not os.path.isdir(_path):
+                doc=open(_path, 'r')
+                addDocument(plone_help, filename, filename, '',
+                            'structured-text', doc.read())
+                getattr(plone_help,filename)._setPortalTypeName('Document')
+
+
     # change the action in portal_types for
     # viewing a folder
 
