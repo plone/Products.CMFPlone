@@ -1,3 +1,222 @@
+2004-02-05 22:49  shh42
+
+	* ActionIconsTool.py, CREDITS.txt, FormTool.py, HISTORY.txt,
+	  INSTALL.txt, LICENSE.txt, MembershipTool.py, MigrationTool.py,
+	  PloneFolder.py, PloneTool.py, Portal.py, SkinsTool.py,
+	  StatelessTreeNav.py, SyndicationTool.py, UPGRADE.txt,
+	  version.txt, Extensions/package_plone.py, debian/README.Debian,
+	  debian/changelog, debian/compat, debian/config, debian/control,
+	  debian/copyright, debian/docs, debian/postinst, debian/prerm,
+	  debian/rules, debian/templates, migrations/__init__.py,
+	  migrations/migration_util.py, migrations/v2/oneX_twoBeta2.py,
+	  migrations/v2/plone2_base.py, migrations/v2/portlet_migration.py,
+	  migrations/v2/release_candidates.py,
+	  migrations/v2/twoBeta2_twoBeta3.py,
+	  setup/ConfigurationMethods.py, setup/__init__.py,
+	  setup/config_files.py, setup/dependencies.py, setup/languages.py,
+	  setup/standard.ini, skins/cmf_legacy/RSS.dtml,
+	  skins/cmf_legacy/rssBody.dtml,
+	  skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  skins/plone_3rdParty/jscalendar/calendar-hy.js,
+	  skins/plone_3rdParty/jscalendar/calendar-hy.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar_stripped.js,
+	  skins/plone_content/discussionitem_view.pt,
+	  skins/plone_content/document_edit_form.cpt,
+	  skins/plone_content/event_edit_form.cpt,
+	  skins/plone_content/event_edit_form.cpt.metadata,
+	  skins/plone_content/event_view.pt,
+	  skins/plone_content/file_edit_form.cpt,
+	  skins/plone_content/file_edit_form.cpt.metadata,
+	  skins/plone_content/file_view.pt,
+	  skins/plone_content/folder_edit_form.cpt,
+	  skins/plone_content/folder_edit_form.cpt.metadata,
+	  skins/plone_content/image_edit_form.cpt,
+	  skins/plone_content/image_edit_form.cpt.metadata,
+	  skins/plone_content/image_view.pt,
+	  skins/plone_content/link_edit_form.cpt,
+	  skins/plone_content/link_edit_form.cpt.metadata,
+	  skins/plone_content/metadata_edit_form.cpt,
+	  skins/plone_content/metadata_edit_form.cpt.metadata,
+	  skins/plone_content/newsitem_edit_form.cpt,
+	  skins/plone_content/newsitem_edit_form.cpt.metadata,
+	  skins/plone_ecmascript/plone_javascripts.js,
+	  skins/plone_form_scripts/change_ownership.py,
+	  skins/plone_form_scripts/file_edit.cpy,
+	  skins/plone_form_scripts/personalize.cpy,
+	  skins/plone_form_scripts/sendto.cpy,
+	  skins/plone_form_scripts/validate_document_edit.vpy,
+	  skins/plone_form_scripts/validate_start_end_date.vpy,
+	  skins/plone_forms/calendar_popup.pt,
+	  skins/plone_forms/content_status_history.cpt,
+	  skins/plone_forms/discussion_reply_form.pt,
+	  skins/plone_forms/enabling_cookies.pt,
+	  skins/plone_forms/failsafe_login.pt,
+	  skins/plone_forms/failsafe_login.pt.metadata,
+	  skins/plone_forms/folder_factories.pt,
+	  skins/plone_forms/folder_localrole_form.pt,
+	  skins/plone_forms/folder_rename_form.cpt,
+	  skins/plone_forms/history_form.pt,
+	  skins/plone_forms/insufficient_privileges.pt,
+	  skins/plone_forms/join_form.cpt,
+	  skins/plone_forms/join_form.cpt.metadata,
+	  skins/plone_forms/login_failed.pt,
+	  skins/plone_forms/login_form.pt,
+	  skins/plone_forms/login_password.pt,
+	  skins/plone_forms/login_success.pt,
+	  skins/plone_forms/mail_password_form.pt,
+	  skins/plone_forms/member_search_results.pt,
+	  skins/plone_forms/ownership_form.pt,
+	  skins/plone_forms/registered.pt, skins/plone_forms/roster.pt,
+	  skins/plone_forms/search.pt, skins/plone_forms/search_form.pt,
+	  skins/plone_forms/sendto_form.cpt,
+	  skins/plone_forms/synPropertiesForm.cpt,
+	  skins/plone_forms/talkback_tree.pt,
+	  skins/plone_images/error_icon.gif.metadata,
+	  skins/plone_images/linkOpaque.gif,
+	  skins/plone_portlets/calendar_slot.pt,
+	  skins/plone_portlets/portlet_calendar.pt,
+	  skins/plone_portlets/portlet_events.pt,
+	  skins/plone_portlets/portlet_login.pt,
+	  skins/plone_portlets/portlet_navigation.pt,
+	  skins/plone_portlets/portlet_news.pt,
+	  skins/plone_portlets/portlet_recent.pt,
+	  skins/plone_portlets/portlet_related.pt,
+	  skins/plone_prefs/password_form.pt,
+	  skins/plone_prefs/personalize_form.cpt,
+	  skins/plone_prefs/personalize_form.cpt.metadata,
+	  skins/plone_prefs/plone_control_panel.pt,
+	  skins/plone_prefs/plone_memberprefs_panel.pt,
+	  skins/plone_prefs/plone_memberprefs_panel.pt.metadata,
+	  skins/plone_prefs/prefs_error_log_form.pt,
+	  skins/plone_prefs/prefs_error_log_showEntry.pt,
+	  skins/plone_prefs/prefs_group_details.pt,
+	  skins/plone_prefs/prefs_group_manage.cpy,
+	  skins/plone_prefs/prefs_group_manage.cpy.metadata,
+	  skins/plone_prefs/prefs_group_manage.py,
+	  skins/plone_prefs/prefs_group_members.pt,
+	  skins/plone_prefs/prefs_groups_overview.pt,
+	  skins/plone_prefs/prefs_install_product_readme.pt,
+	  skins/plone_prefs/prefs_install_products_form.pt,
+	  skins/plone_prefs/prefs_installed_product_overview.pt,
+	  skins/plone_prefs/prefs_mailhost_form.pt,
+	  skins/plone_prefs/prefs_main_template.pt,
+	  skins/plone_prefs/prefs_portal_properties_list.pt,
+	  skins/plone_prefs/prefs_portalskin_form.pt,
+	  skins/plone_prefs/prefs_portrait_delete.py,
+	  skins/plone_prefs/prefs_search_macros.pt,
+	  skins/plone_prefs/prefs_syndication_form.pt,
+	  skins/plone_prefs/prefs_user_details.pt,
+	  skins/plone_prefs/prefs_user_edit.py,
+	  skins/plone_prefs/prefs_user_group_search_form.pt,
+	  skins/plone_prefs/prefs_user_manage.cpy,
+	  skins/plone_prefs/prefs_user_manage.cpy.metadata,
+	  skins/plone_prefs/prefs_user_manage.py,
+	  skins/plone_prefs/prefs_user_memberships.pt,
+	  skins/plone_prefs/prefs_users_overview.pt,
+	  skins/plone_prefs/prefs_workflow_advanced.pt,
+	  skins/plone_prefs/prefs_workflow_basic.pt,
+	  skins/plone_prefs/reconfig_form.cpt,
+	  skins/plone_scripts/batchedFolderContents.py,
+	  skins/plone_scripts/breadcrumbs.py,
+	  skins/plone_scripts/browserDefault.py,
+	  skins/plone_scripts/displayContentsTab.py,
+	  skins/plone_scripts/folder_copy.cpy.metadata,
+	  skins/plone_scripts/folder_cut.cpy.metadata,
+	  skins/plone_scripts/folder_delete.cpy.metadata,
+	  skins/plone_scripts/folder_paste.cpy.metadata,
+	  skins/plone_scripts/folder_publish.cpy.metadata,
+	  skins/plone_scripts/folder_rename.cpy.metadata,
+	  skins/plone_scripts/getAllowedTypes.py,
+	  skins/plone_scripts/getFolderContents.py,
+	  skins/plone_scripts/logged_in.py,
+	  skins/plone_scripts/require_login.py,
+	  skins/plone_scripts/spamProtect.py,
+	  skins/plone_styles/plone.css.dtml,
+	  skins/plone_styles/ploneColumns.css.dtml,
+	  skins/plone_styles/ploneCustom.css.dtml,
+	  skins/plone_styles/ploneIEFixes.css.dtml,
+	  skins/plone_styles/plonePresentation.css.dtml,
+	  skins/plone_styles/plonePrint.css.dtml,
+	  skins/plone_tableless/ReadMe-Tableless.txt,
+	  skins/plone_tableless/colophon.pt,
+	  skins/plone_tableless/main_template.pt,
+	  skins/plone_tableless/ploneColumns.css.dtml,
+	  skins/plone_templates/colophon.pt,
+	  skins/plone_templates/default_error_message.pt,
+	  skins/plone_templates/document_actions.pt,
+	  skins/plone_templates/document_byline.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/folder_listing.pt,
+	  skins/plone_templates/footer.pt,
+	  skins/plone_templates/global_contentmenu.pt,
+	  skins/plone_templates/global_contentviews.pt,
+	  skins/plone_templates/global_defines.pt,
+	  skins/plone_templates/global_logo.pt,
+	  skins/plone_templates/global_pathbar.pt,
+	  skins/plone_templates/global_personalbar.pt,
+	  skins/plone_templates/global_sections.pt,
+	  skins/plone_templates/global_statusmessage.pt,
+	  skins/plone_templates/header.pt,
+	  skins/plone_templates/main_template.pt,
+	  skins/plone_templates/news.pt,
+	  skins/plone_templates/recently_published.pt,
+	  skins/plone_templates/registered_notify_template.pt,
+	  skins/plone_templates/viewThreadsAtBottom.pt,
+	  skins/plone_wysiwyg/wysiwyg_support.pt, tests/testGroupsTool.py,
+	  tests/testPloneFolder.py: Merging Plone-2_0-branch (post RC5) to
+	  HEAD so we have a nice starting point for the sprint.
+
+2004-02-05 21:42  shh42
+
+	* skins/: cmf_legacy/RSS.dtml, cmf_legacy/rssBody.dtml,
+	  plone_images/error_icon.gif.metadata: Removing some wrongly
+	  merged files in preparation of a working HEAD.
+
+2004-02-05 15:58  psol
+
+	* skins/plone_scripts/breadcrumbs.py (Plone-2_0-branch): #2595 -
+	  more fixing, can't do anything on the method object
+
+2004-02-05 15:34  psol
+
+	* skins/plone_scripts/breadcrumbs.py (Plone-2_0-branch): #2595 -
+	  trying to get physicalpath of view methods
+
+2004-02-05 14:13  gbjk
+
+	* skins/plone_templates/sendto_template.pt (Plone-2_0-branch):
+	  utool is defined in global_defines.pt.  global_defines doesn't
+	  get called when this pt is called by sendto in PloneTool with
+	  self.sendto_template(..) update -r1.6.2.1 -> -r1.6.2.3 # No cvs
+	  remove|doh
+
+2004-02-05 14:09  gbjk
+
+	* skins/plone_templates/registered_notify_template.pt
+	  (Plone-2_0-branch): utool is defined in global_defines.pt.
+	  global_defines doesn't get called when this pt is called by
+	  registeredNotify in RegistrationTool with
+	  self.register_notify_template(..) update -r1.7.2.6 -> -r1.7.2.8 #
+	  No cvs remove|doh
+
+2004-02-05 11:40  tiran
+
+	* migrations/v2/portlet_migration.py (Plone-2_0-branch): fixed max
+	  recursion depth error for cmf collector
+
+2004-02-05 06:48  vinsci
+
+	* INSTALL.txt (Plone-2_0-branch): Fix typo, point out that Zope
+	  2.6.3 shouldn't be used.
+
+2004-02-05 06:38  tiran
+
+	* INSTALL.txt, UPGRADE.txt (Plone-2_0-branch): updated docs
+
+2004-02-05 04:56  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-05 01:19  zopezen
 
 	* LICENSE.txt (Plone-2_0-branch): Update to 2004
