@@ -29,10 +29,16 @@
                />
         </form>
 
-        <div tal:condition="python: userIsAnonymous and not userHasReplyPermission"
-             tal:define="pss modules/Products/PythonScripts/standard">
-          You can add comments to this item if you <a href="" tal:attributes="href python: '%s/login_form?came_from=%s' % (here.portal_url(), pss.url_quote(request['URL']))">log in</a>.
-        </div>
+        <form tal:condition="python: userIsAnonymous and not userHasReplyPermission"
+              tal:define="pss modules/Products/PythonScripts/standard"
+              tal:attributes="action python: '%s/login_form?came_from=%s' % (here.portal_url(), pss.url_quote(request['URL']))">
+
+            <input class="standalone" 
+    	       type="submit" 
+    	       value="Log in to add comments"
+               i18n:attributes="value"
+               />
+        </form>
     
         <a name="comments"> </a>
 
