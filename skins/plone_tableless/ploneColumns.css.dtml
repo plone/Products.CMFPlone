@@ -5,6 +5,7 @@
 ** Michael Zeltner (http://niij.org).
 */
 
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> */
 
 body {
