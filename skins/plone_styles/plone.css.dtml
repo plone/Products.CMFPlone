@@ -223,7 +223,7 @@ blockquote {
     font-size: 120%;
 }
 code {
-    font-family: "American Typewriter", "Courier New", Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
     font-size: 120%;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
