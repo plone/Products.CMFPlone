@@ -1,3 +1,35 @@
+2004-01-28 21:51  shh42
+
+	* tests/testMembershipTool.py (Plone-2_0-branch): Shut up
+	  "DeprecationWarning: Owned.getOwner(1) is deprecated"
+
+2004-01-28 20:56  limi
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): Added
+	  extra check for dictionary-based actions. Will work better with
+	  old sites being migrated.
+
+2004-01-28 15:25  limi
+
+	* HISTORY.txt, skins/plone_tableless/main_template.pt,
+	  skins/plone_templates/main_template.pt (Plone-2_0-branch): Added
+	  notes to history, made sure the tableless main_template has the
+	  same slot names as the table-based one.
+
+2004-01-28 11:46  limi
+
+	* migrations/v2/portlet_migration.py (Plone-2_0-branch): Migration
+	  was putting in "news_portlet_" instead of "news_portlet". Fixed.
+
+2004-01-28 05:50  jimroepcke
+
+	* skins/plone_templates/global_pathbar.pt: fix for
+	  http://plone.org/collector/2506
+
+2004-01-28 04:59  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-27 20:19  limi
 
 	* skins/plone_templates/main_template.pt (Plone-2_0-branch):
