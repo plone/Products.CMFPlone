@@ -380,13 +380,6 @@ msgstr "Opp ett nivå"
 msgid "choose_language"
 msgstr "Velg språk"
 
-#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
-#.   <span>
-#.             Click ${here (tal attributes="href python: request.URL + '?do_cite=1'")} to cite the existing transcript.
-#.             </span>
-msgid "click_to_cite"
-msgstr "Klikk ${here} for å sitere den opprinnelige meldingen."
-
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <span tal:condition="item/assigned_to|nothing">,
 #.                 Assigned to
@@ -686,16 +679,6 @@ msgstr "for å få tildelt en bruker."
 #.         </p>
 msgid "description_no_comparison_support"
 msgstr "Denne typen innhold støtter ikke sammenligning."
-
-#: from plone_forms/folder_listing.pt
-#.   <span>
-#.               This folder does not have a default page, therefore a list of items
-#.               is shown instead.
-#.               If you want to create a default page in this folder that will
-#.               replace the item listing,
-#.               </span>
-msgid "description_no_default_folder"
-msgstr "Denne mappen har ingen standardvisning, derfor vises en innholdsliste. Hvis du vil opprette en standardvisning,"
 
 #: from plone_forms/folder_listing.pt
 #.   <p condition="not: here/contentValues">
@@ -3625,9 +3608,6 @@ msgstr "Innholdet er for tiden i ${review_state} tilstand"
 msgid "label_state"
 msgstr "Tilstand"
 
-msgid "label_selected_keywords"
-msgstr "Valgte Nøkkelord"
-
 msgid "label_new_keywords"
 msgstr "Nye nøkkelord"
 
@@ -3755,3 +3735,24 @@ msgstr "Neon-Plone"
 # End 17.11.2002 update          #
 ##################################
 
+
+
+##################################
+# Added in the 19.11.2002 update #
+##################################
+
+msgid "batch_previous_x_items"  
+msgstr "Til de ${number} forrige"
+
+msgid "batch_next_x_items"  
+msgstr "Til de ${number} neste"
+
+msgid "description_no_default_folder_create_new"
+msgstr "Denne mappen har ingen standardvisning, derfor vises det en innholdsliste. Hvis du vil lage en side som skal være standardvisning, bruk knappen for å legge til."
+
+msgid "Create default document"
+msgstr "Legg til standardvisning"
+
+#########################
+# End 19.11.2002 update #
+#########################
