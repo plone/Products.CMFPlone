@@ -1,3 +1,50 @@
+2004-02-09 02:44  jok2
+
+	* skins/plone_forms/content_status_history.cpt: Fix for
+	  plone.org/collector/2593
+
+2004-02-09 02:11  runyaga
+
+	* HISTORY.txt (Plone-2_0-branch): no RC6 - just final
+
+2004-02-09 02:07  runyaga
+
+	* Extensions/package_plone.py (Plone-2_0-branch): incoporate CMF
+	  into PLone releases now.  Jujst mkaes life easier
+
+2004-02-09 01:09  plonista
+
+	* skins/plone_scripts/navigationRemoteResources.py
+	  (Plone-2_0-branch): * add try block to handle edge case uncovered
+	  in CMFMember
+
+2004-02-08 22:19  runyaga
+
+	* Extensions/package_plone.py (Plone-2_0-branch): typo
+
+2004-02-08 21:52  runyaga
+
+	* version.txt, Extensions/package_plone.py, migrations/__init__.py
+	  (Plone-2_0-branch): prep for 2.0 release in a few minutes
+
+2004-02-08 21:20  runyaga
+
+	* skins/plone_scripts/logged_in.py (Plone-2_0-branch): fix the
+	  whole -> login_form -> login -redirect> login_form but this needs
+	  much nicer mechanism.  but we must get 2.0 out
+
+2004-02-08 19:51  limi
+
+	* skins/: plone_portlets/portlet_login.pt,
+	  plone_templates/global_personalbar.pt (Plone-2_0-branch): Added
+	  some extra names and IDs to ease Geoff's functional testing task.
+	  Search form now has the name "searchform", and the user's ID has
+	  the ID "user-name" - corresponding to the ID/class naming scheme.
+
+2004-02-08 04:55  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-07 17:19  gbjk
 
 	* HISTORY.txt (Plone-2_0-branch): Added "If a content type is
