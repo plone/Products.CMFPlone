@@ -9,7 +9,7 @@ def twoBeta2_twoBeta3(portal):
     out = []
 
     # as per bug #1600
-    out.append("Altering my preferences to point at the member preferences panel")
+    out.append("Altering my preferences to point at the member preferences panel, bug #1600")
     pm = portal.portal_membership
     actions = pm._cloneActions()
     for action in actions:
@@ -26,10 +26,19 @@ def twoBeta2_twoBeta3(portal):
             id = "Plone Site",
             typeinfo_name = "CMFPlone: Plone Site"
         )
+        out.append("Adding in Plone Site type")
 
     # and then in workflow remove any workflow from it
     wt = getToolByName(portal, "portal_workflow")
     wt.setChainForPortalTypes(("Plone Site",), "")
+    out.append("Setting up Plone Site workflow")
+
+    # sometimes it seems the migration nukes the
+    # default skin, causing a browserDefault error
+    ps = getToolByName(portal, "portal_skins")
+    if not ps.default_skin:
+        out.append("Setting default skin to be Plone Default")
+        ps.default_skin = "Plone Default"
 
 
 if __name__=='__main__':
