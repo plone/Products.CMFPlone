@@ -87,12 +87,12 @@
             <legend i18n:translate="legend_installed_products">Installed products</legend> 
 
             <ul class="configlets">
-                <li tal:repeat="product QI/listInstalledProducts">
-                
+
+                <tal:products tal:repeat="product QI/listInstalledProducts">
                 <tal:filter condition="python: not product['isHidden'] and not product['isLocked']">
-                <tal:product define="prodver python:QI.getProductVersion(product['id']);
-                                     pid product/id;" 
-                             >
+
+                <li tal:define="prodver python:QI.getProductVersion(product['id']);
+                                        pid product/id;">
     
                     <input class="noborder"
                            type="checkbox"
@@ -139,9 +139,9 @@
                          This Product has been removed from the file system
                         </li>
                     </ul>
-                </tal:product>
-                </tal:filter>
                 </li>
+                </tal:filter>
+                </tal:products>
             </ul>
         
             <input class="context"
