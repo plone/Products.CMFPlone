@@ -1,14 +1,10 @@
-#from DateTime import DateTime
-#REQUEST=context.REQUEST
-#expires=DateTime()+7
-#last_modified=DateTime()-14
-#date_format = '%a, %d %b %Y %H:%M:%S'
-
-#REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )
-#REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )
-#REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime(date_format) )
-#REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime(date_format) )
-
+<dtml-let last_modified="_.DateTime()-14"
+          expires="_.DateTime()+7" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
+</dtml-let>
 
 return r"""
 var ie = document.all != null;
