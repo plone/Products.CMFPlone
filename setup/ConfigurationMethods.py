@@ -66,10 +66,8 @@ def setupDefaultLeftRightSlots(self, portal):
 
 def setupDefaultItemActionSlots(self, portal):                
     """ Sets up the default action item slots """
-    document_action_slots=( 'here/actions_slot/macros/print'
-                      , 'here/actions_slot/macros/sendto'
-          , 'here/actions_slot/macros/syndication' )
-    safeEditProperty(portal, 'document_action_slots', document_action_slots, 'lines')
+    'These are now document_actions ActionInformation object in portal_actiosn'
+    pass
 
 def installExternalEditor(self, portal):
     ''' responsible for doing whats necessary if external editor is found '''
