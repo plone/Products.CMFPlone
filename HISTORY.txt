@@ -12,7 +12,9 @@ Plone 1.0 rc2
          Then it's just the usual:
          <div class="even content">
          etc.
-
+    - Added skin variable to end of CSS file name, avoids caching problems when 
+      switching skins on the fly.
+      
 Plone 1.0 rc1
     - added 'fullname' to portal_memberdata
     - 'properties' forms (metadata_edit_form) no longer allows anyone to add keywords.  this is now

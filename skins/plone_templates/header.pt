@@ -25,7 +25,7 @@
     -->
 
     <!-- Main style sheets for CSS2 capable browsers -->
-    <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css);"></style>
+    <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css?skin=${current_skin});"></style>
 
     <!-- Custom style sheet if available -->
     <style type="text/css" media="all" tal:condition="exists: here/ploneCustom.css" tal:content="string:@import url(${here/portal_url}/ploneCustom.css);"></style>
