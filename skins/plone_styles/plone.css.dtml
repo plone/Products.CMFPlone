@@ -1155,46 +1155,19 @@ ol.visualNoMarker {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    margin: 1px 0;
 }
 
-/* The deprecated navtree levels. These will go away once we ship with new navtree */
+/* The deprecated navtree levels. These will go away once we ship with new 
+   navtree in 2.1 */
 
-.navLevel1 {
-    margin-left: 0em;
-}
-
-.navLevel2 {
-    margin-left: 1em;
-}
-
-.navLevel3 {
-    margin-left: 2em;
-}
-
-.navLevel4 {
-    margin-left: 3em;
-}
-
-.navLevel5 {
-    margin-left: 4em;
-}
-
-.navLevel6 {
-    margin-left: 4.5em;
-}
-
-.navLevel7 {
-    margin-left: 5em;
-}
-
-.navLevel8 {
-    margin-left: 5.5em;
-}
-
-/* Add more levels if needed. Then again, if you have more than 3-4 level deep
-   structures, you should definitely re-think your Information Architecture ;)*/
-
+.navLevel1 { margin-left: 0em; }
+.navLevel2 { margin-left: 1em; }
+.navLevel3 { margin-left: 2em; }
+.navLevel4 { margin-left: 3em; }
+.navLevel5 { margin-left: 4em; }
+.navLevel6 { margin-left: 4.5em; }
+.navLevel7 { margin-left: 5em;   }
+.navLevel8 { margin-left: 5.5em; }
 
 
 /* New-style navigation tree */
