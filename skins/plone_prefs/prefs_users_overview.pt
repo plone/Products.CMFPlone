@@ -95,7 +95,7 @@
         <input type="hidden" value="1" name="came_from_prefs" />
         <input type="hidden" value="b_start" name="b_start" 
                tal:attributes="value b_start"/>
-            <table class="listing">
+        <table class="listing" summary="User management and search">
                 <tr>
                     <th colspan="4">
                         <span tal:omit-tag="" i18n:translate="label_quick_search">User Search</span>:
