@@ -15,7 +15,7 @@
     <h1 i18n:translate="heading_plone_setup">Plone Setup</h1>
 
     <p i18n:translate="description_plone_setup">
-    Here you configure some of the settings that affect Plone.
+      Here you can configure your Portal's skins settings.
     </p>
 
     <form class="group"
