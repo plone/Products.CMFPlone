@@ -1,5 +1,8 @@
 CHANGES
 Plone 1.1
+    - Instance version was being set to 1.0beta2 on Portal.py
+    - CMF from HEAD has version 'Unreleased'. Registered a
+      Configuration for it while the apb-redux branch doesnt lands.
     - Removed "(No Description)" string from news.pt 
     - creates an object to hold customization policy output, if any.
     - Added translation to field 'type' in folder_listing table. Replaced

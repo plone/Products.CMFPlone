@@ -174,6 +174,9 @@ class OriginalConfiguration:
         actions_tool._actions=tuple(actions)
 
 registerConfiguration(('1.1','1.2','1.3','1.3.1'), OriginalConfiguration)
+# Unreleased is CMF-HEAD. It should use OneFourConfiguration when the
+# types_tool_as_apb branch is merged.
+registerConfiguration(('Unreleased',), OriginalConfiguration)
 
 class OneFourConfiguration(OriginalConfiguration):
     _methods=_methods+('plonify_typeActions',)
@@ -225,7 +228,8 @@ class OneFourConfiguration(OriginalConfiguration):
                 if action.id=='join':
                     action.action=Expression('string:${portal_url}/portal_form/join_form')
         actions_tool._actions=tuple(actions)
-registerConfiguration('1.4', OneFourConfiguration)
+registerConfiguration(('1.4',), OneFourConfiguration)
+
 
 
 

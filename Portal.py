@@ -269,7 +269,8 @@ class PloneGenerator(Portal.PortalGenerator):
         CalendarInstall.install(p)
 
         m = p.portal_migration
-        m.setInstanceVersion('1.0beta2')
+        # XXX we need to make this read version.txt
+        m.setInstanceVersion('1.0.1')
         m.upgrade()
         
     def create(self, parent, id, create_userfolder):
