@@ -1,5 +1,5 @@
 #
-# Test methods used to make template-mixin enabled display menu work
+# Test methods used to make browser-default-mixin enabled display menu work
 #
 
 import os, sys
@@ -10,10 +10,8 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
-
-
 class TestTemplateMixinScripts(PloneTestCase.PloneTestCase):
-    '''Tests the template-mixin and folder-default page scripts'''
+    '''Tests the browser default and folder-default page scripts'''
 
     def testNoIndexHtml(self):
         # A folder shouldn't have an index_html object at instantiation time
@@ -33,7 +31,7 @@ class TestTemplateMixinScripts(PloneTestCase.PloneTestCase):
         self.failUnless('atct_album_view' in views)
 
     def testGetSelectableViewsWithoutViews(self):
-        # Assume documents have only one view
+        # Assume documents have only one view
         self.folder.invokeFactory('Document', 'test', 
                                   title='Test default page')
         doc = getattr(self.folder, 'test')
@@ -48,10 +46,8 @@ class TestTemplateMixinScripts(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', 'test', 
                                   title='Test default page')
         self.failUnless(self.folder.canSelectDefaultPage())
-        self.failUnless(self.folder.setDefaultPage('test'))
+        self.folder.saveDefaultPage('test')
         self.failUnless(self.folder.test.isDefaultPageInFolder())
-
-
 
 def test_suite():
     from unittest import TestSuite, makeSuite
