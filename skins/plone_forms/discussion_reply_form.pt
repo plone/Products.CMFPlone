@@ -55,8 +55,8 @@
                           cols="40"
                           rows="8"
                           tabindex=""
-													tal:attributes="tabindex tabindex/next;"
-			              tal:content="request/text_override | nothing"></textarea>
+                          tal:attributes="tabindex tabindex/next"
+                          tal:content="request/text_override | nothing"></textarea>
             </div>
             
         </div>
