@@ -105,14 +105,12 @@
     
                 <thead> 
                     <tr>
-                        <th name="nosort">
-                            <input class="noborder" 
-                                   type="image"
-                                   src="select_all_icon.gif" 
-                                   name="selectButton" 
-                                   onClick="toggleSelect(this); return false;"
-                                   />                           
-                        </th>
+                        <th name="nosort"><input class="noborder" 
+                                                 type="image"
+                                                 src="select_all_icon.gif" 
+                                                 name="selectButton" 
+                                                 onClick="toggleSelect(this); return false;"
+                                                 /></th>
                         <th>Title&nbsp;<img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
                         <th>Type</th>
                         <th>Size</th>
@@ -234,12 +232,6 @@
     
     </form>
 
-    
-<script tal:condition="nothing" language="JavaScript" type="text/javascript">
-<!--
-document.write(document.getElementById('sortable').getElementsByTagName("th").item(0).getAttribute('name'));
-//-->
-</script>
 </div>
 
 
