@@ -8,7 +8,7 @@ from OFS.Image import Image
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Acquisition import aq_base
-from CMFCorePermissions import View
+from Products.CMFCore.CMFCorePermissions import View
 
 default_portrait = 'defaultUser.gif'
 
@@ -99,8 +99,8 @@ class MembershipTool(BaseTool):
         """
 
         # do not create member_area for groups
-        if member_id in self.portal_groups.listGroupIds():
-            return
+        #if member_id in self.portal_groups.listGroupIds():
+        #    return
 
         parent = self.aq_inner.aq_parent
         members =  self.getMembersFolder()
