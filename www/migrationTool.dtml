@@ -1,50 +1,19 @@
 <dtml-var manage_page_header>
 <dtml-var manage_tabs>
 
-<p>
-<b>Instance version:</b> &dtml-getInstanceVersion; <br />
-<b>File system version:</b> &dtml-getFileSystemVersion; <br />
-</p>
+<p>The migration and setup tool allows you to handle migrating between versions of Plone and altering the setup of your Plone site.</p>
 
-<p>
-<dtml-if needUpgrading>
-Your Plone instance is out of date. Click "upgrade" to migrate to the latest version. Please note: an upgrade involves recataloging the site, this might take a while for large sites.
+<p>If you wish to upgrade to a new Plone instance, go to <a href="manage_migrate">migrate</a>.</p>
+<p>If you wish to alter how your exsiting Plone site is set up, go to <a href="manage_setup">setup</a>.</p>
 
-<form action="upgrade">
+<hr />
 
-<p>Print the result of the migration without actually writing anything to the database.</p>
+<p>Core Plone information</p>
 
-<input name="dry_run" type="checkbox" value="1:int">Dry run</input><br/><br/>
-
-<input type="submit" value="Upgrade"/>
-
-</form>
-
-<dtml-else>
-Your Plone instance is up to date. 
-</dtml-if>
-</p>
-
-<hr/>
-
-<form action="upgrade">
-<p>
-If, however, you're <strong>absolutely</strong> sure your instance is not &dtml-getInstanceVersion;, choose the correct version below and click "force migrate":
-</p>
-
-<select name="force_instance_version">
-  <dtml-in knownVersions sort>
-    <option>&dtml-sequence-item;</option>
-  </dtml-in>
-</select><br />
-
-<p>Print the result of the migration without actually writing anything to the database.</p>
-
-<input name="dry_run" type="checkbox" value="1:int">Dry run</input>
-
-<p><b>Note:</b> please ensure you have a backup of you Plone site prior to performing this and be aware you may break your site if you have the wrong version.</p>
-<input type="submit" value="Force migrate"/>
-
-</form>
+<ul>
+<dtml-in coreVersionsList prefix="setup">
+    <li>&dtml-setup_key;: &dtml-setup_item;</li>
+</dtml-in>
+</ul>
 
 <dtml-var manage_page_footer>
