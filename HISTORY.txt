@@ -4,12 +4,6 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
-    - Removed the imagePatch.py that added longdesc support to normal
-      Image objects - this is not necessary for icons, and slows down
-      Zope. Longdesc attributes should be implemented in the content
-      type instead, and should be a URI element, not a text element.
-      [limi]
-
     - Fixed http://plone.org/collector/3542 - queryCatalog script ignored
       'sort_limit' argument. Thanks to kaib for the patch!
       [stefan]

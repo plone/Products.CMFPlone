@@ -87,6 +87,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         else:
             self.fail("Topic has no 'folderlisting' action")
 
+    def testImagePatch(self):
+        # Is it ok to remove the imagePatch? Probably not as we
+        # don't want the border attribute ...
+        self.folder.invokeFactory('Image', id='foo', file=dummy.Image())
+        endswith = ' alt="" title="" longdesc="" height="16" width="16" />'
+        self.assertEqual(self.folder.foo.tag()[-len(endswith):], endswith)
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
