@@ -13,14 +13,31 @@
     &dtml-Description;
   </description>
 
-  <image rdf:resource="logo.png" />
-<rdf:li resource="<dtml-var absolute_url>" />
+  <image rdf:resource="&dtml-portal_url;/logo.jpg" />
+
+<dtml-comment>Start List of Items</dtml-comment>
+  <items>
+    <rdf:Seq>
+<dtml-in queryCatalog prefix="obj">
+<dtml-let url="getObject().absolute_url()">
+      <rdf:li rdf:resource="&dtml-url;" />
+</dtml-let>
+</dtml-in>
+    </rdf:Seq>
+  </items>
+<dtml-comment>End List of Items</dtml-comment>
 
 </channel>
 
+<image rdf:about="&dtml-portal_url;/logo.jpg">
+  <title>&dtml-Title;</title>
+  <url>&dtml-portal_url;/logo.jpg</url>
+  <link>&dtml-portal_url;/</link>
+</image>
+
 <dtml-comment>Start Item Elements</dtml-comment>
-  <dtml-in queryCatalog prefix="obj">
-    <dtml-var expr="itemRSS(obj_item.getObject())">
-  </dtml-in>
+<dtml-in queryCatalog prefix="obj">
+<dtml-var expr="itemRSS(obj_item.getObject())">
+</dtml-in>
 <dtml-comment>End Item Elements</dtml-comment>
 </rdf:RDF>
