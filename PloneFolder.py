@@ -207,8 +207,8 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
     manage_addFolder = manage_addPloneFolder
     manage_renameObject = OrderedContainer.manage_renameObject
 
-    security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
-    def manage_delObjects(self, ids):
+    #security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
+    def manage_delObjects(self, ids=[], REQUEST=None):
         """ We need to enforce security. """
         mt=getToolByName(self, 'portal_membership')
         for id in ids:
@@ -216,7 +216,7 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
             if not mt.checkPermission(Permissions.delete_objects, item):
                 raise BeforeDeleteException, (
                     "Do not have permissions to remove this object")
-        SkinnedFolder.manage_delObjects(self, ids)
+        SkinnedFolder.manage_delObjects(self, ids, REQUEST=REQUEST)
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead of
