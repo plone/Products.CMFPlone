@@ -22,6 +22,7 @@
                        href=""
                        tal:attributes="href o/getRemoteUrl" 
                        tal:content="o/title_or_id">Favorite title</a>
+                    <br />
                 </span>
 
             </td>
@@ -29,11 +30,9 @@
 
         <tr class="even">
             <td colspan="2">
-
                 <a href="" 
                    class="marker" 
                    tal:attributes="href string:${folder/absolute_url}/folder_contents">Organize Favorites</a>
-
             </td>
         </tr>
     </tbody>

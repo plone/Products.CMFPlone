@@ -7,7 +7,13 @@
     - MembershipTool.changeMemberPortrait() method added and removed from personazlize
     - added MIGRATION documentation
     - calendar_slot will only search for items with review_state=published
-    
+    - width/height are correctly being calculated for all icons (limi fixed this)
+    - added validator for content_status_modify and if folder_publish 
+      is used for mass publishing it will redirect back to folder_contents
+      asking for publishing action if none is supplied
+    - also fixed the mass publishing which was borked.  now we pass around 
+      the container
+    - Issue 266 fixed - topic_view now says 'no results found'
 1.0 alpha4
     - publishing now works without javascript. #202
     - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will need updating if migrate)
