@@ -166,6 +166,9 @@ class MembershipTool( BaseTool ):
         portal = self.portal_url.getPortalObject()
         for u in portal.acl_users.getUsers():
             user = md.wrapUser(u)
+            # To honour the listed attribute, uncomment the following lines
+            #if not user.listed:
+            #    continue
             if name:
                 if u.getUserName().lower().find(name) == -1:
                     continue
