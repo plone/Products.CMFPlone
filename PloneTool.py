@@ -181,12 +181,12 @@ class PloneTool (UniqueObject, SimpleItem):
     security.declareProtected(CMFCorePermissions.View, 'getIconFor')
     def getIconFor(self, category, id, default=_marker):
         """ Cache point for actionicons.getActionIcon call
-            also we want to allow for a default icon to be 
+            also we want to allow for a default icon id to be 
             passed in.
         """
         #short circuit the lookup
         if (category, id) in _icons.keys(): 
-            return getattr(self, _icons[ (category, id) ])
+            return _icons[ (category, id) ]
 
         try:
             actionicons=getToolByName(self, 'portal_actionicons')
@@ -199,7 +199,7 @@ class PloneTool (UniqueObject, SimpleItem):
                 raise
 
         #we want to return the actual object
-        return getattr(self, icon) 
+        return icon
 
     security.declareProtected(CMFCorePermissions.View, 'getReviewStateTitleFor')
     def getReviewStateTitleFor(self, obj):

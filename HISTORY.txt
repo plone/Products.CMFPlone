@@ -6,7 +6,7 @@ Plone 1.1 - Fyuti
 
     - Now require CMFActionIcons Product from cvs.zope.org.  We register document_action icons
       for such actions as: Send to friend, Print this page, and RSS.  Please use the
-      putils (in global_defines.pt) getIconFor which will return the actual object.
+      putils (in global_defines.pt) getIconFor which will return the id of the icon.
       
     - Groups support via GRUF
       [runyaga]

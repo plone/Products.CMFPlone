@@ -10,11 +10,12 @@
         <a href="" 
            tal:attributes="href daction/url"
            tal:define="title daction/name;
-                       icon python:getIconFor('plone', daction['id'], 'site_icon.gif')">
+                       icon python:getIconFor('plone', daction['id'], None)"
+           tal:condition="icon">
             
             <img i18n:attributes="title" title="#"
                  tal:condition="icon"
-                 tal:attributes="src string:$portal_url/${icon/getId};
+                 tal:attributes="src string:$portal_url/$icon;
                                  title title;
 				 alt title" />
         </a>
