@@ -1,0 +1,172 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {});
+                Batch python:modules['ZTUtils'].Batch;
+                b_start python:request.get('b_start',0);"
+     tal:condition="here/rejectAnonymous" >
+	
+    <h1 i18n:translate="">User Management</h1>
+
+    <p i18n:translate="">
+    Click the User Name to see and change the details of a specific user, or click 
+    the envelope to send a mail. You can edit the roles and e-mail address
+    and remove users directly from this form.
+    You can also access the user registration form to add new users.
+    To deactivate a user without deleting, just remove all the roles for that
+    particular user.
+    </p>
+
+    <form action=""
+          name="users"
+          method="post"
+          tal:attributes="action here/absolute_url"
+          tal:define="portal_users python: here.portal_membership.listMembers();
+                      batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
+
+       <input class="standalone add"
+              tabindex=""
+              type="submit"
+              name="portal_form/join_form:method"
+              value="Add New User"
+              tal:attributes="tabindex tabindex/next;"
+              />
+
+       <input class="quickSearch"
+              tabindex=""
+              type="text"
+              name=""
+              value="Quick Search"
+              tal:attributes="tabindex tabindex/next;"
+              />
+               
+
+        <table class="listing"
+               tal:condition="portal_users">
+               
+            <tr>
+                <th rowspan="2">User name</th>
+                <th rowspan="2">E-mail Address</th>
+                <th colspan="3">Roles</th>
+                <th rowspan="2">Reset<br />Password</th>
+                <th rowspan="2">Remove user</th>
+            </tr>
+            <tr>
+                <th>Manager</th>
+                <th>Member</th>
+                <th>Reviewer</th>
+            </tr>
+            
+            <metal:block tal:repeat="this_user batch">
+            
+            <tr tal:define="oddrow repeat/this_user/odd"
+                 tal:attributes="class python:test(oddrow,'odd','even')">
+            
+            <metal:block tal:define="roles python: this_user.getRoles();
+                                     username python: this_user.getUserName();
+                                     fullname python: this_user.getProperty('fullname')">
+         
+            <td>
+                <input type="hidden" 
+                       name="name" 
+                       value=""
+                       tal:attributes="name string:roles-${username}:list" />
+                
+                <a href="XXX_prefs_user_management_individual_form">
+                   
+                    <img src=""
+                         tal:replace="structure portal/user.gif" />&nbsp;<span 
+                         tal:replace="username">username</span>
+                    
+                    (<span tal:replace="username">Full Name</span>)
+
+                </a>
+                                
+            </td>
+
+            <td tal:define="email python: this_user.getProperty('email')">
+                <a href="#"
+                   tal:attributes="href string:mailto:${email}">
+                <img src=""
+                     tal:replace="structure portal/mail_icon.gif" />   
+                </a>
+                <input type="text" 
+                       size="20" 
+                       name="" 
+                       value=""
+                       tal:attributes="name string:email-${username};
+                                       value email" />
+
+            </td>
+            
+            <td class="checkbox">
+                <input type="checkbox" 
+                       class="noborder"
+                       name="name"
+                       value="Manager"
+                       tal:attributes="checked python:test( 'Manager' in roles, 'checked', '');
+                                       name string:roles-${username}:list" />
+            </td>
+            
+            <td class="checkbox">
+                <input type="checkbox"
+                       class="noborder"
+                       name="name"
+                       value="Member"
+                       tal:attributes="checked python:test( 'Member' in roles, 'checked', '');
+                                       name string:roles-${username}:list" />
+            </td>
+            
+            <td class="checkbox">
+                <input type="checkbox"
+                       class="noborder"
+                       name="name" 
+                       value="Reviewer"
+                       tal:attributes="checked python:test( 'Reviewer' in roles, 'checked', '');
+                                       name string:roles-${username}:list" />
+            </td>
+            
+            <td class="checkbox">
+                <input type="checkbox"
+                       class="noborder"
+                       name="newpassword:list"
+                       value="value"
+                       tal:attributes="value string:newpassword-${username}" />
+            </td>
+            
+            <td class="checkbox">
+                <input type="checkbox"
+                       class="noborder notify"
+                       name="delete:list"
+                       value="value"
+                       tal:attributes="value string:${username}" />
+            </td>
+            
+            </metal:block>
+        </tr>
+        </metal:block>
+        </table>
+
+        <input class="context"
+               tabindex="" 
+               type="submit" 
+               name="some_method:method" 
+               value="Apply Changes"
+               tal:attributes="tabindex tabindex/next;"
+               />
+
+    </form>
+
+</div>
+
+</body>
+</html>
+

@@ -556,6 +556,17 @@ input.noborder {
     background-color: transparent;
 }
 
+input.add {
+
+}
+
+input.quickSearch {
+}
+
+input.notify {
+    border: &dtml-destructiveButtonBorder;;  
+}
+
 div.row {
     min-height: 4em;
     margin: 0em 0em 1em 0em;
@@ -669,6 +680,10 @@ table.listing tr.odd {
 
 table.listing tr.even {
     background: &dtml-listingEvenBackground;;
+}
+
+table.listing td.checkbox {
+    text-align: center;
 }
 
 table.listing td,
