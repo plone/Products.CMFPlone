@@ -1,3 +1,76 @@
+2004-01-10 00:09  runyaga
+
+	* SkinsTool.py (Plone-2_0-branch): minor optimization that is not
+	  enabled by default
+
+2004-01-09 21:14  limi
+
+	* skins/plone_ecmascript/: plone_minwidth.js.dtml
+	  (Plone-2_0-branch), plone_minwidth.js.dtml: Missing value was
+	  56em instead of the updated 70.
+
+2004-01-09 21:07  limi
+
+	* skins/plone_images/: error_icon.gif.metadata (Plone-2_0-branch),
+	  error_icon.gif.metadata: error_icon was missing caching metadata.
+
+2004-01-09 19:45  limi
+
+	* skins/plone_portlets/: about_slot.pt, events_slot.pt,
+	  favorites_slot.pt, login_slot.pt, navigation_tree_slot.pt,
+	  news_slot.pt, recently_published_slot.pt, related_slot.pt,
+	  workflow_review_slot.pt: Removing all the old deprecated slots
+	  (portlets) from HEAD, except calendar_slot, which is still wired
+	  up in the code, and should be fixed. Use the 2.0 branch if you
+	  still need these - they will go away in 2.1, that's why we are
+	  removing them now.
+
+2004-01-09 19:40  limi
+
+	* skins/plone_portlets/: language_slot.pt, portlet_language.pt:
+	  Removing portlet_language and language_slot from CMFPlone - it
+	  really doesn't belong in CMFPlone. It's now located in
+	  PloneLanguageTool in the Collective.
+
+2004-01-09 19:36  limi
+
+	* skins/plone_portlets/: language_slot.pt, portlet_language.pt
+	  (Plone-2_0-branch): Removing portlet_language and language_slot
+	  from CMFPlone - it really doesn't belong in CMFPlone. It's now
+	  located in PloneLanguageTool in the Collective.
+
+2004-01-09 07:35  zopezen
+
+	* skins/plone_form_scripts/validate_document_edit.vpy
+	  (Plone-2_0-branch): typo
+
+2004-01-09 06:33  runyaga
+
+	* skins/plone_templates/: global_defines.pt, global_logo.pt,
+	  global_sections.pt, header.pt, viewThreadsAtBottom.pt
+	  (Plone-2_0-branch): small refinements here and there.. basically
+	  less traversal.  one thing I found which is a very big ugly is
+	  that viewThreadsAtBottom is called *on every template*.  there is
+	  no way inside of document_view or say the 'news' template to
+	  override the 'sub' slot.  so what ends up happening is that
+	  *every* page is calling viewThreadsAtBottom.	which is exceedinly
+	  inefficient.
+
+2004-01-09 05:55  runyaga
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): missed ;
+
+2004-01-09 05:10  runyaga
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_templates/global_defines.pt,
+	  plone_templates/global_personalbar.pt (Plone-2_0-branch): fix
+	  typo and redundnat assignments
+
+2004-01-09 05:03  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-09 04:07  runyaga
 
 	* skins/plone_styles/: plone.css.dtml, plonePresentation.css.dtml
