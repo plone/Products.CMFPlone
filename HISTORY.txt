@@ -2,14 +2,16 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.0.2 - Hicks
+Plone 2.0.1 - Jello
+
+    - Renamed METAL macro "list-item" to "listitem" in news.pt and folder_listing.pt
+      to fix Zope 2.6 compatibility.
+      [limi]
 
     - Commented out the javascript that auto-focuses on the first field in a form. 
       There are too many places that causes a lot of trouble by moving focus away from 
       a field in which the user is actually  typing. 
       [elvix]
-
-Plone 2.0.1 - Jello
 
     - Backported fix for http://plone.org/collector/2183 from HEAD.
       _verifyObjectPaste() should deny pasting if the content type is not
