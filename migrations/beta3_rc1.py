@@ -20,7 +20,8 @@ def threerc1(portal):
     props = portal.portal_properties.site_properties
     if not hasattr(props, 'allowRolesToAddKeywords'):
         props._setProperty('allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
-    if not hasattr(props, 'fullname'):
+
+    if not portal.portal_memberdata.hasProperty('fullname'):
        portal.portal_memberdata.manage_addProperty('fullname', '', 'string')
 
 def registerMigrations():
@@ -30,9 +31,6 @@ def registerMigrations():
             '1.0RC1', 
             threerc1
             )
-    # it will run through them all until its upto date
-    # etc
-    # MigrationTool.registerUpgradePath('1.0beta3', '1.0beta4', beta3two4)
 
 if __name__=='__main__':
     registerMigrations()

@@ -51,11 +51,18 @@ class MigrationTool( UniqueObject, SimpleItem):
         """ Need upgrading? """
         return self.getInstanceVersion() != self.getFileSystemVersion()
 
+    def _check(self):
+        """ Are we inside a Plone site?  Are we allowed? """
+        if not hasattr(self,'portal_url'):
+            raise 'You must be in a Plone site to migrate.'
+        
     security.declareProtected(ManagePortal, 'upgrade')
     def upgrade(self, REQUEST=None):
         """ perform the upgrade """
         # keep it simple
         out = []
+
+        self._check()
         
         # either get the forced upgrade instance or the current instance
         newv = getattr(REQUEST, "force_instance_version", self.getInstanceVersion())
