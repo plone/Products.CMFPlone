@@ -1,3 +1,13 @@
+2003-12-04 03:02  limi
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_templates/global_searchbox.pt (Plone-2_0-branch): Fixed
+	  search box button wrapping + positioning.
+
+2003-12-03 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-03 00:55  runyaga
 
 	* .cvsignore, ActionIconsTool.py, ActionsTool.py, CREDITS.txt,
