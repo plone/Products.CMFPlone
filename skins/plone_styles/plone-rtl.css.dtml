@@ -50,7 +50,7 @@ ol {
 }
  
 #portal-personaltools li {
-    background: transparent url(&dtml-portal_url;/linkOpaque.gif) center right no-repeat;
+    background: transparent url(&dtml-portal_url;/rtl-linkOpaque.gif) center right no-repeat;
     padding-right: 5px;
     margin-left: 1em;
 }
@@ -114,15 +114,18 @@ ol {
 .standalone,
 .documentEditable * .standalone {
     padding: 1px 15px 1px 1px;
+    background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/rtl-linkOpaque.gif) 90% 1px no-repeat;
 }
 
 .context,
 .documentEditable * .context {
     padding: 1px 15px 1px 1px;
+    background: transparent url(&dtml-portal_url;/rtl-linkTransparent.gif) 90% 1px no-repeat;
 }
 
 .destructive,
 .documentEditable * .destructive {
+    background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/rtl-linkTransparent.gif) 90% 1px no-repeat;
     padding: 1px 15px 1px 1px;
 }
 
