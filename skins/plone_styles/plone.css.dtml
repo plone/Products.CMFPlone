@@ -303,6 +303,7 @@ del {
     /* Top section */
     margin: 0;
     padding: 0;
+    background-color: transparent;
 }
 
 
@@ -312,11 +313,11 @@ del {
     border-collapse: collapse;
     white-space: nowrap;
     list-style: none;
-    margin: 1px 1em 0 0;
+    margin: 1px 0 0 0;
     height: auto;
     line-height: normal;
     float: right;
-    padding: 3px;
+    padding: 3px 2em 3px 0;
 }
 #portal-siteactions li {
     display: inline;
@@ -346,15 +347,13 @@ del {
 
 /* searchbox style and positioning */
 #portal-searchbox {
-    position: absolute;
-    top: 45px;
-    right: 1.5em;
+    float: right;
+    clear: right;
     background-color: transparent;
-    margin: 0;
-    padding: 0;
+    margin: 1.5em 0 0 0;
+    padding: 0 2em 0 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
-    width: 50%;
     white-space: nowrap;
     z-index: 2;
 }

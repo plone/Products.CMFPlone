@@ -12,6 +12,13 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
       produces more sane HTML now. Site actions have IDs now too.
       [limi]
 
+    - Changed the search box behaviour too - it shouldn't be 
+      absolutely positioned. If you have customized, you will need
+      to move the main_template invocation of the search box, plus
+      re-do the CSS, if any. Sanity was needed, sorry for the
+      invonvenience.
+      [limi]
+
     - The body tag now has an HTML 'class' 
       attribute, so you can skin different sections of the site
       with different styles. Prefix is "section-" and then the
