@@ -73,6 +73,17 @@ if not sys.modules.has_key('Testing'):
 import Testing, unittest
 execfile(os.path.join(os.path.dirname(Testing.__file__), 'common.py'))
 
+# Import Zope package for Zope 2.7
+# otherwise from ZTUtils import make_query is broken 
+#
+if not sys.modules.has_key('Zope'):
+    if __SOFTWARE_HOME not in sys.path:
+        sys.path.append(__SOFTWARE_HOME)
+    try:
+        import Zope
+    except ImportError:
+        pass
+
 # Include ZopeTestCase support
 #
 if 1:   # Create a new scope
