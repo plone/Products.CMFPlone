@@ -15,6 +15,10 @@ if REQUEST.has_key('ids'):
                 , script.getId()
                 , 'success'
                 , portal_status_message='Item(s) copied.')
+
+    from Products.CMFPlone import transaction_note
+    transaction_note('Copied %s from %s' % (str(REQUEST['ids']), context.absolute_url()))
+
     return state.set(portal_status_message='Item(s) copied.')
 
 return state.set(status='failure', portal_status_message='Please select one or more items to copy.')

@@ -162,7 +162,8 @@ class PloneTool(UniqueObject, SimpleItem):
             # UTF-8 is the only reasonable choice, as using unicode means
             # that Latin-1 is probably not enough.
             msg = msg.encode('utf-8')
-        get_transaction().note(msg)
+        if not get_transaction().description:
+            get_transaction().note(msg)
 
     security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):

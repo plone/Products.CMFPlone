@@ -35,4 +35,7 @@ state.set(came_from=REQUEST.get('came_from','logged_in'))
 if came_from_prefs:
     state.set(status='prefs')
 
+from Products.CMFPlone import transaction_note
+transaction_note('%s registered' % username)
+
 return state

@@ -7,13 +7,14 @@
 ##parameters=userid, subobjects=0
 ##title=Change ownership
 ##
-from Products.CMFPlone import transaction_note
 
 if subobjects:
     subobjects=1
 
 context.plone_utils.changeOwnershipOf(context, userid, subobjects)
-transaction_note('Changed owner of %s to %s' % (context.absolute_url(), userid))
+
+from Products.CMFPlone import transaction_note
+transaction_note('Changed owner of %s at %s to %s' % (context.title_or_id(), context.absolute_url(), userid))
 
 return context.portal_navigation.getNext( context
                                         , 'metadata_edit'

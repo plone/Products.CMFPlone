@@ -37,6 +37,7 @@ if workflow_action!=current_state:
     wfcontext=new_context.portal_workflow.doActionFor( context,
                                                        workflow_action,
                                                        comment=comment )
+    
 if not wfcontext:
     wfcontext = new_context
 
@@ -46,6 +47,9 @@ if not contentEditSuccess:
         editContent(wfcontext, effective_date, expiration_date)
     except 'Unauthorized':
         pass
+
+from Products.CMFPlone import transaction_note
+transaction_note('Changed status of %s at %s' % (wfcontext.title_or_id(), wfcontext.absolute_url()))
 
 return state.set(context=wfcontext,
                  portal_status_message='Your contents status has been modified.')

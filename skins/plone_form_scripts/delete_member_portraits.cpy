@@ -17,7 +17,7 @@ for member in ids:
     membership.deletePersonalPortrait(member)
 
 
-tmsg='Portrait(s) of %s has been deleted.' % ' '.join(ids)
+tmsg='Deleted portrait(s) of %s.' % ' '.join(ids)
 transaction_note(tmsg)
 
 return state.set(portal_status_message=tmsg)

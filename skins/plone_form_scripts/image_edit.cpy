@@ -36,5 +36,8 @@ new_context.plone_utils.contentEdit(new_context,
 
 new_context.edit( precondition=precondition, file=file )
 
+from Products.CMFPlone import transaction_note
+transaction_note('Edited image %s at %s' % (new_context.title_or_id(), new_context.absolute_url()))
+
 return state.set(context=new_context,
                  portal_status_message='Image changes saved.')

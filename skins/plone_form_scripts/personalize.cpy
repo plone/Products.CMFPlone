@@ -27,7 +27,7 @@ if delete_portrait:
     context.portal_membership.deletePersonalPortrait(member.getId())
 
 
-tmsg=member.getUserName()+' personalized their settings.'
+tmsg='Edited personal settings for %s' % member.getUserName()
 transaction_note(tmsg)
 
 return state.set(portal_status_message='Your personal settings have been saved.')

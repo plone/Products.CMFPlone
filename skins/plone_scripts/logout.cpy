@@ -12,4 +12,8 @@ if REQUEST.has_key('portal_skin'):
 cookie_name=context.cookie_authentication.getProperty('auth_cookie')
 REQUEST.RESPONSE.expireCookie(cookie_name, path='/')
 REQUEST.SESSION.invalidate()
+
+from Products.CMFPlone import transaction_note
+transaction_note('Logged out')
+
 return state.set(next_action='redirect_to:string:'+REQUEST.URL1+'/logged_out')
