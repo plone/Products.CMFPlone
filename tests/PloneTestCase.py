@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 
 from Testing import ZopeTestCase
 
@@ -19,16 +19,42 @@ ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 ZopeTestCase.installProduct('CMFPlone')
 
-from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
-from AccessControl.User import User
 
+from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
 from Acquisition import aq_base
 import time
 
 
 class PloneTestCase(ZopeTestCase.PortalTestCase):
-    pass
 
+    def getPortal(self):
+        return self.app.portal
+
+    def createMemberarea(self, member_id):
+        '''Creates a minimal, no-nonsense memberarea.'''
+        membership = self.portal.portal_membership
+        catalog = self.portal.portal_catalog
+        # Owner
+        uf = self.portal.acl_users
+        user = uf.getUserById(member_id)
+        if user is None:
+            raise ValueError, 'Member %s does not exist' % member_id
+        user = user.__of__(uf)
+        # Home folder
+        members = membership.getMembersFolder()
+        members.manage_addPloneFolder(member_id)
+        folder = membership.getHomeFolder(member_id)
+        folder.changeOwnership(user)
+        folder.__ac_local_roles__ = None
+        folder.manage_setLocalRoles(member_id, ['Owner'])
+        # Personal folder
+        folder.manage_addPloneFolder(membership.personal_id)
+        personal = membership.getPersonalFolder(member_id)
+        personal.changeOwnership(user)
+        personal.__ac_local_roles__ = None
+        personal.manage_setLocalRoles(member_id, ['Owner'])
+        catalog.unindexObject(personal)
+ 
 
 def setupPloneSite(app, id='portal', quiet=0):
     '''Creates a Plone site.'''
@@ -51,16 +77,24 @@ def setupPloneSite(app, id='portal', quiet=0):
 
 def optimize():
     '''Significantly reduces portal creation time.'''
+    # Don't compile expressions on creation
     def __init__(self, text):
-        # Don't compile expressions on creation
         self.text = text
     from Products.CMFCore.Expression import Expression
     Expression.__init__ = __init__
+    # Don't clone actions but convert to list only
     def _cloneActions(self):
-        # Don't clone actions but convert to list only
         return list(self._actions)
     from Products.CMFCore.ActionProviderBase import ActionProviderBase
     ActionProviderBase._cloneActions = _cloneActions
+    # Don't setup default directory views
+    def setupDefaultSkins(self, p):
+        from Products.CMFCore.utils import getToolByName
+        ps = getToolByName(p, 'portal_skins')
+        ps.manage_addFolder(id='custom')
+        ps.addSkinSelection('Basic', 'custom')
+    from Products.CMFDefault.Portal import PortalGenerator
+    PortalGenerator.setupDefaultSkins = setupDefaultSkins
 
 
 optimize()
