@@ -197,7 +197,7 @@
             </div>
             <div class="field">
             <!-- ISO-639-2 language selector for Plone -->
-            <select name="language"
+            <select name="default_language"
                     tabindex="6"
                     value=""
                     onfocus="formtooltip('language_help',1)"
