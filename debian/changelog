@@ -1,3 +1,9 @@
+zope-cmfplone (2.0.0rc4) unstable; urgency=low
+
+  * New upstream release
+
+ -- Christian Heimes <heimes@faho.rwth-aachen.de>  Mon, 26 Jan 2004 16:51:12 +0100
+
 zope-cmfplone (2.0.0rc3+CVS20040123) unstable; urgency=low
 
   * Initial Release.
