@@ -68,6 +68,9 @@ for k, v in second_pass.items():
 # any items were found, then you can pass show_all=1.
 
 if show_query:
-    results=catalog(query)
+    try:
+        results=catalog(query)
+    except:
+        return None
 
 return results
