@@ -1,4 +1,3 @@
-#First we want to setup touch points for people to register with the CustomizationPolicies
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
 def listPolicies(): return custom_policies.keys()
@@ -47,7 +46,6 @@ class PloneGenerator(Portal.PortalGenerator):
     def customizePortalTypes(self, p):
         typesToSkip=['Folder', 'Discussion Item', 'Topic']
         typesTool=getToolByName(p, 'portal_types')
-
         typesTool._delObject('Folder')
         typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type
                                            , id='Folder'
@@ -70,7 +68,6 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
             addPloneTool('Plone Membership Tool', None)
             addPloneTool('CMF Formulator Tool', None)
-            #addPloneTool('CMF Calendar Tool', None)
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=1
         p.portal_membership.setMemberareaCreationFlag()
@@ -176,7 +173,6 @@ def manage_addSite(self, id, title='Portal', description='',
     if listPolicies() and custom_policy:
         o=custom_policies[custom_policy]
         o.customize(p)
-		
     if RESPONSE is not None:
         RESPONSE.redirect(p.absolute_url() + '/finish_portal_construction')
         
@@ -184,5 +180,4 @@ def register(context, globals):
     context.registerClass(meta_type='Plone Site',
                           permission='Add CMF Sites',
                           constructors=(manage_addSiteForm,
-                                        manage_addSite,
-                                        ))    
+                                        manage_addSite,) )    

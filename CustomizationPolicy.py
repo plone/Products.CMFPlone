@@ -29,12 +29,10 @@ class DefaultCustomizationPolicy:
 
         #now lets get rid of folder_listing/folder_contents tabs for folder objects
         tt=getToolByName(portal, 'portal_types')
-        folderType=tt['Folder']
-	folder_actions=folderType.listActions()  #_actions[:]
+	folder_actions=tt['Folder']._actions[:]
         for a in folder_actions:
             if a.get('id','') in ('folderlisting', ): a['visible']=0
-        folderType._actions=folder_actions
-        tt['Folder']._p_changed = 1
+        tt['Folder']._actions=folder_actions
 
 	#add custom Plone actions
         at=getToolByName(portal, 'portal_actions')
