@@ -10,6 +10,9 @@ Plone 2.0 - Fyuti
 
     Beta 3
 
+    - renamed plone_debug script to plone_log.  if you want to log out to zLOG
+      simply context.plone_log('this should be in the log')
+
     - removed 'portal_workflow' from list of portal_actions' Action Providers.
       Sites with large worklists would benefit most from this.  We no longer
       put worklist states in the 'personalBar'.  We use the 'review_slot'.  
