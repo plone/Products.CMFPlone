@@ -84,7 +84,7 @@
                             <select name="type_name" 
                                     tabindex=""
                                     tal:condition="python:test(no_types > 1, 1, 0)"
-                                    tal:attributes="tabindex tabindex/next|nothing;"
+                                    tal:attributes="tabindex tabindex/next|nothing"
 				    alt="Add an item" >
                                 <option value="Select" i18n:translate="label_select">Select</option>
                                 <metal:block tal:repeat="ctype types">
@@ -166,7 +166,9 @@
                                                         item.absolute_url()+'/'+action);"> 
     
                             <a href="#" tal:attributes="href url">
-                                <img tal:attributes="src python:item.getIcon(1);alt alt" 
+
+                                <img tal:define="icon python:item.getIcon(1); iconObject python:getattr(here,icon)" 
+                                     tal:attributes="src icon; alt iconObject/title_or_id"
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
                             <tal:block tal:condition="python:site_properties.ext_editor and item_typeinfo.getActionById('external_edit',None)">
