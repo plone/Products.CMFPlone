@@ -12,7 +12,8 @@
                  global filterValues decodedFilter;
                  global filter decodedFilter;
                  standalone python:1;
-                 folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);">
+                 folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);
+                 myfolder python:user.getUserName()==here.getId() and here.getParentNode().getId()=='Members';">
 
     <form name="folderContentsForm"
           method="post"
@@ -25,12 +26,12 @@
 
             <div class="title">
 
-                <h1 class="folderName" tal:condition="python:user.getUserName()==here.getId()">
+                <h1 class="folderName" tal:condition="myfolder">
                 <img tal:replace="structure here/folder.gif" />
                 <span i18n:translate="heading_my_folder" tal:omit-tag="">My Folder</span>
                 </h1>
 
-                <h1 tal:condition="python: user.getUserName()!=here.getId()">
+                <h1 tal:condition="not:myfolder">
                 <img tal:replace="structure here/folder.gif" />
                 <span tal:content="here/title_or_id" tal:omit-tag="">Directory Id</span>
                 </h1>
@@ -44,13 +45,13 @@
             </p>
             </metal:block>
 
-            <p tal:condition="python:user.getUserName()==here.getId()"
+            <p tal:condition="myfolder"
                   i18n:translate="description_contains_items_by">
             Contains the items created and collected by <tal:block content="python:user.getUserName()" i18n:name="name">User</tal:block>
             </p>
 
             <p tal:content="structure here/Description"
-               tal:condition="python:not user.getUserName()==here.getId()">
+               tal:condition="not:myfolder">
                description
             </p>
 
