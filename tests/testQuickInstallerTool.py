@@ -31,7 +31,7 @@ class InstanceHomeFixup:
     if not os.path.exists(os.path.join(instance_home, 'Products')):
         instance_home = '' # punt
 
-    def setupLocalEnvironment(self):
+    def afterSetUp(self):
         builtins = getattr(__builtins__, '__dict__', __builtins__)
         if self.instance_home:
             self._saved = INSTANCE_HOME
@@ -46,7 +46,7 @@ class InstanceHomeFixup:
 class TestQuickInstallerTool(InstanceHomeFixup, PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        InstanceHomeFixup.setupLocalEnvironment(self)
+        InstanceHomeFixup.afterSetUp(self)
         self.qi = self.portal.portal_quickinstaller
 
     def _installed(self):
