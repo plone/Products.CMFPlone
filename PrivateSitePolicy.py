@@ -5,6 +5,7 @@ from Products.CMFPlone.Portal import addPolicy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.CMFCorePermissions import AddPortalMember
 
 from CustomizationPolicy import DefaultCustomizationPolicy
 from interfaces.CustomizationPolicy import ICustomizationPolicy
@@ -31,11 +32,13 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
         
         wf_tool.updateRoleMappings()
         wf_tool.doActionFor(portal,'show',comment='The portal object itelf but be visible')
-        wf_tool.doActionFor(portal.Members, 'show', comment='Members must be visible')
+        wf_tool.doActionFor(portal.portal_skins, 'show', comment='The skins tool is a folder and must be visible')
+        #wf_tool.doActionFor(portal.Members, 'show', comment='Members must be visible')
 
-        portal.manage_delObjects('portal_registration')
+        portal.manage_permission(AddPortalMember,('Manager',))
+        #portal.manage_delObjects('portal_registration')
         pa_tool=getToolByName(portal,'portal_actions')
-        pa_tool.action_providers=tuple([ap for ap in pa_tool.action_providers if ap!='portal_registration'])
+        #pa_tool.action_providers=tuple([ap for ap in pa_tool.action_providers if ap!='portal_registration'])
      
         #only Members are allowed to see the default tabs
         actions=pa_tool._cloneActions()
