@@ -10,7 +10,7 @@ def two05_alpha1(portal):
     """2.0.5 -> 2.1-alpha1
     """
     out = []
-    
+
     # XXX: Must get rid of this!
     # ATCT is not installed when SUPPRESS_ATCT_INSTALLATION is set to YES
     # It's required for some unit tests in ATCT [tiran]
@@ -30,7 +30,7 @@ def two05_alpha1(portal):
 
     # Install Archetypes
     installArchetypes(portal, out)
-    
+
     # Install ATContentTypes
     if not suppress_atct:
         installATContentTypes(portal, out)
@@ -45,6 +45,7 @@ def alpha1_alpha2(portal):
     """2.1-alpha1 -> 2.1-alpha2
     """
     out = []
+    reindex = 0
 
     # Add full_screen action
     addFullScreenAction(portal, out)
@@ -53,6 +54,23 @@ def alpha1_alpha2(portal):
     # Make visible_ids a site-wide property
     addVisibleIdsSiteProperty(portal, out)
     deleteVisibleIdsMemberProperty(portal, out)
+
+    # Switch path index to ExtendedPathIndex
+    reindex += switchPathIndex(portal, out)
+
+    # Add getFolderOrder index
+    reindex += addGetFolderOrderIndex(portal, out)
+
+    # Update navtree_properties
+    updateNavTreeProperties(portal, out)
+
+    # Add sitemap action
+    addSitemapAction(portal, out)
+
+    # Rebuild catalog
+    if reindex:
+        refreshSkinData(portal, out)
+        reindexCatalog(portal, out)
 
     return out
 
@@ -172,4 +190,103 @@ def deleteVisibleIdsMemberProperty(portal, out):
         if memberdata.hasProperty('visible_ids'):
             memberdata.manage_delProperties(['visible_ids'])
         out.append("Deleted 'visible_ids' property from portal_memberdata.")
+
+
+def switchPathIndex(portal, out):
+    """Changes the 'path' index to ExtendedPathIndex."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        try:
+            index = catalog._catalog.getIndex('path')
+        except KeyError:
+            pass
+        else:
+            indextype = index.__class__.__name__
+            if indextype == 'ExtendedPathIndex':
+                return 0
+            catalog.delIndex('path')
+            out.append("Deleted %s 'path' from portal_catalog." % indextype)
+
+        catalog.addIndex('path', 'ExtendedPathIndex')
+        out.append("Added ExtendedPathIndex 'path' to portal_catalog.")
+        return 1 # Ask for reindexing
+
+
+def addGetFolderOrderIndex(portal, out):
+    """Adds the getFolderOrder FieldIndex."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        try:
+            index = catalog._catalog.getIndex('getFolderOrder')
+        except KeyError:
+            pass
+        else:
+            indextype = index.__class__.__name__
+            if indextype == 'FieldIndex':
+                return 0
+            catalog.delIndex('getFolderOrder')
+            out.append("Deleted %s 'getFolderOrder' from portal_catalog." % indextype)
+
+        catalog.addIndex('getFolderOrder', 'FieldIndex')
+        out.append("Added FieldIndex 'getFolderOrder' to portal_catalog.")
+        return 1 # Ask for reindexing
+
+
+def updateNavTreeProperties(portal, out):
+    """Updates navtree_properties for new NavTree."""
+    # Plone setup has changed because of the new NavTree implementation.
+    # StatelessTreeNav had a createNavTreePropertySheet method which is now
+    # in Portal.py (including the new properties).
+    # If typesTolist is not there we're dealing with a real migration:
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(aq_base(propTool), 'navtree_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('typesToList'):
+                propSheet._setProperty('typesToList', ['Folder', 'Large Plone Folder'], 'lines')
+                propSheet._setProperty('sortAttribute', 'getFolderOrder', 'string')
+                propSheet._setProperty('sortOrder', 'asc', 'string')
+                propSheet._setProperty('sitemapDepth', 3, 'int')
+                out.append('Updated navtree_properties.')
+
+
+def addSitemapAction(portal, out):
+    """Adds the sitemap action."""
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        for action in actionsTool.listActions():
+            if action.getId() == 'sitemap':
+                break # We already have the action
+        else:
+            actionsTool.addAction('sitemap',
+                name='Sitemap',
+                action='string:$portal_url/sitemap',
+                condition='',
+                permission=CMFCorePermissions.View,
+                category='site_actions',
+                visible=1,
+                )
+        out.append("Added 'sitemap' action to actions tool.")
+
+
+def refreshSkinData(portal, out=None):
+    """Refreshes skins to make new scripts available in the
+    current transaction.
+    """
+    if hasattr(portal, '_v_skindata'):
+        portal._v_skindata = None
+    if hasattr(portal, 'setupCurrentSkin'):
+        portal.setupCurrentSkin()
+
+
+def reindexCatalog(portal, out):
+    """Rebuilds the portal_catalog."""
+    catalog = getToolByName(portal, 'portal_catalog', None)
+    if catalog is not None:
+        # Reduce threshold for the reindex run
+        old_threshold = catalog.threshold
+        catalog.threshold = 2000
+        catalog.refreshCatalog(clear=1)
+        catalog.threshold = old_threshold
+        out.append("Reindexed portal_catalog.")
 

@@ -180,6 +180,21 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.failUnless(self.properties.site_properties.hasProperty('visible_ids'))
         self.failIf(self.memberdata.hasProperty('visible_ids'))
 
+    def testNavTreeProperties(self):
+        # navtree_properties should contain the new properties
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
+
+    def testSitemapAction(self):
+        # There should be a sitemap action
+        for action in self.actions.listActions():
+            if action.getId() == 'sitemap':
+                break
+        else:
+            self.fail("Actions tool has no 'sitemap' action")
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

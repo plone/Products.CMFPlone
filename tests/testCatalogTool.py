@@ -67,7 +67,13 @@ class TestCatalogSetup(PloneTestCase.PloneTestCase):
         def testPloneLexiconIsZCTextLexicon(self):
             # Lexicon should be a ZCTextIndex lexicon
             self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
-            self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
+            self.assertEqual(self.catalog.plone_lexicon.meta_type,\
+                             'ZCTextIndex Lexicon')
+
+    def testPathIsExtendedPathIndex(self):
+        # Path index should be an ExtendedPathIndex
+        itype = self.catalog.Indexes['path'].__class__.__name__
+        self.assertEqual(itype, 'ExtendedPathIndex')
 
 
 class TestCatalogIndexing(PloneTestCase.PloneTestCase):

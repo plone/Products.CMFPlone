@@ -22,7 +22,6 @@ from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from StatelessTree import NavigationTreeViewBuilder as NTVB
 from ZODB.POSException import ConflictError
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
@@ -455,50 +454,87 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             text='\n'.join(traceback.format_exception(*sys.exc_info())),
             log_level=WARNING)
 
-    #replaces navigation_tree_builder.py
-    def createNavigationTreeBuilder(self, tree_root,
-                                    navBatchStart=None,
-                                    showMyUserFolderOnly=None,
-                                    includeTop=None,
-                                    showFolderishSiblingsOnly=None,
-                                    showFolderishChildrenOnly=None,
-                                    showNonFolderishObject=None,
-                                    topLevel=None,
-                                    batchSize=None,
-                                    showTopicResults=None,
-                                    rolesSeeUnpublishedContent=None,
-                                    sortCriteria=None,
-                                    metaTypesNotToList=None,
-                                    parentMetaTypesNotToQuery=None,
-                                    forceParentsInBatch=None,
-                                    skipIndex_html=None,
-                                    rolesSeeHiddenContent=None,
-                                    bottomLevel=None):
+    security.declarePublic('createSitemap')
+    def createSitemap(self, context):
+        return self.createNavTree(context, sitemap=1)
 
-        """ Returns a structure that can be used by
-        navigation_tree_slot.  We are being quite lazy because of
-        massive signature.  """
+    security.declarePublic('createNavTree')
+    def createNavTree(self, context, sitemap=None):
+        """Returns a structure that can be used by
+        navigation_tree_slot."""
+        ct=getToolByName(self, 'portal_catalog')
+        ntp=getToolByName(self, 'portal_properties').navtree_properties
+        if not context:
+            context = self.getCallingContext()
+        currentPath = None
+        query = {}
 
-        t_builder = NTVB(tree_root=tree_root,
-                         navBatchStart=navBatchStart,
-                         showMyUserFolderOnly=showMyUserFolderOnly,
-                         includeTop=includeTop,
-                         showFolderishSiblingsOnly=showFolderishSiblingsOnly,
-                         showFolderishChildrenOnly=showFolderishChildrenOnly,
-                         showNonFolderishObject=showNonFolderishObject,
-                         topLevel=topLevel,
-                         batchSize=batchSize,
-                         showTopicResults=showTopicResults,
-                         rolesSeeUnpublishedContent=rolesSeeUnpublishedContent,
-                         sortCriteria=sortCriteria,
-                         metaTypesNotToList=metaTypesNotToList,
-                         parentMetaTypesNotToQuery=parentMetaTypesNotToQuery,
-                         forceParentsInBatch=forceParentsInBatch,
-                         skipIndex_html=skipIndex_html,
-                         rolesSeeHiddenContent=rolesSeeHiddenContent,
-                         bottomLevel=bottomLevel  )
-        ctx_tree_builder=t_builder.__of__(self)
-        return ctx_tree_builder()
+        # XXX check if isDefaultPage is in the catalogs
+        #query['isDefaultPage'] = 0
+
+        if context == self or sitemap:
+            currentPath = getToolByName(self, 'portal_url').getPortalPath()
+            query['path'] = {'query':currentPath, 'depth':ntp.sitemapDepth}
+        else:
+            currentPath = '/'.join(context.getPhysicalPath())
+            query['path'] = {'query':currentPath, 'navtree':1}
+
+        if ntp.typesToList:
+            query['portal_type'] = ntp.typesToList
+
+        if ntp.sortAttribute:
+            query['sort_on'] = ntp.sortAttribute
+
+        if ntp.sortAttribute and ntp.sortOrder:
+            query['sort_order'] = ntp.sortOrder
+
+        rawresult = ct(**query)
+
+        # Build result dict
+        result = {}
+        foundcurrent = False
+        for item in rawresult:
+            path = item.getPath()
+            currentItem = path == currentPath
+            if currentItem:
+                foundcurrent = path
+            data = {'Title':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+                    'currentItem':currentItem,
+                    'absolute_url': item.getURL(),
+                    'getURL':item.getURL(),
+                    'path': path,
+                    'icon':item.getIcon,
+                    'creation_date': item.CreationDate,
+                    'review_state': item.review_state,
+                    'Description':item.Description,
+                    'children':[]}
+            parentpath = '/'.join(path.split('/')[:-1])
+            # Tell parent about self
+            if result.has_key(parentpath):
+                result[parentpath]['children'].append(data)
+            else:
+                result[parentpath] = {'children':[data]}
+            # If we have processed a child already, make sure we register it
+            # as a child
+            if result.has_key(path):
+                data['children'] = result[path]['children']
+            result[path] = data
+
+        portalpath = getToolByName(self, 'portal_url').getPortalPath()
+
+        if not foundcurrent:
+            #    result['/'.join(currentPath.split('/')[:-1])]['currentItem'] = True
+            for i in range(1, len(currentPath.split('/')) - len(portalpath.split('/')) + 1):
+                p = '/'.join(currentPath.split('/')[:-i])
+                if result.has_key(p) and not foundcurrent:
+                    foundcurrent = p
+                    result[p]['currentItem'] = True
+                    continue
+
+        if result.has_key(portalpath):
+            return result[portalpath]
+        else:
+            return {}
 
     # expose ObjectManager's bad_id test to skin scripts
     security.declarePublic('good_id')

@@ -17,6 +17,11 @@ from Products.CMFPlone.migrations.v2_1.alphas import addFullScreenAction
 from Products.CMFPlone.migrations.v2_1.alphas import addFullScreenActionIcon
 from Products.CMFPlone.migrations.v2_1.alphas import addVisibleIdsSiteProperty
 from Products.CMFPlone.migrations.v2_1.alphas import deleteVisibleIdsMemberProperty
+from Products.CMFPlone.migrations.v2_1.alphas import switchPathIndex
+from Products.CMFPlone.migrations.v2_1.alphas import addGetFolderOrderIndex
+from Products.CMFPlone.migrations.v2_1.alphas import updateNavTreeProperties
+from Products.CMFPlone.migrations.v2_1.alphas import addSitemapAction
+from Products.CMFPlone.migrations.v2_1.alphas import reindexCatalog
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
@@ -49,6 +54,13 @@ class MigrationTest(PloneTestCase.PloneTestCase):
         # Removes a site property from portal_properties
         tool = getattr(self.portal, 'portal_properties')
         sheet = getattr(tool, 'site_properties')
+        if sheet.hasProperty(property_id):
+            sheet.manage_delProperties([property_id])
+
+    def removeNavTreeProperty(self, property_id):
+        # Removes a navtree property from portal_properties
+        tool = getattr(self.portal, 'portal_properties')
+        sheet = getattr(tool, 'navtree_properties')
         if sheet.hasProperty(property_id):
             sheet.manage_delProperties([property_id])
 
@@ -96,6 +108,7 @@ class TestMigrations_v2_1(MigrationTest):
         self.icons = self.portal.portal_actionicons
         self.properties = self.portal.portal_properties
         self.memberdata = self.portal.portal_memberdata
+        self.catalog = self.portal.portal_catalog
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -179,6 +192,121 @@ class TestMigrations_v2_1(MigrationTest):
         # Should not fail if portal_memberdata is missing
         self.portal._delObject('portal_memberdata')
         deleteVisibleIdsMemberProperty(self.portal, [])
+
+    def testSwitchPathIndex(self):
+        # Should convert 'path' index to EPI
+        self.catalog.delIndex('path')
+        self.catalog.addIndex('path', 'FieldIndex')
+        switchPathIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('path')
+        self.assertEqual(index.__class__.__name__, 'ExtendedPathIndex')
+
+    def testSwitchPathIndexTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('path')
+        self.catalog.addIndex('path', 'FieldIndex')
+        switchPathIndex(self.portal, [])
+        switchPathIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('path')
+        self.assertEqual(index.__class__.__name__, 'ExtendedPathIndex')
+
+    def testSwitchPathIndexNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        switchPathIndex(self.portal, [])
+
+    def testSwitchPathIndexNoIndex(self):
+        # Should not fail if path index is missing
+        self.catalog.delIndex('path')
+        switchPathIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('path')
+        self.assertEqual(index.__class__.__name__, 'ExtendedPathIndex')
+
+    def testAddGetFolderOrderIndex(self):
+        # Should add getFolderOrder index
+        self.catalog.delIndex('getFolderOrder')
+        addGetFolderOrderIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('getFolderOrder')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddGetFolderOrderIndexTwice(self):
+        # Should not fail if migrated again
+        self.catalog.delIndex('getFolderOrder')
+        addGetFolderOrderIndex(self.portal, [])
+        addGetFolderOrderIndex(self.portal, [])
+        index = self.catalog._catalog.getIndex('getFolderOrder')
+        self.assertEqual(index.__class__.__name__, 'FieldIndex')
+
+    def testAddGetFolderOrderIndexNoCatalog(self):
+        # Should not fail if portal_catalog is missing
+        self.portal._delObject('portal_catalog')
+        addGetFolderOrderIndex(self.portal, [])
+
+    def testUpdateNavTreeProperties(self):
+        # Should add new navtree_properties
+        self.removeNavTreeProperty('typesToList')
+        self.removeNavTreeProperty('sortAttribute')
+        self.removeNavTreeProperty('sortOrder')
+        self.removeNavTreeProperty('sitemapDepth')
+        self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
+        updateNavTreeProperties(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
+
+    def testUpdateNavTreePropertiesTwice(self):
+        # Should not fail if migrated again
+        self.removeNavTreeProperty('typesToList')
+        self.removeNavTreeProperty('sortAttribute')
+        self.removeNavTreeProperty('sortOrder')
+        self.removeNavTreeProperty('sitemapDepth')
+        self.failIf(self.properties.navtree_properties.hasProperty('typesToList'))
+        updateNavTreeProperties(self.portal, [])
+        updateNavTreeProperties(self.portal, [])
+        self.failUnless(self.properties.navtree_properties.hasProperty('typesToList'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sortAttribute'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sortOrder'))
+        self.failUnless(self.properties.navtree_properties.hasProperty('sitemapDepth'))
+
+    def testUpdateNavTreePropertiesNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        updateNavTreeProperties(self.portal, [])
+
+    def testUpdateNavTreePropertiesNoSheet(self):
+        # Should not fail if navtree_properties is missing
+        self.properties._delObject('navtree_properties')
+        updateNavTreeProperties(self.portal, [])
+
+    def testAddSitemapAction(self):
+        # Should add the sitemap action
+        self.removeActionFromTool('sitemap')
+        self.failIf('sitemap' in [x.id for x in self.actions.listActions()])
+        addSitemapAction(self.portal, [])
+        self.failUnless('sitemap' in [x.id for x in self.actions.listActions()])
+
+    def testAddSitemapActionTwice(self):
+        # Should not fail if migrated again
+        self.removeActionFromTool('sitemap')
+        self.failIf('sitemap' in [x.id for x in self.actions.listActions()])
+        addSitemapAction(self.portal, [])
+        addSitemapAction(self.portal, [])
+        self.failUnless('sitemap' in [x.id for x in self.actions.listActions()])
+
+    def testAddSitemapActionNoTool(self):
+        # Should not fail if portal_actions is missing
+        self.portal._delObject('portal_actions')
+        addSitemapAction(self.portal, [])
+
+    def testReindexCatalog(self):
+        # Should rebuild the catalog
+        self.folder.invokeFactory('Document', id='doc', title='Foo')
+        self.folder.doc.setTitle('Bar')
+        self.assertEqual(len(self.catalog(Title='Foo')), 1)
+        reindexCatalog(self.portal, [])
+        self.assertEqual(len(self.catalog(Title='Foo')), 0)
+        self.assertEqual(len(self.catalog(Title='Bar')), 1)
 
 
 def test_suite():

@@ -60,10 +60,6 @@ def initialize(context):
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('localized_time')
     allow_module('Products.CMFPlone.PloneUtilities')
 
-    import StatelessTreeNav
-    from StatelessTree import NavigationTreeViewBuilder
-    allow_class(NavigationTreeViewBuilder)
-
     # For form validation bits
     from PloneUtilities import IndexIterator
     allow_class(IndexIterator)

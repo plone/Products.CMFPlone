@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+<metal:main fill-slot="main">
+
+    <h1>Site map</h1>
+    
+    <p class="documentDescription"
+       i18n:translate="">
+    An overview of the available content on this site. Keep the pointer still 
+    over an item for a few seconds to get its description.
+    </p>
+
+    <ul class="portal-sitemap portletNavigationLevel0"
+        tal:define="data python:here.plone_utils.createSitemap(here)"
+        tal:content="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
+        SUBTREE
+	 </ul>
+
+</metal:main>
+</body>
+</html>

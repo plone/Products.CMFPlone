@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged plip-80-navtree r6183:HEAD into 2.1 branch. This adds the new
+      catalog-based navigation tree and sitemap. Plone now depends on the
+      ExtendedPathIndex product.
+      [stefan] [jladage] [tesdal] [elvix]
+
     - Merged plip79-RelatedItems r6128:HEAD into 2.1 branch. Adds a macro to
       display related items in all content templates.
       [stefan] [_ender_] [mrtopf]

@@ -426,6 +426,49 @@ class TestFormulatorFields(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Language(), 'en')
 
 
+class TestNavTree(PloneTestCase.PloneTestCase):
+    '''Tests for the new navigation tree and sitemap'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.populateSite()
+
+    def populateSite(self):
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Document', 'doc1')
+        self.portal.invokeFactory('Document', 'doc2')
+        self.portal.invokeFactory('Document', 'doc3')
+        self.portal.invokeFactory('Folder', 'folder1')
+        folder1 = getattr(self.portal, 'folder1')
+        folder1.invokeFactory('Document', 'doc11')
+        folder1.invokeFactory('Document', 'doc12')
+        folder1.invokeFactory('Document', 'doc13')
+        self.portal.invokeFactory('Folder', 'folder2')
+        folder2 = getattr(self.portal, 'folder2')
+        folder2.invokeFactory('Document', 'doc21')
+        folder2.invokeFactory('Document', 'doc22')
+        folder2.invokeFactory('Document', 'doc23')
+        self.setRoles(['Member'])
+
+    def testCreateNavTree(self):
+        # See if we can create one at all
+        tree = self.utils.createNavTree(self.portal)
+        self.failUnless(tree)
+        self.assertEqual(tree.keys(), ['children'])
+
+    def testCreateNavTreeCurrentItem(self):
+        # With the context set to folder2 it should return a dict with
+        # currentItem set to True
+        tree = self.utils.createNavTree(self.portal.folder2)
+        self.failUnless(tree)
+        self.assertEqual(tree['children'][-1]['currentItem'], True)
+
+    def testCreateSitemap(self):
+        # Internally createSitemap is the same as createNavTree
+        tree = self.utils.createSitemap(self.portal)
+        self.failUnless(tree)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -433,6 +476,7 @@ def test_suite():
     suite.addTest(makeSuite(TestEditMetadata))
     suite.addTest(makeSuite(TestEditMetadataIndependence))
     suite.addTest(makeSuite(TestFormulatorFields))
+    suite.addTest(makeSuite(TestNavTree))
     return suite
 
 if __name__ == '__main__':
