@@ -15,7 +15,7 @@ import string
 
 from Acquisition import Implicit
 import Persistence
-
+from Extensions.Upgrade import normalize_tabs
 cmfplone_globals = {}
 
 import zLOG
@@ -122,7 +122,7 @@ def populatePortalWithContent(self, outStream):
     o = getattr(root, 'index_html')
     o.edit('structured-text', default_frontpage)
     o.setTitle('Welcome to Plone')
-    
+    normalize_tabs(self) 
     outStream.write('new frontpage, index_html was created in root of Portal\n')
 
 def changeImmediateViews(self, outStream):
