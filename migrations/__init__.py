@@ -1,9 +1,11 @@
-
-try:
-    from Products.CMFPlone import MigrationTool
-    import final_one_zero_one, rc2_final, rc1_rc2, beta3_rc1, beta2_beta3, beta1_beta2, alpha_beta
-except:
-    print "Ack.  MigrationTool could not be found"
+from Products.CMFPlone import MigrationTool
+import final_one_zero_one
+import rc2_final
+import rc1_rc2
+import beta3_rc1
+import beta2_beta3
+import beta1_beta2
+import alpha_beta
 
 def registerMigrations():
     # so the basic concepts is you put  a bunch of migrations is here

@@ -1,3 +1,5 @@
+from migration_util import safeEditProperty
+
 from Products.CMFPlone import MigrationTool
 from Products.CMFPlone.Portal import PloneGenerator
 from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
@@ -11,7 +13,8 @@ def rc1rc2(portal):
     nav_props=portal.portal_properties.navigation_properties
     changes={'default.folder_rename_form.success':'script:folder_rename',
              'default.personalize.success':'personalize_form'}
-    nav_props.manage_changeProperties(changes)
+    for k, v in changes.items():
+        safeEditProperty(nav_props, k, v)
 
     pg=PloneGenerator()
     sk_tool=getToolByName(portal, 'portal_skins')
