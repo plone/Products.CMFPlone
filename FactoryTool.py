@@ -137,7 +137,11 @@ class TempFolder(TempFolderBase):
             try:
                 self.invokeFactory(id=id, type_name=type_name)
             except:
+                # some errors from invokeFactory (AttributeError, maybe others) 
+                # get swallowed -- dump the exception to the log to make sure
+                # developers can see what's going on
                 getToolByName(self, 'plone_utils').logException()
+                raise
             obj = self._getOb(id)
             obj.unindexObject()  # keep obj out of the catalog
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
