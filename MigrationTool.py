@@ -52,7 +52,9 @@ class MigrationTool( UniqueObject, SimpleItem):
     security.declareProtected(ManagePortal, 'upgrade')
     def upgrade(self, REQUEST=None):
         """ perform the upgrade """
-        out = getattr(REQUEST, 'RESPONSE', None)
+        if REQUEST is None:
+            REQUEST = self.REQUEST
+        out = REQUEST.RESPONSE
         if out is None:
             # FIXME - perhaps zLOG?
             import StringIO
