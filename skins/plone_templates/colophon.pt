@@ -30,6 +30,30 @@
         </a>
     </li>
     <li>
+        <a href="http://www.section508.gov">
+        <img src="" 
+             height="15"
+             width="80"
+             alt="Section 508"
+             title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
+             tal:attributes="src string:$portal_url/colophon_sec508.gif" 
+             i18n:attributes="alt title" />
+        </a>
+    </li>
+    <li>
+        <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance"
+           title="Explanation of Level Triple-A Conformance"
+           i18n:attributes="title">
+        <img src="" 
+             height="15"
+             width="80"
+             alt="WCAG Triple-A conformance"
+             title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
+             tal:attributes="src string:$portal_url/colophon_wai-aaa.gif" 
+             i18n:attributes="alt title" />
+        </a>
+    </li>
+    <li>
         <a href="http://validator.w3.org/check/referer">
         <img src="" 
              height="15"
@@ -59,30 +83,6 @@
              alt="Usable in any browser"
              title="This Plone site is usable in any web browser."
              tal:attributes="src string:$portal_url/colophon_anybrowser.png" 
-             i18n:attributes="alt title" />
-        </a>
-    </li>
-    <li>
-        <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance"
-           title="Explanation of Level Triple-A Conformance"
-           i18n:attributes="title">
-        <img src="" 
-             height="15"
-             width="80"
-             alt="Level Triple-A conformance"
-             title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
-             tal:attributes="src string:$portal_url/colophon_wai-aaa.gif" 
-             i18n:attributes="alt title" />
-        </a>
-    </li>
-    <li>
-        <a href="http://www.section508.gov">
-        <img src="" 
-             height="15"
-             width="80"
-             alt="Section 508"
-             title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
-             tal:attributes="src string:$portal_url/colophon_sec508.gif" 
              i18n:attributes="alt title" />
         </a>
     </li>
