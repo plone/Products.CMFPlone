@@ -1,3 +1,17 @@
+2004-02-25 21:38  shh42
+
+	* tests/testInterfaces.py (Plone-2_0-branch): Don't run interface
+	  tests in Zope < 2.7 as older interface packages are borked.
+
+2004-02-25 05:42  ronnix
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): Fixed
+	  control panel migration from RC3 to RC4.
+
+2004-02-25 04:48  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-24 04:49  longsleep
 
 	* CVSLOG: auto generated new changelog
