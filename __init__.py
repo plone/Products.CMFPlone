@@ -197,7 +197,3 @@ def initialize(context):
 
     CustomizationPolicy.register(context, cmfplone_globals)
     PrivateSitePolicy.register(context, cmfplone_globals)
-
-    import SkinsCustomFolder
-    SkinsCustomFolder.register(context, cmfplone_globals)
-
