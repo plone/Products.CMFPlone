@@ -48,6 +48,8 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
         font-weight: bold;
         color: &dtml-fontColor;;
         }
+        
+    - Nav tree now displays Description for its items as a tooltip.
 
     - Changed the behaviour of the site-wide actions (currently
       only used for text size) - so if you use or have a custom
