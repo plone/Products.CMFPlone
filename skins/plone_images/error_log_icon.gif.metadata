@@ -1,5 +1,4 @@
-
 [default]
-title=Error Log
+title=Error
 cache=HTTPCache
 

@@ -1,4 +1,3 @@
-
 [default]
-title=Popup Calendar
+title=Calendar
 cache=HTTPCache

@@ -1,4 +1,3 @@
-
 [default]
-title=Search icon
+title=Search
 cache=HTTPCache

@@ -1,4 +1,3 @@
-
 [default]
-title=Up Arrow
+title=Up
 cache=HTTPCache

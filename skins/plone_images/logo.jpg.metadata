@@ -1,4 +1,3 @@
-
 [default]
-title=Plone Logo
+title=Plone
 cache=HTTPCache

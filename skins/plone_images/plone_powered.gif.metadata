@@ -1,4 +1,3 @@
-
 [default]
-title=Plone powered
+title=Plone Powered
 cache=HTTPCache

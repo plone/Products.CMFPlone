@@ -1,4 +1,3 @@
-
 [default]
-title=Locked Item
+title=Lock
 cache=HTTPCache

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Added icons for left/leftmost/right/rightmost. Removed unused icons.
+      Fixed alt-representations of images.
+      [limi]
+
     - Fixed bare 'except:' statements in Plone so we don't swallow
       ZODB ConflictErrors. Mostly by adding 'except ConflictError: raise'. 
       [stefan]
