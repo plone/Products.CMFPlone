@@ -116,7 +116,7 @@ Fill in the email address of your friend to send an email with the address.
                 <span i18n:translate="label_comment">Comment</span>
                 
                 <div id="comment_help" 
-                     i18n:translate="help_comment"
+                     i18n:translate="help_comment_to_link"
                      class="help" 
                      style="visibility:hidden">
                 A comment to this link. 

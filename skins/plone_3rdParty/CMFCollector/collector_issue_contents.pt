@@ -42,7 +42,7 @@
             <h6 i18n:translate="box_transcript_for_issue"> 
                 Transcript for Issue
                 <span tal:replace="here/id" i18n:name="id">ID</span>
-                (<span tal:replace="entries" i18n:name="num">7</span>
+                (<span tal:replace="python:str(entries)" i18n:name="num">7</span>
     
                  <tal:block condition="python:entries == 1">
                  <span i18n:name="listing_entry">

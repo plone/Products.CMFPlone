@@ -65,7 +65,9 @@
                 <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
             </th>
             <th colspan="5" tal:define="date string:$month/1/$year">
-              <span i18n:translate="" tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag="" /> <span tal:replace="python:DateTime(date).year()"/>
+              <span i18n:translate="" tal:omit-tag="">
+                <span tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag=""> <span i18n:name="year" tal:content="python:DateTime(date).year()" tal:omit-tag="" /> </span>
+              </span>
             </th>
         
             <th>
