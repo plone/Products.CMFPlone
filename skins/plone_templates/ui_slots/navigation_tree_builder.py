@@ -38,12 +38,15 @@ def childFinder(obj,folderishOnly=1):
         else:
             #and all other *CMF* folders
             res=obj.contentValues()
-
+    
     res = filter (lambda x:x.meta_type not in metaTypesNotToList,res)
 
     # if wanted just keep folderish objects
     if folderishOnly:
-        return filter(lambda x: hasattr(x.aq_explicit,'isPrincipiaFolderish') and x.aq_explicit.isPrincipiaFolderish,res)
+        objs=filter(lambda x: hasattr(x.aq_explicit,'isPrincipiaFolderish') and x.aq_explicit.isPrincipiaFolderish,res)
+        perm = 'List folder contents' #XXX should be imported
+        permChk = context.portal_membership.checkPermission
+        return [o for o in res if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
     else:
         return res
 
