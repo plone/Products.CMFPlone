@@ -102,7 +102,27 @@ def normalize_tabs(self):
         st_actions.append(globaltab)
     st._actions=st_actions
 
-    get_transaction().commit(1)
+    #move add to favorites 
+    mt=getToolByName(self, 'portal_membership')
+    mt_actions=[]
+    for a in mt._actions:
+        if a.id=='addFavorite' or \
+           a.id=='favorites' or \
+           a.id=='login':
+            a.visible=0
+	if a.id=='mystuff':
+            mt_actions.insert(0, a)
+	mt_actions.append(a)
+    #add 'my workspace' to user actions
+    mt_actions.insert(1, ActionInformation( 'myworkspace'
+                                          , title='My Workspace'
+					  , category='user'
+					  , permissions=('View',)
+					  , condition=Expression('python: member and portal.portal_membership.getHomeFolder()')
+					  , action=Expression('python: portal.portal_membership.getHomeUrl()+"/folder_contents"')))
+    mt._actions=mt_actions
+
+    #get_transaction().commit(1)
     import time
     return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
  
