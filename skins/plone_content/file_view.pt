@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
-		
+
 <body>
 
 <div metal:fill-slot="main">
@@ -11,62 +12,68 @@
     <div class="contentHeader">
     <h1 tal:content="here/title_or_id">Title or id</h1>
     </div>
+
    
+
     <span class="description" tal:content="structure here/Description">
     Description
     </span>
- 
+
     <div class="group">
         <span class="legend" i18n:translate="">File details</span>
 
-        
         <div class="row">
-            <span class="label" i18n:translate="">Size</span>
-            <span class="field" 
+            <div class="label" i18n:translate="">Size</div>
+
+            <div class="field" 
                   tal:define="size python:here.getObjSize(here)"
                   tal:content="size">                        
             File size
-            </span>            
-            <span class="info" tal:condition="python:test(here.size, 0, 1)" i18n:translate="">
+            </div>            
+
+            <span tal:condition="python:test(here.size, 0, 1)" i18n:translate="">
               (No file has been uploaded)
             </span>
         </div>
-        
-        <div class="row">
-            <span class="label" i18n:translate="">File type</span>
-            <span class="field" tal:content="here/content_type">
-            Content type
-            </span>
-        </div>    
-    
-        <div class="row">
-            <span class="label"></span>
-            <span class="field">
-            <form name="download"
-	          action=""
-		  method="GET"
-		  target="top"
-                  tal:attributes="action string:${here/getId}/download"> 
-                <input class="standalone" 
-                       type="submit" 
-                       value="Download file" 
-                       i18n:attributes="value" />
-            </form>
-            </span>
-        </div>
 
-        <div class="row"
-	     tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
-	    <span class="label">&nbsp;</span>
-	    <span class="field">
-	      <pre tal:content="here/data">
-	      </pre>
-	    </span>
-	</div>
-	
+        <div class="row">
+            <div class="label" i18n:translate="">File type</div>
+            <div class="field" tal:content="here/content_type">
+            Content type
+            </div>
+        </div>    
+
+        <div class="row">
+            <div class="label">&nbsp;</div>
+            <div class="field">
+                <form name="download"
+                      action=""
+                      method="GET"
+                      target="top"
+                      tal:attributes="action string:${here/getId}/download"> 
+    
+                    <input class="standalone" 
+                           type="submit" 
+                           value="Download file" 
+                           i18n:attributes="value" />
+                </form>
+            </div>
+        </div>
     </div>
 
+    <div class="row"
+         tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
+            
+            <h2>File contents</h2>
+            
+            <pre tal:content="here/data">
+            </pre>
+    </div>
+    
+    
 </div>
 
 </body>
+
 </html>
+
