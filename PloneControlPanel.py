@@ -14,6 +14,8 @@ from Products.CMFCore.utils import _checkPermission, _dtmldir, getToolByName, Si
 
 from Products.CMFCore.interfaces.portal_actions import portal_actions as IActionsTool
 
+from interfaces.PloneControlPanel import IControlPanel
+
 class PloneConfiglet(ActionInformation):
     def __init__(self,appId,**kwargs):
         self.appId=appId
@@ -38,7 +40,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
         to the current user and context.
     """
 
-    __implements__ = (IActionsTool, ActionProviderBase.__implements__)
+    __implements__ = (IControlPanel, ActionProviderBase.__implements__)
 
     security = ClassSecurityInfo()
 
@@ -71,6 +73,16 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
         context=createExprContext(self,portal,self)
         return [a.getAction(context) for a in self.listActions() if a.category==group and a.testCondition(context)]
 
+    def unregisterConfiglet(self,id):
+        selection=[a for a in self.listActions() if a.id==id]
+        self.deleteActions(selection)
+        
+    def unregisterApplication(self,appId):
+        selection=[a for a in self.listActions() if a.appId==appId]
+        self.deleteActions(selection)
+        
+        
+        
     def _extractAction( self, properties, index ):
 
         """ Extract an ActionInformation from the funky form properties.

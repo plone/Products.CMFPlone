@@ -3,10 +3,20 @@ from interface import Interface, Attribute
 class IControlPanel(Interface):
     """ Interface for the ControlPanel """
 
-    def registerConfiglet(id, appId, label, templateUrl, image, group, url):
+    def registerConfiglet( id
+                 , name
+                 , action
+                 , condition=''
+                 , permission=''
+                 , category='Plone'
+                 , visible=1
+                 , appId=None
+                 , imageUrl=None
+                 , REQUEST=None
+                 ):
         """ Registration of a Configlet """
 
-    def unregisterConfiglet(configletId):
+    def unregisterConfiglet(id):
         """ unregister Configlet """
 
     def unregisterApplication(appId):
@@ -19,5 +29,6 @@ class IControlPanel(Interface):
         """ list of groups as dicts with id and title """
         
     def enumConfiglets(group=None,appId=None):
-        """ lists the Configlets of a group """
+        """ lists the Configlets of a group, returns them as dicts by
+            calling .getAction() on each of them """
 
