@@ -331,7 +331,7 @@ ul#portalTabs li a:hover {
     border-bottom-color: &dtml-mainTabBackground;;
     color: &dtml-mainTabFontColorSelected;;
 }
-div#personalBar {
+ul#personalBar {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background: &dtml-mainTabBackground;;
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
@@ -341,15 +341,29 @@ div#personalBar {
     padding-right: 3em;
     text-align: right;
     text-transform: &dtml-textTransform;;
+    list-style: none;
 }
-div#personalBar a {
+ul#portalTabs li {
+    float: right;
+    background: transparent url("/linkOpaque.gif") center left no-repeat;
+    padding-left: 12px;
+    min-height: 16px;
+    /* Make the links inline using Fabrice's inversion to fix NS4 */
+    display : inline;
+    /*/*//*/
+    display : none;
+    /* */
+}
+ul#portalTabs li#personalBar-user {
+    background: transparent url("/user.gif") center left no-repeat;
+    padding-left: 19px;
+}
+    
+div#personalBar li a {
     background-color: transparent;
-	color: &dtml-mainTabFontColorSelected;;
+    color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
-}
-div#personalBar img {
-    vertical-align: top;
 }
 .caseSensitive {
     text-transform: none;
@@ -782,6 +796,13 @@ a.external {
 }
 div.hiddenlabel {
     visibility: hidden;
+}
+.hiddenstructure {
+    height: 0px;
+    overflow: hidden;
+}
+.clear {
+    clear: both;
 }
 label.hiddenlabel {
     visibility: hidden;

@@ -61,6 +61,7 @@
                  selected_tabs python:here.selectedTabs(template.getId(), here);
                  selected_portal_tab selected_tabs/portal;" >
     <ul id="portalTabs" class="portaltabs">
+       <h5 class="hiddenstructure" i18n:translate="">Navigation</h5>
        <tal:tabs tal:repeat="tab portal_tabs">
        <li tal:define="firstitem repeat/tab/first;
                        lastitem repeat/tab/last;"
@@ -74,43 +75,46 @@
           </a>
       </li>
       </tal:tabs>
+      <div class="clear"></div>
    </ul>
 </div>
 
 <!-- THE PERSONAL BAR DEFINITION -->
-<div class="personalBar"
+<ul class="personalBar"
      id="personalBar"
      metal:define-macro="personal_bar"
      tal:define="portal_url portal_url|here/portal_url;
                  user_actions user_actions|actions/user;
                  global_actions global_actions|actions/global;
                  mtool mtool|here/portal_membership;
-                 display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">&nbsp;
-    <a href=""
-       tal:omit-tag="not: mtool/getHomeFolder"
-       tal:condition="not: isAnon"
-       tal:attributes="href string:${mtool/getHomeUrl}"
-       accesskey="accesskeys-personalbar"
-       i18n:attributes="accesskey"
-       class="userName">
-       <img tal:replace="structure portal/user.gif" />
-       <span tal:replace="user/getUserName">
+                 display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">
+    <h5 class="hiddenstructure" i18n:translate="">Personal tools</h5>
+    <li id="personalBar-user" tal:condition="not: isAnon"><a href=""
+        tal:omit-tag="not: mtool/getHomeFolder"
+        tal:attributes="href string:${mtool/getHomeUrl}"
+        accesskey="accesskeys-personalbar"
+        i18n:attributes="accesskey">
+        <span tal:replace="user/getUserName">
              john
-       </span>
-    </a>
-    <span tal:condition="isAnon"
+        </span>
+    </a></li>
+    <li id="personalBar-anon" tal:condition="isAnon"
           i18n:translate="you_are_not_logged_in">
               You are not logged in
-    </span>
-    <a href=""
-       tal:repeat="action python:display_actions"
-       tal:attributes="href action/url"
-       accesskey="accesskeys-personalbar"
-       i18n:attributes="accesskey">
-       <img tal:replace="structure portal/linkOpaque.gif" />
-       <tal:actionname i18n:translate="" tal:content="action/name">dummy</tal:actionname>
-    </a>
-</div>
+    </li>
+    <tal:actions tal:repeat="action python:display_actions"> 
+        <li id=""
+            tal:attributes="id string:personalBar-${action/id}">
+            <a href=""
+               tal:attributes="href action/url"
+               accesskey="accesskeys-personalbar"
+               i18n:attributes="accesskey">
+               <tal:actionname i18n:translate="" tal:content="action/name">dummy</tal:actionname>
+            </a>
+        </li>
+    </tal:actions>
+    <div class="clear"></div>
+</ul>
 
 <!-- THE PATHBAR (breadcrumbs) DEFINITION -->
 <div metal:define-macro="path_bar"
