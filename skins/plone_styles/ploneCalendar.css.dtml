@@ -48,10 +48,9 @@ div.date {
   
 table.calendar {
     border: &dtml-boxBorder;;
-    text-align: right;
-    margin-right: 1em;
-    margin-bottom: 2em;
     float: left;
+    margin: 0em 1em 2em 0em;
+    text-align: right;
 }
 
 table.calendar a {
