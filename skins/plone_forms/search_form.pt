@@ -118,7 +118,7 @@
                 </div>
     
                 <tal:datetime define="today python:DateTime().earliestTime()">
-                <select name="created.query:record:date"
+                <select name="created.query:list:record:date"
                         id="created"
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;"
