@@ -1,3 +1,61 @@
+2004-01-17 00:45  vinsci
+
+	* skins/plone_prefs/prefs_syndication_form.pt (Plone-2_0-branch):
+	  Remove enclosing <p>, <form> and <p> are both blocklevel
+	  elements.
+
+2004-01-16 14:52  vinsci
+
+	* skins/plone_prefs/prefs_error_log_form.pt (Plone-2_0-branch): Was
+	  using Zope-2.7 construct for attribute i18n.
+
+2004-01-16 08:04  vinsci
+
+	* skins/plone_prefs/prefs_error_log_form.pt (Plone-2_0-branch): Add
+	  table summary attribute. Reuse legend_logexception as summary
+	  text for i18n. Part of the fixes for 2269.
+
+2004-01-16 07:56  vinsci
+
+	* skins/plone_templates/global_statusmessage.pt (Plone-2_0-branch):
+	  Partial fix for issue 2269.
+
+2004-01-16 07:11  vinsci
+
+	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
+	  Partial fix for issue 2269 (img tag missing alt attribute).
+
+2004-01-16 07:08  vinsci
+
+	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
+	  Add summary attribute to table, plus i18n of it.
+
+2004-01-16 06:02  vinsci
+
+	* skins/plone_prefs/personalize_form.cpt (Plone-2_0-branch): Add
+	  alt="" to <img> tag, this particular img also has a label, so no
+	  additional alt text is necessary, I think. Partial fix for issue
+	  2269.
+
+2004-01-16 05:41  vinsci
+
+	* skins/plone_portlets/: calendar_slot.pt, portlet_calendar.pt
+	  (Plone-2_0-branch): Add table summary="Calendar" attribute to the
+	  calendars, plus i18n.
+
+2004-01-16 05:25  vinsci
+
+	* skins/plone_forms/login_form.pt (Plone-2_0-branch): Apply XHTML
+	  standardisation
+	  (http://www.w3.org/TR/2000/REC-xhtml1-20000126/#h-4.8) to script
+	  tag, in futile attempt to silence html tidy. Tidy needs to be
+	  fixed for this one, though. All other script tags in Plone should
+	  have this same fix applied, though. Later.
+
+2004-01-16 05:02  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-16 04:49  vinsci
 
 	* skins/plone_forms/history_form.pt (Plone-2_0-branch): Added
