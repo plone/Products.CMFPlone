@@ -113,7 +113,9 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool('Plone Migration Tool', None)
         if not exists('portal_configuration'):
             addPloneTool('Plone Control Panel', None)
-
+        if not exists('portal_interface'):
+            addPloneTool('Portal Interface Tool', None)
+            
         p.manage_permission( CMFCorePermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
