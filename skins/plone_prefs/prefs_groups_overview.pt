@@ -75,6 +75,7 @@
               i18n:attributes="value"
               />
     
+	      <tal:block tal:condition="groups">
             <table class="listing">
                    
                 <tr>
@@ -114,11 +115,7 @@
                     </tal:header>
                 </tr>
     
-    	    <tr tal:condition="not:batch">
-    	      <td colspan="6">No matches</td>
-    	    </tr>
-    
-                <tal:block tal:condition="batch" repeat="this_group batch">
+                <tal:block repeat="this_group batch">
     
                 <tr
                     tal:define="oddrow repeat/this_group/odd"
@@ -171,7 +168,7 @@
                    tal:attributes="tabindex tabindex/next;"
                    i18n:attributes="value"
                    />
-    
+	      </tal:block>
         </form>
     
         <h1 i18n:translate="heading_roles_management">Roles Management</h1>
