@@ -38,7 +38,8 @@ if cmfcore:
                 break
         print 'filtered:',filtered
         x = float(filtered)
-    except IOError:
+            
+    except IOError, ValueError:
         x = 0
         CMF_VERSION = 'Unknown'
     if x < 1.4:
