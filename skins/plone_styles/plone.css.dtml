@@ -307,6 +307,7 @@ pre {
     text-align: right;
     text-transform: &dtml-textTransform;;
     width: 30%;
+    white-space: nowrap;
 }
 input.searchButton {
     font-size: 100%;
