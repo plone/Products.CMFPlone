@@ -26,22 +26,26 @@ class LazySequenceLength(Base):
         return l
 
 class Batch(ZTUBatch):
+    """Create a sequence batch"""
     __allow_access_to_unprotected_subobjects__ = 1 
 
     previous = LazyPrevBatch()
     next = LazyNextBatch()
     sequence_length = LazySequenceLength()
 
+    size = first= start = end = orphan = overlap = navlist = None 
+    numpages = pagenumber = pagerange = pagerangeend = pagerangestart = pagenumber = quantumleap = None
+    
     def __init__( self, sequence, size, start=0, end=0, orphan=0, overlap=0, pagerange=7, quantumleap=0):
-        """
-        sequence is the data to batch. 
-        size is the number of items in each batch, and will be computed if left out.
-        start is the first element of sequence to include in batch (0-index)
-        end is the last element of sequence to include in batch (0-index, optional)
-        orpan is the minimum number of elements in last batch to avoid it being combined with current batch
-        overlap is the number of overlapping elements in each batch
-        pagerange is the number of pages to display in the navigation
-        quantumleap is to use bigger increments in the navigation with big results.
+        """ Encapsulate sequence in batches of size
+        sequence    - the data to batch. 
+        size        - the number of items in each batch. This will be computed if left out.
+        start       - the first element of sequence to include in batch (0-index)
+        end         - the last element of sequence to include in batch (0-index, optional)
+        orphan      - the next page will be combined with the current page if it does not contain more than orphan elements 
+        overlap     - the number of overlapping elements in each batch
+        pagerange   - the number of pages to display in the navigation
+        quantumleap - 0 or 1 to indicate if bigger increments should be used in the navigation list for big results.
         """
         start = start + 1
 
@@ -63,7 +67,7 @@ class Batch(ZTUBatch):
         if self.first == 0:
             self.previous = None
         
-        # Set up the number of pages
+        # Set up the total number of pages
         self.numpages = calculate_pagenumber(self.sequence_length - self.orphan, self.size, self.overlap)
                 
         # Set up the current page number
@@ -72,10 +76,15 @@ class Batch(ZTUBatch):
         # Set up pagerange for the navigation quick links
         self.pagerange, self.pagerangestart, self.pagerangeend = calculate_pagerange(self.pagenumber,self.numpages,pagerange)
         
-        # Set up the list for the navigation: 4 5 [6] 7 8 
-        self.navlist = []
+        # Set up the lists for the navigation: 4 5 [6] 7 8
+        #  navlist is the complete list, including pagenumber
+        #  prevlist is the 4 5 in the example above
+        #  nextlist is 7 8 in the example above 
+        self.navlist = self.prevlist = self.nextlist = []
         if self.pagerange and self.numpages >= 1:
-            self.navlist = range(self.pagerangestart, self.pagerangeend)
+            self.navlist  = range(self.pagerangestart, self.pagerangeend)
+            self.prevlist = range(self.pagerangestart, self.pagenumber)
+            self.nextlist = range(self.pagenumber + 1, self.pagerangeend)
 
         # QuantumLeap - faster navigation for big result sets
         self.quantumleap = quantumleap
@@ -91,9 +100,18 @@ class Batch(ZTUBatch):
         b_start = pagenumber * (self.size - self.overlap) - self.size
         return make_query(formvariables, b_start=b_start)
 
-    def navurls(self, formvariables):
+    def navurls(self, formvariables, navlist=[]):
         """ Returns the page number and url for the navigation quick links """
-        return map(lambda x, formvariables = formvariables: (x, self.pageurl(formvariables, x)), self.navlist)
+        if not navlist: navlist = self.navlist
+        return map(lambda x, formvariables = formvariables: (x, self.pageurl(formvariables, x)), navlist)
+
+    def prevurls(self, formvariables):
+        """ Helper method to get prev navigation list from templates """
+        return self.navurls(formvariables, self.prevlist)
+
+    def nexturls(self, formvariables):
+        """ Helper method to get next navigation list from templates """
+        return self.navurls(formvariables, self.nextlist)
 
 # Calculate start, end, batchsize
 # This is copied from ZTUtils.Batch.py because orphans were not correct there.

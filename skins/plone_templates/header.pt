@@ -36,6 +36,8 @@
     <!-- Style sheet used for presentations (Opera is the only browser supporting this at the moment) -->
     <link rel="stylesheet" type="text/css" media="projection" href="" tal:attributes="href string:$portal_url/plonePresentation.css" />
 
+    <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico"/>
+    
     <!-- Disable IE6 image toolbar -->
     <meta http-equiv="imagetoolbar" content="no" />
 

@@ -27,9 +27,10 @@ class PloneTool (UniqueObject, SimpleItem):
     field_prefix = 'field_' # Formulator prefixes for forms
 
     security.declarePublic('sendto')
-    def sendto( self, variables ):
+    def sendto( self, variables = {} ):
         """Sends a link of a page to someone
         """
+        if not variables: return
         mail_text = self.sendto_template( self
                                         , variables['send_from_address']
                                         , variables['send_to_address']

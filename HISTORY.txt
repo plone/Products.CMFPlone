@@ -1,8 +1,97 @@
+CHANGES
+    - whether or not /folder_contents is appended to the url in folder_contents is now determined by site_properties/use_folder_contents
+    - Issue #458 - portal_properties.site_properties is where all Plone/site-wide configuration data is now held
+    - Moved changes from 1.2 to Portal.py to the migration
+    - Added the migration tool
+    - Added PloneInitialize which loads up the ZODB with a Plone instance and some goodies, if and only if the write type of config file that the installer writes is found.
+    - CustomizationPolicy made the 'folder contents' tab on object un-visible.
+      Also changed the name of 'folder contents' for folder category to 'contents'
+      Changes 'Publishing' tab title to 'Workflow'
+    - Added "Print this page" option.
+    - Reworked the CSS for forms. Should look good in all browsers now, and the
+      wrapping problem should be resolved.
+    - Made all fonts use percentage values, untangled nesting, made textareas use 
+      non-proportional fonts. Fixed several other visual bugs.
+    - NavigationExceptions now dump stack traces to the event log rather than including
+      them in the error message.
+    - Object IDs are checked for collision with skin files when renaming objects.  This
+      prevents a stack overflow in BSD.
+    - createObject now uses portal navigation (default is action:edit)
+    - Added getId and meta_type to the catalog metadata
+    - Added support for CMFBTreeFolder if it is installed.
+    - Added a script, portal_form_url.py, that adds portal_form to a URL in the appropriate
+      spot.  If you set your form's action to python:here.portal_form_url(template.id), the
+      portal_form machinery will kick in upon submission even if the form's URL doesn't have
+      portal_form in it initially.
+    - Added validation for folder_rename and changed the navigation properties accordingly.
+    - Added "New items since last login" to the logged_in page.
+    - You can now set the length of the authorization cookie in portal_properties.site_properties
+    - Added portal_properties.site_properties property sheet for portal wide properties
+    - Issue 478, folder contents 'add new item' list is now sorted in alphabetical order
+    - If a member has defined a portrait it will now show up in 'local roles' form
+      also the defaultUser.gif portrait will show up in your preferences unless you
+      personalize the portrait
+    - Major CSS update:
+        - added new box class
+        - rewrote all boxes (everything in ui_slots)  to use the new code
+        - made News use the new code
+        - made Collector use the new code
+        - made viewThreadsAtBottom use the new code
+        - moved viewThreadsAtBottom to templates dir 
+    - IMPORTANT: if you have customized your stylesheet properties, you need to add the
+      new destructiveButton properties to yours, have a look in stylesheet_properties.props   
+    - All CSS2 style sheets are now contained in plone.css. This causes fewer requests, and a general
+      speedup both in rendering and transfer. 
+    - Changed the person icon and name in personal bar to link to page of self, not folder_contents.
+      This is more consistent with the use of the person icon elsewhere, and you now have both view
+      and folder contents link in personal bar.
+    - All Netscape4 style sheets were collapsed into on, and re-built. Plone is *much* faster and looks
+      much better in Netscape 4.x now.
+    - fixed ISSUES: 327, 363, 445 (thanks interra!), 485, 60, 491, 495, 364 (CustomizationPolicy), 494,
+      488 (more logic in showEditableBorder *sigh*), 452 (gdavis), 349, 437 (Private Policy, thanks
+      mitja!), 471 (thanks SDuncan)
+    - Issue 473 - we now have a standard_error_message python script that 
+      calls the default_error_message PageTemplate.  Its possible for you to customize this script
+      and dispatch to an appropriate PageTemplate depending on the error that was raised.  Thanks
+      to Tino Wildenhain for providing insight.  #zope is such a great resource.
+    - factored out logged_in.pt into 4 entities: logged_in.py (dispatches to appopriate view),
+      login_success.pt, login_failed.pt, login_password.pt
+    - fixed workflow permissions so that:
+      if the Manager 'publishes' the root Folder object (so that Members can 'List folder contents')
+      that Members can still 'List folder contents' and get the folder_buttons (portal_actions)
+      displayed in their home folder.  
+      NOTE: at the end of CustomizationPolicies both catalog and workflow tool will be 'reindexed'
+
 Plone Beta 2
     - navigation slot/tree was made more resilient to exceptions thrown while traversing child nodes    
     - migration script has been updated to transfer portal_memberdata over in a more sane way 
     - if you only have 1 item you can add dont show drop down list in folder_contents
       just show 'Add New $contenttype' and insert a hidden form variable
+    - PrivateCustomizationPolicy had *no way* to let anonymous users view content.  This is 
+      debatable feature but 99% end users will want a tranistion that allows content to 
+      be visible by a Anonymous user.  Thus introduced the public state and publicize tranistion
+    - PloneFolder mixes in DefaultDublinCoreImpl and declares the DublinCore interface
+      also it maps manage_addFolder to manage_addPloneFolder
+    - By default only Subject keywords assigned in the portal_metadata show up in metadata_edit_form
+      instead of the default CMF policy of all Keywords ever assigned + the allowed ones. Also 
+      alphabetized Keywords and Languages.  Also removed 'None' from dates.
+    - reconfig_form didn't use the postback value of default language, if the form had errors.
+    - Bugs fixed 373, 383, 316, 433, 329, 441
+    - metadate_edit_form added a '\n' in Contrbutors field, everytime it was saved.
+    - Issue 403 - added <meta> tags to header, not really used by modern search engines
+      need script listMetaTags.py
+    - reintroduced getPersonalFolder/getPersonalPortrait python scripts for backwards compatibility
+    - Topics use folder_workflow now
+    - added titles for xxx_edit_forms (breadcrumbs seemingly have changed)
+    - Issue 300 - Standardized batch navigation. Batching now uses PloneBatch and its macro.
+    - Issue 440 - Forms automatically focus on input element with tabindex=1
+    - main_template now uses prepare_slots.py 
+    - added structure here/title_or_id to plone_contents and other views. 
+      Thanks to 'DZ' on plone.org for noticing
+    - dont show a select box, "Show all items" in folder_contents unless there are types 
+    - gave Manager 'Modify portal content' permission in folder_workflow.published
+    - closed out Issue 457.  now ppl can define a ploneCustom.css and it will be included in the header
+    - zwork and limi have worked out quite a few issues regarding the new tree maker
 
 Plone Beta 1
     - Added tree navigation from Philipp Auersperg and made it the default

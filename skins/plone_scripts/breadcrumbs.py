@@ -68,4 +68,3 @@ if published != o and not currentlyViewingFolderContents and published_id != vie
     except:
         pass
 
-return path_seq

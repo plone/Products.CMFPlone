@@ -1,6 +1,6 @@
-# $Id: NavigationTool.py,v 1.28.2.11 2002/10/27 20:57:12 plonista Exp $
-# $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
-__version__ = "$Revision: 1.31 $"[11:-2] + " " + "$Name:  $"[7:-2]
+# $Id$
+# $Source$
+__version__ = "$Revision$"[11:-2] + " " + "$Name$"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -493,6 +493,7 @@ class ScriptStatus:
         self.status = status
         self.kwargs = kwargs
         self.new_context = new_context
+
 
 class Redirector(SimpleItem):
     """

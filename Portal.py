@@ -90,7 +90,8 @@ class PloneGenerator(Portal.PortalGenerator):
         addPloneTool('Plone Properties Tool', None)
         addPloneTool('Plone Migration Tool', None)
 
-        p.manage_permission( CMFCorePermissions.ListFolderContents, ('Manager', 'Member', 'Owner',), acquire=1 )
+        p.manage_permission( CMFCorePermissions.ListFolderContents, \
+                             ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=1
 
@@ -110,7 +111,8 @@ class PloneGenerator(Portal.PortalGenerator):
         o = p.index_html
         o._setPortalTypeName( 'Document' )
         o.setTitle('Welcome to Plone')
-        o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
+        o.setDescription('This welcome page is used to introduce you'+\
+                         ' to the Plone Content Management System.')
         o.edit('structured-text', default_frontpage)
         
         o = p.Members
@@ -121,26 +123,13 @@ class PloneGenerator(Portal.PortalGenerator):
     def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow
         wf_tool.manage_addWorkflow( id='plone_workflow'
-                                  , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
+                                  , workflow_type='plone_workflow '+\
+                                    '(Default Workflow [Plone])')
         wf_tool.setDefaultChain('plone_workflow')
 
         wf_tool.manage_addWorkflow( id='folder_workflow'
-                                  , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
-        folder_wf = wf_tool['folder_workflow']
-        #Published folders means that anonymous should be able to 'list the folder contents'
-        folder_wf.permissions+=(CMFCorePermissions.ListFolderContents, )
-        folder_wf.states.published.permission_roles[CMFCorePermissions.ListFolderContents]=['Anonymous',]
-        folder_wf.states.published.permission_roles[CMFCorePermissions.ModifyPortalContent]=('Manager', )
-        folder_wf.states.deleteStates( ('pending', ) )
-        state_priv=folder_wf.states['private']
-        state_priv.transitions = ('publish', 'show') 
-        state_pub=folder_wf.states['published']
-        state_pub.transitions = ('hide', 'retract') 
-        folder_wf.transitions.deleteTransitions( ('submit', 'reject') )
-        trans_publish=folder_wf.transitions['publish']
-        trans_publish_guard=trans_publish.getGuard()
-        trans_publish_guard.permissions=(CMFCorePermissions.ModifyPortalContent, )
-        trans_publish_guard.roles=('Owner', 'Manager')
+                                  , workflow_type='folder_workflow '+\
+                                    '(Folder Workflow [Plone])')
         wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
 
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):        
@@ -171,7 +160,8 @@ class PloneGenerator(Portal.PortalGenerator):
                 path.append( plonedir )
         path=','.join(path)
         sk_tool.addSkinSelection('Plone Default', path)
-        self.setupSecondarySkin(sk_tool, 'Plone Mozilla', 'plone_styles/mozilla')
+        self.setupSecondarySkin(sk_tool, 'Plone Mozilla', \
+                                'plone_styles/mozilla')
         self.setupSecondarySkin(sk_tool, 'Plone XP', 'plone_styles/winxp')
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
         
@@ -179,35 +169,51 @@ class PloneGenerator(Portal.PortalGenerator):
 
     def setupForms(self, p):
         prop_tool = p.portal_properties
-        prop_tool.manage_addPropertySheet('navigation_properties', 'Navigation Properties')
+        prop_tool.manage_addPropertySheet('navigation_properties', \
+                                          'Navigation Properties')
         prop_tool.manage_addPropertySheet('form_properties', 'Form Properties')
 
         form_tool = p.portal_form
-        form_tool.setValidators('link_edit_form', ['validate_id', 'validate_link_edit'])
-        form_tool.setValidators('newsitem_edit_form', ['validate_id', 'validate_newsitem_edit'])
-        form_tool.setValidators('document_edit_form', ['validate_id', 'validate_document_edit'])
-        form_tool.setValidators('image_edit_form', ['validate_id', 'validate_image_edit'])
-        form_tool.setValidators('file_edit_form', ['validate_id', 'validate_file_edit'])
-        form_tool.setValidators('folder_edit_form', ['validate_id', 'validate_folder_edit'])
-        form_tool.setValidators('event_edit_form', ['validate_id', 'validate_event_edit'])
-        form_tool.setValidators('topic_edit_form', ['validate_id', 'validate_topic_edit'])
-        form_tool.setValidators('content_status_history', ['validate_content_status_modify'])
+        form_tool.setValidators('link_edit_form', \
+                                ['validate_id', 'validate_link_edit'])
+        form_tool.setValidators('newsitem_edit_form', \
+                                ['validate_id', 'validate_newsitem_edit'])
+        form_tool.setValidators('document_edit_form', \
+                                ['validate_id', 'validate_document_edit'])
+        form_tool.setValidators('image_edit_form', \
+                                ['validate_id', 'validate_image_edit'])
+        form_tool.setValidators('file_edit_form', \
+                                ['validate_id', 'validate_file_edit'])
+        form_tool.setValidators('folder_edit_form', \
+                                ['validate_id', 'validate_folder_edit'])
+        form_tool.setValidators('event_edit_form', \
+                                ['validate_id', 'validate_event_edit'])
+        form_tool.setValidators('topic_edit_form', \
+                                ['validate_id', 'validate_topic_edit'])
+        form_tool.setValidators('content_status_history', \
+                                ['validate_content_status_modify'])
         form_tool.setValidators('metadata_edit_form', [])
-        form_tool.setValidators('reconfig_form', ['validate_reconfig'])
-        form_tool.setValidators('personalize_form', ['validate_personalize'])
-        form_tool.setValidators('join_form', ['validate_registration'])
-        form_tool.setValidators('metadata_edit_form', ['validate_metadata_edit'])
+        form_tool.setValidators('reconfig_form', \
+                                ['validate_reconfig'])
+        form_tool.setValidators('personalize_form', \
+                                ['validate_personalize'])
+        form_tool.setValidators('join_form', \
+                                ['validate_registration'])
+        form_tool.setValidators('metadata_edit_form', \
+                                ['validate_metadata_edit'])
         
         #set up properties for StatelessTreeNav
-        from Products.CMFPlone.StatelessTreeNav import setupNavTreePropertySheet
+        from Products.CMFPlone.StatelessTreeNav \
+             import setupNavTreePropertySheet
         setupNavTreePropertySheet(prop_tool)
 
-        # grab the initial portal navigation properties from data/navigation_properties
+        # grab the initial portal navigation properties
+        # from data/navigation_properties
         nav_tool = p.portal_navigation
 
         # open and parse the file
         filename='navigation_properties'
-        src_file =  open(os.path.join(Globals.package_home(globals()), 'data', filename), 'r')
+        src_file = open(os.path.join(Globals.package_home(globals()), 'data', filename), 'r')
         src_lines = src_file.readlines()
         src_file.close(); 
 

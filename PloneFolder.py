@@ -6,6 +6,7 @@ from Products.CMFCore.CMFCorePermissions import View, ManageProperties, ListFold
 from Products.CMFCore.CMFCorePermissions import AddPortalFolders, AddPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
+from Products.CMFCore.interfaces.DublinCore import DublinCore as IDublinCore
 from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo, Unauthorized
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base
@@ -121,7 +122,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             id = obj.getId()
             v = obj
             try:
-                if len(id) and id[:1]=='.' and suppressHiddenFiles:
+                if len(id) and id[0]=='.' and suppressHiddenFiles:
                     raise Unauthorized(id, v)
                 if getSecurityManager().validate(self, self, id, v):
                     l.append(obj)
