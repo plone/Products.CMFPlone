@@ -5,7 +5,7 @@
                    pss modules/Products/PythonScripts/standard;
                    showNav python:0;
                    showNav here/portal_url/CMFTopic_navigator | showNav"
-       tal:condition="python:results and here.meta_type!='Portal Topic' and showNav">
+       tal:condition="python:0 and results and here.meta_type!='Portal Topic' and showNav">
        <!-- We don't show this box when we are editing a Portal Topic
             This is because it would lead to infinate recursion -->
 

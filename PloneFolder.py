@@ -135,4 +135,4 @@ def addPloneFolder( self, id, title='', description='', REQUEST=None ):
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
 
-InitializeClass(SkinnedFolder)
+InitializeClass(PloneFolder)

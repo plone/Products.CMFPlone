@@ -17,8 +17,7 @@
         <tr tal:define="oddrow repeat/o/odd"
             tal:attributes="class python:test(oddrow, 'odd','even')" class="#">
 
-            <td colspan="2"
-                tal:define="actions python:container.portal_actions.listFilteredActionsFor(o);">
+            <td colspan="2">
 
                 <a href="#"
                    class="marker"

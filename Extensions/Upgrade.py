@@ -71,22 +71,22 @@ def normalize_tabs(self):
 	welcome=ActionInformation( 'index_html'
 	                         , title='Welcome'
 				 , category='global_tabs'
-				 , permissions=('View',)
+				 , permissions='View'
 				 , action=Expression('portal_url'))
 	members=ActionInformation( 'Members'
 	                         , title='Members'
 				 , category='global_tabs'
-				 , permissions=('List portal members', )
+				 , permissions='List portal members'
 				 , action=Expression('string: $portal_url/Members/roster'))
 	news=ActionInformation( 'recent_news'
 	                      , title='News'
 			      , category='global_tabs'
-			      , permissions=('View', )
+			      , permissions='View'
 			      , action=Expression('string: $portal_url/recent_news'))
 	search=ActionInformation( 'search_form'
 	                        , title='Search'
 				, category='global_tabs'
-				, permissions=('View', )
+				, permissions='View'
 				, action=Expression('string: $portal_url/search_form'))
 	return (welcome, members, news, search)
 			      
@@ -103,7 +103,7 @@ def normalize_tabs(self):
     st_actions.append( ActionInformation( 'content_status_history'
                                         , title='Publishing'
                                         , category='local_tabs'
-                                        , permissions=('View',)
+                                        , permissions='View'
                                         , condition=Expression("python: member and hasattr(object, 'workflow_history')")
                                         , action=Expression("string: ${object_url}/content_status_history")))
     st._actions=st_actions
@@ -123,7 +123,7 @@ def normalize_tabs(self):
     mt_actions.insert(1, ActionInformation( 'myworkspace'
                                           , title='My Workspace'
 					  , category='user'
-					  , permissions=('View',)
+					  , permissions='View'
 					  , condition=Expression('python: member and portal.portal_membership.getHomeFolder()')
 					  , action=Expression('python: portal.portal_membership.getHomeUrl()+"/workspace"')))
     mt._actions=mt_actions

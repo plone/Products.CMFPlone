@@ -1,6 +1,5 @@
 <div metal:define-macro="discussionView"
-    tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));
-                isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
+    tal:define="isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
                 hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
                 view_action python:hereTypeInfo.getActionById('view');
                 isViewTemplate python:test(template.getId()==view_action, 1, 0);"

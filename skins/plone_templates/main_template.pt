@@ -3,6 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US" metal:define-macro="master">
 
+<metal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here)" />
+
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="head_slot">
     <META HTTP-EQUIV="pragma" CONTENT="no-cache">
@@ -17,7 +19,7 @@
   </metal:block>
 </head>
 
-<body tal:define="global filtered_actions python:here.portal_actions.listFilteredActionsFor(here)">
+<body>
 
 <div metal:use-macro="here/header/macros/portal_header">
 Header stuff
@@ -39,13 +41,12 @@ Header stuff
             </td>
             
             <td class="main" 
-                tal:define="show_border python:here.showEditableBorder(template_id=template.getId());">
+                tal:define="show_border python:here.showEditableBorder(template_id=template.getId(), actions=actions);">
 
                 <metal:block metal:define-slot="super" tal:condition="show_border">
                     
                 <div class="contentTabs" metal:define-macro="contentTabs"
-                     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));
-                                 obj_type python:here.getTypeInfo().id;">
+                     tal:define="obj_type python:here.getTypeInfo().id;">
     
                     <span tal:define="global obj_actions actions/object;
                                       global wf_actions actions/workflow;

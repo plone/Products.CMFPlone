@@ -7,7 +7,7 @@
 		   listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
 		   notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
 		   editorView python:test(listContentsPermission and notFolderContents, 1, 0);"
-       tal:condition="python:test(siblings or editorView or parent_url, 1, 0)"
+       tal:condition="python:test(siblings or editorView or parent_url , 1, 0)"
        class="box"
        summary="Navigation"
        cellpadding="0"
@@ -30,15 +30,13 @@
                 <strong>Other items</strong> <br />
                 <div tal:repeat="sibling siblings">
                     <a href="#" class="plain"
-                     tal:define="actions python:here.portal_actions.listFilteredActionsFor(sibling);
-                     action python:here.getActionUrlById('view', actions['object']);
-                     url python:test(action, action,sibling.absolute_url()+'/folder_contents');"
+                     tal:define="url string:${here/absolute_url}/folder_contents;
+		                 sibling_title python:'&nbsp;;'.join(sibling.title_or_id()[:18].split(' '));"
                      tal:attributes="href url">
-    		            <img src="" height="16" width="16" alt="dummy" 
-			         tal:attributes="src string:$portal_url/${sibling/getIcon};alt sibling/Type" />&nbsp;<span tal:replace="structure python:'&nbsp;'.join(here.truncID(sibling.title_or_id(), 18).split(' '))">
-    			                                                            truncated content title whose white spaces are non-breaking
-    			                                                          </span>
-		            </a>
+                        <img src="" height="16" width="16" alt="dummy" 
+                             tal:attributes="src string:$portal_url/${sibling/getIcon};
+		                             alt sibling/Type;" />&nbsp;<tal:block tal:content="structure sibling_title" />
+                    </a>
                 </div>
             </div>
             </td>
@@ -63,7 +61,7 @@
                <a class="marker"
                   href="../folder_contents"
                   tal:condition="not: here/isPrincipiaFolderish" 
-                  tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
+                  tal:attributes="href string:${here/absolute_url}/folder_contents"
                   >Editor view</a>
             </td>
         </tr>

@@ -6,27 +6,27 @@
 ##bind subpath=traverse_subpath
 ##parameters=obj=None
 ##title=encapsulates the current and up one level box contents
-##
-listing=()
+##a
+checkPermission=context.portal_membership.checkPermission
+debug=context.plone_debug
 
+listing=[]
+folder=None
 if obj is None: 
     obj=context 
 
-obj=obj.aq_parent
+path_ids=context.portal_url.getRelativeContentPath(obj)
+if len(path_ids)>1:
+    folder=obj.getParentNode()
+else:
+    folder=context.portal_url.getPortalObject()
 
-if obj.getId()=='Members':
-    return listing
-    
-try:
-    for o in obj.listFolderContents(spec='Folder'):
-       if o.Type()=='Folder' and o.Title()!='Favorites':
-           if context.portal_membership.checkPermission('List folder contents', o):
-               listing += (o,)
-       else:
-           if o.getId() != context.getId():
-               listing += (o,)
-    
-except: #CMF is not catching its own exceptions, as advertised
-    pass
+for o in folder.listFolderContents():
+   if o.Type()=='Folder' and o.Title()!='Favorites':
+       if checkPermission('List folder contents', o):
+           listing.append(o)
+   else:
+       if o.getId() != context.getId():
+           listing.append(o)
 
 return listing

@@ -9,8 +9,7 @@
           
 <!-- The tabs displayed on editable content -->
 
-<div class="contentTabs" metal:define-macro="contentTabs"
-     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));">
+<div class="contentTabs" metal:define-macro="contentTabs">
     
     <span tal:define="global obj_actions actions/object; 
                       global wf_actions actions/workflow;
@@ -35,8 +34,7 @@
 
 <div class="contentTabs" 
      metal:define-macro="folderTabs"
-     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));
-                 folderActions actions/folder;" >
+     tal:define="folderActions actions/folder" >
 
      <span tal:repeat="action folderActions">
          <a tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"

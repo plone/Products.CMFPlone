@@ -1,6 +1,6 @@
 ##bind container=container
 ##bind context=context
-##bind namespace=
+##bind namespace=_
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##bind container=container
@@ -8,14 +8,14 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=template_id=None
+##parameters=template_id=None, actions=None
 ##title=returns whether or not current template displays *editable* border
 ##
 """ assumes the object has a edit property """
-
+if actions is None:
+    raise 'You must pass in the filtered actions'
+    
 REQUEST=context.REQUEST
-actions=REQUEST.get('filtered_actions', container.portal_actions.listFilteredActionsFor(context))
-
 for action in actions.get('object', []):
     if action.get('id', '')!='view':
         return 1
