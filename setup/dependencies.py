@@ -32,7 +32,9 @@ if cmfcore:
     try:
         file = join(package_home(cmfcore_globals), 'version.txt')
         CMF_VERSION = open(file, 'r').read().strip()
-        version = CMF_VERSION
+        version = CMF_VERSION.strip()
+        if version.lower().startswith('cmf-'):
+            version = version[4:]
         filtered = ''
         for v in version:
             if v in ['0','1','2','3','4','5','6','7','8','9','.']:
