@@ -92,7 +92,7 @@ class MembershipTool(BaseTool):
             membertool._setPortrait(portrait, member_id)
 
 
-    def createMemberarea(self, member_id):
+    def createMemberarea(self, member_id=''):
         """
         since we arent using PortalFolders and invokeFactory will not work
         we must do all of this ourself. ;(
@@ -104,6 +104,13 @@ class MembershipTool(BaseTool):
 
         parent = self.aq_inner.aq_parent
         members =  self.getMembersFolder()
+
+        if not member_id:
+             # member_id is optional (see CMFCore.interfaces.portal_membership:
+             #     Create a member area for 'member_id' or authenticated user.
+             portal_membership = getToolByName(self, 'portal_membership')
+             member = portal_membership.getAuthenticatedMember()
+             member_id = member.id
 
         if members is None:
             parent.manage_addPloneFolder(id=self.membersfolder_id, title='Members')
