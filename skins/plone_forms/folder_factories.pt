@@ -40,9 +40,8 @@
                            tal:condition="python:test(Id not in filterOut, 1, 0)">
     	
               <div class="label">
-                  <span for="#" 
-                        tal:attributes="for string:cb_${repeat/ctype/number}" 
-                        tal:replace="Title">
+                  <span i18n:translate=""
+                        tal:content="Title">
                         Title
                   </span>
                   <a href="#" tal:attributes="href python:'createObject?type_name='+pss.url_quote(Id)">
