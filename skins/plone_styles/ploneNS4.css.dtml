@@ -19,21 +19,15 @@
 */
 
 /* Basic Elements */
-body, td, th, div, span { font: &dtml-mainFont;; }
+body, td, th, div, span { font-family: Verdana, Helvetica, sans-serif; }
 body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; }
 a { text-decoration: none; color: &dtml-mainLinkColor;; }
 table { font: &dtml-mainFont;; }
-p { font: &dtml-contentFont;; }
+p { font: 12px Verdana, Helvetica, sans-serif; }
 p a { text-decoration: underline; }
 p img { border: &dtml-contentImageBorder;; }
 hr { margin:0; padding: 0; }
 h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;; font: &dtml-headingFont;; }
-h1 { font-size: 24px; }
-h2 { font-size: 20px; }
-h3 { font-size: 16px; }
-h4 { font-size: 14px; }
-h5 { font-size: 13px; }
-h6 { font-size: 12px; }
 ul { list-style-image: url("bullet.gif"); }
 form { border: none; }
 textarea { font: &dtml-inputFont;; width: 100%; }
@@ -90,11 +84,6 @@ table.listing tr.odd { background: &dtml-listingOddBackground;; }
 table.listing tr.even { background: &dtml-listingEvenBackground;; }
 table.listing td { padding: 0em 1em;}
 table.listing a:hover { text-decoration: &dtml-listingLinkHover;; }
-table.box { }
-table.box th { background: &dtml-boxHeaderBackground;; color: &dtml-boxHeaderFontColor;; font-weight: normal; padding: 0em 1em; text-align: left;}
-table.box th.empty { background: &dtml-mainBackground;; }
-table.box tr.odd { background: &dtml-boxOddBackground;; }
-table.box tr.even { background-color: &dtml-boxEvenBackground;; }
 div.boxDetails { text-align: right; }
 
 div.box {

@@ -22,9 +22,8 @@
           tal:attributes="name python:keyval[0];
                            content python:keyval[1];" />
 
-    <!-- Basic crude style for Netscape4.x - Removed until we have the time to update it. 
+    <!-- Basic crude style for Netscape4.x - This can be removed if you don't want the special NS4 look - it will still work, just be plain text instead. -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
-    -->
 
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css?${current_skin});"></style>
@@ -90,11 +89,6 @@
          </span>
      </tal:block>
 
-<!--
-     <div id="statusMessage" style="position: absolute; top: -1.8em; left: 1em; font-size: 100%;" class="message">
-     Testing
-     </div>
--->      
         <div class="top">
 
             <div class="searchBox">
@@ -122,6 +116,7 @@
                            uri logo/absolute_url" >
                 <img src="logo.jpg"
                      class="logo"
+                     border="0"
                      alt=""
                      tal:attributes="width logo/width;
                                      height logo/height;

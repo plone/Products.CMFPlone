@@ -674,6 +674,7 @@ div.stx table td {
 
 
 div.box {
+    border: none;
     margin: 0em 0em 2em 0em;
     padding: 0;
 }
