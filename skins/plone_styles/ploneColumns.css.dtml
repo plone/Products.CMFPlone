@@ -58,6 +58,10 @@ body {
 
 /* hide columns */
 
+.visualColumnHideOneTwo #portal-column-content #content {
+    margin: 0;
+}
+
 .visualColumnHideOne #portal-column-content #content {
     margin: 0 17em 0 0;
 }
