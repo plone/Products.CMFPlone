@@ -5,9 +5,7 @@
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
 </dtml-let>
-
 <dtml-with stylesheet_properties>
-
 
 body {
     background: White url(logo.jpg) no-repeat fixed 95% 95%;
@@ -35,13 +33,13 @@ h2 {
     font-size: 30px;	
 }
 
-p {
-	font-size: 30px;
+p, dl {
+    font-size: 30px;
     text-align: left;
 }
 
 .description {
-	font-size: 30px;
+    font-size: 30px;
     font-weight: normal;
 }
 
@@ -65,13 +63,17 @@ input
 #contentTabs,
 #contentBar
 {
-display: none;
+    display: none;
 }
-
 
 ul { 
     list-style-type: square;
     font-size: 30px;
+}
+
+pre { 
+    font-size: 20px;
+    padding: 1em;
 }
 
 div.editableDocument,
@@ -104,3 +106,4 @@ div.document a:visited:after {
    }
 
 </dtml-with>
+
