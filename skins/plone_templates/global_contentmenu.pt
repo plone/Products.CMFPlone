@@ -5,11 +5,8 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="contentTypes allowed_types;
-        filterOut here/getNotAddableTypes;
-        size python:len(contentTypes);
-        folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());
-        isContextDefaultPage here/isDefaultPageInFolder;">
+<ul tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());">
+
 
     <tal:states define="review_state wf_state;
                         transitions workflow_actions;"
@@ -68,8 +65,16 @@
     
     </tal:states>
 
-    <tal:dropdown tal:condition="python: size>1">
+    <tal:add define="allowedTypes here/getAllowedTypes;
+                     menuTypes    python:here.getAddableTypesInMenu(allowedTypes);
+                     numAllowed   python:len(allowedTypes);
+                     numMenu      python:len(menuTypes);    
+                     showAdd      python:numAllowed > 1;
+                     showMore     python:numAllowed > numMenu;
+                     showMenu     python:showMore or numMenu > 1;"
+             condition="showAdd">
 
+    <tal:dropdown tal:condition="showMenu">
     <li>
         <div class="menuPosition">
             <a href="#"
@@ -77,36 +82,51 @@
                onclick="return buttonClick(event, 'objectMenu');"
                onmouseover="buttonMouseover(event, 'objectMenu');"
                i18n:attributes="title">
-               <span i18n:translate="label_add_new_item">Add New Item</span></a>
+               <span tal:condition="here/isPrincipiaFolderish" 
+                        i18n:translate="label_add_new_item">Add item</span>
+               <span tal:condition="not:here/isPrincipiaFolderish" 
+                        i18n:translate="label_add_new_item_in_folder">Add in folder</span>
+            </a>
     
             <ul class="actionMenu" id="objectMenu"
                 onmouseover="menuMouseover(event)">
-                <metal:block tal:repeat="ctype contentTypes"> 
-                <li tal:define="Title ctype/Title;Id ctype/getId">
-                    <a href="#" 
-                       onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                       i18n:attributes="title"
-                       tal:attributes="href python:folder.absolute_url()+'/createObject?type_name='+Id;
-                                       title Title">
-                      <img src="folder.gif" 
-                           alt="" 
-                           width="16" 
-                           height="16" 
-                           tal:attributes="src string:$portal_url/${ctype/getIcon}" />
-                      <tal:title i18n:translate=""
-                                 tal:content="Title">Title</tal:title>
+                <tal:types repeat="ctype menuTypes"> 
+                    <li tal:define="Title ctype/Title; Id ctype/getId">
+                        <a href="#" 
+                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                           i18n:attributes="title"
+                           tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${Id};
+                                           title Title">
+                          <img src="folder.gif" 
+                               alt="" 
+                               width="16" 
+                               height="16" 
+                               tal:attributes="src string:$portal_url/${ctype/getIcon}" />
+                          <tal:title i18n:translate=""
+                                     tal:content="Title">Title</tal:title>
+                        </a>
+                    </li>
+                </tal:types>
+                <li tal:condition="showMore">
+                    <a href="#" class="folderAddMore"
+                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                           i18n:attributes="title"
+                           tal:attributes="href string:${folder/absolute_url()}/folder_factories;
+                                           title Title">
+                          <tal:title i18n:translate="folder_add_more">
+                            More...
+                          </tal:title>
                     </a>
                 </li>
-                </metal:block>
             </ul>
         </div>
     </li>
     </tal:dropdown>
 
-    <li tal:condition="python: size==1 and allowedSortedContentTypes[0].getId() not in filterOut"
+    <li tal:condition="not:showMenu"
         class="actionSingular">
         <a href="#" 
-           tal:define="portaltype python: contentTypes[0];"
+           tal:define="portaltype python: allowedTypes[0];"
            tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId}"
            >
             <img src="folder.gif" 
@@ -118,25 +138,32 @@
                   tal:replace="python:here.translate('Add ${type}', {'type':ttype})" />
         </a>
     </li>
+    
+    </tal:add>
 
-    <tal:templateMixin define="contextHasIndexHtml context/hasIndexHtml;
-                               folderHasIndexHtml folder/hasIndexHtml;
-                               parentVocab folder/getSelectableViews;
-                               contextVocab here/getSelectableViews;
-                               canSelectDefaultFolderPage folder/canSelectDefaultPage;
-                               canSelectDefaultContextPage here/canSelectDefaultPage;
-                               showMenu python:(context is folder and not contextHasIndexHtml) or 
-                                               (isContextDefaultPage and not folderHasIndexHtml);
+    <tal:templateMixin define="contextHasIndexHtml          context/hasIndexHtml;
+                               folderHasIndexHtml           folder/hasIndexHtml;
+                               parentVocab                  folder/getSelectableViews;
+                               contextVocab                 here/getSelectableViews;
+                               canSelectDefaultFolderPage   folder/canSelectDefaultPage;
+                               canSelectDefaultContextPage  here/canSelectDefaultPage;
+                               isContextDefaultPage         here/isDefaultPageInFolder;
+                               parentHasActions             python:parentVocab or canSelectDefaultFolderPage;
+                               contextHasActions            python:contextVocab or canSelectDefaultContextPage;
+                               dimMenu python:not ((context.isPrincipiaFolderish and not contextHasIndexHtml) or 
+                                                   (isContextDefaultPage and not folderHasIndexHtml));
+
                                "
-                        condition="python:parentVocab or contextVocab or canSelectDefaultFolderPage or canSelectDefaultContextPage">        
+                        condition="python:(isContextDefaultPage and parentHasActions) or
+                                           contextHasActions">
         <li>
         
-            <div class="menuPosition">
+            <div class="menuPosition"
+                    tal:attributes="class python:test(dimMenu, 'menuPosition disabled', 'menuPosition')">
                 
                 <span title="Delete or rename the index_html item to gain full control over how this folder is displayed."
                    i18n:attributes="title"
-                   class="disabled"
-                   tal:condition="not:showMenu">
+                   tal:condition="dimMenu">
                     <span i18n:translate="label_disabled_display_menu">Display</span>
                 </span>
                 
@@ -146,11 +173,11 @@
                    onclick="return buttonClick(event, 'templateMenu');"
                    onmouseover="buttonMouseover(event, 'templateMenu');"
                    i18n:attributes="title"
-                   tal:condition="showMenu">
+                   tal:condition="not:dimMenu">
                     <span i18n:translate="label_choose_template">Display</span>
                 </a>
 
-                <ul class="actionMenu" id="templateMenu"
+                <ul class="actionMenu" id="templateMenu" condition="not:dimMenu"
                     onmouseover="menuMouseover(event)">
                     
                     <!-- Parent Views menu -->
@@ -255,9 +282,6 @@
         </div>
     </li>
     </tal:templateMixin>
-
-
-
 
 </ul>
 
