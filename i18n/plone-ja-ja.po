@@ -1,21 +1,20 @@
 # Gettext Message File for Plone.
-# Maisa <maisa@x3ng.com.br>, 2002.
+# Robert, Yusei and Mai <please add at least one email address for contact>
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: Plone 1.0\n"
+msgstr "Project-Id-Version: Plone 1.0\n"
 "POT-Creation-Date: 2002-09-13 06:11+0300\n"
-"PO-Revision-Date: 2002-09-04 18:56-0300\n"
-"Last-Translator: Maisa <maisa@x3ng.com.br>\n"
-"Language-Team: X3ng Web Technology\n"
+"PO-Revision-Date: 2002-09-05 01:19+0900\n"
+"Last-Translator: Robert, Yusei and Mai\n"
+"Language-Team: Japanese\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"Language-code: pt_BR\n"
-"Language-name: Brazilian Portuguese\n"
-"Preferred-encodings: utf-8 latin1\n"
+"Language-code: ja\n"
+"Language-name: Japanese\n"
+"Preferred-encodings: utf-8\n"
 "Domain: plone\n"
+"X-Generator: KBabel 0.9.6\n"
 
 #: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
 #.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Add" class="context" type="submit" />
@@ -34,13 +33,13 @@ msgstr "Add"
 #.   <input value="Add Comment" class="standalone" type="submit" />
 #.   
 msgid "Add Comment"
-msgstr "Adicionar Coment�rio"
+msgstr "コメントを追加する"
 
 #: from plone_templates/folder_contents.pt
 #.   <input attributes="tabindex tabindex/next|nothing;" tabindex="" value="Add New Item" class="standalone" name="folder_factories:method" type="submit" />
 #.   
 msgid "Add New Item"
-msgstr "Adicionar Novo Item"
+msgstr "新しいアイテムを追加する"
 
 #: from plone_forms/content_status_history.pt
 #.   <input attributes="tabindex tabindex/next;" value="Apply" class="context" name="workflow_action_submit" type="submit" />
@@ -50,14 +49,14 @@ msgstr "Adicionar Novo Item"
 #.   
 #, fuzzy
 msgid "Apply"
-msgstr "Responder"
+msgstr "返信"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Assign Local Role to Selected User(s)" class="context" type="submit" />
 #.   
 #, fuzzy
 msgid "Assign Local Role to Selected User(s)"
-msgstr "Delegar pap�is locais para a pasta ${folder}"
+msgstr "${folder} にローカルロールを割り当てる"
 
 #: from plone_forms/folder_rename_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" onclick="javascript:document.folder_rename.action=document.folder_rename.here.value+'/folder_contents';document.folder_rename.submit();" class="context" type="submit" value="Cancel" />
@@ -76,7 +75,7 @@ msgstr "Cancel"
 #.   
 #, fuzzy
 msgid "Change Password"
-msgstr "Senha"
+msgstr "パスワード"
 
 #: from plone_forms/history_form.pt
 #.   <input value="Compare" class="context" name="manage_historicalComparison:method" type="submit" />
@@ -94,7 +93,7 @@ msgstr "Copy to present"
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Delete Selected Role(s)" class="context" type="submit" />
 #.   
 msgid "Delete Selected Role(s)"
-msgstr "Deletar Pap�is Selecionados"
+msgstr "選択されたロールを削除"
 
 #: from plone_forms/synPropertiesForm.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Disable Syndication" class="standalone" type="submit" />
@@ -113,7 +112,7 @@ msgstr "Download file"
 #.               Email Admin
 #.               </a>
 msgid "Email Administrator"
-msgstr "Enviar email ao administrador"
+msgstr "管理者にメールを送る"
 
 #: from plone_forms/synPropertiesForm.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Enable syndication" class="standalone" type="submit" />
@@ -125,7 +124,7 @@ msgstr "Enable syndication"
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Perform Search" class="context" type="submit" />
 #.   
 msgid "Perform Search"
-msgstr "Efetuar Busca"
+msgstr "検索する"
 
 #: from plone_templates/footer.pt
 #.   <img attributes="src string:$portal_url/plone_powered.gif" height="30" width="96" alt="Powered by Plone" src="" title="This site was built using the Plone Content Management System. Click for more information." />
@@ -139,14 +138,13 @@ msgstr "Powered by Plone"
 #.   
 #, fuzzy
 msgid "Preview Comment"
-msgstr "Adicionar Coment�rio"
+msgstr "コメントを追加する"
 
 #: from plone_forms/join_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Register" class="context" type="submit" name="submit">
 #.               </input>
-#, fuzzy
 msgid "Register"
-msgstr "Requisitante"
+msgstr "Register"
 
 #: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
 #.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Remove" class="context" name="topic_deleteCriteria:action" type="submit" />
@@ -158,7 +156,7 @@ msgstr "Remove"
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Rename" class="context" type="submit" />
 #.   
 msgid "Rename"
-msgstr "Renomear"
+msgstr "名前を変更"
 
 #: from plone_forms/viewThreadsAtBottom.pt
 #.   <input value="Reply to this" class="standalone" type="submit" />
@@ -174,7 +172,7 @@ msgstr "Reply to this"
 #.   <input value="Reset" class="standalone" name="reset" type="reset">
 #.           </input>
 msgid "Reset"
-msgstr "Limpar"
+msgstr "Reset"
 
 #: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
 #.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" name="topic_editCriteria:action" type="submit" />
@@ -200,7 +198,7 @@ msgstr "Limpar"
 #.   
 #: 4 more references
 msgid "Save"
-msgstr "Salvar"
+msgstr "保存"
 
 #: from plone_forms/reconfig_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save Settings" class="context" type="submit" name="submit" />
@@ -215,14 +213,14 @@ msgstr "Save Settings"
 #.   <input value="Search" class="context" type="submit" />
 #.   
 msgid "Search"
-msgstr "Busca"
+msgstr "検索"
 
 #: from plone_forms/mail_password_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Send me my password" class="context" type="submit" />
 #.   
 #, fuzzy
 msgid "Send me my password"
-msgstr "Confirmar <br /> Senha"
+msgstr "パスワード <br /> 確認"
 
 #: from plone_forms/registered.pt
 #.   <input value="Sign in" class="standalone" type="submit" />
@@ -231,7 +229,7 @@ msgstr "Confirmar <br /> Senha"
 #.   <input value="Sign in" class="context" name="submit" type="submit" />
 #.   
 msgid "Sign in"
-msgstr "Entrar"
+msgstr "ログイン"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <input value="Submit" class="context" type="submit" />
@@ -243,7 +241,7 @@ msgstr "Entrar"
 #.           </input></input>
 #: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
 msgid "Submit"
-msgstr "Submeter"
+msgstr "Submit"
 
 #: from plone_templates/footer.pt
 #.   <img attributes="src string:$portal_url/plone_powered.gif" height="30" width="96" alt="Powered by Plone" src="" title="This site was built using the Plone Content Management System. Click for more information." />
@@ -255,7 +253,7 @@ msgstr "This site was built using the Plone Content Management System. Click for
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Undo" class="context" name="undo:method" type="submit" />
 #.   
 msgid "Undo"
-msgstr "Desfazer"
+msgstr "元に戻す"
 
 #: from plone_forms/logged_in.pt
 #.   <a attributes="href request/HTTP_REFERER" href="">back to where you came from</a>
@@ -274,9 +272,8 @@ msgstr "Displaying"
 #: from plone_forms/search.pt
 #: from plone_forms/search.pt
 #: from plone_forms/search.pt
-#, fuzzy
 msgid "batch_items"
-msgstr "achados (${num_total} total)"
+msgstr "items"
 
 #: from plone_3rdParty/CMFCollector/collector_macros.pt
 #.   <a tal:attributes="href python:
@@ -304,45 +301,44 @@ msgstr "Previous"
 #.   <span omit-tag="">
 #.                 of
 #.                 </span>
-#, fuzzy
 msgid "batch_to"
-msgstr "achados (${num_total} total)"
+msgstr "of"
 
 #: from plone_3rdParty/CMFCollector/collector_macros.pt
 #.   <span omit-tag="">total</span>
 msgid "batch_total"
-msgstr "achados (${num_total} total)"
+msgstr "total"
 
 #: from plone_forms/search.pt
 #.   <span>items matching your criteria</span>
 #, fuzzy
 msgid "batch_x_items_matching_your_criteria"
-msgstr "items que casam com seu crit�rio"
+msgstr "マッチするアイテムはありません。"
 
 #: from plone_templates/ui_slots/about_slot.pt
 #.   <th>About</th>
 #, fuzzy
 msgid "box_about"
-msgstr "Sobre"
+msgstr "About"
 
 #: from plone_templates/ui_slots/about_slot.pt
 #.   <strong>Created&nbsp;by:</strong>
 #, fuzzy
 msgid "box_created_by"
-msgstr "Criado&nbsp;por:"
+msgstr "作成者："
 
 #: from plone_templates/ui_slots/navigation_slot.pt
 #.   <span>Editor view</span>
 #: from plone_templates/ui_slots/navigation_slot.pt
 #, fuzzy
 msgid "box_editor_view"
-msgstr "Modo de Edi��o"
+msgstr "エディタのビュー"
 
 #: from plone_templates/ui_slots/related_slot.pt
 #.   <strong>External links</strong>
 #, fuzzy
 msgid "box_external_links"
-msgstr "Links externos"
+msgstr "外部リンク"
 
 #: from plone_templates/ui_slots/favorites_slot.pt
 #.   <strong>Favorites</strong>
@@ -353,25 +349,25 @@ msgstr "Favorites"
 #.   <span omit-tag="">Forgot your password?</span>
 #, fuzzy
 msgid "box_forgot_password_option"
-msgstr "Esqueceu sua senha?"
+msgstr "パスワードを忘れましたか?"
 
 #: from plone_templates/ui_slots/about_slot.pt
 #.   <strong>Last&nbsp;modified:</strong>
 #, fuzzy
 msgid "box_last_modified"
-msgstr "Modificado:"
+msgstr "最終変更日"
 
 #: from plone_templates/ui_slots/related_slot.pt
 #.   <strong condition="localContent">Local resources</strong>
 #, fuzzy
 msgid "box_local_resources"
-msgstr "Local"
+msgstr "ローカルリソース"
 
 #: from plone_templates/ui_slots/favorites_slot.pt
 #.   <th>My&nbsp;Favorites</th>
 #, fuzzy
 msgid "box_my_favorites"
-msgstr "Adicionar aos favoritos"
+msgstr "お気に入りに追加する"
 
 #: from plone_templates/ui_slots/navigation_slot.pt
 #.   <th>Navigation</th>
@@ -379,7 +375,7 @@ msgstr "Adicionar aos favoritos"
 #.   <th>navigation</th>
 #, fuzzy
 msgid "box_navigation"
-msgstr "Navega��o"
+msgstr "ナビゲーション"
 
 #: from plone_templates/ui_slots/login_slot.pt
 #.   <span omit-tag="">New user?</span>
@@ -390,13 +386,13 @@ msgstr "New user?"
 #.   <th>News</th>
 #, fuzzy
 msgid "box_news"
-msgstr "Not�cias"
+msgstr "ニュース"
 
 #: from plone_templates/ui_slots/navigation_slot.pt
 #.   <span>Ordinary view</span>
 #, fuzzy
 msgid "box_ordinary_view"
-msgstr "Modo Normal"
+msgstr "通常のビュー"
 
 #: from plone_templates/ui_slots/favorites_slot.pt
 #.   <a attributes="href string:${folder/absolute_url}/folder_contents" href="" class="marker">Organize Favorites</a>
@@ -407,13 +403,13 @@ msgstr "Organize Favorites"
 #.   <strong>Other items</strong>
 #, fuzzy
 msgid "box_other_items"
-msgstr "Outros items"
+msgstr "その他のアイテム"
 
 #: from plone_templates/ui_slots/related_slot.pt
 #.   <th>Related</th>
 #, fuzzy
 msgid "box_related"
-msgstr "Relacionado"
+msgstr "関連したコンテンツ"
 
 #: from plone_templates/ui_slots/workflow_review_slot.pt
 #.   <th>Review List</th>
@@ -424,7 +420,7 @@ msgstr "Review List"
 #.   <th>Sign in</th>
 #, fuzzy
 msgid "box_sign_in"
-msgstr "Entrar"
+msgstr "ログイン"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_contents.pt
 #.   <div class="heading"> 
@@ -440,7 +436,7 @@ msgstr "Transcript for Issue ${id} (${num} ${listing_entry}${listing_entries})"
 #.   <span>Up one level</span>
 #, fuzzy
 msgid "box_up_one_level"
-msgstr "Um n�vel acima"
+msgstr "一つ上に移動"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <option value="">Choose Language</option>
@@ -451,9 +447,8 @@ msgstr "Choose Language"
 #.   <span>
 #.             Click ${here (tal attributes="href python: request.URL + '?do_cite=1'")} to cite the existing transcript.
 #.             </span>
-#, fuzzy
 msgid "click_to_cite"
-msgstr "Clique ${here} para citar o relat�rio existente."
+msgstr "Click ${here} to cite the existing transcript."
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <span tal:condition="item/assigned_to|nothing">,
@@ -461,9 +456,8 @@ msgstr "Clique ${here} para citar o relat�rio existente."
 #.                  
 #.                 ${names (tal content="python: ', '.join(item.assigned_to)")}
 #.               </span>
-#, fuzzy
 msgid "collector_issue_assigned_to"
-msgstr "(${num} retornos)"
+msgstr ", Assigned to ${names}"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <tal:block condition="python:numcmts>1">
@@ -471,14 +465,14 @@ msgstr "(${num} retornos)"
 #.                 comments)
 #.             </tal:block>
 msgid "collector_issue_num_comments"
-msgstr "(${num} retornos)"
+msgstr "(${num} comments)"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <tal:block condition="python:numcmts==1">
 #.                 (1 comment)
 #.             </tal:block>
 msgid "collector_issue_one_comment"
-msgstr "(1 retorno)"
+msgstr "(1 comment)"
 
 #: from plone_3rdParty/CMFCollector/collector_macros.pt
 #.   <a tal:attributes="href python:here.aq_parent.absolute_url()" href="">
@@ -486,18 +480,19 @@ msgstr "(1 retorno)"
 #.               [${collector_abbrev (tal replace="here/abbrev|nothing")}]
 #.               </a>
 msgid "collector_link"
+msgstr "${collector_title} [${collector_abbrev}]"
 
 #: from plone_content/event_view.pt
 #.   <div class="label">Contact Email</div>
 #, fuzzy
 msgid "contact_email"
-msgstr "Novo endere�o <br /> de email"
+msgstr "新しいメール <br /> アドレス"
 
 #: from plone_content/event_view.pt
 #.   <div class="label">Name</div>
 #, fuzzy
 msgid "contact_name"
-msgstr "Nome"
+msgstr "名前"
 
 #: from plone_content/event_view.pt
 #.   <div class="label">Contact Phone</div>
@@ -511,7 +506,7 @@ msgstr "Contact Phone"
 #.       </p>
 #, fuzzy
 msgid "description_add_comment"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="description">
@@ -520,7 +515,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.   </div>
 #, fuzzy
 msgid "description_add_new_issue"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/folder_factories.pt
 #.   <p>
@@ -528,7 +523,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.   	</p>
 #, fuzzy
 msgid "description_add_new_item"
-msgstr "Selecione o tipo de item que voc� quer adicionar � sua pasta."
+msgstr "フォルダに追加したいアイテムのタイプを選択してください。"
 
 #: from plone_forms/search_form.pt
 #.   <p>
@@ -541,7 +536,7 @@ msgstr "Selecione o tipo de item que voc� quer adicionar � sua pasta."
 #.       </p>
 #, fuzzy
 msgid "description_advanced_search"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <p>
@@ -564,7 +559,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.         			</p>
 #, fuzzy
 msgid "description_assign_localrole"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/logged_in.pt
 #.   <span>
@@ -581,7 +576,7 @@ msgstr "Before you start exploring you need to change your original password. Th
 #.       </p>
 #, fuzzy
 msgid "description_change_ownership"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/personalize_form.pt
 #.   <a href="password_form">Click here to change your password</a>
@@ -594,13 +589,13 @@ msgstr "Click here to change your password"
 #.       </p>
 #, fuzzy
 msgid "description_comment_preview"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/folder_listing.pt
 #.   <a attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document" href="#">click here.</a>
 #, fuzzy
 msgid "description_create_folder_click_here"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <p>
@@ -608,7 +603,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.           </p>
 #, fuzzy
 msgid "description_current_localroles"
-msgstr "Esses usu�rios possuem pap�is delegados nesse folder atualmente:"
+msgstr "これらのユーザは現在このフォルダのローカルロールに割り当てられています:"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <div class="description">
@@ -625,7 +620,7 @@ msgstr "Use this form to edit the data of an existing issue. Do not use this for
 #.       </p>
 #, fuzzy
 msgid "description_edit_document"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_3rdParty/CMFCalendar/event_edit_form.pt
 #.   <p>
@@ -633,7 +628,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.       </p>
 #, fuzzy
 msgid "description_edit_event"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_content/file_edit_form.pt
 #.   <p>
@@ -642,7 +637,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.       </p>
 #, fuzzy
 msgid "description_edit_file"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_content/image_edit_form.pt
 #.   <p>
@@ -651,7 +646,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.       </p>
 #, fuzzy
 msgid "description_edit_image"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_content/link_edit_form.pt
 #.   <p>
@@ -690,7 +685,7 @@ msgstr "This information, also referred to as <em>metadata</em> is the collectio
 #.       </p>
 #, fuzzy
 msgid "description_edit_topic"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <p>Select one or more Members, and a role to assign.</p>
@@ -706,7 +701,7 @@ msgstr "Select one or more Members, and a role to assign."
 #.                   </p>
 #, fuzzy
 msgid "description_logged_in_explain"
-msgstr "Voc� pode perceber que a a parte na direita da barra superior mudou. Ela agora cont�m v�rios items personalizados. Estes itens continuar�o disponiveis enquanto voc� estiver logado, e lhe permitir�o controlar suas configura��es e sua �rea pessoal do site."
+msgstr "右上のナビゲーションバーが変化したことにお気づきですか？ ここにあなた個人のナビゲーションが表示されています。ログインしている間に限り、このバーからご自分のコンテンツや環境設定をコントロールできるようになっています。"
 
 #: from plone_forms/mail_password_form.pt
 #.   <p> 
@@ -717,7 +712,7 @@ msgstr "Voc� pode perceber que a a parte na direita da barra superior mudou. Ela
 #.       </p>
 #, fuzzy
 msgid "description_lost_password"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/roster.pt
 #.   <p>
@@ -725,7 +720,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.           </p>
 #, fuzzy
 msgid "description_member_listing"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/logged_in.pt
 #.   <span>
@@ -733,7 +728,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.                   </span>
 #, fuzzy
 msgid "description_newbie_pointers_1"
-msgstr "Voc� deve querer ir para"
+msgstr "まず、ご自分のコンテンツをチェックするには"
 
 #: from plone_forms/logged_in.pt
 #.   <span>
@@ -741,13 +736,13 @@ msgstr "Voc� deve querer ir para"
 #.                   </span>
 #, fuzzy
 msgid "description_newbie_pointers_2"
-msgstr "e adicionar algum conteudo ou"
+msgstr "をクリックして、そこで自由にコンテンツを追加してみましょう。又は、"
 
 #: from plone_forms/logged_in.pt
 #.   <a define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']" condition="prefs" attributes="href python:prefs.pop()" href="metadata_form">set up your Preferences</a>
 #, fuzzy
 msgid "description_newbie_pointers_3"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/login_form.pt
 #.   <span omit-tag="">
@@ -755,7 +750,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.   </span>
 #, fuzzy
 msgid "description_no_account_1"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/login_form.pt
 #.   <a href="portal_form/join_form" omit-tag="">
@@ -763,7 +758,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.   </a>
 #, fuzzy
 msgid "description_no_account_2"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/login_form.pt
 #.   <span omit-tag="">
@@ -771,7 +766,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.   </span>
 #, fuzzy
 msgid "description_no_account_3"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/history_comparison.pt
 #.   <p>
@@ -789,7 +784,7 @@ msgstr "This object does not provide comparison support."
 #.               </span>
 #, fuzzy
 msgid "description_no_default_folder"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/folder_listing.pt
 #.   <p condition="not: here/contentValues">
@@ -817,7 +812,7 @@ msgstr "This folder has no visible items. To add content, press the 'Add New Ite
 #.       </p>
 #, fuzzy
 msgid "description_plone_setup"
-msgstr "Aqui voc� configura algumas das configura��es que afetam o Plone."
+msgstr "ここでいくつかのPlone設定ができます。"
 
 #: from plone_forms/content_status_history.pt
 #.   <p>
@@ -835,7 +830,7 @@ msgstr "Aqui voc� configura algumas das configura��es que afetam o Plone."
 #.       </p>
 #, fuzzy
 msgid "description_publishing_process"
-msgstr "Processo de publica��o"
+msgstr "公開するプロセス"
 
 #: from plone_forms/join_form.pt
 #.   <p>
@@ -845,13 +840,13 @@ msgstr "Processo de publica��o"
 #.       </p>
 #, fuzzy
 msgid "description_registration_form"
-msgstr "Registrando-se voc� ter� uma conta com a possibilidade de criar seu pr�prio conteudo, podendo adicionar seus pr�prios documentos, imagens e arquivos ao site."
+msgstr "このサイトに登録すると、個人的なコンテンツをカスタマイズできるあなた自身のアカウントが作成され、そこにドキュメントやイメージ、ファイルなどを自由にアップロードできます。"
 
 #: from plone_forms/folder_rename_form.pt
 #.   <p>To rename an item, enter the new name below.</p>
 #, fuzzy
 msgid "description_rename_item"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/login_form.pt
 #.   <p>
@@ -859,7 +854,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.   </p>
 #, fuzzy
 msgid "description_sign_in"
-msgstr "Para acessar essa �rte do site voc� precisa se identificar, usando seu nome e senha."
+msgstr "サイトのこの部分にアクセスするには、あなたのユーザ名とパスワードでログインする必要があります。"
 
 #: from plone_forms/logged_in.pt
 #.   <span>
@@ -869,7 +864,7 @@ msgstr "Para acessar essa �rte do site voc� precisa se identificar, usando seu n
 #.               </span>
 #, fuzzy
 msgid "description_sign_in_failure"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/logged_in.pt
 #.   <span>
@@ -877,7 +872,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.                   </span>
 #, fuzzy
 msgid "description_signed_in"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/logged_out.pt
 #.   <p>
@@ -885,7 +880,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.        </p>
 #, fuzzy
 msgid "description_signed_out"
-msgstr "Esperamos que voc� tenha gostado de nossos servi�os. Esperamos v�-lo de novo."
+msgstr "私達のサービスを楽しんでいただけたことを願っています。またこちらのサイトまでお越しくださるよう、心よりお待ちしております。"
 
 #: from plone_templates/standard_error_message.pt
 #.   <p>
@@ -894,7 +889,7 @@ msgstr "Esperamos que voc� tenha gostado de nossos servi�os. Esperamos v�-lo de 
 #.           </p>
 #, fuzzy
 msgid "description_site_error"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_templates/standard_error_message.pt
 #.   <p>
@@ -917,7 +912,7 @@ msgstr "Please double check the web address or use the search function on this p
 #.               </p>
 #, fuzzy
 msgid "description_site_error_mail_admin"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_templates/standard_error_message.pt
 #.   <p>
@@ -925,7 +920,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.               </p>
 #, fuzzy
 msgid "description_site_error_thank_you"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/synPropertiesForm.pt
 #.   <div condition="python:not container.portal_syndication.isSiteSyndicationAllowed()">
@@ -949,7 +944,7 @@ msgstr "Syndication enables you to syndicate this folder so it can be synchroniz
 #.                   </span>
 #, fuzzy
 msgid "description_trouble_logging_in"
-msgstr "Tendo problemas na identifica��o?"
+msgstr "ログインができませんか?"
 
 #: from plone_forms/undo_form.pt
 #.   <p>
@@ -959,7 +954,7 @@ msgstr "Tendo problemas na identifica��o?"
 #.           </p>
 #, fuzzy
 msgid "description_undo_action"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/undo_form.pt
 #.   <p>
@@ -970,7 +965,7 @@ msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem se
 #.           </p>
 #, fuzzy
 msgid "description_undo_action_select"
-msgstr "Retornar items que casam com esta descri��o. M�ltiplas palavras podem ser combinadas utilizando-se <strong>AND</strong> e <strong>OR</strong> "
+msgstr "ここに入力された説明にマッチするアイテムを検索します。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/logged_in.pt
 #.   <p>
@@ -1031,7 +1026,7 @@ msgstr "Where"
 #.   <a href="mail_password_form">Click here</a>
 #, fuzzy
 msgid "forgotten_password_link_1"
-msgstr "Clique aqui"
+msgstr "ここをクリック"
 
 #: from plone_forms/login_form.pt
 #.   <span>
@@ -1048,13 +1043,13 @@ msgstr "to have it mailed to you."
 #.   <a attributes="href parent_url" href="">Up one level</a>
 #, fuzzy
 msgid "go_to_parent_url"
-msgstr "Um n�vel acima"
+msgstr "一つ上に移動"
 
 #: from plone_forms/discussion_reply_form.pt
 #.   <h1>Add Comment</h1>
 #, fuzzy
 msgid "heading_add_comment"
-msgstr "Adicionar Coment�rio"
+msgstr "コメントを追加する"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <h1>
@@ -1067,7 +1062,7 @@ msgstr "Add new issue to ${collector_title}"
 #.   <h1>Add new item</h1>
 #, fuzzy
 msgid "heading_add_new_item"
-msgstr "Adicionar Novo Item"
+msgstr "新しいアイテムを追加する"
 
 #: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
 #.   <h2>Add New Topic Criteria</h2>
@@ -1078,7 +1073,7 @@ msgstr "Add New Topic Criteria"
 #.   <h1>Advanced search for content</h1>
 #, fuzzy
 msgid "heading_advanced_search"
-msgstr "Busca avan�ada por conte�do"
+msgstr "コンテンツのアドバンスト検索"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <span>Assign local roles to folder
@@ -1086,7 +1081,7 @@ msgstr "Busca avan�ada por conte�do"
 #.   		</span>
 #, fuzzy
 msgid "heading_assign_localrole"
-msgstr "Delegar pap�is locais para a pasta ${folder}"
+msgstr "${folder} にローカルロールを割り当てる"
 
 #: from plone_forms/ownership_form.pt
 #.   <h1>Change ownership</h1>
@@ -1114,7 +1109,7 @@ msgstr "Criteria for"
 #.   	    </span>
 #, fuzzy
 msgid "heading_currently_assigned_localroles"
-msgstr "Pap�is atualmente delegados no folder ${folder}"
+msgstr "現在フォルダ ${folder} に割り当てられているロール"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <h1>
@@ -1142,7 +1137,7 @@ msgstr "Edit file"
 #.   <h1>Edit Folder Properties</h1>
 #, fuzzy
 msgid "heading_edit_folder_properties"
-msgstr "Editar Propiedades da Pasta"
+msgstr "フォルダのプロパティを編集"
 
 #: from plone_content/image_edit_form.pt
 #.   <h1>Edit Image</h1>
@@ -1163,7 +1158,7 @@ msgstr "Edit News Item"
 #.   <h1>Edit Properties</h1>
 #, fuzzy
 msgid "heading_edit_properties"
-msgstr "Editar Propriedades"
+msgstr "プロパティを編集する"
 
 #: from plone_3rdParty/CMFTopic/topic_edit_form.pt
 #.   <h1>Edit Topic</h1>
@@ -1184,13 +1179,13 @@ msgstr "Link to"
 #.   <h1>Lost Password</h1>
 #, fuzzy
 msgid "heading_lost_password"
-msgstr "Enviar senha por email?"
+msgstr "パスワードの送信"
 
 #: from plone_forms/roster.pt
 #.   <h1>Member Listing</h1>
 #, fuzzy
 msgid "heading_member_listing"
-msgstr "Listagem dos Membros"
+msgstr "メンバー一覧"
 
 #: from plone_templates/folder_contents.pt
 #.   <span condition="python:
@@ -1209,19 +1204,19 @@ msgstr "My Preferences"
 #.   <h1>Plone Setup</h1>
 #, fuzzy
 msgid "heading_plone_setup"
-msgstr "Configura��es do Plone"
+msgstr "Plone設定"
 
 #: from plone_forms/content_status_history.pt
 #.   <h1>Publishing process</h1>
 #, fuzzy
 msgid "heading_publishing_process"
-msgstr "Processo de publica��o"
+msgstr "公開するプロセス"
 
 #: from plone_forms/join_form.pt
 #.   <h1>Please register</h1>
 #, fuzzy
 msgid "heading_registration_form"
-msgstr "Por favor registre-se"
+msgstr "登録してください"
 
 #: from plone_forms/folder_rename_form.pt
 #.   <h1>Rename item</h1>
@@ -1234,13 +1229,13 @@ msgstr "Rename item"
 #: from plone_forms/search.pt
 #, fuzzy
 msgid "heading_search_results"
-msgstr "Resultados da Busca"
+msgstr "検索結果"
 
 #: from plone_forms/login_form.pt
 #.   <h1>Please sign in</h1>
 #, fuzzy
 msgid "heading_sign_in"
-msgstr "Entre no sistema, por favor"
+msgstr "ログインしてください"
 
 #: from plone_forms/logged_in.pt
 #.   <h1>Sign-in failure</h1>
@@ -1251,7 +1246,7 @@ msgstr "Sign-in failure"
 #.   <h1>You are now signed out</h1>
 #, fuzzy
 msgid "heading_signed_out"
-msgstr "Voc� saiu do sistema"
+msgstr "ログアウトしました"
 
 #: from plone_templates/standard_error_message.pt
 #.   <h1>Site error</h1>
@@ -1288,7 +1283,7 @@ msgstr "Welcome!"
 #.   <h1>You are now logged in</h1>
 #, fuzzy
 msgid "heading_you_are_now_logged_in"
-msgstr "Voc� est� identificado"
+msgstr "ログインしました。"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>
@@ -1324,7 +1319,7 @@ msgstr "The body text of the news item."
 #.                   </div>
 #, fuzzy
 msgid "help_change_status"
-msgstr "Mudar Situa��o"
+msgstr "ステータス変更"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>
@@ -1365,8 +1360,8 @@ msgstr "Occasionally, product updates require internal catalog reinit and reinde
 #.   <span>
 #.           Fill in the alternatives for issue categorization.
 #.           </span>
-#, fuzzy
 msgid "help_collector_selections"
+msgstr "Fill in the alternatives for issue categorization."
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>
@@ -1395,7 +1390,7 @@ msgstr "The text shown to users about what kind of version information they shou
 #: from plone_forms/password_form.pt
 #, fuzzy
 msgid "help_confirm_password"
-msgstr "Confirmar <br /> Senha"
+msgstr "パスワード <br /> 確認"
 
 #: from plone_3rdParty/CMFCalendar/event_edit_form.pt
 #.   <div class="help" id="contact_email_help" style="visibility:hidden">
@@ -1485,7 +1480,7 @@ msgstr "Specify the default site wide look to be used for users."
 #.                   </div>
 #, fuzzy
 msgid "help_description"
-msgstr "Entre com uma breve descri��o do conte�do da pasta."
+msgstr "このフォルダの説明を入力してください。"
 
 #: from plone_forms/personalize_form.pt
 #.   <div class="help" id="visible_ids_help" style="visibility:hidden">
@@ -1512,7 +1507,7 @@ msgstr "Here you can enter the domains you want to restrict the user to be able 
 #.                   </div>
 #, fuzzy
 msgid "help_edit_contents"
-msgstr "Conte�do da Pasta"
+msgstr "フォルダ内容"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <div class="help" id="effective_date_help" style="visibility:hidden">
@@ -1527,7 +1522,7 @@ msgstr "Conte�do da Pasta"
 #.                   </div>
 #, fuzzy
 msgid "help_effective_date"
-msgstr "Data de Publica��o"
+msgstr "有効年月日"
 
 #: from plone_forms/join_form.pt
 #.   <div class="help" id="email_help" style="visibility:hidden">
@@ -1588,7 +1583,7 @@ msgstr "Enter the optional web address of a page containing more info about the 
 #.                   </div>
 #, fuzzy
 msgid "help_expiration_date"
-msgstr "Data de Expira��o"
+msgstr "失効年月日"
 
 #: from plone_content/file_edit_form.pt
 #.   <div class="help" id="file_help" style="visibility:hidden">
@@ -1660,7 +1655,7 @@ msgstr "Toggles inheritance of criteria. For example, if you have specified that
 #.                   </div>
 #, fuzzy
 msgid "help_keywords"
-msgstr "Palavras-chave"
+msgstr "キーワード"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <div class="help" id="language_help" style="visibility:hidden">
@@ -1686,7 +1681,7 @@ msgstr "A short descriptive summary of the news. This will be what shows up on t
 #.                       </div>
 #, fuzzy
 msgid "help_listed_status"
-msgstr "situa��o"
+msgstr "表示ステータス"
 
 #: from plone_forms/reconfig_form.pt
 #.   <div class="help" id="long_date_format_help" style="visibility:hidden">
@@ -1695,7 +1690,7 @@ msgstr "situa��o"
 #.                   </div>
 #, fuzzy
 msgid "help_long_date_format"
-msgstr "Formato longo de data"
+msgstr "日付の長型フォーマット"
 
 #: from plone_forms/personalize_form.pt
 #.   <div class="help" id="skin_help" style="visibility:hidden">
@@ -1711,7 +1706,7 @@ msgstr "Here you choose the appearance of the site. Several styles are available
 #.                   </div>
 #, fuzzy
 msgid "help_mail_password"
-msgstr "Enviar senha por email?"
+msgstr "パスワードの送信"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <div class="help" id="id_help" style="visibility:hidden">
@@ -1750,7 +1745,7 @@ msgstr "Enviar senha por email?"
 #.                   </div>
 #, fuzzy
 msgid "help_name"
-msgstr "Renomear"
+msgstr "名前を変更"
 
 #: from plone_forms/personalize_form.pt
 #.   <div class="help" id="new_email_help" style="visibility:hidden">
@@ -1758,7 +1753,7 @@ msgstr "Renomear"
 #.                       </div>
 #, fuzzy
 msgid "help_new_email"
-msgstr "Novo endere�o <br /> de email"
+msgstr "新しいメール <br /> アドレス"
 
 #: from plone_forms/logged_in.pt
 #.   <div class="help" id="new_password_help" style="visibility:hidden">
@@ -1770,7 +1765,7 @@ msgstr "Novo endere�o <br /> de email"
 #.                   </div>
 #, fuzzy
 msgid "help_new_password"
-msgstr "Confirmar <br /> Senha"
+msgstr "パスワード <br /> 確認"
 
 #: from plone_forms/login_form.pt
 #.   <div class="help" id="password_help" style="visibility:hidden">
@@ -1779,7 +1774,7 @@ msgstr "Confirmar <br /> Senha"
 #.               </div>
 #, fuzzy
 msgid "help_password"
-msgstr "Enviar senha por email?"
+msgstr "パスワードの送信"
 
 #: from plone_forms/join_form.pt
 #.   <div class="help" id="password_help" style="visibility:hidden">
@@ -1796,7 +1791,7 @@ msgstr "Enter the password you want. Minimum 5 characters."
 #.                   </div>
 #, fuzzy
 msgid "help_password_policy"
-msgstr "Pol�tica de Senhas"
+msgstr "パスワードポリシー"
 
 #: from plone_forms/reconfig_form.pt
 #.   <div class="help" id="portal_description_help" style="visibility:hidden">
@@ -1805,7 +1800,7 @@ msgstr "Pol�tica de Senhas"
 #.                   </div>
 #, fuzzy
 msgid "help_portal_description"
-msgstr "Descri��o"
+msgstr "ポータルの説明"
 
 #: from plone_forms/reconfig_form.pt
 #.   <div class="help" id="portal_from_address_help" style="visibility:hidden">
@@ -1814,7 +1809,7 @@ msgstr "Descri��o"
 #.                   </div>
 #, fuzzy
 msgid "help_portal_from_address"
-msgstr "Endere�o 'From' do Portal"
+msgstr "ポータルの返信アドレス"
 
 #: from plone_forms/reconfig_form.pt
 #.   <div class="help" id="portal_from_name_help" style="visibility:hidden">
@@ -1823,7 +1818,7 @@ msgstr "Endere�o 'From' do Portal"
 #.                   </div>
 #, fuzzy
 msgid "help_portal_from_name"
-msgstr "Nome 'From' do Portal"
+msgstr "ポータルの送信者名"
 
 #: from plone_forms/reconfig_form.pt
 #.   <div class="help" id="portal_title_help" style="visibility:hidden">
@@ -1831,7 +1826,7 @@ msgstr "Nome 'From' do Portal"
 #.                   </div>
 #, fuzzy
 msgid "help_portal_title"
-msgstr "T�tulo do Portal"
+msgstr "ポータルタイトル"
 
 #: from plone_forms/personalize_form.pt
 #.   <div class="help" id="portrait_help" style="visibility:hidden">
@@ -1841,7 +1836,7 @@ msgstr "T�tulo do Portal"
 #.                       </div>
 #, fuzzy
 msgid "help_portrait"
-msgstr "Foto"
+msgstr "顔写真"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <textarea cols="55" name="description:text" rows="10">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
@@ -1857,7 +1852,7 @@ msgstr "Prefix lines with whitespace or '&gt;' to preserve their format."
 #.                   </div>
 #, fuzzy
 msgid "help_publishing_comments"
-msgstr "Entre com uma curta descri��o ou alguns coment�rios a serem adicionados ao hist�rico de publica��o. Se m�ltiplos itens foram selecionados, este coment�rio valer� para todos eles."
+msgstr "一般公開履歴のコメント欄に表示するための簡潔な説明、又はコメントを入力してください。上欄で複数のアイテムが選択されている場合、このコメントがすべてのアイテムに付加されます。"
 
 #: from plone_forms/login_form.pt
 #.   <div class="help" id="remember_help" style="visibility:hidden">
@@ -1882,7 +1877,7 @@ msgstr "Return items created by a particular person."
 #.                   </div>
 #, fuzzy
 msgid "help_search_description"
-msgstr "Descri��o"
+msgstr "ポータルの説明"
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="item_type_search_help" style="visibility:hidden">
@@ -1890,7 +1885,7 @@ msgstr "Descri��o"
 #.                   </div>
 #, fuzzy
 msgid "help_search_item_type"
-msgstr "Para uma busca simples, digite seu termo de busca aqui. M�ltiplas palavras podem ser utilizadas, combinando-as com <strong>AND</strong> ou <strong>OR</strong</strong>. O texto neste campo ser� procurado no t�tulo, conte�do e descri��o dos itens."
+msgstr "単純なテキスト検索として、ここに検索語を入力してください。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="keywords_search_help" style="visibility:hidden">
@@ -1907,7 +1902,7 @@ msgstr "Return items matching one or more of these subjects. Multiple words may 
 #.                   </div>
 #, fuzzy
 msgid "help_search_new_items_since"
-msgstr "Novos items desde"
+msgstr "アイテムの追加時点"
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="review_status_search_help" style="visibility:hidden">
@@ -1917,7 +1912,7 @@ msgstr "Novos items desde"
 #.                   </div>
 #, fuzzy
 msgid "help_search_review_status"
-msgstr "situa��o"
+msgstr "校閲状態"
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="text_search_help" style="visibility:hidden">
@@ -1929,7 +1924,7 @@ msgstr "situa��o"
 #.                   </div>
 #, fuzzy
 msgid "help_search_text"
-msgstr "Para uma busca simples, digite seu termo de busca aqui. M�ltiplas palavras podem ser utilizadas, combinando-as com <strong>AND</strong> ou <strong>OR</strong</strong>. O texto neste campo ser� procurado no t�tulo, conte�do e descri��o dos itens."
+msgstr "単純なテキスト検索として、ここに検索語を入力してください。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="title_search_help" style="visibility:hidden">
@@ -1937,7 +1932,7 @@ msgstr "Para uma busca simples, digite seu termo de busca aqui. M�ltiplas palavr
 #.                   </div>
 #, fuzzy
 msgid "help_search_title"
-msgstr "Para uma busca simples, digite seu termo de busca aqui. M�ltiplas palavras podem ser utilizadas, combinando-as com <strong>AND</strong> ou <strong>OR</strong</strong>. O texto neste campo ser� procurado no t�tulo, conte�do e descri��o dos itens."
+msgstr "単純なテキスト検索として、ここに検索語を入力してください。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_forms/reconfig_form.pt
 #.   <div class="help" id="short_date_format_help" style="visibility:hidden">
@@ -1946,7 +1941,7 @@ msgstr "Para uma busca simples, digite seu termo de busca aqui. M�ltiplas palavr
 #.                   </div>
 #, fuzzy
 msgid "help_short_date_format"
-msgstr "Formato curto para data"
+msgstr "日付の短縮フォーマット"
 
 #: from plone_forms/reconfig_form.pt
 #.   <div class="help" id="smtp_server_help" style="visibility:hidden">
@@ -1956,7 +1951,7 @@ msgstr "Formato curto para data"
 #.                   </div>
 #, fuzzy
 msgid "help_smtp_server"
-msgstr "Servidor SMTP"
+msgstr "SMTP サーバ"
 
 #: from plone_3rdParty/CMFTopic/topic_edit_form.pt
 #.   <div class="help" id="title_help" style="visibility:hidden">
@@ -1989,7 +1984,7 @@ msgstr "Servidor SMTP"
 #.                   </div>
 #, fuzzy
 msgid "help_title"
-msgstr "Entre com o t�tulo da pasta"
+msgstr "フォルダのタイトルを入力してください。"
 
 #: from plone_content/document_edit_form.pt
 #.   <div class="help" id="upload_help" style="visibility:hidden">
@@ -2025,7 +2020,7 @@ msgstr "The address of the location. Prefix is optional; if not provided, the li
 #.                   </div>
 #, fuzzy
 msgid "help_user_name"
-msgstr "Nome de usu�rio"
+msgstr "ユーザ名"
 
 #: from plone_forms/join_form.pt
 #.   <div class="help" id="user_name_help" style="visibility:hidden">
@@ -2080,17 +2075,15 @@ msgstr "Assign to:"
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label">Attachment (optional)</div>
 #: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
-#, fuzzy
 msgid "label_attachment_optional"
-msgstr "Anexo (opcional)"
+msgstr "Attachment (optional)"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label"> Attachment type (optional)</div>
 #: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
 #.   <div class="label">Attachment type (optional)</div>
-#, fuzzy
 msgid "label_attachment_type_optional"
-msgstr "Tipo de anexo (opcional)"
+msgstr "Attachment type (optional)"
 
 #: from plone_forms/search_form.pt
 #.   <span>Author</span>
@@ -2111,7 +2104,7 @@ msgstr "Body text"
 #.   <span>Change State</span>
 #, fuzzy
 msgid "label_change_status"
-msgstr "Mudar Situa��o"
+msgstr "ステータス変更"
 
 #: from plone_forms/reconfig_form.pt
 #.   <option value="">Choose Language</option>
@@ -2126,9 +2119,8 @@ msgstr "Choose Look"
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label">Classification</div>
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
-#, fuzzy
 msgid "label_classification"
-msgstr "Classifica��o"
+msgstr "Classification"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
 #.   <div class="label">Action</div>
@@ -2184,9 +2176,8 @@ msgstr "Collector email"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>Importance</span>
-#, fuzzy
 msgid "label_collector_importance"
-msgstr "Import�ncia"
+msgstr "Importance"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <div class="label">Managers</div>
@@ -2205,9 +2196,8 @@ msgstr "Internal only"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>No</span>
-#, fuzzy
 msgid "label_collector_reinstate_no"
-msgstr "N�o"
+msgstr "No"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>Internal &amp; Site-wide (slow)</span>
@@ -2236,15 +2226,14 @@ msgstr "Topics"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <div class="label">Transcript</div>
-#, fuzzy
 msgid "label_collector_transcript"
-msgstr "Relat�rio"
+msgstr "Transcript"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <div class="label">Comment</div>
 #, fuzzy
 msgid "label_comment"
-msgstr "Comentar"
+msgstr "コメント"
 
 #: from plone_forms/talkback_tree.pt
 #.   <span>by</span>
@@ -2265,7 +2254,7 @@ msgstr "at"
 #.   <span>Comments</span>
 #, fuzzy
 msgid "label_comments"
-msgstr "Coment�rios"
+msgstr "コメント"
 
 #: from plone_forms/join_form.pt
 #.   <span>Confirm <br />
@@ -2275,7 +2264,7 @@ msgstr "Coment�rios"
 #: from plone_forms/password_form.pt
 #, fuzzy
 msgid "label_confirm_password"
-msgstr "Confirmar <br /> Senha"
+msgstr "パスワード <br /> 確認"
 
 #: from plone_3rdParty/CMFCalendar/event_edit_form.pt
 #.   <span>Contact E-mail</span>
@@ -2294,9 +2283,8 @@ msgstr "Contact Phone"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <div class="label">Contains</div>
-#, fuzzy
 msgid "label_contains"
-msgstr "Cont�m"
+msgstr "Contains"
 
 #: from plone_forms/personalize_form.pt
 #.   <span>Content editor</span>
@@ -2331,9 +2319,8 @@ msgstr "Criteria type"
 #.   <div attributes="id string:${criterionid}_help;" content="criterion/Description | here/Description" class="help" id="" style="visibility:hidden">
 #.           Date
 #.           </div>
-#, fuzzy
 msgid "label_date"
-msgstr "Data"
+msgstr "Date"
 
 #: from plone_forms/reconfig_form.pt
 #.   <span>Default Language</span>
@@ -2359,7 +2346,7 @@ msgstr "Default Look"
 #: 3 more references
 #, fuzzy
 msgid "label_description"
-msgstr "Descri��o"
+msgstr "説明"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <label for="discussion_default">Default</label>
@@ -2385,7 +2372,7 @@ msgstr "Display Names"
 #.   <label for="radio_action_comment">Comment</label>
 #, fuzzy
 msgid "label_do_comment"
-msgstr "Comentar"
+msgstr "コメント"
 
 #: from plone_forms/password_form.pt
 #.   <span>Domains</span>
@@ -2396,14 +2383,14 @@ msgstr "Domains"
 #.   <span>Edit Contents</span>
 #, fuzzy
 msgid "label_edit_contents"
-msgstr "Conte�do da Pasta"
+msgstr "フォルダ内容"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <span>Effective Date</span>
 #: from plone_forms/content_status_history.pt
 #, fuzzy
 msgid "label_effective_date"
-msgstr "Data de Publica��o"
+msgstr "有効年月日"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label">Email</div>
@@ -2412,13 +2399,13 @@ msgstr "Data de Publica��o"
 #: from plone_forms/personalize_form.pt
 #, fuzzy
 msgid "label_email"
-msgstr "Novo endere�o <br /> de email"
+msgstr "新しいメール <br /> アドレス"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <option value="email">Email Address</option>
 #, fuzzy
 msgid "label_email_address"
-msgstr "Endere�o de Email"
+msgstr "Eメールアドレス"
 
 #: from plone_templates/standard_error_message.pt
 #.   <div class="label">
@@ -2471,15 +2458,14 @@ msgstr "Event URL"
 #: from plone_forms/content_status_history.pt
 #, fuzzy
 msgid "label_expiration_date"
-msgstr "Data de Expira��o"
+msgstr "失効年月日"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
 #.   <label for="radio_attachment_type_file">File</label>
 #: from plone_content/file_edit_form.pt
 #.   <span>File</span>
-#, fuzzy
 msgid "label_file"
-msgstr "Arquivo"
+msgstr "File"
 
 #: from plone_content/file_view.pt
 #.   <div class="label">File type</div>
@@ -2488,9 +2474,8 @@ msgstr "File type"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
 #.   <div class="label">Follow-up</div>
-#, fuzzy
 msgid "label_follow_up"
-msgstr "Retorno"
+msgstr "Follow-up"
 
 #: from plone_forms/login_form.pt
 #.   <strong>
@@ -2498,13 +2483,13 @@ msgstr "Retorno"
 #.                   </strong>
 #, fuzzy
 msgid "label_forgotten_your_password"
-msgstr "Esqueceu sua senha?"
+msgstr "パスワードを忘れましたか?"
 
 #: from plone_forms/personalize_form.pt
 #.   <span>Form Help</span>
 #, fuzzy
 msgid "label_form_help"
-msgstr "Digite a senha que voc� deseja. M�nimo 5 caracteres."
+msgstr "ご希望のパスワードを入力してください。最低５文字必要です。"
 
 #: from plone_content/document_edit_form.pt
 #.   <span>Format</span>
@@ -2515,9 +2500,8 @@ msgstr "Format"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <div class="label">From (alt. email)</div>
-#, fuzzy
 msgid "label_from_alt_email"
-msgstr "Enviado por (email alt.)"
+msgstr "From (alt. email)"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <div class="label">From (login name)</div>
@@ -2528,7 +2512,7 @@ msgstr "From (login name)"
 #.   <div class="label">From (name)</div>
 #, fuzzy
 msgid "label_from_name"
-msgstr "Enviado por (nome)"
+msgstr "ポータルの送信者名"
 
 #: from plone_forms/reconfig_form.pt
 #.   <label for="validate_email_on">Generate and e-mail members' initial password</label>
@@ -2539,16 +2523,14 @@ msgstr "Generate and e-mail members' initial password"
 #.   <label for="radio_attachment_type_image">Image</label>
 #: from plone_content/image_edit_form.pt
 #.   <span>Image</span>
-#, fuzzy
 msgid "label_image"
-msgstr "Imagem"
+msgstr "Image"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label">Importance</div>
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
-#, fuzzy
 msgid "label_importance"
-msgstr "Import�ncia"
+msgstr "Importance"
 
 #: from plone_forms/content_status_history.pt
 #.   <label for="include_subfolders">Include subfolders</label>
@@ -2564,14 +2546,14 @@ msgstr "Inherit Criteria"
 #.   <span>Item type</span>
 #, fuzzy
 msgid "label_item_type"
-msgstr "Tipo"
+msgstr "アイテムのタイプ"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <span>Keywords</span>
 #: from plone_forms/search_form.pt
 #, fuzzy
 msgid "label_keywords"
-msgstr "Palavras-chave"
+msgstr "キーワード"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <span>Language</span>
@@ -2587,7 +2569,7 @@ msgstr "Lead-in"
 #.   <span>Listed status</span>
 #, fuzzy
 msgid "label_listed_status"
-msgstr "situa��o"
+msgstr "表示ステータス"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <div class="label">
@@ -2600,7 +2582,7 @@ msgstr "Role to assign"
 #.   <span>Long Date</span>
 #, fuzzy
 msgid "label_long_date_format"
-msgstr "Formato longo de data"
+msgstr "日付の長型フォーマット"
 
 #: from plone_forms/personalize_form.pt
 #.   <span>Look</span>
@@ -2611,7 +2593,7 @@ msgstr "Look"
 #.   <span>Mail Password?</span>
 #, fuzzy
 msgid "label_mail_password"
-msgstr "Enviar senha por email?"
+msgstr "パスワードの送信"
 
 #: from plone_forms/personalize_form.pt
 #.   <label for="cb_listed">Listed</label>
@@ -2629,7 +2611,7 @@ msgstr "Unlisted"
 #.               </div>
 #, fuzzy
 msgid "label_my_user_name_is"
-msgstr "Meu nome de usu�rio �"
+msgstr "私のユーザ名は"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>Name</span>
@@ -2644,7 +2626,7 @@ msgstr "Meu nome de usu�rio �"
 #: 2 more references
 #, fuzzy
 msgid "label_name"
-msgstr "Nome"
+msgstr "名前"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label">Name of upload (optional)</div>
@@ -2656,7 +2638,7 @@ msgstr "Name of upload (optional)"
 #.   <span>New items since</span>
 #, fuzzy
 msgid "label_new_items_since"
-msgstr "Novos items desde"
+msgstr "アイテムの追加時点"
 
 #: from plone_forms/ownership_form.pt
 #.   <span>New owner</span>
@@ -2668,13 +2650,12 @@ msgstr "New owner"
 #: from plone_forms/password_form.pt
 #, fuzzy
 msgid "label_new_password"
-msgstr "Enviar senha por email?"
+msgstr "パスワードの送信"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <div class="label">Notifications</div>
-#, fuzzy
 msgid "label_notifications"
-msgstr "Classifica��o"
+msgstr "Notifications"
 
 #: from plone_forms/personalize_form.pt
 #.   <option attributes="value editor;
@@ -2691,13 +2672,13 @@ msgstr "Ordinary Form-based Editor (works in all browsers)"
 #.   <strong>Password</strong>
 #, fuzzy
 msgid "label_password"
-msgstr "Senha"
+msgstr "パスワード"
 
 #: from plone_forms/reconfig_form.pt
 #.   <span>Password policy</span>
 #, fuzzy
 msgid "label_password_policy"
-msgstr "Pol�tica de Senhas"
+msgstr "パスワードポリシー"
 
 #: from plone_forms/join_form.pt
 #.   <div class="field">
@@ -2711,31 +2692,31 @@ msgstr "A password will be generated and e-mailed to you to complete the registr
 #.   <span>Portal description</span>
 #, fuzzy
 msgid "label_portal_description"
-msgstr "Descri��o"
+msgstr "ポータルの説明"
 
 #: from plone_forms/reconfig_form.pt
 #.   <span>Portal 'From' address</span>
 #, fuzzy
 msgid "label_portal_from_address"
-msgstr "Endere�o 'From' do Portal"
+msgstr "ポータルの返信アドレス"
 
 #: from plone_forms/reconfig_form.pt
 #.   <span>Portal 'From' name</span>
 #, fuzzy
 msgid "label_portal_from_name"
-msgstr "Nome 'From' do Portal"
+msgstr "ポータルの送信者名"
 
 #: from plone_forms/reconfig_form.pt
 #.   <span>Portal title</span>
 #, fuzzy
 msgid "label_portal_title"
-msgstr "T�tulo do Portal"
+msgstr "ポータルタイトル"
 
 #: from plone_forms/personalize_form.pt
 #.   <span>Portrait</span>
 #, fuzzy
 msgid "label_portrait"
-msgstr "Foto"
+msgstr "顔写真"
 
 #: from plone_forms/content_status_history.pt
 #.   <span omit-tag="">effective</span>
@@ -2756,7 +2737,7 @@ msgstr "Remember my name."
 #.   <span>Review status</span>
 #, fuzzy
 msgid "label_review_status"
-msgstr "situa��o"
+msgstr "校閲状態"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <span>
@@ -2771,7 +2752,7 @@ msgstr "Role(s):"
 #.             			</div>
 #, fuzzy
 msgid "label_search_by"
-msgstr "Procurar por"
+msgstr "検索する文字列"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <div class="label">
@@ -2779,26 +2760,24 @@ msgstr "Procurar por"
 #.                       </div>
 #, fuzzy
 msgid "label_search_term"
-msgstr "Termo de Busca"
+msgstr "検索する文字列"
 
 #: from plone_forms/search_form.pt
 #.   <span>Search Text</span>
 #, fuzzy
 msgid "label_search_text"
-msgstr "Para uma busca simples, digite seu termo de busca aqui. M�ltiplas palavras podem ser utilizadas, combinando-as com <strong>AND</strong> ou <strong>OR</strong</strong>. O texto neste campo ser� procurado no t�tulo, conte�do e descri��o dos itens."
+msgstr "単純なテキスト検索として、ここに検索語を入力してください。複数の単語は <strong>AND</strong> 又は <strong>OR</strong> を間に入れての組み合わせ検索が可能です。"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label">Security</div>
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
-#, fuzzy
 msgid "label_security"
-msgstr "Seguran�a"
+msgstr "Security"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <label for="security_related_checkbox">Security related</label>
-#, fuzzy
 msgid "label_security_related"
-msgstr "Relacionado a seguran�a"
+msgstr "Security related"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <span>
@@ -2806,15 +2785,14 @@ msgstr "Relacionado a seguran�a"
 #.               should <strong>not</strong> be publicly visible until
 #.               completed.
 #.               </span>
-#, fuzzy
 msgid "label_security_related_desc"
-msgstr "Relacionado a seguran�a"
+msgstr "Yes, this issue is security related, and should <strong>not</strong> be publicly visible until completed."
 
 #: from plone_templates/folder_contents.pt
 #.   <option value="Select">Select</option>
 #, fuzzy
 msgid "label_select"
-msgstr "Selecione"
+msgstr "選択"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <span>
@@ -2832,7 +2810,7 @@ msgstr "Selections"
 #.   <span>Short Date</span>
 #, fuzzy
 msgid "label_short_date_format"
-msgstr "Formato curto para data"
+msgstr "日付の短縮フォーマット"
 
 #: from plone_templates/folder_contents.pt
 #.   <option attributes="selected
@@ -2841,7 +2819,7 @@ msgstr "Formato curto para data"
 #.                                       </option>
 #, fuzzy
 msgid "label_show_all_items"
-msgstr "Mostrar todos os items"
+msgstr "全アイテムを表示"
 
 #: from plone_content/file_view.pt
 #.   <div class="label">Size</div>
@@ -2854,13 +2832,13 @@ msgstr "Size:"
 #.   <span>SMTP server</span>
 #, fuzzy
 msgid "label_smtp_server"
-msgstr "Servidor SMTP"
+msgstr "SMTP サーバ"
 
 #: from plone_forms/content_status_history.pt
 #.   <div class="label">Status</div>
 #, fuzzy
 msgid "label_status"
-msgstr "Situa��o"
+msgstr "状態"
 
 #: from plone_forms/content_status_history.pt
 #.   <span>Subfolders</span>
@@ -2876,9 +2854,8 @@ msgstr "Subject"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label">Submitter</div>
-#, fuzzy
 msgid "label_submitter"
-msgstr "Remetente"
+msgstr "Submitter"
 
 #: from plone_forms/ownership_form.pt
 #.   <span>Subobjects</span>
@@ -2928,15 +2905,14 @@ msgstr "Update Period"
 #: 2 more references
 #, fuzzy
 msgid "label_title"
-msgstr "T�tulo"
+msgstr "タイトル"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label"> Topic </div>
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <div class="label">Topic</div>
-#, fuzzy
 msgid "label_topic"
-msgstr "T�pico"
+msgstr "Topic"
 
 #: from plone_forms/login_form.pt
 #.   <strong>
@@ -2944,13 +2920,12 @@ msgstr "T�pico"
 #.                   </strong>
 #, fuzzy
 msgid "label_trouble_logging_in"
-msgstr "Tendo problemas na identifica��o?"
+msgstr "ログインができませんか?"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <div class="label">Upload</div>
-#, fuzzy
 msgid "label_upload"
-msgstr "Anexar arquivo"
+msgstr "Upload"
 
 #: from plone_content/document_edit_form.pt
 #.   <span>Upload contents (optional)</span>
@@ -2969,7 +2944,7 @@ msgstr "URL"
 #: from plone_forms/login_form.pt
 #, fuzzy
 msgid "label_user_name"
-msgstr "Nome de Usu�rio"
+msgstr "ユーザ名"
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <div class="label">Version boilerplate</div>
@@ -2980,9 +2955,8 @@ msgstr "Version boilerplate"
 #.   <div class="label">Version Info</div>
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <div class="label">Version info</div>
-#, fuzzy
 msgid "label_version_info"
-msgstr "Informa��o sobre a vers�o"
+msgstr "Version info"
 
 #: from plone_forms/roster.pt
 #.   <span>Visible Members</span>
@@ -3001,21 +2975,20 @@ msgstr "Last sign-in"
 
 #: from plone_templates/news.pt
 #.   <span omit-tag="">Last Updated</span>
-#, fuzzy
 msgid "last_updated"
-msgstr "�ltima atualiza��o"
+msgstr "Last Updated"
 
 #: from plone_forms/login_form.pt
 #.   <span class="legend">Account details</span>
 #, fuzzy
 msgid "legend_account_details"
-msgstr "Detalhes da conta"
+msgstr "アカウント明細"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <span class="legend">Assigned Roles</span>
 #, fuzzy
 msgid "legend_assigned_roles"
-msgstr "Pap�is delegados"
+msgstr "割り当てられているロール"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <span class="legend">Available Members</span>
@@ -3073,13 +3046,12 @@ msgstr "File details"
 #.   <span class="legend">Folder Details</span>
 #, fuzzy
 msgid "legend_folder_details"
-msgstr "Detalhes da pasta"
+msgstr "フォルダ詳細"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
 #.   <span class="legend">Follow-up details</span>
-#, fuzzy
 msgid "legend_follow_up_details"
-msgstr "Detalhes de Retorno"
+msgstr "Follow-up details"
 
 #: from plone_content/image_edit_form.pt
 #.   <span class="legend">Image Details</span>
@@ -3090,21 +3062,20 @@ msgstr "Image Details"
 #.   <span class="legend">Issue Details</span>
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <span class="legend">Issue details</span>
-#, fuzzy
 msgid "legend_issue_details"
-msgstr "Detalhes da Tarefa"
+msgstr "Issue details"
 
 #: from plone_content/metadata_edit_form.pt
 #.   <span class="legend">Item Properties</span>
 #, fuzzy
 msgid "legend_item_properties"
-msgstr "Propriedades do Item"
+msgstr "アイテムのプロパティ"
 
 #: from plone_forms/folder_factories.pt
 #.   <span class="legend">Items Available</span>
 #, fuzzy
 msgid "legend_items_available"
-msgstr "Itens Dispon�veis"
+msgstr "利用できるアイテム"
 
 #: from plone_content/link_edit_form.pt
 #.   <span class="legend">Link Details</span>
@@ -3125,25 +3096,25 @@ msgstr "News Item Details"
 #.   <span class="legend">Password Details</span>
 #, fuzzy
 msgid "legend_password_details"
-msgstr "Marque esta op��o para ter sua senha enviada para seu email. "
+msgstr "ここをチェックすると、あなたのパスワードがメールで送信されます。こうすれば、パスワードを忘れてもご自分の受信箱ですぐにチェックできます。"
 
 #: from plone_forms/join_form.pt
 #.   <span class="legend">Personal Details</span>
 #, fuzzy
 msgid "legend_personal_details"
-msgstr "Informa��es Pessoais"
+msgstr "個人情報"
 
 #: from plone_forms/reconfig_form.pt
 #.   <span class="legend">Plone Details</span>
 #, fuzzy
 msgid "legend_plone_details"
-msgstr "Detalhes do Plone"
+msgstr "Ploneの詳細"
 
 #: from plone_forms/content_status_history.pt
 #.   <span class="legend">Publishing Details</span>
 #, fuzzy
 msgid "legend_publishing_details"
-msgstr "Detalhes de Publica��o"
+msgstr "公開詳細"
 
 #: from plone_forms/folder_rename_form.pt
 #.   <span class="legend">Rename Details</span>
@@ -3152,22 +3123,21 @@ msgstr "Rename Details"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <span class="legend">Search for issues</span>
-#, fuzzy
 msgid "legend_search_for_issues"
-msgstr "Procurar por tarefas"
+msgstr "Search for issues"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <span class="legend">Search Terms</span>
 #: from plone_forms/search_form.pt
 #, fuzzy
 msgid "legend_search_terms"
-msgstr "Termos de busca"
+msgstr "検索する文字列"
 
 #: from plone_forms/content_status_history.pt
 #.   <span class="legend">Status</span>
 #, fuzzy
 msgid "legend_status"
-msgstr "Situa��o"
+msgstr "状態"
 
 #: from plone_forms/synPropertiesForm.pt
 #.   <span class="legend">Channel Details</span>
@@ -3193,7 +3163,7 @@ msgstr "Member Details"
 #.   <span>The link address is:</span>
 #, fuzzy
 msgid "link_address"
-msgstr "O endere�o do link �:"
+msgstr "リンクのURLは:"
 
 #: from plone_content/favorite_view.pt
 #.   <span>Created by</span>
@@ -3222,9 +3192,8 @@ msgstr "Affected Item"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Assigned</th>
-#, fuzzy
 msgid "listingheader_assigned"
-msgstr "Delegado"
+msgstr "Assigned"
 
 #: from plone_forms/search.pt
 #.   <span omit-tag="">Author</span>
@@ -3233,9 +3202,8 @@ msgstr "Author"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Classification</th>
-#, fuzzy
 msgid "listingheader_classification"
-msgstr "Classifica��o"
+msgstr "Classification"
 
 #: from plone_content/discussionitem_view.pt
 #.   <th>comment</th>
@@ -3244,13 +3212,12 @@ msgstr "Classifica��o"
 #: from plone_forms/viewThreadsAtBottom.pt
 #, fuzzy
 msgid "listingheader_comment"
-msgstr "Comentar"
+msgstr "コメント"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Date</th>
-#, fuzzy
 msgid "listingheader_date"
-msgstr "Data"
+msgstr "Date"
 
 #: from plone_forms/content_status_history.pt
 #.   <th>Date&nbsp;and&nbsp;Time</th>
@@ -3265,13 +3232,12 @@ msgstr "Date and time"
 #.   <span omit-tag="">Description</span>
 #, fuzzy
 msgid "listingheader_description"
-msgstr "Descri��o"
+msgstr "説明"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Importance</th>
-#, fuzzy
 msgid "listingheader_importance"
-msgstr "Import�ncia"
+msgstr "Importance"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Issue</th>
@@ -3287,7 +3253,6 @@ msgstr "Last Modified"
 #.   <span omit-tag="">Modified</span>
 #, fuzzy
 msgid "listingheader_modified"
-msgstr "Modificado"
 
 #: from plone_forms/content_status_history.pt
 #.   <th>Performed&nbsp;by</th>
@@ -3298,21 +3263,19 @@ msgstr "Performed by"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Requester</th>
-#, fuzzy
 msgid "listingheader_requester"
-msgstr "Requisitante"
+msgstr "Requester"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Security Related</th>
-#, fuzzy
 msgid "listingheader_security_related"
-msgstr "Relacionado a seguran�a"
+msgstr "Security Related"
 
 #: from plone_templates/folder_contents.pt
 #.   <span omit-tag="">Size</span>
 #, fuzzy
 msgid "listingheader_size"
-msgstr "Tamanho"
+msgstr "サイズ"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Status</th>
@@ -3321,13 +3284,12 @@ msgstr "Tamanho"
 #.   <span omit-tag="">Status</span>
 #, fuzzy
 msgid "listingheader_status"
-msgstr "Situa��o"
+msgstr "状態"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Submitter</th>
-#, fuzzy
 msgid "listingheader_submitter"
-msgstr "Remetente"
+msgstr "Submitter"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Title</th>
@@ -3336,31 +3298,30 @@ msgstr "Remetente"
 #: from plone_templates/folder_contents.pt
 #, fuzzy
 msgid "listingheader_title"
-msgstr "T�tulo"
+msgstr "タイトル"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Topic</th>
-#, fuzzy
 msgid "listingheader_topic"
-msgstr "T�pico"
+msgstr "Topic"
 
 #: from plone_templates/folder_contents.pt
 #.   <span omit-tag="">Type</span>
 #, fuzzy
 msgid "listingheader_type"
-msgstr "Tipo"
+msgstr "タイプ"
 
 #: from plone_forms/undo_form.pt
 #.   <th>Undo</th>
 #, fuzzy
 msgid "listingheader_undo"
-msgstr "Desfazer"
+msgstr "元に戻す"
 
 #: from plone_forms/folder_listing.pt
 #.   <span omit-tag="">Description</span>
 #, fuzzy
 msgid "listingheaders_description"
-msgstr "Descri��o"
+msgstr "説明"
 
 #: from plone_forms/folder_listing.pt
 #.   <span omit-tag="">Last Modified</span>
@@ -3371,19 +3332,19 @@ msgstr "Last Modified"
 #.   <span omit-tag="">Size</span>
 #, fuzzy
 msgid "listingheaders_size"
-msgstr "Tamanho"
+msgstr "サイズ"
 
 #: from plone_forms/folder_listing.pt
 #.   <span omit-tag="">Title</span>
 #, fuzzy
 msgid "listingheaders_title"
-msgstr "T�tulo"
+msgstr "タイトル"
 
 #: from plone_forms/folder_listing.pt
 #.   <span omit-tag="">Type</span>
 #, fuzzy
 msgid "listingheaders_type"
-msgstr "Tipo"
+msgstr "タイプ"
 
 #: from plone_templates/news.pt
 #.   <span omit-tag="">More Recent News</span>
@@ -3400,9 +3361,8 @@ msgstr "My Folder"
 #.   <label for="cb_noformtooltips">No</label>
 #: from plone_forms/personalize_form.pt
 #.   <label for="cb_invisible_ids">No</label>
-#, fuzzy
 msgid "no"
-msgstr "N�o"
+msgstr "No"
 
 #: from plone_content/document_view.pt
 #.   <p condition="not: len_text">
@@ -3425,7 +3385,7 @@ msgstr "This document has yet to be written, click the edit button to write on d
 #.                       </span>
 #, fuzzy
 msgid "no_comments"
-msgstr "Coment�rios"
+msgstr "コメント"
 
 #: from plone_content/file_view.pt
 #.   <span condition="python:test(here.size, 0, 1)">
@@ -3453,7 +3413,7 @@ msgstr "(No image has been uploaded yet)"
 #.       </span>
 #, fuzzy
 msgid "no_mail_address"
-msgstr "Endere�o de Email"
+msgstr "Eメールアドレス"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <p>No members were found using your <strong>Search Criteria</strong></p>
@@ -3509,18 +3469,18 @@ msgstr "Read More"
 #.   <span condition="effective">and <strong>is effective</strong>.</span>
 #, fuzzy
 msgid "status_is_effective"
-msgstr "e <strong>foi efetivado</strong>."
+msgstr "は <strong>有効</strong>です。"
 
 #: from plone_forms/content_status_history.pt
 #.   <span condition="after">but is <strong>no longer</strong> effective.</span>
 msgid "status_no_longer_effective"
-msgstr "mas <strong>n�o est� mais efetivado</strong>."
+msgstr "ステータスは <strong>もはや有効ではありません</strong>。"
 
 #: from plone_forms/content_status_history.pt
 #.   <span condition="before">but is <strong>not yet</strong> effective.</span>
 #, fuzzy
 msgid "status_not_yet_effective"
-msgstr "mas ainda <strong>n�o foi efetivado</strong>."
+msgstr "ステータスは <strong>無効</strong>です。"
 
 #: from plone_content/document_edit_form.pt
 #.   <label for="cb_structuredtext">Structured Text</label>
@@ -3552,21 +3512,20 @@ msgstr "Yesterday"
 #.   <label for="cb_formtooltips">Yes</label>
 #: from plone_forms/personalize_form.pt
 #.   <label for="cb_visible_ids">Yes</label>
-#, fuzzy
 msgid "yes"
-msgstr "Sim"
+msgstr "Yes"
 
 #: from plone_templates/header.pt
 #.   <span omit-tag="">You are here:</span>
 #, fuzzy
 msgid "you_are_here"
-msgstr "Voc� est� aqui:"
+msgstr "現在の場所:"
 
 #: from plone_templates/header.pt
 #.   <span condition="here/portal_membership/isAnonymousUser">You are not logged in</span>
 #, fuzzy
 msgid "you_are_not_logged_in"
-msgstr "voce n�o est� identificado"
+msgstr "ログインしていません"
 
 #: .missing file
 #. The below is collected by inserting a plone-my-lang.missing file in the i18n
@@ -3575,82 +3534,79 @@ msgstr "voce n�o est� identificado"
 #. _____________________________________________________________________________
 
 msgid "Welcome"
-msgstr "Bem Vindo"
+msgstr "ようこそ!"
 
 msgid "Members"
-msgstr "Membros"
+msgstr "メンバー"
 
 msgid "News"
-msgstr "Not�cias"
+msgstr "ニュース"
 
 msgid "My Folder"
 
 #, fuzzy
 msgid "My Preferences"
-msgstr "Prefer�ncias"
+msgstr "設定"
 
 msgid "Plone Setup"
-msgstr "Configura��es do Plone"
+msgstr "Plone設定"
 
 #, fuzzy
 msgid "Sign out"
-msgstr "Sair"
+msgstr "ログイン"
 
 msgid "Navigation"
-msgstr "Navega��o"
+msgstr "ナビゲーション"
 
 msgid "Editor view"
-msgstr "Modo de Edi��o"
+msgstr "エディタのビュー"
 
 msgid "visible"
-msgstr "vis�vel"
+msgstr "visible"
 
 msgid "Folder contents"
-msgstr "Conte�do da Pasta"
+msgstr "フォルダ内容"
 
 #, fuzzy
 msgid "Contents"
-msgstr "Coment�rios"
+msgstr "コメント"
 
 msgid "View"
-msgstr "Visualizar"
+msgstr "表示"
 
 msgid "Edit"
-msgstr "Editar"
+msgstr "編集"
 
 msgid "Properties"
-msgstr "Propriedades"
+msgstr "プロパティ"
 
 msgid "Publishing"
-msgstr "Publica��o"
+msgstr "公開中"
 
 msgid "Ordinary view"
-msgstr "Modo Normal"
+msgstr "通常のビュー"
 
 msgid "Local Roles"
-msgstr "Pap�is Locais"
+msgstr "ローカルロール"
 
 msgid "Ownership"
 
 msgid "${type}s only"
-msgstr "Apenas ${type}s"
+msgstr "${type}sのみ"
 
 #, fuzzy
 msgid "Document"
-msgstr "Comentar"
+msgstr "コメント"
 
 msgid "Image"
-msgstr "Imagem"
 
 msgid "File"
-msgstr "Arquivo"
 
 msgid "Link"
 
 msgid "News Item"
 
 msgid "Topic"
-msgstr "T�pico"
 
 msgid "Folder"
 
@@ -3665,36 +3621,33 @@ msgid "CMF Wiki Page"
 msgid "CMF Wiki"
 
 msgid "Cut"
-msgstr "Recortar"
+msgstr "切り取り"
 
 msgid "Copy"
-msgstr "Copiar"
+msgstr "コピー"
 
 msgid "Delete"
-msgstr "Excluir"
+msgstr "削除"
 
 msgid "Change Status"
-msgstr "Mudar Situa��o"
+msgstr "ステータス変更"
 
 msgid "This item is currently in the ${review_state} state"
-msgstr "Este item est� atualmente no estado ${review_state}"
+msgstr "このアイテムは現在 ${review_state} 状態にあります。"
 
 #, fuzzy
 msgid "Make private"
-msgstr "privado"
+msgstr "プライベート"
 
 #, fuzzy
 msgid "Publish"
-msgstr "Publica��o"
+msgstr "公開中"
 
 msgid "Collector Catalog"
 
-#, fuzzy
 msgid "Collector Issue"
 
-#, fuzzy
 msgid "Collector Issue Transcript"
-msgstr "Relat�rio"
 
 msgid "Discussion Item"
 
@@ -3723,43 +3676,40 @@ msgid "A Collector Subset represents a view on a subset of the issues in a colle
 msgid "Loosely organized (yet structured) content can be added to Wikis."
 
 msgid "Browse"
-msgstr "Olhar"
 
+#, fuzzy
 msgid "New Issue"
-msgstr "Nova Tarefa"
+msgstr "新規ユーザですか？"
 
 msgid "Configure"
-msgstr "Configurar"
 
 msgid "pending"
-msgstr "pendente"
+msgstr "pending"
 
 msgid "private"
-msgstr "privado"
+msgstr "プライベート"
 
 msgid "published"
-msgstr "publicado"
+msgstr "一般公開中"
 
 msgid "No"
-msgstr "N�o"
 
 msgid "Yes"
-msgstr "Sim"
 
 msgid "Comment"
-msgstr "Comentar"
+msgstr "コメント"
 
 msgid "History"
-msgstr "Hist�rico"
+msgstr "履歴"
 
 msgid "Backlinks"
-msgstr "Links para essa p�gina"
+msgstr "リンク元"
 
 msgid "Advanced"
-msgstr "Avan�ado"
+msgstr "アドバンスト"
 
 msgid "Help"
-msgstr "Ajuda"
+msgstr "ヘルプ"
 
 msgid "Criteria"
 
@@ -3767,613 +3717,432 @@ msgid "Subtopics"
 
 msgid "Metadata"
 
-#~ msgid "${start_index} to ${end_index} of ${num_found}"
-#~ msgstr "${start_index} a ${end_index} de ${num_found}"
-
-
-#~ msgid "${title} ${abbrev} - Issue Collector"
-#~ msgstr "${title} ${abbrev} - Coletor de Tarefas"
-
-
-#~ msgid "&nbsp;"
-#~ msgstr "&nbsp"
+#~ msgid ""
+#~ "<h1>Our apologies...</h1> <p> ...but the item you requested does not "
+#~ "exist on this server or cannot be served. </p> <p> Please double "
+#~ "check the web address or use the search function on this page to "
+#~ "find what you are looking for. </p> <p> If you know you have the "
+#~ "correct web address but are encountering an error, please send a "
+#~ "mail to the administrator of this site. </p> ${mail_admin}. <p> "
+#~ "Thank you. </p> <code> 404 Not Found </code>"
+#~ msgstr "<h1>申し訳ございません…</h1> <p> リクエストされた内容がこのサーバー上にないか、 提供ができません。</p><p>URLを再確認してください。また、このサイトの検索機能を利用して 探しているコンテンツを見つけてください。</p>  <p>URLが正しいのにエラーになっている場合には、 このサイトの管理者宛(下記)にメールしてください。</p> ${mail_admin} <p> ご協力ありがとうございます。</p> <code>404 見つかりませんでした </code>"
 
 
 #~ msgid ""
-#~ "<h1>Edit Collector Issue ${id}</h1> <div class=\"description\"> Use this "
-#~ "form to edit the data of an existing issue. Do not use this form to follow "
-#~ "up or change the workflow status of an issue - use the issue follow up form "
-#~ "for that. </div>"
-#~ msgstr "<h1>Editar Coletor de Tarefas ${id}</h1> <div class=\\"description\\"> Use esse formul�rio para editar os dados de uma tarefa existente. N�o use esse formul�rio para retorno ou mudar a situa��o de workflow de uma tarefa - use o formul�rio de follow up para isso. </div>"
+#~ "<h1>Site error</h1> <p> This site encountered an error trying to "
+#~ "fulfill your request. The errors were: </p> <div class=\"group\"> "
+#~ "<span class=\"legend\">Error Details</span> <div class=\"row\"> <div "
+#~ "class=\"label\"> Error Type </div> ${error_type} </div> <div class="
+#~ "\"row\"> <div class=\"label\"> Error Message </div> ${error_message} "
+#~ "</div> <div class=\"row\"> <div class=\"label\"> Error Value </div> "
+#~ "${error_value} </div> </div>"
+#~ msgstr "<h1>サイトエラー</h1> <p> リクエストに回答しようとしてエラーが発生しました。エラーは以下の通りです: </p> <div class=\"group\"> <span class=\"legend\">エラー詳細</span> <div class=\"row\"> <div class=\"label\"> エラータイプ </div> ${error_type} </div> <div class=\"row\"> <div class=\"label\"> エラーメッセージ </div> ${error_message} </div> <div class=\"row\"> <div class=\"label\"> エラー値</div> ${error_value} </div> </div>"
 
 
 #~ msgid ""
-#~ "<h1>Our apologies...</h1> <p> ...but the item you requested does not exist "
-#~ "on this server or cannot be served. </p> <p> Please double check the web "
-#~ "address or use the search function on this page to find what you are looking "
-#~ "for. </p> <p> If you know you have the correct web address but are "
-#~ "encountering an error, please send a mail to the administrator of this site. "
-#~ "</p> ${mail_admin}. <p> Thank you. </p> <code> 404 Not Found </code>"
-#~ msgstr "<h1>Nossas desculpas...</h1> <p> ...mas o item requisitado n�o parece existir nesse servidor, ou n�o pode ser servido. </p> <p> Por favor verifique novamente o endere�o web ou use a fun��o de busca nesta p�gina para encontrar o que procura. </p> <p> Se voc� tem certeza do endere�o web correto mas est� encontrando um erro, por favor envie uma mensagem para o administrador deste site. </p> ${mail_admin}. <p> Nossos agradecimentos. </p> <code> 404 N�o Encontrado </code>"
+#~ "A local role is a way of allowing other users into some or all of "
+#~ "your folders. These users can edit items, publish them - et cetera, "
+#~ "depending on what permissions you give them."
+#~ msgstr "ローカルロールは、他のユーザに自分のフォルダへの部分的 又は完全なアクセス権を与える方法です。ロールを割り当てられたユーザは、あなたの設定次第で アイテムの編集や一般公開etcができます。"
 
 
 #~ msgid ""
-#~ "<h1>Site error</h1> <p> This site encountered an error trying to fulfill "
-#~ "your request. The errors were: </p> <div class=\"group\"> <span class="
-#~ "\"legend\">Error Details</span> <div class=\"row\"> <div class=\"label\"> "
-#~ "Error Type </div> ${error_type} </div> <div class=\"row\"> <div class=\"label"
-#~ "\"> Error Message </div> ${error_message} </div> <div class=\"row\"> <div "
-#~ "class=\"label\"> Error Value </div> ${error_value} </div> </div>"
-#~ msgstr "<h1>Ooooops. Erro no site :)</h1> <p> Este site encontrou erros tentando responder � sua requisi��o. Os erros foram: </p> <div class=\"group\"> <span class=\"legend\">Detalhes do Erro</span> <div class=\"row\"> <div class=\"label\"> Tipo de Erro </div> ${error_type} </div> <div class=\"row\"> <div class=\"label\"> Mensagem de Erro </div> ${error_message} </div> <div class=\"row\"> <div class=\"label\"> Valor do Erro</div> ${error_value} </div> </div>"
-
-
-#~ msgid ""
-#~ "A local role is a way of allowing other users into some or all of your "
-#~ "folders. These users can edit items, publish them - et cetera, depending on "
-#~ "what permissions you give them."
-#~ msgstr "O papel local � uma maneira de permitir que outros usu�rios entrem em algumas ou todas as suas pastas. Os usu�rios podem editar itens, public�-los, etc, dependendo das permiss�es que voc� os deu."
-
-
-#~ msgid ""
-#~ "A news item is a small piece of news that is published on the front page. "
-#~ "Add the relevant details below, and press \"Save\"."
-#~ msgstr "Uma not�cia � um pequeno peda�o de informa��o que � publicado na pagina central. Coloque os detalhes relevantes abaixo e clique em \"Salvar\"."
-
-
-#~ msgid ""
-#~ "An item's status (also called its review state) determines who can see it. A "
-#~ "<strong>private</strong> item can only be viewed by its Owner and by the "
-#~ "site management. Only <strong>published</strong> items are available to the "
-#~ "general member base and anonymous visitors. To make an item published, it "
-#~ "has to be reviewed by one of the site's Reviewers. You can request that an "
-#~ "item be reviewed by <strong>sumbitting it for review</strong>. <br /> "
-#~ "Another way to control the visibility of an item is with its "
-#~ "<strong>effective date</strong>. An item is not publicly available before "
-#~ "its effective date, <em>even if its status is <strong>published</strong></"
-#~ "em>."
-#~ msgstr "A situa��o de um item determina quem pode v�-lo. Um item <strong>privado</strong> s� pode ser visto pelo seu Dono e pela ger�ncia do site. Apenas itens <strong>publicados</strong> est�o dispon�veis para todos os usu�rios e visitantes an�nimos. Para publicar um item, ele deve ser revisado por um dos Revisores do site. Voc� pode pedir que um item seja revisado <strong>submetendo-o � revis�o</strong>. <br />Outra forma de controlar a visibilidade de um item � controlar sua <strong>data de pubica��o</strong>. Um item n�o est� publicamente dispon�vel antes de sua data de publica��o, <em>mesmo se sua situa��o for <strong>publicado</strong></em> "
+#~ "An item's status (also called its review state) determines who can "
+#~ "see it. A <strong>private</strong> item can only be viewed by its "
+#~ "Owner and by the site management. Only <strong>published</strong> "
+#~ "items are available to the general member base and anonymous "
+#~ "visitors. To make an item published, it has to be reviewed by one of "
+#~ "the site's Reviewers. You can request that an item be reviewed by "
+#~ "<strong>sumbitting it for review</strong>. <br /> Another way to "
+#~ "control the visibility of an item is with its <strong>effective "
+#~ "date</strong>. An item is not publicly available before its "
+#~ "effective date, <em>even if its status is <strong>published</"
+#~ "strong></em>."
+#~ msgstr "アイテムのステータスは、誰がこのアイテムを見ることができるのかによって決まります。<strong>プライベート</strong>のアイテムは、その所有者とサイト管理者だけが見ることができます。<strong>一般公開</strong>されたアイテムのみがと一般メンバー匿名のゲストに公開されます。一般公開するためには、アイテムをこのサイトの校閲者のうちの１人にチェックしてもらわねばなりません。チェックを依頼する際は、<strong>校閲に提出</strong>をクリックしてください。<br />アイテムの公開度をコントロールするもうひとつの方法は、アイテムの <strong>有効年月日</strong>です。この有効年月日以前には、<em>たとえステータスが<strong>一般公開</strong>に設定されていたとしても、</em>アイテムは一般公開されません。"
 
 
 #~ msgid "Best Regards from the"
-#~ msgstr "Os melhores votos do"
-
-
-#~ msgid "Blog"
-#~ msgstr "Blog"
-
-
-#~ msgid "Bug"
-#~ msgstr "Bug"
-
-
-#~ msgid "Bug+solution"
-#~ msgstr "Bug+solu��o"
-
-
-#~ msgid ""
-#~ "Change this item's metadata using the form below. Remember, metadata is "
-#~ "powerful - it enables us to do lots of useful categorization. So fill in the "
-#~ "fields as concisely as possible, and leave the ones you don't know blank."
-#~ msgstr "Mude os metadados do item usando o formul�rio abaixo. Lembre-se de que os metadados s�o um recurso poderoso - eles nos permitem fazer montes de categoriza��es �teis. Por isso preencha os campos da forma mais concisa poss�vel, e deixe os que voc� nao conhece em branco."
-
-
-#~ msgid "Critical"
-#~ msgstr "Cr�tica"
+#~ msgstr "敬具"
 
 
 #~ msgid "Currently assigned local roles in folder"
-#~ msgstr "Pap�is locais delegados na pasta"
-
-
-#~ msgid "Description:"
-#~ msgstr "Descri��o:"
-
-
-#~ msgid "Doc"
-#~ msgstr "Documento"
+#~ msgstr "現在フォルダに割り当てられているロール"
 
 
 #~ msgid "Don't panic! :)"
-#~ msgstr "N�o entre em p�nico :-)"
-
-
-#~ msgid "Edit News item"
-#~ msgstr "Editar Not�cia"
-
-
-#~ msgid "Feature"
-#~ msgstr "Recurso"
-
-
-#~ msgid "Feature+solution"
-#~ msgstr "Recurso+solu��o"
-
-
-#~ msgid "Followup"
-#~ msgstr "Retorno"
-
-
-#~ msgid "From (ID)"
-#~ msgstr "Enviado por (ID)"
-
-
-#~ msgid "From:"
-#~ msgstr "Enviado por:"
+#~ msgstr "あわてないで! (^^)"
 
 
 #~ msgid "Generate and email members' initial password"
-#~ msgstr "Gerar e enviar por email a senha inicial dos membros"
+#~ msgstr "メンバーのパスワードを自動的に生成してメールで送る"
 
 
 #~ msgid "Here is a list of the members that are visible."
-#~ msgstr "Essa � uma lista dos membros vis�veis"
-
-
-#~ msgid "Home page area that contains the items created and collected by ${name}"
-#~ msgstr "Esta pasta cont�m v�rios items criados e colecionados por ${name}"
-
-
-#~ msgid "ID"
-#~ msgstr "ID"
+#~ msgstr "表示できるメンバーのリストです。"
 
 
 #~ msgid ""
-#~ "If this will not work for you (for example, if you forgot your member name "
-#~ "or didn't enter your email address) send an email to"
-#~ msgstr "Se isto n�o funcionar para voc� (por exemplo, se voc� esqueceu seu nome de usu�rio ou n�o preencheu seu endere�o de email) envie um email para"
+#~ "Home page area that contains the items created and collected by "
+#~ "${name}"
+#~ msgstr "${name}が作成･収集したコンテンツを持つホームページ領域"
 
 
 #~ msgid ""
-#~ "If you do not have an account here, head over to the <a href=\"join_form"
-#~ "\">registration form</a> to become a member."
-#~ msgstr "Se voc� nao possui uma conta aqui, preencha o formul�rio de registro para se tornar um membro."
+#~ "If this will not work for you (for example, if you forgot your "
+#~ "member name or didn't enter your email address) send an email to"
+#~ msgstr "ご自分のユーザ名を忘れた、又は正しいメールアドレスを入力しなかった等の理由で上記の方法がうまくいかない場合は、こちらまでメールしてください: "
 
 
 #~ msgid ""
-#~ "If you do not have an account here, head over to the registration form to "
-#~ "become a member."
-#~ msgstr "Se voc� nao possui uma conta aqui, preencha o formul�rio de registro para se tornar um membro."
+#~ "If you do not have an account here, head over to the <a href="
+#~ "\"join_form\">registration form</a> to become a member."
+#~ msgstr "もしここにアカウントをお持ちでない場合は、<a href=\"join_form\">登録フォーム</a> にてメンバー登録を行ってください。"
 
 
-#~ msgid "Importance:"
-#~ msgstr "Import�ncia"
-
-
-#~ msgid "Issue ${id} of ${collector_link}"
-#~ msgstr "Tarefa ${id} de ${collector_link}\""
+#~ msgid ""
+#~ "If you do not have an account here, head over to the registration "
+#~ "form to become a member." 
+#~ msgstr "もしここにアカウントをお持ちでない場合は、登録フォームにてメンバー登録を行ってください。"
 
 
 #~ msgid "Join"
-#~ msgstr "Criar conta"
+#~ msgstr "加入する"
 
 
 #~ msgid ""
-#~ "Just enter your username below, click <strong>Mail me my password</strong>, "
-#~ "and your password will be mailed to you if you gave a valid email address "
-#~ "when you registered."
-#~ msgstr "Digite seu nome de usu�rio abaixo, clique <strong>Envie-me minha senha</strong>, e sua senha ser� enviada por email para voc� se voc� informou um email v�lido quando se registrou."
+#~ "Just enter your username below, click <strong>Mail me my password</"
+#~ "strong>, and your password will be mailed to you if you gave a valid "
+#~ "email address when you registered."
+#~ msgstr "あなたのユーザ名を下欄に記入したうえで、<strong>パスワードの送信</strong>をクリックしてください。登録時に記入したメールアドレスが有効であれば、あなたのパスワードがメールで送信されます。"
 
 
 #~ msgid ""
-#~ "Local roles are ideal in cooperation projects, and as every item has a "
-#~ "history and an undo option, it's easy to keep track of the changes."
-#~ msgstr "Pap�is locais s�o ideais em projetos cooperativos, e, como todo item tem uma op��o hist�rico e desfazer, � f�cil controlar as mudan�as."
+#~ "Local roles are ideal in cooperation projects, and as every item has "
+#~ "a history and an undo option, it's easy to keep track of the changes."
+#~ msgstr "ローカルロールは数人参加の共同プロジェクトに最適のコンセプトです。また、どのアイテムも独自の履歴とアンドゥオプションを持つため、変更の経過が簡単に把握できます。"
 
 
 #~ msgid "Log in"
-#~ msgstr "Entrar"
+#~ msgstr "ログイン"
+
+
+#~ msgid "Log out"
+#~ msgstr "ログアウト"
 
 
 #~ msgid "Login"
-#~ msgstr "Entrar"
-
-
-#~ msgid "Low"
-#~ msgstr "Baixa"
+#~ msgstr "ログイン"
 
 
 #~ msgid ""
-#~ "Make sure to enable cookies in your web browser. Don't forget to logout or "
-#~ "exit your browser when you're done."
-#~ msgstr "Tenha certeza de que seu web browser permite cookies. N�o esque�a de sair do sistema ou fechar o browser, assim que terminar."
-
-
-#~ msgid "Medium"
-#~ msgstr "M�dia"
+#~ "Make sure to enable cookies in your web browser. Don't forget to "
+#~ "logout or exit your browser when you're done."
+#~ msgstr "ブラウザでクッキーを有効にしてください。作業が終了した後、忘れずにログアウトして、ブラウザを終了してください。"
 
 
 #~ msgid "Member Preferences"
-#~ msgstr "Prefer�ncias"
+#~ msgstr "メンバーの個人設定"
 
 
 #~ msgid "My Stuff"
-#~ msgstr "Meus Documentos"
+#~ msgstr "マイ コンテンツ"
 
 
 #~ msgid "My stuff"
-#~ msgstr "Meus documentos"
-
-
-#~ msgid "New"
-#~ msgstr "Novo"
-
-
-#~ msgid "New User?"
-#~ msgstr "Novo Usu�rio:"
-
-
-#~ msgid "News Details"
-#~ msgstr "Detalhes da Not�cia"
+#~ msgstr "マイ コンテンツ"
 
 
 #~ msgid "No Results were Found"
-#~ msgstr "N�o foram encontrados resultados!"
-
-
-#~ msgid ""
-#~ "No problem, <a href=\"mail_password_form\">click here</a> to have it mailed "
-#~ "to you."
-#~ msgstr "Sem problema, <a href=\"mail_password_form\">clique aqui</a> e n�s a enviamos."
+#~ msgstr "該当する検索結果が見つかりませんでした"
 
 
 #~ msgid "No problem, click here to have it mailed to you."
-#~ msgstr "Sem problema. Clique aqui para t�-la enviada para voc�."
+#~ msgstr "大丈夫、ここをクリックすればメールで送信してもらえます。"
 
 
 #~ msgid "Password:"
-#~ msgstr "Senha:"
+#~ msgstr "パスワード"
 
 
 #~ msgid "Paste"
-#~ msgstr "Colar"
-
-
-#~ msgid "Pending"
-#~ msgstr "Pendente"
+#~ msgstr "貼り付け"
 
 
 #~ msgid "Plone setup"
-#~ msgstr "Configura��o do Plone"
+#~ msgstr "Plone設定"
 
 
 #~ msgid ""
-#~ "Remember that you can use the quick search anytime, it's normally good "
-#~ "enough, this search form is just if you want to be more specific."
-#~ msgstr "Lembre-se que voc� pode usar a busca r�pida a qualquer momento, e ela � normalmente boa o bastante; este formul�rio de busca � apenas para quando voc� quiser ser mais espec�fico."
-
-
-#~ msgid "Security related:"
-#~ msgstr "Relacionado a seguran�a:"
+#~ "Remember that you can use the quick search anytime, it's normally "
+#~ "good enough, this search form is just if you want to be more "
+#~ "specific."
+#~ msgstr "サイト右上のクイック検索は通常それだけで十分検索でき、いつでもご利用できます。この検索フォームは、検索内容をさらに絞り込みたい場合にご利用ください。"
 
 
 #~ msgid "Short Name"
-#~ msgstr "Nome abreviado"
-
-
-#~ msgid "Status:"
-#~ msgstr "Situa��o"
-
-
-#~ msgid "Test"
-#~ msgstr "Teste"
+#~ msgstr "短いネーム"
 
 
 #~ msgid ""
-#~ "This folder has no visible items. To add content, press the \"Add New Item\" "
-#~ "button, or paste content from another location."
-#~ msgstr "Esta pasta n�o cont�m itens vis�veis. Para adicionar conte�do, clique no bot�o \"Adicionar Novo Item\" ou copie conte�do a partir de outro local."
+#~ "This folder has no visible items. To add content, press the \"Add "
+#~ "New Item\" button, or paste content from another location."
+#~ msgstr "このフォルダには公開されているアイテムがありません。コンテンツを追加するには、\"新しいアイテムを追加する\" ボタンを押すか、他の場所からのコンテンツを貼り付けてください。"
 
 
 #~ msgid ""
-#~ "This information, also referred to as <em>metadata</em> is the collection of "
-#~ "information that is used to categorize an object, assign effectuation dates "
-#~ "and expiration dates, language, and keywords."
-#~ msgstr "Essa informa��o, tamb�m chamada de <em>metadados</em> � a cole��o de informa��es usadas para categorizar um objeto, marcar datas de publica��o e expira��o, linguagem e palavras-chave."
+#~ "This search form enables you to find content on the site by "
+#~ "specifying one or more criteria to be met."
+#~ msgstr "この検索フォームでは、複数の検索基準を特定して、より絞り込んだコンテンツ検索を可能にします。"
 
 
 #~ msgid ""
-#~ "This search form enables you to find content on the site by specifying one "
-#~ "or more criteria to be met."
-#~ msgstr "Este formul�rio de busca permite que voc� encontre conte�do no site especificando um ou mais crit�rios."
-
-
-#~ msgid "Title:"
-#~ msgstr "T�tulo:"
-
-
-#~ msgid ""
-#~ "To give a person a local role in this folder, just search for the person's "
-#~ "name or email address in the form below, and you will be presented with a "
-#~ "page that will show you the options available."
-#~ msgstr "Para delegar um papel local nessa pasta, procure a passoa palo nome ou endere�o de e-mail no formul�rio abaixo e ser� apresentada uma p�gina com as op��es poss�veis. "
-
-
-#~ msgid "Topic/class:"
-#~ msgstr "T�pico/classe:"
-
-
-#~ msgid "Uploads:"
-#~ msgstr "Arquivos anexados"
-
-
-#~ msgid ""
-#~ "Use the issue folder_contents view (if accessible) to change the uploads."
-#~ msgstr "Use a guia \"Conte�do da Pasta\" (se acess�vel) para administrar os anexos."
+#~ "To give a person a local role in this folder, just search for the "
+#~ "person's name or email address in the form below, and you will be "
+#~ "presented with a page that will show you the options available."
+#~ msgstr "あるユーザにこのフォルダへのローカルロールを割り当てるには、まずユーザ名、又はメールアドレスを下記のフォームにて検索します。すると、検索結果と割り当てるロールのオプションが表示されます。"
 
 
 #~ msgid "User Details"
-#~ msgstr "Detalhes do usu�rio"
-
-
-#~ msgid "Version info:"
-#~ msgstr "Informa��o sobre a vers�o:"
+#~ msgstr "ユーザ詳細"
 
 
 #~ #. Author
 #~ msgid "author"
-#~ msgstr "Autor"
+#~ msgstr "著者"
 
 
 #~ #. Return items created by a particular person.
 #~ msgid "author_search_help"
-#~ msgstr "Retorna items criados por uma pessoa."
-
-
-#~ msgid "bug"
-#~ msgstr "bug"
-
-
-#~ msgid "bug+solution"
-#~ msgstr "bug+solu��o"
+#~ msgstr "ある特定のユーザによって作成されたアイテムを検索します。"
 
 
 #~ msgid "change_status_help"
-#~ msgstr "Selecione o novo status para os documentos selecionados."
+#~ msgstr "選択されたコンテンツを新しいステータスに変更します。"
 
 
 #~ #. Re-enter the password. Make sure the passwords are identical.
 #~ msgid "confirm_password_help"
-#~ msgstr "Digite novamente a senha. Certifique-se que as senhas s�o id�nticas."
-
-
-#~ #. ---EXPLICIT ID--- original text follows:
-#~ #. on:
-#~ msgid "creationdate_on"
-#~ msgstr "em"
-
-
-#~ msgid "critical"
-#~ msgstr "cr�tica"
+#~ msgstr "パスワードを再入力してください。同一のパスワードであるように注意してください。"
 
 
 #~ #. Description
 #~ msgid "description"
-#~ msgstr "Descri��o"
-
-
-#~ msgid "doc"
-#~ msgstr "documento"
+#~ msgstr "説明"
 
 
 #~ msgid "effective_date_help"
-#~ msgstr "A data em que o documento vai estar vis�vel. Dessa forma, voc� pode publicar um documento avan�adamente, mas ele n�o estar� visivel antes dessa data. Se nenhuma data for selecionada, o documento estar� dispon�vel (vis�vel) imediatamente."
+#~ msgstr "アイテムが一般公開される日付です。この日付より前にアイテムを一般公開ステータスにしても、実際はこの日付になるまでは他のユーザにはアイテムが見えない状態です。この日付が設定されていない場合は、一般公開が即座に実行されます。"
 
 
 #~ #. E-mail
 #~ msgid "email"
-#~ msgstr "email"
+#~ msgstr "メール"
 
 
 #~ #. Enter your email address. This is necessary in case you lose your password. We respect your privacy, and will not give the address away to any third parties.
 #~ msgid "email_help"
-#~ msgstr "Digite seu endere�o de email. Isto � necess�rio caso voc� esque�a sua senha. N�s respeitamos sua privacidade e n�o iremos divulgar seu endere�o para terceiros."
+#~ msgstr "あなたのメールアドレスを入力してください。これはパスワードの損失の際に必要になります。あなたのプライバシーは尊重され、メールアドレスが第三者の手に渡ることはありません。"
 
 
 #~ msgid "expiration_date_help"
-#~ msgstr "A data em que o documento expira. Esta ir� tornar o documento invis�vel para outros na data informada. Se n�o for informada uma data, o documento nunca ir� expirar."
-
-
-#~ msgid "feature"
-#~ msgstr "recurso"
-
-
-#~ msgid "feature+solution"
-#~ msgstr "recurso+solu��o"
+#~ msgstr "一般公開ステータスが失効となる日付です。この日付以降には、たとえ一般公開ステータスになっていても他のユーザからはアイテムが見えない状態となります。"
 
 
 #~ #. Select whether you want form tooltips to be displayed.
 #~ msgid "formtooltips_help"
-#~ msgstr "Escolha se voc� quer que as dicas sejam mostradas."
+#~ msgstr "ヒントを表示させるか否かを選択してください。"
 
 
 #~ #. Display form tooltips
 #~ msgid "formtooltips_status"
-#~ msgstr "Mostrar dicas"
+#~ msgstr "ヒントを表示する"
 
 
 #~ #. Return items of a specific type.
 #~ msgid "item_type_search_help"
-#~ msgstr "Retornar items de um tipo espec�fico"
+#~ msgstr "特定のアイテムタイプを検索します。"
 
 
 #~ #. Return items matching one or more of these subjects. Multiple words may be found by combining them with <strong>AND</strong> and <strong>OR</strong>.
 #~ msgid "keywords_search_help"
-#~ msgstr "Retorna items que se encaixam em um ou mais destes assuntos. M�ltiplas palavras podem ser buscadas combinando as com <strong>AND</strong> e <strong>OR</strong>."
+#~ msgstr "このうちの１つ又は複数のキーワードにマッチするアイテムを検索します。複数のキーワードはCtrlキーを同時に押すことによって選択できます。"
 
 
 #~ #. Default Language
 #~ msgid "language_help"
-#~ msgstr "Linguagem Padr�o"
+#~ msgstr "デフォルトの言語"
 
 
 #~ #. Select whether you want to be listed on the public membership listing or not. Remember that your Member folder will still be publicly accessible unless you change its security settings, even if you select "unlisted" here.
 #~ msgid "listed_status_help"
-#~ msgstr "Escolha se voc� deseja ser mostrado na lista de p�blica de membros do site. Lembre-se que sua pasta pessoal continuar� acessivel a menos que voc� mude suas configura��es de seguran�a, mesmo que voc� escolha n�o ser listado."
+#~ msgstr "一般公開のメンバー一覧リストにご自分を表示させるか否かを選択してください。ここで「表示しない」を選択しても、メンバーのフォルダはあなたが公開度ステータスを変更しない限り、デフォルトで一般公開されますのでご注意ください。"
 
 
 #~ #. You can enter the strftime format for how dates in the system will be formatted. Refer to strftime formats in C or Python manuals.
 #~ msgid "long_date_format_help"
-#~ msgstr "Voc� pode digitar como as datas do sistema ser�o formatadas usando a nota��o do strftime. Para mais informa��es consulte a documenta��o do strftime no manual do C ou Python."
-
-
-#~ msgid "low"
-#~ msgstr "baixa"
-
-
-#~ msgid "medium"
-#~ msgstr "m�dia"
+#~ msgstr "システムの日付処理を設定するために strftime フォーマットを入力することができます。strftime フォーマットに関しては、C 又は Python のマニュアルをご覧ください。"
 
 
 #~ #. Enter your new e-mail address here, if you want to change it.
 #~ msgid "new_email_help"
-#~ msgstr "Digite seu novo endere�o de email aqui, se voc� quiser modific�-lo."
+#~ msgstr "メールアドレスを変更したい場合は、ここに入力してください。"
 
 
 #~ #. Return items added since you were last logged on, the last week, etc.
 #~ msgid "new_items_since_search_help"
-#~ msgstr "Retornar items adicionados desde sua ultima conex�o, desde a �ltima semana, etc."
+#~ msgstr "あなたの最終ログイン時以来、先週以来 etc、ある時点以来に追加されたアイテムを検索します。"
 
 
 #~ #. Password
 #~ msgid "password"
-#~ msgstr "Senha"
+#~ msgstr "パスワード"
 
 
 #~ #. Selects if the users can choose their initial password or not. It's easier to create bogus accounts if the password is not generated, so if this is a concern, choose "Generate".
 #~ msgid "password_policy_help"
-#~ msgstr "Escolha se os usu�rios poder�o escolher sua senha inicial ou n�o. � mais f�cil criar contas sem utilidade se a senha n�o for gerada automaticamente. Se isso n�o eh uma preocupa��o para voc�, escolha \"Gerar senha automaticamente\"."
+#~ msgstr "ユーザが初期パスワードを選べるか否かを選択してください。パスワードを自動生成しない場合は、簡単に偽のアカウントを作成することができます。これを避けるには「自動生成」を選択してください。"
 
 
 #~ #. This description is made available via syndicated content and elsewhere. It should be fairly brief.
 #~ msgid "portal_description_help"
-#~ msgstr "Esta descri��o ser� disponibilizada via RSS e em outros lugares do site. Deve ser bastante breve."
+#~ msgstr "この説明はシンジケートコンテンツなどを通して利用されます。説明は非常に簡潔でなければなりません。"
 
 
 #~ #. When Plone generates mail, it uses this address as its (apparent) return address.
 #~ msgid "portal_from_address_help"
-#~ msgstr "Quando o Plone envia email, ele usa este endere�o como seu endere�o de retorno, ou seja, o email que ir� receber mensagens caso as pessoas responderem."
+#~ msgstr "Plone がメールを生成する際、このアドレスを返信アドレスとして使用します。"
 
 
 #~ #. When Plone generates mail, it uses this name as its (apparent) sender.
 #~ msgid "portal_from_name_help"
-#~ msgstr "Quando o Plone enviar email, ele usar� este nome como o nome do remetente."
+#~ msgstr "Plone がメールを生成する際、この名前を送信者名として使用します。"
 
 
 #~ #. This is the title of your Plone instance.
 #~ msgid "portal_title_help"
-#~ msgstr "O t�tulo ser� usado como prefixo em todas as p�ginas do portal. "
+#~ msgstr "これがあなたのPlone インスタンスのタイトルです。"
 
 
 #~ #. To add a new portrait, click the <strong>Browse</strong> button and select a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
 #~ msgid "portrait_help"
-#~ msgstr "Para adicionar sua foto, clique no bot�o <strong>Procurar</strong> e selecione uma foto sua. O tamanho recomendado � 75 pixels de largura e 100 pixels de altura."
+#~ msgstr "新しい顔写真を追加するには、<strong>Browse</strong> ボタンをクリックしてあなたの写真を選択してください。推奨サイズは幅 75 ピクセル、高さ 100 ピクセルです。"
 
 
 #~ #. Remember my name.
 #~ msgid "remember"
-#~ msgstr "Lembrar meu nome"
+#~ msgstr "ユーザ名を記憶する"
 
 
 #~ #. Setting the 'Remember my name' option will bake a cookie with your username. When you sign in later, your user name will already be filled in for you.
 #~ msgid "remember_help"
-#~ msgstr "Setando a op��o 'Lembrar meu nome' far� com que o site guarde um cookie com seu nome de usu�rio. Quando voc� retornar ao site mais tarde, seu nome de usu�rio j� estar� preenchido para voc�."
+#~ msgstr "「ユーザ名を記憶する」オプションでは、あなたのユーザ名入りのクッキーが送信されます。再度ログインする際、ユーザ名欄にあなたの名前がすでに入力された状態になります。"
 
 
 #~ #. As a reviewer, you may search for items based on their review state. If you wish to constrain results to items in certain states, select them from this list.
 #~ msgid "review_status_search_help"
-#~ msgstr "Como revisor, voc� pode procurar por items baseado no seu estado. Se voc� deseja restringir o resultado da busca a items em determinados estados, voc� pode selecionar nessa lista."
+#~ msgstr "校閲者として、校閲状態を基準にアイテムを検索する必要がおありでしょう。ある特定の校閲状態にあるアイテムを絞り込み検索したい場合、このリストから選択してください。"
 
 
 #~ #. You can enter the strftime format for how dates in the system will be formatted. Refer to strftime formats in C or Python manuals.
 #~ msgid "short_date_format_help"
-#~ msgstr "Voc� pode digitar como as datas do sistema ser�o formatadas usando a nota��o do strftime. Para mais informa��es consulte a documenta��o do strftime no manual do C ou Python."
+#~ msgstr "システムの日付処理を設定するために strftime フォーマットを入力することができます。strftime フォーマットに関しては、C 又は Python のマニュアルをご覧ください。"
 
 
 #~ #. Skin
 #~ msgid "skin"
-#~ msgstr "Skin"
+#~ msgstr "スキン"
 
 
 #~ #. Here you choose the appearance of the site. Several styles are available, and you can always change it back to the default if you do not like a skin.
 #~ msgid "skin_help"
-#~ msgstr "Escolha a apar�ncia do site. V�rios estilos est�o dispon�veis, e voc� sempre pode voltar ao estilo original caso n�o goste do estilo escolhido."
+#~ msgstr "このサイトの画面外観をここで選択できます。いくつかの異なるスタイルが利用できます。気に入らない場合はいつでもデフォルトに戻すことができます。"
 
 
 #~ #. This is the address of your local SMTP (out-going mail) server. Usually "localhost", unless you use an external server to send mail.
 #~ msgid "smtp_server_help"
-#~ msgstr "Este eh o endere�o de seu servidor local de SMTP (envio de email). Geralmente � usado o endere�o 'localhost', a menos que voc� utilize um servidor externo para enviar seu email."
+#~ msgstr "これはあなたのSMTP (メール送信)サーバのアドレスです。メール送信に外部サーバを使用しない場合、通常はlocalhost です。"
 
 
 #~ msgid "status"
-#~ msgstr "situa��o"
+#~ msgstr "ステータス"
 
 
 #~ msgid "team"
-#~ msgstr "time"
-
-
-#~ msgid "test"
-#~ msgstr "teste"
+#~ msgstr "チーム"
 
 
 #~ #. Text
 #~ msgid "text"
-#~ msgstr "Text"
+#~ msgstr "テキスト"
 
 
 #~ #. Title
 #~ msgid "title"
-#~ msgstr "T�tulo"
+#~ msgstr "タイトル"
 
 
 #~ #. Return items matching this title.
 #~ msgid "title_search_help"
-#~ msgstr "Retornar items que casam com este t�tulo."
+#~ msgstr "このタイトルにマッチするアイテムを検索します。"
 
 
 #~ msgid "to change your password"
-#~ msgstr "para mudar sua senha"
+#~ msgstr "パスワードを変更するには"
 
 
 #~ #. Enter the user name you want, usually something like "jsmith". No spaces or special characters. This is the name you use to sign in.
 #~ msgid "user_name_help"
-#~ msgstr "Digite o nome de usu�rio que voc� deseja utilizar. Geralmente algo como \"jsilva\" ou \"joao_silva\". N�o s�o permitidos caracteres especiais ou espa�os no nome de usu�rio. Este � o nome que voc� ir� utilizar para entrar no sistema."
+#~ msgstr "あなたのご希望のユーザ名を入力してください(例: msasaki)。スペースや特殊文字は使用できません。ユーザ名はログイン時に使われる名前です。"
 
 
 #~ #. Select whether you want ids to be visible when editing contents.
 #~ msgid "visible_ids_help"
-#~ msgstr "Escolha se voc� quer que os ids sejam mostrados quando editando conte�do."
+#~ msgstr "コンテンツの編集中に id が表示されるべきかを選択してください。"
 
 
 #~ #. Display content ids
 #~ msgid "visible_ids_status"
-#~ msgstr "Mostrar os ids do conte�do"
+#~ msgstr "コンテンツの id を表示する"
 
 
 #~ #. WYSIWYG editor
 #~ msgid "wysiwyg_editor"
-#~ msgstr "Editor WYSIWYG"
+#~ msgstr "WYSIWYG エディタ"
 
 
 #~ #. Select the editor that you would like to use for editing content more easily. What You See Is What You Get editors often have browser requirements.
 #~ msgid "wysiwyg_editor_help"
-#~ msgstr "Selecione o editor que voc� gostaria de usar para editar conte�do de forma mais simplificada. Editores 'What You See Is What You Get' geralmente possuem depend�ncias de uma vers�o espec�fica de browser."
+#~ msgstr "コンテンツをより容易に編集したい場合にこのエディタを選択してください。WYSIWYG エディタ はしばしば、特定のブラウザバージョンを必要とします。"
 
 
-#~ msgid "<h1> Add new issue to ${collector_title} </h1> <div class=\"description\"> Use this form to add your issue to the Collector. Please provide as many details as possible. </div>"
-#~ msgstr "<h1> Adicionar nova tarefa ${collector_title} </h1> <div class=\"description\"> Use esse formul�rio para adicionar sua tarefa ao Coletor. Por favor d� tantos detalhes quanto for poss�vel. </div>"
+#~ msgid "Blog"
 
 
-#~ #. here
-#~ msgid "click_here"
-#~ msgstr "aqui"
+#~ msgid "No problem, <a href=\"mail_password_form\">click here</a> to have it mailed to you."
+#~ msgstr "大丈夫、<a href=\"mail_password_form\">ここをクリック</a>すればパスワードがあなたのメールアドレスに送信されます。"
 
 
-#~ msgid "Id of upload (optional)"
-#~ msgstr "Id do anexo (opcional)"
+#~ msgid "Edit News item"
+#~ msgstr "ニュースアイテムを編集する"
 
 
-#~ msgid "Transcript for Issue ${id} (${num} ${entry_or_entries})"
-#~ msgstr "Relat�rio da Tarefa ${id} (${num} ${entry_or_entries})"
+#~ msgid "A news item is a small piece of news that is published on the front page. Add the relevant details below, and press \"Save\"."
+#~ msgstr "ニュースアイテムとは、フロントページで公開されるニュースのことです。下欄に関連事項を入力したうえで、\"保存\"をクリックしてください。"
+
+
+#~ msgid "News Details"
+#~ msgstr "ニュースの詳細"
+
+
+#~ msgid "&nbsp;"
+#~ msgstr "&nbsp;"
+
+
+#~ msgid "This information, also referred to as <em>metadata</em> is the collection of information that is used to categorize an object, assign effectuation dates and expiration dates, language, and keywords."
+#~ msgstr "この情報は<em>メタデータ</em>とも呼ばれるもので、オブジェクトの分類、又は有効･失効年月日や言語、キーワードの割り当てに利用される情報の集大成です。 "
+
+
+#~ msgid "Change this item's metadata using the form below. Remember, metadata is powerful - it enables us to do lots of useful categorization. So fill in the fields as concisely as possible, and leave the ones you don't know blank."
+#~ msgstr "下のフォームにてこのアイテムのメタデータを変更してください。メタデータは多くの有用な分類を可能にする、強力なツールです。ですから、入力の際はできる限り正確に記入し、わからない部分には何も記入しないでください。"
 
 
