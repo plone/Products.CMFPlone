@@ -30,7 +30,7 @@ body {
     color: &dtml-mainFontColor;;
     margin: 0;
     padding: 0;
-/* These work in IE only, change the look of the scrollbar + textareas */
+/* These work in IE only, changes the look of the scrollbar + textareas */
 
     scrollbar-base-color: &dtml-mainTabBackground;;
     scrollbar-highlight-color: &dtml-mainTabBackground;;

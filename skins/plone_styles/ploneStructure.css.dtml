@@ -34,7 +34,6 @@ div.top {
     background: &dtml-topBackground;;
     margin: &dtml-topMargin;;
     padding: &dtml-topPadding;;
-    width: 100%;
 }
 
 .logo {

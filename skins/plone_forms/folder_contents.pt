@@ -40,7 +40,7 @@
         
             <div class="title"> 
     
-                <img src="folder.gif" alt="Folder" tal:attributes="src string:$portal_url/folder.gif" /> 
+                <img tal:replace="structure here/folder.gif" /> 
 
                 <span class="folderName" tal:condition="python:
 user.getUserName()==here.getId()" i18n:translate="">
@@ -66,11 +66,11 @@ user.getUserName()==here.getId()" i18n:translate="">
             </p>						    
             </metal:block>
      
-            <span tal:condition="python:user.getUserName()==here.getId()" 
+            <p tal:condition="python:user.getUserName()==here.getId()" 
                   i18n:translate="">
 Home page area that contains the items created and collected by <span tal:replace="python:user.getUserName()" i18n:name="name">User</span>
  
-            </span> 
+            </p> 
 
             <p tal:content="structure here/Description"
                tal:condition="python:not user.getUserName()==here.getId()">
@@ -160,7 +160,7 @@ Home page area that contains the items created and collected by <span tal:replac
                                                  onClick="toggleSelect(this); return false;"
                                                  /></th>
                         <th><span tal:omit-tag=""
-i18n:translate="">Title</span> <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+i18n:translate="">Title</span> <img tal:replace="structure here/arrowUp.gif" /></th>
                         <th i18n:translate="">Type </th>
                         <th i18n:translate="">Size </th>
                         <th i18n:translate="">Modified </th>
@@ -189,22 +189,16 @@ i18n:translate="">Title</span> <img src="arrowUp.gif" alt="Sort" height="6" widt
                                         url python:test(action, item.absolute_url()+'/'+action, item.absolute_url()+'/folder_contents');"> 
     
                             <a href="#" tal:attributes="href url">
-                                <img src="" alt="Folder" border="0"
-                                     height="16"
-                                     width="16"
-                                     tal:attributes="src string:$portal_url/${item/getIcon};
-                                                     alt item/Title;"
-                             />&nbsp;<span tal:replace="item/title_or_id">Title</span>
+                                <img tal:replace="structure python:path('here/%s' % item.getIcon())" 
+                                />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
                             <tal:block tal:condition="python:test(here.portal_url.getPortalObject().getProperty('ext_editor') and item.hasActionId('external_edit'), 1,0)">
 
                             <a href="absolute_url/external_edit"
-                               tal:attributes="href string:${item/absolute_url}/external_edit">
+                               tal:attributes="href string:${item/absolute_url}/external_edit"
+                               tal:define="edit here/edit.gif">
                                
-                               <img src="" 
-                                    border="0"
-                                    alt="External Editor"
-                                    tal:attributes="src string:${here/portal_url}/edit.gif" border="0" />
+                               <img tal:replace="structure python:edit.tag(title='Edit with External Editor')" />
                              </a>
                             </tal:block>
     

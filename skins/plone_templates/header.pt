@@ -101,8 +101,10 @@
                 </form>
             </div>
 
-            <a href="#" tal:attributes="href portal_url" >
-                <img src="" class="logo" alt="Plone" border="0" tal:attributes="src string:$portal_url/logo.png" />
+            <a href="/"
+               tal:attributes="href portal_url" 
+               tal:define="logo here/logo.png">
+                <img tal:replace="structure python:logo.tag(css_class='logo')" />
             </a>
 
 
@@ -142,10 +144,7 @@
             <a href=""
                tal:condition="not:here/portal_membership/isAnonymousUser"
                tal:attributes="href string:${here/portal_membership/getHomeUrl}/folder_contents">
-                <img src="" 
-                     alt="User" 
-                     border="0" 
-                     tal:attributes="src string:$portal_url/user.gif" />
+                <img tal:replace="structure here/user.gif" />
             
                 <span tal:replace="user/getUserName">john</span>
             </a>
@@ -155,10 +154,7 @@
             <metal:block tal:repeat="action python:display_actions">
             <a href=""
                tal:attributes="href action/url">
-                <img src="" 
-                     alt="&gt;"
-                     border="0"
-                     tal:attributes="src string:$portal_url/linkOpaque.gif" />
+                <img tal:replace="structure here/linkOpaque.gif" />
                 
                 <span tal:replace="action/name" i18n:translate="">My&nbsp;Stuff</span>
             </a>
@@ -175,14 +171,10 @@
 
             <a href="#"
                tal:condition="not: here/portal_membership/isAnonymousUser"
-               tal:attributes="href string:${here/absolute_url}/addtoFavorites">
+               tal:attributes="href string:${here/absolute_url}/addtoFavorites"
+               tal:define="addFavorite here/addFavorite.gif">
 
-                <img class="addFavorite" 
-                     src="dummy.gif" 
-                     alt="Add this location to My Favorites"
-                     title="Add this location to My Favorites" 
-                     border="0"
-                     tal:attributes="src string:$portal_url/addFavorite.gif" />
+                <img tal:replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')" />
             </a>
 	    <span tal:omit-tag="" i18n:translate="">You are here:</span>
 	    
@@ -214,7 +206,7 @@
          tal:define="portal_message request/portal_status_message | nothing"
          tal:condition="portal_message"> 
 
-        <img src="" alt="Portal information" tal:attributes="src string:$portal_url/info.gif" />
+        <img tal:replace="structure here/info.gif" />
 
         <strong tal:content="portal_message">Object changed.</strong> 
     </div>
