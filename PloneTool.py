@@ -57,7 +57,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     toolicon = 'skins/plone_images/site_icon.gif'
     security = ClassSecurityInfo()
     plone_tool = 1
-    field_prefix = 'field_' # Formulator prefixes for forms
+    field_prefix = 'field_' # Prefix for forms fields!?
 
     __implements__ = (PloneBaseTool.__implements__,
                       SimpleItem.__implements__, )
@@ -374,26 +374,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         """ sets the current skin """
         portal = getToolByName(self, 'portal_url').getPortalObject()
         portal._v_skindata=(self.REQUEST, self.getSkinByName(skin_name), {} )
-
-    #XXX deprecated methods
-    security.declarePublic('getNextPageFor')
-    def getNextPageFor(self, context, action, status, **kwargs):
-        log( 'Plone Tool Deprecation', action + \
-             ' has called plone_utils.getNextPageFor()' + \
-             ' which has been deprecated. ' + \
-             'Use portal_navigation.getNextRequestFor() instead.', WARNING)
-
-        nav_tool=getToolByName(self, 'portal_navigation')
-        return nav_tool.getNextPageFor(context, action, status, **kwargs)
-
-    security.declarePublic('getNextRequestFor')
-    def getNextRequestFor(self, context, action, status, **kwargs):
-        log( 'Plone Tool Deprecation', action + \
-             ' has called plone_utils.getNextPageFor()' + \
-             ' which has been deprecated. ' + \
-             'Use portal_navigation.getNextRequestFor() instead.', WARNING)
-        nav_tool=getToolByName(self, 'portal_navigation')
-        return nav_tool.getNextRequestFor(context, action, status, **kwargs)
 
     security.declareProtected(CMFCorePermissions.ManagePortal,
                               'changeOwnershipOf')

@@ -121,6 +121,22 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         endswith = ' alt="" title="" longdesc="" height="16" width="16" />'
         self.assertEqual(self.folder.foo.tag()[-len(endswith):], endswith)
 
+    def testNoPortalFormTool(self):
+        # portal_form should have been removed
+        self.failIf('portal_form' in self.portal.objectIds())
+
+    def testNoPortalNavigationTool(self):
+        # portal_navigation should have been removed
+        self.failIf('portal_navigation' in self.portal.objectIds())
+
+    def testNoFormProperties(self):
+        # form_properties should have been removed
+        self.failIf('form_properties' in self.portal.portal_properties.objectIds())
+
+    def testNoNavigationProperties(self):
+        # navigation_properties should have been removed
+        self.failIf('navigation_properties' in self.portal.portal_properties.objectIds())
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 

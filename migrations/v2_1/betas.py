@@ -1,19 +1,24 @@
-from Products.CMFCore import CMFCorePermissions
-from AccessControl import Permissions
-from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.Expression import Expression
 from Acquisition import aq_base
-from Products.CMFPlone.migrations.migration_util import saveCloneActions, cleanupSkinPath
-import zLOG
-from StringIO import StringIO
+
 
 def two0x_beta1(portal):
     """2.0.x -> 2.1-beta1
     """
     out = []
+
+    # Install SecureMailHost
     replaceMailHost(portal, out)
-    
+
+    # Remove legacy tools
+    deleteTool(portal, out, 'portal_form')
+    deleteTool(portal, out, 'portal_navigation')
+
+    # Remove old properties
+    deletePropertySheet(portal, out, 'form_properties')
+    deletePropertySheet(portal, out, 'navigation_properties')
+
     return out
+
 
 def replaceMailHost(portal, out):
     """replaces the mailhost with a secure mail host
@@ -23,9 +28,25 @@ def replaceMailHost(portal, out):
     title = oldmh.title
     smtp_host = oldmh.smtp_host
     smtp_port = oldmh.smtp_port
-    out.append('Removing old MailHost')
     portal.manage_delObjects([id])
-    
-    out.append('Adding new MailHost(SecureMailHost): %s:%s' % (smtp_host, smtp_port))
+    out.append('Removed old MailHost')
+
     addMailhost = portal.manage_addProduct['SecureMailHost'].manage_addMailHost
     addMailhost(id, title=title, smtp_host=smtp_host, smtp_port=smtp_port)
+    out.append('Added new MailHost (SecureMailHost): %s:%s' % (smtp_host, smtp_port))
+
+
+def deleteTool(portal, out, tool_name):
+    """Deletes a tool."""
+    if hasattr(aq_base(portal), tool_name):
+        portal._delObject(tool_name)
+    out.append('Deleted %s tool.' % tool_name)
+
+
+def deletePropertySheet(portal, out, sheet_name):
+    """Deletes a property sheet from portal_properties."""
+    proptool = portal.portal_properties
+    if hasattr(aq_base(proptool), sheet_name):
+        proptool._delObject(sheet_name)
+    out.append('Deleted %s property sheet.' % sheet_name)
+

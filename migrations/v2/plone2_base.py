@@ -39,11 +39,11 @@ def make_plone(portal):
     folder_wf = wf_tool['folder_workflow']
     folder_wf.states.visible.permission_roles[ListFolderContents]=('Manager', 'Owner', 'Member')
 
-    addPortalFormValidators(portal)
+    #addPortalFormValidators(portal)    # Gone since 2.1
     addCatalogIndexes(portal)
     addCatalogLexicon(portal)
     addSiteProperties(portal,portal)
-    addNavigationProperties(portal)
+    #addNavigationProperties(portal)    # Gone since 2.1
     extendSiteProperties(portal)
     extendMemberdata(portal)
     addDefaultPloneSkins(portal)
