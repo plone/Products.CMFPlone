@@ -152,7 +152,7 @@
                            confirm request/confirm | nothing;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
-            <label i18n:translate="label_confirm_password">Confirm Password</label>
+            <label i18n:translate="label_confirm_password">Confirm password</label>
 
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title"
