@@ -64,7 +64,6 @@ div.row {
     width: 94%;
     padding: 1em 0em;
 }
-
 .legend {
     position : relative;
     top: -1.8em;
@@ -156,6 +155,10 @@ table.listing a:hover {
     text-decoration: &dtml-listingLinkHover;;
 }
 
+table.listing img{
+	vertical-align: middle;
+}
+
 table.box {
     /* The Plone Box(tm) (Navigation, Related etc) */
     background: transparent;
@@ -198,6 +201,10 @@ table.box td {
     padding: 1em;
 }
 
+table.box img{
+	vertical-align: middle;
+}
+
 div.boxDetails {
     /*the line that contains the date for news and other info */
     text-align: right;
@@ -210,7 +217,7 @@ table.box a.comment {
     /* special link for comments - default behavior is to display the discussion icon next to the link */
     background-image: url(<dtml-var "portal_url() + '/'+ portal_types.getTypeInfo('Discussion Item').getIcon()">); 
     background-repeat: no-repeat;
-    background-position: 0px 0px;
+    background-position: 0px -2px;
     padding: 0em 0em 0.5em 2em;
     margin: 0;
     display: block;
