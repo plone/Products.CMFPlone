@@ -26,7 +26,7 @@
 <div metal:define-macro="content_actions"
      i18n:domain="plone"
      class="contentActions"
-     tal:define="content_actions actions/object_actions;">
+     tal:define="content_actions actions/object_actions|nothing;">
 
     <ul class="contentActions">
     <tal:contentactions repeat="action content_actions">
