@@ -12,7 +12,7 @@
        i18n:domain="plone">
 
   <head>
-    <title>Calendar</title>
+    <title i18n:translate="label_calendar">Calendar</title>
 
     <script type="text/javascript" language="javascript" 
             tal:content="python: here.getPopupScript(inputname=inputname, formname=formname)">
