@@ -13,19 +13,15 @@
 
 <div metal:fill-slot="main"
      tal:define="standalone python:1;
-                 folder_contents python:here.getFolderContents(suppressHiddenFiles=1);
                  myfolder python: here_url==mtool.getHomeUrl();
-                 contentTypes python: here.getAllowedTypes(); 
-                 num_types python: len(contentTypes)">
+                 num_types python: len(allowedSortedContentTypes)">
                  
     <form name="folderContentsForm"
           method="post"
           action="folder_object"
           tal:attributes="action here_url"
           tal:define="b_start python:request.get('b_start', 0);
-                      results folder_contents;
-                      Batch python:modules['Products.CMFPlone'].Batch;
-                      batch python:Batch(results, 100, int(b_start), orphan=0);">
+                      batch python:here.batchedFolderContents(suppressHiddenFiles=1);">
 
 
         <h1>
@@ -46,7 +42,7 @@
            Description
         </p>
         
-        <p tal:condition="not: folder_contents"
+        <p tal:condition="not: batch"
            i18n:translate="description_no_visible_items_add_paste">
         This folder has no visible items. To add content, press the
         add button, or paste content from another location.
@@ -74,7 +70,8 @@
             </tal:contentTypes>
 
             <div tal:condition="standalone|nothing"
-                tal:define="types contentTypes">
+                 tal:define="types allowedSortedContentTypes;
+                             filterOut here/getNotAddableTypes;">
 
                 <!-- Add Item pulldown -->
                 <label for="select_add_item">
@@ -91,6 +88,7 @@
                     <metal:block tal:repeat="ctype types">
                     <option value="Document"
                             tal:define="Id ctype/getId"
+                            tal:condition="python:Id not in filterOut"
                             tal:attributes="value ctype/getId"
                             tal:content="ctype/Title"
                             i18n:translate="">Document</option>
@@ -124,7 +122,7 @@
 
                 <thead>
 
-                    <metal:block tal:condition="folder_contents|not:standalone|nothing">
+                    <metal:block tal:condition="batch|not:standalone|nothing">
                     <tr>
                         <th class="nosort"><input class="noborder"
                                                  type="checkbox"
@@ -164,7 +162,7 @@
                     </metal:block>
                 </thead>
 
-                <metal:block tal:condition="folder_contents|not:standalone|nothing">
+                <metal:block tal:condition="batch|not:standalone|nothing">
                 <tbody tal:define="getRelativeContentURL nocall:utool/getRelativeContentURL">
                 <metal:block tal:repeat="item batch">
                     <tr tal:define="oddrow repeat/item/odd;
@@ -263,7 +261,7 @@
                    name=""
                    value=""
                    tabindex=""
-                   tal:condition="python:folder_contents or (here.cb_dataValid and button['id'] == 'paste')"
+                   tal:condition="python:batch or (here.cb_dataValid and button['id'] == 'paste')"
                    i18n:attributes="value"
                    tal:attributes="value button/name;
                                    name button/url;
