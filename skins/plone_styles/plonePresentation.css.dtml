@@ -40,7 +40,7 @@ body {
     margin: 0 !important;
 }
 
-h1 {
+h1, h2 {
     font-size: 50px !important;
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;
@@ -58,10 +58,6 @@ h1.documentFirstHeading {
     /* Trick to avoid getting an initial blank page */
     page-break-before: avoid; 
 } 
-
-h2 {
-    font-size: 40px !important;	
-}
 
 dl, ol, ul {
     font-size: 40px !important;
