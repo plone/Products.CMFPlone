@@ -155,12 +155,12 @@ table.columns td.main {
     vertical-align: top;
     padding: 2em 2em 1em 1em;
     margin: 0;
-    width: &dtml-mainColumnWidth;;
 }
 
 table.columns td.right {
     vertical-align: top;
     width: &dtml-rightColumnWidth;;
+    padding: 2em 2em 1em 0em;
 }
 
 div.contentTabs {

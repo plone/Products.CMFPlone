@@ -12,84 +12,91 @@
 Header stuff
 </div>
 
-<div style="float:left">
-    <div metal:use-macro="here/ui_slots/topic_navigator_slot/macros/CMFTopic_navigation_box">
-    Navigation box
-    </div>
 
-    <div metal:use-macro="here/ui_slots/news_slot/macros/newsBox">
-    News box
-    </div>
-</div>
+<table class="columns">
 
-<div style="float:right">
-    <div metal:use-macro="here/ui_slots/login_slot/macros/loginBox">
-    Login box
-    </div>
+    <tbody>
+        <tr>
+            <td class="left">
+                <div metal:use-macro="here/ui_slots/topic_navigator_slot/macros/CMFTopic_navigation_box">
+                Navigation box
+                </div>
 
-    <div metal:use-macro="here/ui_slots/calendar_slot/macros/calendarBox">
-    Calendar box
-    </div>
-</div>
-
+                <div metal:use-macro="here/ui_slots/news_slot/macros/newsBox">
+                News box
+                </div>
+            </td>
             
-<div tal:define="show_border python:here.showEditableBorder();">
+            <td class="main" 
+                tal:define="show_border python:here.showEditableBorder();">
 
-    <metal:block metal:define-slot="super" tal:condition="show_border">
+                <metal:block metal:define-slot="super" tal:condition="show_border">
+                    
+                <div class="contentTabs" metal:define-macro="contentTabs"
+                     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));">
+    
+                    <span tal:define="global obj_actions actions/object;
+                                      global wf_actions actions/workflow;
+                                      global historyForm python:here.getActionUrlById('history', actions['object']);" />
+
+                    <span tal:repeat="action obj_actions">
+                        <a class="" href="" 
+                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"> 
+                            <span tal:replace="action/name" /> 
+                        </a> 
+                    
+                        <span class="netscape4">&middot;</span>
+                    </span>
+    
+    
+                    <a class=""
+                       href="content_status_history"
+                       tal:condition="python:test( (not here.portal_membership.isAnonymousUser and here.getActionUrlById('status history', wf_actions ) or wf_actions ) , 1, 0)"
+                       tal:attributes="href string:${here/absolute_url}/content_status_history;
+                                       class python:test(request.URL0.find('content_status')!=-1, 'selected', 'plain');">
+                       Publishing</a> <span class="netscape4">&middot;</span>
+    
+                </div>
+
+                <div class="contentBar">        
+                &nbsp;
+                </div>    
+            
+                </metal:block>
+            
+                <div class="document"
+                     tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
+
+                    <div metal:use-macro="here/header/macros/portal_message">
+                    Message box
+                    </div>
         
-    <div class="contentTabs" metal:define-macro="contentTabs"
-         tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));">
+                    <div metal:define-slot="header" tal:content="nothing">
+                    Header slot 
+                    </div>
 
-        <span tal:define="global obj_actions actions/object;
-                          global wf_actions actions/workflow;
-                          global historyForm python:here.getActionUrlById('history', actions['object']);" />
-
-        <span tal:repeat="action obj_actions">
-            <a class="" href="" 
-               tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"> 
-                <span tal:replace="action/name" /> 
-            </a> 
+                    <div metal:define-slot="main" tal:content="nothing">
+                    Page body text 
+                    </div>
         
-            <span class="netscape4">&middot;</span>
-        </span>
+                    <div metal:define-slot="sub">
+                    <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                    </div> 
+                </div>
+            </td>
 
+            <td class="right">
+                <div metal:use-macro="here/ui_slots/login_slot/macros/loginBox">
+                Login box
+                </div>
 
-        <a class=""
-           href="content_status_history"
-           tal:condition="python:test( (not here.portal_membership.isAnonymousUser and here.getActionUrlById('status history', wf_actions ) or wf_actions ) , 1, 0)"
-           tal:attributes="href string:${here/absolute_url}/content_status_history;
-                           class python:test(request.URL0.find('content_status')!=-1, 'selected', 'plain');">
-           Publishing</a> <span class="netscape4">&middot;</span>
-
-    </div>
-
-    <div class="contentBar">        
-    &nbsp;
-    </div>    
-
-    </metal:block>
-
-    <div class="document"
-         tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
-
-        <div metal:use-macro="here/header/macros/portal_message">
-        Message box
-        </div>
-
-        <div metal:define-slot="header" tal:content="nothing">
-        Header slot 
-        </div>
-
-        <div metal:define-slot="main" tal:content="nothing">
-        Page body text 
-        </div>
-
-        <div metal:define-slot="sub">
-        <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-        </div> 
-    </div>
-</div>
-
+                <div metal:use-macro="here/ui_slots/calendar_slot/macros/calendarBox">
+                Calendar box
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 <hr size="" class="netscape4" />
 
