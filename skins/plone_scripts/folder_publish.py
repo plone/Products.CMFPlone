@@ -10,9 +10,13 @@
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 workflow = context.portal_workflow
-
 failed = {}
 success = {}
+
+if not ids:
+    return REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
+                                    , 'folder_contents'
+                                    , 'portal_status_message=You+must+select+content+to+change.') )
 
 for id in ids:
     o = getattr(context, id)
@@ -25,11 +29,6 @@ for id in ids:
             success[id]=comment
     except Exception, e:
         failed[id]=e
-
-if not ids:
-    REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                             , 'folder_contents'
-                             , 'portal_status_message=You+must+select+content+to+change.') )
 
 transaction_note( str(ids) + ' transitioned ' + workflow_action )
 
