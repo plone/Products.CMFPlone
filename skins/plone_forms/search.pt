@@ -65,7 +65,7 @@
                     <td>
 		                <img src="#" tal:attributes="src result/getIcon; alt result/Type;" />&nbsp;<a 
                          href="#" tal:attributes="href url"
-                                  tal:content="result/title_or_id" />
+                                  tal:content="result/Title" />
                     </td>
                     <td tal:content="result/Creator">Author </td>
                     <td tal:content="result/ModificationDate">Modification Date</td>
