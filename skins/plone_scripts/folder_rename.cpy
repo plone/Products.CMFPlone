@@ -5,24 +5,17 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=
-##title=Rename Object
+##parameters=new_ids=[],old_ids=[],new_titles=[]
+##title=Rename Objects
 ##
-
 from Products.CMFPlone import transaction_note
-REQUEST=context.REQUEST
-new_ids=REQUEST['new_ids']
-old_ids=REQUEST['ids']
-new_titles=REQUEST['new_titles']
 
-x=0
-for id in new_ids:
-    old_id=old_ids[x]
-    new_title=new_titles[x]
-    o=getattr(context,old_id)
-    if o.Title()!=new_title:
+for x in range(0, len(new_ids):
+    old_id = old_ids[x]
+    new_title = new_titles[x]
+    obj = context.restrictedTraverse(old_id)
+    if o.Title() != new_title:
         o.setTitle(new_title)
-    x=x+1
 
 context.manage_renameObjects(old_ids, new_ids)
 transaction_note( str(old_ids) + 'have been renamed' )
