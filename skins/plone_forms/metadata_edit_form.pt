@@ -264,7 +264,7 @@
 			onblur="formtooltip('format_help',0)"
 			tal:attributes="value here/Format">
 	            <option value="">Choose MIME-type</option> 
-                    <option tal:repeat="mimetype here/availableMIMETypes"
+                    <option tal:repeat="mimetype here/plone_utils/availableMIMETypes"
                             tal:attributes="value python:mimetype;
                                             selected python:test(here.Format() == mimetype, 'selected', '');"
                             tal:content="mimetype" />
