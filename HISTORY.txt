@@ -4,17 +4,17 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
-    - Intergrated plip16,  It is now possible to stop acquisition of local roles
-      on a Plone Folder and change roles of allready assigned users/groups.
+    - Intergrated PLIP16. It is now possible to stop acquisition of local roles
+      in a Plone Folder and change the roles of already assigned users/groups.
       Many thanks to: ender, MrTopf, hazmat and pjgrizel.
-      [jladage] 
+      [jladage]
+
+    - Plone now supports/requires GRUF 3.1.1. Thanks to pjgrizel for the patches.
+      [jladage]
 
     - Fixed http://plone.org/collector/3641 - validate_start_end_date chopped
       off the AM/PM value when saving Events.
       [stefan]
-
-    - Plone now supports/requires GRUF 3.1.1. Thanks to pjgrizel for the patches.
-      [jladage]
 
     - Removed the dependency on Formulator as well as FormTool and NavigationTool.
       [stefan]
