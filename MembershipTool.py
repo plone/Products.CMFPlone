@@ -134,3 +134,56 @@ class MembershipTool( BaseTool ):
             
             catalog = getToolByName(self, 'portal_catalog')
             catalog.unindexObject(personal) #dont add .personal folders to catalog
+
+
+    # this should probably be in MemberDataTool.py
+    #security.declarePublic( 'searchForMembers' )
+    def searchForMembers( self, REQUEST=None, **kw ):
+        """ """
+        if REQUEST:
+            dict = REQUEST
+        else:
+            dict = kw
+        
+        name = dict.get('name', None)
+        email = dict.get('email', None)
+        roles = dict.get('roles', None)
+        last_login_time = dict.get('last_login_time', None)
+            
+        if name:
+            name = name.strip().lower()
+        if not name:
+            name = None
+        if email:
+            email = email.strip().lower()
+        if not email:
+            email = None
+
+
+        md = self.portal_memberdata
+        
+        res = []
+        portal = self.portal_url.getPortalObject()
+        for u in portal.acl_users.getUsers():
+            user = md.wrapUser(u)
+            if name:
+                if u.getUserName().lower().find(name) == -1:
+                    continue
+            if email:
+                if user.email.lower().find(email) == -1:
+                    continue
+            if roles:
+                user_roles = user.getRoles()
+                found = 0
+                for r in roles:
+                    if r in user_roles:
+                        found = 1
+                        break
+                if not found:
+                    continue
+            if last_login_time:
+                if user.last_login_time < last_login_time:
+                    continue
+            res.append(user)
+
+        return res

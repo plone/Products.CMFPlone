@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="base">
+      <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+                 tal:replace="nothing">
+      Disable the tabs
+      </tal:block>
+  </metal:block>
+                               
+<body>
+
+<div metal:fill-slot="main"
+       tal:define="results python:here.portal_membership.searchForMembers(request);
+                   Batch python:modules['Products.CMFPlone'].Batch;
+                   DateTime python:modules['DateTime'].DateTime;
+                   b_size python:30;b_start python:0;b_start request/b_start | b_start;">
+    
+    <h1 i18n:translate="heading_search_results">Search results</h1>
+                 
+    <div tal:condition="results"
+          tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);">
+
+        <strong> 
+        <span tal:replace="python:len(results)" /> 
+        <span i18n:translate="batch_x_items_matching_your_criteria">items matching your criteria</span>. 
+        </strong> 
+        
+        <br/>
+        
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+        <!-- Search results -->
+        
+        <table class="listing"
+               id="sortable"
+               border="1"
+               tal:condition="here/contentValues">
+        
+            <thead>
+                <tr>
+                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_user_name">User name</span>&nbsp;</th>
+                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_email">Email</span>&nbsp;</th>
+                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_roles">Roles</span>&nbsp;</th>
+                    <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_last_login_time">Last login</span>&nbsp;</th>
+                </tr>
+            </thead>
+
+            <tbody>
+	        <metal:block tal:repeat="result batch">
+                <tr class="even" 
+		            tal:define="oddrow repeat/result/odd;" 
+		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+                    <td tal:define="name result/getUserName">
+                       <a tal:attributes="href string:member_edit_form?member=${name}" 
+                          tal:content="name" /></td>
+                    <td tal:content="structure string:${result/email}&nbsp;">Email</td>
+                    <td><span tal:repeat="role result/getRoles" tal:omit-tag="">
+                       <span tal:condition="python:role!='Authenticated'" tal:content="string:$role " tal:omit-tag="">Roles</span></span></td>
+                    <td tal:content="python:here.toPortalTime(result.last_login_time)">Last login</td>
+                </tr>
+		</metal:block>
+            </tbody>
+        </table>
+
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+    </div>
+    
+    <div tal:condition="not: results">
+        <p><strong i18n:translate="description_no_results_found">No results were found.</strong></p>
+    </div>		 
+
+</div>
+
+
+</body>
+</html>
+
