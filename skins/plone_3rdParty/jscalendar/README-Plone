@@ -1,0 +1,48 @@
+
+This is Mihai Bazon's, aka "mishoo", excellent DHTML Calendar Widget,
+("jscalendar") available in original from: http://dynarch.com/mishoo/calendar/
+
+For distribution with Plone, we have only flattened the directory
+hierarchy and added this file. Everything else is unchanged. This
+means the subdirectories "doc", "doc/html" and "lang" have been
+removed, with their contents moved to the top jscalendar directory
+instead. This is only in order to avoid making "doc", "doc/html" and
+"lang" available from other url's on a site, under Zope's acquisition
+logic.
+
+Plone integration
+-----------------
+
+- i18n
+
+  jscalendar uses its own translations, i.e. not plone-i18n. The
+  jscalendar translations are available in the various calendar-*js
+  files.
+
+- skins
+
+  jscalendar comes with several default skins, if you want to change
+  the skin, please customize Plone's plone_templates/header.pt.
+
+- references in Plone files:
+
+  header.pt
+      - includes calendar.js, a style sheet and a translation.
+  calendar_slot.pt
+      - has a javascript onclick handler that calls showJsCalendar in
+        plone_javascripts.js
+  plone_javascripts.js
+      - function showJsCalendar (mimics Calendar.setup() as an ordinary
+        function instead of as a handler)
+      - function update_date_field
+
+Upgrading Plone's jscalendar
+----------------------------
+
+When a new upstream version is available it should be simple to
+integrate it with Plone. Just flatten its directory hierarchy and run
+"diff -ru jscalendar jscalendar-x.y.x", to see if there are any
+changes that might be significant to the Plone integration. Pay close
+attention to calendar-setup.js. Any changes there might have to be
+reflected in plone_javascripts.js.
+
