@@ -1,6 +1,6 @@
 import dependencies
 
-from Products.CMFPlone import MigrationTool #:wort registerSetupWidget
+from Products.CMFPlone import MigrationTool
 from customization_policy import CustomizationPolicySetup
 from ConfigurationMethods import GeneralSetup
 
