@@ -15,7 +15,7 @@
      tal:condition="python: isAnon and okToShowHere">
 
     <div class="portlet"
-         tal:condition="not: auth"
+         tal:condition="python: not auth"
          id="portlet-login">
         <h5 i18n:translate="box_sign_in">Log in</h5>
         <div class="portletBody">
@@ -30,7 +30,7 @@
          tal:define="ac_name auth/name_cookie|nothing;
                      ac_password auth/pw_cookie|nothing;
                      ac_persist auth/persist_cookie|nothing;"
-         tal:condition="auth"
+         tal:condition="python: auth"
          id="portlet-login">
 
         <h5 i18n:translate="box_sign_in">Log in</h5>

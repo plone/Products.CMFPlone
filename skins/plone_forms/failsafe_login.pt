@@ -27,9 +27,6 @@ function cookiesEnabled() {
 <body>
 
 <div tal:define="auth nocall:here/cookie_authentication|nothing;
-                 ac_name auth/name_cookie;
-                 ac_password auth/pw_cookie;
-                 ac_persist auth/persist_cookie;
 		 Iterator python:modules['Products.CMFPlone'].IndexIterator;
 		 tabindex python:Iterator(pos=30000)">
 
@@ -66,13 +63,13 @@ to become a member.
 // ]]>
 </script>
 
-<div condition="not:auth" i18n:translate="failsafe_login_disabled">
+<div condition="python:not auth" i18n:translate="failsafe_login_disabled">
       This feature is not available while cookie authentication is disabled.
 </div>
 
 <form action="logged_in"
       method="post"
-      tal:condition="auth"
+      tal:condition="python: auth"
       tal:define="ac_name auth/name_cookie|nothing;
                   ac_password auth/pw_cookie|nothing;
                   ac_persist auth/persist_cookie|nothing;">
