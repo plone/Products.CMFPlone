@@ -15,21 +15,21 @@ class DefaultCustomizationPolicy:
     def customize(self, portal):
 	#make 'reply' tab unvisible
         dt=getToolByName(portal, 'portal_discussion') 
-	dt_actions=dt.listActions()        
+	dt_actions=dt._cloneActions()        
         for a in dt_actions: 
             if a.id=='reply': a.visible=0
         dt._actions=dt_actions
 
         #make 'syndication' tab unvisible
         st=getToolByName(portal, 'portal_syndication')
-        st_actions=st.listActions()
+        st_actions=st._cloneActions()
         for a in st_actions:
             if a.id=='syndication': a.visible=0
         st._actions=st_actions
 
         #now lets get rid of folder_listing/folder_contents tabs for folder objects
         tt=getToolByName(portal, 'portal_types')
-	folder_actions=tt['Folder']._actions[:]
+	folder_actions=tt['Folder']._cloneActions()
         for a in folder_actions:
             if a.get('id','') in ('folderlisting', ): a['visible']=0
         tt['Folder']._actions=folder_actions
@@ -50,7 +50,7 @@ class DefaultCustomizationPolicy:
 
 	#customize membership tool
         mt=getToolByName(portal, 'portal_membership')
-        m_actions=mt.listActions()
+        m_actions=mt._cloneActions()
         for a in m_actions:
             if getattr(a,'id','') in ('addFavorite', 'favorites'): a.visible=0
         mt._actions=m_actions        
@@ -63,7 +63,7 @@ class DefaultCustomizationPolicy:
         
 	#customized the registration tool
         rt=getToolByName(portal, 'portal_registration')
-        rt_actions=rt.listActions()
+        rt_actions=rt._cloneActions()
         for a in rt_actions:
             if a.id=='join':
                 a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
