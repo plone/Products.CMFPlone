@@ -23,7 +23,6 @@ if hasattr(obj.aq_explicit, 'Subject'):
 
 if subjects:
     for o in context.portal_catalog( Subject = subjects
-                                   , review_state = 'published'
                                    , sort_on = 'portal_type'
                                    , sort_order = 'reverse'  ):
         url=o.getURL()
