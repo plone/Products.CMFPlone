@@ -247,6 +247,9 @@ class MigrationTool( UniqueObject, SimpleItem):
                 if not swallow_errors:
                     for msg, sev in out: log(msg, severity=sev)
                     raise
+                else:
+                    # abort transaction to safe the zodb
+                    get_transaction().abort()
 
         out.append(("End of upgrade path, migration has finished", zLOG.INFO))
 
