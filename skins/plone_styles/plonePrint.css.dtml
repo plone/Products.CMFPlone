@@ -37,7 +37,7 @@ input
 }
 
 ul { 
-    list-style-image: none; 
+    list-style-type: square;
 }
 
 .editableDocument,

@@ -131,7 +131,7 @@ h6 {
 
 ul { 
     line-height: 1.5em;
-    list-style-image: url("bullet.gif"); 
+    list-style-type: square;
     margin-left: 2em;
     padding:0;
 }
