@@ -50,15 +50,15 @@
         </a>
     </li>
     <li>
-        <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance"
-           title="Explanation of Level Triple-A Conformance"
+        <a href="http://www.w3.org/WAI/WCAG1AA-Conformance"
+           title="Explanation of WCAG Conformance"
            i18n:attributes="title">
         <img src="" 
              height="15"
              width="80"
-             alt="WCAG Triple-A conformance"
+             alt="WCAG"
              title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
-             tal:attributes="src string:$portal_url/colophon_wai-aaa.gif" 
+             tal:attributes="src string:$portal_url/colophon_wai-aa.gif" 
              i18n:attributes="alt title" />
         </a>
     </li>
