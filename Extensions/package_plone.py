@@ -8,6 +8,7 @@ def get_version():
 release=get_version()
 releasename='CMFPlone-%s' % release
 releasetar='CMFPlone%s.tar' % release
+releasezip='CMFPlone%s.zip' % release
 
 sh_cleanmisc = """find . | grep '~' | xargs rm -rf"""
 sh_cleanpyc = """find . | grep 'pyc' | xargs rm -rf"""
@@ -31,5 +32,7 @@ os.system("cd ../" + releasename+";" + sh_cleancvs)
 os.system("cd .. ; tar -cvf %s %s" % ( releasetar 
                                      , releasename ) )
 os.system("cd .. ; gzip %s " % releasetar )
+os.system("cd .. ; zip -r %s %s" % (releasezip
+                                    , releasename ))
 
 
