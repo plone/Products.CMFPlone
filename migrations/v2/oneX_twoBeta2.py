@@ -121,6 +121,8 @@ def oneX_twoBeta2(portal):
     removed = removeTranslationService(portal)
     if removed:
         out.append(("Removing deprecated translation service. Plone 2 is using the PlacelessTranslationService for translation. Your old translation data is still stored in the Localizer.", zLOG.WARNING))
+    out.append('Adding plone tableless directory view')
+    addPloneTableless(portal)    
     return out
 
 def doit(self):
@@ -274,16 +276,15 @@ def migratePortraits(portal):
             buf.seek(0) #lovely Zope mixing OFS interfaces w/ HTTP interfaces
             mt.changeMemberPortrait(buf, id)
 
-def fixupPlone2SkinPaths(portal, out):
-    def newDV(st, dir):
-        from os import path
-        createDirectoryView(st, path.join('CMFPlone', 'skins', dir))
+def _newDV(st, dir):
+    createDirectoryView(st, os.path.join('CMFPlone', 'skins', dir))
 
+def fixupPlone2SkinPaths(portal, out):
     st=getToolByName(portal, 'portal_skins')
     to_add=['cmf_legacy','plone_portlets', 'plone_form_scripts', 'plone_prefs']
     for item in to_add:
         if item not in portal.portal_skins.objectIds():
-            newDV(st, item)
+            _newDV(st, item)
 
     to_remove=['plone_templates/ui_slots', 'plone_scripts/form_scripts',
                'plone_3rdParty/CMFCollector', 'plone_3rdParty/CMFCalendar']
@@ -510,6 +511,11 @@ def removeTranslationService(portal):
     if hasattr(portal.aq_explicit, ts):
         portal.manage_delObjects(ts)
         return 1
+
+def addPloneTableless(portal):
+    st = getToolByName(portal, 'portal_skins')
+    if not hasattr(aq_base(st), 'plone_tableless'):
+        _newDV(st, 'plone_tableless')
             
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
