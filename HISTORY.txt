@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - validate_document_edit assumed the Content-Type header is always
+      present. This is not the case.
+      [stefan]
+
     - Added two classes to allow list without markers: 
       'ul.visualNoMarker' and 'ol.visualNoMarker'.
       [limi]
@@ -14,7 +18,7 @@ Plone 2.0.1 - Jello
     - Implemented 'management_page_charset' as ComputedAttribute returning
       the value of portal_properties/site_properties/default_charset.
       Also see http://plone.org/collector/2778.
-      This means Unicode characters are show correctly in the ZMI too.
+      This means Unicode characters are shown correctly in the ZMI too.
       [stefan]
 
     - Added years range properties in site_properties:
