@@ -23,8 +23,6 @@
                       Batch python:modules['Products.CMFPlone'].Batch;
                       batch python:Batch(results, 100, int(b_start), orphan=0);">
 
-        <input type="hidden" name="filter_state" value="set_view_filter" />
-        
             <div class="title"> 
     
                 <h1 class="folderName" tal:condition="python:user.getUserName()==here.getId()">
@@ -81,33 +79,6 @@
                 <thead>
                     <tr tal:condition="standalone|nothing">
                         <td class="top" colspan="6">
-                            <!-- Filter pulldown -->
-                            <tal:block tal:condition="no_types">
-                                <select id="filter_selection" 
-                                        name="filter_by_portal_type:list" 
-                                        style="float: left"
-                                        onChange="submitFilterAction()"
-                                        tabindex=""
-                                        tal:attributes="tabindex tabindex/next|nothing;">
-                                    <option value="#" 
-                                            tal:attributes="selected
-                                            python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', None);"
-                                            i18n:translate="label_show_all_items">
-                                    Show All Items
-                                    </option>  
-                                    <metal:block tal:repeat="type types">
-                                        <option value="#"
-                                                tal:define="typetitle type/Title; typeid type/getId"
-                                                i18n:translate="label_show_x_only"
-                                                tal:attributes="value typeid;
-                                                                selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', None);"
-                                        ><span i18n:name="type"><span i18n:translate="" tal:content="string:${typetitle}" tal:omit-tag="" /></span>s only</option>
-                                    </metal:block>
-                                </select>
-                    
-                                <input type="hidden" name="filter_by_Subject:tokens" value="" />
-                                <!--you can filter by subject keywords by filling in this value-->
-                            </tal:block>
                             
                             <!-- Add Item pulldown -->
                             <select name="type_name" 
