@@ -1,3 +1,60 @@
+2003-12-01 02:27  limi
+
+	* skins/plone_styles/base_properties.props (Plone-2_0-branch):
+	  Changed back to 69% font size, silly Mozilla bug.
+
+2003-11-30 22:21  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): add actionicons,
+	  siteactions, etc.
+
+2003-11-30 21:14  limi
+
+	* skins/plone_styles/base_properties.props (Plone-2_0-branch):
+	  Changed the font size to 70% to improve rendering in Opera -
+	  eaon, if there was a specific reason for using 69% instead of
+	  70%, please notify me :)
+
+2003-11-30 20:44  tiran
+
+	* skins/: plone_3rdParty/CMFTopic/topic_criteria_form.pt,
+	  plone_content/document_edit_form.cpt,
+	  plone_content/event_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/folder_edit_form.cpt,
+	  plone_content/image_edit_form.cpt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_content/newsitem_edit_form.cpt,
+	  plone_forms/content_status_history.cpt,
+	  plone_forms/discussion_reply_form.pt,
+	  plone_forms/folder_localrole_form.pt,
+	  plone_forms/mail_password_form.pt, plone_forms/password_form.pt,
+	  plone_forms/personalize_form.cpt, plone_forms/search_form.pt,
+	  plone_forms/sendto_form.cpt, plone_prefs/prefs_group_details.pt,
+	  plone_wysiwyg/wysiwyg_support.pt (Plone-2_0-branch): fixed bug
+	  #1992 - missing ids in forms cause xhtml errors FYI: I added the
+	  tag tiran-before_xhtml_fix-tag before this commit
+
+2003-11-30 09:13  runyaga
+
+	* skins/plone_portlets/: calendar_slot.pt, portlet_calendar.pt
+	  (Plone-2_0-branch): be bale to pass in 'url' and 'method' for
+	  calendars.  easier to cache
+
+2003-11-30 08:49  runyaga
+
+	* skins/: plone_portlets/news_slot.pt,
+	  plone_portlets/portlet_news.pt,
+	  plone_scripts/date_components_support.py (Plone-2_0-branch): fix
+	  unrefeenced var in news portlets.  CEILING breaks DateTime so we
+	  use PLONE_CEILING which is sane for DateTime *and* the calendar
+	  widget
+
+2003-11-30 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-30 03:01  runyaga
 
 	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): dont ref
