@@ -89,7 +89,7 @@ class MembershipTool( BaseTool ):
             # instance of MembershipTool.
             addDocument( f
                        , 'index_html'
-                       , member_id+"'s Home"
+                       , member_id+"'s Home Page"
                        , member_id+"'s front page"
                        , "structured-text"
                        , (DEFAULT_MEMBER_CONTENT % member_id)
