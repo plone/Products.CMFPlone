@@ -1,4 +1,4 @@
-x.x
+1.0alpha2
 
     - Added localLongTimeFormat, set to '%Y-%m-%d %I:%M %p' by default. Used by Events.
     - Publish tabs now appear on all content types if they have available tranistions
@@ -9,7 +9,16 @@ x.x
     - change status ('mass publishing') now works as expected
     - personalize_form was reseting values on form validation failure
     - on the rename form you can now change the id and title (maybe the id should be optional)
-    
+    - the way forms interacted with editing scripts has changed:
+        - form validation has been refactored (basiclly the only thing you need in validate_xxx.py)
+	- the actual editing scripts call plone_utils.getNextXXXXFor() to get the next screen to goto 
+	- look at plone_scripts/form_scripts/navigation_properties.props if you want to change this.
+    - bad id's will not escape the validation machinery
+    - if you want to disable registration, unregister the registration tool from portal_actions and then remove it
+    - added small IndexIterator utility class (PloneUtilities.IndexIterator), we should use this for tabindexs
+    - metadata_edit_form now has mimetypes/languages boxes that work, also popup calendar works now as well
+    - some python scripts did not have context namespaces bound to them (on the filesystem)
+    -  __init__.py files that declard modules in folders if had 0 bytes made winzip unhappy
     
 1.0a - Boards of Canada Release:
     - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
