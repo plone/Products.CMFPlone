@@ -131,6 +131,7 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
     original=getattr(self, source_folder_id)
     newsite=getattr(self, dest_folder_id)
     new_typetool=newsite.portal_types
+
     def do_migrate(o):
         out.write("\nMigrating object: "+o.getId()+"\n")
         if o.getId() in portal_tools:
@@ -146,9 +147,7 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
         except:
             out.write('Error getting typeinfo for '+o.getId()+'\n')
             return
-            
         new_parent=newsite.restrictedTraverse(o_parent_path)
-
         if not hasattr(o.aq_base,'portal_type'):
             if o.getId() not in new_parent.objectIds():
                 out.write('Raw copy of: '+o.getId()+'\n')
@@ -156,6 +155,13 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
                     new_parent.manage_pasteObjects( o.aq_parent.manage_copyObjects( (o.getId(),)))
                 except:
                     out.write('Raw copy didnt work')
+                try:
+                    new_object=new_parent[o.getId()]
+                    owner_id=o.getOwner().getUserName()
+                    user=newsite.acl_users.getUser(owner_id).__of__(newsite.acl_users)
+                    new_object.changeOwnership(user)
+                except:
+                    out.write('Problems transfering Membership')
             else:
                 out.write('Object existed :'+o.getId()+'\n')
             return #its not content, just copied. Content in other folders will not be migrated.
@@ -187,8 +193,10 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
             do_migrate(obj)
         return
 
+    newsite.manage_pasteObjects( original.manage_copyObjects('acl_users') ) #copy over acl_users so we can xfer Ownership
     for f in original.objectValues():
-        do_migrate(f)
+        if original.getId() not in ('acl_users', ):
+            do_migrate(f)
         
     out.write("Finished"+'\n')
     return out.getvalue()
