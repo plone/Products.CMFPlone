@@ -14,7 +14,7 @@ from DateTime import DateTime
 if id is None: 
     id=context.getId()
 try:
-    obj_type, date_created, random_number = id.split(',')
+    obj_type, date_created, random_number = id.split('.')
 
     if ' '.join(obj_type.split('_'))==context.Type() and \
        DateTime(date_created) and \

@@ -13,8 +13,9 @@ REQUEST=context.REQUEST
 if type_name is None:
     raise Exception
 
+now=DateTime()
 if id is None:
-	id=type_name.replace(' ', '_')+','+DateTime().strftime('%Y-%m-%d')+','+str(context.random_number())
+	id=type_name.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%M%S')
 
 context.invokeFactory(id=id, type_name=type_name)
 o=getattr(context, id, None)
