@@ -2,4 +2,3 @@
 [default]
 title=News item
 cache=HTTPCache
-alt=News item

@@ -2,4 +2,3 @@
 [default]
 title=Image item
 cache=HTTPCache
-alt=Image item
