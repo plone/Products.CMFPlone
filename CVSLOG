@@ -1,3 +1,22 @@
+2004-03-31 15:10  limi
+
+	* HISTORY.txt, skins/plone_templates/folder_listing.pt,
+	  skins/plone_templates/news.pt (Plone-2_0-branch): Renamed to the
+	  generic list-item, and put the macro in folder_listing and
+	  news.pt.
+
+2004-03-31 13:51  limi
+
+	* HISTORY.txt, skins/plone_templates/news.pt (Plone-2_0-branch):
+	  Added a define-macro to the news-item display, so it can be
+	  reused in other templates. You have to define a repeat statement
+	  outside it similar to the template in 'plone_templates/news.pt'.
+	  The macro itself renders one item.
+
+2004-03-31 05:02  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-30 15:10  dpunktnpunkt
 
 	* skins/plone_scripts/translate.py (Plone-2_0-branch): Added
