@@ -53,7 +53,7 @@
 
   <metal:block tal:condition="not: history">
   <h2 i18n:translate="label_historical_unavailable">Historical not available</h2>
-  <span omit-tag="" i18n:translate="description_historical_unavailable">
+  <span tal:omit-tag="" i18n:translate="description_historical_unavailable">
   This class does not support the historical interface.  The content must
   mix-in OFS.History.Historical
   </span>

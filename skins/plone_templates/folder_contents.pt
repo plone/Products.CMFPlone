@@ -84,7 +84,7 @@
                         <td class="top" colspan="6">
 
                             <!-- Add Item pulldown -->
-                            <label for="select_add_item"><div class="hiddenlabel" i18n:translate="label_add_item">Select an item to add</div>
+                            <label for="select_add_item"><span class="hiddenlabel" i18n:translate="label_add_item">Select an item to add</span>
 			    <select id="select_add_item"
 				    name="type_name"
                                     tabindex=""
@@ -220,11 +220,11 @@
                         </td>
                         <td tal:condition="isOrderable">
                             <a href=""
-                               tal:attributes="href string:${here/absolute_url}/folder_position?position=up&id=${item/getId}"
+                               tal:attributes="href string:${here/absolute_url}/folder_position?position=up&amp;id=${item/getId}"
                             ><img tal:replace="structure here/portal_url/arrowUp.gif" /></a>
                             &nbsp;
                             <a href=""
-                               tal:attributes="href string:${here/absolute_url}/folder_position?position=down&id=${item/getId}"
+                               tal:attributes="href string:${here/absolute_url}/folder_position?position=down&amp;id=${item/getId}"
                             ><img tal:replace="structure here/portal_url/arrowDown.gif" /></a>
                         </td>
                     </tr>
