@@ -1,3 +1,96 @@
+2004-04-21 04:32  tiran
+
+	* HISTORY.txt (Plone-2_0-branch): Updated history
+
+2004-04-21 04:31  tiran
+
+	* skins/: plone_portlets/portlet_events.pt,
+	  plone_portlets/portlet_review.pt, plone_scripts/my_worklist.py,
+	  plone_templates/recently_published.pt (Plone-2_0-branch): Fixed
+	  http://plone.org/collector/2973  Unecessary use of getObject
+
+2004-04-21 02:34  tiran
+
+	* skins/plone_scripts/batchedFolderContents.py (Plone-2_0-branch):
+	  Fixed http://plone.org/collector/2795. Replaced aq_explicit by
+	  aq_inner in batchedFolderContents.py
+
+2004-04-21 00:58  tiran
+
+	* skins/plone_form_scripts/content_status_modify.cpy
+	  (Plone-2_0-branch): Fixing buggy fix
+
+2004-04-20 21:51  shh42
+
+	* tests/testContentPublishing.py (Plone-2_0-branch): Split single
+	  large test up into three smaller tests.
+
+2004-04-20 19:44  tiran
+
+	* skins/plone_form_scripts/content_status_modify.cpy
+	  (Plone-2_0-branch): Fixed http://plone.org/collector/2115 -
+	  Problems with workflow actions and effective date
+
+2004-04-20 19:06  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Fixed
+	  padding on the pull-down menu buttons.
+
+2004-04-20 18:30  tiran
+
+	* __init__.py, tests/testSecurityDeclarations.py: allow access to
+	  logging.getLogger() and logging.Logger class because zLOG is
+	  deprecated in Zope >2.7.0
+
+2004-04-20 18:03  tiran
+
+	* __init__.py, skins/plone_scripts/log_error.py,
+	  tests/testSecurityDeclarations.py: Added log_error script for
+	  http://plone.org/collector/2850 Importing zLOG.WARNING for
+	  log_error (including unit test)
+
+2004-04-20 17:22  runyaga
+
+	* tests/testContentPublishing.py (Plone-2_0-branch): fix gene weens
+	  name
+
+2004-04-20 16:27  mrtopf
+
+	* HISTORY.txt (Plone-2_0-branch): added bugfix for #472 to HISTORY
+
+2004-04-20 15:42  tiran
+
+	* interfaces/: IDublinCore.py, _DummyInterface.py, mkepydoc.sh,
+	  plone_utils.py, portal_actionicons.py, portal_types.py
+	  (tiran-documentation-branch): Updated doc strings Fixed
+	  DummInterface Added mkepydoc.sh
+
+2004-04-20 13:22  shh42
+
+	* HISTORY.txt (Plone-2_0-branch): Fix tab confusion.
+
+2004-04-20 12:39  mrtopf
+
+	* tests/testContentTypeScripts.py (Plone-2_0-branch): adjusted test
+	  for new use of discussion_reply.py (related to fix of bug #472)
+
+2004-04-20 11:59  interra
+
+	* skins/plone_prefs/: plone_control_panel.pt,
+	  plone_memberprefs_panel.pt: Corrected glitches introduced with my
+	  previous checkin.
+
+2004-04-20 11:48  interra
+
+	* skins/plone_prefs/: plone_control_panel.pt,
+	  plone_memberprefs_panel.pt (Plone-2_0-branch): Better invisible
+	  configlet handling. http://plone.org/collector/3023. dreamcatcher
+	  allowed to do the commit.
+
+2004-04-20 05:09  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-20 01:42  tiran
 
 	* HISTORY.txt, Portal.py, SkinsTool.py (Plone-2_0-branch): Removed
