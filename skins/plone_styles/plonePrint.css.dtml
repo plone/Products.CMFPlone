@@ -21,7 +21,7 @@ body {
     font-family: Georgia, Garamond, Times, serif;
     font-size: 11pt !important;
     color: Black;
-    margin: 0;
+    margin: 1em;
     padding: 0;
 }
 
@@ -116,16 +116,28 @@ a:link, a:visited {
    content: " ( " attr(href) " ) ";
 }
 
+/*
+** disable layout
+*/
+
 #visual-portal-wrapper {
     width: 100% !important;
     min-width: 0 !important;
+    margin: 0 !important;
+}
+
+#visual-column-wrapper {
+    margin: 0 !important;
+    float: none !important;
 }
 
 #portal-column-content {
+    float: none !important;
     margin: 0 !important;
 }
 
 #portal-column-content #content {
-    padding: 1em;
-    margin: 0 !important;
+    float: none !important;
+    padding: 0em !important;
+    margin: 0 8em 0 0 !important;
 }
