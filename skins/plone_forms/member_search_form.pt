@@ -80,6 +80,23 @@
                 <input type="hidden" name="last_login_time.range:record" value="min" />
             </div>
     
+            <div class="field"
+                 tal:define="grouplist gtool/listGroups"
+                 tal:condition="python:is_manager and grouplist">
+                 <label i18n:translate="legend_group"> Group </label>
+
+                 <div class="formHelp" i18n:translate="help_search_group"> 
+                 Return memebrs in the selected group.
+                 </div>
+
+                 <select name="groupname">
+                     <option value="" i18n:translate="search_any_group"> Any Group </option>
+                     <option tal:repeat="group grouplist"
+                             tal:attributes="value group/getUserName"
+                             tal:content="group/title_or_id">group name</option>
+                 </select>
+            </div>
+
             <div class="field" 
                  tal:condition="is_manager"
                  tal:define="memberRoles request/roles|nothing;
