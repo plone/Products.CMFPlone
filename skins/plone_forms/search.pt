@@ -3,6 +3,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
+<<<<<<< search.pt
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone"      i18n:domain="plone"
+>
+=======
       metal:use-macro="here/main_template/macros/master">
 
   <metal:block fill-slot="base">
@@ -12,6 +17,7 @@
       </tal:block>
   </metal:block>
                                
+>>>>>>> 1.15
 <body>
 
 <div metal:fill-slot="main"

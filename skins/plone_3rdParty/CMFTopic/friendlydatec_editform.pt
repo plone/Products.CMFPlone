@@ -1,7 +1,8 @@
 <div class="row"
      metal:define-macro="friendlydatec_editform"
      tal:define="criterionid criterion/getId | here/getId;"
-     >
+     i18n:domain="plone"
+>
 
     <div class="label">
         <input class="noborder"
