@@ -182,7 +182,7 @@ def addNewActions(self, portal):
 
     at.addAction('index_html',
                  name='Home',
-                 action='portal_url',
+                 action='string:$portal_url',
                  condition='',
                  permission='View',
                  category='portal_tabs')
