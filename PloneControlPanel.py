@@ -36,14 +36,29 @@ class PloneConfiglet(ActionInformation):
         return res
     
 default_configlets = (
-    {'id':'QuickInstaller','appId':'QuickInstaller','name':'Install Products',
-        'action':'prefs_install_products_form','category':'Plone','permission': ManagePortal,'imageUrl':'plone_images/site_icon.gif'},
+    {'id':'QuickInstaller',
+     'appId':'QuickInstaller',
+     'name':'Install Products',
+     'action':'prefs_install_products_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/site_icon.gif'},
 
-    {'id':'PloneReconfig','appId':'Plone','name':'Portal Settings',
-        'action':'reconfig_form','category':'Plone','permission': ManagePortal,'imageUrl':'plone_images/site_icon.gif'},
+    {'id':'PloneReconfig',
+     'appId':'Plone',
+     'name':'Portal Settings',
+     'action':'reconfig_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/site_icon.gif'},
 
-    {'id':'UsersGroups','appId':'UsersGroups','name':'Users and Groups',
-        'action':'prefs_users_overview','category':'Plone','permission': ManagePortal,'imageUrl':'plone_images/site_icon.gif'},
+    {'id':'UsersGroups',
+     'appId':'UsersGroups',
+     'name':'Users and Groups',
+     'action':'prefs_users_overview',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/user.gif'},
 
 )
 
