@@ -917,8 +917,7 @@ div.date {
 
 table.calendar {
     border: &dtml-boxBorder;;
-    margin:  1em ;
-    text-align: right;
+    margin: 1em 0em;
 }
 table.calendar a {
     text-decoration: none;
@@ -937,6 +936,7 @@ table.calendar td {
     background-color: transparent;
     width: 1.5em;
     padding: 2px;
+    text-align: right;
 }
 table.calendar td.weekdays {
     background-color: &dtml-boxHeaderBackground;;
