@@ -20,6 +20,7 @@
     - some python scripts did not have context namespaces bound to them (on the filesystem)
     -  __init__.py files that declard modules in folders if had 0 bytes made winzip unhappy
     - folder_contents will no longer show empty dropdown/add new item button or (up one level) if they are not usable
+    - on Plone site creation we now add another workflow defnition, folder_workflow which is bound to Folder types.
     
 1.0a - Boards of Canada Release:
     - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
