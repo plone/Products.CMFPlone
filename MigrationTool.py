@@ -92,7 +92,7 @@ class MigrationTool( UniqueObject, SimpleItem):
 
         # do this once all the changes have been done
         try:
-            log('Recataloging site, this might take a minute')
+            log('Note: recataloging site, this might take a minute')
             self.portal_catalog.refreshCatalog()
             self.portal_workflow.updateRoleMappings()
         except:
@@ -102,9 +102,10 @@ class MigrationTool( UniqueObject, SimpleItem):
         if dry_run:
             out.append("Dry run selected, transaction aborted")
             get_transaction().abort()
-            
+
+        # log all this to the ZLOG
+        log('\n'.join(out))
         return '\n'.join(out)
-        
 
     def _upgrade(self, version):
         version = version.lower()
