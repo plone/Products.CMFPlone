@@ -13,22 +13,31 @@ def notPresent(file, add):
         return
     return data        
 
-def change_py(file):
-    add = """###################################
-## here goes the copyright text
-###################################
+copytext = """\
+##############################################################################
+#
+# Copyright (c) 2003 Alan Runyan, Alexander Limi and Contributors
+#
+# This software is subject to the provisions of the General Public License,
+# Version 2.0 (GPL).  A copy of the GPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE
+#
+##############################################################################
 """
-    res = notPresent(file, add)
+
+def change_py(file):
+    res = notPresent(file, copytext)
     if res is not None:
-	res = add + res
+	res = copytext + res
         open(file, 'w').write(res)
         print "Changed", file
 
 def change_pt(file):
-    add = """<tal:comment replace="nothing">
-    here goes the copyright text
-</tal>
-"""
+    add = """\n<tal:comment replace="nothing">\n""" + copytext + """</tal:comment>\n"""
+
     res = notPresent(file, add)
     if res is not None:
         lines = res.split('\n')
