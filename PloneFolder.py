@@ -19,7 +19,7 @@ from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
 # from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 
-from OFS.ObjectManager import REPLACEABLE
+from OFS.ObjectManager import REPLACEABLE, BeforeDeleteException
 from ComputedAttribute import ComputedAttribute
 
 from PloneUtilities import log
@@ -200,6 +200,14 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
     manage_addFolder = manage_addPloneFolder
     manage_renameObject = OrderedContainer.manage_renameObject
 
+    security.declareProtected(Permissions.delete_objects, 'manage_beforeDelete')
+    def manage_beforeDelete(self, item, container):
+        """ We need to enforce security. """
+        mt=getToolByName(self, 'portal_membership')
+        if not mt.checkPermission(Permissions.delete_objects, item):
+            raise BeforeDeleteException, "Do not have permissions to remove this object"
+        SkinnedFolder.manage_beforeDelete(self, item, container)
+        
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead of index_html """
         return self.browserDefault(request)
