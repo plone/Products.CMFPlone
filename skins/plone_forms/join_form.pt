@@ -80,7 +80,8 @@
 
             <div class="field"
                   tal:attributes="class python:test(error_email, 'field error', 'field')" >
-                <div tal:replace="error_email " />
+		  
+                <div tal:replace="structure string:$error_email <br /> " />
 
                 <input type="text" 
                        name="field_email" 
@@ -110,7 +111,9 @@
 
             <div class="field"
                   tal:attributes="class python:test(error_password, 'field error', 'field')" >
-               <div tal:replace="error_password " />
+		  
+               <div tal:replace="structure string:$error_password <br />" />
+	       
                 <input type="password" 
                        name="field_password" 
                        size="10"
@@ -139,7 +142,7 @@
             
             <div class="field"
                  tal:attributes="class python:test(error_confirm, 'field error', 'field')" >
-                <span tal:replace="error_confirm" />
+                <span tal:replace="structure string:$error_confirm<br/>" />
                 <input type="password" 
                        name="field_confirm" 
                        size="10" 
