@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/2855 -  Folders have "Properties"
+      instead of "Edit" as title for the edit form.
+      [jladage]
+
     - Fixed http://plone.org/collector/2512 - folder_localrole_form role
       assignment pulldowns should be multiple select. Thanks to teix.
       [dtremea]
