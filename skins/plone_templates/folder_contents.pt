@@ -29,32 +29,32 @@
                       batch python:Batch(results, 100, int(b_start), orphan=0);">
 
         <input type="hidden" name="filter_state" value="set_view_filter" />
-        
-            <div class="title"> 
-    
+
+            <div class="title">
+
                 <h1 class="folderName" tal:condition="python:user.getUserName()==here.getId()">
-                <img tal:replace="structure here/folder.gif" /> 
+                <img tal:replace="structure here/folder.gif" />
                 <span i18n:translate="heading_my_folder" tal:omit-tag="">My Folder</span>
-                </h1> 
-                
+                </h1>
+
                 <h1 tal:condition="python: user.getUserName()!=here.getId()">
-                <img tal:replace="structure here/folder.gif" /> 
+                <img tal:replace="structure here/folder.gif" />
                 <span tal:content="here/title_or_id" tal:omit-tag="">Directory Id</span>
-                </h1> 
-   
+                </h1>
+
             </div>
-    
+
             <metal:block tal:condition="not: folder_contents">
             <p i18n:translate="description_no_visible_items_press_add">
             This folder has no visible items. To add content, press the 'Add New Item' button,
             or paste content from another location.
-            </p>						    
+            </p>
             </metal:block>
-     
-            <p tal:condition="python:user.getUserName()==here.getId()" 
+
+            <p tal:condition="python:user.getUserName()==here.getId()"
                   i18n:translate="description_contains_items_by">
             Contains the items created and collected by <tal:block content="python:user.getUserName()" i18n:name="name">User</tal:block>
-            </p> 
+            </p>
 
             <p tal:content="structure here/Description"
                tal:condition="python:not user.getUserName()==here.getId()">
@@ -75,29 +75,29 @@
                                           isExpired nocall:here/isExpired;
                                           toPortalTime nocall:here/toPortalTime;
                                           getObjSize nocall:here/getObjSize;">
-                                                                                                                                                                                                                                                                                                                                                    
+
             <table id="sortable"
                    class="listing"
                    summary="Content listing"
                    cellpadding="0" cellspacing="0">
-                   
+
                 <thead>
                     <tr tal:condition="standalone|nothing">
                         <td class="top" colspan="6">
                             <!-- Filter pulldown -->
                             <tal:block tal:condition="no_types">
-                                <select id="filter_selection" 
-                                        name="filter_by_portal_type:list" 
+                                <select id="filter_selection"
+                                        name="filter_by_portal_type:list"
                                         style="float: left"
                                         onChange="submitFilterAction()"
                                         tabindex=""
                                         tal:attributes="tabindex tabindex/next|nothing;">
-                                    <option value="#" 
+                                    <option value="#"
                                             tal:attributes="selected
                                             python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', None);"
                                             i18n:translate="label_show_all_items">
                                     Show All Items
-                                    </option>  
+                                    </option>
                                     <metal:block tal:repeat="type types">
                                         <option value="#"
                                                 tal:define="typetitle type/Title; typeid type/getId"
@@ -107,13 +107,13 @@
                                         ><span i18n:name="type"><span i18n:translate="" tal:content="string:${typetitle}" tal:omit-tag="" /></span>s only</option>
                                     </metal:block>
                                 </select>
-                    
+
                                 <input type="hidden" name="filter_by_Subject:tokens" value="" />
                                 <!--you can filter by subject keywords by filling in this value-->
                             </tal:block>
-                            
+
                             <!-- Add Item pulldown -->
-                            <select name="type_name" 
+                            <select name="type_name"
                                     tabindex=""
                                     tal:condition="python:test(no_types > 1, 1, 0)"
                                     tal:attributes="tabindex tabindex/next|nothing;">
@@ -126,16 +126,16 @@
                                         i18n:translate="">Document</option>
                                 </metal:block>
                             </select>
-                            
+
                             <input type="hidden"
                                    name="type_name"
                                    value="Content Type Id"
                                    tal:condition="python:test(no_types==1, 1, 0)"
                                    tal:attributes="value python:types[0].getId()" />
-                                   
-                            <input class="standalone" 
-                                   type="submit" 
-                                   name="folder_factories:method" 
+
+                            <input class="standalone"
+                                   type="submit"
+                                   name="folder_factories:method"
                                    value="Add New Item"
                                    tabindex=""
                                    style="font-size: 100%;"
@@ -146,13 +146,13 @@
                                                                     , 'Add New ' + types[0].Title()
                                                                     , 'Add New Item');" />
                         </td>
-                    </tr> 
+                    </tr>
 
                     <metal:block tal:condition="folder_contents|not:standalone|nothing">
                     <tr>
-                        <th class="nosort"><input class="noborder" 
+                        <th class="nosort"><input class="noborder"
                                                  type="checkbox"
-                                                 src="select_all_icon.gif" 
+                                                 src="select_all_icon.gif"
                                                  name="selectButton"
                                                  title="Select all items"
                                                  onClick="toggleSelect(this); return false;"
@@ -174,10 +174,10 @@
 
                 <metal:block tal:condition="folder_contents|not:standalone|nothing">
                 <tbody>
-                <metal:block tal:repeat="item batch"> 
+                <metal:block tal:repeat="item batch">
                     <tr tal:define="oddrow repeat/item/odd"
-                        tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
-    
+                        tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+
                         <td>
                             <input type="checkbox" class="noborder" name="ids:list" id="#"
                                    value="#"
@@ -186,14 +186,14 @@
                                                    checked request/ids_checked|nothing;
                                                    tabindex tabindex/next|nothing"/>
                         </td>
-    
+
                         <td tal:define="action python:item.getTypeInfo().getActionById('view');
-                                        url python:test(item.getTypeInfo().getId() in use_folder_contents, 
+                                        url python:test(item.getTypeInfo().getId() in use_folder_contents,
                                                         item.absolute_url()+'/folder_contents',
-                                                        item.absolute_url()+'/'+action);"> 
-    
+                                                        item.absolute_url()+'/'+action);">
+
                             <a href="#" tal:attributes="href url">
-                                <img alt="" tal:attributes="src python:item.getIcon(1)" 
+                                <img alt="" tal:attributes="src python:item.getIcon(1)"
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
                             <tal:block tal:condition="python:test(site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
@@ -202,30 +202,30 @@
                                tal:attributes="href string:${item/absolute_url}/external_edit">
                                <img tal:replace="structure python:pencil_icon.tag(title='Edit with External Editor')" />
                              </a>
-                             
+
                             <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
                                  tal:condition="python:lockable and item.wl_isLocked()"
                                  tal:replace="structure python:locked.tag(title='Locked')" />
 
                             </tal:block>
-    
+
                           <span class="expired"
                                 tal:condition="python:isExpired(item)">expired</span>
                         </td>
-    
+
                         <td i18n:translate="" tal:content="python:item.getTypeInfo().Title()">
                         folder
                         </td>
-    
+
                         <td tal:define="size python:getObjSize(item)"
                             tal:content="structure python:test(size, size, '&nbsp;')">
                         size
                         </td>
-    
+
                         <td tal:content="python:toPortalTime(item.ModificationDate())">
-                        08/19/2001 03:01 AM 
+                        08/19/2001 03:01 AM
                         </td>
-    
+
                         <td class="private"
                             tal:define="review_state python:here.portal_workflow.getInfoFor(item, 'review_state', '')"
                             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
@@ -235,27 +235,27 @@
                     </tr>
                 </metal:block>
                 </tbody>
-                </metal:block> 
+                </metal:block>
             </table>
             </metal:block>
-    
+
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />
 
             <tal:block tal:repeat="button actions/folder_buttons|nothing">
-            <input class="context" 
-	               type="submit" 
-	               name="" 
-                   value="" 
+            <input class="context"
+	               type="submit"
+	               name=""
+                   value=""
                    tabindex=""
                    tal:condition="python:folder_contents or (here.cb_dataValid and button['id'] == 'paste')"
                    i18n:attributes="value"
-                   tal:attributes="value button/name; 
+                   tal:attributes="value button/name;
                                    name button/url;
                                    tabindex tabindex/next;" />
-           </tal:block>   
+           </tal:block>
 
-   
+
     </form>
 
 </div>

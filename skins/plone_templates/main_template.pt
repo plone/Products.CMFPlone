@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
-      lang="en" 
+      lang="en"
       metal:define-macro="master"
       tal:define="member here/portal_membership/getAuthenticatedMember;
         portal here/portal_url/getPortalObject;
@@ -19,28 +19,28 @@
         template_id options/template_id|template_id|template/getId|nothing;
         slots_mapping options/slots_mapping|template/prepare_slots|here/prepare_slots|nothing;
         Iterator python:modules['Products.CMFPlone'].IndexIterator;
-        tabindex python:Iterator(pos=30000);" 
+        tabindex python:Iterator(pos=30000);"
       tal:attributes="lang site_properties/default_language|default;
                       xml:lang site_properties/default_language|default;">
 
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="base">
     <metal:block metal:define-slot="base">
-       <base href="" 
-             tal:condition="here/isPrincipiaFolderish|nothing" 
+       <base href=""
+             tal:condition="here/isPrincipiaFolderish|nothing"
              tal:attributes="href python:here.absolute_url()+'/'" />
        <metal:block tal:condition="not:here/isPrincipiaFolderish|nothing">
-          <base href="" 
+          <base href=""
                 tal:define="path python:'/'.join(here.portal_url.getRelativeContentPath(here)[:-1])"
                 tal:attributes="href python:here.portal_url()+'/'+path+test(len(path)>0,'/','')" />
        </metal:block>
     </metal:block>
   </metal:block>
-  
+
   <metal:block fill-slot="head_slot"
                tal:define="language here/Language;
-	                   lang python:test(language, 
-                                            language, 
+	                   lang python:test(language,
+                                            language,
                                             site_properties.default_language);
                            charset site_properties/default_charset|string:utf-8">
 
@@ -52,7 +52,7 @@
 
     <metal:block define-slot="head_slot" />
   </metal:block>
-  
+
   <metal:block fill-slot="css_slot">
     <metal:block define-slot="css_slot" />
   </metal:block>
@@ -78,7 +78,7 @@ Header stuff
 	                                 site_properties options/site_properties|site_properties|nothing;
 	                                 portal_url options/portal_url|portal_url|nothing;
                                          Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                                         tabindex python:Iterator(pos=10000);" 
+                                         tabindex python:Iterator(pos=10000);"
 	                     tal:condition="slots_mapping/left|nothing">
                 <metal:block tal:repeat="slot slots_mapping/left|slots_mapping/left">
                 <tal:block tal:define="global pathexpr python:slot[0];
@@ -90,7 +90,7 @@ Header stuff
                       tal:replace="structure python:path(pathexpr)" />
                 </metal:block>
             </td>
-            <td class="main" 
+            <td class="main"
                 tal:define="global show_border python:here.showEditableBorder( template_id=template_id
                                                                              , actions=actions );
                             Iterator python:modules['Products.CMFPlone'].IndexIterator;
@@ -98,7 +98,7 @@ Header stuff
 
                 <metal:block define-slot="super"
 		             tal:condition="show_border" >
-                
+
                 <div id="contentTabs" metal:define-macro="contentTabs"
 	                  tal:define="isFolder options/isFolder|isFolder|nothing;
 	                              folder_actions options/folder_actions|folder_actions|nothing;
@@ -106,23 +106,23 @@ Header stuff
 	                              obj_actions options/obj_actions|obj_actions|nothing;
 	                              template_id options/template_id|template_id|nothing"
 	                  i18n:domain="plone">
-   
+
                     <tal:block tal:repeat="action python:test(isFolder, folder_actions+obj_actions+local_actions, obj_actions+local_actions)">
-                        <a class="" href="" 
+                        <a class="" href=""
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template_id, 'selected', 'plain');
 			                   href action/url;">
                             <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
-                        </a> 
+                        </a>
                     </tal:block>
-    
+
                 </div>
 
-                <div id="contentBar">        
+                <div id="contentBar">
                 &nbsp;
-                </div>    
-            
+                </div>
+
                 </metal:block>
-            
+
                 <div class="document"
                      tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
 
@@ -131,42 +131,42 @@ Header stuff
                         <metal:block metal:use-macro="here/header/macros/portal_message">
                         Message box
                         </metal:block>
-            
+
                         <div class="documentActions"
                              metal:define-macro="documentActions"
 			     tal:define="portal_url portal_url|here/portal_url">
-    
-                            <metal:block define-slot="documentActions" 
+
+                            <metal:block define-slot="documentActions"
 			                 tal:content="nothing">
                             Document actions slot
-                            </metal:block>                     
-    
+                            </metal:block>
+
                             <a href=""
                                tal:condition="site_properties/allow_sendto | nothing"
                                tal:attributes="href python:'%s/portal_form/sendto_form' % here.absolute_url()">
                                 <img i18n:attributes="title" alt="Send to"
-                                     tal:attributes="src string:$portal_url/mail_icon.gif" 
+                                     tal:attributes="src string:$portal_url/mail_icon.gif"
                                      src="mail_icon.gif" title="Send this page to somebody" />
                             </a>
-    
+
                             <a href="javascript:this.print();">
                                 <img i18n:attributes="title" alt="Print"
-                                     tal:attributes="src string:$portal_url/print_icon.gif" 
+                                     tal:attributes="src string:$portal_url/print_icon.gif"
                                      src="print_icon.gif" title="Print this page" />
                             </a>
                         </div>
-    
+
                         <metal:block metal:define-slot="header" tal:content="nothing">
-                        Header slot 
+                        Header slot
                         </metal:block>
-    
+
                         <metal:block metal:define-slot="main" tal:content="nothing">
-                        Page body text 
+                        Page body text
                         </metal:block>
-            
+
                         <metal:block metal:define-slot="sub">
                         <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-                        </metal:block> 
+                        </metal:block>
                     </div>
                 </div>
             </td>
@@ -175,7 +175,7 @@ Header stuff
 	                      tal:define="slots_mapping options/slots_mapping|slots_mapping|nothing;
 	                                  portal_url options/portal_url|portal_url|nothing;
                                           Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                                          tabindex python:Iterator(pos=20000);" 
+                                          tabindex python:Iterator(pos=20000);"
 	                      tal:condition="slots_mapping/right">
                 <metal:block tal:repeat="slot slots_mapping/right">
                     <tal:block tal:define="global pathexpr python:slot[0];

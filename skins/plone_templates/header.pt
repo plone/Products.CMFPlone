@@ -21,12 +21,12 @@
     <metal:block metal:define-slot="base" />
 
     <meta tal:condition="here/listMetaTags|nothing"
-          tal:repeat="keyval here/listMetaTags" 
+          tal:repeat="keyval here/listMetaTags"
           tal:attributes="name python:keyval[0];
                            content python:keyval[1];" />
 
-    <!-- Basic crude style for Netscape4.x - This can be removed 
-         if you don't want the special NS4 look - it will still work, 
+    <!-- Basic crude style for Netscape4.x - This can be removed
+         if you don't want the special NS4 look - it will still work,
 	 just be plain text instead. -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
 
@@ -35,7 +35,7 @@
 
     <!-- Custom style sheet if available -->
     <style type="text/css" media="all" tal:condition="exists: here/ploneCustom.css" tal:content="string:@import url(${here/portal_url}/ploneCustom.css);"></style>
-    
+
     <!-- Style sheet used for printing -->
     <link rel="stylesheet" type="text/css" media="print" href="" tal:attributes="href string:$portal_url/plonePrint.css" />
 
@@ -53,11 +53,11 @@
     <metal:block metal:define-slot="css_slot" tal:replace="nothing">
     Inserts CSS specified from a page.
     </metal:block>
-    
+
     <metal:block metal:define-slot="head_slot" tal:replace="nothing">
     Flexibility for published templates to inject stuff into the head tag.
     </metal:block>
-    
+
     <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
     Inserts javascript specified from a page.
     </metal:block>
@@ -68,7 +68,7 @@
     <tal:block tal:define="member here/portal_membership/getAuthenticatedMember;
                            defaulttips python:here.portal_memberdata.getProperty('formtooltips');
                            showdefault python:test(defaulttips, 'true', 0);
-                           formtooltips python:member.getProperty('formtooltips', showdefault)" 
+                           formtooltips python:member.getProperty('formtooltips', showdefault)"
                tal:omit-tag="">
       <script type="text/javascript"
               tal:condition="formtooltips"
@@ -78,7 +78,7 @@
           <metal:block >function formtooltip(el,flag){}</metal:block>
         <tal:block tal:replace="structure python:'&lt;/script&gt;'" />
       </metal:block>
-      
+
     </tal:block>
 </head>
 
@@ -88,29 +88,29 @@
                  ztu ztu|modules/ZTUtils;
                  current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
 
-     <tal:block tal:condition="not: actions|nothing">     
+     <tal:block tal:condition="not: actions|nothing">
          <span tal:define="global actions actions|here/portal_actions/listFilteredActionsFor"
                   tal:replace="nothing" >
-             This is here just in case actions is not defined.  This would happen if you were calling from a DTML Document   
+             This is here just in case actions is not defined.  This would happen if you were calling from a DTML Document
          </span>
      </tal:block>
 
         <div class="top">
 
             <div class="searchBox">
-                <form name="searchform" 
+                <form name="searchform"
                       action="search"
                       tal:attributes="action string:${portal_url}/search" >
-    
-                    <input id="searchGadget" 
-                           name="SearchableText" 
-                           type="text" 
-                           size="20" 
+
+                    <input id="searchGadget"
+                           name="SearchableText"
+                           type="text"
+                           size="20"
                            value=""
                            tal:attributes="value request/SearchableText|nothing; tabindex tabindex/next" />
-    
-                    <input class="context searchButton" 
-                           type="submit" 
+
+                    <input class="context searchButton"
+                           type="submit"
                            value="Search"
                            tal:attributes="tabindex tabindex/next"
                            i18n:attributes="value" />
@@ -118,7 +118,7 @@
             </div>
 
             <a href="/"
-               tal:attributes="href portal_url" 
+               tal:attributes="href portal_url"
                tal:define="logo here/logo.jpg;
                            uri logo/absolute_url" >
                 <img src="logo.jpg"
@@ -132,7 +132,7 @@
         </div>
 
         <hr size="" class="netscape4" />
-     
+
         <div class="tabs"
              metal:define-macro="portal_tabs"
              tal:define="portal_tabs actions/portal_tabs|nothing;
@@ -161,7 +161,7 @@
                tal:condition="not:here/portal_membership/isAnonymousUser"
                tal:attributes="href string:${here/portal_membership/getHomeUrl}">
                 <img tal:replace="structure here/user.gif" />
-            
+
                 <span tal:replace="user/getUserName">john</span>
             </a>
 
@@ -171,7 +171,7 @@
             <a href=""
                tal:attributes="href action/url">
                 <img tal:replace="structure here/linkOpaque.gif" />
-                
+
                 <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
             </a>
             </metal:block>
@@ -191,25 +191,25 @@
             </a>
 	    <span tal:omit-tag="" i18n:translate="you_are_here">You are here:</span>
 	        <span tal:condition="breadcrumbs" tal:omit-tag="">
-                <a i18n:translate="tabs_home" tal:attributes="href portal_url">Home</a> 
+                <a i18n:translate="tabs_home" tal:attributes="href portal_url">Home</a>
                 <strong>&raquo;</strong>
             </span>
 
             <span tal:condition="not: breadcrumbs" i18n:translate="tabs_home" tal:omit-tag="">
                 Home
             </span>
-            
+
             <span tal:repeat="crumb breadcrumbs">
 
                 <metal:block tal:define="global is_last repeat/crumb/end" />
 
-                <a href="#" 
-                   tal:condition="python:not is_last" 
+                <a href="#"
+                   tal:condition="python:not is_last"
                    tal:attributes="href python:crumb[1]"
                    tal:content="structure python:crumb[0]"
                    i18n:translate="">crumb</a>
                 <strong tal:condition="python:not is_last"> &raquo; </strong>
-                <span tal:condition="python: is_last" 
+                <span tal:condition="python: is_last"
                       tal:content="structure python:crumb[0]"
                       i18n:translate="">crumb</span>
 
@@ -222,14 +222,14 @@
     </div>
 
     <div class="message"
-         i18n:domain="plone" 
-         metal:define-macro="portal_message" 
+         i18n:domain="plone"
+         metal:define-macro="portal_message"
          tal:define="portal_message request/portal_status_message | nothing"
-         tal:condition="portal_message"> 
+         tal:condition="portal_message">
 
         <img tal:replace="structure here/info.gif" />
 
-        <strong tal:content="portal_message" i18n:translate=""></strong> 
+        <strong tal:content="portal_message" i18n:translate=""></strong>
     </div>
 
 </html>
