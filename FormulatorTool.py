@@ -6,6 +6,7 @@ from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 from OFS.ObjectManager import bad_id
+from PloneUtilities import log_deprecated
 from copy import deepcopy
 import sys
 
@@ -16,12 +17,10 @@ class FormulatorTool (UniqueObject, SimpleItem):
     security = ClassSecurityInfo()
     plone_tool = 1
     
-    # DEPRECATED
     security.declarePublic('log')
     def log(self, msg):
         """ """
-        import sys
-        sys.stdout.write(str(msg))
+        log_deprecated(msg)
 
     # DEPRECATED
     security.declarePublic('validate')
@@ -30,7 +29,7 @@ class FormulatorTool (UniqueObject, SimpleItem):
            checks for ID collisions when objects are renamed, then sets up the REQUEST.
            Returns errors in a dictionary.
         """
-        sys.stdout.write('FormulatorTool.validate has been deprecated\n')
+        log_deprecated('FormulatorTool.validate has been deprecated\n')
         # validate is a convenience method that is typically called by a form handling
         # script, e.g. a myobject_edit.py external method in skins/plone_scripts/form_scripts.
         #
@@ -77,7 +76,7 @@ class FormulatorTool (UniqueObject, SimpleItem):
     security.declarePublic('createForm') # ( CMFCorePermissions.AddPortalContent, 'createForm' )
     def createForm(self):
         """Returns a CMFForm object"""
-        sys.stdout.write('FormulatorTool.createForm has been deprecated\n')
+        log_deprecated('FormulatorTool.createForm has been deprecated\n')
         # CMFForm wraps Formulator.BasicForm and provides some convenience methods that
         # make BasicForms easier to work with from external methods.
         return getToolByName(self, 'portal_form').createForm()
@@ -86,14 +85,14 @@ class FormulatorTool (UniqueObject, SimpleItem):
     security.declarePublic('cacheValidator')
     def cacheValidator(self, key, validator):
         """Cache a validator for later use"""
-        sys.stdout.write('FormulatorTool.cacheValidator has been deprecated\n')
+        log_deprecated('FormulatorTool.cacheValidator has been deprecated\n')
         return getToolByName(self, 'portal_form').cacheValidator(key, validator)
 
     # DEPRECATED
     security.declarePublic('getValidator')
     def getValidator(self, key):
         """Get a validator from the cache"""
-        sys.stdout.write('FormulatorTool.getValidator has been deprecated\n')
+        log_deprecated('FormulatorTool.getValidator has been deprecated\n')
         return getToolByName(self, 'portal_form').getCachedValidator(key)
 
 InitializeClass(FormulatorTool)

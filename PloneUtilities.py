@@ -11,4 +11,8 @@ class IndexIterator:
             return self.pos
         raise KeyError, 'Reached upper bounds'
 
-
+#deprecration warning
+import zLOG
+def log_deprecated(message,summary='Deprecation Warning',severity=zLOG.WARNING):
+    zLOG.LOG('Plone: ',severity,summary,message)
+            
