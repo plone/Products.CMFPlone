@@ -134,7 +134,6 @@ div.document {
     background: &dtml-contentBackground;;
     margin: 0;
     margin-bottom: 2em;
-    padding: 2em;
     padding-top: 0;
 }
 

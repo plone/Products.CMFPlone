@@ -10,13 +10,14 @@
 		      Batch python:modules['ZTUtils'].Batch;
 		      DateTime python:modules['DateTime'].DateTime;
 		      b_start python:request.get('b_start',0);">
-	
-		<form name="searchresults" action="#" method="post"
+
+
+		<form name="searchresults" action="" method="post"
 				tal:condition="results"
           tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 				
 		  
-			<span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
+ 			<span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
 				<a href="#" tal:attributes="href string:?b_start=${p/first}">
 				&laquo; more recent news
 				</a> 
@@ -39,9 +40,6 @@
 				
 				last updated at <p tal:replace="python:container.toPortalTime(result.Date)"/> 
 						 
-				<!-- Type: <p tal:replace="result/meta_type" /> -->
-				
-				
 				<p>
    			    <strong tal:content="python:test(result.Description, result.Description, '(No Description)')">
 					Description
@@ -82,9 +80,8 @@
 				older news &raquo;
 				</a>
 			</span> 
-			
-		  </form>
-
+ 	  </form>
+          
           <div class="row" tal:condition="not: results">
             No news have been posted.
           </div>		
