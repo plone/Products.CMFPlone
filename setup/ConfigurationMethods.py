@@ -342,7 +342,8 @@ these functions do not have a uninstall function."""
     def addItems(self, fns):   
         out = []         
         for fn in fns:
-            functions[fn](self, self.portal)
+            portal=getToolByName(self, 'portal_url').getPortalObject()
+            functions[fn](self, portal)
             out.append(('Function %s has been applied' % fn, INFO))
         return out
 
