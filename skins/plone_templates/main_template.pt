@@ -14,7 +14,7 @@
                            charset site_properties/default_charset|string:utf-8">
 
     <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
-      Get the global cache settings located in global_cache_settings.
+      Get the global cache headers located in global_cache_settings.
     </metal:cache>
 
     <metal:headslot define-slot="head_slot" />

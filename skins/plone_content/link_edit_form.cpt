@@ -173,6 +173,9 @@
                                        tabindex tabindex/next;"
                        />
 
+<!-- Commented out, doesn't work properly. Maybe after 1.1. :)
+ 
+
                  <span tal:condition="exists:here/link_tree"
                        tal:define="start_url string:${here/portal_url}/link_tree">
                      <a href="" onclick="javascript:window.open('url','title', 'width=200,height=200,menubar=no,toolbar=no,scrollbars=no,resizable=yes').focus();return true;"
@@ -184,7 +187,7 @@
                           tal:attributes="src string: ${portal_url}/sitemap_icon.gif" />
                      </a>
                  </span>
-
+-->
             </div>
         </div>
 

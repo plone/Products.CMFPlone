@@ -7,17 +7,22 @@
 
 <div metal:fill-slot="main">
 
-    <div class="contentHeader">
-        <h1 tal:content="here/title_or_id">Title or id</h1>
+    <h1 tal:content="here/title_or_id">
+    Title or id
+    </h1>
+
+    <div id="description"
+         tal:content="here/Description">
+    description
     </div>
 
     <img tal:condition="here/size"
          src="#"
          tal:attributes="src here/absolute_url" />
 
-    <p style="margin-top: 2em;" tal:content="here/Description">
-    Description
-    </p>
+    <div id="byline" metal:use-macro="here/byline/macros/byline">
+      Get the byline - contains details about author and modification date.
+    </div>
 
     <small>
 

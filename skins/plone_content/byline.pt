@@ -1,0 +1,28 @@
+<div id="byline"
+     metal:define-macro="byline" 
+     i18n:domain="plone"
+     tal:define="creator here/Creator;
+                 creator_home python:mtool.getHomeUrl(creator);">
+
+    <img tal:define="locked portal_object/lock_icon.gif;
+                     lockable python:hasattr(here, 'wl_isLocked');"
+         tal:condition="python:lockable and here.wl_isLocked()"
+         tal:replace="structure python:locked.tag(title='Locked')" />
+
+    <span i18n:translate="box_created_by">Created by</span>
+
+    <a href="#" tal:condition="creator_home"
+                tal:attributes="href creator_home"
+                tal:content="creator">bob</a>
+
+    <span tal:condition="not: creator_home"
+          tal:content="creator">bob</span>
+
+    <br />
+
+    <span i18n:translate="box_last_modified">Last modified</span>
+    <span tal:replace="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
+    August 16, 2001 at 23:35:59
+    </span>
+
+</div>

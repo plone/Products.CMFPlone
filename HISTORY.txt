@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Reworked the default content views, they look much better now.
+      [limi]
+
+    - Moved the byline to a separate template in plone_contents.
+      [limi]
+
     - Cache headers were moved to a separate file in plone_templates called 
       global_cache_settings to make it easier to customize the caching options 
       without changing main_template.

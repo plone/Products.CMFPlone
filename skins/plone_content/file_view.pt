@@ -8,51 +8,55 @@
 <div metal:fill-slot="main"
      tal:define="size python:here.getObjSize(here)">
 
-    <div class="contentHeader">
-    <h1 tal:content="here/title_or_id">Title or id</h1>
+    <h1 tal:content="here/title_or_id">
+    Title or id
+    </h1>
+
+    <div id="description"
+         tal:content="here/Description">
+    description
     </div>
 
-    <span id="description" tal:content="here/Description">
-    Description
-    </span>
+    <p>
+        <a href=""
+           tal:attributes="href here/absolute_url">
+            <img tal:attributes="src string:${portal_url}/file_icon.gif" alt="" />
+            <tal:block i18n:translate="label_click_to_get_file">
+            Click here to get the file
+            </tal:block>
+        </a>
+    </p>
 
-    <div class="group">
-        <span class="legend" i18n:translate="legend_file_details">File details</span>
+    <small class="discreet">
+        <span i18n:translate="label_size">
+        Size
+        </span>
+        
+        <span tal:condition="size"
+            tal:content="size">
+        257 KB
+        </span>
 
-        <div class="row">
-            <div class="label" i18n:translate="label_size">Size</div>
+        <span tal:condition="python:test(size,0,1)" i18n:translate="no_file_uploaded">
+          (No file has been uploaded)
+        </span>
 
-            <div class="field"
-                  tal:content="size">
-            File size
-            </div>
+        -
+        
+        <span i18n:translate="label_file_type">
+        File type
+        </span>
 
-            <span tal:condition="python:test(size,0,1)" i18n:translate="no_file_uploaded">
-              (No file has been uploaded)
-            </span>
-        </div>
-
-        <div class="row">
-            <div class="label" i18n:translate="label_file_type">File type</div>
-            <div class="field" tal:content="here/content_type">
-            Content type
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="label">&nbsp;</div>
-            <div class="field">
-              <p>
-                <a href=""
-                   i18n:translate="label_click_to_get_file"
-                   tal:attributes="href here/absolute_url">
-                   Click here to get the file
-                </a>
-              </p>
-            </div>
-        </div>
+        <span tal:content="here/content_type">
+        Content type
+        </span>
+    </small>
+        
+    
+    <div id="byline" metal:use-macro="here/byline/macros/byline">
+      Get the byline - contains details about author and modification date.
     </div>
-
+    
     <div class="row"
          tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
 

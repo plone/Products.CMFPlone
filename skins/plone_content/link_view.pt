@@ -5,26 +5,29 @@
 
 <body>
 
-    <div metal:fill-slot="main">
+<div metal:fill-slot="main">
 
-        <div class="contentHeader">
-        <h1 tal:content="here/title_or_id">Title or id</h1>
-        </div>
-
-        <div id="description"
-             tal:content="here/Description">
-        description
-        </div>
-
-        <p>
-        <span i18n:translate="link_address">The link address is:</span>
-        <a href="#" tal:attributes="href here/remote_url"
-                    tal:content="here/remote_url">remote url</a>
-        </p>
-
+    <div class="contentHeader">
+    <h1 tal:content="here/title_or_id">Title or id</h1>
     </div>
 
-</body>
+    <div id="description"
+         tal:content="here/Description">
+    description
+    </div>
 
+    <p>
+    <span i18n:translate="link_address">The link address is:</span>
+    <a href="#" tal:attributes="href here/remote_url"
+                tal:content="here/remote_url">remote url</a>
+    </p>
+
+    <div id="byline" metal:use-macro="here/byline/macros/byline">
+      Get the byline - contains details about author and modification date.
+    </div>
+
+</div>
+
+</body>
 </html>
 
