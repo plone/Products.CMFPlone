@@ -7,8 +7,8 @@
 
 /* <dtml-with base_properties> */
 
-#visual-portal-wrapper {
-    min-width: <dtml-var portalMinWidth missing="56em">;
+body {
+    min-width: <dtml-var portalMinWidth missing="70em">;
 }
 #portal-columns {
     width: auto;

@@ -20,7 +20,7 @@ function fixwidth() {
     el=document.getElementById('visual-portal-wrapper');
     if (!rulersCreated){
         ruler = document.createElement('div');
-        ruler.style.width="<dtml-var portalMinWidth missing="56em">";
+        ruler.style.width="<dtml-var portalMinWidth missing="70em">";
         ruler.style.position="absolute";
         ruler.style.top="-10px"
         ruler.style.visibility="hidden";
