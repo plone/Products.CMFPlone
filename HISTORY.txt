@@ -1,5 +1,7 @@
 CHANGES
+
 Plone 1.0 rc1
+    - Added site_properties into beta2-beta3 migration script. Thanks interra Issue #659
     - Added some navigation properties into the beta2-beta3 migration script that were missing.
       Also put them into the newly created beta3-rc1 migration script for people who migrated
       using the existing script.  Fixes Issue 600.
