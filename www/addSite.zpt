@@ -11,7 +11,8 @@
   Add Plone Site
   </div>
 
-<form action="manage_addSite" method="POST">
+<form action="manage_addSite" method="POST"
+      tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies()">
     <div class="form-help">
     Enter an ID and click the button below to create a new Plone site.
     </div>
@@ -40,8 +41,10 @@
     <textarea name="description" cols="60" rows="10"
      style="width: 95%"></textarea>
 
-   <!--  
-    <input type="hidden" name="custom_policy" value="Default Plone">
+    <input type="hidden" name="custom_policy" value="Default Plone"
+           tal:condition="python:len(policies)==1" />
+
+  <!--
     If you want to have your customization policy to show up.  The class needs
     an boolean attribute, availableAtConstruction
    -->
@@ -49,7 +52,7 @@
     <div class="form-label">
     Customisation policy setup
     </div>
-    <span tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies()">
+    <span tal:condition="python:len(policies)>1">
       <select name="custom_policy">
         <tal:block tal:repeat="policy policies">
 	<option tal:attributes="name policy" tal:content="policy"> Custom Policy </option>
@@ -67,6 +70,8 @@
     <input class="form-element" type="submit" name="submit" 
      value=" Add Plone Site " />
     </div>
+
+  </form>
 
   </body>
 </html>

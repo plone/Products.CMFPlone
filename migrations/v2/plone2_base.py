@@ -414,7 +414,7 @@ def addActionsToPortalTypes(portal):
         if ptype.getId() not in ('Folder', 'Plone Site'):
             ptype.addAction('local_roles',
                      name='Sharing',
-                     action="string:${folder_url}/folder_localrole_form",
+                     action="string:${object_url}/folder_localrole_form",
                      condition='',
                      permission='Manage properties',
                      category='object')
