@@ -1,4 +1,5 @@
 
 [default]
-title=Required
+title=Required information
 cache=HTTPCache
+alt=Required information

@@ -1,4 +1,5 @@
 
 [default]
-title=Defaultuser
+title=Default user
 cache=HTTPCache
+alt=Default user

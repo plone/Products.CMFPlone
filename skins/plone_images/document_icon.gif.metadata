@@ -1,4 +1,5 @@
 
 [default]
-title=Document icon
+title=Document item
 cache=HTTPCache
+alt=Document item

@@ -1,4 +1,5 @@
 
 [default]
-title=Linkopaque
+title=Link item
 cache=HTTPCache
+alt=Link item

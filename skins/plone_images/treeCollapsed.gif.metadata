@@ -1,4 +1,5 @@
 
 [default]
-title=Treecollapsed
+title=Collapsed Tree
 cache=HTTPCache
+alt=Collapsed Tree

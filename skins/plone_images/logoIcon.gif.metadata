@@ -1,4 +1,5 @@
 
 [default]
-title=Logoicon
+title=Plone Logo
 cache=HTTPCache
+alt=Plone Logo

@@ -1,4 +1,5 @@
 
 [default]
-title=Popup calendar
+title=Popup Calendar
 cache=HTTPCache
+alt=Popup Calendar

@@ -1,4 +1,5 @@
 
 [default]
-title=Link icon
+title=Link item
 cache=HTTPCache
+alt=Link item

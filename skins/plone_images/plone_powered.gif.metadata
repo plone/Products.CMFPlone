@@ -2,3 +2,4 @@
 [default]
 title=Plone powered
 cache=HTTPCache
+alt=Plone powered

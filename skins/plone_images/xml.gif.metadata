@@ -1,4 +1,5 @@
 
 [default]
-title=Xml
+title=Syndicate with RSS
 cache=HTTPCache
+alt=Syndicate with RSS

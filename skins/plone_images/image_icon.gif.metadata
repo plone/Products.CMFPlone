@@ -1,4 +1,5 @@
 
 [default]
-title=Image icon
+title=Image item
 cache=HTTPCache
+alt=Image item

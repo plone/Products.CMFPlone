@@ -1,4 +1,5 @@
 
 [default]
-title=Lock icon
+title=Locked Item
 cache=HTTPCache
+alt=Locekd Item

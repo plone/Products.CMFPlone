@@ -1,4 +1,5 @@
 
 [default]
-title=Folder icon
+title=Folder item
 cache=HTTPCache
+alt=Folder item

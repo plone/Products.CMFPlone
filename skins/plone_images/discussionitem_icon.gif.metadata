@@ -1,4 +1,5 @@
 
 [default]
-title=Discussionitem icon
+title=Discussion item
 cache=HTTPCache
+alt=Discussion item

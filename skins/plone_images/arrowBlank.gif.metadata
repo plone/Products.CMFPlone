@@ -1,4 +1,5 @@
 
 [default]
-title=Arrowblank
+title=Blank Marker
 cache=HTTPCache
+alt=Blank Marker

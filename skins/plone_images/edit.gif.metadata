@@ -1,4 +1,5 @@
 
 [default]
-title=Edit
+title=Edit object
 cache=HTTPCache
+alt=Edit object

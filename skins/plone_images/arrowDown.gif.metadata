@@ -1,4 +1,5 @@
 
 [default]
-title=Arrowdown
+title=Down Arrow
 cache=HTTPCache
+alt=Down Arrow

@@ -1,4 +1,5 @@
 
 [default]
-title=Newsitem icon
+title=News item
 cache=HTTPCache
+alt=News item

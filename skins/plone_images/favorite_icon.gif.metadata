@@ -1,4 +1,5 @@
 
 [default]
-title=Favorite icon
+title=Favorites item
 cache=HTTPCache
+alt=Favorites item

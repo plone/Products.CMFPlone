@@ -1,4 +1,5 @@
 
 [default]
-title=Info
+title=Info item
 cache=HTTPCache
+alt=Info item

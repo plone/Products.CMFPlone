@@ -1,4 +1,5 @@
 
 [default]
-title=Print icon
+title=Print item
 cache=HTTPCache
+alt=Print item

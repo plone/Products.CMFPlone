@@ -1,4 +1,5 @@
 
 [default]
-title=Pencil icon
+title=Edit with External Editor
 cache=HTTPCache
+alt=Edit with External Editor

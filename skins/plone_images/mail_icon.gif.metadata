@@ -1,4 +1,5 @@
 
 [default]
-title=Mail icon
+title=Mail item
 cache=HTTPCache
+alt=Mail item

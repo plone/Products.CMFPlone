@@ -1,4 +1,5 @@
 
 [default]
-title=Topic icon
+title=Topic item
 cache=HTTPCache
+alt=Topic item

@@ -1,4 +1,5 @@
 
 [default]
-title=Pdf icon
+title=Pdf item
 cache=HTTPCache
+alt=Pdf item

@@ -1,4 +1,5 @@
 
 [default]
-title=Site icon
+title=Site item
 cache=HTTPCache
+alt=Site item

@@ -1,4 +1,5 @@
 
 [default]
-title=Treeexpanded
+title=Expanded Tree
 cache=HTTPCache
+alt=Expanded Tree

@@ -1,4 +1,5 @@
 
 [default]
-title=Addfavorite
+title=Add to favorites
 cache=HTTPCache
+alt=Add to favorites

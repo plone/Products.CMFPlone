@@ -1,4 +1,5 @@
 
 [default]
-title=File icon
+title=File item
 cache=HTTPCache
+alt=File item
