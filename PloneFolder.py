@@ -312,6 +312,11 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         of index_html """
         try:
             return self.browserDefault()
+        except Unauthorized:
+            # Temporary hack, try index_html or folder_listing
+            if hasattr(aq_base(self), 'index_html'):
+                return self, ['index_html']
+            return self,['folder_listing']
         except AttributeError:
             skins = getToolByName(self, "portal_skins")
             default = skins.default_skin
