@@ -11,6 +11,7 @@ class QuickInstallerTool(BaseTool):
 
     meta_type = ToolNames.QuickInstallerTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/product_icon.gif'
 
 QuickInstallerTool.__doc__ = BaseTool.__doc__
 

@@ -7,6 +7,7 @@ class TypesTool(BaseTool):
 
     meta_type = ToolNames.TypesTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/document_icon.gif'
 
 TypesTool.__doc__ = BaseTool.__doc__
 

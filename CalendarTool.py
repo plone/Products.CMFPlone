@@ -7,6 +7,7 @@ class CalendarTool(BaseTool):
 
     meta_type = ToolNames.CalendarTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/event_icon.gif'
 
 CalendarTool.__doc__ = BaseTool.__doc__
 

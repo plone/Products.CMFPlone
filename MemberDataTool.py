@@ -12,6 +12,7 @@ class MemberDataTool(BaseTool):
 
     meta_type = ToolNames.MemberDataTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/user.gif'
 
     def __init__(self):
         BaseTool.__init__(self)

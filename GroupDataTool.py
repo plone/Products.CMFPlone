@@ -8,6 +8,7 @@ class GroupDataTool(BaseTool):
 
     meta_type = ToolNames.GroupDataTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/group.gif'
 
 GroupDataTool.__doc__ = BaseTool.__doc__
 

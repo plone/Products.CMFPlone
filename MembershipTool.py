@@ -26,6 +26,7 @@ Default page for %s
 class MembershipTool(BaseTool):
 
     meta_type = ToolNames.MembershipTool
+    toolicon = 'skins/plone_images/user.gif'
     plone_tool = 1
     personal_id = '.personal'
     portrait_id = 'MyPortrait'

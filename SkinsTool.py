@@ -14,6 +14,7 @@ class SkinsTool(BaseTool):
 
     meta_type = ToolNames.SkinsTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/skins_icon.gif'
 
     security.declarePrivate('getSkinByName')
     def __getSkinByName(self, name):

@@ -36,6 +36,7 @@ class RegistrationTool(BaseTool):
 
     meta_type = ToolNames.RegistrationTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/pencil_icon.gif'
     plone_tool = 1
     md5key = None
     _v_md5base = None

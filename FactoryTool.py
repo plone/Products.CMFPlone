@@ -145,6 +145,7 @@ class FactoryTool(UniqueObject, SimpleItem):
     """ """
     id = 'portal_factory'
     meta_type= 'Plone Factory Tool'
+    toolicon = 'skins/plone_images/add_icon.gif'
     security = ClassSecurityInfo()
     isPrincipiaFolderish = 0
 

@@ -7,6 +7,7 @@ class UndoTool(BaseTool):
 
     meta_type = ToolNames.UndoTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/undo_icon.gif'
 
 UndoTool.__doc__ = BaseTool.__doc__
 

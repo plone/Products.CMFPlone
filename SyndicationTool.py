@@ -13,6 +13,7 @@ class SyndicationTool(BaseTool):
 
     meta_type = ToolNames.SyndicationTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/rss.gif'
     _actions = actions
 
 SyndicationTool.__doc__ = BaseTool.__doc__

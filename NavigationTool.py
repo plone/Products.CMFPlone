@@ -1,4 +1,4 @@
-# $Id: NavigationTool.py,v 1.37.4.1 2004/03/19 22:04:40 shh42 Exp $
+# $Id: NavigationTool.py,v 1.37.4.2 2004/03/19 22:50:05 shh42 Exp $
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -36,6 +36,8 @@ class NavigationTool(UniqueObject, SimpleItem):
 
     id = 'portal_navigation'
     meta_type = ToolNames.NavigationTool
+    toolicon = 'skins/plone_images/error_icon.gif'
+
     security = ClassSecurityInfo()
     plone_tool = 1
     __implements__ = INavigationController,

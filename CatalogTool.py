@@ -11,6 +11,7 @@ class CatalogTool(BaseTool):
 
     meta_type = ToolNames.CatalogTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/book_icon.gif'
 
     def manage_afterAdd(self, item, container):
         # Makes sure the SearchableText index is a ZCTextIndex

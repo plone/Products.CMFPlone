@@ -16,6 +16,7 @@ class ActionIconsTool(BaseTool):
 
     meta_type = ToolNames.ActionIconsTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/action_icon.gif'
 
     security.declareProtected(View, 'renderActionIcon')
     def renderActionIcon( self,

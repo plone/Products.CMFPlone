@@ -10,6 +10,7 @@ class DiscussionTool(BaseTool):
 
     meta_type = ToolNames.DiscussionTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/discussionitem_icon.gif'
 
     security.declareProtected('Modify portal content', 'cookContent')
     def cookReply(self, reply, text_format=None):

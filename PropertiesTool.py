@@ -18,6 +18,8 @@ from AccessControl import ClassSecurityInfo
 class PropertiesTool(Folder, BaseTool):
 
     id = BaseTool.id
+    toolicon = 'skins/plone_images/topic_icon.gif'
+
     meta_type = ToolNames.PropertiesTool
     meta_types = all_meta_types =  ( ( { 'name' : 'Plone Property Sheet'
                                        , 'action' : 'manage_addPropertySheetForm' }, ) )

@@ -160,6 +160,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     id = 'portal_controlpanel'
     title = 'Control Panel'
+    toolicon = 'skins/plone_images/site_icon.gif'
     meta_type = ToolNames.ControlPanelTool
     _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )
 

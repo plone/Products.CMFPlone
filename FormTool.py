@@ -1,4 +1,4 @@
-# $Id: FormTool.py,v 1.28.4.8 2004/03/19 22:04:40 shh42 Exp $
+# $Id: FormTool.py,v 1.28.4.9 2004/03/19 22:50:05 shh42 Exp $
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -32,6 +32,7 @@ debug = 0  # enable/disable logging
 class FormTool(UniqueObject, SimpleItem):
     id = 'portal_form'
     meta_type= 'Plone Form Tool'
+    toolicon = 'skins/plone_images/error_icon.gif'
     security = ClassSecurityInfo()
     __implements__ = IFormTool,
 

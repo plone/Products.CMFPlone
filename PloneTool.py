@@ -38,6 +38,7 @@ class PloneTool(UniqueObject, SimpleItem):
 
     id = 'plone_utils'
     meta_type= ToolNames.UtilsTool
+    toolicon = 'skins/plone_images/site_icon.gif'
     security = ClassSecurityInfo()
     plone_tool = 1
     field_prefix = 'field_' # Formulator prefixes for forms

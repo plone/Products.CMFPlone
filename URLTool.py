@@ -7,6 +7,7 @@ class URLTool(BaseTool):
 
     meta_type = ToolNames.URLTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/link_icon.gif'
 
 URLTool.__doc__ = BaseTool.__doc__
 

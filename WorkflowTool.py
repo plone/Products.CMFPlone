@@ -19,6 +19,7 @@ class WorkflowTool(BaseTool):
     meta_type = ToolNames.WorkflowTool
     security = ClassSecurityInfo()
     plone_tool = 1
+    toolicon = 'skins/plone_images/workflow_icon.gif'
 
     security.declarePublic('doActionFor')
     def doActionFor(self, ob, action, wf_id=None, *args, **kw):

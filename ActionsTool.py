@@ -12,6 +12,7 @@ class ActionsTool(BaseTool):
 
     meta_type = ToolNames.ActionsTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/action_icon.gif'
 
 
     # __init__ is derived from the corresponding method in CMFCore.ActionsTool.
