@@ -17,7 +17,8 @@
                     at 
                     <span tal:replace="python: here.toPortalTime(reply.modified())">8/23/2001 12:40:44 PM</span>
                     
-                    <p tal:content="structure reply/text">
+                    <p tal:define="pss modules/Products.PythonScripts.standard"
+                       tal:content="structure python:pss.structured_text(reply.text)">
         		    This is the body text of the comment. 
         		    </p>
                     
