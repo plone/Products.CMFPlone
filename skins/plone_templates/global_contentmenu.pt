@@ -42,8 +42,10 @@
 
     <tal:singular tal:condition="python: size==1">
         <a href="#" 
-           tal:define="portaltype python: allowed[0]"
-           tal:content="string: Add New $portaltype">Add New Foo</a>
+           tal:define="portaltype python: allowed[0];
+                       folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());"
+           tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId}"
+           tal:content="string: Add New ${portaltype/Title}">Add New Foo</a>
     </tal:singular>
 
     <li tal:define="review_state wf_state"
