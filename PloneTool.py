@@ -549,7 +549,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                             break
                     if found==0:
                         # add it to result
-                        result=result.append((user, roles, type, name))
+                        result.append((user, roles, type, name))
                 if parent==portal:
                     cont=0
                 else:
