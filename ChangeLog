@@ -1,3 +1,8 @@
+2003-04-12  Sidnei da Silva  <sidnei@x3ng.com>
+
+	* skins/plone_scripts/add_ext_editor.py (omit_types): Added
+	ValueError to the list of exceptions to catch.
+
 2003-01-08 15:01  lalo
 
 	* skins/plone_templates/main_template.pt (Plone-1_0.3):

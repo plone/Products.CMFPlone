@@ -12,7 +12,7 @@ omit_types=('Folder','Discussion Item','Event','Topic', 'Collector', 'Collector 
 for ctype in [ctype for ctype in types.objectValues() if ctype.Title() not in omit_types]:
     try:
         ctype.getActionById('external_edit')
-    except (TypeError, KeyError):
+    except (TypeError, KeyError, ValueError):
         ctype.addAction( 'external_edit',
                          'External Editor',
                          'external_edit',
