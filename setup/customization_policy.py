@@ -10,13 +10,15 @@ class CustomizationPolicySetup(SetupWidget):
     type = 'Customization Policy Setup'
     single = 1
     description = """Sets up a customization policy, which configures
-the plone setup. The default site has already been run. <b>Please note</b>
-that uninstalling a policy is <i>not</i> supported at this time. Be careful
-before selecting this."""
+    the plone setup. The default site has already been run.
+    <b>Please note</b> that uninstalling a policy is
+    <i>not</i> supported at this time.
+    Be careful before selecting this."""
 
     def delItems(self, policy):
         out = []
-        out.append(('Currently we have no way to remove customisation policies', ERROR))
+        out.append(('Currently we have no way to remove '
+                    'customisation policies', ERROR))
         return out
 
     def addItems(self, policy):
