@@ -10,8 +10,7 @@
 
 from DateTime import DateTime
 REQUEST=context.REQUEST
-
-errors = {}
+state = context.portal_form_controller.getState(script, is_validator=1)
 
 effective_date = None
 try:
@@ -19,7 +18,7 @@ try:
       REQUEST.effective_date != '':
         effective_date = DateTime(REQUEST.effective_date)
 except:
-    errors['effective_date'] = 'Please enter a valid date and time.'
+    state.setError('effective_date', 'Please enter a valid date and time.')
     
 expiration_date = None
 try:
@@ -27,14 +26,17 @@ try:
       REQUEST.expiration_date != '':
         expiration_date = DateTime(REQUEST.expiration_date)
 except:
-    errors['expiration_date'] = 'Please enter a valid date and time.'
+    state.setError('expiration_date', 'Please enter a valid date and time.')
 
 
 validator = context.portal_form.createForm()
 validator.addField('workflow_action', 'String', required=1)
-errors.update(validator.validate(context.REQUEST))
+errors = validator.validate(context.REQUEST)
+for fieldid, error in errors.items():
+    state.setError(fieldid, error)
 
-if errors:
-    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
-return ('success', errors, {'portal_status_message':'Content publishing information has been saved.'})
+if state.getErrors():
+    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
+else:
+    return state
 

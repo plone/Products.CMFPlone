@@ -2,10 +2,10 @@
 title=edit form
 
 [validators]
-validators..Change=validate_id,validate_document_edit
+validators..Save=validate_id,validate_document_edit
 validators..Cancel=
 
 [actions]
-action.success..Change=traverse_to:string:document_edit
+action.success..Save=traverse_to:string:document_edit
 action.success..Cancel=redirect_to_action:string:view
 action.failure=traverse_to:string:document_edit_form
