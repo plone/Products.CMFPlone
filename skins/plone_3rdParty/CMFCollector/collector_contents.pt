@@ -49,11 +49,12 @@
                  batch python: Batch(items, BATCHSIZE, int(b_start), orphan=0);">
 
     <div tal:define="total here/length;
-                     found python:len(items);">
+                     found python:len(items);"
+         i18n:translate="collector_issue_number">
         Found 
-        <span tal:replace="found">found</span> 
+        <span tal:replace="found" i18n:name="found">found</span> 
         issues. In total there are 
-        <span tal:replace="total">total</span>
+        <span tal:replace="total" i18n:name="total">total</span>
         issues in this collector.
     </div>
     
