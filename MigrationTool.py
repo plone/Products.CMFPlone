@@ -92,6 +92,7 @@ class MigrationTool( UniqueObject, SimpleItem):
 
         # do this once all the changes have been done
         try:
+            log('Recataloging site, this might take a minute')
             self.portal_catalog.refreshCatalog()
             self.portal_workflow.updateRoleMappings()
         except:
