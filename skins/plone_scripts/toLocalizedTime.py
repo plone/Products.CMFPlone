@@ -45,7 +45,7 @@ if dateFormat == None or dateFormat == '':
 # extract parts from date
 try:
     time = DateTime(time)
-except (AttributeError, KeyError, IndexError):
+except (AttributeError, KeyError, IndexError, TypeError):
     pass
 
 # extract date parts from DateTime object
