@@ -3,7 +3,9 @@
       i18n:domain="plone">
 
 <tal:head metal:fill-slot="head_slot"
-          tal:define="dummy python:request.set('disable_border',1)"></tal:head>
+          tal:define="dummy python:request.set('disable_border',1)">
+    <meta name="robots" content="noindex,follow" />
+</tal:head>
 
 <body>          
           
