@@ -49,11 +49,14 @@
 
         <h1 i18n:translate="">
             Issue <span tal:replace="here/id" i18n:name="id">ID</span> of
-            <a href="" i18n:name="collector_link" i18n:translate="collector_link"
-             tal:attributes="href python:here.aq_parent.absolute_url()">
-            <span tal:replace="here/aq_parent/Title"
-	    i18n:name="collector_title">COLLECTOR TITLE</span>
-            [<span tal:replace="here/abbrev|nothing" i18n:name="collector_abbrev" />]
+            <a href="" 
+               i18n:name="collector_link"
+               tal:attributes="href python:here.aq_parent.absolute_url()">
+                <span i18n:translate="collector_link">
+                    <span tal:replace="here/aq_parent/Title"
+                          i18n:name="collector_title">COLLECTOR TITLE</span>
+                    [<span tal:replace="here/abbrev|nothing" i18n:name="collector_abbrev" />]
+                </span>
             </a>
         </h1>
         
