@@ -1,3 +1,54 @@
+2003-12-18 02:45  vinsci
+
+	* skins/plone_portlets/portlet_navigation.pt (Plone-2_0-branch):
+	  Apply panjunyong's navigator fix. This closes issue 1029.
+
+2003-12-18 01:53  limi
+
+	* skins/plone_ecmascript/plone_inplace_calendar.js.pt.metadata
+	  (Plone-2_0-branch): The pop-up calendar wasn't being cached. Now
+	  it is. Yay. :)
+
+2003-12-17 22:47  runyaga
+
+	* HISTORY.txt, skins/plone_forms/folder_factories.pt,
+	  skins/plone_prefs/prefs_workflow_advanced.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/global_contentmenu.pt,
+	  skins/plone_templates/global_contentviews.pt (Plone-2_0-branch):
+	  moved here/allowedContentTypes to use the global
+	  allowedSortedContentTypes which is defined in
+	  plone_templates/contentviews.  This should only be invoked if you
+	  are logged in and can edit something.  Everything else falls back
+	  to here/allowedContentTypes if the global does not exist.
+
+2003-12-17 16:34  pjgrizel
+
+	* MemberDataTool.py, skins/plone_prefs/prefs_group_members.pt: -
+	  Fixed nested groups pb in groups preferences. See
+	  http://plone.org/collector/1894.    This code needs the lated
+	  GRUF version.
+
+2003-12-17 11:00  zopezen
+
+	* Extensions/setupSite.py (Plone-2_0-branch): Oops looking for conf
+	  in the wrong place
+
+2003-12-17 10:13  zopezen
+
+	* Extensions/setupSite.py (Plone-2_0-branch): setup Site hack. Note
+	  this requires Zope 2.7.
+
+2003-12-17 07:48  panjunyong
+
+	* setup/dependencies.py (Plone-2_0-branch): no "CMF-" prefix in the
+	  version.txt file of CMF1.3.2(it is just "1.3.2"); the following
+	  filter will filter the "CMF-" prefix
+
+2003-12-17 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-16 20:40  zopezen
 
 	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): Sigh, preserve
