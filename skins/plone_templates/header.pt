@@ -55,6 +55,10 @@
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextLarge.css" title="Large Text" />
 
+    <style type="text/css" media="handheld"
+           tal:content="structure string: <!-- @import url($portal_url/ploneMobile.css); -->">
+    </style>
+
     <!-- Custom style sheet if available -->
     <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
            tal:content="structure string:<!-- @import url($portal_url/ploneCustom.css); -->">

@@ -12,7 +12,7 @@
         <input id="searchGadget"
                name="SearchableText"
                type="text"
-               size="20"
+               size="15"
                value=""
                alt="Search"
                title="Search"

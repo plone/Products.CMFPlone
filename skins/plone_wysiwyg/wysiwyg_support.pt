@@ -3,18 +3,12 @@
 <!-- wysiwyg default widget, this is overridden by other editors -->
 
 <div metal:define-macro="wysiwygEditorBox">
-  <textarea cols="80"
-            rows="25"
-            tabindex=""
+  <textarea tabindex=""
             name="description"
             tal:content="inputvalue"
             tal:attributes="name inputname;
                             id inputname;
-                            onfocus onfocus|nothing;
-                            onblur onblur|nothing;
-                            tabindex tabindex|nothing;
-                            rows rows|default;
-                            cols cols|default;"></textarea>
+                            tabindex tabindex|nothing;"></textarea>
 </div>
 
 

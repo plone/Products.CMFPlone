@@ -361,7 +361,7 @@ del {
     z-index: 2;
 }
 #portal-globalnav {
-    /* Navigational Plone Tabs(tm). The power of CSS runs strong in these :) */
+   /* Navigational Plone Tabs(tm), implemented by customizing the a and li tags */
     background-color: transparent;
     padding: 0em 0em 0em 2em;
     white-space: nowrap;
@@ -608,7 +608,7 @@ del {
 }
  
 #content {
-    padding: 0.139em 1em 0 1em;
+    padding: 1em 1em 0 1em;
     margin: 0em 0em 2em 0em;
 }
 

@@ -55,7 +55,6 @@
                    id="id"
                    name="id"
                    value=""
-                   size="40"
                    tabindex=""
                    tal:attributes="value id;
                                    tabindex tabindex/next;"
@@ -86,7 +85,6 @@
                          id="title"
                          name="title"
                          value=""
-                         size="40"
                          tabindex=""
                          tal:attributes="value Title;
                                          tabindex tabindex/next;"
@@ -104,9 +102,7 @@
               A brief description of the item.
             </div>
 
-            <textarea cols="80"
-                      rows="5"
-                      tabindex=""
+            <textarea tabindex=""
                       id="description"
                       name="description"
                       tal:content="description"
@@ -153,7 +149,6 @@
             <input type="file"
                    id="file"
                    name="file"
-                   size="30"
                    tabindex=""
                    value=""
                    tal:attributes="tabindex tabindex/next"
