@@ -16,7 +16,7 @@ from Products.CMFCore.Expression import Expression
 
 from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
-from Products.CMFPlone.setup.ConfigurationMethods import addSiteActions, addErrorLog, assignTitles
+from Products.CMFPlone.setup import ConfigurationMethods
 from Products.CMFPlone import ToolNames
 
 from Acquisition import aq_base
@@ -75,7 +75,7 @@ def oneX_twoBeta2(portal):
     addFormController(portal)
 
     out.append("Adding in site actions")
-    addSiteActions(portal, portal)
+    ConfigurationMethods.addSiteActions(portal, portal)
 
     out.append("Moving portraits into the memberdata tool")
     #migrate Memberdata, Membership and Portraits
@@ -89,9 +89,11 @@ def oneX_twoBeta2(portal):
     out.append("Updating nav tree")
     migrateNavTree(portal)
     out.append("Adding error log")
-    addErrorLog(None, portal)
+    ConfigurationMethods.addErrorLog(None, portal)
     out.append("Assigning titles to tools")
-    assignTitles(None, portal)
+    ConfigurationMethods.assignTitles(None, portal)
+    out.append("Mark old fs directory views out-dated")
+    deprFsViews(portal)
     return out
 
 def doit(self):
@@ -398,6 +400,32 @@ def updateNavigationProperties(portal):
             nav_props._updateProperty(id, action)
         else:
             nav_props._setProperty(id, action)
+
+def deprFsViews(portal):
+    st = getToolByName(portal, 'portal_skins')
+    fsViewIds = ['Images', 'actionicons', 'calendar', 'content', 'control',
+        'generic', 'no_css', 'nouvelle', 'topic', 'zpt_calendar', 'zpt_content', 
+        'zpt_control', 'zpt_generic', 'zpt_topic', 
+        ]
+    for fsViewId in fsViewIds:
+        view = getattr(st, fsViewId)
+        view.title += 'Deprecated, can safely be deleted'
+        
+    for skin in st.getSkinSelections():
+        oldpath = st.getSkinPath(skin)
+        oldpath = [p.strip() for p in oldpath.split(',')]
+        # all non depr pathes
+        newpath = [p for p in oldpath if p not in fsViewIds and p != 'cmf_legacy' ]
+        # all depr pathes that are in oldpath
+        deprpath = [p for p in oldpath if p in fsViewIds ]
+        # add depr pathes to the end after cmf_legacy
+        newpath.append('cmf_legacy')
+        newpath.extend(deprpath)
+        # remove all plone_styles/ subdirs
+        newpath = [ p for p in newpath if not p.startswith('plone_styles/') ]
+        
+        path = ','.join(newpath)
+        st.addSkinSelection(skin, path)
             
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
