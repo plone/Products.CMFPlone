@@ -18,6 +18,16 @@ class LargePloneFolder(BTreeFolder2Base, PloneFolder):
         PloneFolder.__init__(self, id, title)
         self.id=id
         self.title=title
+    
+    # as per CMFBTreeFolder.py
+    def _checkId(self, id, allow_dup=0):
+        PloneFolder._checkId(self, id, allow_dup)
+        BTreeFolder2Base._checkId(self, id, allow_dup)
+    
+    # this works around a problem that makes empty folders
+    # evaluate to false in boolean tests, like:
+    # tal:condition="python: someFolder and someFolder.someMethod(...)"
+    __len__ = PloneFolder.__len__
 
 InitializeClass(LargePloneFolder)
 
