@@ -1,3 +1,35 @@
+2004-04-21 20:53  shh42
+
+	* Portal.py, verifyObjectPastePatch.py, PloneFolder.py, __init__.py
+	  (Plone-2_0-branch): Implement the _verifyObjectPaste fix as a
+	  monkey-patch instead of a mix-in class.
+
+2004-04-21 19:23  shh42
+
+	* PloneFolder.py (Plone-2_0-branch): Add ZPL notice for stuff
+	  copied from CMFCore.
+
+2004-04-21 18:39  shh42
+
+	* HISTORY.txt, Portal.py, PloneFolder.py,
+	  tests/testCutPasteSecurity.py (Plone-2_0-branch): Backported fix
+	  for http://plone.org/collector/2183 from HEAD.
+	  _verifyObjectPaste() should deny pasting if the content type is
+	  not allowed in the target container.
+
+2004-04-21 17:32  zworkb
+
+	* CustomizationPolicy.py, Portal.py, HISTORY.txt,
+	  interfaces/CustomizationPolicy.py (Plone-2_0-branch): -
+	  improvement to Customization policy:	     In a customization
+	  policy class you can now provide an optional method
+	  'getPloneGenerator',	     where you can return a different
+	  PloneGenerator than the default one
+
+2004-04-21 05:09  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-21 04:32  tiran
 
 	* HISTORY.txt (Plone-2_0-branch): Updated history
