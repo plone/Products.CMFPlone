@@ -14,82 +14,47 @@
                  b_start python:request.get('b_start',0);">
 
 
-    <h1 i18n:translate="heading_news">Published items</h1>
+    <h1 i18n:translate="heading_recently_published">Published items</h1>
     
-    <div i18n:translate="description_news" id="description">All the published items, sorted in a reverse chronological order.</div>
+    <div i18n:translate="description_recently_published" id="description">All published items, latest first.</div>
 
     <form name="searchresults" action="" method="post" tal:condition="results"
-                      tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
+                      tal:define="batch python:Batch(results, 20, int(b_start), orphan=1)">
 
-        <metal:block tal:repeat="result batch">
+        <tal:results tal:repeat="result batch">
 
-            <tal:block  
-             tal:define="resultObject result/getObject">
-         
-            <div class="box">
+            <tal:object define="resultObject result/getObject">
+                
 
-                <h6>
+            <dl>
+                <dt>
                     <img src="" style="border: 0" 
                          tal:attributes="src result/getIcon; 
                                          alt result/Type" />
-                
-                    <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span> 
-                
-                    <a href=""
-                       tal:attributes="href python:here.portal_membership.getHomeUrl(result.Creator)">
-    
-                        <img tal:replace="structure here/user.gif" />
-                    
-                        <span tal:replace="result/Creator" > 
-                        Author
-                        </span>
-    
-                    </a>                                 
-    
-                  - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python:container.toPortalTime(result.modified)" /> 
-                
-                </h6>
-
-                <div class="body">
-                    <div class="content">
-    
-                        <h2 tal:content="result/Title">
-                        Title
-                        </h2>
         
-                        <p tal:content="structure result/Description">
-                        Description
-                        </p>
+                    <a href="/view" 
+                       tal:content="result/Title"
+                       tal:attributes="href resultObject/absolute_url">
+                    Title
+                    </a>
+                </dt>
     
-                    
-                        <p>
-                            <span style="float: right" 
-                                  tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).objectIds() ), 1, 0)">
-                                <img tal:replace="structure here/discussionitem_icon.gif" /> 
-                                <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)"> 
-                                     <a href="" 
-                                        tal:attributes="href string:${resultObject/absolute_url}#comments">
-                                        <span tal:replace="python:talkback.replyCount(resultObject)" /> comments
-                                     </a>
-                                </span>
-                            </span>
-        
-            
-                            <a href="/view" tal:attributes="href resultObject/absolute_url" i18n:translate="read_more">
-                            Read More
-                            </a>
-                        </p>
-                    
-                        
-                    </div>
-
+                <div class="byline">
+                    <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="here/modified" /> 
                 </div>
-                
-            </div>
-            
-            </tal:block>
 
-        </metal:block>
+                <dd class="link"> 
+                    <a href="/view" 
+                       tal:content="structure result/Description"
+                       tal:attributes="href resultObject/absolute_url">
+                    Description
+                    </a>
+                </dd>
+            </dl>
+            
+            </tal:object>
+
+        </tal:results>
         
         <div class="spacer">
         &nbsp;
