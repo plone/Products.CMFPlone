@@ -10,24 +10,22 @@
 from Products.PythonScripts.standard import url_quote
 
 REQUEST=context.REQUEST
+msg = 'No change has been done.'
 
 if addname:
     context.portal_groups.addGroup(addname,"",(),())
     group=context.portal_groups.getGroupById(addname)
+    msg = 'Group ' + addname + ' has been added.'
 else:
     group=context.portal_groups.getGroupById(groupname)
-
+    msg = 'Changes saved.'
 processed={}
 for id, property in context.portal_groupdata.propertyItems():
     processed[id]=REQUEST.get(id, None)
 
-msg = 'Changes made.'
-
 if group:
     # for what reason ever, the very first group created does not exist
     group.setGroupProperties(processed)
-else:
-    msg = 'No Changes made.'
 
 url='%s?%s=%s' % (context.prefs_groups_overview.absolute_url(),
     url_quote('portal_status_message'),

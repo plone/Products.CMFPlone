@@ -60,7 +60,7 @@
                    i18n:attributes="title alt"/>
             </th>
             
-	    <th i18n:translate="listingheader_group_name">Group name</th>
+	    <th i18n:translate="listingheader_group_name">Group/User name</th>
 	  </tr>
 
 	  <tal:block repeat="obj batch">
