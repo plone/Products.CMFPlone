@@ -153,9 +153,18 @@ dt {
     font-weight: bold;    
 }
 
+dt a {
+    text-decoration: underline;
+}
+
+
 dd {
     line-height: 1.5em;
     margin-bottom: 1em;
+}
+
+d a {
+    text-decoration: underline;
 }
 
 
