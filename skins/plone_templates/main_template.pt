@@ -46,7 +46,9 @@
 
 <div id="portal-top" i18n:domain="plone" >
 
-    <a href="#documentContent" class="hiddenStructure"
+    <a class="hiddenStructure"
+       tal:define="url request/VIRTUAL_URL|string:${request/SERVER_URL}${request/PATH_TRANSLATED}"
+       tal:attributes="href string:${url}#documentContent"
        i18n:translate="label_skiptocontent">Skip to content.</a>
 
     <a metal:use-macro="here/global_logo/macros/portal_logo">
