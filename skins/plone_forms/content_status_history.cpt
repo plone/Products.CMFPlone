@@ -38,7 +38,7 @@
           name="edit_form"
           method="post"
           action="content_status_modify"
-          tal:define="self_publish test(request.get('ids', None), 1, 0)"
+          tal:define="self_publish python:test(request.get('ids', None), 1, 0)"
           tal:attributes="action string:${here/getId}/${template/getId}">
 
         <span class="legend" i18n:translate="legend_publishing_details">Publishing Details</span>
