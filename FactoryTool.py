@@ -12,6 +12,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from ZODB.POSException import ConflictError
 
 ListType=type([])
 
@@ -138,6 +139,8 @@ class TempFolder(TempFolderBase):
             type_name = self.getId()
             try:
                 self.invokeFactory(id=id, type_name=type_name)
+            except ConflictError:
+                raise
             except:
                 # some errors from invokeFactory (AttributeError, maybe others) 
                 # get swallowed -- dump the exception to the log to make sure
