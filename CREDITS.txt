@@ -79,6 +79,8 @@ contributed code.
   
   Paul Everitt (ev) -- PR, help, advice and enthusiasm 
   - "Zope Europe":http://www.zope-europe.org
+  
+  Christian Heimes (Tiran) -- Bug hunting 'till dawn and small improvements
 
 Companies (in randomized order):
 
