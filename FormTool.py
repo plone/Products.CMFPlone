@@ -105,7 +105,7 @@ class FormTool(UniqueObject, SimpleItem):
 
         # see if we are handling validation for this form
         validators = self.getValidators(name)
-        if validators is none:
+        if validators is None:
             # no -- do normal traversal
             target = getattr(aq_parent(self), name, None)
             if target:
