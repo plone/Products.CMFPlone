@@ -10,7 +10,6 @@
 
 <div metal:fill-slot="main">
 
-
     <div tal:define="p_props here/portal_properties;
                      success request/success|nothing;">
         <div tal:condition="not:success">
