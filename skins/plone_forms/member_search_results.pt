@@ -19,7 +19,7 @@
        tal:define="results python:here.portal_membership.searchForMembers(request);
                    Batch python:modules['Products.CMFPlone'].Batch;
                    DateTime python:modules['DateTime'].DateTime;
-                   b_size python:18;b_start python:0;b_start request/b_start | b_start;">
+                   b_size python:12;b_start python:0;b_start request/b_start | b_start;">
     
     <h1 i18n:translate="heading_search_results">Search results</h1>
                  

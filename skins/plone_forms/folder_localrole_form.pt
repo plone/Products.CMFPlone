@@ -12,7 +12,7 @@
        tal:define="join python:modules['string'].join;
                    Iterator python:modules['Products.CMFPlone'].IndexIterator;
                    Batch python:modules['Products.CMFPlone'].Batch;
-                   b_size python:18;b_start python:0;b_start request/b_start | b_start;
+                   b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    search_submitted request/role_submit|nothing;
                    search_results python:test(search_submitted, here.portal_membership.searchMembers( search_param=request.get('search_param','')
@@ -33,9 +33,6 @@
 	
         <metal:block tal:define="batch python:Batch(search_results, b_size, int(b_start), orphan=3)">
 
-        <!-- Navigation -->
-        <div metal:use-macro="here/batch_macros/macros/navigation" />
-
 	      <form class="group"
               method="post" 
               name="change_type" 
@@ -46,6 +43,9 @@
             <span class="legend" i18n:translate="legend_available_members">Available Members</span>
                 
             <input type="hidden" name="change_type" value="add" />
+
+            <!-- Navigation -->
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
     		
     		    <span class="card" tal:repeat="member batch">
     				
@@ -78,6 +78,9 @@
         		        
                 <span tal:condition="python:not member['email']">&nbsp;</span>
     		    </span>
+
+            <!-- Navigation -->
+            <div metal:use-macro="here/batch_macros/macros/navigation" />
 
         		<div class="row">
         				
@@ -116,8 +119,6 @@
         		</div>			
 		
 		    </form>
-        <!-- Navigation -->
-        <div metal:use-macro="here/batch_macros/macros/navigation" />
         </metal:block>				
 
     </metal:block>
