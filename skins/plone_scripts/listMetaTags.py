@@ -39,7 +39,6 @@ for accessor, key in metadataList:
         value = method()
     except AttributeError:
         value = None
-
     if not value:
         # no data
         continue
@@ -58,13 +57,21 @@ for accessor, key in metadataList:
 # This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
 created = context.CreationDate()
 
-effective = context.EffectiveDate()
+try:
+    effective = context.EffectiveDate()
+except AttributeError:
+    effective = None
+
 if effective and effective != 'None':
     effective = DateTime(effective)
 else:
     effective = None
 
-expires = context.ExpirationDate()
+try:
+    expires = context.ExpirationDate()
+except AttributeError:
+    expires = None 
+
 if expires and expires != 'None':
     expires = DateTime(expires)
 else:
