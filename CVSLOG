@@ -1,3 +1,54 @@
+2003-12-29 21:49  limi
+
+	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch): Fix
+	  for Issue #1979.
+
+2003-12-29 21:12  elvix
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  fixes for bugs 2194 and 2197. Add class="link-plain" to external
+	  links to avoid the world icon
+
+2003-12-29 18:47  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Removed
+	  duplicate selectors. Fix for bug #2190. Thanks wavelengths ;)
+
+2003-12-29 16:45  ronnix
+
+	* skins/plone_styles/: plonePresentation.css.dtml,
+	  plonePrint.css.dtml (Plone-2_0-branch): Fixed missing comma in
+	  selector.
+
+2003-12-29 15:33  limi
+
+	* skins/plone_form_scripts/plone_change_password.py
+	  (Plone-2_0-branch): Was sending people to the personalize form
+	  after changing passwords. Now returns them to the memberprefs
+	  panel, like it should.
+
+2003-12-29 05:57  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): Yet
+	  more fixes for disappearing text in IE. We're close to
+	  effectively doing * { height: 100%} in IE6 now. Insane.
+
+2003-12-29 05:21  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): More
+	  fixes for disappearing text in IE, documentDescription was
+	  renamed but not updated in this file.
+
+2003-12-29 05:05  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2003-12-29 05:01  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): Fix
+	  for disappearing definition lists in IE6. Swift and painful death
+	  to IE. Now.
+
 2003-12-29 02:15  limi
 
 	* skins/plone_styles/plonePresentation.css.dtml (Plone-2_0-branch):
