@@ -23,13 +23,15 @@ if title or description or subject: #we dont want metadata to redirect (uses mod
 
 
 #if a new_id 
-if REQUEST['id']:
-    if REQUEST['id']!=context.getId():
-        context.manage_renameObjects( (context.getId(), ), (REQUEST['id'], ), REQUEST)
+id = REQUEST.get('field_id', REQUEST.get('id',''))
+
+if id:
+    if id!=context.getId():
+        context.manage_renameObjects( (context.getId(), ), (id, ), REQUEST)
         if redirect:
             status_msg=REQUEST.get('portal_status_message', 'Changes+have+been+Saved.')
             url='%s/%s?%s' % ( REQUEST['URL2']
-                             , REQUEST['id']
+                             , id
                              , 'portal_status_message='+status_msg )
             return REQUEST.RESPONSE.redirect(url)
 
