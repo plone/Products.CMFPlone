@@ -16,7 +16,7 @@ body {
 #visual-column-wrapper {
     float: left;
     width: 100%;
-    margin-right: -17em;
+    margin-right: -16em;
 }
 #portal-column-content {
     width: 100%;
@@ -25,19 +25,19 @@ body {
 }
 
 #portal-column-content #content {
-    margin: 0 17em;
+    margin: 0 16em;
 }
 
 #portal-column-one {
     float: left;
-    margin-right: -16em;
-    width: 17em;
+    margin-right: -15em;
+    width: 16em;
     overflow: hidden;
 }
 
 #portal-column-two {
     float: right;
-    width: 17em;
+    width: 16em;
     overflow: hidden;
 }
 
@@ -60,11 +60,11 @@ body {
 }
 
 .visualColumnHideOne #portal-column-content #content {
-    margin: 0 17em 0 0;
+    margin: 0 16em 0 0;
 }
 
 .visualColumnHideTwo #portal-column-content #content {
-    margin: 0 0 0 17em;
+    margin: 0 0 0 16em;
 }
 
 /* </dtml-with> */

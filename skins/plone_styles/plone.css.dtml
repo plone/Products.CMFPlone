@@ -934,7 +934,6 @@ ul.configlets li a {
     background: &dtml-evenRowBackgroundColor;; 
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
     padding: 0 1em 0.5em 1em;
-    color: &dtml-discreetColor;
 }
 
 .comment h1,
@@ -944,7 +943,11 @@ ul.configlets li a {
 .comment h5,
 .comment h6 {
     border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
-    color: gray;
+    font-weight: normal;
+}
+
+.commentBody {
+    margin: 0 1em 1em 1em;
 }
 
 .visualCommentAlign {

@@ -96,9 +96,7 @@
                 A brief description of the item. 
                 </div>
 
-                <textarea cols="80" 
-                          rows="5" 
-                          tabindex=""
+                <textarea tabindex=""
                           name="description"
                           tal:content="description"
                           tal:attributes="tabindex tabindex/next;"

@@ -31,7 +31,8 @@
                 <span tal:replace="python: here.toPortalTime(here.modified(), long_format=1)">8/23/2001 12:40:44 PM</span>
             </div>
 
-            <div tal:content="structure here/CookedBody">
+            <div class="commentBody"
+                 tal:content="structure here/CookedBody">
             This is the body text of the comment.
             </div>
 

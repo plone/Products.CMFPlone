@@ -47,7 +47,8 @@
                         <span tal:replace="python: here.toPortalTime(reply.modified(),long_format=1)">8/23/2001 12:40:44 PM</span>
                     </div>
             
-                    <div tal:content="structure reply/CookedBody">
+                    <div class="commentBody"
+                         tal:content="structure reply/CookedBody">
                         This is the body text of the comment. 
                     </div>
             
@@ -79,9 +80,8 @@
                                />
                     </form>
             
-                    <div 
-                        tal:define="replies python: here.getReplyReplies(reply)"
-                        tal:condition="replies">
+                    <div tal:define="replies python: here.getReplyReplies(reply)"
+                         tal:condition="replies">
 
                         <h4 i18n:translate="legend_replies_to_this_comment">Replies to this comment</h4>
             
@@ -89,8 +89,7 @@
                             <span tal:omit-tag=""
                                   tal:content="structure python: '&nbsp;' * lst['depth']" />                                
                             <a href="" 
-                                   class="comment" 
-                                   tal:attributes="href string:${lst/object/absolute_url}/discussionitem_view">
+                               tal:attributes="href string:${lst/object/absolute_url}/discussionitem_view">
                             <img tal:replace="structure here/discussionitem_icon.gif" />
                             <span tal:replace="lst/object/Title">Comment title</span>   
                             (<span i18n:translate="label_comment_by">Posted by</span> 
