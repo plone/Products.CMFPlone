@@ -36,6 +36,7 @@ div.day {
     background-color: #FFFFBB;
     border: 1px solid Black;
     padding: 0.2em;
+    position: absolute;
     visibility: hidden;
     width: 12em;
     z-index: 2;
@@ -48,7 +49,7 @@ div.date {
   
 table.calendar {
     border: &dtml-boxBorder;;
-    margin: 0em 1em 2em 0em;
+    margin: 0em 1em 1em 0em;
     text-align: right;
 }
 

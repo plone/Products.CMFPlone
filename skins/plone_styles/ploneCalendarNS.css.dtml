@@ -16,15 +16,10 @@ div.container {
 
 div.day {
     background-color: #FFFFBB;
-    border: 1px solid Black;
-    padding: 0.2em;
-    visibility: hidden;
-    width: 12em;
-    z-index: 2;
 }
 
 div.date {
-/* deprecate? */
+    font-weight: bold;
 }
 
   

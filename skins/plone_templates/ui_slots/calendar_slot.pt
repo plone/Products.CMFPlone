@@ -25,15 +25,15 @@
             </th>
 
         <tr tal:define="weekdays here/portal_calendar/getDays">
-          <metal:block tal:repeat="weekday weekdays" tal:omit-tag="">
+          <metal:block tal:repeat="weekday weekdays">
             <td class="weekdays" tal:content="weekday">Su</td>
           </metal:block>
         </tr>
 
             <tr tal:repeat="week weeks">
-              <metal:block tal:define="days week" tal:omit-tag="">
-                <metal:block tal:repeat="day days" tal:omit-tag="">
-                  <metal:block tal:condition="day/event" tal:omit-tag="">
+              <metal:block tal:define="days week">
+                <metal:block tal:repeat="day days">
+                  <metal:block tal:condition="day/event">
                   <metal:block tal:define="daynumber day/day;
                                            datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
                                            javascriptstring string:javascript:%sDay('%s');;">
@@ -66,28 +66,22 @@
 
 
     <!-- The sticky notes -->
-    <span tal:repeat="week weeks" tal:omit-tag="">
-      <span tal:define="days week" tal:omit-tag="">
-        <span tal:repeat="day days" tal:omit-tag="">
-
-          <div class="day" 
-               id="dummy"
-               style="position: absolute; visibility: hidden" 
-               tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
-               tal:condition="day/event">
-
+    <metal:block tal:repeat="week weeks">
+      <metal:block tal:define="days week">
+        <metal:block tal:repeat="day days">
+        <div class="day" 
+             id="dummy"
+             tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
+             tal:condition="day/event">
             <div class="date" tal:content="python:'%d-%0.2d-%0.2d' % (year, month, day['day'])">
               2001-04-11
             </div>
-
-              <span tal:repeat="anevent day/eventslist" tal:omit-tag="">
-                <div class="appointment" tal:content="python: here.getEventString(event=anevent)">an event</div>
-              </span>
+            <metal:block tal:repeat="anevent day/eventslist">
+            <div class="appointment" tal:content="python: here.getEventString(event=anevent)">an event</div>
+            </metal:block>
           </div>
-
-        </span>
-      </span>
-    </span>
-
+        </metal:block>
+      </metal:block>
+    </metal:block>
 
 </div>
