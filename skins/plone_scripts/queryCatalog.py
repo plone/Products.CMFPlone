@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=show_all=0
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 results=[]
@@ -12,19 +12,20 @@ REQUEST=context.REQUEST
 catalog=context.portal_catalog
 indexes=catalog.indexes()
 query={}
+show_query=show_all
 
-for i in indexes:
-    v=REQUEST.get(i, None)
-    if v:
-        query.update({i:v})
+for k, v in REQUEST.items():
+    if k in indexes:
+        query.update({k:v})
+        show_query=1
+    elif k.endswith('_usage') or k=='sort_on' or k=='sort_order':
+        query.update({k:v})
 
-notRawIndexFields=[k for k in REQUEST.form.keys() if k not in query.keys()]
-if notRawIndexFields:
-    for k in notRawIndexFields:
-        if k.endswith('_usage'):
-            query.update({k:REQUEST.get(k)})
+# doesn't normal call catalog unless some field has been queried
+# against. if you want to call the catalog _regardless_ of whether
+# any items were found, then you can pass show_all=1.
 
-if query:
+if show_query:
     results=catalog(query)
 
 return results
