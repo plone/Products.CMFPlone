@@ -11,7 +11,6 @@
 REQUEST=context.REQUEST
 portal_membership = context.portal_membership
 member=portal_membership.getMemberById(userid)
-
 if portrait:
     portrait.seek(0)
     portal_membership.changeMemberPortrait(portrait, userid)

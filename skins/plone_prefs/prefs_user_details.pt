@@ -407,8 +407,11 @@ we eventually might want to merge this form with personalize_form
                 </div>
             </div>
     
-    
-            <div class="row"
+            <!--
+                _robert_: the following block is not needed here, since the skin has to be selected by an actual user and is set on her computer
+                by help of a cookie
+            -->
+            <!--div class="row"
                 tal:condition="here/portal_skins/allow_any">
     
                 <div class="label">
@@ -440,7 +443,7 @@ we eventually might want to merge this form with personalize_form
                             >dummy skin</option>
                     </select>
                 </div>
-            </div>
+            </div -->
             <div class="portrait_edit"
                 tal:define="portrait python:here.portal_membership.getPersonalPortrait(member.getId());">
                 <div class="label">
