@@ -178,11 +178,11 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
     def getGroupIds(self,category=''):
         return [g.split('|')[1] for g in self.groups if category=='' or g.split('|')[0]==category]
 
-    security.declareProtected( ManagePortal, 'getGroups' )
+    security.declareProtected( SetOwnProperties, 'getGroups' )
     def getGroups(self,category=''):
         return [{'id':g.split('|')[1],'title':g.split('|')[2]} for g in self.groups if category=='' or g.split('|')[0]==category]
 
-    security.declareProtected( ManagePortal, 'enumConfiglets' )
+    security.declareProtected( SetOwnProperties, 'enumConfiglets' )
     def enumConfiglets(self,group=None):
         portal=getToolByName(self,'portal_url').getPortalObject()
         context=createExprContext(self,portal,self)
