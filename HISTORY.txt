@@ -1,6 +1,8 @@
 CHANGES
 
 Plone 1.0.2
+    - Added translation to field 'type' in folder_listing table. Replaced
+      'n/a' with '&nbsp' to work like folder_contents
     - Only show "Add Comment" button if discussion is allowed, and user
       has permission to reply to item.
     - added on-error for search results when path('here/%s'%result.getIcon) 

@@ -78,10 +78,10 @@
 			<a href="#" tal:attributes="href string:${obj/absolute_url}/view"
                            tal:content="obj/title_or_id" />
                     </td>   
-                    <td tal:content="obj/Type">Type</td>
-                    <td tal:content="python:test(hasattr(obj, 'get_size'), getObjSize(obj), 'n/a')">Size</td>
+                    <td i18n:translate="" tal:content="obj/Type">Type</td>
+                    <td tal:content="structure python:test(hasattr(obj, 'get_size'), getObjSize(obj), '&nbsp;')">Size</td>
                     <td tal:content="python:toPortalTime(obj.ModificationDate())">Modification Date</td>
-                    <td tal:content="structure python:test(obj.Description(), obj.Description(), 'n/a')"> description </td>
+                    <td tal:content="structure python:test(obj.Description(), obj.Description(), '&nbsp;')"> description </td>
                 </tr>
 		</metal:block>
             </tbody>
