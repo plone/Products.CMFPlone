@@ -15,7 +15,7 @@
             <td colspan="2">
 
                 <form action="logged_in" method="post"
-                      tal:translate="action string:$portal_url/logged_in">
+                      tal:attributes="action string:$portal_url/logged_in">
 
                     <input type="hidden" name="came_from" value=""
                            tal:condition="python:request.get('came_from', '')"
