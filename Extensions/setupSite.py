@@ -1,7 +1,7 @@
 import os
 import sys
 
-def process(name, ihome, swhome):
+def process(name, swhome, ihome):
     admin_username = name
     os.environ['INSTANCE_HOME'] = ihome
 
@@ -11,6 +11,7 @@ def process(name, ihome, swhome):
         sys.path.insert(2, '%s' % swhome)
     else:
         os.environ['SOFTWARE_HOME'] = swhome
+        sys.path.insert(0, '%s' % swhome)
 
     # have to set up env first
     from App import FindHomes
@@ -44,5 +45,8 @@ note: win32 does this slightly differently
 
     # for example the following is how i run it on win32
     # "c:\Program Files\Plone\python\python" setupSite.py admin "c:\Program Files\Plone\Data" "c:\Program Files\Plone"
+    # like it says above, win32 is different
+    # example for Mac OS X (and probably all nix-based OS, adjust paths as required, note "Default" is INSTANCE_HOME and contains Extensions/import/var/Products etc):
+    # /Applications/Plone2/Software/Zope262/Python/bin/python setupSite.py admin /Applications/Plone2/Software/Zope262/Zope/lib/python /Applications/Plone2/Sites/Default
     name, swhome, ihome = sys.argv[1:]
-    process(name, ihome, swhome)
+    process(name, swhome, ihome)
