@@ -30,7 +30,7 @@ class MembershipTool(BaseTool):
     default_portrait = 'defaultUser.gif'
     security = ClassSecurityInfo()
 
-    def getPersonalPortrait(self, member_id=None, verifyPermission=0):
+    def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
         returns the Portait for a member_id
         """
@@ -40,8 +40,8 @@ class MembershipTool(BaseTool):
         #if verifyPermission and not _checkPermission('View', portrait):
         #    return None
         if not member_id:
-            member_id = self.REQUEST.get('userid')
-            
+            member_id = self.getAuthenticatedMember().getUserName()
+
         portrait = membertool._getPortrait(member_id)
         if type(portrait) == type(''):
             portrait = None
@@ -71,6 +71,9 @@ class MembershipTool(BaseTool):
         we put this method here because we do not want
         .personal or portrait in the catalog
         """
+        if not member_id:
+            member_id = self.getAuthenticatedMember().getUserName()
+
         if portrait and portrait.filename:
             portrait = Image(id=member_id, file=portrait, title='')
             membertool   = getToolByName(self, 'portal_memberdata')

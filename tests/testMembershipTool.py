@@ -52,12 +52,17 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         assert self.membership.getPersonalPortrait(_user_name).getId() == _user_name
         assert self.membership.getPersonalPortrait(_user_name).meta_type == 'Image'
 
-    def testGetPersonalPortraitUsesRequestVar(self):
-        '''Should use the request var if member_id is not given'''
-        self.membership.changeMemberPortrait(Portrait(), 'user_2')
-        assert self.membership.getPersonalPortrait(None).getId() == 'defaultUser.gif'
-        self.app.REQUEST['userid'] = 'user_2'
-        assert self.membership.getPersonalPortrait(None).getId() == 'user_2'
+#     def testGetPersonalPortraitUsesRequestVar(self):
+#         '''Should use the request var if member_id is not given'''
+#         self.membership.changeMemberPortrait(Portrait(), 'user_2')
+#         assert self.membership.getPersonalPortrait(None).getId() == 'defaultUser.gif'
+#         self.app.REQUEST['userid'] = 'user_2'
+#         assert self.membership.getPersonalPortrait(None).getId() == 'user_2'
+
+    def testGetPersonalPortraitWithoutId(self):
+        """  getPeronalPortrait sould return logged in users portrait if no id is given """
+        # stefan, how can I get an authenticated member ????
+        pass
 
     def testListMembers(self):
         '''Should return the members list'''
@@ -69,6 +74,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         '''Should only return real members, not groups'''
         uf = self.portal.acl_users
         uf.changeOrCreateGroups(new_groups=['Foo', 'Bar'])
+        print uf.getUserNames()
         assert len(uf.getUserNames()) == 3
         members = self.membership.listMembers()
         assert len(members) == 1

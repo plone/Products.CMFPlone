@@ -72,7 +72,7 @@ we eventually might want to merge this form with personalize_form
 
         <div id="portrait_edit">
             <div class="portrait"
-                tal:define="portrait here/portal_membership/getPersonalPortrait">
+                tal:define="portrait python:here.portal_membership.getPersonalPortrait(member.getId())">
                 <img src="" alt=""
                     tal:attributes="src portrait/absolute_url" />
             </div>

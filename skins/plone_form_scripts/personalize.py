@@ -8,7 +8,7 @@
 ##title=Personalization Handler.
 
 from Products.CMFPlone import transaction_note
-portrait_id='MyPortrait'
+#portrait_id='MyPortrait'
 
 member=context.portal_membership.getAuthenticatedMember()
 member.setProperties(context.REQUEST)
@@ -18,7 +18,7 @@ context.portal_skins.updateSkinCookie()
 if member_context is None:
     member_context=context.portal_url.getPortalObject()
 
-if (member_context is not None and portrait and portrait.filename):
+if (portrait and portrait.filename):
     context.portal_membership.changeMemberPortrait(portrait)
 
 tmsg=member.getUserName()+' personalized their settings.'
