@@ -1,5 +1,13 @@
 CHANGES
 
+Plone 1.0.3 - Brazil Soundtrack Release
+
+    - 1.0.2 ERRATA fixes
+
+    - WorkflowTool.doActionFor was not returning objects if they were moved
+
+    - favorites_slot was recurssing infinitely - fixed
+
 Plone 1.0.2 - Vert Release
 
     - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
