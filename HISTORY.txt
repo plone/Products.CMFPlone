@@ -13,6 +13,12 @@ Plone 2.1-beta1 - Warp - Released (no date yet)
     - Consolidated all monkey patches in the 'patches' sub-package.
       [stefan]
 
+    - Changed CatalogTool.catalog_object() and CatalogTool.reindexObject() to 
+      support the new update_metadata protocol (Zope > 2.6.2). An optional
+      'update_metadata' argument controls whether the object's metadata record
+      is updated while cataloging. It defaults to yes.
+      [stefan]
+
     - SearchableText, Title, and Description now use TextIndexNG2 if installed.
       All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
       not installed. Note that in Plone 2.0 Title and Description used to be plain 
@@ -85,12 +91,6 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
       with ATContentTypes.
       [tiran]
 
-    - Changed CatalogTool.catalog_object() and CatalogTool.reindexObject() to 
-      support the new update_metadata protocol (Zope > 2.6.2). An optional
-      'update_metadata' argument controls whether the object's metadata record
-      is updated while cataloging. It defaults to yes.
-      [stefan]
-
     - Changed the visual rendering of the nav tree. It now uses CSS instead 
       of fixed values wherever possible. 
       [limi]
@@ -103,9 +103,14 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
         background-color: transparent;
         border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
         }
+        
         .currentNavItem {
         font-weight: bold;
         color: &dtml-fontColor;;
+        }
+        
+        .navItem {
+        padding: 0 0 0 20px;
         }
         
     - Nav tree now displays Description for its items as a tooltip.
