@@ -1,12 +1,9 @@
+NOTE: Requires latest CVS version of PlacelessTranslationService to do the RTL
+      switching transparently.
+
 RTL To-do list 
 
-- At the moment, this branch hardcodes RTL into Plone until PTS supports querying it. Thus, it only supports RTL right now, LTR languages will look strange. ;)
-
-- PlacelessTranslationService needs a way to report back whether a language is RTL or not, and this needs integration into header.pt and main_template.pt - search for XXX and RTL in these templates.
-
-- Margins and paddings are way off in a lot of cases, need to look into this.
-
-- Below are the remaining things from Mohsen's patch - should look into solving these more elegantly.
+- Below is the remaining navtree changes from Mohsen's patch - should look into solving this more elegantly.
 
 -- Alexander Limi
 
@@ -22,103 +19,3 @@ diff -uBrN /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_port
                                             accesskey="accesskeys-navigation"
                                             i18n:attributes="accesskey">
                              <tal:block replace="structure python:path('here/%s' % sibling.getIcon(1))"
-
-
-diff -uBrN /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/bodydir.py 1/plone_styles/bodydir.py
---- /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/bodydir.py	1970-01-01 04:00:00.000000000 +0400
-+++ 1/plone_styles/bodydir.py	2004-07-24 11:28:25.000000000 +0400
-@@ -0,0 +1,9 @@
-+from Products.PythonScripts.standard import html_quote
-+request = container.REQUEST
-+RESPONSE =  request.RESPONSE
-+
-+# Return a string identifying this script.
-+if context.language_is_rtl():
-+    return '<body dir="rtl">'
-+
-+return '<body dir="ltr">'
-
-
-diff -uBrN /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/direction.py 1/plone_styles/direction.py
---- /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/direction.py	1970-01-01 04:00:00.000000000 +0400
-+++ 1/plone_styles/direction.py	2004-07-24 11:28:25.000000000 +0400
-@@ -0,0 +1,9 @@
-+from Products.PythonScripts.standard import html_quote
-+request = container.REQUEST
-+RESPONSE =  request.RESPONSE
-+
-+# Return a string identifying this script.
-+if context.language_is_rtl():
-+    return 'rtl'
-+
-+return 'ltr'
-
-
-diff -uBrN /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/language_is_rtl.py 1/plone_styles/language_is_rtl.py
---- /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/language_is_rtl.py	1970-01-01 04:00:00.000000000 +0400
-+++ 1/plone_styles/language_is_rtl.py	2004-07-24 11:28:25.000000000 +0400
-@@ -0,0 +1,10 @@
-+from Products.PythonScripts.standard import html_quote
-+request = container.REQUEST
-+RESPONSE =  request.RESPONSE
-+
-+if (request['LANGUAGE'] == 'fa') or (request['LANGUAGE'] == 'ar'):
-+#   return 'True' + request['LANGUAGE']
-+    return True
-+
-+#return 'False' + request['LANGUAGE']
-+return False
-
-
-
-diff -uBrN /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/left.py 1/plone_styles/left.py
---- /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/left.py	1970-01-01 04:00:00.000000000 +0400
-+++ 1/plone_styles/left.py	2004-07-24 11:28:25.000000000 +0400
-@@ -0,0 +1,8 @@
-+from Products.PythonScripts.standard import html_quote
-+request = container.REQUEST
-+RESPONSE =  request.RESPONSE
-+
-+if context.language_is_rtl():
-+    return 'right'
-+
-+return 'left'
-
-diff -uBrN /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/right.py 1/plone_styles/right.py
---- /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/right.py	1970-01-01 04:00:00.000000000 +0400
-+++ 1/plone_styles/right.py	2004-07-24 11:28:25.000000000 +0400
-@@ -0,0 +1,7 @@
-+from Products.PythonScripts.standard import html_quote
-+request = container.REQUEST
-+RESPONSE =  request.RESPONSE
-+
-+if context.language_is_rtl():
-+    return 'left'
-+return 'right'
-diff -uBrN /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/swap_rl.py 1/plone_styles/swap_rl.py
---- /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_styles/swap_rl.py	1970-01-01 04:00:00.000000000 +0400
-+++ 1/plone_styles/swap_rl.py	2004-07-24 11:28:25.000000000 +0400
-@@ -0,0 +1,10 @@
-+from Products.PythonScripts.standard import html_quote
-+request = container.REQUEST
-+RESPONSE =  request.RESPONSE
-+
-+# Return a string identifying this script.
-+
-+if context.language_is_rtl():
-+   return '%s %s %s %s' % (top, left, bottom, right)
-+
-+return '%s %s %s %s' % (top, right, bottom, left)
-diff -uBrN /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_templates/main_template.pt 1/plone_templates/main_template.pt
---- /home/elzubeir/apps/zope/instance1/Products/CMFPlone/skins/plone_templates/main_template.pt	2004-05-05 04:53:52.000000000 +0400
-+++ 1/plone_templates/main_template.pt	2004-07-24 11:28:35.000000000 +0400
-@@ -40,8 +40,7 @@
-     </metal:javascriptslot>
-   </head>
- 
--  <body>
--
-+  <body tal:attributes="dir here/direction">
-     <div id="visual-portal-wrapper">
- 
-       <div id="portal-top" i18n:domain="plone" >
