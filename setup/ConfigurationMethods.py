@@ -13,7 +13,7 @@ def modifyAuthentication(self, portal):
     cookie_authentication._updateProperty('auto_login_page', 'require_login')
 
 def installPortalTools(self,portal):
-    ''' thats the place to install custom tools '''
+    ''' This should be done in Products/CMFPlone/Portal.py in setupTools '''
     pass
 
 def addSiteProperties(self, portal):

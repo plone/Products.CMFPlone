@@ -73,16 +73,17 @@ class PloneSite(CMFSite):
 class PloneGenerator(Portal.PortalGenerator):
 
     klass = PloneSite
-
+            
     def customizePortalTypes(self, p):
         typesTool=getToolByName(p, 'portal_types')
-
-        typesToSkip=['Folder', 'Discussion Item', 'Topic']
         typesTool._delObject('Folder')
-        typesTool.manage_addTypeInformation(
-            FactoryTypeInformation.meta_type
-            , id='Folder'
-            , typeinfo_name='CMFPlone: Plone Folder')
+        typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type,
+                                            id='Folder',
+                                            typeinfo_name='CMFPlone: Plone Folder')
+        typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type,
+                                            id='Large Plone Folder',
+                                            typeinfo_name='CMFPlone: Large Plone Folder')
+        typesToSkip=['Folder', 'Discussion Item', 'Topic']
         for contentType in typesTool.listContentTypes():
             typeInfo=typesTool.getTypeInfo(contentType)
             if typeInfo.getId() not in typesToSkip:
