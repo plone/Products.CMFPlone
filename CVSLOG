@@ -1,3 +1,41 @@
+2003-11-27 00:56  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): icing on the
+	  cake, use plone tool.gif
+
+2003-11-27 00:32  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): bring along the
+	  roles from the old siute
+
+2003-11-26 23:37  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): remove pdb
+
+2003-11-26 23:35  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): i believe this
+	  completes the 1.0.x to 2.0 migrations.  please read plone-dev if
+	  you want to test.  NOTE: you must execute the migrations outside
+	  of the plone site ;-( copy migrations/oneX_twoBeta3.py to
+	  Extensions/migrate.py
+
+	  create Ext. Method in the root of your zodb id: migrate module:
+	  CMFPlone.migrate function: doit
+
+	  create a python script obj=context['plone.org'] #get a ref to the
+	  site you want to migrate context.doit(obj) return 'fin'
+
+2003-11-26 17:37  plonista
+
+	* skins/plone_templates/header.pt (Plone-2_0-branch): Changed
+	  commenting out of old css file -- with the existing comments it
+	  was trying to be loaded.
+
+2003-11-26 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-25 05:12  longsleep
 
 	* CVSLOG: auto generated new changelog
