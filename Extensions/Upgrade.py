@@ -68,12 +68,12 @@ def normalize_tabs(self):
     tt['Folder']._actions=actions
 
     def global_tabs():
-	welcome=ActionInformation( 'welcome'
+	welcome=ActionInformation( 'index_html'
 	                         , title='Welcome'
 				 , category='global_tabs'
 				 , permissions=('View',)
 				 , action=Expression('portal_url'))
-	members=ActionInformation( 'roster'
+	members=ActionInformation( 'Members'
 	                         , title='Members'
 				 , category='global_tabs'
 				 , permissions=('List portal members', )
@@ -112,7 +112,8 @@ def normalize_tabs(self):
             a.visible=0
 	if a.id=='mystuff':
             mt_actions.insert(0, a)
-	mt_actions.append(a)
+        else:
+            mt_actions.append(a)
     #add 'my workspace' to user actions
     mt_actions.insert(1, ActionInformation( 'myworkspace'
                                           , title='My Workspace'

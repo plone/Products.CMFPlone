@@ -139,75 +139,56 @@
      off the filesystem we will move to implementing the functionality.  This can also cause serious incompatibilties
      for those using CMF1.2.  Sorry, backwards compatability is too crufty.  We can also speed plone up by not having to
      worry about previous versions to CMF1.3.  ~runyaga 5/7/02
--->
-	<div class="tabs"  metal:use-macro="here/portal_tabs/macros/portal_tabs" >
-          Portal Tabs are here       
-        </div>
 
+-->
+        <div class="tabs"
+	    metal:define-macro="portal_tabs"
+	    tal:define="global actions here/portal_actions/listFilteredActionsFor;
+	                global_tabs actions/global_tabs|nothing;">
+	    <metal:block tal:repeat="tab global_tabs"
+	                 tal:define="contentpath python:here.portal_url.getRelativeContentPath(here);
+                                     global compare_id python:template.getId();" >
+
+              <tal tal:condition="contentpath">
+                 <tal tal:define="global compare_id python:contentpath[0]" />
+              </tal>
+	      
+	      <a href="" class=""
+	         tal:attributes="href tab/url;
+		                 class python:test(compare_id==tab['id'], 'selected', 'plain')">
+	      <span tal:replace="tab/name">welcome</span>
+	      <span class="netscape4">&middot;</span>
+	      </a>
+	    </metal:block>
+	</div>
+	
 	<div class="personalBar"
 	     metal:define-macro="personalBar"
 	     tal:define="portal_url here/portal_url;
 			 actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here)); 
-			 my_stuff python:[ua for ua in actions['user'] if ua.get('id','')=='mystuff'];	
-			 undo python:[ga for ga in actions['global'] if ga.get('id', '')=='undo'];
-			 my_prefs python:[ua for ua in actions['user'] if ua.get('id', '')=='preferences'];
-			 portal_prefs python:[ga for ga in actions['global'] if ga.get('id', '')=='configportal'];
-			 logout python:test(here.portal_membership.isAnonymousUser(), None, portal_url+'/logout');">
-
+			 user_actions actions/user;
+			 global_actions actions/global;
+			 my_stuff python:user_actions[0];
+			 display_actions python:user_actions[:-1]+global_actions+list((user_actions[-1],))">
 	    &nbsp;
-	    <a href=""
+  
+            <a href=""
 	       tal:condition="my_stuff"
-	       tal:attributes="href python:my_stuff[0]['url']">
+	       tal:attributes="href my_stuff/url">
 		 <img src="dummy.gif" alt="User" 
 		      border="0" 
 		      tal:attributes="src string:$portal_url/user.gif" /> &nbsp;
 		      <span tal:replace="user/getUserName">john</span>
 	    </a>
-
-	    <a href=""
-	       tal:condition="my_stuff" 
-	       tal:attributes="href python:my_stuff[0]['url']">
-		 <img src="dummy.gif" alt="&gt;" 
-		      border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>
-		      My&nbsp;Stuff 
-	    </a>
-
-	    <a href="workspace"
-	       tal:condition="my_stuff"
-	       tal:attributes="href string:${here/portal_membership/getHomeUrl}/workspace">
-		 <img src="dummy.gif" alt="&gt;" 
-		      border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>
-		      My&nbsp;Workspace 
-	    </a>
+            <metal:block tal:repeat="action python:display_actions">
+                <a href=""
+                   tal:attributes="href action/url">
+                   <img src="dummy.gif" alt="&gt;"
+                        border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>
+                   <span tal:replace="action/name">My&nbsp;Stuff</span>
+		</a>
+	    </metal:block>
 	    
-	    
-	    <a href=""
-	       tal:condition="undo" 
-	       tal:attributes="href python:undo[0]['url']">
-		 <img src="dummy.gif" alt="&gt;" border="0"  
-		      tal:attributes="src string:$portal_url/linkOpaque.gif" />Undo&nbsp;History
-	    </a>
-
-	    <a href=""
-	       tal:condition="my_prefs" 
-	       tal:attributes="href python:my_prefs[0]['url']">
-		 <img src="linkOpaque.gif" alt="&gt;" border="0"  
-		      tal:attributes="src string:$portal_url/linkOpaque.gif" />My&nbsp;Preferences
-	    </a>
-
-	    <a href=""
-	       tal:condition="portal_prefs"
-	       tal:attributes="href python:portal_prefs[0]['url']"> 
-		 <img src="dummy.gif" alt="&gt;" border="0"  
-		      tal:attributes="src string:$portal_url/linkOpaque.gif"/>CMF&nbsp;Setup
-	    </a>
-
-	    <a href=""
-	       tal:condition="logout" 
-	       tal:attributes="href logout">
-		 <img src="dummy.gif" alt="&gt;" border="0"  
-		      tal:attributes="src string:$portal_url/linkOpaque.gif"/>Sign Out</a> 
-
 	</div>
 
 	<div class="pathBar"
@@ -220,9 +201,9 @@
 		   tal:condition="not: here/portal_membership/isAnonymousUser"
 		   tal:attributes="href string:${here/absolute_url}/addtoFavorites">
 		     <img class="addFavorite" 
-              src="dummy.gif" 
+                          src="dummy.gif" 
 			  alt="Add this location to My Favorites"
-              title="Add this location to My Favorites" 
+                          title="Add this location to My Favorites" 
 			  border="0"
 			  tal:attributes="src string:$portal_url/addFavorite.gif" />
 		</a>
@@ -248,9 +229,6 @@
 	<hr size="" class="netscape4" />
 
 </div>
-
-
-
 
 <div metal:define-macro="portal_message" class="message"
      tal:define="portal_message request/portal_status_message | nothing"
