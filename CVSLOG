@@ -1,3 +1,13 @@
+2004-01-03 15:15  redcor
+
+	* skins/plone_prefs/prefs_error_log_form.pt (Plone-2_0-branch):
+	  corrected default value to 0.0 in
+	  float(member.getProperty('error_log_update', 0.0))
+
+2004-01-03 05:04  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-02 05:04  longsleep
 
 	* CVSLOG: auto generated new changelog
