@@ -20,6 +20,8 @@ for x in range(0, len(new_ids)):
         obj.setTitle(new_title)
     if new_id and id != new_id:
         context.manage_renameObjects((id,), (new_id,))
+    else:
+        obj.reindexObject()
 
 transaction_note('Renamed %s in %s' % (str(ids), context.absolute_url()))
 return state.set(portal_status_message='Item(s) renamed.')
