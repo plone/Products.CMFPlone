@@ -210,6 +210,7 @@ table.box a.comment {
     background-position: 0px 0px;
     padding: 0em 0em 0.5em 2em;
     margin: 0;
+    display: block;
 }
 
 table.box a.marker {
