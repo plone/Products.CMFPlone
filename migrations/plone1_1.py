@@ -19,6 +19,7 @@ from Products.CMFPlone import cmfplone_globals
 from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
 from Products.CMFPlone.setup.ConfigurationMethods import addSiteProperties
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
+from Products.CMFPlone import ToolNames
 
 from Products.CMFCore import CachingPolicyManager
 from Products.CMFCore.CMFCorePermissions import ListFolderContents
@@ -61,9 +62,8 @@ def make_plone(portal):
     safeEditProperty(site_props,'ellipsis','...','string')
 
     #We depend on CMFQuickInstaller
-    if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
-        manage_addTool=portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool
-        manage_addTool('CMF QuickInstaller Tool')
+    if 'portal_quickinstaller' not in portal.objectIds():
+        portal.manage_addProduct['CMFPlone'].manage_addTool(ToolNames.QuickInstallerTool)
 
     addGroupUserFolder(portal)
     portal.portal_syndication.isAllowed = 0
@@ -74,7 +74,7 @@ def make_plone(portal):
     # change the action in portal_types for viewing a folder
     if 'portal_interface' not in portal.objectIds():
         manage_addTool=portal.manage_addProduct['CMFPlone'].manage_addTool
-        manage_addTool('Portal Interface Tool')
+        manage_addTool(ToolNames.InterfaceTool)
     addControlPanel(portal)
     upgradePortalFactory(portal)
 
@@ -191,9 +191,10 @@ def addGroupUserFolder(portal):
 
     qi=getToolByName(portal, 'portal_quickinstaller')
     qi.installProduct('GroupUserFolder')
-    addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool
-    addGRUFTool('CMF Groups Tool')
-    addGRUFTool('CMF Group Data Tool')
+    addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
+    if 'portal_groups' not in portal.objectIds():
+        addPloneTool(ToolNames.GroupsTool)
+        addPloneTool(ToolNames.GroupDataTool)
 
 def addDocumentActions(portal):
     at = portal.portal_actions
