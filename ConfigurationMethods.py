@@ -190,16 +190,16 @@ def addNewActions(self, portal):
                  condition='',
                  permission='View',
                  category='portal_tabs')
-    at.addAction('Members',
-                 name='Members',
-                 action='python:portal.portal_membership.getMembersFolder().absolute_url()',
-                 condition='python:portal.portal_membership.getMembersFolder()',
-                 permission='View',
-                 category='portal_tabs')
     at.addAction('news',
                  name='News',
                  action='string:$portal_url/news',
                  condition='',
+                 permission='View',
+                 category='portal_tabs')
+    at.addAction('Members',
+                 name='Members',
+                 action='python:portal.portal_membership.getMembersFolder().absolute_url()',
+                 condition='python:portal.portal_membership.getMembersFolder()',
                  permission='View',
                  category='portal_tabs')
     at.addAction('content_status_history',
