@@ -83,6 +83,8 @@ def installExternalEditor(self, portal):
                             permission=CMFCorePermissions.ModifyPortalContent,
                             category='object',
                             visible=0 )
+    from Products.ExternalEditor.ExternalEditor import ExternalEditorPermission
+    portal.manage_permission(ExternalEditorPermission, ('Manager', 'Authenticated'), acquire=0)
 
 def assignTitles(self, portal):
     titles={'portal_actions':'Contains custom tabs and buttons',
