@@ -22,8 +22,8 @@ class TestDAVProperties(PloneTestCase.PloneTestCase):
         psets = mkdict(ptool.propertysheets.items())
         self.failUnless('default' in psets)
         default = psets['default']
-        items = dict(default.propertyItems())
-        self.failUnless('title' in items)
+        items = mkdict(default.propertyItems())
+        self.failUnless('title' in items.keys())
         self.assertEquals(items['title'], self.portal.title)
 
 
