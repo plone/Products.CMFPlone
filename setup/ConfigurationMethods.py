@@ -194,6 +194,13 @@ def modifyMembershipTool(self, portal):
                 ,'View'
                 ,'user'
                 , visible=0)
+    mt.addAction('configPortal'
+                ,'Plone Setup'
+                ,'string: ${portal_url}/plone_control_panel'
+                ,''
+                ,CMFCorePermissions.ManagePortal
+                ,'user'
+                , visible=1)
     new_actions=[]
     for a in mt._cloneActions():
         if a.id=='login':
