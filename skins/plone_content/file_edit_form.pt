@@ -170,7 +170,7 @@
         <div class="row"
             tal:define="content_type python:here.content_type;
                         content_type python:test(content_type==None,'',content_type);"
-            tal:condition="python:test(content_type.find('text')>-1, 1,0)">
+            tal:condition="python:test(content_type.find('text')>-1 and here.data, 1,0)">
 
             <div class="label">
                 <span i18n:translate="label_edit_contents">Edit Contents</span>
