@@ -211,7 +211,100 @@
                        tal:content="structure python:language[1]" />
             </select>
         </div> 
-                
+
+        <div class="row"
+             tal:define="localTimeFormat request/localTimeFormat | props/localTimeFormat;
+                         error_localTimeFormat errors/localTimeFormat | nothing;">
+            <div class="label required">
+                <span i18n:id="short_date_format">Short Date</span>
+                <div id="short_date_format_help"
+                     i18n:id="short_date_format_help"
+                     class="help"
+                     style="visibility:hidden">
+                You can enter the strftime format for how dates in the system will be formatted.
+                Refer to strftime formats in C or Python manuals.
+                </div>
+            </div>
+            <div class="field"
+                 tal:attributes="class python:test(error_localTimeFormat, 'field error', 'field')">
+                 
+                <div tal:condition="error_localTimeFormat"
+                     tal:replace="structure string:$error_localTimeFormat <br />" />
+                     
+                <input type="text"
+                       name="localTimeFormat"
+                       value=""
+                       tabindex=""
+                       onfocus="formtooltip('short_date_format_help',1)"
+                       onblur="formtooltip('short_date_format_help',0)" 
+                       tal:attributes="value localTimeFormat;
+                                       tabindex tabindex/next;" />
+            </div>
+        </div>
+        
+        <div class="row"
+            tal:define="localLongTimeFormat request/localLongTimeFormat | props/localLongTimeFormat;
+                        error_localLongTimeFormat errors/localLongTimeFormat | nothing;">
+            <div class="label required">
+                <span i18n:id="long_date_format">Long Date</span>
+                <div id="long_date_format_help"
+                     i18n:id="long_date_format_help"
+                     class="help"
+                     style="visibility:hidden">
+                You can enter the strftime format for how dates in the system will be formatted.
+                Refer to strftime formats in C or Python manuals.
+                </div>
+            </div>
+
+            <div class="field"
+                 tal:attributes="class python:test(error_localLongTimeFormat, 'field error', 'field')">
+                 
+                 <div tal:condition="error_localLongTimeFormat"
+                      tal:replace="structure string:$error_localLongTimeFormat <br />" />
+                 
+                 <input type="text"
+                        name="localLongTimeFormat"
+                        size="45"
+                        value=""
+                        tabindex=""
+                        onfocus="formtooltip('long_date_format_help',1)"
+                        onblur="formtooltip('long_date_format_help',0)"
+                        tal:attributes="value localLongTimeFormat;
+                                        tabindex tabindex/next;" />
+                        
+            </div>
+               
+        </div>
+        
+        <div class="row"
+            tal:define="default_skin request/default_skin | here/portal_skins/getDefaultSkin;
+                        error_default_skin errors/default_skin | nothing;">
+            <div class="label">
+               <span i18n:id="language_help">Default Skin</span>
+               <div id="skin_help"
+                    i18n:id="skin_help"
+                    class="help"
+                    style="visibility:hidden">
+               Specify the default site wide skin to be used for users. 
+               </div>
+            </div>
+            <div class="field">
+		<select name="default_skin"
+			tabindex="6"
+			value=""
+			onfocus="formtooltip('skin_help',1)"
+			onblur="formtooltip('skin_help',0)"
+			tal:attributes="value here/portal_skins/getDefaultSkin;
+					tabindex tabindex/next;">
+		   <option value="">Choose Skin</option>
+		   <option tal:repeat="skin here/portal_skins/getSkinSelections"
+			   tal:attributes="value skin;
+					   selected python:test(default_skin == skin, 'selected', '')"
+			   tal:content="structure skin" />
+		</select>
+            </div>
+        </div>
+        
         <div class="row">
             <div class="label">
                 <span i18n:id="password_policy">Password policy</span>

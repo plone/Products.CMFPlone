@@ -152,6 +152,14 @@ class PloneTool (UniqueObject, SimpleItem):
             pass 
         return wfs
 
+    #convienance method since skinstool requires loads of acrobats.
+    #we use this for the reconfig form
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'setDefaultSkin')
+    def setDefaultSkin(self, default_skin):
+        """ sets the default skin """
+        st=getToolByName(self, 'portal_skins')
+        st.default_skin=default_skin        
+     
     #XXX deprecated methods
     security.declarePublic('getNextPageFor')
     def getNextPageFor(self, context, action, status, **kwargs):
