@@ -7,6 +7,12 @@ from Acquisition import aq_base
 from Globals import InitializeClass
 from DateTime import DateTime
 
+try: 
+    import Products.TextIndexNG2
+    txng_version = 2
+except ImportError:
+    txng_version = 0
+
 class CatalogTool(BaseTool):
 
     meta_type = ToolNames.CatalogTool
@@ -15,26 +21,44 @@ class CatalogTool(BaseTool):
     def manage_afterAdd(self, item, container):
         # Makes sure the SearchableText index is a ZCTextIndex
 
-        if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
-            class args:
-                def __init__(self, **kw):
-                    self.__dict__.update(kw)
+        class args:
+            def __init__(self, **kw):
+                self.__dict__.update(kw)
+            def keys(self):
+                return self.__dict__.keys()
 
-            self.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
-                'plone_lexicon',
-                elements=[
-                args(group= 'Case Normalizer' , name= 'Case Normalizer' ),
-                args(group= 'Stop Words' , name= " Don't remove stop words" ),
-                args(group= 'Word Splitter' , name= "Unicode Whitespace splitter" ),
-                ]
-                )
+        if txng_version == 2:
+            """ Prefer TextIndexNG V2 if available instead of ZCTextIndex """
 
-            extra = args( doc_attr = 'SearchableText',
-                          lexicon_id = 'plone_lexicon',
-                          index_type  = 'Okapi BM25 Rank' )
+            extra = args(default_encoding='utf-8')
+            self.manage_delIndex(['SearchableText', 'Title', 'Description'])
+            self.manage_addIndex('SearchableText', 'TextIndexNG2', 
+                                  extra=args(default_encoding='utf-8', 
+                                             use_converters=1, autoexpand=1))
+            self.manage_addIndex('Title', 'TextIndexNG2', extra=extra)
+            self.manage_addIndex('Description', 'TextIndexNG2', extra=extra)
+            self.manage_delObjects('Vocabulary')
 
-            self.manage_delIndex(['SearchableText'])
-            self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
+        else:
+
+            if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
+
+
+                self.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
+                    'plone_lexicon',
+                    elements=[
+                    args(group= 'Case Normalizer' , name= 'Case Normalizer' ),
+                    args(group= 'Stop Words' , name= " Don't remove stop words" ),
+                    args(group= 'Word Splitter' , name= "Unicode Whitespace splitter" ),
+                    ]
+                    )
+
+                extra = args( doc_attr = 'SearchableText',
+                              lexicon_id = 'plone_lexicon',
+                              index_type  = 'Okapi BM25 Rank' )
+
+                self.manage_delIndex(['SearchableText'])
+                self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
 
     def _listAllowedRolesAndUsers( self, user ):
         # Makes sure the list includes the user's groups
