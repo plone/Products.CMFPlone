@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3416 - Uploading a File with a bad name,
+      without specifying an id in the form, caused validators to complain about
+      'id' instead of 'file'. This was especially bad as the current file_edit
+      form does not show the 'id' field at all :-P
+      [stefan]
+
     - Fixed a usability bug where clicking the "Add default document"
       button would only generate a blank Document with the ID index_html
       - it now sends you to the edit form of said document instead.
@@ -12,6 +18,7 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
     - Fixed http://plone.org/collector/3500 - Modified .metadata files to
       make FormController do something appropriate when someone submits a
       for using the return key in IE.
+      [geoffd]
 
     - Fixed http://plone.org/collector/3406 - Did a big makeover of 
       FactoryTool.py that fixes a lot of permissions problems.  Objects are
@@ -23,7 +30,8 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       so mapply headaches don't occur anymore.  doCreate method now checks 
       for and calls if present an object method called 
       'manage_afterPortalFactoryCreate' so any extra post-instantiation 
-      initialization can take place. [geoffd]
+      initialization can take place.
+      [geoffd]
 
     - Fixed http://plone.org/collector/3458 - Images in folder_contents and 
       navtree have wrong paths in VirtualHosted sites. It worked anyway

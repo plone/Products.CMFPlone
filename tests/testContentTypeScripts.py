@@ -313,28 +313,48 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.folder.invokeFactory('File', id=self.file_id)
         self.folder.invokeFactory('Image', id=self.image_id)
+        get_transaction().commit(1) # make rename work
 
     def testUploadFile(self):
-        get_transaction().commit(1) # make rename work
         self.folder[self.file_id].file_edit(file=dummy.File('fred.txt'))
         self.failUnless('fred.txt' in self.folder.objectIds())
 
     def testUploadImage(self):
-        get_transaction().commit(1) # make rename work
         self.folder[self.image_id].image_edit(file=dummy.File('fred.gif'))
         self.failUnless('fred.gif' in self.folder.objectIds())
 
     def DISABLED_testFileRenameKeepsExtension(self):
         # XXX Wishful thinking
-        get_transaction().commit(1) # make rename work
         self.folder[self.file_id].file_edit(id='barney')
         self.failUnless('barney.txt' in self.folder.objectIds())
 
     def DISABLED_testImageRenameKeepsExtension(self):
         # XXX Wishful thinking
-        get_transaction().commit(1) # make rename work
         self.folder[self.image_id].image_edit(id='barney')
         self.failUnless('barney.gif' in self.folder.objectIds())
+
+
+class TestBadFileIds(PloneTestCase.PloneTestCase):
+
+    file_id = 'File.2001-01-01.12345'
+    image_id = 'Image.2001-01-01.12345'
+
+    def afterSetUp(self):
+        self.folder.invokeFactory('File', id=self.file_id)
+        self.folder.invokeFactory('Image', id=self.image_id)
+        get_transaction().commit(1) # make rename work
+
+    def testUploadBadFile(self):
+        # http://plone.org/collector/3416
+        self.folder[self.file_id].file_edit(file=dummy.File('fred%.txt'))
+        self.failIf('fred%.txt' in self.folder.objectIds())
+
+    def testUploadBadImage(self):
+        # http://plone.org/collector/3518
+        self.folder[self.image_id].image_edit(file=dummy.File('fred%.gif'))
+        self.failIf('fred%.gif' in self.folder.objectIds())
+
+    # XXX: Dang! No easy way to get at the validator state...
 
 
 class TestGetObjSize(PloneTestCase.PloneTestCase):
@@ -425,6 +445,7 @@ def test_suite():
     suite.addTest(makeSuite(TestEditShortName))
     suite.addTest(makeSuite(TestEditFileKeepsMimeType))
     suite.addTest(makeSuite(TestFileExtensions))
+    suite.addTest(makeSuite(TestBadFileIds))
     suite.addTest(makeSuite(TestGetObjSize))
     suite.addTest(makeSuite(TestDefaultPage))
 
