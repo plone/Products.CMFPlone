@@ -42,7 +42,7 @@
     <li tal:condition="python: size==1"
         class="actionSingular">
         <a href="#" 
-           tal:define="portaltype python: allowed[0];
+           tal:define="portaltype python: allowedSortedContentTypes[0];
                        folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());"
            tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId}"
            >
