@@ -15,7 +15,6 @@ success = {}
 
 for id in ids:
     o = getattr(context, id)
-    context.plone_debug('o is ' + str(o.absolute_url()))
     try:
         if o.isPrincipiaFolderish and include_subfolders:
             workflow.doActionFor(o, workflow_action, comment=comment)
