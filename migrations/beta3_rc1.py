@@ -10,9 +10,12 @@ def threerc1(portal):
     nav_tool.addTransitionFor('default', 'createObject', 'success_no_edit', 'action:view')
 
     # these were missed in the initial beta 3 release
-    nav_tool.addTransitionFor('default', 'folder_rename_form', 'failure', 'folder_rename_form')
-    nav_tool.addTransitionFor('default', 'folder_rename_form', 'success', 'script:folder_rename_form')
-    nav_tool.addTransitionFor('default', 'register', 'failure', 'join_form')
+    if not nav_tool.hasProperty('default.folder_rename_form.failure'):
+        nav_tool.addTransitionFor('default', 'folder_rename_form', 'failure', 'folder_rename_form')
+    if not nav_tool.hasProperty('default.folder_rename_form.success'):
+        nav_tool.addTransitionFor('default', 'folder_rename_form', 'success', 'script:folder_rename')
+    if not nav_tool.hasProperty('default.register.failure'):
+        nav_tool.addTransitionFor('default', 'register', 'failure', 'join_form')
 
     props = portal.portal_properties.site_properties
     if not hasattr(props, 'allowRolesToAddKeywords'):

@@ -92,7 +92,7 @@ def twothree(portal):
     nav_tool.addTransitionFor('default', 'sendto', 'failure', 'action:view')
     # these were missed in the initial beta 3 release
     nav_tool.addTransitionFor('default', 'folder_rename_form', 'failure', 'folder_rename_form')
-    nav_tool.addTransitionFor('default', 'folder_rename_form', 'success', 'script:folder_rename_form')
+    nav_tool.addTransitionFor('default', 'folder_rename_form', 'success', 'script:folder_rename')
     nav_tool.addTransitionFor('default', 'register', 'failure', 'join_form')
     
 

@@ -1,4 +1,7 @@
 CHANGES
+Plone 1.0 rc2
+    - typo in portal_navigation default.folder_rename_form.success should be script:folder_rename
+      this typo was propagated throughout previous migration scripts and was also fixed.
 
 Plone 1.0 rc1
     - added 'fullname' to portal_memberdata
