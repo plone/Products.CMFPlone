@@ -81,23 +81,22 @@
         <!-- start of main content block -->
         <div class="main"
             id="contentWrapper"
-            tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions );
+            tal:define="global is_editable python:here.showEditableBorder( template_id=template_id , actions=actions );
             tabindex python:Iterator(pos=0)">
 
-            <div class="padding">
+            <div tal:attributes="class python:test(is_editable,'editable pageContent','pageContent')">
 
-                <metal:ifborder tal:condition="show_border" >
-                    <div metal:use-macro="here/view_tabs/macros/content_tabs">
-                        The content view tabs (View, Edit, Properties, Workflow)
+                <metal:ifborder tal:condition="is_editable" >
+                    <div metal:use-macro="here/view_tabs/macros/content_views">
+                        The content views (View, Edit, Properties, Workflow)
                     </div>
 
-                    <div metal:use-macro="here/view_tabs/macros/content_bar">
+                    <div metal:use-macro="here/view_tabs/macros/content_actions">
                         The content bar
                     </div>
                 </metal:ifborder>
 
-                <div id="documentContent"
-                     tal:attributes="class python:test(show_border,'editableDocument','document')">
+                <div class="contentContent">
 
                     <div metal:use-macro="here/global_statusmessage/macros/portal_message">
                         Portal status message

@@ -397,7 +397,7 @@ div#pathBar {
 .addFavorite {
     vertical-align: bottom;
 }
-ul#contentTabs {
+ul.contentViews {
     background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
     padding-left: 1em;
@@ -407,10 +407,10 @@ ul#contentTabs {
     /* white-space: nowrap; */
     list-style: none;
 }
-ul#contentTabs li {
+ul.contentViews li {
     display: inline;
 }
-#contentTabs li a {
+.contentViews li a {
     background: &dtml-contentTabBackgroundNotSelected;;
     border: &dtml-contentTabBorder;;
     border-style: solid solid solid solid;
@@ -424,17 +424,17 @@ ul#contentTabs li {
     text-transform: &dtml-textTransform;;
     z-index: 1;
 }
-#contentTabs li.selected a {
+.contentViews li.selected a {
     background: &dtml-contentTabBackground;;
     border-bottom: &dtml-contentTabBackground; 1px solid;
     color: &dtml-contentTabFontColorSelected;;
     font-weight: &dtml-contentTabFontWeight;;
 }
-#contentTabs li a:hover {
+.contentViews li a:hover {
     background-color: &dtml-contentTabBackground;;
     color: &dtml-contentTabFontColorSelected;;
 }
-#contentBar {
+.contentActions {
     border-collapse: collapse;
     border-top: &dtml-contentTabBorder;;
     background: &dtml-contentTabBackground;;
@@ -446,16 +446,25 @@ ul#contentTabs li {
     padding: 0 1em;
     z-index: 2;
 }
-div.document, div.editableDocument {
-    background: &dtml-mainBackground;;
-    font: <dtml-var contentFont>;
-    padding: 0;
+.pageContent {
+    padding: 1em;
     margin: 0em 0em 2em 0em;
 }
-div.editableDocument {
+
+.editable {
+    padding: 1em 2em !important;
+}
+
+div.contentContent {
+    font: <dtml-var contentFont>;
+    padding: 0em 1em 2em 1em ! important;
+    background: &dtml-mainBackground;;
+}
+
+.editable div.contentContent {
     background: &dtml-contentBackground; ! important;
     border: &dtml-contentTabBorder;;
-    padding: 0em 1em 2em 1em ! important;
+    padding: 0;
 }
 div.documentActions {
     float: right; 
@@ -749,7 +758,7 @@ a.more {
     text-align: right;
 }
 
-div.box .content {
+div.box div.content {
     padding: 1em;
 }
 div.box a.close {

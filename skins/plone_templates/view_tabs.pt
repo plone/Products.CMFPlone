@@ -1,6 +1,6 @@
 <html>
-<ul metal:define-macro="content_tabs"
-     id="contentTabs" 
+<ul metal:define-macro="content_views"
+     class="contentViews" 
      i18n:domain="plone"
      tal:define="plone_actions python:here.plonifyActions(template_id=template_id, actions=actions)">
     <tal:actions repeat="action plone_actions">
@@ -18,9 +18,9 @@
     </tal:actions>
 </ul>
 
-<div metal:define-macro="content_bar"
+<div metal:define-macro="content_actions"
      i18n:domain="plone"
-     id="contentBar">
+     class="contentActions">
 
     &nbsp;
 
