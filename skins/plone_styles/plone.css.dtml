@@ -262,26 +262,28 @@ div#siteActions {
     margin: 1em 1em 0.5em 1em;
 }
 
+/* Logo properties */
+ 
 h1#logo {
+    background: url(<dtml-var portal_url>/logo.jpg) no-repeat;
     border: 0;
     margin: &dtml-logoMargin;;
+    padding: &dtml-logoPadding;;
 }
 h1#logo a {
-    /* Logo properties */
     display: block;
-    background: url(<dtml-var portal_url>/logo.jpg);
-    background-repeat: no-repeat;
     text-decoration: none;
+    overflow: hidden;
     border: 0;
     margin: 0;
-    padding: &dtml-logoPadding;;
+    padding: 0;
     padding-top: <dtml-var "_['logo.jpg'].height">px;
-    overflow: hidden;
     height: 0px !important;
     height /**/: <dtml-var "_['logo.jpg'].height">px;
     width: <dtml-var "_['logo.jpg'].width">px;
     cursor: pointer;
 }
+
 div#searchBox {
     /*searchbox style and positioning */
     background-color: transparent;
