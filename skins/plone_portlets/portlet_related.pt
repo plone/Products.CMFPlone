@@ -12,7 +12,8 @@
                  "
      tal:condition="python: relatedLocal or relatedRemote" >
 
-    <div class="portlet">
+    <div class="portlet"
+         id="portlet-related">
 
         <h5 i18n:translate="box_related">Related</h5>
 

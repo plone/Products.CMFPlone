@@ -4,10 +4,15 @@ Changelog for Plone
 
 Plone 2.0.3 - Noname
 
+    - Added id="portlet-related" in the Related portlet (was missing),
+      and renamed 'portlet-recent-items' to 'portlet-recent' to make
+      the name consistent with the other portlets.
+
     - Hardened any send mail sending utilities and readying CMF 1.4.4.
       [andym]
 
-    - Fixed a small bug in plone_javascripts.js that prevents the highlight of the search term in simple searchs.
+    - Fixed a small bug in plone_javascripts.js that prevents the highlight
+      of the search term in simple searchs.
       [azy]
 
 Plone 2.0.2 - Hicks
