@@ -281,9 +281,10 @@ pre {
     padding: 0;
 }
 #portal-siteactions {
-    float: right;
-    margin: -5.5em 2em 0 0;
-    width: 54px;
+    position: absolute;
+    top: 1.5em;
+    right: 2em;
+    width: auto;
 }
 
 #portal-siteactions a {
@@ -929,6 +930,15 @@ ul.configlets li a {
 }
 .portlet input {
     font-size: 100%;
+}
+
+.portlet ul,
+.portlet li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    list-style-image: none;
+    line-height: 1em;
 }
 
 .comment {
