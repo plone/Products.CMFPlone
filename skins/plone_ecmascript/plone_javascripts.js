@@ -723,8 +723,7 @@ function fullscreenMode() {
         setDisplayMode('portal-column-two', 'table-cell');
         // set cookie        
 	    createCookie('fullscreenMode', '');        
-	}    else {   
-	    window.alert(document.getElementById('portal-column-one').style.display)     
+	}    else {    
 	    setDisplayMode('portal-top', 'none');
         setDisplayMode('portal-column-one', 'none');
         setDisplayMode('portal-column-two', 'none');        
