@@ -230,6 +230,7 @@ pre {
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
+    overflow: auto;
 }
 .pre a {
     text-decoration: underline;
@@ -1151,6 +1152,7 @@ ul.configlets li a {
     border-color: &dtml-notifyBorderColor;; 
     border-width: &dtml-borderWidth;;
 }
+
 .visualOverflow {
     overflow: auto;
 }

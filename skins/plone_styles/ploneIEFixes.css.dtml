@@ -29,8 +29,14 @@ div#portal-columns div#portal-column-one,
 div#portal-columns div#portal-column-two {
     overflow: hidden;
 }
-div.visualOverflow {
+
+.visualOverflow {
     overflow: auto;
+}
+
+fieldset {
+    width: 90%;
+    margin: 1em auto 1em auto;
 }
 
 body { /* These work in IE only, changes the look of the scrollbar + textareas */
