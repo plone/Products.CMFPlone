@@ -8,6 +8,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore
 from types import TupleType
 from urllib import urlencode
+import re
 
 from zLOG import LOG, INFO
 def log(summary='', text=''):
@@ -141,6 +142,44 @@ class PloneTool (UniqueObject, SimpleItem):
             pass 
         return wfs
 
+    # Transitions are determined by a set of actions listed in a properties file.
+    # One can include information from the REQUEST into a transition by using 
+    # an expression enclosed in brackets, i.e. something of the form [foo].
+    # The bracketed expression will be replaced by REQUEST['foo'], or an empty
+    # string if the REQUEST has no key 'foo'.  To specify an alternative action
+    # in the event that the REQUEST has no key 'foo', use [foo|bar].  If REQUEST.foo
+    # doesn't exist, then the bracketed expression is replaced by bar.
+    #
+    # Example: document.document_edit.success:string=view?came_from=[came_from|/]
+    #
+    # Regular expression used for performing substitutions in navigation transitions:
+    # Find a [ that is not prefixed by a \, then
+    # get everything until we hit a ] not prefixed by a \,
+    # then get the terminal ]
+    transitionSubExpr = r"""(?:(?<!\\)\[)(?P<expr>(?:[^\]]|(?:(?<=\\)\]))*)(?:(?<!\\)\])"""
+    transitionSubReg = re.compile(transitionSubExpr, re.VERBOSE)
+
+    def _transitionSubstitute(self, action, REQUEST):
+        action2 = ''
+        segments = self.transitionSubReg.split(action)
+        count = 0
+        for seg in segments:
+            if count % 2:
+                separatorIndex = seg.find('|')
+                if separatorIndex >= 0:
+                    key = seg[0:separatorIndex]
+                    fallback = seg[separatorIndex+1:]
+                else:
+                    key = seg
+                    fallback = ''
+                action2 = action2 + REQUEST.get(key, fallback)
+            else:
+                action2 = action2 + seg
+            count = count + 1
+        action2 = action2.replace('\[', '[')
+        action2 = action2.replace('\]', ']')
+        return action2
+
     def getNavigationTransistion(self, context, action, status):
         navprops = getattr(self, 'navigation_properties')
         fixedTypeName = ''.join(context.getTypeInfo().Title().lower().split(' '))
@@ -149,12 +188,12 @@ class PloneTool (UniqueObject, SimpleItem):
         if action_id is None:
             navTransition='%s.%s.%s' % ('default',action,status)
             action_id = getattr(navprops.aq_explicit, navTransition, None)
-        return action_id
+        return self._transitionSubstitute(action_id, self.REQUEST)
 
     security.declarePublic('getNextPageFor')
     def getNextPageFor(self, context, action, status, **kwargs):
         """ given a object, action_id and status we can fetch the next action
-	    for this object 
+            for this object 
         """
         action_id=self.getNavigationTransistion(context,action,status)
         next_action=context.getTypeInfo().getActionById(action_id)
@@ -166,7 +205,7 @@ class PloneTool (UniqueObject, SimpleItem):
     def getNextRequestFor(self, context, action, status, **kwargs):
         """ takes object, action, and status and returns a RESPONSE redirect """
         url_params=urlencode(kwargs)
-        action_id=self.getNavigationTransistion(context,action,status)
+        action_id=self.getNavigationTransistion(context,action,status) ###
         redirect=None
         try:
             action_id=context.getTypeInfo().getActionById(action_id)
