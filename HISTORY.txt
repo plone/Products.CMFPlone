@@ -4,6 +4,8 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - made discussion item preview on the same page using vcXMLRPC, would like to do for all content types [andym]
+
     - tabindex can now be used in left/right_slot too. [magnus]
 
     - Breadcrumbs and form validation error messages are now translated [magnus]
