@@ -4,5 +4,12 @@
 
 # golly this could be index.html
 # return context, ['index.html',]
+page = 'index_html'
+if page in context.objectIds():
+    return context, [page, ]
 
-return context, ['index_html',]
+# what if the page isnt found?
+# call the method on the folder, if you
+# dont have this you will have problems
+# with blank folders
+return context, [None,]
