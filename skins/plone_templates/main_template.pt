@@ -7,7 +7,8 @@
 
 <tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
                        global site_properties here/portal_properties/site_properties;
-                       global current_skin python:request.get(here.portal_skins.getRequestVarname(),None);" />
+                       global ztu modules/ZTUtils;
+                       global current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(),None));" />
 
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="base">
