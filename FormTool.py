@@ -1,5 +1,3 @@
-# $Id: FormTool.py,v 1.28.4.10 2004/04/16 17:12:48 limi Exp $
-
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
 from Products.CMFCore.utils import UniqueObject

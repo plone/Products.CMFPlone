@@ -1,5 +1,3 @@
-# $Id: NavigationTool.py,v 1.37.4.2 2004/03/19 22:50:05 shh42 Exp $
-
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import UniqueObject
