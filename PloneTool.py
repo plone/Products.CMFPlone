@@ -21,7 +21,7 @@ from Products.CMFPlone import ToolNames
 
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass, DTMLFile
-from AccessControl import ClassSecurityInfo
+from AccessControl import ClassSecurityInfo, Unauthorized
 from StatelessTree import constructNavigationTreeViewBuilder, \
      NavigationTreeViewBuilder as NTVB
 
@@ -57,7 +57,7 @@ class PloneTool(UniqueObject, SimpleItem):
         host = self.MailHost
         host.send( mail_text )
 
-    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'editMetadata')
+    security.declarePublic('editMetadata')
     def editMetadata( self
                      , obj
                      , allowDiscussion=None
@@ -74,6 +74,10 @@ class PloneTool(UniqueObject, SimpleItem):
         """ responsible for setting metadata on a content object
             we assume the obj implemented IDublinCoreMetadata
         """
+        mt = getToolByName(self, 'portal_membership')
+        if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
+            raise Unauthorized
+
         REQUEST=self.REQUEST
         pfx=self.field_prefix
 
@@ -160,10 +164,10 @@ class PloneTool(UniqueObject, SimpleItem):
             msg = msg.encode('utf-8')
         get_transaction().note(msg)
 
-    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'contentEdit')
+    security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):
         """ encapsulates how the editing of content occurs """
-
+        
         try:
             self.editMetadata(obj, **kwargs)
         except AttributeError, msg:
