@@ -15,12 +15,6 @@ if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
     
-context.edit( text_format
-            , text
-            , file=file
-            , safety_belt=SafetyBelt
-            )
-
 filename=getattr(file, 'filename', '')
 if file and filename:
     if filename.find('\\')>-1:       
@@ -39,11 +33,23 @@ if hasattr(context, 'extended_edit'):
     response=edit_hook(redirect=0)
     if response:
         return response
+#we need to do this afterwards because metadata sets the format to the context's format
+#we need to change the format to the one in the form, not the current format.
+context.edit( text_format
+            , text
+            , file=file
+            , safety_belt=SafetyBelt
+            )
+    
+if id!=context.getId():
+    context.rename_object(redirect=0, id=id)
 
-context.rename_object(redirect=0, id=id)
 target_action = context.getTypeInfo().getActionById( 'view' )
+context.plone_debug('format'+ context.text_format)
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                                 , target_action
                                                 , qst
                                                 ) )
+
+
 

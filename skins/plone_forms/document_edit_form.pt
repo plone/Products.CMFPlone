@@ -18,7 +18,7 @@
     <form class="group"
           name="edit_form"
           action="document_edit" 
-          method="post" 
+          method="get" 
           enctype="multipart/form-data" >
 
         <span class="legend">Document Details</span>    
@@ -96,15 +96,21 @@
 
 	    <div class="row">
             <span class="label">Format</span>
-  	        <span class="field">
+  	        <span class="field">	
                 <input class="noborder" type="radio" name="text_format"
                        value="structured-text" id="cb_structuredtext"
                        tal:attributes="checked python:test(here.text_format=='structured-text', 1, 0)" />
-                <label for="cb_structuredtext">Structured Text</label> <br />	
+                <label for="cb_structuredtext">Structured Text</label> <br />
+		
                 <input class="noborder" type="radio" name="text_format" value="html" id="cb_html"
-                       tal:attributes="checked python:test(here.text_format=='html', 1, 0)" />						 
-		        <label for="cb_html">HTML</label>
-		    </span>
+                       tal:attributes="checked python:test(here.text_format=='html', 1, 0)" />	
+		<label for="cb_html">HTML</label> <br />
+			
+                <input class="noborder" type="radio" name="text_format"
+                       value="plain" id="cb_plain"
+                       tal:attributes="checked python:test(here.text_format=='plain', 1, 0)" />
+                <label for="cb_plain">Plain Text</label>
+                </span>
             <span class="info"> 
             Select which format you want to type the contents of this
             document in. If you are unsure of which format to use, just
