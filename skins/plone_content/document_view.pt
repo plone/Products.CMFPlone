@@ -6,7 +6,7 @@
 
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-           tal:define="len_text python:len(here.text);">
+           tal:define="text here/text|nothing">
         <h1 tal:content="here/title_or_id" class="documentFirstHeading">
           Title or id
         </h1>
@@ -20,7 +20,7 @@
             description
         </div>
     
-        <p tal:condition="python: not len_text and is_editable"
+        <p tal:condition="python: not text and is_editable"
            i18n:translate="no_body_text"
            class="discreet">
             This item does not have any body text, click the edit tab to change it.
