@@ -377,7 +377,7 @@ pre {
     border-bottom-color: &dtml-globalBorderColor;;
     border-bottom-style: &dtml-borderStyle;;
     border-bottom-width: &dtml-borderWidth;;
-    line-height: 1.2em;
+    line-height: 1.3em;
     color: &dtml-fontColor;;
     padding: 0em 3em 0em 3em;
     margin: 0;
