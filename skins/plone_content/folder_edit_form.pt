@@ -21,7 +21,7 @@
         <div class="row"
              tal:condition="python:member.getProperty('visible_ids', None)"
              tal:define="error_id errors/id | nothing;
-                         id python:request.get('id', here.getId());
+                         id python:request.get('id', test(here.show_id(),here.getId(),''));
                          readonly python:test( here.portal_membership.getHomeUrl()==here.absolute_url(), 1, 0);" >
 
             <div class="label">
@@ -56,6 +56,7 @@
                        />
             </div>
         </div>
+
         <input type="hidden"
                name="id"
                tal:condition="python: not member.getProperty('visible_ids', None)"

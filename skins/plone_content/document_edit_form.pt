@@ -68,6 +68,7 @@
                 </div>
 
             </div>
+
             <input type="hidden"
                    name="id"
                    tal:condition="python:not member.getProperty('visible_ids', '')"
