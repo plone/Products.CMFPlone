@@ -123,11 +123,12 @@
                               global allowedSubjects python:list(allowedSubjects);
                               dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
 
-                    <span i18n:translate="label_existing_keywords">Existing keywords</span>
-                    <br />
+                    <div style="width: 45%; float: left;">                              
+                        <span i18n:translate="label_existing_keywords">Existing keywords</span>
+                        <br />
                         <select id="predefined_subjects"
                                 name="predefined_subjects" 
-                                size="7" 
+                                size="14" 
                                 multiple="multiple"
                                 tabindex=""
                                 onfocus="formtooltip('keywords_help',1)" 
@@ -140,26 +141,30 @@
                           </option>                                
                         </select>
                         
-                        <br />
+                    </div>
+                        
                     <tal:block tal:define="site_props here/portal_properties/site_properties;
                                            allowRolesToAddKeywords site_props/allowRolesToAddKeywords"
                                tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
                           
-                    <span i18n:translate="label_new_keywords">New keywords</span>
-                    <br />
-                    <textarea id="entered_subjects"
-                      name="subject:lines" 
-                      rows="15" 
-                      cols="15" 
-                      wrap="off"
-                      tabindex=""
-                      onfocus="formtooltip('keywords_help',1)" 
-                      onblur="formtooltip('keywords_help',0)"
-                      tal:attributes="tabindex tabindex/next;"
-                      tal:define="subject python:request.get('subject',[])"
-                      tal:content="python:'\n'.join(subject)"
-                      >selected keywords</textarea>&nbsp;
-                    
+                        <div style="width: 45%; float: left;">                              
+    
+                            <span i18n:translate="label_new_keywords">New keywords</span>
+                            <br />
+                            <textarea id="entered_subjects"
+                              name="subject:lines" 
+                              rows="11" 
+                              cols="15" 
+                              wrap="off"
+                              tabindex=""
+                              onfocus="formtooltip('keywords_help',1)" 
+                              onblur="formtooltip('keywords_help',0)"
+                              tal:attributes="tabindex tabindex/next;"
+                              tal:define="subject python:request.get('subject',[])"
+                              tal:content="python:'\n'.join(subject)"
+                              >selected keywords</textarea>&nbsp;
+
+                        </div>                    
                     </tal:block>
             </div>
 
