@@ -59,6 +59,7 @@
                          height="16"
                          width="16"
                          alt="dummy"
+			 tal:on-error="structure python:path('here/linkOpaque.gif')"
                          tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a 
                     href="#" tal:attributes="href url"
                     tal:content="python:result.Title or result.getId" />
