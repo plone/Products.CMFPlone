@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Fixed http://plone.org/collector/3005 by catching non existing home folder.
+
+    - Fixed http://plone.org/collector/2963. Allow access to
+      Products.ZCTextIndex.ParseTree.ParseError and catch it
+      in the queryCatalog script
+      [tiran]
+
     - Fixed http://plone.org/collector/2862. Added a listMetaTags script to
       skins/plone_scripts to add automagically generated meta tags in the 
       <header>
