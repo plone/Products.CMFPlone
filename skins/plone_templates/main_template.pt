@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
-      tal:attributes="lang site_properties/default_language|default;
-                      xml:lang site_properties/default_language|default;">
+      tal:attributes="lang default_language|default;
+                      xml:lang default_language|default;">
 
 
 <head metal:use-macro="here/header/macros/html_header">
@@ -17,7 +17,7 @@
 
     <metal:headslot fill-slot="head_slot"
                tal:define="language here/Language;
-                           lang language | site_properties/default_language;
+                           lang language | default_language;
                            charset site_properties/default_charset|string:utf-8">
 
     <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
