@@ -22,7 +22,7 @@
 
 	<span metal:define-slot="hiddens" />
 	
-        <table class="listing">
+        <table class="listing" summary="User management">
 	  <tr>
 	    <th colspan="2">
 	      <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
