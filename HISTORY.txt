@@ -5,26 +5,20 @@ Changelog for Plone
 Plone 2.1 - Plaid - (unreleased)
 
     - Merged uiteam-plip77-78-content-menu-browser-default-refactoring
-      6317:HEAD into 2.1 branch:
+      r6317:HEAD into 2.1 branch.
       [tiran]
 
-    - PLIP-77: Constrain addable types on a per-folder basis
-     
+      PLIP 77: Constrain addable types on a per-folder basis
       - New menu item "settings" on "add new item" drop-down to select
         which items to display, and how.
-    
       [optilude]
 
-    - PLIP-78: "Display" menu to select default view
-
+      PLIP 78: "Display" menu to select default view of a folder
       - Enable TemplateMixin and fix its UI (in ATContentTypes)
-
       - Add a "display" drop-down where these can be chosen
-      
       - On folderish items, an option "select item" - shows browser, select
         default_page.
-         
-      [optilude, david convent]
+      [optilude] [davconvent]
 
     - Cleaned up listMetaTypes by moving the payload into PloneTool and
       cleaning up the code.
@@ -64,18 +58,12 @@ Plone 2.1 - Plaid - (unreleased)
       [panjunyong]
 
     - Added some knobs to jscalendar:
-
       - show_hm: show hour and minute dropbox or not 
-
       - show_jscalendar: show the jscalendar icon or not. If you hate the fat 
         javascript, you can turn it off.
-
       - starting_year: starting year
-
       - ending_year: ending year
-
       - future_year: future years after this year
-
       - show_single_year: when year is fixed (min_year==max_year), sometimes we don't
         need to show the single year.
       [panjunyong]
