@@ -26,13 +26,12 @@
           name="groups"
           method="post"
           tal:attributes="action here/absolute_url"
-          tal:define="portal_users python: here.portal_membership.listMembers();
-                      batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
+          tal:define="groups python:Batch(here.acl_users.getGroupNames(), 25, int(b_start), orphan=1)">
 
        <input class="standalone add"
               tabindex=""
               type="submit"
-              name="portal_form/join_form:method"
+              name=""
               value="Add New Group"
               tal:attributes="tabindex tabindex/next;"
               />
@@ -47,7 +46,7 @@
                
 
         <table class="listing"
-               tal:condition="portal_users">
+               tal:condition="groups">
                
             <tr>
                 <th rowspan="2">Group name</th>
@@ -60,13 +59,13 @@
                 <th>Reviewer</th>
             </tr>
             
-            <metal:block tal:repeat="this_user batch">
+            <metal:block tal:repeat="this_group groups">
             
-            <tr tal:define="oddrow repeat/this_user/odd"
+            <tr tal:define="oddrow repeat/this_group/odd"
                  tal:attributes="class python:test(oddrow,'odd','even')">
             
-            <metal:block tal:define="roles python: this_group.getRoles();
-                                     groupname python: this_group.getGroupName()">
+            <metal:block tal:define="roles python: ['Member', 'Reviewer'];
+                                     groupname python: ('Tech', 'Finance')">
          
             <td>
                 <a href="XXX_prefs_group_management_individual_form">
@@ -77,13 +76,16 @@
                 </a>
             </td>
             
+            
+            <!-- XXX - Somebody has to make this iterate over the available
+                       roles and show the correct roles for a group - and make it capable of
+                       writing them back -->
             <td class="checkbox">
                 <input type="checkbox" 
                        class="noborder"
                        name="name"
                        value="Manager"
-                       tal:attributes="checked python:test( 'Manager' in roles, 'checked', '');
-                                       name string:roles-${username}:list" />
+                       tal:attributes="checked string:checked" />
             </td>
             
             <td class="checkbox">
@@ -91,8 +93,7 @@
                        class="noborder"
                        name="name"
                        value="Member"
-                       tal:attributes="checked python:test( 'Member' in roles, 'checked', '');
-                                       name string:roles-${username}:list" />
+                       tal:attributes="checked string:checked" />
             </td>
             
             <td class="checkbox">
@@ -100,8 +101,7 @@
                        class="noborder"
                        name="name" 
                        value="Reviewer"
-                       tal:attributes="checked python:test( 'Reviewer' in roles, 'checked', '');
-                                       name string:roles-${username}:list" />
+                       tal:attributes="checked string:checked" />
             </td>
           
             <td class="checkbox">
