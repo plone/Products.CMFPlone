@@ -28,7 +28,7 @@ def replaceFolderPropertiesWithEdit(portal, out):
     for action in _actions:
         if action.id=='edit':
             action.title='Edit'
-    typeObj._actions=_actions
+    typeObj._actions=tuple(_actions)
 
     out.append("Renamed Folder 'properties' tab to 'edit'.")
     return out
@@ -38,6 +38,7 @@ def interchangeEditAndSharing(portal, out):
     typeInfo=typesTool.getTypeInfo('Folder')
     typeObj=getattr(typesTool, typeInfo.getId())
     _actions=typeInfo._cloneActions()
+    i = j = -1
     count = 0
     for action in _actions:
         if action.id=='local_roles':
@@ -45,9 +46,14 @@ def interchangeEditAndSharing(portal, out):
         if action.id=='edit':
             j = count
         count = count+1
-    _actions[i],_actions[j] = _actions[j],_actions[i]
-    out.append("Interchanged 'edit' and 'sharing' tabs.")      
-    typeObj._actions=_actions 
+
+    # Don't switch if we couldn't find both actions
+    # or the tab order is already correct.
+    if -1 < i < j:
+        _actions[i], _actions[j] = _actions[j], _actions[i]
+        typeObj._actions=tuple(_actions)
+
+    out.append("Interchanged 'edit' and 'sharing' tabs.")
     return out
 
 def addFolderListingActionToTopic(portal, out):
