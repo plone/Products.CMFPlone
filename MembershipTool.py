@@ -311,19 +311,20 @@ class MembershipTool(BaseTool):
         else:
             raise 'Bad Request', 'Not logged in.'
 
-    security.declareProtected(View, 'getCandidateLocalRoles')
-    def getCandidateLocalRoles( self, obj ):
-        """ What local roles can I assign? """
-        member = self.getAuthenticatedMember()
-
-        if 'Manager' in member.getRoles():
-            return self.getPortalRoles()
-        else:
-            member_roles = list( member.getRolesInContext( obj ) )
-            if 'Member' in member_roles:
-                del member_roles[member_roles.index( 'Member')]
-
-        return tuple( member_roles )
+    # XXX: The implementation in CMFCore is superior
+    #security.declareProtected(View, 'getCandidateLocalRoles')
+    #def getCandidateLocalRoles( self, obj ):
+    #    """ What local roles can I assign? """
+    #    member = self.getAuthenticatedMember()
+    #
+    #    if 'Manager' in member.getRoles():
+    #        return self.getPortalRoles()
+    #    else:
+    #        member_roles = list( member.getRolesInContext( obj ) )
+    #        if 'Member' in member_roles:
+    #            del member_roles[member_roles.index( 'Member')]
+    #
+    #    return tuple( member_roles )
 
 MembershipTool.__doc__ = BaseTool.__doc__
 
