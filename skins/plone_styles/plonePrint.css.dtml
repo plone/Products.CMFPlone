@@ -10,7 +10,6 @@
 
 body {
     background: White;
-    font-family: Georgia, Garamond, Times, serif;
     font-size: 11pt;
     color: Black;
     margin: 0;
@@ -35,6 +34,7 @@ input,
 a.skipnav
 {
     display: none;
+    visibility: hidden;
 }
 
 ul { 
@@ -43,15 +43,18 @@ ul {
 
 .editableDocument,
 .document,
-#description,
+.description,
 .group,
+li,
+#content,
+.stx,
 p {
     background: transparent;
     border: none ! important;
     font-family: Georgia, Garamond, Times, serif;
     font-size: 11pt;
-    padding: 0;
-    margin: 0;
+    padding: 0 ! important;
+    margin: 0 ! important;
     text-align: left;
 }
 
@@ -63,12 +66,12 @@ p {
 h1, h2, h3, h4, h5, h6
 {
     border: none;
-    font-family: Georgia, Garamond, Times, serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
 }
 
 p, #description {
-    margin: 1em 0;
+    margin: 1em 0 ! important;
     line-height: 1.2em;    
 }
 
