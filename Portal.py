@@ -161,17 +161,7 @@ class PloneGenerator(Portal.PortalGenerator):
         path=','.join(path)
         sk_tool.addSkinSelection('Plone Default', path)
 
-        self.setupSecondarySkin(sk_tool, 'Plone Autumn',        'plone_styles/autumn')
-        self.setupSecondarySkin(sk_tool, 'Plone Core',          'plone_styles/core')
-        self.setupSecondarySkin(sk_tool, 'Plone Core Inverted', 'plone_styles/core_inverted')
         self.setupSecondarySkin(sk_tool, 'Plone Corporate',     'plone_styles/corporate')
-        self.setupSecondarySkin(sk_tool, 'Plone Greensleeves',  'plone_styles/greensleeves')
-        self.setupSecondarySkin(sk_tool, 'Plone Kitty',         'plone_styles/kitty')
-        self.setupSecondarySkin(sk_tool, 'Plone Mozilla',       'plone_styles/mozilla')
-        self.setupSecondarySkin(sk_tool, 'Plone Mozilla New',   'plone_styles/mozilla_new')
-        self.setupSecondarySkin(sk_tool, 'Plone Prime',         'plone_styles/prime')
-        self.setupSecondarySkin(sk_tool, 'Plone Zed',           'plone_styles/zed')
-
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
         
         sk_tool.request_varname='plone_skin'
