@@ -12,6 +12,7 @@
         portal_title portal_object/Title;
         object_title here/Title;
         portal_url utool;
+        portal nocall:portal_object;
         member mtool/getAuthenticatedMember;
         membersfolder mtool/getMembersFolder;
         isAnon mtool/isAnonymousUser;

@@ -10,9 +10,9 @@
 
 <div metal:define-macro="loginBox"
      tal:omit-tag=""
-     tal:condition="here/portal_membership/isAnonymousUser">
+     tal:condition="isAnon">
 
-    <div class="box" tal:define="portal_url here/portal_url">
+    <div class="box" tal:define="portal_url portal_url|here/portal_url">
 
         <h5 i18n:translate="box_sign_in">Log in</h5>
 
@@ -51,18 +51,19 @@
             <div class="content even"> 
                 <a href="mail_password_form"
                    tal:attributes="href string:$portal_url/mail_password_form">
-                   <img tal:replace="structure here/linkTransparent.gif" />
+                   <img tal:replace="structure portal_object/linkTransparent.gif" />
                    <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
                 </a>
             </div>
     
             <div class="content odd"
-                tal:condition="python:test(hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
+                tal:condition="python:test(hasattr(here,'portal_registration') and 
+		                           mtool.checkPermission('Add portal member', here), 1, 0)">
           
                 <a href="portal_form/join_form"
                    tal:attributes="href string:$portal_url/portal_form/join_form">
                     
-                    <img tal:replace="structure here/linkTransparent.gif" />
+                    <img tal:replace="structure portal_object/linkTransparent.gif" />
           
                     <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
                 </a>

@@ -9,8 +9,9 @@
 <!-- The About box -->
 
 <div metal:define-macro="aboutBox" 
-     tal:condition="python:test(not site_properties.allowAnonymousViewAbout and
-                                site_properties.portal_membership.isAnonymousUser(), 0, 1)" 
+     tal:define="mtool mtool|here/portal_membership;
+                 isAnon isAnon|mtool/isAnonymousUser"
+     tal:condition="python:test(not site_properties.allowAnonymousViewAbout and isAnon, 0, 1)" 
      tal:omit-tag="">
 
     <div class="box">
@@ -21,7 +22,7 @@
         
             <div class="content odd"
                  tal:define="creator here/Creator;
-                             creator_home python:container.portal_membership.getHomeUrl(creator);">
+                             creator_home python:mtool.getHomeUrl(creator);">
                              
                 <strong i18n:translate="box_created_by">Created by</strong> <br />
                 <img tal:replace="structure here/user.gif" />            
@@ -56,7 +57,7 @@
             </div>
         
             <div class="content even"
-        	     tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state', '')"
+        	     tal:define="review_state wf_state"
         	     tal:condition="review_state">
             
                 <strong i18n:translate="label_state">State</strong> <br />

@@ -148,20 +148,22 @@
         <div class="personalBar"
              metal:define-macro="personalBar"
              tal:define="portal_url portal_url|here/portal_url;
-                         user_actions actions/user;
-                         global_actions actions/global;
+                         user_actions user_actions|actions/user;
+                         global_actions global_actions|actions/global;
+                         mtool mtool|here/portal_membership;
                          display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">&nbsp;
 
             <a href=""
-               tal:omit-tag="not: here/portal_membership/getHomeFolder"
-               tal:condition="not:here/portal_membership/isAnonymousUser"
-               tal:attributes="href string:${here/portal_membership/getHomeUrl}">
+               tal:omit-tag="not: mtool/getHomeFolder"
+               tal:condition="not: isAnon"
+               tal:attributes="href string:${mtool/getHomeUrl}">
                 <img tal:replace="structure here/user.gif" />
             
                 <span tal:replace="user/getUserName">john</span>
             </a>
 
-            <span tal:condition="here/portal_membership/isAnonymousUser" i18n:translate="you_are_not_logged_in">You are not logged in</span>
+            <span tal:condition="isAnon" 
+	          i18n:translate="you_are_not_logged_in">You are not logged in</span>
 
             <metal:block tal:repeat="action python:display_actions">
             <a href=""
@@ -176,12 +178,12 @@
         <div class="pathBar"
              metal:define-macro="pathBar"
              tal:define="breadcrumbs python:here.breadcrumbs(here);
-                         portal_url portal_url|here/portal_url;">
+                         portal_url portal_url|here/portal_url">
 
             <a href="#"
-               tal:condition="here/portal_membership/getHomeFolder"
-               tal:attributes="href string:${here/absolute_url}/addtoFavorites"
-               tal:define="addFavorite here/addFavorite.gif">
+               tal:define="addFavorite portal_object/addFavorite.gif;"
+               tal:condition="nothing"
+               tal:attributes="href string:${here/absolute_url}/addtoFavorites">
 
                 <img tal:replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')" />
             </a>
