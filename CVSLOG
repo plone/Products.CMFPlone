@@ -1,3 +1,42 @@
+2003-11-01 03:58  limi
+
+	* skins/plone_templates/site_actions.pt (Plone-2_0-branch): Not in
+	  use, superceded by global_site_actions
+
+2003-11-01 02:15  limi
+
+	* skins/plone_templates/: standard_html_footer.dtml,
+	  standard_html_header.dtml (Plone-2_0-branch): Removed legacy DTML
+	  header/footer. We're not supporting DTML anymore, afaik.
+
+2003-10-31 21:02  eaon
+
+	* skins/: plone_ecmascript/plone_minmax.js,
+	  plone_ecmascript/plone_minmax.js.metadata,
+	  plone_templates/header.pt, plone_templates/main_template.pt
+	  (Plone-2_0-branch): added min- max-width support for ie (fixes ie
+	  scaling issues), removed useless wrapper
+
+2003-10-31 20:55  limi
+
+	* skins/plone_templates/global_defines.pt (Plone-2_0-branch): Added
+	  gtool alias for the portal_groups tool.
+
+2003-10-31 05:14  chrism
+
+	* __init__.py, skins/plone_scripts/isExpired.py (Plone-2_0-branch):
+	  isExpired:  Use the 'expires' method (which is defined by
+	  DublinCore and returns a DateTime) instead of trying to cast the
+	  result of 'ExpirationDate' back to a DateTime.
+
+	  __init__.py: define 'base_hasattr' which does a hasattr against
+	  aq_base of the object passed in.  Use when you want to perform a
+	  hasattr but you don't want to acquire names.
+
+2003-10-31 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-10-31 00:23  limi
 
 	* skins/plone_templates/header.pt (Plone-2_0-branch): Added meta
