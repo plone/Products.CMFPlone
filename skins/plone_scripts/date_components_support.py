@@ -27,6 +27,11 @@ minutes=[]
 ampm=[]
 now=DateTime()
 
+#Comes from CMFDefault.DublineCore
+CEILING=DateTime(9999, 0)
+FLOOR=DateTime(1970, 0)
+PLONE_CEILING=DateTime('12/31/2020')
+
 def month_names():
     names={}
     for x in range(1,13):
@@ -51,6 +56,10 @@ if date is None:
     default=1
 elif not same_type(date, now):
     date=DateTime(date)
+
+#Now we need to convert from CEILING to Plone CEILING
+if date.equalTo(CEILING):
+    date = PLONE_CEILING    
 
 year=int(date.strftime('%Y'))
 
