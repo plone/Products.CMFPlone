@@ -1,5 +1,6 @@
 from types import ListType, TupleType
 from Acquisition import aq_base
+from Products.CMFCore.utils import getToolByName
 import zLOG
 
 try:
@@ -41,3 +42,28 @@ def saveCloneActions(actionprovider):
         else:
             actionprovider._convertActions()
             return True, actionprovider._cloneActions()
+
+def testSkinLayer(skinsTool, layer):
+    """Make sure a skin layer exists"""
+    # code adapted from CMFCore.SkinsContainer.getSkinByPath
+    ob = aq_base(skinsTool)
+    for name in layer.strip().split('/'):
+        if not name:
+            continue
+        if name.startswith('_'):
+            return 0
+        ob = getattr(ob, name, None)
+        if ob is None:
+            return 0
+    return 1
+
+def cleanupSkinPath(portal, skinName, test=1):
+   """Remove invalid skin layers from skins"""
+   skinstool = getToolByName(portal, 'portal_skins')
+   selections = skinstool._getSelections()
+   old_path = selections[skinName].split(',')
+   new_path = []
+   for layer in old_path:
+      if layer and testSkinLayer(skinstool, layer):
+         new_path.append(layer)
+   skinstool.addSkinSelection(skinName, ','.join(new_path), test=test)
