@@ -16,6 +16,23 @@
                 Batch python:modules['ZTUtils'].Batch;
                 b_start python:request.get('b_start',0);"
      tal:condition="here/rejectAnonymous" >
+
+<!-- ugly way of simulating real actions on the groups/user pages until we have
+     real objects. -->
+<div id="contentTabs"> 
+    <a class="selected" 
+       href=""
+       tal:attributes="href here/absolute_url"
+    >User</a>
+    <a class=""         
+       href=""
+       tal:attributes="href string: prefs_user_management_individual_groups_form?username=${user/getId}"
+    >Group Membership</a>
+</div>
+<div id="contentBar">&nbsp;</div>
+<!-- End of tabs -->
+
+<div class="document editable">    
 	
     <h1 i18n:translate="">User Properties for <span tal:replace="user/getId"/></h1>
 
@@ -153,6 +170,8 @@
                value="Save" />
     </form>
 
+</div>
+    
 </div>
 
 </body>

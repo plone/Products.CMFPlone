@@ -1,0 +1,140 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="userid python:request.get('userid', member.getId());
+                user python:mtool.getMemberById(userid);
+                mdata here/portal_memberdata;
+                errors python:request.get('errors', {});
+                Batch python:modules['ZTUtils'].Batch;
+                b_start python:request.get('b_start',0);"
+     tal:condition="here/rejectAnonymous" >
+
+<!-- ugly way of simulating real actions on the groups/user pages until we have
+     real objects. -->
+<div id="contentTabs"> 
+    <a class="" 
+       href=""
+       tal:attributes="href string: prefs_group_management_individual_form?username=testuser"
+    >User</a>
+    <a class="selected"         
+       href=""
+       tal:attributes="href here/absolute_url"
+    >Group Membership</a>
+</div>
+<div id="contentBar">&nbsp;</div>
+<!-- End of tabs -->
+
+<div class="document editable">    
+	
+    <h1 i18n:translate="">Group Membership for <span tal:replace="string: TestUser"/></h1>
+
+    <p i18n:translate="">
+    This user is a member of the following groups. 
+    </p>
+
+<!-- Again, dead code below, should reuse existing Group listing -->    
+
+       <input class="standalone add" tabindex="30003"
+              type="submit" name="" value="Add New Group Membership" />
+
+               
+
+        <table class="listing">
+               
+            <tr>
+                <th rowspan="2">Group name</th>
+                <th colspan="4">Roles</th>
+                <th rowspan="2">Remove Group</th>
+            </tr>
+            <tr>
+                
+                <th>Member</th>
+                
+                
+                <th>Reviewer</th>
+                
+                
+                <th>Manager</th>
+                
+                
+                <th>Owner</th>
+                
+            </tr>
+            
+            
+
+            <tr class="even">
+            
+            
+         
+            <td>
+                <a href="http://localhost/Plone/prefs_group_management_individual_form?groupname=TestGroup">
+                   
+                    <img src="http://localhost/Plone/group.gif" alt="Group icon" title="Group icon" height="16" width="16" border="0" />&nbsp;TestGroup
+                </a>
+            </td>
+            
+            
+            <!-- XXX - Somebody has to make this iterate over the available
+                       roles and show the correct roles for a group - and make it capable of
+                       writing them back -->
+
+            <td class="checkbox">
+            
+                <input type="checkbox" class="noborder"
+                       name="group_TestGroup:list"
+                       value="Member" checked="checked" />
+            </td>
+            <td class="checkbox">
+            
+                <input type="checkbox" class="noborder"
+                       name="group_TestGroup:list"
+                       value="Reviewer" checked="checked" />
+            </td>
+            <td class="checkbox">
+            
+                <input type="checkbox" class="noborder"
+                       name="group_TestGroup:list"
+                       value="Manager" />
+            </td>
+            <td class="checkbox">
+            
+                <input type="checkbox" class="noborder"
+                       name="group_TestGroup:list"
+                       value="Owner" />
+            </td>
+            
+            <td class="checkbox">
+                <input type="checkbox"
+                       class="noborder notify"
+                       name="delete:list"
+                       value="group_TestGroup" />
+            </td>
+            
+            
+        </tr>
+        
+        </table>
+
+        <input class="destructive" tabindex="30005"
+               type="submit"
+               name="prefs_group_manage:method"
+               value="Remove selected groups" />
+
+<!-- End dead code -->            
+
+</div>
+    
+</div>
+
+</body>
+</html>
+

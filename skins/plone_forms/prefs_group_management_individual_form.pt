@@ -23,6 +23,23 @@
                                                       acl_users.getGroup(groupname, prefixed=0).getRoles())" />
     </tal:conditional>
 
+<!-- ugly way of simulating real actions on the groups/user pages until we have
+     real objects. -->
+<div id="contentTabs"> 
+    <a class="selected" 
+       href=""
+       tal:attributes="href here/absolute_url"
+    >Group</a>
+    <a class=""         
+       href=""
+       tal:attributes="href string: prefs_group_management_individual_members_form?groupname=${groupname}"
+    >Members</a>
+</div>
+<div id="contentBar">&nbsp;</div>
+<!-- End of tabs -->
+    
+<div class="document editable">    
+
     <h1 i18n:translate="">Edit Group Properties</h1>
 
     <p i18n:translate="">
@@ -69,23 +86,6 @@
                 </select>
             </div>
         </div>
-        
-        <div class="row">
-            <div class="label">Users</div>
-    
-            <div class="field">   
-                <select name="users:list" multiple>
-                  <tal:options repeat="userid acl_users/Users/acl_users/getUserNames">
-                    <option tal:define="userobj python:acl_users.getUser(userid);
-                                        user_groups python:userobj.getGroups();"
-                            tal:attributes="selected python:test(groupprefix+groupname in user_groups, 'SELECTED','')"
-                            tal:content="userid">
-                    username
-                    </option>
-                  </tal:options>
-                </select>
-            </div>
-        </div>
 
     <input class="context"
            type="submit" 
@@ -94,6 +94,8 @@
 
     </form>
 
+</div>
+    
 </div>
 
 </body>

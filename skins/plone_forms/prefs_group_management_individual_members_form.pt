@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<tal:head metal:fill-slot="head_slot"
+          tal:define="dummy python:request.set('disable_border',1)" />
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {});
+                 acl_users here/acl_users;
+                 portal_roles mtool/getPortalRoles;
+                 groupname request/groupname|nothing;
+                 grouproles python:request.set('grouproles', []);
+                 groupnames python:acl_users.getGroupNames(without_prefix=1);
+                 groupexists python:groupname in groupnames;
+                 groupprefix acl_users/getGroupPrefix;"
+     tal:condition="here/rejectAnonymous" >
+
+    <tal:conditional condition="groupexists">
+        <tal:defines define="dummy python:request.set('grouproles', 
+                                                      acl_users.getGroup(groupname, prefixed=0).getRoles())" />
+    </tal:conditional>
+
+<!-- ugly way of simulating real actions on the groups/user pages until we have
+     real objects. -->
+<div id="contentTabs"> 
+    <a class="" 
+       href=""
+       tal:attributes="href string: prefs_group_management_individual_form?groupname=${groupname}"
+    >Group</a>
+    <a class="selected"         
+       href=""
+       tal:attributes="href here/absolute_url"
+    >Members</a>
+</div>
+<div id="contentBar">&nbsp;</div>
+<!-- End of tabs -->
+    
+<div class="document editable">    
+
+    <h1 i18n:translate="">Members of the <tal:group content="groupname">Finance</tal:group> Group</h1>
+
+    <p i18n:translate="">
+    You can add or remove users from this particular group here. Note that this
+    doesn't actually delete the user, it is only removed from this group.
+    </p>
+    
+<p>
+Code listing users in this group:
+           <tal:options repeat="userid acl_users/Users/acl_users/getUserNames">
+            <option tal:define="userobj python:acl_users.getUser(userid);
+                                user_groups python:userobj.getGroups();"
+                    tal:attributes="selected python:test(groupprefix+groupname in user_groups, 'SELECTED','')"
+                    tal:content="userid">
+            username
+            </option>
+          </tal:options>
+</p>    
+    
+<!-- NOTE! This is just dead code to show how this will work, it should be combined,
+     so we're using the code from the User Management form here (limi) -->
+
+          
+    <form action=""
+          name="groups"
+          method="post"
+          tal:attributes="action here/absolute_url">
+
+       <input class="standalone add"
+              tabindex=""
+              type="submit"
+              name="portal_form/join_form:method"
+              value="Add Users or Groups to this Group"
+              tal:attributes="tabindex tabindex/next;"
+              />
+
+       <input class="quickSearch"
+              tabindex=""
+              type="text"
+              name=""
+              value="Quick Search"
+              tal:attributes="tabindex tabindex/next;"
+              />
+               
+
+<!-- start of dead code - should list Groups on top (if any), then individual users.-->
+       <table class="listing">
+               
+            <tr>
+                <th>User name</th>
+                <th>E-mail Address</th>
+                <th>Remove user</th>
+            </tr>
+            
+            <tr class="odd">
+                <td>
+                    <a href="http://localhost/Plone/portal_memberdata/prefs_user_management_individual_form?userid=testuser">
+                        <img src="http://localhost/Plone/user.gif" alt="User" title="User" height="12" width="8" border="0" />&nbsp;testuser
+                        (testuser)
+                    </a>
+                </td>
+                <td>
+                    <a href="mailto:alexander@mail.no">
+                    <img src="http://localhost/Plone/mail_icon.gif" alt="Mail icon" title="Mail icon" height="16" width="16" border="0" />   
+                    alexander@test.no
+                    </a>
+                </td>
+                <td class="checkbox">
+                    <input type="checkbox"
+                           class="noborder notify"
+                           name="delete:list" value="testuser" />
+                </td>
+            </tr>
+        
+            <tr class="even">
+                <td>
+                    <a href="http://localhost/Plone/portal_memberdata/prefs_user_management_individual_form?userid=testuser">
+                        <img src="http://localhost/Plone/user.gif" alt="User" title="User" height="12" width="8" border="0" />&nbsp;testuser2
+                        (another test user)
+                    </a>
+                </td>
+                <td>
+                    <a href="mailto:alexander@mail.no">
+                    <img src="http://localhost/Plone/mail_icon.gif" alt="Mail icon" title="Mail icon" height="16" width="16" border="0" />   
+                    new@test.no
+                    </a>
+                </td>
+                <td class="checkbox">
+                    <input type="checkbox"
+                           class="noborder notify"
+                           name="delete:list" value="testuser" />
+                </td>
+            </tr>
+        
+        </table>
+
+
+<!-- end dead code -->
+
+        <input class="destructive"
+               type="submit" 
+               name="prefs_group_edit:method" 
+               value="Delete selected users" />
+
+    </form>
+
+</div>
+    
+</div>
+
+</body>
+</html>
+
