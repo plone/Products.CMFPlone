@@ -141,6 +141,7 @@ select {
 abbr, acronym, .help {
 /* Help classes */
     border-bottom: 1px dotted &dtml-mainLinkColor;;
+    color: &dtml-mainLinkColor;;
     cursor: help;
 }
 
