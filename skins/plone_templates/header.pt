@@ -107,7 +107,9 @@
 			
 			<div class="searchBox">
                 
-            	<form name="searchform" action="search">
+            	<form name="searchform" 
+		      action="search"
+		      tal:attributes="action string:${portal_url}/search" >
 			    Search
           		    <input id="searchGadget" 
 			           name="SearchableText" 
