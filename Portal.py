@@ -88,7 +88,7 @@ class PloneGenerator(Portal.PortalGenerator):
             typeInfo=typesTool.getTypeInfo(contentType)
             if typeInfo.getId() not in typesToSkip:
                 typeObj=getattr(typesTool, typeInfo.getId())
-                view=typeInfo.getActionById('edit')
+                view=typeInfo.getActionById('view')
                 typeObj._setPropValue('immediate_view', view)
             if typeInfo.getId()=='Folder':
                 typeObj=getattr(typesTool, typeInfo.getId())
