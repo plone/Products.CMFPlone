@@ -4,11 +4,10 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=show_all=0
+##parameters=REQUEST,show_all=0,quote_logic=0,quote_logic_indexes=['SearchableText']
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 results=[]
-REQUEST=context.REQUEST
 catalog=context.portal_catalog
 indexes=catalog.indexes()
 query={}
@@ -19,6 +18,12 @@ def quotestring(s):
     return '"%s"' % s
 
 def quotequery(s):
+    if not s:
+        return s
+    try:
+        terms = s.split()
+    except:
+        return s
     terms = s.split()
     tokens = ('OR', 'AND', 'NOT')
     s_tokens = ('OR', 'AND')
@@ -34,7 +39,8 @@ def quotequery(s):
 
 for k, v in REQUEST.items():
     if k in indexes:
-        v = quotequery(v)
+        if quote_logic and k in quote_logic_indexes:
+            v = quotequery(v)
         query.update({k:v})
         show_query=1
     elif k.endswith('_usage'):
