@@ -18,7 +18,17 @@ site_properties=context.portal_properties.site_properties
 username = REQUEST['username']
 
 password=REQUEST.get('password') or portal_registration.generatePassword()
-portal_registration.addMember(username, password, properties=REQUEST)
+
+# This is a temporary work-around for an issue with CMF not properly
+# reserving some existing ids (FSDV skin elements, for example). Until 
+# this is fixed in the CMF we can at least fail nicely. See
+# http://plone.org/collector/2982 and http://plone.org/collector/3028
+# for more info. (rohrer 2004-10-24)
+try:
+    portal_registration.addMember(username, password, properties=REQUEST)
+except AttributeError:
+    state.setError('username', 'The login name you selected is already in use or is not valid. Please choose another.')
+    return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
 
 if site_properties.validate_email or REQUEST.get('mail_me', 0):
     try:

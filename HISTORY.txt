@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Fixed http://plone.org/collector/2982 - the CMF does not allow to
+      register with a user name that equals the name of a content object
+      on the acquisition path. Provide a sane error message until this is
+      resolved in CMF.
+      [rohrer]
+
     - Fixed http://plone.org/collector/3091 - new SetupWidgets can now
       work without cut/pasting the existing code, and use inheritance 
       instead. Thanks to jccooper for the fix!
