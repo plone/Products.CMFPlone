@@ -117,7 +117,7 @@
                   tal:define="global contentSubjects here/Subject;
                               global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
                               global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
-                              global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
+                              global allowedSubjects python:list(here.unique(allowedSubjects+contentSubjects));
                               dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
 
                     <tal:block tal:define="site_props here/portal_properties/site_properties;

@@ -1,7 +1,7 @@
 import re
 import sys
 import traceback
-from types import TupleType, UnicodeType, DictType
+from types import TupleType, UnicodeType, DictType, StringType
 from urllib import urlencode
 import urlparse
 from cgi import parse_qs
@@ -109,8 +109,8 @@ class PloneTool (UniqueObject, SimpleItem):
             if rights is None:
                 rights=REQUEST.get(pfx+'rights', obj.Rights())
 
-        if Discussable.isImplementedBy(obj):
-            if allowDiscussion and hasattr(allowDiscussion, 'lower'):
+        if Discussable.isImplementedBy(obj): 
+            if allowDiscussion and type(allowDiscussion)==StringType:
                 allowDiscussion=allowDiscussion.lower().strip()
             if allowDiscussion=='default': 
                 allowDiscussion=None
