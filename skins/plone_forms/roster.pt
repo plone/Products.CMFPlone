@@ -38,7 +38,7 @@
             <span class="card" tal:define="home python:container.portal_membership.getHomeUrl(result['id'], verifyPermission=1);
                                            portrait python: here.portal_membership.getPersonalPortrait(result['id']);">
                 <a href="#" tal:attributes="href home">
-                  <img src="#" alt="" tal:replace="structure python:portrait.tag(width=75, height=100, border=0);"/>
+                  <img src="#" alt="" tal:replace="structure python:portrait.tag(width=75, height=100, border=0)" />
                   <br />
                   <span tal:content="python:result['id']"> member id</span>
                 </a>
