@@ -28,6 +28,11 @@ body {
 
 #visual-portal-wrapper {
     width: 100% !important;
+    min-width: 0 !important;
+}
+
+#portal-column-content {
+    margin: 0 !important;
 }
 
 #portal-column-content #content {
