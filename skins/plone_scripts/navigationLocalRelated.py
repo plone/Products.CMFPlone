@@ -18,7 +18,10 @@ if hasattr(obj, 'Subject'):
     subjects=obj.Subject()
     
 if subjects:  
-    for o in context.portal_catalog(Subject = {'query':subjects}, sort_on='Type', sort_order='reverse'  ):
+    for o in context.portal_catalog( Subject = {'query':subjects}
+                                   , review_state = 'published'
+                                   , sort_on = 'Type'
+                                   , sort_order = 'reverse'  ):
         url=o.getURL()
         if url.find(obj.absolute_url())==-1:
             if o.Title:

@@ -6,6 +6,7 @@
       added icons, sort by Type and changed up navigationLocal    
     - MembershipTool.changeMemberPortrait() method added and removed from personazlize
     - added MIGRATION documentation
+    - calendar_slot will only search for items with review_state=published
 
 1.0 alpha4
     - publishing now works without javascript. #202
