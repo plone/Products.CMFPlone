@@ -34,6 +34,9 @@
     <link rel="stylesheet" type="text/css" media="print" href="dummy" 
           tal:attributes="href string:$portal_url/plonePrint.css"/>
 
+    <!-- Style sheet used for presentations (OperaShow, mainly) -->
+    <link rel="stylesheet" type="text/css" media="projection" href="dummy" tal:attributes="href string:$portal_url/plonePresentation.css"/>
+
     <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
 
     <!-- Consolidation of all javascript into 1 call -->
