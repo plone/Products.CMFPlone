@@ -1,3 +1,13 @@
+2004-04-30 16:54  shh42
+
+	* tests/: testSkeletonPloneTest.py, testSkeletonZopeTest.py
+	  (Plone-2_0-branch): Reformat the skeleton tests a bit. Reformat
+	  the rest later.
+
+2004-04-30 06:18  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-29 21:21  limi
 
 	* HISTORY.txt (Plone-2_0-branch): Added dates to the history.
