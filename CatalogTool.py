@@ -46,6 +46,16 @@ class CatalogTool(BaseTool):
             self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
 
 
+    def _listAllowedRolesAndUsers( self, user ):
+        result = list( user.getRoles() )
+        try:
+            result += map(lambda x: "user:%s" % x, user.getGroups())
+        except:
+            pass
+        result.append( 'Anonymous' )
+        result.append( 'user:%s' % user.getId() )
+        return result
+
     # searchResults has inherited security assertions.
     def searchResults(self, REQUEST=None, **kw):
         """
@@ -53,9 +63,7 @@ class CatalogTool(BaseTool):
             limit the results to what the user is allowed to see.
         """
         user = _getAuthenticatedUser(self)
-        # _robert_ the following line is replaced by the last line
-        # we can not use it because it does not take into acount local roles
-        #kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers( user )
+        kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers( user )
 
         if not _checkPermission( AccessInactivePortalContent, self ):
             base = aq_base( self )
@@ -68,9 +76,9 @@ class CatalogTool(BaseTool):
                 kw[ 'effective_usage'] = 'range:max'
                 kw[ 'expires_usage'  ] = 'range:min'
 
-        results = apply(BaseTool.searchResults, (self, REQUEST), kw)
-        # _robert_ instead of kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers( user )
-        return [ s for s in results if user.has_permission('View', s.getObject()) ]
+        return apply(BaseTool.searchResults, (self, REQUEST), kw)
+
+    __call__ = searchResults
 
 CatalogTool.__doc__ = BaseTool.__doc__
 
