@@ -12,30 +12,31 @@
 
     <div tal:define="err_type options/error_type|nothing;">
     
-        <div tal:condition="python:test(err_type=='NotFound', 1, 0)">
+        <div tal:condition="python:test(err_type=='NotFound', 1, 0)" i18n:translate="">
          
-            <h1 i18n:translate="">Our apologies...</h1>
-            
-            <p i18n:translate="">
+            <h1>Our apologies...</h1>
+
+            <p>
             ...but the item you requested does not exist on this server or cannot be served.
             </p>
             
-            <p i18n:translate="">
+            <p>
             Please double check the web address or use the search function on this page to find what you are looking for.
             </p>
             
-            <p i18n:translate="">
+            <p>
             If you know you have the correct web address but are encountering an error, please 
             send a mail to the administrator of this site.
             </p>
 
             <a href="mailto:admin@here.com" title="Email Administrator"
                tal:attributes="href string:mailto:${here/portal_properties/email_from_address}"
-               tal:content="string:${here/portal_properties/email_from_address}">
+               tal:content="string:${here/portal_properties/email_from_address}"
+               i18n:name="mail_admin" i18n:attributes="title">
             Email Admin
             </a>.
 
-            <p i18n:translate="">
+            <p>
             Thank you.
             </p>
             
@@ -45,47 +46,47 @@
 
         </div>
     
-        <div tal:condition="python:test(err_type=='NotFound', 0, 1)">
+        <div tal:condition="python:test(err_type=='NotFound', 0, 1)" i18n:translate="">
         
-        <h1 i18n:translate="">Site error</h1>
+        <h1>Site error</h1>
         
-        <p i18n:translate="">
+        <p>
         This site encountered an error trying to fulfill your request.
         The errors were:
         </p>
         
             <div class="group">
                 
-                <span class="legend" i18n:translate="">Error Details</span>
+                <span class="legend">Error Details</span>
                 
                 <div class="row">
-                    <div class="label" i18n:id="error_type">
+                    <div class="label">
                     Error Type
                     </div>
             
-                    <div class="field"
+                    <div class="field" i18n:name="error_type"
                           tal:content="structure options/error_type">
                     The rendered error type                
                     </div>
                 </div>        
             
                 <div class="row">
-                    <div class="label" i18n:id="error_message">
+                    <div class="label">
                     Error Message
                     </div>
             
-                    <div class="field"
+                    <div class="field" i18n:name="error_message"
                          tal:content="structure options/error_message">
                     The rendered error message
                     </div>
                 </div>        
             
                 <div class="row">
-                    <div class="label" i18n:id="error_value">
+                    <div class="label">
                     Error Value
                     </div>
             
-                    <div class="field"
+                    <div class="field" i18n:name="error_value"
                          tal:content="structure options/error_value">
                     The rendered error value
                     </div>
