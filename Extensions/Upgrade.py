@@ -79,7 +79,7 @@ def normalize_tabs(self):
 	search=ActionInformation( 'search_form'
 	                        , title='Search'
 				, category='global_tabs'
-				, permissions=('Viewa',)
+				, permissions=('View',)
 				, action=Expression('string: $portal_url/search_form'))
 	publishing=ActionInformation( 'content_status_history'
                                     , title='Publishing'
