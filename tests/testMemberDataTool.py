@@ -42,6 +42,7 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
         self.pm.pruneMemberDataContents()
         assert len(self.pm.portraits.objectIds()) == 1
 
+
 if __name__ == '__main__':
     framework()
 else:
