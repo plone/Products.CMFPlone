@@ -20,22 +20,22 @@ function fixwidth() {
     el=document.getElementById('visual-portal-wrapper');
     if (!rulersCreated){
         ruler = document.createElement('div');
-        ruler.style.width="58em";
+        ruler.style.width="56em";
         ruler.style.position="absolute";
         ruler.style.top="-10px"
         ruler.style.visibility="hidden";
         document.body.insertBefore(ruler, document.body.firstChild)
         
         ruler2 = document.createElement('div');
-        ruler2.style.position="relative";
-        ruler2.style.height="1px"
-        ruler2.style.visibility="hidden";
+        ruler2.style.height="1px";
+        ruler2.style.overflow="hidden";
+        ruler2.style.margin="-1px 0 0 0";
         document.body.insertBefore(ruler2, document.body.firstChild)       
         
         rulersCreated=1
     }
     if (ruler2.offsetWidth < ruler.offsetWidth){
-        el.style.width="58em"
+        el.style.width="56em"
     }else{
         el.style.width=ruler2.offsetWidth+'px'
     }
