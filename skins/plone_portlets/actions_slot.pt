@@ -1,0 +1,35 @@
+<html i18n:domain="plone">
+<body>
+
+<metal:block define-macro="sendto">
+<a href=""
+   tal:condition="site_properties/allow_sendto | nothing"
+   tal:attributes="href python:'%s/sendto_form' % here.absolute_url()">
+   <img i18n:attributes="title alt" 
+        tal:attributes="src string:$portal_url/mail_icon.gif" 
+	src="mail_icon.gif" alt="Send to" 
+	title="Send this page to somebody" />
+</a>
+</metal:block>
+
+<metal:block define-macro="print">
+<a href="javascript:this.print();">
+   <img i18n:attributes="title alt" 
+        tal:attributes="src string:$portal_url/print_icon.gif" 
+        src="print_icon.gif" alt="Print" 
+        title="Print this page" />
+</a>
+</metal:block>
+
+<metal:block define-macro="syndication">
+<a href="" tal:condition="python:here.isPrincipiaFolderish and 'syndication_information' in here.objectIds()"
+   tal:attributes="href string:${here/absolute_url}/RSS">
+   <img i18n:attributes="title"
+        tal:attributes="src string:$portal_url/rss.gif"
+	src="rss.gif" alt="RSS"
+	title="Syndication" />
+</a>
+</metal:block>
+
+</body>
+</html>
