@@ -1,0 +1,20 @@
+To: <span tal:omit-tag="" tal:content="request/email" />
+From: "<span tal:omit-tag="" tal:content="here/email_from_name" />" <<span tal:omit-tag="" tal:content="here/email_from_address" />>
+Subject: Portal Membership Information
+
+You have been registered as a member of <span tal:omit-tag="" tal:content="python:here.portal_url.getPortalObject().Title()" />, which
+allows you to personalize your view of the Portal website and participate in
+the community.
+
+This describes the purpose of the portal:
+<span tal:omit-tag="" tal:content="here/description" />
+
+Visit us at <span tal:omit-tag="" tal:content="here/portal_url" />
+
+Your login id and password are:
+
+Login ID: <span tal:omit-tag="" tal:content="options/member" />
+Password: <span tal:omit-tag="" tal:content="options/password" />
+
+--
+Portal Admin
