@@ -145,10 +145,8 @@ def optimize():
     PloneGenerator.setupMembersFolder = setupMembersFolder
     # Don't setup Plone content (besides Members folder)
     def setupPortalContent(self, p):
-        from Products.CMFPlone.LargePloneFolder import addLargePloneFolder
-        addLargePloneFolder(p, 'Members')
+        p.invokeFactory('Large Plone Folder', id='Members')
         p.portal_catalog.unindexObject(p.Members)
-        p.Members._setPortalTypeName('Folder')
     PloneGenerator.setupPortalContent = setupPortalContent
 
 
