@@ -126,7 +126,7 @@
               <span metal:define-slot="issue_from_slot"
                     tal:content="here/submitter_name">NAME</span>
            </td>
-           <td align="right" i18n:translate="creationdate_on">on:</td>
+           <td align="right" i18n:translate="posted_on">on</td>:
            <td NOWRAP>
              <code>
                <span tal:replace="python: here.aCompact(here.creation_date)">
