@@ -36,7 +36,7 @@ function fixwidth() {
         rulersCreated=1
     }
     if (ruler2.offsetWidth < ruler.offsetWidth){
-        el.style.width="<dtml-var portalMinWidth missing="56em">"
+        el.style.width="<dtml-var portalMinWidth missing="70em">"
     }else{
         el.style.width=ruler2.offsetWidth+'px'
     }
