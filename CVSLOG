@@ -1,3 +1,239 @@
+2003-12-22 04:52  bitranch
+
+	* skins/plone_prefs/reconfig_form.cpt (Plone-2_0-branch): text
+	  edits for clarity -- more needed
+
+2003-12-22 03:55  shh42
+
+	* tests/testMembershipTool.py (Plone-2_0-branch): Make tests run
+	  with python 2.1 and zope 2.6.
+
+2003-12-22 03:48  shh42
+
+	* MembershipTool.py, tests/testMembershipTool.py
+	  (Plone-2_0-branch): Cleaned up createMemberarea(). Removed
+	  ancient cruft and adapted to CMF 1.4 conventions.
+
+2003-12-22 03:10  eaon
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): accedently
+	  removed one line - it's back now
+
+2003-12-22 03:07  eaon
+
+	* skins/: plone_styles/plone.css.dtml, plone_templates/news.pt
+	  (Plone-2_0-branch): new news styling and structure (more
+	  semantic, accessible and flexible - as always :))
+
+2003-12-22 02:02  bitranch
+
+	* skins/plone_templates/homePageText.pt (Plone-2_0-branch): text
+	  edits for clarity
+
+2003-12-22 01:45  bitranch
+
+	* skins/plone_forms/personalize_form.cpt (Plone-2_0-branch): text
+	  edits for sense and clarity
+
+2003-12-22 01:19  limi
+
+	* skins/plone_prefs/: prefs_group_details.pt,
+	  prefs_group_members.pt, prefs_user_details.pt,
+	  prefs_user_memberships.pt (Plone-2_0-branch): Inserted links to
+	  the Overview screens in the second-level user/groups screens.
+	  Part 1 of Un-fucktarding the Control Panel.
+
+2003-12-22 00:33  redcor
+
+	* MembershipTool.py (Plone-2_0-branch): MembershipTool.setPassword
+	  and testCurrentPassword now search for an appropriate acl_users
+	  if thaeAuthenticatedMember was is not found in portals acl_users
+
+2003-12-22 00:27  eaon
+
+	* skins/plone_styles/base_properties.props (Plone-2_0-branch):
+	  sorry ... it's late ...
+
+2003-12-22 00:20  eaon
+
+	* skins/: plone_styles/ploneColumns.css.dtml,
+	  plone_ecmascript/plone_minwidth.js.dtml (Plone-2_0-branch): the
+	  content uses an 800x600 equivalent em width (not the window) even
+	  if the window is not that big
+
+2003-12-21 23:36  dannybloe
+
+	* PloneTool.py, skins/plone_forms/folder_localrole_form.pt
+	  (Plone-2_0-branch): Added functionality to folder_local_role so
+	  you see the acquired roles from parent folders.  todo: final
+	  check and i18n
+
+2003-12-21 23:01  eaon
+
+	* skins/plone_ecmascript/plone_minwidth.js.dtml (Plone-2_0-branch):
+	  everyone update your cvs versions and test if your ie crashes
+
+2003-12-21 22:49  dannybloe
+
+	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch):
+	  Added toggle buttons to check/uncheck users/groups similar to
+	  folder_contents, search_form etc.
+
+2003-12-21 22:48  dannybloe
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  Updated toggleSelect, selectAll and deselectAll to make it
+	  possible to switch groups of checkboxes with equal Names but in
+	  different form on the same page (used in folder_local_role.pt)
+
+2003-12-21 22:26  limi
+
+	* skins/plone_prefs/: prefs_error_log.pt.metadata,
+	  prefs_error_log_form.pt, prefs_error_log_form.pt.metadata,
+	  prefs_error_log_showEntry.pt,
+	  prefs_error_log_showEntry.pt.metadata, prefs_groups_overview.pt,
+	  prefs_groups_overview.pt.metadata, prefs_main_template.pt,
+	  prefs_main_template.pt.metadata, prefs_user_details.pt,
+	  prefs_user_details.pt.metadata, prefs_user_group_search_form.pt,
+	  prefs_user_group_search_form.pt.metadata,
+	  prefs_user_memberships.pt, prefs_user_memberships.pt.metadata,
+	  prefs_users_overview.pt, prefs_users_overview.pt.metadata
+	  (Plone-2_0-branch): Replaced all occurences of
+	  tal:condition="here/rejectAnonymous" with the equivalent
+	  .metadata file. Added .metadata for the missing ones. Issue #795.
+
+2003-12-21 21:56  redcor
+
+	* skins/plone_prefs/plone_control_panel.pt (Plone-2_0-branch):
+	  added condition to suppress configlets with visibility set to 0
+
+2003-12-21 21:54  redcor
+
+	* PloneControlPanel.py (Plone-2_0-branch): added configlet pointing
+	  to prefs_groups_overview with visibility=0
+
+2003-12-21 21:12  limi
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  Fixed so the pulldown works again. Sorry about that 30 minute
+	  outage :)
+
+2003-12-21 20:16  runyaga
+
+	* skins/: plone_content/file_edit_form.cpt,
+	  plone_portlets/portlet_related.pt,
+	  plone_portlets/related_slot.pt, plone_templates/batch_macros.pt,
+	  plone_templates/default_error_message.pt,
+	  plone_templates/global_contentmenu.pt,
+	  plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch): remove
+	  over zealous use of python:test() you should only use these when
+	  your result is something other than a True or False. like
+	  test(expr, 'foo', 'bar') there are more extraneous use of test()
+	  but i'm not bothering with them.
+
+2003-12-21 20:08  runyaga
+
+	* HISTORY.txt, skins/plone_content/discussionitem_view.pt,
+	  skins/plone_forms/login_form.pt,
+	  skins/plone_forms/member_search_form.pt,
+	  skins/plone_forms/search_form.pt,
+	  skins/plone_portlets/portlet_login.pt,
+	  skins/plone_portlets/portlet_navigation.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  now all forms that use checkPermission use the global_defines
+	  reference instead of doing traversals each time to
+	  checkpermission.  this should speed things up a tiny bit and
+	  clean up the code as well
+
+2003-12-21 20:06  limi
+
+	* skins/plone_forms/roster.pt (Plone-2_0-branch): Fixed it so the
+	  portrait images are constant size, issue 2125.
+
+2003-12-21 19:51  bitranch
+
+	* skins/plone_forms/login_password.pt (Plone-2_0-branch): text
+	  edits for clarity
+
+2003-12-21 19:43  limi
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  State and Add pulldowns no longer shows menu selectors if there's
+	  only one item available. Refactored code. Issue 2157.
+
+2003-12-21 19:42  bitranch
+
+	* skins/plone_forms/login_form.pt (Plone-2_0-branch): standardize
+	  the spelling of "user name"
+
+2003-12-21 19:12  limi
+
+	* skins/plone_portlets/: navigation_tree_slot.pt,
+	  portlet_navigation.pt (Plone-2_0-branch): Removed redundant class
+	  attribute.
+
+2003-12-21 18:22  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): typo
+
+2003-12-21 18:21  runyaga
+
+	* HISTORY.txt, skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/global_defines.pt (Plone-2_0-branch): do
+	  not show the external editor icon if you can not modify portal
+	  cotent
+
+2003-12-21 18:08  limi
+
+	* skins/plone_forms/login_form.pt (Plone-2_0-branch): Fixed wording
+	  even more.
+
+2003-12-21 17:51  limi
+
+	* skins/plone_forms/login_form.pt (Plone-2_0-branch): Fixed
+	  wording.
+
+2003-12-21 16:05  plonista
+
+	* skins/plone_scripts/portal_form_url.py (Plone-2_0-branch): Added
+	  portal_form_url back (and flagged it as deprecated)
+
+2003-12-21 13:47  zworkb
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch):  show readme also for installed products
+
+2003-12-21 13:04  zworkb
+
+	* skins/plone_prefs/: prefs_install_product_readme.pt,
+	  prefs_install_products_form.pt (Plone-2_0-branch): format the
+	  readme as stx
+
+2003-12-21 05:25  limi
+
+	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
+	  Moved the Add Group button above the table.
+
+2003-12-21 05:16  limi
+
+	* skins/plone_prefs/prefs_users_overview.pt (Plone-2_0-branch):
+	  Moved the Add User button above the table.
+
+2003-12-21 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2003-12-21 05:05  limi
+
+	* skins/plone_forms/join_form.cpt (Plone-2_0-branch): More tweaks
+	  to the join form, since it has a double duty at the moment.
+
+2003-12-21 04:59  limi
+
+	* skins/plone_forms/join_form.cpt (Plone-2_0-branch): Removed
+	  surplus label, changed the wording somewhat.
+
 2003-12-21 04:49  limi
 
 	* skins/plone_ecmascript/: stxPreview.js, stxPreview.js.metadata
