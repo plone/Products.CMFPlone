@@ -1,3 +1,8 @@
+2003-04-16  Sidnei da Silva  <sidnei@x3ng.com>
+
+	* skins/plone_templates/main_template.pt: Add obj_actions to the
+	list of actions to show if the object is folderish.
+
 2003-04-15  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* MembershipTool.py (MembershipTool.createMemberarea): Added a
