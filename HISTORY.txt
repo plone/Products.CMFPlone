@@ -6,8 +6,13 @@ Plone 2.0 - Fyuti
 
    RC5/Final?   
 
+    - Added extra check for dictionary-based actions. Will work better 
+      with old sites being migrated.
+      [tesdal]
+
     - The base slots were being filled in the wrong order, causing it to 
       not work as expected. Fixed.
+      [tesdal]
 
     - Added macro names for the left/right slots, so you can override them
       by filling the slots from a template. Example::
