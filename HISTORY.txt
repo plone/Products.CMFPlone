@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - validate_document_edit assumed the Content-Type header is always
+      present. This is not the case.
+      [stefan]
+
     - Added two classes to allow list without markers: 
       'ul.visualNoMarker' and 'ol.visualNoMarker'.
       [limi]
