@@ -17,6 +17,9 @@
         <a href="#" tal:attributes="href string:${obj/absolute_url}/folder_listing"
            tal:content="obj/title_or_id" />   
       </div>
+      <div tal:condition="not: here/contentValues">
+         There are currently no files in this directory. <br />
+      </div>
   </div>
 </body>
 </html>

@@ -1,8 +1,10 @@
 from Products.CMFCore import DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
-import MembershipTool, FormulatorTool, CalendarTool, SkinsTool
+import MembershipTool, FormulatorTool, CalendarTool
+import PloneFolder
 
-from SkinsTool import ColorPreset
+BROWSE_DIRECTORY_LISTING = 'Browse directory listing'
+ADD_CONTENT_PERMISSION = 'Add portal content'
 
 #for plone_debug method
 import zLOG
@@ -21,7 +23,7 @@ def allow_class(Class):
     from Globals import InitializeClass 
     InitializeClass(Class)
 
-allow_class(ColorPreset)
+#allow_class(ColorPreset)
 
 ModuleSecurityInfo('Products.Formulator').declarePublic('StringField','EmailField')
 ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
@@ -38,8 +40,10 @@ except: from Products.CMFCore import FSPageTemplate
 
 tools = ( MembershipTool.MembershipTool
         , FormulatorTool.FormulatorTool 
-        , CalendarTool.CalendarTool
-        , SkinsTool.SkinsTool )
+        , CalendarTool.CalendarTool )
+
+contentClasses = ( PloneFolder.PloneFolder , )
+contentConstructors = ( PloneFolder.addPloneFolder, )
 
 DirectoryView.registerDirectory('skins', globals())
 cmfplone_globals=globals()
@@ -48,4 +52,11 @@ def initialize(context):
     utils.ToolInit('Plone Tool', tools=tools,
                    product_name='CMFPlone', icon='tool.gif',
                    ).initialize( context )
-    pass
+
+    utils.ContentInit( 'Plone Content'
+                     , content_types=contentClasses
+                     , permission=ADD_CONTENT_PERMISSION
+                     , extra_constructors=contentConstructors
+                     , fti=PloneFolder.factory_type_information
+                     ).initialize( context )
+
