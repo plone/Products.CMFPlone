@@ -1,3 +1,35 @@
+2004-05-18 05:09  zopezen
+
+	* HISTORY.txt, INSTALL.txt, version.txt, migrations/__init__.py
+	  (Plone-2_0-branch): Readying for Plone 2.0.3
+
+2004-05-18 04:56  zopezen
+
+	* RegistrationTool.py (Plone-2_0-branch): Harden the CMF mail
+	  functions
+
+2004-05-18 04:40  zopezen
+
+	* PloneTool.py (Plone-1_0): Ensure full security in Plone 1
+
+2004-05-17 18:06  shh42
+
+	* tests/testWebDAV.py (Plone-2_0-branch): Python 2.1. compat the
+	  third. :-S
+
+2004-05-17 17:05  shh42
+
+	* tests/testMembershipTool.py: Home page title has changed.
+
+2004-05-17 13:26  shh42
+
+	* tests/testWebDAV.py (Plone-2_0-branch): More Python 2.1 b/w
+	  compatibility.
+
+2004-05-17 06:15  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-17 05:57  zopezen
 
 	* PloneTool.py (Plone-1_0): Back porting of the sendto hardening
