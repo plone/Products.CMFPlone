@@ -1,1 +1,1 @@
-2.0.5 (SVN/UNRELEASED)
+2.0.5-rc1

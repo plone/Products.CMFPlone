@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.0.5 - Backed Up Willie - Unreleased
+Plone 2.0.5 - Backed Up Willie - RC1 - Released November 22, 2004
 
     - Fixed it so the .error class no longer causes compression of items in
       forms.
