@@ -4,13 +4,16 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
-    - Plone now supports translation of keywords. There is a separate
-      i18n:domain for this - 'plone-keywords'. Anything added into a
-      'plone-keywords-fr.po' file with the 'plone-keywords' domain will
-      be parsed on the metadata_edit_form, and replaced with the 
+    - Plone now supports translation of keywords and other metadata. 
+      There is a separate i18n:domain for this - 'plone-metadata'. 
+      Anything added into a (for example) 'plone-metadata-fr.po' file 
+      with the 'plone-metadata' domain will
+      be parsed on the metadata_edit_form in French, and replaced with the 
       translated strings from the po-file. Please note that this usually
-      requires adding new keywords in a default language to avoid
-      a mess when translating. :)
+      requires adding new metadata in a default language to avoid
+      a mess when translating. Plone does nothing to enforce this at the
+      moment. Currently supported fields are Keywords (aka. Subject) and
+      Copyright (aka. Rights).
       [limi]
 
     - Added a define-macro "list-item" to news.pt and folder_listing.pt, so

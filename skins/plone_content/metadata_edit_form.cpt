@@ -158,7 +158,7 @@
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;">
                   <option value="#"
-                          i18n:domain="plone-keywords"
+                          i18n:domain="plone-metadata"
                           i18n:translate=""
                           tal:repeat="subject allowedSubjects"
                           tal:content="subject"
@@ -316,6 +316,8 @@
                    tabindex=""
                    tal:attributes="value request/rights | here/Rights;
                                    tabindex tabindex/next;"
+                   i18n:domain="plone-metadata"
+                   i18n:translate=""
                    />
           </div>
 
