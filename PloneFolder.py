@@ -431,7 +431,7 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             myType = pt.getTypeInfo(self)
             if myType is not None and not myType.allowType(type_name):
                 raise ValueError, \
-                      "Disallowed to paste subobject type '%s'." % type_nam
+                      "Disallowed to paste subobject type '%s'." % type_name
 
     security.declareProtected( AccessContentsInformation, 'folderlistingFolderContents')
     def folderlistingFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
