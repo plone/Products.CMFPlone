@@ -10,14 +10,14 @@
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 if REQUEST.has_key('ids'):
-  transaction_note( str(REQUEST['ids'])+' has been deleted' )
-  context.manage_delObjects(REQUEST['ids'], REQUEST)
-  return context.plone_utils.getNextRequestFor( context
-                                              , script.getId()
-                                              , 'success'
-                                              , portal_status_message='Deleted.' )
-else:
-  return context.plone_utils.getNextRequestFor( context
-                                              , script.getId()
-                                              , 'failure'
-                                              , portal_status_message='Please select one or more items to delete.' )
+    transaction_note( str(REQUEST['ids'])+' has been deleted' )
+    context.manage_delObjects(REQUEST['ids'], REQUEST)
+    return context.plone_utils.getNextRequestFor( context
+                                                , script.getId()
+                                                , 'success'
+                                                , portal_status_message='Deleted.' )
+
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'failure'
+                                            , portal_status_message='Please select one or more items to delete.' )
