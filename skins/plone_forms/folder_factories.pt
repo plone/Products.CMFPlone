@@ -15,8 +15,11 @@
 	Select the type of item you want to add to your folder.
 	</p>
 
-    <div class="group" 
-         tal:define="filterOut python:['Favorite']">
+    <div class="group" metal:define-macro="addlist"
+         tal:define="filterOut python:['Favorite'];
+                     create_id id | nothing;
+                     id_query string:&amp;id=$create_id;
+                     query python:test(create_id, id_query, '');">
     
         <span class="legend">Items Available</span>
         
@@ -29,7 +32,7 @@
                     <span for="#" tal:attributes="for string:cb_${repeat/ctype/number}" tal:replace="Type">
                         Type
                     </span>
-                    <a href="#" tal:attributes="href string:createObject?type_name=$Id">
+                    <a href="#" tal:attributes="href string:createObject?type_name=$Id$query">
                         <img src="folder.gif" alt="" width="16" height="16" tal:attributes="src ctype/getIcon" />
                     </a>
                 </span>
@@ -37,6 +40,7 @@
                 <span class="field">
                     <form name="quickAdd" action="createObject" method="post">
         				<input name="type_name" type="hidden" value="" tal:attributes="value Id">
+        				<input name="id" type="hidden" value="" tal:attributes="value create_id" tal:condition="create_id">
                         <input class="standalone" type="submit" value="Add" />
                     </form>
     			</span>
