@@ -96,6 +96,7 @@ def initialize(context):
 
     import setup
     import imagePatch
+    import zserverPatch
     import UnicodeSplitter # registers unicode splitter w/ zctextindex pipeline registry
 
     from Products.CMFCore import DirectoryView

@@ -122,7 +122,16 @@ default_configlets = (
      'action':'string:${portal_url}/prefs_portal_properties_list',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'}, 
+     'imageUrl':'plone_images/site_icon.gif'},
+
+    {
+        'id':'ZMI',
+        'appId':'ZMI',
+        'name':'Zope Management Interface',
+        'action':'string:${portal_url}/manage_main',
+        'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/site_icon.gif'},
 
 )
 
@@ -138,7 +147,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     security = ClassSecurityInfo()
 
-    id = 'portal_configuration'
+    id = 'portal_control_panel_actions'
     title = 'Control Panel'
     meta_type = 'Plone Control Panel'
     _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )

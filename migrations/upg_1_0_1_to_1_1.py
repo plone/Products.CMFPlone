@@ -72,11 +72,11 @@ def upgradePortalFactory(portal):
     
 def addControlPanel(portal):
     addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
-    if not hasattr(portal.aq_explicit,'portal_configuration'):
+    if not hasattr(portal.aq_explicit,'portal_control_panel_actions'):
         addPloneTool('Plone Control Panel', None)
     # must be done here because controlpanel depends on
     # portal_actionicons concerning icon registration
-    portal.portal_configuration.registerDefaultConfiglets()
+    portal.portal_control_panel_actions.registerDefaultConfiglets()
 
 
 def addCacheAccelerators(portal):
