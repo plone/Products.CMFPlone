@@ -79,8 +79,7 @@
                            i18n:translate="description_newbie_pointers_preferences_link"
                            tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
                            tal:condition="prefs" tal:attributes="href python:prefs.pop()"
-                           >set up your Preferences</a>.
-                    </span>
+                           >set up your Preferences</a></span>.
                 
                 </p>
 
@@ -93,12 +92,18 @@
                     <form name="searchresults" action="" method="post" tal:condition="results"
                                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 
-                        <h1>Items published since your last login</h1>
+                        <h1 i18n:translate="heading_items_published_since_last_login">Items published since your last login</h1>
                         
                         <table class="listing" id="sortable">
                         
                             <thead>
-                                <tr><th>Title</th><th>Type</th><th>Modified</th><th>Author</th><th>Description</th></tr>
+                                <tr>
+                                    <th i18n:translate="listingheader_title">Title</th>
+                                    <th i18n:translate="listingheader_type">Type</th>
+                                    <th i18n:translate="listingheader_modified">Modified</th>
+                                    <th i18n:translate="listingheader_author">Author</th>
+                                    <th i18n:translate="listingheader_description">Description</th>
+                                </tr>
                             </thead>
                             
                             <tbody>
@@ -119,8 +124,7 @@
                                         tal:content="result/Title|result/id" />
                                     </td>      
                                     <td tal:content="result/Type">Type</td>      
-                                    <td tal:content="result/ModificationDate">Modified</td>      
-                                    <td tal:content="result/Creator">Author</td>      
+                                    <td tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>                                    <td tal:content="result/Creator">Author</td>      
                                     <td tal:content="result/Description">Description</td>      
                                 </tr>
                                 </tal:block>
