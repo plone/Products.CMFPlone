@@ -1,3 +1,49 @@
+2003-11-13 00:40  eaon
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_styles/ploneColumns.css.dtml, plone_templates/news.pt
+	  (Plone-2_0-branch): fixing news again ;) opera column position
+	  bug fixed - visualClear moved to the old state (ie made problems)
+
+2003-11-12 23:36  eaon
+
+	* skins/: plone_styles/plone.css.dtml, plone_templates/news.pt
+	  (Plone-2_0-branch): someone forgot to rename .content while the
+	  nameageddon ;)
+
+2003-11-12 23:29  eaon
+
+	* skins/: plone_styles/plone.css.dtml, plone_templates/news.pt
+	  (Plone-2_0-branch): fixed news
+
+2003-11-12 19:17  jimroepcke
+
+	* Extensions/setupSite.py (Plone-2_0-branch): added nix example
+	  command line, made it work on nix, reversed the order of params
+	  to make it match the order given on command line
+
+2003-11-12 11:11  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): corrected
+	  error margin
+
+2003-11-12 08:09  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): formHelp
+	  now more readable on hover
+
+2003-11-12 08:05  eaon
+
+	* skins/plone_prefs/: plone_control_panel.pt,
+	  prefs_error_log_form.pt, prefs_mailhost_form.pt,
+	  prefs_portalskin_form.pt, reconfig_form.cpt (Plone-2_0-branch):
+	  skin configlet now visually more logical - and we should be valid
+	  even if pages will never reach a validator ;)
+
+2003-11-12 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-12 01:22  runyaga
 
 	* skins/plone_templates/news.pt (Plone-2_0-branch): news template
