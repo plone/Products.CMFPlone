@@ -13,6 +13,9 @@
 # one02_one03
 # upg_1_0_1_to_1_1
 
+from cStringIO import StringIO
+from Acquisition import aq_base
+
 from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCacheManager
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 
@@ -201,13 +204,19 @@ def addGroupUserFolder(portal):
         so that you can manipulate the acl_users folders.
     """
     get_transaction().commit(1)
-
+    out=[]
+    out.append('Adding GroupUserFolder to portal')
     qi=getToolByName(portal, 'portal_quickinstaller')
     qi.installProduct('GroupUserFolder',locked=1)
     addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
-    if 'portal_groups' not in portal.objectIds():
+    portal_ids = aq_base(portal).objectIds()
+    if 'portal_groups' not in portal_ids:
+        out.append('Adding portal_groups tool to portal')
         addPloneTool(ToolNames.GroupsTool)
+    if 'portal_groupdata' not in portal_ids:
+        out.append('Adding portal_groupdata tool to portal')
         addPloneTool(ToolNames.GroupDataTool)
+    return out
 
 def addDocumentActions(portal):
     at = portal.portal_actions
@@ -301,8 +310,6 @@ def setupHelpSection(portal):
 def setupCalendar(portal):
     """ Copied directly from CMFCalendar/Extensions/Install.py """
     self=portal
-    from StringIO import StringIO
-    from Acquisition import aq_base
     from Products.CMFCalendar import Event
     from Products.CMFCore.TypesTool import ContentFactoryMetadata
 
