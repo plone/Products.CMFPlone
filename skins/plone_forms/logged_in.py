@@ -24,7 +24,7 @@ if isAnonymous:
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
     pagetemplate=context.restrictedTraverse(login_failed)
 
-if pagetemplate is None and member.getProperty('login_time', None) == '2000/01/01' and \
+if pagetemplate is None and member.getProperty('login_time', None) == DateTime('2000/01/01') and \
   properties_tool.validate_email:
     pagetemplate=context.restrictedTraverse(login_changepassword)
 

@@ -56,10 +56,22 @@ else:
 # perform the actual check
 if checkForCollision:
     container = context.getParentNode()
+    if hasattr(container, 'objectIds'):
+        try:
+            if id in container.objectIds():
+                return 'There is already an item named \'%s\' in this folder.' % id
+        except Unauthorized:
+            pass  # ignore if we don't have permission
+    if hasattr(container, 'checkIdAvailable'):
+        try:
+            if not container.checkIdAvailable(id):
+                return '\'%s\' is reserved.' % id
+            else:
+                return
+        except Unauthorized:
+            pass # ignore if we don't have permission
     if hasattr(container, 'checkValidId'):
         try:
             container.checkValidId(id)
         except BadRequestException:
-            errors['id'] = '\'%s\' is reserved.' % id
-    if id in container.objectIds():
-        return 'There is already an item named \'%s\' in this folder.' % id
+            return '\'%s\' is reserved.' % id

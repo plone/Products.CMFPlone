@@ -23,11 +23,11 @@ if file and filename:
 if context.CreationDate() == context.ModificationDate() and filename:
     alternative_id = filename[max( string.rfind(filename, '/')
                        , string.rfind(filename, '\\')
-                       , string.rfind(filename, ':') )+1:]
+                       , string.rfind(filename, ':') )+1:].strip()
 else:
     alternative_id = context.getId()
 
-id = context.REQUEST.get('id', '')
+id = context.REQUEST.get('id', '').strip()
 id_err = context.check_id(id, 1, alternative_id)
 if id_err:
     errors['id'] = id_err

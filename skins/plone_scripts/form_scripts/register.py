@@ -22,6 +22,7 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
     try:
         portal_registration.registeredNotify(username)
     except:
+        context.plone_utils.logException()
         exception = context.plone_utils.exceptionString()
         errors['email'] = 'We were unable to send your password to this address.'
         return ('failure', context, {'portal_status_message':exception,
