@@ -30,7 +30,6 @@
   <body style="margin: 0, 0, 0, 0;">
     
     <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBoxPopup">
-      oo look it's a calendar :-)
     </div>
 
   </body>
