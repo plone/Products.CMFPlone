@@ -9,7 +9,7 @@
 		size python:len(contentTypes);">
 
     <tal:states define="review_state wf_state;
-                        transitions python:wtool.getTransitionsFor(here, here);"
+                        transitions workflow_actions;"
                 condition="python:review_state">
 
     <li tal:condition="not: transitions"
