@@ -7,13 +7,19 @@
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
            tal:define="len_text python:len(here.text);">
+
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+
         <h1 tal:content="here/title_or_id" class="documentFirstHeading">
           Title or id
         </h1>
     
-        <div metal:use-macro="here/document_actions/macros/document_actions">
-            Document actions (print, sendto etc)
+        <div metal:use-macro="here/document_byline/macros/byline">
+          Get the byline - contains details about author and modification date.
         </div>
+
     
         <div class="documentDescription"
              tal:content="here/Description">
@@ -33,9 +39,6 @@
             <div tal:replace="structure python:here.CookedBody(stx_level=2)" />
         </div>
     
-        <div metal:use-macro="here/document_byline/macros/byline">
-          Get the byline - contains details about author and modification date.
-        </div>
     </tal:main-macro>
 </metal:main>
 

@@ -5,6 +5,20 @@
      tal:define="creator here/Creator;
                  creator_home python:mtool.getHomeUrl(creator);">
 
+  <tal:name tal:condition="creator"
+        i18n:translate="label_author">
+    By
+      <a href="#"
+         tal:attributes="href string:$portal_url/author/$creator"
+         tal:content="python: mtool.getMemberById(here.Creator()).getProperty('fullname')"
+         tal:on-error="here/Creator"
+         i18n:name="author">
+        Bob Dobalina
+      </a>
+  </tal:name>
+
+  &mdash;
+
   <img src="" alt=""
        tal:define="locked portal_object/lock_icon.gif;
                    lockable python:hasattr(here, 'wl_isLocked');"
@@ -12,33 +26,28 @@
        tal:replace="structure python:locked.tag(title='Locked')"
        />
 
-  <span tal:condition="creator"
-        i18n:translate="box_created_by">
-    Created by
-  </span>
+  <tal:modified i18n:translate="label_published_date">
+    Published:
+    <tal:date tal:content="here/EffectiveDate|string:Not published"
+              i18n:name="date">
+    August 16, 2001 at 23:35:59
+    </tal:date>
+  </tal:modified>
 
-  <a href="#" tal:condition="creator_home"
-     tal:attributes="href creator_home"
-     tal:content="creator">
-    bob
-  </a>
 
-  <span tal:condition="not: creator_home"
-        tal:content="creator">
-    bob
-  </span>
-
-  <br />
-
-  <tal:contrib condition="here/Contributors">
-    <span i18n:translate="label_contributors">
-      Contributors
-    </span>:
-    <span tal:replace="python: ', '.join(here.Contributors())">
+  <div tal:condition="here/Contributors"
+       i18n:translate="label_additional_contributors">
+    Additional contributors:
+    <tal:people content="python: ', '.join(here.Contributors())"
+                 i18n:name="people">
       Mary
-    </span>
-    <br />
-  </tal:contrib>
+    </tal:people>
+  </div>
+
+  <div class="state-expired"
+       tal:condition="python:here.isExpired(here)">
+    This document has expired.
+  </div>
 
   <tal:rights condition="here/Rights">
     <span tal:replace="here/Rights">
@@ -47,17 +56,6 @@
     <br />
   </tal:rights>
 
-  <span i18n:translate="box_last_modified">
-    Last modified
-  </span>
-  <span tal:replace="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
-    August 16, 2001 at 23:35:59
-  </span>
 
-  <span class="state-expired"
-        tal:condition="python:here.isExpired(here)"
-        i18n:translate="time_expired">
-    expired
-  </span>
 
 </div>
