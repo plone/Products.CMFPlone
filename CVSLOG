@@ -1,3 +1,22 @@
+2004-04-09 21:20  shh42
+
+	* tests/testPortalCreation.py (Plone-2_0-branch): Test for
+	  site_properties not being a property sheet at all.
+
+2004-04-09 20:23  shh42
+
+	* Portal.py (Plone-2_0-branch): Be even more paranoid.
+
+2004-04-09 19:52  shh42
+
+	* HISTORY.txt, Portal.py, tests/testPortalCreation.py
+	  (Plone-2_0-branch): Implemented 'management_page_charset' as
+	  ComputedAttribute. Also see http://plone.org/collector/2778.
+
+2004-04-09 04:58  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-09 04:37  limi
 
 	* skins/plone_prefs/plone_control_panel.pt (Plone-2_0-branch): Made
