@@ -64,7 +64,6 @@ class MemberDataTool(PloneBaseTool, BaseTool):
         '''
         Delete ALL MemberData information. This is required for us as we change the
         MemberData class.
-        XXX THIS HAS TO BE DONE WHEN MIGRATING FROM PREVIOUS VERSIONS TO THIS ONE.
         '''
         membertool= getToolByName(self, 'portal_membership')
         members   = self._members
@@ -76,36 +75,73 @@ class MemberDataTool(PloneBaseTool, BaseTool):
 
         return "Done."
 
-    security.declarePrivate('wrapUser')
-    def wrapUser(self, u):
-        '''
-        If possible, returns the Member object that corresponds
-        to the given User object.
-        We override this to ensure OUR MemberData class is used
-        '''
-        id = u.getId()
-        members = self._members
-        if not members.has_key(id):
-            # Get a temporary member that might be
-            # registered later via registerMemberData().
-            temps = self._v_temps
-            if temps is not None and temps.has_key(id):
-                m = temps[id]
-            else:
-                base = aq_base(self)
-                m = MemberData(base, id)
-                if temps is None:
-                    self._v_temps = {id:m}
-                    if hasattr(self, 'REQUEST'):
-                        # No REQUEST during tests.
-                        self.REQUEST._hold(CleanupTemp(self))
-                else:
-                    temps[id] = m
-        else:
-            m = members[id]
-        # Return a wrapper with self as containment and
-        # the user as context.
-        return m.__of__(self).__of__(u)
+    security.declarePrivate("updateMemberDataContents")
+    def updateMemberDataContents(self,):
+        """Update former MemberData objects to new MemberData objects
+        """
+        count = 0
+        membertool= getToolByName(self, 'portal_membership')
+        members   = self._members
+        properties = self.propertyIds()
+
+        # Scan members for old MemberData
+        for member_name, member_obj in members.items():
+            values = {}
+            if getattr(member_obj, "_is_new_kind", None):
+                continue        # Do not have to upgrade that object
+
+            # Have to upgrade. Create the values mapping.
+            for pty_name in properties:
+                user_value = getattr( member_obj, pty_name, _marker )
+                if user_value <> _marker:
+                    values[pty_name] = user_value
+
+            # Wrap a new user object of the RIGHT class
+            u = self.acl_users.getUserById(member_name)
+            if not u:
+                continue                # User is not in main acl_users anymore
+            self.wrapUser(u)
+
+            # Set its properties
+            mbr = self._members.get(member_name, None)
+            if not mbr:
+                raise RuntimeError, "Error while upgrading user '%s'." % (member_name, )
+            mbr.setProperties(values, force_local = 1)
+            count += 1
+
+        return count
+                
+
+##    security.declarePrivate('wrapUser')
+##    def wrapUser(self, u):
+##        '''
+##        If possible, returns the Member object that corresponds
+##        to the given User object.
+##        We override this to ensure OUR MemberData class is used
+##        '''
+##        id = u.getId()
+##        members = self._members
+##        if not members.has_key(id):
+##            # Get a temporary member that might be
+##            # registered later via registerMemberData().
+##            temps = self._v_temps
+##            if temps is not None and temps.has_key(id):
+##                m = temps[id]
+##            else:
+##                base = aq_base(self)
+##                m = MemberData(base, id)
+##                if temps is None:
+##                    self._v_temps = {id:m}
+##                    if hasattr(self, 'REQUEST'):
+##                        # No REQUEST during tests.
+##                        self.REQUEST._hold(CleanupTemp(self))
+##                else:
+##                    temps[id] = m
+##        else:
+##            m = members[id]
+##        # Return a wrapper with self as containment and
+##        # the user as context.
+##        return m.__of__(self).__of__(u)
 
 MemberDataTool.__doc__ = BaseTool.__doc__
 
@@ -119,7 +155,7 @@ class MemberData(BaseData):
 
     meta_type='Plone MemberData'
     security = ClassSecurityInfo()
-    _values = {}                        # Values dict
+    _is_new_kind = 1
 
     def __init__(self, *args, **kw):
         BaseData.__init__(self, *args, **kw)
@@ -187,8 +223,9 @@ class MemberData(BaseData):
         
 
     security.declarePrivate('setMemberProperties')
-    def setMemberProperties(self, mapping):
+    def setMemberProperties(self, mapping, force_local = 0):
         '''Sets the properties of the member.
+        If force_local is true, values will not be stored in the underlying user folder
         '''
         # Sets the properties given in the MemberDataTool.
         tool = self.getTool()
@@ -203,6 +240,9 @@ class MemberData(BaseData):
 
                     # Try to update the property with GRUF's API
                     try:
+                        if force_local:
+                            raise RuntimeError, "Force storing in the MemberData object"
+                            
                         # If it works, add a marker to retreive the data from the user object
                         self.setProperty(id, value)             # This is GRUF's method
                         setattr(self, "%s_USER" % id, 1)
