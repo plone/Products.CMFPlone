@@ -250,7 +250,8 @@
                  year python:request.get('year', DateTime().year());
                  prevMonthTime python:here.getPreviousMonth(month, year);
                  nextMonthTime python:here.getNextMonth(month, year);
-                 weeks python:here.portal_calendar.getWeeksList(month=month, year=year);">
+                 weeks python:here.portal_calendar.getWeeksList(month=month, year=year);
+                 input_id string:${formname}_${inputname}_${tabindex};">
 
     <table cellpadding="2" cellspacing="0" border="0" class="calendar" id="thecalendar">
         <tr tal:define="calendarurl python:'%s?input_id=%s' % (path('template/absolute_url'),input_id) ">
