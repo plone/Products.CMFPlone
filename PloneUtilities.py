@@ -1,5 +1,5 @@
-from DateTime import DateTime 
-from types import StringTypes
+from DateTime import DateTime
+from types import StringType, UnicodeType
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1 
@@ -111,7 +111,9 @@ def localized_time(time = None, long_format = None, context = None):
 
         return DateTime(str(time)).strftime(format)
 
-    if isinstance(time, StringTypes) or isinstance(time, IntType):
+    if isinstance(time, StringType) or \
+       isinstance(time, UnicodeType) or \
+       isinstance(time, IntType):
         time = DateTime(time)
 
     # Avoid breakage if no dateFormat and no context (not caught above)
