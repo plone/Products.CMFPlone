@@ -16,18 +16,18 @@
 To access this part of the site, you need to sign in with your username and password.
 </p>
 
-<p tal:condition="python: here.portal_membership.checkPermission('Add portal member', here)">
+<p i18n:translate="description_no_account"
+   tal:condition="python: here.portal_membership.checkPermission('Add portal member', here)">
 
-<span i18n:translate="description_no_account_1" tal:omit-tag="">
 If you do not have an account here, head over to the
-</span>
-<a href="portal_form/join_form" i18n:translate="description_no_account_2">
-registration form
-</a> 
-<span i18n:translate="description_no_account_3" tal:omit-tag="">
-to become a member.
+
+<span i18n:name="registration_form">
+    <a href="portal_form/join_form" i18n:translate="description_no_account_registration_linktext">
+        registration form
+    </a> 
 </span>
 
+to become a member.
 </p>
 
 <form class="group"
@@ -133,16 +133,17 @@ to become a member.
                    tal:attributes="tabindex tabindex/next;" 
                    />
 
-            <p>
-                <strong i18n:translate="label_forgotten_your_password">
+            <p i18n:translate="description_forgotten_your_password">
+                <strong>
                 Forgotten your password?
                 </strong> 
                 
-                
-                <a href="mail_password_form" i18n:translate="forgotten_password_link_1">Click here</a> 
-                <span i18n:translate="forgotten_password_link_2">
-                to have it mailed to you.
+                <span i18n:name="click_here">
+                    <a href="mail_password_form" i18n:translate="description_forgotten_your_password_linktext">
+                    Click here
+                    </a> 
                 </span>
+                to have it mailed to you.
                 
             </p>
             

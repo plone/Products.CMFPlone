@@ -5,9 +5,11 @@
 Added everything between the 17.11.2002 comments at the bottom of the plone.pot.
 
 Added a lot of new strings to reflect the cleanup.
-Merging of stings to make them more Japanese/Korean/Chinese-friendly is still 
-left to do. Remember to delete the strings on the delete-list below 
+
+********************************************************
+Remember to delete the strings on the delete-lists below 
 if you are updating an existing po-file.
+********************************************************
 
 Deleted:
 
@@ -22,13 +24,10 @@ msgid "heading_edit_news_item"
 msgid "heading_edit_properties"
 msgid "heading_edit_topic"
 
-These were replaced with:
-
-
 Deleted:
 msgid "${type}s only"
 
-Replaced with
+Replaced with:
 msgid "label_show_x_only"
 
 Deleted:
@@ -50,19 +49,53 @@ msgid "batch_previous"
 Replaced with:
 
 msgid "batch_previous_x_items"  
-msgstr "Previous ${number} items"
-
 msgid "batch_next_x_items"  
-msgstr "Next ${number} items"
-
 
 Deleted:
 msgid "click_to_cite"
-
 
 Deleted:
 msgid "description_no_default_folder"
 
 Replaced with:
 msgid "description_no_default_folder_create_new"
+
+#####################
+# 20.11.2002 update #
+#####################
+
+Deleted:
+msgid "description_newbie_pointers_1"
+msgid "description_newbie_pointers_2"
+msgid "description_newbie_pointers_3"
+
+Replaced with:
+msgid "description_newbie_pointers"
+msgid "description_newbie_pointers_yourfolder_link"
+msgid "description_newbie_pointers_preferences_link"
+
+Deleted:
+msgid "description_no_account_1"
+msgid "description_no_account_2"
+msgid "description_no_account_3"
+
+Replaced with:
+msgid "description_no_account"
+msgid "description_no_account_registration_linktext"
+
+Deleted:
+msgid "label_forgotten_your_password"
+msgid "forgotten_password_link_1"
+msgid "forgotten_password_link_2"
+
+Replaced with:
+msgid "description_forgotten_your_password"
+msgid "description_forgotten_your_password_linktext"
+
+Deleted:
+msgid "description_signed_in"
+
+Replaced with:
+msgid "description_logged_in"
+
 

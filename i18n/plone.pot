@@ -475,7 +475,7 @@ msgstr "You can change the current objects ownership to another member easily fr
 #: from plone_forms/personalize_form.pt
 #.   <a href="password_form">Click here to change your password</a>
 msgid "description_click_to_change_password"
-msgstr "Click here to change your password"
+msgstr "Click here to change your password."
 
 #: from plone_forms/discussion_reply_preview.pt
 #.   <p>
@@ -605,46 +605,6 @@ msgstr "Enter your username below, click <strong>Mail me my password</strong>, a
 msgid "description_member_listing"
 msgstr "A list of the visible members."
 
-#: from plone_forms/logged_in.pt
-#.   <span>
-#.                   You might want to head over to
-#.                   </span>
-msgid "description_newbie_pointers_1"
-msgstr "You might want to head over to"
-
-#: from plone_forms/logged_in.pt
-#.   <span>
-#.                   and add some content, or
-#.                   </span>
-msgid "description_newbie_pointers_2"
-msgstr "and add some content, or"
-
-#: from plone_forms/logged_in.pt
-#.   <a define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']" condition="prefs" attributes="href python:prefs.pop()" href="metadata_form">set up your Preferences</a>
-msgid "description_newbie_pointers_3"
-msgstr "set up your Preferences"
-
-#: from plone_forms/login_form.pt
-#.   <span omit-tag="">
-#.   If you do not have an account here, head over to the
-#.   </span>
-msgid "description_no_account_1"
-msgstr "If you do not have an account here, head over to the"
-
-#: from plone_forms/login_form.pt
-#.   <a href="portal_form/join_form" omit-tag="">
-#.   registration form
-#.   </a>
-msgid "description_no_account_2"
-msgstr "registration form"
-
-#: from plone_forms/login_form.pt
-#.   <span omit-tag="">
-#.   to become a member.
-#.   </span>
-msgid "description_no_account_3"
-msgstr "to become a member."
-
 #: from plone_forms/history_comparison.pt
 #.   <p>
 #.         This object does not provide comparison support.
@@ -735,13 +695,6 @@ msgstr "To access this part of the site, you need to log in with your username a
 #.               </span>
 msgid "description_sign_in_failure"
 msgstr "You are not currently logged in. Your user name and/or password may be incorrect. Your browser may also not be configured to accept HTTP cookies. If you need help please try the 'Forgotten password' link or contact"
-
-#: from plone_forms/logged_in.pt
-#.   <span>
-#.                   This is the first time that you've logged in to 
-#.                   </span>
-msgid "description_signed_in"
-msgstr "This is the first time that you've logged in to"
 
 #: from plone_templates/standard_error_message.pt
 #.   <p>
@@ -876,18 +829,6 @@ msgstr "When"
 #.   <div class="label">Where</div>
 msgid "event_where"
 msgstr "Where"
-
-#: from plone_forms/login_form.pt
-#.   <a href="mail_password_form">Click here</a>
-msgid "forgotten_password_link_1"
-msgstr "Click here"
-
-#: from plone_forms/login_form.pt
-#.   <span>
-#.                   to have it mailed to you.
-#.                   </span>
-msgid "forgotten_password_link_2"
-msgstr "to have it mailed to you."
 
 #: from plone_forms/folder_listing.pt
 #.   <a define="parent_url python:here.navigationParent(here, template.getId());" attributes="href parent_url" href="">
@@ -2219,13 +2160,6 @@ msgstr "File type"
 #.   <div class="label">Follow-up</div>
 msgid "label_follow_up"
 msgstr "Follow-up"
-
-#: from plone_forms/login_form.pt
-#.   <strong>
-#.                   Forgotten your password?
-#.                   </strong>
-msgid "label_forgotten_your_password"
-msgstr "Forgotten your password?"
 
 #: from plone_forms/personalize_form.pt
 #.   <span>Form Help</span>
@@ -3688,4 +3622,58 @@ msgstr ""
 #########################
 # End 19.11.2002 update #
 #########################
+
+##################################
+# Added in the 20.11.2002 update #
+##################################
+
+
+msgid "Join"
+msgstr ""
+
+
+#: from plone_forms/login_form.pt
+#.   <span omit-tag="">
+#.   If you do not have an account here, head over to the
+#.   </span>
+msgid "description_no_account"
+msgstr "If you do not have an account here, head over to the ${registration_form} to become a member."
+
+msgid "description_no_account_registration_linktext"
+msgstr "registration form"
+
+#: from plone_forms/login_form.pt
+#.   <a href="mail_password_form">Click here</a>
+msgid "description_forgotten_your_password"
+msgstr "<strong>Forgotten your password?</strong> ${click_here} to have it mailed to you."
+
+msgid "description_forgotten_your_password_linktext"
+msgstr "Click here"
+
+msgid "The User ID you entered could not be found."
+msgstr ""
+
+#: from plone_forms/login_success.pt
+#.   <span>
+#.                   You might want to head over to
+#.                   </span>
+msgid "description_newbie_pointers"
+msgstr "You might want to head over to ${your_folder} and add some content, or ${set_up_your_preferences}"
+
+msgid "description_newbie_pointers_yourfolder_link"
+msgstr "your folder"
+
+msgid "description_newbie_pointers_preferences_link"
+msgstr "set up your preferences"
+
+#: from plone_forms/login_password.pt
+#.   <span>
+#.                   This is the first time that you've logged in to 
+#.                   </span>
+msgid "description_logged_in"
+msgstr "This is the first time that you've logged in to ${here}."
+
+##################################
+# End 20.11.2002 update          #
+##################################
 

@@ -24,7 +24,7 @@
     <h1 i18n:translate="heading_my_preferences">My Preferences</h1>
 
     <p> 
-        <a href="password_form" i18n:translate="description_click_to_change_password">Click here to change your password</a>. 
+        <a href="password_form" i18n:translate="description_click_to_change_password">Click here to change your password.</a> 
     </p>
       
   
