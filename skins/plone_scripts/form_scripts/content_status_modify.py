@@ -13,10 +13,9 @@ if effective_date or expiration_date:
                                    , effective_date=effective_date
                                    , expiration_date=expiration_date )
 
-context.portal_workflow.doActionFor(
-    context,
-    workflow_action,
-    comment=comment)
+context.portal_workflow.doActionFor( context
+                                   , workflow_action
+                                   , comment=comment )
 
 typeObj=context.portal_types.getTypeInfo(context)
 view=typeObj.getActionById('view')
@@ -24,6 +23,5 @@ view=typeObj.getActionById('view')
 redirect_url = '%s/%s?%s' % ( context.absolute_url()
                             , view
                             , 'portal_status_message=Status+changed.')
-			    
 context.REQUEST[ 'RESPONSE' ].redirect( redirect_url )
 

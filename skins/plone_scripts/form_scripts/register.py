@@ -8,16 +8,17 @@
 ##title=Register a User
 ##
 REQUEST=context.REQUEST
-portal_registration=context.portal_registration
-portal_properties=context.portal_properties
 
-errors=context.validate_registration()
+errors=context.portal_form_validateion.validate(context, 'validate_registration')
 if errors:
     return context.join_form( context, REQUEST)
 
-password=REQUEST.get('field_password') or portal_registration.generatePassword()
-portal_registration.addMember(REQUEST['field_username'], password, properties=REQUEST)
-if portal_properties.validate_email or REQUEST.get('field_mail_me', 0):
-    portal_registration.registeredNotify(REQUEST['field_username'])
+portal_registration=context.portal_registration
+portal_properties=context.portal_properties
+
+password=REQUEST.get('password') or portal_registration.generatePassword()
+portal_registration.addMember(REQUEST['username'], password, properties=REQUEST)
+if portal_properties.validate_email or REQUEST.get('mail_me', 0):
+    portal_registration.registeredNotify(REQUEST['username'])
 
 return context.registered( context, REQUEST )

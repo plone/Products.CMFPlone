@@ -4,27 +4,24 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=text, text_format, field_title='', field_description='', choice=' Change ', subject=None, field_id=''
+##parameters=text, text_format, title='', description='', choice=' Change ', subject=None, id=''
 ##title=Edit a news item
 
-REQUEST=context.REQUEST
-
-errors=context.validate_newsitem_edit()
+errors=context.portal_form_validation.validate(context, 'validate_newsitem_edit')
 if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 
 context.edit( text 
-            , field_description
+            , description
             , text_format )
 
 context.plone_utils.contentEdit( context
-                               , id=field_id
-                               , description=field_description)
+                               , id=id
+                               , description=description)
 
-qst='portal_status_message=News+Item+changed.'
-
+message='portal_status_message=News+Item+changed.'
 
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                                 , context.getTypeInfo().getActionById( 'view' )
-                                                , qst ) )
+                                                , message) )

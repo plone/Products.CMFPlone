@@ -4,21 +4,21 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=field_title, field_description, choice=' Change ', field_id=''
+##parameters=title, description, choice=' Change ', id=''
 ##title=Edit a folder (Plonized)
 ##
 
-errors=context.validate_folder_edit()
+errors=context.portal_form_validation.validate(context, 'validate_folder_edit')
 if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 
-context.edit( title=field_title,
-              description=field_description)
+context.edit( title=title,
+              description=description)
 
 context.plone_utils.contentEdit( context
-                               , id=field_id
-                               , description=field_description)
+                               , id=id
+                               , description=description)
 
 qst='portal_status_message=Folder+changed.'
 

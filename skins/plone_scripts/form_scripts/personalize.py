@@ -7,24 +7,22 @@
 ##bind subpath=traverse_subpath
 ##parameters=portrait=None
 from Products.CMFPlone import transaction_note
-REQUEST=context.REQUEST
 portrait_id='MyPortrait'
-skinvar=context.portal_skins.getRequestVarname()
 
-errors=context.validate_personalize()
+errors=context.portal_form_validation.validate(context, 'validate_personalize')
 if errors:
     edit_form=getattr(context, 'personalize_form')
-    return edit_form(errors)
+    return edit_form()
     
 try:
-    context.portal_registration.setProperties(REQUEST)
+    context.portal_registration.setProperties(context.REQUEST)
 except: #CMF1.3 below
     member=context.portal_membership.getAuthenticatedMember()
-    member.setProperties(REQUEST)
+    member.setProperties(context.REQUEST)
     
 context.portal_skins.updateSkinCookie()
     
-#if a portait file was upload put it in the /Members/XXXX/.personal/MyPortrait
+#if a portait file was uploaded put it in the /Members/XXXX/.personal/MyPortrait
 if portrait and portrait.filename:
     personal=context.getPlonePersonalFolder()
     if not personal:
@@ -39,4 +37,4 @@ if portrait and portrait.filename:
 qs = '/personalize_form?portal_status_message=Member+changed.'
 tmsg=context.portal_membership.getAuthenticatedMember().getUserName()+' personalized their settings.'
 transaction_note(tmsg)
-return REQUEST.RESPONSE.redirect(context.portal_url() + qs)
+return context.REQUEST.RESPONSE.redirect(context.portal_url() + qs)

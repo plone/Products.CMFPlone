@@ -7,24 +7,16 @@
 ##parameters=
 ##title=Validates a image edit_form contents
 ##
-REQUEST=context.REQUEST
-fv=context.portal_form_validation
+validator = context.portal_form_validation.createForm()
+validator.addField('id', 'String', required=1)
+validator.addField('title', 'String', required=0)
+errors = validator.validate(context.REQUEST)
 
-form=fv.createForm()
-idField=fv.createField('String', 'id', title='id', required=1, display_width=20)
-form.add_field(idField)
-
-titleField=fv.createField('String', 'title', title='title', required=0, display_width=20)
-form.add_field(titleField)
-errors=fv.validate(form)
-
-filename=getattr(REQUEST['field_file'], 'filename', None)
+filename=getattr(context.REQUEST['file'], 'filename', None)
 size=context.get_size()
 if not filename and not size:
-    if not errors: errors={}
     errors['file']='You must upload a file'
 
-context.validate_setupRequest(errors)
 return errors
 
 

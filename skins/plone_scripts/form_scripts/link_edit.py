@@ -4,20 +4,20 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=field_remote_url, field_id='', field_title=None, field_description=None, subject=None
+##parameters=remote_url, id='', title=None, description=None, subject=None
 ##title=Edit a link
 ##
 
-errors=context.validate_link_edit()
+errors = context.portal_form_validation.validate(context, 'validate_link_edit')
 if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 
-context.edit(remote_url=field_remote_url)
+context.edit(remote_url=remote_url)
 
 context.plone_utils.contentEdit( context
-                               , id=field_id
-                               , description=field_description)
+                               , id=id
+                               , description=description)
 
 qst='?portal_status_message=Link+changed.'
 

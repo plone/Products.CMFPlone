@@ -4,22 +4,22 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST, RESPONSE, acquireCriteria, field_id, field_title=None, field_description=None
+##parameters=REQUEST, RESPONSE, acquireCriteria, id, title=None, description=None
 ##title=
 ##
 
-errors=context.validate_topic_edit()
+errors=context.portal_form_validation.validate(context, 'validate_topic_edit')
 if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 
 context.edit(acquireCriteria=acquireCriteria,
-             title=field_title,
-             description=field_description)
+             title=title,
+             description=description)
 
 context.plone_utils.contentEdit( context
-                               , id=field_id
-                               , description=field_description)
+                               , id=id
+                               , description=description)
 	     
 qst='portal_status_message=Topic+changed.'
 

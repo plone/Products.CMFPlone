@@ -4,9 +4,15 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST, RESPONSE, field_title=None, field_description=None, event_type=None, start_date=None, end_date=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, field_id='' 
+##parameters=REQUEST, RESPONSE, title=None, description=None, event_type=None, start_date=None, end_date=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, id='' 
 ##title=
 ##
+
+errors=context.portal_form_validation.validate(context, 'validate_event_edit')
+if errors:
+    # get and return the relevant edit form
+    edit_form = getattr(context, context.getTypeInfo().getActionById('edit'))
+    return edit_form()
 
 # need to parse date string *before* passing to Event.edit since
 # it expects bite sized chunks....
@@ -16,8 +22,8 @@ dt_start = DateTime( start_date )
 dt_end = DateTime( end_date )
 
 try:
-    context.edit(title=field_title
-             , description=field_description
+    context.edit(title=title
+             , description=description
              , eventType=event_type
              , effectiveDay=dt_start.year()
              , effectiveMo=dt_start.month()
@@ -37,8 +43,8 @@ try:
              )
 
     context.plone_utils.contentEdit( context
-                               , id=field_id
-                               , description=field_description)
+                               , id=id
+                               , description=description)
 
 except:
     msg='portal_status_message=Error+saving+event.'

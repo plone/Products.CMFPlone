@@ -4,27 +4,20 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=file=None
+##parameters=
 ##title=Validates a document edit_form contents
 ##
-REQUEST=context.REQUEST
 
-fv=context.portal_form_validation
+validator = context.portal_form_validation.createForm()
+validator.addField('id', 'String', required=1)
+validator.addField('title', 'String', required=1)
+errors = validator.validate(context.REQUEST)
 
-form=fv.createForm()
-idField=fv.createField('String', 'id', title='id', required=1, display_width=20)
-form.add_field(idField)
-
-titleField=fv.createField('String', 'title', title='title', required=1, display_width=20)
-form.add_field(titleField)
-errors=fv.validate(form)
-
+file = context.REQUEST.get('file', '')
 if file and getattr(file, 'filename' ,''): 
     file.seek(0)
     headers = file.headers
     if headers['Content-Type'].find('text')==-1:
-        if not errors: errors={} 
-	errors.update( {'file':'This file is not text, To upload binary files create File content,'} )
-	    
-context.validate_setupRequest(errors)
+        errors.update( {'file':'This file is not text, To upload binary files create File content,'} )
+
 return errors

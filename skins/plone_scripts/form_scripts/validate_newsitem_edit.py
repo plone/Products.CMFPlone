@@ -7,17 +7,7 @@
 ##parameters=
 ##title=Validates a newsitem edit_form contents
 ##
-REQUEST=context.REQUEST
-fv=context.portal_form_validation
-
-form=fv.createForm()
-idField=fv.createField('String', 'id', title='id', required=1, display_width=20)
-form.add_field(idField)
-
-titleField=fv.createField('String', 'title', title='title', required=1, display_width=20)
-form.add_field(titleField)
-
-errors=fv.validate(form) #the validate method could just as well setup the next request
-
-context.validate_setupRequest(errors) #setup the Next Request
-return errors
+validator = context.portal_form_validation.createForm()
+validator.addField('id', 'String', required=1)
+validator.addField('title', 'String', required=1, required_not_found='Please enter a title.')
+return validator.validate(context.REQUEST)
