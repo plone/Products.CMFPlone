@@ -39,16 +39,14 @@
         </table>
 
     </div>          
-
 </metal:block>
+
+
 
 <metal:block metal:fill-slot="sub">
-    <metal:block tal:condition="python:here.talkback.hasReplies(here)">
-        <metal:block tal:replace="structure here/viewThreadsAtBottom">
-            override discussionitem_view viewThreadsAtBottom
-        </metal:block>
-    </metal:block>
+        <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
 </metal:block>
+
 
 </body>
 
