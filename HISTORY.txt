@@ -10,10 +10,16 @@ Plone 2.0 - Fyuti
 
     Beta 2
 
+    - added 'enable_border' to folder_localrole_form, folder_edit_form,
+      content_status_history so that the greenborder will show up when
+      you are performing these actions at the root of the Plone site.
+      this should be done in python instead of in the templates.  2.1 ;-)
+
     - added 'unwrapobjects' property to the CatalogTool PropertyManager
       if this is True the catalog will unwrap the AcquisitionWrapper from
       the object before indexing.  This was done because you could get
       unexpected results if you had content with the same ID as a Index.
+      [stefan removed this because runyaga sucks but we need this w/ tests]
       
     - added a Plone Site portal_type.  This portal_type is what the root
       of the Plone Site's _setPortalTypeName is set to.  This way the
