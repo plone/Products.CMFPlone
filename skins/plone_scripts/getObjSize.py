@@ -22,6 +22,13 @@ if hasattr(obj, 'get_size'):
     if not size:
         return '0 %s' % smaller
 
+    # if the size is a float, then make it an int
+    # happens for large files
+    try:
+        size = int(size)
+    except (ValueError, TypeError):
+        pass
+
     if same_type(size, 0) or same_type(size, 0L):
         if size < const[smaller]:
             return '1 %s' % smaller

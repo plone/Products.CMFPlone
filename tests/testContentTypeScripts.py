@@ -346,6 +346,12 @@ class TestGetObjSize(PloneTestCase.PloneTestCase):
         size = self.getSize()
         self.assertEquals(size, '1.1 GB')
 
+    def testGBytesSizeFloat(self):
+        # Size can be a float when files are large
+        self.ob.set_size(float(1024*1024*1024+1024*1024*107))
+        size = self.getSize()
+        self.assertEquals(size, '1.1 GB')
+
 
 class DummyDefaultPage:
 

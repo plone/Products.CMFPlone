@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Backported fix for http://plone.org/collector/3098. 
+      getObjSize() should handle floats.
+      [stefan]
+
     - Applied patch from http://plone.org/collector/3159. Missing 
       form fields should not cause user prefs to be set to None.
       [stefan]
