@@ -1,4 +1,4 @@
-plone.po is the English master file for the translations.
+plone.pot is the English master file for the translations.
 
 To use:
 
@@ -28,4 +28,4 @@ To use:
   useful for the people in your country!
   
   
--- Alexander Limi (alexander@zope.no), September 2002
+-- Alexander Limi (limi@plone.org), November 2002
