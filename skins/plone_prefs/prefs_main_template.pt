@@ -2,7 +2,7 @@
 <tal:block metal:use-macro="here/main_template/macros/master">
 
 <tal:block metal:fill-slot="head_slot">
-   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+   <tal:block tal:define="global is_editable python:request.set('disable_border',1)" />
 </tal:block>
 
 <div metal:fill-slot="main">
