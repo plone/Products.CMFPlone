@@ -11,7 +11,7 @@
 
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors">
-
+         
     <h1 i18n:translate="heading_edit_folder_properties">Edit Folder Properties</h1>
 
     <form name="edit_form"
@@ -20,12 +20,15 @@
           enctype="multipart/form-data"
           tal:attributes="action string:${here/getId}/${template/getId}" >
         
+        
+        
         <fieldset>
     
             <legend i18n:translate="legend_folder_details">Folder Details</legend>
           
             <div class="field" 
-                 tal:condition="python:member.getProperty('visible_ids', None)"
+                 tal:condition="python:member.getProperty('visible_ids', None) and
+                                       getattr(here, id) != portal"
                  tal:define="error errors/id | nothing;
                              id python:request.get('id', test(here.show_id(),here.getId(),''));"
                  tal:attributes="class python:test(error, 'field error', 'field')">
@@ -52,8 +55,9 @@
 
             <input type="hidden" 
                    name="id" 
-                   tal:condition="python:not member.getProperty('visible_ids', '')"
-                   tal:attributes="value python:request.get('id', here.getId())" 
+                   tal:condition="python:not member.getProperty('visible_ids', '') or getattr(here, id) == portal"
+                   tal:define="id python:request.get('id', here.getId())"
+                   tal:attributes="value id" 
                    />
           
             <div class="field"
