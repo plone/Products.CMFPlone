@@ -1,19 +1,82 @@
-#!/usr/bin/python
-
+#!/usr/bin/env python
 ## script to add copyright messages on .py and .pt files
 ## by Fabiano Weimar dos Santos <xiru@xiru.org>
 ## based on Andy McKay ClearWind script.
+## Rewritten by Sidnei da Silva <sidnei@awkly.org>
 
-import os, sys
+__metaclass__ = type
 
-def notPresent(file, add):
-    data = open(file, 'r').read()
-    if data.find(add) > -1:
-        print "Text already present in file", file
-        return
-    return data        
+import sys
+from os import remove, rename
+from os.path import join, walk, splitext, exists
+from xml.dom import minidom
+from xml.parsers.expat import ExpatError
+from cStringIO import StringIO
 
-copytext = """\
+class BaseChecker:
+
+    def __init__(self, text, out=StringIO()):
+        self.text = text
+
+    def check(self, data):
+        """Returns false if text is found in data"""
+        if data.find(self.text) > -1:
+            return False
+        return True
+
+
+class PythonChecker(BaseChecker):
+
+    def check(self, data):
+        """Returns false if text is found in data"""
+        if super(PythonChecker, self).check(data):
+            # Python Scripts should never make it
+            # XXX We need a better check here
+            if data.split('\n')[0].startswith('## '):
+                return False
+        return True
+
+class PageTemplateChecker(BaseChecker):
+    pass
+
+class BaseProcessor:
+
+    def __init__(self, text, out=StringIO()):
+        self.text = text
+        self.out = out
+
+    def process(self, fname, data):
+        return "%s\n%s" % (self.text, data)
+
+class PythonProcessor(BaseProcessor):
+    pass
+
+def findAndAppend(root, name, new_node):
+    nodes = root.getElementsByTagName(name)
+    if nodes:
+        nodes[0].childNodes.append(new_node)
+        return True
+    return False
+
+class PageTemplateProcessor(BaseProcessor):
+
+    def process(self, fname, data):
+        try:
+            d = minidom.parseString(data)
+        except ExpatError, msg:
+            print >> self.out, "Not valid XML. %s" % fname
+            return False
+        try:
+            new = minidom.parseString(self.text)
+        except ExpatError, msg:
+            print >> self.out, "String to insert is Not valid XML. %s" % fname
+            return False
+        if findAndAppend(d, 'body', new.childNodes[0]):
+            return d.toxml()
+        return False
+
+
+pycopyright = """\
 ##############################################################################
 #
 # Copyright (c) 2003 Alan Runyan, Alexander Limi and Contributors
@@ -28,41 +91,104 @@ copytext = """\
 ##############################################################################
 """
 
-#DO NOT TOUCH Controlled/Python Scripts
-def change_py(file):
-    res = notPresent(file, copytext)
-    if res and res.split('\n')[0].startswith('## '):
-        return
-    if res is not None:
-	res = copytext + res
-        open(file, 'w').write(res)
-        print "Changed", file
+ptcopyright = """\
+<tal:copyright replace="nothing">
+%s
+</tal:copyright>
+""" % pycopyright
 
-def change_pt(file):
-    """ This needs to be aware of <html> tags.  We need to insert the tag after <html>
-        or it could possibly choke up html authoring tools 
-    """
-    add = """\n<tal:copyright replace="nothing">\n""" + copytext + """</tal:copyright>\n"""
+class Walker:
 
-    res = notPresent(file, add)
-    if res is not None:
-        lines = res.split('\n')
-        addlines = add.split('\n')
-	if file.endswith('main_template.pt'):
-	    res = lines[0:1] + addlines + lines[1:]
-	else:
-	    res = addlines + lines
-        res = '\n'.join(res)
-        open(file, 'w').write(res)
-        print "Changed", file
+    def __init__(self, checkers, processors, dry=False, ignore=None, out=StringIO()):
+        self.checkers = checkers
+        self.processors = processors
+        self.out = out
+        self.dry = dry
+        if ignore is None:
+            ignore = {}
+        self.ignore = ignore
+        self.ignored = []
+        self.processed = []
+        self.failed = []
 
-def walker(ignore, dr, files):
-    for file in files:
-        file = os.path.join(dr, file)
-        if file.endswith('.py'):
-            change_py(file)
-        if file.endswith('.pt'):
-            change_pt(file)
+    def read(self, fname):
+        try:
+            f = open(fname, 'r')
+            data = f.read()
+            f.close()
+            return data
+        except IOError, msg:
+            print >> self.out, "%s: I/O Error: %s" % (fname, str(msg))
+        return None
+
+    def write(self, fname, data):
+        bak = fname + ".bak"
+        if exists(bak):
+            remove(bak)
+        rename(fname, bak)
+        print >> self.out, "Renamed %s to %s" % (fname, bak)
+        try:
+            f = open(fname, 'w')
+            f.write(data)
+            f.close()
+            return True
+        except IOError, msg:
+            print >> self.out, "%s: I/O Error: %s" % (fname, str(msg))
+        return None
+
+    def walk(self, ignore, _dir, fnames):
+        for fname in fnames:
+            ext = splitext(fname)[-1]
+            name = join(_dir, fname)
+            ignore = self.ignore.get(ext)
+            if ignore:
+                self.ignored.append(name)
+                continue
+            checker = self.checkers.get(ext)
+            if checker is None:
+                self.ignore[ext] = True
+                print >> out, ("Checker not found for '%s'. "
+                               "Ignoring all remaining occurrences."
+                               % ext)
+                self.ignored.append(name)
+                continue
+            processor = self.processors.get(ext)
+            if processor is None:
+                self.ignore[ext] = True
+                print >> out, ("Processor not found for '%s'. "
+                               "Ignoring all remaining occurrences."
+                               % ext)
+                self.ignored.append(name)
+                continue
+            data = self.read(name)
+            if data is None:
+                self.failed.append(name)
+                continue
+            if checker.check(data):
+                newdata = processor.process(name, data)
+                if newdata:
+                    # If dry is true, we just skip write
+                    res = (not self.dry) and self.write(name, newdata) or True
+                    if res:
+                        self.processed.append(name)
+                        print >> out, ("Processing of '%s' succeeded."
+                                       % name)
+                        continue
+                else:
+                    print >> out, ("Processor failed for '%s'."
+                                   % name)
+            self.failed.append(name)
 
 if __name__=='__main__':
-    os.path.walk(sys.argv[1], walker, [])
+    out = StringIO()
+
+    checkers = {'.pt':PageTemplateChecker(ptcopyright, out),
+                '.py':PythonChecker(pycopyright, out)}
+    processors = {'.pt':PageTemplateProcessor(ptcopyright, out),
+                  '.py':PythonProcessor(pycopyright, out)}
+
+    walker = Walker(checkers, processors, dry=False, out=out)
+    walk(sys.argv[1], walker.walk, [])
+    total = len(walker.ignored) + len(walker.processed)
+    print out.getvalue()
+    print "Processed %s out of %s files" % (len(walker.processed), total)
