@@ -270,7 +270,6 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
     def testNotifyScriptIsCalled(self):
         # The notify script should be called
-        class FooException: pass
         def notify_script(): raise FooException
         self.portal.notifyMemberAreaCreated = notify_script
         self.assertRaises(FooException, self.membership.createMemberarea, 'user2') 
@@ -380,6 +379,8 @@ class Portrait:
     def seek(*args): pass
     def tell(*args): return 0
     def read(*args): return 'bar'
+
+class FooException: pass
 
 
 if __name__ == '__main__':
