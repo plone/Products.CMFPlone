@@ -6,7 +6,6 @@ def process(name, ihome, swhome):
     os.environ['INSTANCE_HOME'] = ihome
 
     if sys.platform == 'win32':
-        print swhome
         sys.path.insert(0, '%s/Zope/lib/python' % swhome)
         sys.path.insert(1, '%s/Python/lib' % swhome)
         sys.path.insert(2, '%s' % swhome)
@@ -46,4 +45,4 @@ note: win32 does this slightly differently
     # for example the following is how i run it on win32
     # "c:\Program Files\Plone\python\python" setupSite.py admin "c:\Program Files\Plone\Data" "c:\Program Files\Plone"
     name, swhome, ihome = sys.argv[1:]
-    process(name, swhome, ihome)
+    process(name, ihome, swhome)
