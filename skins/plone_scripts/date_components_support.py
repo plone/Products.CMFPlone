@@ -29,7 +29,7 @@ now=DateTime()
 
 def month_names():
     names={}
-    for x in range(1,12):
+    for x in range(1,13):
         faux=DateTime('%s/1/02'%str(x))
         names[x]=faux.pMonth()
     return names
@@ -74,9 +74,9 @@ if default:
 else:
     months.append(empty)
 
-for x in range(1, 12):
+for x in range(1, 13):
     d={'id':x,
-       'value':x,
+       'value':'%02d'%x,
        'selected':None}
     if x==month and not default:
         d['selected']=1
@@ -92,7 +92,7 @@ else:
 
 for x in range(1,32):
     d={'id':x,
-       'value':x,
+       'value':'%02d'%x,
        'selected':None}
     if x==day and not default:
         d['selected']=1
