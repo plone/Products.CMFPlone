@@ -59,7 +59,7 @@
      tal:define="portal_tabs actions/portal_tabs|nothing;
                  selected_tabs python:here.selectedTabs(template.getId(), here);
                  selected_portal_tab selected_tabs/portal;" >
-    <h5 class="hiddenstructure">Navigation</h5>
+    <h5 class="hiddenstructure">Sections</h5>
     <ul id="portalTabs">
        <tal:tabs tal:repeat="tab portal_tabs">
        <li tal:attributes="id string:portaltab-${tab/id};
