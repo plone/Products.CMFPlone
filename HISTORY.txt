@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - tabindex can now be used in left/right_slot too. [magnus]
+
+    - Breadcrumbs and form validation error messages are now translated [magnus]
 
     - Moved folder_listing into plone_templates [limi]
 

@@ -194,7 +194,12 @@
                              onblur string:formtooltip('effective_date_help',0);
                              tabindex tabindex/next;" 
                  tal:attributes="class python:test(error, 'field error', 'field')">
-                <div tal:replace="error" />
+
+                <div tal:condition="error">
+                    <tal:block i18n:translate="" content="error">Error</tal:block>
+                    <br />
+                </div>
+
                 <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                 </div>
@@ -224,7 +229,12 @@
                              onblur string:formtooltip('expiration_date_help',0);
                              tabindex tabindex/next;" 
                  tal:attributes="class python:test(error, 'field error', 'field')">
-                <div tal:replace="error" />
+                
+                <div tal:condition="error">
+                    <tal:block i18n:translate="" content="error">Error</tal:block>
+                    <br />
+                </div>
+
                 <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                 </div>

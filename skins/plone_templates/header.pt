@@ -208,10 +208,12 @@
                 <a href="#" 
                    tal:condition="python:not is_last" 
                    tal:attributes="href python:crumb[1]"
-                   tal:content="structure python:crumb[0]">crumb</a>
+                   tal:content="structure python:crumb[0]"
+                   i18n:translate="">crumb</a>
                 <strong tal:condition="python:not is_last"> &raquo; </strong>
                 <span tal:condition="python: is_last" 
-                      tal:content="structure python:crumb[0]">crumb</span>
+                      tal:content="structure python:crumb[0]"
+                      i18n:translate="">crumb</span>
 
             </span>
 
