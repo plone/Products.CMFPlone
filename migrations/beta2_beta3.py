@@ -10,12 +10,12 @@ def twothree(portal):
     # register Btree folder if aint there
     try:
         typesTool.manage_addTypeInformation('Factory-based Type Information',
-                                            'BTree Folder', 
+                                            'BTree Folder',
                                             'BTreeFolder2: CMF BTree Folder')
-    # ugh, this is bad                                            
+    # ugh, this is bad
     except:
         pass
-    
+
     # line 148
     # portal workflow change
     wf_tool=portal.portal_workflow
@@ -29,7 +29,7 @@ def twothree(portal):
     form_tool.setValidators('sendto_form', ['validate_sendto'])
 
     # line 251
-    # add columns to the calatog 
+    # add columns to the calatog
     catalog = portal.portal_catalog
     if not catalog._catalog.schema.has_key('getId'):
         catalog.addColumn('getId', None)
@@ -38,16 +38,18 @@ def twothree(portal):
 
     # line 195
     # add in site properties sheet
-    
+
     #moving properties from CMF Site object to portal_properties/site_properties
-    addSiteProperties(portal, portal)       # hack
-    
+    #policy=DefaultCustomizationPolicy()
+    from Products.CMFPlone.ConfigurationMethods import addSiteProperties
+    addSiteProperties(portal,portal)
+
     prop_tool = portal.portal_properties
     if 'site_properties' not in prop_tool.objectIds():
         prop_tool.manage_addPropertySheet('site_properties', 'Site Properties')
 
     p = prop_tool.site_properties
-    
+
     # line 195
     # add in auth cookie length
     _ids = p.propertyIds()
@@ -94,13 +96,13 @@ def twothree(portal):
     nav_tool.addTransitionFor('default', 'folder_rename_form', 'failure', 'folder_rename_form')
     nav_tool.addTransitionFor('default', 'folder_rename_form', 'success', 'script:folder_rename')
     nav_tool.addTransitionFor('default', 'register', 'failure', 'join_form')
-    
+
 
 def registerMigrations():
     # so the basic concepts is you put a bunch of migrations is here
     MigrationTool.registerUpgradePath(
-            '1.0beta2', 
-            '1.0beta3', 
+            '1.0beta2',
+            '1.0beta3',
             twothree
             )
     # it will run through them all until its upto date

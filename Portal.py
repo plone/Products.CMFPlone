@@ -1,5 +1,5 @@
 from __future__ import nested_scopes
-    
+
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
 from Products.CMFPlone import PloneFolder
@@ -24,8 +24,8 @@ __version__='1.0'
 default_frontpage=r"""
 You can customize this frontpage by clicking the edit tab on this document if you
 have the correct permissions. Create folders and put content in those folders.
-Folders will show up in the navigation box if they are published. It's a very 
-simple and powerful system.  
+Folders will show up in the navigation box if they are published. It's a very
+simple and powerful system.
 
 For more information:
 
@@ -35,11 +35,11 @@ For more information:
 
 - "CMF website":http://cmf.zope.org
 
-There are "mailing lists":http://plone.org/development/lists and 
-"recipe websites":http://www.zopelabs.com  
+There are "mailing lists":http://plone.org/development/lists and
+"recipe websites":http://www.zopelabs.com
 available to provide assistance to you and your new-found Content Management System.
 "Online chat":http://plone.org/development/chat is also a nice way
-of getting advice and help. 
+of getting advice and help.
 
 Please contribute your experiences at the "Plone website":http://www.plone.org
 
@@ -56,9 +56,9 @@ class PloneSite(CMFSite):
     meta_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
 
-    def __browser_default__(self, request):
-        """ Set default so we can return whatever we want instead of index_html """
-        return self.browserDefault(request)
+    #def __browser_default__(self, request):
+    #    """ Set default so we can return whatever we want instead of index_html """
+    #    return self.browserDefault(request)
 
 class PloneGenerator(Portal.PortalGenerator):
 
@@ -72,12 +72,12 @@ class PloneGenerator(Portal.PortalGenerator):
         typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type
                                            , id='Folder'
                                            , typeinfo_name='CMFPlone: Plone Folder')
-        for contentType in typesTool.listContentTypes():        
+        for contentType in typesTool.listContentTypes():
             typeInfo=typesTool.getTypeInfo(contentType)
             if typeInfo.getId() not in typesToSkip:
                 typeObj=getattr(typesTool, typeInfo.getId())
                 view=typeInfo.getActionById('edit')
-                typeObj._setPropValue('immediate_view', view)       
+                typeObj._setPropValue('immediate_view', view)
             if typeInfo.getId()=='Folder':
                 typeObj=getattr(typesTool, typeInfo.getId())
                 view='folder_contents'
@@ -96,7 +96,7 @@ class PloneGenerator(Portal.PortalGenerator):
         addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
 
         addPloneTool('Plone Membership Tool', None)
-        addPloneTool('CMF Workflow Tool', None) 
+        addPloneTool('CMF Workflow Tool', None)
         if not exists('portal_form_validation'):
             addPloneTool('CMF Formulator Tool', None)
         if not exists('plone_utils'):
@@ -118,8 +118,8 @@ class PloneGenerator(Portal.PortalGenerator):
         p.portal_skins.allow_any=1
 
         p.icon = 'misc_/CMFPlone/plone_icon'
-        
-        
+
+
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
         PloneFolder.addPloneFolder(p, 'Members')
@@ -128,7 +128,7 @@ class PloneGenerator(Portal.PortalGenerator):
         p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
                                                                 , 'Member list'
                                                                 , '<dtml-return member_search_form>')
-        p.Members._setPortalTypeName( 'Folder' )                                                               
+        p.Members._setPortalTypeName( 'Folder' )
         Document.addDocument(p, 'index_html')
         o = p.index_html
         o._setPortalTypeName( 'Document' )
@@ -136,13 +136,13 @@ class PloneGenerator(Portal.PortalGenerator):
         o.setDescription('This welcome page is used to introduce you'+\
                          ' to the Plone Content Management System.')
         o.edit('structured-text', default_frontpage)
-        
+
         o = p.Members
         o.setTitle('Members')
         o.setDescription("Container for portal members' home directories")
-        
-        
-    def setupPloneWorkflow(self, p):      
+
+
+    def setupPloneWorkflow(self, p):
         wf_tool=p.portal_workflow
         wf_tool.manage_addWorkflow( id='plone_workflow'
                                   , workflow_type='plone_workflow '+\
@@ -154,11 +154,11 @@ class PloneGenerator(Portal.PortalGenerator):
                                   '(Folder Workflow [Plone])')
         wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
 
-    def setupSecondarySkin(self, skin_tool, skin_title, directory_id):        
+    def setupSecondarySkin(self, skin_tool, skin_title, directory_id):
         path=[elem.strip() for elem in skin_tool.getSkinPath('Plone Default').split(',')]
         path.insert(path.index('custom')+1, directory_id)
         skin_tool.addSkinSelection(skin_title, ','.join(path))
-        
+
     def setupPloneSkins(self, p):
         sk_tool=p.portal_skins
         path=[elem.strip() for elem in sk_tool.getSkinPath('Basic').split(',')]
@@ -194,7 +194,7 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupSecondarySkin(sk_tool, 'Plone Zed',           'plone_styles/zed')
 
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
-        
+
         sk_tool.request_varname='plone_skin'
 
     def setupForms(self, p):
@@ -231,7 +231,7 @@ class PloneGenerator(Portal.PortalGenerator):
                                 ['validate_registration'])
         form_tool.setValidators('metadata_edit_form', \
                                 ['validate_metadata_edit'])
-        
+
         #set up properties for StatelessTreeNav
         from Products.CMFPlone.StatelessTreeNav \
              import setupNavTreePropertySheet
@@ -245,7 +245,7 @@ class PloneGenerator(Portal.PortalGenerator):
         filename='navigation_properties'
         src_file = open(os.path.join(Globals.package_home(globals()), 'data', filename), 'r')
         src_lines = src_file.readlines()
-        src_file.close(); 
+        src_file.close();
 
         re_comment = re.compile(r"\s*#")
         re_blank = re.compile(r"\s*\n")
@@ -259,7 +259,7 @@ class PloneGenerator(Portal.PortalGenerator):
                 else:
                     sys.stderr.write("Unable to parse '%s' in navigation properties file" % (line))
 
-    def setupPlone(self, p): 
+    def setupPlone(self, p):
         self.customizePortalTypes(p)
         self.customizePortalOptions(p)
         self.setupPloneWorkflow(p)
@@ -270,9 +270,9 @@ class PloneGenerator(Portal.PortalGenerator):
 
         m = p.portal_migration
         # XXX we need to make this read version.txt
-        m.setInstanceVersion('1.0beta2')
+        m.setInstanceVersion('1.0beta2') #.1')
         m.upgrade()
-        
+
     def create(self, parent, id, create_userfolder):
         id = str(id)
         portal = self.klass(id=id)
@@ -281,7 +281,7 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setup(p, create_userfolder)
         self.setupPlone(p)
         return p
-    
+
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 manage_addSiteForm = PageTemplateFile('www/addSite', globals())
 manage_addSiteForm.__name__ = 'addSite'
@@ -307,16 +307,16 @@ def manage_addSite(self, id, title='Portal', description='',
         if result:
             p.invokeFactory(type_name='Document', id='CustomizationLog')
             p.CustomizationLog.edit(text_format='plain', text=result)
-    
+
     # reindex catalog and workflow settings
-    p.portal_catalog.refreshCatalog()     
-    p.portal_workflow.updateRoleMappings() 
+    p.portal_catalog.refreshCatalog()
+    p.portal_workflow.updateRoleMappings()
 
     if RESPONSE is not None:
         RESPONSE.redirect(p.absolute_url())
-        
+
 def register(context, globals):
     context.registerClass(meta_type='Plone Site',
                           permission='Add CMF Sites',
                           constructors=(manage_addSiteForm,
-                                        manage_addSite,) )    
+                                        manage_addSite,) )

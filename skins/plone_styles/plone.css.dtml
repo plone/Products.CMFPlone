@@ -20,8 +20,7 @@
 /* <dtml-with stylesheet_properties> */
 
 
- 
-body {
+ body {
     font: &dtml-mainFont;;
     background: &dtml-mainBackground;;
     color: &dtml-mainFontColor;;
@@ -41,6 +40,9 @@ table {
     font-size: 100%;
 }
 
+
+
+
 a {
 	text-decoration: none;
     color: &dtml-mainLinkColor;;
@@ -48,7 +50,6 @@ a {
 }
 
 table {
-
 }
 
 
@@ -91,9 +92,12 @@ hr {
 }
 
 
+
+
+
 h1, h2, h3, h4, h5, h6 {
     color: &dtml-headingFontColor;;
-    clear: left;
+
     font: &dtml-headingFont;;
     margin: 0;
     padding-top: 0.5em;
@@ -123,6 +127,10 @@ h5 {
 h6 {
     font-size: &dtml-headingSize6;;
 }
+
+
+
+
 
 ul { 
     line-height: 1.5em;
@@ -245,6 +253,15 @@ pre {
     display: none;
 }
 
+
+
+
+
+
+
+
+
+
 /*
 ** Structural Elements
 */
@@ -365,35 +382,12 @@ div.pathBar {
     vertical-align: bottom;
 }
 
-table.columns {
-	width: 100%;
-}
-
-table.columns td.left {
-    vertical-align: top;
-    width: 15%;
-    padding: 2em 0em 1em 2em;
-}
-
-table.columns td.main {
-    vertical-align: top;
-    padding: 0em 2em 1em 2em;
-    margin: 0;
-
-}
-
-table.columns td.right {
-    vertical-align: top;
-    width: 15%;
-    padding: 2em 2em 1em 0em;
-}
-
 #contentTabs {
     background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
     border-bottom: &dtml-contentTabBorder;;
     padding-left: 1em;
-    margin-top: 2em;
+    margin-top: 1em;
     white-space: nowrap;
 }
 
@@ -495,6 +489,11 @@ div.title {
 /*
 ** Widgets
 */
+
+
+
+
+
 
 input.standalone {
     background: &dtml-standaloneButtonBackground;;
@@ -615,7 +614,7 @@ div.stx table {
     border-bottom: &dtml-listingBorder;;
     font-size: 80%;
     margin: 1em 0em 1em 0em;
-    clear: both;
+
 }
 
 table.listing th,
@@ -686,7 +685,7 @@ div.stx table td {
 
 div.box {
     border: none;
-    margin: 0em 0em 2em 0em;
+    margin: 1em;
     padding: 0;
 }
 
@@ -850,7 +849,7 @@ div.date {
   
 table.calendar {
     border: &dtml-boxBorder;;
-    margin: 0em 1em 2em 0em;
+    margin:  1em ;
     text-align: right;
 }
 
@@ -902,6 +901,10 @@ table.calendar td.todaynoevent {
     border-collapse: collapse;
     border: &dtml-boxHighlight;;
 }
+
+
+
+
 
 
 

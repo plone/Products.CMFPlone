@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <div class="footer" metal:define-macro="portal_footer" i18n:domain="plone"
      tal:define="portal_url here/portal_url">

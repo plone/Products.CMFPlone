@@ -1,6 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                   tabindex python:Iterator();">
 
@@ -21,8 +18,9 @@
                                                template_title );"
            tal:content="string:$portal_title - $here_title">Title of page</title>
 
-    <metal:block metal:define-slot="base" />
+    <base href="" tal:attributes="href here/renderBase" />             
 
+    
     <meta tal:condition="here/listMetaTags|nothing"
           tal:repeat="keyval here/listMetaTags" 
           tal:attributes="name python:keyval[0];
@@ -30,13 +28,18 @@
 
     <!-- Basic crude style for Netscape4.x - This can be removed 
          if you don't want the special NS4 look - it will still work, 
-	 just be plain text instead. -->
+	 just be plain text instead.   -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
+  
+    
+    <!-- Column layout stylesheet. Even kinda works with Netscape4 -->
+    <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneColumns.css" />
 
     <!-- Main style sheets for CSS2 capable browsers -->
-    <style type="text/css" media="all" 
+    <style type="text/css" media="all"  
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
-
+  
+    
     <!-- Custom style sheet if available -->
     <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css" 
            tal:content="string:@import url($portal_url/ploneCustom.css);"></style>
@@ -50,9 +53,15 @@
           tal:attributes="href string:$portal_url/plonePresentation.css" />
 
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
+
+    <!-- Usability rel links, show up in Opera (and Mozilla if you have the plugin)  -->
     <link rel="home" href="" title="Front Page" tal:attributes="href string:$portal_url" />
     <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
-
+    <metal:block metal:define-slot="rel_slot" tal:replace="nothing">
+    Inserts rel links specified from a page.
+    </metal:block>
+    
+    
     <!-- Disable IE6 image toolbar -->
     <meta http-equiv="imagetoolbar" content="no" />
 
@@ -90,166 +99,5 @@
       
     </tal:block>
 </head>
-
-<div metal:define-macro="portal_header"
-     i18n:domain="plone"
-     tal:define="portal_url portal_url|here/portal_url;
-                 ztu ztu|modules/ZTUtils;
-                 current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
-
-     <tal:block tal:condition="not: actions|nothing">     
-         <span tal:define="global actions actions|here/portal_actions/listFilteredActionsFor"
-                  tal:replace="nothing" >
-             XXX Like the previous member call problem. 
-             This is here just in case actions is not defined. 
-             This would happen if you were calling from a DTML Document   
-         </span>
-     </tal:block>
-
-        <div class="top">
-
-            <div class="searchBox">
-                <form name="searchform" 
-                      action="search"
-                      tal:attributes="action string:${portal_url}/search" >
-    
-                    <input id="searchGadget" 
-                           name="SearchableText" 
-                           type="text" 
-                           size="20" 
-                           value=""
-                           tal:attributes="value request/SearchableText|nothing; 
-                                           tabindex tabindex/next" />
-    
-                    <input class="context searchButton" 
-                           type="submit" 
-                           value="Search"
-                           tal:attributes="tabindex tabindex/next"
-                           i18n:attributes="value" />
-                </form>
-            </div>
-
-            <a href="/"
-               tal:attributes="href portal_url" 
-               tal:define="logo portal/logo.jpg;
-                           uri logo/absolute_url" >
-                <img src="logo.jpg"
-                     class="logo"
-                     border="0"
-                     alt=""
-                     tal:attributes="width logo/width;
-                                     height logo/height;
-                                     src string:$uri?$current_skin" />
-            </a>
-        </div>
-
-        <hr size="" class="netscape4" />
-     
-        <div class="tabs"
-             metal:define-macro="portal_tabs"
-             tal:define="portal_tabs actions/portal_tabs|nothing;
-                         selected_tabs python:here.selectedTabs(template.getId(), here);
-                         selected_portal_tab selected_tabs/portal;" >
-
-        <metal:block tal:repeat="tab portal_tabs">
-            <a href="" class=""
-               tal:attributes="href tab/url;
-                               class python:test(selected_portal_tab==tab['id'], 'selected', 'plain')">
-                <tal:block omit-tag="" i18n:translate="">
-                    <span tal:replace="tab/name">dummy</span>
-                </tal:block>
-            </a>
-        </metal:block>
-
-        </div>
-
-        <div class="personalBar"
-             metal:define-macro="personalBar"
-             tal:define="portal_url portal_url|here/portal_url;
-                         user_actions user_actions|actions/user;
-                         global_actions global_actions|actions/global;
-                         mtool mtool|here/portal_membership;
-                         display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">&nbsp;
-
-            <a href=""
-               tal:omit-tag="not: mtool/getHomeFolder"
-               tal:condition="not: isAnon"
-               tal:attributes="href string:${mtool/getHomeUrl}">
-                <img tal:replace="structure portal/user.gif" />
-            
-                <span tal:content="user/getUserName"
-                      class="caseSensitive">john</span>
-            </a>
-
-            <span tal:condition="isAnon" 
-	          i18n:translate="you_are_not_logged_in">You are not logged in</span>
-
-            <metal:block tal:repeat="action python:display_actions">
-            <a href=""
-               tal:attributes="href action/url">
-                <img tal:replace="structure portal/linkOpaque.gif" />
-                
-                <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
-            </a>
-            </metal:block>
-        </div>
-
-        <div class="pathBar"
-             metal:define-macro="pathBar"
-             tal:define="breadcrumbs python:here.breadcrumbs(here);
-                         portal_url portal_url|here/portal_url">
-
-            <a href="#"
-               tal:define="addFavorite portal_object/addFavorite.gif;"
-               tal:condition="nothing"
-               tal:attributes="href string:${here/absolute_url}/addtoFavorites">
-
-                <img tal:replace="structure python:addFavorite.tag(css_class='addFavorite', 
-                                                   title='Add this location to My Favorites')" />
-            </a>
-	    <span tal:omit-tag="" i18n:translate="you_are_here">You are here:</span>
-	        <span tal:condition="breadcrumbs" tal:omit-tag="">
-                <a i18n:translate="tabs_home" tal:attributes="href portal_url">Home</a> 
-                <strong>&raquo;</strong>
-            </span>
-
-            <span tal:condition="not: breadcrumbs" i18n:translate="tabs_home" tal:omit-tag="">
-                Home
-            </span>
-            
-            <span tal:repeat="crumb breadcrumbs">
-
-                <metal:block tal:define="is_last repeat/crumb/end">
-                
-                <a href="#" 
-                   tal:condition="python:not is_last" 
-                   tal:attributes="href python:crumb[1]"
-                   tal:content="structure python:crumb[0]"
-                   i18n:translate="">crumb</a>
-                <strong tal:condition="not: is_last"> &raquo; </strong>
-                <span tal:condition="is_last" 
-                      tal:content="structure python:crumb[0]"
-                      i18n:translate="">crumb</span>
-
-                </metal:block>
-
-            </span>
-
-        </div>
-
-        <hr size="" class="netscape4" />
-
-    </div>
-
-    <div class="message"
-         i18n:domain="plone" 
-         metal:define-macro="portal_message" 
-         tal:define="portal_message request/portal_status_message | nothing"
-         tal:condition="portal_message"> 
-
-        <img tal:replace="structure here/info.gif" />
-
-        <strong tal:content="portal_message" i18n:translate=""></strong> 
-    </div>
 
 </html>

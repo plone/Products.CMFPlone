@@ -1,6 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       i18n:domain="plone"
@@ -8,21 +5,7 @@
 
 <body>
 
-<metal:block fill-slot="portal_message">
-        
-    <div class="message"
-         i18n:domain="plone"
-         tal:define="dummy here/filterCookie;
-                     portal_message request/portal_status_message | nothing"
-         tal:condition="portal_message">
 
-        <img tal:replace="structure here/info.gif" />
-
-        <strong tal:content="portal_message" i18n:translate=""></strong>
-    </div>
-</metal:block>
-
-<!-- removed dummy here/filterCookie; -->
 <div metal:fill-slot="main"
      tal:define="folderfilter python:request.get('folderfilter', '');
                  global decodedFilter python:here.decodeFolderFilter(folderfilter);

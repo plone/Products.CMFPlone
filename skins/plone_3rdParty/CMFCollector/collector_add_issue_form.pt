@@ -1,13 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <span tal:condition="nothing"
       tal:define="has_add_priv nocall: here/add_issue">
   This span ensures that the visitor has edit privilege, by fetching - but not
   displaying - the protected collector.add_issue method.
-</span>
-
-<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+</span><html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
