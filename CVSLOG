@@ -1,3 +1,31 @@
+2003-11-22 02:46  zopezen
+
+	* CustomizationPolicy.py, MigrationTool.py (Plone-2_0-branch):
+	  Continuation of the fix. I just created 8 Plone sites in a row on
+	  multiple threads and they were all ok.
+
+	  runyaga: since you found this bug could you please confirm?
+
+2003-11-22 02:41  zopezen
+
+	* setup/: ConfigurationMethods.py, SetupBase.py, languages.py
+	  (Plone-2_0-branch): Alright i think this fixes the fix, where by
+	  no configuration method could actually find the portal. Each time
+	  a new configuration object is created a reference to portal is
+	  made. That object isnt kept or maintained, that code was removed
+	  earlier.
+
+2003-11-21 05:28  tiran
+
+	* skins/plone_content/folder_edit_form.cpt (Plone-2_0-branch):
+	  fixed #1994 "renaming portal folder is bad" but I'm not shure if
+	  the way with getattr(here, id) is the best way. It least it
+	  should be safer than here == portal
+
+2003-11-21 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-21 00:21  dreamcatcher
 
 	* skins/plone_wysiwyg/wysiwyg_support.pt (Plone-2_0-branch): Allow
