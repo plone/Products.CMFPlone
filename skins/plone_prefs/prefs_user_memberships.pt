@@ -51,7 +51,7 @@
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/prefs_users_overview"
-           i18n:translate="">
+           i18n:translate="label_up_to_usersoverview">
         Up to Users Overview
         </a>
 
