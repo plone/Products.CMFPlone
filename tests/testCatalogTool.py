@@ -122,6 +122,15 @@ class TestCatalogSearch(PloneTestCase.PloneTestCase):
         self.login(user2)
         self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
 
+    def testContentTitleChangeAndSearch(self):
+        title='Test User Folder - Snooze!'
+        description='A description')
+        self.folder.folder_edit(title, description)
+        results=self.portal.portal_catalog('Snooze')
+        self.assert(len(results)>=1)
+        for result in results:
+            self.assertEqual(result.Title, title) 
+        
 
 class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
