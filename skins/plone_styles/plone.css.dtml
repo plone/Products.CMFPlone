@@ -228,14 +228,13 @@ code {
     font-size: 120%;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
     padding: 0 0.1em;
 }
 pre {
     font-family: "Courier New", Courier, monospace;
     font-size: 120%;
     padding: 1em;
-    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
     overflow: auto;
