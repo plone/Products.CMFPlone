@@ -15,7 +15,8 @@
 
     <form method="POST"
           action="wikipage_editcomment_handler"
-          enctype="multipart/form-data">
+          enctype="multipart/form-data"
+	  tal:attributes="action string:${here/getId}/wikipage_editcomment_handler">
     <input type=hidden name=timeStamp value="&dtml-editTimestamp;">
     <input type=hidden name=page value="&dtml-getId;">
 
