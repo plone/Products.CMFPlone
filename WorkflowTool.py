@@ -22,7 +22,7 @@ class WorkflowTool( CoreWorkflowTool ):
         for o in [getattr(self, oid, None) for oid in objs]:
             trans=()
             try:
-                trans=getTransitionsFor(self, obj=o)
+                trans=self.getTransitionsFor(o)
             except: #yikes
                 pass
             if trans:
@@ -38,7 +38,7 @@ class WorkflowTool( CoreWorkflowTool ):
     def getTransitionsFor(self, obj=None, REQUEST=None):	
         wf_tool=getToolByName(self, 'portal_workflow')
         if type(obj)==type([]):
-            return flattenTransitions(self, objs=obj)
+            return self.flattenTransitions(objs=obj)
         elif hasattr(obj, 'isPortalContent'):
             obj=obj
         else: 
