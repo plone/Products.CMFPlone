@@ -4,9 +4,14 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Fixed http://plone.org/collector/3601 - Cancel in password_form redirected
+      to the wrong page. Thanks to Varun for the patch. Also fixed the same issue
+      in personalize_form.
+      [stefan]
+
     - Fixed http://plone.org/collector/3577 - Interchanged 'Edit' and 'Sharing'
-      tab on folder.
-      [jladage, thanks to vamsik]
+      tab on folder. Thanks to Vamsik for the patch.
+      [jladage]
 
     - Made prefs_error_log_form a tad safer in the face of weird upgrade issues.
       Also see http://plone.org/collector/3435

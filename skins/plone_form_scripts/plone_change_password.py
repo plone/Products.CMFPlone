@@ -10,7 +10,7 @@
 REQUEST=context.REQUEST
 if REQUEST.form.has_key('cancel'):
     REQUEST.set('portal_status_message', 'Password change was canceled.')
-    return context.personalize_form()
+    return context.plone_memberprefs_panel()
 
 mt=context.portal_membership
 
