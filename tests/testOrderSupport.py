@@ -119,10 +119,33 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('foo'), 2)
 
 
+class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.setRoles(['Manager'])
+        # Add a bunch of subobjects we can order later on
+        self.portal.invokeFactory('Document', id='foo')
+        self.portal.invokeFactory('Document', id='bar')
+        self.portal.invokeFactory('Document', id='baz')
+        # Move them to the top
+        self.portal.moveObject('foo', 0)
+        self.portal.moveObject('bar', 1)
+        self.portal.moveObject('baz', 2)
+
+    def testRenameObject(self):
+        # Renaming should not change position
+        get_transaction().commit(1) # make rename work
+        self.portal.manage_renameObjects(['bar'], ['barney'])
+        self.assertEqual(self.portal.getObjectPosition('foo'), 0)
+        self.assertEqual(self.portal.getObjectPosition('barney'), 1)
+        self.assertEqual(self.portal.getObjectPosition('baz'), 2)
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestOrderSupport))
+    suite.addTest(makeSuite(TestOrderSupportInPortal))
     return suite
 
 if __name__ == '__main__':

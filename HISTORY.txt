@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.0.6 - Anti-Pop - (Unreleased)
 
+    - Objects in the portal root lost their ordering when being renamed.
+      [stefan]
+
     - Fixed two potentially unsafe uses of acl_users.getUserById().
       [stefan]
 
