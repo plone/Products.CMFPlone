@@ -170,9 +170,10 @@ def modifyActionProviders(self, portal):
             action.title='Contents'
             action.name='Contents'
     at._actions=_actions
+
     # Remove the portal_workflow from the actionproviders
     # Since we have the 'review_slot'
-    at.deleteActionProvider('portal_workflow')
+    #at.deleteActionProvider('portal_workflow')
    
     dt=getToolByName(portal, 'portal_discussion')
     _actions=dt._cloneActions()
@@ -221,6 +222,8 @@ def modifySkins(self, portal):
     # this should be run through the skins setup widget :)
     st=getToolByName(portal, 'portal_skins')
     skins_map=st._getSelections()
+    skins_map=st._getSelections()
+
     if skins_map.has_key('No CSS'):
         del skins_map['No CSS']
     if skins_map.has_key('Nouvelle'):        
@@ -342,8 +345,14 @@ these functions do not have a uninstall function."""
     def addItems(self, fns):   
         out = []         
         for fn in fns:
+<<<<<<< ConfigurationMethods.py
+            functions[fn](self, self.portal)
+            #print self.portal._p_jar._storage
+            #get_transaction().commit(1) #XXX This is throwing stones
+=======
             portal=getToolByName(self, 'portal_url').getPortalObject()
             functions[fn](self, portal)
+>>>>>>> 1.16.2.15
             out.append(('Function %s has been applied' % fn, INFO))
         return out
 
