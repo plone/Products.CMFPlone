@@ -23,16 +23,26 @@ class CatalogTool(BaseTool):
         ZCatalog.__init__(self, self.getId())
         self._initIndexes()
         
-#        if not hasattr(self, 'Vocabulary'):
-#            # As of 2.6, the Catalog no longer adds a vocabulary in itself
-#            from Products.PluginIndexes.TextIndex.Vocabulary import Vocabulary
-#            vocabulary = Vocabulary('Vocabulary', 'Vocabulary', globbing=1)
-#            self._setObject('Vocabulary', vocabulary)
-            
     security.declarePublic( 'enumerateIndexes' ) 
     def enumerateIndexes(self):
-        lst = BaseTool.enumerateIndexes(self)
-        return [ (idx, itype) for idx, itype in lst if itype != 'TextIndex']
+
+        return ( ('Subject', 'KeywordIndex')
+               , ('Creator', 'FieldIndex')
+               , ('Date', 'DateIndex')
+               , ('Type', 'FieldIndex')
+               , ('created', 'DateIndex')
+               , ('effective', 'DateIndex')
+               , ('expires', 'FieldIndex')
+               , ('modified', 'DateIndex')
+               , ('allowedRolesAndUsers', 'KeywordIndex')
+               , ('review_state', 'FieldIndex')
+               , ('in_reply_to', 'FieldIndex')
+               , ('meta_type', 'FieldIndex')
+               , ('id', 'FieldIndex')
+               , ('getId', 'FieldIndex')
+               , ('path', 'PathIndex')
+               , ('portal_type', 'FieldIndex')
+               )
 
     def _removeIndex(self, index):
         """ Safe removal of an index """
