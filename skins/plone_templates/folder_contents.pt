@@ -13,8 +13,8 @@
                  global filter decodedFilter;
                  standalone python:1;
                  folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);
-                 myfolder python:user.getUserName()==here.getId() and here.getParentNode().getId()=='Members';">
-
+                 mtool mtool|here/portal_membership;
+                 myfolder python:here.absolute_url()==mtool.getHomeUrl();">
     <form name="folderContentsForm"
           method="post"
           action="folder_object"
