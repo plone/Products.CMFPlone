@@ -13,8 +13,8 @@ reg_tool=context.portal_registration
 def invalid(field):
     state.setError('email', 'You did not enter an email address.', 'invalid_email')
 
-if email and not reg_tool.isValidEmail(email):
-    invalid('email')
+if email and reg_tool.isValidEmail(email):
+    pass
 else:
     invalid('email')
 
