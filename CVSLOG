@@ -1,3 +1,67 @@
+2003-10-31 00:23  limi
+
+	* skins/plone_templates/header.pt (Plone-2_0-branch): Added meta
+	  name="generator" tag.
+
+2003-10-30 17:29  zopezen
+
+	* PloneInitialize.py (Plone-2_0-branch): Reverse PloneIntialize
+	  turning off
+
+2003-10-30 17:18  zopezen
+
+	* plone.ini (Plone-2_0-branch): Disable plone.ini by default
+
+2003-10-30 17:05  runyaga
+
+	* skins/plone_form_scripts/register.cpy (Plone-2_0-branch): fix
+	  1733
+
+2003-10-30 16:37  runyaga
+
+	* Portal.py, skins/plone_scripts/expireAuthCookie.py
+	  (Plone-2_0-branch): issue 1779 when Portal is being deleted it
+	  sets an attr called, removal_inprogress=1 and CMFQuickInstaller
+	  now checks for it
+
+2003-10-30 14:12  limi
+
+	* skins/plone_images/: flag_dk.png, flag_no.png, flag_uk.png
+	  (Plone-2_0-branch): Checked in some of the flags, the rest is
+	  coming later.
+
+2003-10-30 10:19  runyaga
+
+	* CustomizationPolicy.py, setup/SetupBase.py (Plone-2_0-branch):
+	  its too late.. need to sleep
+
+2003-10-30 10:11  runyaga
+
+	* MigrationTool.py (Plone-2_0-branch): oops.. now it works ;-)
+
+2003-10-30 09:58  runyaga
+
+	* setup/: ConfigurationMethods.py, SetupBase.py (Plone-2_0-branch):
+	  made SetupBase inherient from Acquisition.Implicit.  This is the
+	  laziest possible thing you could do without rewriting it.  We
+	  wrap the 'ConfigWidget' with a context each time a
+	  CustomizationPolicy is executed
+
+2003-10-30 09:00  runyaga
+
+	* skins/plone_scripts/expireAuthCookie.py (Plone-2_0-branch): now
+	  logout works properly
+
+2003-10-30 07:20  zopezen
+
+	* MigrationTool.py (Plone-2_0-branch): Don't hold to widgets in the
+	  widget registry because that means holding on to objects that may
+	  have changed, if at this late hour, instead
+
+2003-10-30 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-10-29 16:20  bmh
 
 	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
