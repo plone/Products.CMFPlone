@@ -25,15 +25,6 @@ body {
     color: &dtml-mainFontColor;;
     margin: 0;
     padding: 0;
-/* These work in IE only, changes the look of the scrollbar + textareas 
-    scrollbar-base-color: &dtml-mainTabBackground;;
-    scrollbar-highlight-color: &dtml-mainTabBackground;;
-    scrollbar-track-color: &dtml-evenRowBackground;;
-    scrollbar-darkshadow-color: &dtml-evenRowBackground;;
-    scrollbar-3dlight-color: &dtml-mainTabBorderColorSelected;;
-    scrollbar-shadow-color: &dtml-mainTabBorderColorSelected;;
-    scrollbar-arrow-color: &dtml-mainTabFontColorSelected;;
-*/
 }
 table {
     font-size: 100%;
@@ -311,10 +302,11 @@ ul#portalTabs {
     white-space: nowrap;
     list-style: none;
     margin: 0;
+    height: auto;
+    line-height: normal;
 }
 ul#portalTabs li {
     display: inline;
-    line-height: 1.2em;
 }
 ul#portalTabs li a {
     /* The normal, unselected tabs. They are all links */
@@ -324,7 +316,7 @@ ul#portalTabs li a {
     border-style: solid solid none solid;
     color: &dtml-mainTabFontColor;;
     font-weight: &dtml-mainTabFontWeight;;
-    height: 1.2em;
+    height: auto;
     margin-right: 0.5em;
     padding: 0em 2em;
     text-decoration: none;
@@ -474,8 +466,6 @@ ul.contentViews li {
 .pageContent {
     padding: 1em;
     margin: 0em 0em 2em 0em;
-/* Fix for a bug in IE6 where text becomes invisible: */
-    height: 100%;
 }
 
 .editable {
@@ -817,8 +807,6 @@ div.comment {
     padding: 0 1em 0.5em 1em;
     border-style: dashed;
     color: gray;
-    /* Fix for the IE6 disappearing float bug */
-    height: 100%;
 }
 
 div.comment h1,
