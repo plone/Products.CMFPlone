@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Commented out the javascript that auto-focuses on the first field in a form. 
+      There are too many places that causes a lot of trouble by moving focus away from 
+      a field in which the user is actually  typing. 
+      [elvix]
+
     - Backported fix for http://plone.org/collector/2183 from HEAD.
       _verifyObjectPaste() should deny pasting if the content type is not
       allowed in the target container.
