@@ -7,16 +7,18 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-    <div meal:fill-slot="super1">
-       <div metal:use-macro="here/portal_tabs/macros/folderTabs">
-       Content tabs
-       </div>
+    <div metal:fill-slot="super1">
 
-       <div metal:use-macro="here/portal_bars/macros/contentBar">
-       Content bar
-       </div>
+            <div metal:use-macro="here/portal_tabs/macros/folderTabs">
+            Content tabs
+            </div>
+
+            <div metal:use-macro="here/portal_bars/macros/contentBar">
+            Content bar
+            </div>
+
     </div>
-    
+
     <div metal:fill-slot="main">
 
         <div class="contentHeader"
@@ -55,7 +57,9 @@
                     <td tal:condition="not: obj/isPrincipiaFolderish | nothing"
                         tal:content="python:here.getObjSize(obj)">Size</td>
                     <td tal:content="python:here.toPortalTime(obj.ModificationDate())">Modification Date</td>
-                    <td> <span tal:replace="here/Description"> Description </span> &nbsp; </td>
+                    <td tal:condition="here/Description"
+		        tal:content="here/Description"> description </td>
+		    <td tal:condition="not: here/Description"> &nbsp; </td>
                 </tr>
 		</metal:block>
             </tbody>
