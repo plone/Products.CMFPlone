@@ -161,7 +161,7 @@ as possible.
     <div class="row">
          <div class="label" i18n:translate="label_description">Description</div>
          <div class="field">
-           <textarea name="description:text" rows="10" cols="55" i18n:translate="help_prefix_lines_with_whitespace">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
+           <textarea name="description:text" rows="10" cols="55" i18n:translate="help_prefix_lines_with_whitespace"></textarea>
          </div>
 
     </div>
