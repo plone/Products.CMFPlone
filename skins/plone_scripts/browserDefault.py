@@ -1,9 +1,15 @@
 ## Script (Python) "browserDefault"
-##title=Set Browser Default
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##parameters=request
-
-if request['REQUEST_METHOD'] != 'GET':
-    return context, [request['REQUEST_METHOD']]
+##title=Set Browser Default
+##
+if request.has_key('REQUEST_METHOD'):
+    if request['REQUEST_METHOD'] != 'GET':
+        return context, [request['REQUEST_METHOD']]
 
 default_pages = ['index_html', ]
 pages = getattr(context, 'default_page', [])
