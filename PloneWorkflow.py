@@ -13,11 +13,13 @@ def setupDefaultPloneWorkflow(wf):
 def configureEventPermissions(wf):
     """ Since events use a unique set of Permissions we 
         need to add it to the workflow definition and make
-        it conform to other tranistions/states 
+        it conform to other transitions/states 
     """
     wf.permissions+=(ChangeEvents, )
     wf.states.published.permission_roles[ChangeEvents]=('Manager',)
     wf.states.pending.permission_roles[ChangeEvents]=('Manager', 'Reviewer')
+    wf.states.private.permission_roles[ChangeEvents]=('Manager', 'Owner')
+    wf.states.visible.permission_roles[ChangeEvents]=('Manager', 'Owner')
 
 def createDefaultPloneWorkflow(id):
     ob=DCWorkflowDefinition(id)
