@@ -1,8 +1,3 @@
-2003-06-10  Sidnei da Silva  <sidnei@x3ng.com>
-
-	* ConfigurationMethods.py (installPortalTools): Adding actionicons
-	tool and interface tool if they werent already instantiated.
-
 2003-05-24  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* PloneFolder.py: Better fix. Assert that we implement whatever
