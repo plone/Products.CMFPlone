@@ -13,6 +13,13 @@
 
     <h1 i18n:translate="heading_error_log">Error log</h1>
          
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="">
+    Up to Plone Setup
+    </a>
+
     <p i18n:translate="description_error_log_setup">
         This page lists the exceptions that have occurred in this site
         recently.  You can configure how many exceptions should be kept
@@ -78,28 +85,38 @@
                 No exceptions logged.
                 </div>
 
-                <div class="field" tal:condition="entries">
-                        <span i18n:translate="label_time">Time</span>
-                        <span i18n:translate="label_user_name">Username (User Id)</span>
-                        <span i18n:translate="label_exception">Exception</span>
+                <table class="sortable listing"
+                       tal:condition="entries">
+                    <thead>
+                        <tr>
+                            <th i18n:translate="label_time">Time</th>
+                            <th i18n:translate="label_user_name">User Name</th>
+                            <th i18n:translate="label_exception">Exception</th>
+                        </tr>
+                    </thead>
 
-                    <div tal:define="updatetime python:float(member.getProperty('error_log_update',''))"
-                         tal:repeat="entry entries">
+                    <tbody tal:define="updatetime python:float(member.getProperty('error_log_update',''))">
                         
-                        <div tal:condition="python: test(entry['time'] > updatetime,1,0)">
+                        <tal:entry tal:repeat="entry entries">
+                        <tr tal:define="oddrow repeat/entry/odd;"
+                            tal:attributes="class python:test(oddrow, 'even', 'odd')"
+                            tal:condition="python: test(entry['time'] > updatetime,1,0)">
                         
-                            <span tal:replace="python: DateTime(entry['time']).Date()">13:04:41</span>
-                            <span tal:replace="string: ${entry/username} (${entry/userid})">joe</span>
-                            <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
-                                <span tal:replace="entry/type">AttributeError</span>:
-                                <span tal:define="value entry/value"
-                                      tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
-                                Application object has no attribute "gak"
-                                </span>
-                            </a>
-                        </div>
-                    </div>    
-                </div>
+                            <td tal:content="python: DateTime(entry['time'])">13:04:41</td>
+                            <td tal:content="string: ${entry/username} (${entry/userid})">joe</td>
+                            <td>
+                                <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
+                                    <span tal:replace="entry/type">AttributeError</span>:
+                                    <span tal:define="value entry/value"
+                                          tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
+                                    Application object has no attribute "gak"
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tal:entry>
+                    </tbody>
+                </table>
                 
                 <div class="formControls">
                     <input class="standalone" type="submit" name="submit" value="Refresh" i18n:attributes="value" />
