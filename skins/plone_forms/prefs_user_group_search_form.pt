@@ -80,7 +80,9 @@
             </tr>
             <tr class="even">
                 <td>
-                <input type="checkbox" selected="selected" />
+                <input class="noborder"
+                       type="checkbox" 
+                       selected="selected" />
                 </td>
 
                 <td>
