@@ -54,9 +54,10 @@
 
         <ul class="menu"
             id="statusMenu"
-            onmouseover="menuMouseover(event)">  
-            <tal:block define="global transitions python:here.portal_workflow.getTransitionsFor(here, here)"
-                       repeat="transition transitions">
+            onmouseover="menuMouseover(event)"
+            tal:define="global transitions python:wtool.getTransitionsFor(here, here)"
+            tal:condition="transitions">  
+            <tal:block repeat="transition transitions">
             <li class="menuItem">
                 <a href="#"
                    i18n:translate=""
