@@ -120,7 +120,7 @@
 			</div>
 
             <a href="#" tal:attributes="href portal_url" >
-            	<img src="img/logo.png" class="logo" alt="Zope CMF" border="0" tal:attributes="src string:$portal_url/logo.png" />
+            	<img src="img/logo.png" class="logo" alt="Plone" border="0" tal:attributes="src string:$portal_url/logo.png" />
             </a>
 		
 
