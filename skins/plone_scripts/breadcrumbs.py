@@ -14,7 +14,7 @@ if obj is None:
 relative_ids = context.portal_url.getRelativeContentPath(obj)
 published = context.REQUEST.get('PUBLISHED', None)
 published_id = None
-if published and hasattr(published, 'getId'):
+if published is not None and hasattr(published, 'getId'):
     published_id = published.getId()
 
 currentlyViewingFolderContents = (published_id == 'folder_contents')
