@@ -6,7 +6,7 @@
 
 <!-- The languages box -->
 
-<div metal:define-macro="portletLanguage"
+<div metal:define-macro="portlet"
      tal:define="PTS modules/Products/PlacelessTranslationService | nothing;
                  portal here/portal_url/getPortalObject"
      tal:condition="PTS">

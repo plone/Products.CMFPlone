@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The Recently Published items box -->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_recent. -->
 
 <div metal:define-macro="recentlyPublishedBox"
      tal:condition="not: isAnon"

@@ -8,7 +8,7 @@
      Do not try to make sense of this.
 -->
 
-<div metal:define-macro="portletNavigation"
+<div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
        tal:define="isContainer here/isPrincipiaFolderish|nothing;

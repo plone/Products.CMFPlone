@@ -6,7 +6,7 @@
 
 <!-- The review box -->
 
-<div metal:define-macro="portletReview"
+<div metal:define-macro="portlet"
      tal:define="DateTime python:modules['DateTime'].DateTime;
                  results here/my_worklist;"
      tal:condition="results">

@@ -7,7 +7,7 @@
 
 <!-- The Log in box -->
 
-<div metal:define-macro="portletLogin"
+<div metal:define-macro="portlet"
      tal:omit-tag=""
      tal:condition="isAnon">
 

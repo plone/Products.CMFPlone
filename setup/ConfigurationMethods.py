@@ -62,14 +62,14 @@ def addSiteProperties(self, portal):
 
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
-    left_slots=( 'here/navigation_tree_slot/macros/navigationBox'
-               , 'here/login_slot/macros/loginBox'
-               , 'here/related_slot/macros/relatedBox' )
-    right_slots=( 'here/workflow_review_slot/macros/review_box'
-                , 'here/news_slot/macros/newsBox'
-                , 'here/events_slot/macros/eventsBox'
-                , 'here/recently_published_slot/macros/recentlyPublishedBox'
-                , 'here/calendar_slot/macros/calendarBox' )
+    left_slots=( 'here/portlet_navigation/macros/portlet'
+               , 'here/portlet_login/macros/portlet'
+               , 'here/portlet_related/macros/portlet' )
+    right_slots=( 'here/portlet_review/macros/portlet'
+                , 'here/portlet_news/macros/portlet'
+                , 'here/portlet_events/macros/portlet'
+                , 'here/portlet_recent/macros/portlet'
+                , 'here/portlet_calendar/macros/portlet' )
     safeEditProperty(portal, 'left_slots', left_slots, 'lines')
     safeEditProperty(portal, 'right_slots', right_slots, 'lines')
     safeEditProperty(portal.Members, 'right_slots', (), 'lines')

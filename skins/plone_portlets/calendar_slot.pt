@@ -4,6 +4,9 @@
 
 <body>
 
+<!-- This portlet is now deprecated.  It has been moved to portlet_calendar. 
+     The calendar date pickers will remain until they are moved to their own macros. -->
+
 <div metal:define-macro="calendarBox"
      tal:omit-tag=""
      tal:define="DateTime python:modules['DateTime'].DateTime;

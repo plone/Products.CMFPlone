@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The news box -->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_news. -->
 
 <div metal:define-macro="newsBox"
      tal:define="results python:request.get('news', here.portal_catalog.searchResults( meta_type='News Item'

@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The events box -->
+<!-- This portlet has been deprecated.  The new portlet is now portlet_events -->
 
 <div metal:define-macro="eventsBox"
      tal:define="results python:here.portal_catalog.searchResults( portal_type='Event'

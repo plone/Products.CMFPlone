@@ -6,7 +6,7 @@
 
 <!-- The Favorites Box -->
 
-<div metal:define-macro="portletFavorites"
+<div metal:define-macro="portlet"
      tal:omit-tag=""
      tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
      tal:condition="nocall: folder">

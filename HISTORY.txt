@@ -4,6 +4,18 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+    RC2 
+
+    - Now in setup/ConfigurationMethods.py where the left/right_slots for the 
+      portal root are created have been changed.  It is quite sensible.  We
+      are removing the terminology of 'slots'.  We are moving towards the prefered
+      naming, 'portlets'.  Macro paths are sensible: here/portlet_foo/macros/portlet
+      This means that all slots are now renamed portlet_$name and all macro have been
+      renamed to 'portlet'.  The old slot code still exists and has deprecation comments
+      in the PageTemplates.
+
+    RC1
+
     - PrivatePloneWorkflow and PrivateFolderWorkflow no longer register their 
       workflow factories. They will disappear from Plone core.
       [stefan]

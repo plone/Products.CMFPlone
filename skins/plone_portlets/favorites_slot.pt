@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The Favorites Box -->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_favorites. -->
 
 <div metal:define-macro="favoritesBox"
      tal:omit-tag=""

@@ -6,7 +6,7 @@
 
 <!-- The events box -->
 
-<div metal:define-macro="portletEvents"
+<div metal:define-macro="portlet"
      tal:define="results python:here.portal_catalog.searchResults( portal_type='Event'
                                                                  , end=here.ZopeTime()
                                                                  , end_usage='range:min'

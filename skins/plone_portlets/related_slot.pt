@@ -1,8 +1,11 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
+
 <body>
-<!-- The Related Items box -->
+
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_related. -->
+
 <div metal:define-macro="relatedBox"
      tal:define="localContent here/navigationLocalRelated;
                  remoteContent here/navigationRemoteResources;"

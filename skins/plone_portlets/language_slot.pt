@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The languages box -->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_language. -->
 
 <div metal:define-macro="languageBox"
      tal:define="PTS modules/Products/PlacelessTranslationService | nothing;

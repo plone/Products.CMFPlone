@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The review box -->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_review. -->
 
 <div metal:define-macro="review_box"
      tal:define="DateTime python:modules['DateTime'].DateTime;

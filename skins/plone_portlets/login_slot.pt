@@ -4,7 +4,7 @@
 
 <body>
 
-<!-- The Log in box -->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_login -->
 
 <div metal:define-macro="loginBox"
      tal:omit-tag=""

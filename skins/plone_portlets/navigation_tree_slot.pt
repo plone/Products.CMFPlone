@@ -4,9 +4,7 @@
 
 <body>
 
-<!-- This code is *really* messed up, and will be replaced in the next version of Plone. 
-     Do not try to make sense of this.
--->
+<!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_navigation. -->
 
 <div metal:define-macro="navigationBox"
        i18n:domain="plone"
