@@ -140,8 +140,8 @@
                      i18n:id="url_help"
                      class="help" 
                      style="visibility:hidden">
-                The address of the location. Prefix optional, but will default
-                to HTTP. FTP and other protocols are also valid types.
+                The address of the location. Prefix is optional; if not
+                provided, the link will be relative.
                 </div>
             </div>
             
