@@ -1,4 +1,4 @@
-<div tal:condition="python:here.portal_discussion.getDiscussionFor(here) or None"
+<div tal:condition="python:here.portal_discussion.isDiscussionAllowedFor(here)"
      tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
     <a name="comments"> </a>
     <div tal:repeat="reply python:container.sort_modified_ascending(here.talkback.getReplies())">
