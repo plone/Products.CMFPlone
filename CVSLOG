@@ -1,3 +1,29 @@
+2004-04-29 21:21  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Added dates to the history.
+	  Please fill in the dates on upcoming releases too. :)
+
+2004-04-29 20:34  dreamcatcher
+
+	* InterfaceTool.py, skins/plone_templates/colophon.pt,
+	  skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Added a slot for colophon. Rewrapped some lines.
+
+2004-04-29 15:06  tesdal
+
+	* NavigationTool.py (Plone-2_0-branch): Removing __version__
+	  completely.
+
+2004-04-29 10:13  shh42
+
+	* ActionIconsTool.py (Plone-2_0-branch), ActionIconsTool.py: The
+	  ManageSite permission does not exist any more (and we don't need
+	  it anyway).
+
+2004-04-29 06:17  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-28 06:17  longsleep
 
 	* CVSLOG: auto generated new changelog
