@@ -6,6 +6,9 @@ Plone 2.0 - Fyuti
 
    RC5/Final?   
 
+    = Removed false 'required' indicators for Title attribute on file/image
+      edit forms.  You simply need to upload a file.  Thats it.
+
     - Added extra check for dictionary-based actions. Will work better 
       with old sites being migrated.
       [tesdal]
