@@ -984,16 +984,18 @@ input.searchButton {
     vertical-align: middle;
 }
 
-/* XXX FIXME: rewrite these tables, need vertical/horizontal mode */
+/* Vertical addition class */
 
-.listing th.vertical {
-    padding: 0.5em;
+.vertical th {
+    padding: 0.25em 0.5em;
 }
 
-.listing td.vertical {
-    border-top: 1px solid #8cacbb; 
-    padding: 0.5em;
+.vertical td {
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0.25em 0.5em;
 }
+
+
 
 ul.configlets {
     margin: 1em;
