@@ -56,8 +56,8 @@
            tal:content="match/Title" />
                 </td>   
                 <td tal:content="match/Type">Type</td>
-                <td>Modification Date [FIXME]</td>
-                <td>Description [FIXME]</td>
+                <td tal:content="match/ModificationDate">Modification Date</td>
+                <td tal:content="match/Description">Description</td>
             </tr>
         </metal:block>
         </tbody>
