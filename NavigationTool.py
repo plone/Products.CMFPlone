@@ -12,6 +12,7 @@ from urllib import urlencode
 from cgi import parse_qs
 from PloneUtilities import log as debug_log
 from PloneUtilities import log_deprecated
+from urlparse import urlparse, urljoin
 import re
 import traceback
 import sys
@@ -38,6 +39,8 @@ class NavigationTool (UniqueObject, SimpleItem):
 
             kwargs - additional keyword arguments are passed to subsequent pages either in
                 the REQUEST or as GET parameters if a redirection needs to be done
+
+            trace - navigation trace for internal use
         """
         try:
             trace.append('Looking up transition for %s.%s.%s' % (context, script, status))
@@ -79,7 +82,7 @@ class NavigationTool (UniqueObject, SimpleItem):
                         or 'failure') and optional kwargs.
                         getNext() will be called using the return code to determine the next page
                         to load.
-                url:URL redirects to the url specified by URL
+                url:URL redirects to the url specified by URL.  URL may be absolute or relative
                 PAGE invokes the page PAGE on the current context
         """
 
@@ -252,11 +255,15 @@ class NavigationTool (UniqueObject, SimpleItem):
             raise NavigationError(e, trace)
 
 
-    def _dispatchRedirect(self, context, url, trace, **kwargs):
+    def _dispatchUrl(self, context, url, trace, **kwargs):
         try:
             url = self._addUrlArgs(url, kwargs)
-#            self.log('url = ' + str(url), '_dispatchRedirect')
-            trace.append('dispatchRedirect: url = %s' % (str(url)))
+            if len(urlparse(url)[1]) == 0:
+                # no host specified -- url is relative
+                # get an absolute url
+                url = urljoin(context.absolute_url()+'/', url)
+#            self.log('url = ' + str(url), '_dispatchUrl')
+            trace.append('dispatchUrl: url = %s' % (str(url)))
             return self.REQUEST.RESPONSE.redirect(url)
         except Exception, e:
             raise NavigationError(e, trace)
