@@ -263,6 +263,8 @@ class MembershipTool(BaseTool):
                 if failMessage is not None:
                     raise 'Bad Request', failMessage
 
+            if domains is None:
+                domains = []
             acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
             #member.setSecurityProfile(password=password, domains=domains)
         else:
