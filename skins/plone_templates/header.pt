@@ -37,7 +37,7 @@
     -->
     
     <!-- Main style sheets for CSS2 capable browsers -->
-    <style type="text/css" media="all"
+    <style type="text/css" media="screen"
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
 
 
