@@ -35,7 +35,7 @@ class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
         self.addPS('ps', body=psbody)
         try:
             self.folder.ps()
-        except (AttributeError, Unauthorized):
+        except (AttributeError, ImportError, Unauthorized):
             pass
 
 
@@ -156,6 +156,10 @@ class TestSecurityDeclarations(RestrictedPythonTest):
     def testAccess_Unauthorized(self):
         self.check('import AccessControl;'
                    'print AccessControl.Unauthorized')
+
+    def testImport_zExceptionsUnauthorized(self):
+        # XXX: Note that this is not allowed
+        self.checkUnauthorized('from zExceptions import Unauthorized')
 
     def testImport_ConflictError(self):
         self.check('from ZODB.POSException import ConflictError')
