@@ -1,6 +1,6 @@
 <metal:membercontent tal:define="member nocall:options/member">
 
-Home page for <span tal:replace="member/getId" />
+Home page for <span tal:replace="member/getUserName" />
 
   This page was automatically created for you when
   you joined the community or when your account

@@ -127,6 +127,14 @@ def addMemberdata(self, portal):
     if not hasattr(md, 'fullname'):
         safeEditProperty(md, 'fullname', '', 'string')
 
+def modifyActionProviders(self, portal):
+    mt=getToolByName(portal, 'portal_properties')
+    _actions=mt._cloneActions()
+    for action in _actions:
+        if action.id=='configPortal':
+            action.title='Setup Plone'
+    mt._actions=_actions
+    
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
     mt.addAction('myworkspace'
@@ -269,6 +277,7 @@ functions = {
     'modifySkins': modifySkins,
     'installPortalTools': installPortalTools,
     'modifyAuthentication': modifyAuthentication,
+    'modifyActionProviders': modifyActionProviders,
     }
 
 class GeneralSetup(SetupWidget):
