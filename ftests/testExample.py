@@ -96,13 +96,15 @@ class TestFunctionalExample(ZopeTestCase.Functional, PloneTestCase.PloneTestCase
         self.b.select_form('edit_form')
         # Specify a new title on the form.
         self.b['title'] = 'My test document'
+        # Body text is required by ATCT Documents
+        self.b['text'] = 'My text'
         # Submit the form.
-        self.b.open(self.b.click('form.button.Save'))
+        self.b.open(self.b.click('form_submit'))
 
         # Get the post-click url and chop off server info and the query string.
         url = urlparse(self.b.geturl())[2]
         # Check the template id in the url.
-        self.assertEqual(url.split('/')[-1], 'document_view')
+        self.assertEqual(url.split('/')[-1], 'view')
         # Get the document from the zodb using the id obtained earlier.
         doc = getattr(self.folder, doc_id)
         # Verify that the document's title is what we set it to be.
