@@ -38,11 +38,13 @@
         
             <div class="title"> 
     
-                <span style="float: right; vertical-align: top;">
+                <span style="float: right; vertical-align: top;" 
+                      tal:define="allowedContentTypes here/allowedContentTypes"
+		      tal:condition="allowedContentTypes">
                     <!-- Add Item pulldown -->
                     <select name="type_name" >
                         <option value="Select">Select</option>
-                        <metal:block tal:repeat="ctype here/allowedContentTypes"
+                        <metal:block tal:repeat="ctype allowedContentTypes"
                                      tal:define="global filterOut  python:['Favorite']">
                         <option value="Document"
                                 tal:condition="python: ctype.getId() not in filterOut"
@@ -63,10 +65,12 @@
                 <span class="folderName" tal:condition="python: user.getUserName()!=here.getId()" tal:content="here/title_or_id">
                 Directory Id
                 </span> 
-    
+   
+                <tal:block tal:define="parent_url python:here.navigationParent(here, template.getId());"
+		           tal:condition="parent_url">
                 (<a href="" 
-                   tal:define="parent_url python:here.navigationParent(here, template.getId());"
                    tal:attributes="href parent_url">Up one level</a>)
+                </tal:block>
 
             </div>
     
