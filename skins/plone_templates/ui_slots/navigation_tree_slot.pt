@@ -23,7 +23,7 @@
 
     <tbody>
 
-        <tr class="odd">
+        <tr class="odd" >
             <td colspan="2">
             <div>
                 <div
@@ -42,12 +42,13 @@
                                              sibling_title python:'&nbsp;;'.join(te['object'].title_or_id()[:18].split(' '));"
                    ><span tal:repeat="x python:range( te['level']-1)" tal:omit-tag="">&nbsp;</span
                    >
-                    <a href="#" class="plain"
+                    <a href="#" class="plain" 
                        tal:condition="python: not iscurrent and sibling.meta_type != 'CMF Site'"
                        tal:define="url string:${sibling/absolute_url}/${stdCommand}"
                        tal:attributes="href url" >
                        <img 
                            tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
+                           tal:on-error="structure here/folder_icon.gif"
                         />&nbsp;<tal:block tal:content="structure sibling_title" />
                     </a>
                     <a href="#" class="plain"
@@ -57,10 +58,11 @@
                        <img tal:replace="structure here/favorite_icon.gif" 
                        />&nbsp;<tal:block tal:content="structure sibling_title" />
                     </a>
-                    <tal:block tal:condition="iscurrent">
+                    <tal:block tal:condition="iscurrent" tal:on-error="string:scheisse">
                     <span class="even">
                    <img 
                            tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
+                           tal:on-error="structure here/folder_icon.gif"
                    />&nbsp;<strong 
                                tal:content="structure sibling_title">
                                Current content id
