@@ -66,6 +66,11 @@ class TempFolder(TempFolderBase):
                         if not role in local_roles[k]:
                             local_roles[k].append(role)
 
+            # Check if local role has to be acquired.
+            if getattr(object, '__ac_local_roles_block__', None):
+                # Ok, we have to stop there, as lr. blocking is enabled
+                break
+
             # Prepare next iteration
             inner = getattr(object, 'aq_inner', object)
             parent = getattr(inner, 'aq_parent', None)
