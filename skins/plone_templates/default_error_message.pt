@@ -30,11 +30,10 @@
             send a mail to the administrator of this site.
             </p>
 
-            <a href="mailto:admin@here.com" title="Email Administrator"
+            <a href="mailto:admin@here.com" title="Administrator Email"
                tal:attributes="href string:mailto:${here/portal_properties/site_properties/email_from_address}"
                tal:content="string:${here/portal_properties/site_properties/email_from_address}"
-               i18n:attributes="title">
-            Email Admin
+               i18n:attributes="title">Email Admin
             </a>.
 
             <p i18n:translate="description_site_error_thank_you">
