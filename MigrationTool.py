@@ -133,12 +133,7 @@ class MigrationTool( UniqueObject, SimpleItem):
         """ We cant instantiate widgets at run time
         but can send all get calls through here... """
         _widget = _widgetRegistry[widget]
-        if isinstance(_widget, types.ClassType):
-            w = _widget(self.aq_parent, self)
-            _widgetRegistry[widget] = w
-            return w
-            
-        return _widget
+        return _widget(self.aq_parent, self)
                 
     security.declareProtected(ManagePortal, 'listWidgets')
     def listWidgets(self):
