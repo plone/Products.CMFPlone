@@ -161,7 +161,12 @@
               </span>
             
               <span class="field">
-                  was performed by <span tal:replace="items/actor" /> 
+                  was performed by 
+		  <a href="/Members/runyaga"
+		     tal:attributes="href python:container.portal_membership.getHomeUrl(items.get('actor'), '')"
+		     tal:content="items/actor">
+		     runyaga
+	          </a> 
                   on <span tal:replace="python: items['time'].aCommon()" />
                   <span tal:condition="items/effective_date|nothing">
                   (effective: 
