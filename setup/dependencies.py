@@ -11,6 +11,37 @@ def log(message,summary='',severity=zLOG.ERROR, optional=None):
         msg = 'Plone Dependency'
     zLOG.LOG(msg,severity,summary,message)
 
+cmfcore = 0
+try:
+    import Products.CMFCore
+    cmfcore = 1
+except ImportError:
+    log("CMFCore not found.  Please download the CMF from http://cmf.zope.org/download")
+
+
+# check the CMF version
+if cmfcore:
+    from Products.CMFCore import cmfcore_globals
+    from App.Common import package_home
+    from os.path import join
+
+    try:
+        file = join(package_home(cmfcore_globals), 'version.txt')
+        CMF_VERSION = open(file, 'r').read().strip()
+        version = CMF_VERSION[len('CMF-'):]
+        filtered = ''
+        for v in version:
+            if v in ['0','1','2','3','4','5','6','7','8','9','.']:
+                filtered += v
+            else:
+                break
+        x = float(filtered)
+    except IOError:
+        x = 0
+        CMF_VERSION = 'Unknown'
+    if x < 1.4:
+        log("Plone requires CMF 1.4 or later.  Your version: %s" % CMF_VERSION)
+
 try:
     import Products.CMFQuickInstallerTool
 except ImportError:
@@ -38,10 +69,14 @@ except ImportError:
     log("GroupUserFolder not found. Please download it from http://sf.net/projects/collective", optional=1)
 
 try:
-    import Products.CMFFormControllerPatch
+    import Products.CallProfiler
+    try:
+        import Products.CMFFormControllerPatch
+    except ImportError:
+        log("CMFFormControllerPatch not found. This is only required for using Call Profiler with Plone, you can download it from http://sf.net/projects/collective", severity=zLOG.INFO, optional=1)
 except ImportError:
-    log("CMFFormControllerPatch not found. This is required for using Call Profiler with Plone, you can download it from http://sf.net/projects/collective", optional=1)
-
+    pass
+    
 try:
     import Products.BTreeFolder2
 except ImportError:
