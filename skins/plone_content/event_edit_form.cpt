@@ -113,7 +113,8 @@
                 <label for="event_type" i18n:translate="label_event_type">Event Type</label>
 
                 <div class="formHelp" i18n:translate="help_event_type">
-                Multiple event types possible by depressing Ctrl.
+                Multiple event types possible by depressing Ctrl (or Apple
+                key on Mac).
                 </div>
     
                 <select name="event_type:list" 
@@ -237,7 +238,7 @@
             <label for="contact_name" i18n:translate="label_contact_name">Contact Name</label>
                 
             <div class="formHelp" i18n:translate="help_contact_name">
-            Optional contact person or organization for the event.
+            Contact person or organization for the event.
             </div>
             
             <input type="text"
@@ -255,7 +256,7 @@
             <label for="contact_email" i18n:translate="label_contact_email">Contact E-mail</label>
                 
             <div class="formHelp" i18n:translate="help_contact_email">
-            Optional e-mail address to display for information regarding
+            E-mail address to display for information regarding
             the event.
             </div>
             
@@ -274,7 +275,7 @@
             <label for="contact_phone" i18n:translate="label_contact_phone">Contact Phone</label>
                 
             <div class="formHelp" i18n:translate="help_contact_phone">
-            Optional phone number to call for information and/or booking.
+            Phone number to call for information and/or booking.
             </div>
             
             <input type="text"
