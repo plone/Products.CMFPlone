@@ -5,13 +5,13 @@
       metal:use-macro="here/main_template/macros/master">
 	
 <body>
-    <span metal:fill-slot="main"
+    <div metal:fill-slot="main"
           tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='modified',sort_order='reverse',review_state='published');
 		      Batch python:modules['ZTUtils'].Batch;
 		      DateTime python:modules['DateTime'].DateTime;
 		      b_start python:request.get('b_start',0);">
 	
-		<form name="search results" action="#" method="POST"
+		<form name="searchresults" action="#" method="post"
 				tal:condition="results"
           tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 				
@@ -28,7 +28,7 @@
 				</a>
 			</span> 
 			
-			<span tal:repeat="result batch" >
+			<div tal:repeat="result batch" >
 			<div class="row" tal:define="resultObject result/getObject">
 				
 				<h1 tal:content="result/Title">
@@ -69,7 +69,7 @@
                 
 			</div>
             <hr />
-			</span>
+			</div>
 						
 			<span tal:define="p batch/previous | nothing" tal:condition="p"> 
 				<a href="#" tal:attributes="href string:?b_start=${p/first}">
@@ -89,7 +89,7 @@
             No news have been posted.
           </div>		
  
-  </span>
+  </div>
 
   
 </body>

@@ -32,7 +32,7 @@
             <span class="label">Text</span>
             
             <span class="field">
-                <input type="text" name="SearchableText" size="25">
+                <input type="text" name="SearchableText" size="25" />
             </span>
             
             <span class="info">
@@ -47,7 +47,7 @@
         <div class="row">
             <span class="label">Title</span>
             
-            <span class="field"><input type="text" name="Title" size="25"></span>
+            <span class="field"><input type="text" name="Title" size="25" /></span>
             
             <span class="info">
             Return items matching this title.
@@ -65,7 +65,7 @@
                 
                 <br />
                 
-                <select name="subject:list" size="7" multiple>
+                <select name="subject:list" size="7" multiple="multiple">
                     <option value="fix"
                             tal:repeat="subject allowedSubjects"
                             tal:replace="subject">fix</option>
@@ -84,7 +84,7 @@
             <span class="label">Description</span>
 	
             <span class="field">
-                <input type="text" name="Description" size="25">
+                <input type="text" name="Description" size="25" />
             </span>
 	
             <span class="info">
