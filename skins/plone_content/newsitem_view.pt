@@ -19,9 +19,10 @@
             News summary
         </div>
     
-        <p tal:condition="not: len_text"
-           i18n:translate="no_body_text">
-        This item does not have any body text, click the edit tab to change it.
+        <p tal:condition="python: not len_text and is_editable"
+           i18n:translate="no_body_text"
+           class="discreet">
+            This item does not have any body text, click the edit tab to change it.
         </p>
     
         <div class="stx"

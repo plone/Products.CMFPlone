@@ -20,8 +20,9 @@
             description
         </div>
     
-        <p tal:condition="not: len_text"
-           i18n:translate="no_body_text">
+        <p tal:condition="python: not len_text and is_editable"
+           i18n:translate="no_body_text"
+           class="discreet">
             This item does not have any body text, click the edit tab to change it.
         </p>
     
