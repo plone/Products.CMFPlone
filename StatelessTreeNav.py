@@ -213,6 +213,9 @@ class StatelessTreeBuilder:
             for sibling in item['siblings'] :
                 current = 0
 
+                if self.skipIndex_html and sibling.getId()=='index_html':
+                    continue
+
                 if (sibling == item['object']) :
                     act = 1
                     if item==list[-2] and (skipself or self.showFolderishChildrenOnly and not self.showNonFolderishObject):
