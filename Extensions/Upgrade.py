@@ -107,8 +107,7 @@ def normalize_tabs(self):
     mt_actions=[]
     for a in mt._actions:
         if a.id=='addFavorite' or \
-           a.id=='favorites' or \
-           a.id=='login':
+	   a.id=='favorites':
             a.visible=0
 	if a.id=='mystuff':
             mt_actions.insert(0, a)

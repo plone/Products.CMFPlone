@@ -181,13 +181,15 @@
 	    &nbsp;
   
             <a href=""
-	       tal:condition="my_stuff"
+	       tal:condition="not: here/portal_membership/isAnonymousUser"
 	       tal:attributes="href my_stuff/url">
 		 <img src="dummy.gif" alt="User" 
 		      border="0" 
 		      tal:attributes="src string:$portal_url/user.gif" /> &nbsp;
 		      <span tal:replace="user/getUserName">john</span>
 	    </a>
+	    <span tal:condition="here/portal_membership/isAnonymousUser">you are not logged in</span>
+
             <metal:block tal:repeat="action python:display_actions">
                 <a href=""
                    tal:attributes="href action/url">
