@@ -72,8 +72,12 @@ def addSupportOptions(self, outStream):
     outStream.write( "By default anonymous is not allowed to see the About box \n" )
 
 def loadEmergingExample(self, outStream):
+    """ 
+    installs a sample Website Content and supporting skin 
+    """
+    return
+
     import os
-    log('inside loadEmergingExample')
     root=getToolByName(self, 'portal_url').getPortalObject()
     
     filename='emerging.zexp'
@@ -98,13 +102,12 @@ def loadEmergingExample(self, outStream):
                                        title='',
                                        module='CMFPlone.emerging_utils',
                                        function='bindSkin')
-    log('added external method')
     website._setObject('bind_emerging_website', em)
+
     try:
         website.manage_addProduct['SiteAccess'].manage_addAccessRule('bind_emerging_website')
     except Exception, e:
-	log('trying to add accessrule ' + str(e))
-    log('finished merging setup')
+	log('error when trying to set AccessRule\n' + str(e))
 
 def populatePortalWithContent(self, outStream):
     """ eventually this will need to be moved out into a seperate module """
