@@ -143,6 +143,8 @@ class DefaultCustomizationPolicy:
                 new_actions.insert(1, a)
             elif a.id=='logout':
                 new_actions.append(a)
+            elif a.id=='preferences':
+                a.action=Expression('string:${portal_url}/portal_form/personalize_form')
             else:
                 new_actions.insert(len(new_actions)-1,a)
         mt._actions=new_actions
@@ -160,6 +162,7 @@ class DefaultCustomizationPolicy:
         for a in pp_actions:
             if a.id=='configPortal':
                 a.title='Plone Setup'
+                a.action=Expression('string:${portal_url}/portal_form/reconfig_form')
         pp._actions=pp_actions
 
         #the new plone actions are prefix with 'portal_form/'  this
