@@ -1,10 +1,6 @@
 Changelog for Plone
 
    (name of developer listed in brackets)
-   - CatalogTool's searchResults takes Permission settings aquired trough
-     local groups into acount. Permission local roles assigned to users
-     is still not honoured.
-     [_robert_]
 
 Plone 2.0 - Fyuti
 
@@ -146,6 +142,11 @@ Plone 2.0 - Fyuti
       installed.  QuickInstaller is now subclassed in Plone and has a test
       that installs/uninstalls a product.  [runyaga]
 
+    - CatalogTool's searchResults takes Permission settings aquired trough
+      local groups into acount. Permission local roles assigned to users
+      is still not honoured.
+      [_robert_]
+     
     - MembershipTool's listMembers and listMemberIds now only return real users 
       (not groups) when GRUF is employed. The MembershipTool comes with tests!
       [_robert_] [stefan]
