@@ -463,7 +463,7 @@ ul.contentViews li {
 }
 .contentActions ul li {
     border: &dtml-contentTabBorder;;
-    border-style: solid none solid solid;
+    border-style: none none none solid;
     display: inline;
     padding: 0 1em;
     margin: 0;
@@ -669,9 +669,9 @@ ul.menuBar, ul.menuBar li.menuButton {
 
 ul.menuBar li.menuButton {
     border: &dtml-contentTabBorder;;
-    border-style: solid none solid solid;
+    border-style: none none none solid;
 } 
-
+/*  border-style: solid none solid solid; */
 ul.menuBar li.menuButton .menuIndicator {
     color: &dtml-mainFontColor;;
 }

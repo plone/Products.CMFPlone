@@ -1,10 +1,11 @@
 <metal:globaldefine define-macro="defines"
       tal:define="
         global utool nocall:here/portal_url;
-        global mtool here/portal_membership;
-        global atool here/portal_actions;
+        global mtool nocall:here/portal_membership;
+        global atool nocall:here/portal_actions;
+        global aitool nocall:here/portal_actionicons;
         global putils nocall:here/plone_utils;
-        global wtool here/portal_workflow;
+        global wtool nocall:here/portal_workflow;
         global portal_object utool/getPortalObject;
         global portal_title portal_object/Title;
         global object_title here/Title;

@@ -10,6 +10,21 @@ Plone 2.0 - Fyuti
 
     Beta 2
 
+    - add portal_actionicons.renderActionIcon(category, iconid, default)
+      which returns back the actual object instance instead of a path.
+      Now you can put icon and action in the bar left of the 'add new item'
+      in the green bar by:
+
+          - creating an action who's category is: object_actions
+
+          - create an action_icon whos category is: object_actions 
+          and icon_id is the same as the 'id' above
+
+      this potentially invokes lots of calls down to portal_actionicons
+      but its the only way to actually get the icons with all the attributes.
+      We could cache the icons in the renderActionIcon method.  Also added
+      unit tests.
+
     - add PloneContent.py base class that inherients from PortalContent
       we could use this in the future to hook the reference engine in
       archetypes (or rather the reference engine that should move out
