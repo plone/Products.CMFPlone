@@ -163,13 +163,7 @@ def modifyActionProviders(self, portal):
     ut._actions=_actions
 
     at=getToolByName(portal, 'portal_actions')
-    _actions=at._cloneActions()
-    for action in _actions:
-        if action.id=='folderContents':
-            action.title='Contents'
-            action.name='Contents'
-    at._actions=_actions
-
+    correctFolderContentsAction(at)
     # Remove the portal_workflow from the actionproviders
     # Since we have the 'review_slot'
 #    at.deleteActionProvider('portal_workflow')
@@ -180,6 +174,17 @@ def modifyActionProviders(self, portal):
         if action.id=='reply':
             action.visible=0
     dt._actions=_actions
+
+def correctFolderContentsAction(actionTool):
+    _actions=actionTool._cloneActions()
+    for action in _actions:
+        if action.id=='folderContents':
+            action.title='Contents'
+            action.name='Contents'
+            action.condition=Expression(
+                    'python: member and folder is not object')
+    actionTool._actions=_actions
+    
 
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
