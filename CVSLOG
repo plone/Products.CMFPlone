@@ -1,3 +1,47 @@
+2003-12-07 04:20  limi
+
+	* skins/plone_forms/login_password.pt (Plone-2_0-branch): Button
+	  was missing CSS class.
+
+2003-12-07 01:01  runyaga
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): only show $X
+	  comments on news if they have comment
+
+2003-12-06 19:41  eaon
+
+	* skins/plone_styles/ploneColumns.css.dtml (Plone-2_0-branch):
+	  fixed silly mozilla bug - which made the css more logical ;)
+
+2003-12-06 19:18  elvix
+
+	* skins/: plone_ecmascript/plone_javascripts.js,
+	  plone_templates/main_template.pt (Plone-2_0-branch): updated
+	  external-links-detector script to use wrapper-div. This should
+	  remove the annoying flickering of the icons, Also removed
+	  onload-handler on body. Please keep main template free of
+	  javascript calls.
+
+2003-12-06 13:44  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): fixed
+	  content action menu (note: don't simplify without testing ;))
+
+2003-12-06 12:37  eaon
+
+	* skins/plone_ecmascript/plone_minwidth.js (Plone-2_0-branch): no
+	  unneeded margin anymore, 640x480 without horizontal scrollbars
+
+2003-12-06 12:09  eaon
+
+	* skins/plone_styles/ploneColumns.css.dtml (Plone-2_0-branch):
+	  cleanups, hopefully newest safari (1.1.1) fix? 640x480 now
+	  without scrollbars
+
+2003-12-06 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-05 20:16  zopezen
 
 	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): Untested, but no
