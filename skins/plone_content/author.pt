@@ -13,27 +13,35 @@
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
                     tal:define="author python:request.traverse_subpath[0];
-                                portrait python: mtool.getPersonalPortrait(author);">
+                                portrait python: mtool.getPersonalPortrait(author);
+                                authorinfo python: here.getAuthorInfo(author);">
 
         <div metal:use-macro="here/document_actions/macros/document_actions">
             Document actions (print, sendto etc)
         </div>
 
-        <h1 class="documentFirstHeading">
-            <tal:author content="python: mtool.getMemberById(author).getProperty('fullname')" />
-        </h1>
+        <tal:condition condition="authorinfo">
+            <h1 class="documentFirstHeading">
+                <tal:author content="authorinfo/fullname" />
+            </h1>
 
-        <div class="documentDescription">
-            <img src=""
+            <div class="documentDescription">
+                <img src=""
                  alt=""
                  class="portraitPhoto"
                  width="75"
                  height="100"
                  style="float: left"
                  tal:attributes="src portrait/absolute_url" />
-        This is Alexander Limi
-        </div>
-    
+              <tal:author content="string:This is ${authorinfo/fullname}" />
+            </div>
+        </tal:condition>
+        <tal:condition condition="not: authorinfo">
+            <h1 class="documentFirstHeading">
+                No user by that name
+            </h1>
+        </tal:condition>
+
     </tal:main-macro>
 </metal:main>
 
