@@ -11,22 +11,6 @@
     width: auto;
 }
 
-#content,
-#content p,
-div.comment,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.description,
-.portalMessage
-{
-    /* Fix for IE6 disappearing float bug */
-    height: 100%;
-}
-
 input {
         margin-bottom: 1px; /* bug fix */
 }
@@ -57,6 +41,30 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
     scrollbar-3dlight-color: &dtml-globalBorderColor;;
     scrollbar-shadow-color: &dtml-globalBorderColor;;
     scrollbar-arrow-color: &dtml-globalFontColor;;
+}
+
+/* 
+** Fix for IE6 diseappearing float bug and
+** Nonexistant Class for fixing IE5.0
+**  
+** Do not change anything here, this could 
+** cause IE 5.0 and/or 6.0 woes.
+*/
+
+.fakeclass {content:"\"/*"}
+
+#content,
+#content p,
+div.comment,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.description,
+.portalMessage {
+    height: 100%;
 }
 
 /* </dtml-with> */
