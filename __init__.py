@@ -1,15 +1,19 @@
 cmfplone_globals=globals()
+custom_policies={} #stores the registered Policies
 
 from Products.CMFCore import DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
 import MembershipTool, FormulatorTool, TranslatorTool
 import PloneFolder, Portal
+import CustomizationPolicy
+
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
 #for plone_debug method
 import zLOG
 ModuleSecurityInfo('zLOG').declarePublic('LOG')
 ModuleSecurityInfo('zLOG').declarePublic('INFO')
+ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
 
 #for form validation bits
 def allow_class(Class): 
@@ -63,4 +67,5 @@ def initialize(context):
                      , extra_constructors=contentConstructors
                      , fti=PloneFolder.factory_type_information
                      ).initialize( context )
-    Portal.register(context, cmfplone_globals)
+    Portal.register(context, globals())
+    CustomizationPolicy.register(context, globals())

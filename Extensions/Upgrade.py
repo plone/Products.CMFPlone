@@ -69,28 +69,33 @@ def normalize_tabs(self):
         if a.get('id','') in ('folderlisting', ):
             a['visible']=0
     folderType._p_changed=1
-			      
-    st=getToolByName(self, 'portal_actions')
-    st.addAction('index_html','Welcome','portal_url','', 'View', 'global_tabs')
-    st.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','global_tabs')
-    st.addAction('news','News','string: $portal_url/news','','View', 'global_tabs')
-    st.addAction('search_form','Search','string: $portal_url/search_form','','View','global_tabs')
-    st.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','','View','local_tabs')
+    get_transaction().commit(1)
 
+    #at=getToolByName(self, 'portal_actions')
+    #at.addAction('index_html','Welcome','portal_url','', 'View', 'global_tabs')
+    #get_transaction().commit(1)
+    #at.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','global_tabs')
+    #at.addAction('news','News','string: $portal_url/news','','View', 'global_tabs')
+    #at.addAction('search_form','Search','string: $portal_url/search_form','','View','global_tabs')
+    #at.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','','View','local_tabs')
+    #get_transaction().commit(1)
     #move add to favorites 
     mt=getToolByName(self, 'portal_membership')
-    for x in range(0, len(mt._actions)):
-        a=mt._actions[x]
-        if a.id=='addFavorite' or \
-	   a.id=='favorites':
+    #import pdb; pdb.set_trace()
+    #m_actions=mt._actions[:]
+    m_actions=mt.listActions()
+    for a in m_actions:
+        if getattr(a,'id','') in ('addFavorite', 'favorites'):
             a.visible=0
-    mt.addAction('myworkspace'
-                ,'My Workspace'
-                ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
-                ,'python: member and portal.portal_membership.getHomeFolder()'
-                ,'View'
-		,'user')
-    mt._p_changed=1
+    mt._actions=m_actions
+    #mt.addAction('myworkspace'
+    #            ,'My Workspace'
+    #            ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
+    #            ,'python: member and portal.portal_membership.getHomeFolder()'
+    #            ,'View'
+    #    	,'user')
+    #mt._p_changed=1
+    get_transaction().commit(1)
     #make 'join' action disappear if anonymous cant add portal member
     #this is aligned with out the 'sign in' box works in ui_slots
     rt=getToolByName(self, 'portal_registration')
@@ -98,7 +103,7 @@ def normalize_tabs(self):
         if a.id=='join':
             a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
     rt._p_changed=1
-    
+    get_transaction().commit(1)
     import time
     return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
 

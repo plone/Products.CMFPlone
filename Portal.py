@@ -1,9 +1,16 @@
+#First we want to setup touch points for people to register with the CustomizationPolicies
+from Products.CMFPlone import cmfplone_globals
+from Products.CMFPlone import custom_policies
+def listPolicies():
+    return custom_policies.keys()
+def addPolicy(label, klass):
+    custom_policies[label]=klass
+
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import Portal
-from Products.CMFPlone import cmfplone_globals
-from Extensions.Upgrade import normalize_tabs, setupButtonActions
+#from Extensions.Upgrade import normalize_tabs, setupButtonActions
 from Products.CMFCalendar.Extensions import Install as CalendarInstall
 from Products.ExternalMethod import ExternalMethod
 import Globals
@@ -134,7 +141,6 @@ class PloneGenerator(Portal.PortalGenerator):
         p._setObject('getWorklists', em)
         p._setObject('getAvailableTransitions', em2)
         
-        
     def setupPlone(self, p): 
         self.customizePortalTypes(p)
         self.customizePortalOptions(p)
@@ -143,8 +149,6 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupPloneSkins(p)
         self.setupExternalMethods(p)
 	CalendarInstall.install(p)
-        normalize_tabs(p)
-	setupButtonActions(p)
         
     def create(self, parent, id, create_userfolder):
         id = str(id)
@@ -164,13 +168,19 @@ def manage_addSite(self, id, title='Portal', description='',
                    create_userfolder=1,
                    email_from_address='postmaster@localhost',
                    email_from_name='Portal Administrator',
-                   validate_email=0, RESPONSE=None):
+                   validate_email=0,
+		   custom_policy='',
+		   RESPONSE=None):
     """ factory """
     gen = PloneGenerator()
     p = gen.create(self, id.strip(), create_userfolder)
     gen.setupDefaultProperties(p, title, description,
                                email_from_address, email_from_name,
                                validate_email)
+    if listPolicies() and custom_policy:
+        o=custom_policies[custom_policy]
+        o.customize(p)
+		
     if RESPONSE is not None:
         RESPONSE.redirect(p.absolute_url() + '/finish_portal_construction')
         
