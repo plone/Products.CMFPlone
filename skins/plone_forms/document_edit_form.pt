@@ -111,11 +111,17 @@
             </span>
 	    </div>
 
-	    <div class="row"> 
+	    <div class="row"
+	         tal:define="error_file errors/file|nothing;"> 
             
             <span class="label">Upload contents (optional)</span>
             
-            <span class="field"><input type="file" name="file" size="10" /></span>
+            <span class="field"
+	          tal:attributes="class python:test(error_file, 'field error', 'field')">
+                  <div tal:condition="error_file"
+                       tal:replace="error_file" />
+                  <input type="file" name="file" size="10" />
+            </span>
             
             <span class="info">
             This feature can be used if you already have the document 

@@ -8,6 +8,7 @@
 ##title=Validates a document edit_form contents
 ##
 REQUEST=context.REQUEST
+
 fv=context.portal_form_validation
 
 form=fv.createForm()
@@ -18,5 +19,12 @@ titleField=fv.createField('String', 'title', title='title', required=1, display_
 form.add_field(titleField)
 errors=fv.validate(form)
 
+
+if REQUEST.get('file', ''):
+    headers = REQUEST['file'].headers
+    if headers['Content-Type'].find('text')==-1:
+        if not errors: errors={} 
+	errors.update( {'file':'This file is not text, To upload binary files create File content,'} )
+	    
 context.validate_setupRequest(errors)
 return errors
