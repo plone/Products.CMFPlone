@@ -39,6 +39,11 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         self.app.manage_pasteObjects(cb)
         self.failUnless(hasattr(self.app, 'copy_of_portal'))
 
+    def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
+        uf = self.portal.acl_users
+        # I do not know yet how to proceed
+        # have to ask stefan holek
+
     
 if __name__ == '__main__':
     framework()
