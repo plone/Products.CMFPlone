@@ -279,13 +279,17 @@ div.workspace {
 div.workspace span.small {
     float: left;
     height: 30em;
-    width: 20em;	
+    width: 20em;
+    margin-right: 1em;
+    margin-bottom: 1em;
 }
 
 div.workspace span.big {
     float: left;
     height: 40em;
     width: 40em;	
+    margin-right: 1em;
+    margin-bottom: 1em;
 }
 
 

@@ -20,7 +20,9 @@
             <td colspan="2"
                 tal:define="actions python:container.portal_actions.listFilteredActionsFor(o);">
 
-                <a href="#" tal:attributes="href python:container.getActionUrlById('view', actions['object'])">
+                <a href="#"
+                   class="marker"
+                   tal:attributes="href python:container.getActionUrlById('view', actions['object'])">
                     <span tal:replace="o/title_or_id">
                     Extended Calendar Product
                     </span>
