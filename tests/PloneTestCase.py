@@ -9,6 +9,7 @@ from Testing import ZopeTestCase
 ZopeTestCase.installProduct('CMFCore')
 ZopeTestCase.installProduct('CMFDefault')
 ZopeTestCase.installProduct('CMFCalendar')
+ZopeTestCase.installProduct('CMFTopic')
 ZopeTestCase.installProduct('DCWorkflow')
 ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('CMFActionIcons')
