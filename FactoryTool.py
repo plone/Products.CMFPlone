@@ -14,6 +14,34 @@ from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 
+# patched version of __ac_local_roles__ used for portal_factory created objects
+# We need the patch because the object is created during traversal, when the
+# currently authenticated user is unknown, so the owner is not set correctly.
+def patchObj(instance):
+    def __ac_local_roles__():
+        member = getToolByName(self, 'portal_membership').getAuthenticatedMember()
+        username = member.getUserName()
+        # try to get original __ac_local_roles__
+        local_roles = getattr(self._old__ac_local_roles__, None)
+        if callable(local_roles):
+            local_roles = local_roles()
+        local_roles = local_roles or {}
+        # amend original local roles (if any)
+        if not local_roles.has_key(username):
+            local_roles[username] = []
+        if not 'Owner' in local_roles[username]:
+            local_roles[username].append('Owner')
+        return local_roles
+
+
+    # patch instance's __ac_local_roles__ method (see above)
+    old_local_roles = getattr(aq_base(inst), '__ac_local_roles__', None)
+    if old_local_roles:
+        inst._old__ac_local_roles__ = old_local_roles
+    inst.__ac_local_roles__ = __ac_local_roles__
+
+    
+
 # ##############################################################################
 # A class used for generating the temporary folder that will
 # hold temporary objects.  We need a separate class so that
@@ -144,6 +172,9 @@ class TempFolder(TempFolderBase):
                 raise
             obj = self._getOb(id)
             obj.unindexObject()  # keep obj out of the catalog
+
+            # patch object's __ac_local_roles__ method (see above)
+            patchObj(obj)
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
     # ignore rename requests since they don't do anything

@@ -3,6 +3,17 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.0.5 - (Backed Up Willie) - Released (TBA)
+
+    - Fixed ownership on objects created by portal_factory.  The
+      changes to portal_factory in 2.0.4 fix problems with mapply, but 
+      they mess up object ownership and potentially have side effects 
+      if an object tries to look up its owner during initialization.  
+      The pre-2.0.4 portal_factory breaks Epoz; the 2.0.4 portal_factory
+      breaks PloneHelpCenter.  The current fix should enable both to
+      work.  The Right Way to fix this would be to perform object 
+      construction in a post-traversal hook (pre-2.0.4 object construction
+      happened at publication time; 2.0.4 constructs during traversal),
+      but that means abandoning support for Zope 2.6.x.  [geoff]
  
     - Fixed transaction_notes overflowing struct size in ZODB.
       Also made there be 1 entry point into transaction_note instead
