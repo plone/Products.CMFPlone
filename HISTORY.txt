@@ -6,6 +6,10 @@ Plone 2.0 - Fyuti
 
    RC6, updated to fix non-critical issues
 
+    - fixed #2804
+      the plone_memberprefs_panel.pt ignored the 'visible' of configlet
+      actions. thats corrected now [zworkb]
+
     - breadcrumbs.py had bugs in which (1) a terminal object was sometimes 
       displayed twice, and (2) terminal non-content non-view objects (e.g. page 
       templates) were not displayed at all.  The bugs have been fixed and 
