@@ -24,6 +24,7 @@
 
             <div class="portletContent odd">
                 <form action="logged_in"
+                      name="loginform"
                       method="post"
                       tal:attributes="action string:${utool}/logged_in">
 
