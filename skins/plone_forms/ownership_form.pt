@@ -15,7 +15,7 @@
     <form action="change_ownership"
           name="ownership_form"
           method="post"
-          tal:attributes="action string:${here/absolute_url}/change_ownership">
+          tal:attributes="action string:$here_url/change_ownership">
 
         <fieldset>
             <legend i18n:translate="legend_change_ownership">Change Ownership</legend>
@@ -32,7 +32,7 @@
                 </div>
         
                 <select name="userid">
-                   <tal:block tal:repeat="uid here/portal_membership/listMemberIds">
+                   <tal:block tal:repeat="uid mtool/listMemberIds">
                      <option value=""
                              tal:attributes="value uid;
                                              selected python:test(uid==here.Creator(), 'selected', None);"

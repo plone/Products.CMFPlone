@@ -14,18 +14,13 @@
 <div metal:fill-slot="main"
      tal:define="standalone python:1;
                  folder_contents python:here.getFolderContents(suppressHiddenFiles=1);
-                 mtool mtool|here/portal_membership;
-                 myfolder python:here.absolute_url()==mtool.getHomeUrl();
-                 num_types python: 0;" >
-
-    <tal:types condition="allowedSortedContentTypes|nothing">
-        <metal:assign tal:define="global num_types python:len(allowedSortedContentTypes)" />
-    </tal:types>
+                 myfolder python: here_url==mtool.getHomeUrl();
+                 num_types python: len(allowedSortedContentTypes)">
                  
     <form name="folderContentsForm"
           method="post"
           action="folder_object"
-          tal:attributes="action here/absolute_url"
+          tal:attributes="action here_url"
           tal:define="b_start python:request.get('b_start', 0);
                       results folder_contents;
                       Batch python:modules['Products.CMFPlone'].Batch;
@@ -59,15 +54,15 @@
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
         <metal:block define-macro="folder_listing"
-                     tal:define="locked portal_object/lock_icon.gif;
-                                 pencil_icon portal_object/edit.gif;
+                     tal:define="locked portal/lock_icon.gif;
+                                 pencil_icon portal/edit.gif;
                                  use_folder_contents site_properties/use_folder_contents;
-                                 isExpired nocall:here/isExpired;
-                                 toPortalTime nocall:here/toPortalTime;
-                                 getObjSize nocall:here/getObjSize;
-                                 lock_tool here/portal_lock|nothing;
+                                 isExpired nocall:portal/isExpired;
+                                 toPortalTime nocall:portal/toPortalTime;
+                                 getObjSize nocall:portal/getObjSize;
+                                 lock_tool portal/portal_lock|nothing;
                                  getInfoFor python:wtool.getInfoFor;
-                                 iface_tool here/portal_interface;
+                                 iface_tool portal/portal_interface;
                                  orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
                                  canModifyFolderContent python:checkPermission('Modify portal content', here);
                                  isOrderable python:iface_tool.objectImplements(here, orderable_iface);
@@ -171,10 +166,15 @@
                 </thead>
 
                 <metal:block tal:condition="folder_contents|not:standalone|nothing">
-                <tbody>
+                <tbody tal:define="getRelativeContentURL nocall:utool/getRelativeContentURL">
                 <metal:block tal:repeat="item batch">
                     <tr tal:define="oddrow repeat/item/odd;
-                                    item_typeinfo item/getTypeInfo"
+                                    item_url item/absolute_url;
+                                    item_id item/getId;
+                                    item_title_or_id item/title_or_id;
+                                    item_typeinfo item/getTypeInfo;
+                                    arrowUp portal/arrowUp.gif;
+                                    arrowDown portal/arrowDown.gif;"
                         tal:attributes="class python:test(oddrow, 'even', 'odd')" >
 
                         <td>
@@ -183,16 +183,16 @@
                                    tal:attributes="value item/getId;
                                                    id python: 'cb_'+item.getId();
                                                    checked request/ids_checked|nothing;
-                                                   tabindex tabindex/next|nothing; alt string:Select ${item/title_or_id};
-                                                   title string:Select ${item/title_or_id}"/>
+                                                   tabindex tabindex/next|nothing; alt string:Select $item_title_or_id;
+                                                   title string:Select $item_title_or_id"/>
                             <input type="hidden" name="obj_paths:list" value="#"
-                                   tal:attributes="value python:utool.getRelativeContentURL(item)" />
+                                   tal:attributes="value python:getRelativeContentURL(item)" />
                         </td>
 
                         <td tal:define="action python:item_typeinfo.immediate_view;
                                         url python:test(item_typeinfo.getId() in use_folder_contents,
-                                                        item.absolute_url()+'/folder_contents',
-                                                        item.absolute_url()+'/'+action);">
+                                                        item_url+'/folder_contents',
+                                                        item_url+'/'+action);">
 
                             <a href="#" tal:attributes="href url; title item/Description;">
 
@@ -205,7 +205,7 @@
 
                             <a href="absolute_url/external_edit"
                                tal:condition="python:site_properties.ext_editor and item_typeinfo.getActionById('external_edit',None) and checkPermission('Modify portal content', item)"
-                               tal:attributes="href string:${item/absolute_url}/external_edit">
+                               tal:attributes="href string:$item_url/external_edit">
                                 <img tal:replace="structure python:pencil_icon.tag(title='Edit with External Editor')" />
                             </a>
 
@@ -225,7 +225,7 @@
                             tal:content="structure python:test(size, size, '&nbsp;')"> size </span>
                         </td>
 
-                        <td tal:content="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
+                        <td tal:content="item/ModificationDate">
                         08/19/2001 03:01 AM
                         </td>
 
@@ -239,14 +239,14 @@
                             <a href=""
                                title="Move item up"
                                i18n:attributes="title"
-                               tal:attributes="href string:${here/absolute_url}/folder_position?position=up&amp;id=${item/getId}"
-                            ><img tal:replace="structure here/portal_url/arrowUp.gif" /></a>
+                               tal:attributes="href string:$here_url/folder_position?position=up&amp;id=$item_id"
+                            ><img tal:replace="structure arrowUp" /></a>
                             &nbsp;
                             <a href=""
                                title="Move item down"
                                i18n:attributes="title"
-                               tal:attributes="href string:${here/absolute_url}/folder_position?position=down&amp;id=${item/getId}"
-                            ><img tal:replace="structure here/portal_url/arrowDown.gif" /></a>
+                               tal:attributes="href string:$here_url/folder_position?position=down&amp;id=$item_id"
+                            ><img tal:replace="structure arrowDown" /></a>
                         </td>
                     </tr>
                 </metal:block>
@@ -284,7 +284,7 @@
 
         <form action=""
               method="post"
-              tal:attributes="action string:${here/absolute_url}/invokeFactory">
+              tal:attributes="action string:$here_url/invokeFactory">
             <input type="hidden"
                    name="id"
                    value="index_html"/>

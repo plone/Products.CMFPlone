@@ -31,7 +31,7 @@
             </p>
 
             <a href="" 
-               tal:replace="structure python: here.spamProtect(here.portal_properties.site_properties.email_from_address)">
+               tal:replace="structure python: here.spamProtect(site_properties.email_from_address)">
                example@mail.com
             </a>
 

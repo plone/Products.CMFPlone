@@ -7,7 +7,7 @@
 
   <form action="#"
         method="post"
-        tal:attributes="action here/absolute_url"
+        tal:attributes="action here_url"
         tal:condition="history" >
 
   <table summary="History" i18n:attributes="summary" tal:define="history_length python:len(history)">
@@ -24,7 +24,7 @@
 
          <div tal:condition="history" tal:repeat="version history">
              <input type="checkbox" value="" name="keys:list" tal:attributes="value version/key" />
-             <a href="#" tal:attributes="href string:${here/absolute_url}/HistoricalRevisions/${version/key}">
+             <a href="#" tal:attributes="href string:$here_url/HistoricalRevisions/${version/key}">
                <span tal:replace="version/time" />
                <span tal:condition="version/user_name" tal:replace="string:(${version/user_name})" />
              </a>

@@ -85,12 +85,12 @@
                    onMouseUp="if (activeButton != null) resetButton(activeButton);" 
                    i18n:translate=""
                    tal:content="transition/name"
-                   tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=${transition/id}">File Menu Item 1</a>
+                   tal:attributes="href string:$here_url/content_status_modify?workflow_action=${transition/id}">File Menu Item 1</a>
             </li>
             </tal:block>
             <li class="actionSeperator">
                 <a href="#" 
-                   tal:attributes="href string:${here/absolute_url}/content_status_history"
+                   tal:attributes="href string:$here_url/content_status_history"
                    i18n:translate="label_advanced">Advanced</a>
             </li>
         </ul>

@@ -282,8 +282,9 @@
             <th i18n:translate="listingheader_comment">Comment</th>
           </tr>
 
-          <metal:block tal:repeat="items review_history">
-            <tr tal:define="review_history python: here.reverseList(review_history);
+          <metal:block tal:define="reverseList nocall:portal/reverseList"
+                       tal:repeat="items review_history">
+            <tr tal:define="review_history python: reverseList(review_history);
                             global odd repeat/items/odd; global rhComments items/comments;"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
                 tal:condition="items/action">
@@ -293,17 +294,17 @@
 
               <td>
                 <a href="/Members/runyaga"
-                   tal:attributes="href python:container.portal_membership.getHomeUrl(items.get('actor'), '')"
+                   tal:attributes="href python: mtool.getHomeUrl(items.get('actor'), '')"
                    tal:content="items/actor">
                   runyaga
                 </a>
               </td>
 
               <td>
-                <span tal:replace="python: items['time'].strftime(container.portal_properties.site_properties.localTimeFormat)" />
+                <span tal:replace="python: items['time'].strftime(site_properties.localTimeFormat)" />
                 <span tal:condition="items/effective_date|nothing">
                   (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
-                  <span tal:replace="python: items['effective_date'].strftime(container.portal_properties.site_properties.localTimeFormat)"></span>)
+                  <span tal:replace="python: items['effective_date'].strftime(site_properties.localTimeFormat)"></span>)
                 </span>
               </td>
 

@@ -6,13 +6,13 @@
 <!-- THE PATHBAR (breadcrumbs) DEFINITION -->
 <div metal:define-macro="path_bar"
      id="portal-breadcrumbs"
-     tal:define="breadcrumbs python:here.breadcrumbs(here);
+     tal:define="breadcrumbs python:portal.breadcrumbs(here);
                      portal_url portal_url|here/portal_url">
 
      <a href="#"
-        tal:condition="mtool/getHomeFolder"
-        tal:attributes="href string:${here/absolute_url}/addtoFavorites"
-        tal:define="addFavorite here/addFavorite.gif">
+        tal:condition="python: not isAnon and mtool.getHomeFolder()"
+        tal:attributes="href string:$here_url/addtoFavorites"
+        tal:define="addFavorite portal/addFavorite.gif">
 
      <tal:block replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')"/>
      </a>

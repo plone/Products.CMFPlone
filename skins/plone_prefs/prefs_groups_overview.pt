@@ -62,7 +62,7 @@
         <form action=""
               name="groups_add"
               method="post"
-              tal:attributes="action here/absolute_url">
+              tal:attributes="action here_url">
 
 	       <input class="standalone add"
 	              tabindex=""
@@ -78,7 +78,7 @@
         <form action=""
               name="groups_search"
               method="post"
-              tal:attributes="action here/absolute_url"
+              tal:attributes="action here_url"
               tal:define="searchstring request/searchstring | nothing;
                           groups python:here.prefs_user_group_search(searchstring, 'groups');
                           batch python:Batch(groups, b_size, int(b_start), orphan=1)">
@@ -135,7 +135,7 @@
     
                 <td>
                     <a href="prefs_group_details"
-                       tal:attributes="href string:${here/absolute_url}/prefs_group_members?groupname=${this_group/getGroupName}">
+                       tal:attributes="href string:$here_url/prefs_group_members?groupname=${this_group/getGroupName}">
     
                         <tal:block replace="structure portal/group.gif"/>&nbsp;
     		    <tal:group tal:replace="this_group/getGroupName" />

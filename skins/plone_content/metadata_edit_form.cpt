@@ -106,8 +106,7 @@
                              global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
                              dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
 
-              <tal:block tal:define="site_props here/portal_properties/site_properties;
-                                     allowRolesToAddKeywords site_props/allowRolesToAddKeywords"
+              <tal:block tal:define="allowRolesToAddKeywords site_properties/allowRolesToAddKeywords"
                          tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
 
                 <div style="width: 45%; float: right;">
@@ -251,7 +250,7 @@
           </div>
 
           <div class="field"
-               tal:define="def_language here/portal_properties/site_properties/default_language;
+               tal:define="def_language site_properties/default_language;
                            sel_language python:test(here.Language(), here.Language(), def_language);
                            sel_language python:request.get('language',sel_language)">
 

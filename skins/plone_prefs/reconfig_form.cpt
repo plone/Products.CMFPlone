@@ -28,14 +28,13 @@
     <form action=""
           name="reconfig"
           method="post"
-          tal:attributes="action string:${here/getId}/${template/getId}"
-          tal:define="props python:here.portal_properties;">
+          tal:attributes="action string:${here/getId}/${template/getId}">
         
         <fieldset>
             <legend i18n:translate="legend_plone_details">Plone Details</legend>
     
             <div class="field"
-                 tal:define="title request/title | props/title;
+                 tal:define="title request/title | portal_properties/title;
                              error errors/title | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
