@@ -9,12 +9,15 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+from Acquisition import aq_base
+
+
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         # The portal has already been set up, so there 
         # is little to do. :-|
-        pass
+        self.membership = self.portal.portal_membership
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -24,12 +27,30 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # index_html should render
         self.portal.index_html()
 
-    def testMemberIndexHtml(self):
-        # the index_html for Memebrs should be a PageTemplate
-        from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-        members=self.portal.Members
-        #self.assertEqual(members.index_html.aq_base, ZopePageTemplate)
-        self.assertEqual(members['index_html'], ZopePageTemplate(id, '<span></span>'))
+    def testMembersIndexHtml(self):
+        # index_html for Members folder should be a Page Template
+        members = self.membership.getMembersFolder()
+        self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
+        self.failUnless(hasattr(aq_base(members), 'index_html'))
+        # getitem works
+        self.assertEqual(aq_base(members)['index_html'].meta_type, 'Page Template')
+        self.assertEqual(members['index_html'].meta_type, 'Page Template')
+        # _getOb works
+        self.assertEqual(aq_base(members)._getOb('index_html').meta_type, 'Page Template')
+        self.assertEqual(members._getOb('index_html').meta_type, 'Page Template')
+        # getattr works when called explicitly
+        self.assertEqual(aq_base(members).__getattr__('index_html').meta_type, 'Page Template')
+        self.assertEqual(members.__getattr__('index_html').meta_type, 'Page Template')
+
+    def testLargePloneFolderFuckup(self):
+        members = self.membership.getMembersFolder()
+        self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
+        # XXX: This screws up and acquires the Document from above
+        self.assertEqual(members.index_html.meta_type, 'Document')
+        # Now make the test fail so we don't forget about it.
+        # Must be fixed in BTreeFolder2 I guess...
+        self.assertEqual(members.index_html.meta_type, 'Page Template')
+
             
 if __name__ == '__main__':
     framework()
