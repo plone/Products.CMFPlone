@@ -157,7 +157,7 @@
                 <label for=""
                        i18n:translate=""
                        tal:attributes="for string:pt_toggle"
-                       >Toggle
+                       >Select All/None
                 </label>
                 <br />
                 </tal:tabindex>
