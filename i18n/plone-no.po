@@ -250,34 +250,6 @@ msgstr "Angre"
 msgid "back_to_where_you_came_from"
 msgstr "Tilbake dit du kom fra"
 
-#: from plone_forms/search.pt
-#.   <span omit-tag="">items</span>
-#: from plone_forms/search.pt
-#: from plone_forms/search.pt
-#: from plone_forms/search.pt
-msgid "batch_items"
-msgstr ""
-
-#: from plone_3rdParty/CMFCollector/collector_macros.pt
-#.   <a tal:attributes="href python:
-#.                                        base+'&'+make_query(b_start=next.first)" href="NEXT BATCH">
-#.                 Next</a>
-#: from plone_forms/search.pt
-#.   <span omit-tag="">Next</span>
-#: from plone_forms/search.pt
-msgid "batch_next"
-msgstr "Neste"
-
-#: from plone_3rdParty/CMFCollector/collector_macros.pt
-#.   <a tal:attributes="href python:
-#.                                        base+'&'+make_query(b_start=prev.first)" href="PREVIOUS BATCH">
-#.                  Previous</a>
-#: from plone_forms/search.pt
-#.   <span omit-tag="">Previous</span>
-#: from plone_forms/search.pt
-msgid "batch_previous"
-msgstr "Forrige"
-
 #: from plone_templates/ui_slots/about_slot.pt
 #.   <th>About</th>
 msgid "box_about"
@@ -503,7 +475,7 @@ msgstr "Du kan enkelt endre eierskapet på dette objektet til et annet medlem med
 #: from plone_forms/personalize_form.pt
 #.   <a href="password_form">Click here to change your password</a>
 msgid "description_click_to_change_password"
-msgstr "Klikk her for å endre passordet ditt"
+msgstr "Klikk her for å endre passordet ditt."
 
 #: from plone_forms/discussion_reply_preview.pt
 #.   <p>
@@ -633,46 +605,6 @@ msgstr "Fyll inn brukernavnet ditt, trykk på knappen <strong>Send meg passordet<
 msgid "description_member_listing"
 msgstr "En oversikt over de synlige brukerne."
 
-#: from plone_forms/logged_in.pt
-#.   <span>
-#.                   You might want to head over to
-#.                   </span>
-msgid "description_newbie_pointers_1"
-msgstr "Du kan enten gå til"
-
-#: from plone_forms/logged_in.pt
-#.   <span>
-#.                   and add some content, or
-#.                   </span>
-msgid "description_newbie_pointers_2"
-msgstr "for å legge til innhold, eller"
-
-#: from plone_forms/logged_in.pt
-#.   <a define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']" condition="prefs" attributes="href python:prefs.pop()" href="metadata_form">set up your Preferences</a>
-msgid "description_newbie_pointers_3"
-msgstr "endre på innstillingene dine"
-
-#: from plone_forms/login_form.pt
-#.   <span omit-tag="">
-#.   If you do not have an account here, head over to the
-#.   </span>
-msgid "description_no_account_1"
-msgstr "Hvis du ikke har en bruker her, fyll ut"
-
-#: from plone_forms/login_form.pt
-#.   <a href="portal_form/join_form" omit-tag="">
-#.   registration form
-#.   </a>
-msgid "description_no_account_2"
-msgstr "registreringsskjemaet"
-
-#: from plone_forms/login_form.pt
-#.   <span omit-tag="">
-#.   to become a member.
-#.   </span>
-msgid "description_no_account_3"
-msgstr "for å få tildelt en bruker."
-
 #: from plone_forms/history_comparison.pt
 #.   <p>
 #.         This object does not provide comparison support.
@@ -753,13 +685,6 @@ msgstr "For å få tilgang til dette innholdet, må du logge inn med brukernavn og 
 #.               </span>
 msgid "description_sign_in_failure"
 msgstr "Du ble ikke logget inn. Brukernavne og/eller passord er muligens feil. Nettleseren din kan også være satt opp til ikke å ta i mot informasjonskapsler. Hvis du trenger hjelp, forsøk &laquo;Glemt passord&raquo;-valget eller send en e-post til"
-
-#: from plone_forms/logged_in.pt
-#.   <span>
-#.                   This is the first time that you've signed in to 
-#.                   </span>
-msgid "description_signed_in"
-msgstr "Det er første gang du besøker"
 
 #: from plone_templates/standard_error_message.pt
 #.   <p>
@@ -894,18 +819,6 @@ msgstr "Når"
 #.   <div class="label">Where</div>
 msgid "event_where"
 msgstr "Hvor"
-
-#: from plone_forms/login_form.pt
-#.   <a href="mail_password_form">Click here</a>
-msgid "forgotten_password_link_1"
-msgstr "Gå hit"
-
-#: from plone_forms/login_form.pt
-#.   <span>
-#.                   to have it mailed to you.
-#.                   </span>
-msgid "forgotten_password_link_2"
-msgstr "for å få passordet tilsendt."
 
 #: from plone_forms/folder_listing.pt
 #.   <a define="parent_url python:here.navigationParent(here, template.getId());" attributes="href parent_url" href="">
@@ -3756,3 +3669,56 @@ msgstr "Legg til standardvisning"
 #########################
 # End 19.11.2002 update #
 #########################
+
+##################################
+# Added in the 19.11.2002 update #
+##################################
+
+msgid "Join"
+msgstr "Registrér deg"
+
+#: from plone_forms/login_form.pt
+#.   <span omit-tag="">
+#.   If you do not have an account here, head over to the
+#.   </span>
+msgid "description_no_account"
+msgstr "Hvis du ikke allerede har en brukerkonto her, gå til ${registration_form} for å få utdelt en bruker."
+
+msgid "description_no_account_registration_linktext"
+msgstr "registreringsskjemaet"
+
+#: from plone_forms/login_form.pt
+#.   <a href="mail_password_form">Click here</a>
+msgid "description_forgotten_your_password"
+msgstr "<strong>Glemt passordet?</strong> ${click_here} for å få det tilsendt."
+
+msgid "description_forgotten_your_password_linktext"
+msgstr "Klikk her"
+
+msgid "The User ID you entered could not be found."
+msgstr "Brukernavnet du forsøkte å logge inn med ble ikke funnet."
+
+#: from plone_forms/logged_in.pt
+#.   <span>
+#.                   You might want to head over to
+#.                   </span>
+msgid "description_newbie_pointers"
+msgstr "Du kan enten gå til ${your_folder} for å legge til innhold, eller ${set_up_your_preferences}."
+
+msgid "description_newbie_pointers_yourfolder_link"
+msgstr "mappen din"
+
+msgid "description_newbie_pointers_preferences_link"
+msgstr "endre innstillingene dine"
+
+#: from plone_forms/login_password.pt
+#.   <span>
+#.                   This is the first time that you've logged in to 
+#.                   </span>
+msgid "description_logged_in"
+msgstr "Dette er første gangen du har logget inn hos ${here}."
+
+##################################
+# End 20.11.2002 update          #
+##################################
+
