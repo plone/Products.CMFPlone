@@ -59,6 +59,13 @@ class TestSecurityDeclarations(RestrictedPythonTest):
         self.check('import zLOG;'
                    'print zLOG.INFO')
 
+    def testImport_WARNING(self):
+        self.check('from zLOG import WARNING')
+
+    def testAccess_WARNING(self):
+        self.check('import zLOG;'
+                   'print zLOG.WARNING')
+
     def testImport_translate_wrapper(self):
         self.check('from Products.CMFPlone.PloneUtilities import translate_wrapper')
         
