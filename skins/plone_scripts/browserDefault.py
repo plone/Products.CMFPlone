@@ -11,7 +11,7 @@
 # WARNING: Do not remove this, or else WebDAV breaks badly
 request = context.REQUEST
 if request.has_key('REQUEST_METHOD'):
-    if request['REQUEST_METHOD'] not in  ['GET', 'HEAD']:
+    if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
         return context, [request['REQUEST_METHOD']]
 
 default_pages = ['index_html', ]
