@@ -1,3 +1,25 @@
+2004-03-09 03:10  dtremea
+
+	* skins/plone_scripts/translate.py (Plone-2_0-branch): Added a
+	  'domain' argument so we can use it with other i18n domains. Maybe
+	  we can use a different approach to implement it in the right way
+	  (tm)... Check a message in Plone-i18n list.
+
+2004-03-08 19:39  runyaga
+
+	* HISTORY.txt (Plone-2_0-branch): update for Final that we did make
+	  a small change
+
+2004-03-08 19:31  runyaga
+
+	* skins/plone_scripts/isExpired.py (Plone-2_0-branch): fix a
+	  problem andrewr saw.	we should move from using expires to
+	  ExpirationDate at some later time.  I think this should work
+
+2004-03-08 05:06  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-07 16:49  limi
 
 	* INSTALL.txt (Plone-2_0-branch): Updated version number for Epoz,
