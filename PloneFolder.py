@@ -1,3 +1,5 @@
+from __future__ import nested_scopes
+
 from Products.CMFCore.utils import _verifyActionPermissions, getToolByName
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
@@ -89,6 +91,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             return apply(view, (self, self.REQUEST))
         else:
              return view()
+
     ### DefaultDublinCoreImpl.editMetadata() has a very bad assumption
     ### which it does not declare in its interface which is 
     ### failIflocked
@@ -102,7 +105,23 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     ### objects via Python (eg: on a unittest) apparently because of
     ### a missing context
     Creator = DefaultDublinCoreImpl.Creator
-            
+   
+    security.declarePublic('contentValues')
+    def contentValues(self,
+                      spec=None,
+                      filter=None,
+                      sort_on=None,
+                      reverse=0):
+        """ Able to sort on field """
+        values=SkinnedFolder.contentValues(self, spec=spec, filter=filter)
+        if sort_on is not None:
+            values.sort(lambda x, y: safe_cmp(getattr(x,sort_on),
+                                              getattr(y,sort_on)))
+        if reverse:
+           values.reverse()
+
+        return values
+
     security.declareProtected( CMFCorePermissions.View, 'view' )    
     view = __call__
     index_html = None
@@ -149,6 +168,11 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     ### a missing context
 
     Creator = DefaultDublinCoreImpl.Creator
+
+def safe_cmp(x, y):
+    if callable(x): x=x()
+    if callable(y): y=y()
+    return cmp(x,y)
 
 def _getViewFor(obj, view='view', default=None):
     ti = obj.getTypeInfo()
