@@ -1,6 +1,22 @@
 For nicer install docs, try http://plone.org/documentation. They are more up to
 date, and have nice and funky pictures to go with them ;)
 
+**REQUIREMENTS**
+
+  - CMF1.4 or later, see cmf.zope.org
+
+  - Formulator 1.2.0 or later, see cvs.infrae.org
+
+  - ExternalEditor 0.6 or later, see www.zope.org
+
+  - CMFActionsTool, from CVS - cvs.zope.org/CMF
+
+  - CMFQuickInstallerTool, from CVS - sf.net/projects/collective
+
+  - GroupUserFolder, from CVS - sf.net/projecst/collective
+ 
+  - (optional) BTreeFolder2, from CVS - http://cvs.zope.org/Products
+
 **Download the following:**
 
 - "Latest Zope":http://www.zope.org/Products (you need at least version  2.5.1)
