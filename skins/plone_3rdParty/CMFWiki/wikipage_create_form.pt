@@ -24,6 +24,7 @@
         Format: <span tal:replace="here/page_type">page type</span><br />
 
         <textarea name="text"
+                  rows="20"
 		          tal:attributes="readonly python:test(noedit, 'readonly', None);"
                   tal:content="text">wiki content</textarea>
                   
