@@ -357,6 +357,7 @@
                        type="submit"
                        tabindex=""
                        name="form.button.Save"
+                       value="Save"
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
                        />
@@ -364,6 +365,7 @@
                        type="submit"
                        tabindex=""
                        name="form.button.Cancel"
+                       value="Cancel"
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
                        />
