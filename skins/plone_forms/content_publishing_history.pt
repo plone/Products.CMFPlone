@@ -7,6 +7,14 @@
 
 <div metal:fill-slot="main"
       tal:condition="here/rejectAnonymous">
+
+    <metal:block tal:condition="not: request/ids|nothing">
+      <tal tal:define="dummy python:request.RESPONSE.redirect(here.absolute_url()+'/folder_contents?portal_status_message=You+must+select+content+to+publish')">
+        Useability nit-pick: if the user has not selected 
+	any ids to publish we will redirect back to the 
+	folder_contents with a message
+      </tal>
+    </metal:block>
       
     <script language="JavaScript" 
             src="cmf_skin_tools/calendar.js"
