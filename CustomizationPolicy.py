@@ -54,16 +54,25 @@ class DefaultCustomizationPolicy:
 
 	#customize membership tool
         mt=getToolByName(portal, 'portal_membership')
-        m_actions=mt._cloneActions()
-        for a in m_actions:
-            if getattr(a,'id','') in ('addFavorite', 'favorites'): a.visible=0
-        mt._actions=m_actions        
         mt.addAction('myworkspace'
                     ,'My Workspace'
                     ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
                     ,'python: member and portal.portal_membership.getHomeFolder()'
                     ,'View'
-                    ,'user')
+                    ,'user')		    
+        new_actions=[]
+        for a in mt._cloneActions():
+            if getattr(a,'id','') in ('addFavorite', 'favorites'): 
+                a.visible=0
+            if a.id=='mystuff': 
+                new_actions.insert(0, a)
+            elif a.id=='myworkspace':
+                new_actions.insert(1, a)
+            elif a.id=='logout':
+                new_actions.append(a)
+            else:
+                new_actions.insert(len(new_actions)-1,a)
+        mt._actions=new_actions
         
 	#customized the registration tool
         rt=getToolByName(portal, 'portal_registration')

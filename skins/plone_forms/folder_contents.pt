@@ -81,8 +81,6 @@
                    tal:attributes="href parent_url">Up one level</a>)
 
             </div>
-
-
     
             <metal:block tal:condition="not: folder_contents">
             <p>
