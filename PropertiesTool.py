@@ -44,7 +44,8 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         """
         return BaseTool.title(self)
 
-    title = ComputedAttribute(title, 1)
+    # XXX breaks interface implementation and unit test
+    #title = ComputedAttribute(title, 1)
 
     def addPropertySheet(self, id, title='', propertysheet=None):
         """ Add a new PropertySheet
