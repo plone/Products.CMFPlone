@@ -1,6 +1,7 @@
 CHANGES
 
 Plone 1.0 rc1
+    - added 'fullname' to portal_memberdata
     - 'properties' forms (metadata_edit_form) no longer allows anyone to add keywords.  this is now
       controlled in portal_properties/site_properties/allowRolesToAddKeywords
     - Added code to ensure that content object ids do not collide with skin names or reserved ids.

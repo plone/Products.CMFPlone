@@ -226,7 +226,9 @@ class DefaultCustomizationPolicy:
             md._setProperty('listed', '1', 'boolean')
         else:
             md._setPropValue('listed','1')
-
+        if not hasattr(md, 'fullname'):
+            md._setProperty('fullname', '', 'string')
+      
         #customize membership tool
         mt=getToolByName(portal, 'portal_membership')
         mt.addAction('myworkspace'
