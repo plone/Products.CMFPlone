@@ -45,7 +45,7 @@
 	    
             <div class="field">
                 <input type="text" 
-                       name="field_id" 
+                       name="id" 
                        value="#"
                        size="25" 
                        tal:attributes="value id" 
@@ -77,7 +77,7 @@
                 <div tal:replace="error_title" />
 
                 <input type="text" 
-                       name="field_title" 
+                       name="title" 
                        value="#" 
                        size="30" 
                        tabindex="2"
@@ -157,7 +157,7 @@
                 <textarea cols="40" 
                           rows="5" 
                           tabindex="5"
-                          name="field_description"
+                          name="description"
                           tal:content="description"
                           onfocus="formtooltip('event_description_help',1)" 
                           onblur="formtooltip('event_description_help',0)">
@@ -191,7 +191,9 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row"
+             tal:define="start_date python:request.get('start_date', here.toPortalTime(here.start(), long_format=1));
+                         error_start_date errors/start_date | nothing;">
             <div class="label">
               <span i18n:id="start_date">Event Starts</span>
                 <div id="start_date_help"
@@ -202,10 +204,14 @@
                      or click the calendar icon and select it.
                 </div>
             </div>
-            <div class="field">
+            <div class="field"
+                 tal:attributes="class python:test(error_start_date, 'field error', 'field')" >
+
+                <div tal:replace="error_start_date" />
+
                 <div tal:define="inputname  string:start_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:here.toPortalTime(here.start(), long_format=1);
+                                 inputvalue start_date;
                                  onfocus string:formtooltip('start_date_help',1);
                                  onblur string:formtooltip('start_date_help',0);
                                  tabindex string:7;">
@@ -216,9 +222,11 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row"
+             tal:define="end_date python:request.get('end_date', here.toPortalTime(here.end(), long_format=1));
+                         error_end_date errors/end_date | nothing;">
             <div class="label">
-              <span i18n:id="start_date">Event Ends</span>
+              <span i18n:id="end_date">Event Ends</span>
                 <div id="end_date_help"
                      i18n:id="end_date_help" 
                      class="help" 
@@ -227,10 +235,12 @@
                      or click the calendar icon and select it.
                 </div>
             </div>
-            <div class="field">
+            <div class="field"
+                tal:attributes="class python:test(error_end_date, 'field error', 'field')" >
+                <div tal:replace="error_end_date" />
                 <div tal:define="inputname  string:end_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:here.toPortalTime(here.start(), long_format=1);
+                                 inputvalue end_date;
                                  onfocus string:formtooltip('end_date_help',1);
                                  onblur string:formtooltip('end_date_help',0);
                                  tabindex string:8;">
