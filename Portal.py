@@ -1,16 +1,13 @@
 #First we want to setup touch points for people to register with the CustomizationPolicies
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
-def listPolicies():
-    return custom_policies.keys()
-def addPolicy(label, klass):
-    custom_policies[label]=klass
+def listPolicies(): return custom_policies.keys()
+def addPolicy(label, klass): custom_policies[label]=klass
 
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import Portal
-#from Extensions.Upgrade import normalize_tabs, setupButtonActions
 from Products.CMFCalendar.Extensions import Install as CalendarInstall
 from Products.ExternalMethod import ExternalMethod
 import Globals
@@ -154,8 +151,7 @@ class PloneGenerator(Portal.PortalGenerator):
         id = str(id)
         portal = self.klass(id=id)
         parent._setObject(id, portal)
-        # Return the fully wrapped object.
-        p = parent._getOb(id)
+        p = parent._getOb(id) # Return the fully wrapped object
         self.setup(p, create_userfolder)
         self.setupPlone(p)
         return p
@@ -171,7 +167,7 @@ def manage_addSite(self, id, title='Portal', description='',
                    validate_email=0,
 		   custom_policy='',
 		   RESPONSE=None):
-    """ factory """
+    """ Plone Site factory """
     gen = PloneGenerator()
     p = gen.create(self, id.strip(), create_userfolder)
     gen.setupDefaultProperties(p, title, description,
