@@ -16,9 +16,6 @@ if not field_id:
 id=field_id
 remote_url=field_remote_url
 
-if context.Type().strip()=='Link' and remote_url.find('://')==-1: 
-    remote_url='http://'+remote_url
-
 errors=context.validate_link_edit()
 if REQUEST.has_key('errors'):
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
