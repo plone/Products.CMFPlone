@@ -4,6 +4,9 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
+<head metal:fill-slot="head_slot">
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0')" />
+</head>
 <body>
 
 <!-- 
