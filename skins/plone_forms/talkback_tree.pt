@@ -3,12 +3,8 @@
     
     <div tal:repeat="row t/rows">
       
-	 
-	    <span tal:define="indent python:row.depth - 1"
-              tal:condition="indent"
-              tal:attributes="colspan indent"></span>
-              <!-- ^- We need to solve this in a span-related way, currently no indenting is done -->
-          
+	<div tal:define="indent python:(row.depth * 20) - 20"
+	             tal:attributes="style string:margin:0px 0px 0px ${indent}px;">
         <span tal:define="rlink row/branch">
             <a tal:condition="rlink"
                tal:attributes="name row/id;href rlink/link"
@@ -27,7 +23,7 @@
                <span tal:replace="obj/Creator">Me</span> on 
                <span tal:replace="obj/CreationDate">Today</span>.
         </span>
-    
+   	</div> 
     </div>
     
 </div>
