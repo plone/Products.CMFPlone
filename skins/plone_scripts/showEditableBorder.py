@@ -54,4 +54,10 @@ if idActions.has_key('edit') :
         template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']) :
         return 1
 
+# Check to see if the user is able to add content or change workflow state
+if context.getAllowedTypes():
+    return 1
+if context.portal_workflow.getTransitionsFor(context, context):
+    return 1
+
 return 0
