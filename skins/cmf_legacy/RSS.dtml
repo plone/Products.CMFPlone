@@ -1,0 +1,7 @@
+<dtml-if expr="portal_syndication.isSyndicationAllowed(this())"> 
+Content-type: text/xml
+
+<dtml-var rssBody>
+<dtml-else>
+<dtml-call "REQUEST['RESPONSE'].redirect(absolute_url() + '/rssDisabled?portal_status_message=Syndication+is+Disabled')">
+</dtml-if>
