@@ -1,3 +1,300 @@
+2003-11-04 00:43  shh42
+
+	* FolderWorkflow.py (Plone-2_0-branch): ListFolderContents was
+	  available to Members, even in private state.
+
+2003-11-04 00:41  shh42
+
+	* PloneWorkflow.py (Plone-2_0-branch): ChangeEvents permission
+	  mappings did not follow the mappings for ModifyPortalContent.
+
+2003-11-04 00:39  shh42
+
+	* tests/testDefaultWorkflow.py (Plone-2_0-branch): Wrote more test
+	  for DefaultWorkflow.
+
+2003-11-04 00:39  shh42
+
+	* tests/testFolderWorkflow.py (Plone-2_0-branch): Added tests for
+	  FolderWorkflow.
+
+2003-11-03 22:50  chrism
+
+	* skins/plone_scripts/logged_in.py (Plone-2_0-branch): Don't use
+	  HTTP_REFERER as a surrogate 'came_from', this screws up the
+	  joining mechanism.
+
+2003-11-03 22:49  chrism
+
+	* skins/plone_portlets/login_slot.pt (Plone-2_0-branch): Set
+	  came_from to URL instead of REQUEST/came_from (this doesn't make
+	  sense in the context of a portlet).
+
+2003-11-03 22:31  dreamcatcher
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): Wrong import
+
+2003-11-03 17:15  limi
+
+	* skins/: plone_3rdParty/CMFTopic/friendlydatec_editform.pt,
+	  plone_3rdParty/CMFTopic/listc_edit.pt,
+	  plone_3rdParty/CMFTopic/sic_edit.pt,
+	  plone_3rdParty/CMFTopic/sort_edit.pt,
+	  plone_3rdParty/CMFTopic/ssc_edit.pt,
+	  plone_3rdParty/CMFTopic/topic_criteria_form.pt,
+	  plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  plone_content/document_edit_form.cpt,
+	  plone_content/event_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/folder_edit_form.cpt,
+	  plone_content/image_edit_form.cpt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_content/newsitem_edit_form.cpt,
+	  plone_forms/content_status_history.cpt,
+	  plone_forms/discussion_reply_form.pt,
+	  plone_forms/folder_factories.pt,
+	  plone_forms/folder_localrole_form.pt,
+	  plone_forms/folder_rename_form.cpt, plone_forms/join_form.cpt,
+	  plone_forms/login_form.pt, plone_forms/login_password.pt,
+	  plone_forms/mail_password_form.pt,
+	  plone_forms/member_search_form.pt, plone_forms/ownership_form.pt,
+	  plone_forms/password_form.pt, plone_forms/personalize_form.cpt,
+	  plone_forms/search_form.pt, plone_forms/sendto_form.cpt,
+	  plone_forms/synPropertiesForm.cpt,
+	  plone_prefs/prefs_error_log_form.pt,
+	  plone_prefs/prefs_error_log_showEntry.pt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_mailhost_form.pt,
+	  plone_prefs/prefs_portal_properties.pt,
+	  plone_prefs/prefs_portalskin_form.pt,
+	  plone_prefs/prefs_syndication_form.pt,
+	  plone_prefs/prefs_user_details.pt,
+	  plone_prefs/prefs_workflow_advanced.pt,
+	  plone_prefs/prefs_workflow_basic.pt,
+	  plone_prefs/reconfig_form.cpt, plone_styles/plone.css.dtml,
+	  plone_templates/default_error_message.pt,
+	  plone_wysiwyg/wysiwyg_support.pt (Plone-2_0-branch): Merging
+	  limi-formageddon-branch. Documentation and how to convert to the
+	  new format is at
+	  http://plone.org/development/current/projects/NewFormsStyle -
+	  hope you like it :)
+
+2003-11-03 16:10  limi
+
+	* skins/: plone_3rdParty/CMFTopic/friendlydatec_editform.pt,
+	  plone_3rdParty/CMFTopic/listc_edit.pt,
+	  plone_3rdParty/CMFTopic/sic_edit.pt,
+	  plone_3rdParty/CMFTopic/sort_edit.pt,
+	  plone_3rdParty/CMFTopic/ssc_edit.pt,
+	  plone_forms/content_status_history.cpt,
+	  plone_forms/login_password.pt, plone_forms/ownership_form.pt,
+	  plone_prefs/prefs_portalskin_form.pt,
+	  plone_prefs/prefs_syndication_form.pt,
+	  plone_prefs/prefs_user_details.pt, plone_prefs/reconfig_form.cpt
+	  (limi-formageddon-branch): Removed all reference to the old
+	  "help" class.
+
+2003-11-03 15:44  limi
+
+	* skins/plone_prefs/prefs_workflow_basic.pt
+	  (limi-formageddon-branch): removed old formatting.
+
+2003-11-03 15:42  limi
+
+	* skins/plone_forms/synPropertiesForm.cpt
+	  (limi-formageddon-branch): New style forms.
+
+2003-11-03 14:01  limi
+
+	* skins/plone_prefs/prefs_syndication_form.pt
+	  (limi-formageddon-branch): removed old formatting.
+
+2003-11-03 13:50  limi
+
+	* skins/plone_prefs/prefs_syndication_form.pt
+	  (limi-formageddon-branch): New style forms.
+
+2003-11-03 13:11  limi
+
+	* skins/plone_prefs/prefs_workflow_basic.pt
+	  (limi-formageddon-branch): Removed references to old form format,
+	  this is still an inactive template.
+
+2003-11-03 13:05  limi
+
+	* skins/plone_forms/ownership_form.pt (limi-formageddon-branch):
+	  New style forms.
+
+2003-11-03 13:00  batlogg
+
+	* skins/plone_forms/content_status_history.cpt
+	  (limi-formageddon-branch): new form style. most of the work
+	  should be done. i'm still unsure how to handle with the radio
+	  buttons. limi - please can you check the styles?
+
+2003-11-03 12:51  limi
+
+	* skins/: plone_3rdParty/CMFTopic/topic_criteria_form.pt,
+	  plone_forms/folder_factories.pt (limi-formageddon-branch): New
+	  forms season.
+
+2003-11-03 12:32  shh42
+
+	* PloneInitialize.py (Plone-2_0-branch): Back-out the mods I made
+	  in version 1.9.2.2.  PloneInitialize is no longer imported by
+	  Plone's __init__.py so the hack is obsolete.
+
+2003-11-03 12:29  limi
+
+	* skins/: plone_3rdParty/CMFTopic/topic_criteria_form.pt,
+	  plone_styles/plone.css.dtml (limi-formageddon-branch): New forms
+	  style, also adjusted the CSS a bit.
+
+2003-11-03 11:03  limi
+
+	* skins/: plone_3rdParty/CMFTopic/friendlydatec_editform.pt,
+	  plone_3rdParty/CMFTopic/listc_edit.pt,
+	  plone_3rdParty/CMFTopic/sic_edit.pt,
+	  plone_3rdParty/CMFTopic/sort_edit.pt,
+	  plone_3rdParty/CMFTopic/ssc_edit.pt,
+	  plone_content/event_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt, plone_forms/join_form.cpt,
+	  plone_forms/ownership_form.pt, plone_forms/synPropertiesForm.cpt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_mailhost_form.pt,
+	  plone_prefs/prefs_portalskin_form.pt,
+	  plone_prefs/prefs_syndication_form.pt,
+	  plone_prefs/prefs_user_details.pt, plone_prefs/reconfig_form.cpt
+	  (limi-formageddon-branch): Removing tooltips.
+
+2003-11-03 09:44  batlogg
+
+	* skins/plone_forms/content_status_history.cpt
+	  (limi-formageddon-branch): new form style, not entirely finished,
+	  will work on this later
+
+2003-11-03 09:15  limi
+
+	* skins/plone_templates/default_error_message.pt
+	  (limi-formageddon-branch): Definition lists. Yes. Good for you,
+	  good for me.
+
+2003-11-03 08:57  limi
+
+	* skins/plone_prefs/prefs_portalskin_form.pt
+	  (limi-formageddon-branch): Changed description.
+
+2003-11-03 08:56  limi
+
+	* skins/plone_prefs/prefs_portalskin_form.pt
+	  (limi-formageddon-branch): New style forms.
+
+2003-11-03 08:35  chrism
+
+	* MembershipTool.py (Plone-2_0-branch): Add a method alias for
+	  'createMemberArea' to 'createMemberarea' to deal with gratuitous
+	  CMF API change.
+
+2003-11-03 08:23  limi
+
+	* skins/plone_prefs/prefs_portal_properties.pt
+	  (limi-formageddon-branch): New style forms. (this template is
+	  still non-functional, though.)
+
+2003-11-03 08:03  chrism
+
+	* skins/: plone_form_scripts/discussion_reply.py,
+	  plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Prevent a reply to a comment from rendering a 'Reply to this'
+	  button unless the user has reply to item permission against the
+	  comment (viewThreadsAtBottom).
+
+	  Clean up discussion_reply given that change.
+
+2003-11-03 08:00  limi
+
+	* skins/plone_prefs/reconfig_form.cpt (limi-formageddon-branch):
+	  New style forms.
+
+2003-11-03 07:29  limi
+
+	* skins/plone_prefs/prefs_workflow_advanced.pt
+	  (limi-formageddon-branch): New style forms.
+
+2003-11-03 07:20  limi
+
+	* skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt
+	  (limi-formageddon-branch): New style forms.
+
+2003-11-03 07:16  limi
+
+	* skins/plone_prefs/prefs_error_log_showEntry.pt
+	  (limi-formageddon-branch): Added definition list. limi likes
+	  definition lists.
+
+2003-11-03 07:12  limi
+
+	* skins/plone_prefs/prefs_error_log_showEntry.pt
+	  (limi-formageddon-branch): Style cleanups.
+
+2003-11-03 07:01  limi
+
+	* skins/plone_prefs/prefs_error_log_form.pt
+	  (limi-formageddon-branch): Major cleanup plus new forms style.
+
+2003-11-03 06:40  chrism
+
+	* skins/plone_scripts/: create_query_string.py, logged_in.py
+	  (Plone-2_0-branch): Cause logged_in to just redirect to
+	  'came_from' or HTTP_REFERER when it makes sense to do so instead
+	  of returning the 'login_success' page.
+
+	  Added create_query_string script which has the capability to
+	  generate a new query string with additional key/value pairs from
+	  an existing one.
+
+2003-11-03 06:24  limi
+
+	* skins/plone_forms/personalize_form.cpt (limi-formageddon-branch):
+	  Son of new forms style.
+
+2003-11-03 05:48  limi
+
+	* skins/plone_forms/password_form.pt (limi-formageddon-branch):
+	  Guess what? New forms style.
+
+2003-11-03 05:39  limi
+
+	* skins/plone_forms/member_search_form.pt
+	  (limi-formageddon-branch): New forms style.
+
+2003-11-03 05:21  limi
+
+	* skins/plone_forms/mail_password_form.pt
+	  (limi-formageddon-branch): Testing is nice. We like testing. Yes,
+	  we do.
+
+2003-11-03 05:18  limi
+
+	* skins/plone_forms/mail_password_form.pt
+	  (limi-formageddon-branch): New forms style.
+
+2003-11-03 05:11  limi
+
+	* skins/plone_forms/login_password.pt (limi-formageddon-branch):
+	  New forms style.
+
+2003-11-03 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2003-11-03 05:03  limi
+
+	* skins/plone_forms/login_form.pt (limi-formageddon-branch): New
+	  forms style.
+
 2003-11-03 04:57  limi
 
 	* skins/plone_forms/join_form.cpt (limi-formageddon-branch): New
