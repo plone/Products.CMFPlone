@@ -22,7 +22,8 @@ Plone 1.1
     - main_template and header cleanup (needs to be re-aligned with CMFDefault) 
     - added CMFDefault variables to main_template.pt and moving to use alot of 
       the variables declared in main_template else where in PageTemplates
-
+    - items listed in folder_contents generatd urls pointing to immediate_view (type information)
+    
 Plone 1.0
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
     - modified condition of 'state' action in portal_actions so that DTML objects work

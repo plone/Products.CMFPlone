@@ -191,7 +191,7 @@
                                                    tabindex tabindex/next|nothing"/>
                         </td>
     
-                        <td tal:define="action python:item.getTypeInfo().getActionById('view');
+                        <td tal:define="action python:item.getTypeInfo().immediate_view;
                                         url python:test(item.getTypeInfo().getId() in use_folder_contents, 
                                                         item.absolute_url()+'/folder_contents',
                                                         item.absolute_url()+'/'+action);"> 
