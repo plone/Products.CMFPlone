@@ -11,7 +11,10 @@ props = context.portal_properties.site_properties
 
 # Yeeha. Must be good at logic.
 pages = not pages and props.hasProperty('default_page') \
-        and props.getProperty('default_page') or pages or default_pages
+        and props.getProperty('default_page') or pages
+
+# Always look for index_html
+pages.extend(default_pages)
 
 if pages:
     # loop through each page given and 
@@ -22,7 +25,12 @@ if pages:
             return context, [page]
 
 # what if the page isnt found?
-# call the method on the folder, if you
-# dont have this you will have problems
-# with blank folders
-return context, ['folder_listing']
+try:
+    # look for a type action called "folderlisting"
+    act = context.getTypeInfo().getActionById('folderlisting')
+    if act.startswith('/'):
+        act = act[1:]
+    return context, [act]
+except:
+    # if all else fails, fall back to /folder_listing
+    return context, ['folder_listing']
