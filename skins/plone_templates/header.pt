@@ -9,7 +9,7 @@
 
 	<title tal:content="string:${here/portal_properties/title} - ${here/title_or_id}">Title of page</title>
 
-    <BASE href="" tal:attributes="href string:$baseHREF" />
+    <base href="" tal:attributes="href string:$baseHREF" />
 
 <!-- Commented out for now - we need a new editor 
 	<metal:block tal:condition="python:test(request['HTTP_USER_AGENT'].find('MSIE')!=-1, 1, 0)">
@@ -61,7 +61,8 @@
             type="text/javascript"
             src="ieemu.js"
             tal:attributes="src string:$portal_url/ieemu.js" ></script>
-    <script language="javascript">
+
+    <script language="javascript" type="text/javascript">
       if (moz) {
       	extendElementModel();
         extendEventObject();
