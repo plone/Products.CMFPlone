@@ -16,20 +16,23 @@ except ImportError: NotFound = 'NotFound'
 class TestPloneFolder(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        # Get rid of the .personal subfolder
+        membership = self.portal.portal_membership
+        self.folder._delObject(membership.personal_id)
         # Create a bunch of subfolders
         self.folder.invokeFactory('Folder', id='sub1')
         self.folder.invokeFactory('Folder', id='sub2')
         self.folder.invokeFactory('Folder', id='sub3')
 
     def testGetObjectPosition(self):
-        self.assertEqual(self.folder.getObjectPosition('.personal'), 0)
+        self.assertEqual(self.folder.getObjectPosition('sub1'), 0)
 
     def testGetObjectPositionRaisesNotFound(self):
         self.assertRaises(NotFound, self.folder.getObjectPosition, 'foobar')
 
     def testSortOrder(self):
         self.assertEqual(self.folder.objectIds(), 
-            ['.personal', 'sub1', 'sub2', 'sub3'])
+            ['sub1', 'sub2', 'sub3'])
 
     def testEditFolderKeepsPosition(self):
         # Cover http://plone.org/collector/2796
@@ -37,7 +40,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.sub2.Title(), 'Foo')
         # Order should remain the same
         self.assertEqual(self.folder.objectIds(), 
-            ['.personal', 'sub1', 'sub2', 'sub3'])
+            ['sub1', 'sub2', 'sub3'])
 
     def testRenameFolderKeepsPosition(self):
         # Cover http://plone.org/collector/2796
@@ -46,7 +49,7 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.foo.Title(), 'Foo')
         # Order should remain the same
         self.assertEqual(self.folder.objectIds(), 
-            ['.personal', 'sub1', 'foo', 'sub3'])
+            ['sub1', 'foo', 'sub3'])
 
 
 if __name__ == '__main__':
