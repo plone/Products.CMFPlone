@@ -6,8 +6,7 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="rejection here/rejectAnonymous;
-                 errors python:request.get('errors', {});" >
+     tal:define="errors python:request.get('errors', {});" >
 
     <h1 i18n:translate="heading_edit_item">
     Edit

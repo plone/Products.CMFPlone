@@ -1,0 +1,5 @@
+[default]
+title=edit form
+
+[security]
+View=1:Member,Authenticated

@@ -185,6 +185,8 @@
                                                    id python: 'cb_'+item.getId();
                                                    checked request/ids_checked|nothing;
                                                    tabindex tabindex/next|nothing"/>
+                            <input type="hidden" name="obj_paths:list" value="#"
+                                   tal:attributes="value python:utool.getRelativeContentURL(item)" />
                         </td>
     
                         <td tal:define="action python:item_typeinfo.immediate_view;

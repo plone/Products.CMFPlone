@@ -10,8 +10,7 @@
 <body>
 			
 <div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {})"
-     tal:condition="here/rejectAnonymous" >
+     tal:define="errors python:request.get('errors', {})" >
 
     
     <span tal:define="dummy python:request.response.setHeader('pragma','no-cache')" />
@@ -25,9 +24,6 @@
     </p>
       
   
-    <metal:block tal:condition="not: here/portal_membership/isAnonymousUser"
-                 tal:define="member container/portal_membership/getAuthenticatedMember | nothing">
-
         <form class="group"
               action="personalize" 
               method="post"
@@ -463,8 +459,6 @@
             <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
                         
 		</form>
-    </metal:block>
-	
     
 </div>
 	   

@@ -10,8 +10,7 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {})"
-     tal:condition="here/rejectAnonymous" >
+     tal:define="errors python:request.get('errors', {})">
 	
     <h1 i18n:translate="heading_plone_setup">Plone Setup</h1>
     

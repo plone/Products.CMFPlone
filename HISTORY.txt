@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - removed all .properties files and made them .metadata files 
+      tal:define="here/rejectAnonymous" and made [security] assertions in .metadata
+
+    - there is a folder in the root of the Plone site called 'help' which is bootstrapped
+      with 'Document' objects located in CMFPlone/docs
+
     - ownership_form now reindexes objects when they change ownership. This exposes
       a ugly bug in CMF where Creator=Owner *sigh*
     

@@ -10,6 +10,7 @@
 permCheck = context.portal_membership.checkPermission
 from Products.PythonScripts.standard import url_quote_plus
 
+Creator = context.portal_membership.getAuthenticatedMember().getUserName()
 
 if permCheck('Reply to item',context):
     replyID = context.createReply( title = title

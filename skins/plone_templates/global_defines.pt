@@ -1,4 +1,4 @@
-<metal:block define-macro="defines"
+<metal:globaldefine define-macro="defines"
       tal:define="
         global utool nocall:here/portal_url;
         global mtool here/portal_membership;

@@ -14,7 +14,6 @@
 -->
 
 <div metal:fill-slot="main"
-      tal:condition="here/rejectAnonymous"
       tal:define="errors request/errors | nothing;
 		  review_state wf_state;
 		  review_history python:here.portal_workflow.getInfoFor(here, 'review_history')">
