@@ -42,10 +42,12 @@ if not portal_properties.validate_email:
      len(password)<5:
       errors['password'] = errors['confirm'] = 'Password must be atleast 5 letters.'
 
+#XXX hamish has a solution for htis
 #portal_registration.testPropertiesValidity uses the REQUEST
 #this is a bad sign ;(
 #for all methods that accept REQUEST we will always have to have some middle man that
 #maps from field_xxxx to xxxx... Waaaa!
+context.validate_setupRequest(errors)
 
 failMessage=portal_registration.testPropertiesValidity(REQUEST)
 if failMessage:

@@ -16,7 +16,7 @@
     possibility to have personalized content, and you will be able to add
     your own documents, images and files to the site.
     </p> 
-<span tal:replace="errors" />
+
     <form class="group"
           action="register" 
           method="post"
