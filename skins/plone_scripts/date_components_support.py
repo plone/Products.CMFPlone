@@ -9,17 +9,14 @@
 ##
 
 from DateTime import DateTime
+#plone_log=context.plone_log
 
 #id is what will show up.  December for month 12
 #value is the value for the form.
 #selected is whether or not it is selected
 
-empty={'id':'----',
-       'value':None,
-       'selected':None}
-
-empty_selected=empty.copy()
-empty_selected['selected']=1
+empty={'id':'----', 'value':None, 'selected':None}
+empty_selected={'id':'----', 'value':None, 'selected':'selected'}
 
 default=0
 years=[]
@@ -28,6 +25,7 @@ months=[]
 hours=[]
 minutes=[]
 ampm=[]
+now=DateTime()
 
 def month_names():
     names={}
@@ -38,15 +36,20 @@ def month_names():
 
 month_dict=month_names()
 
-try:
-    date=DateTime(date)
-except: #XXX DateTime can throw numerous exceptions.  catch all.
-    date=None
+#XXX This debacle is because the date that is usually passed in ends with GMT
+#    and of course DateTime is too stupid to handle it.  So we strip it off.
+
+if same_type(date, ''):
+    date=date.strip()
+    if not date:
+        date=None
+    if date and date.split(' ')[-1].startswith('GMT'):
+        date=DateTime(' '.join(date.split()[:-1]))
 
 if date is None:
     date=DateTime()
     default=1
-else:
+elif not same_type(date, now):
     date=DateTime(date)
 
 year=int(date.strftime('%Y'))
@@ -98,11 +101,11 @@ for x in range(1,32):
 minute=int(date.strftime('%M'))
 
 if default:
-    minutes.append(empty_selected)
+    minutes.append({'id':'00','value':00,'selected':1})
 else:
-    minutes.append(empty)
+    minutes.append({'id':'00','value':00,'selected':None})
 
-for x in range(0,60,5):
+for x in range(5,60,5):
     d={'id':'%02d'%x,
        'value':x,
        'selected':None}
@@ -113,11 +116,11 @@ for x in range(0,60,5):
 hour=int(date.strftime('%H'))
 
 if default:
-    hours.append(empty_selected)
+    hours.append({'id':'00','value':00,'selected':1})
 else:
-    hours.append(empty)
+    hours.append({'id':'00','value':00,'selected':None})
 
-for x in range(0,24):
+for x in range(1,24):
     d={'id':'%02d'%x,
        'value':x,
        'selected':None}

@@ -108,32 +108,36 @@
            portal_url here/portal_url;
 	   tabindex tabindex/next|tabindex|nothing;
 	   input_id string:${formname}_${inputname}_${tabindex};
-	   time   python:here.extract_date_components(inputvalue);
-	   day    python:time['day'];
-	   month  python:time['month'];
-	   year   python:time['year'];
-	   hour   python:time['hour'];
-	   minute python:time['minute'];">
+	   values   python:here.date_components_support(inputvalue);
+           days values/days; months values/months; years values/years;
+           minutes values/minutes; hours values/hours;">
 
-  <input type="hidden" tal:attributes="name string:$inputname;                                    
-                                            id input_id;
-                                            value inputvalue;" />
+            <input type="hidden" tal:attributes="name string:$inputname;                                    
+                                                 id input_id;
+                                                 value inputvalue;" />
 
+            <span>
+                <select name="ic_year"
+                        id="ic_year"
+                        size="1"
+                        tal:attributes="tabindex tabindex;
+                                        name string:${inputname}_year;
+                                        id string:${input_id}_year;
+                                        onfocus onfocus|nothing;
+                                        onblur onblur|nothing;
+                                        onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');">
 
-  <input type="text" 
-         size="4" 
-         name="ic_year" 
-         id="ic_year" 
-         tal:attributes="value year;
-                         name string:${inputname}_year;
-                         id string:${input_id}_year;               
-                         onfocus onfocus|nothing;
-                         onblur onblur|nothing;
-                         onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');
-                         tabindex tabindex;
-			 alt string:$inputname;
-			 title string:$inputname;"/>
-       <span i18n:translate="date_separator">/</span>
+                   <option value="year"
+                           tal:repeat="year years"
+                           tal:attributes="value year/value; selected year/selected"
+                           i18n:translate=""
+                           tal:content="year/id">year</option>
+
+               </select>
+            </span>
+
+           <span i18n:translate="date_separator">/</span>
+
             <span>
                 <select name="ic_month" 
                         id="ic_month"
@@ -144,15 +148,18 @@
                                         onfocus onfocus|nothing;
                                         onblur onblur|nothing;
                                         onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');">
+
                    <option value="subj"
-                           tal:repeat="subj python:range(1, 13, 1)"
-                           tal:attributes="value python:'%02d'%subj; selected python:'%02d'%subj == month"
-                           i18n:translate="" tal:content="python: DateTime('1997/' + str('%02d'%subj) + '/09 1:45pm').Month()">month name</option>
+                           tal:repeat="month months"
+                           tal:attributes="value month/value; selected month/selected"
+                           i18n:translate="" 
+                           tal:content="month/id">month name</option>
+
                </select>
             </span>
 
             <span>
-                <select name="ic_day" 
+                <select name="ic_day"
                         id="ic_day"
                         size="1"
                         tal:attributes="tabindex tabindex;
@@ -161,46 +168,25 @@
                                         onfocus onfocus|nothing;
                                         onblur onblur|nothing;
                                         onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');">
+
                    <option value="subj"
-                           tal:repeat="subj python:range(1, 32, 1)"
-                           tal:attributes="value python:'%02d'%subj; selected python:'%02d'%subj == day"
-                           tal:content="python:'%02d'%subj">day</option>
+                           tal:repeat="day days"
+                           tal:attributes="value day/value; selected day/selected"
+                           i18n:translate=""
+                           tal:content="day/id">day</option>
+
                </select>
             </span>
-         <!--<input type="text" 
-         size="2" 
-         name="ic_month" 
-         id="ic_month" 
-         tal:attributes="value month;
-                         name string:${inputname}_month;
-                         id string:${input_id}_month;               
-                         onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');
-                         onfocus onfocus|nothing;
-                         onblur onblur|nothing;
-                         tabindex tabindex;
-			 alt string:$inputname;
-			 title string:$inputname;"/>-->
-  <span i18n:translate="date_separator">/</span>
-  <!--<input type="text" 
-         size="2" 
-         name="ic_day" 
-         id="ic_day" 
-         tal:attributes="value day;
-                         name string:${inputname}_day;
-                         id string:${input_id}_day;               
-                         onfocus onfocus|nothing;
-                         onblur onblur|nothing;
-                         onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');
-                         tabindex tabindex;
-			 alt string:$inputname;
-			 title string:$inputname;"/>-->
 
-  <a href="" onclick="" tal:attributes="onclick string:return showCalendar('${input_id}_year', '${input_id}', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', 'y/mm/dd');">
+  <span i18n:translate="date_separator">/</span>
+
+  <a href="" onclick="" 
+     tal:attributes="onclick string:return showCalendar('${input_id}_year', '${input_id}', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', 'y/mm/dd');">
     <img tal:replace="structure here/popup_calendar.gif" />
   </a>
 
             <span>
-                <select name="ic_hour" 
+                <select name="ic_hour"
                         id="ic_hour"
                         size="1"
                         tal:attributes="tabindex tabindex;
@@ -209,37 +195,38 @@
                                         onfocus onfocus|nothing;
                                         onblur onblur|nothing;
                                         onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');">
-                   <option tal:replace="nothing">Event Type 1</option>
-                   <option tal:replace="nothing">Event Type 2</option>
-                   <option tal:replace="nothing">...</option>
+
                    <option value="subj"
-                           tal:repeat="subj python:range(0, 24, 1)"
-                           tal:attributes="value python:'%02d'%subj; selected python:'%02d'%subj == hour"
-                           tal:content="python:'%02d'%subj">Event Type N</option>
+                           tal:repeat="hour hours"
+                           tal:attributes="value hour/value; selected hour/selected"
+                           i18n:translate=""
+                           tal:content="hour/id">hour</option>
+
                </select>
             </span>
+
             <span i18n:translate="time_separator">:</span>
+
             <span>
-                <select name="ic_minute" 
+                <select name="ic_minute"
                         id="ic_minute"
                         size="1"
-                        tal:attributes="tabindex tabindex;               
+                        tal:attributes="tabindex tabindex;
                                         name string:${inputname}_minute;
-                                        id string:${input_id}_minute;               
+                                        id string:${input_id}_minute;
                                         onfocus onfocus|nothing;
-                                        onblur onblur|nothing;                                        
+                                        onblur onblur|nothing;
                                         onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');">
 
-                   <option tal:replace="nothing">Event Type 1</option>
-                   <option tal:replace="nothing">Event Type 2</option>
-                   <option tal:replace="nothing">...</option>
                    <option value="subj"
-                           tal:repeat="subj python:range(0,60,5)"
-                           tal:attributes="value python:'%02d'%subj; selected python:'%02d'%subj == minute"
-                           tal:content="python:'%02d'%subj">Event Type N</option>
+                           tal:repeat="minute minutes"
+                           tal:attributes="value minute/value; selected minute/selected"
+                           i18n:translate=""
+                           tal:content="minute/id">hour</option>
+
                </select>
             </span>
-				   
+
 </div>
 
 <div metal:define-macro="calendarDatePickerBoxPopup"
