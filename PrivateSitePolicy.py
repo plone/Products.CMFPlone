@@ -32,7 +32,6 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
         
         wf_tool.updateRoleMappings()
         wf_tool.doActionFor(portal,'show',comment='The portal object itelf but be visible')
-        wf_tool.doActionFor(portal.portal_skins, 'show', comment='The skins tool is a folder and must be visible')
         #wf_tool.doActionFor(portal.Members, 'show', comment='Members must be visible')
 
         portal.manage_permission(AddPortalMember,('Manager',))
