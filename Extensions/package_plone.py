@@ -26,9 +26,6 @@ for product in ('CMFPlone', 'Formulator', 'CMFActionIcons', 'CMFQuickInstallerTo
                ):
     os.system("cd .. ; cp -rfL %s %s" % (product, releasename))
 
-# copy i18n into plone
-os.system("cd .. ; cp -rfL i18n  %s/CMFPlone/" % releasename)
-
 # clean up
 os.system("cd ../%s; %s"  % (releasename, sh_clean))
 
