@@ -1,3 +1,250 @@
+2003-12-20 03:03  runyaga
+
+	* skins/plone_forms/mail_password_template.dtml (Plone-2_0-branch):
+	  fix for 2023
+
+2003-12-20 03:01  runyaga
+
+	* skins/plone_forms/mail_password_template.dtml (Plone-2_0-branch):
+	  again?
+
+2003-12-20 02:57  runyaga
+
+	* skins/plone_forms/mail_password_template.dtml (Plone-2_0-branch):
+	  fix for # 2023
+
+2003-12-20 02:57  zopezen
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): Cope with non
+	  Plone skins in a Plone site (heretics!)
+
+2003-12-20 02:05  dpunktnpunkt
+
+	* skins/plone_templates/robots.txt (Plone-2_0-branch): Wouldn't
+	  work like that :P
+
+2003-12-20 02:00  dpunktnpunkt
+
+	* skins/plone_templates/robots.txt (Plone-2_0-branch): robots.txt
+	  for Google, fixes 1886
+
+2003-12-20 01:45  plonista
+
+	* FactoryTool.py (Plone-2_0-branch): Fix for 2072, 2073
+
+2003-12-20 01:42  plonista
+
+	* PloneFolder.py, skins/plone_scripts/createObject.cpy
+	  (Plone-2_0-branch): Fix for 846
+
+2003-12-20 01:41  plonista
+
+	* skins/plone_scripts/folder_delete.cpy (Plone-2_0-branch): Fixed
+	  cut-and-paste coding error
+
+2003-12-20 01:32  eaon
+
+	* skins/plone_styles/: plone.css.dtml, ploneIEFixes.css.dtml
+	  (Plone-2_0-branch): ie form + portalwrap fixes - scrollable pre
+	  for moz and opera
+
+2003-12-20 01:29  pupq
+
+	* skins/plone_content/file_view.pt (Plone-2_0-branch): Collector
+	  #1349. Essentially, even if the default view for File types is
+	  switched to be this skin, clicking the d/l link should _always_
+	  download it, and this guarantees that.
+
+2003-12-20 01:16  pupq
+
+	* MembershipTool.py (Plone-2_0-branch): Fixes collector #1153,
+	  where member folder couldn't have ID of any parent of the Members
+	  folder.
+
+2003-12-20 00:34  plonista
+
+	* PloneTool.py, skins/plone_form_scripts/change_ownership.py,
+	  skins/plone_form_scripts/content_status_modify.cpy,
+	  skins/plone_form_scripts/delete_member_portraits.cpy,
+	  skins/plone_form_scripts/disableSyndication.cpy,
+	  skins/plone_form_scripts/discussion_reply.py,
+	  skins/plone_form_scripts/document_edit.cpy,
+	  skins/plone_form_scripts/editSynProperties.cpy,
+	  skins/plone_form_scripts/enableSyndication.cpy,
+	  skins/plone_form_scripts/event_edit.cpy,
+	  skins/plone_form_scripts/file_edit.cpy,
+	  skins/plone_form_scripts/folder_edit.cpy,
+	  skins/plone_form_scripts/folder_localrole_edit.py,
+	  skins/plone_form_scripts/image_edit.cpy,
+	  skins/plone_form_scripts/link_edit.cpy,
+	  skins/plone_form_scripts/metadata_edit.cpy,
+	  skins/plone_form_scripts/newsitem_edit.cpy,
+	  skins/plone_form_scripts/personalize.cpy,
+	  skins/plone_form_scripts/plone_change_password.py,
+	  skins/plone_form_scripts/portrait_delete.cpy,
+	  skins/plone_form_scripts/reconfig.cpy,
+	  skins/plone_form_scripts/register.cpy,
+	  skins/plone_form_scripts/sendto.cpy,
+	  skins/plone_scripts/folder_copy.cpy,
+	  skins/plone_scripts/folder_cut.cpy,
+	  skins/plone_scripts/folder_delete.cpy,
+	  skins/plone_scripts/folder_paste.cpy,
+	  skins/plone_scripts/folder_rename.cpy,
+	  skins/plone_scripts/logout.cpy (Plone-2_0-branch): Added better
+	  transaction notes to common scripts to make the Undo screen
+	  nicer.
+
+2003-12-20 00:31  runyaga
+
+	* Extensions/add_copyright.py (Plone-2_0-branch): copyright tag
+
+2003-12-20 00:11  vinsci
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Remove
+	  styling for <select>. This fixes issue 2143.
+
+2003-12-20 00:06  runyaga
+
+	* Extensions/add_copyright.py (Plone-2_0-branch): add copy to apply
+	  against .zpt and .py
+
+2003-12-19 23:54  runyaga
+
+	* HISTORY.txt, PloneControlPanel.py, Portal.py,
+	  migrations/__init__.py, migrations/final_one_zero_one.py,
+	  migrations/one01_one02.py, migrations/one02_one03.py,
+	  migrations/one03_one04.py, migrations/oneX_twoBeta2.py,
+	  migrations/plone2_base.py, migrations/rc1_rc2.py,
+	  migrations/rc2_final.py, migrations/twoBeta2_twoBeta3.py,
+	  migrations/v1/__init__.py, migrations/v1/final_one_zero_one.py,
+	  migrations/v1/one01_one02.py, migrations/v1/one02_one03.py,
+	  migrations/v1/one03_one04.py, migrations/v1/rc1_rc2.py,
+	  migrations/v1/rc2_final.py, migrations/v2/__init__.py,
+	  migrations/v2/oneX_twoBeta2.py, migrations/v2/plone2_base.py,
+	  migrations/v2/twoBeta2_twoBeta3.py (Plone-2_0-branch): moved
+	  migrations into v1 and v2 modules
+
+2003-12-19 23:12  pupq
+
+	* skins/plone_scripts/queryCatalog.py (Plone-2_0-branch): No longer
+	  filters out sort_on, sort_order; new param for null search
+	  returning everything. See collector #2147.
+
+2003-12-19 23:02  pupq
+
+	* skins/plone_scripts/queryCatalog.py: No longer filters out
+	  sort_on, sort_order; new param for null search returning
+	  everything. See collector #2147.
+
+2003-12-19 22:20  plonista
+
+	* PloneTool.py, skins/plone_form_scripts/change_ownership.py
+	  (Plone-2_0-branch): Fixed 2042
+
+2003-12-19 22:15  runyaga
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  state: $foo should not be href if there are no available
+	  transitions.	limi needs to fix the arrow for the state.  I bet
+	  its something inside of CSS
+
+2003-12-19 22:15  elvix
+
+	* skins/plone_ecmascript/plone_minwidth.js.dtml (Plone-2_0-branch):
+	  moved the hidden magic div that in some cases caused a mysterious
+	  10px logo offset
+
+2003-12-19 22:00  xiru
+
+	* Extensions/add_copyright.py (Plone-2_0-branch): Added script to
+	  insert copyright messages on .pt and .py files (based on Andy
+	  McKay´s script)
+
+2003-12-19 21:48  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  fixed jensen's stompage
+
+2003-12-19 21:37  bitranch
+
+	* skins/plone_scripts/mail_password.py (Plone-2_0-branch): Should
+	  be checking for 'NotFound' on a non-existent user ID.
+
+2003-12-19 20:58  chrism
+
+	* skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Add indicator that anonymous users may be able to comment if they
+	  log in.  Limi will fix the look.
+
+2003-12-19 20:19  limi
+
+	* docs/: README.txt, REQUIREMENTS.txt (Plone-2_0-branch): Removed
+	  separate requirements file, since these are listed in the
+	  INSTALL.txt.
+
+2003-12-19 20:08  yenzenz
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  fixed Issue 2146: Add up arrow to folder_contents as well
+
+2003-12-19 19:10  plonista
+
+	* FormTool.py (Plone-2_0-branch): Modified FormTool so that it
+	  doesn't break when invoking CMFFormController validators
+
+2003-12-19 18:54  plonista
+
+	* zserverPatch.py (Plone-2_0-branch): Modify zserverPatch to deal
+	  gracefully with the case of no ZServer (i.e. python is accessing
+	  the ZODB directly)
+
+2003-12-19 18:47  limi
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  Added title to the Add New Item menu, signifying that it will be
+	  added in the containing folder.
+
+2003-12-19 18:13  dpunktnpunkt
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Added default for when there's no translation available.
+
+2003-12-19 17:30  dpunktnpunkt
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  "Add New ${type}" in global_contentmenu.pt translatable.
+
+2003-12-19 17:19  dpunktnpunkt
+
+	* skins/plone_templates/: folder_contents.pt, global_defines.pt
+	  (Plone-2_0-branch): Added 'translate' to global_defines:
+	  translate(msgid, mapping, default=None) -> string Fixed
+	  folder_contents.pt 'Add New ${type}' translation.
+
+2003-12-19 16:45  dannybloe
+
+	* skins/: plone_ecmascript/plone_javascripts.js,
+	  plone_forms/search_form.pt (Plone-2_0-branch): Collector Issue
+	  330: Modified the js functions to toggle checkboxes so it now can
+	  be used in many places  (not only folder_contents but also
+	  search_form) and also more than once on a single page. It is
+	  backwards compatible.
+
+	  modified search_form so it now uses the toggle function.
+
+	  todo: limi, take a look at the toggle buttons on search_form,
+	  i18n-ize it please.
+
+2003-12-19 11:15  runyaga
+
+	* CustomizationPolicy.py, Portal.py, PrivateSitePolicy.py,
+	  www/addSite.zpt (Plone-2_0-branch): renable customization policy.
+	  By default privatesitepolicy is not enabled.
+
+2003-12-19 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-19 00:15  runyaga
 
 	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): all
