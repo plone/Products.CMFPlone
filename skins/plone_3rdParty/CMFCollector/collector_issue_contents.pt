@@ -40,16 +40,18 @@
     
             <h6 i18n:translate="box_transcript_for_issue"> 
                 Transcript for Issue
-                <span tal:replace="here/id" i18n:name="id">ID</span>
-                (<span tal:replace="python:str(entries)" i18n:name="num">7</span>
-                <span i18n:name="listing_entries">
-                    <tal:block condition="python:entries == 1">
-                        <span i18n:translate="">entry</span>
-                    </tal:block>
-                    <tal:block condition="python:entries != 1">
-                        <span i18n:translate="">entries</span>
-                    </tal:block>
-                </span>)
+                <tal:block content="here/id" i18n:name="id">ID</tal:block>
+                (<tal:block content="entries" i18n:name="num">7</tal:block>
+    
+                 <tal:block condition="python:entries == 1">
+                 <span i18n:name="listing_entry" i18n:translate="entry_singular">entry</span>
+                 <tal:block i18n:name="listing_entries"></tal:block>
+                 </tal:block>
+                 
+                 <tal:block condition="python:entries != 1">
+                 <tal:block i18n:name="listing_entry"></tal:block>
+                 <span i18n:name="listing_entries" i18n:translate="entries_plural">entries</span>
+                 </tal:block>)
             </h6>
 
             <div class="body">

@@ -19,8 +19,8 @@
 <div metal:fill-slot="header">
 
 <h1 i18n:translate="heading_add_new_issue_to">
-Add new issue to <span tal:condition="here/Title"
-tal:replace="here/Title" i18n:name="collector_title">TITLE</span>
+Add new issue to < tal:block content="here/title_or_id"
+i18n:name="collector_title">TITLE</tal:block>
 </h1>
 
 <div class="description" i18n:translate="description_add_new_issue">
@@ -191,8 +191,10 @@ as possible.
     <div class="row">
         <div class="label" i18n:translate="label_attachment_type_optional"> Attachment type (optional)</div>
         <div class="field">
-            <input class="noborder" type=radio name="filetype" value="File" checked /> File 
-            <input class="noborder" type=radio name="filetype" value="Image" /> Image
+            <input class="noborder" type=radio name="filetype" id="radio_file" value="File" checked />
+	    <label for="radio_file" i18n:translate="">File</label>
+            <input class="noborder" type=radio name="filetype" id="radio_image" value="Image" />
+	    <label for="radio_image" i18n:translate="">Image</label>
         </div>
     </div>
     

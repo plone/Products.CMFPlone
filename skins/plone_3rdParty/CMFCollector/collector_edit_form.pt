@@ -90,12 +90,17 @@
             <input type="text"
                    name="abbrev"
                    value=""
+                   onfocus="formtooltip('abbrev_help',1)" 
+                   onblur="formtooltip('abbrev_help',0)"
                    tal:attributes="value here/abbrev|nothing"
                    size="5" />
-        <span i18n:translate="help_abbreviation">
+            <div id="abbrev_help" 
+                 i18n:translate="help_abbreviation"
+                 class="help" 
+                 style="visibility:hidden">
             Abbreviation for the collector, used as the prefix of
             the subject line in mail from the collector.
-        </span>
+            </div>
         </div>
     </div>
   
@@ -123,10 +128,15 @@
                    name="email" 
                    size=25
                    value="EMAIL"
+                   onfocus="formtooltip('email_help',1)" 
+                   onblur="formtooltip('email_help',0)"
                    tal:attributes="value email" />
-            <span i18n:translate="help_collector_email">
+        <div id="email_help" 
+                 i18n:translate="help_email"
+                 class="help" 
+                 style="visibility:hidden">
         This is the collector's email 'From' address.
-        </span>
+        </div>
                             
         </div>
     </div>
@@ -136,13 +146,18 @@
         <div class="field">
             <textarea name="managers:lines" rows="5" cols="15"
                       tal:define="mgrs python:'\n'.join([m for m in here.managers])"
+		      onfocus="formtooltip('managers_help',1)" 
+		      onblur="formtooltip('managers_help',0)"
                       tal:content="mgrs"></textarea>
-            <span i18n:translate="help_collector_managers">
+            <div id="managers_help" 
+                 i18n:translate="help_collector_managers"
+                 class="help" 
+                 style="visibility:hidden">
             Managers configure the collector, and receive request notices.
             Managers can accept issues, but must be on Supporters roster to be
             assigned.  (Managers cannot remove <em>themselves</em> from the
             management roster.)
-        </span>
+            </div>
         </div>
     </div>
 
@@ -150,12 +165,18 @@
         <div class="label" i18n:translate="label_collector_supporters">Supporters</div> 
         <div class="field">
             <textarea name="supporters:lines" rows="5" cols="15"
-                      tal:define="supporters python:'\n'.join([s for s in here.supporters])"></textarea>
-        <span i18n:translate="help_collector_supporters">
-        Supporters can be assigned to requests.  They may or may not
+		      onfocus="formtooltip('supporters_help',1)" 
+		      onblur="formtooltip('supporters_help',0)"
+                      tal:define="supporters python:'\n'.join([s for s in here.supporters])"
+		      tal:content="supporters"></textarea>
+            <div id="supporters_help" 
+                 i18n:translate="help_collector_supporters"
+                 class="help" 
+                 style="visibility:hidden">
+            Supporters can be assigned to requests.  They may or may not
             receive initial request notifications, depending on the
             'dispatching' setting below.
-        </span>
+            </div>
         </div>
     </div>
   
@@ -250,6 +271,8 @@
                        size="30" 
                        name="stateemail" 
                        value=""
+		       onfocus="formtooltip('notification_help',1)" 
+		       onblur="formtooltip('notification_help',0)"
                        tal:attributes="name python: 'state_email.' + state
                                                     + ':record';
                                        value python: here.state_email.get(state, '')" />
@@ -257,11 +280,14 @@
                                                 
             </metal:block>
             </div>
-        <span i18n:translate="help_collector_notifications">
+            <div id="notification_help" 
+                 i18n:translate="help_collector_notifications"
+                 class="help" 
+                 style="visibility:hidden">
             Fill in addresses next to the state names to have notifications for 
             issues in that state sent to those addresses (this is in addition to 
             normal issue-participant notifications)
-        </span>
+            </div>
         </div>
     </div>
 
@@ -272,22 +298,31 @@
 
             <span i18n:translate="label_collector_topics">Topics</span>
             <textarea name="topics:lines" rows="5" cols="15"
+                      onfocus="formtooltip('selections_help',1)" 
+                      onblur="formtooltip('selections_help',0)"
                       tal:define="topics python:'\n'.join([t for t in here.topics])"
                       tal:content="topics"></textarea>
             
             <span i18n:translate="label_collector_classifications">Classifications</span>
             <textarea name="classifications:lines" rows="5" cols="15"
+                      onfocus="formtooltip('selections_help',1)" 
+                      onblur="formtooltip('selections_help',0)"
                       tal:define="classi python:'\n'.join([c for c in here.classifications])"
                       tal:content="classi"></textarea>
             
             <span i18n:translate="label_collector_importance">Importance</span>
             <textarea name="importances:lines" rows="5" cols="15"
+                      onfocus="formtooltip('selections_help',1)" 
+                      onblur="formtooltip('selections_help',0)"
                       tal:define="imp python:'\n'.join([i for i in here.importances])"
                       tal:content="imp"></textarea>
             </div>
-            <span i18n:translate="help_collector_selections">
-        Fill in the alternatives for issue categorization.
-        </span>
+            <div id="selections_help" 
+                 i18n:translate="help_collector_selections"
+                 class="help" 
+                 style="visibility:hidden">
+            Fill in the alternatives for issue categorization.
+	    </div>
         </div>
     </div>
 
@@ -295,11 +330,16 @@
         <div class="label" i18n:translate="label_version_boilerplate">Version boilerplate</div> 
         <div class="field">
    <textarea name="version_info_spiel:text" rows="3" cols="50"
+             onfocus="formtooltip('version_bp_help',1)" 
+	     onblur="formtooltip('version_bp_help',0)"
              tal:content="here/version_info_spiel|nothing"></textarea>
              
-    <span i18n:translate="help_collector_version_boilerplate">
-    The text shown to users about what kind of version information they should include.
-    </span>
+            <div id="version_bp_help" 
+                 i18n:translate="help_collector_version_boilerplate"
+                 class="help" 
+                 style="visibility:hidden">
+            The text shown to users about what kind of version information they should include.
+	    </div>
         </div>
     </div>
  
@@ -308,36 +348,48 @@
         <div class="field">
             <div style="float: left">
                 <input class="noborder" 
+		       id="reinstate_no"
                        type="radio"
                        name="recatalog:int" 
                        value="0" 
                        checked="checked" 
+		       onfocus="formtooltip('reinstate_help',1)" 
+		       onblur="formtooltip('reinstate_help',0)"
                        />
                 
-                <span i18n:translate="label_collector_reinstate_no">No</span><br />
+                <label for="reinstate_no" i18n:translate="label_collector_reinstate_no">No</label><br />
                 
                 <input class="noborder" 
+		       id="reinstate_internal"
                        type="radio"
                        name="recatalog:int" 
                        value="1"
+		       onfocus="formtooltip('reinstate_help',1)" 
+		       onblur="formtooltip('reinstate_help',0)"
                        />
                 
-                <span i18n:translate="label_collector_reinstate_internal_only">Internal only</span><br />
+                <label for="reinstate_internal" i18n:translate="label_collector_reinstate_internal_only">Internal only</label><br />
                 
                 <input class="noborder" 
+		       id="reinstate_sitewide"
                        type="radio"
                        name="recatalog:int" 
                        value="2"
+		       onfocus="formtooltip('reinstate_help',1)" 
+		       onblur="formtooltip('reinstate_help',0)"
                        />
                
-               <span i18n:translate="label_collector_reinstate_sitewide">Internal &amp; Site-wide (slow)</span><br />
+               <label for="reinstate_sitewide" i18n:translate="label_collector_reinstate_sitewide">Internal &amp; Site-wide (slow)</label><br />
             
             </div>
-            <span i18n:translate="help_collector_reinstate">
+            <div id="reinstate_help" 
+                 i18n:translate="help_collector_reinstate"
+                 class="help" 
+                 style="visibility:hidden">
                 Occasionally, product updates require internal catalog reinit and
                 reindex and other existing-issue adjustment.  Collector product
                 RELEASE_NOTES.txt will indicate when necessary.
-            </span>
+	    </div>
         </div>
     </div>
 
