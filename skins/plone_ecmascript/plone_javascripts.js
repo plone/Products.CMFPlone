@@ -484,7 +484,7 @@ function highlightSearchTerm() {
         }
         if (query){
             var qfinder = new RegExp()
-            qfinder.compile("searchterm=(.*)\&?","gi")
+            qfinder.compile("searchterm=[^&]*","gi")
             qq = qfinder.exec(query)
             if (qq && qq[1]){
                 query = qq[1]
