@@ -4,8 +4,8 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST, RESPONSE, title=None, description=None, event_type=None, start_date=None, end_date=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, id='' 
-##title=
+##parameters=title=None, description=None, event_type=None, start_date=None, end_date=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, id='' 
+##title=Edit an event
 ##
 
 # need to parse date string *before* passing to Event.edit since
@@ -15,9 +15,8 @@ from DateTime import DateTime
 dt_start = DateTime( start_date )
 dt_end = DateTime( end_date )
 
-new_context = context.portal_factory.doCreate(context, id)
-
 try:
+    new_context = context.portal_factory.doCreate(context, id)
     new_context.edit( title=title
                     , description=description
                     , eventType=event_type
@@ -41,10 +40,12 @@ try:
                                        , id=id
                                        , description=description )
 except:
-    msg='portal_status_message=Error+saving+event.'
-    view='event_edit_form'
+    return ('failure', context) 
+#    msg='portal_status_message=Error+saving+event.'
+#    view='event_edit_form'
 else:
-    msg='portal_status_message=Event+changes+saved.'
-    view='event_view'
+    return ('success', new_context) 
+#    msg='portal_status_message=Event+changes+saved.'
+#    view='event_view'
 
-return ('success', new_context)
+#return ('success', new_context)
