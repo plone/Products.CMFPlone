@@ -30,7 +30,8 @@
             <legend i18n:translate="legend_personal_details">Personal Details</legend>
     
             <input type="hidden" name="came_from" value=""
-                   tal:attributes="value request/came_from|request/HTTP_REFERER" />
+                   tal:condition="request/came_from|nothing"
+                   tal:attributes="value request/came_from" />
             <input type="hidden" name="last_visit:date" value="ZopeTime"
                    tal:attributes="value here/ZopeTime" />
             <input type="hidden" name="prev_visit:date" value="ZopeTime"
