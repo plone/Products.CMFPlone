@@ -38,6 +38,7 @@ class Item(SimpleItem):
             self.title = title
 
     manage_before_delete_called = 0
+
     def manage_beforeDelete(self, item, container):
         self.manage_before_delete_called = 1
 
