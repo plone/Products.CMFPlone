@@ -25,7 +25,7 @@
         <div>    
             <small>
         
-                <span i18n:translate="label_size">Size:</span>
+                <span i18n:translate="label_size">Size</span>:
         
                 <span tal:define="size python:here.getObjSize(here)"
                       tal:content="size">
