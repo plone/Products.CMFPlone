@@ -62,19 +62,17 @@
     <ul id="portalTabs">
        <h5 class="hiddenstructure">Navigation</h5>
        <tal:tabs tal:repeat="tab portal_tabs">
-       <li tal:define="firstitem repeat/tab/first;
-                       lastitem repeat/tab/last;"
-           tal:attributes="id string:portaltab-${tab/id};
-                           class python:test(selected_portal_tab==tab['id'], 'selected', 'plain') + test(firstitem, ' firstItem', '') + test(lastitem, ' lastItem', '');">
+       <li tal:attributes="id string:portaltab-${tab/id};
+                           class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
           <a href="" class="" tal:attributes="href tab/url;"
 		       accesskey="accesskeys-tabs" i18n:attributes="accesskey" >
           <tal:block omit-tag="" i18n:translate="">
                <span tal:replace="tab/name">Tab Name</span>
           </tal:block>
           </a>
-      </li>
-      </tal:tabs>
-      <div class="clear"></div>
+       </li>
+       </tal:tabs>
+       <div class="clear"></div>
    </ul>
 </div>
 
@@ -87,7 +85,7 @@
                  mtool mtool|here/portal_membership;
                  display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">
     <h5 class="hiddenstructure">Personal tools</h5>
-    <li id="personalBar-user" class="firstItem" tal:condition="not: isAnon"><a href=""
+    <li id="personalBar-user" tal:condition="not: isAnon"><a href=""
         tal:omit-tag="not: mtool/getHomeFolder"
         tal:attributes="href string:${mtool/getHomeUrl}"
         accesskey="accesskeys-personalbar"
@@ -96,15 +94,13 @@
              john
         </span>
     </a></li>
-    <li id="personalBar-anon" class="firstItem" tal:condition="isAnon"
+    <li id="personalBar-anon" tal:condition="isAnon"
           i18n:translate="you_are_not_logged_in">
               You are not logged in
     </li>
     <tal:actions tal:repeat="action python:display_actions"> 
         <li id=""
-            tal:define="lastitem repeat/action/last;"
-            tal:attributes="id string:personalBar-${action/id};
-                            class python:test(lastitem,'lastItem','');">
+            tal:attributes="id string:personalBar-${action/id};">
             <a href=""
                tal:attributes="href action/url"
                accesskey="accesskeys-personalbar"
