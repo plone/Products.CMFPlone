@@ -1,14 +1,21 @@
+README-Plone
 
-This is Mihai Bazon's, aka "mishoo", excellent DHTML Calendar Widget,
-("jscalendar") available in original from: http://dynarch.com/mishoo/calendar/
+This is Mihai Bazon's <mishoo@infoiasi.ro> excellent DHTML Calendar
+Widget, ("jscalendar") available in original from:
+http://dynarch.com/mishoo/calendar/ (see README for licensing
+information).
+
+For version 0.9.5 of jscalendar, included in Plone 2.0, the
+integration from the previous jscalendar versions was changed
+slightly.
 
 For distribution with Plone, we have only flattened the directory
-hierarchy and added this file. Everything else is unchanged. This
-means the subdirectories "doc", "doc/html" and "lang" have been
-removed, with their contents moved to the top jscalendar directory
-instead. This is only in order to avoid making "doc", "doc/html" and
-"lang" available from other url's on a site, under Zope's acquisition
-logic.
+hierarchy and added this file (README-Plone) and all of the .metadata
+files. Everything else is unchanged. This means the subdirectories
+"doc", "doc/html" and "lang" have been removed, with their contents
+moved to the top jscalendar directory instead. This is only in order
+to avoid making "doc", "doc/html" and "lang" available from other
+url's on a site, under Zope's acquisition logic.
 
 Plone integration
 -----------------
@@ -35,6 +42,13 @@ Plone integration
       - function showJsCalendar (mimics Calendar.setup() as an ordinary
         function instead of as a handler)
       - function update_date_field
+
+- other
+
+  calendar-setup*.js isn't used by the Plone integration (it would require
+  adding a little javascript after the </form> tag, which seems
+  difficult to do with CMFFormController, as the script still needs to
+  refer to the controls by id. Added .metadata files for it anyway.
 
 Upgrading Plone's jscalendar
 ----------------------------
