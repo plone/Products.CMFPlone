@@ -65,9 +65,3 @@ class ITranslatable(Interface):
         """
         Returns the language of this translation - same as DC
         """
-
-    def initializeTranslation():
-        """
-        Initializes the object as a translation, would typically be called by
-        addTranslation.
-        """
