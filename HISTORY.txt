@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1-beta1 - (TBA) - (Unreleased)
 
+    - It was impossible to create a item named 'index_html' on Portal
+      root or inside a folder via WebDAV. Added a functional doctest
+      for it.
+      [dreamcatcher]
+
     - Removed headingFontBaseSize from base_properties and plone.css.dtml
       because it doesn't actually work and cost/benefit of implementation is too
       high.
@@ -13,11 +18,11 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
       in another node
       [elvix]
 
-    - Added Collapse/Expand-form-section javascript for future use. Usage described
-      in plone_javascripts.js
+    - Added Collapse/Expand-form-section javascript for future
+      use. Usage described in plone_javascripts.js
       [elvix]
 
-    - check_id now accepts an additional 'contained_by' argument, allowing to 
+    - check_id now accepts an additional 'contained_by' argument, allowing to
       disambiguate the target folder in cases where using the acquisition
       parent would yield the wrong results.
       [gkirk]
@@ -25,7 +30,7 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
     - Consolidated all monkey patches in the 'patches' sub-package.
       [stefan]
 
-    - Changed CatalogTool.catalog_object() and CatalogTool.reindexObject() to 
+    - Changed CatalogTool.catalog_object() and CatalogTool.reindexObject() to
       support the new update_metadata protocol (Zope > 2.6.2). An optional
       'update_metadata' argument controls whether the object's metadata record
       is updated while cataloging. It defaults to yes.
@@ -35,8 +40,8 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
       [tiran]
 
     - SearchableText, Title, and Description now use TextIndexNG2 if installed.
-      All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
-      not installed. Note that in Plone 2.0 Title and Description used to be plain 
+      All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is
+      not installed. Note that in Plone 2.0 Title and Description used to be plain
       TextIndexes.
       [ajung]
 
@@ -45,12 +50,12 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
       start/end dates of Events.
       [ajung]
 
-    - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it 
+    - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it
       should be and will be revised. See http://plone.org/collector/2461.
       [db] [batlogg]
 
-    - getObjSize() now accepts second (optional) size argument to allow formatting
-      of arbitrary sizes.
+    - getObjSize() now accepts second (optional) size argument to
+      allow formatting of arbitrary sizes.
       [andym]
 
 Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
@@ -83,11 +88,11 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
       forms.
       [limi]
 
-    - Fixed http://plone.org/collector/3601 - Cancel in password_form 
+    - Fixed http://plone.org/collector/3601 - Cancel in password_form
       redirected to the wrong page. Thanks to Varun for the patch.
       [stefan]
 
-    - Fixed http://plone.org/collector/3599 - Cancel in personalize_form 
+    - Fixed http://plone.org/collector/3599 - Cancel in personalize_form
       redirected to the wrong page. Thanks to Varun for the patch.
       [stefan]
 
