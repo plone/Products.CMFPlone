@@ -8,6 +8,7 @@
 ##parameters=password='password', confirm='confirm', came_from_prefs=None
 ##title=Register a User
 ##
+from ZODB.POSException import ConflictError
 
 REQUEST=context.REQUEST
 
@@ -22,6 +23,8 @@ portal_registration.addMember(username, password, properties=REQUEST)
 if site_properties.validate_email or REQUEST.get('mail_me', 0):
     try:
         portal_registration.registeredNotify(username)
+    except ConflictError:
+        raise
     except Exception, err: 
 
         #XXX registerdNotify calls into various levels.  Lets catch all exceptions.
