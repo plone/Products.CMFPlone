@@ -278,14 +278,14 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
     manage_addFolder = manage_addPloneFolder
     manage_renameObject = OrderedContainer.manage_renameObject
 
-    #security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
+    security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
     def manage_delObjects(self, ids=[], REQUEST=None):
         """ We need to enforce security. """
         mt=getToolByName(self, 'portal_membership')
         for id in ids:
             item = self._getOb(id)
             if not mt.checkPermission(Permissions.delete_objects, item):
-                raise BeforeDeleteException, (
+                raise Unauthorized, (
                     "Do not have permissions to remove this object")
         SkinnedFolder.manage_delObjects(self, ids, REQUEST=REQUEST)
 
