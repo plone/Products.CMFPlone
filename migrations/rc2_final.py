@@ -26,6 +26,10 @@ def rc2Final(portal):
             action.condition=statexpr
     at._actions = tuple(actions)
 
+    nav_props = portal.portal_properties.navigation_properties
+    nav_props._updateProperty('default.content_status_modify.failure', 
+        'content_status_history')
+
 def registerMigrations():
     MigrationTool.registerUpgradePath(
             '1.0RC2', 
