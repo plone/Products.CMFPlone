@@ -138,7 +138,8 @@
 
         <!-- start of the left (by default at least) column -->
         <div id="portal-column-one"
-            tal:condition="slots_mapping/left">
+             metal:define-slot="column_one_slot"
+             tal:condition="slots_mapping/left">
             <div class="visualPadding">
                 <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
                     This instruction gets the portlets (boxes) for the left column.
@@ -153,7 +154,8 @@
 
     <!-- start of right (by default at least) column -->
     <div id="portal-column-two"
-        tal:condition="slots_mapping/right">
+         metal:define-slot="column_two_slot"
+         tal:condition="slots_mapping/right">
         <div class="visualPadding">
             <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
                 This instruction gets the portlets (boxes) for the right column.

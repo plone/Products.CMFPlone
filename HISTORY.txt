@@ -4,6 +4,17 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+   RC5/Final?   
+
+    - Added macro names for the left/right slots, so you can override them
+      by filling the slots from a template. Example::
+
+      <metal:override fill-slot="column_one_slot" />
+      <metal:override fill-slot="column_two_slot" />
+
+      This enables you to "turn off" the slots from a template, thus
+      eliminating the need to create a folder to do it.
+
    RC4
 
     - CMFPlone.FormTool.BasicForm.get_field signature has changed.
