@@ -104,22 +104,25 @@ def _installLocalizer(plone):
 
     # add in languages
     out.append('Reading .po files from %s' % i18nDir)
-    for file in glob.glob(os.path.join(i18nDir, '*.po')):
-        try:
-            out.append('Found file: %s' % file)
-            fn = os.path.basename(file)
-            lang = fn[6:-3]
+    if os.path.exists(i18nDir):
+        for file in glob.glob(os.path.join(i18nDir, '*.po')):
+            try:
+                out.append('Found file: %s' % file)
+                fn = os.path.basename(file)
+                lang = fn[6:-3]
 
-            # first add in the language
-            out.append('Adding language: %s' % lang)
-            mObj.manage_addLanguage(lang)
-
-            # then add in the file
-            out.append('Adding po file')
-            fh = open(file, 'rb')
-            mObj.manage_import(lang, fh)
-        except:
-            out.append('Failed to setup .po file for: %s' % file)
+                # first add in the language
+                out.append('Adding language: %s' % lang)
+                mObj.manage_addLanguage(lang)
+    
+                # then add in the file
+                out.append('Adding po file')
+                fh = open(file, 'rb')
+                mObj.manage_import(lang, fh)
+            except:
+                out.append('Failed to setup .po file for: %s' % file)
+    else:
+        out.append('No i18n directory found')
 
     # set the default language to english
     mObj.manage_changeDefaultLang(language='en')
