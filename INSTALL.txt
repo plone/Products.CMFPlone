@@ -34,10 +34,10 @@ Installing Plone manually, step by step instructions.
  
   **MANDATORY** 
  
-  - Zope 2.7.3 (not 2.8)
-     http://zope.org/Products/Zope/2.7.3
-     http://zope.org/Products/Zope/2.7.3/Zope-2.7.3.tgz
-     Note: Zope 2.7 requires Python 2.3.4.
+  - Zope 2.7.4 (not 2.8)
+     http://zope.org/Products/Zope/2.7.4
+     http://zope.org/Products/Zope/2.7.4/Zope-2.7.4.tgz
+     Note: Zope 2.7 requires Python 2.3.5.
  
   - CMF 1.4.7 (not 1.5)
      Included in the Plone tarball 
@@ -63,6 +63,15 @@ Installing Plone manually, step by step instructions.
   - CMFFormController 
      Included in the Plone tarball 
  
+  - SecureMailHost
+     Included in the Plone tarball
+ 
+  - Archetypes
+     Included in the Plone tarball 
+
+  - ATContentTypes
+     Included in the Plone tarball
+
 ------------------------------------------------------------------------------- 
  
   **OPTIONAL ADD-ONS** 
@@ -71,12 +80,12 @@ Installing Plone manually, step by step instructions.
      Included in the Plone tarball 
      Required to support multilingual interface and access keys.
      http://plone.org/development/teams/i18n
-     
-  - Archetypes
+
+  - PloneTranslations
      Included in the Plone tarball 
-     Enables the easy creation of new content types. It's a prerequisite for an 
-     increasing number of new Plone products 
- 
+     Plone's i18n files. Required if you want Plone in a language other than
+     English.
+     
 =============================================================================== 
  
  
@@ -135,6 +144,7 @@ Installing Plone manually, step by step instructions.
    The results will be a directory named CMFPlone-xxxx where 
    xxxx is the version. This should contain the following subdirectories: 
  
+   ATContentTypes
    Archetypes
    BTreeFolder2
    CMFActionIcons
@@ -145,13 +155,17 @@ Installing Plone manually, step by step instructions.
    CMFPlone
    CMFQuickInstallerTool
    CMFTopic
+   Epoz
+   ExternalEditor
    DCWorkflow
-   Formulator
-   generator
    GroupUserFolder
+   MimetypesRegistry
    PlacelessTranslationService
    PloneErrorReporting
+   PloneTranslations
    PortalTransforms
+   SecureMailHost
+   generator
    validation 
 
    Move (or symlink) each of these subdirectories into your 
