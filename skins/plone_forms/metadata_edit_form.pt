@@ -109,7 +109,7 @@
                     Existing keywords
                     <br />
                         <select id="predefined_keywords" name="predefined_subjects" size="7" multiple="multiple" >
-                        <option value="#" tal:repeat="subject python:allowedSubjects+previousSubjects"
+                        <option value="#" tal:repeat="subject python:here.unique(allowedSubjects+previousSubjects)"
                                 tal:content="subject" tal:attributes="value subject"> # </option>                                
                         </select>
                         <input class="context" type="submit" name="add" value="Add &gt;"
