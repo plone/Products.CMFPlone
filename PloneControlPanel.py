@@ -14,6 +14,7 @@ from Products.CMFCore.utils import _checkPermission, _dtmldir, getToolByName, Si
 
 from Products.CMFCore.interfaces.portal_actions import portal_actions as IActionsTool
 
+import ToolNames
 from interfaces.PloneControlPanel import IControlPanel
 
 class PloneConfiglet(ActionInformation):
@@ -147,9 +148,9 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     security = ClassSecurityInfo()
 
-    id = 'portal_control_panel_actions'
+    id = 'portal_controlpanel'
     title = 'Control Panel'
-    meta_type = 'Plone Control Panel'
+    meta_type = ToolNames.ControlPanelTool
     _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )
 
     _properties=(
@@ -172,6 +173,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     security.declareProtected( ManagePortal, 'registerDefaultConfiglets' )
     def registerDefaultConfiglets(self):
+        """ We need to bootstrap the default_configlets into the control panel """
         self.registerConfiglets(default_configlets)
 
     security.declareProtected( ManagePortal, 'getGroupIds' )

@@ -1,6 +1,6 @@
 ##parameters=templateId
 #!/usr/bin/python
-#$Id: controlPanelParentUrl.py,v 1.1.2.2 2003/11/10 22:27:41 dreamcatcher Exp $
+#$Id: controlPanelParentUrl.py,v 1.1.2.3 2003/11/11 23:23:36 tiran Exp $
 #Copyright: ClearWind Consulting Ltd
 
 # please someone fix this!
@@ -14,7 +14,7 @@ parentPages = {
   }
 
 
-tool = context.portal_control_panel_actions
+tool = context.portal_controlpanel
 
 parent = None
 

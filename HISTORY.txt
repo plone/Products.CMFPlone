@@ -6,6 +6,9 @@ Plone 2.0 - Fyuti
 
     RC2 
 
+    - Renamed portal_control_panel_actions to 'portal_controlpanel' (much simpler).
+      Limi has HOWTO fix.
+
     - Now comments in Plone are text/plain.  No longer using structured-text.
       DiscussionTool has grown a method, cookReply.  This is temp fix.
       CMFDefault.Document should have a cook method which can 'recook' its 
