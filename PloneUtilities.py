@@ -137,45 +137,38 @@ def localized_time(time = None, long_format = None, context = None):
 
     return localized_time
 
-#Portions of this class was copy/pasted from the CMFCore.utils from
-#CMF 1.4.  This class is licensed under the ZPL 2.0 as stated here:
-#http://www.zope.org/Resources/ZPL
-#Zope Public License (ZPL) Version 2.0
-#This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
+# Portions of this class was copy/pasted from the CMFCore.utils from
+# CMF 1.4. Other parts are derived from code in Zope App.ProductContext
+# in Zope 2.7
+#
+# This class is licensed under the ZPL 2.0 as stated here:
+# http://www.zope.org/Resources/ZPL
+# Zope Public License (ZPL) Version 2.0
+# This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
 from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
-from Products.CMFCore.utils import manage_addToolForm, manage_addTool
 import Globals, os, OFS.ObjectManager, OFS.misc_, Products
+
 class ToolInit(CMFCoreToolInit):
-
     def initialize(self, context):
-        # Add only one meta type to the folder add list.
-        context.registerClass(
-            meta_type = self.meta_type,
-            # This is a little sneaky: we add self to the
-            # FactoryDispatcher under the name "toolinit".
-            # manage_addTool() can then grab it.
-            constructors = (manage_addToolForm,
-                            manage_addTool,
-                            self,),
-            icon = self.icon
-            )
-
-        icons = {self.icon:1}
+        """ Wrap the CMFCore Tool Init method """
+        CMFCoreToolInit.initialize(self, context)
         for tool in self.tools:
-            icon = getattr(tool, 'toolicon', self.icon)
-            tool.__factory_meta_type__ = self.meta_type
-            tool.icon = 'misc_/%s/%s' % (self.product_name, os.path.split(icon)[1])
-
-            # Make sure the icon is available
-            if not icons.has_key(icon):
+            # get the icon from the icon
+            icon = getattr(tool, 'toolicon', None)
+            if icon:
+                # do some tesdal magic
                 pc = getattr(context, '_ProductContext__prod', getattr(context, '__prod',None))
                 if pc:
-                    icons[icon] = 1
                     pid = pc.id
                     name=os.path.split(icon)[1]
-                    icon=Globals.ImageFile(icon, getattr(context, '_ProductContext__pack', getattr(context,'__pack__',None)).__dict__)
-                    icon.__roles__=None
-                    if not hasattr(OFS.misc_.misc_, pid):
-                        setattr(OFS.misc_.misc_, pid, OFS.misc_.Misc_(pid, {}))
-                    getattr(OFS.misc_.misc_, pid)[name]=icon
-
+                    try:
+                        icon=Globals.ImageFile(icon, getattr(context, '_ProductContext__pack', getattr(context,'__pack__',None)).__dict__)
+                        icon.__roles__=None
+                        tool.icon = 'misc_/%s/%s' % (self.product_name, name)
+                        if not hasattr(OFS.misc_.misc_, pid):
+                            setattr(OFS.misc_.misc_, pid, OFS.misc_.Misc_(pid, {}))
+                        getattr(OFS.misc_.misc_, pid)[name]=icon
+                    except (IOError, OSError):
+                        # if there is some problem loading the fancy image from the tool then
+                        # tell someone about it
+                        log("The icon for the product: %s, icon name: %s, was not found. Using the default." % (self.product_name, icon))
