@@ -119,7 +119,7 @@ default_configlets = (
    {'id':'PortalProperties',
      'appId':'PortalProperties',
      'name':'PortalProperties',
-     'action':'string:${portal_url}/prefs_portal_properties_list.pt',
+     'action':'string:${portal_url}/prefs_portal_properties_list',
      'category':'Plone',
      'permission': ManagePortal,
      'imageUrl':'plone_images/site_icon.gif'}, 
