@@ -361,6 +361,32 @@ portal_skins tool and set the correct default skin.""" % default
                 pass
         return l
 
+    # Override CMFCore's invokeFactory to return the id returned by the
+    # factory in case the factory modifies the id
+    security.declareProtected(AddPortalContent, 'invokeFactory')
+    def invokeFactory( self
+                     , type_name
+                     , id
+                     , RESPONSE=None
+                     , *args
+                     , **kw
+                     ):
+        '''Invokes the portal_types tool.'''
+        pt = getToolByName( self, 'portal_types' )
+        myType = pt.getTypeInfo(self)
+
+        if myType is not None:
+            if not myType.allowType( type_name ):
+                raise ValueError, 'Disallowed subobject type: %s' % type_name
+
+        new_id = apply( pt.constructContent
+             , (type_name, self, id, RESPONSE) + args
+             , kw
+             )
+        if new_id is None or new_id == '':
+            new_id = id
+        return new_id
+
 InitializeClass(BasePloneFolder)
 
 class PloneFolder( BasePloneFolder, OrderedContainer ):
