@@ -19,7 +19,6 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.memberdata = self.portal.portal_memberdata
-
         self.membership = self.portal.portal_membership
         self.membership.memberareaCreationFlag = 0
         # Don't let default_user disturb results
@@ -27,7 +26,7 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
         # Add some members
         self.addMember('fred', 'Fred Flintstone', 'fred@bedrock.com', ['Member', 'Reviewer'], '2002-01-01')
         self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
-        self.addMember('bambam', 'Bambam Rubble', 'bambam@bambam.net', ['Member'], '2003-12-31')
+        self.addMember('brubble', 'Bambam Rubble', 'bambam@bambam.net', ['Member'], '2003-12-31')
         # MUST reset this
         self.memberdata._v_temps = None
 
@@ -55,13 +54,15 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.memberdata.portraits.objectIds()), 1)
 
     def testFulltextMemberSearch(self):
-        """search a user by name"""
+        # Search for a user by id, name, email, ...
         search = self.memberdata.searchFulltextForMembers
         self.assertEqual(len(search('')), 3)
         self.assertEqual(len(search('rubble')), 2)
         self.assertEqual(len(search('stone')), 1)
         self.assertEqual(len(search('bambam.net')), 1)
         self.assertEqual(len(search('bedrock.com')), 2)
+        self.assertEqual(len(search('brubble')), 1)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
