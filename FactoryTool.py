@@ -120,7 +120,7 @@ class FactoryTool(UniqueObject, SimpleItem):
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""
         parent=aq_parent(aq_inner(obj))
-        return getattr(parent, meta_type, 'None') == TempFolder.meta_type
+        return getattr(parent, 'meta_type', 'None') == TempFolder.meta_type
 
 
     def __before_publishing_traverse__(self, other, REQUEST):
