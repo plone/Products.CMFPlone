@@ -303,7 +303,7 @@
                 <td>
                   <span tal:replace="python: items['time'].strftime(here.localTimeFormat)" />
                   <span tal:condition="items/effective_date|nothing">
-                  (<metal:block i18n:translate="label_publishing_effective">effective</metal:block>: 
+                  (<span i18n:translate="label_publishing_effective" omit-tag="">effective</span>: 
                   <span tal:replace="python: items['effective_date'].strftime(here.localTimeFormat)"></span>)
                   </span>
                 </td>
