@@ -33,14 +33,16 @@ Header stuff
                 <metal:block metal:define-slot="super" tal:condition="show_border">
                     
                 <div class="contentTabs" metal:define-macro="contentTabs"
-                     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));">
+                     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));
+                                 obj_type python:here.getTypeInfo().id;">
     
                     <span tal:define="global obj_actions actions/object;
                                       global wf_actions actions/workflow;
+				      global folder_actions actions/folder;
 				      global local_actions python:actions.get('local_tabs', []);
                                       global historyForm python:here.getActionUrlById('history', actions['object']);" />
 
-                    <span tal:repeat="action python:obj_actions+local_actions">
+                    <span tal:repeat="action python:test(obj_type=='Folder', folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"> 
                             <span tal:replace="action/name" /> 
