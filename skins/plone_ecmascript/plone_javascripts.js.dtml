@@ -264,7 +264,7 @@ function submitFilterAction() {
                 document.folderContentsForm.filter_state.value='clear_view_filter';
             }
             else {
-                document.folderContentsForm.filter_state.value='set_view_filter'
+                document.folderContentsForm.filter_state.value='set_view_filter';
             }
         }						
     }

@@ -18,7 +18,6 @@
         isAnon mtool/isAnonymousUser;
         global actions python:here.portal_actions.listFilteredActionsFor(here);
         user_actions actions/user;
-        object_actions actions/object;
         workflow_actions actions/workflow;
         folder_actions actions/folder;
         global_actions actions/global;
@@ -26,9 +25,7 @@
         site_properties here/portal_properties/site_properties;
         ztu modules/ZTUtils;
         actions options/actions|actions;
-        obj_actions object_actions;
         wf_actions workflow_actions;
-        local_actions python:actions.get('object_tabs', []);
         isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);
         template_id options/template_id|template_id|template/getId|nothing;
         slots_mapping options/slots_mapping|here/prepare_slots|nothing;
@@ -105,17 +102,19 @@ Header stuff
 		             tal:condition="show_border" >
                 
                 <div id="contentTabs" metal:define-macro="contentTabs" i18n:domain="plone"
-                     tal:define="objactions python:obj_actions+local_actions;
-                                 foldactions python:folder_actions+obj_actions+local_actions;">
-   
-                    <tal:block repeat="action python:test(isFolder, foldactions, objactions)">
+                     tal:define="plone_actions python:here.plonifyActions(template_id=template_id,
+                                                                          actions=actions)">
+                    <tal:block repeat="action plone_actions">
                         <a class="" href="" 
-                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template_id, 'selected', 'plain');
+                           tal:define="selected action/selected|nothing"
+                           tal:attributes="class python:test(selected, 'selected', 'plain');
 			                   href action/url;">
-                            <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
+                            <span tal:omit-tag="" i18n:translate="">
+                                <span tal:replace="action/name">dummy</span>
+                            </span>
                         </a> 
                     </tal:block>
-    
+
                 </div>
 
                 <div id="contentBar">        

@@ -10,6 +10,6 @@
 results=[]
 try:
     results=filter['portal_type']
-except KeyError:
+except (TypeError,KeyError):
     pass
 return results
