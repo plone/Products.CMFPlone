@@ -1,3 +1,62 @@
+2004-01-23 02:41  limi
+
+	* skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Fixed styling for the "log in to add comments" button.
+
+2004-01-23 02:31  limi
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): Proper
+	  indenting.
+
+2004-01-23 02:28  limi
+
+	* skins/: plone_styles/plone.css.dtml, plone_templates/news.pt
+	  (Plone-2_0-branch): More tweaks to the news listing.
+
+2004-01-23 02:20  limi
+
+	* skins/: plone_styles/plone.css.dtml, plone_templates/news.pt
+	  (Plone-2_0-branch): Fixed up the news listing slightly, still not
+	  100% happy with it, but looks better.
+
+2004-01-23 00:29  jok2
+
+	* skins/: plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/folder_edit_form.cpt,
+	  plone_content/image_edit_form.cpt,
+	  plone_content/link_edit_form.cpt (Plone-2_0-branch): Fix for
+	  http://plone.org/collector/2382 as discussed with limi.
+
+2004-01-22 20:57  limi
+
+	* skins/plone_templates/main_template.pt (Plone-2_0-branch):
+	  Removed hidecolumns for the table-based layout - not needed.
+
+2004-01-22 20:50  eaon
+
+	* skins/plone_styles/: plone.css.dtml, ploneIEFixes.css.dtml
+	  (Plone-2_0-branch): content is in the right position again - name
+	  fixes for ie - ol has the correct margin now
+
+2004-01-22 10:02  ajung
+
+	* skins/: plone_content/discussionitem_view.pt,
+	  plone_content/event_view.pt, plone_forms/member_search_form.pt,
+	  plone_forms/search.pt, plone_portlets/calendar_slot.pt,
+	  plone_portlets/portlet_calendar.pt,
+	  plone_portlets/portlet_events.pt, plone_portlets/portlet_news.pt,
+	  plone_portlets/portlet_recent.pt,
+	  plone_portlets/portlet_review.pt,
+	  plone_templates/folder_contents.pt,
+	  plone_templates/folder_listing.pt,
+	  plone_templates/viewThreadsAtBottom.pt: toPortalTime() ->
+	  toLocalizedTime()
+
+2004-01-22 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-22 03:24  runyaga
 
 	* skins/: plone_content/file_view.pt,
