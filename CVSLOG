@@ -1,3 +1,39 @@
+2004-04-22 18:56  zopezen
+
+	* Extensions/package_plone.py (Plone-2_0-branch): Add sanity check
+	  for i18n and a script for building PloneBase
+
+2004-04-22 18:06  zopezen
+
+	* version.txt (Plone-2_0-branch): Moving version up to 2.0.1
+
+2004-04-22 16:27  shh42
+
+	* tests/testPloneFolder.py (Plone-2_0-branch): Simplify tests by
+	  removing the .personal folder.
+
+2004-04-22 15:39  eaon
+
+	* skins/plone_tableless/main_template.pt (Plone-2_0-branch): fixed
+	  nesting errors - tableless layout works again
+
+2004-04-22 14:43  shh42
+
+	* tests/testOrderSupport.py, PloneFolder.py (Plone-2_0-branch): Add
+	  first stab at tests for OrderSupport, along with the obligatory
+	  bug fixes.  Plone now has more than 500 unit tests!
+
+2004-04-22 07:01  dtremea
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Changed to reuse an existing defined msgid and thus removed the
+	  redundant correspondent one from manual.pot. Also removed the
+	  (now) unused i18n:attribute.
+
+2004-04-22 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-21 20:53  shh42
 
 	* Portal.py, verifyObjectPastePatch.py, PloneFolder.py, __init__.py
