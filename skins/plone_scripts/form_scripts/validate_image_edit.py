@@ -14,7 +14,7 @@ form=fv.createForm()
 idField=fv.createField('String', 'id', title='id', required=1, display_width=20)
 form.add_field(idField)
 
-titleField=fv.createField('String', 'title', title='title', required=1, display_width=20)
+titleField=fv.createField('String', 'title', title='title', required=0, display_width=20)
 form.add_field(titleField)
 errors=fv.validate(form)
 
