@@ -188,6 +188,18 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.image.Format(), 'image/tiff')
         self.assertEqual(self.folder.image.content_type, 'image/tiff')
 
+    def testFileRenameKeepsMimeType(self):
+        get_transaction().commit(1) # make rename work
+        self.folder.file.file_edit(id='foo')
+        self.assertEqual(self.folder.foo.Format(), 'application/pdf')
+        self.assertEqual(self.folder.foo.content_type, 'application/pdf')
+
+    def testImageRenameKeepsMimeType(self):
+        get_transaction().commit(1) # make rename work
+        self.folder.image.image_edit(id='foo')
+        self.assertEqual(self.folder.foo.Format(), 'image/tiff')
+        self.assertEqual(self.folder.foo.content_type, 'image/tiff')
+
 
 # Fake upload object
 
