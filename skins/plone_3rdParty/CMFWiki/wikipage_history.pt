@@ -35,9 +35,14 @@
                      b_more  python: len( batch ) >= b_size;
                     ">
     
-        <h1> <span tal:replace="here/getId">Page ID</span>
-             <span tal:replace="python: modules['string'].capitalize( mode )">Mode</span>
-             Change History </h1>
+        <h1> 
+            <span tal:replace="python: modules['string'].capitalize( mode )">Mode</span>
+                
+            Change History for 
+            <span tal:replace="here/getId">
+                Page ID
+            </span>
+        </h1>
         
         <p> This is a <span tal:replace="mode">condensed</span> record of
             <span tal:replace="here/getId">Page ID</span>'s historical
@@ -67,106 +72,130 @@
           </p>
         </div>
     
-    <form method="POST" tal:attributes="action here/absolute_url">
+        <form method="post" tal:attributes="action here/absolute_url">
+
+            <!-- list navigation -->
+            <div class="listingBar"
+                 tal:condition="python: (b_start > 0) or b_more">
+                <span class="previous"
+                      tal:condition="python: b_start > 0">
+            
+                    <span tal:define="b_prev python: max( b_start-b_size, 0 );
+                                      q_mode string:mode=${mode};
+                                      q_start string:b_start=${b_prev};
+                                      q_size  string:b_size=${b_size};
+                                      q       string:${q_mode}&${q_start}&${q_size};
+                                     ">
+                    <a href="wikipage_history"
+                       tal:attributes="href string:wikipage_history?${q}"
+                    > &laquo; More Recent Revisions </a>
+                    </span>
+                </span>
+            
+                <span class="next"
+                      tal:condition="b_more">
+                    <span tal:define="q_mode string:mode=${mode};
+                                     q_start string:b_start=${b_end};
+                                     q_size  string:b_size=${b_size};
+                                     q       string:${q_mode}&${q_start}&${q_size};
+                                    ">
+                    <a href="wikipage_history"
+                       tal:attributes="href string:wikipage_history?${q}"
+                    > Less Recent Revisions &raquo; </a>
+                    </span>
+                </span>
+            </div>
+       
+            <!-- result listing -->
+            <table class="listing">
+                <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>Date/Author</th>
+                        <th>Action Performed</th>
+                        <th>Log Message</th>
+                        <th>Revision</th>
+                    </tr>
+                </thead>
+                            
+                <tbody>
+                    <tr tal:repeat="trans batch">
+        
+                        <td>
+                            <!-- Do we want this?
+                            <span style="color: gray">-<span tal:replace="trans/tacked_on_index">?</span></span>
+                            -->
+                            <input type="checkbox"
+                                   class="noborder"
+                                   name="keys:list"
+                                   tal:attributes="value trans/key" />
+                        </td>
+                        
+                        <td>
+                            <a href="history"
+                              tal:attributes="href
+                                string:${here/absolute_url}/HistoricalRevisions/${trans/key}"
+                            ><span tal:replace="python: trans['time'].Mon()">Jan</span> 
+                             <span tal:replace="python: trans['time'].day()">01</span>
+                             <span tal:replace="python: trans['time'].Time()">08:00:00</span>
+                             by
+                             <span tal:condition="trans/user_name"
+                                   tal:replace="trans/user_name">user</span>
+                            </a>
+                            
+                            <span tal:condition="python: trans['tacked_on_index'] == 0">
+                                <strong>(Current)</strong>
+                            </span>
+                        </td>
+                        
+                        <span tal:define="descr python:modules['string'].split( trans['description']
+                                                                                 , '\012\012'
+                                                                                 )">
+                            <td>
+                                <span tal:replace="python:descr[0]">method</span>
+                            </td>
+                            
+                            <td>
+                                <span tal:repeat="more python:descr[1:]">
+                                        <span tal:replace="more" />
+                                </span>
+                            </td>
+                        </span>
     
-    <table
-    >
-     <tr tal:condition="python: b_start > 0">
-      <td colspan="2"> <br> </td>
-      <td align="left">
-       <span tal:define="b_prev python: max( b_start-b_size, 0 );
-                         q_mode string:mode=${mode};
-                         q_start string:b_start=${b_prev};
-                         q_size  string:b_size=${b_size};
-                         q       string:${q_mode}&${q_start}&${q_size};
-                        ">
-        <a href="wikipage_history"
-           tal:attributes="href string:wikipage_history?${q}"
-        > (More Recent Revisions) </a>
-       </span>
-      </td>
-     </tr>
+                        <td>
+                            <span tal:condition="exists: trans/revision"
+                                  tal:replace="trans/revision">
+                            Revision
+                            </span>
     
-     <tr tal:repeat="trans batch">
+                            <span tal:condition="not: exists: trans/revision">
+                            &nbsp;
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+                
+            </table>
+
+            <input type="submit" 
+                   class="context"
+                   name="wikipage_compare_versions:method"
+                   value="Compare">
+            <span tal:condition="editor">
+                 &nbsp; &nbsp;
+                 <input type="submit" 
+                        class="context" 
+                        name="wikipage_copyhistory_handler:method"
+                        value="Copy to present">
+            </span>
+
+
+        </form>
     
-      <td align="right" valign="top" NOWRAP>
-       <font color="gray">-<span tal:replace="trans/tacked_on_index">?</span></font>
-      </td>
-    
-      <td valign="top">
-       <input type="checkbox"
-              class="noborder"
-              name="keys:list"
-              tal:attributes="value trans/key"
-       >
-      </td>
-    
-      <td valign="top">
-       <span tal:condition="python: trans['tacked_on_index'] == 0">
-         <strong>(Current)</strong>
-       </span>
-       <a href="history"
-          tal:attributes="href
-            string:${here/absolute_url}/HistoricalRevisions/${trans/key}"
-       ><span tal:replace="python: trans['time'].Mon()">Jan</span> 
-        <span tal:replace="python: trans['time'].day()">01</span>
-        <span tal:replace="python: trans['time'].Time()">08:00:00</span>
-        <span tal:condition="trans/user_name"
-              tal:replace="trans/user_name">user</span>
-       </a>
-       <span tal:define="descr python:modules['string'].split( trans['description']
-                                                             , '\012\012'
-                                                             )">
-         <span tal:replace="python:descr[0]">method</span>
-         <span tal:repeat="more python:descr[1:]">
-           <br /><span tal:replace="more" />
-         </span>
-       </span>
-       <span tal:condition="exists: trans/revision">
-        <br>Revision: <em tal:content="trans/revision">revision</em>
-       </span>
-      </td>
-     </tr>
-    
-     <tr tal:condition="b_more">
-      <td colspan="2"> <br> </td>
-      <td align="left">
-       <span tal:define="q_mode string:mode=${mode};
-                         q_start string:b_start=${b_end};
-                         q_size  string:b_size=${b_size};
-                         q       string:${q_mode}&${q_start}&${q_size};
-                        ">
-        <a href="wikipage_history"
-           tal:attributes="href string:wikipage_history?${q}"
-        > (Less Recent Revisions) </a>
-       </span>
-      </td>
-     </tr>
-    
-     <tr>
-      <td> &nbsp; </td>
-      <td> &nbsp; </td>
-      <td>
-        <input type="submit" 
-               class="context"
-               name="wikipage_compare_versions:method"
-               value="Compare">
-        <span tal:condition="editor">
-             &nbsp; &nbsp;
-             <input type="submit" 
-                    class="context" 
-                    name="wikipage_copyhistory_handler:method"
-                    value="Copy to present">
-        </span>
-      </td>
-     </tr>
-    
-    </table>
-    </form>
     </div>
 
-
-
 </div>
+
+
 </body>
 </html>
