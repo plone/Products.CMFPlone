@@ -134,7 +134,7 @@ def modifyActionProviders(self, portal):
     _actions=mt._cloneActions()
     for action in _actions:
         if action.id=='configPortal':
-            action.title='Setup Plone'
+            action.title='Plone Setup'
     mt._actions=_actions
 
     at=getToolByName(portal, 'portal_actions')

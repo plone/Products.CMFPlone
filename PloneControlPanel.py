@@ -42,7 +42,7 @@ default_configlets = (
      'action':'string:${portal_url}/prefs_install_products_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+     'imageUrl':'plone_images/product_icon.gif'},
 
     {'id':'PloneReconfig',
      'appId':'Plone',
@@ -58,7 +58,7 @@ default_configlets = (
      'action':'string:${portal_url}/prefs_users_overview',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/user.gif'},
+     'imageUrl':'plone_images/group.gif'},
 
     {'id':'MemberPrefs',
      'appId':'Plone',
