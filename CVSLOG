@@ -1,3 +1,62 @@
+2004-01-27 20:19  limi
+
+	* skins/plone_templates/main_template.pt (Plone-2_0-branch):
+	  Indenting and whitespace fix.
+
+2004-01-27 17:28  dpunktnpunkt
+
+	* skins/plone_prefs/prefs_group_members.pt (Plone-2_0-branch):
+	  Removed bogus id. (Comment #3 in #2412)
+
+2004-01-27 15:43  runyaga
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): remove
+	  state tab
+
+2004-01-27 15:32  runyaga
+
+	* FormTool.py, HISTORY.txt, migrations/v2/release_candidates.py
+	  (Plone-2_0-branch): fix for 2498, 2500
+
+2004-01-26 19:29  runyaga
+
+	* migrations/v2/release_candidates.py,
+	  setup/ConfigurationMethods.py (Plone-2_0-branch): fix the sharing
+	  debacle
+
+2004-01-26 18:06  runyaga
+
+	* INSTALL.txt (Plone-2_0-branch): add martinb's INSTALL.txt
+
+2004-01-26 17:46  runyaga
+
+	* migrations/v2/: plone2_base.py, release_candidates.py
+	  (Plone-2_0-branch): add sharing to portal_types again.
+
+2004-01-26 16:53  runyaga
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): remove
+	  some extra sharing checks
+
+2004-01-26 16:51  tiran
+
+	* debian/changelog (Plone-2_0-branch): preparing RC4
+
+2004-01-26 16:48  runyaga
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): fix typo
+
+2004-01-26 09:31  tiran
+
+	* debian/: README.Debian, changelog, compat, config, control,
+	  copyright, docs, postinst, prerm, rules, templates
+	  (Plone-2_0-branch): added debian/rules (aka debian package
+	  directory)
+
+2004-01-26 04:59  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-26 03:48  zworkb
 
 	* skins/plone_templates/main_template.pt (Plone-2_0-branch): close
