@@ -11,7 +11,7 @@
        tal:omit-tag=""
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
                    navBatchStart request/navBatchStart | python:None;
-                   tree python:here.plone_utils.createNavigationTreeBuilder(root,navBatchStart);
+                   tree python:here.navigation_tree_builder(root,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;
                    listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
