@@ -1,3 +1,12 @@
+2004-04-12 18:34  tiran
+
+	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
+	  return the remote url, too
+
+2004-04-12 04:57  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-11 20:14  limi
 
 	* HISTORY.txt, skins/plone_styles/plone.css.dtml
