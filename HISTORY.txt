@@ -4,6 +4,25 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Migration Tool overhaul
+
+      - trimmed down plone initialize
+
+      - added seperate setup widgets for languages, skins etc
+
+      - added needUpdating and needRecataloguing
+
+      - added visual notification in the ZMI that the instance
+        is out of date
+
+      - added improved log results
+
+      - other improvements
+      [andym]
+
+    - Added Plone trashcan on behalf of Maik Jablonski
+      [andym]
+
     - Fixed Plone Print style sheet - finally prints well in all browsers
       that know how to do printing. Which unfortunately excludes Mozilla 
       in its current state. IE and Opera print perfectly, Mozilla prints 
