@@ -11,10 +11,6 @@
                   tal:attributes="href python: here.absolute_url() + '/'">
     </metal:block>
 
-    <metal:block metal:fill-slot="javascript_head_slot">
-        <script type="text/javascript" tal:attributes="src here/folder_actions.js/absolute_url"></script>
-    </metal:block>
-
 <body>
 
 <div metal:fill-slot="main">

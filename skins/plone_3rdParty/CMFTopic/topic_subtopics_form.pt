@@ -2,10 +2,6 @@
     xmlns:metal="http://xml.zope.org/namespaces/metal"
     metal:use-macro="container/main_template/macros/master">
 
-  <metal:block metal:fill-slot="javascript_head_slot">
-    <script type="text/javascript" tal:attributes="src here/folder_actions.js/absolute_url"></script>
-  </metal:block>
-
 <body>
 <div metal:fill-slot="main"
      tal:define="Batch python:modules['ZTUtils'].Batch;
@@ -13,11 +9,7 @@
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
-<div class="Desktop">
-
-<div class="Topic">
-
-<h2> Topic Subtopics: <span tal:replace="here/getId">Id</span> </h2>
+<h1> Topic Subtopics: <span tal:replace="here/getId">Id</span> </h1>
 
 <form action="" method="post" 
       tal:attributes="action here/absolute_url"
@@ -60,9 +52,6 @@
        /></p>
 </form>
 
-</div>
-
-</div>
 </div>
 </body>
 </html>
