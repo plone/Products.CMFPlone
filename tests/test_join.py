@@ -1,7 +1,7 @@
-""" 
+"""
 Tests for joining/registration of a user.
 
-$Id: test_join.py,v 1.2 2002/10/07 14:50:37 dreamcatcher Exp $
+$Id: test_join.py,v 1.3 2003/02/21 12:38:50 magnusheino Exp $
 """
 
 import Zope

@@ -1,13 +1,14 @@
 from interface import Interface
 
 class ICMFForm(Interface):
-    """ Wraps a Formulator BasicForm and provides convience methods to ease validation """
-    
+    """ Wraps a Formulator BasicForm and provides convience methods to
+    ease validation """
+
     def addField(field_id, fieldType, group=None, **kwargs):
         """ Adds a Formulator Field to a Form object
-            The fieldType is referred to by the prefix 
+            The fieldType is referred to by the prefix
             before Field in a Formulator field.  i.e.
-            fieldType String == StringField 
+            fieldType String == StringField
         """
 
     def validate(self, REQUEST, errors=None):
@@ -15,12 +16,12 @@ class ICMFForm(Interface):
             Errors can be passed in and will be appended to the errors dictionary.
             We will also strip the prefix of 'field_' in the REQUEST.form dictionary.
         """
-        
+
 class IFormTool(Interface):
     """ FormTool handles Form validation, caching of Form validators and serves as a factory for portal_form objects.
     """
-    
-    def setValidators(form, validators=None):            
+
+    def setValidators(form, validators=None):
         """ Given a form id and a sequence of validators, update the validators.
         """
 
