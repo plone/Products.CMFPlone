@@ -1,3 +1,212 @@
+2004-04-18 02:13  zworkb
+
+	* PloneControlPanel.py (Plone-2_0-branch): fixed #2848 (permission
+	  checking for configlet listing)
+
+2004-04-18 01:04  shh42
+
+	* tests/testCatalogTool.py (Plone-2_0-branch): More tests for
+	  folder_rename.
+
+2004-04-18 00:38  shh42
+
+	* tests/testContentTypeScripts.py (Plone-2_0-branch): Stay
+	  compatible with Python 2.1. No True+False allowed.
+
+2004-04-18 00:37  tiran
+
+	* HISTORY.txt (Plone-2_0-branch): updated history
+
+2004-04-18 00:30  tiran
+
+	* skins/plone_scripts/listMetaTags.py (Plone-2_0-branch): added
+	  listMetaTags to fix #2862 "meta tags not being generated" The
+	  implementation of the script isn't as magic as the original
+	  script and works with AT based objects, too
+
+2004-04-17 23:56  tiran
+
+	* skins/plone_prefs/prefs_user_membership_edit.py
+	  (Plone-2_0-branch): Workaround / Fix for #2821: when you use
+	  Control Panel's "user group membership" (prefs_user_memberships).
+	  The user doesn't show up as a member of that group after adding.
+	  It does show up, however, couple of minutes later in the page
+	  after visiting some other page on the site and then coming back
+	  to user management.
+
+2004-04-17 23:47  yenzenz
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  fixing 2148 part 1: default page is now marked <strong /> in
+	  folder_contents i hope is didnt missed something with this
+	  strange browserDefault stuff.
+
+2004-04-17 23:44  tiran
+
+	* PloneFolder.py: added the missing e ... not my day
+
+2004-04-17 23:43  shh42
+
+	* tests/testCatalogTool.py (Plone-2_0-branch): Tests for
+	  https://plone.org/collector/2876.
+
+2004-04-17 23:20  tiran
+
+	* skins/plone_scripts/folder_rename.cpy (Plone-2_0-branch):
+	  explicitly reindex an object if only the title has changed
+
+2004-04-17 23:17  tiran
+
+	* PloneFolder.py: ok .. THIS TIME it has to work :)
+
+2004-04-17 23:03  yenzenz
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  fixed #643: Broken Favorites
+
+	  if the target of an favorite has been deleted the folder_contents
+	  for the folder containing the Favorites doesnt work.
+
+	  applied and tested patch from optilude.
+
+2004-04-17 23:00  tiran
+
+	* PloneFolder.py (Plone-2_0-branch): added missing import
+
+2004-04-17 22:47  shh42
+
+	* skins/plone_portlets/portlet_events.pt (Plone-2_0-branch):
+	  Whitespace.
+
+2004-04-17 22:44  tiran
+
+	* skins/plone_forms/calendar_popup.pt (Plone-2_0-branch): Fixed
+	  calendar_popup by includeding global_defines
+
+2004-04-17 22:43  shh42
+
+	* skins/plone_portlets/: calendar_slot.pt, portlet_calendar.pt
+	  (Plone-2_0-branch): Uhm, reverting the changes to these templates
+	  as the new query syntax does not seem to work as advertised.
+
+2004-04-17 21:54  dreamcatcher
+
+	* HISTORY.txt (Plone-2_0-branch): Update HISTORY
+
+2004-04-17 21:54  tiran
+
+	* PloneFolder.py: Resurrected _verifyObjectPaste
+
+2004-04-17 21:51  dreamcatcher
+
+	* PloneControlPanel.py, tests/testPortalCreation.py
+	  (Plone-2_0-branch): Initialize instance var 'groups' in
+	  PortalControlPanel.  Fixes https://plone.org/collector/2749
+
+2004-04-17 21:22  dreamcatcher
+
+	* HISTORY.txt, PloneTool.py, tests/testContentTypeScripts.py
+	  (Plone-2_0-branch):	  - Fixed https://plone.org/collector/2671.
+	  default_page as a string
+		property would not work. Fixed this and added tests for
+	  basic
+		behavior. More tests are needed IMHO.
+		[dreamcatcher]
+
+2004-04-17 21:20  yenzenz
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  fix fo #3012: Error in localized 'Add new item' dropdown (if only
+	  one child type available inside)
+
+	  if no translation is available PTS returns None. In this case a
+	  instead of english type-name the string '${type}' is shown.
+
+	  Changed it to show the english type-name if None is returned.
+	  This behavior is the same as in the drop-down for multiple types.
+
+2004-04-17 20:43  dreamcatcher
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): Add a title to
+	  the quickinstaller tool. Fixes https://plone.org/collector/2812
+
+2004-04-17 20:24  dreamcatcher
+
+	* skins/: plone_content/document_edit_form.cpt.metadata,
+	  plone_content/newsitem_edit_form.cpt.metadata,
+	  plone_content/newsitem_view.pt.metadata,
+	  plone_prefs/prefs_install_product_readme.pt,
+	  plone_prefs/prefs_main_template.pt, plone_templates/header.pt
+	  (Plone-2_0-branch): Partial fix for
+	  https://plone.org/collector/2812. Show template id whenever
+	  context title is not set (ie: title_or_id == getId).
+
+2004-04-17 19:57  runyaga
+
+	* HISTORY.txt, PloneTool.py, tests/testContentPublishing.py
+	  (Plone-2_0-branch): ?fix? at least a test added for
+	  http://plone.org/collector/2914 some logic in PloneTool was ugly.
+	  tried to make a it a tad more sane.
+
+2004-04-17 19:56  shh42
+
+	* skins/plone_portlets/: events_slot.pt, portlet_calendar.pt,
+	  portlet_recent.pt (Plone-2_0-branch): Rid more '_usage' queries.
+
+2004-04-17 19:54  dreamcatcher
+
+	* HISTORY.txt, skins/plone_templates/folder_contents.pt
+	  (Plone-2_0-branch):	  - Fixed http://plone.org/collector/2814.
+	  'Document' was being
+		checked against a list of FactoryTypeInformation, which
+	  would
+		never work. Changed to check against the list of
+	  portal_types
+		generated by <FTI>.getId()
+		[dreamcatcher]
+
+2004-04-17 19:36  dreamcatcher
+
+	* HISTORY.txt, skins/plone_content/document_byline.pt,
+	  skins/plone_scripts/getObjSize.py,
+	  tests/testContentTypeScripts.py (Plone-2_0-branch): Fix
+	  https://plone.org/collector/2907, with tests.
+
+2004-04-17 19:27  shh42
+
+	* skins/plone_portlets/: calendar_slot.pt,
+	  recently_published_slot.pt (Plone-2_0-branch): Get rid of
+	  deprecated '_usage' queries.
+
+2004-04-17 18:51  shh42
+
+	* tests/testInterfaceTool.py (Plone-2_0-branch): Fix test broken by
+	  recent introduction of IPloneBaseTool.
+
+2004-04-17 18:33  dreamcatcher
+
+	* skins/plone_content/document_byline.pt (Plone-2_0-branch): Fixes
+	  https://plone.org/collector/2909. Logic for anonymousViewAbout
+	  was wrong.
+
+2004-04-17 16:02  ajung
+
+	* skins/plone_portlets/calendar_slot.pt: converted to new-style
+	  ZCatalog query syntax
+
+2004-04-17 15:04  shh42
+
+	* skins/plone_form_scripts/register.cpy: Defuse a bare except.
+
+2004-04-17 13:48  shh42
+
+	* Portal.py (Plone-2_0-branch): Don't import ComputedAttribute into
+	  the class namespace.
+
+2004-04-17 05:09  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-17 01:25  shh42
 
 	* HISTORY.txt (Plone-2_0-branch): Note fix for
