@@ -13,6 +13,8 @@ from AccessControl import Unauthorized, getSecurityManager
 from OFS.CopySupport import CopyError
 from Acquisition import aq_base
 
+from Products.CMFCore.utils import getToolByName
+
 
 class TestContentSecurity(PloneTestCase.PloneTestCase):
 
@@ -99,7 +101,35 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         #self.assertRaises(CopyError, src.manage_cutObjects, 'testcut')
         self.assertRaises(Unauthorized, src.restrictedTraverse, 'manage_cutObjects')
 
-
+    def test_Bug2183_PastingIntoFolderFailsForNotAllowedContentTypes(self):
+        # XXX This test is related to the '_verifyObjectPaste' change
+        # in PloneFolder.py. With the move of the bug fix to CMFCore
+        # this test will move also and could the be removed from here.
+        
+        # we have to do things as manager to not be bothered 
+        # by permission issues
+        self.portal.acl_users._doAddUser('manager1', 'secret', ['Manager'], [])
+        self.login('manager1')
+        
+        # add the document to be copy and pasted later
+        self.portal.invokeFactory('Document', 'doc')
+        
+        # add the folder where we try to paste the document later
+        self.portal.invokeFactory('Folder', 'folder')
+        folder = self.portal.folder
+        
+        # now disallow adding Document globaly
+        pt = getToolByName(self.portal, 'portal_types')
+        pt.Document.manage_changeProperties(global_allow=0)
+        
+        # copy and pasting the object into the folder should raise
+        # an exception
+        self.assertRaises(
+            ValueError, 
+            folder.manage_pasteObjects,
+            self.portal.manage_copyObjects(ids=['doc'])
+        )
+        
 if __name__ == '__main__':
     framework()
 else:

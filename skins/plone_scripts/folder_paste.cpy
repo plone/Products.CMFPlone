@@ -17,8 +17,12 @@ if context.cb_dataValid:
         from Products.CMFPlone import transaction_note
         transaction_note('Pasted content to %s' % (context.absolute_url()))
         return state.set(portal_status_message='Item(s) pasted.')
-    except: #pasteObjects throws a 'Copy Error' exception ;-(
-        msg='Paste could not find clipboard content'
+    except ValueError: 
+        msg="Disallowed to paste item(s)."
+    except 'Unauthorized':
+        msg="Unauthorized to paste item(s)."
+    except: # fallback
+        msg='Paste could not find clipboard content.'
 
 return state.set(status='failure', portal_status_message=msg)
 
