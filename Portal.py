@@ -106,7 +106,7 @@ class PloneGenerator(Portal.PortalGenerator):
                                                                 , 'Member list'
                                                                 , '<dtml-return roster>')
         p.invokeFactory('Document', 'index_html')
-        o = p.frontpage
+        o = p.index_html
         o.setTitle('Welcome to Plone')
         o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
         o.edit('structured-text', default_frontpage)
