@@ -33,17 +33,13 @@ def processFolderish(obj):
 
 def processObject(o):
     left = getattr(o.aq_base, 'left_slots', None)
-    #print left
     if left:
         new=renameEntries(left)
         o.left_slots=tuple(new)
-        #print o.left_slots
     right = getattr(o.aq_base, 'right_slots', None)
-    #print right
     if right:
         new=renameEntries(right)
         o.right_slots=tuple(new)
-        #print o.right_slots
 
 def renameEntries(lines):
     new=[]
