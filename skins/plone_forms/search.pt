@@ -29,7 +29,7 @@
         <div align="right">
              <a href="" tal:attributes="href string:${here/absolute_url}/search_rss?${request/QUERY_STRING}">
                 <img
-                  i18n:attributes="title"
+                  i18n:attributes="title alt"
                   tal:attributes="src string:$portal_url/rss.gif"
                   src="rss.gif"
                   alt="RSS Feed"

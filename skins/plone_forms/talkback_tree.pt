@@ -14,7 +14,9 @@
         <span tal:define="rlink row/branch">
             <a tal:condition="rlink"
                tal:attributes="name row/id;href rlink/link"
-               tal:content="structure rlink/img" href name><img src="/p_/pl" alt="+" /></a>
+               tal:content="structure rlink/img" href="" name="">
+            <img src="/p_/pl" alt="+" />
+            </a>
         </span>
 
         <span tal:attributes="colspan python:height-row.depth"

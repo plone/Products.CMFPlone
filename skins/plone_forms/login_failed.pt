@@ -21,9 +21,11 @@
             You are not currently logged in.  Your user name and/or password may
             be incorrect.  <a href="mail_password_form">Click here</a> to have
             your password mailed to you if you have forgotten it or contact</span>
-            <a href="mailto:admin@here.com" title="E-mail Administrator"
+            <a href="mailto:admin@here.com" title="Email Administrator"
             tal:attributes="href string:mailto:${p_props/email_from_address}"
-            tal:content="p_props/email_from_name">
+            tal:content="p_props/email_from_name"
+	    i18n:attributes="title"
+            i18n:translate="Email Administrator">
             Email Admin
             </a>
             </p>
@@ -31,19 +33,29 @@
         <div tal:condition="success">
             <h1 i18n:translate="heading_sign_in_failure">Cookies must be enabled</h1>
 
-            <p>You are not currently signed in because you are not accepting
+            <p>
+            <span tal:omit-tag="" i18n:translate="description_sign_in_failure">
+            You are not currently signed in because you are not accepting
             cookies.  Please make sure that your browser is configured to
-            <a href="enabling_cookies">accept cookies</a>.
+	    </span>
+            <a href="enabling_cookies"
+               i18n:translate="description_sign_in_failure_enabling_cookies">
+            accept cookies</a>.
+	    </p>
 
-            <p>If you are still reaching this page after correctly configuring
+            <p i18n:translate="description_still_failure">
+            If you are still reaching this page after correctly configuring
             your browser, here are some possible reasons:</p>
 
             <ul>
-               <li>You may be running web filtering software that
+               <li>
+	       <span tal:omit-tag="" i18n:translate="description_still_failure_reason1">
+               You may be running web filtering software that
                disables cookies.  If so, you will need to configure the
-               software so that it enables you to accept cookies from
+               software so that it enables you to accept cookies from</span>
                <span tal:replace="here/portal_url"/></li>
-               <li>Your computer may be behind a firewall or proxy server
+               <li i18n:translate="description_still_failure_reason2">
+               Your computer may be behind a firewall or proxy server
                that prevents cookies from being sent to or from your browser.
                If so, you will need to ask your systems administrator if the
                problem can be fixed.</li>
