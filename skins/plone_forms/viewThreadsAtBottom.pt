@@ -3,18 +3,19 @@
 			 isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
 			 hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
 			 view_action python:hereTypeInfo.getActionById('view');
-			 reply python:[oa for oa in actions['object'] if oa.get('id', '')=='reply'];
 			 isViewTemplate python:test(template.getId()==view_action, 1, 0);"
 	     tal:condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0) ">	
+ 
+    <metal:block tal:condition="isDiscussionAllowed"> 
+      <tal tal:define="global discussion python:here.portal_discussion.getDiscussionFor(here)" />
+    </metal:block>
 
     <form name="reply" 
           action="" 
           method="post"
-          tal:condition="reply" 
-	  tal:attributes="action python:reply[0]['url']">       	
+          tal:condition="isDiscussionAllowed" 
+	  tal:attributes="action string:${here/absolute_url}/discussion_reply_form">       	
 
-        <tal tal:define="discussion python:here.portal_discussion.getDiscussionFor(here)" />
-	
         <input class="standalone" 
 	       type="submit" 
 	       value="Add Comment" />
@@ -49,7 +50,8 @@
 			<form name="reply"
 			      action="discussion_reply_form"
 			      method="post"
-			      tal:condition="python:test( getattr(here, 'isPortalContent', ''), here.isPortalContent, 0)" >
+			      tal:condition="python:test( getattr(here, 'isPortalContent', ''), here.isPortalContent, 0)" 
+			      tal:attributes="action string:${reply/absolute_url}/discussion_reply_form" >
 			      
 			    <input class="standalone" type="submit" value="Reply to this" />
 			

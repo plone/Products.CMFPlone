@@ -34,4 +34,46 @@ def migrate2ColumnLayout(self):
         path = [p for p in fsdir_views if p]
         skin_map[skin_name]=','.join(path)
 
+def normalize_tabs(self):
+    """ attempts to remove tabs that dont add to user experience """
+    #make 'reply' tab unvisible
+    dt=getToolByName(self, 'portal_discussion')
+    dt_actions=[]
+    for a in dt._actions:
+        if a.id=='reply':
+            a.visible=0
+	dt_actions.append(a)    
+    dt._actions=dt_actions
 
+    #make 'syndication' tab unvisible
+    st=getToolByName(self, 'portal_syndication')
+    st_actions=[]
+    for a in st._actions:
+        if a.id=='syndication':
+            a.visible=0
+	st_actions.append(a)
+    st._actions=st_actions
+
+    #now lets get rid of folder_listing/folder_contents tabs for folder objects
+    tt=getToolByName(self, 'portal_types')
+    f_actions=tt['Folder']._actions
+    for a in f_actions:
+        if a.get('id','') in ('foldercontents', 'folderlisting'):
+            a['visible']=0
+    tt['Folder']._actions=f_actions
+    
+    #lets check actions tool for orphaned actions
+    at=getToolByName(self, 'portal_actions')
+    a_actions=at._actions
+    actions=[]
+    for a in a_actions:
+        if a.id!='folderContents' and \
+	   a.id!='foldercontents':
+            actions.append(a)
+    at._actions=actions
+   
+    get_transaction().commit(1)
+
+    import time    
+    return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
+	
