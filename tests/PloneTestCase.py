@@ -34,6 +34,7 @@ default_user = ZopeTestCase.user_name
 
 
 class PloneTestCase(ZopeTestCase.PortalTestCase):
+    '''TestCase for Plone testing'''
 
     def getPortal(self):
         '''Returns the portal object to the bootstrap code.
@@ -45,15 +46,26 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
     def createMemberarea(self, member_id):
         '''Creates a minimal, no-nonsense memberarea.'''
         membership = self.portal.portal_membership
-        catalog = self.portal.portal_catalog
         # Owner
         uf = self.portal.acl_users
         user = uf.getUserById(member_id)
         if user is None:
             raise ValueError, 'Member %s does not exist' % member_id
         user = user.__of__(uf)
-        # Home folder
-        membership.createMemberArea(member_id, minimal=1)
+        # Home folder may already exist (see below)
+        members = membership.getMembersFolder()
+        if not hasattr(aq_base(members), member_id):
+            _setupHomeFolder(self.portal, member_id)
+        # Take ownership of home folder
+        home = membership.getHomeFolder(member_id)
+        home.changeOwnership(user)
+        home.__ac_local_roles__ = None
+        home.manage_setLocalRoles(member_id, ['Owner'])
+        # Take ownership of personal folder
+        personal = membership.getPersonalFolder(member_id)
+        personal.changeOwnership(user)
+        personal.__ac_local_roles__ = None
+        personal.manage_setLocalRoles(member_id, ['Owner'])
 
     def setGroups(self, groups, name=default_user):
         '''Changes the specified user's groups. Assumes GRUF.'''
@@ -70,7 +82,7 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         newSecurityManager(None, user)
 
 
-def setupPloneSite(app=None, id=portal_name, quiet=0):
+def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1):
     '''Creates a Plone site.'''
     if not hasattr(aq_base(app), id):
         _start = time.time()
@@ -82,10 +94,29 @@ def setupPloneSite(app=None, id=portal_name, quiet=0):
         # Add Plone Site
         factory = app.manage_addProduct['CMFPlone']
         factory.manage_addSite(id, '', create_userfolder=1)
+        # Precreate default memberarea for performance reasons
+        if with_default_memberarea:
+            _setupHomeFolder(app[id], default_user)
         # Log out
         noSecurityManager()
         get_transaction().commit()
         if not quiet: ZopeTestCase._print('done (%.3fs)\n' % (time.time()-_start,))
+
+
+def _setupHomeFolder(portal, member_id):
+    '''Creates the folders comprising a memberarea.'''
+    from Products.CMFPlone.PloneUtilities import _createObjectByType
+    membership = portal.portal_membership
+    catalog = portal.portal_catalog
+    # Create home folder
+    members = membership.getMembersFolder()
+    _createObjectByType('Folder', members, id=member_id)
+    # Create personal folder
+    home = membership.getHomeFolder(member_id)
+    _createObjectByType('Folder', home, id=membership.personal_id)
+    # Uncatalog personal folder
+    personal = membership.getPersonalFolder(member_id)
+    catalog.unindexObject(personal)
 
 
 def optimize():
