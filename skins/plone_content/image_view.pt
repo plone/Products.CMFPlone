@@ -23,23 +23,25 @@
         <img tal:condition="here/size"
              src="#"
              tal:attributes="src here/absolute_url" />
-    
-        <small>
-    
-            <span i18n:translate="label_size">Size:</span>
-    
-            <span tal:define="size python:here.getObjSize(here)"
-                  tal:content="size">
-                File size
-            </span>
-    
-            <span tal:condition="python:test(here.size, 0, 1)"
-                  i18n:translate="no_file_uploaded">
-                (No file has been uploaded)
-            </span>
-    
-        </small>
-    
+
+        <div>    
+            <small>
+        
+                <span i18n:translate="label_size">Size:</span>
+        
+                <span tal:define="size python:here.getObjSize(here)"
+                      tal:content="size">
+                    File size
+                </span>
+        
+                <span tal:condition="python:test(here.size, 0, 1)"
+                      i18n:translate="no_file_uploaded">
+                    (No file has been uploaded)
+                </span>
+        
+            </small>
+        </div>
+        
         <div metal:use-macro="here/document_byline/macros/byline">
             Get the byline - contains details about author and modification date.
         </div>
