@@ -90,6 +90,12 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                 )
                              }
 
+#Portions of this class were copy/pasted from CMFCore.PortalFolder of
+#CMF 1.4.  This class is licensed under the ZPL 2.0 as stated here:
+#http://www.zope.org/Resources/ZPL
+#Zope Public License (ZPL) Version 2.0
+#This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
+
 class VerifyObjectPasteFix(Base):
     """This class is mixed-in to BasePloneFolder and PloneSite
        to fix http://plone.org/collector/2183. 
