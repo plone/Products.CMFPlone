@@ -4,6 +4,8 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Major refactoring of the visual rendering of the nav tree.
+
     - Changed the behaviour of the site-wide actions (currently
       only used for text size) - so if you use or have a custom
       variant of this, you will need to re-customize this part.
@@ -17,10 +19,6 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
       to move the main_template invocation of the search box, plus
       re-do the CSS, if any. Sanity was needed, sorry for the
       invonvenience.
-      [limi]
-
-    - Added some discreet markers at the top level nav items to 
-      easier identify the main sections.
       [limi]
 
     - Added 'navtreeItem' and 'navLevelX' classes to the navigation

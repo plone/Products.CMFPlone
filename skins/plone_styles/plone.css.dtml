@@ -1151,22 +1151,62 @@ ol.visualNoMarker {
 .spacer {
 	margin: 1em;
 }
-.currentNavItem {
-    color: &dtml-fontColor;;
-    font-weight: bold;
-}
 
-.navRootItem {
-}
+/* Navigation tree styling */
 
+.navRootItem,
 .navItem {
     margin: 0 0 0.2em 0;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 0.1em 0.25em 0.1em 20px;
 }
 
-#portlet-navigation-tree a.navLevel1 {
-    border-top: 1px dotted &dtml-globalBorderColor;;  
-    margin-top: 0.2em;
+.currentNavItem,
+#portlet-navigation-tree a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
+
+.navLevel1 {
+    margin-left: 0em;
+}
+
+.navLevel2 {
+    margin-left: 1em;
+}
+
+.navLevel3 {
+    margin-left: 2em;
+}
+
+.navLevel4 {
+    margin-left: 3em;
+}
+
+.navLevel5 {
+    margin-left: 4em;
+}
+
+.navLevel6 {
+    margin-left: 4.5em;
+}
+
+.navLevel7 {
+    margin-left: 5em;
+}
+
+.navLevel8 {
+    margin-left: 5.5em;
+}
+
+/* Add more levels if needed. Then again, if you have more than 3-4 level deep
+   structures, you should definitely re-think your Information Architecture ;)*/
+
+/* workflow state colors */
 
 .state-private {
     color: Black;
@@ -1308,6 +1348,12 @@ ol.visualNoMarker {
 .link-comment {
     background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center left no-repeat;
     padding: 1px 0px 1px 16px !important;
+}
+
+.link-anchor {
+    color: &dtml-discreetColor;;
+    text-decoration: none;
+    font-weight: normal;
 }
 
 .hiddenStructure {

@@ -48,25 +48,22 @@
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');
-                                           style python: 'padding-left: ' + str(te['indent']/2.0) + 'em;;' + 'display:block';
-                                           class python: 'navItem ' + 'navLevel' + str(te['indent']);"
+                                           class python: 'navItem ' + 'navLevel' + str(te['indent']) + test(iscurrent, ' currentNavItem', '');
+                                           style string: background-image: url(${here/portal_url}/${sibling/getIcon});"
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
-                            <tal:block define="nicon python:path('here/%s' % sibling.getIcon(1))"
-                                       replace="structure python: nicon.tag(css_class='navIcon')"
-                                       on-error="structure here/site_icon.gif"
-                                    />&nbsp;<tal:item tal:condition="not: iscurrent" tal:content="sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="sibling_title" />
+                            <tal:item content="sibling_title" />
                         </a>
                         <a href=""
-                           class="navRootItem"
                            tal:condition="python: sibling == portalObject"
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
-                                           title title;"
+                                           title title;
+                                           class python: 'navItem ' + 'navRootItem' + test(iscurrent, ' currentNavItem', '');"
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
                             <tal:block define="proot portal/site_icon.gif"
-                                       replace="structure python: proot.tag(css_class='navRootIcon')" />&nbsp;<span class="" tal:attributes="class python:test(iscurrent,'currentNavItem','')" i18n:translate="tabs_home">Home</span>
+                                       replace="structure python: proot.tag(css_class='navRootIcon')" />&nbsp;<tal:home i18n:translate="tabs_home">Home</tal:home>
                         </a>
                     </tal:variables>
                 </tal:nodes>
