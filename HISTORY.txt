@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - (Unreleased)
 
+    - Allow migrations to and from release candidates to finish. This was
+      borked in RC2.
+      [stefan]
+
     - Fixed http://plone.org/collector/3629 - Migration failed if 'Topic'
       portal type was missing or otherwise broken.
       [stefan]
