@@ -56,7 +56,7 @@
                     </td>   
                     <td tal:content="python:test(hasattr(obj, 'get_size'), here.getObjSize(obj), 'n/a')">Size</td>
                     <td tal:content="python:here.toPortalTime(obj.ModificationDate())">Modification Date</td>
-                    <td tal:content="structure python:test(here.Description(), here.Description(), '&nbsp;')"> description </td>
+                    <td tal:content="structure python:test(obj.Description(), obj.Description(), '&nbsp;')"> description </td>
                 </tr>
 		</metal:block>
             </tbody>
