@@ -221,6 +221,10 @@ class DefaultCustomizationPolicy:
             md._setProperty('visible_ids', '1', 'boolean')
         if not hasattr(md,'wysiwyg_editor'):
             md._setProperty('wysiwyg_editor', '', 'string')
+        if not hasattr(md,'listed'):
+            md._setProperty('listed', '1', 'boolean')
+        else:
+            md._setPropValue('listed','1')
 
         #customize membership tool
         mt=getToolByName(portal, 'portal_membership')

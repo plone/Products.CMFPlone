@@ -149,6 +149,7 @@ class MembershipTool( BaseTool ):
         email = dict.get('email', None)
         roles = dict.get('roles', None)
         last_login_time = dict.get('last_login_time', None)
+        is_manager = self.checkPermission('Manage portal', self)
             
         if name:
             name = name.strip().lower()
@@ -166,9 +167,8 @@ class MembershipTool( BaseTool ):
         portal = self.portal_url.getPortalObject()
         for u in portal.acl_users.getUsers():
             user = md.wrapUser(u)
-            # To honour the listed attribute, uncomment the following lines
-            #if not user.listed:
-            #    continue
+            if not (user.listed or is_manager):
+                continue
             if name:
                 if u.getUserName().lower().find(name) == -1:
                     continue
