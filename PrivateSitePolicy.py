@@ -31,7 +31,7 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
         
         wf_tool.updateRoleMappings()
         wf_tool.doActionFor(portal,'show',comment='The portal object itelf but be visible')
-        #wf_tool.doActionFor(portal.index_html,'hide',comment='frontpage is not viewable')
+        wf_tool.doActionFor(portal.Members, 'show', comment='Members must be visible')
 
         portal.manage_delObjects('portal_registration')
         pa_tool=getToolByName(portal,'portal_actions')
