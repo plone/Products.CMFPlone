@@ -32,10 +32,15 @@
 
 <body>
 
-<a class="skipnav" 
-   href="#documentContent">Skip to content</a>
-
 <div class="top" i18n:domain="plone">
+
+    <a class="skipnav" 
+       href="#documentContent">Skip to content</a>
+    
+    <div metal:use-macro="here/global_elements/macros/skin_tabs">
+        The skin switcher tabs. Based on which role you have, you
+        get a selection of skins that you can switch between.
+    </div>
 
     <div metal:use-macro="here/site_actions/macros/site_actions">
         Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)

@@ -286,6 +286,16 @@ pre {
 ** Structural Elements
 */
 
+div.switchbar {
+    /* The skin switcher at the top, only shows up if you have multiple skins available */
+    
+}
+
+div.switchbar a {
+    display: block;
+    float: left;
+}
+
 div.top {
     /* Top section */
     background: &dtml-topBackground;;
