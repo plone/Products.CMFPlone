@@ -17,8 +17,14 @@ from webdav.NullResource import NullResource
 from types import StringType
 from DocumentTemplate.sequence import sort
 
-from OFS.IOrderSupport import IOrderedContainer
-from OFS.OrderedFolder import OrderedFolder
+# This import can change in Zope 2.7
+try:
+    from OFS.IOrderSupport import IOrderedContainer as IZopeOrderedContainer
+    hasZopeOrderedSupport=1
+except ImportError:
+    hasZopeOrderedSupport=0
+# ATM it's safer to define our own
+from interfaces.OrderedContainer import IOrderedContainer
 
 from OFS.ObjectManager import REPLACEABLE
 from ComputedAttribute import ComputedAttribute
@@ -81,10 +87,16 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 #Zope Public License (ZPL) Version 2.0
 #This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
 
-class OrderedContainer(OrderedFolder):
+class OrderedContainer(Folder):
     """Folder with subobject ordering support"""
 
-    __implements__ = (OrderedFolder.__implements__,)
+    if hasZopeOrderedSupport:
+        # Got the IOrderedContainer interface from Zope 2.7 too,
+        # make sure this implementation fullfills both interfaces
+        __implements__  = (IOrderedContainer, IZopeOrderedContainer)
+    else:
+        __implements__  = (IOrderedContainer,)
+
     security = ClassSecurityInfo()
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObject')
@@ -101,6 +113,8 @@ class OrderedContainer(OrderedFolder):
         self._objects = tuple(metadata)
 
     # Here the implementation of IOrderedContainer starts
+    # Once Plone depends on Zope 2.7 this should be replaced by mixing in
+    # the 2.7 specific class OFS.OrderedContainer.OrderedContainer
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsByDelta')
     def moveObjectsByDelta(self, ids, delta, subset_ids=None):
@@ -177,18 +191,57 @@ class OrderedContainer(OrderedFolder):
         raise NotFound, 'Object %s was not found' % str(id)
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsUp')
+    def moveObjectsUp(self, ids, delta=1, RESPONSE=None):
+        """ Move an object up """
+        self.moveObjectsByDelta(ids, -delta)
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_workspace')
+
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsDown')
+    def moveObjectsDown(self, ids, delta=1, RESPONSE=None):
+        """ move an object down """
+        self.moveObjectsByDelta(ids, delta)
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_workspace')
+
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsToTop')
+    def moveObjectsToTop(self, ids, RESPONSE=None):
+        """ move an object to the top """
+        self.moveObjectsByDelta( ids, -len(self._objects) )
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_workspace')
+
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsToBottom')
+    def moveObjectsToBottom(self, ids, RESPONSE=None):
+        """ move an object to the bottom """
+        self.moveObjectsByDelta( ids, len(self._objects) )
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_workspace')
+
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectToPosition')
+    def moveObjectToPosition(self, id, position):
+        """ Move specified object to absolute position.
+        """
+        delta = position - self.getObjectPosition(id)
+        return self.moveObjectsByDelta(id, delta)
+
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'orderObjects')
+    def orderObjects(self, key, reverse=None):
+        """ Order sub-objects by key and direction.
+        """
+        ids = [ id for id, obj in sort( self.objectItems(),
+                                        ( (key, 'cmp', 'asc'), ) ) ]
+        if reverse:
+            ids.reverse()
+        return self.moveObjectsByDelta( ids, -len(self._objects) )
 
     # Here the implementation of IOrderedContainer ends
 
     def manage_renameObject(self, id, new_id, REQUEST=None):
         """Rename a particular sub-object"""
         objidx = self.getObjectPosition(id)
-        result = Folder.manage_renameObject(self, id, new_id, REQUEST)
+        method = OrderedContainer.inheritedAttribute('manage_renameObject')
+        result = method(self, id, new_id, REQUEST)
         self.moveObject(new_id, objidx)
 
         return result
@@ -242,8 +295,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
 
     index_html = ComputedAttribute(index_html, 1)
 
-    security.declareProtected(CMFCorePermissions.AddPortalFolders,
-                              'manage_addPloneFolder')
+    security.declareProtected(CMFCorePermissions.AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """ adds a new PloneFolder """
         ob=PloneFolder(id, title)

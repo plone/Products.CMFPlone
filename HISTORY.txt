@@ -19,9 +19,6 @@ Plone 2.1 - (TBA) - (Unreleased)
       in standards-compliant browsers too.
       [limi]
 
-    - PloneFolders now expose ordering controls in the ZMI (experimental).
-      [stefan]
-
     - Added convenience ID for use in CSS - #portal-header - useful for background
       images in the portal header, for instance.
       [limi]
