@@ -56,7 +56,13 @@ class DefaultCustomizationPolicy:
         at.addAction('news','News','string: $portal_url/news','','View', 'portal_tabs')	
         at.addAction('search_form','Search','string: $portal_url/search_form','','View','portal_tabs')
 
-        at.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','python:portal.plone_utils.getWorkflowChainFor(object)','View','object_tabs')
+        at.addAction( 'content_status_history'
+                    , 'Publishing'
+                    , 'string:${object_url}/content_status_history'
+                    , 'python:test(member and portal.plone_utils.getWorkflowChainFor(object), 1, 0)'
+                    , 'View'
+                    , 'object_tabs' )
+
         at.addAction('rename','Rename','string:folder_rename_form:method','', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('cut', 'Cut', 'string:folder_cut:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('copy', 'Copy', 'string:folder_copy:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
