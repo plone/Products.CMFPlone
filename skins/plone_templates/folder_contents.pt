@@ -88,10 +88,9 @@
                         <td class="top" colspan="6">
                             <!-- Filter pulldown -->
                             <tal:block tal:condition="no_types">
-                            <span style="float: left">
-                    
                                 <select id="filter_selection" 
                                         name="filter_by_portal_type:list" 
+                                        style="float: left"
                                         onChange="submitFilterAction()"
                                         tabindex=""
                                         tal:attributes="tabindex tabindex/next|nothing;">
@@ -113,7 +112,6 @@
                     
                                 <input type="hidden" name="filter_by_Subject:tokens" value="" />
                                 <!--you can filter by subject keywords by filling in this value-->
-                            </span>
                             </tal:block>
                             
                             <!-- Add Item pulldown -->
