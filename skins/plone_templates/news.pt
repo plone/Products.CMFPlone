@@ -29,9 +29,9 @@
                   tal:define="resultObject result/getObject;
                               creator result/Creator">
 
-                    <h2 tal:content="result/Title">
-                        Title
-                    </h2>
+                <h2 tal:content="result/Title">
+                    Title
+                </h2>
 
                 <div class="newsContent"
                      tal:define="resulturl resultObject/absolute_url">
@@ -39,7 +39,7 @@
                     <p tal:content="structure result/Description">
                         Description
                     </p>
-
+    
                     <ul class="newsAbout">
  
                         <li>
