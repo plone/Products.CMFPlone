@@ -190,7 +190,6 @@ textarea {
     color: &dtml-inputFontColor;;
     background-color: white;
     width: 100%;
-    padding: 0em;
 }
 input {
     font-family: <dtml-var fontFamily>;
@@ -199,7 +198,6 @@ input {
     color: &dtml-inputFontColor;;
     background-color: white;
     vertical-align: middle;
-    padding: 0em;
 }
 select {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
@@ -1188,14 +1186,19 @@ ol.visualNoMarker {
     text-transform: &dtml-textTransform;;
     vertical-align: top;
     margin: 1em 0em;
+    font-size: 94%;
 }
-.listingBar span.previous {
+.listingBar span.previous,
+.listingPrevious {
     text-align: left;
     float: left;
+    margin-right: 1em;
 }
-.listingBar span.next {
+.listingBar span.next,
+.listingNext {
     text-align: right;
     float: right;
+    margin-left: 1em;
 }
 .listingBar img {
 	vertical-align: middle;
