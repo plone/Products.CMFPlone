@@ -6,6 +6,44 @@
 // that you want to pass into these scripts should be placed there.
 
 
+function registerPloneFunction(func){
+    // registers a function to fire onload. 
+	// Turned out we kept doing this all the time
+	// Use this for initilaizing any javascript that should fire once the page has been loaded. 
+	// 
+    if (window.addEventListener) window.addEventListener("load",func,false);
+    else if (window.attachEvent) window.attachEvent("onload",func);   
+  }
+
+function getContentArea(){
+	// to end all doubt on where the content sits. It also felt a bit silly doing this over and over in every
+	// function, even if it is a tiny operation. Just guarding against someone changing the names again, in the name
+	// of semantics or something.... ;)
+	node =  document.getElementById('region-content')
+	if (! node){
+		node = document.getElementById('content')
+		}
+	return node
+	}
+
+function wrapNode(node, wrappertype, wrapperclass){
+    // utility function to wrap a node "node" in an arbitrary element of type "wrappertype" , with a class of "wrapperclass"
+    wrapper = document.createElement(wrappertype)
+    wrapper.className = wrapperclass;
+    innerNode = node.parentNode.replaceChild(wrapper,node);
+    wrapper.appendChild(innerNode)
+}
+  
+
+
+
+
+
+
+
+
+
+
 // The calendar popup show/hide:
 
     function showDay(date) {
@@ -17,9 +55,10 @@
         return true;
     }
 
-// Focus on error or tabindex=1
-if (window.addEventListener) window.addEventListener("load",setFocus,false);
-else if (window.attachEvent) window.attachEvent("onload",setFocus);
+
+
+	
+// Focus on error or tabindex=1 
 function setFocus() {
     var xre = new RegExp(/\berror\b/);
     // Search only forms to avoid spending time on regular text
@@ -42,6 +81,11 @@ function setFocus() {
         }
     }
 }
+registerPloneFunction(setFocus)
+
+
+
+
 
 /********* Table sorter script *************/
 // Table sorter script, thanks to Geir Bækholt for this.
@@ -105,8 +149,6 @@ function getConcatenedTextContent(node) {
     }
   	return _result;
 }
-
-
 
 function sort(e) {
     var el = window.event ? window.event.srcElement : e.currentTarget;
@@ -175,7 +217,7 @@ function sort(e) {
     }
 }
     
-function init(e) {
+function initalizeTableSort(e) {
     var tbls = document.getElementsByTagName('table');
     for (var t = 0; t < tbls.length; t++)
         {
@@ -218,27 +260,12 @@ function init(e) {
             } catch(er) {}
         }
     }
-}
-
-// initialize the sorter functions 
-// add stuff to secure it from broken DOM-implanetations or missing objects.
-   
-    
-    	
-//    p.appendChild(document.createTextNode("Change sorting by clicking on each individual heading."));
-//    document.getElementById(tablename).parentNode.insertBefore(p,document.getElementById(tablename));
-    
-
-if (window.addEventListener) window.addEventListener("load",init,false);
-else if (window.attachEvent) window.attachEvent("onload",init);
-
-       
+}   
 // **** End table sort script ***
-
+registerPloneFunction(initalizeTableSort)   
 
 
 // Actions used in the folder_contents view
-
 function submitFolderAction(folderAction) {
     document.folderContentsForm.action = document.folderContentsForm.action+'/'+folderAction;
     document.folderContentsForm.submit();
@@ -323,15 +350,7 @@ function toggleSelect(selectbutton, id, initialState, formName) {
   }
 }
 
-
-function wrapNode(node, wrappertype, wrapperclass){
-    // utility function to wrap a node "node" in an arbitrary element of type "wrappertype" , with a class of "wrapperclass"
-    wrapper = document.createElement(wrappertype)
-    wrapper.className = wrapperclass;
-    innerNode = node.parentNode.replaceChild(wrapper,node);
-    wrapper.appendChild(innerNode)
-}
-    
+ 
 
 // script for detecting external links.
 // sets their target-attribute to _blank , and adds a class external
@@ -345,7 +364,7 @@ function scanforlinks(){
     // Scan all links in the document and set classes on them dependant on 
     // whether they point to the current site or are external links
     
-    contentarea = document.getElementById('content')
+    contentarea = getContentArea()
     if (! contentarea){return false}
     
     links = contentarea.getElementsByTagName('a');
@@ -353,7 +372,7 @@ function scanforlinks(){
         if ((links[i].getAttribute('href'))&&(links[i].className.indexOf('link-plain')==-1 )){
             var linkval = links[i].getAttribute('href')
             // check if the link href is a relative link, or an absolute link to the current host.
-            if (linkval.indexOf(window.location.protocol+'//'+window.location.host)==0){
+			if (linkval.toLowerCase().indexOf(window.location.protocol+'//'+window.location.host)==0) {
                 // we are here because the link is an absolute pointer internal to our host
                 // do nothing
             } else if (linkval.indexOf('http:') != 0){
@@ -373,6 +392,7 @@ function scanforlinks(){
             }else{
                 // we are in here if the link points to somewhere else than our site.
                 if ( links[i].getElementsByTagName('img').length == 0 ){
+					// we do not want to mess with those links that already have images in them
                     //links[i].className = 'link-external'
                     wrapNode(links[i], 'span', 'link-external')
                     //links[i].setAttribute('target','_blank')
@@ -385,9 +405,7 @@ function scanforlinks(){
         }
     }
 }
-
-if (window.addEventListener) window.addEventListener("load",scanforlinks,false);
-else if (window.attachEvent) window.attachEvent("onload",scanforlinks);
+registerPloneFunction(scanforlinks)   
 
 
 function climb(node, word){
@@ -430,26 +448,23 @@ function checkforhighlight(node,word) {
 function correctPREformatting(){
         // small utility thing to correct formatting for PRE-elements and some others
         // thanks to Michael Zeltner for CSS-guruness and research ;) 
-        contentarea = document.getElementById('content')
+		// currently not activated
+        contentarea = getContentArea();
         if (! contentarea){return false}
         
         pres = contentarea.getElementsByTagName('pre');
         for (i=0;i<pres.length;i++){
            wrapNode(pres[i],'div','visualOverflow')
-		}
+			}
                
-        tables = contentarea.getElementsByTagName('table');
-        for (i=0;i<tables.length;i++){
-           if (tables[i].className=="listing"){
-           wrapNode(tables[i],'div','visualOverflow')
-		   }
-        }
-        
+        //tables = contentarea.getElementsByTagName('table');
+        // for (i=0;i<tables.length;i++){
+        //   if (tables[i].className=="listing"){
+        //   wrapNode(tables[i],'div','visualOverflow')
+		//  }
+        //}      
 }
-// if (window.addEventListener) window.addEventListener("load",correctPREformatting,false);
-// else if (window.attachEvent) window.attachEvent("onload",correctPREformatting);
-
-
+//registerPloneFunction(correctPREformatting);
 
 function highlightSearchTerm() {
         // search-term-highlighter function --  Geir Bækholt
@@ -477,15 +492,14 @@ function highlightSearchTerm() {
                 queries = query.replace(/\+/g,' ').split(/\s+/)
                 
                 // make sure we start the right place and not higlight menuitems or breadcrumb
-                theContents = document.getElementById('content');
-                for (q=0;q<queries.length;q++) {
-                    climb(theContents,queries[q]);
+                contentarea = getContentArea();
+				for (q=0;q<queries.length;q++) {
+                    climb(contentarea,queries[q]);
                 }
             }
         }
 }
-if (window.addEventListener) window.addEventListener("load",highlightSearchTerm,false);
-else if (window.attachEvent) window.attachEvent("onload",highlightSearchTerm);
+registerPloneFunction(highlightSearchTerm);
 
 
 // ----------------------------------------------
@@ -536,9 +550,7 @@ function readCookie(name) {
   }
   return null;
 }
-
-if (window.addEventListener) window.addEventListener("load",setStyle,false);
-else if (window.attachEvent) window.attachEvent("onload",setStyle);
+registerPloneFunction(setStyle);
 
 
 
@@ -657,3 +669,41 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
     cal.showAtElement(input_id_anchor, null);
     return false;
 }
+
+
+
+
+
+
+
+// and finally : Mike Malloch's fixes for Internet Explorer 5 - 
+// These should be considered temporary, as they actually add functionality to IE5, while we just want it to not blurt errormessages... 
+//
+
+function hackPush(el){
+        this[this.length] = el;
+}
+
+function hackPop(){
+        var N = this.length - 1, el = this[N];
+        this.length = N
+        return el;
+}
+
+function hackShift(){
+        var one = this[0], N = this.length;
+        for (var i = 1; i < N; i++){
+                this[i-1] = this[i];
+        }
+        this.length = N-1
+        return one;
+}
+
+var testPushPop = new Array();
+if (testPushPop.push){
+}else{
+        Array.prototype.push = hackPush
+        Array.prototype.pop = hackPop
+        Array.prototype.shift =hackShift;
+}
+
