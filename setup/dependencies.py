@@ -161,3 +161,28 @@ try:
 except ImportError:
     log(("SecureMailHost not found. Please "
          "download it from http://sf.net/projects/collective"))
+
+try:
+    import Products.MimetypesRegistry
+except ImportError:
+    log(("MimetypesRegistry not found. Please "
+         "download it from http://sf.net/projects/archetypes"))
+
+try:
+    import Products.PortalTransforms
+except ImportError:
+    log(("PortalTransforms not found. Please "
+         "download it from http://sf.net/projects/archetypes"))
+
+try:
+    import Products.Archetypes
+except ImportError:
+    log(("Archetypes not found. Please "
+         "download it from http://sf.net/projects/archetypes"))
+
+try:
+    import Products.ATContentTypes
+except ImportError:
+    log(("ATContentTypes not found. Please "
+         "download it from http://sf.net/projects/collective"))
+

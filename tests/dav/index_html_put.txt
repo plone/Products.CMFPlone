@@ -38,7 +38,7 @@ PUT index_html into a Plone Folder. Should work just fine.
   True
 
   >>> print self.folder._getOb('index_html').meta_type
-  Document
+  ATDocument
 
 Now, let's try the same at the Portal level:
 
@@ -77,4 +77,4 @@ PUT index_html into Plone root. Should work just fine.
   True
 
   >>> print self.portal._getOb('index_html').meta_type
-  Document
+  ATDocument

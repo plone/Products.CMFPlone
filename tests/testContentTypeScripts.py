@@ -216,7 +216,7 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
 
     def testFileEditString(self):
         self.folder.file.file_edit(file='foo')
-        self.assertEqual(str(self.folder.file), 'foo')
+        self.assertEqual(str(self.folder.file.getFile()), 'foo')
 
     def testImageEditString(self):
         self.folder.image.image_edit(file=dummy.GIF)
@@ -245,7 +245,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
 
     def testFileMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
-        self.assertEqual(self.folder.file.content_type, 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
 
     def testImageMimeType(self):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
@@ -255,7 +255,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.folder.file.file_edit(title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
-        self.assertEqual(self.folder.file.content_type, 'application/pdf')
+        self.assertEqual(self.folder.file.getFile().content_type, 'application/pdf')
 
     def testImageEditKeepsMimeType(self):
         self.folder.image.image_edit(title='Foo')
@@ -267,7 +267,7 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         get_transaction().commit(1) # make rename work
         self.folder.file.file_edit(id='foo')
         self.assertEqual(self.folder.foo.Format(), 'application/pdf')
-        self.assertEqual(self.folder.foo.content_type, 'application/pdf')
+        self.assertEqual(self.folder.foo.getFile().content_type, 'application/pdf')
 
     def testImageRenameKeepsMimeType(self):
         get_transaction().commit(1) # make rename work

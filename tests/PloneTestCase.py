@@ -25,6 +25,21 @@ ZopeTestCase.installProduct('PageTemplates', quiet=1)
 ZopeTestCase.installProduct('PythonScripts', quiet=1)
 ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 
+# Archetypes/ATContentTypes dependencies
+ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
+ZopeTestCase.installProduct('PortalTransforms', quiet=1)
+ZopeTestCase.installProduct('Archetypes')
+
+# Unit tests are FU if LinguaPlone is available but not installed
+if ZopeTestCase.hasProduct('LinguaPlone'):
+    ZopeTestCase.installProduct('PloneLanguageTool')
+    ZopeTestCase.installProduct('LinguaPlone')
+
+ZopeTestCase.installProduct('ATContentTypes')
+
+# Install sessioning
+ZopeTestCase.utils.setupCoreSessions()
+
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base

@@ -301,7 +301,7 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
 
     def testMemberareaIsPloneFolder(self):
         # Memberarea should be a Plone folder
-        self.assertEqual(self.home.meta_type, 'Plone Folder')
+        self.assertEqual(self.home.meta_type, 'ATFolder')
         self.assertEqual(self.home.portal_type, 'Folder')
 
     def testMemberareaIsOwnedByMember(self):
@@ -331,7 +331,7 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
     def testHomePageIsDocument(self):
         # Home page should be a Document
         page = self.home.index_html
-        self.assertEqual(page.meta_type, 'Document')
+        self.assertEqual(page.meta_type, 'ATDocument')
         self.assertEqual(page.portal_type, 'Document')
 
     def testHomePageIsOwnedByMember(self):
@@ -362,7 +362,7 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
     def testPersonalFolderIsPloneFolder(self):
         # .personal should be a Plone folder
         personal = self.home[self.membership.personal_id]
-        self.assertEqual(personal.meta_type, 'Plone Folder')
+        self.assertEqual(personal.meta_type, 'ATFolder')
         self.assertEqual(personal.portal_type, 'Folder')
 
     def testPersonalFolderIsOwnedByMember(self):

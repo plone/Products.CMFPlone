@@ -1,4 +1,5 @@
 from Acquisition import aq_base
+from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
 
 def two05_alpha1(portal):
@@ -16,6 +17,13 @@ def two05_alpha1(portal):
     # Remove old properties
     deletePropertySheet(portal, out, 'form_properties')
     deletePropertySheet(portal, out, 'navigation_properties')
+
+    # Install Archetypes and ATCT
+    installArchetypes(portal, out)
+    installATContentTypes(portal, out)
+
+    # Switch over to ATCT
+    migrateToATCT(portal, out)
 
     return out
 
@@ -48,4 +56,32 @@ def deletePropertySheet(portal, out, sheet_name):
     if hasattr(aq_base(proptool), sheet_name):
         proptool._delObject(sheet_name)
     out.append('Deleted %s property sheet.' % sheet_name)
+
+
+def installArchetypes(portal, out):
+    """Quickinstalls Archetypes if not installed yet."""
+    for product_name in ('MimetypesRegistry', 'PortalTransforms', 'Archetypes'):
+        installOrReinstallProduct(portal, product_name, out)
+
+
+def installATContentTypes(portal, out):
+    """Quickinstalls ATContentTypes if not installed yet."""
+    for product_name in ('ATContentTypes',):
+        installOrReinstallProduct(portal, product_name, out)
+
+
+def migrateToATCT(portal, out):
+    """Switches portal to ATContentTypes."""
+    get_transaction().commit(1)
+    migrateFromCMFtoATCT = portal.migrateFromCMFtoATCT
+    switchCMF2ATCT = portal.switchCMF2ATCT
+    out.append('Migrating and switching to ATContentTypes ...')
+    result = migrateFromCMFtoATCT()
+    out.append(result)
+    try:
+        switchCMF2ATCT(skip_rename=False)
+    except IndexError:
+        switchCMF2ATCT(skip_rename=True)
+    get_transaction().commit(1)
+    #out.append('Switched portal to ATContentTypes.')
 

@@ -67,3 +67,29 @@ def cleanupSkinPath(portal, skinName, test=1):
       if layer and testSkinLayer(skinstool, layer):
          new_path.append(layer)
    skinstool.addSkinSelection(skinName, ','.join(new_path), test=test)
+   
+def installOrReinstallProduct(portal, product_name, out):
+    """Installs a product
+    
+    If product is already installed test if it needs to be reinstalled. Also
+    fix skins after reinstalling
+    """
+    qi = getToolByName(portal, 'portal_quickinstaller') 
+    if not qi.isProductInstalled(product_name):
+        qi.installProduct(product_name)
+        # Refresh skins
+        if getattr(aq_base(portal), '_v_skindata', None) is not None:
+            portal._v_skindata = None
+        if getattr(aq_base(portal), 'setupCurrentSkin', None) is not None:
+            portal.setupCurrentSkin()
+        out.append('Installed %s.' % product_name)
+    else:
+        info = qi._getOb(product_name)
+        installed_version = info.getInstalledVersion()
+        product_version = qi.getProductVersion(product_name)
+        if installed_version != product_version:
+            qi.reinstallProducts([product_name])
+            out.append('%s is out of date (installed: %s/ filesystem: %s), '\
+                'reinstalled.' % (product_name, installed_version, product_version))
+        else:
+            out.append('%s already installed.' % product_name)
