@@ -28,7 +28,7 @@
               method="post"
               enctype="multipart/form-data"
               tal:condition="member"
-              tal:attributes="action string:${here/getId}/${template/getId}">
+              tal:attributes="action template/getId">
             <span class="legend" i18n:translate="legend_member_details">Member Details</span>
 
             <div class="row"
