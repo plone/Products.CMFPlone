@@ -62,7 +62,7 @@ to become a member.
 <script type="text/javascript">
 <!--
    if (cookiesEnabled && !cookiesEnabled()) {
-      document.writeln('<div class="message"><img src="info.gif">Cookies are not enabled. <a href="enabling_cookies">How to enable cookies</a></div>');
+      document.writeln('<div class="portalMessage"><img src="info.gif">Cookies are not enabled. You can not log in if they are turned off. <a href="enabling_cookies">How to enable cookies</a>.</div>');
    }
 //-->
 </script>
@@ -153,16 +153,6 @@ to become a member.
                    />
 
         </div>
-
-        <p>
-            <strong i18n:translate="label_trouble_logging_in">
-            Having trouble logging in?
-            </strong>
-
-            <span i18n:translate="description_trouble_logging_in">
-            Make sure to <a href="enabling_cookies">enable cookies</a> in your web browser.
-            </span>
-        </p>
 
 
         <p i18n:translate="remember_to_log_out">
