@@ -33,7 +33,7 @@
             <dl>
 	        <tal:entry tal:repeat="obj folderContents">
 
-                <dt metal:define-macro="list-item"
+                <dt metal:define-macro="listitem"
                     tal:define="url python: obj.absolute_url()+test(obj.isPrincipiaFolderish,'/','');
                                 icon python: obj.getIcon(1)">
                 <a href="#" tal:attributes="href url">

@@ -34,7 +34,7 @@
         <metal:block tal:repeat="result batch">
 
             <div class="newsItem"
-                 metal:define-macro="list-item"
+                 metal:define-macro="listitem"
                  tal:define="resultObject result/getObject;
                              creator result/Creator;
                              resulturl resultObject/absolute_url;">
