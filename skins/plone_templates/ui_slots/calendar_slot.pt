@@ -114,7 +114,7 @@
 
  </comment>
  
-  <input type=text tal:attributes="name string:$inputname:date;
+  <input type=text tal:attributes="name string:$inputname;
                                    id input_id;
                                    value inputvalue;
                                    onfocus onfocus|nothing;
