@@ -4,6 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setup.ConfigurationMethods import correctFolderContentsAction
 from Products.CMFCore.Expression import Expression
 from Acquisition import aq_base
+from plone2_base import addCatalogIndexes
 
 _permMap = {
     'rename' : CMFCorePermissions.AddPortalContent,
@@ -131,6 +132,8 @@ def rc5_final(portal):
     out.append('Added Plone Tabless skin')
     addTablelessSkin(portal)
 
+    out.append('Adding in Plone 2 base')
+    addCatalogIndexes(portal)
     return out
 
 def addTablelessSkin(portal):
