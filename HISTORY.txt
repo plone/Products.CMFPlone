@@ -63,7 +63,11 @@
     - my_worklist works correctly and sorts in ascending order for modified
     - you can now edit text of File objects who has text content_type
     - added StringIO string access
-    - added publishing button that allows mass publishing of folder contents
+    - added 'change status' button that allows mass publishing of folder contents
+    - refactored filesystem directory view skin structure 
+      - plone_scripts contains scrips and supporting form_scripts
+      - plone_templates containers site wide templates and supporting ui_slots
+      - plone_styles container default style and optional plone_themes
     - many more changes and cleanups
 
 0.9.8 - Ulrich Schnauss Release:
