@@ -4,7 +4,7 @@
 
 import zLOG
 
-def log(message,summary='',severity=0):
+def log(message,summary='',severity=zLOG.ERROR):
     zLOG.LOG('Plone Dependency: ',severity,summary,message)
 
 try:
