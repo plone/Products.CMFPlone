@@ -57,6 +57,17 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             'user@example.org\r\nfoo',
             'user@example.org\r\rfoo',
             'user@example.org\nfoo@example.org', # only single address allowed, even if given one per line
+            'user@example.org\nBcc: user@example.org',
+            'user@example.org\nCc: user@example.org',
+            'user@example.org\nSubject: Spam',
+            # and a full email (note the missing ,!)
+            'From: foo@example.org\n'
+            'To: bar@example.org, spam@example.org\n'
+            'Cc: egg@example.org\n'
+            'Subject: Spam me plenty\n'
+            'Spam Spam Spam\n'
+            'I hate spam',
+            
         )
         for address in validInputs:
             self.failUnless(val(address), '%s should validate' % address)
