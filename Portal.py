@@ -141,6 +141,7 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_calendar'
                     , 'plone_templates/ui_slots'
                     , 'plone_wysiwyg'
+                    , 'plone_3rdParty/XSDHTMLEditor'
                     ):
             try:
                 path.insert( path.index( 'custom')+1, plonedir )

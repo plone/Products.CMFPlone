@@ -34,6 +34,8 @@
     customize the header to get rid of the search_form tal:condition="not: here/portal_membership/isAnonymousUser"
     - added metadata tab to Event contentType in DefaultCustomizationPolicy 
     - fixed issue 163
+    - metadata tab is now labeled Properties
+    - added XSDHTMLEditor to document form for trial before 1.0
 
 1.0a - Boards of Canada Release:
     - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
