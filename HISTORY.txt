@@ -2,6 +2,18 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone HEAD
+
+    - SearchableText, Title, and Description now use TextIndexNG2 if installed.
+      All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
+      not installed. Note that in Plone 2.0 Title and Description used to be plain 
+      TextIndexes.
+      [ajung]
+
+    - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it 
+      should be and will be revised. See http://plone.org/collector/2461.
+      [db, batlogg]
+
 Plone 2.0.2 - Hicks
 
     - Commented out the javascript that auto-focuses on the first field in a form. 
@@ -766,16 +778,17 @@ Plone 2.0 - Fyuti
       administrators.
       [limi]
 
-    - Bug fix for http://plone.org/collector/1154 (SearchableText should be       ZCTextIndex)
+    - Bug fix for http://plone.org/collector/1154 (SearchableText should be ZCTextIndex)
       [kapil]
 
-    - Added unicode splitter for zctextindex element pipeline from silva (w/       license).
+    - Added unicode splitter for zctextindex element pipeline from silva (w/ license).
       [kapil]
 
     - Added lexicon addition to migration.
       [kapil]
 
-    - Added lexicon addition and recreation of searchabletext index as zctext to       catalog tool's manage_afterAdd.
+    - Added lexicon addition and recreation of searchabletext index as zctext to catalog 
+      tool's manage_afterAdd.
       [kapil]
 
     - Added new directories: 'plone_portlets' (formerly 'plone_templates/ui_slots'),
