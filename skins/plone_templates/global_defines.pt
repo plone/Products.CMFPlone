@@ -41,5 +41,6 @@
         global sr slots_mapping/right;
         global hidecolumns python:here.hide_columns(sl,sr);
         global default_language site_properties/default_language|nothing;
-        global is_editable python:here.showEditableBorder( template_id=template_id , actions=actions );
+        global allowed_types here/getAllowedTypes;
+        global is_editable python:here.showEditableBorder(template_id=template_id, allowed_types=allowed_types, actions=actions );
 " />

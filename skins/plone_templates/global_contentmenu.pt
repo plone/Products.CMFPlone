@@ -5,7 +5,7 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="contentTypes python:here.getAllowedTypes();
+<ul tal:define="contentTypes allowed_types;
 		size python:len(contentTypes);">
 
     <tal:dropdown tal:condition="python: size>1">
