@@ -106,6 +106,10 @@ class PloneSite(CMFSite, OrderedContainer):
         of index_html """
         return self.browserDefault()
 
+    def manage_beforeDelete(self, container, item):
+        """ Should send out an Event before Site is being deleted """
+        self.removal_inprogress=1
+
 class PloneGenerator(Portal.PortalGenerator):
 
     klass = PloneSite
