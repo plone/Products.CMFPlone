@@ -88,7 +88,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     def failIfLocked(self):
         """ failIfLocked is used for WEBDAV locking """
         plone=getToolByName(self, 'plone_utils')
-        log(self.absolute_url() + " failIfLocked called on Plone Folder" )
+        #log(self.absolute_url() + " failIfLocked called on Plone Folder" )
         return 0
     
     ### FIXME! SkinnedFolder Creator method doesnt work when creating

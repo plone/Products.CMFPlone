@@ -8,7 +8,7 @@
 ##title=adds ext_edit actions to types
 types=context.portal_types
 omit_types=('Folder','Discussion Item','Event','Topic')
-for ctype in [ctype for ctype in types.objectValues() if types.getId() not in omit_types]:
+for ctype in [ctype for ctype in types.objectValues() if ctype.Title() not in omit_types]:
     try:
         ctype.getActionById('external_edit')
     except (TypeError, KeyError):
