@@ -49,7 +49,6 @@ img {
 }
 p {
     margin: 0.5em 0em 1em 0em;
-    text-align: left;
     line-height: 1.5em;
 }
 p a {
