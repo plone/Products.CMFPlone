@@ -14,6 +14,20 @@
      i18n:attributes="alt title" />
 </a>
 
+<!-- 
+     
+     Please keep the Plone Powered button (or a textual link to us) if you use 
+     Plone on your site. It's a nice token of gratitude, and we appreciate your
+     help in promoting the Plone name. 
+     
+     Plone is powered by the combined forces of Zope and CMF, two absolutely
+     great systems made by Zope Corporation (http://zope.com) and they in turn
+     are based on the best programming language in the world - Python
+     (http://www.python.org). We owe these guys a lot, thanks for making Plone
+     possible!
+     
+ -->
+
 <br />
 
 <span i18n:translate="description_copyright" tal:omit-tag="">
