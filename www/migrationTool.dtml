@@ -18,4 +18,25 @@ not do any harm to a standard Plone.
 
 <p>[ <a href="upgrade">Migrate</a> ] </p>
 
+<hr width="90%" />
+
+<form action="upgrade">
+If, however, you're <strong>absolutely</strong> sure your instance is not
+&dtml-getInstanceVersion;, choose the correct version below and click "force
+migrate": <br />
+
+<select name="force_instance_version">
+  <dtml-in knownVersions sort>
+    <option>&dtml-sequence-item;</option>
+  </dtml-in>
+</select><br />
+
+<input id="confirm" name="yes_I_am_very_sure" type="checkbox" />
+<label for="confirm">I am very sure that I know what I'm doing and I'm aware
+that I may break my Plone site if I'm wrong</label><br />
+
+<input type="submit" value="force migrate" />
+
+</form>
+
 <dtml-var manage_page_footer>

@@ -100,5 +100,4 @@ def initialize(context):
 import PloneInitialize
 
 # setup migrations
-import Migrations
-Migrations.registerMigrations()
+migrations.registerMigrations()

@@ -51,7 +51,7 @@ def kidgloves(skintool):
             paths.insert(paths.index('custom'), id)
         skins[skinname]=','.join(paths)
     
-def migrate(self, portal):
+def migrate(portal):
     addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
     addCoreTool=portal.manage_addProduct['CMFCore'].manage_addTool
     addDefaultTool=portal.manage_addProduct['CMFDefault'].manage_addTool

@@ -2,7 +2,7 @@ try:
     from Products.CMFPlone import MigrationTool
     import beta2_beta3, beta1_beta2, alpha_beta
 except:
-    print "Ack.  MigrationTool could not be found"   
+    print "Ack.  MigrationTool could not be found"
 
 def registerMigrations():
     # so the basic concepts is you put  a bunch of migrations is here
