@@ -1,3 +1,389 @@
+2004-01-07 02:43  shh42
+
+	* tests/PloneTestCase.py: What we need to fake is not a script but
+	  a published object. Merged from Plone-2_0-branch.
+
+2004-01-07 02:10  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): In fact, what we need
+	  to fake is not a script but a published object.
+
+2004-01-07 01:38  runyaga
+
+	* ActionIconsTool.py, ActionsTool.py, CREDITS.txt,
+	  CustomizationPolicy.py, DiscussionTool.py, FactoryTool.py,
+	  FolderWorkflow.py, FormTool.py, HISTORY.txt, INSTALL.txt,
+	  LargePloneFolder.py, MembershipTool.py, MigrationTool.py,
+	  PloneControlPanel.py, PloneFolder.py, PloneTool.py, Portal.py,
+	  PrivateSitePolicy.py, PropertiesTool.py, QuickInstallerTool.py,
+	  RegistrationTool.py, StatelessTreeNav.py, __init__.py,
+	  version.txt, Extensions/add_copyright.py, Extensions/migrate.py,
+	  docs/README.txt, migrations/__init__.py,
+	  migrations/v1/__init__.py, migrations/v1/final_one_zero_one.py,
+	  migrations/v1/one01_one02.py, migrations/v1/one02_one03.py,
+	  migrations/v1/one03_one04.py, migrations/v1/rc1_rc2.py,
+	  migrations/v1/rc2_final.py, migrations/v2/__init__.py,
+	  migrations/v2/oneX_twoBeta2.py, migrations/v2/plone2_base.py,
+	  migrations/v2/twoBeta2_twoBeta3.py,
+	  setup/ConfigurationMethods.py, setup/SetupBase.py,
+	  setup/customization_policy.py, setup/dependencies.py,
+	  setup/languages.py, skins/cmf_legacy/clearCookie.py,
+	  skins/cmf_legacy/filterCookie.py, skins/cmf_legacy/itemRSS.dtml,
+	  skins/cmf_legacy/truncID.py, skins/cmf_legacy/unauthRedirect.py,
+	  skins/plone_3rdParty/CMFTopic/topic_criteria_form.pt,
+	  skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  skins/plone_3rdParty/jscalendar/README,
+	  skins/plone_3rdParty/jscalendar/README-Plone,
+	  skins/plone_3rdParty/jscalendar/bugtest-hidden-selects.html,
+	  skins/plone_3rdParty/jscalendar/calendar-af.js,
+	  skins/plone_3rdParty/jscalendar/calendar-af.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-blue.css,
+	  skins/plone_3rdParty/jscalendar/calendar-blue.css.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-br.js,
+	  skins/plone_3rdParty/jscalendar/calendar-br.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-brown.css,
+	  skins/plone_3rdParty/jscalendar/calendar-brown.css.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-ca.js,
+	  skins/plone_3rdParty/jscalendar/calendar-ca.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-cs-win.js,
+	  skins/plone_3rdParty/jscalendar/calendar-cs-win.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-da.js,
+	  skins/plone_3rdParty/jscalendar/calendar-da.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-de.js,
+	  skins/plone_3rdParty/jscalendar/calendar-de.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-du.js,
+	  skins/plone_3rdParty/jscalendar/calendar-du.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-el.js,
+	  skins/plone_3rdParty/jscalendar/calendar-el.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-en.js,
+	  skins/plone_3rdParty/jscalendar/calendar-en.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-es.js,
+	  skins/plone_3rdParty/jscalendar/calendar-es.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-fr.js,
+	  skins/plone_3rdParty/jscalendar/calendar-fr.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-green.css,
+	  skins/plone_3rdParty/jscalendar/calendar-green.css.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-hr-utf8.js,
+	  skins/plone_3rdParty/jscalendar/calendar-hr-utf8.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-hr.js,
+	  skins/plone_3rdParty/jscalendar/calendar-hr.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-hu.js,
+	  skins/plone_3rdParty/jscalendar/calendar-hu.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-it.js,
+	  skins/plone_3rdParty/jscalendar/calendar-it.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-jp.js,
+	  skins/plone_3rdParty/jscalendar/calendar-jp.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-nl.js,
+	  skins/plone_3rdParty/jscalendar/calendar-nl.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-no.js,
+	  skins/plone_3rdParty/jscalendar/calendar-no.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-pl.js,
+	  skins/plone_3rdParty/jscalendar/calendar-pl.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-pt.js,
+	  skins/plone_3rdParty/jscalendar/calendar-pt.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-ro.js,
+	  skins/plone_3rdParty/jscalendar/calendar-ro.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-ru.js,
+	  skins/plone_3rdParty/jscalendar/calendar-ru.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-setup.js,
+	  skins/plone_3rdParty/jscalendar/calendar-setup.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-setup_stripped.js,
+	  skins/plone_3rdParty/jscalendar/calendar-setup_stripped.js.metada
+	  ta, skins/plone_3rdParty/jscalendar/calendar-sk.js,
+	  skins/plone_3rdParty/jscalendar/calendar-sk.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-sp.js,
+	  skins/plone_3rdParty/jscalendar/calendar-sp.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-sv.js,
+	  skins/plone_3rdParty/jscalendar/calendar-sv.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-system.css,
+	  skins/plone_3rdParty/jscalendar/calendar-system.css.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-tr.js,
+	  skins/plone_3rdParty/jscalendar/calendar-tr.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-win2k-1.css,
+	  skins/plone_3rdParty/jscalendar/calendar-win2k-1.css.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-win2k-2.css,
+	  skins/plone_3rdParty/jscalendar/calendar-win2k-2.css.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar-win2k-cold-1.css,
+	  skins/plone_3rdParty/jscalendar/calendar-win2k-cold-1.css.metadat
+	  a, skins/plone_3rdParty/jscalendar/calendar-win2k-cold-2.css,
+	  skins/plone_3rdParty/jscalendar/calendar-win2k-cold-2.css.metadat
+	  a, skins/plone_3rdParty/jscalendar/calendar-zh.js,
+	  skins/plone_3rdParty/jscalendar/calendar-zh.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar.js,
+	  skins/plone_3rdParty/jscalendar/calendar.js.metadata,
+	  skins/plone_3rdParty/jscalendar/calendar_stripped.js,
+	  skins/plone_3rdParty/jscalendar/calendar_stripped.js.metadata,
+	  skins/plone_3rdParty/jscalendar/img.gif,
+	  skins/plone_3rdParty/jscalendar/index.html,
+	  skins/plone_3rdParty/jscalendar/menuarrow.gif,
+	  skins/plone_3rdParty/jscalendar/reference-Z-S.css,
+	  skins/plone_3rdParty/jscalendar/reference.css,
+	  skins/plone_3rdParty/jscalendar/reference.html,
+	  skins/plone_3rdParty/jscalendar/reference.pdf,
+	  skins/plone_3rdParty/jscalendar/release-notes.html,
+	  skins/plone_3rdParty/jscalendar/simple-1.html,
+	  skins/plone_3rdParty/jscalendar/simple-2.html,
+	  skins/plone_3rdParty/jscalendar/simple-3.html,
+	  skins/plone_3rdParty/jscalendar/simple-4.html,
+	  skins/plone_content/discussionitem_view.pt,
+	  skins/plone_content/document_edit_form.cpt,
+	  skins/plone_content/document_view.pt,
+	  skins/plone_content/event_edit_form.cpt,
+	  skins/plone_content/file_edit_form.cpt,
+	  skins/plone_content/file_view.pt,
+	  skins/plone_content/folder_edit_form.cpt,
+	  skins/plone_content/image_edit_form.cpt,
+	  skins/plone_content/link_edit_form.cpt,
+	  skins/plone_content/metadata_edit_form.cpt,
+	  skins/plone_content/newsitem_edit_form.cpt,
+	  skins/plone_content/newsitem_view.pt,
+	  skins/plone_ecmascript/plone_javascripts.js,
+	  skins/plone_ecmascript/plone_menu.js.dtml,
+	  skins/plone_ecmascript/plone_minwidth.js.dtml,
+	  skins/plone_ecmascript/plone_minwidth.js.dtml.metadata,
+	  skins/plone_form_scripts/change_ownership.py,
+	  skins/plone_form_scripts/content_status_modify.cpy,
+	  skins/plone_form_scripts/disableSyndication.cpy,
+	  skins/plone_form_scripts/discussion_reply.py,
+	  skins/plone_form_scripts/document_edit.cpy,
+	  skins/plone_form_scripts/editSynProperties.cpy,
+	  skins/plone_form_scripts/enableSyndication.cpy,
+	  skins/plone_form_scripts/event_edit.cpy,
+	  skins/plone_form_scripts/file_edit.cpy,
+	  skins/plone_form_scripts/folder_edit.cpy,
+	  skins/plone_form_scripts/folder_localrole_edit.py,
+	  skins/plone_form_scripts/image_edit.cpy,
+	  skins/plone_form_scripts/link_edit.cpy,
+	  skins/plone_form_scripts/metadata_edit.cpy,
+	  skins/plone_form_scripts/newsitem_edit.cpy,
+	  skins/plone_form_scripts/personalize.cpy,
+	  skins/plone_form_scripts/plone_change_password.py,
+	  skins/plone_form_scripts/reconfig.cpy,
+	  skins/plone_form_scripts/register.cpy,
+	  skins/plone_form_scripts/sendto.cpy,
+	  skins/plone_form_scripts/validate_folder_rename.vpy,
+	  skins/plone_forms/content_status_history.cpt,
+	  skins/plone_forms/discussion_reply_form.pt,
+	  skins/plone_forms/enabling_cookies.pt,
+	  skins/plone_forms/folder_factories.pt,
+	  skins/plone_forms/folder_localrole_form.pt,
+	  skins/plone_forms/folder_rename_form.cpt,
+	  skins/plone_forms/history_form.pt,
+	  skins/plone_forms/join_form.cpt, skins/plone_forms/login_form.pt,
+	  skins/plone_forms/login_password.pt,
+	  skins/plone_forms/login_success.pt,
+	  skins/plone_forms/mail_password_form.pt,
+	  skins/plone_forms/mail_password_template.dtml,
+	  skins/plone_forms/member_search_form.pt,
+	  skins/plone_forms/ownership_form.pt, skins/plone_forms/roster.pt,
+	  skins/plone_forms/search.pt, skins/plone_forms/search_form.pt,
+	  skins/plone_forms/sendto_form.cpt,
+	  skins/plone_forms/synPropertiesForm.cpt,
+	  skins/plone_images/arrowDownAlternative.gif.metadata,
+	  skins/plone_images/arrowUpAlternative.gif.metadata,
+	  skins/plone_images/book_icon.gif,
+	  skins/plone_images/bullet.gif.metadata,
+	  skins/plone_images/bulletBig.gif.metadata,
+	  skins/plone_images/colophon_anybrowser.png.metadata,
+	  skins/plone_images/colophon_css.png.metadata,
+	  skins/plone_images/colophon_csstableless.gif.metadata,
+	  skins/plone_images/colophon_sec508.gif.metadata,
+	  skins/plone_images/colophon_wai-aaa.gif.metadata,
+	  skins/plone_images/colophon_xhtml.png,
+	  skins/plone_images/colophon_xhtml.png.metadata,
+	  skins/plone_images/error_icon.gif,
+	  skins/plone_images/extedit_icon.gif.metadata,
+	  skins/plone_images/flag_dk.png.metadata,
+	  skins/plone_images/flag_no.png.metadata,
+	  skins/plone_images/flag_uk.png.metadata,
+	  skins/plone_images/lock_icon.gif,
+	  skins/plone_images/phone_icon.gif.metadata,
+	  skins/plone_images/product_icon.gif.metadata,
+	  skins/plone_images/rss.gif.metadata,
+	  skins/plone_images/search_icon.gif,
+	  skins/plone_images/search_icon.gif.metadata,
+	  skins/plone_images/sitemap_icon.gif.metadata,
+	  skins/plone_images/skins_icon.gif.metadata,
+	  skins/plone_images/textsize_huge.gif.metadata,
+	  skins/plone_images/textsize_large.gif.metadata,
+	  skins/plone_images/textsize_normal.gif.metadata,
+	  skins/plone_images/textsize_small.gif.metadata,
+	  skins/plone_images/workflow_icon.gif.metadata,
+	  skins/plone_images/zope_icon.gif.metadata,
+	  skins/plone_portlets/about_slot.pt,
+	  skins/plone_portlets/calendar_slot.pt,
+	  skins/plone_portlets/events_slot.pt,
+	  skins/plone_portlets/navigation_tree_slot.pt,
+	  skins/plone_portlets/news_slot.pt,
+	  skins/plone_portlets/related_slot.pt,
+	  skins/plone_prefs/password_form.pt,
+	  skins/plone_prefs/password_form.pt.metadata,
+	  skins/plone_prefs/personalize_form.cpt,
+	  skins/plone_prefs/personalize_form.cpt.metadata,
+	  skins/plone_prefs/plone_control_panel.pt,
+	  skins/plone_prefs/plone_control_panel.pt.metadata,
+	  skins/plone_prefs/plone_memberprefs_panel.pt,
+	  skins/plone_prefs/prefs_error_log_form.pt,
+	  skins/plone_prefs/prefs_error_log_form.pt.metadata,
+	  skins/plone_prefs/prefs_error_log_showEntry.pt,
+	  skins/plone_prefs/prefs_error_log_showEntry.pt.metadata,
+	  skins/plone_prefs/prefs_group_details.pt,
+	  skins/plone_prefs/prefs_group_members.pt,
+	  skins/plone_prefs/prefs_groups_overview.pt,
+	  skins/plone_prefs/prefs_groups_overview.pt.metadata,
+	  skins/plone_prefs/prefs_install_product_readme.pt,
+	  skins/plone_prefs/prefs_install_products.pt.metadata,
+	  skins/plone_prefs/prefs_install_products_form.pt,
+	  skins/plone_prefs/prefs_install_products_form.pt.metadata,
+	  skins/plone_prefs/prefs_installed_product_overview.pt,
+	  skins/plone_prefs/prefs_mailhost_form.pt,
+	  skins/plone_prefs/prefs_mailhost_form.pt.metadata,
+	  skins/plone_prefs/prefs_main_template.pt,
+	  skins/plone_prefs/prefs_main_template.pt.metadata,
+	  skins/plone_prefs/prefs_portalskin_form.pt,
+	  skins/plone_prefs/prefs_portalskin_form.pt.metadata,
+	  skins/plone_prefs/prefs_search_macros.pt,
+	  skins/plone_prefs/prefs_syndication_form.pt,
+	  skins/plone_prefs/prefs_user_details.pt,
+	  skins/plone_prefs/prefs_user_details.pt.metadata,
+	  skins/plone_prefs/prefs_user_group_search_form.pt,
+	  skins/plone_prefs/prefs_user_group_search_form.pt.metadata,
+	  skins/plone_prefs/prefs_user_memberships.pt,
+	  skins/plone_prefs/prefs_user_memberships.pt.metadata,
+	  skins/plone_prefs/prefs_users_overview.pt,
+	  skins/plone_prefs/prefs_users_overview.pt.metadata,
+	  skins/plone_prefs/prefs_workflow_advanced.pt,
+	  skins/plone_prefs/prefs_workflow_basic.pt,
+	  skins/plone_prefs/reconfig_form.cpt,
+	  skins/plone_prefs/reconfig_form.cpt.metadata,
+	  skins/plone_scripts/addtoFavorites.py,
+	  skins/plone_scripts/browserDefault.py,
+	  skins/plone_scripts/check_id.py,
+	  skins/plone_scripts/createObject.cpy,
+	  skins/plone_scripts/displayContentsTab.py,
+	  skins/plone_scripts/folder_copy.cpy,
+	  skins/plone_scripts/folder_cut.cpy,
+	  skins/plone_scripts/folder_cut.cpy.metadata,
+	  skins/plone_scripts/folder_delete.cpy,
+	  skins/plone_scripts/folder_paste.cpy,
+	  skins/plone_scripts/folder_paste.cpy.metadata,
+	  skins/plone_scripts/folder_position.py,
+	  skins/plone_scripts/folder_publish.cpy.metadata,
+	  skins/plone_scripts/folder_rename.cpy,
+	  skins/plone_scripts/getFolderContents.py,
+	  skins/plone_scripts/mail_password.py,
+	  skins/plone_scripts/navigationRemoteResources.py,
+	  skins/plone_scripts/portal_form_url.py,
+	  skins/plone_scripts/showEditableBorder.py,
+	  skins/plone_styles/base_properties.props,
+	  skins/plone_styles/plone.css.dtml,
+	  skins/plone_styles/ploneColumns.css.dtml,
+	  skins/plone_styles/ploneIEFixes.css.dtml,
+	  skins/plone_styles/plonePresentation.css.dtml,
+	  skins/plone_styles/plonePrint.css.dtml,
+	  skins/plone_styles/ploneTextHuge.css,
+	  skins/plone_styles/ploneTextLarge.css,
+	  skins/plone_styles/ploneTextSmall.css,
+	  skins/plone_templates/batch_macros.pt,
+	  skins/plone_templates/colophon.pt,
+	  skins/plone_templates/default_error_message.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/folder_listing.pt,
+	  skins/plone_templates/global_defines.pt,
+	  skins/plone_templates/global_searchbox.pt,
+	  skins/plone_templates/global_siteactions.pt,
+	  skins/plone_templates/global_skinswitcher.pt,
+	  skins/plone_templates/header.pt,
+	  skins/plone_templates/homePageText.pt,
+	  skins/plone_templates/main_template.pt,
+	  skins/plone_templates/news.pt,
+	  skins/plone_templates/sendto_template.pt,
+	  skins/plone_templates/viewThreadsAtBottom.pt,
+	  skins/plone_wysiwyg/wysiwyg_support.pt, tests/PloneTestCase.py,
+	  tests/testMembershipTool.py, tests/testPloneTool.py,
+	  www/addSite.zpt: merging Plone-2_0-branch to HEAD.  RC3 has been
+	  released.  we will wait for installers and then release final.
+	  DO NOT TOUCH THIS BRANCH UNLESS YOU HAVE A BUG TO FIX AND EVEN
+	  THEN ASK!
+
+2004-01-06 23:15  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): Need to fake a
+	  SCRIPT_NAME so that URL1 is available in the REQUEST
+
+2004-01-06 22:19  runyaga
+
+	* migrations/v2/plone2_base.py,
+	  skins/plone_scripts/addtoFavorites.py (Plone-2_0-branch): uhm.
+	  not sure what vinsci checked in *wink* but we didnt collide
+
+2004-01-06 22:05  vinsci
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Filter out non-addable content types, like global_contentmenu.pt
+	  does.
+
+2004-01-06 21:48  runyaga
+
+	* skins/plone_scripts/addtoFavorites.py (Plone-2_0-branch): stupid
+	  API
+
+2004-01-06 21:44  runyaga
+
+	* skins/plone_scripts/addtoFavorites.py (Plone-2_0-branch): dont
+	  add a PortalFolder. just use the type 'Folder'
+
+2004-01-06 21:25  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): sharing tab is
+	  now on portal_actions - limi will test and then release
+
+2004-01-06 21:13  runyaga
+
+	* setup/ConfigurationMethods.py,
+	  skins/plone_scripts/displayContentsTab.py,
+	  skins/plone_scripts/getFolderContents.py,
+	  skins/plone_templates/folder_listing.pt (Plone-2_0-branch): made
+	  folder_listing more efficient.  getFolderContents will spit out a
+	  debug log if it finds a old PloneFolder.  getFolderContents
+	  should be marked deprecated.	finally added a help script to
+	  calculate if we want to show the contents tab.
+
+2004-01-06 19:07  runyaga
+
+	* version.txt (Plone-2_0-branch): increment version number - get
+	  ready for release after some testing
+
+2004-01-06 19:06  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): typo
+
+2004-01-06 19:04  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): now limi shoudl
+	  be happy. contents tabs should only show up when it makes sense
+
+2004-01-06 18:50  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): change
+	  permissions on folderContents so that you do not see 'contents'
+	  tab unless you can do something useful there.
+
+2004-01-06 18:21  shh42
+
+	* migrations/v2/plone2_base.py, tests/testFolderWorkflow.py
+	  (Plone-2_0-branch): Synced migrations with FolderWorkflow wrt
+	  'List folder contents'. Adapted the tests.
+
+2004-01-06 16:15  shh42
+
+	* tests/testFolderWorkflow.py (Plone-2_0-branch): Members are no
+	  longer allowed to 'List folder contents' of visible folders.
+
+2004-01-06 05:04  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-06 03:35  runyaga
 
 	* FolderWorkflow.py, PloneFolder.py, Portal.py (Plone-2_0-branch):
