@@ -35,5 +35,13 @@ def registerMigrations():
                                        final_one_zero_one.onezeroone )
 
     MigrationTool.registerUpgradePath( '1.0.1',
+                                       '1.0.2',
+                                       one01_one02.onezerotwo )
+
+    MigrationTool.registerUpgradePath( '1.0.2',
+                                       '1.0.3',
+                                       one02_one03.onezerothree )
+
+    MigrationTool.registerUpgradePath( '1.0.3',
                                        '1.1',
                                        upg_1_0_1_to_1_1.upg_1_0_1_to_1_1 )
