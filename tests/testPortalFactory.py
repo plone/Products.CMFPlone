@@ -22,6 +22,14 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.assertEqual(temp_doc.meta_type, 'Document')
         self.assertEqual(temp_doc.getId(), 'tmp_id')
 
+    def testTraverseTwiceByDifferentContentTypes(self):
+        temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        self.assertEqual(temp_doc.meta_type, 'Document')
+        self.assertEqual(temp_doc.getId(), 'tmp_id')
+        temp_img = self.folder.restrictedTraverse('portal_factory/Image/tmp_id_image')
+        self.assertEqual(temp_img.meta_type, 'Portal Image')
+        self.assertEqual(temp_img.getId(), 'tmp_id_image')
+
     def testTempFolderLocalRoles(self):
         self.membership = self.portal.portal_membership
         self.membership.addMember('user2', 'secret', ['Member'], [])
