@@ -5,17 +5,23 @@ Changelog for Plone
 Plone 2.0 - Fyuti
 
    Final
+
     - Fixed #2852 [geoffd]
 
     - Added cleanupSkinPath method to migration_util, used to remove
       bad skin layers when adding the Plone Tableless skin in the RC5-RC6
-      migration.[geoffd, tiran]
+      migration. [geoffd, tiran]
+
+    - Updated link in footer.pt to Alan's new company. 
+      [andym]
+
+    - Added 'domain' parameter to translate.py. Defaults to 'plone'.
+      [deo]
 
     - Updated isExpired.py to take the case that datetime instances
       are not callable.  It looks a bit strange.  But its fixed.
-      Future versions should use ExpirationDate accessor.
-
-   RC6, updated to fix non-critical issues
+      Future versions should use ExpirationDate accessor. 
+      [runyaga]
 
     - The tableless skin didn't have the top_slot defined.
       [limi]
