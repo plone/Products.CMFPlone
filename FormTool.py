@@ -198,6 +198,8 @@ class FormValidator(SimpleItem):
                 trace.append('No validation needed.  Going to %s.%s' % (str(aq_parent(self)), self.form))
 #                self.log('going to %s.%s' % (str(aq_parent(self)), self.form))
                 target = getattr(aq_parent(self), self.form, None)
+                if not target:
+                    raise KeyError("Unable to find form '%s'.  Check your skins path." % (self.form))
                 return target(REQUEST, **kw)
         except NavigationError:
             raise
@@ -220,6 +222,8 @@ class FormValidator(SimpleItem):
                 trace.append('Invoking %s' % validator)
 #                self.log('calling validator [%s]' % (str(validator)))
                 v = getattr(context, validator)
+                if not v:
+                    raise KeyError("Unable to find validator '%s'.  Check your skins path." % (validator))
                 (status, errors, kwargs) = mapply(v, REQUEST.args, REQUEST,
                                 call_object, 1, missing_name, dont_publish_class,
                                 REQUEST, bind=1)
