@@ -21,6 +21,10 @@ isAnonymous = membership_tool.isAnonymousUser()
 #
 # Look for the REQUEST variable 'success' -- if it's not present,
 # redirect to the current page.
+# 
+# Commented out the code below because it broke older IE's and
+# most importantly Safari
+"""
 success = REQUEST.get('success',None)
 if success is None:
     # 'success' variable not found -- create it and reload the page
@@ -31,6 +35,7 @@ if success is None:
     REQUEST.RESPONSE.setHeader('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')
     REQUEST.RESPONSE.setHeader('Pragma', 'no-cache')
     return REQUEST.RESPONSE.redirect(url)
+"""
 
 login_failed = 'login_failed'
 login_changepassword = 'login_password'
