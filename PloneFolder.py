@@ -218,10 +218,10 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
                     "Do not have permissions to remove this object")
         SkinnedFolder.manage_delObjects(self, ids, REQUEST=REQUEST)
 
-    def __browser_default__(self, request):
-        """ Set default so we can return whatever we want instead of
-        index_html """
-        return self.browserDefault(request)
+#    def __browser_default__(self, request):
+#        """ Set default so we can return whatever we want instead of
+#        index_html """
+#        return self.browserDefault()
 
     security.declarePublic('contentValues')
     def contentValues(self,
