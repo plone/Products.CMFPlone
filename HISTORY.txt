@@ -10,7 +10,11 @@ Plone 1.0 beta3
       we need to add this permission to the Workflow definitions and set the permissions
       appropriately. fixes Issue 575
     - removed a useless conditional check on search_form.pt thanks sspickle!
-
+    - Xopus technology preview has been checked in.  It only works on document_edit_forms currently.
+      Thanks to q42.nl for the revolutionary technology.  http://xopus.org/
+    - turned on the 'SuppressHiddenFiles' in folder_contents.  Now folders that begin with a .
+      will not show up.  Ideally we would want this turned off if we were a Manager.  
+      
     *NOTE*
     We released a beta3 tarball and then decided to fix the above before a final beta3 tarball release
 
