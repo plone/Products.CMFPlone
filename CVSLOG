@@ -1,3 +1,60 @@
+2004-02-01 22:04  runyaga
+
+	* skins/plone_scripts/displayContentsTab.py (Plone-2_0-branch):
+	  attempt to fix contents tab
+
+2004-02-01 20:50  runyaga
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  remove 'New' from Add New $type.  If you only have 1 item it
+	  should just jsut Add $Type.  'Add New' only makes sense for
+	  multiple entries
+
+2004-02-01 16:05  limi
+
+	* skins/plone_forms/member_search_results.pt (Plone-2_0-branch):
+	  Fix for 2522, small visual anomaly.
+
+2004-02-01 15:34  limi
+
+	* HISTORY.txt, skins/plone_content/event_edit_form.cpt.metadata,
+	  skins/plone_content/file_edit_form.cpt.metadata,
+	  skins/plone_content/folder_edit_form.cpt.metadata,
+	  skins/plone_content/image_edit_form.cpt.metadata,
+	  skins/plone_content/link_edit_form.cpt.metadata,
+	  skins/plone_content/metadata_edit_form.cpt.metadata,
+	  skins/plone_content/newsitem_edit_form.cpt.metadata
+	  (Plone-2_0-branch): Added security checks for viewing the view
+	  forms. There was no security problem, since you couldn't save the
+	  document, but now we also check that you are logged in, so you
+	  can't invoke the URL directly to look at the edit form anymore
+	  either. Fix for issue 2486.
+
+2004-02-01 15:08  limi
+
+	* HISTORY.txt, skins/plone_content/document_edit_form.cpt,
+	  skins/plone_content/file_edit_form.cpt,
+	  skins/plone_content/folder_edit_form.cpt,
+	  skins/plone_content/image_edit_form.cpt,
+	  skins/plone_content/link_edit_form.cpt,
+	  skins/plone_content/metadata_edit_form.cpt,
+	  skins/plone_content/newsitem_edit_form.cpt,
+	  skins/plone_forms/content_status_history.cpt,
+	  skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch): -
+	  Added the Creator/Modified indicator to the edit forms too.
+	  (Issue 2504)
+
+	  - Removed the ability to edit short names while adding a file,
+	  since users have problems remembering that the extension has to
+	  be   included. They are also very surprised when the file they
+	  uploaded   has a different file name. Removing this will give
+	  them a sensible   default. If you want to re-enable short names
+	  for files for your   site, remove the comments around the code.
+
+2004-02-01 04:57  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-01 03:16  dpunktnpunkt
 
 	* skins/plone_prefs/: prefs_error_log_form.pt,
