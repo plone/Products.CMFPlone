@@ -39,9 +39,43 @@
               tal:attributes="action python:here.portal_form_url(template.id)">
         
             <span class="legend" i18n:translate="legend_member_details">Member Details</span>
+
+            <div class="row"
+                 tal:define="error_fullname errors/fullname | nothing;
+                             fullname python:request.get('fullname', member.getProperty('fullname'));">
+                
+                <div class="label">
+                    <span i18n:translate="label_full_name">Full name</span>
+
+                    <div id="full_name_help"
+                         i18n:translate="help_full_name" 
+                         class="help" 
+                         style="visibility:hidden">
+                    You can change your full name here.
+                    </div>
+                </div>
+                
+                <div class="field" tal:attributes="class python:test(error_fullname, 'field error', 'field')"> 
+                    
+                    <div tal:condition="error_fullname" 
+                         tal:replace="structure string:$error_fullname <br />" />					  
+                    
+                    <input type="text" 
+                           name="fullname" 
+                           size="25"
+                           tabindex=""
+                           value="member.fullname html_quote"
+                           onfocus="formtooltip('full_name_help',1)" 
+                           onblur="formtooltip('full_name_help',0)" 
+                           tal:attributes="value fullname;
+                                           tabindex tabindex/next;" 
+                           />
+                </div>
+
+            </div>
 		
             <div class="row"
-	         tal:define="error_email errors/email | nothing;
+                 tal:define="error_email errors/email | nothing;
                              email python:request.get('email', member.getProperty('email'));">
                 
                 <div class="label required">

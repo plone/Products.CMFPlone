@@ -171,7 +171,7 @@ class MembershipTool( BaseTool ):
             if not (user.listed or is_manager):
                 continue
             if name:
-                if u.getUserName().lower().find(name) == -1:
+                if (u.getUserName().lower().find(name) == -1) and (user.fullname.lower().find(name) == -1):
                     continue
             if email:
                 if user.email.lower().find(email) == -1:
