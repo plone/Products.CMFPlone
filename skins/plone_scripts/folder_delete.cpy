@@ -27,7 +27,6 @@ if ids:
     message=', '.join(titles)+' has been deleted.'
     transaction_note('Deleted %s from %s' % (', '.join(titles_and_ids), context.absolute_url()))
     context.manage_delObjects(ids)
-    from Products.CMFPlone import transaction_note
 
 return state.set(status=status, portal_status_message=message)
 

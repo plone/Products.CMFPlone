@@ -186,7 +186,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
             raise 'Unauthorized'    # FIXME: Some scripts rely on this being string?
 
-        REQUEST=self.REQUEST
+        REQUEST = self.REQUEST
         pfx = self.field_prefix
 
         def getfield(request, name, default=None, pfx=pfx):
