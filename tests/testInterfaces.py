@@ -7,6 +7,7 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 from Testing import ZopeTestCase
+from Products.CMFPlone.tests import PloneTestCase
 
 # import Interface for interface testing
 try:
@@ -94,6 +95,8 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
         setattr(MyClass, MyMethodName, lambda self: self._testStuff())
 
     """
+
+    _setup_fixture = 0  # No default fixture
 
     klass = None    # test this class
     instance = None # test this instance
@@ -246,14 +249,14 @@ for testInstance in testInstances:
     setattr(InstanceInterfaceTest, funcName, lambda self: self._testStuff())
     tests.append(InstanceInterfaceTest)
 
+
+import unittest
+
+def test_suite():
+    suite = unittest.TestSuite()
+    for test in tests:
+        suite.addTest(unittest.makeSuite(test))
+    return suite
+
 if __name__ == '__main__':
-    framework()
-else:
-    # While framework.py provides its own test_suite()
-    # method the testrunner utility does not.
-    import unittest
-    def test_suite():
-        suite = unittest.TestSuite()
-        for test in tests:
-            suite.addTest(unittest.makeSuite(test))
-        return suite
+    unittest.main(defaultTest='test_suite')

@@ -20,14 +20,7 @@ default_user = PloneTestCase.default_user
 
 class TestGroupDataTool(PloneTestCase.PloneTestCase):
 
-    #def _setupUserFolder(self):
-    #    if hasattr(aq_base(self.portal), 'acl_users'):
-    #        self.portal._delObject('acl_users')
-    #    manage_addGroupUserFolder(self.portal)
-
     def afterSetUp(self):
-        #self.portal._setObject('portal_groupdata', GroupDataTool())
-        #self.portal._setObject('portal_groups', GroupsTool())
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
         self.groupdata = self.portal.portal_groupdata
@@ -50,18 +43,11 @@ class TestGroupDataTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.groupdata._members), 0)
         self.groupdata.registerGroupData(aq_base(g), g.getId())
         self.assertEqual(len(self.groupdata._members), 1)
-        
+
 
 class TestGroupData(PloneTestCase.PloneTestCase):
-    
-    #def _setupUserFolder(self):
-    #    if hasattr(aq_base(self.portal), 'acl_users'):
-    #        self.portal._delObject('acl_users')
-    #    manage_addGroupUserFolder(self.portal)
 
     def afterSetUp(self):
-        #self.portal._setObject('portal_groupdata', GroupDataTool())
-        #self.portal._setObject('portal_groups', GroupsTool())
         self.membership = self.portal.portal_membership
         self.memberdata = self.portal.portal_memberdata
         self.acl_users = self.portal.acl_users
@@ -113,18 +99,18 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.assertEqual(ms[0].__class__.__name__, 'MemberData')
         self.assertEqual(ms[0].aq_parent.__class__.__name__, 'GRUFUser')
         self.assertEqual(ms[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
-        
+
     def testAddMember(self):
         g = self.groups.getGroupById('foo')
         g.addMember(default_user)
         self.assertEqual(g.getGroupMembers()[0].getId(), default_user)
-        
+
     def testRemoveMember(self):
         g = self.groups.getGroupById('foo')
         g.addMember(default_user)
         g.removeMember(default_user)
         self.assertEqual(len(g.getGroupMembers()), 0)
-         
+
     #def testSetProperties(self):
     #    # XXX: ERROR!
     #    g = self.groups.getGroupById('foo')
@@ -175,7 +161,7 @@ class TestGroupData(PloneTestCase.PloneTestCase):
     def testGetDomains(self):
         g = self.groups.getGroupById('foo')
         self.assertEqual(g.getDomains(), ())
-        
+
     def testHasRole(self):
         g = self.groups.getGroupById('foo')
         self.acl_users._updateGroup(g.getId(), roles=['Member'])
@@ -192,4 +178,3 @@ else:
         suite.addTest(makeSuite(TestGroupDataTool))
         suite.addTest(makeSuite(TestGroupData))
         return suite
-

@@ -5,7 +5,9 @@ from Products.CMFPlone.interfaces.CustomizationPolicy import ICustomizationPolic
 class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """
     __implements__ = ICustomizationPolicy
+
     availableAtConstruction=1
+
     def customize(self, portal):
         # run all the methods in the misc class
         # this will change to use a config file hopefully

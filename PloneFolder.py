@@ -388,16 +388,6 @@ class PloneFolder( BasePloneFolder, OrderedContainer ):
     manage_renameObject = OrderedContainer.manage_renameObject
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
-InitializeClass(BasePloneFolder)
-
-class PloneFolder( BasePloneFolder, OrderedContainer ):
-    meta_type = 'Plone Folder'
-
-    __implements__ = BasePloneFolder.__implements__ + \
-                     OrderedContainer.__implements__
-
-    manage_renameObject = OrderedContainer.manage_renameObject
-
 InitializeClass(PloneFolder)
 
 def safe_cmp(x, y):

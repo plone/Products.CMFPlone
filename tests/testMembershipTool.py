@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+
 from AccessControl.User import nobody
 from Acquisition import aq_base
 

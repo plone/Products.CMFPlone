@@ -360,8 +360,8 @@ class TestFolderWorkflow(PloneTestCase.PloneTestCase):
         self.logout()
         self.failIf(checkPerm(ListFolderContents, self.dir))
 
-    def testListFolderContentsIsAcquiredVisibleState(self):
-        self.assertEqual(self.dir.acquiredRolesAreUsedBy(ListFolderContents), 'CHECKED')
+    def testListFolderContentsIsNotAcquiredInVisibleState(self):
+        self.assertEqual(self.dir.acquiredRolesAreUsedBy(ListFolderContents), '')
 
     def testListPrivateFolderContents(self):
         self.workflow.doActionFor(self.dir, 'hide')
@@ -395,7 +395,7 @@ class TestFolderWorkflow(PloneTestCase.PloneTestCase):
         self.logout()
         self.failUnless(checkPerm(ListFolderContents, self.dir))
 
-    def testListFolderContentsIsAcquiredVisibleState(self):
+    def testListFolderContentsIsAcquiredInPublishedState(self):
         self.workflow.doActionFor(self.dir, 'publish')
         self.assertEqual(self.dir.acquiredRolesAreUsedBy(ListFolderContents), 'CHECKED')
 
