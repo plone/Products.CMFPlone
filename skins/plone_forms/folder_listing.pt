@@ -53,7 +53,7 @@
         
             <thead>
                 <tr>
-                    <th> <metal:block i18n:translate="listingheaders_title">Title</metal:block>&nbsp;<img tal:replace="structure here/arrowUp.gif" /></th>
+                    <th> <span i18n:translate="listingheaders_title" omit-tag="">Title</span>&nbsp;<img tal:replace="structure here/arrowUp.gif" /></th>
                     <th i18n:translate="listingheaders_type">Type</th>
                     <th i18n:translate="listingheaders_size">Size</th>
                     <th i18n:translate="listingheaders_last_modified">Last Modified</th>
