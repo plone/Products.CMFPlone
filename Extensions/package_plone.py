@@ -13,6 +13,7 @@ releasezip='CMFPlone%s.zip' % release
 sh_cleanmisc = """find . | grep '~' | xargs rm -rf"""
 sh_cleanpyc = """find . | grep 'pyc' | xargs rm -rf"""
 sh_cleancvs = """ find . | grep 'CVS' | xargs rm -rf"""
+sh_cleanpyo = """find . | grep 'pyo' | xargs rm -rf"""
 
 os.system("cd ..; rm -rf " + releasetar)
 
