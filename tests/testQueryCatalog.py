@@ -125,12 +125,33 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.queryCatalog(request), expected)
 
 
+AddPortalTopics = 'Add portal topics'
+
+class TestSearchForms(PloneTestCase.PloneTestCase):
+    """Render all forms related to queryCatalog"""
+
+    def testRenderSearchForm(self):
+        self.portal.search_form()
+
+    def testRenderSearchResults(self):
+        self.portal.search()
+
+    def testRenderSearchRSS(self):
+        self.portal.search_rss(self.portal, self.app.REQUEST)
+
+    def testRenderTopicView(self):
+        self.setPermissions(AddPortalTopics)
+        self.folder.invokeFactory('Topic', id='topic')
+        self.folder.topic.topic_view()
+
+
 if __name__ == '__main__':
     framework()
 else:
-    from unittest import TestSuite, makeSuite
     def test_suite():
+        from unittest import TestSuite, makeSuite
         suite = TestSuite()
         suite.addTest(makeSuite(TestQueryCatalog))
         suite.addTest(makeSuite(TestQueryCatalogQuoting))
+        suite.addTest(makeSuite(TestSearchForms))
         return suite
