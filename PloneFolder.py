@@ -255,9 +255,11 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     # fix permissions set by CopySupport.py
     __ac_permissions__=(
         ('Modify portal content',
-         ('manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjects',
+         ('manage_cutObjects', 'manage_pasteObjects',
           'manage_renameForm', 'manage_renameObject', 'manage_renameObjects',)),
         )
+
+    security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
     def __init__(self, id, title=''):
         DefaultDublinCoreImpl.__init__(self)
@@ -278,8 +280,6 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         return ReplaceableWrapper(aq_base(_target).__of__(self))
 
     index_html = ComputedAttribute(index_html, 1)
-
-    security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
     security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
