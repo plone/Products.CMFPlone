@@ -2,6 +2,7 @@ from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
 from Products.CMFPlone.PloneFolder import addPloneFolder
+from Globals import InitializeClass
 from Acquisition import aq_base
 
 default_portrait = 'defaultUser.gif'
@@ -220,3 +221,5 @@ class MembershipTool( BaseTool ):
             res.append(user)
 
         return res
+
+InitializeClass(MembershipTool)
