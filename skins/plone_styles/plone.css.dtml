@@ -38,7 +38,7 @@ table#columns td#right {
     padding: 2em 2em 1em 0em;
 }
 /* The basic elements: */
- body {
+body {
     font: <dtml-var mainFont>;
     background: &dtml-mainBackground;;
     color: &dtml-mainFontColor;;
@@ -430,7 +430,7 @@ ul#contentTabs li {
     z-index: 2;
 }
 
-#documentContent {
+* html #documentContent {
     /* Fix for IE6 disappearing float bug */
     height: 100%;
 }
