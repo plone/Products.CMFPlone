@@ -225,8 +225,16 @@
 			 portal_url here/portal_url;"
 	     tal:condition="breadcrumbs">
 
-	    <div class="clock"
-		 tal:content="here/toPortalTime">05/02/2002 07:20 AM</div>
+		<a href="#"
+		   tal:condition="not: here/portal_membership/isAnonymousUser"
+		   tal:attributes="href string:${here/absolute_url}/addtoFavorites">
+		     <img class="addFavorite" 
+              src="/img/linkTransparent.gif" 
+			  alt="Add this location to My Favorites"
+              title="Add this location to My Favorites" 
+			  border="0"
+			  tal:attributes="src string:$portal_url/addFavorite.gif" />
+		</a>
 
 		You are here: 
 
@@ -243,16 +251,6 @@
 			  tal:content="python:crumb[0]" > crumb </strong>
 
 		</span>   
-
-		<a href="#"
-		   tal:condition="not: here/portal_membership/isAnonymousUser"
-		   tal:attributes="href string:${here/absolute_url}/addtoFavorites">
-		     <img src="plone_ico/img/linkTransparent.gif" 
-			  alt="&gt;" 
-			  border="0"
-			  tal:attributes="src string:$portal_url/linkTransparent.gif" />
-		Add to My Favorites
-		</a>
 
 	</div>
 	     

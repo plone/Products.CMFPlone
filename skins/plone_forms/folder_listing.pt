@@ -34,7 +34,8 @@
 	  to create a default page in this folder. 
        </div>
 
-        <table class="listing">
+        <table class="listing"
+                tal:condition="here/contentValues">
         
             <thead>
                 <tr>
@@ -57,14 +58,14 @@
                     </td>   
                     <td tal:content="python:test(hasattr(obj, 'get_size'), here.getObjSize(obj), 'n/a')">Size</td>
                     <td tal:content="python:here.toPortalTime(obj.ModificationDate())">Modification Date</td>
-                    <td tal:content="structure python:test(obj.Description(), obj.Description(), '&nbsp;')"> description </td>
+                    <td tal:content="structure python:test(obj.Description(), obj.Description(), 'n/a')"> description </td>
                 </tr>
 		</metal:block>
             </tbody>
         </table>
 
         <div tal:condition="not: here/contentValues">
-         <p>There are currently no files in this directory.</p>
+         <p>There are currently no items in this folder.</p>
         </div>        
 
     </div>

@@ -10,7 +10,10 @@
 <div metal:fill-slot="main">
 
     <h1>Workspace test</h1>
- 
+
+	    <div class="clock"
+		 tal:content="here/toPortalTime">05/02/2002 07:20 AM</div>
+          
     <div class="workspace">
     
         <div metal:use-macro="here/calendar_slot/macros/calendarBox">
