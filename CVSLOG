@@ -1,3 +1,14 @@
+2003-12-24 08:15  vinsci
+
+	* skins/plone_3rdParty/jscalendar/README-Plone (Plone-2_0-branch):
+	  Document how to find the target language (until it is done
+	  properly), more on the skins and the possible future plone.css
+	  fix.
+
+2003-12-24 05:06  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-24 01:17  pupq
 
 	* FormTool.py (Plone-2_0-branch): getToolByName requires context as
