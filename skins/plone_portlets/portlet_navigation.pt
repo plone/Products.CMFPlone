@@ -59,11 +59,11 @@
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title title;
-                                           class python: 'navItem ' + 'navRootItem' + test(iscurrent, ' currentNavItem', '');"
+                                           class python: 'navItem ' + 'navRootItem' + test(iscurrent, ' currentNavItem', '');
+                                           style string: background-image: url(${here/portal_url}/site_icon.gif);"
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
-                            <tal:block define="proot portal/site_icon.gif"
-                                       replace="structure python: proot.tag(css_class='navRootIcon')" />&nbsp;<tal:home i18n:translate="tabs_home">Home</tal:home>
+                            <tal:home i18n:translate="tabs_home">Home</tal:home>
                         </a>
                     </tal:variables>
                 </tal:nodes>
