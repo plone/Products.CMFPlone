@@ -415,7 +415,7 @@ ul#contentTabs li {
     margin-right: 0.5em;
     padding: 0em 2em;
     position: relative;
-    top: 2px; /* Cope with odd rounding bugs */
+    top: 1px; /* Cope with odd rounding bugs */
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
