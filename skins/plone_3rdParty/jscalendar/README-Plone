@@ -27,7 +27,8 @@ integrate it with Plone. Just flatten its directory hierarchy and run
 changes that might be significant to the Plone integration. Pay close
 attention to calendar-setup.js. Any changes there might have to be
 reflected in plone_javascripts.js. Also apply the patch at the end of
-this file.
+this file. Finally, the corresponding change needs to be applied to
+calendar_stripped.js, no patch is provided for this -- figure it out.
 
 
 Plone integration
