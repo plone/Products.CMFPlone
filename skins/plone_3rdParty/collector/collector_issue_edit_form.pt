@@ -19,9 +19,13 @@
 <div metal:fill-slot="header"
      tal:define="global collector_issue_header_present python: 1">
 
-  <div metal:use-macro="here/collector_macros/macros/issue_header">
-    ISSUE HEADER
-  </div>
+    <h1>Edit Collector Issue <span tal:replace="here/id"></span></h1>
+
+    <div class="description">
+    Use this form to edit the data of an existing issue. Do not use this form
+    to follow up or change the workflow status of an issue - use the issue follow
+    up form for that.
+    </div>
 
 </div>
 
@@ -34,122 +38,91 @@
     </div>
   </div>
 
-  <table width="100%">
-
-    <tr bgcolor="ccffcc">
-      <td>
-        <font size="+1">
-          <strong>
-            Edit Collector Issue <span tal:replace="here/id"></span>
-          </strong>
-        </font>
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <p>
-          Adjust various issue data - the current settings are indicated
-          above.  Use the regular issue followup, instead, to change the issue
-          workflow state or assigned supporters, and use the folder contents
-          view to change the uploads.
-        </p>
-      </td>
-    </tr>
-  </table>
-
-  <form method="POST" enctype="multipart/form-data"
+<form class="group"
+        method="post" 
+        enctype="multipart/form-data"
         action="collector_issue_edit">
 
-    <div metal:use-macro="here/collector_macros/macros/issue_header">
+    <span class="legend">Issue details</span>    
 
-      <span tal:condition="nothing">
-        This table will be replaced by the issue header structure, with the
-        various value slots being replaced by the input fields below.
-      </span>
 
-      <table>
-
-        <tr>
-          <td> ISSUE TITLE </td>
-          <td metal:fill-slot="issue_title_slot" colspan="3">
+    <div class="row">
+        <div class="label"> Title </div> 
+        <div class="field">
             <input name="title" value="TITLE" size="65"
-                   tal:attributes="value python: here.Title()">
-          </td>
-        </tr>
+                   tal:attributes="value python: here.Title()" />
+        </div>
+    </div>
 
-        <tr>
-          <td align="right"> Security Related: </td>
-          <td metal:fill-slot="issue_security_slot"> related?
-            <input type="checkbox" name="security_related:int" value="1"
-                   tal:attributes="checked here/security_related">
-          </td>
-        </tr>
+    <div class="row">
+        <div class="label"> Security </div> 
+        <div class="field">
+            <input class="noborder"
+                   type="checkbox" 
+                   name="security_related:int" 
+                   value="1"
+                   tal:attributes="checked here/security_related" /> Security related
+        </div>
+    </div>
 
-        <tr>
-          <td> ISSUE DESCRIPTION </td>
-          <td metal:fill-slot="issue_description_slot" colspan="3">
+    <div class="row">
+        <div class="label"> Description </div> 
+        <div class="field">
             <textarea name="description:text" rows="4" cols="60"
-                      tal:content="here/description">
-</textarea>
-          </td>
-        </tr>
+                      tal:content="here/description"></textarea>
+        </div>
+    </div>
 
-        <tr>
-          <td> FROM </td>
-          <td>
-            <span metal:fill-slot="issue_from_slot">
+    <div class="row">
+        <div class="label"> From (name)</div> 
+        <div class="field">
               <input name="submitter_name" value="NAME" size="25"
-                     tal:attributes="value python: here.submitter_name">
-            </span>
-          </td>
-        </tr>
+                     tal:attributes="value python: here.submitter_name" />
+        </div>
+    </div>
 
-        <tr>
-          <td> FROM </td>
-          <td>
-            <span metal:fill-slot="issue_submitter_id_slot">
-              Id: <input name="submitter_id" value="ID" size="12"
-                     tal:attributes="value python: here.submitter_id">
-                <br>
-                  <font size="-1">Alt Email:</font>
-                  <input name="submitter_email" value="EMAIL" size="22"
-                         tal:attributes="value here/submitter_email|nothing">
-            </span>
-          </td>
-        </tr>
+    <div class="row">
+        <div class="label"> From (ID) </div> 
+        <div class="field">
+            <input name="submitter_id" value="ID" size="25"
+                   tal:attributes="value python: here.submitter_id" />
+        </div>
+    </div>
 
-        <tr>
-          <td> FROM </td>
-          <td>
-            <span metal:fill-slot="issue_submitter_email_slot">
-              <input name="submitter_email" value="EMAIL" size="20"
+    <div class="row">
+        <div class="label"> From (alt. email) </div> 
+        <div class="field">
+                  <input name="submitter_email" value="EMAIL" size="25"
+                         tal:attributes="value here/submitter_email|nothing" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label"> From (email) </div> 
+        <div class="field">
+              <input name="submitter_email" value="EMAIL" size="25"
                      tal:attributes="value python: here.submitter_email or ''">
-            </span>
-          </td>
-        </tr>
+        </div>
+    </div>
 
-        <tr>
-          <td> Topic </td>
-          <td>
-            <span metal:fill-slot="issue_topic_slot">
-              <select name="topic">
+    <div class="row">
+        <div class="label"> Topic </div> 
+        <div class="field">
+            <select name="topic">
                 <option value=""
                         tal:repeat="it here/aq_parent/topics"
                         tal:attributes="value it;
                                         selected python: here.topic == it"
                         tal:content="python: it.capitalize()">
                 </option>
-              </select>
-            </span>
-          </td>
-        </tr>
+            </select>
+        </div>
+    </div>
 
-        <tr>
-          <td> Classification </td>
-          <td>
-            <span metal:fill-slot="issue_classification_slot">
-              <select name="classification">
+    <div class="row">
+        <div class="label"> Classification </div> 
+        <div class="field">
+            <select name="classification">
                 <option value=""
                         tal:repeat="it here/aq_parent/classifications"
                         tal:attributes="value it;
@@ -157,77 +130,67 @@
                                                          == it"
                         tal:content="python: it.capitalize()">
                 </option>
-              </select>
-            </span>
-          </td>
-        </tr>
-
-        <tr>
-          <td> Importance </td>
-          <td metal:fill-slot="issue_importance_slot">
-            <select name="importance">
-              <option value=""
-                      tal:repeat="it here/aq_parent/importances"
-                      tal:attributes="value it;
-                                      selected python: here.importance == it"
-                      tal:content="python: it.capitalize()">
-              </option>
             </select>
-          </td>
-        </tr>
-
-        <tr>
-          <td> Version info </td>
-          <td colspan="3"
-              metal:fill-slot="issue_version_info_slot">
-            <textarea name="version_info" rows="2" cols="40"
-                      tal:content="here/version_info">
-</textarea>
-          </td>
-        </tr>
-
-        <tr>
-          <td> Upload </td>
-          <td metal:fill-slot="issue_uploads_slot" colspan="3">
-            <font color="gray">
-              Use the issue folder_contents view, if accessible, to change the
-              uploads.
-            </font>
-          </td>
-        </tr>
-      </table>
-
+        </div>
     </div>
 
-    <table>
-      <tr>
-        <th> Comment </th>
-      </tr>
-      <tr>
-        <td>
-          <textarea name="comment" rows="3" cols="75" wrap="soft">
-</textarea>
-        </td>
-      </tr>
 
-      <tr>
-        <th> Edit Transcript </th>
-      </tr>
-      <tr tal:define="transcript here/get_transcript">
-        <td>
+    <div class="row">
+        <div class="label"> Importance </div> 
+        <div class="field">
+            <select name="importance">
+                <option value=""
+                        tal:repeat="it here/aq_parent/importances"
+                        tal:attributes="value it;
+                                        selected python: here.importance == it"
+                        tal:content="python: it.capitalize()">
+                </option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label"> Version info </div> 
+        <div class="field">
+            <textarea name="version_info" rows="2" cols="40"
+                      tal:content="here/version_info"></textarea>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label"> Upload </div> 
+        <div class="field">
+        Use the issue folder_contents view (if accessible) to change the
+        uploads.
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="label"> Comment </div> 
+        <div class="field">
+            <textarea name="comment" rows="3" cols="75"></textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="label"> Transcript </div> 
+        <div class="field" tal:define="transcript here/get_transcript">
           <textarea name="text" rows="10" cols="75" wrap="soft"
-                    tal:content="transcript/text">
-</textarea>
-        </td>
-      </tr>
+                    tal:content="transcript/text"></textarea>
+        </div>
+    </div>
 
-      <tr>
-        <td>
-            <input type="submit" name="submit" value="Submit">
-            <input type="reset" name="reset" value="Reset">
-        </td>
-      </tr>
-    </table>
+
+    <div class="row">
+        <div class="label"> &nbsp; </div> 
+        <div class="field">
+            <input class="context" type="submit" name="submit" value="Submit">
+            <input class="standalone" type="reset" name="reset" value="Reset">
+        </div>
+    </div>
 
   </form>
 

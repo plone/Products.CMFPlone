@@ -11,8 +11,8 @@ Issue #<dtml-var issue_id> Update (<dtml-var action>) "<dtml-var title size=200>
 </dtml-if> Status <dtml-var status>, <dtml-var topic>/<dtml-var klass> <dtml-var importance>
 To followup, visit:
   <dtml-var issue_url>
-
 ______________________________________________________________
+
 <dtml-var body>
 ______________________________________________________________
 

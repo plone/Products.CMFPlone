@@ -19,223 +19,140 @@
 
 <div metal:fill-slot="header">
 
-  <div metal:use-macro="here/collector_macros/macros/collector_header">
-    COLLECTOR HEADER
-  </div>
+<h1>Collector Configuration</h1>
 
 </div>
 
 <div metal:fill-slot="main">	  
 
-<form action="collector_edit" method="post">
-<table class="FormLayout" width="100%">
- 
- <tr bgcolor="#ccffcc">
-  <td align="center" colspan="4">
-    <font size="+1"> <strong> Configure Collector </strong> </font>
-  </td>
- </tr>
+<form class="group"
+      action="collector_edit" 
+      method="post">
 
- <tr>
-  <td> &nbsp; </td>
- </tr>
- 
- <tr valign="top">
-  <th align="right"> Title
-  </th>
-  <td colspan="2">
-   <input type="text"
-          name="title"
-          value=""
-     tal:attributes="value here/title"
-          size="45">
-  </td>
- </tr>
-  
- <tr valign="top">
-  <th> Abbreviation </th>
-  <td colspan="4">
-   <input type="text"
-          name="abbrev"
-          value=""
-      tal:attributes="value here/abbrev|nothing"
-          size="5">
-    <font color="gray" size="-1">
-      Collector email subject-line prefix
-    </font>
-  </td>
- </tr>
-  
- <tr valign="top">
-  <th align="right"> Description
-  </th>
-  <td colspan="3">
-   <font color="gray" size="-1"> Will be rendered as HTML: </font>
-   <br>
-   <textarea name="description:text" rows="3"
-             cols="50"
-       tal:content="here/description">
-   </textarea>
-  </td>
- </tr>
-  
- <tr valign="top">
-  <th align="right"> Collector Email
-  </th>
-  <td colspan="3"
-      tal:define="member python:
-                         here.portal_membership.getAuthenticatedMember();
-                  getpropemail python: hasattr(member, 'getProperty')
-                                       and member.getProperty('email', '');
-                  attremail python: getattr(member, 'email', '');
-                  email python: getattr(here, 'email', 
-                                        getpropemail or attremail)">
-          <table>
-            <tr>
-              <td>
-                <input type="text" name="email" size=25
-                       value="EMAIL"
-                       tal:attributes="value email">
-              </td>
-              <td>
-                <font color="gray" size="-1">
-                  Collector email "From" address
-                </font>
-              </td>
-            </tr>
-          </table>
-  </td>
- </tr>
+    <div class="row">
+        <div class="label"> Title </div> 
+        <div class="field">
+            <input type="text"
+                   name="title"
+                   value=""
+                   tal:attributes="value here/title"
+                   size="45" />
+        </div>
+    </div>
 
- <tr valign="top">
-  <th align="right"> Managers
-  </th>
-  <td>
+    <div class="row">
+        <div class="label"> Abbreviation </div> 
+        <div class="field">
+            <input type="text"
+                   name="abbrev"
+                   value=""
+                   tal:attributes="value here/abbrev|nothing"
+                   size="5" /> 
+            (Collector email subject-line prefix)
+        </div>
+    </div>
+  
+    <div class="row">
+        <div class="label"> Description </div> 
+        <div class="field">
+            <textarea name="description:text" rows="3"
+                      cols="50"
+                      tal:content="here/description">
+            </textarea>
+            (Will be rendered as HTML)
+        </div>
+    </div>
+      
+    <div class="row">
+        <div class="label"> Collector email </div> 
+        <div class="field"
+             tal:define="member python: here.portal_membership.getAuthenticatedMember();
+                         getpropemail python: hasattr(member, 'getProperty')
+                                              and member.getProperty('email', '');
+                         attremail python: getattr(member, 'email', '');
+                         email python: getattr(here, 'email', 
+                                                getpropemail or attremail)">
+            
+            <input type="text" 
+                   name="email" 
+                   size=25
+                   value="EMAIL"
+                   tal:attributes="value email" />
+            (Collector email "From" address)
+                            
+        </div>
+    </div>
+  
+
+  
+
+Managers
    <textarea name="managers:lines" rows="5" cols="15">
 <span tal:repeat="it here/managers" tal:replace="it"></span>
 </textarea>
-  </td>
-  <td colspan="2">
-          <font color="gray" size="-1">
+
             Managers configure the collector, and receive request notices.
             Managers can accept issues, but must be on Supporters roster to be
             assigned.  (Managers cannot remove <em>themselves</em> from the
             management roster.)
-          </font>
-  </td>
- </tr>
 
- <tr>
-  <th align="right"> Supporters
-  </th>
-  <td>
+Supporters
    <textarea name="supporters:lines" rows="5" cols="15">
 <span tal:repeat="it here/supporters" tal:replace="it"></span>
 </textarea>
-  </td>
-  <td colspan="2">
-          <font color="gray" size="-1">
+
             Supporters can be assigned to requests.  They may or may not
             receive initial request notifications, depending on the
             "dispatching" setting below.
-          </font>
-  </td>
- </tr>
 
- <tr valign="top">
-  <th align="right"> Dispatcher Mode
-  </th>
-  <td colspan="3">
-          <table>
-            <tr>
-              <td NOWRAP>
+Dispatcher Mode
                 <input type="radio" name="dispatching:int" value="0"
                        tal:attributes="checked not: here/dispatching|nothing">
                   Off
-              </td>
-              <td>
-                <font color="gray" size="-1">
-                  Managers and supporters receive pending-issue notices
-                </font>
-              </td>
-            </tr>
-            <tr>
-              <td NOWRAP>
+                  (Managers and supporters receive pending-issue notices)
+
                 <input type="radio" name="dispatching:int" value="1"
                        tal:attributes="checked here/dispatching|nothing">
                   On
-              </td>
-              <td>
-                <font color="gray" size="-1">
-                  Only managers receive pending-issue notices
-                </font>
-              </td>
-            </tr>
-          </table>
-  </td>
- </tr>
+                  (Only managers receive pending-issue notices)
 
- <tr valign="top">
-  <th align="right"> Participation Mode
-  </th>
-  <td colspan="3">
-          <table>
-            <tr>
-              <td NOWRAP>
+
+
+Participation Mode
                 <input type="radio" name="participation:string" value="staff"
                        tal:attributes="checked python: here.participation
                                                        == 'staff'">
                   Staff
-              </td>
-              <td>
-                <font color="gray" size="-1">
-                  Only collector staff and issue requester participate in an
-                  issue
-                </font>
-              </td>
-            </tr>
-            <tr>
-              <td NOWRAP>
+
+                  (Only collector staff and issue requester participate in an
+                  issue)
+
                 <input type="radio" name="participation:string"
                        value="authenticated"
                        tal:attributes="checked python: here.participation
                                                        == 'authenticated'">
                   Authenticated
-              </td>
-              <td>
-                <font color="gray" size="-1">
-                  Any non-anonymous visitors can participate
-                </font>
-              </td>
-            </tr>
-            <tr>
-              <td NOWRAP>
+
+                  (Any non-anonymous visitors can participate)
+
                 <input type="radio" name="participation:string" value="anyone"
                        tal:attributes="checked python: here.participation
                                                        == 'anyone'">
                   Anyone
-              </td>
-              <td>
-                <font color="gray" size="-1">
-                  Anyone, including anonymous visitors, can chime in
-                </font>
-              </td>
-            </tr>
-          </table>
-  </td>
- </tr>
 
- <tr>
-   <th> Notifications </th>
-   <td colspan="3">
-     <font color="gray">
+                  (Anyone, including anonymous visitors, can chime in)
+
+
+
+<div class="group">
+
+<span class="legend">Notifications</span>
+
        Fill in addresses next to the state names to have notifications for
        issues in that state sent to those addresses (this is in addition to
        normal issue-participant notifications):
-     </font>
-   <td>
- </tr>
 
+<table>
  <tbody tal:define="states here/issue_states;
                     stateslen python: len(states)"
         tal:repeat="itemnum python: range((stateslen+1)/2)">
@@ -266,16 +183,16 @@
      </td>
    </tr>
  </tbody>
+</table>
+ 
+</div>
 
- <tr>
-   <th> Selections </th>
-   <td colspan="3">
-     <font color="gray">
+<div class="group">
+
+<span class="legend">Selections</span>
+
        Fill in the alternatives for issue categorization:
-     </font>
-   <td>
- </tr>
-
+<table>
  <tr valign="top">
   <td align="right"> <em> Topics </em>
   </td>
@@ -301,48 +218,29 @@
 </span></textarea>
   </td>
  </tr>
+</table>
+
+
   
- <tr valign="top">
-  <th align="right"> Version Info Spiel </th>
-  <td colspan=3>
-          <font color="gray" size="-1">
+Version Info Spiel
             Something to prompt requesters for useful version info...
-          </font>
-    <br> 
+
    <textarea name="version_info_spiel:text" rows="3" cols="50">
 <span tal:replace="here/version_info_spiel|nothing">
 </span></textarea>
-  </td>
- </tr>
 
- <tr valign="top">
-  <th> Reinstate catalog </th>
-  <td colspan="4">
-    <font color="gray" size="-1">
+Reinstate catalog
       Occasionally, product updates require internal catalog reinit and
       reindex and other existing-issue adjustment.  Collector product
       RELEASE_NOTES.txt will indicate when necessary.
-    </font>
-    <br>
+
     <input type="radio" name="recatalog:int" value="0" CHECKED>No
     <input type="radio" name="recatalog:int" value="1">Internal only
     <input type="radio" name="recatalog:int" value="2">Internal &amp; Site-wide
     (<em>slow</em>)
-  </td>
- </tr>
 
- <tr valign="top">
-  <td> &nbsp; </td>
- </tr>
-
- <tr valign="top">
-  <td> <br> </td>
-  <td>
-   <input type="submit" value=" Submit ">
-   <input type="reset" value=" Reset ">
-  </td>
- </tr>
-</table>
+   <input class="context" type="submit" value="Submit">
+   <input class="standalone" type="reset" value="Reset">
 
 </form>
 </div>
