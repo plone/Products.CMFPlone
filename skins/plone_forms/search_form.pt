@@ -199,6 +199,7 @@
             
             <div class="field">
                 <span tal:repeat="type python:container.portal_types.listContentTypes()">
+                    <metal:block tal:define="tabindex tabindex/next">
                     <input type="checkbox" 
                            name="portal_type:list" 
                            value="#"
@@ -208,12 +209,15 @@
                            onfocus="formtooltip('item_type_search_help',1)" 
                            onblur="formtooltip('item_type_search_help',0)" 
                            tal:attributes="value type;
-                                           tabindex tabindex/next;"/> 
-                    <span tal:omit-tag="" i18n:translate=""><span
-                          tal:replace="python:here.portal_types.getTypeInfo(type).Title()">
-                    dummy
-                    </span></span>
+                                           tabindex tabindex;
+                                           id string:portal_type_${tabindex}"/> 
+                    <label for=""
+                           i18n:translate=""
+                           tal:attributes="for string:portal_type_${tabindex}"
+                           tal:content="python:here.portal_types.getTypeInfo(type).Title()"
+                           />
                     <br />
+                    </metal:block>
                 </span>       
             </div>
         </div>
@@ -260,6 +264,7 @@
 
             <div class="field">
                 <span tal:repeat="state python:here.portal_catalog.uniqueValuesFor('review_state')">
+                    <metal:block tal:define="tabindex tabindex/next">
                     <input type="checkbox" 
                            name="review_state" 
                            value="#" 
@@ -269,8 +274,14 @@
                            onfocus="formtooltip('review_status_search_help',1)" 
                            onblur="formtooltip('review_status_search_help',0)" 
                            tal:attributes="value state;
-                                           tabindex tabindex/next;"/> 
-                    <span tal:omit-tag="" i18n:translate=""><span tal:replace="state">dummy</span></span> <br />
+                                           tabindex tabindex;
+                                           id string:review_state_${tabindex}"/> 
+                    <label for=""
+                           i18n:translate=""
+                           tal:content="state"
+                           tal:attributes="for string:review_state_${tabindex}" />
+                    <br />
+                    </metal:block>
                 </span> 
             </div>
         </div>
