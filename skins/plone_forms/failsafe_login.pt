@@ -73,7 +73,7 @@ to become a member.
 <form action="logged_in"
       method="post"
       tal:condition="auth"
-      tal:define="ac_name auth/name_cookie|nothing;;
+      tal:define="ac_name auth/name_cookie|nothing;
                   ac_password auth/pw_cookie|nothing;
                   ac_persist auth/persist_cookie|nothing;">
 
