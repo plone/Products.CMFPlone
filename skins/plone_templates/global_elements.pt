@@ -7,16 +7,17 @@
           action="search"
           tal:attributes="action string:${portal_url}/search" >
 
-        <input id="searchGadget"
+        <label for="searchGadget" ><div class="hiddenlabel">Search</div><input id="searchGadget"
                name="SearchableText"
                type="text"
                size="20"
                value=""
-               alt="search"
+               alt="Search"
+	       title="Search"
 	       accesskey="accesskeys-search"
 	       i18n:attributes="alt accesskey"
 	       tal:attributes="value request/SearchableText|nothing;
-                               tabindex tabindex/next" />
+                               tabindex tabindex/next" class="visibility:visible" /></label>
 
         <input class="context searchButton"
                type="submit"
@@ -36,7 +37,6 @@
                uri logo/absolute_url" >
     <img src="logo.jpg"
          class="logo"
-         border="0"
          alt="logo"
          tal:attributes="width logo/width;
                          height logo/height;

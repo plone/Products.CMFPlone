@@ -81,7 +81,9 @@
                         <td class="top" colspan="6">
                             
                             <!-- Add Item pulldown -->
-                            <select name="type_name" 
+                            <label for="select_add_item"><div class="hiddenlabel">Select an item to add</div>
+			    <select id="select_add_item"
+				    name="type_name" 
                                     tabindex=""
                                     tal:condition="python:test(no_types > 1, 1, 0)"
                                     tal:attributes="tabindex tabindex/next|nothing"
@@ -95,6 +97,7 @@
                                         i18n:translate="">Document</option>
                                 </metal:block>
                             </select>
+			    </label>
                             
                             <input type="hidden"
                                    name="type_name"
@@ -155,7 +158,7 @@
                                    tal:attributes="value item/getId;
                                                    id python: 'cb_'+item.getId();
                                                    checked request/ids_checked|nothing;
-                                                   tabindex tabindex/next|nothing"/>
+                                                   tabindex tabindex/next|nothing; alt string:Select ${item/title_or_id}; title string:Select ${item/title_or_id}"/>
                             <input type="hidden" name="obj_paths:list" value="#"
                                    tal:attributes="value python:utool.getRelativeContentURL(item)" />
                         </td>

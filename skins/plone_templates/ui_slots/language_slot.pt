@@ -18,8 +18,9 @@
 
         <div class="body">
 
-            <select name="language" onChange="document.cookie='user_language=' + this.options[this.selectedIndex].value + ';path=/'; window.location.reload()"
-                    style="width: 175px" alt="Language">
+            <label for="language" ><div class="hiddenlabel">Choose your language</div>
+	    <select name="language" id="language" onChange="document.cookie='user_language=' + this.options[this.selectedIndex].value + ';path=/'; window.location.reload()"
+                    style="width: 175px" alt="Choose your Language" title="Choose your language">
 
                 <tal:block tal:repeat="lang plone_langs">
                     <option value=""
@@ -29,7 +30,7 @@
                        tal:content="python:PTS.getLanguageName(lang) or lang">Engrish</option>
                 </tal:block>
 
-            </select>
+            </select></label>
     
         </div>
 

@@ -25,7 +25,6 @@
                         <a href="" 
                            tal:attributes="href string:${related/url}/view">
                            <img src="" 
-                                border="0" 
                                 tal:attributes="src string:$portal_url/${related/icon};alt here/title" />
                                 &nbsp;<span tal:replace="related/title">Object related by keyword</span>
                         </a>

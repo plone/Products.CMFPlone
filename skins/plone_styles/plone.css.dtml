@@ -220,6 +220,7 @@ textarea {
 }
 
 input {
+    visibility: visible;
     font: <dtml-var inputFont>;
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
@@ -593,13 +594,6 @@ span.legend {
     left: 0em;
 }
 
-div.label,
-{
-    font-weight: bold;
-    display: inline;
-    padding-right: 0.5em;
-}
-
 div.field {
     margin-top: 0.2em;
 }
@@ -878,6 +872,21 @@ a.skipnav {
 a.external {
     background: White url(link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
+}
+
+div.hiddenlabel {
+    visibility: hidden;
+}
+
+label.hiddenlabel {
+    visibility: hidden;
+}
+
+label.label,
+{
+    font-weight: bold;
+    display: inline;
+    padding-right: 0.5em;
 }
 
 

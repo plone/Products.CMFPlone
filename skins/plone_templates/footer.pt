@@ -7,7 +7,6 @@
 <img src="" 
      height="30"
      width="96"
-     border="0"
      alt="Powered by Plone"
      title="This site was built using the Plone Content Management System. Click for more information."
      tal:attributes="src string:$portal_url/plone_powered.gif" 
@@ -38,7 +37,7 @@ by
 <span i18n:name="blacktar"><a href="http://blacktar.com">Vidar Andersen</a></span>.
 </span>
 
-<hr size="" class="netscape4" />
+<hr class="netscape4" />
 
 <strong class="netscape4">
 If you can read this text, it means you are not experiencing the Plone design at its best.

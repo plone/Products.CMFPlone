@@ -27,15 +27,17 @@
                            tal:attributes="value request/came_from;
                                            tabindex tabindex/next" />
     
-                    <strong i18n:translate="label_user_name">Name</strong> <br />
-                    <input type="text" name="__ac_name" size="12"
+                    <label for="__ac_name"><strong i18n:translate="label_user_name">Name</strong> <br />
+                    <input type="text" id="__ac_name" name="__ac_name" size="12"
                            tal:attributes="value python:request.get('__ac_name', ''); tabindex tabindex/next" alt="Username" accesskey="accesskeys-login" i18n:attributes="alt" />
+		    </label>
     
                     <br />
     
-                    <strong i18n:translate="label_password">Password</strong>  <br />
-                    <input tal:attributes="tabindex tabindex/next" type="password" name="__ac_password" size="12" alt="Password" accesskey="accesskeys-login" i18n:attributes="alt accesskey" />
-    
+                    <label for="__ac_password"><strong i18n:translate="label_password">Password</strong>  <br />
+                    <input tal:attributes="tabindex tabindex/next" type="password" id="__ac_password" name="__ac_password" size="12" alt="Password" accesskey="accesskeys-login" i18n:attributes="alt accesskey" />
+		    </label>
+
                     <br />
                     &nbsp;
                     <br />
