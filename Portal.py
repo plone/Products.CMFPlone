@@ -68,6 +68,7 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
             addPloneTool('Plone Membership Tool', None)
             addPloneTool('CMF Formulator Tool', None)
+            addPloneTool('Plone Utility Tool', None)
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=1
         p.portal_membership.setMemberareaCreationFlag()
