@@ -5,7 +5,7 @@ from Products.CMFCore import DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
 import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
 import PloneFolder, Portal
-import CustomizationPolicy
+import CustomizationPolicy,PrivateSitePolicy
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
@@ -45,7 +45,6 @@ allow_class(EmailField)
 allow_class(FormValidationError)
 allow_class(BasicForm)
 
-
 def transaction_note(note):
     """ write human legible note """
     T=get_transaction()
@@ -76,3 +75,4 @@ def initialize(context):
                      ).initialize( context )
     Portal.register(context, globals())
     CustomizationPolicy.register(context, globals())
+    PrivateSitePolicy.register(context, globals())
