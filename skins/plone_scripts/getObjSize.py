@@ -19,7 +19,7 @@ if not size and obj and hasattr(obj, 'get_size'):
 # happens for large files
 try:
     size = int(size)
-except ValueError:
+except (ValueError, TypeError):
     pass
 
 if same_type(size, 0):
