@@ -23,25 +23,31 @@ cmfplone_globals = {}
 
 __version__='0.9'
 default_frontpage=r"""
-<p> 
-You can customize this frontpage by editing the index_html Document that is in your root folder.
-In fact this is how you use your new system.  Create folders and put content in those folders.
-It's a very simple and powerful system.  </p>
-<p> For more information: </p>
-<ul> 
-   <li> Plone website - <a href="http://www.plone.org">plone.org</a> </li>
-   <li> ZOPE site - <a href="http://www.zope.org">ZOPE</a> </li>
-   <li> CMF website - <a href="http://cmf.zope.org">CMF</a> </li>
-</ul>
-<p> There is an enormous user community for you to take advantage of. 
-There are <a href="http://www.zope.org/Resources/MailingLists">mailing lists</a>, 
-<a href="http://www.zopelabs.com/">websites</a>, and 
-<a href="http://www.zope.org/Documentation/Chats">online chat</a> mediums available to 
-to provide you assistance to your new found Content Management System.</p>
-<p> Please contribute your experiences at the <a href="http://www.plone.org">Plone website</a>. <br/><br/>
-Thanks,<br/>
-The Plone Team.
-</p>"""
+You can customize this frontpage by clicking the edit tab on this document.
+In fact this is how you use your new system. Create folders and put content in those folders.
+It's a very simple and powerful system.  
+
+For more information:
+
+- "Plone website":http://www.plone.org
+
+- "Zope community":http://www.zope.org
+
+- "CMF website":http://cmf.zope.org
+
+There is an enormous user community for you to take advantage of. 
+There are "mailing lists":http://www.zope.org/Resources/MailingLists and 
+"recipe websites":http://www.zopelabs.com  
+available to provide assistance to you and your new-found Content Management System.
+"Online chat":http://www.zope.org/Documentation/Chats is also a nice way
+of getting advice and help. 
+
+Please contribute your experiences at the "Plone website":http://www.plone.org
+
+Thanks for using our product.
+
+**The Plone Team**.
+"""
 
 def addSupportOptions(self, outStream):
     """ a little lagniappe """
@@ -66,7 +72,7 @@ def populatePortalWithContent(self, outStream):
     root = getToolByName(self, 'portal_url').getPortalObject()
     root.invokeFactory('Document', id)
     o = getattr(root, 'index_html')
-    o.edit('html', default_frontpage)
+    o.edit('structured-text', default_frontpage)
     o.setTitle('Welcome to Plone')
     outStream.write('new frontpage, index_html was created in root of Portal\n')
 
@@ -97,7 +103,7 @@ def changeImmediateViews(self, outStream):
             pass #gulp!
 
 def checkDependencies(self, outStream):
-    """ attempt to report back any dependncies"""
+    """ attempt to report back any dependencies"""
 
     rootObj=self.aq_parent.restrictedTraverse( ('',) )
     control_panel = getattr(rootObj, 'Control_Panel', None)
@@ -158,7 +164,7 @@ def checkDependencies(self, outStream):
     
 def install_SubSkin(self, outStream, skinName, skinFolder):
     """ Installs a subskin, should be just 1 folder that overrides the needed plone /img and stylesheet
-        i.e. skinName=Plone IE5.5, skinFolder=plone_ie55
+        i.e. skinName=Plone XP, skinFolder=plone_xp
     """
     skinstool=getToolByName(self, 'portal_skins')
     path = skinstool.getSkinPath('Plone Default') #default
