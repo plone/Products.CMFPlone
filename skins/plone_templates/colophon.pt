@@ -37,7 +37,7 @@
 
 
 <a href="">
-<img src="" 
+<img src="http://www.plonesolutions.com/articles/semanticallycorrect" 
      height="15"
      width="80"
      alt="CSS Tableless Design"
@@ -46,7 +46,7 @@
      i18n:attributes="alt title" />
 </a>
 
-<a href="http://plone.org">
+<a href="http://www.anybrowser.org/campaign/">
 <img src="" 
      height="15"
      width="80"
@@ -63,7 +63,7 @@
      height="15"
      width="80"
      alt="Level Triple-A conformance"
-     title="Conforms to the W3C-WAI Web Content Accessibility Guidelines"
+     title="This site conforms to the W3C-WAI Web Content Accessibility Guidelines."
      tal:attributes="src string:$portal_url/colophon_wai-aaa.gif" 
      i18n:attributes="alt title" />
 </a>
@@ -73,7 +73,7 @@
      height="15"
      width="80"
      alt="Section 508"
-     title="This site conforms to the US Government Section 508 accessibility guidelines."
+     title="This site conforms to the US Government Section 508 Accessibility Guidelines."
      tal:attributes="src string:$portal_url/colophon_sec508.gif" 
      i18n:attributes="alt title" />
 </a>
