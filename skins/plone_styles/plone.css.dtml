@@ -132,26 +132,31 @@ h6 {
 
 ul {
     line-height: 1.5em;
-    list-style-type: square;
     margin: 0.5em 0 0 1.5em;
     padding: 0;
     list-style-image: url(&dtml-portal_url;/bullet.gif);
+    list-style-type: square;
 }
 
 ol {
     line-height: 1.5em;
     margin: 0.5em 0 0 1.5em;
     padding: 0;
+    list-style-image: none;
 }
+
 ul a, ol a {
     text-decoration: underline;
 }
+
 li {
     margin-bottom: 1em;
 }
+
 dt {
     font-weight: bold;
 }
+
 dt a {
     text-decoration: underline;
 }
@@ -1509,6 +1514,8 @@ ol.visualNoMarker {
 
 .visualFontSizeCorrection { /* Correction for WYSIWYG editors */
     font-size: 75%;
+    background: transparent;
+    background-image: none;
 }
 
 /*
