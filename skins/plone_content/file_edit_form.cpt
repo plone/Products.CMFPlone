@@ -1,199 +1,200 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
-<body>
 
-<div metal:fill-slot="main" 
-     tal:define="errors options/state/getErrors">
+  <body>
 
-    <h1 i18n:translate="heading_edit_item">
-    Edit
-        <span i18n:name="itemtype">
-              <span i18n:translate=""         
-                    tal:content="python:here.getTypeInfo().Title()" 
-                    tal:omit-tag="">Item type</span>
-        </span> 
-    </h1>
-    
-    <p i18n:translate="description_edit_file">
-    Add the relevant details of the file to be added in the form below,
-    select the file with the 'Browse' button, and press 'Save'.
-    </p>
+    <div metal:fill-slot="main"
+	 tal:define="errors options/state/getErrors">
 
-    <form name="edit_form"
-          action="." 
-          method="post" 
-          enctype="multipart/form-data"
-          tal:attributes="action string:${here/getId}/${template/getId}" >
-        
-        <fieldset>
-    
-            <legend i18n:translate="legend_file_details">File Details</legend>
-          
-            <div class="field" 
-                 tal:condition="python:member.getProperty('visible_ids', None)"
-                 tal:define="error errors/id | nothing;
-                             id python:request.get('id', test(here.show_id(),here.getId(),''));"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
-                
-                <label for="id" i18n:translate="label_short_name">Short Name</label>
+      <h1 i18n:translate="heading_edit_item">
+	Edit
+	<span i18n:name="itemtype">
+	  <span i18n:translate=""
+		tal:content="python:here.getTypeInfo().Title()"
+	  tal:omit-tag="">Item type</span>
+	</span>
+      </h1>
 
-                <div class="formHelp" i18n:translate="help_shortname">
-                Should not contain spaces, underscores or mixed case. 
-                Short Name is part of the file's web address.
-                </div>
-    
-                <div tal:content="error">Validation error output</div>
-    
-                <input type="text" 
-                       id="id"
-                       name="id" 
-                       value=""
-                       size="40"
-                       tabindex=""
-                       tal:attributes="value id;
-                                       tabindex tabindex/next;"
-                       />
-                
-            </div>
+      <p i18n:translate="description_edit_file">
+	Add the relevant details of the file to be added in the form below,
+	select the file with the 'Browse' button, and press 'Save'.
+      </p>
 
-            <input type="hidden" 
-                   name="id" 
-                   tal:condition="python:not member.getProperty('visible_ids', '')"
-                   tal:attributes="value python:request.get('id', here.getId())" 
-                   />
-          
-            <div class="field"
-                 tal:define="error errors/title|nothing;
-                             Title request/title | here/Title;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
-              
-                <label for="title" i18n:translate="label_title">Title</label>
-                
-                <span class="fieldRequired" title="Required"
-                      i18n:attributes="title"
-                      i18n:translate="label_required">(Required)</span>
-                    
-                <div tal:content="error">Validation error output</div>
-    
-                <input type="text" 
-                       id="title"
-                       name="title" 
-                       value="" 
-                       size="40" 
-                       tabindex=""
-                       tal:attributes="value Title;
-                                       tabindex tabindex/next;" 
-                       />
-    
-            </div>
-    
-            <div class="field"
-                 tal:define="description request/description | here/Description ">
+      <form name="edit_form"
+	    action="."
+	    method="post"
+	    enctype="multipart/form-data"
+	    tal:attributes="action string:${here/getId}/${template/getId}" >
 
-                <label for="description" i18n:translate="label_description">Description</label>
-                    
-                <div class="formHelp" i18n:translate="help_description">
-                A brief description of the file.
-                </div>
+	<fieldset>
 
-                <textarea cols="80" 
-                          rows="5" 
-                          tabindex=""
-                          id="description"
-                          name="description"
-                          tal:content="description"
-                          tal:attributes="tabindex tabindex/next;"
-                          >
-                Description 
-                </textarea>
-            </div>
-    
-            <div class="field"
-                 tal:define="error errors/file|nothing;
-                             file request/file|here/file|nothing;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
-                
-                <label for="file" i18n:translate="label_file">File</label>
+	  <legend i18n:translate="legend_file_details">File Details</legend>
 
-                <span class="fieldRequired" title="Required"
-                      i18n:attributes="title"
-                      i18n:translate="label_required">(Required)</span>
+	  <div class="field"
+	       tal:condition="python:member.getProperty('visible_ids', None)"
+	       tal:define="error errors/id | nothing;
+	       id python:request.get('id', test(here.show_id(),here.getId(),''));"
+	       tal:attributes="class python:test(error, 'field error', 'field')">
 
-                <div class="formHelp" i18n:translate="help_file">
-                Select the file to be added by clicking the 'Browse' button.
-                </div>
+	    <label for="id" i18n:translate="label_short_name">Short Name</label>
 
-                <div tal:content="error">Validation error output</div>
+	    <div class="formHelp" i18n:translate="help_shortname">
+	      Should not contain spaces, underscores or mixed case.
+	      Short Name is part of the file's web address.
+	    </div>
 
-                
-                <input type="file" 
-                       id="file"
-                       name="file" 
-                       size="30" 
-                       tabindex="" 
-                       tal:attributes="tabindex tabindex/next"
-                       />
+	    <div tal:content="error">Validation error output</div>
 
-                <br />
+	    <input type="text"
+		   id="id"
+		   name="id"
+		   value=""
+		   size="40"
+		   tabindex=""
+		   tal:attributes="value id;
+		   tabindex tabindex/next;"
+		   />
 
-                <span i18n:translate="no_file_uploaded"
-                      tal:define="file_size python:here.getObjSize(here)"
-                      tal:condition="not: file_size">
-                  (No file has been uploaded yet)
-                </span>
-            </div>
-    
-            <div class="field"
-                tal:define="content_type python:here.content_type;
-                            content_type python:test(content_type==None,'',content_type);"
-                tal:condition="python:test(content_type.find('text')>-1 and here.data, 1,0)">
-                
+	  </div>
 
-                <label for="file_data" i18n:translate="label_edit_contents">Edit Contents</label>
+	  <input type="hidden"
+		 name="id"
+		 tal:condition="python:not member.getProperty('visible_ids', '')"
+		 tal:attributes="value python:request.get('id', here.getId())"
+		 />
 
-                <div class="formHelp" i18n:translate="help_edit_contents">
-                This file is a text file, and you can edit its
-                contents directly.
-                </div>
-                
-                <textarea name="file_data:text"
-                          id="file_data"
-                          cols="80"
-                          rows="20"
-                          tabindex="" 
-                          tal:content="here/data"
-                          tal:attributes="tabindex tabindex/next"></textarea>
-            </div>
-        
-            <div class="formControls"
-                 tal:define="process_creation request/process_creation|nothing;">
-        
-                <input class="context" 
-                       type="submit"
-                       tabindex="" 
-                       name="form.button.Save" 
-                       value="Save" 
-                       i18n:attributes="value"
-                       tal:attributes="tabindex tabindex/next"
-                       /> 
-                <input class="context" 
-                       type="submit"
-                       tabindex="" 
-                       name="form.button.Cancel" 
-                       value="Cancel" 
-                       i18n:attributes="value"
-                       tal:attributes="tabindex tabindex/next"
-                       /> 
-            </div>
-            
-            <input type="hidden" name="form.submitted" value="1" />
+	  <div class="field"
+	       tal:define="error errors/title|nothing;
+	       Title request/title | here/Title;"
+	       tal:attributes="class python:test(error, 'field error', 'field')">
 
-        </fieldset>
+	    <label for="title" i18n:translate="label_title">Title</label>
 
-    </form>
+	    <span class="fieldRequired" title="Required"
+		  i18n:attributes="title"
+	    i18n:translate="label_required">(Required)</span>
 
-</div>
-  
-</body>
+	    <div tal:content="error">Validation error output</div>
+
+	    <input type="text"
+		   id="title"
+		   name="title"
+		   value=""
+		   size="40"
+		   tabindex=""
+		   tal:attributes="value Title;
+		   tabindex tabindex/next;"
+		   />
+
+	  </div>
+
+	  <div class="field"
+	       tal:define="description request/description | here/Description ">
+
+	    <label for="description" i18n:translate="label_description">Description</label>
+
+	    <div class="formHelp" i18n:translate="help_description">
+	      A brief description of the file.
+	    </div>
+
+	    <textarea cols="80"
+		      rows="5"
+		      tabindex=""
+		      id="description"
+		      name="description"
+		      tal:content="description"
+		      tal:attributes="tabindex tabindex/next;"
+		      >
+	      Description
+	    </textarea>
+	  </div>
+
+	  <div class="field"
+	       tal:define="error errors/file|nothing;
+	       file request/file|here/file|nothing;"
+	       tal:attributes="class python:test(error, 'field error', 'field')">
+
+	    <label for="file" i18n:translate="label_file">File</label>
+
+	    <span class="fieldRequired" title="Required"
+		  i18n:attributes="title"
+	    i18n:translate="label_required">(Required)</span>
+
+	    <div class="formHelp" i18n:translate="help_file">
+	      Select the file to be added by clicking the 'Browse' button.
+	    </div>
+
+	    <div tal:content="error">Validation error output</div>
+
+
+	    <input type="file"
+		   id="file"
+		   name="file"
+		   size="30"
+		   tabindex=""
+		   tal:attributes="tabindex tabindex/next"
+		   />
+
+	    <br />
+
+	    <span i18n:translate="no_file_uploaded"
+		  tal:define="file_size python:here.getObjSize(here)"
+		  tal:condition="not: file_size">
+	      (No file has been uploaded yet)
+	    </span>
+	  </div>
+
+	  <div class="field"
+	       tal:define="content_type python:here.content_type;
+	       content_type python:test(content_type==None,'',content_type);"
+	       tal:condition="python:test(content_type.find('text')>-1 and here.data, 1,0)">
+
+
+	    <label for="file_data" i18n:translate="label_edit_contents">Edit Contents</label>
+
+	    <div class="formHelp" i18n:translate="help_edit_contents">
+	      This file is a text file, and you can edit its
+	      contents directly.
+	    </div>
+
+	    <textarea name="file_data:text"
+		      id="file_data"
+		      cols="80"
+		      rows="20"
+		      tabindex=""
+		      tal:content="here/data"
+	    tal:attributes="tabindex tabindex/next"></textarea>
+	  </div>
+
+	  <div class="formControls"
+	       tal:define="process_creation request/process_creation|nothing;">
+
+	    <input class="context"
+		   type="submit"
+		   tabindex=""
+		   name="form.button.Save"
+		   value="Save"
+		   i18n:attributes="value"
+		   tal:attributes="tabindex tabindex/next"
+		   />
+	    <input class="context"
+		   type="submit"
+		   tabindex=""
+		   name="form.button.Cancel"
+		   value="Cancel"
+		   i18n:attributes="value"
+		   tal:attributes="tabindex tabindex/next"
+		   />
+	  </div>
+
+	  <input type="hidden" name="form.submitted" value="1" />
+
+	</fieldset>
+
+      </form>
+
+    </div>
+
+  </body>
 </html>
