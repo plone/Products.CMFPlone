@@ -6,6 +6,10 @@
   xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
   xmlns="http://purl.org/rss/1.0/"
 >
+<dtml-let 
+    start="REQUEST.get('b_start', 0)"
+    end="REQUEST.get('b_end', start+30)"
+    results="queryCatalog()[start:end]">
 <channel rdf:about="<dtml-var absolute_url>">
   <title>&dtml-Title;</title>
   <link>&dtml-portal_url;</link>
@@ -18,7 +22,7 @@
 <dtml-comment>Start List of Items</dtml-comment>
   <items>
     <rdf:Seq>
-<dtml-in queryCatalog prefix="obj">
+<dtml-in results prefix="obj">
 <dtml-let url="getObject().absolute_url()">
       <rdf:li rdf:resource="&dtml-url;" />
 </dtml-let>
@@ -36,8 +40,9 @@
 </image>
 
 <dtml-comment>Start Item Elements</dtml-comment>
-<dtml-in queryCatalog prefix="obj">
+<dtml-in results prefix="obj">
 <dtml-var expr="itemRSS(obj_item.getObject())">
 </dtml-in>
 <dtml-comment>End Item Elements</dtml-comment>
+</dtml-let>
 </rdf:RDF>
