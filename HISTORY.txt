@@ -2,6 +2,9 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+    - Fixed a small bug in plone_javascripts.js that prevents the highlight of the search term in simple searchs.
+      [azy]
+
 Plone 2.0.2 - Hicks
 
     - Added the 'listingNext' and 'listingPrevious' class for the batch 
