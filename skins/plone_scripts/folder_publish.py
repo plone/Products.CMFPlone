@@ -16,7 +16,7 @@ success = {}
 for id in ids:
     o = getattr(context, id)
     try:
-        if o.getTypeInfo().getId()=='Folder' and REQUEST.get('include_subfolders', ''):
+        if o.isPrincipiaFolderish and REQUEST.get('include_subfolders', ''):
             o.folder_publish(o.objectIds(), workflow_action, comment)       
         else:
             workflow.doActionFor(o, workflow_action, comment=comment)
