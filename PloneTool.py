@@ -7,6 +7,7 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore
 from types import TupleType
+from urllib import urlencode
 
 from zLOG import LOG, INFO
 def log(summary='', text=''):
@@ -164,19 +165,17 @@ class PloneTool (UniqueObject, SimpleItem):
     security.declarePublic('getNextRequestFor')
     def getNextRequestFor(self, context, action, status, **kwargs):
         """ takes object, action, and status and returns a RESPONSE redirect """
+        url_parms=urlencode(kwargs)
         action_id=self.getNavigationTransistion(context,action,status)
-        url_params,next_id,next_action='','',''
-        if action_id:
+        try:
             next_action=context.getTypeInfo().getActionById(action_id)
-       
-        for key,value in kwargs.items():
-            url_params+=key+'='+value+'&'
-	    
-	if next_action:
-            to_url='%s/%s?%s' % ( context.absolute_url()
-                                , next_action
-                                , url_params )
-            return self.REQUEST.RESPONSE.redirect(to_url)
+            return self.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
+                                                                , next_action
+                                                                , url_params ) )
+        except: # XXX because ActionTool doesnt throw ActionNotFound exception ;(
+            pass
+        return self.REQUEST.RESPONSE.redirect( '%s/%s' % ( context.absolute_url()
+                                                         , action_id ) )
 
 InitializeClass(PloneTool)
 
