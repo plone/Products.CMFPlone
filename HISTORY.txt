@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+    - Made sure there are no naked mailto: links for spambots, all mail addresses
+      are now using the spamProtect script. Syntax:
+      '<a tal:replace="structure python: here.spamProtect(Person.email)" />'
+      - this will return a complete a href tag with the mail address spam-
+      protected.
+
     RC3
 
     - WARNING: Some changes had to be made permission-wise to make the default 
