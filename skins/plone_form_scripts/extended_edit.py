@@ -18,20 +18,21 @@ subject=REQUEST.get('subject', REQUEST.get('field_subject', context.Subject()))
 effective_date=REQUEST.get('effective_date', None)
 expiration_date=REQUEST.get('expiration_date', None)
 
-if title or description or subject: #we dont want metadata to redirect (uses modified metadata_edit)
-    context.metadata_edit(title=title, subject=subject, description=description, effective_date=effective_date, expiration_date=expiration_date, redirect=0)
+#use plone metadata_edit
+if title or description or subject: 
+    context.metadata_edit(title=title,
+                          subject=subject, 
+                          description=description, 
+                          effective_date=effective_date, 
+                          expiration_date=expiration_date, 
+                          redirect=0)
 
-
-#if a new_id 
 id = REQUEST.get('field_id', REQUEST.get('id',''))
-
-if id:
-    if id!=context.getId():
-        context.manage_renameObjects( (context.getId(), ), (id, ), REQUEST)
-        if redirect:
-            status_msg=REQUEST.get('portal_status_message', 'Changes+have+been+Saved.')
-            url='%s/%s?%s' % ( REQUEST['URL2']
-                             , id
-                             , 'portal_status_message='+status_msg )
-            return REQUEST.RESPONSE.redirect(url)
-
+if id!=context.getId():
+    context.manage_renameObjects( (context.getId(), ), (id, ), REQUEST)
+    if redirect:
+        status_msg=REQUEST.get( 'portal_status_message', 
+                                'Changes+have+been+Saved.')
+        return REQUEST.RESPONSE.redirect('%s/%s/%s' % ( REQUEST['URL2']
+                                                      , id
+                                                      , 'portal_status_message=' + status_msg ) )
