@@ -1,8 +1,9 @@
     - subjects(keywords) in metadata tool were being saved with null property.. automatically relating items
-    - changed folder_contents had filter_by_Type where CMF1.3 now uses filter_by_portal_type - thanks Florrent!
+    - filtering was broke changed folder_contents had filter_by_Type where CMF1.3 now uses filter_by_portal_type 
+      this required changed to folder_contents and filterTypes - only 2 lines of code to change ;) - thanks Florrent!
     - topic has been changed to to make the icon clickable, it now uses title or id of the catalog brain
     - related box now has <br /> seperating elements and will not show related items that dont have a title - thanks kpm!
-      added icons, sort by Type and changed up navigationLocal
+      added icons, sort by Type and changed up navigationLocal    
     - MembershipTool.changeMemberPortrait() method added and removed from personazlize
 
 1.0 alpha4
