@@ -3,13 +3,13 @@
 
 <head metal:define-macro="html_header" 
       tal:define="global portal_url here/portal_url;
-                  baseHREF python:test(here.isPrincipiaFolderish, here.absolute_url(), here.aq_parent.absolute_url());">
+                  baseHREF python:test(here.isPrincipiaFolderish, here.absolute_url()+'/', here.absolute_url());">
 
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 
 	<title tal:content="string:${here/portal_properties/title} - ${here/title_or_id}">Title of page</title>
 
-    <BASE href="" tal:attributes="href string:$baseHREF/" />
+    <BASE href="" tal:attributes="href string:$baseHREF" />
 
 <!-- Commented out for now - we need a new editor 
 	<metal:block tal:condition="python:test(request['HTTP_USER_AGENT'].find('MSIE')!=-1, 1, 0)">
