@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Fixed http://plone.org/collector/3325 and related. Plone calendar got
+      confused when "datetime-format international" was set in zope.conf.
+      [stefan]
+
+    - login_form broke with Zope 2.7.2 because of stricter XHMTL parsing.
+      [stefan]
+
     - Fixed came_from testing when there is a query string (logged_in.py).
       [geoffd]
 

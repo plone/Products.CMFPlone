@@ -24,17 +24,17 @@
                     <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (anchor_url, anchor_method, prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
                 </th>
                 <th colspan="5"
-                    tal:define="date string:$month/1/$year;">
+                    tal:define="date python:DateTime(year, month, 1);">
                     <span i18n:translate="" tal:omit-tag="">
                         <span i18n:name="monthname">
                             <span i18n:translate=""
-                                  tal:define="monthstring python:DateTime(date).strftime('%B').capitalize();"
+                                  tal:define="monthstring python:date.strftime('%B').capitalize();"
                                   tal:attributes="id string:calendar-month-$monthstring"
                                   tal:content="string:$monthstring"
                                   id="calendar-month-month">&nbsp;</span>
                         </span>
                         <span i18n:name="year"
-                              tal:define="year python:DateTime(date).year()"
+                              tal:define="year python:date.year()"
                               tal:content="string:$year"
                               tal:attributes="id string:calendar-year-$year;"
                               id="calendar-year">&nbsp;</span>

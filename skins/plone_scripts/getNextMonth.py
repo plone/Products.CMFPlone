@@ -16,4 +16,4 @@ if month==12:
 else:
     month+=1
 
-return DateTime('%s/1/%s' % (month, year))
+return DateTime(year, month, 1)
