@@ -273,12 +273,12 @@
 
             <span i18n:translate="label_collector_topics">Topics</span>
             <textarea name="topics:lines" rows="5" cols="15"
-                      tal:define="topics '\n'.join([t for t in here.topics()])"
+                      tal:define="topics python:'\n'.join([t for t in here.topics()])"
                       tal:content="topics"></textarea>
             
             <span i18n:translate="label_collector_classifications">Classifications</span>
             <textarea name="classifications:lines" rows="5" cols="15"
-                      tal:define="classi '\n'.join([c for c in here.classifications()])"
+                      tal:define="classi python:'\n'.join([c for c in here.classifications()])"
                       tal:content="classi"></textarea>
             
             <span i18n:translate="label_collector_importance">Importance</span>
