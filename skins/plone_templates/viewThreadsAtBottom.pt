@@ -35,8 +35,7 @@
     
         <a name="comments"> </a>
 
-        <tal:getreplies repeat="reply python:container.sort_modified_ascending(
-                                                                                         here.portal_discussion.getDiscussionFor(here).getReplies())">
+        <tal:getreplies repeat="reply python:container.sort_modified_ascending(here.portal_discussion.getDiscussionFor(here).getReplies())">
 
                 <div class="comment">
             
