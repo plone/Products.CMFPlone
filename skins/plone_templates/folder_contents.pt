@@ -81,7 +81,7 @@
                    cellpadding="0" cellspacing="0">
 
                 <thead>
-                    <tr tal:define="no_types python:len(allowedSortedContentTypes)"
+                    <tr tal:define="num_types python: len(allowedSortedContentTypes)"
                         tal:condition="standalone|nothing">
                         <td class="top" colspan="6">
 
@@ -90,7 +90,7 @@
 			    <select id="select_add_item"
 				    name="type_name"
                                     tabindex=""
-                                    tal:condition="python:test(no_types > 1, 1, 0)"
+                                    tal:condition="python: num_types > 1"
                                     tal:attributes="tabindex tabindex/next|nothing"
 				    alt="Add an item" >
                                 <option value="Select" i18n:translate="label_select">Select</option>
@@ -107,7 +107,7 @@
                             <input type="hidden"
                                    name="type_name"
                                    value="Content Type Id"
-                                   tal:condition="python:test(no_types==1, 1, 0)"
+                                   tal:condition="python: num_types==1"
                                    tal:attributes="value python:types[0].getId()" />
 
                             <input class="standalone"
@@ -117,9 +117,9 @@
                                    tabindex=""
                                    style="font-size: 100%;"
                                    i18n:attributes="value"
-                                   tal:condition="types"
+                                   tal:condition="python: num_types"
                                    tal:attributes="tabindex tabindex/next|nothing;
-                                                   value python:test( no_types == 1
+                                                   value python:test( num_types == 1
                                                                     , 'Add New ' + types[0].Title()
                                                                     , 'Add New Item');" />
                         </td>
