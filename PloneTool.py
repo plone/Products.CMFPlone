@@ -6,7 +6,7 @@ from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore
-from types import TupleType
+from types import TupleType, UnicodeType
 from urllib import urlencode
 from cgi import parse_qs
 import re
@@ -104,6 +104,11 @@ class PloneTool (UniqueObject, SimpleItem):
         relative_path='/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
         if not msg:
             msg=relative_path+'/'+obj.title_or_id()+' has been modified.'
+        if isinstance(msg, UnicodeType):
+            # Convert unicode to a regular string for the backend write IO.
+            # UTF-8 is the only reasonable choice, as using unicode means
+            # that Latin-1 is probably not enough.
+            msg = msg.encode('utf-8')
         get_transaction().note(msg)
 
     security.declarePublic('contentEdit')
