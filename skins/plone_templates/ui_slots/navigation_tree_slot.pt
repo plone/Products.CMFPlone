@@ -78,7 +78,7 @@
                                       sibling.isPrincipiaFolderish , 'folder_contents', 
                                       test(sibling.isPrincipiaFolderish,'','view'));
                                       title python:te['object'].title_or_id();
-                                      sibling_title python:'&nbsp;;'.join(title[:croppingLength].split(' '));"
+                                      sibling_title python:' '.join(title[:croppingLength].split(' '));"
                                       tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                            >
                                
