@@ -93,6 +93,20 @@ def rc3_rc4(portal):
 
     return out
     
-def rc4_final(portal):
+def rc4_rc5(portal):
+    #fix 'local_roles' properties
+    out=[]
+    typestool=getToolByName(portal, 'portal_types')
+    for typeobj in typestool.objectValues():
+        _actions = typeobj._cloneActions()
+        for action in _actions:
+            if action.id=='local_roles':
+                id.title='Sharing'
+        typeobj._actions = _actions
+    out.append('Change local_roles label to Sharing')
+    return out
+ 
+def rc5_final(portal):
     out = []
     return out
+
