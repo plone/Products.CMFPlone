@@ -30,7 +30,23 @@ def change_ownershipIfNeeded(self, objs):
             changeOwnershipOf(self, o, uname)
         except:
             pass
- 
+
+from ZODB.PersistentMapping import PersistentMapping
+import copy
+def copyZopeAttributes(old,new):
+    #change the Ownership    
+    try:
+        changeOwnershipOf(old, new, old.getOwner().getId())
+    except:
+        pass
+    if hasattr(new, '__acl_local_roles__'):
+        new.__acl_local_roles__={}
+        new.__acl_local_roles__.update(old.__acl_local_roles__)
+    if hasattr(old, 'workflow_history'):
+        new.workflow_history=PersistentMapping()
+        new.workflow_history.__dict__=old.workflow_history.__dict__
+    new.__dict__=old.__dict__        
+
 def migrate_portal(self, id):
     """ migrates a Pre-1.0 Plone to Plone 1.0 compliance """
     folder_types = ['Portal Folder', 'Plone Folder']
@@ -60,16 +76,12 @@ def migrate_portal(self, id):
         if not o.isPrincipiaFolderish:
             if o.getId() not in new_parent.objectIds():
                 new_parent.invokeFactory(id=o.getId(), type_name=type_id)
-                new_o=getattr(new_parent, o.getId())
-                new_o.__dict__.update(o.__dict__)
+                copyZopeAttributes(o, getattr(new_parent, o.getId()))
             return
 
         if o.getId() not in new_parent.objectIds():
             new_parent.invokeFactory(id=o.getId(), type_name=type_id)
-        try:
-            changeOwnershipOf(o, o, o.getOwner().getId())
-        except:
-            pass
+        copyZopeAttributes(o, getattr(new_parent, o.getId()))
         for obj in o.objectValues():
             do_migrate(obj)
         return
