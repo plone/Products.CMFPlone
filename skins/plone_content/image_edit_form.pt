@@ -162,7 +162,8 @@
                        tabindex="" 
                        onfocus="formtooltip('image_help',1)" 
                        onblur="formtooltip('image_help',0)" 
-                       tal:attributes="tabindex tabindex/next;"
+                       tal:attributes="tabindex tabindex/next;
+                                       value python:here.getFilenameFromRequest('file')"
                        />
                 
                 <br />
