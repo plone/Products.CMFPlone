@@ -17,8 +17,8 @@ isAnonymous = membership_tool.isAnonymousUser()
 
 login_failed = 'login_failed'
 login_changepassword = 'login_password'
-
-login_success = REQUEST.get('came_from')
+login_success = None
+came_from = REQUEST.get('came_from')
 
 # If someone has something on their clipboard, expire it.
 if REQUEST.get('__cp', None) is not None:
@@ -26,7 +26,9 @@ if REQUEST.get('__cp', None) is not None:
 
 # if we weren't called from something that set 'came_from' or if HTTP_REFERER
 # is the 'logged_out' page, return the default 'login_success' form
-if login_success is None or login_success.endswith('logged_out'):
+if came_from is None or \
+   came_from.endswith('logged_out') or \
+   came_from.endswith('login_form'):
     login_success = '%s/%s' % (context.portal_url(), 'login_success')
 
 if isAnonymous:
@@ -67,10 +69,10 @@ qs = context.create_query_string(
     )
 
 REFERER=REQUEST.get('HTTP_REFERER')
-if REFERER and REFERER.startswith(login_success):
-    URL=REFERER
-else:
+if login_success:
     URL=login_success
+else:
+    URL=REQUEST.get('came_from', REFERER)
 
 if URL.find('?')==-1:
     dest = '%s?%s' % (URL, qs)
