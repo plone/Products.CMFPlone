@@ -21,5 +21,4 @@ if anonymous and not contextEditable:
 if template_id=='folder_contents' or isWorkflowable :
     return 1
 
-if contextEditable:
-    return 1
+if contextEditable and context.getTypeInfo().Type()=='Topic': return 1
