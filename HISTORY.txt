@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Added i18n markup to global_siteactions.pt. Now those 'Small, Normal,
+      Large Text' site actions can be translated.
+      [dtremea]
+
     - Changed imagePatch to use hasattr(aq_base(ob)...) and then
       getattr(ob, ...) in order to fix a problem with Archetypes
       ImageField which have a ComputedAttribute for
