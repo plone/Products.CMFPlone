@@ -10,6 +10,11 @@ Plone 2.0 - Fyuti
 
     Beta 2
 
+    - add PloneContent.py base class that inherients from PortalContent
+      we could use this in the future to hook the reference engine in
+      archetypes (or rather the reference engine that should move out
+      of archetypes *wink*)
+
     - added 'enable_border' to folder_localrole_form, folder_edit_form,
       content_status_history so that the greenborder will show up when
       you are performing these actions at the root of the Plone site.

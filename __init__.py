@@ -103,7 +103,7 @@ def initialize(context):
     from Products.CMFCore import DirectoryView
     DirectoryView.registerDirectory('skins', cmfplone_globals)
 
-    import PloneFolder, PloneWorkflow, FolderWorkflow, Portal
+    import PloneContent, PloneFolder, PloneWorkflow, FolderWorkflow, Portal
 
     contentClasses = ( PloneFolder.PloneFolder , )
     contentConstructors = ( PloneFolder.addPloneFolder, )
