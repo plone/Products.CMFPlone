@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - unknown - unknown - unreleased
+Plone 2.1 - Plaid - unreleased
 
     - added 2 new knob to jscalendar: 
 
@@ -41,7 +41,7 @@ Plone 2.1 - unknown - unknown - unreleased
       mixin.
       [tiran]
 
-Plone 2.1 - Ms. Bumblebee - Alpha1 - Released March 12, 2005 
+Plone 2.1 - Plaid - Alpha1 - Released March 12, 2005 
 
     - No longer uncatalog the Members folder on installation so that the new
       NavTreePortlet (not included) works out of the box.
