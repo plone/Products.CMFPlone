@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.28.4.4 2003/12/20 21:17:31 dreamcatcher Exp $
+# $Id: FormTool.py,v 1.28.4.5 2003/12/24 00:17:18 pupq Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.28.4.4 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.28.4.5 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -303,7 +303,17 @@ class FormValidator(SimpleItem):
                 # handle CMFFormController validators properly
                 if getattr(v, 'is_validator', 0):
                     # get a controller_state object and populate it
-                    controller_state = getToolByName(context, 'portal_form_controller').getState(context, 1)
+                    form_controller = getToolByName(context, 'portal_form_controller')
+                    try:
+                        controller_state = form_controller.getState(context, 1)
+                    except ValueError:
+                        controller_state = ControllerState()
+                        controller_state.set(context=context)
+                        controller_state.setButton(None)
+                        for k in REQUEST.keys():
+                            if k.startswith('form.button.'):
+                                controller_state.setButton(k[len('form.button.'):])
+                                break
                     controller_state.setStatus(REQUEST.get('validation_status', 'success'))
                     controller_state.setErrors(REQUEST.get('errors', {}))
                     # XXX this is a bit of a hack -- lots of REQUEST keys could be
