@@ -151,9 +151,9 @@
     </div>
     <!-- end of the right (by default at least) column -->
 
-</div>
+    <div class="visualClear">&nbsp;</div>
 
-<div class="visualClear">&nbsp;</div>
+</div>
 <!-- end column wrapper -->
 
 <hr class="netscape4" />
