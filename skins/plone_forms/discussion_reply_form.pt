@@ -27,6 +27,51 @@
         <input type="hidden" name="Creator" value=""
         	   tal:attributes="value member/getUserName" />
 
+        <div class="message"
+             tal:condition="here/portal_membership/isAnonymousUser">
+
+        <img tal:replace="structure here/info.gif">
+
+        <span>
+        Note: you are not logged in.  You may optionally enter your username
+        and password below.  If you don't enter your username and
+        password below, this comment will be posted as the 'Anonymous User'.
+        </span>
+
+        <br/><br/>
+
+          <div class="row">
+
+            <div class="label" i18n:translate="label_name">
+            Name
+            </div>
+
+            <div class="field">
+                <input name="username"
+                       value="" alt="Username" title="Name"
+                       size="40"/>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="label" i18n:translate="label_password">
+            Password
+            </div>
+
+            <div class="field">
+                <input type="password"
+                       name="password"
+                       value="" alt="Password" title="Password"
+                       size="40"/>
+            </div>
+
+          </div>
+
+         </div>
+
+
         <div class="row">
 
             <div class="label" i18n:translate="label_subject">
@@ -37,9 +82,7 @@
                 <input name="title"
                        value=""
                        size="40"
-                       tabindex=""
-                       tal:attributes="value request/title_override|nothing;
-											                 tabindex tabindex/next;" />
+                       tal:attributes="value request/title_override|nothing;"/>
             </div>
 
         </div>
@@ -54,8 +97,6 @@
                 <textarea name="text"
                           cols="40"
                           rows="8"
-                          tabindex=""
-                          tal:attributes="tabindex tabindex/next"
                           tal:content="request/text_override | nothing"
                           ></textarea>
             </div>
@@ -74,10 +115,8 @@
                        type="submit"
                        value="Add Comment"
                        name=""
-                       tabindex=""
                        i18n:attributes="value"
-                       tal:attributes="name string:discussion_reply:method;
-											                 tabindex tabindex/next;" />
+                       tal:attributes="name string:discussion_reply:method;"/>
             </div>
 
         </div>
