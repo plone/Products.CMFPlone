@@ -27,6 +27,21 @@ class TempFolder(TempFolderBase):
 
     parent = None
 
+    # override getPhysicalPath so that temporary objects return a full path
+    # that includes the acquisition parent of portal_factory (otherwise we get
+    # portal_root/portal_factory/... no matter where the object will reside)
+    def getPhysicalPath(self):
+        '''Returns a path (an immutable sequence of strings)
+        that can be used to access this object again
+        later, for example in a copy/paste operation.  getPhysicalRoot()
+        and getPhysicalPath() are designed to operate together.
+        '''
+        portal_factory = aq_parent(aq_inner(self))
+        path = aq_parent(portal_factory).getPhysicalPath() + (portal_factory.getId(), self.getId(),)
+
+        return path
+
+
     def __getitem__(self, id):
         if id in self.objectIds():
             return self._getOb(id).__of__(aq_parent(aq_parent(self)))
@@ -36,11 +51,6 @@ class TempFolder(TempFolderBase):
             obj = self._getOb(id).__of__(aq_parent(aq_parent(self)))
             obj.unindexObject()
             return obj
-
-#    def __ac_local_roles__(self):
-#        membership_tool = getToolByName(self, 'portal_membership')
-#        member = membership_tool.getAuthenticatedMember()
-#        return {member.getUserName():['Owner']}
 
 
 
@@ -61,6 +71,7 @@ class FactoryTool(UniqueObject, SimpleItem):
     manage_overview._need__name__ = 0
 
     manage_main = manage_overview
+
 
     def doCreate(self, obj, id=None, **kw):
         """Create a real object from a temporary object."""
