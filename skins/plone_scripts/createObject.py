@@ -27,8 +27,12 @@ if o is None:
 view=''
 try:
     view=o.getTypeInfo().getActionById('edit')
-except:
+except KeyError: #edit action doesnt exist try view action
     view=o.getTypeInfo().getActionById('view')
+
 transaction_note(o.getTypeInfo().getId() + ' was created.')
-return REQUEST.RESPONSE.redirect(o.absolute_url()+'/'+view)
+return REQUEST.RESPONSE.redirect('%s/%s?portal_status_message=%s' % ( o.absolute_url()
+                                                                     , view
+                                                                     , type_name + ' has been created.') )
+
 

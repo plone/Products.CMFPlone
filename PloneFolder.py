@@ -80,7 +80,12 @@ class PloneFolder ( SkinnedFolder ):
 	self._setObject(id, ob)
 	if REQUEST is not None:
             return self.folder_contents(self, REQUEST, portal_status_message='Folder added')
-       
+    
+    def manage_afterAdd(self, item, container):
+        """ hook to script """
+        if hasattr(aq_base(item), 'doAfterCreation'):
+            item.doAfterCreation()
+            
     security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): # XXX
         """
