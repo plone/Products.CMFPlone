@@ -5,18 +5,20 @@
 
 <div metal:define-macro="discussionView"
      class="discussion"
-     tal:define="isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
+     tal:define="userHasReplyPermission python: here.portal_membership.checkPermission('Reply to item', here);
+                 isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
+                 userIsAnonymous python: here.portal_membership.isAnonymousUser();
                  hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
                  view_action python:hereTypeInfo.getActionById('view');
                  isViewTemplate python:test(template.getId()==view_action, 1, 0);
                  ">
     
-    <tal:allowed condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0)">
+    <tal:allowed condition="python: isDiscussionAllowed and isViewTemplate">
 
         <form name="reply" 
               action="" 
               method="post"
-              tal:condition="python:isDiscussionAllowed and here.portal_membership.checkPermission('Reply to item', here)" 
+              tal:condition="userHasReplyPermission" 
               tal:attributes="action string:${here/absolute_url}/discussion_reply_form">       	
 
             <input class="standalone" 
@@ -25,12 +27,15 @@
                i18n:attributes="value"
                />
         </form>
+
+        <div tal:condition="python: userIsAnonymous and not userHasReplyPermission"
+             tal:define="pss modules/Products/PythonScripts/standard">
+          You may be able to add a comment or reply if you <a href="" tal:attributes="href python: '%s/login_form?came_from=%s' % (here.portal_url(), pss.url_quote(request['URL']))">log in</a>.
+        </div>
     
-        <tal:discussionallowed condition="python:here.portal_discussion.isDiscussionAllowedFor(here)">
+        <a name="comments"> </a>
 
-        	<a name="comments"> </a>
-
-        	<tal:getreplies repeat="reply python:container.sort_modified_ascending(
+        <tal:getreplies repeat="reply python:container.sort_modified_ascending(
                                                                                          here.portal_discussion.getDiscussionFor(here).getReplies())">
 
                 <div class="comment">
@@ -105,8 +110,6 @@
 
             </tal:getreplies>
         
-        </tal:discussionallowed>
-
     </tal:allowed>
 
 </div>
