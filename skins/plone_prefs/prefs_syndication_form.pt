@@ -135,17 +135,15 @@
     
     </div>
 
-    <p>
-        <form action="" 
-              method="post"
-              tal:condition="not:isSynAllowed"
-              tal:attributes="action string:prefs_syndication_set">
-            <input class="standalone" type="submit" value="Enable Syndication"
-                   i18n:attributes="value" />
-            <input type="hidden" name="isAllowed:int" value="1" />
+    <form action="" 
+          method="post"
+          tal:condition="not:isSynAllowed"
+          tal:attributes="action string:prefs_syndication_set">
+        <input class="standalone" type="submit" value="Enable Syndication"
+               i18n:attributes="value" />
+        <input type="hidden" name="isAllowed:int" value="1" />
 
-        </form>
-    </p>
+    </form>
 
 </div>
 
