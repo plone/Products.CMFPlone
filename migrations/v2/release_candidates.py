@@ -153,6 +153,16 @@ def rc5_final(portal):
 
 def rc5_rc6(portal):
     removeTypesForcedFolderContents(portal)
+    # changeCopyPermission(portal)
+
+def changeCopyPermission(portal):
+    _actions = portal.portal_actions._cloneActions()
+    for action in _actions:
+        if action.id=='copy':
+            expr='python:portal.portal_membership.checkPermission("%s", object)' % \
+                 CMFCorePermissions.ModifyPortalContent
+            action.condition=Expression(expr)
+    portal.portal_actions._actions=_actions
 
 def removeTypesForcedFolderContents(portal):
     pp=getToolByName(portal,'portal_properties')
