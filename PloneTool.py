@@ -144,7 +144,11 @@ class PloneTool (UniqueObject, SimpleItem):
         navprops = getattr(self, 'navigation_properties')
         fixedTypeName = '.'.join(context.getTypeInfo().Title().lower().split(' '))
         navTransition = fixedTypeName+'.'+action+'.'+status
-        return getattr(navprops.aq_explicit, navTransition, None)
+        action_id = getattr(navprops.aq_explicit, navTransition, None)
+        if action_id is None:
+            navTransition='%s.%s.%s' % ('default',action,status)
+            action_id = getattr(navprops.aq_explicit, navTransition, None)
+        return action_id
 
     security.declarePublic('getNextPageFor')
     def getNextPageFor(self, context, action, status, **kwargs):
@@ -155,7 +159,6 @@ class PloneTool (UniqueObject, SimpleItem):
         next_action=context.getTypeInfo().getActionById(action_id)
         if next_action is not None:
             return context.restrictedTraverse(next_action)
- 
         raise Exception, 'Argh! could not find the transition, ' + navTransition
             
     security.declarePublic('getNextRequestFor')
