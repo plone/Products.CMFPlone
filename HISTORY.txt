@@ -1,3 +1,10 @@
+Plone Beta 2
+    - navigation slot/tree was made more resilient to exceptions thrown while traversing child nodes    
+    - migration script has been updated to transfer portal_memberdata over in a more sane way 
+    - if you only have 1 item you can add dont show drop down list in folder_contents
+      just show 'Add New $contenttype' and insert a hidden form variable
+
+Plone Beta 1
     - Added tree navigation from Philipp Auersperg and made it the default
       navigation device. Thanks!
     - Fixed #245, there can now be more than one sortable table on a page.

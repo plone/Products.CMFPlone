@@ -1,4 +1,5 @@
 plone_skin:string=Mozilla
+
 mainFont:string=10px Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=White
 mainFontColor:string=Black
@@ -11,6 +12,7 @@ mainTabBackdrop:string=Black
 mainTabFontWeight:string=bold
 mainTabFontColor:string=Black
 mainTabFontColorSelected:string=White
+
 headingFont:string=10px Verdana, Helvetica, Arial, sans-serif
 headingFontColor:string=Black
 headingSize1:string=200%
@@ -19,7 +21,9 @@ headingSize3:string=160%
 headingSize4:string=140%
 headingSize5:string=120%
 headingSize6:string=110%
+
 descriptionFont:string=bold 120% Verdana, Helvetica, Arial, sans-serif
+
 contentFont:string=12px Verdana, Helvetica, Arial, sans-serif
 contentBackground:string=White
 contentImageBorder:string=0
@@ -33,26 +37,34 @@ contentTabLinkColor:string=Black
 contentTabFontWeight:string=bold
 contentTabFontColor:string=Black
 contentTabFontColorSelected:string=Black
+
 preBorder:string=1px solid #C04735
 preBackground:string=#F7C768
+
 messageFont:string=bold 100% Verdana, Helvetica, Arial, sans-serif
 messageBackground:string=#F7C768
 messageBorder:string=1px solid #F7C768
+
 textTransform:string=lowercase
 noBorder:string=none
 evenRowBackground:string=#FFFAF2
 oddRowBackground:string=transparent
 groupBorder:string=1px solid #C04735
 requiredField:string=url(required.gif) 1em no-repeat
+
 inputFont:string=bold 10px Verdana, Helvetica, Arial, sans-serif
 inputBorder:string=1px solid #C04735
+
 contextButtonBackground:string=White url(linkTransparent.gif) left no-repeat
 contextButtonPadding:string=1px 1px 1px 15px
 contextButtonFontColor:string=Black
+
 standaloneButtonBackground:string=#C04735 url(linkOpaque.gif) left no-repeat
 standaloneButtonPadding:string=1px 1px 1px 15px
 standaloneButtonFontColor:string=White
+
 buttonWeight:string=bold
+
 boxBorder:string=1px solid #C04735
 boxHeaderBackground:string=#C04735
 boxHeaderFontColor:string=White
@@ -61,48 +73,27 @@ boxLinkColor:string=Black
 boxEvenBackground:string=#FFFAF2
 boxOddBackground:string=transparent
 boxHighlight:string=2px solid #F7C768
+
 listingBorder:string=1px solid #C04735
 listingHeaderBackground:string=#C04735
 listingHeaderFontColor:string=White
 listingLinkHover:string=underline
 listingEvenBackground:string=#FFFAF2
 listingOddBackground:string=transparent
+
 topBackground:string=Black
 topMargin:string=0
 topPadding:string=0
+
 logoMargin:string=0em 0em 1em 0em
 logoPadding:string=0
+
 searchMargin:string=3em 0em 0em 0em
 searchPadding:string=0em 2em 0em 0em
 searchFontColor:string=White
+
 footerBackground:string=#F7C768
 footerBorder:string=1px solid #F7C768
+
 leftColumnWidth:string=15%
 rightColumnWidth:string=15%
-deprecated_properties:string=Below -- taken from Nouvelle
-alink_color:string=#FF0000
-base_font_color:string=#000000
-base_font_size:string=8pt
-bg_color:string=#FFFFFF
-guest_actions_color:string=#FFEEEE
-guest_actions_link_color:string=#660000
-highlight_color:string=#888888
-highlight_font_color:string=#000000
-hover_color:string=#FF0000
-link_color:string=#c4bd58
-primary_accent_alink_color:string=#FF0000
-primary_accent_color:string=#000000
-primary_accent_font_color:string=#A28144
-primary_accent_link_color:string=#A28144
-primary_accent_text_color:string=#A28144
-primary_accent_vlink_color:string=#A28144
-primary_font_family:string=Arial, Verdana, Helvetica, sans-serif
-secondary_accent_alink_color:string=#FF0000
-secondary_accent_color:string=#A28144
-secondary_accent_font_color:string=#000000
-secondary_accent_link_color:string=#FFFFFF
-secondary_accent_vlink_color:string=#FFFFFF
-secondary_font_family:string=Verdana, Arial, Helvetica, sans-serif
-select_stylesheet_id:string=nouvelle_stylesheet
-title:string=New Style
-vlink_color:string=#c4bd58

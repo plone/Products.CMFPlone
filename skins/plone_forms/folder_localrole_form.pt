@@ -114,7 +114,7 @@
         <span tal:condition="python:test(not search_submitted or (search_submitted and not search_results), 1, 0)">
        		  <h1>
                 <span i18n:translate="heading_assign_localrole">Assign local roles to folder
-      			    <span tal:replace="here/title_or_id" i18n:name="folder">title</span>
+      			    <span tal:content="here/title_or_id" i18n:name="folder">title</span>
 		</span>
       			</h1>
       			
@@ -203,7 +203,7 @@
     
         <h1>
             <span i18n:translate="heading_currently_assigned_localroles">Currently assigned local roles in folder
-        		<span tal:replace="here/title_or_id" i18n:name="folder">title</span>
+        		<span tal:content="here/title_or_id" i18n:name="folder">title</span>
 	    </span>
         </h1>
 
@@ -216,7 +216,9 @@
               name="deleterole" 
               action="folder_localrole_edit">
     
-            <span class="legend" i18n:translate="legend_assigned_roles">Assigned Roles</span>
+            <span class="legend" i18n:translate="legend_assigned_roles">Assigned Roles
+                <span tal:content="here/title_or_id" i18n:name="folder">title</span>
+            </span>
 
             <input type="hidden" name="change_type" value="delete">
             <input type="hidden" name="member_role" value="">

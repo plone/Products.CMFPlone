@@ -11,7 +11,7 @@
 body {
     background: White;
     font-family: Georgia, Garamond, Times, serif;
-    font-size: 12pt;
+    font-size: 11pt;
     color: Black;
     margin: 5%;
 }

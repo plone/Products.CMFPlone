@@ -29,6 +29,7 @@
  *
  */
  
+
 div.top {
     /* Top section */
     background: &dtml-topBackground;;
@@ -51,6 +52,7 @@ div.searchBox {
     padding: &dtml-searchPadding;;
     text-align: right;
     text-transform: &dtml-textTransform;;
+    width: 30%;
 }
 
 input.searchGadget {

@@ -42,6 +42,14 @@
 # I have used a modified version of this script to migrate a production site from
 # CMF beta 1.1 to Plone cvs head (after Alpha 4).
 # I hope this is useful for someone!
+#---------TODO------------
+# portal_metadata elements should be migrated
+# portal_catalog indexes/metadata should be migrated
+# custom actions on all the tools should be migrated (action providers should be checked)
+# Plone Folders local roles and security settings should be migrated
+# portal_skins - custom skin folders that are ZODB based
+# come up w/ migration document.. should be in sync w/ developers document
+# !! How to write content that conforms with plone migration machinery !!
 
 
 from __future__ import nested_scopes
@@ -170,14 +178,7 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
                     wf_history.update(o.workflow_history.__dict__)
                     new_object.workflow_history=wf_history
                 except:
-                    out.write('Problems transfering workflow_history')
-                try:
-                    newmember=newsite.portal_membership.getMemberById(o.getOwner().getUserName())
-                    oldmember=original.portal_membership.getMemberById(o.getOwner().getUserName())
-                    newmember.setProperties({'email':oldmember.email})
-                except:
-                    out.write('Problems transfering membership properties')
-
+                    out.write( o.absolute_url()  + ' worklfow history could not be xfered ' )
             else:
                 out.write('Object existed :'+o.getId()+'\n')
             return #its not content, just copied. Content in other folders will not be migrated.
@@ -210,6 +211,22 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
         return
 
     newsite.manage_pasteObjects( original.manage_copyObjects('acl_users') ) #copy over acl_users so we can xfer Ownership
+    
+    memberdata_properties=newsite.portal_memberdata.propertyIds()
+    for memberid in newsite.portal_membership.listMemberIds():
+        newmember=newsite.portal_membership.getMemberById(memberid)
+        oldmember=original.portal_membership.getMemberById(memberid)
+        properties={}
+
+        for property in memberdata_properties:
+            properties.update( {property:getattr(oldmember,property,'')} ) 
+        try:
+            newmember.setMemberProperties( properties )
+        except:
+            out.write( newmember.getUserName() + ' could not migrate users memberdata \n' )
+
+    out.write("successfully set new portal_memberdata properties manually\n") #XXX should be done using BTree.copy()
+
     for f in original.objectValues():
         if original.getId() not in ('acl_users', ):
             do_migrate(f)

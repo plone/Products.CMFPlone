@@ -27,7 +27,7 @@ if o is None:
 view=''
 try:
     view=o.getTypeInfo().getActionById('edit')
-except TypeError: #edit action doesnt exist try view action
+except (TypeError, ValueError, KeyError): #edit action doesnt exist try view action
     view=o.getTypeInfo().getActionById('view')
 
 transaction_note(o.getTypeInfo().getId() + ' was created.')

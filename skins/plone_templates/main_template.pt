@@ -38,9 +38,11 @@ Header stuff
 
     <tbody>
         <tr>
-            <td class="left">
+            <td class="left"
+                tal:define="valid_slots python:[slot for slot in here.left_slots if slot];"
+                tal:condition="valid_slots">
                 <metal:block define-slot="left_column">
-                  <tal:block tal:repeat="lslot here/left_slots">
+                  <tal:block tal:repeat="lslot valid_slots">
                     <metal:block use-macro="python:path(lslot)">
                     Left Column boxes
                     </metal:block>
@@ -49,7 +51,8 @@ Header stuff
             </td>
             
             <td class="main" 
-                tal:define="global show_border python:here.showEditableBorder(template_id=template.getId(), actions=actions);">
+                tal:define="global show_border python:here.showEditableBorder( template_id=template.getId()
+                                                                             , actions=actions )">
 
                 <metal:block metal:define-slot="super"
 		             tal:condition="show_border" >
@@ -108,11 +111,12 @@ Header stuff
                 </div>
             </td>
 
-            <td class="right"
-                tal:condition="here/right_slots">
+            <td class="right" 
+                tal:define="valid_slots python:[slot for slot in here.right_slots if slot];"
+                tal:condition="valid_slots">
                 <metal:block define-slot="right_column">
-                    <tal:block tal:repeat="rslot here/right_slots">
-                        <metal:block use-macro="python:path(rslot)">
+                    <tal:block tal:repeat="rslot valid_slots">
+                        <metal:block metal:use-macro="python:path(rslot)">
                         Right Column boxes
                         </metal:block>
                     </tal:block>

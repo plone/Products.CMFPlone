@@ -46,7 +46,7 @@
                  tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
                              expiration_date python:test(here.expiration_date, here.expiration_date, '');
                              effective python:">
-        This item is currently in the <strong i18n:name="review_state" tal:content="review_state">review_state;</strong> state
+        This item is currently in the <strong i18n:name="review_state" i18n:translate="" tal:content="review_state">review_state;</strong> state
         <tal:block tal:condition="python: review_state == 'published'"
 	               tal:define="eff_date here/effective_date | nothing;
 	                           exp_date here/expiration_date | nothing;

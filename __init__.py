@@ -8,6 +8,7 @@ import PloneFolder, Portal
 import CustomizationPolicy,PrivateSitePolicy
 import sys
 import StatelessTreeNav
+import Globals
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
@@ -33,6 +34,9 @@ def allow_class(Class):
 
 from PloneUtilities import IndexIterator
 allow_class(IndexIterator)
+
+from PloneBatch import Batch
+allow_class(Batch)
 
 from StringIO import StringIO
 allow_class(StringIO)
@@ -68,9 +72,11 @@ tools = ( MembershipTool.MembershipTool
 contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )
 
-DirectoryView.registerDirectory('skins', globals())
+DirectoryView.registerDirectory('skins', cmfplone_globals)
 this_module = sys.modules[ __name__ ]
 z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
+
+misc_ = {'plone_icon': Globals.ImageFile('skins/plone_images/site_icon.gif', cmfplone_globals)}
 
 def initialize(context):
     utils.initializeBasesPhase2( z_bases, context )    
@@ -83,6 +89,6 @@ def initialize(context):
                      , extra_constructors=contentConstructors
                      , fti=PloneFolder.factory_type_information
                      ).initialize( context )
-    Portal.register(context, globals())
-    CustomizationPolicy.register(context, globals())
-    PrivateSitePolicy.register(context, globals())
+    Portal.register(context, cmfplone_globals)
+    CustomizationPolicy.register(context, cmfplone_globals)
+    PrivateSitePolicy.register(context, cmfplone_globals)

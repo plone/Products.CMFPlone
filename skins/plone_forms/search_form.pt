@@ -282,7 +282,7 @@
                        type="submit" 
                        name="submit" 
                        value="Search"
-                       i18n:attributes="" 
+                       i18n:attributes="value" 
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>

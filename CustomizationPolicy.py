@@ -145,6 +145,10 @@ class DefaultCustomizationPolicy:
                     , visible=0)		    
         new_actions=[]
         for a in mt._cloneActions():
+            if a.id=='login':
+                a.title='Sign in'
+            if a.id=='logout':
+                a.title='Sign out'
             if a.id=='preferences':
                 a.title='My Preferences'
                 a.action=Expression('string:${portal_url}/portal_form/personalize_form')

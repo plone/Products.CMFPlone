@@ -6,7 +6,7 @@ def addPolicy(label, klass): custom_policies[label]=klass
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByName, registerIcon
 from Products.CMFDefault import Portal
 from Products.CMFCalendar.Extensions import Install as CalendarInstall
 from Products.ExternalMethod import ExternalMethod
@@ -86,6 +86,7 @@ class PloneGenerator(Portal.PortalGenerator):
         p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
         p._setProperty('default_language', 'en', 'string')
         p._setProperty('use_folder_tabs',('Folder',), 'lines')
+        p.icon = 'misc_/CMFPlone/plone_icon'
         
         
     def setupPortalContent(self, p):

@@ -95,13 +95,22 @@
                              tabindex=""
                              tal:attributes="tabindex tabindex/next;">
                          <tal:block tal:repeat="editor here/portal_properties/available_editors">
-                         <option value="None"
+                         <option tal:condition="python:editor != 'None'"
+                                 value="None"
+                                 tal:attributes="value editor;
+                                                 selected python:test(editor==wysiwyg_editor, 'selected', '');"
+                                 tal:content="editor">
+                         WYSIWYG-editor
+                         </option>
+                         <option tal:condition="python:editor == 'None'"
+                                 value="None"
                                  tal:attributes="value editor;
                                                  selected python:test(editor==wysiwyg_editor, 'selected', '');"
                                  tal:content="editor"
                                  i18n:translate="label_ordinary_content_editor">
                          Ordinary Form-based Editor (works in all browsers)
                          </option>
+
                          </tal:block>
                      </select>
                 </div>

@@ -79,12 +79,14 @@ user.getUserName()==here.getId()" i18n:translate="heading_my_folder">
                    
                 <thead >
                     <tr tal:condition="standalone|nothing">
-                        <td class="top" colspan="6">
+                        <td class="top" colspan="6"
+                            tal:define="types here/allowedContentTypes;
+                                        no_types python:len(types);" >
 
                             <!-- Filter pulldown -->
+                            <tal:block tal:condition="not: no_types">
                             <span style="float: left"
-                                  tal:define="filterValues decodedFilter/keys | nothing;
-                                              types here/allowedContentTypes"
+                                  tal:define="filterValues decodedFilter/keys | nothing;"
                                   tal:condition="here/listFolderContents">
                     
                                 <select id="filter_selection" 
@@ -114,15 +116,15 @@ user.getUserName()==here.getId()" i18n:translate="heading_my_folder">
                                 <input type="hidden" name="filter_by_Subject:tokens" value="" />
                                 <!--you can filter by subject keywords by filling in this value-->
                             </span>
+                            </tal:block>
                             
-                        <metal:block tal:define="allowedContentTypes here/allowedContentTypes"
-                            tal:condition="allowedContentTypes">
                             <!-- Add Item pulldown -->
                             <select name="type_name" 
                                     tabindex=""
+                                    tal:condition="python:test(no_types > 1, 1, 0)"
                                     tal:attributes="tabindex tabindex/next|nothing;">
                                 <option value="Select" i18n:translate="label_select">Select</option>
-                                <metal:block tal:repeat="ctype allowedContentTypes"
+                                <metal:block tal:repeat="ctype types"
                                              tal:define="global filterOut  python:['Favorite']">
                                 <option value="Document"
                                         tal:condition="python: ctype.getId() not in filterOut"
@@ -131,16 +133,24 @@ user.getUserName()==here.getId()" i18n:translate="heading_my_folder">
                                         i18n:translate="">Document</option>
                                 </metal:block>
                             </select>
-                
+                            
+                            <input type="hidden"
+                                   name="type_name"
+                                   value="Content Type Id"
+                                   tal:condition="python:test(no_types==1, 1, 0)"
+                                   tal:attributes="value python:types[0].getId()" />
+                                   
                             <input class="standalone" 
                                    type="submit" 
                                    name="folder_factories:method" 
                                    value="Add New Item"
                                    tabindex=""
                                    i18n:attributes="value"
-                                   tal:attributes="tabindex tabindex/next|nothing;" 
-                                   />
-                        </metal:block>
+                                   tal:condition="types"
+                                   tal:attributes="tabindex tabindex/next|nothing;
+                                                   value python:test( no_types == 1
+                                                                    , 'Add New ' + types[0].Title()
+                                                                    , 'Add New Item');" />
             
                         </td>
                     </tr> 
@@ -205,7 +215,7 @@ user.getUserName()==here.getId()" i18n:translate="heading_my_folder">
                                 tal:condition="python:container.isExpired(item)">expired</span>
                         </td>
     
-                        <td tal:content="python:item.getTypeInfo().Title()">
+                        <td i18n:translate="" tal:content="python:item.getTypeInfo().Title()">
                         folder
                         </td>
     

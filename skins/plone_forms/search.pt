@@ -17,16 +17,14 @@
 
 <div metal:fill-slot="main"
        tal:define="results python:here.queryCatalog();
-                 Batch python:modules['ZTUtils'].Batch;
+                 Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;">
     
     <h1 i18n:translate="heading_search_results">Search results</h1>
                  
     <div tal:condition="results"
-          tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);
-                      mq python:modules['ZTUtils'].make_query;
-                      mhi python:modules['ZTUtils'].make_hidden_input">
+          tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);">
 
         <strong> 
         <span tal:replace="python:len(results)" /> 
@@ -36,32 +34,7 @@
         <br/>
         
         <!-- Navigation -->
-        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
-            <span class="previous" 
-              tal:define="p batch/previous | nothing" 
-              tal:condition="p"> 
-                <a href=""
-                   tal:attributes="href python: 'search?' + mq( request.form, b_start=p.first )">
-                   &laquo;
-                   <span i18n:translate="batch_previous" omit-tag="">Previous</span>
-                   <span tal:replace="p/length">n</span> 
-                   <span i18n:translate="batch_items" omit-tag="">items</span>
-                </a>
-            </span>
-                
-            <span class="next" 
-              tal:define="n batch/next | nothing" 
-              tal:condition="n">
-                <a href=""
-                   tal:attributes="href python: 'search?' + mq( request.form, b_start=n.first )">
-                   &laquo;
-                   <span i18n:translate="batch_next" omit-tag="">Next</span>
-                   <span tal:replace="n/length">n</span> 
-                   <span i18n:translate="batch_items" omit-tag="">items</span>
-                   &raquo;
-                </a>
-            </span> 
-        </div>
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
 
         <!-- Search results -->
         
@@ -105,32 +78,7 @@
         </table>
 
         <!-- Navigation -->
-        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
-            <span class="previous" 
-              tal:define="p batch/previous | nothing" 
-              tal:condition="p"> 
-                <a href=""
-                   tal:attributes="href python: 'search?' + mq( request.form, b_start=p.first )">
-                   &laquo;
-                   <span i18n:translate="batch_previous" omit-tag="">Previous</span>
-                   <span tal:replace="p/length">n</span> 
-                   <span i18n:translate="batch_items" omit-tag="">items</span>
-                </a>
-            </span>
-                
-            <span class="next" 
-              tal:define="n batch/next | nothing" 
-              tal:condition="n">
-                <a href=""
-                   tal:attributes="href python: 'search?' + mq( request.form, b_start=n.first )">
-                   &laquo;
-                   <span i18n:translate="batch_next" omit-tag="">Next</span>
-                   <span tal:replace="n/length">n</span> 
-                   <span i18n:translate="batch_items" omit-tag="">items</span>
-                   &raquo;
-                </a>
-            </span> 
-        </div>
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
 
     </div>
     

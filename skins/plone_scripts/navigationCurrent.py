@@ -8,7 +8,6 @@
 ##title=encapsulates the current and up one level box contents
 ##a
 checkPermission=context.portal_membership.checkPermission
-debug=context.plone_debug
 
 listing=[]
 folder=None
@@ -16,19 +15,18 @@ if obj is None:
     obj=context 
 
 path_ids=context.portal_url.getRelativeContentPath(obj)
+
 if len(path_ids)>1:
     folder=obj.getParentNode()
 else:
     folder=context.portal_url.getPortalObject()
 
-if not checkPermission('List folder contents', folder):
-    return listing
-
-for o in folder.listFolderContents():
-   if o.getId()=='Folder' and o.Title()!='Favorites':
-       if checkPermission('List folder contents', o):
-           listing.append(o)
-   else:
-       listing.append(o)
+if checkPermission('List folder contents', folder):
+    for o in folder.listFolderContents():
+        if o.getId()=='Folder' and o.Title()!='Favorites':
+            if checkPermission('List folder contents', o):
+                listing.append(o)
+        else:
+            listing.append(o)
 
 return listing
