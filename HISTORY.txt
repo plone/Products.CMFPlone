@@ -1,3 +1,6 @@
+    - Cleaned out all old javascript, consolidated everything into one file,
+      this makes the whole thing more caching-friendly. You can also sort
+      any table on any page by putting id="sortable" in the <table> tag.
     - Moved all javascript/ECMAscript into the plone_ecmascript folder. This
       will require earlier instances of Plone to have plone_ecmascript added
       to their skinpath. New sites will work fine.
