@@ -101,6 +101,10 @@ class PloneGenerator(Portal.PortalGenerator):
 	                          , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
         folder_wf = wf_tool['folder_workflow']
         folder_wf.states.deleteStates( ('pending', ) )
+        state_priv=folder_wf.states['private']
+        state_priv.transitions = ('publish', 'show') 
+        state_pub=folder_wf.states['published']
+        state_pub.transitions = ('hide', 'retract') 
         folder_wf.transitions.deleteTransitions( ('submit', 'reject') )
         trans_publish=folder_wf.transitions['publish']
         trans_publish_guard=trans_publish.getGuard()

@@ -1,7 +1,7 @@
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
-from Products.CMFCore.WorkflowTool import WorkflowTool as CoreWorkflowTool
+from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
 from AccessControl import getSecurityManager
 from Products.CMFCore.WorkflowCore import WorkflowException
 
@@ -9,7 +9,7 @@ from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 
-class WorkflowTool( CoreWorkflowTool ):
+class WorkflowTool( BaseTool ):
     security = ClassSecurityInfo()
     plone_tool = 1
 
@@ -55,6 +55,8 @@ class WorkflowTool( CoreWorkflowTool ):
         for wf in wfs:
             stdef=wf.states[objstate]
             for tid in stdef.transitions:
+                if tid not in wf.transitions.objectIds(): #XXX sometimes getting submit
+                    break
                 trans=wf.transitions[tid]
                 if trans.getGuard().check(getSecurityManager(), wf, obj):
                     t={}
@@ -106,7 +108,7 @@ class WorkflowTool( CoreWorkflowTool ):
                               , 'name' : getattr(wlist_def, 'actbox_name', None)
                               , 'url' : getattr(wlist_def, 'actbox_url', None) }
                     wlists.append(a_wlist)
-                # yes, we can duplicates, we filter duplicates out on the client end
+                # yes, we can duplicates, we filter duplicates out on the calling PyhtonScript client
                 wf_with_wlists[id]=wlists 
 
         return wf_with_wlists

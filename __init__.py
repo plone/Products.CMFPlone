@@ -11,6 +11,9 @@ ADD_CONTENT_PERMISSION = 'Add portal content'
 
 #for plone_debug method
 import zLOG
+def log(message,summary='',severity=0):
+    zLOG.LOG('MyDebugLog',severity,summary,message)
+
 ModuleSecurityInfo('zLOG').declarePublic('LOG')
 ModuleSecurityInfo('zLOG').declarePublic('INFO')
 ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
