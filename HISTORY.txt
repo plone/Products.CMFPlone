@@ -53,7 +53,7 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
       of arbitrary sizes.
       [andym]
 
-Plone 2.0.5 - Backed Up Willie - (Unreleased)
+Plone 2.0.5 - Backed Up Willie - RC2 - Released November 26, 2004
 
     - Fixed http://plone.org/collector/3612 - listFilteredActionsFor of
       ActionsTool now ignores missing or broken action providers.
