@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1-beta1 - Warp - Released (no date yet)
 
+    - Polished up the datetime-picker widget.  Now provides default values
+      for month ('01') and day ('01').  Also new is the option to unset a
+      date by deselecting ('----') the year.
+      Fixes http://plone.org/collector/2291
+      [stefan]
+
     - Consolidated all monkey patches in the 'patches' sub-package.
       [stefan]
 
