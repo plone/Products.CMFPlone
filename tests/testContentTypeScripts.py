@@ -430,13 +430,13 @@ def test_suite():
 
     # urlparse.urlparse() of Python2.1 is borked
     try:
-        foo = True
-        suite.addTest(makeSuite(TestFileURL))
+        True
     except NameError:
         pass
+    else:
+        suite.addTest(makeSuite(TestFileURL))
 
     return suite
-
 
 if __name__ == '__main__':
     framework()
