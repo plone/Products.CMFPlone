@@ -44,8 +44,8 @@
                                    datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
                                    javascriptstring string:javascript:%sDay('%s');">
                   <td class="event" tal:condition="day/event"
-                      tal:attributes="onMouseOut  python: javascriptstring % ('hide', datestring);
-                                      onMouseOver python: javascriptstring % ('show', datestring);
+                      tal:attributes="onmouseout  python: javascriptstring % ('hide', datestring);
+                                      onmouseover python: javascriptstring % ('show', datestring);
                                       class       python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todayevent', 'event')">
                     <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=daynumber, month=month, year=year)" tal:omit-tag="">
                       <span tal:define="begin python:DateTime(begEndTimes[0].timeTime()+86400).ISO();

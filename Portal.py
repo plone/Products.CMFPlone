@@ -42,7 +42,7 @@ Please contribute your experiences at the "Plone website":http://www.plone.org
 
 Thanks for using our product.
 
-"Plone":img:logoIcon.gif  "**The Plone Team**":http://plone.org/about/team
+"**The Plone Team**":http://plone.org/about/team
 """
 
 class PloneSite(CMFSite):

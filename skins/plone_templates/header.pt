@@ -122,6 +122,7 @@
                            uri logo/absolute_url" >
                 <img src="logo.jpg"
                      class="logo"
+                     alt=""
                      tal:attributes="width logo/width;
                                      height logo/height;
                                      src string:${logo/absolute_url}?$current_skin" />
