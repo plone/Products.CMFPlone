@@ -17,7 +17,8 @@
 	  News summary 
 	</span>
 
-        <p tal:condition="not: len_text">
+        <p tal:condition="not: len_text"
+           i18n:translate="">
           This document has yet to be written, click the edit button to write on document.
         </p>
       

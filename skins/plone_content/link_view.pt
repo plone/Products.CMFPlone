@@ -9,13 +9,13 @@
     <span metal:fill-slot="main">
 
         <div class="contentHeader">
-	<h1 tal:content="here/title_or_id">Title or id</h1>
+	        <h1 tal:content="here/title_or_id">Title or id</h1>
         </div>
 
         <span class="description" tal:content="here/Description"> Link description </span>
         
         <p>
-        The link address is:
+        <span i18n:translate="">The link address is:</span>
         <a href="#" tal:attributes="href here/remote_url"
                     tal:content="here/remote_url">remote url</a>
         </p>            

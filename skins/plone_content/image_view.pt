@@ -22,19 +22,20 @@
     </span>
 
     <small>
-    Size:
+    <span i18n:translate="">Size:</span>
         <span tal:define="size python:here.getObjSize(here)"
               tal:content="size">                        
         File size
         </span>            
         
-        <span tal:condition="python:test(here.size, 0, 1)">
+        <span tal:condition="python:test(here.size, 0, 1)"
+              i18n:translate="">
           (No file has been uploaded)
         </span>
         
         -
         
-        Content type:
+        <span i18n:translate="">Content type:</span>
         <span tal:content="here/content_type">
         Content type
         </span>

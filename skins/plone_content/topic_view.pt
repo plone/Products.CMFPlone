@@ -1,3 +1,6 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
     xmlns:metal="http://xml.zope.org/namespaces/metal"
     metal:use-macro="here/main_template/macros/master">
@@ -10,7 +13,7 @@
   </div>
 
 <span tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
-    <h4>Subtopics: </h4>
+    <h4 i18n:translate="">Subtopics: </h4>
     <div tal:repeat="topic topics">
         <a href=""
             tal:define="topictitle python:topic.Title() or topic.getId()"
@@ -26,7 +29,7 @@
             results here/queryCatalog;
             Batch python:modules['ZTUtils'].Batch;
             global batch python:Batch(results, 20, int(b_start), orphan=1)">
-    <h4>Topic Matches: </h4>
+    <h4 i18n:translate="">Topic Matches: </h4>
     <div tal:repeat="match batch" tal:condition="batch">
         <a href=""
             tal:attributes="href string:${match/getURL}/view"
@@ -45,7 +48,7 @@
         tal:replace="n/length">n</span> items</a>
     </span>
 
-    <h3> Query Parameters </h3>
+    <h3 i18n:translate=""> Query Parameters </h3>
 
     <ul tal:define="queries here/buildQuery; items python:queries.items()"
         tal:condition="queries">

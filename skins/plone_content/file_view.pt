@@ -17,23 +17,23 @@
     </span>
  
     <div class="group">
-        <span class="legend">File details</span>
+        <span class="legend" i18n:translate="">File details</span>
 
         
         <div class="row">
-            <span class="label">Size</span>
+            <span class="label" i18n:translate="">Size</span>
             <span class="field" 
                   tal:define="size python:here.getObjSize(here)"
                   tal:content="size">                        
             File size
             </span>            
-            <span class="info" tal:condition="python:test(here.size, 0, 1)">
+            <span class="info" tal:condition="python:test(here.size, 0, 1)" i18n:translate="">
               (No file has been uploaded)
             </span>
         </div>
         
         <div class="row">
-            <span class="label">File type</span>
+            <span class="label" i18n:translate="">File type</span>
             <span class="field" tal:content="here/content_type">
             Content type
             </span>
@@ -47,7 +47,10 @@
 		  method="GET"
 		  target="top"
                   tal:attributes="action here/getId"> 
-                <input class="standalone" type="submit" value="Download file" />
+                <input class="standalone" 
+                       type="submit" 
+                       value="Download file" 
+                       i18n:attributes="value" />
             </form>
             </span>
         </div>

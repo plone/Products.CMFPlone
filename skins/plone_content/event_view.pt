@@ -16,34 +16,34 @@
         </p>
         
         <p tal:condition="here/event_url|nothing">
-        For more information, visit
+        <span i18n:translate="">For more information, visit</span>
         <a href="event_url"
            tal:attributes="href here/event_url"
            tal:content="here/event_url">event_url</a>
         </p>
 
         <div class="group">
-            <span class="legend">Event Details</span>
+            <span class="legend" i18n:translate="">Event Details</span>
 
             <div class="row">
-                <span class="label">What</span>
+                <span class="label" i18n:translate="">What</span>
                 <span class="field">
                     <span tal:content="python:modules['string'].join(here.Subject(), ' ')"></span>
                 </span>
             </div>
 
             <div class="row">
-                <span class="label">When</span>
+                <span class="label" i18n:translate="">When</span>
                 <span class="field">
-                    Between
+                    <span i18n:translate="">Between</span>
                     <span tal:replace="python:here.toPortalTime(here.start())">Start Date Time</span>
-                    and
+                    <span i18n:translate="">and</span>
                     <span tal:replace="python:here.toPortalTime(here.end())">End Date Time</span>
                 </span>
             </div>
 
             <div class="row">
-                <span class="label">Where</span>
+                <span class="label" i18n:translate="">Where</span>
                 <span class="field">
                     <span tal:replace="here/location">location</span>
                 </span>
@@ -52,7 +52,7 @@
         </div>    
 
         <div class="group">
-            <span class="legend">Contact details</span>
+            <span class="legend" i18n:translate="">Contact details</span>
 
             <div class="row">
                 <span class="label">Name</span>
@@ -60,7 +60,7 @@
             </div>
         
             <div class="row">
-                <span class="label">Contact Email</span>
+                <span class="label" i18n:translate="">Contact Email</span>
                 <span class="field" tal:condition="here/contact_email">
                     <a tal:attributes="href python:'mailto:' + here.contact_email"
                     tal:content="here/contact_email"
@@ -69,7 +69,7 @@
             </div>
 
             <div class="row">
-                <span class="label">Contact Phone</span>
+                <span class="label" i18n:translate="">Contact Phone</span>
                 <span class="field" 
                       tal:content="here/contact_phone">contact_phone</span>
             </div>
