@@ -58,7 +58,7 @@
   
   <form name="folderContentsForm" method="get"
         tal:attributes="action here/absolute_url"
-        tal:define="global folder_contents python:here.listFolderContents( contentFilter=filter, suppressHiddenFiles=1); 
+        tal:define="global folder_contents python:here.listFolderContents( contentFilter=filter ); 
                     b_start python:request.get('b_start', 0);
                     results python:here.sortObjectValues(folder_contents);
                     global DateTime python:modules['DateTime'].DateTime;
