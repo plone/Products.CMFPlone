@@ -79,8 +79,7 @@ hr {
 h1, h2, h3, h4, h5, h6 {
     color: &dtml-fontColor;;
     background-color: transparent;
-    font-family: <dtml-var headingFontFamily>;
-    font-size: &dtml-headingFontBaseSize;;
+    font-family: &dtml-var headingFontFamily;;
     font-weight: normal;
     margin: 0;
     padding-top: 0.5em;
@@ -94,7 +93,7 @@ h3 a,
 h4 a,
 h5 a,
 h6 a {
-    color: &dtml-fontColor; ! important; 
+    color: &dtml-fontColor; ! important;
 }
 
 h1 {
@@ -131,7 +130,7 @@ h6 {
 }
 
 
-ul { 
+ul {
     line-height: 1.5em;
     list-style-type: square;
     margin: 0.5em 0 0 1.5em;
@@ -151,7 +150,7 @@ li {
     margin-bottom: 1em;
 }
 dt {
-    font-weight: bold;    
+    font-weight: bold;
 }
 dt a {
     text-decoration: underline;
@@ -188,8 +187,8 @@ form {
     margin: 0;
 }
 textarea {
-    font: 110% "Courier New", Courier, monospace; 
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
+    font: 110% "Courier New", Courier, monospace;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
     background-color: white;
     width: 100%;
@@ -197,13 +196,13 @@ textarea {
 input {
     font-family: <dtml-var fontFamily>;
     visibility: visible;
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
     background-color: white;
     vertical-align: middle;
 }
 select {
-    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
     color: &dtml-inputFontColor;;
     vertical-align: top;
 }
@@ -271,7 +270,7 @@ del {
 
 
 /* Logo properties */
- 
+
 #portal-logo {
     background: url(&dtml-portal_url;/&dtml-logoName;) no-repeat;
     border: 0;
@@ -378,7 +377,7 @@ del {
     /* The normal, unselected tabs. They are all links */
     background-color: transparent;
     border-color: &dtml-globalBorderColor;;
-    border-width: &dtml-borderWidth;; 
+    border-width: &dtml-borderWidth;;
     border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
     color: &dtml-globalFontColor;;
     height: auto;
@@ -428,7 +427,7 @@ del {
     background: transparent;
     background-image: none;
 } /* Used on all descriptions relevant to those not logged in */
- 
+
 #portal-personaltools li {
     background: transparent url(&dtml-portal_url;/linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
@@ -540,8 +539,8 @@ del {
 }
 
 .menuPosition {
-    /*  The spec says we can't put this on an element with a float (although 
-        Opera is the only one that cares) and we need it in order to catch 
+    /*  The spec says we can't put this on an element with a float (although
+        Opera is the only one that cares) and we need it in order to catch
         the position:absolute bubbling up */
     position: relative;
     }
@@ -609,7 +608,7 @@ del {
 .configlet .contentViews {
     font-size: 90%;
 }
- 
+
 #content {
     padding: 0.139em 1em 0 1em;
     margin: 0em 0em 2em 0em;
@@ -630,7 +629,7 @@ del {
 
 .newsContent ul,
 .newsContent li {
-    display: block; 
+    display: block;
     list-style: none;
     list-style-image: none;
     margin: 0;
@@ -654,7 +653,7 @@ del {
 }
 
 .newsFooter {
-    
+
 }
 
 .newsFooter li {
@@ -813,7 +812,7 @@ del {
 .destructive,
 .documentEditable * .destructive {
     background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
     margin-bottom: 1em;
@@ -842,7 +841,7 @@ input.searchButton {
 }
 .notify,
 .documentEditable * .notify {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
 
 /* The new form elements */
@@ -850,7 +849,7 @@ input.searchButton {
 .field {
     top: 0;
     left: 0;
-    margin: 0 1em 1em 0;    
+    margin: 0 1em 1em 0;
 }
 
 .field .field {
@@ -866,7 +865,7 @@ input.searchButton {
     background: url(&dtml-portal_url;/required.gif) center left no-repeat;
     padding: 0 0 0 8px;
     color: &dtml-backgroundColor;;
-} 
+}
 
 .formHelp {
     font-size: 90%;
@@ -884,7 +883,7 @@ input.searchButton {
 }
 
 .formControls {
-   margin: 1em 0 0 0; 
+   margin: 1em 0 0 0;
 }
 
 .error {
@@ -898,7 +897,7 @@ input.searchButton {
 
 .error .fieldRequired {
    color: &dtml-notifyBackgroundColor;;
-} 
+}
 
 .card {
     background-color: &dtml-globalBackgroundColor;;
@@ -1016,8 +1015,8 @@ ul.configletDetails li label {
 
 /* List classes without markers */
 
-ul.visualNoMarker, 
-ol.visualNoMarker { 
+ul.visualNoMarker,
+ol.visualNoMarker {
     list-style-type: none;
     list-style-image: none;
     margin: 0.5em 0 0 0;
@@ -1055,7 +1054,7 @@ ol.visualNoMarker {
     font-weight: normal;
     white-space: nowrap;
 }
-.portlet h5 { 
+.portlet h5 {
     background: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
@@ -1068,7 +1067,7 @@ ol.visualNoMarker {
     font-weight: normal;
     white-space: nowrap;
 }
-.portlet h6 { 
+.portlet h6 {
     background: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
@@ -1105,9 +1104,9 @@ ol.visualNoMarker {
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding: 0em 0.2em;
 }
-.portlet h1, 
-.portlet h2, 
-.portlet h3, 
+.portlet h1,
+.portlet h2,
+.portlet h3,
 .portlet h4 {
     margin: 0;
     padding: 0;
@@ -1132,8 +1131,8 @@ ol.visualNoMarker {
 }
 
 .comment {
-    background: &dtml-evenRowBackgroundColor;; 
-    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
+    background: &dtml-evenRowBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
     padding: 0 1em 0.5em 1em;
     margin-bottom: 1em;
 }
@@ -1141,7 +1140,7 @@ ol.visualNoMarker {
 .comment h1,
 .comment h2,
 .comment h3,
-.comment h4, 
+.comment h4,
 .comment h5,
 .comment h6 {
     border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
@@ -1238,25 +1237,25 @@ ol.visualNoMarker {
     color: #008000;
 }
 .role-Member {
-    
+
 }
 .role-Reviewer {
-    
+
 }
 .role-Manager {
-    
+
 }
 .role-Translator {
-    
+
 }
 .location-frontpage {
-    
+
 }
 .location-news {
-    
+
 }
 .location-members {
-    
+
 }
 .even {
     background-color: &dtml-evenRowBackgroundColor;;
@@ -1304,7 +1303,7 @@ ol.visualNoMarker {
 }
 
 /*
-** Accessibility and visual enhancement elements 
+** Accessibility and visual enhancement elements
 */
 
 .link-plain {
@@ -1422,7 +1421,7 @@ ol.visualNoMarker {
 
 #portal-column-content fieldset > * input:focus,
 #portal-column-content fieldset > * textarea:focus {
-    border-color: &dtml-notifyBorderColor;; 
+    border-color: &dtml-notifyBorderColor;;
     border-width: &dtml-borderWidth;;
 }
 
@@ -1442,7 +1441,7 @@ ol.visualNoMarker {
 }
 
 /*
-** Calendar elements - used in the calendar rendering 
+** Calendar elements - used in the calendar rendering
 */
 
 .dayPopup {

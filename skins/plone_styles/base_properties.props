@@ -24,7 +24,6 @@ globalBackgroundColor:string=#dee7ec
 globalFontColor:string=#436976
 
 headingFontFamily:string="Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif
-headingFontBaseSize:string=100%
 
 contentViewBorderColor:string=#74ae0b
 contentViewBackgroundColor:string=#cde2a7
