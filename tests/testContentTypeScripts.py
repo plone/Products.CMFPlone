@@ -268,6 +268,35 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.foo.content_type, 'image/gif')
 
 
+class TestFileURL(PloneTestCase.PloneTestCase):
+    # Tests covering http://plone.org/collector/3296
+    # file:// URLs should contain correct number of slashes
+    # NOTABUG: This is how urlparse.urlparse() works.
+
+    def testFileURLWithHost(self):
+        self.folder.invokeFactory('Link', id='link', remote_url='file://foo.com/baz.txt')
+        self.assertEqual(self.folder.link.getRemoteUrl(), 'file://foo.com/baz.txt')
+
+    def testFileURLNoHost(self):
+        self.folder.invokeFactory('Link', id='link', remote_url='file:///foo.txt')
+        self.assertEqual(self.folder.link.getRemoteUrl(), 'file:///foo.txt')
+
+    def testFileURLFourSlash(self):
+        self.folder.invokeFactory('Link', id='link', remote_url='file:////foo.com/baz.txt')
+        # See urlparse.urlparse()
+        self.assertEqual(self.folder.link.getRemoteUrl(), 'file://foo.com/baz.txt')
+
+    def testFileURLFiveSlash(self):
+        self.folder.invokeFactory('Link', id='link', remote_url='file://///foo.com/baz.txt')
+        # See urlparse.urlparse()
+        self.assertEqual(self.folder.link.getRemoteUrl(), 'file:///foo.com/baz.txt')
+
+    def testFileURLSixSlash(self):
+        self.folder.invokeFactory('Link', id='link', remote_url='file://////foo.com/baz.txt')
+        # See urlparse.urlparse()
+        self.assertEqual(self.folder.link.getRemoteUrl(), 'file:////foo.com/baz.txt')
+
+
 class TestFileExtensions(PloneTestCase.PloneTestCase):
 
     file_id = 'File.2001-01-01.12345'
@@ -387,6 +416,7 @@ def test_suite():
     suite.addTest(makeSuite(TestContentTypeScripts))
     suite.addTest(makeSuite(TestEditShortName))
     suite.addTest(makeSuite(TestEditFileKeepsMimeType))
+    suite.addTest(makeSuite(TestFileURL))
     suite.addTest(makeSuite(TestFileExtensions))
     suite.addTest(makeSuite(TestGetObjSize))
     suite.addTest(makeSuite(TestDefaultPage))
