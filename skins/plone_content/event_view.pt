@@ -59,10 +59,11 @@
                 <dd tal:content="here/contact_name">contact_name</dd>
             </tal:name>
     
-            <tal:email condition="here/contact_email">
+            <tal:email tal:define="contact_email here/contact_email"
+                       condition="here/contact_email">
                 <dt i18n:translate="contact_email">Contact Email</dt>
                 <dd>
-                    <a tal:replace="structure python: here.spamProtect(here.contact_email)" />
+                    <a tal:replace="structure python: here.spamProtect(contact_email)" />
                 </dd>
             </tal:email>
     
