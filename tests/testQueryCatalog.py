@@ -140,7 +140,7 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
         self.portal.search_rss(self.portal, self.app.REQUEST)
 
     def testRenderTopicView(self):
-        self.setPermissions(AddPortalTopics)
+        self.setPermissions([AddPortalTopics])
         self.folder.invokeFactory('Topic', id='topic')
         self.folder.topic.topic_view()
 
