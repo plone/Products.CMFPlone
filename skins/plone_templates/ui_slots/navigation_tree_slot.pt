@@ -1,8 +1,8 @@
 <table metal:define-macro="navigationBox"
        i18n:domain="plone"
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
-                   tree python:here.navigation_tree_builder(here);
-
+                   navBatchStart request/navBatchStart | python:0;
+                   tree python:here.navigation_tree_builder(here,navBatchStart);
                    parent_url python:here.navigationParent(here, template.getId());
                    siblings here/navigationCurrent;
                    showOtherNav python:0;
@@ -18,6 +18,7 @@
 
     <thead>
         <tr><th i18n:translate="">Navigation</th><th class="empty">&nbsp;</th></tr>
+        
     </thead>
 
     <tbody>
@@ -25,23 +26,42 @@
         <tr class="odd" tal:condition="siblings">
             <td colspan="2">
             <div>
-                <div tal:repeat="te tree">
-                   <tal:block tal:define="iscurrent python:test(te['object'].getId()==here.getId(), 1, 0);
+                <div
+                    tal:condition="tree/prev">
+                       <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
+                          <span i18n:translate="">...</span>
+                       </a>
+                       
+                </div>
+                <div tal:repeat="te tree/list">
+                   <tal:block tal:define="iscurrent te/iscurrent | python:0;
                                            sibling python:te['object'];
-                                           stdCommand python:test(template.getId()=='folder_contents' and  sibling.isPrincipiaFolderish , 'folder_contents', 'view');
+                                           stdCommand python:test(template.getId()=='folder_contents' and  
+                                               sibling.isPrincipiaFolderish , 'folder_contents', 'view');
                                            
                                              sibling_title python:'&nbsp;;'.join(te['object'].title_or_id()[:18].split(' '));"
                    ><span tal:repeat="x python:range( te['level']-1)" tal:omit-tag="">&nbsp;</span
-                   ><a href="#" class="plain"
-                       tal:condition="not: iscurrent"
+                   >
+                    <a href="#" class="plain"
+                       tal:condition="python: not iscurrent and sibling.meta_type != 'CMF Site'"
                        tal:define="url string:${sibling/absolute_url}/${stdCommand}"
-                       tal:attributes="href url">
-                   <img tal:replace="structure here/folder_icon.gif" 
-                    />&nbsp;<tal:block tal:content="structure sibling_title" />
+                       tal:attributes="href url" >
+                       <img 
+                           tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
+                        />&nbsp;<tal:block tal:content="structure sibling_title" />
+                    </a>
+                    <a href="#" class="plain"
+                       tal:condition="python: not iscurrent and sibling.meta_type == 'CMF Site'"
+                       tal:define="url string:${sibling/absolute_url}"
+                       tal:attributes="href url" >
+                       <img 
+                           tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
+                        />&nbsp;<tal:block tal:content="structure sibling_title" />
                     </a>
                     <tal:block tal:condition="iscurrent">
                     <span class="even">
-                   <img tal:replace="structure here/folder_icon_highlighted.gif" 
+                   <img 
+                           tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
                    />&nbsp;<strong 
                                tal:content="structure sibling_title">
                                Current content id
@@ -50,6 +70,14 @@
                     </tal:block>
                     </tal:block>
                 </div>
+                <div
+                    tal:condition="tree/next">
+                       <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">
+                          <span i18n:translate="">...</span>
+                       </a>
+                       
+                </div>
+                
             </div>
             </td>
         </tr>
