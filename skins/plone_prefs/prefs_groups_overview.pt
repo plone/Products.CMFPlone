@@ -60,8 +60,8 @@
                           batch python:Batch(groups, b_size, int(b_start), orphan=1)">
     
         <p i18n:translate="description_groups_management">
-          Groups are logical collections of users, like departments and
-          business units.  They are not directly related to permissions on
+          Groups are logical collections of users, such as departments and
+          business units. Groups are not directly related to permissions on
           a global level, you normally use Roles for that - and let
           certain Groups have a particular role.
         </p>
@@ -183,8 +183,9 @@
         </p>
         
         <p i18n:translate="description_roles_zmi">
-        Currently, if you want to add a new role, you'll have to use the 
-        Zope Management Interface, as this is considered a development task.
+        Currently, if you want to add a new role, you must use the 
+        Zope Management Interface, as adding roles is considered a
+        development task.
         </p>
     
     </div>
