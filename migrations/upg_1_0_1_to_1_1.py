@@ -42,7 +42,7 @@ def upg_1_0_1_to_1_1(portal):
 
     addControlPanel(portal)
     upgradePortalFactory(portal)
-    
+    updateNavigationProperties(portal)
 
 def upgradePortalFactory(portal):
     site_props = portal.portal_properties.site_properties
@@ -158,6 +158,16 @@ def addDocumentActions(portal):
                  '',
                  'View',
                  'document_actions')
+
+def updateNavigationProperties(portal):
+    nav_props = portal.portal_properties.navigation_properties
+    nav = (('default.reconfig.success', 'url:plone_control_panel'),
+           )
+    for id, action in nav:
+        if nav_props.hasProperty(id):
+            nav_props._updateProperty(id, action)
+        else:
+            nav_props._setProperty(id, action)
 
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
