@@ -14,9 +14,15 @@
             <li class="menuItem"
                 tal:define="Title ctype/Title;Id ctype/getId"
                 tal:condition="python:test(Id not in filterOut, 1, 0)">
-                <a href="#" tal:attributes="href string:createObject?type_name=$Id">
-                    <img src="folder.gif" alt="" width="16" height="16" tal:attributes="src string:$portal_url/${ctype/getIcon}" />
-                    <span tal:replace="ctype/Title">Title</span>
+                <a href="#" 
+                   tal:attributes="href string:createObject?type_name=$Id">
+                  <img src="folder.gif" 
+                       alt="" 
+                       width="16" 
+                       height="16" 
+                       tal:attributes="src string:$portal_url/${ctype/getIcon}" />
+                  <span i18n:translate=""
+                        tal:replace="ctype/Title">Title</span>
                 </a>
             </li>
             </metal:block>
@@ -38,6 +44,7 @@
                        repeat="transition transitions">
             <li class="menuItem">
                 <a href="#"
+                   i18n:translate=""
                    tal:content="transition/name"
                    tal:attributes="href string:${here/absolute_url}/portal_form/contentbar_status_modify?workflow_action=${transition/id}&amp;form_submitted=content_status_modify">File Menu Item 1</a>
             </li>
