@@ -7,9 +7,7 @@
 ##parameters=
 ##title=Validates a topic edit_form contents
 ##
-REQUEST=context.REQUEST
 fv=context.portal_form_validation
-
 form=fv.createForm()
 idField=fv.createField('String', 'id', title='id', required=1, display_width=20)
 form.add_field(idField)
@@ -20,5 +18,3 @@ errors=fv.validate(form)
 
 context.validate_setupRequest(errors)
 return errors
-
-
