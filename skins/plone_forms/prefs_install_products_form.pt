@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<body>
+
+	   
+<div metal:fill-slot="main" i18n:domain="plone">
+    <h2> installable products </h2>
+    <form action="installProducts" tal:attributes="action python:here.absolute_url()+'/installProducts'" method="POST">
+    
+        <table>
+            <tr tal:repeat="product here/listInstallableProducts">
+                <td><input type=checkbox name=products:list tal:attributes="value product/id"></td>
+                <td tal:content="product/id">product name</td>
+                <td><a tal:condition="product/hasError" tal:attributes="href string:${product/id}/prefs_installed_product_overview">
+                        <img  src="/misc_/PageTemplates/exclamation.gif"></a>
+                </td>
+            </tr>
+        </table>
+        <input type=submit i18n:attributes="value" value="Install">
+    </form>
+
+    <h2> installed products </h2>
+    <form action="uninstallProducts" method="POST">
+    
+        <table>
+            <tr tal:repeat="product here/listInstalledProducts">
+                <td><input type=checkbox name=products:list tal:attributes="value product/id"></td>
+                <td>
+                     <a tal:attributes="href string:${product/id}/prefs_installed_product_overview" tal:content="product/id" >product name</a></td>
+            </tr>
+        </table>
+        <input type=submit i18n:attributes="value" value="Uninstall">
+    </form>
+</div>
+	   
+</body>
+</html>

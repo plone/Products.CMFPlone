@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<body>
+	   
+<div metal:fill-slot="main" i18n:domain="plone">
+
+<h1 tal:content="string:Status of Product ${here/id}"> Installed Product  </h1>
+
+
+<table border>
+    <tr tal:repeat="entry python:['Types','Skins','Actions','PortalObjects','Workflows','Slots']">
+        <th tal:content="entry"></th>
+        <td>
+            <table>
+                <tr tal:repeat="r python:getattr(here,'get'+entry)()">
+                    <td tal:content="r">entry</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <th> Status </th><td tal:content="here/getStatus"> status </td>
+    </tr>
+
+    <tr tal:condition="here/hasError">
+        <th> Error </th>
+        <td tal:condition="here/hasError">
+            <img src="/misc_/PageTemplates/exclamation.gif"> 
+            There were Errors during install, check Transcript 
+        </td>
+    </tr>
+
+    
+</table>
+
+<hr>
+<h2>Transcript</h2>
+
+<span tal:content="structure python:here.getTranscriptAsText().replace('\n','<br>')">
+</span>
+
+</div>
+</body>
+</html>
