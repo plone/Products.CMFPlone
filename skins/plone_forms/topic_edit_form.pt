@@ -14,7 +14,7 @@
           action="" 
           method="post"
 	  name="edit_form"
-	  tal:attributes="action here/absolute_url">
+	  tal:attributes="action string:${here/getId}/topic_editTopic">
 
         <span class="legend"> Topic Details </span>
 
@@ -93,7 +93,7 @@
 	     <span class="field">
                  <input class="context"
 		        type="submit" 
-		        name="topic_editTopic:action" 
+		        name="topic_editTopic" 
 			value="Change" />
 	     </span>
 	     <span class="info"> &nbsp; </span>

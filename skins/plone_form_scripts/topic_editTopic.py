@@ -14,6 +14,8 @@ if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 
+context.plone_debug('context is '+ context.absolute_url())
+
 context.edit(acquireCriteria=acquireCriteria,
              title=title,
              description=description)
@@ -23,7 +25,7 @@ target_action = context.getTypeInfo().getActionById( 'view' )
 
 #this needs to be factored into renameAndViewObject and taken out of extrneded_edit
 if id!=context.getId():
-    container.manage_renameObjects( (context.getId(), ), (id, ))
+    context.aq_parent.manage_renameObjects( (context.getId(), ), (id, ))
     url='%s/%s?%s' % ( REQUEST['URL2']
                      , id+'/'+target_action
                      , '/'+qst )
