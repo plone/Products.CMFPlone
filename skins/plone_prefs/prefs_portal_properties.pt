@@ -9,15 +9,20 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_main"
-     tal:define="errors options/state/getErrors;">
+     tal:define="errors python:request.get('errors', {});">
 
-    <h1 title="title"
-        i18n:attributes="title"
-        tal:attributes="title string:heading_${request/attr}">title</h1>
+    <h1 tal:define="heading_title string:heading_${request/attr}"
+        tal:content="python:here.translate(heading_title)">title</h1>
 
-    <p title="title"
-       i18n:attributes="title"
-       tal:attributes="title string:description_${request/attr}">description</p>
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="label_up_to_plone_setup">
+    Up to Plone Setup
+    </a>
+
+    <p tal:define="heading_description string:description_${request/attr}"
+       tal:content="python:here.translate(heading_description)">description</p>
 
     <form action=""
           name="reconfig"
@@ -36,7 +41,7 @@
             <div class="field"
                  tal:repeat="id python:obj.propertyIds()">
 
-                <label tal:content="id" />
+                <label i18n:translate="" tal:content="id" />
     
                 <input size="40"
                        tabindex=""
