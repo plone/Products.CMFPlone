@@ -9,15 +9,14 @@
 	   
 <div metal:fill-slot="main">
 
-    <h1>Insufficient Privileges</h1>
+    <h1>Help</h1>
  
-   <p>You do not have sufficient privileges to view this page.  If you believe
-   you are receiving this message in error, please send an e-mail to 
-   <span tal:define="mail_subject string:Insufficient privileges;">
-      <a href="" metal:use-macro="here/mailto_admin/macros/mailto_admin">
-         <span metal:fill-slot="text">exchange@sigmaxi.org</span>
-      </a>
-   </span>. 
+    <p>
+    The help file isn't done yet. (Surprise! :)
+    </p>
+		
+	
+
 </div>
 	   
 </body>
