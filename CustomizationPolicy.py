@@ -146,7 +146,7 @@ class DefaultCustomizationPolicy:
         new_actions=[]
         for a in mt._cloneActions():
             if a.id=='preferences':
-                a.title='my preferences'
+                a.title='My Preferences'
                 a.action=Expression('string:${portal_url}/portal_form/personalize_form')
                 new_actions.insert(0, a)
             if getattr(a,'id','') in ('addFavorite', 'favorites'): 
