@@ -156,6 +156,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
                     'cannot get user for member area creation'
 
         ## get some translations
+
+        # before translation we must set right encodings in header to make PTS happy
+        properties = getToolByName(self, 'portal_properties')
+        charset = properties.site_properties.getProperty('default_charset', 'utf-8')
+        self.REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;charset=%s' % charset)
+
         member_folder_title = translate(
             'plone', 'title_member_folder',
             {'member': member_id}, self,
