@@ -60,7 +60,7 @@
                    i18n:attributes="title alt"/>
             </th>
             
-	    <th i18n:translate="listingheader_group_name">Name</th>
+	    <th i18n:translate="listingheader_group_name">Group name</th>
 	  </tr>
 
 	  <tal:block repeat="obj batch">
@@ -80,18 +80,18 @@
 		<tal:block tal:condition="obj/getGroupName | nothing">
 		  <img src="group.gif" alt="" />
 		  <a href="" tal:attributes="href string:prefs_group_details?groupname=${obj/getGroupName}"
-			tal:content="obj/getGroupName | default"
-                        i18n:translate="link_groupname_not_available">
-			groupname not available
-		  </a>
+                        tal:content="obj/getGroupName | default">
+                        <span i18n:translate="link_groupname_not_available">
+                        groupname not available</span>
+                </a>
 		</tal:block>
 		<tal:block tal:condition="not:obj/getGroupName | nothing">
 		  <img src="user.gif" alt="" />
 		  <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
-			tal:content="obj/getUserName | default"
-                        i18n:translate="link_username_not_available">
-			username not available
-		  </a>
+                        tal:content="obj/getUserName | default">
+                        <span i18n:translate="link_username_not_available">
+                        username not available</span>
+                </a>
 		</tal:block>
 	      </td>
 	    </tr>

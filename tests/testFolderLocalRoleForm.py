@@ -9,6 +9,10 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+def sortTuple(t):
+    l = list(t)
+    l.sort()
+    return tuple(l)
 
 class TestFolderLocalRole(PloneTestCase.PloneTestCase):
 
@@ -23,17 +27,17 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # Should assing a local role
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
         member = self.membership.getMemberById('user2')
-        self.assertEqual(member.getRolesInContext(self.folder),
+        self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Foo', 'Member'))
 
     def testFolderLocalRoleDelete(self):
         # Should delete a local role
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
         member = self.membership.getMemberById('user2')
-        self.assertEqual(member.getRolesInContext(self.folder),
+        self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Foo', 'Member'))
         self.folder.folder_localrole_edit('delete', ['user2'])
-        self.assertEqual(member.getRolesInContext(self.folder),
+        self.assertEqual(sortTuple(member.getRolesInContext(self.folder)),
                          ('Authenticated', 'Member'))
 
     def testFolderLocalRoleView(self):

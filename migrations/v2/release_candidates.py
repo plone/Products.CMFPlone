@@ -4,6 +4,10 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setup.ConfigurationMethods import correctFolderContentsAction
 from Products.CMFCore.Expression import Expression
 from Acquisition import aq_base
+from oneX_twoBeta2 import addPloneTableless
+from plone2_base import addCatalogIndexes
+from Products.CMFPlone.migrations.migration_util import saveCloneActions
+import zLOG
 
 _permMap = {
     'rename' : CMFCorePermissions.AddPortalContent,
@@ -17,10 +21,6 @@ _condMap = {
     'copy': 'python:portal.portal_membership.checkPermission("%s", object)' % Permissions.copy_or_move,
     }
 
-def rc2_rc3(portal):
-    # this migration was never written so all code went to rc3_rc4
-    return []
-
 def rc3_rc4(portal):
     out=[]
 
@@ -33,6 +33,13 @@ def rc3_rc4(portal):
     pt._actions=_actions
 
     at=getToolByName(portal, 'portal_actions')
+
+    out.append('Renaming control panel to \'portal_controlpanel\'')
+    if hasattr(aq_base(portal), 'portal_control_panel_actions'):
+        at.deleteActionProvider('portal_control_panel_actions')
+        portal.manage_renameObject('portal_control_panel_actions', 'portal_controlpanel')
+        at.addActionProvider('portal_controlpanel')
+    
     out.append('Fixing folder contents action')
     correctFolderContentsAction(at)
     _actions=at._cloneActions()
@@ -63,20 +70,16 @@ def rc3_rc4(portal):
                      permission='Manage properties',
                      category='object')
         actions = ()
-        try:
-            _actions = ptype._cloneActions()
-        except AttributeError:
-            # Stumbled across ancient dictionary actions
-            if not hasattr(aq_base(ptype), '_convertActions'):
-                out.append(('Can\'t convert actions of %s! Jumping to next action.' % ptype.getId(), zLOG.ERROR))
-                # XXX that's bad :[
-                continue
-            ptype._convertActions()
-            _actions = ptype._cloneActions()
+        success, retval = saveCloneActions(ptype)
+        if success:
+            _actions = retval
+        else:
+            out.append(retval)
+            continue
 
         for action in _actions:
             if action.getId()=='metadata':
-                 action.title='properties'
+                 action.title='Properties'
             if action.getId()=='content_status_history':
                  action.visible=0
         ptype._actions = _actions
@@ -84,7 +87,7 @@ def rc3_rc4(portal):
     if 'addtofavorites' not in [action.getId() for action in at.listActions()]:
         at.addAction('addtofavorites',
                      'Add to Favorites',
-                     'string:${request/URL1}/addtoFavorites',
+                     'string:${object_url}/addtoFavorites',
                      'member',
                      'View',
                      'document_actions')
@@ -104,7 +107,13 @@ def rc4_rc5(portal):
     out=[]
     typestool=getToolByName(portal, 'portal_types')
     for typeobj in typestool.objectValues():
-        _actions = typeobj._cloneActions()
+        success, retval = saveCloneActions(typeobj)
+        if success:
+            _actions = retval
+        else:
+            out.append(retval)
+            continue
+
         for action in _actions:
             if action.id=='local_roles':
                 action.title='Sharing'
@@ -128,18 +137,80 @@ def rc5_final(portal):
                 hasFavorites=1
     at._actions=_actions
 
-    out.append('Added Plone Tabless skin')
+    out.append('Added Plone Tableless skin')
     addTablelessSkin(portal)
+
+    out.append('Adding in catalog indexes')
+    addCatalogIndexes(portal)
+    
+    out.append('Adding new properties: typesLinkToFolderContents, typesLinkToFolderContentsInFC')
+    addFolderContentsProperties(portal)
+
+    out.append('Removing deprecated property: use_folder_contents')
+    delOldFolderContentsProperty(portal)
 
     return out
 
+def rc5_rc6(portal):
+    removeTypesForcedFolderContents(portal)
+    # changeCopyPermission(portal)
+
+def changeCopyPermission(portal):
+    _actions = portal.portal_actions._cloneActions()
+    for action in _actions:
+        if action.id=='copy':
+            expr='python:portal.portal_membership.checkPermission("%s", object)' % \
+                 CMFCorePermissions.ModifyPortalContent
+            action.condition=Expression(expr)
+    portal.portal_actions._actions=_actions
+
+def removeTypesForcedFolderContents(portal):
+    pp=getToolByName(portal,'portal_properties')
+    p = getattr(pp , 'navtree_properties', None)
+
+    if props.hasProperty('removeTypesForcedFolderContents(portal)'):
+        props._delProperty('removeTypesForcedFolderContents(portal)')    
+
+def addFolderContentsProperties(portal):
+    """Existing use_folder_contents split into two new properties:
+
+    site_properties/typesLinkToFolderContentsInFC:
+      when looking at folder_contents, what content types should be linked to /folder_contents,
+      as opposed to their 'view' link?
+    navtree_properties/typesLinkToFolderContents:
+      for quick navigation in navigation slot, what types should always show as link to /f_c,
+      (assuming you have perm, etc.)
+    """
+ 
+    props = portal.portal_properties.navtree_properties
+    if not hasattr(props, 'typesLinkToFolderContents'):
+        props._setProperty('typesLinkToFolderContents', [], 'lines')
+    props = portal.portal_properties.site_properties
+    ufc = []
+    if hasattr(props, 'use_folder_contents'):
+        ufc = props.use_folder_contents
+    if not ufc:
+        ufc = ['Folder','Large Plone Folder']
+    if not hasattr(props, 'typesLinkToFolderContentsInFC'):
+        props._setProperty('typesLinkToFolderContentsInFC', ufc, 'lines')
+        
+def delOldFolderContentsProperty(portal):
+    """This was an overly-vague name, which got us into a mess as people overloaded it."""
+
+    props = portal.portal_properties.site_properties
+    if hasattr(props, 'use_folder_contents'):
+        props._delProperty('use_folder_contents')
+
 def addTablelessSkin(portal):
+    # to be shure that we have a plone_tableless directory view
+    from oneX_twoBeta2 import addPloneTableless
+    addPloneTableless(portal)
     st = getToolByName(portal, 'portal_skins')
     defaultName = 'Plone Default'
     tablelessName = 'Plone Tableless'
     path = []
     selections = st._getSelections()
-    
+
     if selections.has_key(defaultName):
         for p in selections[defaultName].split(','):
             if p == 'plone_templates':

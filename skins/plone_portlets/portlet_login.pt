@@ -9,7 +9,9 @@
 
 <div metal:define-macro="portlet"
      tal:omit-tag=""
-     tal:condition="isAnon">
+     tal:define="pageloc python: request.URL.split('/')[-1];
+                 okToShowHere python: not pageloc in ('login_form', 'join_form');"
+     tal:condition="python: isAnon and okToShowHere">
 
     <div class="portlet" 
          tal:define="auth nocall:here/cookie_authentication;
@@ -24,6 +26,7 @@
 
             <div class="portletContent odd">
                 <form action="logged_in"
+                      name="loginform"
                       method="post"
                       tal:attributes="action string:${utool}/logged_in">
 
@@ -58,6 +61,7 @@
                            type="submit"
                            name="submit"
                            value="Log in"
+                           alt="Log in"
                            tal:attributes="tabindex tabindex/next"
                            accesskey="accesskeys-login"
 			   i18n:attributes="value alt"

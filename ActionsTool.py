@@ -1,7 +1,11 @@
-from Products.CMFCore.ActionsTool import ActionsTool as BaseTool
-from Products.CMFPlone import ToolNames
-from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
+from AccessControl import ClassSecurityInfo
+from Acquisition import aq_base, aq_inner, aq_parent
+from Products.CMFCore.ActionsTool import ActionsTool as BaseTool
+from Products.CMFCore.ActionInformation import oai
+from Products.CMFCore.Expression import createExprContext
+from Products.CMFCore.utils import _checkPermission
+from Products.CMFPlone import ToolNames, FactoryTool
 from setup.ConfigurationMethods import correctFolderContentsAction
 
 class ActionsTool(BaseTool):
@@ -11,6 +15,109 @@ class ActionsTool(BaseTool):
 
     def __init__(self):
         correctFolderContentsAction(self)
+
+
+    #
+    #   'portal_actions' interface methods
+    #
+    # Overriding listFilteredActionsFor so that it hands the correct 'folder'
+    # object to action expressions.
+    # 
+    security.declarePublic('listFilteredActionsFor')
+    def listFilteredActionsFor(self, object=None):
+        """
+        Return a mapping containing of all actions available to the
+        user against object, bucketing into categories.
+        """
+        portal = aq_parent(aq_inner(self))
+        if object is None or not hasattr(object, 'aq_base'):
+            folder = portal
+        else:
+            folder = object
+            # Search up the containment hierarchy until we find an
+            # object that claims it's a folder.
+            while folder is not None:
+                if getattr(aq_base(folder), 'isPrincipiaFolderish', 0):
+                    # found it.
+                    break
+                else:
+                    # !!! This is the only change from CMFCore.ActionsTool.listFilteredActionsFor
+                    # If the parent of the object in hand is a TempFolder
+                    # don't strip off its outer acquisition context.
+                    parent = aq_parent(aq_inner(folder))
+                    if getattr(parent, '__class__', None) == FactoryTool.TempFolder:
+                        folder = aq_parent(folder)
+                    else:
+                        folder = parent
+        ec = createExprContext(folder, portal, object)
+        actions = []
+        append = actions.append
+        info = oai(self, folder, object)
+
+        # Include actions from specific tools.
+        for provider_name in self.listActionProviders():
+            provider = getattr(self, provider_name)
+            self._listActions(append,provider,info,ec)
+
+        # Include actions from object.
+        if object is not None:
+            base = aq_base(object)
+            if hasattr(base, 'listActions'):
+                self._listActions(append,object,info,ec)
+
+        # Reorganize the actions by category,
+        # filtering out disallowed actions.
+        filtered_actions={'user':[],
+                          'folder':[],
+                          'object':[],
+                          'global':[],
+                          'workflow':[],
+                          }
+        for action in actions:
+            category = action['category']
+            permissions = action.get('permissions', None)
+            visible = action.get('visible', 1)
+            if not visible:
+                continue
+            verified = 0
+            if not permissions:
+                # This action requires no extra permissions.
+                verified = 1
+            else:
+                # startswith() is used so that we can have several
+                # different categories that are checked in the object or
+                # folder context.
+                if (object is not None and
+                    (category.startswith('object') or
+                     category.startswith('workflow'))):
+                    context = object
+                elif (folder is not None and
+                      category.startswith('folder')):
+                    context = folder
+                else:
+                    context = portal
+                for permission in permissions:
+                    # The user must be able to match at least one of
+                    # the listed permissions.
+                    if _checkPermission(permission, context):
+                        verified = 1
+                        break
+            if verified:
+                catlist = filtered_actions.get(category, None)
+                if catlist is None:
+                    filtered_actions[category] = catlist = []
+                # Filter out duplicate actions by identity...
+                if not action in catlist:
+                    catlist.append(action)
+                # ...should you need it, here's some code that filters
+                # by equality (use instead of the two lines above)
+                #if not [a for a in catlist if a==action]:
+                #    catlist.append(action)
+        return filtered_actions
+
+    # listFilteredActions() is an alias.
+    security.declarePublic('listFilteredActions')
+    listFilteredActions = listFilteredActionsFor
 
 ActionsTool.__doc__ = BaseTool.__doc__
 

@@ -4,8 +4,54 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
-   RC6/Final?
- 
+   Final
+
+    - Checked in fix for 2600: group names and user names were not
+      shown correctly in the Group Memberships form and the Members of
+      Group from, if viewed not in english. Fix Suggested by ozone [jok2]
+    
+    - Fix for 2704: added manager proxy role to register.cpy to avoid
+      error if mail could not be sent to new member. Fix suggested by
+      Seb Potter [jok2]
+      
+    - Fix for 2462: change default value of ids to empty list instead
+      of None (folder_delete.cpy). Done to avoid error about iteration 
+      over non-sequence, if no item is selected for deletion. Fix 
+      suggested by Seb Potter [jok2]
+   
+    - Merge the fix for portlet_related over from the microoptimisations 
+      branch and fix for 2293 and 1920 [andym]
+   
+    - Split 'use_folder_contents' site property into two different
+      properties: typesLinkToFolderContents (a navtree prop for
+      how nav tree behaves) and typesLinkToFolderContentsInFC
+      (a site-wide prop, for how folder_contents page should
+      behave). Added migration to create these two and to remove
+      the old use_folder_contents. [pupq]
+
+    - Diet Plone® - an initial page load of Plone was reduced from 
+      150K to 75K, and HTTP requests from 30 to 15 by performing 
+      the following tweaks:
+      [limi]
+
+      - Calendar JS only included on pages that use it
+
+      - Deprecated pop-up tool tips JS code commented out 
+        (easy to re-enable if you need it for legacy sites)
+
+      - Made the colophon buttons with CSS instead of using images
+
+      - Pulldown menu only available to logged-in users
+        (although it can be enabled for anonymous too, if you need it)
+
+
+    - Added fix for the bug reported by Edward Muller (skin setting 
+      and login problems). Don't clear the name of the skin cookie
+      in the prefs_portal_skiset.py. [jok2] 
+   
+    - Added fix for breadcrumbs so that the parent folder is shown when
+      you are looking at folder_contents.  [pupq]
+
     - Fix bug 2373 so folder_contents items goto
       getTypeInfo.getActionById('view')
 	[runyaga]
@@ -25,6 +71,15 @@ Plone 2.0 - Fyuti
       security problem, since you couldn't save the document, but now we 
       also check that you are logged in, so you can't invoke the URL 
       directly to look at the edit form anymore either.
+
+    - Added getAllowedTypes for use in folder_contents and global_contentmenu 
+      to check for getNotAddableTypes and when to show a single item instead 
+      of a dropdown. ( fixes bug )
+
+    - If a content type is listed in 
+      portal_properties/site_properties/use_folder_contents then use
+      'folder_contents' to display it, not ''. Removed the migration
+      that initialized this value to ['Folder'] [?, pupq]
 
    RC5
 

@@ -18,13 +18,13 @@
 
 contents = None
 try:
-    contents = context.listFolderContents(contentFilter=contentFilter, suppressHiddenFiles=suppressHiddenFiles)
+    contents = context.aq_explicit.listFolderContents(contentFilter=contentFilter, suppressHiddenFiles=suppressHiddenFiles)
 except TypeError:
     #XXX Manually do suppression
     context.plone_log('Manual fall back in getFolderContents - your Folder.listFolderContents method does not ' \
                       'support suppressHiddenFiles')
     contents = [obj
-                for obj in context.listFolderContents(contentFilter=contentFilter)
+                for obj in context.aq_explicit.listFolderContents(contentFilter=contentFilter)
                 if not obj.getId().startswith('.')
                ]
 return contents

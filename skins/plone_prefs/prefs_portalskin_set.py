@@ -12,15 +12,18 @@ REQUEST=context.REQUEST
 
 ps = context.portal_skins
 
+#get cookie name to set it again, if no cookie name is set, 
+#set it to defaul value. else cookie name is cleared which
+#causes login errors
+if ps.request_varname:
+  rv=ps.request_varname
+else:
+  rv='plone_skin'
+  
 ps.manage_properties(default_skin=default_skin,
-                     request_varname='',
-                     chosen=(),
-                     add_skin=0,
-                     del_skin=0,
-                     skinname='',
-                     skinpath='',
                      allow_any=allow_any,
-                     cookie_persistence=cookie_persistence)
+                     cookie_persistence=cookie_persistence,
+		     request_varname=rv)
 
 msg = 'Portal skin updated'
 RESPONSE.redirect('prefs_portalskin_form?portal_status_message=' + msg)

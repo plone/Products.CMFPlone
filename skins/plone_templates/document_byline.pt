@@ -1,6 +1,7 @@
 <div class="documentByLine"
      metal:define-macro="byline" 
      i18n:domain="plone"
+     tal:condition="python: not (site_properties.allowAnonymousViewAbout and isAnon)"
      tal:define="creator here/Creator;
                  creator_home python:mtool.getHomeUrl(creator);">
 

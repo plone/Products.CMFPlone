@@ -19,7 +19,7 @@
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | portal_properties/navtree_properties/croppingLength | python:18;
                    rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner'];
-                   useFolderContents site_properties/use_folder_contents | python:['Folder'];
+                   useFolderContents here/navtree_properties/typesLinkToFolderContents | portal_properties/navtree_properties/typesLinkToFolderContents | python:[];
                    desc_ellipsis site_properties/ellipsis;"
                    >
     <div class="portlet" id="portlet-navigation-tree">
@@ -36,7 +36,7 @@
                     <span tal:define="iscurrent te/iscurrent | python:0;
                                       sibling python:te['object'];
                                       typeInfo sibling/getTypeInfo;
-                                      stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'',typeInfo.getActionById('view')));
+                                      stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'folder_contents',typeInfo.getActionById('view')));
                                       command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPermission('List folder contents',sibling) ,'',stdCommand);
                                       title python:te['object'].title_or_id();
                                       charset site_properties/default_charset|string:utf-8;

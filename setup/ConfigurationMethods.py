@@ -47,7 +47,7 @@ def addSiteProperties(self, portal):
     if not hasattr(p,'use_folder_tabs'):
         safeEditProperty(p, 'use_folder_tabs',('Folder',), 'lines')
     if not hasattr(p,'use_folder_contents'):
-        safeEditProperty(p, 'use_folder_contents',('Folder',), 'lines')
+        safeEditProperty(p, 'use_folder_contents',[], 'lines')
     if not hasattr(p,'ext_editor'):
         safeEditProperty(p, 'ext_editor', 0, 'boolean')
     if not hasattr(p, 'available_editors'):

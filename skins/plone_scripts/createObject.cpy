@@ -21,7 +21,7 @@ if type_name is None:
 
 if context.portal_factory.getFactoryTypes().has_key(type_name):
     o = context.restrictedTraverse('portal_factory/' + type_name + '/' + id)
-    portal_status_message = 'Complete the form to create your ' + type_name + '.'
+    portal_status_message = None
     transaction_note('Initiated creation of %s with id %s in %s' % (o.getTypeInfo().getId(), id, context.absolute_url()))
 else:
     new_id = context.invokeFactory(id=id, type_name=type_name)
@@ -40,4 +40,6 @@ if o.getTypeInfo().getActionById('edit', None) is None:
 if script_id:
     state.setId(script_id)
 
-return state.set(context=o, portal_status_message=portal_status_message)
+if portal_status_message:
+    state.set(portal_status_message=portal_status_message)
+return state.set(context=o)

@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=template_id=None, actions=None
+##parameters=template_id=None, allowed_types=None, actions=None
 ##title=returns whether or not current template displays *editable* border
 ##
 
@@ -29,6 +29,8 @@ REQUEST=context.REQUEST
 
 if actions is None:
     raise 'You must pass in the filtered actions'
+if allowed_types is None:
+    raise 'You must pass in the allowed types'
 
 if REQUEST.has_key('disable_border'): #short circuit
     return 0
@@ -53,5 +55,11 @@ if idActions.has_key('edit') :
     if (idActions.has_key(template_id) or \
         template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']) :
         return 1
+
+# Check to see if the user is able to add content or change workflow state
+if allowed_types:
+    return 1
+if context.portal_workflow.getTransitionsFor(context, context):
+    return 1
 
 return 0

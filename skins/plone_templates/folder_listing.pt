@@ -6,7 +6,7 @@
 <body>
 
     <div metal:fill-slot="main"
-         tal:define="folderContents python:here.getFolderContents(suppressHiddenFiles=1)">
+         tal:define="folderContents python:here.getFolderListingFolderContents(suppressHiddenFiles=1)">
 
         <h1 tal:content="here/title_or_id" class="documentFirstHeading">
             Title or id

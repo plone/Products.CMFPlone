@@ -15,7 +15,7 @@ new_context = context.portal_factory.doCreate(context)
 portal_workflow=new_context.portal_workflow
 current_state=portal_workflow.getInfoFor(new_context, 'review_state')
 
-if workflow_action!=current_state and not effective_date:
+if workflow_action!=current_state and not effective_date and context.EffectiveDate()=='None':
     effective_date=DateTime()
 
 #plone_log('effective date ' + str(effective_date))

@@ -15,23 +15,13 @@ def process(name, swhome, ihome):
 
     # have to set up env first
     import Zope
+    configfile = os.path.join(ihome,'etc','zope.conf')
 
-    # http://mail.zope.org/pipermail/zope-dev/2003-August/020274.html
-    # this is annoying, but works, hopefully this can be removed in the near
-    # future
-    from App import FindHomes
-    from Zope.Startup.options import ZopeOptions
-    from Zope.Startup import handlers as h
-    from App import config
-    opts = ZopeOptions()
-    # its going to look for zope.conf in instance home
-    opts.configfile = os.path.join(ihome,'etc/zope.conf')
-    sys.argv = sys.argv[:1]
-    opts.realize()
-    h.handleConfig(opts.configroot,opts.confighandlers)
-    config.setConfiguration(opts.configroot)
-    # end hack
-
+    # nuke remaining command line arguments
+    sys.argv = sys.argv[1:]
+    
+    # for 2.7 run configure
+    Zope.configure(configfile)
     app = Zope.app()
 
     from OFS.Application import initialize

@@ -12,7 +12,9 @@
 <h5 class="hiddenStructure" i18n:translate="heading_personal_tools">Personal tools</h5>
 
 <ul id="portal-personaltools">
-    <li class="portalUser" tal:condition="not: isAnon"><a href=""
+    <li class="portalUser" 
+        tal:condition="not: isAnon"><a 
+        id="user-name"
         tal:omit-tag="not: mtool/getHomeFolder"
         tal:attributes="href string:${mtool/getHomeUrl}"
         accesskey="accesskeys-personalbar"

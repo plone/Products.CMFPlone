@@ -332,9 +332,6 @@ pre {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
     background-color: transparent;
     border-collapse: collapse;
-    border-bottom-color: &dtml-globalBorderColor;;
-    border-bottom-style: &dtml-borderStyle;;
-    border-bottom-width: &dtml-borderWidth;;
     padding: 0em 0em 0em 2em;
     white-space: nowrap;
     list-style: none;
@@ -374,6 +371,9 @@ pre {
 #portal-personaltools {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background-color: &dtml-globalBackgroundColor;;
+    border-top-color: &dtml-globalBorderColor;;
+    border-top-style: &dtml-borderStyle;;
+    border-top-width: &dtml-borderWidth;;
     border-bottom-color: &dtml-globalBorderColor;;
     border-bottom-style: &dtml-borderStyle;;
     border-bottom-width: &dtml-borderWidth;;
@@ -721,7 +721,18 @@ pre {
     list-style: none;
     display: inline;
     text-decoration: none;
+    color: &dtml-fontColor;;
 }
+
+#portal-colophon ul li {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-width: 1px 1px 1px 1.75em;
+    background-color: &dtml-globalBackgroundColor;;
+    font-size: &dtml-fontSmallSize;;
+    margin: 0 0.25em;
+    padding: 0.1em 0.2em;
+}
+
 
 /*
 ** Widgets
@@ -1263,6 +1274,10 @@ ul.configletDetails li label {
 .visualOverflow table,
 .visualOverflow img {
     margin: 0;
+}
+
+.visualFontSizeCorrection { /* Correction for WYSIWYG editors */
+    font-size: 75%;
 }
 
 /*

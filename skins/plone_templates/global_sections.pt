@@ -7,7 +7,8 @@
 <div metal:define-macro="portal_tabs"
      tal:omit-tag=""
      tal:define="selected_tabs python:here.selectedTabs(template_id, here);
-                 selected_portal_tab selected_tabs/portal;" >
+                 selected_portal_tab selected_tabs/portal;"
+     tal:condition="portal_tabs">
     <h5 class="hiddenStructure" i18n:translate="heading_sections">Sections</h5>
     <ul id="portal-globalnav">
        <tal:tabs tal:repeat="tab portal_tabs">

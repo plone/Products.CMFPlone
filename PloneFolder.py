@@ -6,7 +6,7 @@ from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.CMFCorePermissions import View, ManageProperties, \
-     ListFolderContents
+     ListFolderContents, AccessContentsInformation
 from Products.CMFCore.CMFCorePermissions import AddPortalFolders, \
      AddPortalContent, ModifyPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
@@ -357,6 +357,7 @@ portal_skins tool and set the correct default skin.""" % default
    
         return contents
     
+    # XXX: Not sure this belongs here, it was only on HEAD before the merge!
     def _verifyObjectPaste(self, object, validate_src=1):
         # XXX This is just an extension of a copy of the 
         # _verifyObjectPaste code from CMFCores PortalFolder. 
@@ -440,6 +441,14 @@ portal_skins tool and set the correct default skin.""" % default
                 raise ValueError, \
                       "Disallowed to paste subobject type '%s'." % type_name
         
+    security.declareProtected( AccessContentsInformation, 'folderlistingFolderContents')
+    def folderlistingFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
+        """
+        Calls listFolderContents in protected only by ACI so that folder_listing
+        can work without the List folder contents permission, as in CMFDefault
+        """
+        return self.listFolderContents(spec, contentFilter, suppressHiddenFiles)
+
     # Override CMFCore's invokeFactory to return the id returned by the
     # factory in case the factory modifies the id
     security.declareProtected(AddPortalContent, 'invokeFactory')

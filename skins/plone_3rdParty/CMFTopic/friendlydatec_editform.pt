@@ -43,11 +43,11 @@
                 >
                 
             <option value="min"
-                    tal:attributes="selected python:coperation=='min'"
+                    tal:attributes="selected python:coperation=='max'"
             >more than</option>
             
             <option value="max"
-                    tal:attributes="selected python:coperation=='max'"
+                    tal:attributes="selected python:coperation=='min'"
             >less than</option>
              
             <option value="within_day"

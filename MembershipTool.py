@@ -115,7 +115,8 @@ class MembershipTool(BaseTool):
 
         if members is not None and not hasattr(members, member_id):
             f_title = "%s's Home" % member_id
-            members.manage_addPloneFolder(id=member_id, title=f_title)
+            from Products.CMFPlone.PloneFolder import addPloneFolder
+            addPloneFolder(members, id=member_id, title=f_title)
             f=getattr(members, member_id)
             
             acl_users = self.__getPUS()

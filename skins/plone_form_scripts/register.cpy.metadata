@@ -1,5 +1,6 @@
 [default]
 title=Register a User
+proxy=Manager,Anonymous
 
 [validators]
 validators = validate_registration

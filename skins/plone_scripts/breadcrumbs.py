@@ -130,4 +130,7 @@ if published != o and iface_tool and \
     url = published.absolute_url() + '/view'
     path_seq.append( (published.title_or_id(), url) )
 
+elif currentlyViewingFolderContents:
+    path_seq.append( (published.getParentNode().title_or_id(), published.getParentNode().absolute_url()) )
+
 return path_seq
