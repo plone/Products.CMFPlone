@@ -37,7 +37,7 @@
                     <p tal:content="structure python:stx(here.text)">
         		    This is the body text of the comment. 
         		    </p>
-                    
+                    <!-- 
                     <form name="reply"
                           action=""
                           method="post"
@@ -45,7 +45,8 @@
                           
                         <input class="standalone" type="submit" value="Reply to this" />
                     
-                    </form>                                
+                    </form>  
+		    -->
                 </td>
             </tr>
         </table>
