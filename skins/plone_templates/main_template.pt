@@ -84,9 +84,6 @@
 
       <div class="visualClear"></div>
 
-<strong>
-Language: <em tal:content="structure here/Language">lang</em>
-</strong>
       <!-- The wrapper table. It contains the three columns. There's a table-less
            alternative in the plone_tableless skin layer that you can use if you
            prefer layouts that don't use tables. -->
