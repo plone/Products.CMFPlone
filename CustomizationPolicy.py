@@ -62,7 +62,8 @@ class DefaultCustomizationPolicy:
                     ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
                     ,'python: member and portal.portal_membership.getHomeFolder()'
                     ,'View'
-                    ,'user')		    
+                    ,'user'
+                    , visible=0)		    
         new_actions=[]
         for a in mt._cloneActions():
             if getattr(a,'id','') in ('addFavorite', 'favorites'): 

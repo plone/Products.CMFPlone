@@ -28,7 +28,7 @@
     - view_source.py has been added to Extensions. use it by http://site/object/view_source?template_id=$id
       - create external method, id=view_source, module=CMFPlone.view_source, function=getObjectSource
     - topics have been skinned.  subtopics now share their listing/management of subtopics with folder_contents
-    
+    - removed 'my workspace' (not visible action) until CMFWorkspaces and friends land   
     
 1.0a - Boards of Canada Release:
     - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
