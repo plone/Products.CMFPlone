@@ -288,8 +288,8 @@ def addNewActions(self, portal):
     at.addAction('copy',
                  name='Copy',
                  action='string:folder_copy:method',
-                 condition='',
-                 permission=Permissions.copy_or_move,
+                 condition='python:portal.portal_membership.checkPermission("%s", object)' % Permissions.copy_or_move,
+                 permission=Permissions.view_management_screens,
                  category='folder_buttons')
     at.addAction('paste',
                  name='Paste',
