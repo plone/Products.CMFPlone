@@ -74,7 +74,6 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         '''Should only return real members, not groups'''
         uf = self.portal.acl_users
         uf.changeOrCreateGroups(new_groups=['Foo', 'Bar'])
-        print uf.getUserNames()
         assert len(uf.getUserNames()) == 3
         members = self.membership.listMembers()
         assert len(members) == 1
