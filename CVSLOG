@@ -1,3 +1,67 @@
+2003-11-07 00:36  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): As usual,
+	  eaon forgets to commit his fixes ;)
+
+2003-11-06 23:22  limi
+
+	* skins/plone_ecmascript/plone_menu.js.dtml (Plone-2_0-branch):
+	  Removed some debug code Geir forgot in here :)
+
+2003-11-06 22:18  shh42
+
+	* tests/testPortalCreation.py (Plone-2_0-branch): Invert
+	  testWorkflowIsNoActionProvider to testWorkflowIsActionProvider as
+	  this change has been backed-out.
+
+2003-11-06 20:09  eaon
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  condition was set on the wrong wrapper
+
+2003-11-06 18:04  eaon
+
+	* skins/: plone_forms/login_form.pt, plone_styles/plone.css.dtml,
+	  plone_templates/global_contentviews.pt (Plone-2_0-branch): fixed
+	  content type specific actions items, removed unnecessary classes
+	  for forms, repaired form displaying in ie and opera
+
+2003-11-06 16:48  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  Added float fixes for IE to the header and description elements.
+
+2003-11-06 15:51  limi
+
+	* Portal.py (Plone-2_0-branch): "Properties" was not capitalized.
+
+2003-11-06 11:26  elvix
+
+	* skins/plone_ecmascript/plone_menu.js.dtml (Plone-2_0-branch):
+	  repaired the menu-javascripts somewhat. Should work in IE6 again
+	  now. Anyone doing ECMAscript, please indent your code and wrap
+	  logic-blocks in brackets ;)
+
+2003-11-06 09:16  philikon
+
+	* Portal.py, ToolNames.py, VisualEditingTool.py, __init__.py,
+	  interfaces/VisualEditingTool.py, setup/ConfigurationMethods.py,
+	  setup/dependencies.py, skins/plone_forms/original_edit_form.py,
+	  skins/plone_forms/visual_edit_form.py,
+	  skins/plone_templates/main_template.pt,
+	  tests/testVisualEditingTool.py, www/visualeditingTool.zpt
+	  (philikon-visualediting-branch): This is a first implementation
+	  of PLIP5 (Visual editing). See
+	  http://plone.org/development/current/projects/PLIP5 for detailled
+	  information.
+
+	  Note that there are no tests yet (I know, I know...). Portal
+	  migration is also missing.
+
+2003-11-06 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-06 01:26  limi
 
 	* skins/: plone_ecmascript/plone_javascripts.js,
