@@ -17,8 +17,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # is little to do.
         pass
 
+    def testPloneSkins(self):
+        '''Plone skins should have been set up'''
+        assert hasattr(self.folder, 'plone_powered.gif')
+
     def testDefaultView(self):
-        '''index_html should render'''
+        '''index_html should render (slow test)'''
         self.portal.index_html()
 
             
