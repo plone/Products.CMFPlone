@@ -25,6 +25,10 @@
             <a href="#" tal:attributes="href here/remote_url"
                         tal:content="here/remote_url">remote url</a>
         </p>
+
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+            show related items if they exist
+        </div>
     
         <div metal:use-macro="here/document_byline/macros/byline">
             Get the byline - contains details about author and modification date.

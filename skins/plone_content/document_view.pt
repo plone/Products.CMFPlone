@@ -33,7 +33,7 @@
             <div tal:replace="structure text" />
         </div>
 
-        <div metal:use-macro="here/global_relateditems/macros/relatedItems">
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
             show related items if they exist
         </div>
     
