@@ -18,3 +18,4 @@
     document.getElementById('day' + date).style.visibility = 'hidden';
     return true;
   }
+
