@@ -83,7 +83,7 @@
         tal:replace="n/length">n</span> items</a>
     </span>
 
-<metal:block tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
+    <metal:block tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
 
     <h2 i18n:translate="">Sub-topics</h2>
     
@@ -100,7 +100,11 @@
         </li>
     </ul>    
     
-</metal:block>
+    </metal:block>
+
+    <div tal:condition="not: results">
+        <p><strong i18n:translate=""> No Results were Found </strong></p>
+    </div>
 
     </metal:block>
     
