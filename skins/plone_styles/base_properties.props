@@ -27,6 +27,8 @@ contentViewBorderColor:string=#74ae0b
 contentViewBackgroundColor:string=#cde2a7
 contentViewFontColor:string=#578308
 
+inputFontColor:string=Black
+
 textTransform:string=lowercase
 
 evenRowBackgroundColor:string=#f7f9fa

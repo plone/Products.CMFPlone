@@ -177,7 +177,7 @@ form {
 }
 textarea {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
-    color: &dtml-fontColor;;
+    color: &dtml-inputFontColor;;
     background-color: white;
     width: 98%;
     padding: 0.1em;
@@ -186,13 +186,14 @@ input {
     font-family: <dtml-var fontFamily>;
     visibility: visible;
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
-    color: &dtml-fontColor;;
+    color: &dtml-inputFontColor;;
     background-color: white;
     vertical-align: middle;
     padding: 0.1em;
 }
 select {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
+    color: &dtml-inputFontColor;;
     vertical-align: top;
 }
 abbr, acronym, .explain {
