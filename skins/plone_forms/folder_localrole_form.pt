@@ -93,6 +93,7 @@
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
                         <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
+                                tal:attributes="value lroles"
                                 tal:content="lroles"
                                 i18n:translate="">
                            Role name
@@ -282,12 +283,16 @@
                         </span>
                         
                         <br />	
+
+                    <span class="field">
+                        <tal:block tal:repeat="role python:lrole[1]">
+                        <span i18n:translate=""
+                              tal:content="role"
+                              tal:omit-tag="">Role</span><span tal:condition="not: repeat/role/end"
+                                                               tal:omit-tag="">, </span>
+                        </tal:block>
+                    </span>
                 		
-                		<span class="field"
-                          tal:content="python:join(lrole[1], ', ')">
-                		Role, Another role
-                		</span>
-            
                 </span>
 
             </div>
