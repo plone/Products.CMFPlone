@@ -339,11 +339,12 @@ ul#personalBar {
     border-bottom-width: 1px;
     color: &dtml-mainFontColor;;
     padding-right: 3em;
+    margin: 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
-ul#portalTabs li {
+ul#personalBar li {
     float: right;
     background: transparent url("/linkOpaque.gif") center left no-repeat;
     padding-left: 12px;
@@ -354,12 +355,12 @@ ul#portalTabs li {
     display : none;
     /* */
 }
-ul#portalTabs li#personalBar-user {
+ul#personalBar li#personalBar-user {
     background: transparent url("/user.gif") center left no-repeat;
     padding-left: 19px;
 }
     
-div#personalBar li a {
+ul#personalBar li a {
     background-color: transparent;
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
@@ -387,9 +388,9 @@ div#pathBar {
 ul#contentTabs {
     background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
-    border-bottom: &dtml-contentTabBorder;;
     padding-left: 1em;
     margin-top: 1em;
+    margin-left: 0;
     /* white-space: nowrap; */
     list-style: none;
 }
@@ -422,6 +423,8 @@ ul#contentTabs li {
     color: &dtml-contentTabFontColorSelected;;
 }
 #contentBar {
+    border-collapse: collapse;
+    border-top: &dtml-contentTabBorder;;
     background: &dtml-contentTabBackground;;
     border-left: &dtml-contentTabBorder;;
     border-right: &dtml-contentTabBorder;;
