@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.0.1 - Jello
+Plone 2.0.1 - Jello - Released XX. April 2004
 
     - Renamed METAL macro "list-item" to "listitem" in news.pt and folder_listing.pt
       to fix Zope 2.6 compatibility.
@@ -214,7 +214,7 @@ Plone 2.0.1 - Jello
       The folder listing of the current folder
       </div>
 
-Plone 2.0 - Fyuti
+Plone 2.0 - Fyuti - released 23. March 2004
 
    Final
 
@@ -1200,13 +1200,13 @@ Plone 2.0 - Fyuti
       script which can be customized to filter out types based on user
       or context. [philikon]
 
-Plone 1.0.5 - Breakbeat Era
+Plone 1.0.5 - Breakbeat Era - released 9. September 2003
 
     - Security fix in CMF made us issue a new release with the updated CMF 1.3.2.
 
     - Workaround for the disappearing text bug in Internet Explorer 6 on Windows.
 
-Plone 1.0.4 - Zita Swoon
+Plone 1.0.4 - Zita Swoon - released 14. August 2003
 
     - Plone is now compliant with the two most widely-used accessibility
       standards in the world - Level A Conformance to the W3C's Web
@@ -1237,7 +1237,7 @@ Plone 1.0.4 - Zita Swoon
       reverse is 0 by default
       [runyaga]
 
-Plone 1.0.3 - Brazil
+Plone 1.0.3 - Brazil - released 19. June 2003
 
     - Fixed ERRATA in 1.0.2
 
@@ -1250,7 +1250,7 @@ Plone 1.0.3 - Brazil
     - added a property in portal_properties/site_properties called invalid_ids
     which will not be allowed to be used in the CMF/Plone site.
 
-Plone 1.0.2 - Vert Release
+Plone 1.0.2 - Vert - released 3. June 2003
 
     - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
 
@@ -1304,7 +1304,7 @@ Plone 1.0.2 - Vert Release
 
     - removed the setHeader() in header
 
-Plone 1.0.1 - Mira Calix
+Plone 1.0.1 - Mira Calix - released 19. February 2003
 
     - Added "Dry run" option to portal_migration
 
@@ -1328,7 +1328,7 @@ Plone 1.0.1 - Mira Calix
 
     - fixed Collector bug in new issue formPlone 1.0
 
-Plone 1.0
+Plone 1.0 - released 6. February 2003
 
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
 
@@ -2074,7 +2074,7 @@ Plone 1.0alpha - Boards of Canada Release:
 
     - issue #51 resolved
 
-Plone 0.9.9 - Bola Release:
+Plone 0.9.9 - Bola - released 25. May 2002:
 
     - Replaced all references to TextColor with FontColor, added
       headingFontColor property
@@ -2264,7 +2264,7 @@ Plone 0.9.9 - Bola Release:
 
     - many more changes and cleanups
 
-Plone 0.9.8 - Ulrich Schnauss Release:
+Plone 0.9.8 - Ulrich Schnauss - released 19. March 2002:
 
 
     - renaming of objects
@@ -2280,7 +2280,7 @@ Plone 0.9.8 - Ulrich Schnauss Release:
 
     - other things I forgot ;'(
 
-Plone 0.9.5 - 1/31/02:
+Plone 0.9.5 - Released 31. January 2002:
 
 
     - enormous overhaul of entire UI.  UI now works with Mozilla.
