@@ -1,6 +1,8 @@
 CHANGES
 
 Plone 1.0 rc1
+    - add_ext_editor script was added.  If you have ExternalEditor installed and 
+    you run this script; it should configure your system to use it.
     - tiny feature.. the filename will remain if your validation fails (not in IE)
       Issue 597
     - folder_publish now applied effective/expiration dates and will do so recurssively.
