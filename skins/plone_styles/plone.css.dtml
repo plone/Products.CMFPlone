@@ -264,7 +264,6 @@ div#siteActions {
     /* Logo properties */
     margin: &dtml-logoMargin;;
     padding: &dtml-logoPadding;;
-    display: block;
 }
 div#searchBox {
     /*searchbox style and positioning */
@@ -295,11 +294,7 @@ ul#portalTabs {
     margin: 0;
 }
 ul#portalTabs li {
-    /* Make the links inline using Fabrice's inversion to fix NS4 */
-    display : inline;
-    /*/*//*/
-    display : none;
-    /* */
+    display: inline;
 }
 ul#portalTabs li a {
     /* The normal, unselected tabs. They are all links */
@@ -338,34 +333,26 @@ ul#personalBar {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     color: &dtml-mainFontColor;;
-    padding-right: 3em;
+    padding: 0em 3em 0em 3em;
     margin: 0;
-    padding-bottom: 0;
-    padding-top: 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
 ul#personalBar li {
-    float: right;
+    display: inline;
     padding-bottom: 0;
     padding-top: 0;
-    /* Make the links inline using Fabrice's inversion to fix NS4 */
-    display : inline;
-    /*/*//*/
-    display : none;
-    /* */
     margin-bottom: 0;
 }
 ul#personalBar li#personalBar-user a {
     background: transparent url(user.gif) center left no-repeat;
-    padding-left: 19px;
+    padding-left: 15px;
 }
     
 ul#personalBar li a {
     background: transparent url(linkOpaque.gif) center left no-repeat;
-    padding-left: 12px;
-    min-height: 16px;
+    padding-left: 8px;
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
@@ -400,11 +387,7 @@ ul#contentTabs {
     list-style: none;
 }
 ul#contentTabs li {
-    /* Make the links inline using Fabrice's inversion to fix NS4 */
-    display : inline;
-    /*/*//*/
-    display : none;
-    /* */
+    display: inline;
 }
 #contentTabs li a {
     background: &dtml-contentTabBackgroundNotSelected;;
@@ -416,7 +399,7 @@ ul#contentTabs li {
     margin-right: 0.5em;
     padding: 0em 2em;
     position: relative;
-    top: 1px; /* Cope with odd rounding bugs */
+    top: 2px; /* Cope with odd rounding bugs */
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }

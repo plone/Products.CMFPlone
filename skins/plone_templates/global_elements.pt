@@ -59,8 +59,8 @@
      tal:define="portal_tabs actions/portal_tabs|nothing;
                  selected_tabs python:here.selectedTabs(template.getId(), here);
                  selected_portal_tab selected_tabs/portal;" >
+    <h5 class="hiddenstructure">Navigation</h5>
     <ul id="portalTabs">
-       <h5 class="hiddenstructure">Navigation</h5>
        <tal:tabs tal:repeat="tab portal_tabs">
        <li tal:attributes="id string:portaltab-${tab/id};
                            class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
@@ -72,19 +72,20 @@
           </a>
        </li>
        </tal:tabs>
-       <div class="clear"></div>
    </ul>
 </div>
 
 <!-- THE PERSONAL BAR DEFINITION -->
-<ul id="personalBar"
-     metal:define-macro="personal_bar"
-     tal:define="portal_url portal_url|here/portal_url;
-                 user_actions user_actions|actions/user;
-                 global_actions global_actions|actions/global;
-                 mtool mtool|here/portal_membership;
-                 display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">
-    <h5 class="hiddenstructure">Personal tools</h5>
+
+<span metal:define-macro="personal_bar"
+      tal:define="portal_url portal_url|here/portal_url;
+                  user_actions user_actions|actions/user;
+                  global_actions global_actions|actions/global;
+                  mtool mtool|here/portal_membership;
+                  display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];"
+      tal:omit-tag="" >
+<h5 class="hiddenstructure">Personal tools</h5>
+<ul id="personalBar">
     <li id="personalBar-user" tal:condition="not: isAnon"><a href=""
         tal:omit-tag="not: mtool/getHomeFolder"
         tal:attributes="href string:${mtool/getHomeUrl}"
@@ -108,8 +109,8 @@
             </a>
         </li>
     </tal:actions>
-    <div class="clear"></div>
 </ul>
+</span>
 
 <!-- THE PATHBAR (breadcrumbs) DEFINITION -->
 <div metal:define-macro="path_bar"
