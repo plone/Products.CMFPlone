@@ -3,7 +3,7 @@ from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault import Portal
 from Products.CMFPlone import cmfplone_globals
-from Extensions.Upgrade import normalize_tabs
+from Extensions.Upgrade import normalize_tabs, setupButtonActions
 from Products.CMFCalendar.Extensions import Install as CalendarInstall
 from Products.ExternalMethod import ExternalMethod
 import Globals
@@ -140,6 +140,7 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupExternalMethods(p)
 	CalendarInstall.install(p)
         normalize_tabs(p)
+	setupButtonActions(p)
         
     def create(self, parent, id, create_userfolder):
         id = str(id)

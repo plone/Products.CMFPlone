@@ -36,6 +36,43 @@ def migrate2ColumnLayout(self):
         path = [p for p in fsdir_views if p]
         skin_map[skin_name]=','.join(path)
 
+def setupButtonActions(self):
+    st=getToolByName(self, 'portal_actions')
+    for button in ( ActionInformation( 'rename'
+                                     , title='Rename'
+				     , category='local_buttons'
+				     , permissions=('List folder contents',)
+				     , action=Expression('string:folder_rename_form:method'))
+	          , ActionInformation( 'cut'
+		                     , title='Cut'
+				     , category='local_buttons'
+				     , permissions=('List folder contents',)
+				     , action=Expression('string:folder_cut:method'))
+                  , ActionInformation( 'copy'
+		                     , title='Copy'
+				     , category='local_buttons'
+				     , permissions=('List folder contents',)
+				     , action=Expression('string:folder_copy:method'))
+	          , ActionInformation( 'paste'
+		                     , title='Paste'
+				     , category='local_buttons'
+				     , permissions=('List folder contents',)
+				     , condition=Expression('folder/cb_dataValid')
+				     , action=Expression('string:folder_paste:method'))
+	          , ActionInformation( 'delete'
+		                     , title='Delete'
+				     , category='local_buttons'
+                                     , permissions=('List folder contents',)
+				     , action=Expression('string:folder_delete:method'))
+	          , ActionInformation( 'change_status'
+		                     , title='Change Status'
+				     , category='local_buttons'
+				     , permissions=('List folder contents',)
+				     , action=Expression('string:content_status_history:method')) ):
+        st._actions.append(button)
+    st._p_changed=1
+    return 'setup complete'
+			    
 def normalize_tabs(self):
     """ attempts to remove tabs that dont add to user experience """
     #make 'reply' tab unvisible

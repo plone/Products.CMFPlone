@@ -184,14 +184,16 @@
                 <!--you can filter by subject keywords by filling in this value-->
             </span>
 
-            <input class="context" type="submit" name="folder_rename_form:method" value="Rename" tal:condition="folder_contents" />
-            <input class="context" type="submit" name="folder_cut:method" value="Cut" tal:condition="folder_contents" /> 
-            <input class="context" type="submit" name="folder_copy:method" value="Copy" tal:condition="folder_contents" />
-            <input tal:condition="here/cb_dataValid | nothing"
-                   class="context" type="submit" name="folder_paste:method" value="Paste" />
-            <input class="context" type="submit" name="folder_delete:method" value="Delete" tal:condition="folder_contents" />
-            <input class="context" type="submit" name="content_status_history:method" value="Change Status" tal:condition="folder_contents" />
-    
+            <metal:block tal:condition="folder_contents">
+              <tal:block tal:repeat="button actions/local_buttons|nothing">
+              <input class="context" 
+	             type="submit" 
+	             name="folder_rename_form:method" 
+		     value="Rename" 
+		     tal:attributes="value button/name; name button/url;" />
+              </tal:block>   
+            </metal:block>
+
         </td></tr></tbody></table>
     
     </form>
