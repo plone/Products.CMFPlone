@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Added current time to the standard error message. Useful when your
+      users report errors and you want to locate the incident in the
+      error logs.
+      [limi]
+
     - User Management Screens were added:
 
       - Users overview - prefs_users_overview - batch user maintenance

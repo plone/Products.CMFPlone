@@ -92,6 +92,17 @@
                     </div>
                 </div>        
                 
+                <div class="row">
+                    <div class="label" i18n:translate="label_error_time">
+                    Request made at
+                    </div>
+            
+                    <div class="field" 
+                         tal:content="here/ZopeTime">
+                    The time the error was encountered
+                    </div>
+                </div>        
+
             </div>
         
         </div>
