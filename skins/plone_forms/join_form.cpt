@@ -244,7 +244,7 @@
                        tal:attributes="checked python:test(mail_me, 'checked', None);
                                        tabindex tabindex/next;" 
                        />
-                <label for="cb_mailme" i18n:translate="label_yes_mail_me_password">Yes, mail me my password</label>
+                <label for="cb_mailme" i18n:translate="label_yes_mail_password">Yes, send a mail containing the password</label>
             </div>
         </div>
 
