@@ -49,7 +49,10 @@ class DefaultCustomizationPolicy:
         tt=getToolByName(portal, 'portal_types')
         folder_actions=tt['Folder']._cloneActions()
         for a in folder_actions:
-            if a.get('id','') in ('folderlisting', ): a['visible']=0
+            if a.get('id','') in ('folderlisting', ): 
+                a['visible'] = 0
+            if a.get('id','')=='edit':
+                a['name'] = 'Properties'
         tt['Folder']._actions=folder_actions
 
         tt['Event'].addAction( 'metadata'
