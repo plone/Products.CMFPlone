@@ -160,6 +160,9 @@ def modifyActionProviders(self, portal):
             action.title='Contents'
             action.name='Contents'
     at._actions=_actions
+    # Remove the portal_workflow from the actionproviders
+    # Since we have the 'review_slot'
+    at.deleteActionProvider('portal_workflow')
    
     dt=getToolByName(portal, 'portal_discussion')
     _actions=dt._cloneActions()

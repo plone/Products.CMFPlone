@@ -48,6 +48,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # This works now as hazmat fixed LargePloneFolder, hurray.
         self.assertEqual(members.index_html.meta_type, 'Page Template')
 
+    def testPortalActionProviders(self):
+        # Remove portal_workflow by default.  We are falling back to
+        # our use of the 'review_slot'.  There are no places using 
+        # the worklist ui anymore directly from the listFilteredActionsFor
+        at = self.portal.portal_actions
+        self.failUnless('portal_workflow' not in at.listActionProviders())
             
 if __name__ == '__main__':
     framework()
