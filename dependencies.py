@@ -22,3 +22,8 @@ try:
 except ImportError:
     log("ExternalEditor not found.  Please download it from http://www.zope.org/Members/Caseman/ExternalEditor")
 
+try:
+    import Products.GroupUserFolder
+except ImportError:
+    log("GroupUserFolder not found. Please download it from http://sf.net/projects/collective")
+
