@@ -11,13 +11,12 @@ class CatalogTool(BaseTool):
 
     meta_type = ToolNames.CatalogTool
     security = ClassSecurityInfo()
-    unwrap_objects = 0
 
     def catalogObject(self, object, uid, threshold=None, idxs=[]):
         """ 
         Unwraps the acquisition from an object before it is cataloged. 
         """
-        if self.unwrap_objects:
+        if self.getProperty('unwrapobjects', None):
             object=aq_base(object)
 
         BaseTool.catalogObject(self, object, uid, threshold=None, idxs=[])

@@ -52,7 +52,6 @@ Plone 2.0 - Fyuti
           but should use the 'workflow' or 'worklist' category.  Up to whoever
           gets to it first 8-).
             
-    
     - Presentation mode now renders paragraph tags invisible, which means
       you can create a richer document for web and/or print, but keep the 
       presentations without the additional comments. If you want the old

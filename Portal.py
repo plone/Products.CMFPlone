@@ -351,6 +351,10 @@ class PloneGenerator(Portal.PortalGenerator):
         addCMFPloneTool = p.manage_addProduct['CMFPlone'].manage_addTool
         addCMFPloneTool(ToolNames.ActionsTool, None)
         addCMFPloneTool(ToolNames.CatalogTool, None)
+        #Add unwrapobjects boolean which will toggle whether or not 
+        #the catalog needs to unwrap objects before indexing 
+        p.portal_catalog._setProperty('unwrapobjects', 1, 'boolean')
+
         addCMFPloneTool(ToolNames.MemberDataTool, None)
         addCMFPloneTool(ToolNames.SkinsTool, None)
         addCMFPloneTool(ToolNames.TypesTool, None)
