@@ -4,15 +4,23 @@ Changelog for Plone
 
 Plone 2.1 - unknown - unknown - unreleased
 
-    -  PLIP-78: "Display" menu to select default view
+    - PLIP-77: Constrain addable types on a per-folder basis
+     
+      - New menu item "settings" on "add new item" drop-down to select
+        which items to display, and how.
+    
+      [optilude]
 
-      - Enable TemplateMixin and fix its UI
+    - PLIP-78: "Display" menu to select default view
+
+      - Enable TemplateMixin and fix its UI (in ATContentTypes)
 
       - Add a "display" drop-down where these can be chosen
-
-      - Ghost this out when editing
-
-      - On folderish items, an option "select item" - shows browser, select default_page.
+      
+      - On folderish items, an option "select item" - shows browser, select
+        default_page.
+         
+      [optilude, david convent]
 
     - added 2 new knob to jscalendar: 
 
