@@ -80,12 +80,12 @@
            <td tal:define="statpair python: split(here.status(), '_');
                            base python: statpair[0];
                            paren python: len(statpair) > 1">
-                <span i18n:translate="" tal:replace="python: '%s%s%s'
+                <span tal:omit-tag="" i18n:translate=""><span tal:replace="python: '%s%s%s'
                                            % ((paren and '(') or '',
                                               base,
                                               (paren and ')') or '')">
                   STATUS
-                </span>
+                </span></span>
            </td>
 
            <td align="right" i18n:translate="">Security related:</td> 
@@ -162,16 +162,15 @@
            <td> <strong>
            <span metal:define-slot="issue_topic_slot"
                  tal:replace="here/topic">
-            TOPIC</span>/<span metal:define-slot="issue_classification_slot"
-                               tal:replace="here/classification" i18n:translate=""
-            >CLASSIFICATION</span>
+            TOPIC</span>/<metal:block define-slot="issue_classification_slot"><span tal:omit-tag="" i18n:translate=""><span tal:replace="here/classification"
+            >CLASSIFICATION</span></span></metal:block>
              </strong>
            </td>
            <td align="right" i18n:translate="">Importance:</td>
            <td metal:define-slot="issue_importance_slot">
-             <span tal:replace="here/importance" i18n:translate="">
+             <span tal:omit-tag="" i18n:translate=""><span tal:replace="here/importance">
                IMPORTANCE
-             </span>
+             </span></span>
            </td>
          </tr>
 

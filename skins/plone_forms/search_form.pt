@@ -208,10 +208,10 @@
                            onblur="formtooltip('item_type_search_help',0)" 
                            tal:attributes="value type;
                                            tabindex tabindex/next;"/> 
-                    <span i18n:translate=""
+                    <span tal:omit-tag="" i18n:translate=""><span
                           tal:replace="python:here.portal_types.getTypeInfo(type).Title()">
                     dummy
-                    </span>
+                    </span></span>
                     <br />
                 </span>       
             </div>
@@ -269,7 +269,7 @@
                            onblur="formtooltip('review_status_search_help',0)" 
                            tal:attributes="value state;
                                            tabindex tabindex/next;"/> 
-                    <span tal:replace="state" i18n:translate="">dummy</span> <br />
+                    <span tal:omit-tag="" i18n:translate=""><span tal:replace="state">dummy</span></span> <br />
                 </span> 
             </div>
         </div>

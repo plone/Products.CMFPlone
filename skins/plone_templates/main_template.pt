@@ -72,7 +72,7 @@ Header stuff
                         <a class="" href="" 
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');
 			                   href action/url;"> 
-                            <span tal:replace="action/name" i18n:translate="">dummy</span>
+                            <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
                         </a> 
                         <span class="netscape4">&middot;</span>
                     </span>

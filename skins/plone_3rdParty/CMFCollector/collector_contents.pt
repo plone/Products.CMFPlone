@@ -154,9 +154,9 @@
             
             <br />
             
-            <span tal:replace="item/importance" i18n:translate="">
+            <span tal:omit-tag="" i18n:translate=""><span tal:replace="item/importance">
               Importance
-            </span>
+            </span></span>
 
             <span tal:condition="item/assigned_to|nothing"
 	              i18n:translate="collector_issue_assigned_to">,

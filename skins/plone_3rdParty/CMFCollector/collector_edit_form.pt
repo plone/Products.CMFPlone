@@ -238,7 +238,7 @@
             <metal:block tal:define="states here/issue_states;"
                          tal:repeat="state states">
 
-                <span tal:replace="state" i18n:translate="">State:</span>
+                <span tal:omit-tag="" i18n:translate=""><span tal:replace="state">State:</span></span>
                 
                 <br />
                 

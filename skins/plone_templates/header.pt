@@ -131,7 +131,7 @@
             <a href="" class=""
                tal:attributes="href tab/url;
                                class python:test(compare_id==tab['id'], 'selected', 'plain')">
-                <span tal:content="tab/name" i18n:translate="">dummy</span>
+                <span tal:omit-tag="" i18n:translate=""><span tal:replace="tab/name">dummy</span></span>
             </a>
             
             <span class="netscape4">&middot;</span>
@@ -160,7 +160,7 @@
                tal:attributes="href action/url">
                 <img tal:replace="structure here/linkOpaque.gif" />
                 
-                <span tal:replace="action/name" i18n:translate="">dummy</span>
+                <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
             </a>
             </metal:block>
         </div>
