@@ -21,10 +21,6 @@ _condMap = {
     'copy': 'python:portal.portal_membership.checkPermission("%s", object)' % Permissions.copy_or_move,
     }
 
-def rc2_rc3(portal):
-    # this migration was never written so all code went to rc3_rc4
-    return []
-
 def rc3_rc4(portal):
     out=[]
 
@@ -37,6 +33,13 @@ def rc3_rc4(portal):
     pt._actions=_actions
 
     at=getToolByName(portal, 'portal_actions')
+
+    out.append('Renaming control panel to \'portal_controlpanel\'')
+    if hasattr(aq_base(portal), 'portal_control_panel_actions'):
+        at.deleteActionProvider('portal_control_panel_actions')
+        portal.manage_rename('portal_control_panel_actions', 'portal_controlpanel')
+        at.addActionProvider('portal_controlpanel')
+    
     out.append('Fixing folder contents action')
     correctFolderContentsAction(at)
     _actions=at._cloneActions()
