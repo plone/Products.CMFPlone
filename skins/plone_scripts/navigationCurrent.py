@@ -14,6 +14,9 @@ if obj is None:
 
 obj=obj.aq_parent
 
+if obj.getId()=='Members':
+    return listing
+    
 try:
     for o in obj.listFolderContents(spec='Folder'):
        if o.Type()=='Folder' and o.Title()!='Favorites':
