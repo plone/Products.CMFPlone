@@ -140,6 +140,7 @@ class DefaultCustomizationPolicy:
             if getattr(a,'id','') in ('addFavorite', 'favorites'): 
                 a.visible=0
             if a.id=='mystuff': 
+                a.name='My Folder'
                 new_actions.insert(0, a)
             elif a.id=='myworkspace':
                 new_actions.insert(1, a)

@@ -1,3 +1,4 @@
+
     - subjects(keywords) in metadata tool were being saved with null property.. automatically relating items
     - filtering was broke changed folder_contents had filter_by_Type where CMF1.3 now uses filter_by_portal_type 
       this required changed to folder_contents and filterTypes - only 2 lines of code to change ;) - thanks Florrent!
@@ -14,6 +15,14 @@
     - also fixed the mass publishing which was borked.  now we pass around 
       the container
     - Issue 266 fixed - topic_view now says 'no results found'
+    - Issue 288 fixed - favorites slot needed <br />
+    - removed CSSImports and inlined @imports into <style tal:content="string">
+      put Content-Language to use here.Language() or portal_properties.default_language
+      changed 'My Stuff' to 'My Folder' 
+      moved edit_forms in with content
+      moved event_xxxx into plone_3rdParty/CMFCalendar for consitency
+      Issue 204 fixed
+    
 1.0 alpha4
     - publishing now works without javascript. #202
     - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will need updating if migrate)
