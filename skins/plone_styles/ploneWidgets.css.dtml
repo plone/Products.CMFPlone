@@ -56,7 +56,7 @@ div.row {
     width: 94%;
 }
 span.legend {
-    background: &dtml-mainBackground;;
+    background: &dtml-contentBackground;;
     padding: 0.5em;
     position : relative;
     top: -1.8em;
