@@ -1,55 +1,81 @@
-<div tal:condition="python:here.portal_discussion.isDiscussionAllowedFor(here)"
-     tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
-    <a name="comments"> </a>
-    <div tal:repeat="reply python:container.sort_modified_ascending(here.talkback.getReplies())">
+<metal:block metal:define-macro="discussionView"
+             tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));
+			 isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
+			 hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
+			 view_action python:hereTypeInfo.getActionById('view');
+			 reply python:[oa for oa in actions['object'] if oa.get('id', '')=='reply'];
+			 isViewTemplate python:test(template.getId()==view_action, 1, 0);"
+	     tal:condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0) ">	
 
-        <table class="box"
-               cellpadding="0"
-               cellspacing="0">
-            <tr>
-                <th>Comment</th><th class="empty">&nbsp;</th>	
-            </tr>
-            
-            <tr>
-                <td colspan="2">
-                    <h2><img src="discussionitem_icon.gif" alt="Comment" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
-                    Posted by:
-                    <span tal:content="reply/Creator">Poster Name</span>
-                    at 
-                    <span tal:replace="python: here.toPortalTime(reply.modified())">8/23/2001 12:40:44 PM</span>
-                    
-                    <p tal:content="structure python:stx(reply.text)">
-        		    This is the body text of the comment. 
-        		    </p>
-                    
-                    <form name="reply"
-                          action="discussion_reply_form"
-                          method="post"
-			  tal:condition="python:test( getattr(here, 'isPortalContent', ''), here.isPortalContent, 0)" >
-                          
-                        <input class="standalone" type="submit" value="Reply to this" />
-                    
-                    </form>
-                    
-                    <div class="group" tal:condition="python: here.talkback.hasReplies(reply)">
-                        <span class="legend">Replies</span>
+    <form name="reply" 
+          action="" 
+          method="post"
+          tal:condition="reply" 
+	  tal:attributes="action python:reply[0]['url']">       	
 
-                        <span> 
-                             <span tal:repeat="child python:container.sort_modified_ascending(reply.talkback.getReplies())">
-                                <a href="" 
-                                   class="comment" 
-                                   tal:attributes="href string:${child/absolute_url}/discussionitem_view">
-                                <span tal:replace="child/Title">Comment title</span>   
-                                (by <span tal:replace="child/Creator">username</span>
-                                at <span tal:replace="python: here.toPortalTime(child.modified())">8/23/2001 12:49:08 PM</span>)
-                                </a>
-                             </span>
-                        </span>
-                    </div>
-                                
-                </td>
-            </tr>
-        </table>
-        
+        <tal tal:define="discussion python:here.portal_discussion.getDiscussionFor(here)" />
+	
+        <input class="standalone" 
+	       type="submit" 
+	       value="Add Comment" />
+    </form>
+    
+    <div class="spacer"> &nbsp; </div>
+
+    <div tal:condition="python:here.portal_discussion.isDiscussionAllowedFor(here)"
+	 tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
+	<a name="comments"> </a>
+	<div tal:repeat="reply python:container.sort_modified_ascending(here.talkback.getReplies())">
+
+	    <table class="box"
+		   cellpadding="0"
+		   cellspacing="0">
+		<tr>
+		    <th>Comment</th><th class="empty">&nbsp;</th>	
+		</tr>
+		
+		<tr>
+		    <td colspan="2">
+			<h2><img src="discussionitem_icon.gif" alt="Comment" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
+			Posted by:
+			<span tal:content="reply/Creator">Poster Name</span>
+			at 
+			<span tal:replace="python: here.toPortalTime(reply.modified())">8/23/2001 12:40:44 PM</span>
+			
+			<p tal:content="structure python:stx(reply.text)">
+				This is the body text of the comment. 
+				</p>
+			
+			<form name="reply"
+			      action="discussion_reply_form"
+			      method="post"
+			      tal:condition="python:test( getattr(here, 'isPortalContent', ''), here.isPortalContent, 0)" >
+			      
+			    <input class="standalone" type="submit" value="Reply to this" />
+			
+			</form>
+			
+			<div class="group" tal:condition="python: here.talkback.hasReplies(reply)">
+			    <span class="legend">Replies</span>
+
+			    <span> 
+				 <span tal:repeat="child python:container.sort_modified_ascending(reply.talkback.getReplies())">
+				    <a href="" 
+				       class="comment" 
+				       tal:attributes="href string:${child/absolute_url}/discussionitem_view">
+				    <span tal:replace="child/Title">Comment title</span>   
+				    (by <span tal:replace="child/Creator">username</span>
+				    at <span tal:replace="python: here.toPortalTime(child.modified())">8/23/2001 12:49:08 PM</span>)
+				    </a>
+				 </span>
+			    </span>
+			</div>
+				    
+		    </td>
+		</tr>
+	    </table>
+	    
+	</div>
     </div>
-</div>
+    
+</metal:block>

@@ -2,7 +2,7 @@
                       Your code will have started above. ;)
                     </dtml-comment>
 
-                    <dtml-var "macro_renderer(template='here/portal_buttons', macro='discussionView')" >
+                    <dtml-var "macro_renderer(template='here/viewThreadsAtBottom', macro='discussionView')" >
                 
                   </div>
 

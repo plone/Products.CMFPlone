@@ -49,18 +49,19 @@
                 
                     </metal:block>
                 
-                    <div class="document" tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
+                    <div class="document"
+		         tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
 
                         <div metal:use-macro="here/header/macros/portal_message">
                         Message box
                         </div>
             
-                	    <div metal:define-slot="main" tal:content="nothing">
+                	<div metal:define-slot="main" tal:content="nothing">
                         Page body text 
                         </div>
             
                         <div metal:define-slot="sub">
-                            <span metal:use-macro="here/portal_buttons/macros/discussionView" />
+                        <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
                         </div> 
                     
                     </div>   
