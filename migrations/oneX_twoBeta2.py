@@ -93,7 +93,6 @@ def migrateTools(portal):
         obj = aq_base(getattr(orig, info['id']))
         tt._setObject(info['id'], obj)
 
-    #need to migrate skin cookie
     avail_paths=manage_listAvailableDirectories()
     orig = _migrate(portal, 'portal_skins', ToolNames.SkinsTool, ['selections', '_actions']) #XXX
     st = getToolByName(portal, 'portal_skins')
@@ -107,6 +106,7 @@ def migrateTools(portal):
         else:
             if obj.meta_type!='Filesystem Directory View':
                 st._setObject(info['id'], obj)
+    st.request_varname = orig.request_varname
 
     at = getToolByName(portal, 'portal_actions')
     ap = at.action_providers
