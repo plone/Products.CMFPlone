@@ -24,8 +24,16 @@ class PloneConfiglet(ActionInformation):
     def getAppId(self):
         return self.appId
     
+    def getDescription(self):
+        return self.description
+    
     def clone(self):
         return self.__class__(**self.__dict__)
+    
+    def getAction(self,ec):
+        res=ActionInformation.getAction(self,ec)
+        res['description']=self.getDescription()
+        return res
     
 default_configlets = (
     {'id':'QuickInstaller','appId':'QuickInstaller','name':'Install Products',
@@ -105,6 +113,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
         visible     =      properties.get( 'visible_%d'     % index, 0  )
         permissions =      properties.get( 'permission_%d'  % index, () )
         appId       =      properties.get( 'appId_%d'  % index, '' )
+        description =      properties.get( 'description_%d'  % index, '' )
 
         if not name:
             raise ValueError('A name is required.')
@@ -135,6 +144,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
                                 , category=category
                                 , visible=visible
                                 , appId = appId
+                                , description = description
                                 )
     security.declareProtected( ManagePortal, 'addAction' )
     def addAction( self
@@ -147,6 +157,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
                  , visible=1
                  , appId=None
                  , imageUrl=None
+                 , description=''
                  , REQUEST=None
                  ):
         """ Add an action to our list.
@@ -172,6 +183,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
                                       , category=str(category)
                                       , visible=int(visible)
                                       , appId=appId
+                                      , description=description
                                       )
 
         new_actions.append( new_action )
@@ -210,6 +222,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
             a1['action'] = a.getActionExpression()
             a1['condition'] = a.getCondition()
             a1['appId'] = a.getAppId()
+            a1['description']=a.getDescription()
             actions.append(a1)
 
         # possible_permissions is in AccessControl.Role.RoleManager.

@@ -139,6 +139,22 @@
 <td></td>
 <td>
   <div class="form-label">
+  Description
+  </div>
+</td>
+<td>
+  <div class="form-element">
+<textarea type="text" name="description_&dtml-index;"  cols="80" rows=5/>
+<dtml-var description missing>
+</textarea>
+  </div>
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td>
+  <div class="form-label">
   Visible?
   </div>
 </td>

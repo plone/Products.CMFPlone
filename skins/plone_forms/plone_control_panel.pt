@@ -20,9 +20,9 @@
         <h2 tal:content="g/title"> Plone Configlets </h2>
         <p tal:define="configlets python:controlPanel.enumConfiglets(group=g['id'])">
             
-            <a href="" tal:repeat = "configl configlets" tal:attributes="href configl/url" >
-            <img tal:attributes="src python:getIconFor('controlpanel',configl['id'])" tal:on-error="string:" />
-            <span tal:content="configl/name" />
+            <a href="" tal:repeat = "configl configlets" tal:attributes="href configl/url " >
+            <img tal:attributes="src python:getIconFor('controlpanel',configl['id']);alt configl/description"  tal:on-error="string:" />
+            <span tal:content="configl/name"    />
             </a>
         </p>
     </tal:block>
