@@ -297,14 +297,16 @@ function toggleSelect(selectbutton) {
 // sets their target-attribute to _blank , and adds a class external
 
 function scanforlinks(){
-    // secure against really old DOMs 
+    // securing against really old DOMs 
     
-    if (!document.getElementsByTagName){return false}
-    
+    if (! document.getElementsByTagName){return false};
+    if (! document.getElementById){return false};
     // Quick utility function by Geir Bækholt
     // Scan all links in the document and set classes on them dependant on whether they point to the current site or are external links
     
     content = document.getElementById('documentContent')
+    if (! content){return false}
+    
     links = content.getElementsByTagName('a');
     for (i=0; i < links.length; i++){      
         if (links[i].getAttribute('href')){
