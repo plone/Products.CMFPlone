@@ -65,13 +65,14 @@ def oneX_twoBeta2(portal):
 
 def doit(self):
     oneX_twoBeta2(self)
-    swapPortalRoot(self)
+    portal=swapPortalRoot(self)
+    moveOldTemplates(portal)
+    return "some templates in portal_skins/custom may have been renamed"
 
 def swap(self):
-    swapPortalRoot(self)
+    return swapPortalRoot(self)
 
 def _migrate(portal, toolid, name, attrs):
-    from copy import deepcopy
     orig=getToolByName(portal, toolid)
     portal.manage_delObjects(toolid)
     portal.manage_addProduct['CMFPlone'].manage_addTool(name)
@@ -79,6 +80,14 @@ def _migrate(portal, toolid, name, attrs):
     for attr in attrs:
             setattr(tool, attr, aq_base(getattr(aq_base(orig), attr)))
     return orig
+
+def moveOldTemplates(portal):
+    #attempt to move old templates out the wway
+    st = getToolByName(portal, 'portal_skins')
+    custom = st.custom
+    for id in custom.objectIds():
+        if id in ('main_template', 'header', 'footer', 'folder_contents'):
+            st.custom.manage_renameObjects([id], ['premigration'+id])
 
 def swapPortalRoot(portal):
     """ We want to swap CMFDefault.PortalObject.Portal with CMFPlone.Portal.Portal """
