@@ -126,6 +126,8 @@ class StatelessTreeBuilder:
                else:
                    r['siblings']=self.getChildObjects(p.aq_parent,self.showFolderishSiblingsOnly)
                    r['siblingtitles']=map(lambda x:x.title_or_id(),r['siblings'])
+                   if p not in r['siblings']:
+                       r['siblings'].append(p)
         
            res.append(r)
            itemcount=itemcount+1
@@ -162,6 +164,9 @@ class StatelessTreeBuilder:
         """
         Constructs a Menu
         """
+        #print 'build...'
+        import time
+        t=time.time()
         
         list,itemtotal = self.buildMenuStructure()
         
@@ -238,9 +243,11 @@ class StatelessTreeBuilder:
               if itemcounter >= batchStart+batchSize :
                   res['nextBatchStart']=itemcounter
                   res['next']=1
+                  #print 'ready:',time.time()-t   
                   return res
                   
-        #pp.pprint(res)    
+        #pp.pprint(res) 
+        #print 'ready:',time.time()-t   
         return res
 
 allow_class(StatelessTreeBuilder)

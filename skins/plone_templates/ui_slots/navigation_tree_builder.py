@@ -1,5 +1,5 @@
 ## Script (Python) "navigation_tree_builder"
-##parameters=tree_root,navBatchStart=0
+##parameters=tree_root,navBatchStart=0,showMyUserFolderOnly=1
 ##title=Standard Tree
 ##
 #Stateless Tree Navigation
@@ -15,8 +15,26 @@ metaTypesNotToList=['CMF Collector','CMF Collector Issue','CMF Collector Catalog
 # there is some VERY weird error with Collectors,
 # so I have to remove from the list
 
+# these types should not be queried for children
+parentMetaTypesNotToQuery=[]
+
 #default function that finds the children out of a folderish object
 def childFinder(obj,folderishOnly=1):
+    if obj.meta_type in parentMetaTypesNotToQuery:
+        return []
+    
+    # shall all Members be listed or just myself!
+    if showMyUserFolderOnly and obj.id=='Members':
+        try:
+            return [getattr(obj,obj.REQUEST['AUTHENTICATED_USER'].getId())]
+        except:
+            return []
+    
+##    if folderishOnly:
+##        return obj.objectValues(['Plone Folder'])
+##    else:
+##        return obj.objectValues()
+    
     if obj.meta_type == 'Portal Topic':
         # to traverse through Portal Topics
         cat = getToolByName( obj, 'portal_catalog' )
@@ -46,7 +64,7 @@ def childFinder(obj,folderishOnly=1):
         objs=filter(lambda x: hasattr(x.aq_explicit,'isPrincipiaFolderish') and x.aq_explicit.isPrincipiaFolderish,res)
         perm = 'List folder contents' #XXX should be imported
         permChk = context.portal_membership.checkPermission
-        return [o for o in res if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
+        return [o for o in objs if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
     else:
         return res
 
