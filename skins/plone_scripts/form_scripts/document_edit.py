@@ -1,7 +1,6 @@
 ## Script (Python) "document_edit"
 ##parameters=text_format, field_text, file='', SafetyBelt='', choice=' Change ', field_title='', field_description='', field_id=''
 ##title=Edit a document
-from Products.CMFPlone import pathsplit
 REQUEST=context.REQUEST
 
 if not field_id:
