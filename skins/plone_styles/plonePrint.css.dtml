@@ -19,8 +19,8 @@ td.right,
 .contentBar,
 .footer,
 .help,
-.legend
-.message
+.legend,
+div.message
 {
     display: none;
 }
