@@ -1,13 +1,17 @@
 from Products.CMFCore import MemberDataTool
 from Products.CMFCore.MemberDataTool import MemberDataTool as BaseTool
 from Products.CMFCore.MemberDataTool import MemberData as BaseData
+from Products.CMFCore.MemberDataTool import CleanupTemp
 from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
+from ZPublisher.Converters import type_converters
 from AccessControl import ClassSecurityInfo
+from Acquisition import aq_inner, aq_parent, aq_base
 from BTrees.OOBTree import OOBTree
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFCore.CMFCorePermissions import SetOwnProperties, ManagePortal
 
 class MemberDataTool(PloneBaseTool, BaseTool):
 
@@ -16,6 +20,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
     toolicon = 'skins/plone_images/user.gif'
     
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
+
 
     def __init__(self):
         BaseTool.__init__(self)
@@ -54,16 +59,161 @@ class MemberDataTool(PloneBaseTool, BaseTool):
             if member_id not in user_list:
                 self.portraits._delObject(member_id)
 
+    security.declareProtected(ManagePortal, 'purgeMemberDataContents')
+    def purgeMemberDataContents(self):
+        '''
+        Delete ALL MemberData information. This is required for us as we change the
+        MemberData class.
+        XXX THIS HAS TO BE DONE WHEN MIGRATING FROM PREVIOUS VERSIONS TO THIS ONE.
+        '''
+        membertool= getToolByName(self, 'portal_membership')
+        members   = self._members
+
+        for tuple in members.items():
+            member_name = tuple[0]
+            member_obj  = tuple[1]
+            del members[member_name]
+
+        return "Done."
+
+    security.declarePrivate('wrapUser')
+    def wrapUser(self, u):
+        '''
+        If possible, returns the Member object that corresponds
+        to the given User object.
+        We override this to ensure OUR MemberData class is used
+        '''
+        id = u.getId()
+        members = self._members
+        if not members.has_key(id):
+            # Get a temporary member that might be
+            # registered later via registerMemberData().
+            temps = self._v_temps
+            if temps is not None and temps.has_key(id):
+                m = temps[id]
+            else:
+                base = aq_base(self)
+                m = MemberData(base, id)
+                if temps is None:
+                    self._v_temps = {id:m}
+                    if hasattr(self, 'REQUEST'):
+                        # No REQUEST during tests.
+                        self.REQUEST._hold(CleanupTemp(self))
+                else:
+                    temps[id] = m
+        else:
+            m = members[id]
+        # Return a wrapper with self as containment and
+        # the user as context.
+        return m.__of__(self).__of__(u)
+
 MemberDataTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MemberDataTool)
 
+
+_marker = []  # Create a new marker object.
+
+
 class MemberData(BaseData):
 
     meta_type='Plone MemberData'
+    security = ClassSecurityInfo()
+    _values = {}                        # Values dict
 
-    def __init__(self):
-        BaseData.__init__(self)
+    def __init__(self, *args, **kw):
+        BaseData.__init__(self, *args, **kw)
+
+    security.declareProtected(SetOwnProperties, 'setProperties')
+    def setProperties(self, properties=None, **kw):
+        '''Allows the authenticated member to set his/her own properties.
+        Accepts either keyword arguments or a mapping for the "properties"
+        argument.
+        '''
+        if properties is None:
+            properties = kw
+        membership = getToolByName(self, 'portal_membership')
+        registration = getToolByName(self, 'portal_registration', None)
+        if not membership.isAnonymousUser():
+            member = membership.getAuthenticatedMember()
+            if registration:
+                failMessage = registration.testPropertiesValidity(properties, member)
+                if failMessage is not None:
+                    raise 'Bad Request', failMessage
+            member.setMemberProperties(properties)
+        else:
+            raise 'Bad Request', 'Not logged in.'
+
+
+    security.declarePublic('getProperty')
+    def getProperty(self, id, default=_marker):
+        tool = self.getTool()
+        base = aq_base( self )
+
+        # Check if we've got a marker asking us to get the value from the user object
+        from_user = getattr(self, "%s_USER" % id, None)
+
+        # First, check the wrapper (w/o acquisition).
+        value = getattr( base, id, _marker )
+
+        # Then, check the tool and the user object for a value.
+        tool_value = tool.getProperty( id, _marker )
+        user_value = getattr( self.getUser(), id, _marker )
+
+        # New Plone behaviour: use user value if we've set it
+        if from_user:
+            if user_value is not _marker:
+                return user_value
+
+        # Return stored value if we've got one
+        if value is not _marker:
+            return value
+
+        # If the tool doesn't have the property, use user_value or default
+        if tool_value is _marker:
+            if user_value is not _marker:
+                return user_value
+            elif default is not _marker:
+                return default
+            else:
+                raise ValueError, 'The property %s does not exist' % id
+
+        # If the tool has an empty property and we have a user_value, use it
+        if not tool_value and user_value is not _marker:
+            return user_value
+
+        # Otherwise return the tool value
+        return tool_value
+        
+
+    security.declarePrivate('setMemberProperties')
+    def setMemberProperties(self, mapping):
+        '''Sets the properties of the member.
+        '''
+        # Sets the properties given in the MemberDataTool.
+        tool = self.getTool()
+        for id in tool.propertyIds():
+            if mapping.has_key(id):
+                if not self.__class__.__dict__.has_key(id):
+                    value = mapping[id]
+                    if type(value)==type(''):
+                        proptype = tool.getPropertyType(id) or 'string'
+                        if type_converters.has_key(proptype):
+                            value = type_converters[proptype](value)
+
+                    # Try to update the property with GRUF's API
+                    try:
+                        # If it works, add a marker to retreive the data from the user object
+                        self.setProperty(id, value)             # This is GRUF's method
+                        setattr(self, "%s_USER" % id, 1)
+                    except:
+                        # It didn't work... use the regular way, then - and remove the marker
+                        setattr(self, id, value)
+                        setattr(self, "%s_USER" % id, 0)        # Remove the marker
+                    
+        # Hopefully we can later make notifyModified() implicit.
+        self.notifyModified()
+
 
 MemberData.__doc__ = BaseData.__doc__
 
