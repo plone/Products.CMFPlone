@@ -85,7 +85,10 @@
       <span tal:define="days week" tal:omit-tag="">
         <span tal:repeat="day days" tal:omit-tag="">
 
-          <div class="day" id="day20010411" tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
+          <div class="day" 
+               id="dummy"
+               style="position: absolute; visibility: hidden" 
+               tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
                tal:condition="day/event">
 
             <div class="date" tal:content="python:'%d-%0.2d-%0.2d' % (year, month, day['day'])">
@@ -100,8 +103,6 @@
         </span>
       </span>
     </span>
-    <style type="text/css" tal:content="python: here.getPopupPositionStyles(weeks=weeks, year=year, month=month)">
-    </style>
 
 
 </div>

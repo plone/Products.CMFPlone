@@ -5,11 +5,6 @@
   }
 
   function showDay(date) {
-    tempX = document.body.offsetWidth - event.x;
-    tempY = event.clientY + document.body.scrollTop;
-
-    document.getElementById('day' + date).style.pixelTop = tempY - 20;
-    document.getElementById('day' + date).style.pixelRight = tempX + 12;
     document.getElementById('day' + date).style.visibility = 'visible';
     return true;
   }
