@@ -85,7 +85,7 @@
                  tal:define="memberRoles request/roles|nothing;
                              portalRoles python:here.portal_membership.getPortalRoles()">
     
-                <label i18n:translate="label_roles">Roles</label>
+                <label i18n:translate="label_roles">Role(s)</label>
     
                 <div class="formHelp" i18n:translate="help_search_roles">
                 Return members with all of the selected roles.
