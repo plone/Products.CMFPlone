@@ -875,6 +875,7 @@ input.searchButton {
     border-color: &dtml-globalBorderColor;;
     border-width: &dtml-borderWidth;;
     border-style: &dtml-borderStyle;;
+    font-size: &dtml-fontSmallSize;;
     margin: 0.5em;
     padding: 0.5em 0;
     text-align: center;
