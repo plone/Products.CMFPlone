@@ -22,16 +22,18 @@ date, and have nice and funky pictures to go with them ;)
   - (optional, but recommended) 
     "ExternalEditor 0.6 or later":http://www.zope.org/Members/Caseman/ExternalEditor
 
+  - "DCWorkflow":http://cvs.zope.org/Products
 
 **The installation procedure:**
 
 - Install Zope
 
 - Unpack the CMF directories (CMFCore, CMFDefault etc) into your Products 
-  directory
+  directory. Note: when you unpack the CMF, you will get a folder like CMF-xxxx 
+  where x is the version. You need the contents of that directory.
 
 - Unpack the Plone directory (CMFPlone) into your Products directory 
-  (also include the DCWorkflow and Formulator products as well as ActivePak)
+  (also include the DCWorkflow and Formulator products)
 
 - Unpack all the other Products listed above into your Products dir
 
