@@ -34,7 +34,7 @@ def oneX_twoBeta2(portal):
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
     # add portal_prefs
-    skinsTool = getToolByName(self, "portal_skins")
+    skinsTool = getToolByName(portal, "portal_skins")
     skins = skinsTool.getSkinSelections()
     for skin in skins:
         path = skinsTool.getSkinPath(skin)
