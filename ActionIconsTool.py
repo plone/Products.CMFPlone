@@ -5,6 +5,14 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
+from permissions import ManageSite
+
+from Products.CMFPlone.PloneTool import _icons as iconcache
+
+def removeAICacheEntry(category, id):
+    if (category, id) in iconcache.keys():
+        del iconcache[(category,id)]
+
 class ActionIconsTool(BaseTool):
 
     meta_type = ToolNames.ActionIconsTool
@@ -31,6 +39,48 @@ class ActionIconsTool(BaseTool):
 
         return default
 
+    #Below we need to invalidate the cache for icons.  We have to
+    #hardocde the module dict because we do not have events, yet.
+    def updateActionIcon( self
+                        , category
+                        , action_id
+                        , icon_expr
+                        , title=None
+                        , priority=0
+                        ):
+        """ update ActionIcons and remove cache entry """
+        BaseTool.updateActionIcon(self, category, action_id, icon_expr, 
+                                  title, priority)
+        removeAICacheEntry(category, action_id)
+
+    def removeActionIcon( self, category, action_id ):
+        """ remove ActionIcon and remove cache entry """
+        BaseTool.removeActionIcon(self, category, action_id)
+        removeAICacheEntry(category, action_id)
+    
+    def clearActionIcons( self ):
+        """ clear ActionIcons and cache entries """
+        BaseTool.clearActionIcons(self)
+        iconcache.clear()
+
+    def manage_updateActionIcon( self
+                               , category
+                               , action_id
+                               , icon_expr
+                               , title
+                               , priority
+                               , REQUEST
+                               ):
+        """ update ActionIcons from ZMI and remove cache entry """
+        BaseTool.manage_updateActionIcon( self, category, action_id, icon_expr,
+                                          title, priority, REQUEST )
+        removeAICacheEntry(category, action_id)
+
+    def manage_removeActionIcon( self, category, action_id, REQUEST ):
+        """ remove ActionIcons from ZMI and remove cache entry """
+        Basetool.manage_removeActionIcon(self, category, action_id)
+        removeAICacheEntry(category, action_id)
+            
 ActionIconsTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(ActionIconsTool)
