@@ -6,10 +6,9 @@
        cellpadding="0" cellspacing="0"
        tal:define="DateTime python:modules['DateTime'].DateTime;
                     results python:here.portal_catalog.searchResults( meta_type='News Item'
-                                                                                                          , sort_on='Date'
-                                                                                                          , sort_order='reverse'
-                                                                                                          , review_state='published');"
-
+                                                                      , sort_on='Date'
+                                                                      , sort_order='reverse'
+                                                                      , review_state='published');"
        tal:condition="results">
 
     <thead>
@@ -25,12 +24,12 @@
             <td colspan="2">
 
                 <a href="#"
-                   tal:attributes="href python:obj.getObject().absolute_url()">
-                    <span tal:replace="python:obj.getObject().Title()"> Extended Calendar Product </span>
+                   tal:attributes="href obj/getURL">
+                    <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Extended Calendar Product </span>
                 </a>
 
                 <div class="boxDetails"
-                     tal:content="python:DateTime(obj.getObject().ModificationDate()).strftime('%B %d, %H:%M')">July 7, 08:11</div>
+                     tal:content="python:obj.modified.strftime('%B %d, %H:%M')">July 7, 08:11</div>
             </td>
 
         </tr>
