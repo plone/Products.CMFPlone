@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Added a define-macro "news-item" to news.pt, so it can be reused 
+      in other templates. You have to define a repeat statement outside it
+      similar to the template in 'plone_templates/news.pt'. The macro itself
+      renders one item.
+
     - Added icons for left/leftmost/right/rightmost. Removed unused icons.
       Fixed alt-representations of images.
       [limi]

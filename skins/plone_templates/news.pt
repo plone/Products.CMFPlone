@@ -3,9 +3,18 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<metal:block fill-slot="top_slot"
-             tal:define="dummy python:request.set('disable_border', 1)" />
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border', 1)" />
 
+    <tal:comment replace="nothing">
+    Please note that this template will most likely be renamed to news_listing
+    in the future, so if you reference this template or its macros from
+    another template, make sure to change it when you upgrade.
+    </tal:comment>
+</head>
+             
+             
 <body>
 <div metal:fill-slot="main" id="content-news"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
@@ -25,9 +34,10 @@
         <metal:block tal:repeat="result batch">
 
             <div class="newsItem"
-                  tal:define="resultObject result/getObject;
-                              creator result/Creator;
-                              resulturl resultObject/absolute_url;">
+                 metal:define-macro="news-item"
+                 tal:define="resultObject result/getObject;
+                             creator result/Creator;
+                             resulturl resultObject/absolute_url;">
 
                 <h2>
                     <a href="/view" 
