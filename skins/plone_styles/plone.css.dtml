@@ -361,17 +361,19 @@ ul#personalBar {
 ul#personalBar li {
     display: inline;
 }
-ul#personalBar li#personalBar-user a {
+ul#personalBar li#personalBar-user {
     background: transparent url(<dtml-var portal_url>/user.gif) center left no-repeat;
     padding-left: 15px;
 }
     
-ul#personalBar li a {
+ul#personalBar li {
     background: transparent url(<dtml-var portal_url>/linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
+}
+ul#personalBar li a {
     text-decoration: none;
 }
 .caseSensitive {
