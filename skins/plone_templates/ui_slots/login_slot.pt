@@ -47,7 +47,8 @@
         </div>
 
         <div class="content even"> 
-            <a href="mail_password_form">
+            <a href="mail_password_form"
+               tal:attributes="href string:$portal_url/mail_password_form">
                <img tal:replace="structure here/linkTransparent.gif" />
                <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
             </a>
