@@ -35,7 +35,7 @@
                      tal:attributes="href url">
                         <img src="" height="16" width="16" alt="dummy" 
                              tal:attributes="src string:$portal_url/${sibling/getIcon};
-		                             alt sibling/Type;" />&nbsp;<tal:block tal:content="structure sibling_title" />
+		                             alt sibling/Title;" />&nbsp;<tal:block tal:content="structure sibling_title" />
                     </a>
                 </div>
             </div>

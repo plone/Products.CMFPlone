@@ -45,7 +45,7 @@
                      TRUNCDESCR python: 150;
                      global artifacts
                             python: [i for i in here.objectValues()
-                                       if i.Type()
+                                       if i.getId()
                                          != 'Collector Issue Transcript']">
         <h1>
             Issue <span tal:replace="here/id">ID</span> of
@@ -209,7 +209,7 @@
                         <img src="" alt="" border="0"
                              tal:attributes="src python: here.portal_url()
                                                          + '/' + icon;
-                                             alt item/Type|nothing"></a>
+                                             alt item/Title|nothing"></a>
                     </span>                
                     <a href="ITEM URL" tal:attributes="href item_url"
                        tal:content="item/id">ITEM ID</a>

@@ -71,7 +71,7 @@
 		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
                     <td>
 		         <a href="#" 
-			    tal:attributes="href url"><img src="#" tal:attributes="src result/getIcon; alt result/Type;" border="0" /></a>&nbsp;<a 
+			    tal:attributes="href url"><img src="#" tal:attributes="src result/getIcon; alt result/Title;" border="0" /></a>&nbsp;<a 
                          href="#" tal:attributes="href url"
                                   tal:content="result/Title" />
                     </td>

@@ -16,7 +16,7 @@ if id is None:
 try:
     obj_type, date_created, random_number = id.split('.')
 
-    if ' '.join(obj_type.split('_'))==context.Type() and \
+    if ' '.join(obj_type.split('_'))==context.getTypeInfo().getId() and \
        DateTime(date_created) and \
        float(random_number):
         return 1

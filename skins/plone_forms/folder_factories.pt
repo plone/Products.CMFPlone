@@ -29,12 +29,12 @@
         
         <div tal:repeat="ctype here/allowedContentTypes"> 
 
-    		<div class="row" tal:define="Type ctype/Type;Id ctype/getId"
+    		<div class="row" tal:define="Title ctype/Title;Id ctype/getId"
                          tal:condition="python:test(Id not in filterOut, 1, 0)">
     	
                 <div class="label">
-                    <span for="#" tal:attributes="for string:cb_${repeat/ctype/number}" tal:replace="Type">
-                        Type
+                    <span for="#" tal:attributes="for string:cb_${repeat/ctype/number}" tal:replace="Title">
+                        Title
                     </span>
                     <a href="#" tal:attributes="href string:createObject?type_name=$Id">
                         <img src="folder.gif" alt="" width="16" height="16" tal:attributes="src string:$portal_url/${ctype/getIcon}" />

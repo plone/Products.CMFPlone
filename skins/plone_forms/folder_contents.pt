@@ -59,7 +59,7 @@
                         <option value="Document"
                                 tal:condition="python: ctype.getId() not in filterOut"
                                 tal:attributes="value ctype/getId"
-                                tal:content="ctype/Type">Document</option>
+                                tal:content="ctype/Title">Document</option>
                         </metal:block>
                     </select>
         
@@ -133,7 +133,7 @@
                                      height="16"
                                      width="16"
                                      tal:attributes="src string:$portal_url/${item/getIcon};
-                                                     alt item/Type;"
+                                                     alt item/Title;"
                              />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a> 
     
@@ -141,7 +141,7 @@
                                 tal:condition="python:container.isExpired(item)">expired</span>
                         </td>
     
-                        <td tal:content="item/Type">
+                        <td tal:content="item/Title">
                         folder
                         </td>
     

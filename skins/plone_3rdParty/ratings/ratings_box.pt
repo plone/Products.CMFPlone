@@ -2,7 +2,7 @@
 <div metal:define-macro="ratingsBox"
      tal:define="portalContent here/isPortalContent | nothing;
                  rating_scale python:6;"
-     tal:condition="python:test( (template.getId()==here.portal_types.getTypeInfo(here.Type()).getActionById('view') and container.portal_ratings.isRatingAllowedFor(here)), 1, 0);">
+     tal:condition="python:test( (template.getId()==here.portal_types.getTypeInfo(here.getId()).getActionById('view') and container.portal_ratings.isRatingAllowedFor(here)), 1, 0);">
     <p>
       <strong> Average </strong>
       <span tal:replace="python:here.portal_ratings.getRatingFor(here).getAverage()"> Average 4 </span>

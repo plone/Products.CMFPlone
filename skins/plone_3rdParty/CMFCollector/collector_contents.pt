@@ -71,7 +71,7 @@
                       tal:attributes="class python:test(oddrow, 'even', 'odd')">
         <metal:block tal:define="global item python:batch[itemnum];
                         itemurl item/getURL;
-                        itemtype item/Type|nothing;
+                        itemtype item/getId|nothing;
                         icon item/getIcon|item/icon|nothing;
                         odd repeat/itemnum/odd;
                         global alternatingcolor python:

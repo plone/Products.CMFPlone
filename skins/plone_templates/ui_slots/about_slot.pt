@@ -14,7 +14,7 @@
 
             <img src="img/icons/folder.gif" alt=""
                  tal:attributes="src python:portal_url + '/' + here.getIcon(relative_to_portal=1);
-                 alt here/meta_type;" />&nbsp;<span tal:replace="python:here.getTypeInfo().Type()">Object type</span>
+                 alt here/meta_type;" />&nbsp;<span tal:replace="python:here.getTypeInfo().Title()">Object type</span>
             </td>
         </tr>
 

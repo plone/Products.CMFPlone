@@ -88,17 +88,17 @@ def changeImmediateViews(self, outStream):
     for contentType in typesTool.listContentTypes():        
         try:
             typeInfo=typesTool.getTypeInfo(contentType)
-            if typeInfo.Type() not in typesToSkip:
+            if typeInfo.getId() not in typesToSkip:
                 typeObj=getattr(typesTool, typeInfo.getId())
                 view=typeInfo.getActionById('edit')
                 typeObj._setPropValue('immediate_view', view)
-                outStream.write(typeInfo.Type() + " has had its immediate view changed to " + view + '\n')
+                outStream.write(typeInfo.getId() + " has had its immediate view changed to " + view + '\n')
             
-            if typeInfo.Type()=='Folder':
+            if typeInfo.getId()=='Folder':
                 typeObj=getattr(typesTool, typeInfo.getId())
                 view='folder_contents'
                 typeObj._setPropValue('immediate_view', view)
-                outStream.write(typeInfo.Type() + " has had its immediate view changed to " + view + '\n')
+                outStream.write(typeInfo.getId() + " has had its immediate view changed to " + view + '\n')
         
         except: 
             pass #gulp!

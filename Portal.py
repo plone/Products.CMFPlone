@@ -52,11 +52,11 @@ class PloneGenerator(Portal.PortalGenerator):
                                            , typeinfo_name='CMFPlone: Plone Folder')
         for contentType in typesTool.listContentTypes():        
             typeInfo=typesTool.getTypeInfo(contentType)
-            if typeInfo.Type() not in typesToSkip:
+            if typeInfo.getId() not in typesToSkip:
                 typeObj=getattr(typesTool, typeInfo.getId())
                 view=typeInfo.getActionById('edit')
                 typeObj._setPropValue('immediate_view', view)       
-            if typeInfo.Type()=='Folder':
+            if typeInfo.getId()=='Folder':
                 typeObj=getattr(typesTool, typeInfo.getId())
                 view='folder_contents'
                 typeObj._setPropValue('immediate_view', view)

@@ -25,7 +25,7 @@ if not checkPermission('List folder contents', folder):
     return listing
 
 for o in folder.listFolderContents():
-   if o.Type()=='Folder' and o.Title()!='Favorites':
+   if o.getId()=='Folder' and o.Title()!='Favorites':
        if checkPermission('List folder contents', o):
            listing.append(o)
    else:

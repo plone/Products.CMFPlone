@@ -48,7 +48,7 @@
                 
 				<p>
           	    <img src="" alt="Folder" style="border: 0" 
-    				 tal:attributes="src result/getIcon; alt result/Type;"/>
+    				 tal:attributes="src result/getIcon; alt result/Title;"/>
 
 	                <a href="/view" tal:attributes="href resultObject/absolute_url">
 					Read more...
