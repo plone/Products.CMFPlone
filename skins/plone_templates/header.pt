@@ -18,38 +18,38 @@
                                                template_title );"
            tal:content="string:$portal_title - $here_title">Title of page</title>
 
-    <base href="" tal:attributes="href here/renderBase" />             
+    <base href="" tal:attributes="href here/renderBase" />
 
-    
+
     <meta tal:condition="here/listMetaTags|nothing"
-          tal:repeat="keyval here/listMetaTags" 
+          tal:repeat="keyval here/listMetaTags"
           tal:attributes="name python:keyval[0];
                           content python:keyval[1];" />
 
-    <!-- Basic crude style for Netscape4.x - This can be removed 
-         if you don't want the special NS4 look - it will still work, 
+    <!-- Basic crude style for Netscape4.x - This can be removed
+         if you don't want the special NS4 look - it will still work,
 	 just be plain text instead.   -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
-  
-    
+
+
     <!-- Column layout stylesheet. Even kinda works with Netscape4 -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneColumns.css" />
 
     <!-- Main style sheets for CSS2 capable browsers -->
-    <style type="text/css" media="all"  
+    <style type="text/css" media="all"
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
-  
-    
+
+
     <!-- Custom style sheet if available -->
-    <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css" 
+    <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
            tal:content="string:@import url($portal_url/ploneCustom.css);"></style>
-    
+
     <!-- Style sheet used for printing -->
-    <link rel="stylesheet" type="text/css" media="print" href="" 
+    <link rel="stylesheet" type="text/css" media="print" href=""
           tal:attributes="href string:$portal_url/plonePrint.css" />
 
     <!-- Style sheet used for presentations (Opera is the only browser supporting this at the moment) -->
-    <link rel="stylesheet" type="text/css" media="projection" href="" 
+    <link rel="stylesheet" type="text/css" media="projection" href=""
           tal:attributes="href string:$portal_url/plonePresentation.css" />
 
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
@@ -66,19 +66,19 @@
     <metal:block metal:define-slot="rel_slot" tal:replace="nothing">
     Inserts rel links specified from a page.
     </metal:block>
-    
-    
+
+
     <!-- Disable IE6 image toolbar -->
     <meta http-equiv="imagetoolbar" content="no" />
 
     <metal:block metal:define-slot="css_slot" tal:replace="nothing">
     Inserts CSS specified from a page.
     </metal:block>
-    
+
     <metal:block metal:define-slot="head_slot" tal:replace="nothing">
     Flexibility for published templates to inject stuff into the head tag.
     </metal:block>
-    
+
     <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
     Inserts javascript specified from a page.
     </metal:block>
@@ -87,12 +87,12 @@
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_javascripts.js"></script>
 
-    <!-- XXX this member before said tal:define="member member|portal..." 
-         BUT THAT IS BAD.  It would CALL member which is wrong.. 
+    <!-- XXX this member before said tal:define="member member|portal..."
+         BUT THAT IS BAD.  It would CALL member which is wrong..
          We want a nocall:  just removed it for now -->
     <tal:block tal:define="member here/portal_membership/getAuthenticatedMember;
                            showdefault python:test(portal.portal_memberdata.getProperty('formtooltips'), 'true', 0);
-                           formtooltips python:member.getProperty('formtooltips', showdefault)" 
+                           formtooltips python:member.getProperty('formtooltips', showdefault)"
                tal:omit-tag="">
       <script type="text/javascript"
               tal:condition="formtooltips"
@@ -102,7 +102,7 @@
           <metal:block >function formtooltip(el,flag){}</metal:block>
         <tal:block tal:replace="structure python:'&lt;/script&gt;'" />
       </metal:block>
-      
+
     </tal:block>
 </head>
 

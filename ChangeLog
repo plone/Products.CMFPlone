@@ -1,6 +1,12 @@
 2003-05-23  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* PloneFolder.py (PloneFolder.__call__): Make index_html be replaceable.
+	(PloneFolder.index_html): Big change ahead! If index_html is not
+	present, acquire it. At the same time, make it replaceable. Also,
+	changed the default view action for folder to folder_listing,
+	instead of index_html. Now, if you have index_html it will be
+	shown, else, it will show folder_listing. But if you go to
+	folder/index_html, it will acquire index_html.
 
 2003-05-22  Sidnei da Silva  <sidnei@x3ng.com>
 

@@ -1,4 +1,3 @@
-import Acquisition
 from Products.CMFCore.utils import _verifyActionPermissions, getToolByName, getActionContext
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
@@ -10,13 +9,25 @@ from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFCore.interfaces.DublinCore import DublinCore as IDublinCore
 from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo, Unauthorized
 from Products.CMFCore import CMFCorePermissions
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 from OFS.ObjectManager import REPLACEABLE
+from ComputedAttribute import ComputedAttribute
 
 from PloneUtilities import log
+
+class ReplaceableWrapper:
+    """ A wrapper around an object to make it replaceable """
+
+    def __init__(self, ob):
+        self.__ob = ob
+
+    def __getattr__(self, name):
+        if name == '__replaceable__':
+            return REPLACEABLE
+        return getattr(self.__ob, name)
 
 fti= { 'id'             : 'Folder'
                              , 'meta_type'      : 'Plone Folder'
@@ -30,16 +41,9 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                              , 'actions'        :
                                 ( { 'id'            : 'view'
                                   , 'name'          : 'View'
-                                  , 'action'        : 'string:${folder_url}/index_html'
-                                  , 'permissions'   :
-                                     (CMFCorePermissions.View,)
-                                  , 'category'      : 'folder'
-                                  }
-                                , { 'id'            : 'folderlisting'
-                                  , 'name'          : 'Folder Listing'
                                   , 'action'        : 'string:${folder_url}/folder_listing'
                                   , 'permissions'   :
-                                     (Permissions.access_contents_information,)
+                                     (CMFCorePermissions.View,)
                                   , 'category'      : 'folder'
                                   }
                                 , { 'id'            : 'local_roles'
@@ -97,8 +101,12 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         else:
              return view()
 
-    index_html = Acquisition.Acquired
-    index_html.__replaceable__ = REPLACEABLE
+    def index_html(self):
+        """ Acquire if not present. """
+        _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
+        return ReplaceableWrapper(aq_base(_target).__of__(self))
+
+    index_html = ComputedAttribute(index_html, 1)
 
     security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
@@ -149,6 +157,7 @@ def addPloneFolder( self, id, title='', description='', REQUEST=None ):
     self._setObject(id, sf)
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
+
 
 class LargePloneFolder(BTreeFolder2Base, PloneFolder):
     meta_type='Large Plone Folder'
