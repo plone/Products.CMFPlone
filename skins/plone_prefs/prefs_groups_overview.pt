@@ -16,7 +16,9 @@
                 portal_roles mtool/getPortalRoles;"
      tal:condition="here/rejectAnonymous" >
 
-<div class="editable pageContent">
+<div class="configlet">
+
+<div class="editable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -186,6 +188,8 @@
         Zope Management Interface.</p>
     
     </div>
+
+</div>
 
 </div>
 

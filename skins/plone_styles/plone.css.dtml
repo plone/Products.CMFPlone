@@ -183,6 +183,7 @@ textarea {
     padding: 0.1em;
 }
 input {
+    font-family: <dtml-var fontFamily>;
     visibility: visible;
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
     color: &dtml-fontColor;;
@@ -430,6 +431,10 @@ input.searchButton {
     background-color: &dtml-contentViewBackgroundColor;;
     color: &dtml-contentViewFontColor;;
 }
+
+.configlet .contentViews {
+    font-size: 90%;
+} 
 .contentActions {
     border-collapse: collapse;
     background-color: &dtml-contentViewBackgroundColor;;
@@ -471,9 +476,13 @@ input.searchButton {
     padding: 1em 2em !important;
 }
 
+.configlet .editable {
+    padding: 0em !important;
+}
+
 .contentContent {
     font-size: 110%;
-    padding: 0em 1em 2em 1em ! important;
+    padding: 0em 1em 2em 1em !important;
     background: &dtml-backgroundColor;;
 }
 

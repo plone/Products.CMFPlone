@@ -24,7 +24,9 @@
         <tal:defines define="dummy python:request.set('grouproles', group.getRoles())" />
     </tal:conditional>
 
-<div class="editable pageContent">
+<div class="configlet">
+
+<div class="editable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -140,6 +142,8 @@
     	  </metal:block>
     	</div>
     </div>
+</div>
+
 </div>
 
 </div>
