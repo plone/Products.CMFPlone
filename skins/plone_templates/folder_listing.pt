@@ -48,8 +48,8 @@
 
                 <a href="#" 
                    tal:condition="python: obj.portal_type == 'Link'"
-                   tal:attributes="href obj/getRemoteUrl;
-                                   class link-plain"
+                   tal:attributes="href obj/getRemoteUrl;"
+                   class="link-plain"
                    tal:content="obj/title_or_id" />
 
                 <span class="discreet"
