@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone HEAD
 
+    - Fixed a small bug in plone_javascripts.js that prevents the highlight of the search term in simple searchs.
+      [azy]
+
     - SearchableText, Title, and Description now use TextIndexNG2 if installed.
       All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
       not installed. Note that in Plone 2.0 Title and Description used to be plain 
