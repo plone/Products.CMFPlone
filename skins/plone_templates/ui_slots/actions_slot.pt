@@ -1,3 +1,6 @@
+<html i18n:domain="plone">
+<body>
+
 <metal:block define-macro="sendto">
 <a href=""
    tal:condition="site_properties/allow_sendto | nothing"
@@ -27,3 +30,6 @@
 	title="Syndication" />
 </a>
 </metal:block>
+
+</body>
+</html>

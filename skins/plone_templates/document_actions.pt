@@ -1,4 +1,5 @@
-
+<html i18n:domain="plone">
+<body>
 <div metal:define-macro="document_actions"
      class="documentActions"
      tal:define="document_actions actions/document_actions|nothing;
@@ -23,3 +24,5 @@
     </tal:actions>
     
 </div>
+</body>
+</html>
