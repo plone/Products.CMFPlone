@@ -48,7 +48,7 @@ class FormTool(UniqueObject, SimpleItem):
 
         st = ','.join(validators)
         if formprops.hasProperty(form):
-            form_props._updateProperty(form, st)
+            formprops._updateProperty(form, st)
         else:
             formprops._setProperty(form, st)
 

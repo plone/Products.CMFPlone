@@ -169,4 +169,13 @@ class DefaultCustomizationPolicy:
         #ensures a special proxy object shadows content objects and
         #they can participate in validation/navigation
         self.plonify_typeActions(portal)
-                                
+        
+        #remove non Plone skins from skins tool
+        #since we implemented the portal_form proxy these skins will no longer work
+        st=getToolByName(portal, 'portal_skins')
+        skins_map=st._getSelections()
+        del skins_map['No CSS']
+        del skins_map['Nouvelle']
+        del skins_map['Basic']
+        st.selections=skins_map
+
