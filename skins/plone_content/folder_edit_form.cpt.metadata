@@ -5,10 +5,10 @@ title=Edit Folder
 View=0:Authenticated
 
 [validators]
-validators..Save=validate_id,validate_title,validate_folder_edit
+validators=validate_id,validate_title,validate_folder_edit
 validators..Cancel=
 
 [actions]
-action.success..Save=traverse_to:string:folder_edit
+action.success=traverse_to:string:folder_edit
 action.success..Cancel=redirect_to:string:folder_contents
 action.failure=traverse_to:string:folder_edit_form

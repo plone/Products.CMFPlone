@@ -5,10 +5,10 @@ title=Edit Properties
 View=0:Authenticated
 
 [validators]
-validators..Save=validate_metadata_edit
+validators=validate_metadata_edit
 validators..Cancel=
 
 [actions]
-action.success..Save=traverse_to:string:metadata_edit
+action.success=traverse_to:string:metadata_edit
 action.success..Cancel=redirect_to:string:metadata_edit_form
 action.failure=traverse_to:string:personalize_form

@@ -5,10 +5,10 @@ title=Edit Image
 View=0:Authenticated
 
 [validators]
-validators..Save=validate_id, validate_image_edit
+validators=validate_id, validate_image_edit
 validators..Cancel=
 
 [actions]
-action.success..Save=traverse_to:string:image_edit
+action.success=traverse_to:string:image_edit
 action.success..Cancel=redirect_to_action:string:view
 action.failure=traverse_to:string:image_edit_form

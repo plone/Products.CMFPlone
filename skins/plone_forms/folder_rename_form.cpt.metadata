@@ -2,10 +2,10 @@
 title=Rename items
 
 [validators]
-validators..RenameAll=validate_folder_rename
+validators=validate_folder_rename
 validators..Cancel=
 
 [actions]
-action.success..RenameAll=traverse_to:string:folder_rename
+action.success=traverse_to:string:folder_rename
 action.success..Cancel=redirect_to:string:folder_contents
 action.failure=traverse_to:string:folder_rename_form
