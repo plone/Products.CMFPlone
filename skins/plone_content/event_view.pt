@@ -34,15 +34,15 @@
             <dt i18n:translate="event_when">When</dt>
             <dd>
             <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
-                <img src="" tal:replace="structure here/event_icon.gif" />
+                <img src="" alt="" tal:replace="structure here/event_icon.gif" />
                 <span tal:replace="python:here.toPortalTime(here.start(), long_format=1)">Start Date Time</span>
                 <span i18n:translate="event_and">to</span> <br />
-                <img src="" tal:replace="structure here/event_icon.gif" />
+                <img src="" alt="" tal:replace="structure here/event_icon.gif" />
                 <span tal:replace="python:here.toPortalTime(here.end(), long_format=1)">End Date Time</span>
             </tal:differentday>       
 
             <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()">
-                <img src="" tal:replace="structure here/event_icon.gif" />
+                <img src="" alt="" tal:replace="structure here/event_icon.gif" />
                 <span tal:replace="python:here.toPortalTime(here.start())">Start Date Time</span>
                 <span i18n:translate="event_from">from</span>
                 <span tal:replace="python:here.start().TimeMinutes()">Start Time</span>
