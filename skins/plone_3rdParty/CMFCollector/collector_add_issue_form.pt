@@ -16,10 +16,12 @@
   Template description: Form for submitting new collector issues.
 </tal:block>
 
+<body>
+
 <div metal:fill-slot="header">
 
 <h1 i18n:translate="heading_add_new_issue_to">
-Add new issue to < tal:block content="here/title_or_id"
+Add new issue to <tal:block content="here/title_or_id"
 i18n:name="collector_title">TITLE</tal:block>
 </h1>
 
@@ -217,5 +219,7 @@ as possible.
 </div>
 
 </div>
+
+</body>
 
 </html>
