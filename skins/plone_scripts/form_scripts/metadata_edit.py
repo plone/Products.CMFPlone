@@ -13,8 +13,6 @@ if not effective_date:
 if not expiration_date:
    expiration_date='None'
 
-context.plone_debug(str(subject))
-
 context.plone_utils.editMetadata(context,
                                  allowDiscussion=allowDiscussion,
                                  title=title,
