@@ -2,6 +2,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.Expression import Expression
 from Products.ExternalMethod import ExternalMethod
+from copy import deepcopy
 
 def upgrade(self):
     portal = getToolByName(self, 'portal_url').getPortalObject()
@@ -40,32 +41,24 @@ def normalize_tabs(self):
     """ attempts to remove tabs that dont add to user experience """
     #make 'reply' tab unvisible
     dt=getToolByName(self, 'portal_discussion')
-    dt_actions=[]
     for a in dt._actions:
         if a.id=='reply':
             a.visible=0
-	dt_actions.append(a)    
-    dt._actions=dt_actions
+    dt._p_changed=1
 
     #make 'syndication' tab unvisible
     st=getToolByName(self, 'portal_syndication')
-    st_actions=[]
     for a in st._actions:
         if a.id=='syndication':
             a.visible=0
-	st_actions.append(a)
-    st._actions=st_actions
+    st._p_changed=1
 
     #now lets get rid of folder_listing/folder_contents tabs for folder objects
     tt=getToolByName(self, 'portal_types')
-    f_actions=tt['Folder']._actions
-    actions=[]
-    for a in f_actions:
+    for a in tt['Folder']._actions:
         if a.get('id','') in ('folderlisting', ):
             a['visible']=0
-	if a.get('id','') != 'syndication': #syndication tab belongs on syndication tool
-            actions.append(a)
-    tt['Folder']._actions=tuple(actions)
+    tt['Folder']._p_changed=1
 
     def global_tabs():
 	welcome=ActionInformation( 'index_html'
@@ -98,46 +91,46 @@ def normalize_tabs(self):
 			      
     #make 'syndication' tab unvisible
     st=getToolByName(self, 'portal_actions')
-    st_actions=[]
     for a in st._actions:
         if a.id=='folderContents':
             a.id='folder_contents'
-	st_actions.append(a)
     for globaltab in global_tabs():
-        st_actions.append(globaltab)
-    st._actions=st_actions
+        st._actions.append(globaltab)
+    st._p_changed=1
 
     #move add to favorites 
     mt=getToolByName(self, 'portal_membership')
-    mt_actions=[]
-    for a in mt._actions:
+    for x in range(0, len(mt._actions)):
+        a=mt._actions[x]
         if a.id=='addFavorite' or \
 	   a.id=='favorites':
             a.visible=0
 	if a.id=='mystuff':
-            mt_actions.insert(0, a)
-        else:
-            mt_actions.append(a)
-    #add 'my workspace' to user actions
-    mt_actions.insert(1, ActionInformation( 'myworkspace'
+            mt._actions.insert(0, ActionInformation('mystuff'
+	                                          , title='My Stuff'
+						  , category=a.category
+						  , permissions=a.permissions
+						  , condition=Expression(a.condition.text)
+						  , action=Expression(a._action.text)))
+	    del mt._actions[x+1]
+    mt._p_changed=1
+    mt._actions.insert(1, ActionInformation( 'myworkspace'
                                           , title='My Workspace'
 					  , category='user'
 					  , permissions='View'
-					  , condition=Expression('python: member and portal.portal_membership.getHomeFolder()')
-					  , action=Expression('python: portal.portal_membership.getHomeUrl()+"/workspace"')))
-    mt._actions=mt_actions
-
+					  , condition=Expression(
+					  'python: member and portal.portal_membership.getHomeFolder()')
+					  , action=Expression(
+					  'python: portal.portal_membership.getHomeUrl()+"/workspace"')))
+    mt._p_changed=1
     #make 'join' action disappear if anonymous cant add portal member
     #this is aligned with out the 'sign in' box works in ui_slots
     rt=getToolByName(self, 'portal_registration')
-    rt_actions=[]
     for a in rt._actions:
         if a.id=='join':
             a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
-        rt_actions.append(a)
-    rt._actions=rt_actions
+    rt._p_changed=1
     
-    #get_transaction().commit(1)
     import time
     return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
 

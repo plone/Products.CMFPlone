@@ -63,7 +63,7 @@
                         <option value="Document"
                                 tal:condition="python: ctype.getId() not in filterOut"
                                 tal:attributes="value ctype/getId"
-                                tal:content="ctype/getId">Document</option>
+                                tal:content="ctype/Type">Document</option>
                         </metal:block>
                     </select>
         
