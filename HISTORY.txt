@@ -4,17 +4,23 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
-   - For those of you who were running tableless designs in the RC3 
-     and earlier releases and want to keep it that way - simply add
-     a DirectoryView for 'plone_tableless' in 'portal_skins', and 
-     add it to the skinpath. This will activate the tableless versions
-     of:
+   RC4
 
-     - main_template
+    - For those of you who were running tableless designs in the RC3 
+      and earlier releases and want to keep it that way - simply add
+      a DirectoryView for 'plone_tableless' in 'portal_skins', and 
+      add it to the skinpath. This will activate the tableless versions
+      of:
 
-     - ploneColumns.css
+      - main_template
 
-     Apart from adding these two, no other changes are needed.
+      - ploneColumns.css
+
+      Apart from adding these two, no other changes are needed. The reason for
+      this change were numerous, the most important ones being crash bugs in IE
+      and bugs in Safari. Tableless will probably return as the default if we can
+      get it stable enough, but it wasn't good enough for 2.0.
+      [limi]
 
     - Made sure there are no naked mailto: links for spambots, all mail addresses
       are now using the spamProtect script. Syntax:
