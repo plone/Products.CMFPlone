@@ -1,6 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
 <div tal:condition="exists: here/portal_skins | nothing"
      tal:replace="nothing">
 
@@ -10,13 +17,13 @@
 
 </div>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
-      lang="en-US"
-      metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+  <metal:block fill-slot="base">
+      <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+                 tal:replace="nothing">
+      Disable the tabs
+      </tal:block>
+  </metal:block>
 
-<body>
 
 <div metal:fill-slot="main"
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
