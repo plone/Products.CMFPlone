@@ -8,22 +8,11 @@
 ##title=
 ##
 
-errors=context.portal_form_validation.validate(context, 'validate_topic_edit')
-if errors:
-    edit_form=context.portal_navigation.getNextPageFor( context
-                                                , script.getId()
-                                                , 'failure' )
-    return edit_form()
-
-context.edit(acquireCriteria=acquireCriteria,
-             title=title,
-             description=description)
-
-context.plone_utils.contentEdit( context
-                               , id=id
-                               , description=description)
-
-return context.portal_navigation.getNextRequestFor( context
-                                            , script.getId()
-                                            , 'success'
-                                            , portal_status_message='Topic changed.')
+new_context = context.portal_factory.doCreate(context, id)
+new_context.edit( acquireCriteria=acquireCriteria
+                , title=title
+                , description=description )
+new_context.plone_utils.contentEdit( context
+                                   , id=id
+                                   , description=description)
+return ('success', new_context)
