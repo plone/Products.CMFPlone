@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {});
+                Batch python:modules['ZTUtils'].Batch;
+                b_start python:request.get('b_start',0);
+                acl_users here/acl_users;"
+     tal:condition="here/rejectAnonymous" >
+	
+    <h1 i18n:translate="">Search for Users and Groups</h1>
+
+    <p i18n:translate="">
+    Search for the users or groups you want to locate (blank search returns all), 
+    and select the ones you want to add.
+    </p>
+
+    <form action=""
+          name="users"
+          method="post">
+        
+        Show me
+
+        <select name=""
+                tabindex=""
+                tal:attributes="tabindex tabindex/next;">
+            <option value="both"> Users and groups </option>
+            <option value="users"> Users </option>
+            <option value="groups"> Groups </option>
+        </select>
+
+        containing
+        
+        <input tabindex=""
+               type="text"
+               name=""
+               value=""
+               tal:attributes="tabindex tabindex/next;"
+               />
+               
+        <input class="context"
+               tabindex=""
+               type="submit"
+               name=""
+               value="Search"
+               tal:attributes="tabindex tabindex/next;"
+               />
+
+               
+        <h2>Returned results</h2>
+        <table class="listing"
+               id="sortable">
+               
+            <tr>
+                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>Type</th>
+            </tr>
+            
+            <tr class="odd">
+                <td>
+                <input class="noborder"
+                       type="checkbox" 
+                       selected="selected" />
+                </td>
+
+                <td>
+                <img src="user.gif" />
+                username (Full Name)
+                </td>
+
+                <td>User</td>
+            </tr>
+            <tr class="even">
+                <td>
+                <input type="checkbox" selected="selected" />
+                </td>
+
+                <td>
+                <img src="group.gif" />
+                groupname
+                </td>
+
+                <td>Group</td>
+            </tr>
+        </table>
+
+        <input class="context"
+               tabindex="" 
+               type="submit" 
+               name="prefs_user_manage:method" 
+               value="Add selection"
+               tal:attributes="tabindex tabindex/next;"
+               />
+
+    </form>
+    
+</div>
+
+</body>
+</html>
+

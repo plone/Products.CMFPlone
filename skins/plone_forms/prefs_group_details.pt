@@ -33,7 +33,7 @@
     <a class=""         
        href=""
        tal:attributes="href string: prefs_group_members?groupname=${groupname}"
-    >Members</a>
+    >Group Members</a>
 </div>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
