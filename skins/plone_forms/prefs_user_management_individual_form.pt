@@ -17,6 +17,14 @@
                 b_start python:request.get('b_start',0);"
      tal:condition="here/rejectAnonymous" >
 	
+    <tal:set tal:condition="here/management_page_charset|nothing"
+            tal:define="dummy python:request.set('management_page_charset_tag','')" />
+            
+    <tal:set tal:condition="not:here/management_page_charset|nothing">
+        <tal:defines define="dummy python:request.set('management_page_charset','UTF-8');
+                             dummy python:request.set('management_page_charset_tag','UTF-8:');" />
+    </tal:set>
+            
     <h1 i18n:translate="">User Properties</h1>
 
     <p i18n:translate="">
