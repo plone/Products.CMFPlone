@@ -992,6 +992,7 @@ ul.configlets li a {
 .discreet {
     color: &dtml-discreetColor;;
     font-size: &dtml-fontSmallSize;;
+    font-weight: normal;
 }
 
 .listingBar {

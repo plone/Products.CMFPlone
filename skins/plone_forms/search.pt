@@ -68,8 +68,10 @@
                      tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a
                 href="#" tal:attributes="href url"
                 tal:content="python:result.Title or result.getId" />
+                <span class="discreet">
                 by <span tal:replace="result/Creator">Author</span>,
                 <span tal:replace="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</span>
+                </span>
             </dt>
             
             <dd tal:content="python:here.cropText(result.Description, desc_length, desc_ellipsis)"> Description </dd>
