@@ -464,8 +464,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         navigation_tree_slot."""
         ct=getToolByName(self, 'portal_catalog')
         ntp=getToolByName(self, 'portal_properties').navtree_properties
-        if not context:
-            context = self.getCallingContext()
         currentPath = None
         query = {}
 
