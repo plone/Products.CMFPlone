@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+   Final
+
+    - Updated isExpired.py to take the case that datetime instances
+      are not callable.  It looks a bit strange.  But its fixed.
+      Future versions should use ExpirationDate accessor.
+
    RC6, updated to fix non-critical issues
 
     - The tableless skin didn't have the top_slot defined.
