@@ -70,7 +70,7 @@
 
         </form>
 
-    <p tal:condition="not: results" i18n:translate="no_new_news">
+    <p tal:condition="not: results" i18n:translate="text_no_new_items">
         No items have been published.
     </p>
 
