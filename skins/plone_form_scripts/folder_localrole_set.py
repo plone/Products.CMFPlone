@@ -3,14 +3,12 @@
 ##title=set acquitision
 ##
 
-if hasattr(context,'acquireLocalRoles'):
-    context.acquireLocalRoles(use_acquisition)
-    if use_acquisition:
-        msg1="Role Acquisition is now turned on, "
-    else:
-        msg1="Role Acquisition is now turned off, "
+putils = context.plone_utils
+putils.acquireLocalRoles(context, use_acquisition)
+if use_acquisition:
+    msg1="Role Acquisition is now turned on, "
 else:
-    msg1=''
+    msg1="Role Acquisition is now turned off, "
 
 if use_portraits:
     msg2="Portraits turned on"

@@ -84,8 +84,9 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
 
     def testIsLocalRoleAcquired(self):
         # Try setting the stop acquisition flag on a folder
-        self.folder.acquireLocalRoles(status=0)
-        self.assertEqual(self.folder.isLocalRoleAcquired(), 0)
+        putils = self.portal.plone_utils
+        putils.acquireLocalRoles(self.folder, status=0)
+        self.assertEqual(putils.isLocalRoleAcquired(self.folder), 0)
 
     def testStopAcquireLocalRole(self):
         # See if a sub folder really didn't get the roles by acquisition
@@ -97,7 +98,8 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
                          ('Authenticated', 'Bar', 'Member'))
 
         self.folder.invokeFactory('Folder', id='A')
-        self.folder.A.acquireLocalRoles(status=0)
+        putils = self.portal.plone_utils
+        putils.acquireLocalRoles(self.folder.A, status=0)
 
         # check if inheritance is blocked
         self.assertEqual(sortTuple(member.getRolesInContext(self.folder.A)),

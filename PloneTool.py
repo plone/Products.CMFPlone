@@ -529,8 +529,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         result.append((user, roles, type, name))
                 if parent==portal:
                     cont=0
-		elif hasattr(parent, 'isLocalRoleAcquired') and \
-                       not parent.isLocalRoleAcquired():
+		elif not self.isLocalRoleAcquired(parent):
                     # role acq check here
                     cont=0
                 else:
@@ -630,5 +629,30 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):
         return ITranslatable.isImplementedBy(obj)
+
+    security.declarePublic("acquireLocalRoles")
+    def acquireLocalRoles(self, obj, status = 1):
+        """If status is 1, allow acquisition of local roles (regular behaviour).
+        If it's 0, prohibit it (it will allow some kind of local role blacklisting).
+        GRUF IS REQUIRED FOR THIS TO WORK.
+        """
+        mt = getToolByName(self, 'portal_membership')
+        if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
+            raise 'Unauthorized' 
+
+        # Set local role status
+        gruf = getToolByName( self, 'portal_url' ).acl_users
+        gruf._acquireLocalRoles(obj, status)   # We perform our own security check
+
+        # Reindex the whole stuff.
+        obj.reindexObjectSecurity()
+
+    security.declarePublic("isLocalRoleAcquired")
+    def isLocalRoleAcquired(self, obj):
+        """GRUF IS REQUIRED FOR THIS TO WORK.
+        Return Local Role acquisition blocking status. True if normal, false if blocked.
+        """
+        gruf = getToolByName( self, 'portal_url' ).acl_users
+        return gruf.isLocalRoleAcquired(obj, )
 
 InitializeClass(PloneTool)

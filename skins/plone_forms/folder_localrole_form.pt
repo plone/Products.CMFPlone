@@ -17,7 +17,7 @@
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    iscontainer here/isPrincipiaFolderish|nothing;
-                   inheritanceActive here/isLocalRoleAcquired|python:1;
+                   inheritanceActive python:putils.isLocalRoleAcquired(here);
                    search_submitted request/role_submit|nothing;
                    search_results python:search_submitted and mtool.searchForMembers(
                                          {request.get('search_param',''):
@@ -503,7 +503,7 @@
           name="setacquisition"
           action="folder_localrole_set">
 
-      <fieldset tal:condition="exists:here/isLocalRoleAcquired">
+      <fieldset>
 
         <legend i18n:translate="legend_security_settings">
             Advanced Settings
