@@ -1,5 +1,10 @@
-from DateTime import DateTime
+from os.path import join, abspath, basename, dirname, split
 from types import StringType, UnicodeType, IntType
+from DateTime import DateTime
+
+import Globals
+import OFS
+from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
@@ -137,38 +142,57 @@ def localized_time(time = None, long_format = None, context = None):
 
     return localized_time
 
-# Portions of this class was copy/pasted from the CMFCore.utils from
-# CMF 1.4. Other parts are derived from code in Zope App.ProductContext
-# in Zope 2.7
-#
-# This class is licensed under the ZPL 2.0 as stated here:
-# http://www.zope.org/Resources/ZPL
-# Zope Public License (ZPL) Version 2.0
-# This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
-from Products.CMFCore.utils import ToolInit as CMFCoreToolInit
-import Globals, os, OFS.ObjectManager, OFS.misc_, Products
-
 class ToolInit(CMFCoreToolInit):
+
+    def getProductContext(self, context):
+        name = '_ProductContext__prod'
+        return getattr(context, name, getattr(context, '__prod', None))
+
+    def getPack(self, context):
+        name = '_ProductContext__pack'
+        return getattr(context, name, getattr(context, '__pack__', None))
+
+    def getIcon(self, context, path):
+        pack = self.getPack(context)
+        icon = None
+        # This variable is just used for the log message
+        icon_path = path
+        try:
+            icon = Globals.ImageFile(path, pack.__dict__)
+        except (IOError, OSError):
+            # Fallback:
+            # Assume path is relative to CMFPlone directory
+            plone_path = dirname(__file__)
+            path = abspath(join(plone_path, path))
+            try:
+                icon = Globals.ImageFile(path, pack.__dict__)
+            except (IOError, OSError):
+                # if there is some problem loading the fancy image
+                # from the tool then  tell someone about it
+                log(('The icon for the product: %s which was set to: %s, '
+                     'was not found. Using the default.' %
+                     (self.product_name, icon_path)))
+        return icon
+
     def initialize(self, context):
         """ Wrap the CMFCore Tool Init method """
         CMFCoreToolInit.initialize(self, context)
         for tool in self.tools:
-            # get the icon from the icon
-            icon = getattr(tool, 'toolicon', None)
-            if icon:
-                # do some tesdal magic
-                pc = getattr(context, '_ProductContext__prod', getattr(context, '__prod',None))
-                if pc:
+            # Get the icon path from the tool
+            path = getattr(tool, 'toolicon', None)
+            if path is not None:
+                pc = self.getProductContext(context)
+                if pc is not None:
                     pid = pc.id
-                    name=os.path.split(icon)[1]
-                    try:
-                        icon=Globals.ImageFile(icon, getattr(context, '_ProductContext__pack', getattr(context,'__pack__',None)).__dict__)
-                        icon.__roles__=None
-                        tool.icon = 'misc_/%s/%s' % (self.product_name, name)
-                        if not hasattr(OFS.misc_.misc_, pid):
-                            setattr(OFS.misc_.misc_, pid, OFS.misc_.Misc_(pid, {}))
-                        getattr(OFS.misc_.misc_, pid)[name]=icon
-                    except (IOError, OSError):
-                        # if there is some problem loading the fancy image from the tool then
-                        # tell someone about it
-                        log("The icon for the product: %s, icon name: %s, was not found. Using the default." % (self.product_name, icon))
+                    name = split(path)[1]
+                    icon = self.getIcon(context, path)
+                    if icon is None:
+                        # Icon was not found
+                        return
+                    icon.__roles__ = None
+                    tool.icon = 'misc_/%s/%s' % (self.product_name, name)
+                    misc = OFS.misc_.misc_
+                    Misc = OFS.misc_.Misc_
+                    if not hasattr(misc, pid):
+                        setattr(misc, pid, Misc(pid, {}))
+                    getattr(misc, pid)[name] = icon
