@@ -29,24 +29,23 @@ for w in q:
 r = " and ".join(r)
 results = catalog(SearchableText=r)
 
-# filter out certain types
-filter=['Subscription', 'Favorite', 'ATDateCriteria', 'ATListCriterion', 'ATPortalTypeCriterion', 'ATSimpleIntCriterion', 'ATSimpleStringCriterion', 
-        'ATSortCriterion', 'Alias', 'ICESubscription']
+# add here the types, that should not appear in a search 
+filter=[]
 
 results = [r for r in results if not r.portal_type in filter]
 
 RESPONSE = context.REQUEST.RESPONSE
 RESPONSE.setHeader('Content-Type', 'text/xml')
 
-#baseurl = context.portal_url()
-
 if not results:
-    print '<table id="LSTable" class="livesearchContainer" style="width:16em">'
-    print '<tr><td style="white-space:nowrap;text-align:center"><br/>No results<br/><br /></td></tr></table>'
+    print '''<fieldset class="livesearchContainer">'''
+    print '''<legend id="livesearchLegend">LiveSearch</legend>'''
+    print '<div id="LSNothingFound">No results</div>'
+    print '''</fieldset>'''
 
 else:
     print '''<fieldset class="livesearchContainer">'''
-    print '''<legend>LiveSearch</legend>'''
+    print '''<legend id="livesearchLegend">LiveSearch</legend>'''
     print '''<ul class="LSTable">'''
     for result in results[:limit]:
         print '''<li class="LSRow">''',
@@ -54,6 +53,11 @@ else:
         print '''<a href="%s">%s</a>''' % (result.getURL(), result.Title)
         print '''<span class="discreet">[%s%%]</span>''' % result.data_record_normalized_score_
         print '''<div class="discreet" style="margin-left: 2.5em;">%s</div>''' % (result.Description)
+        print '''</li>'''
+    if len(results)>limit:
+        # add a more... row
+        print '''<li class="LSRow">'''
+        print '<a href="%s" style="font-weight:normal">More...</a>' % ('search?SearchableText=' + searchterms)
         print '''</li>'''
     print '''</ul>'''
     print '''</fieldset>'''

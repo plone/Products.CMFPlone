@@ -1684,5 +1684,10 @@ ol.visualNoMarker {
     display:block;
 }
 
+#LSNothingFound {
+    text-align: center;
+    padding: 2px;
+}
+
 
 /* </dtml-with> */
