@@ -6,19 +6,20 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-<span metal:fill-slot="main"
+<div metal:fill-slot="main"
        tal:define="results python:container.portal_catalog(request);
                  Batch python:modules['ZTUtils'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;">
-
+    
+    <h1>Search results</h1>
+                 
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);
                       mq python:modules['ZTUtils'].make_query;
                       mhi python:modules['ZTUtils'].make_hidden_input">
 
         <strong> Found <span tal:replace="python:len(results)" /> items matching your criteria. </strong> <br/>
-        <p>Item descriptions are shown below. Click the link go to the item.</p>
         
         <!-- Navigation -->
         <div class="listingBar">
@@ -44,7 +45,8 @@
         <!-- Search results -->
         
         <table class="listing"
-                tal:condition="here/contentValues">
+               id="sortable"
+               tal:condition="here/contentValues">
         
             <thead>
                 <tr>
@@ -76,42 +78,6 @@
             </tbody>
         </table>
 
-        <!-- Old Search results 
-        <span tal:repeat="result batch">
-            <div class="rowEven"
-                 tal:define="rowodd repeat/result/odd;
-                             result_url result/getURL;
-                             url string:$result_url/view;"
-                 tal:attributes="class python:test(rowodd, 'rowOdd', 'rowEven');" >
-
-                <a href="/view" tal:attributes="href url">
-                    <h2 tal:content="result/Title">
-                    Title
-                    </h2>
-                </a>
-
-                <img src="folder.gif" alt="Folder"
-                     tal:attributes="src result/getIcon; alt result/Type;" />		
-
-                by <a href="" tal:content="result/Creator" tal:attributes="href string:${here/portal_url}/Members/${result/Creator}">
-                Creator </a>,
-
-                last updated at <p tal:replace="python:container.toPortalTime(result.ModificationDate)" />
-
-                <p tal:content="python:test(result.Description, result.Description, '(No Description)')">
-                Description
-                </p>
-                
-                <p>
-                <a href="/view" tal:attributes="href url">
-                Go to this item
-                </a>
-                </p>
-
-            </div>
-         </span>	
--->
-
         <!-- Navigation -->
         <div class="listingBar">
             <span class="previous" 
@@ -136,9 +102,10 @@
     </div>
     
     <div tal:condition="not: results">
-           <strong> No Results were Found </strong>
-        </div>		 
-     </span>
+        <p><strong> No Results were Found </strong></p>
+    </div>		 
+
+</div>
 
 
 </body>
