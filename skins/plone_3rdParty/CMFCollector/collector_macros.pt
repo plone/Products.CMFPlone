@@ -273,19 +273,31 @@
           <td align="center" NOWRAP
               tal:define="total here/length;
                           found python: len(items)">
-            <b><tal:block i18n:translate=""
-	      comment="sorry about the ugly TAL... this makes this part i18n-friendly">
-	      <tal:var replace="batch/start" i18n:name="start_index">0</tal:var>
-	      <tal:if condition="python: batch.start != batch.end">
-	        to <tal:var replace="batch/end" i18n:name="end_index">10</tal:var>
-	      </tal:if>
-	      of <tal:var replace="found" i18n:name="num_found">100</tal:var>
-	      </tal:block>
-	      <tal:block condition="python: total != found" i18n:translate="batch_total">
-	        found
-	        (<tal:var replace="total" i18n:name="num_total">1000</tal:var> total)
-	      </tal:block>
-            </b>
+            <strong>
+
+              <span i18n:translate="batch_displaying" omit-tag="">
+              Displaying
+              </span>
+              
+    	      <tal:var replace="batch/start">0</tal:var>
+    
+    	      <tal:if condition="python: batch.start != batch.end">
+    	        <span i18n:translate="batch_to" omit-tag="">to</span> 
+                <tal:var replace="batch/end">10</tal:var>
+    	      </tal:if>
+    
+              <span i18n:translate="batch_to" omit-tag="">
+              of
+              </span>
+    
+              <tal:var replace="found" i18n:name="num_found">100</tal:var>
+    
+    	      <tal:block condition="python: total != found">
+    	        (<tal:var replace="total">1000</tal:var> 
+                 <span i18n:translate="batch_total" omit-tag="">total</span>)
+    	      </tal:block>
+
+            </strong>
           </td>
 
           <td align="right" width="30%">
