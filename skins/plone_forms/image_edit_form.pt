@@ -120,7 +120,7 @@
              tal:define="error_file errors/file|nothing;
                          file request/file | here/file | nothing;">
             
-            <div class="label">
+            <div class="label required">
                 <span i18n:id="image">Image</span>
                 <div id="image_help" 
                      i18n:id="image_help"
