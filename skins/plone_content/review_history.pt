@@ -1,65 +1,47 @@
-<html xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      i18n:domain="Plone">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+      
 <body>
-
-<span metal:define-macro="objectHistoryByLine" tal:define="review_history python:here.portal_workflow.getInfoFor(here, 'review_history');
-														   review_history python:[r for r in review_history if r['action']];
-														   collapsable collapsable|python:1;
-														   wfs python:here.ICETools.getWorkflow(here)" tal:on-error="python:''"
-	tal:condition="python:review_history"><span tal:condition="collapsable" onclick="javascript:toggleHistory();" style="cursor:pointer;margin-bottom:0;padding-bottom:0;">, <span style="white-space: nowrap;"><img id="switch" src="treeCollapsed.gif" style="vertical-align:baseline" alt="toggle" /> history</span></span>
-
-	<div id="history" style=""
-		 tal:attributes="id python:test(collapsable, 'history','');
-			             style python:test(collapsable, 'display:none;;color:black;;padding-top:0;;margin-top:0;;', 'color:black;;padding-top:0;;margin-top:0;;font-size:110%')">
-         <table class="listing nosort" tal:condition="python:[review for review in review_history if review.get('action','')]">
-			<tr>
+<span metal:define-macro="history" 
+      tal:define="review_history here/getWorkflowHistory;">
+    <tal:history tal:condition="review_history"> 				 
+    <div id="history">
+        <table class="listing nosort">
+            <tr>
                 <th style="text-align: left;">State</th>
                 <th style="text-align: left;">Performed&nbsp;by</th>
                 <th style="text-align: left;">Date&nbsp;and&nbsp;Time</th>
                 <th style="text-align: left;">Revision note</th>
             </tr>
-            <metal:block tal:repeat="items review_history">
-            <tr tal:define="review_history python: here.reverseList(review_history);
-						    oddrow repeat/items/odd;
-	                        global rhComments items/comments;"
-                tal:attributes="class python:test(oddrow, 'even', 'odd')"
-                tal:condition="items/action">
-                <td i18n:translate=""> 
-                <span tal:replace="items/action" /> 
-                </td>
-                <td>
-                <a href="/Members/runyaga"
-                     tal:attributes="href python:container.portal_membership.getHomeUrl(items.get('actor'), '')"
-                     tal:content="items/actor">
-                  runyaga
-                </a> 
-                </td>
-                
-                <td>
-      
-				  <span tal:replace="python:obj.toPortalTime(items['time'],long_format=1)" />
-															
-                  <span tal:condition="items/effective_date|nothing">
-                  (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>: 
-                  
-			      <span tal:replace="python:obj.toPortalTime(items['effective_date'],long_format=1)"></span>)
-                  </span>
-                </td>
-              
-                <td>
-                    <span tal:condition="rhComments">
-                        <span tal:replace="rhComments"> some comments </span>
-                    </span>
-
-                    <span tal:condition="not: rhComments" i18n:translate="no_comments">
-                    &nbsp;
-                    </span>
-                </td>
-            </tr>
-            </metal:block>
-        </table>
-	</div>
+            <tal:history_data tal:repeat="event review_history">
+                <tr tal:define="oddrow repeat/event/odd;"
+                    tal:attributes="class python:test(oddrow, 'even', 'odd')"
+                    tal:condition="event/action">
+                    <td i18n:translate=""><span tal:replace="event/action" /></td>
+                    <td>
+                        <a href=""
+                             tal:attributes="href string:${portal_url}/author/${event/actor}"
+                             tal:content="event/actor" />
+                    </td>
+                    <td>
+                     <span tal:replace="python:here.toPortalTime(event['time'],long_format=1)" />
+                     <span tal:condition="event/effective_date|nothing">
+                       (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>: 
+                       <span tal:replace="python:here.toPortalTime(event['effective_date'],long_format=1)"></span>)
+                     </span>
+                    </td>
+                    <td>
+                        <span tal:condition="event/comments">
+                            <span tal:replace="event/comments"> some comments </span>
+                        </span>
+                        <span tal:condition="not: rhComments" i18n:translate="no_comments" />
+                    </td>
+                </tr>
+            </tal:history_data>
+       </table>
+    </div>
 </span>
 </body>
 </html>
