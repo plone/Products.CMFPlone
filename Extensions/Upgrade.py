@@ -65,13 +65,6 @@ def normalize_tabs(self):
             actions.append(a)
     tt['Folder']._actions=actions
  
-    get_transaction().commit(1)
-    import time
-    return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
-
-    """
-    we really ought to take actions from portal_actions, unless they belong there
-    """
     #lets check actions tool for orphaned actions
     at=getToolByName(self, 'portal_actions')
     a_actions=at._actions
