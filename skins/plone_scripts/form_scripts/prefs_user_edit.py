@@ -8,13 +8,9 @@
 ##title=Edit user
 ##
 REQUEST=context.REQUEST
-membership=context.portal_membership
-setMemberProperties=context.plone_utils
-member=membership.getMemberById(userid)
+member=context.portal_membership.getMemberById(userid)
 
-print REQUEST
-return printed
-
+context.plone_utils.setMemberProperties(member, **REQUEST.form)
 
 REFERER=REQUEST.HTTP_REFERER
 statusmsg=REFERER.find('portal_status_message')
