@@ -87,7 +87,7 @@
                  mtool mtool|here/portal_membership;
                  display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">
     <h5 class="hiddenstructure" i18n:translate="">Personal tools</h5>
-    <li id="personalBar-user" tal:condition="not: isAnon"><a href=""
+    <li id="personalBar-user" class="firstItem" tal:condition="not: isAnon"><a href=""
         tal:omit-tag="not: mtool/getHomeFolder"
         tal:attributes="href string:${mtool/getHomeUrl}"
         accesskey="accesskeys-personalbar"
@@ -96,13 +96,15 @@
              john
         </span>
     </a></li>
-    <li id="personalBar-anon" tal:condition="isAnon"
+    <li id="personalBar-anon" class="firstItem" tal:condition="isAnon"
           i18n:translate="you_are_not_logged_in">
               You are not logged in
     </li>
     <tal:actions tal:repeat="action python:display_actions"> 
         <li id=""
-            tal:attributes="id string:personalBar-${action/id}">
+            tal:define="lastitem repeat/action/last;"
+            tal:attributes="id string:personalBar-${action/id};
+                            class python:test(lastitem,'lastItem','');">
             <a href=""
                tal:attributes="href action/url"
                accesskey="accesskeys-personalbar"
