@@ -60,4 +60,6 @@
     expired
   </span>
 
+  <span metal:use-macro="here/review_history/macros/review_history"/>
+
 </div>

@@ -3,13 +3,17 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - Plaid - (unreleased)
-                                     
-    - Manually merged new css files from uiteam-plip85-componentized-css branch 
-      r6361 to 2.1. These are not hooked up to anything just yet, but will be 
-      used by the CSSRegistry.
+
+    - Merged plip81-BylineHistory r6154:HEAD into 2.1 branch. This adds
+      workflow history to the document byline.
+      [stefan] [ender] [limi]
+
+    - Manually merged new css files from uiteam-plip85-componentized-css
+      r6361:HEAD into 2.1 branch. These are not hooked up to anything just yet,
+      but will be used by the CSSRegistry.
       [elvix]
 
-    - Split plone_javascripts.js into small components in preparation of the 
+    - Split plone_javascripts.js into small components in preparation of the
       JSRegistry tool.
       [elvix]
 
