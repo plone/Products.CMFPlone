@@ -1,0 +1,58 @@
+<html metal:define-macro="master"
+      tal:define="document_root python:getattr(here.portal_url.getPortalObject(),'emerging').absolute_url()">
+<head metal:use-macro="here/header.html/macros/html_header"> </head>
+
+<body metal:define-slot="body"
+      bgcolor="#c1c1c7" text="#000000" link="#333333" vlink="#4d4c57" alink="#FF9900" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" background="images/bgs/page.gif">
+<!-- start header container table (includes flash and navigation) 
+     some items are placed on the same code line to keep them from 
+     breaking (graphically) -->
+
+<table width="750" border="0" cellspacing="0" cellpadding="0"
+     metal:use-macro="here/header.html/macros/page_header"> </table>
+<br>
+
+<!-- start 3 col container table (nav/sideways header/content) -->
+<table width="750" border="0" cellspacing="0" cellpadding="0"
+       metal:define-slot="main_columns">
+     <tr width="155"> 
+          <td bgcolor="#737689" valign="top" width="155">
+            <metal:block metal:define-slot="left_column"> 
+               <table width="155" border="0" cellspacing="0" cellpadding="10" bgcolor="#737689" height="100%">
+                    <tr> 
+                         <td align="right" valign="top" width="155" background="images/bgs/nav_left.gif" height="550" bgcolor="#737689" class="subNav"> 
+                              <!--start left nav -->
+                              <div metal:define-slot="left_navigation">
+                                <a href="#" class="subNav">subnav!</a><br>
+				<a href="#" class="subNav">subnav!</a><br>
+				<a href="#" class="subNav">subnav!</a><br>
+				<a href="#" class="subNav">subnav!</a><br>
+				<a href="#" class="subNav">subnav!</a><br>
+				<a href="#" class="subNav">subnav!</a><br>
+                              </div>
+                         </td>
+                    </tr>
+                    <tr> </tr>
+               </table>
+             </metal:block>
+          </td>
+
+	<!--start sideways header  -->
+          <td background="images/bgs/nav_right.gif" bgcolor="#c1c1c7" width="145" align="left" valign="top"><img src="images/headers/news.gif" width="65" height="570" tal:attributes="src string:images/headers/hdr_${here/aq_parent/getId}.gif"></td>
+          <td align="left" width="450" bgcolor="#c1c1c7" valign="top"> 
+               <table width="450" border="0" cellspacing="0" cellpadding="0">
+                    <tr align="left" valign="top"> 
+                         <td> 
+                              <!--start main content  -->
+                              <div metal:define-slot="main">
+                                <span class="copyHead">Header</span> <br>
+                                <span class="copyHi">Content</span> <br>
+                              </div>
+                         </td>
+                    </tr>
+               </table>
+          </td>
+     </tr>
+</table>
+</body>
+</html>

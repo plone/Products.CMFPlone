@@ -4,19 +4,24 @@ Instantiate a CMF Portal with Plone installed and preconfigured in it
 from __future__ import nested_scopes
 
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
-from Products.CMFCore.DirectoryView import addDirectoryViews
+from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName
 from Products.ExternalMethod import ExternalMethod
 
+from Globals import package_home
 from Acquisition import aq_base
 from cStringIO import StringIO
 import string
-import string 
 
 from Acquisition import Implicit
 import Persistence
 
 cmfplone_globals = {}
+
+import zLOG
+
+def log(message,summary='',severity=0):
+	zLOG.LOG('MyDebugLog',severity,summary,message)
 
 
 # set up stuff, copied from Extensions/Install.py
@@ -66,14 +71,52 @@ def addSupportOptions(self, outStream):
     portal._setProperty('allowAnonymousViewAbout', 0, 'boolean')
     outStream.write( "By default anonymous is not allowed to see the About box \n" )
 
+def loadEmergingExample(self, outStream):
+    import os
+    log('inside loadEmergingExample')
+    root=getToolByName(self, 'portal_url').getPortalObject()
+    
+    filename='emerging.zexp'
+    src_file =  open(os.path.join(package_home(globals()), 'www', 'examples', filename), 'rb')   
+    dest_file = open(os.path.join(INSTANCE_HOME, 'Extensions', filename), 'wb')
+    dest_file.write(src_file.read())
+
+    root.manage_importObject(filename)
+
+    #add skin
+    skinstool=getToolByName(self, 'portal_skins')
+    try:
+        registerDirectory(os.path.join('www'), globals())
+        addDirectoryViews( skinstool, os.path.join('www'),  cmfplone_globals ) 
+    except Exception, e:
+        log('failed to add emerging content FS Directory View' + str(e))
+    install_SubSkin(self, outStream, 'Emerging Website', 'examples/emerging')
+
+    #customizations
+    website=getattr(root, 'emerging')
+    em = ExternalMethod.ExternalMethod(id='bind_emerging_website',
+                                       title='',
+                                       module='CMFPlone.emerging_utils',
+                                       function='bindSkin')
+    log('added external method')
+    website._setObject('bind_emerging_website', em)
+    try:
+        website.manage_addProduct['SiteAccess'].manage_addAccessRule('bind_emerging_website')
+    except Exception, e:
+	log('trying to add accessrule ' + str(e))
+    log('finished merging setup')
+
 def populatePortalWithContent(self, outStream):
     """ eventually this will need to be moved out into a seperate module """
+    loadEmergingExample(self, outStream)
+
     id = 'index_html'
     root = getToolByName(self, 'portal_url').getPortalObject()
     root.invokeFactory('Document', id)
     o = getattr(root, 'index_html')
     o.edit('structured-text', default_frontpage)
     o.setTitle('Welcome to Plone')
+    
     outStream.write('new frontpage, index_html was created in root of Portal\n')
 
 def changeImmediateViews(self, outStream):
