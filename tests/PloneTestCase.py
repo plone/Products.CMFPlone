@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-__version__ = '0.4.0'
+# $Id: $
 
 from Testing import ZopeTestCase
 
@@ -11,15 +11,16 @@ ZopeTestCase.installProduct('CMFDefault')
 ZopeTestCase.installProduct('CMFCalendar')
 ZopeTestCase.installProduct('CMFTopic')
 ZopeTestCase.installProduct('DCWorkflow')
-ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 ZopeTestCase.installProduct('CMFPlone')
+ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('PageTemplates', quiet=1)
 ZopeTestCase.installProduct('PythonScripts', quiet=1)
+ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 
 
 from AccessControl.SecurityManagement import newSecurityManager
@@ -57,7 +58,7 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         personal.__ac_local_roles__ = None
         personal.manage_setLocalRoles(member_id, ['Owner'])
         catalog.unindexObject(personal)
- 
+
 
 def setupPloneSite(app, id='portal', quiet=0):
     '''Creates a Plone site.'''
