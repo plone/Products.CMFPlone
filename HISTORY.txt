@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Ms. Bumblebee - (Unreleased)
 
+    - No longer uncatalog the Members folder on installation so that the new
+      NavTreePortlet (not included) works out of the box.
+      [stefan]
+
     - Changed PloneTool.availableMIMETypes to use the MimetypesRegistry to
       return a list of mimetype names.
       [tiran]

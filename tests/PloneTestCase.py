@@ -165,7 +165,7 @@ def optimize():
     # Don't setup Plone content (besides Members folder)
     def setupPortalContent(self, p):
         p.invokeFactory('Large Plone Folder', id='Members')
-        p.portal_catalog.unindexObject(p.Members)
+        ##p.portal_catalog.unindexObject(p.Members)
     PloneGenerator.setupPortalContent = setupPortalContent
 
 
