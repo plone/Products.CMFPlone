@@ -4,13 +4,13 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=id
+##parameters=userid
 ##title=Edit user
 ##
 REQUEST=context.REQUEST
 membership=context.portal_membership
 setMemberProperties=context.plone_utils
-member=membership.getMemberById(id)
+member=membership.getMemberById(userid)
 
 print REQUEST
 return printed

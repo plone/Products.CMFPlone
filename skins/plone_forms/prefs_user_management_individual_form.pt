@@ -76,7 +76,7 @@
                 <tal:define condition="select_variable"
                             define="global select_value python:path('here/%s' %select_variable);" />
 
-                <select name="id" tal:condition="python:type in ('selection',)">
+                <select name="id" tal:condition="python:type in ('selection',)"
                     tal:attributes="name string:$id:$type;">
                     <tal:values repeat="option select_value">
                         <option tal:attributes="SELECTED python:test(propertyvalue==option,'SELECTED','')"
