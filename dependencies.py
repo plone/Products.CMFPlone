@@ -5,7 +5,7 @@
 import zLOG
 
 def log(message,summary='',severity=0):
-    zLOG.LOG('Plone Depeedency: ',severity,summary,message)
+    zLOG.LOG('Plone Dependency: ',severity,summary,message)
 
 try:
     import Products.CMFQuickInstallerTool
