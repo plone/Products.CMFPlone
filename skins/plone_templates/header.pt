@@ -156,7 +156,7 @@
                                      global compare_id python:template.getId();" >
 
             <metal:block tal:condition="contentpath">
-                 <metal:block tal:define="global compare_id python:contentpath[0]" />
+                 <metal:block tal:define="global compare_id python:contentpath[-1]" />
             </metal:block>
 
             <a href="" class=""

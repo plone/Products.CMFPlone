@@ -194,6 +194,7 @@ def checkDependencies(self, outStream):
         outStream.write('unable to add portal_forms, the CMF Form Validation Tool\n')
     
     #encapsulates Calendaring functionality into a tool, thanks AndyD!
+    #NOTE: this is now in CMFDefault, also install_events tries to do this
     try:
         cmfSite.manage_addProduct['CMFPlone'].manage_addTool(type='CMF Calendar Tool')            
         outStream.write('portal_calendar, CMF Calendaring Mechanism added.\n')
