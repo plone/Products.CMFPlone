@@ -34,7 +34,7 @@ def registerMigrations():
     MigrationTool.registerUpgradePath(
             '1.0RC2', 
             '1.0', 
-            rc1Final
+            rc2Final
             )
 
 if __name__=='__main__':
