@@ -15,7 +15,7 @@
      tal:define="standalone python:1;
                  folder_contents python:here.getFolderContents(suppressHiddenFiles=1);
                  myfolder python: here_url==mtool.getHomeUrl();
-                 contentTypes python: here.hasAllowedTypes(); 
+                 contentTypes python: here.getAllowedTypes(); 
                  num_types python: len(contentTypes)">
                  
     <form name="folderContentsForm"
