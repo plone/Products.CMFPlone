@@ -386,6 +386,7 @@ table.columns td.right {
 #contentTabs a {
     background: &dtml-contentTabBackgroundNotSelected;;
     border: &dtml-contentTabBorder;;
+    border-style: solid solid none solid;
     color: &dtml-contentTabFontColor;;
     font-weight: &dtml-contentTabFontWeight;;
     height: 1.2em;
