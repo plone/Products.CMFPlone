@@ -21,6 +21,9 @@ if len(path_ids)>1:
 else:
     folder=context.portal_url.getPortalObject()
 
+if not checkPermission('List folder contents', folder):
+    return listing
+
 for o in folder.listFolderContents():
    if o.Type()=='Folder' and o.Title()!='Favorites':
        if checkPermission('List folder contents', o):
