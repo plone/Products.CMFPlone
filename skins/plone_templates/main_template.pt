@@ -48,14 +48,6 @@ Header stuff
                         <span class="netscape4">&middot;</span>
                     </span>
     
-    
-                    <a class=""
-                       href="content_status_history"
-                       tal:condition="python:test( (not here.portal_membership.isAnonymousUser and here.getActionUrlById('status history', wf_actions ) or wf_actions ) , 1, 0)"
-                       tal:attributes="href string:${here/absolute_url}/content_status_history;
-                                       class python:test(request.URL0.find('content_status')!=-1, 'selected', 'plain');">
-                       Publishing</a> <span class="netscape4">&middot;</span>
-    
                 </div>
 
                 <div class="contentBar">        
