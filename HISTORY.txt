@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Made prefs_error_log_form a tad safer in the face of weird upgrade issues.
+      Also see http://plone.org/collector/3435
+      [stefan]
+
     - Changed localLongTimeFormat to '%Y-%m-%d %H:%M'. Note: there is no migration,
       only new sites will be affected.
       [stefan]
