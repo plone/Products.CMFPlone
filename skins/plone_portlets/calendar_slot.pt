@@ -14,8 +14,8 @@
 	 tal:omit-tag=""
 	 tal:define="DateTime python:modules['DateTime'].DateTime;
 	 current python:DateTime();
-	 month python:request.get('month', DateTime().month());
-	 year python:request.get('year', DateTime().year());
+	 month python:request.get('month', current.month());
+	 year python:request.get('year', current.year());
 	 prevMonthTime python:here.getPreviousMonth(month, year);
 	 nextMonthTime python:here.getNextMonth(month, year);
 	 weeks python:here.portal_calendar.getEventsForCalendar(month=month, year=year);
