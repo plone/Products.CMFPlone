@@ -81,6 +81,13 @@ def make_plone(portal):
     #Add State tabs to portal_types individually instead of globally
     addStateActionToTypes(portal)
 
+    #Add Form Controller - yay for features!
+    addFormController(portal)
+
+def addFormController(portal):
+    qi=getToolByName(portal,'portal_quickinstaller')
+    qi.installProduct('CMFFormController')
+
 def addPortalFormValidators(portal):
     form_tool = portal.portal_form
     form_tool.setValidators('folder_rename_form', ['validate_folder_rename'])
