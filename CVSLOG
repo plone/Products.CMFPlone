@@ -1,3 +1,64 @@
+2004-02-11 00:24  dreamcatcher
+
+	* skins/plone_content/file_edit_form.cpt (Plone-2_0-branch):
+	  Catched by mistake.
+
+2004-02-11 00:17  zopezen
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): fix typo
+
+2004-02-11 00:14  zopezen
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): #2539,
+	  blame alan if it blows up
+
+2004-02-10 20:30  shh42
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): Don't
+	  break if there is no 'Plone Default' skin.
+
+2004-02-10 19:53  pupq
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch):
+	  use_folder_contents is a feature added by runyaga to have the
+	  navigation portlet jump directly to the folder_contents page; it
+	  is *not* related to whether the folder_contents tab appears.
+	  While some users may want use_folder_contents (esp. for sites
+	  that are really meant to manage content and not display it) or
+	  may want to use it after we add or fix logic so that this shows
+	  up at the right times (rather than always), it's definitely not
+	  the default, so removed configuring this with ['Folder']
+
+2004-02-10 17:49  runyaga
+
+	* skins/plone_templates/registered_notify_template.dtml
+	  (Plone-2_0-branch): been awhile since ive used dtml.. fixed some
+	  errors
+
+2004-02-10 17:41  runyaga
+
+	* skins/: plone_forms/mail_password_template.dtml,
+	  plone_templates/mail_password_template.dtml,
+	  plone_templates/registered_notify_template.dtml,
+	  plone_templates/registered_notify_template.pt (Plone-2_0-branch):
+	  zpt is acting unreliable.  it inserts extraneous \n so we must
+	  move back to dtml.  I also moved the mail template into
+	  plone_templates.  the downside is that we have to think more
+	  about i18n in dtml ;-( and people still have to know both zpt and
+	  dtml.  oh well.  2.0 needs to go out
+
+2004-02-10 13:31  plonista
+
+	* FactoryTool.py, tests/testPortalFactory.py (Plone-2_0-branch):
+	  Fix for 2601, attempt 2.  Also added a unit test.  Note to
+	  implementers of PLIP 16: you may have to modify the
+	  __ac_local_roles__() method in TempFolder if you implement PLIP
+	  16.
+
+2004-02-10 04:54  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-10 02:12  limi
 
 	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
