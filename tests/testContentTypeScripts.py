@@ -416,11 +416,19 @@ def test_suite():
     suite.addTest(makeSuite(TestContentTypeScripts))
     suite.addTest(makeSuite(TestEditShortName))
     suite.addTest(makeSuite(TestEditFileKeepsMimeType))
-    suite.addTest(makeSuite(TestFileURL))
     suite.addTest(makeSuite(TestFileExtensions))
     suite.addTest(makeSuite(TestGetObjSize))
     suite.addTest(makeSuite(TestDefaultPage))
+
+    # urlparse.urlparse() of Python2.1 is borked
+    try:
+        foo = True
+        suite.addTest(makeSuite(TestFileURL))
+    except NameError:
+        pass
+
     return suite
+
 
 if __name__ == '__main__':
     framework()
