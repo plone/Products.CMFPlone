@@ -166,6 +166,7 @@ def migrateTools(portal):
             if obj.meta_type!='Filesystem Directory View':
                 st._setObject(info['id'], obj)
     st.request_varname = orig.request_varname
+    st.default_skin = orig.default_skin
 
     at = getToolByName(portal, 'portal_actions')
     ap = list(at.action_providers)
