@@ -40,10 +40,6 @@ class MembershipTool(MembershipTool):
             f.changeOwnership(user)
             f.manage_setLocalRoles(member_id, ['Owner'])
     
-            # Create Member's home page.
-            # default_member_content ought to be configurable per
-            # instance of MembershipTool.
-    
             # the below skips workflow                          
             Document.addDocument( f
                                 , 'index_html'
@@ -55,15 +51,10 @@ class MembershipTool(MembershipTool):
     
             wf_tool=getToolByName(self, 'portal_workflow')
             homepage=getattr(f, 'index_html')
-            wf = wf_tool.getWorkflowsFor(homepage)[0]
-            wf.updateRoleMappingsFor(homepage)
+	    wf_tool.notifyCreated(homepage)
     
             f.index_html._setPortalTypeName( 'Document' )
             # Overcome an apparent catalog bug.
             f.index_html.reindexObject()
-
             #Add .personal folder for Portraits and Personal content
-            if f.meta_type=='Plone Folder':
-                f.manage_addPloneFolder(id='.personal', title='Personal Items' )
-            else:
-                f.manage_addPortalFolder(id='.personal', title='Personal Items')
+            f.manage_addPortalFolder(id='.personal', title='Personal Items')

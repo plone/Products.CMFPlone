@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US" metal:define-macro="master">
 
-<metal:block tal:define="global folderishView python: template.getId() in ('folder_listing', 'folder_contents')" 
+<metal:block tal:define="global folderishView python: template.getId() in ('folder_listing', )" 
              tal:condition="folderishView">
     <tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(container)" />
 </metal:block>
