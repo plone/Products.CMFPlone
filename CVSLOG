@@ -1,3 +1,246 @@
+2004-02-29 01:35  shh42
+
+	* tests/testMembershipTool.py (Plone-2_0-branch): Add tests for
+	  portal_membership.searchForMembers()
+
+2004-02-28 22:37  limi
+
+	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
+	  Fixed it so the Related portlet doesn't bring up an HTTP auth box
+	  - Andy, did you actually test this before checking it in? Still
+	  relates any document to itself, which is slightly silly, but at
+	  least doesn't give you a traceback now.
+
+2004-02-28 22:22  kayeva
+
+	* skins/plone_forms/registered.pt (Plone-2_0-branch): Oops, a typo.
+	  Fixed now. (Fix for http://plone.org/collector/2140)
+
+2004-02-28 22:20  limi
+
+	* skins/: plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  plone_content/document_actions.pt,
+	  plone_content/document_edit_form.cpt,
+	  plone_content/document_view.pt,
+	  plone_content/event_edit_form.cpt, plone_content/event_view.pt,
+	  plone_content/favorite_view.pt, plone_content/file_edit_form.cpt,
+	  plone_content/file_view.pt, plone_content/image_edit_form.cpt,
+	  plone_content/image_view.pt, plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_content/newsitem_edit_form.cpt,
+	  plone_content/newsitem_view.pt,
+	  plone_forms/content_status_history.cpt,
+	  plone_forms/enabling_cookies.pt, plone_forms/failsafe_login.pt,
+	  plone_forms/folder_factories.pt,
+	  plone_forms/folder_localrole_form.pt,
+	  plone_forms/folder_rename_form.cpt, plone_forms/help.pt,
+	  plone_forms/insufficient_privileges.pt,
+	  plone_forms/join_form.cpt, plone_forms/logged_out.pt,
+	  plone_forms/login_failed.pt, plone_forms/login_form.pt,
+	  plone_forms/login_password.pt, plone_forms/login_success.pt,
+	  plone_forms/mail_password_form.pt,
+	  plone_forms/mail_password_response.pt,
+	  plone_forms/member_search_form.pt,
+	  plone_forms/member_search_results.pt,
+	  plone_forms/ownership_form.pt, plone_forms/roster.pt,
+	  plone_forms/search.pt, plone_forms/search_form.pt,
+	  plone_forms/sendto_form.cpt, plone_forms/synPropertiesForm.cpt,
+	  plone_forms/talkback_tree.pt, plone_forms/undo_form.pt,
+	  plone_prefs/password_form.pt, plone_prefs/personalize_form.cpt,
+	  plone_prefs/plone_control_panel.pt,
+	  plone_prefs/plone_memberprefs_panel.pt,
+	  plone_prefs/prefs_error_log_form.pt,
+	  plone_prefs/prefs_error_log_showEntry.pt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_install_product_readme.pt,
+	  plone_prefs/prefs_install_products_form.pt,
+	  plone_prefs/prefs_installed_product_overview.pt,
+	  plone_prefs/prefs_mailhost_form.pt,
+	  plone_prefs/prefs_portal_properties.pt,
+	  plone_prefs/prefs_portal_properties_list.pt,
+	  plone_prefs/prefs_portalskin_form.pt,
+	  plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_syndication_form.pt,
+	  plone_prefs/prefs_user_details.pt,
+	  plone_prefs/prefs_user_group_search_form.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt,
+	  plone_prefs/prefs_workflow_advanced.pt,
+	  plone_prefs/prefs_workflow_basic.pt,
+	  plone_prefs/reconfig_form.cpt, plone_tableless/colophon.pt,
+	  plone_templates/colophon.pt,
+	  plone_templates/default_error_message.pt,
+	  plone_templates/folder_contents.pt,
+	  plone_templates/folder_listing.pt, plone_templates/footer.pt,
+	  plone_templates/global_contentmenu.pt,
+	  plone_templates/global_contentviews.pt,
+	  plone_templates/global_logo.pt,
+	  plone_templates/global_pathbar.pt,
+	  plone_templates/global_personalbar.pt,
+	  plone_templates/global_searchbox.pt,
+	  plone_templates/global_sections.pt,
+	  plone_templates/global_siteactions.pt,
+	  plone_templates/global_skinswitcher.pt,
+	  plone_templates/global_statusmessage.pt,
+	  plone_templates/header.pt, plone_templates/index_html.pt,
+	  plone_templates/news.pt, plone_templates/portlets_fetcher.pt,
+	  plone_templates/recently_published.pt,
+	  plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Changed lang="en-US" to "en".
+
+2004-02-28 22:17  limi
+
+	* skins/: plone_forms/failsafe_login.pt, plone_forms/login_form.pt,
+	  plone_prefs/prefs_portal_properties.pt,
+	  plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt,
+	  plone_templates/folder_contents.pt,
+	  plone_templates/global_personalbar.pt, plone_templates/header.pt
+	  (Plone-2_0-branch): Fixed up HTML so it's standards compliant
+	  again ;)
+
+2004-02-28 22:09  plonista
+
+	* skins/: plone_scripts/breadcrumbs.py,
+	  plone_templates/global_pathbar.pt (Plone-2_0-branch): Fix for
+	  2743
+
+2004-02-28 21:49  kayeva
+
+	* skins/plone_forms/registered.pt (Plone-2_0-branch): Fix for
+	  http://plone.org/collector/2140
+
+2004-02-28 21:05  limi
+
+	* HISTORY.txt, skins/plone_content/document_actions.pt,
+	  skins/plone_content/document_byline.pt,
+	  skins/plone_templates/document_actions.pt,
+	  skins/plone_templates/document_byline.pt (Plone-2_0-branch):
+	  Moved 'document_byline' and 'document_actions' to the
+	  'plone_content' folder - as they belong to the content templates.
+
+2004-02-28 20:39  limi
+
+	* Portal.py (Plone-2_0-branch): The folder Edit tab should be Edit,
+	  not Properties. This was one of the things that confuse blind
+	  people. It's a very minor tweak, so no migration necessary, IMHO
+	  - it will only apply to new sites. Very easy to change on your
+	  existing site if you want the change. Yes, I'm lazy. :]
+
+2004-02-28 20:27  limi
+
+	* skins/plone_ecmascript/vcXMLRPC.js (Plone-2_0-branch): Removed
+	  the insulting error message saying "your browser does not support
+	  XML-RPC". If it doesn't, it's our job to degrade correctly,
+	  showing a pop-up is annoying.
+
+2004-02-28 20:03  shh42
+
+	* MembershipTool.py (Plone-2_0-branch): Fixing
+	  http://plone.org/collector/2576
+
+2004-02-28 19:59  limi
+
+	* skins/: plone_forms/search_form.pt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): Fix for #2450, toggling of all/none now has a
+	  proper class and is visually offset from the rest. Also renamed
+	  it from "Toggle" to "Select All/None".
+
+2004-02-28 19:48  shh42
+
+	* tests/testPortalFactory.py (Plone-2_0-branch): Removed redundant
+	  fixture component
+
+2004-02-28 18:31  limi
+
+	* skins/plone_content/: document_view.pt, newsitem_view.pt
+	  (Plone-2_0-branch): Fix for 2509, the "click edit tab to change"
+	  on empty documents shouldn't be shown to users that can't edit.
+
+2004-02-28 14:43  shh42
+
+	* ActionsTool.py, FactoryTool.py, HISTORY.txt, MembershipTool.py,
+	  PloneFolder.py, PloneInitialize.py, StatelessTreeNav.py,
+	  version.txt, Extensions/package_plone.py,
+	  Extensions/setupSite.py, debian/changelog,
+	  migrations/__init__.py, migrations/migration_util.py,
+	  migrations/v2/oneX_twoBeta2.py, migrations/v2/plone2_base.py,
+	  migrations/v2/release_candidates.py,
+	  setup/ConfigurationMethods.py,
+	  skins/plone_3rdParty/CMFTopic/friendlydatec_editform.pt,
+	  skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt.metadata,
+	  skins/plone_content/event_edit_form.cpt,
+	  skins/plone_content/event_view.pt,
+	  skins/plone_content/favorite_view.pt,
+	  skins/plone_content/file_edit_form.cpt,
+	  skins/plone_content/file_view.pt,
+	  skins/plone_content/folder_edit_form.cpt,
+	  skins/plone_content/metadata_edit_form.cpt,
+	  skins/plone_ecmascript/plone_javascripts.js,
+	  skins/plone_form_scripts/content_status_modify.cpy,
+	  skins/plone_form_scripts/register.cpy.metadata,
+	  skins/plone_forms/content_status_history.cpt,
+	  skins/plone_forms/mail_password_form.pt,
+	  skins/plone_forms/mail_password_template.dtml,
+	  skins/plone_portlets/portlet_login.pt,
+	  skins/plone_portlets/portlet_navigation.pt,
+	  skins/plone_portlets/portlet_related.pt,
+	  skins/plone_prefs/personalize_form.cpt,
+	  skins/plone_prefs/prefs_group_details.pt,
+	  skins/plone_prefs/prefs_install_products_form.pt,
+	  skins/plone_prefs/prefs_mailhost_form.pt,
+	  skins/plone_prefs/prefs_portalskin_set.py,
+	  skins/plone_prefs/prefs_search_macros.pt,
+	  skins/plone_prefs/prefs_user_details.pt,
+	  skins/plone_scripts/batchedFolderContents.py,
+	  skins/plone_scripts/breadcrumbs.py,
+	  skins/plone_scripts/contentbar_status_modify.py,
+	  skins/plone_scripts/createObject.cpy,
+	  skins/plone_scripts/folder_delete.cpy,
+	  skins/plone_scripts/getFolderContents.py,
+	  skins/plone_scripts/getFolderListingFolderContents.py,
+	  skins/plone_scripts/logged_in.py, skins/plone_scripts/logout.cpy,
+	  skins/plone_scripts/my_worklist.py,
+	  skins/plone_scripts/navigationLocalRelated.py,
+	  skins/plone_scripts/navigationRemoteResources.py,
+	  skins/plone_scripts/queryCatalog.py,
+	  skins/plone_scripts/showEditableBorder.py,
+	  skins/plone_scripts/translate.py,
+	  skins/plone_styles/plone.css.dtml,
+	  skins/plone_templates/colophon.pt,
+	  skins/plone_templates/document_actions.pt,
+	  skins/plone_templates/document_byline.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/folder_listing.pt,
+	  skins/plone_templates/global_contentmenu.pt,
+	  skins/plone_templates/global_defines.pt,
+	  skins/plone_templates/global_personalbar.pt,
+	  skins/plone_templates/global_sections.pt,
+	  skins/plone_templates/header.pt,
+	  skins/plone_templates/mail_password_template.dtml,
+	  skins/plone_templates/main_template.pt,
+	  skins/plone_templates/news.pt,
+	  skins/plone_templates/registered_notify_template.dtml,
+	  skins/plone_templates/registered_notify_template.pt,
+	  skins/plone_templates/rssBody.pt,
+	  skins/plone_templates/sendto_template.pt,
+	  tests/testFolderLocalRoleForm.py, tests/testGroupDataTool.py,
+	  tests/testGroupsTool.py, tests/testInterfaces.py,
+	  tests/testPortalFactory.py, tests/testQueryCatalog.py: Merge
+	  Plone-2_0-branch to HEAD
+
+2004-02-28 14:25  shh42
+
+	* skins/plone_templates/rssBody.pt: Remove file which is in the way
+	  for merging. It will come back after the merge.
+
+2004-02-28 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-28 00:58  shh42
 
 	* tests/testQueryCatalog.py (Plone-2_0-branch): Fixed a test bug.
