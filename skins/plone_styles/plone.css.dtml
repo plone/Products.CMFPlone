@@ -1,4 +1,4 @@
-/* 
+/*
 ** Plone style sheet for CSS2-capable browsers.
 ** Copyright Alexander Limi, 2002 - http://limi.net
 **
@@ -783,7 +783,7 @@ div listingBar img {
 a.skipnav {
     visibility: hidden;
     position: absolute;
-} 
+}
 a.external {
     background: White url(link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
@@ -792,6 +792,7 @@ div.hiddenlabel {
     visibility: hidden;
 }
 .hiddenstructure {
+    border: none;
     height: 0px;
     overflow: hidden;
     padding-top: 0px;
