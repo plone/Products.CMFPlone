@@ -687,50 +687,6 @@ input.searchButton {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
 }
 
-/* OLD FORMS CODE 
-
-.row {
-    min-height: 4em;
-    margin: 0em 0em 1em 0em;
-    position: relative;
-}
-.group {
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    margin: 1em 0em 1em 0em;
-    padding: 0em 1em;
-}
-.legend {
-    background: &dtml-backgroundColor;;
-    font-size: &dtml-fontSmallSize;;
-    padding: 0.5em;
-    position : relative;
-    top: -0.8em;
-    left: 0em;
-}
-.field {
-    margin-top: 0.2em;
-}
-.help {
-    background-color: &dtml-helpBackgroundColor;; 
-    border: &dtml-borderWidth; &dtml-borderStyle; black; 
-    font-size: &dtml-fontSmallSize;;
-    font-weight: normal;
-    line-height: normal;
-    text-align: left;
-    position: absolute;
-    left: -18em;
-    top: 1.5em;
-    width: 16em;
-    padding: 0.5em;
-}
-
-.required {
-    background: url(required.gif) left no-repeat;
-    padding-left: 8px;
-}
-
-*/
-
 /* The new form elements */
 
 .field {
