@@ -80,9 +80,14 @@
 		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
                     <td>
 		         <a href="#" 
-			    tal:attributes="href url"><img src="#" tal:attributes="src result/getIcon; alt result/Title;" border="0" /></a>&nbsp;<a 
-                         href="#" tal:attributes="href url"
-                                  tal:content="result/Title" />
+                    tal:attributes="href url">
+                    <img src="#" 
+                         height="16"
+                         width="16"
+                         alt="dummy"
+                         tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a 
+                    href="#" tal:attributes="href url"
+                    tal:content="result/Title" />
                     </td>
                     <td tal:content="result/Creator">Author </td>
                     <td tal:content="result/ModificationDate">Modification Date</td>
