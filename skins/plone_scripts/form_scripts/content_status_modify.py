@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=workflow_action, comment='', effective_date=None, expiration_date=None
-##title=less lazy contenet status modify script
+##title=handles the workflow transitions of objects
 ##
 
 if effective_date or expiration_date:
@@ -17,11 +17,7 @@ context.portal_workflow.doActionFor( context
                                    , workflow_action
                                    , comment=comment )
 
-typeObj=context.portal_types.getTypeInfo(context)
-view=typeObj.getActionById('view')
-
-redirect_url = '%s/%s?%s' % ( context.absolute_url()
-                            , view
-                            , 'portal_status_message=Status+changed.')
-context.REQUEST[ 'RESPONSE' ].redirect( redirect_url )
-
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'success'
+                                            , portal_status_message='Status changed.' )

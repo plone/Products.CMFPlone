@@ -219,7 +219,7 @@
 
     <div tal:condition="not: request/ids|nothing">
         
-        <table class="listing" tal:condition="review_history">
+        <table class="listing" tal:condition="python:[review for review in review_history if review.get('action','')]">
             
             <tr>
                 <th>Action</th>
@@ -227,6 +227,7 @@
                 <th>Date&nbsp;and&nbsp;Time</th>
                 <th>Comment</th>
             </tr>
+
             <metal:block tal:repeat="items review_history">
             <tr tal:define="review_history python: here.reverseList(review_history);
 	                    global odd repeat/items/odd; global rhComments items/comments;"
