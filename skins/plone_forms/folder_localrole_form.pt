@@ -166,7 +166,7 @@
 
         <div class="field"
              tal:define="data    python:here.formatColumns(avail_roles);">
-            <table cellspacing=3>
+            <table cellspacing="3">
                 <tr tal:repeat="row     data">
                     <td tal:repeat="lrole row">
                         <input type="checkbox" name="member_roles:list" 
