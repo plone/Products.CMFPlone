@@ -63,7 +63,7 @@
                              error errors/smtp_ports | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
-                <label i18n:translate="label_smtp_server">SMTP port</label>
+                <label i18n:translate="label_smtp_port">SMTP port</label>
 
                 <div class="formHelp" i18n:translate="help_smtp_port">
                 The port of your local SMTP (outgoing
