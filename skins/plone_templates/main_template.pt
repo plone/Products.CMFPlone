@@ -33,7 +33,8 @@
         template_id options/template_id|template_id|template/getId|nothing;
         slots_mapping options/slots_mapping|here/prepare_slots|nothing;
         Iterator python:modules['Products.CMFPlone'].IndexIterator;
-        tabindex python:Iterator(pos=30000);" 
+        tabindex python:Iterator(pos=30000);
+        here_url here/absolute_url" 
       tal:attributes="lang site_properties/default_language|default;
                       xml:lang site_properties/default_language|default;">
 
@@ -45,8 +46,8 @@
              tal:attributes="href python:here.absolute_url()+'/'" />
        <metal:block tal:condition="not:here/isPrincipiaFolderish|nothing">
           <base href="" 
-                tal:define="path python:'/'.join(here.portal_url.getRelativeContentPath(here)[:-1])"
-                tal:attributes="href python:here.portal_url()+'/'+path+test(len(path)>0,'/','')" />
+                tal:define="path python:'/'.join(utool.getRelativeContentPath(here)[:-1])"
+                tal:attributes="href python:portal_url+'/'+path+test(len(path)>0,'/','')" />
        </metal:block>
     </metal:block>
   </metal:block>
@@ -81,7 +82,8 @@ Header stuff
     <tbody>
         <tr>
             <td class="left" metal:define-macro="left_column"
-	                     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator; tabindex python:Iterator(pos=10000);" 
+	                     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator; 
+                                         tabindex python:Iterator(pos=10000);" 
 	                     tal:condition="slots_mapping/left|nothing">
                 <metal:block tal:repeat="slot slots_mapping/left">
                 <tal:block tal:define="global pathexpr python:slot[0];
@@ -102,10 +104,11 @@ Header stuff
                 <metal:block define-slot="super"
 		             tal:condition="show_border" >
                 
-                <div id="contentTabs" metal:define-macro="contentTabs"
-                     i18n:domain="plone">
+                <div id="contentTabs" metal:define-macro="contentTabs" i18n:domain="plone"
+                     tal:define="objactions python:obj_actions+local_actions;
+                                 foldactions python:folder_actions+obj_actions+local_actions;">
    
-                    <tal:block tal:repeat="action python:test(isFolder, folder_actions+obj_actions+local_actions, obj_actions+local_actions)">
+                    <tal:block repeat="action python:test(isFolder, foldactions, objactions)">
                         <a class="" href="" 
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template_id, 'selected', 'plain');
 			                   href action/url;">
@@ -125,9 +128,10 @@ Header stuff
                      tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
 
                     <div id="content">
-
-                        <metal:block metal:use-macro="here/header/macros/portal_message">
-                        Message box
+                        <metal:block define-slot="portal_message">
+                            <metal:block use-macro="here/header/macros/portal_message">
+                            portal status message box
+                            </metal:block>
                         </metal:block>
             
                         <div class="documentActions"

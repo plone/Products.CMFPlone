@@ -8,9 +8,23 @@
 
 <body>
 
+<metal:block fill-slot="portal_message">
+        
+    <div class="message"
+         i18n:domain="plone"
+         tal:define="dummy here/filterCookie;
+                     portal_message request/portal_status_message | nothing"
+         tal:condition="portal_message">
+
+        <img tal:replace="structure here/info.gif" />
+
+        <strong tal:content="portal_message" i18n:translate=""></strong>
+    </div>
+</metal:block>
+
+<!-- removed dummy here/filterCookie; -->
 <div metal:fill-slot="main"
-     tal:define="dummy here/filterCookie;
-                 folderfilter python:request.get('folderfilter', '');
+     tal:define="folderfilter python:request.get('folderfilter', '');
                  global decodedFilter python:here.decodeFolderFilter(folderfilter);
                  global filterValues decodedFilter;
                  global filter decodedFilter;
