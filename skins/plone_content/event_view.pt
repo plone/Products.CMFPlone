@@ -26,17 +26,33 @@
            tal:attributes="href here/event_url"
            tal:content="here/event_url">event_url</a>
         </p>
-    
+
         <dl>
             <dt i18n:translate="event_what">What</dt>
             <dd tal:content="python:modules['string'].join(here.Subject(), ' ')">Conference</dd>
     
             <dt i18n:translate="event_when">When</dt>
             <dd>
+
+            <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
                 <span i18n:translate="event_between">Between</span>
                 <span tal:replace="python:here.toPortalTime(here.start(), long_format=1)">Start Date Time</span>
                 <span i18n:translate="event_and">and</span>
                 <span tal:replace="python:here.toPortalTime(here.end(), long_format=1)">End Date Time</span>
+            </tal:differentday>       
+
+            <tal:sameday tal:condition="python:here.start().Date() == here.end().Date()">
+                <span tal:replace="python:here.toPortalTime(here.start())">Start Date Time</span> -
+                <span i18n:translate="event_from">from</span>
+                <span tal:replace="python:here.start().TimeMinutes()">Start Time</span>
+                <span i18n:translate="event_to">to</span>
+                <span tal:replace="python:here.end().TimeMinutes()">End Date Time</span>
+            </tal:sameday>
+
+
+
+
+
             </dd>
     
             <dt i18n:translate="event_where">Where</dt>
