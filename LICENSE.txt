@@ -1,6 +1,6 @@
   The Plone Content Management System is built on the Content 
   Management Framework (CMF) and the Zope Application Server.  
-  Plone is copyright 2001-2003 George A. Runyan Jr., Alexander 
+  Plone is copyright 2001-2004 George A. Runyan Jr., Alexander 
   Limi and Vidar Andersen.
 
   This program is free software; you can redistribute it and/or modify
