@@ -13,8 +13,7 @@
                  obj python:getattr(here.portal_properties, request.get('attr',''))">
 
     <h1 tal:define="heading_title string:heading_${request/attr}"
-        i18n:attributes="title"
-        tal:attributes="title python:here.translate(heading_title)"
+        i18n:translate=""
         tal:content="obj/title">title</h1>
 
     <a href=""
