@@ -89,7 +89,7 @@ class MembershipTool( BaseTool ):
 
         if members is None:
             parent.manage_addPloneFolder(id='Members', title='Members')
-            members = getattr(parent, 'Members')
+            members = getattr(parent, 'Members', None)
             
         if members is not None and not hasattr(members, member_id):
             f_title = "%s's Home" % member_id
