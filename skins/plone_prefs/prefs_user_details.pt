@@ -343,9 +343,9 @@ we eventually might want to merge this form with personalize_form
                         i18n:translate="help_display_names"
                         class="formHelp"
                         style="visibility:hidden">
-                    Select whether you want Names (also known as IDs) to be
-                    visible and editable when editing contents. If you choose not
-                    to display Names, they will be generated automatically.
+                    Determines if Short Names (also known as IDs) are visible
+                    and editable when editing contents. If Short Names are not
+                    displayed, they will be generated automatically.
                     </div>
                 </div>
                 <div class="field"
