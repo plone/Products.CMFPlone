@@ -350,7 +350,10 @@ def setupCalendar(portal):
                                 'Social Event', 'Work'),
             REQUEST=None,
             )
-    except: pass
+    except: 
+        pass
+    qi = getToolByName(portal, 'portal_quickinstaller')
+    qi.notifyInstalled('CMFCalendar')
     out.write('Event added to Metadata element Policies\n')
     
     
@@ -364,6 +367,8 @@ def addActionIcons(portal):
     ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
     ai.addActionIcon('plone', 'rss', 'rss.gif', 'Syndication')
     ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
+    qi=getToolByName(portal, 'portal_quickinstaller')
+    qi.notifyInstalled('CMFActionIcons')
 
 def addStateActionToTypes(portal):
     """ Deprecated.  We are now using a drop-down box on the contentBar """

@@ -332,6 +332,10 @@ class PloneGenerator(Portal.PortalGenerator):
         addCMFPloneTool(ToolNames.ActionIconsTool, None)
         addCMFPloneTool(ToolNames.CalendarTool, None)
 
+        # 3rd party tools we depend on
+        manage_addTool=p.manage_addProduct['CMFQuickInstallerTool'].manage_addTool
+        manage_addTool('CMF QuickInstaller Tool')
+
     def create(self, parent, id, create_userfolder):
         id = str(id)
         portal = self.klass(id=id)

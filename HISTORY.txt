@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - QuickInstallerTool is now installed in
+      CMFPlone/Portal/PortalGenerator.setupTools()
+      In the migrations for 1.1 QuickInstaller is notified that are installing 
+      CMFActionIcons and CMFCalendar outside the framework.  Now they show
+      installed.
+
     - MembershipTool's listMembers and listMemberIds now only return real users 
       (not groups) when GRUF is employed. The MembershipTool comes with tests!
       [redcor] [stefan]
