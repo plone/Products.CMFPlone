@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.Expression import Expression
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
+from Acquisition import aq_get
 
 from zLOG import INFO, ERROR
 from SetupBase import SetupWidget
@@ -114,10 +115,10 @@ def assignTitles(self, portal):
      'portal_calendar':'Controls how Events are shown'
      }
 
-    for o in portal.objectValues():
-        title=titles.get(o.getId(), None)
+    for oid in portal.objectIds():
+        title=titles.get(oid, None)
         if title:
-            o.title=title
+            setattr(aq_get(portal, oid), 'title', title)
 
 def addMemberdata(self, portal):
     md=getToolByName(portal, 'portal_memberdata')
