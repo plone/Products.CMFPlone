@@ -349,11 +349,11 @@ class PloneGenerator(Portal.PortalGenerator):
         m = p.portal_migration
 
         # XXX we need to make this read version.txt
-        m.setInstanceVersion('1.1') #.1')
-        from migrations.plone1_1 import make_plone
+        m.setInstanceVersion('2.0-beta2') #.1')
+        from migrations.plone2_base import make_plone
         make_plone(p)
-        #we no longer use migrations to setupPlone in the generator
-        #m.upgrade(swallow_errors=0)
+        # we will be migrating from beta2 base
+        m.upgrade(swallow_errors=0)
 
     def setupTools(self, p):
         """Set up initial tools"""
