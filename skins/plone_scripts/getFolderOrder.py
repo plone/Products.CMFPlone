@@ -17,7 +17,7 @@ parent = context.aq_inner.aq_parent
 if interface.objectImplements(parent, Discussable):
     return 0
 
-getpos = getattr(parent.aq_explicit, 'getObjectPosition', None)
+getpos = getattr(parent.aq_inner.aq_explicit, 'getObjectPosition', None)
 if getpos is not None:
     return getpos(context.getId())
 else:

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - changed 'context.aq_explicit.getObjectPosition' to
+      'context.aq_inner.aq_explicit.getObjectPosition' in getFolderOrder.py
+      to guarantee that we don't acquire getObjectPosition [rafrombrc]
+
     - Merged plip-80-navtree r6183:HEAD into 2.1 branch. This adds the new
       catalog-based navigation tree and sitemap. Plone now depends on the
       ExtendedPathIndex product.
