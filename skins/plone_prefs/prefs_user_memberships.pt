@@ -88,8 +88,7 @@
                 <td>
                     <a href="prefs_group_details"
                        tal:attributes="href string:prefs_group_details?groupname=$groupname">
-    		    <img src=""
-                             tal:replace="structure portal/group.gif" />&nbsp;<span
+    		    <tal:block replace="structure portal/group.gif"/>&nbsp;<span
                              tal:replace="groupname">group name</span>
                     </a>
                 </td>

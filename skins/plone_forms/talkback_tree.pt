@@ -24,7 +24,7 @@
 
             <a tal:attributes="href url">
             <img tal:attributes="src python:obj.portal_url() + '/' + obj.getIcon()"
-                 border="0" src="" /></a>
+                 border="0" src="" alt=""/></a>
 
             <a tal:attributes="href url"
                tal:content="obj/Title"

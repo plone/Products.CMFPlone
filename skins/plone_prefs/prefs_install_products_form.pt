@@ -42,7 +42,7 @@
     
                     <label for="" tal:attributes="for pid">
 
-                        <img tal:replace="structure here/product_icon.gif" />
+                        <tal:block replace="structure here/product_icon.gif"/>
                      
                         <span tal:replace="pid">
                         Product Name
@@ -56,13 +56,13 @@
                     <ul class="configletDetails">
                         <li tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">
-                            <img tal:replace="structure here/book_icon.gif" />
+                            <tal:block replace="structure here/book_icon.gif"/>
                             Product Description</a>
                         </li>
                         
                         <li tal:condition="product/hasError">    
                             <a tal:attributes="href string:${QI/absolute_url}/${pid}/prefs_installed_product_overview">
-                                <img tal:replace="structure here/error_icon.gif" />
+                                <tal:block replace="structure here/error_icon.gif"/>
                                 <tal:producterror i18n:translate="">
                                 This Product is broken
                                 </tal:producterror>
@@ -103,7 +103,7 @@
                            />
                         
                     <label for="" tal:attributes="for pid">
-                        <img tal:replace="structure here/product_icon.gif" />
+                        <tal:block replace="structure here/product_icon.gif"/>
                         <span tal:replace="product/id" />
                         
                         <span tal:replace="product/installedVersion">
@@ -116,14 +116,14 @@
                             <a 
                                tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}" 
                                >
-                               <img tal:replace="structure here/book_icon.gif" />
+                               <tal:block replace="structure here/book_icon.gif"/>
                                Product Description</a>
                         </li>
                         
                         <li>
                             <a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview"
                                i18n:translate="link_install_products_log">
-                               <img tal:replace="structure here/document_icon.gif" />
+                               <tal:block replace="structure here/document_icon.gif"/>
                                Install log</a>
                         </li>
                         

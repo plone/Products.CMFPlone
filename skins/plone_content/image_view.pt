@@ -20,9 +20,7 @@
         description
         </div>
     
-        <img tal:condition="here/size"
-             src="#"
-             tal:attributes="src here/absolute_url" />
+        <tal:block condition="here/size" replace="here/absolute_url" />
 
         <div>    
             <small>

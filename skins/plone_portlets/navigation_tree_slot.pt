@@ -53,8 +53,8 @@
                                            style python: 'padding-left: ' + str(te['indent']/2.0) + 'em;;' + 'display:block'; "
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
-                            <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))"
-                                 tal:on-error="structure here/site_icon.gif"
+                            <tal:block replace="structure python:path('here/%s' % sibling.getIcon(1))"
+                                 on-error="structure here/site_icon.gif"
                                     />&nbsp;<span tal:condition="not: iscurrent" tal:content="sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="sibling_title" />
                         </a>
                         <a href=""
@@ -64,7 +64,7 @@
                                            title title;"
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
-                            <img tal:replace="structure portal/site_icon.gif" />&nbsp;<span class="" tal:attributes="class python:test(iscurrent,'currentNavItem','')" i18n:translate="tabs_home">Home</span>
+                            <tal:block replace="structure portal/site_icon.gif"/>&nbsp;<span class="" tal:attributes="class python:test(iscurrent,'currentNavItem','')" i18n:translate="tabs_home">Home</span>
                         </a>
                     </span>
                 </div>

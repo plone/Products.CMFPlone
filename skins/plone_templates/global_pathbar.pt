@@ -14,7 +14,7 @@
         tal:attributes="href string:${here/absolute_url}/addtoFavorites"
         tal:define="addFavorite here/addFavorite.gif">
 
-     <img tal:replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')" />
+     <tal:block replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')"/>
      </a>
 
     <span tal:omit-tag="" i18n:translate="you_are_here">You are here:</span>

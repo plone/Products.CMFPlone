@@ -461,7 +461,7 @@ we eventually might want to merge this form with personalize_form
     
                 </div>
                 <div class="portrait">
-                    <img src=""
+                    <img src="" alt=""
                         height="100"
                         width="75"
                         style="border: 1px solid black"

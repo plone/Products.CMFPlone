@@ -28,7 +28,7 @@
         <dt tal:condition="here/hasError" 
          i18n:translate="label_error">Error</dt>
         <dd tal:condition="here/hasError">
-            <img tal:replace="structure here/error_icon.gif" />
+            <tal:block replace="structure here/error_icon.gif"/>
             
             <tal:errormsg i18n:translate="error_installed_product">
             There were Errors during install, check Transcript

@@ -72,7 +72,7 @@
             <div class="portletContent even">
                 <a href="mail_password_form"
                    tal:attributes="href string:$portal_url/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
-                   <img tal:replace="structure portal_object/linkTransparent.gif" />
+                   <tal:block replace="structure portal_object/linkTransparent.gif"/>
                    <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
                 </a>
             </div>
@@ -82,7 +82,7 @@
                 tal:condition="python:test(join and hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
 
                 <a href="" tal:attributes="href python:join.pop()" accesskey="accesskeys-login" i18n:attributes="accesskey" >
-                    <img tal:replace="structure portal_object/linkTransparent.gif" />
+                    <tal:block replace="structure portal_object/linkTransparent.gif"/>
                     <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
                 </a>
 

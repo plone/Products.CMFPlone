@@ -94,8 +94,8 @@
                 </td>
 
                 <td>
-                <img src="user.gif" tal:condition="not:usergroup/getGroupName | nothing" />
-                <img src="group.gif" tal:condition="usergroup/getGroupName | nothing" />
+                <img src="user.gif" alt="" tal:condition="not:usergroup/getGroupName | nothing" />
+                <img src="group.gif" alt="" tal:condition="usergroup/getGroupName | nothing" />
 
                 <a href="" tal:condition="not:usergroup/getGroupName | nothing"
                     tal:attributes="href string:prefs_user_details?userid=${usergroup/getId}"

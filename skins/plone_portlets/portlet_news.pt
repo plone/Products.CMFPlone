@@ -28,7 +28,7 @@
                     <a href=""
                        tal:attributes="href obj/getURL;
                                        title obj/Description">
-                        <img tal:replace="structure here/newsitem_icon.gif" />
+                        <tal:block replace="structure here/newsitem_icon.gif"/>
                         <span tal:replace="python:test(obj.Title, obj.Title, obj.getId)"> Extended Calendar Product </span>
                     </a>
 

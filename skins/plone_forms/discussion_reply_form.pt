@@ -30,7 +30,7 @@
             <div class="portalMessage"
                  tal:condition="here/portal_membership/isAnonymousUser">
 
-                <img tal:replace="structure here/info.gif"/>
+                <tal:block replace="structure here/info.gif"/>
 
                 <span i18n:translate="legend_note_reply_anonymous">
                     Note: you are not logged in.  You may optionally enter your username
