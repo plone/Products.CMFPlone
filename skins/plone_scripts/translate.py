@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=msgid, mapping={}, default=None, domain='plone'
+##parameters=msgid, mapping={}, default=None, domain='plone', target_language=None
 
 from Products.CMFPlone.PloneUtilities import translate_wrapper
 
@@ -12,6 +12,7 @@ value = translate_wrapper(domain,
                           msgid,
                           mapping,
                           context=context,
+                          target_language=target_language,
                           default=default)
 
 if not value and default is None:
