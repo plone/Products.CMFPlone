@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.0.5 - Backed Up Willie - Unreleased
+Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
     - Fixed http://plone.org/collector/3091 - new SetupWidgets can now
       work without cut/pasting the existing code, and use inheritance 
