@@ -296,6 +296,8 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     def manage_delObjects(self, ids=[], REQUEST=None):
         """ We need to enforce security. """
         mt=getToolByName(self, 'portal_membership')
+        if type(ids) is StringType:
+            ids = [ids]
         for id in ids:
             item = self._getOb(id)
             if not mt.checkPermission(Permissions.delete_objects, item):
