@@ -25,6 +25,10 @@ div.message
     display: none;
 }
 
+ul { 
+    list-style-image: none; 
+}
+
 div.editableDocument,
 .group {
     background: transparent;
