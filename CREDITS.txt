@@ -32,13 +32,13 @@ contributed code.
   - "BlueDynamics":http://www.bluedynamics.com
   
   Sidnei da Silva (dreamcatcher) -- Python guru 
-  - "Dreamcatching":http://dreamcatcher.homeunix.org
+  - "Dreamcatching":http://awkly.org
   
   Steve Alexander (SteveA) -- Helpful ZOPE Guru 
   - "Cat-Box":http://www.cat-box.net/steve
   
   Lalo Martins (lalo) -- Zope Plumbing, PortalFactory, PTS 
-    - "Laranja":http://www.laranja.org
+    - "Asteroid L":http://www.laranja.org
   
   Kapil Thangavelu (hazmat) -- Helpful ZOPE Guru
   
