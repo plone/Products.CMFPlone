@@ -34,7 +34,7 @@
                   tal:attributes="src string:$portal_url/xml.gif"
                   src="xml.gif"
                   alt="RSS Feed"
-                  title="RSS Feed of this search results" />
+                  title="RSS Feed of these search results" />
              </a>
         </div>
 
@@ -89,6 +89,13 @@
         <p><strong i18n:translate="description_no_results_found">No results were found.</strong></p>
     </div>		 
 
+    <p>
+    Did you not find what you were looking for? Try the 
+    <a href=""
+       tal:attributes="href string:$portal_url/search_form">advanced search</a> 
+    for more precise search options.
+    </p>
+    
 </div>
 
 

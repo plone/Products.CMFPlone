@@ -231,12 +231,20 @@
                         tabindex=""
                         onfocus="formtooltip('author_search_help',1)" 
                         onblur="formtooltip('author_search_help',0)"
-                        tal:attributes="tabindex tabindex/next;"> 
+                        tal:attributes="tabindex tabindex/next;"
+                        tal:condition="python: len(creators) <= 30"> 
                     <option value="" i18n:translate="label_any_author">Any Author</option> 
                     <metal:block tal:repeat="creator creators"> 
                         <option value="" tal:attributes="value creator" tal:content="creator"> username </option> 
                     </metal:block>
                 </select> 
+
+                <input name="Creator"
+                       tabindex=""
+                       onfocus="formtooltip('author_search_help',1)" 
+                       onblur="formtooltip('author_search_help',0)"
+                       tal:attributes="tabindex tabindex/next;"
+                       tal:condition="python: len(creators) > 30 " /> 
             </div>
         </div>
 
