@@ -123,7 +123,7 @@
                                         href="#" tal:attributes="href url"
                                         tal:content="result/Title|result/id" />
                                     </td>      
-                                    <td tal:content="result/Type">Type</td>      
+                                    <td i18n:translate="" tal:content="result/Type">Type</td>      
                                     <td tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>                                    <td tal:content="result/Creator">Author</td>      
                                     <td tal:content="result/Description">Description</td>      
                                 </tr>
