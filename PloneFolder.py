@@ -14,6 +14,7 @@ from Acquisition import aq_base
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
+from OFS.ObjectManager import REPLACEABLE
 
 from PloneUtilities import log
 
@@ -96,7 +97,8 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         else:
              return view()
 
-    index_html = None #Acquisition.Acquired
+    index_html = Acquisition.Acquired
+    index_html.__replaceable__ = REPLACEABLE
 
     security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):

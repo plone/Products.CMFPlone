@@ -1,3 +1,7 @@
+2003-05-23  Sidnei da Silva  <sidnei@x3ng.com>
+
+	* PloneFolder.py (PloneFolder.__call__): Make index_html be replaceable.
+
 2003-05-22  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* PloneFolder.py (PloneFolder.__call__): Work around a bug in
