@@ -13,6 +13,13 @@
 
     <h1 i18n:translate="heading_portal_properties">Properties Panel</h1>
 
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="label_up_to_plone_setup">
+    Up to Plone Setup
+    </a>
+
     <p i18n:translate="description_portal_properties">
     description_portal_properties
     </p>
@@ -25,9 +32,8 @@
                    i18n:attributes="title"
                    tal:attributes="title string:heading_${obj/id};
                                    href string:prefs_portal_properties?attr=${obj/id}" /></dt>
-            <dd title="title"
-                i18n:attributes="title"
-                tal:attributes="title string:description_${obj/id}">description</dd>
+            <dd tal:define="heading_description string:description_${obj/id}"
+                tal:content="python:here.translate(heading_description)">description</dd>
         </tal:block>
     </dl>
 </div>
