@@ -36,8 +36,9 @@
                                    onblur onblur|nothing;
                                    tabindex tabindex|nothing" />
 
-  <a href="" tal:attributes="onclick string:window.open('plone_calendar/calendar_popup?inputname=${inputname}&formname=${formname}','cal','dependent=yes,width=180,height=160,screenX=200,screenY=300,titlebar=yes');; return false">
-    <img src="plone_images/popup_calendar.gif">
+  <a href="" tal:attributes="onclick string:window.open('calendar_popup?inputname=${inputname}&formname=${formname}','cal','dependent=yes,width=180,height=160,screenX=200,screenY=300,titlebar=yes');; return false">
+    <img src="popup_calendar.gif"
+         tal:attributes="src string:${here/portal_url}/popup_calendar.gif" />
   </a>
 
 
