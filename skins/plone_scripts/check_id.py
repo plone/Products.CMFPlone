@@ -42,8 +42,11 @@ if not id:
 
 # do basic id validation
 if not context.plone_utils.good_id(id):
-    # id is bad
-    return '\'%s\' is not a legal name.' % id
+    # id is bad so lets find the bad chars
+    c = context.plone_utils.bad_chars(id)
+    return '\'%s\' is not a legal name. '\
+     'The following characters are invalid: %s'\
+     % (id, " ".join(c))
 
 # id is good; make sure we have no id collisions
 if context.portal_factory.isTemporary(context):

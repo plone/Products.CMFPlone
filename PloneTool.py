@@ -44,6 +44,8 @@ def log(summary='', text='', log_level=INFO):
 EMAIL_RE = re.compile(r"^([0-9a-zA-Z_&.+-]+!)*[0-9a-zA-Z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$")
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]") # used to find double new line (in any variant)
 
+BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
+
 #XXX Remove this when we don't depend on python2.1 any longer, use email.Utils.getaddresses instead
 from rfc822 import AddressList
 def _getaddresses(fieldvalues):
@@ -509,6 +511,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         if m is not None:
             return 0
         return 1
+
+    # add a helper function to show what chars are bad in the 
+    # good_id function
+    security.declarePublic('bad_chars')
+    def bad_chars(self, id):
+        """ Returns a list of the Bad characters """
+        return BAD_CHARS(id)
 
     # returns the acquired local roles
     security.declarePublic('getInheritedLocalRoles')
