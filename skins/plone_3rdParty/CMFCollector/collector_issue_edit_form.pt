@@ -21,16 +21,15 @@
 <div metal:fill-slot="header"
      tal:define="global collector_issue_header_present python: 1">
 
-    <tal:block i18n:translate="heading_edit_collector_issue">
-    <h1>Edit Collector Issue <span
-    tal:replace="here/id" i18n:name="id">name</span></h1>
+    <h1 i18n:translate="heading_edit_collector_issue">
+    Edit Collector Issue
+    </h1>
 
     <div class="description" i18n:translate="description_edit_collector_issue">
     Use this form to edit the data of an existing issue. Do not use this form
     to follow up or change the workflow status of an issue - use the issue follow
     up form for that.
     </div>
-    </tal:block>
 
 </div>
 

@@ -160,8 +160,7 @@
 
             <span tal:condition="item/assigned_to|nothing"
 	              i18n:translate="collector_issue_assigned_to">,
-              <br />
-              Assigned:
+              Assigned to
                
               <span tal:content="python: ', '.join(item.assigned_to)" i18n:name="names">
                 SUPPORTERS
@@ -178,12 +177,10 @@
       
           <tal:block condition="python:numcmts==1"
 	      i18n:translate="collector_issue_one_comment">
-              <br />
               (1 comment)
           </tal:block>
           <tal:block condition="python:numcmts>1"
 	      i18n:translate="collector_issue_num_comments">
-              <br />
               (<span tal:replace="numcmts" i18n:name="num">NUM COMMENTS</span>
               comments)
           </tal:block>
