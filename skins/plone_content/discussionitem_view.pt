@@ -20,7 +20,7 @@
                cellpadding="0"
                cellspacing="0">
             <tr>
-                <th i18n:translate="comment">comment</th><th class="empty">&nbsp;</th>	
+                <th i18n:translate="listingheader_comment">comment</th><th class="empty">&nbsp;</th>	
             </tr>
 
             <tr>
