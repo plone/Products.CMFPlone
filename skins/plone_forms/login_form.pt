@@ -6,6 +6,7 @@
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
 </tal:block>
 
+<head>
 <script type="text/javascript" metal:fill-slot="javascript_head_slot">
 <!--
 function cookiesEnabled() {
@@ -27,6 +28,7 @@ function cookiesEnabled() {
 }
 //-->
 </script>
+</head>
 
 <body>
 
@@ -60,11 +62,11 @@ to become a member.
 </p>
 
 <script type="text/javascript">
-//<![CDATA[
+// <![CDATA[
    if (cookiesEnabled && !cookiesEnabled()) {
       document.writeln('<div class="portalMessage"><img src="info.gif">Cookies are not enabled. You can not log in if they are turned off. <a href="enabling_cookies">How to enable cookies</a>.</div>');
    }
-//]]>
+// ]]>
 </script>
 
 <form action="logged_in"

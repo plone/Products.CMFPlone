@@ -2,7 +2,6 @@
       i18n:domain="plone" tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                   tabindex python:Iterator();">
 
-
 <head metal:define-macro="html_header"
       tal:define="ztu ztu|modules/ZTUtils;
                   skinrequest python:request.get(here.portal_skins.getRequestVarname(), '');">
@@ -135,5 +134,8 @@
       
     </tal:block>
 </head>
+
+<body>
+</body>
 
 </html>

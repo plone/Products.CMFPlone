@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
       i18n:domain="plone">
-
+<head>
 <script type="text/javascript">
 <!--
 function cookiesEnabled() {
@@ -22,6 +22,7 @@ function cookiesEnabled() {
 }
 //-->
 </script>
+</head>
 
 <body>
 
@@ -59,11 +60,11 @@ to become a member.
 </tal:nojoin>
 
 <script type="text/javascript">
-//<![CDATA[
+// <![CDATA[
    if (cookiesEnabled && !cookiesEnabled()) {
       document.writeln('<div class="portalMessage"><img src="info.gif">Cookies are not enabled. You can not log in if they are turned off. <a href="enabling_cookies">How to enable cookies</a>.</div>');
    }
-//]]>
+// ]]>
 </script>
 
 <form action="logged_in"

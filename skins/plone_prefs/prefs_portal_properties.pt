@@ -54,8 +54,8 @@
                        tal:condition="python:obj.getPropertyType(id)=='boolean'" />
     
                 <textarea tal:attributes="name id;"
-                          tal:condition="python:obj.getPropertyType(id) in ('text','utext','lines','ulines')">
-<tal:block repeat="val python:obj.getProperty(id)"><span tal:replace="val" /></tal:block></textarea>
+                          tal:condition="python:obj.getPropertyType(id) in ('text','utext','lines','ulines')"
+                ><tal:block repeat="val python:obj.getProperty(id)"><tal:block replace="val" /></tal:block></textarea>
 
             </div>
 

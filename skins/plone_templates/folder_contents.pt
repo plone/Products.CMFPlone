@@ -3,15 +3,14 @@
       i18n:domain="plone"
       metal:use-macro="here/main_template/macros/master">
 
-  <head><title></title></head>
-
-  <metal:block fill-slot="head_slot">
-    <span tal:replace="nothing"
-          tal:define="dummy python:request.set('enable_border', 1)" />
-  </metal:block>
+  <head>
+      <metal:block fill-slot="head_slot">
+        <span tal:replace="nothing"
+              tal:define="dummy python:request.set('enable_border', 1)" />
+      </metal:block>
+  </head>
 
   <body>
-
 
     <div metal:fill-slot="main"
          tal:define="standalone python:1;
