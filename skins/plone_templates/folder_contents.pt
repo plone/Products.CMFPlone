@@ -197,7 +197,7 @@
                             </a>
 
                             <a href="absolute_url/external_edit"
-                               tal:condition="python:site_properties.ext_editor and item_typeinfo.getActionById('external_edit',None) and checkPermission('Modify Portal Content', item)"
+                               tal:condition="python:site_properties.ext_editor and item_typeinfo.getActionById('external_edit',None) and checkPermission('Modify portal content', item)"
                                tal:attributes="href string:${item/absolute_url}/external_edit">
                                 <img tal:replace="structure python:pencil_icon.tag(title='Edit with External Editor')" />
                             </a>
