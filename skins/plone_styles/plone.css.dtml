@@ -292,6 +292,11 @@ div.top {
     padding: &dtml-topPadding;;
 }
 
+div.siteActions {
+    float: right;
+    margin: 1em 1em 0.5em 1em;
+}
+
 .logo {
     /* Logo properties */
     margin: &dtml-logoMargin;;
@@ -302,6 +307,7 @@ div.searchBox {
     /*searchbox style and positioning */
     background-color: transparent;
     color: &dtml-searchFontColor;;
+    clear: right;
     float: right;
     margin: &dtml-searchMargin;;
     padding: &dtml-searchPadding;;

@@ -37,6 +37,10 @@
 
 <div class="top" i18n:domain="plone">
 
+    <div metal:use-macro="here/site_actions/macros/site_actions">
+        Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
+    </div>
+
     <div metal:use-macro="here/global_elements/macros/quick_search">
         The quicksearch box, normally placed at the top right
     </div>
