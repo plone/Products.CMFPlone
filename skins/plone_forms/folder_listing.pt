@@ -5,8 +5,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
-<body>
 
+<head>
+  <metal:block metal:fill-slot="head_slot">
+    <script language="javascript" tal:content="structure here/table_sort.js" >
+    This is the table sorting javascript.  Thanks Geir!
+    </script>
+    <script language="javascript" tal:content="structure here/folder_actions.js" >
+    Folder actions script
+    </script>    
+  </metal:block>
+</head>
+
+<body>
 <div metal:fill-slot="super">
 
     <div metal:use-macro="here/portal_tabs/macros/folderTabs">

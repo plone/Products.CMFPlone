@@ -4,6 +4,15 @@
       lang="en-US" metal:define-macro="master">
 
 <head metal:use-macro="here/header/macros/html_header">
+  <metal:block metal:fill-slot="head_slot">
+    <script type="javascript" tal:content="structure here/ieemu.js">
+    XXX what does this js do? :)
+    </script>
+    <script type="javascript" tal:content="structure here/styley.js">
+    Taken from Apple.com provides cool styles ;)
+    </script>
+    <metal:block metal:define-slot="head_slot" tal:replace="nothing" />
+  </metal:block>
 </head>
 
 <body tal:define="global filtered_actions python:here.portal_actions.listFilteredActionsFor(here)">

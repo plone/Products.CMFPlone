@@ -42,7 +42,7 @@
 	    tal:content="structure here/plone_javascripts.js">
     </script>
 
-    <metal:block metal:define-slot="header_slot" tal:replace="nothing">
+    <metal:block metal:define-slot="head_slot">
     Flexibility for published templates to inject stuff into HEADER
     For instance, folder_listing, folder_contents needs to inject javascript into the header
     </metal:block>

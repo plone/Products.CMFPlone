@@ -1,12 +1,8 @@
-<metal:block tal:replace="structure here/ieemu.js" />
-
   if (moz) {
     extendElementModel();
     extendEventObject();
     emulateEventHandlers(["mouseover", "mouseout"]);
   }
-
-<metal:block tal:replace="structure here/styley.js" />
 
   function showDay(date) {
     tempX = document.body.offsetWidth - event.x;
@@ -36,9 +32,3 @@
       elem.parentNode.parentNode.style.border='none';
       elem.style.visibility='hidden' };
   }
-
-<metal:block tal:condition="python:test(template.getId() in ('folder_listing', 'folder_contents'),1,0)"
-             tal:replace="structure here/table_sort.js" />
-
-<metal:block tal:replace="structure here/folder_actions.js" />
-
