@@ -6,6 +6,13 @@ Plone 2.0 - Fyuti
 
    Final
     
+    - Split 'use_folder_contents' site property into two different
+      properties: typesLinkToFolderContents (a navtree prop for
+      how nav tree behaves) and typesLinkToFolderContentsInFC
+      (a site-wide prop, for how folder_contents page should
+      behave). Added migration to create these two and to remove
+      the old use_folder_contents. [pupq]
+
     - Diet Plone® - an initial page load of Plone was reduced from 
       150K to 75K, and HTTP requests from 30 to 15 by performing 
       the following tweaks:
