@@ -110,15 +110,13 @@
         </div>
        <div class="row"
             tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
-            <span class="label"> Text </span>
             <span class="field">
               <textarea name="file_data:text"
                         id="body"
-			cols="40"
+			cols="80"
 			rows="20"
-                        ><span tal:replace="here/data">text</span></textarea>
+			tal:content="here/data"></textarea>
             </span>
-            <span class="info"> &nbsp; </span>
        </div>
 
     
