@@ -72,7 +72,7 @@
 
                             <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))"
                                  tal:on-error="structure here/site_icon.gif"
-                                    />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                                    />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="sibling_title" />
                         </a>
 
                         <a href=""
@@ -83,7 +83,7 @@
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
 
-                            <img tal:replace="structure portal/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure string:Home" />
+                            <img tal:replace="structure portal/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="string:Home" />
                         </a>
                     </span>
                 </div>
