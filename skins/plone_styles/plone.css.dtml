@@ -1151,6 +1151,19 @@ ol.visualNoMarker {
     color: &dtml-fontColor;;
     font-weight: bold;
 }
+
+.navRootItem {
+}
+
+.navItem {
+    margin: 0 0 0.2em 0;
+}
+
+#portlet-navigation-tree a.navLevel1 {
+    border-top: 1px dotted &dtml-globalBorderColor;;  
+    margin-top: 0.2em;
+}
+
 .state-private {
     color: Black;
 }

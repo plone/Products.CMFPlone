@@ -19,6 +19,19 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
       invonvenience.
       [limi]
 
+    - Added some discreet markers at the top level nav items to 
+      easier identify the main sections.
+
+    - Added 'navtreeItem' and 'navLevelX' classes to the navigation
+      tree, so it's possible to do funky stuff using only CSS to
+      customizing the nav tree - for example make the only the 
+      top-level folders have bold text and dividers.
+      [limi]
+
+    - Added 'navRootItem' and 'navItem' classes to facilitate better
+      skinning of the nav tree.
+      [limi]
+
     - The body tag now has an HTML 'class' 
       attribute, so you can skin different sections of the site
       with different styles. Prefix is "section-" and then the

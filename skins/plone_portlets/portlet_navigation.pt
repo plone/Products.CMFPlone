@@ -27,13 +27,13 @@
         <h5 i18n:translate="box_navigation">Navigation</h5>
         <div class="portletBody">
             <div class="portletContent odd">
-                <div tal:condition="tree/prev">
+                <tal:batch condition="tree/prev">
                     <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
                         <span tal:replace="desc_ellipsis">...</span>
                     </a>
-                </div>
-                <div tal:repeat="te tree/list">
-                    <span tal:define="iscurrent te/iscurrent | python:0;
+                </tal:batch>
+                <tal:nodes repeat="te tree/list">
+                    <tal:variables define="iscurrent te/iscurrent | python:0;
                                       sibling python:te['object'];
                                       typeInfo sibling/getTypeInfo;
                                       stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'folder_contents',typeInfo.getActionById('view')));
@@ -48,29 +48,33 @@
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');
-                                           style python: 'padding-left: ' + str(te['indent']/2.0) + 'em;;' + 'display:block'; "
+                                           style python: 'padding-left: ' + str(te['indent']/2.0) + 'em;;' + 'display:block';
+                                           class python: 'navItem ' + 'navLevel' + str(te['indent']);"
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
-                            <tal:block replace="structure python:path('here/%s' % sibling.getIcon(1))"
-                                 on-error="structure here/site_icon.gif"
-                                    />&nbsp;<span tal:condition="not: iscurrent" tal:content="sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="sibling_title" />
+                            <tal:block define="nicon python:path('here/%s' % sibling.getIcon(1))"
+                                       replace="structure python: nicon.tag(css_class='navIcon')"
+                                       on-error="structure here/site_icon.gif"
+                                    />&nbsp;<tal:item tal:condition="not: iscurrent" tal:content="sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="sibling_title" />
                         </a>
                         <a href=""
+                           class="navRootItem"
                            tal:condition="python: sibling == portalObject"
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title title;"
                                            accesskey="accesskeys-navigation"
                                            i18n:attributes="accesskey">
-                            <tal:block replace="structure portal/site_icon.gif"/>&nbsp;<span class="" tal:attributes="class python:test(iscurrent,'currentNavItem','')" i18n:translate="tabs_home">Home</span>
+                            <tal:block define="proot portal/site_icon.gif"
+                                       replace="structure python: proot.tag(css_class='navRootIcon')" />&nbsp;<span class="" tal:attributes="class python:test(iscurrent,'currentNavItem','')" i18n:translate="tabs_home">Home</span>
                         </a>
-                    </span>
-                </div>
-                <div tal:condition="tree/next">
+                    </tal:variables>
+                </tal:nodes>
+                <tal:batch condition="tree/next">
                     <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">
                         <span tal:replace="desc_ellipsis">...</span>
                     </a>
-                </div>
+                </tal:batch>
             </div>
         </div>
     </div>
