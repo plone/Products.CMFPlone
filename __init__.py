@@ -39,7 +39,8 @@ def initialize(context):
     ModuleSecurityInfo('zLOG').declarePublic('LOG')
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
-
+    allow_module('Products.CMFPlone.PloneUtilites')
+    
     import StatelessTreeNav
     from StatelessTree import NavigationTreeViewBuilder
     allow_class(NavigationTreeViewBuilder)
