@@ -95,7 +95,7 @@ div.box {
 }
 
 
-table.box a.comment { background-image: url(&dtml-portal_url;/discussion_icon.gif); background-position: 0px 0px; padding: 0em 0em 0.5em 2em; }
+table.box a.comment { background-image: url(&dtml-portal_url;/discussionitem_icon.gif); background-position: 0px 0px; padding: 0em 0em 0.5em 2em; }
 table.box a.plain { padding: 0; }
 span.folderName { font-size: 150%; font-weight: bold; }
 div.spacer { }
