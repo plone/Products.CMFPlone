@@ -1,3 +1,304 @@
+2003-12-23 04:28  gerry_kirk
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): plone setup
+	  link to control panel back in personal bar for fresh site
+
+2003-12-23 04:11  vinsci
+
+	* skins/plone_templates/header.pt (Plone-2_0-branch): The
+	  jscalendar comes in a readable javascript version and in a
+	  stripped version.  The stripped version is 14KB smaller (still
+	  4KB smaller when both are gzipped), so deliver that by default.
+
+2003-12-23 03:57  gerry_kirk
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): changed
+	  modifyMembershipTool() in ConfigurationMethods.py to point
+	  personal bar "My Preferences" link to plone_memberprefs_panel.
+	  Link in Control Panel was already correct with fresh site. Can
+	  someone test migration?
+
+2003-12-23 02:38  gerry_kirk
+
+	* skins/plone_scripts/browserDefault.py (Plone-2_0-branch): changed
+	  context.contentIds() to list(context.objectIds()) as suggested by
+	  Sidnei
+
+2003-12-22 19:53  bitranch
+
+	* skins/plone_content/: image_edit_form.cpt, link_edit_form.cpt
+	  (Plone-2_0-branch): text edits for clarity, brevity
+
+2003-12-22 18:42  limi
+
+	* skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Fixed wording in "log in to comment"
+
+2003-12-22 18:24  bitranch
+
+	* skins/plone_content/newsitem_edit_form.cpt (Plone-2_0-branch):
+	  "Title" becomes "Headline"
+
+2003-12-22 18:09  zopezen
+
+	* PropertiesTool.py, setup/ConfigurationMethods.py
+	  (Plone-2_0-branch): Fix for 2068 and the other bugs which i'll
+	  say are done so alan will stop bugging me about.
+
+2003-12-22 17:54  bitranch
+
+	* skins/plone_content/document_edit_form.cpt (Plone-2_0-branch):
+	  text edits for clarity, brevity
+
+2003-12-22 17:50  zopezen
+
+	* migrations/v2/twoBeta2_twoBeta3.py (Plone-2_0-branch): Add in
+	  plone_setup for #2068
+
+2003-12-22 17:46  bitranch
+
+	* skins/plone_content/newsitem_edit_form.cpt (Plone-2_0-branch):
+	  text edits for clarity, brevity
+
+2003-12-22 17:35  bitranch
+
+	* skins/plone_content/folder_edit_form.cpt (Plone-2_0-branch):
+	  Shorten wording for Short Name; other minor text edits
+
+2003-12-22 17:31  bitranch
+
+	* skins/plone_content/: event_edit_form.cpt, file_edit_form.cpt
+	  (Plone-2_0-branch): Shorten wording for Short Name
+
+2003-12-22 17:25  gerry_kirk
+
+	* skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  removed odd and unnecessary line returns, which was causing an
+	  error
+
+2003-12-22 17:25  bitranch
+
+	* skins/plone_content/file_edit_form.cpt (Plone-2_0-branch): text
+	  edits for clarity (fie on copy-pasted help text!)
+
+2003-12-22 17:23  bitranch
+
+	* skins/plone_content/event_edit_form.cpt (Plone-2_0-branch): even
+	  more text edits
+
+2003-12-22 17:08  bitranch
+
+	* skins/plone_content/event_edit_form.cpt (Plone-2_0-branch): fix
+	  bone-headed edit; fix Win-centric instruction
+
+2003-12-22 16:58  bitranch
+
+	* skins/plone_content/event_edit_form.cpt (Plone-2_0-branch): text
+	  edits for clarity, brevity
+
+2003-12-22 16:38  dreamcatcher
+
+	* QuickInstallerTool.py (Plone-2_0-branch): Add a docstring
+
+2003-12-22 14:56  godchap
+
+	* ActionsTool.py, setup/ConfigurationMethods.py (Plone-2_0-branch):
+	  fix for #2186: corrected the condition on both folderContents
+	  actions
+
+	  beware, 1) I am only ALMOST sure that both of them needed to be
+	  fixed.  2) when running tests, I get one error about LocalRoles,
+	  but I suppose it is the same that I can see in the tests runs.
+
+2003-12-22 13:52  plonista
+
+	* skins/plone_scripts/check_id.py (Plone-2_0-branch): Better
+	  comment
+
+2003-12-22 13:52  bitranch
+
+	* skins/plone_forms/login_success.pt (Plone-2_0-branch): text edits
+	  for clarity, brevity
+
+2003-12-22 13:44  vinsci
+
+	* skins/plone_portlets/calendar_slot.pt (Plone-2_0-branch):
+	  Cleanup. Remove space from link (annoying on IE), correct
+	  indentation.
+
+2003-12-22 13:35  bitranch
+
+	* skins/plone_prefs/prefs_mailhost_form.pt (Plone-2_0-branch): text
+	  edits for clarity, brevity
+
+2003-12-22 13:28  bitranch
+
+	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
+	  text edits for clarity, brevity
+
+2003-12-22 13:22  bitranch
+
+	* skins/plone_prefs/reconfig_form.cpt (Plone-2_0-branch): text
+	  edits, typo fixes
+
+2003-12-22 12:48  limi
+
+	* skins/plone_content/: document_view.pt, newsitem_view.pt
+	  (Plone-2_0-branch): Set default STX level to 2, so headers start
+	  on <h2> in the body text. Bug #1245.
+
+2003-12-22 12:06  vinsci
+
+	* skins/plone_ecmascript/plone_inplace_calendar.js.pt.metadata
+	  (Plone-2_0-branch): Remove .metadata for remove .pt.
+
+2003-12-22 12:05  vinsci
+
+	* skins/plone_ecmascript/plone_inplace_calendar.js.pt
+	  (Plone-2_0-branch): Remove old plone_inplace_calendar code.
+
+2003-12-22 11:59  vinsci
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Remove old
+	  plone_inplace_calendar styles.
+
+2003-12-22 11:54  limi
+
+	* skins/: plone_forms/password_form.pt,
+	  plone_forms/password_form.pt.metadata,
+	  plone_forms/personalize_form.cpt,
+	  plone_forms/personalize_form.cpt.metadata,
+	  plone_prefs/password_form.pt,
+	  plone_prefs/password_form.pt.metadata,
+	  plone_prefs/personalize_form.cpt,
+	  plone_prefs/personalize_form.cpt.metadata,
+	  plone_prefs/plone_memberprefs_panel.pt (Plone-2_0-branch): Added
+	  Control Panel navigation to the Personal Prefs panels, and moved
+	  them from plone_forms to plone_prefs, where they should reside.
+	  Fixed some of the inconsistent wording.
+
+2003-12-22 11:50  vinsci
+
+	* skins/: plone_templates/header.pt,
+	  plone_portlets/calendar_slot.pt (Plone-2_0-branch): Use the new
+	  jscalendar instead of plone_inplace_calendar.
+
+2003-12-22 11:45  vinsci
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  Add support functions for jscalendar. Add sip: and h323: protocol
+	  names.
+
+2003-12-22 11:26  vinsci
+
+	* skins/plone_3rdParty/jscalendar/: README, README-Plone,
+	  bugtest-hidden-selects.html, calendar-af.js, calendar-blue.css,
+	  calendar-br.js, calendar-brown.css, calendar-ca.js,
+	  calendar-cs-win.js, calendar-da.js, calendar-de.js,
+	  calendar-du.js, calendar-el.js, calendar-en.js, calendar-es.js,
+	  calendar-fr.js, calendar-green.css, calendar-hr-utf8.js,
+	  calendar-hr.js, calendar-hu.js, calendar-it.js, calendar-jp.js,
+	  calendar-nl.js, calendar-no.js, calendar-pl.js, calendar-pt.js,
+	  calendar-ro.js, calendar-ru.js, calendar-setup.js,
+	  calendar-setup_stripped.js, calendar-sk.js, calendar-sp.js,
+	  calendar-sv.js, calendar-system.css, calendar-tr.js,
+	  calendar-win2k-1.css, calendar-win2k-2.css,
+	  calendar-win2k-cold-1.css, calendar-win2k-cold-2.css,
+	  calendar-zh.js, calendar.js, calendar_stripped.js, img.gif,
+	  index.html, menuarrow.gif, reference-Z-S.css, reference.css,
+	  reference.html, reference.pdf, release-notes.html, simple-1.html,
+	  simple-2.html, simple-3.html, simple-4.html (Plone-2_0-branch):
+	  Import jscalendar version 0.9.5. See README-Plone for integration
+	  comments.
+
+2003-12-22 10:54  dannybloe
+
+	* skins/plone_templates/batch_macros.pt (Plone-2_0-branch):
+	  Modified the opening condition because for some dark reason it
+	  always failed. So I replaced it with a python condition and that
+	  seems to work (for now).
+
+	  Needs some extra attention!!!!
+
+2003-12-22 10:31  limi
+
+	* skins/plone_portlets/portlet_login.pt (Plone-2_0-branch): Logging
+	  in via the Login portlet now sends you back to the exact same
+	  page, instead of sending you to logged_in. Bug #1848.
+
+2003-12-22 10:07  limi
+
+	* skins/: plone_ecmascript/plone_javascripts.js,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_mailhost_form.pt,
+	  plone_prefs/prefs_portalskin_form.pt,
+	  plone_prefs/prefs_users_overview.pt,
+	  plone_prefs/reconfig_form.cpt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): Final Control Panel tweaks, this completes
+	  the UI cleanup for all control panels. Welcome, usable Plone
+	  Setup. :)
+
+2003-12-22 09:18  limi
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Adding Content Type to tooltips on icons. This will make YET
+	  happy again ;)
+
+2003-12-22 09:10  limi
+
+	* skins/plone_prefs/prefs_error_log_form.pt (Plone-2_0-branch):
+	  Rearranged Error Log somewhat.
+
+2003-12-22 09:01  limi
+
+	* skins/plone_prefs/prefs_error_log_form.pt (Plone-2_0-branch):
+	  Made Error Log table sortable
+
+2003-12-22 08:46  limi
+
+	* skins/plone_prefs/: prefs_error_log_form.pt,
+	  prefs_error_log_showEntry.pt (Plone-2_0-branch): More UI porn for
+	  the Error Log Panel. :)
+
+2003-12-22 08:01  vinsci
+
+	* skins/plone_portlets/portlet_calendar.pt (Plone-2_0-branch):
+	  Rename the Plone calendar CSS class to "ploneCalendar" (from
+	  "calendar") and its id to "thePloneCalendar" (from "thecalendar")
+	  in preparation of jscalendar upgrade. It will be easier to merge
+	  new releases of jscalendar this way.
+
+2003-12-22 07:55  vinsci
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Rename the
+	  Plone calendar CSS class to "ploneCalendar" (from "calendar") and
+	  its id to "thePloneCalendar" (from "thecalendar") in preparation
+	  of jscalendar upgrade. It will be easier to merge new releases of
+	  jscalendar this way.
+
+2003-12-22 06:57  limi
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch): Filter for hidden products.
+
+2003-12-22 06:41  limi
+
+	* skins/: plone_images/book_icon.gif, plone_images/error_icon.gif,
+	  plone_images/zope_icon.gif.metadata,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_install_product_readme.pt,
+	  plone_prefs/prefs_install_products_form.pt,
+	  plone_prefs/prefs_installed_product_overview.pt,
+	  plone_prefs/prefs_main_template.pt,
+	  plone_prefs/prefs_users_overview.pt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): UI Porn, Issue 2: Marvel at the icons in the
+	  Products Panel! Love the up-one-level-navigation! Fixate over the
+	  clean code!
+
+2003-12-22 05:06  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-22 04:52  bitranch
 
 	* skins/plone_prefs/reconfig_form.cpt (Plone-2_0-branch): text
