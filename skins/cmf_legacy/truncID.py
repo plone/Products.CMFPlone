@@ -1,4 +1,4 @@
-## Script (Python) "truncID.py $Revision: 1.1.4.1 $"
+## Script (Python) "truncID.py $Revision: 1.3 $"
 ##parameters=objID, size
 ##title=return truncated objID
 ##

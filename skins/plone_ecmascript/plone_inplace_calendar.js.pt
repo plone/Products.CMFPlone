@@ -13,7 +13,7 @@
  * Public License, as long as you do not remove or alter this notice.
  */
 
-// $Id: plone_inplace_calendar.js.pt,v 1.1.4.1 2003/10/03 18:11:15 zopezen Exp $
+// $Id: plone_inplace_calendar.js.pt,v 1.4 2003/12/02 23:47:52 runyaga Exp $
 
 /** The Calendar object constructor. */
 Calendar = function (mondayFirst, dateStr, onSelected, onClose) {

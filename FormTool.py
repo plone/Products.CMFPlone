@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.29 2003/11/18 10:59:05 longsleep Exp $
+# $Id: FormTool.py,v 1.30 2003/12/02 23:47:51 runyaga Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.28.4.1 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.30 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
