@@ -4,6 +4,28 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Added ExternalEditor as an action in the documentActions 
+      area.
+      [limi]
+
+    - Added support for defining your own default pages in any
+      folder. Implemented via browserDefault. The way it works is:
+
+      - if there's a property 'default_page' (must be lines) on 
+        the folder will use that (normal acquistion applies)
+ 
+      - if not found, use site_properties
+ 
+      - if not found, use index_html
+ 
+      - if not found, use default action
+        [andym] [dreamcatcher] [limi] [philikon]
+
+    - Added support for FrontPage as a default page in a folder via
+      browserDefault.
+      This is added to support ZWiki and other Wiki implementations.
+      [limi]
+
     - The Presentation/Slide CSS is now optimized for 1024x768, 
       which is the most common projector resolution. Too bad 
       it's not possible to specify font size relative to the 
