@@ -248,6 +248,7 @@ div.message a {
     font: &dtml-descriptionFont;;
     display: block;
     margin-bottom: 1em;
+    line-height: 1.5em;
 }
 
 .footer {
@@ -260,6 +261,7 @@ div.message a {
     margin: 2em 0em;
     padding: 0.5em 0em 1em 0em;
     text-align: center;
+    line-height: 1.5em;
 }
 
 
