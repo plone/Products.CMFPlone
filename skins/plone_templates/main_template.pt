@@ -84,7 +84,7 @@
 <!-- The wrapper table. It contains the three columns. There's a table-less
      alternative in the plone_tableless skin layer that you can use if you 
      prefer layouts that don't use tables. -->
-<table id="portal-columns" tal:attributes="class string:${hidecolumns}">
+<table id="portal-columns">
     <tbody>
         <tr>
             <!-- start of the left (by default at least) column -->
