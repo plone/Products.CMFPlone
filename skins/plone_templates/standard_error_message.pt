@@ -60,7 +60,7 @@
                 <span class="legend" i18n:translate="legend_error_details">Error Details</span>
                 
                 <div class="row">
-                    <div class="label"i18n:translate="label_error_type">
+                    <div class="label" i18n:translate="label_error_type">
                     Error Type
                     </div>
             
