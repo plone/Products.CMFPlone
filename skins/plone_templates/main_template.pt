@@ -26,6 +26,8 @@
 
 <body>
 
+<a class="skipnav" 
+   href="#documentContent">Skip to content</a>
 
 <div class="top" i18n:domain="plone">
 

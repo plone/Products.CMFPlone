@@ -861,6 +861,12 @@ div listingBar img {
 	vertical-align: middle;
 }
 
+/* Accessibility elements */
+
+a.skipnav {
+display: none;
+} 
+
 
 /*
 ** Calendar elements - used in the calendar rendering 
