@@ -26,13 +26,11 @@
 <div metal:define-macro="content_actions"
      i18n:domain="plone"
      class="contentActions"
-     tal:define="content_actions python:here.plonifyContentActions(template_id=template_id, actions=actions)">
+     tal:define="content_actions actions/object_actions;">
 
     <ul class="contentActions">
     <tal:contentactions repeat="action content_actions">
-    <li tal:define="selected action/selected|nothing;"
-        tal:attributes="id string:contentaction-${action/id};
-                        class python:test(selected, 'selected', 'plain')">
+    <li tal:attributes="id string:contentaction-${action/id};">
         <a class="" href=""
            tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
            i18n:attributes="accesskey" >
