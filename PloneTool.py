@@ -347,7 +347,8 @@ class PloneTool (UniqueObject, SimpleItem):
                                     parentMetaTypesNotToQuery=None,
                                     forceParentsInBatch=None,
                                     skipIndex_html=None,
-                                    rolesSeeHiddenContent=None):
+                                    rolesSeeHiddenContent=None,
+                                    bottomLevel=None):
 
         """ Returns a structure that can be used by
         navigation_tree_slot.  We are being quite lazy because of
@@ -369,7 +370,8 @@ class PloneTool (UniqueObject, SimpleItem):
                          parentMetaTypesNotToQuery=parentMetaTypesNotToQuery,
                          forceParentsInBatch=forceParentsInBatch,
                          skipIndex_html=skipIndex_html,
-                         rolesSeeHiddenContent=rolesSeeHiddenContent )
+                         rolesSeeHiddenContent=rolesSeeHiddenContent,
+                         bottomLevel=bottomLevel  )
         ctx_tree_builder=t_builder.__of__(self)
         return ctx_tree_builder()
 

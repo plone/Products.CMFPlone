@@ -43,7 +43,7 @@ class NavigationTreeViewBuilder(SimpleItem):
           showFolderishChildrenOnly=self.showFolderishChildrenOnly, 
           showNonFolderishObject=self.showNonFolderishObject,    
           topLevel=self.topLevel, forceParentsInBatch=self.forceParentsInBatch,
-          skipIndex_html=self.skipIndex_html)
+          skipIndex_html=self.skipIndex_html,bottomLevel=self.bottomLevel)
     
         batchStart=None
         batchSize=self.batchSize

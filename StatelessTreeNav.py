@@ -36,6 +36,7 @@ def setupNavTreePropertySheet(prop_tool):
     p._setProperty('rolesSeeContentsView', ['Manager','Reviewer','Owner'] , 'lines')
     p._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
     p._setProperty('typesForcedFolderContents', [] , 'lines')
+    p._setProperty('bottomLevel', 65535 , 'int')
 
 class StatelessTreeBuilder:
     """ builds a stateless tree structure for objects """
@@ -45,7 +46,7 @@ class StatelessTreeBuilder:
     def __init__(self, object, topObject=None, topMetaType='CMF Site',
             maxcount=65535,includeTop=0,topLevel=0,listSiblings=1,
             childFinder=None,showFolderishSiblingsOnly=0,showFolderishChildrenOnly=0,
-            showNonFolderishObject=0,forceParentsInBatch=0,skipIndex_html=0):
+            showNonFolderishObject=0,forceParentsInBatch=0,skipIndex_html=0,bottomLevel=65535):
 
         self.object=object
         self.topObject=topObject
@@ -59,6 +60,7 @@ class StatelessTreeBuilder:
         self.showNonFolderishObject=showNonFolderishObject
         self.forceParentsInBatch=forceParentsInBatch
         self.skipIndex_html=skipIndex_html
+        self.bottomLevel=bottomLevel
         
         if topLevel >= 0:
             self.topLevel=topLevel
@@ -257,7 +259,7 @@ class StatelessTreeBuilder:
                     
                 itemcounter = itemcounter + 1
 
-                if r['level'] >= self.topLevel:
+                if r['level'] >= self.topLevel and r['level'] <= self.bottomLevel:
                     l.append(r)
 
                 if (act == 1) :
@@ -291,7 +293,7 @@ class StatelessTreeBuilder:
                     if sibling:
                         r.update({'title':sibling.title_or_id()})
 
-                    if r['level'] >= self.topLevel:
+                    if r['level'] >= self.topLevel and r['level'] <= self.bottomLevel:
                         l.append(r)
 
         # and now extract the correct batch out of the data
