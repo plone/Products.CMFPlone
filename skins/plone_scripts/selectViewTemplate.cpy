@@ -10,13 +10,13 @@
 
 from Products.CMFCore.utils import getToolByName
 
-IBROWSERDEFAULT = 'Products.CMFPlone.interfaces.BrowserDefault.IBrowserDefault'
+INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefault'
 
 itool = getToolByName(context, 'portal_interface')
 
 # This should never happen, but let's be informative if it does
-if not itool.objectImplements(context, IBROWSERDEFAULT):
-    raise NotImplementedError, "Object does not support IBrowserDefault"
+if not itool.objectImplements(context, INTERFACE):
+    raise NotImplementedError, "Object does not support selecting layout templates"
 
 context.setLayout(templateId)
 

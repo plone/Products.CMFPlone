@@ -8,7 +8,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=objectId=None
 
-IBROWSERDEFAULT = 'Products.CMFPlone.interfaces.BrowserDefault.IBrowserDefault'
+INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefault'
 
 if not objectId:
     return state.set(status = 'missing',
@@ -18,7 +18,7 @@ from Products.CMFCore.utils import getToolByName
 itool = getToolByName(context, 'portal_interface')
 
 # Should never happen, but let's be sure
-if not itool.objectImplements(context, IBROWSERDEFAULT):
+if not itool.objectImplements(context, INTERFACE):
     raise NotImplementedError, "Object does not support setting default page"
 
 # Also should never happen

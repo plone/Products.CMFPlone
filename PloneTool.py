@@ -601,14 +601,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # on the object, and the current BrowserDefaultMixin implementation
         # actually stores it as the default_page property, but it's nicer to be 
         # explicit about getting it from IBrowserDefault
-        if IBrowerDefault.isImplementedBy(obj):
-            if obj.hasDefaultPage():
-                page = obj.getDefaultPage()
-                # Be totally anal and triple-check...
-                if page and ids.has_key(page):
-                    return returnPage(obj, page)
-                # IBrowerDefault only manages explicitly contained 
-                # default_page's, so don't look for the id in the skin layers
+        if IBrowserDefault.isImplementedBy(obj):
+            page = obj.getDefaultPage()
+            # Be totally anal and triple-check...
+            if page and ids.has_key(page):
+                return returnPage(obj, page)
+            # IBrowserDefault only manages explicitly contained 
+            # default_page's, so don't look for the id in the skin layers
         
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])
@@ -638,10 +637,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             if ids.has_key(page):
                 return returnPage(obj, page)
         
-        # Look for layout page templates from IBrowerDefault implementations 
+        # Look for layout page templates from IBrowserDefault implementations 
         # This is checked after default_page and index_html, because we want
         # explicitly created index_html's to override any templates set
-        if IBrowerDefault.isImplementedBy(obj):
+        if IBrowserDefault.isImplementedBy(obj):
             page = obj.getLayout()
             if page and portal.unrestrictedTraverse(page, None):
                 return obj, page.split('/')
@@ -675,10 +674,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return False
         
         # Explicitly look at IBrowserDefault
-        if IBrowerDefault.isImplementedBy(parent):
-            if parent.hasDefaultPage():
-                if parent.getDefaultPage() == obj.getId()
-                    return True
+        if IBrowserDefault.isImplementedBy(parent):
+           page = parent.getDefaultPage()
+            if page and page == obj.getId()
+                return True
 
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])

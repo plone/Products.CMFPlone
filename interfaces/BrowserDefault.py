@@ -6,28 +6,53 @@ except ImportError:
 
 from Interface import Attribute
 
-class IBrowerDefault(Interface):
+class IBrowserDefault(Interface):
     """
-    Interface for content supporting selectable default views, either as a
-    page template, or as the id of a contained object (inside a folderish item
-    only). 
+    Interface for content supporting different views on a per-instance basis, 
+    either as a page template, or as the id of a contained object (inside a 
+    folderish item only). 
     """
+        
+    def defaultView(request=None):
+        """
+        Get the actual view to use. If a default page is set, its id will
+        be returned. Else, the current layout's page template id is returned.
+        """
     
-    default_view = Attribute('The id of the page template that is the default view of the object')
-    suppl_views = Attribute('A tuple of page template ids for additional selectable views')
-
     # Note that Plone's browserDefault is very scary. This method should delegate
     # to PloneTool.browserDefault() if at all possible. browserDefault() is
     # aware of IBrowserDefault and will do the right thing wrt. layouts and
     # default pages. 
     
-    def __browser_default__():
+    def __browser_default__(request):
         """
         Resolve what should be displayed when viewing this object without an
-        explicit template specified. If a default page is set 
-        (see setDefaultPage), resolve and return that. If not, resolve and
-        return the page template found by getDefaultLayout().
+        explicit template specified. If a default page is set, resolve and 
+        return that. If not, resolve and return the page template found by 
+        getLayout().
         """
+
+    def getDefaultPage():
+        """
+        Return the id of the default page, or None if none is set. The default
+        page must be contained within this (folderish) item.
+        """
+
+    def getLayout():
+        """
+        Get the selected layout template. Note that a selected default page
+        will override the layout template.
+        """
+    
+class ISelectableBrowserDefault(IBrowserDefault):
+    """
+    Interface for content supporting operations to explicitly set the default
+    layoute template or default page object.
+    """
+    
+    
+    default_view = Attribute('The id of the page template that is the default view of the object')
+    suppl_views = Attribute('A tuple of page template ids for additional selectable views')
 
     def canSetDefaultPage():
         """
@@ -43,21 +68,6 @@ class IBrowerDefault(Interface):
         of this (folderish) object. This will override the current layout
         template returned by getLayout(). Pass None for objectId to turn off
         the default page and return to using the selected layout template.
-        """
-
-    def getDefaultPage():
-        """
-        Return the id of the default page, or None if none is set.
-        """
-
-    def hasDefaultPage():
-        """
-        Return True if this object has a default page set.
-        """
-
-    def getLayout():
-        """
-        Get the selected layout template.
         """
 
     def setLayout(layout):

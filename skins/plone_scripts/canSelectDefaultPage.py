@@ -7,7 +7,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 
-IBROWSERDEFAULT = 'Products.CMFPlone.interfaces.BrowserDefault.IBrowserDefault'
+INTERFACE = 'Products.CMFPlone.interfaces.BrowserDefault.ISelectableBrowserDefault'
 
 if not context.isPrincipiaFolderish:
     return False
@@ -15,7 +15,7 @@ if not context.isPrincipiaFolderish:
 from Products.CMFCore.utils import getToolByName
 itool = getToolByName(context, 'portal_interface')
 
-if not itool.objectImplements(context, IBROWSERDEFAULT):
+if not itool.objectImplements(context, INTERFACE):
     return False
     
 return context.canSetDefaultPage()
