@@ -30,7 +30,7 @@ class DefaultCustomizationPolicy:
         if not hasattr(p,'localTimeFormat'): p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
         if not hasattr(p,'localLongTimeFormat'): p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
         if not hasattr(p,'default_language'): p._setProperty('default_language', 'en', 'string')
-        if not hasattr(p,'default_charset'): p._setProperty('default_charset', 'iso-8859-1', 'string')
+        if not hasattr(p,'default_charset'): p._setProperty('default_charset', 'utf-8', 'string')
         if not hasattr(p,'use_folder_tabs'): p._setProperty('use_folder_tabs',('Folder',), 'lines')
         if not hasattr(p,'use_folder_contents'): p._setProperty('use_folder_contents',('Folder',), 'lines')
         if not hasattr(p,'ext_editor'): p._setProperty('ext_editor', ExtInstalled, 'boolean')
