@@ -8,3 +8,5 @@ import plone2_base
 
 # Plone 2.0b2 to 2.0b3
 import twoBeta2_twoBeta3
+
+import release_candidates
