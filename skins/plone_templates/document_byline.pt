@@ -1,4 +1,4 @@
-<div class="byline"
+<div class="documentByLine"
      metal:define-macro="byline" 
      i18n:domain="plone"
      tal:define="creator here/Creator;

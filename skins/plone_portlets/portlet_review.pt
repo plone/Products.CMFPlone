@@ -11,16 +11,14 @@
                  results here/my_worklist;"
      tal:condition="results">
 
-    <div class="box" id="portlet-workflow-review">
-
-    <div class="padding">
+    <div class="portlet" id="portlet-workflow-review">
 
         <h5 i18n:translate="box_review_list">Review List</h5>
 
-        <div class="body">
+        <div class="portletBody">
             <tal:block repeat="o results">
             <div tal:define="oddrow repeat/o/odd"
-                 tal:attributes="class python:test(oddrow, 'content odd','content even')">
+                 tal:attributes="class python:test(oddrow, 'portletContent odd','portletContent even')">
 
                     <a href="#"
                        class="marker"
@@ -31,7 +29,7 @@
                         </span>
                     </a>
 
-                    <div class="boxDetails"
+                    <div class="portletDetails"
                          tal:content="python:here.toPortalTime(o.ModificationDate())">July 7, 08:11</div>
             </div>
             </tal:block>
@@ -39,8 +37,6 @@
         </div>
 
     </div>
-
-</div>
 
 </div>
 

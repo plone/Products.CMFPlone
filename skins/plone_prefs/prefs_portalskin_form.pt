@@ -63,7 +63,7 @@
                 <span i18n:translate="label_skin_flexibility">Skin flexibility</span>
             </div>
 
-            <div class="checkbox">
+            <div class="listingCheckbox">
 	      <input type="checkbox" 
 		     name="allow_any"
 		     tal:define="allowany here/portal_skins/getAllowAny"
@@ -81,7 +81,7 @@
                 <span i18n:translate="label_cookie_persistence">Skin Cookie persistence</span>
             </div>
 
-            <div class="checkbox">
+            <div class="listingCheckbox">
 	      <input type="checkbox" 
 		     name="cookie_persistence"
 		     tal:define="cookiepers here/portal_skins/getCookiePersistence"

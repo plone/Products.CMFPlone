@@ -27,7 +27,7 @@
         <input type="hidden" name="Creator" value=""
         	   tal:attributes="value member/getUserName" />
 
-        <div class="message"
+        <div class="portalMessage"
              tal:condition="here/portal_membership/isAnonymousUser">
 
         <img tal:replace="structure here/info.gif">

@@ -24,39 +24,39 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
 }
 
-p, ul, li, dt, dd, dl, table, td, th, .description, #pathBar, .description, #footer, #colophon, div.content, div.byline, input, textarea {
+p, ul, li, dt, dd, dl, table, td, th, .documentDescription, #portal-breadcrumbs, .documentDescription, #portal-footer, #portal-colophon, div.content, div.documentByLine, input, textarea {
     font-size: 14px;
 }
 
-.description {
+.documentDescription {
     font-weight: bold;
 }
 
-#columns{
+#portal-columns{
 }
 
-#columns #left {
+#portal-columns #portal-column-one {
     float: left;
     clear: left;
     width: 15%;
     padding: 2em 0em 1em 2em;
 }
 
-#columns #right {
+#portal-columns #portal-column-two {
     float: left;
     clear: right;
     width: 15%;
     padding: 2em 2em 1em 0em;
 }
 
-#columns .main {
+#portal-columns #portal-column-content {
     float: left;
     clear: none;
     width: 62%;
     padding: 0.5em 2em 1em 2em;
 }
 
-#portalTabs li, 
+#portal-globalnav li, 
 #personalbar li, 
 .contentViews li,
 #itemMenu li {

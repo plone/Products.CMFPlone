@@ -28,14 +28,14 @@
 
                    >
 
-    <div class="box" id="portlet-navigation-tree">
+    <div class="portlet" id="portlet-navigation-tree">
 
     <div class="padding">
 
         <h5 i18n:translate="box_navigation">Navigation</h5>
 
-        <div class="body">
-            <div class="content odd">
+        <div class="portletBody">
+            <div class="portletContent odd">
 
                 <div tal:condition="tree/prev">
                     <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">

@@ -3,7 +3,7 @@
 
 <body>
 
-<div id="colophon" metal:define-macro="colophon" i18n:domain="plone">
+<div id="portal-colophon" metal:define-macro="colophon" i18n:domain="plone">
 <!-- 
      
      Please keep the Plone Powered button (or a textual link to us) if you use 

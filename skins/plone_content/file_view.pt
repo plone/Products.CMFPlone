@@ -16,7 +16,7 @@
     Title or id
     </h1>
 
-    <div class="description"
+    <div class="documentDescription"
          tal:content="here/Description">
     description
     </div>
@@ -57,7 +57,7 @@
     </small>
         
     
-    <div metal:use-macro="here/byline/macros/byline">
+    <div metal:use-macro="here/document_byline/macros/byline">
       Get the byline - contains details about author and modification date.
     </div>
     

@@ -26,24 +26,24 @@ body {
 }
 
 div.top,
-#logo,
-.hiddenstructure,
-div#searchBox,
-ul#portalTabs,
-ul#personalBar,
-div#pathBar,
-div#columns div#left,
-div#columns div#right,
+#portal-logo,
+.hiddenStructure,
+#portal-searchbox,
+#portal-globalnav,
+#portal-personaltools,
+#portal-breadcrumbs,
+#portal-columns div#portal-column-one,
+#portal-columns div#portal-column-two,
 .contentViews,
 .contentActions,
 .help,
 .legend,
-div.message,
+div.portalMessage,
 div.documentActions,
-.byline,
+.documentByLine,
 .netscape4,
-#footer,
-#colophon,
+#portal-footer,
+#portal-colophon,
 input
 .skipnav {
     /* Hides all the elements irrelevant for presentations */
@@ -54,8 +54,8 @@ ul {
     list-style-type: square;
 }
 
-.pageContent,
-.description,
+#content,
+.documentDescription,
 .group,
 li,
 .stx,
@@ -69,7 +69,7 @@ p {
     text-align: left;
 }
 
-.byline {
+.documentByLine {
     font-family: Georgia, Garamond, Times, serif;
 }
 
@@ -120,16 +120,16 @@ div.document a:visited:after {
    content: " ( " attr(href) " ) ";
 }
 
-div#columns div#main-left,
-div#columns div#main-left div.main {
+div#portal-columns div#visual-column-wrapper,
+div#portal-columns div#visual-column-wrapper div#portal-column-content {
     width: 100%;
 }
 
-div#columns div#main-left div.main {
+div#portal-columns div#visual-column-wrapper div#portal-column-content {
     padding: 0;
     margin: 0;
 }
 
-div#columns div#main-left div.main * {
+div#portal-columns div#visual-column-wrapper div#portal-column-content * {
     text-align: left;
 }

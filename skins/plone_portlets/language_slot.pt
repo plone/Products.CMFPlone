@@ -11,17 +11,17 @@
                  portal here/portal_url/getPortalObject"
      tal:condition="PTS">
 
-    <div class="box" tal:define="plone_langs python:PTS.getLanguages('plone');
+    <div class="portlet" tal:define="plone_langs python:PTS.getLanguages('plone');
                                  current_lang python:PTS.negotiate(plone_langs, request)" id="portlet-language">
 
     <div class="padding">
 
         <h5 i18n:translate="label_language">Language</h5>
 
-        <div class="body">
+        <div class="portletBody">
 
             <label for="language" >
-            <div class="hiddenlabel" i18n:translate="label_choose_language">Choose your language</div>
+            <div class="hiddenLabel" i18n:translate="label_choose_language">Choose your language</div>
 	    <select name="language" id="language" onChange="document.cookie='user_language=' + this.options[this.selectedIndex].value + ';path=/'; window.location.reload()"
                     style="width: 175px" alt="Choose your Language" title="Choose your language" i18n:attributes="title">
 

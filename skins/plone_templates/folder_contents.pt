@@ -24,19 +24,15 @@
                       Batch python:modules['Products.CMFPlone'].Batch;
                       batch python:Batch(results, 100, int(b_start), orphan=0);">
 
-            <div class="title">
+            <h1 tal:condition="myfolder">
+            <img tal:replace="structure here/folder.gif" />
+            <span i18n:translate="heading_my_folder" tal:omit-tag="">My Folder</span>
+            </h1>
 
-                <h1 class="folderName" tal:condition="myfolder">
-                <img tal:replace="structure here/folder.gif" />
-                <span i18n:translate="heading_my_folder" tal:omit-tag="">My Folder</span>
-                </h1>
-
-                <h1 tal:condition="not:myfolder">
-                <img tal:replace="structure here/folder.gif" />
-                <span tal:content="here/title_or_id" tal:omit-tag="">Directory Id</span>
-                </h1>
-
-            </div>
+            <h1 tal:condition="not:myfolder">
+            <img tal:replace="structure here/folder.gif" />
+            <span tal:content="here/title_or_id" tal:omit-tag="">Directory Id</span>
+            </h1>
 
             <metal:block tal:condition="not: folder_contents">
             <p i18n:translate="description_no_visible_items_press_add">
@@ -86,7 +82,7 @@
                         <td class="top" colspan="6">
 
                             <!-- Add Item pulldown -->
-                            <label for="select_add_item"><span class="hiddenlabel" i18n:translate="label_add_item">Select an item to add</span>
+                            <label for="select_add_item"><span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
 			    <select id="select_add_item"
 				    name="type_name"
                                     tabindex=""

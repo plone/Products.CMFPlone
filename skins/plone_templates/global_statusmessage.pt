@@ -4,7 +4,7 @@
 <body>
 
 <!-- THE STATUS MESSAGE DEFINITION -->
-<div class="message"
+<div class="portalMessage"
          i18n:domain="plone"
          metal:define-macro="portal_message"
          tal:define="portal_message request/portal_status_message | nothing"

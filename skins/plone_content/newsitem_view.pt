@@ -13,7 +13,7 @@
 
     <h1 tal:content="here/title_or_id">Title or id</h1>
 
-    <div class="description" tal:content="here/Description">
+    <div class="documentDescription" tal:content="here/Description">
         News summary
     </div>
 
@@ -28,7 +28,7 @@
         <div tal:replace="structure here/CookedBody" />
     </div>
 
-    <div metal:use-macro="here/byline/macros/byline">
+    <div metal:use-macro="here/document_byline/macros/byline">
       Get the byline - contains details about author and modification date.
     </div>
 

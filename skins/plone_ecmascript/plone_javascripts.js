@@ -328,12 +328,12 @@ function scanforlinks(){
                 for (p=0; p < protocols.length; p++){  
                      if (linkval.indexOf(protocols[p]+':') != -1){
                     // this link matches the protocol . add a classname protocol+link
-                    links[i].className = protocols[p]+'-link'
+                    links[i].className = 'link-'+protocols[p]
                     }
                 }
             }else{
                 // we are in here if the link points to somewhere else than our site.
-                if ( links[i].getElementsByTagName('img').length == 0 ){links[i].className = 'external'}
+                if ( links[i].getElementsByTagName('img').length == 0 ){links[i].className = 'link-external'}
                 links[i].setAttribute('target','_blank')
                 
             }

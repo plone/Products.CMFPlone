@@ -11,16 +11,14 @@
      tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
      tal:condition="nocall: folder">
 
-    <div class="box"
+    <div class="portlet"
          tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);" id="portlet-favorites">
-
-    <div class="padding">
 
         <h5 i18n:translate="box_my_favorites">My Favorites</h5>
 
-        <div class="body">
+        <div class="portletBody">
 
-            <div class="content odd" tal:condition="favorites">
+            <div class="portletContent odd" tal:condition="favorites">
 
                 <span tal:repeat="o favorites">
                     <a class="marker"
@@ -32,7 +30,7 @@
 
             </div>
 
-            <div class="content even">
+            <div class="portletContent even">
                 <a href=""
                    class="marker"
                    i18n:translate="box_organize_favorites"
@@ -42,8 +40,6 @@
         </div>
 
     </div>
-
-</div>
 
 </div>
 

@@ -7,11 +7,11 @@
      tal:define="localContent here/navigationLocalRelated;
                  remoteContent here/navigationRemoteResources;"
      tal:condition="python:test(localContent or remoteContent, 1, 0)" >
-    <div class="box">
+    <div class="portlet">
     <div class="padding">
         <h5 i18n:translate="box_related">Related</h5>
-        <div class="body">
-            <div class="content odd" tal:condition="localContent">
+        <div class="portletBody">
+            <div class="portletContent odd" tal:condition="localContent">
                 <strong i18n:translate="box_local_resources">Local resources</strong>
                 <br />
                 <div tal:repeat="related localContent">
@@ -23,7 +23,7 @@
                     </a>
                 </div>
             </div>
-            <div class="content even" tal:condition="remoteContent">
+            <div class="portletContent even" tal:condition="remoteContent">
                 <strong i18n:translate="box_external_links">External links</strong>
                 <div tal:repeat="o remoteContent">
                     <a href=""

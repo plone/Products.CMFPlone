@@ -4,7 +4,7 @@
 <body>
 
 <!-- THE SKIN SWITCHER TABS DEFINITION -->
-<div id="switchbar" metal:define-macro="skin_tabs">
+<div id="portal-skinswitcher" metal:define-macro="skin_tabs">
   <tal:comment replace="nothing">
   <a href="/">Public View</a>
   <a href="./manage_main" class="selected">Admin View</a>

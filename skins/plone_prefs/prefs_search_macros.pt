@@ -57,7 +57,7 @@
             <tr tal:define="oddrow repeat/obj/odd"
 	        tal:attributes="class python:test(oddrow,'odd','even')">
 
-	      <td class="checkbox">
+	      <td class="listingCheckbox">
                 <input type="checkbox"
                        class="noborder notify"
                        name="add:list"

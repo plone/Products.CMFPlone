@@ -4,12 +4,12 @@
 
 /* <dtml-with base_properties> */
 
-.pageContent,
+#content,
 div.comment {
     /* Fix for IE6 disappearing float bug */
     height: 100%;
 }
-.hiddenstructure {
+.hiddenStructure {
     display: none;
 }
 
@@ -28,14 +28,14 @@ table.listing td.top {
     top: -1px;
 }
 
-div#columns div.box {
+div#portal-columns div.portlet {
     text-align: left;
 }
-div#columns div#left,
-div#columns div#right {
+div#portal-columns div#portal-column-one,
+div#portal-columns div#portal-column-two {
     overflow: hidden;
 }
-div.overflow {
+div.visualOverflow{
     overflow: auto;
 }
 

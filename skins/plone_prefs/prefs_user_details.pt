@@ -20,7 +20,7 @@ we eventually might want to merge this form with personalize_form
 
 <div class="configlet">
 
-<div class="editable">
+<div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -46,7 +46,7 @@ we eventually might want to merge this form with personalize_form
     </div>        
     <!-- End of tabs -->
 
-    <div class="contentContent">
+    <div class="documentContent">
 
         <h1 i18n:translate="heading_prefs_user_details">
           User Properties for

@@ -16,11 +16,11 @@ Fill in the email address of your friend to send an email with the address.
 
 <div class="spacer" />
 
-<div class="box">
+<div class="portlet">
 
 <h6 i18n:translate="box_page_summary">Page summary</h6>
 
-    <div class="body">
+    <div class="portletBody">
         <div class="content odd">
             <h2 tal:content="here/Title">Heading</h2>
             <p tal:content="here/description">

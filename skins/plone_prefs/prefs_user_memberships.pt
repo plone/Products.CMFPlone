@@ -19,7 +19,7 @@
 
 <div class="configlet">
 
-<div class="editable">
+<div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -43,7 +43,7 @@
     </div>        
     <!-- End of tabs -->
 
-    <div class="contentContent">
+    <div class="documentContent">
 
         <h1 i18n:translate="">Group Memberships for <span tal:replace="string:${member/getUserName}"/></h1>
     
@@ -88,7 +88,7 @@
                 </td>
     
     
-                <td class="checkbox">
+                <td class="listingCheckbox">
                     <input type="checkbox"
                            class="noborder notify"
                            name="delete:list"

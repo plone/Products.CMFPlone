@@ -9,32 +9,32 @@
 body {
     min-width: 58em;
 }
-#columns {
+#portal-columns {
     margin: 0;
 }
-#main-left {
+#visual-column-wrapper {
     float: left;
     width: 100%;
     margin-right: -17em;
 }
-.main {
+#portal-column-content {
     width: 100%;
     float: right;
     margin-left: -1em;
 }
 
-.main .pageContent {
+#portal-column-content #content {
     margin: 0 17em;
 }
 
-#left {
+#portal-column-one {
     float: left;
     margin-right: -16em;
     width: 17em;
     overflow: hidden;
 }
 
-#right {
+#portal-column-two {
     float: right;
     width: 17em;
     overflow: hidden;
@@ -42,35 +42,35 @@ body {
 
 /* ie fixes */
 
-* html #columns {
+* html #portal-columns {
   width: 100%;
 }
-* html*#columns {
+* html*#portal-columns {
     width: auto;
 }
 
 /* padding - thanks to the w3c box model :P */
 
-.main .padding {
+#portal-column-content .visualPadding {
     padding: 1em 2em 1em 2em;
 }
-#left .padding {
+#portal-column-one .visualPadding {
     padding: 2em 0em 1em 2em;
 }
-#right .padding {
+#portal-column-two .visualPadding {
     padding: 2em 2em 1em 0em;
 }
-#columns .box .padding {
+#portal-columns .portlet .visualPadding {
     padding: 0;
 }
 
 /* hide columns */
 
-.hideleft .main .pageContent {
+.visualColumnHideOne #portal-column-content #content {
     margin: 0 17em 0 0;
 }
 
-.hideright .main .pageContent {
+.visualColumnHideTwo #portal-column-content #content {
     margin: 0 0 0 17em;
 }
 

@@ -26,7 +26,7 @@
 
 <div class="configlet">
 
-<div class="editable">
+<div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -50,7 +50,7 @@
     </div>        
     <!-- End of tabs -->
 
-    <div class="contentContent"
+    <div class="documentContent"
          tal:condition="not:group | nothing">
     	<h1 i18n:translate="">Group Members</h1>
     
@@ -60,7 +60,7 @@
               i18n:translate="link_find_group">Find a group here</a></p>
     </div>
     
-    <div class="contentContent"
+    <div class="documentContent"
          tal:condition="group | nothing">
     
         <h1 i18n:translate="">Members of the <tal:group content="groupname">Groupname</tal:group> Group</h1>
@@ -124,7 +124,7 @@
     
                 </td>
     
-                    <td class="checkbox">
+                    <td class="listingCheckbox">
                         <input type="checkbox"
                                class="noborder notify"
                                name="delete:list" tal:attributes="value username" />

@@ -24,7 +24,7 @@
                 <span tal:replace="here/title_or_id">Comment title</span>
             </h2>
 
-            <div class="byline">
+            <div class="documentByLine">
                 <span i18n:translate="posted_by">Posted by</span>
                 <span tal:content="here/Creator">Poster Name</span>
                 <span i18n:translate="posted_on">at</span>

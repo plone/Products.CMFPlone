@@ -25,7 +25,7 @@
             <tal:block
              tal:define="resultObject result/getObject">
 
-            <div class="box">
+            <div class="portlet">
 
                 <h6>
                     <img src="" style="border: 0"
@@ -49,7 +49,7 @@
 
                 </h6>
 
-                <div class="body">
+                <div class="portletBody">
                     <div class="content">
 
                         <h2 tal:content="result/Title">

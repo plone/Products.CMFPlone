@@ -23,7 +23,7 @@
 
 <div class="configlet">
 
-<div class="editable">
+<div class="documentEditable">
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
@@ -45,7 +45,7 @@
     </div>        
     <!-- End of tabs -->
 
-    <div class="contentContent"
+    <div class="documentContent"
          tal:condition="not:group | nothing">
 
         <metal:block metal:use-macro="template/macros/props">
@@ -73,7 +73,7 @@
     
     </div>
     
-    <div class="contentContent"
+    <div class="documentContent"
          tal:condition="group | nothing">
     
         <metal:block metal:define-macro="props" tal:omit-tag="">
