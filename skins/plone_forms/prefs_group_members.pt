@@ -27,7 +27,7 @@
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
 <div id="contentTabs"> 
-    <a class="" 
+    <a class=""
        href=""
        tal:attributes="href string:prefs_group_details?groupname=${groupname}"
     >Group</a>
@@ -39,9 +39,19 @@
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
     
-<div class="document editable">    
+<div class="document editable"
+   tal:condition="not:group | nothing">
+    <h1 i18n:translate="">Group Members</h1>
 
-    <h1 i18n:translate="">Members of the <tal:group content="groupname">Finance</tal:group> Group</h1>
+    <p>No group was specified.</p>
+
+    <p><a href="prefs_groups_overview">Find a group here</a></p>
+</div>
+
+<div class="document editable"
+   tal:condition="group | nothing">
+
+    <h1 i18n:translate="">Members of the <tal:group content="groupname">Groupname</tal:group> Group</h1>
 
     <p i18n:translate="">
     You can add or remove users from this particular group here. Note that this

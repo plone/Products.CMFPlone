@@ -36,7 +36,17 @@
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
     
-<div class="document editable">    
+<div class="document editable"
+   tal:condition="not:group | nothing">
+    <h1 i18n:translate="">Group Members</h1>
+
+    <p>No group was specified.</p>
+
+    <p><a href="prefs_groups_overview">Find a group here</a></p>
+</div>
+
+<div class="document editable"
+   tal:condition="group | nothing">
 
     <h1 i18n:translate="">Edit Group Properties for <span tal:replace="group/getGroupName | default">#unavailable#</span></h1>
 
