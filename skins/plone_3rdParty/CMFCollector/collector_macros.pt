@@ -2,7 +2,9 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal">
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
+      i18n:domain="plone">
   <body>
 
     <span tal:replace="nothing">
@@ -19,11 +21,11 @@
 
     <div metal:define-macro="collector_header">
 
-        <h1>
-            <span tal:condition="here/Title"
+        <h1 i18n:translate="">
+            <span tal:condition="here/Title" i18n:name="title"
                 tal:replace="here/Title">TITLE</span>
     
-            <span tal:condition="here/abbrev">
+            <span tal:condition="here/abbrev" i18n:name="abbrev">
                 [<span tal:replace="here/abbrev|nothing"></span>]
             </span>
             - Issue Collector
@@ -47,12 +49,13 @@
                             python: [i for i in here.objectValues()
                                        if i.getId()
                                          != 'Collector Issue Transcript']">
-        <h1>
-            Issue <span tal:replace="here/id">ID</span> of
-            <a href=""
+        <h1 i18n:translate="">
+            Issue <span tal:replace="here/id" i18n:name="id">ID</span> of
+            <a href="" i18n:name="collector_link" i18n:translate="collector_link"
              tal:attributes="href python:here.aq_parent.absolute_url()">
-            <span tal:replace="here/aq_parent/Title">COLLECTOR TITLE</span>
-            [<span tal:replace="here/abbrev|nothing"/>]
+            <span tal:replace="here/aq_parent/Title"
+	    i18n:name="collector_title">COLLECTOR TITLE</span>
+            [<span tal:replace="here/abbrev|nothing" i18n:name="collector_abbrev" />]
             </a>
         </h1>
         
@@ -60,7 +63,7 @@
 
 
          <tr>
-           <td align="right"> Title: </td>
+           <td align="right" i18n:translate="">Title:</td>
            <td colspan="3" metal:define-slot="issue_title_slot">
              <strong>
                <span tal:replace="python: here.title[:TITLELEN]
@@ -73,11 +76,11 @@
          </tr>
 
          <tr>
-           <td align="right">Status:</td>
+           <td align="right" i18n:translate="">Status:</td>
            <td tal:define="statpair python: split(here.status(), '_');
                            base python: statpair[0];
                            paren python: len(statpair) > 1">
-                <span tal:replace="python: '%s%s%s'
+                <span i18n:translate="" tal:replace="python: '%s%s%s'
                                            % ((paren and '(') or '',
                                               base,
                                               (paren and ')') or '')">
@@ -85,15 +88,14 @@
                 </span>
            </td>
 
-           <td align="right"> Security </td> 
+           <td align="right" i18n:translate="">Security related:</td> 
            <td metal:define-slot="issue_security_slot">
-             related:
-             <span tal:condition="not: here/security_related">
+             <span tal:condition="not: here/security_related" i18n:translate="">
                No
              </span>
-             <span tal:condition="here/security_related">
+             <span tal:condition="here/security_related" i18n:translate="">
                Yes 
-               <font color="BROWN or BLACK"
+               <font color="BROWN or BLACK" i18n:name="confidential"
                      tal:attributes="color python:
                                           (here.confidential() and 'brown')
                                           or 'black'"
@@ -106,7 +108,7 @@
          </tr>
 
          <tr>
-           <td align="right" valign="top"> Description: </td>
+           <td align="right" valign="top" i18n:translate="">Description:</td>
            <td colspan="3" metal:define-slot="issue_description_slot">
              <font color="gray">
                <span tal:replace="python: here.description[:TRUNCDESCR]
@@ -119,12 +121,12 @@
          </tr>
 
          <tr>
-           <td align="right">From:</td>
+           <td align="right" i18n:translate="">From:</td>
            <td NOWRAP>
               <span metal:define-slot="issue_from_slot"
                     tal:content="here/submitter_name">NAME</span>
            </td>
-           <td align="right"> on: </td>
+           <td align="right" i18n:translate="creationdate_on">on:</td>
            <td NOWRAP>
              <code>
                <span tal:replace="python: here.aCompact(here.creation_date)">
@@ -140,10 +142,10 @@
              <em><span metal:define-slot="issue_submitter_id_slot"
                         tal:content="here/submitter_id">ID</span></em>
            </td>
-           <td tal:define="actions here/action_number" align="right">
+           <td align="right" i18n:translate="">
              Last update:
            </td>
-           <td>
+           <td tal:define="actions here/action_number">
              <code>
                <span tal:condition="python: actions <= 1">~</span>
                <span tal:condition="python: actions > 1"
@@ -156,26 +158,25 @@
          </tr>
 
          <tr>
-           <td align="right">Topic/class:</td>
+           <td align="right" i18n:translate="">Topic/class:</td>
            <td> <strong>
            <span metal:define-slot="issue_topic_slot"
                  tal:replace="here/topic">
             TOPIC</span>/<span metal:define-slot="issue_classification_slot"
-                               tal:replace="here/classification"
+                               tal:replace="here/classification" i18n:translate=""
             >CLASSIFICATION</span>
              </strong>
            </td>
-           <td align="right"> Importance:
-           </td>
+           <td align="right" i18n:translate="">Importance:</td>
            <td metal:define-slot="issue_importance_slot">
-             <span tal:replace="here/importance">
+             <span tal:replace="here/importance" i18n:translate="">
                IMPORTANCE
              </span>
            </td>
          </tr>
 
          <tr>
-           <td align="right" valign="top"> Version info: </td>
+           <td align="right" valign="top" i18n:translate="">Version info:</td>
            <td valign="top"
 	       metal:define-slot="issue_version_info_slot"
                colspan="3"
@@ -186,7 +187,7 @@
          </tr>
 
          <tr tal:condition="here/assigned_to">
-           <td align="right">Assigned:</td>
+           <td align="right" i18n:translate="">Assigned:</td>
            <td colspan="3">
              <span tal:content="python: ', '.join(here.assigned_to())">
                SUPPORTERS</span>
@@ -194,7 +195,7 @@
          </tr>
 
         <tr tal:condition="artifacts">
-          <td align="right" valign="top"> Uploads: </td>
+          <td align="right" valign="top" i18n:translate="">Uploads:</td>
           <td metal:define-slot="issue_uploads_slot"
               colspan="3">
             <table>
@@ -261,7 +262,7 @@
           <td align="left" width="30%">
             <span tal:condition="prev">
              <strong>
-              <a href="PREVIOUS BATCH"
+              <a href="PREVIOUS BATCH" i18n:translate="previous_batch"
                 tal:attributes="href python:
                                      base+'&'+make_query(b_start=prev.first)">
                Previous</a>
@@ -272,25 +273,25 @@
           <td align="center" NOWRAP
               tal:define="total here/length;
                           found python: len(items)">
-            <b>
-              <span tal:condition="python: batch.start != batch.end"
-                    tal:replace="python: '%s to %s of'
-                                   % (batch.start, batch.end)">X to X of</span>
-              <span tal:condition="python: batch.start == batch.end"
-                    tal:replace="python: '%s of'
-                                   % (batch.start)">X of</span>
-              <span tal:condition="python: total != found"
-                    tal:replace="python: '%s found (%s total)'
-                                         % (found, total)">FOUND/TOTAL</span>
-              <span tal:condition="python: total == found"
-                    tal:replace="python: '%s total' % total">TOTAL</span>
+            <b><tal:block i18n:translate=""
+	      comment="sorry about the ugly TAL... this makes this part i18n-friendly">
+	      <tal:var replace="batch/start" i18n:name="start_index">0</tal:var>
+	      <tal:if condition="python: batch.start != batch.end">
+	        to <tal:var replace="batch/end" i18n:name="end_index">10</tal:var>
+	      </tal:if>
+	      of <tal:var replace="found" i18n:name="num_found">100</tal:var>
+	      </tal:block>
+	      <tal:block condition="python: total != found" i18n:translate="batch_total">
+	        found
+	        (<tal:var replace="total" i18n:name="num_total">1000</tal:var> total)
+	      </tal:block>
             </b>
           </td>
 
           <td align="right" width="30%">
             <span tal:condition="next">
              <strong>
-              <a href="NEXT BATCH"
+              <a href="NEXT BATCH" i18n:translate="next_batch"
                 tal:attributes="href python:
                                      base+'&'+make_query(b_start=next.first)">
               Next</a>

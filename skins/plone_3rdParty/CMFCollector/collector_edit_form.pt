@@ -9,13 +9,15 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/main_template/macros/master">
+      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <body>
 
 <div metal:fill-slot="header">
 
-<h1>Collector Configuration</h1>
+<h1 i18n:translate="">Collector Configuration</h1>
 
 </div>
 
@@ -25,7 +27,7 @@
       action="collector_edit" 
       method="post">
 
-    <span class="legend">Collector Details</span>
+    <span class="legend" i18n:translate="">Collector Details</span>
     
     <div class="row" 
          tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
@@ -34,10 +36,10 @@
                      id python:request.get('id', here.getId());"> 
         <div class="label required">
         
-            <span i18n:translate="id">ID</span>
+            <span i18n:translate="">ID</span>
         
             <div id="id_help" 
-                 i18:id="id_help"
+                 i18n:translate=""
                  class="help" 
                  style="visibility:hidden">
             Enter the ID of the document. This is the part that will show up as part
@@ -66,7 +68,7 @@
     </div>
 
     <div class="row">
-        <div class="label"> Title </div> 
+        <div class="label" i18n:translate="">Title</div> 
         <div class="field">
             <input type="text"
                    name="title"
@@ -77,7 +79,7 @@
     </div>
 
     <div class="row">
-        <div class="label"> 
+        <div class="label" i18n:translate=""> 
         Abbreviation 
         
         </div> 
@@ -86,24 +88,28 @@
                    name="abbrev"
                    value=""
                    tal:attributes="value here/abbrev|nothing"
-                   size="5" /> 
+                   size="5" />
+	    <span i18n:translate="">
             (Collector email subject-line prefix)
+	    </span>
         </div>
     </div>
   
     <div class="row">
-        <div class="label"> Description </div> 
+        <div class="label" i18n:translate="">Description</div> 
         <div class="field">
             <textarea name="description:text" rows="3"
                       cols="50"
                       tal:content="here/description">
             </textarea>
+	    <span i18n:translate="">
             (Will be rendered as HTML)
+	    </span>
         </div>
     </div>
       
     <div class="row">
-        <div class="label"> Collector email </div> 
+        <div class="label" i18n:translate="">Collector email</div> 
         <div class="field"
              tal:define="member python: here.portal_membership.getAuthenticatedMember();
                          getpropemail python: hasattr(member, 'getProperty')
@@ -117,36 +123,42 @@
                    size=25
                    value="EMAIL"
                    tal:attributes="value email" />
-            (Collector email "From" address)
+            <span i18n:translate="">
+	    (Collector email "From" address)
+	    </span>
                             
         </div>
     </div>
   
     <div class="row">
-        <div class="label"> Managers </div> 
+        <div class="label" i18n:translate="">Managers</div> 
         <div class="field">
             <textarea name="managers:lines" rows="5" cols="15">
 <span tal:repeat="it here/managers" tal:replace="it"></span></textarea>
-            Managers configure the collector, and receive request notices.
+            <span i18n:translate="">
+	    Managers configure the collector, and receive request notices.
             Managers can accept issues, but must be on Supporters roster to be
             assigned.  (Managers cannot remove <em>themselves</em> from the
             management roster.)
+	    </span>
         </div>
     </div>
 
     <div class="row">
-        <div class="label"> Supporters </div> 
+        <div class="label" i18n:translate="">Supporters</div> 
         <div class="field">
             <textarea name="supporters:lines" rows="5" cols="15">
 <span tal:repeat="it here/supporters" tal:replace="it"></span></textarea>
-            Supporters can be assigned to requests.  They may or may not
+	    <span i18n:translate="">
+	    Supporters can be assigned to requests.  They may or may not
             receive initial request notifications, depending on the
             "dispatching" setting below.
+	    </span>
         </div>
     </div>
   
     <div class="row">
-        <div class="label"> Dispatcher Mode </div> 
+        <div class="label" i18n:translate="">Dispatcher Mode</div> 
         <div class="field">
             <div style="float:left">
             <input class="noborder"
@@ -154,8 +166,11 @@
                    name="dispatching:int" 
                    value="0"
                    tal:attributes="checked not: here/dispatching|nothing" />
-            Off (Managers and supporters receive pending-issue notices)
+            <span i18n:translate="">
+	    Off (Managers and supporters receive pending-issue notices)
+	    </span>
             
+
             <br />
             
             <input class="noborder"
@@ -163,13 +178,15 @@
                    name="dispatching:int" 
                    value="1"
                    tal:attributes="checked here/dispatching|nothing" />
+	    <span i18n:translate="">
             On (Only managers receive pending-issue notices)
+	    </span>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="label"> Participation Mode </div> 
+        <div class="label" i18n:translate="">Participation Mode</div> 
         <div class="field">
             <div style="float: left">
                 <input class="noborder" 
@@ -178,10 +195,12 @@
                        value="staff"
                        tal:attributes="checked python: here.participation
                                                        == 'staff'">
-                  Staff
+                  <span i18n:translate="">
+		  Staff
 
                   (Only collector staff and issue requester participate in an
                   issue)
+		  </span>
 
                 <br />
                 
@@ -191,9 +210,11 @@
                        value="authenticated"
                        tal:attributes="checked python: here.participation
                                                        == 'authenticated'">
-                  Authenticated
+                  <span i18n:translate="">
+		  Authenticated
 
                   (Any non-anonymous visitors can participate)
+		  </span>
 
                 <br />
                 
@@ -203,21 +224,23 @@
                        value="anyone"
                        tal:attributes="checked python: here.participation
                                                        == 'anyone'">
-                  Anyone
+                  <span i18n:translate="">
+		  Anyone
 
                   (Anyone, including anonymous visitors, can chime in)
+		  </span>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="label"> Notifications </div> 
+        <div class="label" i18n:translate="">Notifications</div> 
         <div class="field">
             <div style="float:left">
             <metal:block tal:define="states here/issue_states;"
                          tal:repeat="state states">
 
-                <span tal:replace="state">State:</span>
+                <span tal:replace="state" i18n:translate="">State:</span>
                 
                 <br />
                 
@@ -232,63 +255,76 @@
                                                 
             </metal:block>
             </div>
+	    <span i18n:translate="">
             Fill in addresses next to the state names to have notifications for 
             issues in that state sent to those addresses (this is in addition to 
             normal issue-participant notifications)
+	    </span>
         </div>
     </div>
 
     <div class="row">
-        <div class="label"> Selections </div> 
+        <div class="label" i18n:translate="">Selections</div> 
         <div class="field">
             <div style="float: left">
-            
-            Topics
+
+            <span i18n:translate="">Topics</span>
             <textarea name="topics:lines" rows="5" cols="15">
 <span tal:repeat="it here/topics|nothing" tal:replace="it"></span></textarea>
             
-            Classifications
+            <span i18n:translate="">Classifications</span>
             <textarea name="classifications:lines" rows="5" cols="15">
 <span tal:repeat="it here/classifications|nothing" tal:replace="it"></span></textarea>
             
-            Importance 
+            <span i18n:translate="">Importance</span>
             <textarea name="importances:lines" rows="5" cols="15">
 <span tal:repeat="it here/importances|nothing" tal:replace="it"></span></textarea>
             </div>
-            (Fill in the alternatives for issue categorization)
+            <span i18n:translate="">
+	    (Fill in the alternatives for issue categorization)
+	    </span>
         </div>
     </div>
 
     <div class="row">
-        <div class="label"> Version boilerplate </div> 
+        <div class="label" i18n:translate="">Version boilerplate</div> 
         <div class="field">
    <textarea name="version_info_spiel:text" rows="3" cols="50">
 <span tal:replace="here/version_info_spiel|nothing">
 </span></textarea>
-        (Something to prompt posters for useful version info)
+        <span i18n:translate="">
+	(Something to prompt posters for useful version info)
+	</span>
         </div>
     </div>
  
     <div class="row">
-        <div class="label"> Reinstate catalog </div> 
+        <div class="label" i18n:translate="">Reinstate catalog</div> 
         <div class="field">
             <div style="float: left">
-                <input class="noborder" type="radio" name="recatalog:int" value="0" checked="checked" /> No <br />
-                <input class="noborder" type="radio" name="recatalog:int" value="1"> Internal only <br />
-                <input class="noborder" type="radio" name="recatalog:int" value="2"> Internal &amp; Site-wide
-                (slow) <br />
+                <input class="noborder" type="radio"
+		name="recatalog:int" value="0" checked="checked" />
+		<span i18n:translate="">No</span><br />
+                <input class="noborder" type="radio"
+		name="recatalog:int" value="1">
+		<span i18n:translate="">Internal only</span><br />
+                <input class="noborder" type="radio"
+		name="recatalog:int" value="2">
+		<span i18n:translate="">Internal &amp; Site-wide (slow)</span><br />
             </div>
+	        <span i18n:translate="">
                 (Occasionally, product updates require internal catalog reinit and
                 reindex and other existing-issue adjustment.  Collector product
                 RELEASE_NOTES.txt will indicate when necessary.)
+		</span>
         </div>
     </div>
 
     <div class="row">
         <div class="label"> &nbsp; </div> 
         <div class="field">
-            <input class="context" type="submit" value="Submit" />
-            <input class="standalone" type="reset" value="Reset" />
+            <input class="context" type="submit" value="Submit" i18n:attributes="value" />
+            <input class="standalone" type="reset" value="Reset" i18n:attributes="value" />
         </div>
     </div>
 

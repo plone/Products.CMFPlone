@@ -9,7 +9,9 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/main_template/macros/master">
+      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 <body>
 
 <span tal:condition="nothing">
@@ -34,7 +36,10 @@
 
 <div class="message" tal:condition="here/no_submitter_email">
     <img tal:replace="structure here/info.gif" />
-    Note: We have no mail address for the submitters, so they won't get followups.
+    <span i18n:translate="">
+    Note: We have no mail address for the submitters, so they won't
+    get followups.
+    </span>
 </div>
 
   
@@ -44,24 +49,29 @@
       action="collector_issue_followup"
       tal:define="actions_pairs here/valid_actions_pairs">
 
-    <span class="legend">Follow-up details</span>    
+    <span class="legend" i18n:translate="">Follow-up details</span>    
 
 
     <div class="row" tal:condition="actions_pairs">
-        <div class="label"> Action </div> 
+        <div class="label" i18n:translate="">Action</div> 
         <div class="field">
             <input class="noborder"
-                   type="radio"
-                   name="action" value="comment" checked="checked" />Comment&nbsp;
+                   type="radio" id="radio_action_comment"
+                   name="action" value="comment" checked="checked" />
+	    <label for="radio_action_comment" i18n:translate="">Comment</label>
 
             <span tal:repeat="pair actions_pairs">
-                <span tal:condition="python: pair[1] != 'Assign'">
+                <span tal:define="name python:pair[0]; text python:pair[1];
+		                  widget_id
+				  string:radio_action_$name"
+				  tal:condition="python: text != 'Assign'">
                     <input class="noborder" 
                            type="radio" 
                            name="action" 
                            value="VALUE"
-                           tal:attributes="value python: pair[0]"
-                     /><span tal:replace="python: pair[1]">ACTION</span>&nbsp;
+                           tal:attributes="value name; id widget_id"
+                     /><label tal:content="python: text"
+		     tal:attributes="for widget_id" i18n:translate="">ACTION</label>
                 </span>
             </span>
 
@@ -69,10 +79,12 @@
                                          if i[1] == 'Assign']"
                   tal:condition="assigning">
                 <input class="noborder"
-                       type="radio" 
+                       type="radio"
+		       id="radio_action_Assign"
                        name="action" 
                        value="Assign"
-                       tal:attributes="value python: assigning[0]"/>Assign to:
+                       tal:attributes="value python:
+		       assigning[0]"/><label for="radio_action_Assign" i18n:translate="">Assign to:</label>
                 <span tal:define="assigning python: [1 for i in actions_pairs
                                                      if i[1] == 'Assign'];
                                   supporters here/aq_parent/supporters"
@@ -93,7 +105,7 @@
     </div>
 
     <div class="row">
-        <div class="label"> Follow-up </div> 
+        <div class="label" i18n:translate="">Follow-up</div> 
         <div class="field">
           <textarea name="comment" rows="10" cols="65" wrap="soft"
                     tal:content="python: (request.get('do_cite')
@@ -102,27 +114,33 @@
     </div>
 
 
-          Click <a href="QUALIFIED" 
+          <span i18n:translate="">
+          Click <a href="QUALIFIED" i18n:translate="click_here" i18n:name="here"
                    tal:attributes="href python: request.URL + '?do_cite=1'">
                 here</a> to cite the existing transcript.
+	  </span>
 
     <div class="row">
-        <div class="label"> Attachment (optional)</div> 
+        <div class="label" i18n:translate="">Attachment (optional)</div> 
         <div class="field">
             <input type=file name="file" size="20" />
         </div>
     </div>
 
     <div class="row">
-        <div class="label"> Attachment type (optional)</div>
+        <div class="label" i18n:translate="">Attachment type (optional)</div>
         <div class="field">
-            <input class="noborder" type=radio name="filetype" value="File" checked /> File 
-            <input class="noborder" type=radio name="filetype" value="Image" /> Image
+            <input class="noborder" type=radio name="filetype"
+            value="File" id="radio_attachment_type_file" checked />
+	    <label for="radio_attachment_type_file" i18n:translate="">File</label>
+            <input class="noborder" type=radio name="filetype"
+            value="Image" id="radio_attachment_type_image" />
+	    <label for="radio_attachment_type_image" i18n:translate="">Image</label>
         </div>
     </div>
     
     <div class="row">
-        <div class="label">Id of upload (optional)</div>
+        <div class="label" i18n:translate="">Id of upload (optional)</div>
         <div class="field">
             <input type=text name="fileid" size="12" />
         </div>
@@ -131,7 +149,8 @@
     <div class="row">
         <div class="label">&nbsp;</div>
         <div class="field">
-         <input class="context" type="submit" value="Submit">
+         <input class="context" type="submit" value="Submit"
+        i18n:attributes="value" />
         </div>
     </div>
 

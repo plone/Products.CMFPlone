@@ -3,7 +3,9 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/main_template/macros/master">
+      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 <body>
 
 <span tal:condition="nothing">
@@ -31,13 +33,13 @@
     <div class="row">
         <div class="box"
              style="width: 90%; float: none"
-             tal:define="entries here/action_number;
-                         ending python: (entries == 1 and 'y') or 'ies'">
+             tal:define="entries here/action_number">
     
-            <div class="heading"> 
+            <div class="heading" i18n:translate=""> 
                 Transcript for Issue
-                <span tal:replace="here/id">ID</span> 
-                (<span tal:replace="python: '%d entr%s' % (entries, ending)"></span>)
+                <span tal:replace="here/id" i18n:name="id">ID</span>
+                (<span tal:replace="entries" i18n:name="num">7</span>
+		 <tal:block condition="python:entries == 1" i18n:name="entry_or_entries">entry</tal:block><tal:block condition="python:entries != 1" i18n:name="entry_or_entries">entries</tal:block>)
             </div>
     
             <span tal:replace="structure here/CookedBody">

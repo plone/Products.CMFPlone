@@ -3,7 +3,9 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/main_template/macros/master">
+      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <span tal:condition="nothing">
   Template description: Batching view of the collector issues.
@@ -57,12 +59,12 @@
     <table id="sortable" class="listing">
       <thead>
       <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Submitter</th>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Description</th>
+        <th i18n:translate="">ID</th>
+        <th i18n:translate="">Title</th>
+        <th i18n:translate="">Submitter</th>
+        <th i18n:translate="">Date</th>
+        <th i18n:translate="">Status</th>
+        <th i18n:translate="">Description</th>
       </tr>
       </thead>
       
@@ -126,8 +128,7 @@
 
         <metal:block tal:define="security python: item.security_related;
                                  confidential python: split(item.status, '_')[-1]
-                                                      == 'confidential';
-                                 plrlcmts python: (numcmts != 1) and 's' or ''">
+                                                      == 'confidential';">
           <td style="white-space: nowrap">
 
             <!-- The color indicates whether the item is security-related, and
@@ -136,7 +137,8 @@
             <font color="SECURITY COLOR"
                   tal:attributes="color python: 
                                         (security and 'brown' or 'black')">
-                <span tal:content="python: (confidential and '(' or '')
+                <span i18n:translate=""
+		      tal:content="python: (confidential and '(' or '')
                                            + cap(split(item.status,
                                                        '_')[0])
                                            + (confidential and ')' or '')">
@@ -152,17 +154,16 @@
             
             <br />
             
-            <span tal:replace="item/importance">
+            <span tal:replace="item/importance" i18n:translate="">
               Importance
             </span>
 
-            <span tal:condition="not: numcmts"
-                  tal:replace="nothing">
-            </span><span tal:condition="item/assigned_to|nothing">,
+            <span tal:condition="item/assigned_to|nothing"
+	      i18n:translated="collector_issue_assigned_to">,
               <br />
               Assigned:
                
-              <span tal:content="python: ', '.join(item.assigned_to)">
+              <span tal:content="python: ', '.join(item.assigned_to)" i18n:name="names">
                 SUPPORTERS
               </span>
             </span>
@@ -175,11 +176,17 @@
               DESCRIPTION
           </metal:block>
       
-          <metal:block tal:condition="numcmts">
+          <tal:block condition="python:numcmts==1"
+	      i18n:translate="collector_issue_one_comment">
               <br />
-              (<span tal:replace="numcmts">NUM COMMENTS</span>
-              followup<span tal:replace="plrlcmts">S?</span>)
-          </metal:block>
+              (1 followup)
+          </tal:block>
+          <tal:block condition="python:numcmts>1"
+	      i18n:translate="collector_issue_num_comments">
+              <br />
+              (<span tal:replace="numcmts" i18n:name="num">NUM COMMENTS</span>
+              followups)
+          </tal:block>
 
           </td>
 
@@ -203,10 +210,10 @@
                       ordered nocall: here/collector_ordered_traits">
       <input type="hidden" name="searching" value="yep">
 
-      <span class="legend">Search for issues</span>
+      <span class="legend" i18n:translate="">Search for issues</span>
 
       <div class="row">
-          <div class="label">Contains</div>
+          <div class="label" i18n:translate="">Contains</div>
     
           <div class="field">
              <input type="text" name="SearchableText" size="40"
@@ -222,17 +229,17 @@
                 <table>
                   
                   <tr>
-                    <th> Status </th>
-                    <th> Requester</th>
-                    <th> Assigned </th>
-                    <th> Security Related </th>
+                    <th i18n:translate=""> Status </th>
+                    <th i18n:translate=""> Requester</th>
+                    <th i18n:translate=""> Assigned </th>
+                    <th i18n:translate=""> Security Related </th>
                   </tr>
                   <tr>
                     <td>
                       <select name="status:list:ignore_empty" multiple size="SIZE"
                             tal:define="values here/collector_issue_trim_states"
                             tal:attributes="size python: min(max(len(values), 3), 5)">
-                        <option value=""
+                        <option value="" i18n:translate=""
                                 tal:repeat="status values"
                                 tal:attributes="value status;
                                                 selected python: status
@@ -277,10 +284,10 @@
                       <select name="security_related:list:ignore_empty" size="3" multiple
                               tal:define="was python: request.get('security_related',
                                                                   [])">
-                        <option value="No"
+                        <option value="No" i18n:translate=""
                                 tal:attributes="selected python: 'No' in was">
                           No </option>
-                        <option value="Yes"
+                        <option value="Yes" i18n:translate=""
                                 tal:attributes="selected python: 'Yes' in was">
                           Yes </option>
                       </select>
@@ -288,9 +295,9 @@
         
                   </tr>
                   <tr>
-                    <th> Topic </th>
-                    <th> Classification </th>
-                    <th> Importance </th>
+                    <th i18n:translate=""> Topic </th>
+                    <th i18n:translate=""> Classification </th>
+                    <th i18n:translate=""> Importance </th>
                     <th> &nbsp; </th>
                   </tr>
                   <tr>
@@ -316,7 +323,7 @@
                                                          here.classifications)"
                               tal:attributes="size python: min(max(len(values), 3),
                                                                5)">
-                        <option value=""
+                        <option value="" i18n:translate=""
                                 tal:repeat="classification values"
                                 tal:attributes="
                                    value classification;
@@ -334,7 +341,7 @@
                                                          here.importances)"
                               tal:attributes="size python: min(max(len(values), 3), 
                                                                5)">
-                        <option value=""
+                        <option value="" i18n:translate=""
                                 tal:repeat="importance values"
                                 tal:attributes="
                                     value importance;
@@ -362,8 +369,8 @@
         <div class="label">&nbsp;</div>  
 
         <div class="field">
-            <input class="context" type="Submit" value="Search" />
-            <input class="standalone" type="reset" value="Reset" />
+            <input class="context" type="Submit" value="Search" i18n:attributes="value" />
+            <input class="standalone" type="reset" value="Reset" i18n:attributes="value" />
         </div>
     </div>
     

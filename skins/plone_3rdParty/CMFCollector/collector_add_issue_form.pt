@@ -9,7 +9,9 @@
 
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/main_template/macros/master">
+      xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <span tal:condition="nothing">
   Template description: Form for submitting new collector issues.
@@ -19,14 +21,17 @@
 
 <div metal:fill-slot="header">
 
+<tal:block i18n:translate="">
 <h1>
-Add new issue to <span tal:condition="here/Title" tal:replace="here/Title">TITLE</span>
+Add new issue to <span tal:condition="here/Title"
+tal:replace="here/Title" i18n:name="collector_title">TITLE</span>
 </h1>
 
 <div class="description">
 Use this form to add your issue to the Collector. Please provide as many details
 as possible.
 </div>
+</tal:block>
 
 </div>
 
