@@ -204,7 +204,7 @@
                 </span>
                  
                 <a href="metadata_form" 
-                   i18n:translate=description_newbie_pointers_3"
+                   i18n:translate="description_newbie_pointers_3"
                    tal:define="prefs python:here.getActionUrlById('preferences', actions['user']);"
                    tal:condition="prefs" 
                    tal:attributes="href prefs"
