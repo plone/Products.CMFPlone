@@ -25,7 +25,7 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.portal.acl_users._doAddUser('member', 'secret', ['Member'], [])
         self.portal.acl_users._doAddUser('reviewer', 'secret', ['Reviewer'], [])
         self.portal.acl_users._doAddUser('manager', 'secret', ['Manager'], [])
-        
+
     def testTraverse(self):
         temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         self.assertEqual(temp_doc.meta_type, 'Document')
@@ -67,7 +67,7 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.login('manager')
         self.portal.invokeFactory(id='nontmp_id', type_name='Document')
         nontemp_object = getattr(self.portal, 'nontmp_id')
-        
+
         # assume identify of the ordinary member
         self.login('member')
         folder = self.portal.Members.member
@@ -76,11 +76,29 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object)),
                          ('Authenticated', 'Member', 'Owner'))
         self.assertEqual(temp_object.Creator(), 'member')
-        # make sure user is not owner of non-temporary object 
-        # (i.e. make sure our evil monkey patch of the temporary instance has 
+        # make sure user is not owner of non-temporary object
+        # (i.e. make sure our evil monkey patch of the temporary instance has
         # not resulted in our patching all instances of the class)
         self.assertEqual(sortTuple(member.getRolesInContext(nontemp_object)),
                          ('Authenticated', 'Member'))
+
+
+    def testTempFolderPermissions(self):
+        from Products.CMFCore.CMFCorePermissions import AddPortalContent
+
+        self.folder.invokeFactory(id='folder2', type_name='Folder')
+        f = self.folder.folder2
+
+        previous_roles = f.rolesOfPermission(AddPortalContent)
+        self.folder.folder2.manage_permission(AddPortalContent,
+                                              ['Anonymous'], 1)
+        new_roles = f.rolesOfPermission(AddPortalContent)
+        self.failIf(previous_roles == new_roles)
+
+        path = 'folder2/portal_factory/Document/tmp_id'
+        temp_folder = self.folder.restrictedTraverse(path).aq_parent
+        temp_roles = temp_folder.rolesOfPermission(AddPortalContent)
+        self.assertEqual(temp_roles, new_roles)
 
 
 class TestCreateObject(PloneTestCase.PloneTestCase):
@@ -134,7 +152,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
 
     def testCreateObject(self):
         # createObject script should make a temp object
-        response = self.publish(self.folder_path + 
+        response = self.publish(self.folder_path +
                                 '/createObject?type_name=Document',
                                 self.basic_auth)
 
@@ -179,7 +197,7 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
 
     def testUnauthorizedToViewEditFormOfNonFactoryObject(self):
         # Anonymous should not be able to see newsitem_edit_form
-        response = self.publish(self.folder_path + 
+        response = self.publish(self.folder_path +
                                 '/createObject?type_name=News%20Item',
                                 ) # No basic out info
 

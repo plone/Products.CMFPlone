@@ -142,7 +142,7 @@ class TempFolder(TempFolderBase):
             except ConflictError:
                 raise
             except:
-                # some errors from invokeFactory (AttributeError, maybe others) 
+                # some errors from invokeFactory (AttributeError, maybe others)
                 # get swallowed -- dump the exception to the log to make sure
                 # developers can see what's going on
                 getToolByName(self, 'plone_utils').logException()
@@ -165,7 +165,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     toolicon = 'skins/plone_images/add_icon.gif'
     security = ClassSecurityInfo()
     isPrincipiaFolderish = 0
-    
+
     __implements__ = (PloneBaseTool.__implements__, SimpleItem.__implements__, )
 
     manage_options = ( ({'label':'Overview', 'action':'manage_overview'}, \
@@ -298,7 +298,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         intended_parent = aq_parent(self)
         if hasattr(intended_parent, id):
             return # do normal traversal via __bobo_traverse__
-        
+
         # about to create an object - prevent further traversal
         stack.reverse()
         factory_info = {'stack':stack}
@@ -329,7 +329,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         tempFolder = self._getTempFolder(type_name)
         # Mysterious hack that fixes some problematic interactions with SpeedPack:
-        #   Get the first item in the stack by explicitly calling __getitem__ 
+        #   Get the first item in the stack by explicitly calling __getitem__
         temp_obj = tempFolder.__getitem__(id)
         stack = stack[2:]
         if stack:
@@ -350,15 +350,17 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             types_tool = getToolByName(self, 'portal_types')
             if not type_name in types_tool.TempFolder.allowed_content_types:
                 # update allowed types for tempfolder
-                types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
+                all_types = types_tool.listContentTypes()
+                types_tool.TempFolder.allowed_content_types = (all_types)
 
             tempFolder = TempFolder(type_name).__of__(self)
             intended_parent = aq_parent(self)
             for p in intended_parent.ac_inherited_permissions(1):
                 name, value = p[:2]
-                p=Permission(name,value,self)
-                roles=p.getRoles(default=[])
-                tempFolder.manage_permission(name, tuple(roles), acquire=type(roles) is ListType)
+                p = Permission(name, value, intended_parent)
+                roles = p.getRoles(default=[])
+                tempFolder.manage_permission(name, tuple(roles),
+                                             acquire=type(roles) is ListType)
             factory_info[type_name] = tempFolder
             self.REQUEST.set(FACTORY_INFO, factory_info)
         else:

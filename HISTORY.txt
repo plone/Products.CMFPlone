@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0.6 - Anti-Pop - (Unreleased)
 
+    - Permission settings were not being correctly copied to temp
+      folder because we were using 'self' instead of 'intended_parent'
+      for looking up permission roles, thus looking them in the factory
+      tool instead of the target container.
+      [dreamcatcher]
+
     - Objects in the portal root lost their ordering when being renamed.
       [stefan]
 
