@@ -5,7 +5,8 @@
     <tal:actions repeat="action plone_actions">
         <a class="" href=""
            tal:define="selected action/selected|nothing"
-           tal:attributes="class python:test(selected, 'selected', 'plain'); href action/url;">
+           tal:attributes="class python:test(selected, 'selected', 'plain'); href action/url; accesskey string:accesskeys-${action/name}"
+	   i18n:attributes="accesskey" >
             <span tal:omit-tag="" i18n:translate="">
                 <span tal:replace="action/name">dummy</span>
             </span>

@@ -60,6 +60,8 @@
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');"
+			   accesskey="accesskeys-navigation"
+			   i18n:attributes="accesskey"
                            class="plain">
                 
                             <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
@@ -71,7 +73,9 @@
                            tal:condition="python: sibling == portalObject"
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
-                                           title python:test(title != sibling_title, title, '');">
+                                           title python:test(title != sibling_title, title, '');"
+			   accesskey="accesskeys-navigation"
+			   i18n:attributes="accesskey">
                            
                             <img tal:replace="structure portal/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
                         </a>

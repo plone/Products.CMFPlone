@@ -13,14 +13,17 @@
                size="20"
                value=""
                alt="search"
+	       accesskey="accesskeys-search"
+	       i18n:attributes="alt accesskey"
 	       tal:attributes="value request/SearchableText|nothing;
                                tabindex tabindex/next" />
 
         <input class="context searchButton"
                type="submit"
                value="Search"
-               tal:attributes="tabindex tabindex/next"
-               i18n:attributes="value" />
+	       accesskey="accesskeys-search"
+	       tal:attributes="tabindex tabindex/next"
+               i18n:attributes="value accesskey" />
     </form>
 </div>
 
@@ -50,7 +53,8 @@
 
     <a href="" class="" tal:repeat="tab portal_tabs"
        tal:attributes="href tab/url;
-                       class python:test(selected_portal_tab==tab['id'], 'selected', 'plain')">
+                       class python:test(selected_portal_tab==tab['id'], 'selected', 'plain')"
+		       accesskey="accesskeys-tabs" i18n:attributes="accesskey" >
         <tal:block omit-tag="" i18n:translate="">
             <span tal:replace="tab/name">Tab Name</span>
         </tal:block>
@@ -72,6 +76,8 @@
        tal:omit-tag="not: mtool/getHomeFolder"
        tal:condition="not: isAnon"
        tal:attributes="href string:${mtool/getHomeUrl}"
+       accesskey="accesskeys-personalbar"
+       i18n:attributes="accesskey"
        class="userName">
 
        <img tal:replace="structure portal/user.gif" />
@@ -88,7 +94,9 @@
 
     <a href=""
        tal:repeat="action python:display_actions"
-       tal:attributes="href action/url">
+       tal:attributes="href action/url"
+       accesskey="accesskeys-personalbar"
+       i18n:attributes="accesskey">
 
        <img tal:replace="structure portal/linkOpaque.gif" />
 
@@ -131,7 +139,9 @@
                tal:condition="python:not is_last"
                tal:attributes="href python:crumb[1]"
                tal:content="python:crumb[0]"
-               i18n:translate="">
+               i18n:translate=""
+	       accesskey="accesskeys-breadcrumbs"
+	       i18n:attributes="accesskey" >
                        crumb
              </a>
 
