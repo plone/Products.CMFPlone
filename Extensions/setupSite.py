@@ -14,17 +14,18 @@ def process(name, swhome, ihome):
         sys.path.insert(0, '%s' % swhome)
 
     # have to set up env first
-    from App import FindHomes
     import Zope
 
     # http://mail.zope.org/pipermail/zope-dev/2003-August/020274.html
     # this is annoying, but works, hopefully this can be removed in the near
     # future
+    from App import FindHomes
     from Zope.Startup.options import ZopeOptions
     from Zope.Startup import handlers as h
     from App import config
     opts = ZopeOptions()
-    opts.configfile = os.path.join(swhome,'etc/zope.conf')
+    # its going to look for zope.conf in instance home
+    opts.configfile = os.path.join(ihome,'etc/zope.conf')
     sys.argv = sys.argv[:1]
     opts.realize()
     h.handleConfig(opts.configroot,opts.confighandlers)
