@@ -35,11 +35,20 @@ function wrapNode(node, wrappertype, wrapperclass){
     wrapper.appendChild(innerNode)
 }
   
-
-
-
-
-
+function nodeContained(innernode, outernode){
+    // check if innernode is contained in outernode
+    var node
+    //debugger
+    node = innernode.parentNode;
+    while (node != document){
+        if (node == outernode){
+            return true; 
+            break
+            }
+        node=node.parentNode
+        }
+    return false
+    }
 
 
 

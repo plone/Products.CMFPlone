@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.1-beta1 - () - Released (TBA)
 
+    - Added utility javascript "nodeContained" to check if a node is contained
+      in another node
+      [elvix]    
+
+    - Added Collapse/Expand-form-section javascript for future use. Usage described
+      in plone_javascripts.js
+      [elvix]
+
     - Polished up the datetime-picker widget.  Now provides default values
       for month ('01') and day ('01').  Also new is the option to unset a
       date by deselecting ('----') the year.
