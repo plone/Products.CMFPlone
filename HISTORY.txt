@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Slight text edits in content_status_history template to more
+      accurately reflect the influence of the effective and expiration
+      dates. [rafrombrc]
+
     - added support for Firefox Live RSS Bookmark. RSS enabled objects
       will show the RSS button in firefox. Search results too.
       [batlogg]
