@@ -93,13 +93,6 @@ factory_type_information = { 'id'             : 'Plone Root'
                          , 'permissions'   : (CMFCorePermissions.ManageProperties,)
                          , 'category'      : 'folder'
                          }
-                       , { 'id'            : 'localroles'
-                         , 'name'          : 'Sharing'
-                         , 'action':
-                                  'string:${object_url}/folder_localrole_form'
-                         , 'permissions'   : (CMFCorePermissions.ManageProperties,)
-                         , 'category'      : 'folder'
-                         }
                        )
   }
 
