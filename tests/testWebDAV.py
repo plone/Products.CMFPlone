@@ -20,7 +20,7 @@ class TestDAVProperties(PloneTestCase.PloneTestCase):
     def testPropertiesToolTitle(self):
         ptool = getToolByName(self.portal, 'portal_properties')
         psets = mkdict(ptool.propertysheets.items())
-        self.failUnless('default' in psets)
+        self.failUnless('default' in psets.keys())
         default = psets['default']
         items = mkdict(default.propertyItems())
         self.failUnless('title' in items.keys())
