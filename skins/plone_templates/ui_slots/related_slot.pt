@@ -22,8 +22,8 @@
                            tal:attributes="href python:content[1]+'/view'" 
                            tal:content="python:content[0]">
                            Object related by keyword
-                        </a>
-                </span>
+                        </a> <br />
+                </span> 
             </td>
         </tr>
         <tr class="even" tal:condition="remoteContent">

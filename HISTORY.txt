@@ -1,6 +1,7 @@
     - subjects(keywords) in metadata tool were being saved with null property.. automatically relating items
     - changed folder_contents had filter_by_Type where CMF1.3 now uses filter_by_portal_type - thanks Florrent!
     - topic has been changed to to make the icon clickable, it now uses title or id of the catalog brain
+    - related box now has <br /> seperating elements
 
 1.0 alpha4
     - publishing now works without javascript. #202
