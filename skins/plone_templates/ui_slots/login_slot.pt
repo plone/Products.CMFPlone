@@ -27,7 +27,7 @@
                            tal:attributes="value request/came_from;
                                            tabindex tabindex/next" />
     
-                    <strong i18n:translate="label_name">Name</strong> <br />
+                    <strong i18n:translate="label_user_name">Name</strong> <br />
                     <input type="text" name="__ac_name" size="12"
                            tal:attributes="value python:request.get('__ac_name', ''); tabindex tabindex/next" />
     
