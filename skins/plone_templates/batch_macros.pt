@@ -11,7 +11,7 @@
                  mq python:modules['ZTUtils'].make_query;
                  url python:request.get('URL0');
                  currentpage batch/pagenumber;"
-     tal:condition="python:test(batch.previous or batch.next, 1, 0)">
+     tal:condition="batch/previous|batch/next">
 
 <!-- XXX tesdal needs to have a look at these
     <metal:rellinks fill-slot="rel_slot">

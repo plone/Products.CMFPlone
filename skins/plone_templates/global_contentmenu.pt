@@ -22,7 +22,7 @@
             tal:define="filterOut here/getNotAddableTypes;">
             <metal:block tal:repeat="ctype allowedSortedContentTypes"> 
             <li tal:define="Title ctype/Title;Id ctype/getId"
-                tal:condition="python:test(Id not in filterOut, 1, 0)">
+                tal:condition="python:Id not in filterOut">
                 <a href="#" 
                    onMouseUp="if (activeButton != null) resetButton(activeButton);"
                    tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
