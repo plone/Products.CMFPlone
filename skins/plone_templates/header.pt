@@ -34,7 +34,8 @@
 
     <!-- Some ECMAScript magic to control the sticky notes :) -->
     
-    <script language="javascript" 
+    <script language="javascript"
+            type="text/javascript"
             src="ieemu.js"
             tal:attributes="src string:$portal_url/ieemu.js" ></script>
     <script language="javascript">
@@ -48,11 +49,14 @@
     <!-- External script from Apple(!), will need to move into code and tweak.
     (No problem licence-wise, it's free and modifiable) --> 
     
-    <script type="text/javascript" 
+    <script language="JavaScript"
+            type="text/javascript" 
       src="http://developer.apple.com/internet/javascript/styley.js"
-      tal:attributes="src string:$portal_url/styley.js" ></script>     
+      tal:attributes="src string:$portal_url/styley.js" >
+    </script>     
 
-    <script language='JavaScript1.3' type='text/javascript'><!--
+    <script language="JavaScript1.3" type="text/javascript">
+     <!--
 
       function showDay(date) {
         tempX = document.body.offsetWidth - event.x;

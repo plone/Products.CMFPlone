@@ -27,11 +27,10 @@ def idInActions(seq, action_id):
 # XXX - runyaga; I wish it could be this simple ;(
 # show_border = wf_actions or len(obj_actions) > 1 #in CMF1.2 'log in' is a wf_action!
 
-if context.isPrincipiaFolderish:
+if context.isPrincipiaFolderish or template_id=='folder_contents' or template_id=='folder_listing' :
     if idInActions(folder_actions, 'edit'): 
         return 1
-    if (template_id=='folder_contents' or template_id=='folder_listing') \
-        and container.portal_membership.checkPermission( 'List folder contents', context):
+    if container.portal_membership.checkPermission( 'List folder contents', context):
         show_border = 1
 else:
     if idInActions(obj_actions, 'edit'): 
