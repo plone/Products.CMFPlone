@@ -176,7 +176,7 @@
                         <br />
                     </div>
 
-                    <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                    <div metal:use-macro="here/ui_slots/calendar_slot/macros/calendarDatePickerBox">
                         calendar popup
                     </div>
                 </div>

@@ -197,7 +197,7 @@
                     <br />
                 </div>
 
-                <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                <div metal:use-macro="here/ui_slots/calendar_slot/macros/calendarDatePickerBox">
                     a calendar, hopefully
                 </div>
             </div>
@@ -232,7 +232,7 @@
                     <br />
                 </div>
 
-                <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
+                <div metal:use-macro="here/ui_slots/calendar_slot/macros/calendarDatePickerBox">
                     a calendar, hopefully
                 </div>
             </div>
