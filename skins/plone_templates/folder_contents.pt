@@ -36,6 +36,7 @@
         <a href=""
            class="link-parent"
            tal:define="parent_url python:here.navigationParent(here, template.getId())"
+           tal:condition="parent_url"
            tal:attributes="href parent_url"
            i18n:translate="go_to_parent_url">
         Up one level
@@ -257,10 +258,9 @@
         </tal:buttons>
     </form>
 
-    <div tal:define="ids python:[obj.getId() for obj in here.contentValues()]"
-         tal:condition="python:not 'index_html' in ids and 
-                        here.portal_membership.checkPermission('Add portal content', here) and
-                        here.getTypeInfo().allowType('Document')">
+    <tal:defaultview condition="python: not 'index_html' in here.contentIds() and 
+                                here.portal_membership.checkPermission('Add portal content', here) and
+                                here.getTypeInfo().allowType('Document')">
 
         <p i18n:translate="description_no_default_folder_create_new">
         If you want to create a default page in this folder that will
@@ -282,7 +282,7 @@
                    i18n:attributes="value"
                    />
         </form>
-    </div>
+    </tal:defaultview>
 
 
 </div>

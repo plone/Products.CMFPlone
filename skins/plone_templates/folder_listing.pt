@@ -11,20 +11,18 @@
             Title or id
         </h1>
 
+        <a href=""
+           class="link-parent"
+           tal:define="parent_url python:here.navigationParent(here, template.getId())"
+           tal:condition="parent_url"
+           tal:attributes="href parent_url"
+           i18n:translate="go_to_parent_url">
+        Up one level
+        </a>
+
         <div class="documentDescription" tal:content="structure here/Description">
             description
         </div>
-
-        <p>
-        <small>
-            <a href=""
-               tal:define="parent_url python:here.navigationParent(here, template.getId())"
-               tal:attributes="href parent_url"
-               i18n:translate="go_to_parent_url">
-            Up one level
-            </a>
-        </small>
-        </p>
 
         <tal:listing condition="folderContents"
                      tal:define="folderContents python:here.getFolderContents(suppressHiddenFiles=1);
