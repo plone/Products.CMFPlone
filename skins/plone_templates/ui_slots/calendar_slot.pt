@@ -114,14 +114,16 @@
 
  </comment>
  
-  <input type=text tal:attributes="name string:$inputname;
+  <input type="text" tal:attributes="name string:$inputname;
                                    id input_id;
                                    value inputvalue;
                                    onfocus onfocus|nothing;
                                    onblur onblur|nothing;
 				   size inputsize|nothing;
-                                   tabindex tabindex"
-                                   />
+                                   tabindex tabindex;
+				   alt string:$inputname;
+				   title string:$inputname"
+				   />
 
   <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?input_id=${input_id}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
     <img tal:replace="structure here/popup_calendar.gif" />

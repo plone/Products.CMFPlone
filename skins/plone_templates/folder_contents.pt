@@ -155,7 +155,8 @@
                                                  src="select_all_icon.gif"
                                                  name="selectButton"
                                                  title="Select all items"
-                                                 onClick="toggleSelect(this); return false;"
+                                                 alt="Select all items"
+						 onClick="toggleSelect(this); return false;"
                                                  tal:attributes="src string:$portal_url/select_all_icon.gif"
                                                  /></th>
                         <th>&nbsp;<span tal:omit-tag=""
@@ -184,7 +185,7 @@
                                    tal:attributes="value item/getId;
                                                    id python: 'cb_'+item.getId();
                                                    checked request/ids_checked|nothing;
-                                                   tabindex tabindex/next|nothing"/>
+                                                   tabindex tabindex/next|nothing; alt string:Select ${item/title_or_id}; title string:Select ${item/title_or_id}"/>
                         </td>
 
                         <td tal:define="action python:item.getTypeInfo().getActionById('view');

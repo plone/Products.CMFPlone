@@ -108,6 +108,8 @@
                            type="text"
                            size="20"
                            value=""
+			   alt="Search"
+			   title="Search"
                            tal:attributes="value request/SearchableText|nothing; tabindex tabindex/next" />
 
                     <input class="context searchButton"

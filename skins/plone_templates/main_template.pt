@@ -64,6 +64,9 @@
 
 <body>
 
+<a class="skipnav" 
+   href="#documentContent">Skip to content</a>
+
 <div metal:use-macro="here/header/macros/portal_header">
 Header stuff
 </div>
@@ -97,7 +100,9 @@ Header stuff
                             Iterator python:modules['Products.CMFPlone'].IndexIterator;
                             tabindex python:Iterator(pos=0);">
 
-                <metal:block define-slot="super"
+		<a name="documentContent" />
+                
+		<metal:block define-slot="super"
 		             tal:condition="show_border" >
 
                 <div id="contentTabs" metal:define-macro="contentTabs"
