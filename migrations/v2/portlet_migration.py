@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
+from Acquisition import aq_base
 
 __author__ = 'DannyB (ender)'
 
@@ -18,28 +19,30 @@ conversions={'here/about_slot/macros/aboutBox':'',
 
 def upgradeSlots2Portlets(portal):
     # traverse all folderish objects and do:
-    # if exist: rename right_slots, left_slots to column_two_portlets, column_one_portlets
     # rename slots in these properties use the conversion list above
 
     # handle current obj first
-    processObject(portal)
+    processObject(aq_base(portal))
     processFolderish(portal)
 
-def processFolderish(obj):
-    for o in obj.contentValues():
-        if o.isPrincipiaFolderish:
-            processObject(o)
-            processFolderish(o)
+def processFolderish(folder):
+    for obj in folder.contentValues():
+        unwrapped = aq_base(obj)
+        # avoid max recursion depth error
+        if unwrapped.isPrincipiaFolderish and \
+          not unwrapped.meta_type == "CMF Collector":
+            processObject(unwrapped)
+            processFolderish(obj)
 
-def processObject(o):
-    left = getattr(o.aq_base, 'left_slots', None)
+def processObject(obj):
+    left = getattr(obj, 'left_slots', None)
     if left:
         new=renameEntries(left)
-        o.left_slots=tuple(new)
-    right = getattr(o.aq_base, 'right_slots', None)
+        obj.left_slots=tuple(new)
+    right = getattr(obj, 'right_slots', None)
     if right:
         new=renameEntries(right)
-        o.right_slots=tuple(new)
+        obj.right_slots=tuple(new)
 
 def renameEntries(lines):
     new=[]
