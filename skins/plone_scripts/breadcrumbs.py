@@ -17,7 +17,12 @@ if obj is not None:
 # Some variables
 factory_tool = context.portal_factory
 url_tool = getToolByName(context, 'portal_url')
-iface_tool = getToolByName(context, 'portal_interface')
+# required for login into a not migrated plone1 site
+try:
+    iface_tool = getToolByName(context, 'portal_interface')
+except AttributeError:    
+    iface_tool = None
+
 published = context.REQUEST.get('PUBLISHED', None)
 published_id = None
 checkPermission=context.portal_membership.checkPermission
@@ -89,7 +94,7 @@ while current and current is not portal:
     if factory_tool.isTemporary(o):
         continue
 
-    if not iface_tool.objectImplements(o, dynamic_type):
+    if iface_tool and not iface_tool.objectImplements(o, dynamic_type):
         continue
 
     url = o.absolute_url()
@@ -116,7 +121,7 @@ path_seq.reverse()
 # be a method. A method doesn't have title_or_id, and even if it had
 # it would not be accessible from here.
 
-if published != o and  \
+if published != o and iface_tool and \
    iface_tool.objectImplements(published, dynamic_type) and not \
     currentlyViewingFolderContents and \
     published_id not in  ('view', 'index_html') and \

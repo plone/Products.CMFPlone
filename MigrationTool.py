@@ -73,6 +73,13 @@ class MigrationTool( UniqueObject, SimpleItem):
             self.setInstanceVersion(self.getFileSystemVersion())
         return self._version.lower()
 
+    security.declarePublic('isPloneOne')
+    def isPloneOne(self):
+        """ is this still a plone 1 instance? Needed for require login"""
+        ver = self.getInstanceVersion().strip()
+        if ver.startswith('1'):
+             return 1
+
     security.declareProtected(ManagePortal, 'setInstanceVersion')
     def setInstanceVersion(self, version):
         """ The version this instance of plone is on """

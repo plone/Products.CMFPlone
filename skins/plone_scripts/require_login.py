@@ -10,8 +10,14 @@
 membership_tool=context.portal_membership
 isAnonymous = membership_tool.isAnonymousUser()
 login = 'login_form'
+failsafe= 'failsafe_login'
 insufficient_privileges = 'insufficient_privileges'
 request = context.REQUEST
+
+# needed for migration
+isPloneOne = context.portal_migration.isPloneOne()
+if isPloneOne:
+    login = failsafe
 
 if isAnonymous:
     query = request.get('QUERY_STRING','')
