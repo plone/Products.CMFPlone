@@ -36,8 +36,7 @@
     <!-- Consolidation of all javascript into 1 call -->
     <script language="javascript"
             type="text/javascript"
-            src=""
-	    tal:attributes="src string:$portal_url/plone_javascripts.js">
+	    tal:content="structure here/plone_javascripts.js">
     </script>
 
 </head>

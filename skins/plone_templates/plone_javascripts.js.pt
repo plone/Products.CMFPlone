@@ -1,8 +1,3 @@
-<span tal:replace="nothing"> 
-  Some ECMAScript magic to control the sticky notes :) 
-  NOTE: iiemu.js is a PythonScript so we must render it 
-</span>
-
 <metal:block tal:replace="structure here/ieemu.js" />
 
   if (moz) {
@@ -42,10 +37,8 @@
       elem.style.visibility='hidden' };
   }
 
-<span tal:replace="nothing"> Table sorting script </span>
 <metal:block tal:condition="python:test(template.getId() in ('folder_listing', 'folder_contents'),1,0)"
              tal:replace="structure here/table_sort.js" />
 
-<span tal:replace="nothing"> folder_contents actions </span>
 <metal:block tal:replace="structure here/folder_actions.js" />
 
