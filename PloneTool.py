@@ -307,8 +307,20 @@ class PloneTool(UniqueObject, SimpleItem):
         catalog_tool=getToolByName(self, 'portal_catalog')
         object.changeOwnership(user, recursive)
 
+        # get rid of all other owners
+        owners = object.users_with_local_role('Owner')
+        for o in owners:
+            roles = list(object.get_local_roles_for_userid(o))
+            roles.remove('Owner')
+            if roles:
+                object.manage_setLocalRoles(o, roles)
+            else:
+                object.manage_delLocalRoles([o])
+
         #FIX for 1750
-        object.manage_setLocalRoles( user.getUserName(), ['Owner'] )
+        roles = list(object.get_local_roles_for_userid(user.getUserName()))
+        roles.append('Owner')
+        object.manage_setLocalRoles( user.getUserName(), roles )
 
         catalog_tool.reindexObject(object)
         if recursive:
