@@ -30,19 +30,19 @@ table.columns {
 table.columns td.left {
     vertical-align: top;
     width: 15%;
-    padding: 0.5em 0.5em 1em 1em;
+    padding: 2em 0em 1em 2em;
 }
 
 table.columns td.main {
     vertical-align: top;
-    padding: 0.5em 0.5em 1em 0.5em;
+    padding: 0.5em 2em 1em 2em;
     margin: 0;
 }
 
 table.columns td.right {
     vertical-align: top;
     width: 15%;
-    padding: 0.5em 1em 1em 0.5em;
+    padding: 2em 2em 1em 0em;
 }
 
 /* The basic elements: */
@@ -720,7 +720,7 @@ div.stx table td {
 
 div.box {
     border: none;
-    margin: 1em;
+    margin-bottom: 1em;
     padding: 0;
 }
 
