@@ -113,10 +113,22 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         except:
             # Bl**dy string exceptions
             import sys; e, v, tb = sys.exc_info(); del tb
-            if str(e) == 'Bad Request' and str(v) == 'Not logged in.': 
+            if str(e) == 'Bad Request' and str(v) == 'Not logged in.':
                 pass    # Test passed
             else:
                 raise
+
+    def testSetPasswordAndKeepGroups(self):
+        # Password should be changed and user must not change group membership
+        group2 = 'g2'
+        groups = self.portal.portal_groups
+        groups.groupWorkspacesCreationFlag = 0
+        groups.addGroup(group2, None, [], [])
+        group = groups.getGroupById(group2)
+        group.addMember(_user_name)
+        ugroups = self.portal.acl_users.getUserById(_user_name).getGroups()
+        self.membership.setPassword('geheim')
+        self.failUnless(self.portal.acl_users.getUserById(_user_name).getGroups() == ugroups)
 
     def testWrapUserCreatesMemberarea(self):
         # This test serves to trip us up should this ever change
