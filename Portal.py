@@ -6,13 +6,13 @@ from Products.CMFPlone import PloneFolder
 from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDefault import Document
 
-def listPolicies(): 
+def listPolicies():
     """ Float default plone to the top """
     keys = custom_policies.keys()
     del keys[keys.index('Default Plone')]
     keys.insert(0, 'Default Plone')
     return keys
-    
+
 def addPolicy(label, klass): custom_policies[label]=klass
 
 from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
@@ -123,7 +123,7 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool('Plone Properties Tool', None)
         if not exists('portal_migration'):
             addPloneTool('Plone Migration Tool', None)
-            
+
         p.manage_permission( CMFCorePermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
@@ -294,9 +294,9 @@ class PloneGenerator(Portal.PortalGenerator):
             if not re_comment.match(line) and not re_blank.match(line):
                 match = re_transition.match(line)
                 if match:
-                    nav_tool.addTransitionFor(match.group('type'), 
-                                              match.group('page'), 
-                                              match.group('outcome'), 
+                    nav_tool.addTransitionFor(match.group('type'),
+                                              match.group('page'),
+                                              match.group('outcome'),
                                               match.group('action'))
                 else:
                     sys.stderr.write("Unable to parse '%s' in navigation properties file" % (line))
@@ -316,7 +316,7 @@ class PloneGenerator(Portal.PortalGenerator):
         m.setInstanceVersion('1.1') #.1')
         from migrations.plone1_1 import make_plone
         make_plone(p)
-        #we no longer use migrations to setupPlone in the generator        
+        #we no longer use migrations to setupPlone in the generator
         #m.upgrade(swallow_errors=0)
 
     def create(self, parent, id, create_userfolder):

@@ -1,3 +1,8 @@
+2003-09-14    <sidnei@plone.org>
+
+	* migrations/plone1_1.py (addCatalogIndexes): Added 'locations' as
+	catalog metadata.
+
 2003-07-30  Geoff Davis <geoff@geoffdavis.net>
 
     * FactoryTool.py: Complete rewrite.  Object ownership is now set properly
