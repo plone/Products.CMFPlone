@@ -62,30 +62,4 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
         PropertyManager.manage_options
         + SimpleItem.manage_options)
 
-
-    security = ClassSecurityInfo()
-    security.declarePrivate(
-        'manage_addProperty',
-        'manage_delProperties',
-        'manage_changePropertyTypes',
-        )
-
-#XXX Why is the below commented out?  Can we remove it? 
-#
-#    def manage_propertiesForm(self, REQUEST, *args, **kw):
-#        'An override that makes the schema fixed.'
-#        my_kw = kw.copy()
-#        my_kw['property_extensible_schema__'] = 0
-#        return apply(PropertyManager.manage_propertiesForm,
-#                     (self, self, REQUEST,) + args, my_kw)
-
-    security.declarePublic('propertyLabel')
-    def propertyLabel(self, id):
-        """Return a label for the given property id
-        """
-        for p in self._properties:
-            if p['id'] == id:
-                return p.get('label', id)
-        return id
-
 InitializeClass( SimpleItemWithProperties )

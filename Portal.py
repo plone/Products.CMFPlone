@@ -12,6 +12,7 @@ from Products.CMFCalendar.Extensions import Install as CalendarInstall
 from Products.ExternalMethod import ExternalMethod
 import Globals
 import string
+import os, sys, re
 
 __version__='1.0'
 
@@ -48,7 +49,7 @@ class PloneGenerator(Portal.PortalGenerator):
 
         typesTool=getToolByName(p, 'portal_types')
 
-        # BUGBUG FIXME - hack to make Links use the portal_form machinery
+        # XXX BUGBUG FIXME - hack to make Links use the portal_form machinery
         typeInfo = typesTool.getTypeInfo('Link')
         for action in typeInfo.getActions():
             if action.get('id', None) == 'edit':
@@ -119,8 +120,6 @@ class PloneGenerator(Portal.PortalGenerator):
         skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
         p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
         p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
-        skins.plone_templates.plone_scripts.form_scripts.navigation_properties.manage_doCustomize(folder_path='custom')
-        p.manage_pasteObjects( skins.custom.manage_cutObjects('navigation_properties') )
 
     def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow
@@ -188,57 +187,28 @@ class PloneGenerator(Portal.PortalGenerator):
         
         form_tool = p.portal_form
         form_tool.setValidator('link_edit_form', 'validate_link_edit')
-        
-        #XXX Yikes! I know this shows off the API but it would be much more practical to
-        #move this into the filesystem.  I added a arg on manage_addPropertySheet that
-        #given a propertysheet will copy the values into the new one.  
-        nav_tool = p.portal_navigation
-        nav_tool.addTransitionFor('Link', 'link_edit_form', 'failure', 'link_edit_form')
-        nav_tool.addTransitionFor('Link', 'link_edit_form', 'success', 'script:link_edit')
-        nav_tool.addTransitionFor('Link', 'link_edit', 'failure', 'link_edit_form')
-        nav_tool.addTransitionFor('Link', 'link_edit', 'success', 'action:view')
 
-        nav_tool.addTransitionFor('Document', 'document_edit', 'success', 'action:view')
-        nav_tool.addTransitionFor('Document', 'document_edit', 'failure', 'action:edit')
-        nav_tool.addTransitionFor('News Item', 'newsitem_edit', 'success', 'action:view')
-        nav_tool.addTransitionFor('News Item', 'newsitem_edit', 'failure', 'action:edit')
-        nav_tool.addTransitionFor('Image', 'image_edit', 'success', 'action:view')
-        nav_tool.addTransitionFor('Image', 'image_edit', 'failure', 'action:edit')
-        nav_tool.addTransitionFor('File', 'file_edit', 'success', 'action:view')
-        nav_tool.addTransitionFor('File', 'file_edit', 'failure', 'action:edit')
-        nav_tool.addTransitionFor('Folder', 'folder_copy', 'success', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_copy', 'failure', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_paste', 'success', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_paste', 'failure', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_cut', 'success', '"folder_contents"') 
-        nav_tool.addTransitionFor('Folder', 'folder_cut', 'failure', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_delete', 'success', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_delete', 'failure', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_rename', 'success', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_rename', 'failure', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_edit', 'success', '"folder_contents"')
-        nav_tool.addTransitionFor('Folder', 'folder_edit', 'failure', 'action:edit')
-        nav_tool.addTransitionFor('Folder', 'reconfig', 'success', '"reconfig_form"')
-        nav_tool.addTransitionFor('Folder', 'reconfig', 'failure', '"reconfig_form"')
-        nav_tool.addTransitionFor('Topic', 'topic_editCriteria', 'success', 'action:criteria')
-        nav_tool.addTransitionFor('Topic', 'topic_editTopic', 'success', 'action:view')
-        nav_tool.addTransitionFor('Topic', 'topic_editTopic', 'failure', 'action:edit')
-        nav_tool.addTransitionFor('Topic', 'folder_cut', 'success', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_cut', 'failure', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_rename', 'success', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_rename', 'failure', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_delete', 'success', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_delete', 'failure', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_copy', 'success', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_copy', 'failure', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_paste', 'success', 'action:subtopics')
-        nav_tool.addTransitionFor('Topic', 'folder_paste', 'failure', 'action:subtopics')
-        nav_tool.addTransitionFor('Event', 'event_edit', 'success', 'action:view')
-        nav_tool.addTransitionFor('Event', 'event_edit', 'failure', 'action:edit')
-        nav_tool.addTransitionFor('Default', 'metadata_edit', 'success', 'action:view')
-        nav_tool.addTransitionFor('Default', 'metadata_edit', 'failure', 'action:metadata')
-        nav_tool.addTransitionFor('Default', 'content_status_modify', 'success', 'action:view')
-        nav_tool.addTransitionFor('Default', 'content_status_modify', 'failure', 'action:publishing')
+
+        # grab the initial portal navigation properties from data/navigation_properties
+        nav_tool = p.portal_navigation
+
+        # open and parse the file
+        filename='navigation_properties'
+        src_file =  open(os.path.join(Globals.package_home(globals()), 'data', filename), 'r')
+        src_lines = src_file.readlines()
+        src_file.close(); 
+
+        re_comment = re.compile(r"\s*#")
+        re_blank = re.compile(r"\s*\n")
+        re_transition = re.compile(r"\s*(?P<type>[^\.]*)\.(?P<page>[^\.]*)\.(?P<outcome>[^\s]*)\s*=\s*(?P<action>[^$]*)$")
+        for line in src_lines:
+            line = line.strip()
+            if not re_comment.match(line) and not re_blank.match(line):
+                match = re_transition.match(line)
+                if match:
+                    nav_tool.addTransitionFor(match.group('type'), match.group('page'), match.group('outcome'), match.group('action'))
+                else:
+                    sys.stderr.write("Unable to parse '%s' in navigation properties file" % (line))
 
     def setupPlone(self, p): 
         self.customizePortalTypes(p)

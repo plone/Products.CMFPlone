@@ -24,20 +24,20 @@ class NavigationTool (UniqueObject, SimpleItem):
 
 
     security.declarePublic('getNext')
-    def getNext(self, context, action, status, **kwargs):
+    def getNext(self, context, script, status, **kwargs):
         """ Perform the next action specified by in portal_properties.navigation_properties.
 
             context - the current context
 
-            action - the script currently being called
+            script - the script/template currently being called
 
             status - 'success' or 'failure' strings used in calculating destination
 
             kwargs - additional keyword arguments are passed to subsequent pages either in
                 the REQUEST or as GET parameters if a redirection needs to be done
         """
-        (transition_type, transition) = self.getNavigationTransistion(context,action,status)
-        self.log("%s.%s.%s(%s) -> %s:%s" % (context, action, status, str(kwargs), transition_type, transition), 'getNext')
+        (transition_type, transition) = self.getNavigationTransistion(context, script, status)
+        self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
         if transition_type == 'action':
             return self._dispatchAction(context, transition, **kwargs)
         elif transition_type == 'url':
@@ -48,14 +48,13 @@ class NavigationTool (UniqueObject, SimpleItem):
             return self._dispatchPage(context, transition, **kwargs)
 
 
-    def addTransitionFor(self, content, action, status, destination):
-        """ adds a transition 
+    def addTransitionFor(self, content, script, status, destination):
+        """ Adds a transition.  When SCRIPT with context CONTENT returns STATUS, go to DESTINATION
 
-            content - is a object or a TypeInfo that you would like to
-                      register a None content object will register Default values.
+            content - is a object or a TypeInfo that you would like to register.
+                      A None content object will register Default values.
 
-            action - script that is used by content edit form
-                     XXX this kinda hokey and error prone
+            script - the script/template that was just called
 
             status - SUCCESS or FAILURE strings used in calculating destination
 
@@ -76,7 +75,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         property_tool = getattr(self, 'portal_properties')
         navprops = getattr(property_tool, 'navigation_properties') #propertymanager that holds data
         status = status.lower()
-        action = action.lower()
+        script = script.lower()
 
         if status not in self._availableStatus():
             raise KeyError, '%s status is not supported' % status
@@ -84,7 +83,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         content=self._getContentFrom(content)
 
         transition = '%s.%s.%s'%( content
-                                , action
+                                , script
                                 , status )
 
         if navprops.hasProperty(transition):
@@ -94,13 +93,13 @@ class NavigationTool (UniqueObject, SimpleItem):
 
 
     security.declarePrivate('removeTransitionFor')
-    def removeTransitionFrom(self, content, action=None, status=None):
-        """ removes everything regarding a content/action combination """
+    def removeTransitionFrom(self, content, script=None, status=None):
+        """ removes everything regarding a content/script combination """
         property_tool = getattr(self, 'portal_properties')
         navprops = getattr(property_tool, 'navigation_properties') #propertymanager that holds data
         transition = self._getContentFrom(content)
-        if action is not None:
-            transition += '.'+action
+        if script is not None:
+            transition += '.'+script
         if status is not None:
             transition += '.'+status
         for prop in navprops.propertyIds():
@@ -112,11 +111,15 @@ class NavigationTool (UniqueObject, SimpleItem):
         """ returns the internal representation of content type """
         if content is None:
             content = 'Default'
-        if hasattr(content, '_isPortalContent'): #XXX Contentish xface
+        if hasattr(content, '__class__') and content.__class__ == PendingCreate:
+            content = content.getPendingCreateType()
+        if hasattr(content, 'getTypeInfo'):
+#        if hasattr(content, '_isPortalContent'): #XXX Contentish xface
             content = content.getTypeInfo()
-        if hasattr(content, '_isTypeInformation'): #XXX use a xface
+        if hasattr(content, 'getId'): #XXX use a xface
+#        if hasattr(content, '_isTypeInformation'): #XXX use a xface
             content = content.getId()
-        content = ''.join(content.split(' ')).lower() #normalize
+        content = '_'.join(content.split(' ')) #normalize
         return content
 
 
@@ -166,28 +169,19 @@ class NavigationTool (UniqueObject, SimpleItem):
                 return (t, transition[len(t)+1:].strip())
         return (None, transition.strip())
 
-    def getNavigationTransistion(self, context, action, status):
+    def getNavigationTransistion(self, context, script, status):
         property_tool = getattr(self, 'portal_properties')
         navprops = getattr(property_tool, 'navigation_properties')
 
-        self.log(str(context.__class__))
-        from FactoryTool import PendingCreate
-        if context.__class__ == PendingCreate:
-            type = context.getPendingCreateType()
-        else:
-            type = context.getTypeInfo().getId()
-        fixedTypeName = ''.join(type.lower().split(' '))
-        self.log('FIXEDTYPENAME = ' + fixedTypeName)
-        
-        transition_key = fixedTypeName+'.'+action+'.'+status
+        transition_key = self._getContentFrom(context)+'.'+script+'.'+status
         transition = getattr(navprops.aq_explicit, transition_key, None)
         
         if transition is None:
-            transition_key='%s.%s.%s' % ('default',action,status)
+            transition_key='%s.%s.%s' % (self._getContentFrom(None),script,status)
             transition = getattr(navprops.aq_explicit, transition_key, None)
 
             if transition is None:
-                transition_key='%s.%s.%s' % ('default','default',status)
+                transition_key='%s.%s.%s' % (self._getContentFrom(None),'default',status)
                 transition = getattr(navprops.aq_explicit, transition_key, '')
 
         transition = self._transitionSubstitute(transition, self.REQUEST)
@@ -274,11 +268,11 @@ class NavigationTool (UniqueObject, SimpleItem):
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
     # USE GETNEXT() INSTEAD AND UPDATE THE NAVIGATION PROPERTIES FILE
     security.declarePublic('getNextPageFor')
-    def getNextPageFor(self, context, action, status, **kwargs):
+    def getNextPageFor(self, context, script, status, **kwargs):
         """ given a object, action_id and status we can fetch the next action
             for this object 
         """
-        (transition_type, action_id) = self.getNavigationTransistion(context,action,status)
+        (transition_type, action_id) = self.getNavigationTransistion(context,script,status)
         
         # If any query parameters have been specified in the transition,
         # stick them into the request before calling getActionById()
@@ -306,9 +300,9 @@ class NavigationTool (UniqueObject, SimpleItem):
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
     # USE GETNEXT() INSTEAD AND UPDATE THE NAVIGATION PROPERTIES FILE
     security.declarePublic('getNextRequestFor')
-    def getNextRequestFor(self, context, action, status, **kwargs):
-        """ takes object, action, and status and returns a RESPONSE redirect """
-        (transition_type, action_id) = self.getNavigationTransistion(context,action,status) ###
+    def getNextRequestFor(self, context, script, status, **kwargs):
+        """ takes object, script, and status and returns a RESPONSE redirect """
+        (transition_type, action_id) = self.getNavigationTransistion(context,script,status) ###
         if action_id.find('?') >= 0:
             separator = '&'
         else:

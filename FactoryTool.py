@@ -75,7 +75,17 @@ class FactoryTool(UniqueObject, SimpleItem):
 
     def _generateId(self, type):
         now = DateTime()
-        return type.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%H%M%S')
+        name = type.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%H%M%S')
+
+        # Reduce chances of an id collision (there is a very small chance that somebody will
+        # create another object during this loop)
+        base_name = name
+        objectIds = self.getParentNode().objectIds()
+        i = 1
+        while name in objectIds:
+            name = base_name + "-" + str(i)
+            i = i + 1
+        return name
 
 
     def _getTypeName(self, name):
