@@ -64,7 +64,9 @@
     <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
     <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
     <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
-    <link rel="up" href="" title="Up one level" tal:attributes="href python:here.navigationParent(here, template.getId())" />
+    <link rel="up" href="" title="Up one level" 
+          tal:define="parent python:here.navigationParent(here, template.getId())"
+          tal:attributes="href python:test(parent, parent, '#')" />
     <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
     <link rel="author" href="" title="Author information" tal:attributes="href string:author" />
 
