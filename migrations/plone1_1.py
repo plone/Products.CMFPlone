@@ -40,6 +40,7 @@ def make_plone(portal):
 
     addPortalFormValidators(portal)
     addCatalogIndexes(portal)
+    addCatalogLexicon(portal)
     addSiteProperties(portal,portal)
     addNavigationProperties(portal)
     extendSiteProperties(portal)
@@ -105,6 +106,27 @@ def addCatalogIndexes(portal):
     if not catalog._catalog.schema.has_key('getRemoteUrl'):
         catalog.addColumn('getRemoteUrl', None)
 
+def addCatalogLexicon(portal):
+    from OFS.ObjectManager import BadRequestException
+    catalog = portal.portal_catalog
+    
+    class largs:
+        def __init__(self, **kw):
+            self.__dict__.update(kw)
+            
+    try:
+        catalog.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
+            'plone_lexicon', 
+            elements=[
+            largs(group= 'Case Normalizer' , name= 'Case Normalizer' ),
+            largs(group= 'Stop Words', name= " Don't remove stop words" ),
+            largs(group= 'Word Splitter' , name= "Unicode Whitespace splitter" ),
+            ]
+            )
+    except BadRequestException:
+        # lexicon id already in use
+        pass
+    
 def addNavigationProperties(portal):
     nav_tool=portal.portal_navigation
     nav_tool.addTransitionFor('default','createObject','success','action:edit')
