@@ -10,6 +10,10 @@
 from Products.CMFPlone import StringIO
 REQUEST=context.REQUEST
 
+if not field_id:
+    field_id=context.getId()
+    REQUEST.set('field_id', field_id)
+
 file=field_file
 id=field_id
 

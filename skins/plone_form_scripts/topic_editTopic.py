@@ -4,9 +4,13 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST, RESPONSE, acquireCriteria, field_id, field_title=None, field_description=None
+##parameters=REQUEST, RESPONSE, acquireCriteria, field_id='', field_title=None, field_description=None
 ##title=
 ##
+if not field_id:
+    field_id=context.getId()
+    REQUEST.set('field_id', field_id)
+
 id, title, description = field_id, field_title, field_description
 errors=context.validate_topic_edit()
 

@@ -4,9 +4,15 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST, RESPONSE, title=None, description=None, event_type=None, effectiveDay=None, effectiveMo=None, effectiveYear=None, expirationDay=None, expirationMo=None, expirationYear=None, start_time=None, startAMPM=None, stop_time=None, stopAMPM=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None 
+##parameters=REQUEST, RESPONSE, title=None, description=None, event_type=None, effectiveDay=None, effectiveMo=None, effectiveYear=None, expirationDay=None, expirationMo=None, expirationYear=None, start_time=None, startAMPM=None, stop_time=None, stopAMPM=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, field_id='' 
 ##title=
 ##
+
+if not field_id:
+    field_id=context.getId()
+    REQUEST.set('field_id', field_id)
+
+id=field_id
 
 try:
     context.edit(title=title
@@ -35,5 +41,7 @@ else:
     msg='portal_status_message=Event+changes+saved.'
     view='event_view'
 
-return RESPONSE.redirect('%s/%s?%s' % (url, view, msg) )
+context.rename_object(redirect=0, id=id)
+
+return RESPONSE.redirect('%s/%s?%s' % (context.absolute_url(), view, msg) )
 

@@ -9,6 +9,11 @@
 ##
 REQUEST=context.REQUEST
 destination_url=context.absolute_url()
+
+if not field_id:
+    field_id=context.getId()
+    REQUEST.set('field_id', field_id)
+
 id=field_id
 
 errors=context.validate_folder_edit()

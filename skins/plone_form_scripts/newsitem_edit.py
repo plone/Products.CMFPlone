@@ -1,9 +1,14 @@
 ## Script (Python) "newsitem_edit"
-##parameters=text, text_format, field_title='', description='', choice=' Change ', subject=None
+##parameters=text, text_format, field_title='', description='', choice=' Change ', subject=None, field_id=''
 ##title=Edit a news item
 REQUEST=context.REQUEST
+if not field_id:
+    field_id=context.getId()
+    REQUEST.set('field_id', field_id)
+id = field_id
 
 errors=context.validate_newsitem_edit()
+
 if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
@@ -21,8 +26,6 @@ if hasattr(context, 'extended_edit'):
     if response:
         return response
 
-id = REQUEST.get( 'field_id'
-                , REQUEST.get('id', ''))
 context.rename_object(redirect=0, id=id)
 
 target_action = context.getTypeInfo().getActionById( 'view' )

@@ -4,11 +4,16 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=field_remote_url, field_title=None, field_description=None, subject=None
+##parameters=field_remote_url, field_id='', field_title=None, field_description=None, subject=None
 ##title=Edit a link
 ##
 
 REQUEST=context.REQUEST
+if not field_id:
+    field_id=context.getId()
+    REQUEST.set('field_id', field_id)
+
+id=field_id
 remote_url=field_remote_url
 
 if context.Type().strip()=='Link' and remote_url.find('://')==-1: 
@@ -29,8 +34,6 @@ if hasattr(context, 'extended_edit'):
     response=edit_hook(redirect=0)
     if response:
         return response
-id = REQUEST.get( 'field_id'
-                , REQUEST.get('id', ''))
 		
 context.rename_object(redirect=0, id=id)
 

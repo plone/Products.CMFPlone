@@ -1,7 +1,12 @@
 ## Script (Python) "document_edit"
-##parameters=field_id, text_format, field_text, file='', SafetyBelt='', choice=' Change ', field_title='', field_description=''
+##parameters=text_format, field_text, file='', SafetyBelt='', choice=' Change ', field_title='', field_description='', field_id=''
 ##title=Edit a document
 REQUEST=context.REQUEST
+
+if not field_id:
+    field_id=context.getId()
+    REQUEST.set('field_id', field_id)
+
 id, text, title, description = field_id, field_text, field_title, field_description
 
 errors=context.validate_document_edit()
