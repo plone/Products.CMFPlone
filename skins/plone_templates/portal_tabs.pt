@@ -64,13 +64,11 @@
 
 <div class="contentTabs" 
      metal:define-macro="folderTabs"
-     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));"
-     >
+     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));
+                 folderActions actions/folder;" >
 
-     <span tal:define="global folderActions actions/folder" />
-    
      <span tal:repeat="action folderActions">
-         <a tal:attributes="class python:test(request.URL0==action['url'], 'selected', 'plain');href action/url;"
+         <a tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"
             class="" href="" > <span tal:replace="action/name" /> </a> <span class="netscape4">&middot;</span> 
      </span>
 
