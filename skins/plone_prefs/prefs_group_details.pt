@@ -173,7 +173,7 @@
                             cols="35"
                             tal:condition="python: type in ('text', 'utext')"
                             tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
-                            tal:content="propertyvalue">some data</textarea>
+                            tal:content="python: '\n'.join(propertyvalue)">some data</textarea>
     
                     <textarea name="lines and ulines"
                             rows="6"
