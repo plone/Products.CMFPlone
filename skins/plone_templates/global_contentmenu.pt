@@ -125,7 +125,6 @@
                                vocab python:field.Vocabulary(here);"
          condition="python:isTemplateMixin and len(vocab) > 1">
     <li>
-    <b tal:content="vocab"/>
         <div class="menuPosition">
             <a href="#"
                title="Choose default view"
