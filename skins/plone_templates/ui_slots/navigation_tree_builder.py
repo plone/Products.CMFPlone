@@ -20,64 +20,64 @@ if hasattr(context,'navtree_properties'):
 
 # show only the userFolder I am browsing and my own one
 if showMyUserFolderOnly is None:
-    showMyUserFolderOnly=getattr(props,'showMyUserFolderOnly',  1)
+    showMyUserFolderOnly=getattr(context,'tree_showMyUserFolderOnly',getattr(props,'showMyUserFolderOnly',  1))
 
 #if set, the top object itself is included in the tree
 if includeTop is None:
-    includeTop=getattr(props,'includeTop',  1)
+    includeTop=getattr(context,'tree_includeTop',getattr(props,'includeTop',  1))
 
 #in the hierarchy above the leaf object just folders should be displayed
 if showFolderishSiblingsOnly is None:
-    showFolderishSiblingsOnly=getattr(props,'showFolderishSiblingsOnly',  1)
+    showFolderishSiblingsOnly=getattr(context,'tree_showFolderishSiblingsOnly',getattr(props,'showFolderishSiblingsOnly',  1))
 
 if showFolderishChildrenOnly is None:
     #list only folders below the leaf object
-    showFolderishChildrenOnly=getattr(props,'showFolderishChildrenOnly',  0)
+    showFolderishChildrenOnly=getattr(context,'tree_showFolderishChildrenOnly',getattr(props,'showFolderishChildrenOnly',  0))
 
 if showNonFolderishObject is None:
     #if the leaf object is not a folder and showFolderishChildrenOnly the leaf is displayed in any case, but not its siblings
-    showNonFolderishObject=getattr(props,'showNonFolderishObject',  0)
+    showNonFolderishObject=getattr(context,'tree_showNonFolderishObject',getattr(props,'showNonFolderishObject',  0))
 
 if topLevel is None:
-    topLevel=getattr(props,'topLevel',  0)
+    topLevel=getattr(context,'tree_topLevel',getattr(props,'topLevel',  0))
 
 if batchSize is None:
     # how long should one batch be. per definition it stops not before the leaf object is reached
-    batchSize=getattr(props,'batchSize',  30)
+    batchSize=getattr(context,'tree_batchSize',getattr(props,'batchSize',  30))
 
 if showTopicResults is None:
     # show results of topics in the tree
-    showTopicResults=getattr(props,'showTopicResults',  1)
+    showTopicResults=getattr(context,'tree_showTopicResults',getattr(props,'showTopicResults',  1))
 
 if rolesSeeUnpublishedContent is None:
     # these (local) roles can see unpublished 
-    rolesSeeUnpublishedContent=getattr(props,'rolesSeeUnpublishedContent',  ['Manager','Reviewer','Owner'])
+    rolesSeeUnpublishedContent=getattr(context,'tree_rolesSeeUnpublishedContent',getattr(props,'rolesSeeUnpublishedContent',  ['Manager','Reviewer','Owner']))
 
 if metaTypesNotToList is None:
     # there is some VERY weird error with Collectors,
     # so I have to remove from the list
-    metaTypesNotToList=getattr(props,'metaTypesNotToList',  ['CMF Collector','CMF Collector Issue','CMF Collector Catalog'])
+    metaTypesNotToList=getattr(context,'tree_metaTypesNotToList',getattr(props,'metaTypesNotToList',  ['CMF Collector','CMF Collector Issue','CMF Collector Catalog']))
 
 if parentMetaTypesNotToQuery is None:
     # these types should not be queried for children
-    parentMetaTypesNotToQuery=getattr(props,'parentMetaTypesNotToQuery',  [])  
+    parentMetaTypesNotToQuery=getattr(context,'tree_parentMetaTypesNotToQuery',getattr(props,'parentMetaTypesNotToQuery',  []))
 
 # put in here the meta_types not to be listed
 if sortCriteria is None:
-    sortCriteria=getattr(props, 'sortCriteria', [('isPrincipiaFolderish','desc'),('Title','asc')])
+    sortCriteria=getattr(context,'tree_sortCriteria',getattr(props, 'sortCriteria', [('isPrincipiaFolderish','desc'),('Title','asc')]))
 
 #should batches that start at a deeper level have the parents
 #prepended
 if forceParentsInBatch is None:
-    forceParentsInBatch=getattr(props, 'forceParentsInBatch', 0)
+    forceParentsInBatch=getattr(context,'tree_forceParentsInBatch',getattr(props, 'forceParentsInBatch', 0))
 
 #skip index_html
 if skipIndex_html is None:
-    skipIndex_html=getattr(props, 'skipIndex_html', 1)
+    skipIndex_html=getattr(context,'tree_skipIndex_html',getattr(props, 'skipIndex_html', 1))
 
 # these (local) roles can see hidden content (staring with '.')
 if rolesSeeHiddenContent is None:
-    rolesSeeHiddenContent=getattr(props,'rolesSeeHiddenContent',  ['Manager',])
+    rolesSeeHiddenContent=getattr(context,'tree_rolesSeeHiddenContent',getattr(props,'rolesSeeHiddenContent',  ['Manager',]))
 
 
 # go through sortCriteria and check that each line is not a string 
