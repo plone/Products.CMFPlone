@@ -1,3 +1,179 @@
+2004-01-22 03:24  runyaga
+
+	* skins/: plone_content/file_view.pt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_forms/calendar_popup.pt,
+	  plone_forms/content_status_history.cpt,
+	  plone_forms/discussion_reply_form.pt,
+	  plone_forms/folder_factories.pt,
+	  plone_forms/folder_localrole_form.pt,
+	  plone_forms/history_form.pt,
+	  plone_forms/insufficient_privileges.pt,
+	  plone_forms/join_form.cpt, plone_forms/login_password.pt,
+	  plone_forms/mail_password_form.pt, plone_forms/ownership_form.pt,
+	  plone_forms/registered.pt, plone_forms/roster.pt,
+	  plone_forms/search.pt, plone_forms/search_form.pt,
+	  plone_portlets/portlet_calendar.pt,
+	  plone_portlets/portlet_navigation.pt,
+	  plone_prefs/personalize_form.cpt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/reconfig_form.cpt,
+	  plone_templates/default_error_message.pt,
+	  plone_templates/folder_contents.pt, plone_templates/footer.pt,
+	  plone_templates/global_contentmenu.pt,
+	  plone_templates/global_pathbar.pt, plone_templates/news.pt,
+	  plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch): every
+	  extra function call that is removed; a kitty goes to heaven
+
+2004-01-22 01:22  runyaga
+
+	* skins/plone_content/image_view.pt (Plone-2_0-branch): fix
+	  image_view for limi if you call the same method twice. please
+	  define the value in a outer block so you only have to call it
+	  once.
+
+2004-01-21 18:34  limi
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): Fixed the news
+	  listing to display the effective date instead of modification
+	  dates, since this is what it sorts on. Fix for issue #2437.
+
+2004-01-21 17:56  jok2
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): Fix
+	  for http://plone.org/collector/2349 Changed in
+	  plone_templates/folder_contents from "item/ModificationDate" to
+	  "python:here.toLocalizedTime(here.ModificationDate(),long_format=
+	  1)"
+
+2004-01-21 17:29  jok2
+
+	* skins/plone_wysiwyg/wysiwyg_support.pt (Plone-2_0-branch): Fix
+	  for http://plone.org/collector/2366 Changed the msgid from
+	  "help_format" to "help_format_wysiwyg" in
+	  plone_wysiwyg/wysiwyg_support.pt
+
+2004-01-21 17:17  jok2
+
+	* skins/plone_forms/ownership_form.pt (Plone-2_0-branch): Fix for
+	  http://plone.org/collector/2389 Changed the msgid from "id_help"
+	  to "help_change_ownership" in plone_forms/ownership_form.pt
+
+2004-01-21 16:53  jok2
+
+	* skins/plone_content/document_edit_form.cpt (Plone-2_0-branch):
+	  Fix for http://plone.org/collector/2382.  Changed default text in
+	  plone_content/document_edit_form.cpt to "A brief description of
+	  the item."
+
+2004-01-21 16:42  jok2
+
+	* skins/plone_prefs/prefs_user_details.pt (Plone-2_0-branch): Fix
+	  for http://plone.org/collector/2383 Change default text for msgid
+	  "help_portrait" in plone_prefs/prefs_user_details.pt to the
+	  default text in plone_prefs/personalize_form.cpt .
+
+2004-01-21 16:20  jok2
+
+	* skins/: plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  plone_content/document_edit_form.cpt,
+	  plone_content/event_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/folder_edit_form.cpt,
+	  plone_content/image_edit_form.cpt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/newsitem_edit_form.cpt (Plone-2_0-branch): Fix for
+	  http://plone.org/collector/2388 Synchronized default text for
+	  msgid help_shortname
+
+2004-01-21 16:06  jok2
+
+	* skins/plone_forms/talkback_tree.pt (Plone-2_0-branch): Fix for
+	  http://plone.org/collector/2390 Changed default text for msgid
+	  "label_comment_by" in plone_forms/talkback_tree.pt to "Posted by"
+
+2004-01-21 15:56  jok2
+
+	* skins/plone_prefs/: prefs_groups_overview.pt,
+	  prefs_users_overview.pt (Plone-2_0-branch): Fix for
+	  http://plone.org/collector/2399.  Added two new msgids,
+	  label_user_search and label_group_search
+
+2004-01-21 10:05  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): migrate all
+	  tools to the plone tool classes
+
+2004-01-21 07:19  jok2
+
+	* skins/plone_templates/registered_notify_template.pt
+	  (Plone-2_0-branch): Fix for http://plone.org/collector/2309/
+
+2004-01-21 06:16  jok2
+
+	* skins/plone_prefs/: personalize_form.cpt,
+	  prefs_portrait_delete.py, prefs_user_details.pt,
+	  prefs_user_edit.py (Plone-2_0-branch): Fix for issue 2281. Delete
+	  Portrait is now a checkbox instead of a submit button.
+
+2004-01-21 05:48  runyaga
+
+	* Portal.py, migrations/v2/release_candidates.py
+	  (Plone-2_0-branch): remove some commented code in Portal.py Tiran
+	  did such a good job but he did not realize one nasty detail.
+	  that in the Portal what happens is that we set the initial state
+	  to 2.0-beta2 and then tell the migration machinery to migrate the
+	  system.
+
+	  yes this could be the sickest most incomprehensible approach in
+	  the world.  but it was not meant to be a permentant solution (or
+	  take 1 year to get 2.0 out!)
+
+	  just goes to show you, "noting more permenant than a temporary
+	  solution."
+
+2004-01-21 05:33  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  golum says, 'nasty fix'.  for 2447 and others
+
+2004-01-21 05:30  limi
+
+	* skins/: plone_images/linkOpaque.gif, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): Real Men™ tweak pixels.
+
+2004-01-21 05:12  limi
+
+	* skins/plone_forms/member_search_results.pt (Plone-2_0-branch):
+	  Added visual clear.
+
+2004-01-21 05:07  runyaga
+
+	* skins/plone_prefs/: plone_control_panel.pt,
+	  prefs_main_template.pt (Plone-2_0-branch): limi moved is_editable
+	  to the global_defines which means now to get rid of the
+	  GreenBorderOfHappiness you must override the global is_editable
+	  in the pagetemplate context instead of using the request variable
+	  'disable_border'
+
+2004-01-21 05:06  gerry_kirk
+
+	* setup/ConfigurationMethods.py, migrations/v2/oneX_twoBeta2.py,
+	  migrations/v2/plone2_base.py,
+	  skins/plone_form_scripts/sendto.cpy,
+	  skins/plone_prefs/reconfig_form.cpt (Plone-2_0-branch): fixes for
+	  issue 1490
+
+2004-01-21 05:02  limi
+
+	* skins/plone_prefs/personalize_form.cpt.metadata
+	  (Plone-2_0-branch): Fix for 2446, not visible for anon users
+	  anymore.
+
+2004-01-21 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-21 04:39  anajarian
 
 	* skins/plone_content/: file_view.pt, image_edit_form.cpt,
