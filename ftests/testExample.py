@@ -9,7 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-ZopeTestCase.utils.startZServer()
+ZopeTestCase.utils.startZServer(2)
 
 from Acquisition import aq_base
 from Products.CMFPlone.Portal import default_frontpage

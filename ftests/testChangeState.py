@@ -7,8 +7,8 @@ if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
 
-os.environ['EVENT_LOG_FILE'] = os.path.join(os.getcwd(), 'zLOG.log')
-os.environ['EVENT_LOG_SEVERITY'] = '-300'
+#os.environ['EVENT_LOG_FILE'] = os.path.join(os.getcwd(), 'zLOG.log')
+#os.environ['EVENT_LOG_SEVERITY'] = '-300'
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
@@ -17,7 +17,7 @@ app=ZopeTestCase.app()
 ZopeTestCase.utils.setupSiteErrorLog(app)
 ZopeTestCase.close(app)
 
-ZopeTestCase.utils.startZServer()
+ZopeTestCase.utils.startZServer(2)
 
 from Acquisition import aq_base
 from Products.CMFPlone.Portal import default_frontpage
