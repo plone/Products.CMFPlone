@@ -23,6 +23,7 @@ from OFS.ObjectManager import ObjectManager
 # the portal.
 class TempFolder(TempFolderBase):
     portal_type = meta_type = 'TempFolder'
+    isPrincipiaFolderish = 0
 
     parent = None
 
@@ -49,6 +50,7 @@ class FactoryTool(UniqueObject, SimpleItem):
     id = 'portal_factory'
     meta_type= 'Plone Factory Tool'
     security = ClassSecurityInfo()
+    isPrincipiaFolderish = 0
 
     manage_options = ( ({'label':'Overview', 'action':'manage_overview'},) +
                        SimpleItem.manage_options)

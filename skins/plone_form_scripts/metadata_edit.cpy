@@ -21,16 +21,18 @@ if not effective_date:
 if not expiration_date:
    expiration_date='None'
 
-context.plone_utils.editMetadata(context,
-                                 allowDiscussion=allowDiscussion,
-                                 title=title,
-                                 subject=subject,
-                                 description=description,
-                                 contributors=contributors,
-                                 effective_date=effective_date,
-                                 expiration_date=expiration_date,
-                                 format=format,
-                                 language=language,
-                                 rights=rights)
+new_context = context.portal_factory.doCreate(context)
 
-return state.set(portal_status_message='Content Properties have been saved.')
+new_context.plone_utils.editMetadata(new_context,
+                                     allowDiscussion=allowDiscussion,
+                                     title=title,
+                                     subject=subject,
+                                     description=description,
+                                     contributors=contributors,
+                                     effective_date=effective_date,
+                                     expiration_date=expiration_date,
+                                     format=format,
+                                     language=language,
+                                     rights=rights)
+
+return state.set(context=new_context, portal_status_message='Content properties have been saved.')
