@@ -443,11 +443,11 @@ class TestFolderWorkflow(PloneTestCase.PloneTestCase):
         self.failUnless(self.catalog(id='dir'))
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestFolderWorkflow))
+    return suite
+    
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestFolderWorkflow))
-        return suite

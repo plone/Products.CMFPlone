@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.15 2004/01/07 01:43:24 shh42 Exp $
+# $Id$
 
 from Testing import ZopeTestCase
 
@@ -27,6 +27,7 @@ from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
 import time
+import types
 
 portal_name = 'portal'
 portal_owner = 'portal_owner'
@@ -36,10 +37,10 @@ default_user = ZopeTestCase.user_name
 class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def getPortal(self):
-        '''Returns the portal object.'''
-        # XXX: Hack. Need to fake a published object so
-        # that URL1 is available in the REQUEST.
-        self.app.REQUEST._steps = ['noobject']
+        '''Returns the portal object to the bootstrap code.
+           DO NOT CALL THIS METHOD! Use the self.portal 
+           attribute to access the portal object from tests.
+        '''
         return self.app[portal_name]
 
     def createMemberarea(self, member_id):
@@ -69,6 +70,7 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def setGroups(self, groups, name=default_user):
         '''Changes the specified user's groups. Assumes GRUF.'''
+        self.assertEqual(type(groups), types.ListType)
         uf = self.portal.acl_users
         uf._updateUser(name, groups=groups, domains=[])
         if name == getSecurityManager().getUser().getId():
@@ -91,9 +93,8 @@ def setupPloneSite(app=None, id=portal_name, quiet=0):
         _start = time.time()
         if not quiet: ZopeTestCase._print('Adding Plone Site ... ')
         # Add user and log in
-        uf = app.acl_users
-        uf._doAddUser(portal_owner, '', ['Manager'], [])
-        user = uf.getUserById(portal_owner).__of__(uf)
+        app.acl_users._doAddUser(portal_owner, '', ['Manager'], [])
+        user = app.acl_users.getUserById(portal_owner).__of__(app.acl_users)
         newSecurityManager(None, user)
         # Add Plone Site
         factory = app.manage_addProduct['CMFPlone']
@@ -133,7 +134,7 @@ def optimize():
         from Products.CMFPlone.LargePloneFolder import addLargePloneFolder
         addLargePloneFolder(p, 'Members')
         p.portal_catalog.unindexObject(p.Members)
-        p.Members._setPortalType = 'Folder'
+        p.Members._setPortalTypeName('Folder')
     PloneGenerator.setupPortalContent = setupPortalContent
 
 

@@ -54,11 +54,11 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         self.assertRaises(Unauthorized, folder.manage_delObjects, ['new'])
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestContentSecurity))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestContentSecurity))
-        return suite

@@ -22,8 +22,8 @@ class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ This tool exposes the interface package for TTW applications,
     by accepting a dotted name of an interface and exporting the
     IInterface API """
-  
-    __implements__ = (PloneBaseTool.__implements__, IInterfaceTool, 
+
+    __implements__ = (PloneBaseTool.__implements__, IInterfaceTool,
                       SimpleItem.__implements__, )
 
     id = 'portal_interface'

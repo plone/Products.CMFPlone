@@ -311,15 +311,6 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
                                self.REQUEST, bind=1)
         id = stack[1]
 
-        # gets SESSION data saved by archetype add_reference
-        # you can use this to load "default" values for instances
-        # just put values on SESSION where key is the instance id
-        # and value is a dictionary with field values
-        if self.REQUEST.SESSION.has_key(id):
-            for (key, value) in self.REQUEST.SESSION.get(id).items():
-                # REQUEST.form data has precedence over SESSION data
-                self.REQUEST.form.setdefault(key, value)
-
         if id in aq_parent(self).objectIds():
             return aq_parent(self).restrictedTraverse('/'.join(stack[1:]))(*args, **kwargs)
 

@@ -281,7 +281,7 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
         """ Invokes the default view. """
         view = _getViewFor(self, 'view', 'folderlisting')
         if getattr(aq_base(view), 'isDocTemp', 0):
-            return apply(view, (self, self.REQUEST))
+            return view(*(self, self.REQUEST))
         else:
             return view()
 
@@ -378,10 +378,8 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
             if not myType.allowType( type_name ):
                 raise ValueError, 'Disallowed subobject type: %s' % type_name
 
-        new_id = apply( pt.constructContent
-             , (type_name, self, id, RESPONSE) + args
-             , kw
-             )
+        args = (type_name, self, id, RESPONSE) + args
+        new_id = pt.constructContent(*args, **kw)
         if new_id is None or new_id == '':
             new_id = id
         return new_id

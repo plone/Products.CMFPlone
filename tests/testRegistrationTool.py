@@ -85,12 +85,12 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         self.assertEqual(rc, self.registration.generateResetCode(salt))
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestRegistrationTool))
+    suite.addTest(makeSuite(TestPasswordGeneration))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestRegistrationTool))
-        suite.addTest(makeSuite(TestPasswordGeneration))
-        return suite

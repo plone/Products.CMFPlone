@@ -36,8 +36,8 @@ for wlist_map_sequence in wf_wlist_map.values():
         # Make sure we have types using this workflow/worklist
         if not skip and types:
             for result in catalog.searchResults(catalog_vars, portal_type=types):
-                o = result
-                absurl = o.getURL()
+                o = result.getObject()
+                absurl = o.absolute_url()
                 if o is not None \
                   and not avail_objs.has_key(absurl) \
                   and (not permissions \
@@ -49,5 +49,5 @@ for wlist_map_sequence in wf_wlist_map.values():
                     avail_objs[absurl] = o
 
 avail_objs = avail_objs.values()
-avail_objs.sort(lambda x, y: cmp(x.modified, y.modified))
+avail_objs.sort(lambda x, y: cmp(x.modified(), y.modified()))
 return avail_objs

@@ -26,7 +26,7 @@
     <span i18n:name="advanced_search">
     <a href=""
        i18n:translate="search_results_advanced_link"
-       tal:attributes="href string:$portal_url/search_form">advanced search</a>
+       tal:attributes="href string:$portal_url/search_form">Advanced Search</a>
     </span>
     for more precise search options.
     </p>
@@ -63,10 +63,20 @@
                      tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a
                 href="#" tal:attributes="href url"
                 tal:content="python:result.Title or result.getId" />
+               <span class="discreet" 
+                     title="Relevance"
+                     tal:condition="result/data_record_normalized_score_"
+                     i18n:translate="label_relevance_percentage"
+                     i18n:attributes="title">
+                    [<span tal:replace="result/data_record_normalized_score_"
+                                      i18n:name="percentage">23%</span>%]
+               </span>
+
                 <span class="discreet" i18n:translate="results_by_author">
                 by <span tal:replace="result/Creator" i18n:name="author">Author</span>,
                 <span tal:replace="python:here.toLocalizedTime(result.ModificationDate, long_format=1)" i18n:name="date">Modification Date</span>
                 </span>
+
             </dt>
             
             <dd tal:content="python:here.cropText(result.Description, desc_length, desc_ellipsis)"> Description </dd>

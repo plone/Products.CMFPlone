@@ -34,11 +34,11 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(action_infos[-1].category, 'foo_category')
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestActionsTool))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestActionsTool))
-        return suite

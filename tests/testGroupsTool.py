@@ -242,12 +242,12 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestGroupsTool))
+    suite.addTest(makeSuite(TestGroupWorkspacesFolder))
+    return suite
+
 if __name__ == '__main__':
-    framework(verbosity=1)
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestGroupsTool))
-        suite.addTest(makeSuite(TestGroupWorkspacesFolder))
-        return suite
+    framework()

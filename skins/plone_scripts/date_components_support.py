@@ -27,7 +27,7 @@ minutes=[]
 ampm=[]
 now=DateTime()
 
-#Comes from CMFDefault.DublineCore
+# from CMFDefault.DublinCore
 CEILING=DateTime(9999, 0)
 FLOOR=DateTime(1970, 0)
 PLONE_CEILING=DateTime(2021,0) # 2020-12-31
@@ -36,7 +36,7 @@ def month_names():
     names={}
     for x in range(1,13):
         faux=DateTime('%s/1/02'%str(x))
-        names[x]=faux.pMonth()
+        names[x]=faux.Month()
     return names
 
 month_dict=month_names()

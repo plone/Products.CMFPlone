@@ -32,8 +32,25 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 _marker = ()
 _icons = {}
 
+try:
+    True
+except:
+    True=1
+    False=0
+
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
+
+EMAIL_RE = re.compile(r"^([0-9a-zA-Z_&.+-]+!)*[0-9a-zA-Z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$")
+EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]") # used to find double new line (in any variant)
+
+#XXX Remove this when we don't depend on python2.1 any longer, use email.Utils.getaddresses instead
+from rfc822 import AddressList
+def _getaddresses(fieldvalues):
+    """Return a list of (REALNAME, EMAIL) for each fieldvalue."""
+    all = ', '.join(fieldvalues)
+    a = AddressList(all)
+    return a.addresslist
 
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
@@ -64,6 +81,64 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mail_text = self.sendto_template( self, **variables)
         host = self.MailHost
         host.send( mail_text )
+
+    security.declarePublic('validateSingleNormalizedEmailAddress')
+    def validateSingleNormalizedEmailAddress(self, address):
+        """Lower-level function to validate a single normalized email address, see validateEmailAddress
+        """
+        if type(address) is not StringType:
+            return False
+
+        sub = EMAIL_CUTOFF_RE.match(address);
+        if sub != None:
+            # Address contains two newlines (possible spammer relay attack)
+            return False
+
+        # sub is an empty string if the address is valid
+        sub = EMAIL_RE.sub('', address)
+        if sub == '':
+            return True
+        return False
+
+    security.declarePublic('validateSingleEmailAddress')
+    def validateSingleEmailAddress(self, address):
+        """Validate a single email address, see also validateEmailAddresses
+        """
+        if type(address) is not StringType:
+            return False
+        
+        sub = EMAIL_CUTOFF_RE.match(address);
+        if sub != None:
+            # Address contains two newlines (spammer attack using "address\n\nSpam message")
+            return False
+        
+        if len(_getaddresses([address])) != 1:
+            # none or more than one address
+            return False
+        
+        # Validate the address
+        for name,addr in _getaddresses([address]):
+            if not self.validateSingleNormalizedEmailAddress(addr):
+                return False
+        return True
+
+    security.declarePublic('validateEmailAddresses')
+    def validateEmailAddresses(self, addresses):
+        """Validate a list of possibly several email addresses, see also validateSingleEmailAddress
+        """
+        if type(addresses) is not StringType:
+            return False
+        
+        sub = EMAIL_CUTOFF_RE.match(addresses);
+        if sub != None:
+            # Addresses contains two newlines (spammer attack using "To: list\n\nSpam message")
+            return False
+        
+        # Validate each address
+        for name,addr in _getaddresses([addresses]):
+            if not self.validateSingleNormalizedEmailAddress(addr):
+                return False
+        return True
 
     security.declarePublic('editMetadata')
     def editMetadata( self

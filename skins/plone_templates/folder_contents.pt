@@ -114,7 +114,7 @@
                    tal:condition="python: num_types"
                    tal:attributes="tabindex tabindex/next|nothing;
                                    value python:ttype and here.translate('Add New ${type}', {'type': ttype}) or
-                                                          here.translate('label_add_new_item')" />
+                                                          here.translate('label_add_new_item', default='Add New Item')" />
           </div>
 
 
@@ -208,7 +208,7 @@
                       </a>
 
                       <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
-                           tal:condition="python:(lockable and item.wl_isLocked()) or (lock_tool and lock_tool.isLockedOut(item))"
+                           tal:condition="python:(lockable and item.wl_isLocked()) or (lock_tool and lock_tool.canLock(item) and lock_tool.isLockedOut(item))"
                            tal:replace="structure python:locked.tag(title='Locked')" />
 
                       <span class="state-expired"

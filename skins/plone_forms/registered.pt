@@ -28,7 +28,7 @@ You will receive an email shortly containing your password
 </p>
 
 <tal:block condition="python:not(ve)">
-    <span i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</span>
+    <p i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</p>
     <form action=""
           method="post"
           tal:define="username request/username;

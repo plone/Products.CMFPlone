@@ -159,6 +159,13 @@ class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
         expected = []
         self.assertEqual(self.portal.queryCatalog(request), expected)
 
+    def testQueryCatalogParseError3050(self):
+        # http://plone.org/collector/3050
+        request = {'SearchableText':'AND'}
+        # ZCTextIndex raises ParseError which translates to empty result
+        expected = []
+        self.assertEqual(self.portal.queryCatalog(request), expected)
+
 
 AddPortalTopics = 'Add portal topics'
 
@@ -180,14 +187,14 @@ class TestSearchForms(PloneTestCase.PloneTestCase):
         self.folder.topic.topic_view()
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestQueryCatalog))
+    suite.addTest(makeSuite(TestQueryCatalogQuoting))
+    suite.addTest(makeSuite(TestQueryCatalogParseError))
+    suite.addTest(makeSuite(TestSearchForms))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestQueryCatalog))
-        suite.addTest(makeSuite(TestQueryCatalogQuoting))
-        suite.addTest(makeSuite(TestQueryCatalogParseError))
-        suite.addTest(makeSuite(TestSearchForms))
-        return suite

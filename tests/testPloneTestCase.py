@@ -57,11 +57,11 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.new.EditableBody(), 'data')
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestPloneTestCase))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestPloneTestCase))
-        return suite

@@ -338,10 +338,10 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
         self.assertEqual(len(page.get_local_roles()), 1)
         self.assertEqual(page.get_local_roles_for_userid('user2'), ('Owner',))
 
-    def testHomePageHasDescription(self):
-        # Home page should have a description
+    def testHomePageHasEmptyDescription(self):
+        # Home page should not have a description (since 2.0.1)
         page = self.home.index_html
-        self.failUnless(page.Description())
+        self.failIf(page.Description())
 
     def testHomePageIsCataloged(self):
         # Home page should be cataloged
@@ -453,14 +453,14 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
         self.assertEqual(len(search(roles=['Member'], last_login_time=DateTime('2003-01-01'))), 1)
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestMembershipTool))
+    suite.addTest(makeSuite(TestCreateMemberarea))
+    suite.addTest(makeSuite(TestMemberareaSetup))
+    suite.addTest(makeSuite(TestSearchForMembers))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestMembershipTool))
-        suite.addTest(makeSuite(TestCreateMemberarea))
-        suite.addTest(makeSuite(TestMemberareaSetup))
-        suite.addTest(makeSuite(TestSearchForMembers))
-        return suite

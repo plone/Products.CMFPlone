@@ -37,11 +37,11 @@ class TestMemberDataTool(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.memberdata.portraits.objectIds()), 1)
 
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestMemberDataTool))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestMemberDataTool))
-        return suite

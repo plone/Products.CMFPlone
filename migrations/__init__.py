@@ -70,3 +70,7 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.0-final',
                                       '2.0.1',
                                       v2.final_two01.twozeroone)
+    
+    MigrationTool.registerUpgradePath('2.0.1',
+                                      '2.0.2',
+                                      null)

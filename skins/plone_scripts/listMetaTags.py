@@ -39,6 +39,7 @@ for accessor, key in metadataList:
         value = method()
     except AttributeError:
         value = None
+
     if not value:
         # no data
         continue
