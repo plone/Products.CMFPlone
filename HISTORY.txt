@@ -4,7 +4,14 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
-    - added a PloneBaseTool that all other tools inherit from. Currently this does absolutely nothing, just a placeholder.
+    - If toolicon can't be found, it may be because a tool is
+      inheriting from a Plone tool, so the icon path (which defaults
+      to relative to CMFPlone's dir) is invalid. We fallback to
+      resolving the CMFPlone dir and join the path.
+      [dreamcatcher\
+
+    - added a PloneBaseTool that all other tools inherit
+      from. Currently this does absolutely nothing, just a placeholder.
       [tiran]
 
     - changed the registration of tools to provide different images in the ZMI 
