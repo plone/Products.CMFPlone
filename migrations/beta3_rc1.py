@@ -14,8 +14,9 @@ def threerc1(portal):
     nav_tool.addTransitionFor('default', 'folder_rename_form', 'success', 'script:folder_rename_form')
     nav_tool.addTransitionFor('default', 'register', 'failure', 'join_form')
 
-    portal.portal_properties.site_properties=props
-    if not hasattr(props, 'allowRolesToAddKeywords'): props._setProperty('allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
+    props = portal.portal_properties.site_properties
+    if not hasattr(props, 'allowRolesToAddKeywords'):
+        props._setProperty('allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
 
     portal.portal_memberdata.manage_addProperty('fullname', '', 'string')
 
