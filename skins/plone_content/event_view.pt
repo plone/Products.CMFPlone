@@ -5,67 +5,67 @@
 <body>
 
 <div metal:fill-slot="main">
-
-    <h1 tal:content="here/title_or_id" class="documentFirstHeading">
-        Title or id
-    </h1>
-
-    <div metal:use-macro="here/document_actions/macros/document_actions">
-        Document actions (print, sendto etc)
-    </div>
-
-    <div class="documentDescription"
-         tal:content="here/Description">
-        description
-    </div>
-
-    <p tal:condition="here/event_url|nothing">
-    <span i18n:translate="event_for_more_info_go_to">For more information, visit</span>
-
-    <a href="event_url"
-       tal:attributes="href here/event_url"
-       tal:content="here/event_url">event_url</a>
-    </p>
-
-    <dl>
-        <dt i18n:translate="event_what">What</dt>
-        <dd tal:content="python:modules['string'].join(here.Subject(), ' ')">Conference</dd>
-
-        <dt i18n:translate="event_when">When</dt>
-        <dd>
-            <span i18n:translate="event_between">Between</span>
-            <span tal:replace="python:here.toPortalTime(here.start(), long_format=1)">Start Date Time</span>
-            <span i18n:translate="event_and">and</span>
-            <span tal:replace="python:here.toPortalTime(here.end(), long_format=1)">End Date Time</span>
-        </dd>
-
-        <dt i18n:translate="event_where">Where</dt>
-        <dd tal:content="here/location">Oslo</dd>
-
-        <tal:name condition="here/contact_name">
-            <dt i18n:translate="contact_name">Name</dt>
-            <dd tal:content="here/contact_name">contact_name</dd>
-        </tal:name>
-
-        <tal:email condition="here/contact_email">
-            <dt i18n:translate="contact_email">Contact Email</dt>
+    <tal:main-macro metal:define-macro="main">
+        <h1 tal:content="here/title_or_id" class="documentFirstHeading">
+            Title or id
+        </h1>
+    
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+    
+        <div class="documentDescription"
+             tal:content="here/Description">
+            description
+        </div>
+    
+        <p tal:condition="here/event_url|nothing">
+        <span i18n:translate="event_for_more_info_go_to">For more information, visit</span>
+    
+        <a href="event_url"
+           tal:attributes="href here/event_url"
+           tal:content="here/event_url">event_url</a>
+        </p>
+    
+        <dl>
+            <dt i18n:translate="event_what">What</dt>
+            <dd tal:content="python:modules['string'].join(here.Subject(), ' ')">Conference</dd>
+    
+            <dt i18n:translate="event_when">When</dt>
             <dd>
-                <a tal:attributes="href python:'mailto:' + here.contact_email"
-                tal:content="here/contact_email"
-                href="mailto:contact_email">contact_email</a>
+                <span i18n:translate="event_between">Between</span>
+                <span tal:replace="python:here.toPortalTime(here.start(), long_format=1)">Start Date Time</span>
+                <span i18n:translate="event_and">and</span>
+                <span tal:replace="python:here.toPortalTime(here.end(), long_format=1)">End Date Time</span>
             </dd>
-        </tal:email>
-
-        <tal:phone condition="here/contact_phone">
-            <dt i18n:translate="contact_phone">Contact Phone</dt>
-            <dd tal:content="here/contact_phone">555-GET-PLONE</dd>
-        </tal:phone>
-    </dl>
-
-    <div metal:use-macro="here/document_byline/macros/byline">
-        Get the byline - contains details about author and modification date.
-    </div>
-
+    
+            <dt i18n:translate="event_where">Where</dt>
+            <dd tal:content="here/location">Oslo</dd>
+    
+            <tal:name condition="here/contact_name">
+                <dt i18n:translate="contact_name">Name</dt>
+                <dd tal:content="here/contact_name">contact_name</dd>
+            </tal:name>
+    
+            <tal:email condition="here/contact_email">
+                <dt i18n:translate="contact_email">Contact Email</dt>
+                <dd>
+                    <a tal:attributes="href python:'mailto:' + here.contact_email"
+                    tal:content="here/contact_email"
+                    href="mailto:contact_email">contact_email</a>
+                </dd>
+            </tal:email>
+    
+            <tal:phone condition="here/contact_phone">
+                <dt i18n:translate="contact_phone">Contact Phone</dt>
+                <dd tal:content="here/contact_phone">555-GET-PLONE</dd>
+            </tal:phone>
+        </dl>
+    
+        <div metal:use-macro="here/document_byline/macros/byline">
+            Get the byline - contains details about author and modification date.
+        </div>
+    </tal:main-macro>
 </div>
 
 </body>
