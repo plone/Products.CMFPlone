@@ -4,8 +4,16 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Merged fixes from tiran-plip30 branch. Changed PloneGenerator and
+      MembershipTool.createMemberarea() to always use portal-aware factory
+      methods for creating content. Prerequesite for future integration
+      with ATContentTypes.
+      [tiran]
+
     - Changed the visual rendering of the nav tree. It now uses CSS instead 
-      of fixed values wherever possible. [limi]
+      of fixed values wherever possible. 
+      [limi]
+
       If you want the old look back, put the following in your
       ploneCustom.css::
       
