@@ -1,7 +1,7 @@
 <dtml-with stylesheet_properties>
 
 body {
-    background: White url(logo.jpg) no-repeat fixed 95% 95%;
+    background: White url(<dtml-var portal_url>/logo.jpg) no-repeat fixed 95% 95%;
     font-family: Verdana Helvetica Arial sans-serif;
     font-size: 60px ! important;
     color: Black;

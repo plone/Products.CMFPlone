@@ -360,12 +360,12 @@ ul#personalBar li {
     display: inline;
 }
 ul#personalBar li#personalBar-user a {
-    background: transparent url(user.gif) center left no-repeat;
+    background: transparent url(<dtml-var portal_url>/user.gif) center left no-repeat;
     padding-left: 15px;
 }
     
 ul#personalBar li a {
-    background: transparent url(linkOpaque.gif) center left no-repeat;
+    background: transparent url(<dtml-var portal_url>/linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
@@ -840,7 +840,7 @@ div listingBar img {
 */
 
 a.external {
-    background: White url(link_icon.gif) 0px 1px no-repeat;
+    background: White url(<dtml-var portal_url>/ink_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 div.hiddenlabel {
@@ -945,7 +945,7 @@ ul.menuBar, ul.menuBar li.menuButton {
     list-style: none;
 }
 ul.menuBar li.menuButton a {
-    background-image: url('arrowDown.gif');
+    background-image: url(<dtml-var portal_url>/arrowDown.gif);
     background-repeat: no-repeat;
     background-position: center right;
     text-transform: &dtml-textTransform;;
