@@ -7,7 +7,8 @@
 
 <ul tal:define="contentTypes allowed_types;
         filterOut here/getNotAddableTypes;
-		size python:len(contentTypes);">
+        size python:len(contentTypes);
+		folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());">
 
     <tal:states define="review_state wf_state;
                         transitions workflow_actions;"
@@ -105,8 +106,7 @@
     <li tal:condition="python: size==1 and allowedSortedContentTypes[0].getId() not in filterOut"
         class="actionSingular">
         <a href="#" 
-           tal:define="portaltype python: contentTypes[0];
-                       folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());"
+           tal:define="portaltype python: contentTypes[0];"
            tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId}"
            >
             <img src="folder.gif" 
@@ -120,10 +120,11 @@
     </li>
 
     <tal:templateMixin define="iface_tool portal/portal_interface;
-                               isTemplateMixin python:iface_tool.objectImplements(here, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');
-                               field python:here.getField('layout');
-                               vocab python:field.Vocabulary(here);"
-         condition="python:isTemplateMixin and len(vocab) > 1">
+                               isTemplateMixin python:iface_tool.objectImplements(here, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');"
+                               tal:condition="isTemplateMixin">
+    <tal:field define="field python:here.getField('layout');
+                       vocab python:field.Vocabulary(here);"
+         condition="python:len(vocab) > 1">
     <li tal:define="fieldvalue here/getLayout">
         <div class="menuPosition">
             <a href="#"
@@ -140,7 +141,7 @@
               <tal:block repeat="item vocab">
                 <li tal:define="value item;
                                 display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
-                    <!--XXX style has to be changed to a css class in next tag-->
+                    <!--XXX style attribute has to be changed to a css class in following tag  -->
                     <span style="white-space: nowrap;"
                           tal:condition="python:value==fieldvalue"
                           i18n:translate=""
@@ -157,9 +158,26 @@
                     </a>
                 </li>
               </tal:block>
+              
+              <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
+              <li tal:condition="python:iface_tool.objectImplements(here, 'Products.ATContentTypes.interfaces.ISelectableDefaultPage')">
+                    <a href="#" 
+                       onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                       tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
+                       title="Select Default Page"
+                       i18n:attributes="title"
+                       tal:attributes="href string:${here/absolute_url}/select_default_page';">
+                         Select
+                    </a>
+              </li>
+              <li>
+                  toto
+              </li>
+
             </ul>
         </div>
     </li>
+    </tal:field>
     </tal:templateMixin>
 
 </ul>
