@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1-beta1 - () - Released (TBA)
+Plone 2.1-beta1 - (TBA) - Unreleased
 
     - Added utility javascript "nodeContained" to check if a node is contained
       in another node
@@ -12,9 +12,14 @@ Plone 2.1-beta1 - () - Released (TBA)
       in plone_javascripts.js
       [elvix]
 
+    - check_id now accepts an additional 'contained_by' argument, allowing to 
+      disambiguate the target folder in cases where using the acquisition
+      parent would yield the wrong results.
+      [gkirk]
+
     - Polished up the datetime-picker widget.  Now provides default values
       for month ('01') and day ('01').  Also new is the option to unset a
-      date by deselecting ('----') the year.
+      date by deselecting the year ('----').
       Fixes http://plone.org/collector/2291
       [stefan]
 

@@ -54,7 +54,10 @@ if id in context.portal_catalog.indexes():
     return '\'%s\' is reserved.' % id
 
 # id is good; make sure we have no id collisions
-if context.portal_factory.isTemporary(context):
+if contained_by is not None:
+    # always check for collisions if a container was passed
+    checkForCollision = 1
+elif context.portal_factory.isTemporary(context):
     # always check for collisions if we are creating a new object
     checkForCollision = 1
 else:
@@ -66,7 +69,7 @@ if checkForCollision:
     # handles two use cases:
     # 1. object has not yet been created and we don't know where it will be
     # 2. object has been created and checking validity of id within container
-    if not contained_by:
+    if contained_by is None:
         contained_by = context.getParentNode()
 
     if hasattr(contained_by, 'objectIds'):
