@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3518 - Same issue as before, but for
+      Images this time. Thanks to Varun for the patch.
+      [stefan]
+
     - Fixed http://plone.org/collector/3416 - Uploading a File with a bad name,
       without specifying an id in the form, caused validators to complain about
       'id' instead of 'file'. This was especially bad as the current file_edit
