@@ -24,6 +24,13 @@
 #    be convient to be able to get actions from the ActionProviders as well
 #    as the portal_actions (aggregate of all ActionProviders)
 #
+#    This hack can go away if we implement something like CMFViews.
+#    We should extend FSMetadata.py for a [plone] section that each
+#    template could define explicitly if they want to show their border.
+#    But its too late in the game for such a large change.
+#    border=None or False or border=True, no border attribute should 
+#    calculate using the arcane rules below *wink*
+
 REQUEST=context.REQUEST
 
 

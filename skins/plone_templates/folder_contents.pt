@@ -4,7 +4,7 @@
       metal:use-macro="here/main_template/macros/master">
 
   <head>
-      <metal:block fill-slot="head_slot">
+      <metal:block fill-slot="top_slot">
         <span tal:replace="nothing"
               tal:define="dummy python:request.set('enable_border', 1)" />
       </metal:block>

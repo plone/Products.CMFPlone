@@ -2,8 +2,10 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-  <tal:head metal:fill-slot="head_slot"
-            tal:define="dummy python:request.set('disable_border',1)">
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+  <tal:head fill-slot="head_slot">
     <meta name="robots" content="noindex,follow" />
   </tal:head>
 

@@ -5,6 +5,16 @@ Changelog for Plone
 Plone 2.0 - Fyuti
 
    RC6
+    - Fix for http://plone.org/collector/2769
+      You could not en/disable the green 'editable border'
+      because this was being done in the 'head_slot' which
+      corresponds to <head> in the document.  en/disabling
+      of the border is computed in global_defines.pt which
+      is the first macro used in main_template.  So introduced
+      another slot in main_template called "top_slot" which
+      occurs before global_defines.  I also suggest how to fix
+      this permanently in showEditableBorder.py.  We should
+      move this off to the .metadata file for the templates.
 
     - Fixed http://plone.org/collector/2744
       Large Plone Folders should use folder_workflow. Fixed 

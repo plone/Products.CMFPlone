@@ -3,9 +3,8 @@
       metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
 
-<tal:block metal:fill-slot="head_slot">
-   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
-</tal:block>
+<metal:block metal:fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
 
 <body>
 

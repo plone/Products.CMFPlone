@@ -3,7 +3,7 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-  <metal:border fill-slot="head_slot">
+  <metal:border fill-slot="top_slot">
     <tal:border define="dummy python:request.set('enable_border',1)" />
   </metal:border>
 
