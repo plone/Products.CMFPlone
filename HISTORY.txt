@@ -14,6 +14,10 @@ Plone HEAD
       should be and will be revised. See http://plone.org/collector/2461.
       [db, batlogg]
 
+    - getObjSize() now accepts second (optional) size argument to allow formatting
+      of arbitrary sizes.
+      [andym]
+
 Plone 2.0.2 - Hicks
 
     - Commented out the javascript that auto-focuses on the first field in a form. 
