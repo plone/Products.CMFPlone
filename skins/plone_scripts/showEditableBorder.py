@@ -9,21 +9,14 @@
 REQUEST=context.REQUEST
 actions=[]
 
-# lets attempt to short circuit listFilteredActionsFor, which is expensive!
-if REQUEST.get('filtered_actions', ''): 
+if REQUEST.get('filtered_actions', ''): #short circuit listFilteredActionsFor
     actions=REQUEST['filtered_actions']
 else:
     actions=container.portal_actions.listFilteredActionsFor(context)
 
-obj_actions=actions.get('object', ())
-folder_actions=actions.get('folder', ())
-
-objectActionIds = [ o.get('id', '') for o in obj_actions ]
-if getattr(context, 'isPortalContent', 0) and 'edit' in objectActionIds: 
-    return 1
-
-folderActionsIds = [ f.get('id', '') for f in folder_actions]
-if 'edit' in folderActionsIds:
+if ( getattr(context, 'isPortalContent', 0) and \
+     'edit' in [ o.get('id', '') for o in actions.get('object', ()) ] ) or \
+     'edit' in [ f.get('id', '') for f in actions.get('folder', ()) ] :
     return 1
 
 return 0
