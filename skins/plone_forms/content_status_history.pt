@@ -19,17 +19,19 @@
     <h1>Publishing process</h1>
     
     <p>
-    An item's status (also called its review state) determines who can see it.
-    A <strong>private</strong> item can only be viewed by its Owner and by the site
-    management. Only <strong>published</strong> items are available to the general
-    member base and anonymous visitors. To make an item published, it
-    has to be reviewed by one of the site's Reviewers. You can request
-    that an item be reviewed by setting its status to <strong>pending</strong>. <br />
-        
-    Another way to control the visibility of an item is with its <strong>effective
-    date</strong>. An item is not publicly available before its effective date,
-    <em>even if its status is <strong>published</strong></em>.
+         A <strong>private</strong> item can only be viewed by its Owner and by
+         the site management. Only <strong>published</strong> items are available
+         to the general member base and anonymous visitors. Before an item is
+         published, it must be reviewed by one of the site's Reviewers. You can
+         request that an item be reviewed by <strong>submit</strong>ting it using
+         this form, which sets its status to <strong>pending</strong>.
+    </p>
 
+    <p>
+         Another way to control the visibility of an item is with its
+         <strong>effective date</strong> and <strong>expiration date</strong>.
+         An item is not publicly available when the current date falls between
+         these dates, <em>even if its status is <strong>published</strong></em>.
     </p>
     
     <div class="group">
@@ -37,10 +39,23 @@
     
         <div class="row">
             <span class="label">Status</span>
-            <span class="field">
-           		This item is currently in <strong
-                tal:content="review_state">review_state;</strong> status.
-            </span>
+            <span class="field"
+	          tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
+	                      expiration_date python:test(here.expiration_date, here.expiration_date, '');
+	                      effective python:">
+	     This item is currently in the <strong tal:content="review_state">review_state;</strong> state
+	    <tal:block tal:condition="python: review_state == 'published'"
+	               tal:define="eff_date here/effective_date | nothing;
+	                           exp_date here/expiration_date | nothing;
+	                           now here/ZopeTime;
+	                           before python:eff_date and (eff_date > now);
+	                           after python:exp_date and (exp_date < now);
+	                           effective python:not(before or after);">
+	        <span tal:condition="effective">and <strong>is effective.</strong></span>
+	        <span tal:condition="before">but is <strong>not yet</strong> effective.</span>
+	        <span tal:condition="after">but is <strong>no longer</strong> effective.</span>
+	    </tal:block>
+	    </span>
             <span class="info"></span>
         </div>
     
