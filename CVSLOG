@@ -1,3 +1,45 @@
+2004-02-13 03:40  zopezen
+
+	* skins/: plone_portlets/portlet_related.pt,
+	  plone_scripts/getObjSize.py,
+	  plone_scripts/navigationLocalRelated.py,
+	  plone_scripts/navigationRemoteResources.py
+	  (Plone-2_0-microoptimizations-branch): Unbugger related slot. It
+	  now does ONE catalog query to get all the links and then splits
+	  them up. No magically looking in the local folder (a performance
+	  hit) for any objects that may happen to remote. Bizarre idea we
+	  ended up with there.
+
+2004-02-12 23:42  jok2
+
+	* skins/plone_prefs/prefs_portalskin_set.py (Plone-2_0-branch):
+	  Fixed sytax error and made it a little bit more error proof.
+	  expanded comment.  Lesson learned: dont do last minute checkins
+	  if they call you to go the restaurant.
+
+2004-02-12 20:50  jok2
+
+	* skins/plone_prefs/prefs_portalskin_set.py (Plone-2_0-branch):
+	  Second pass in fixing the clearing of the cookie name for the
+	  plone skin.  i had to get the existing value and reapply it to
+	  the portal_skins.
+
+2004-02-12 15:37  shh42
+
+	* ftests/: testChangeState.py, testExample.py: Speed things up a
+	  bit by starting 2 ZServer threads.
+
+2004-02-12 12:53  jok2
+
+	* HISTORY.txt, skins/plone_prefs/prefs_portalskin_set.py
+	  (Plone-2_0-branch): Fix for bug reported by Edward Muller on the
+	  plone-devel mailing list about skin setting and login problems.
+	  dont clear the name for the skin cookie.
+
+2004-02-12 04:53  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-12 04:26  pupq
 
 	* HISTORY.txt (Plone-2_0-branch): Added note about breadcrumb fix.
