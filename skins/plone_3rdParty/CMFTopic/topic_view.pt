@@ -33,10 +33,10 @@
 
         <thead>
             <tr>
-                <th>&nbsp;Title&nbsp;</th>
-                <th>&nbsp;Type&nbsp;</th>
-                <th>&nbsp;Last Modified&nbsp;</th>
-                <th>&nbsp;Description&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="">Title</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="">Type</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="">Last Modified</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="">Description</tal:block>&nbsp;</th>
             </tr>
         </thead>
 

@@ -29,6 +29,8 @@ import Globals
 import string
 import os, sys, re
 
+from AccessControl import getSecurityManager
+
 __version__='1.1'
 
 default_frontpage=r"""
