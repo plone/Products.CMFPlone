@@ -151,7 +151,7 @@ class PloneGenerator(Portal.PortalGenerator):
         p.manage_permission( CMFCorePermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
-        p.portal_skins.allow_any=0
+        p.portal_skins.allow_any=0 # Skin changing for users is turned off by default
 
         p.icon = 'misc_/CMFPlone/plone_icon'
 
