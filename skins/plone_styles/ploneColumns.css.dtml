@@ -8,7 +8,7 @@
 /* <dtml-with base_properties> */
 
 #visual-portal-wrapper {
-    min-width: 56em;
+    min-width: <dtml-var portalMinWidth missing="56em">;
 }
 #portal-columns {
     width: auto;
@@ -17,27 +17,27 @@
 #visual-column-wrapper {
     float: left;
     width: 100%;
-    margin-right: -16em;
+    margin-right: -<dtml-var columnTwoWidth missing="16em">;
 }
 #portal-column-content {
     width: 100%;
     float: right;
-    margin-left: -16em;
+    margin-left: -<dtml-var columnOneWidth missing="16em">;
 }
 
 #portal-column-content #content {
-    margin: 0 16em;
+    margin: 0 <dtml-var columnTwoWidth missing="16em"> 0 <dtml-var columnOneWidth missing="16em">;
 }
 
 #portal-column-one {
     float: left;
-    width: 16em;
+    width: <dtml-var columnOneWidth missing="16em">;
     overflow: hidden;
 }
 
 #portal-column-two {
     float: right;
-    width: 16em;
+    width: <dtml-var columnTwoWidth missing="16em">;
     overflow: hidden;
 }
 
@@ -60,11 +60,11 @@
 }
 
 .visualColumnHideOne #portal-column-content #content {
-    margin: 0 16em 0 0;
+    margin: 0 <dtml-var columnTwoWidth missing="16em"> 0 0;
 }
 
 .visualColumnHideTwo #portal-column-content #content {
-    margin: 0 0 0 16em;
+    margin: 0 0 0 <dtml-var columnOneWidth missing="16em">;
 }
 
 /* </dtml-with> */
