@@ -6,6 +6,12 @@ Plone 2.0 - Fyuti
 
     Beta 2
     
+    - Presentation mode now renders paragraph tags invisible, which means
+      you can create a richer document for web and/or print, but keep the 
+      presentations without the additional comments. If you want the old
+      behaviour, just uncomment the relevant p {} section in the
+      plonePresentation.css style sheet.
+
     - CMFPlone.Portal.Site now uses the OrderedContainer mixin.
       __implements__ the OrderContainer and DefaultDublinCoreImpl xface.
 
