@@ -18,6 +18,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
+        self.workflow = self.portal.portal_workflow
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -45,6 +46,13 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             if action.id=='reply':
                 reply_visible=action.visible
         self.assertEqual(reply_visible, 0)
+
+    def testLargePloneFolderWorkflow(self):
+        # Large Plone Folder should use folder_workflow
+        # http://plone.org/collector/2744
+        lpf_chain = self.workflow.getChainFor('Large Plone Folder')
+        self.failUnless('folder_workflow' in lpf_chain)
+        self.failIf('plone_workflow' in lpf_chain)
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

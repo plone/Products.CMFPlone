@@ -6,6 +6,11 @@ Plone 2.0 - Fyuti
 
    RC6
 
+    - Fixed http://plone.org/collector/2744
+      Large Plone Folders should use folder_workflow. Fixed 
+      PortalGenerator and added migration and tests.
+      [stefan]
+
     - Fixed and re-fixed http://plone.org/collector/2246
       Short name should be editable without specifying a file.
       [achilles] [stefan] 

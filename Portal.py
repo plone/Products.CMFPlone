@@ -200,7 +200,7 @@ class PloneGenerator(Portal.PortalGenerator):
         wf_tool.manage_addWorkflow( id='folder_workflow'
                                 , workflow_type='folder_workflow '+\
                                   '(Folder Workflow [Plone])')
-        wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
+        wf_tool.setChainForPortalTypes( ('Folder','Topic','Large Plone Folder'), 'folder_workflow')
 
         #if the CMF has put the ancient 'default_workflow' workflow in
         #portal_workflow we want to remove it.  It adds no value.
