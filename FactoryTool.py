@@ -6,11 +6,10 @@ from Acquisition import aq_base, aq_parent, Implicit
 from DateTime import DateTime
 import cgi
 import urlparse
-
 import sys
 
 
-debug = 0  # enable/disable logging
+debug = 1  # enable/disable logging
 type_map = {}
 
 class FactoryTool(UniqueObject, SimpleItem):
@@ -19,9 +18,28 @@ class FactoryTool(UniqueObject, SimpleItem):
     meta_type= 'Plone Factory Tool'
     security = ClassSecurityInfo()
 
+
+    def doCreate(self, obj, id = None, *args, **kw):
+        if not self.isTemporary(obj=obj):
+            return obj
+        else:
+            return obj.invokeFactory(id, *args, **kw)
+
+
+    def isTemporary(self, obj=None, container=None, id=None):
+        """ Test an object to see if it is a real object or a temporary object awaiting creation.
+            Requires an object with a getId() method, an object and an id, or a container and an id.
+        """
+        if container is None:
+            container = obj.getParentNode()
+        if id is None:
+            id = obj.getId()
+        self.log('ISTEMPORARY(OBJ=%s, CONTAINER=%s, ID=%s) -> %s' % (obj, container, id, not id in container.objectIds()))
+        return not (id in container.objectIds())
+
+
     def __bobo_traverse__(self, REQUEST, name):
         """ """
-
         # The portal factory intercepts things of the following form:
         # (1) The name of a portal type (with spaces replaced by '_'), e.g. .../portal_factor/News_Item/...
         #     In this case, we auto-generate an ID and relocate to a URL of the form .../portal_factory/News_Item.AUTO_GENERATED_ID/...
@@ -53,13 +71,15 @@ class FactoryTool(UniqueObject, SimpleItem):
         if dot_index != -1:
 
             # see if the object exists in the parent context
-            if name in self.getParentNode().objectIds():
+            if not self.isTemporary(id=name, container=self.getParentNode()):
                 # if so, just do a pass-through
                 return getattr(self.getParentNode(), name)
 
             # object does not exist in parent context -- return a PendingCreate
-            self.log('returning PendingCreate(%s)' % type_name, '__bobo_traverse__')
-            return PendingCreate(name, type_name).__of__(aq_parent(self))  # wrap in acquisition layer
+            self.log('returning PendingCreate(%s, %s)' % (name, type_name), '__bobo_traverse__')
+
+            type_info = self.portal_types.getTypeInfo(type_name)
+            return PendingCreate(name, type_info).__of__(aq_parent(self))  # wrap in acquisition layer
 
         # name is just type with no time-stamp.  Autogenerate an ID and relocate
 
@@ -119,7 +139,6 @@ class FactoryTool(UniqueObject, SimpleItem):
         if loc:
             prefix = prefix + '. ' + str(loc)
         sys.stdout.write(prefix+': '+str(msg)+'\n')
-
 InitializeClass(FactoryTool)
 
 
@@ -128,22 +147,23 @@ class PendingCreate(SimpleItem):
     meta_type= 'Object With Creation Pending'
     security = ClassSecurityInfo()
 
-    def __init__(self, id, type):
+
+    def __init__(self, id, type_info):
         now = DateTime()
         self.id = id
-        self._type = type
+        self._type_info = type_info
         self.Title = ''
 
-    security.declarePublic('getPendingCreateType')
-    def getPendingCreateType(self):
+
+    def getTypeInfo(self):
         """ """
-        return self._type
+        return self._type_info
 
 
     def invokeFactory(self, id, *args, **kw):
         self.log('invoking factory')
         container = self.getParentNode()
-        container.invokeFactory(self._type, id, *args, **kw)
+        container.invokeFactory(self._type_info.getId(), id, *args, **kw)
         return getattr(container, id)
 
 
@@ -193,5 +213,4 @@ class Relocator(Implicit):
         if loc:
             prefix = prefix + '. ' + str(loc)
         sys.stdout.write(prefix+': '+str(msg)+'\n')
-
 InitializeClass(Relocator)

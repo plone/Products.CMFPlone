@@ -7,7 +7,6 @@ from OFS.SimpleItem import SimpleItem
 from OFS.Folder import Folder
 from OFS.Traversable import Traversable
 from Acquisition import aq_parent, aq_base
-from FactoryTool import PendingCreate
 from OFS.SimpleItem import Item
 from OFS.ObjectManager import bad_id
 from ZPublisher.mapply import mapply
@@ -60,7 +59,7 @@ class FormTool(UniqueObject, SimpleItem):
     # expose ObjectManager's bad_id test to skin scripts
     def good_id(self, id):
         m = bad_id(id)
-        if m is not None and m.find(' ') != -1: # XXX do we want to disallow spaces in IDs?
+        if m is not None:
             return 0
         return 1
 
@@ -131,9 +130,6 @@ class FormTool(UniqueObject, SimpleItem):
         return FormValidator(name, validators, do_validate).__of__(aq_parent(self)) # wrap in acquisition layer
 
 
-    def _isPendingCreate(self, obj):
-        return obj.__class__ == PendingCreate
-
     # DEPRECATED
     def setValidator(self, form, validator):
         """Register a form validator"""
@@ -184,11 +180,12 @@ class FormValidator(SimpleItem):
             self.log('invoking validation, status = '+status)
 
             # check for validation errors
-            if status == 'success':
-                # if no errors, create a new object if creation is pending and change the context
-                if context.__class__ == PendingCreate:
-                    self.log("new id = " + REQUEST[FormTool.id_key])
-                    context = context.invokeFactory(REQUEST[FormTool.id_key], )
+#            if status == 'success':
+#                # if no errors, create a new object if creation is pending and change the context
+#                if self.portal_factory.isTemporary(context):
+#                    self.log("new id = " + REQUEST[FormTool.id_key])
+#                    context.id = REQUEST[FormTool.id_key]
+#                    context = context.invokeFactory()
 
             return context.portal_navigation.getNext(context, self.form, status, **kw)
         else:

@@ -8,8 +8,9 @@
 ##title=Edit a link
 ##
 
-context.edit(remote_url=remote_url)
-context.plone_utils.contentEdit( context
+new_context = context.portal_factory.doCreate(context, id)
+new_context.edit(remote_url=remote_url)
+new_context.plone_utils.contentEdit(new_context
                                , id=id
                                , description=description)
-return 'success'
+return ('success', new_context)

@@ -11,7 +11,6 @@ from types import TupleType
 from urllib import urlencode
 from cgi import parse_qs
 import re
-from FactoryTool import PendingCreate
 from PloneUtilities import log, log_deprecated
 
 debug = 0  # enable/disable logging
@@ -114,8 +113,6 @@ class NavigationTool (UniqueObject, SimpleItem):
         """ returns the internal representation of content type """
         if content is None:
             content = 'Default'
-        if hasattr(content, '__class__') and content.__class__ == PendingCreate:
-            content = content.getPendingCreateType()
         if hasattr(content, 'getTypeInfo'):
 #        if hasattr(content, '_isPortalContent'): #XXX Contentish xface
             content = content.getTypeInfo()
@@ -164,6 +161,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         action2 = action2.replace('\]', ']')
         return action2
 
+
     def _parseTransition(self, transition):
         type_list = ['action', 'url', 'script']
 
@@ -171,6 +169,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             if transition.startswith(t+':'):
                 return (t, transition[len(t)+1:].strip())
         return (None, transition.strip())
+
 
     def getNavigationTransistion(self, context, script, status):
         script = self._normalize(script) # normalize
@@ -198,6 +197,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         transition = self._transitionSubstitute(transition, self.REQUEST)
         return self._parseTransition(transition)
 
+
     def _dispatchPage(self, context, page, **kwargs):
         # If any query parameters have been specified in the transition,
         # stick them into the request before calling getActionById()
@@ -216,6 +216,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             return apply(context.restrictedTraverse(page), (context, context.REQUEST), kwargs)
         raise Exception, 'Argh! could not find the transition, ' + page
 
+
     def _dispatchScript(self, context, script, **kwargs):
         self.log('calling ' + script, '_dispatchScript')
 
@@ -229,24 +230,28 @@ class NavigationTool (UniqueObject, SimpleItem):
         status = mapply(script_object, self.REQUEST.args, request,
                         call_object, 1, missing_name, dont_publish_class,
                         self.REQUEST, bind=1)
-
         self.log('status = ' + str(status), '_dispatchScript')
+        kwargs = {}
         if type(status) == type(()):
-            (status, kwargs) = status
-        else:
-            kwargs = {}
+            if len(status) == 2:
+                (status, context) = status
+            else:
+                (status, context, kwargs) = status
         return self.getNext(context, script, status, **kwargs)
-    
+
+
     def _dispatchRedirect(self, context, url, **kwargs):
         url = self._addUrlArgs(url, kwargs)
         self.log('url = ' + str(url), '_dispatchRedirect')
         return self.REQUEST.RESPONSE.redirect(url)
+
 
     def _dispatchAction(self, context, action_id, **kwargs):
         next_action = context.getTypeInfo().getActionById(action_id)
         url = self._addUrlArgs(next_action, kwargs)
         self.log('url = ' + str(url), '_dispatchAction')
         return self.REQUEST.RESPONSE.redirect('%s/%s' % (context.absolute_url(), url))
+
 
     def _addUrlArgs(self, base, kwargs):
         url_params=urlencode(kwargs)
