@@ -124,7 +124,7 @@
 
                 <table>
                     <tr><td>
-                    Existing keywords
+                    <span>Existing keywords</span>
                     <br />
                         <select id="predefined_subjects"
                                 name="predefined_subjects" 
@@ -149,7 +149,7 @@
                                tal:attributes="tabindex tabindex/next;">
 
                     <br />
-                    New keyword <br />
+                    <span i18n:translate="label_new_keywords">New keywords</span> <br />
                     <input type="text" 
                            name="entered_keyword" 
                            value="" 
@@ -172,7 +172,7 @@
 
                     <td>
                     <span i18n:translate="label_selected_keywords">
-                    Selected keywords
+                    <span i18n:translate="label_selected_keywords">Selected keywords</span>
                     </span>
                     <br />
                     <textarea id="entered_subjects"
