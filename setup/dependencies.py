@@ -45,7 +45,7 @@ if cmfcore:
         # couldnt make sense of the version number
         pass
     if x < [1,4]:
-        log("Plone requires CMF 1.4 or later.  Your version: %s" % CMF_VERSION, severity=zLOG.INFO, optional=1)
+        log("Plone requires CMF 1.4 or later.  Your version: %s" % CMF_VERSION)
 
 try:
     import Products.CMFQuickInstallerTool
