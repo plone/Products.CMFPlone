@@ -65,6 +65,8 @@ def rc3_rc4(portal):
         for action in _actions:
             if action.getId()=='metadata':
                  action.title='properties'
+            if action.getId()=='content_status_history':
+                 action.visible=0
         ptype._actions = _actions
  
     at.addAction('addtofavorites',
