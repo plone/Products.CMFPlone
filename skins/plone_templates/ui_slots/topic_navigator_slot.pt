@@ -25,28 +25,28 @@
                     <a href=""
                        tal:attributes="href python:here.navigatorExpand.absolute_url()+'?topic='+pss.url_quote(topic.Title)"
                        tal:content="topic/Title">I am a navigation box</a>
-                       
+
                     <div tal:define="obj python:topic.getObject()">
-                    
+
                         <div tal:omit-tag="" tal:repeat="item python:obj.queryCatalog()"
                                               tal:condition="obj">
                             <div tal:omit-tag="" tal:condition="python:item.Title and navExpand==topic.Title">
                                 <a href="#" tal:attributes="href python:item.getObject().absolute_url()"
                                     tal:content="item/Title"> </a>
                             </div>
-                        
+
                         </div>
-        
+
                     </div>
-        
+
                 </div>
-        
+
             </div>
 
-        </div>    
-        
+        </div>
+
     </div>
-            
+
 </div>
 
 </body>

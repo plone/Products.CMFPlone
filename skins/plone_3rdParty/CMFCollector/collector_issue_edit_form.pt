@@ -44,17 +44,17 @@
   </div>
 
 <form class="group"
-        method="post" 
+        method="post"
         enctype="multipart/form-data"
         action=""
         tal:attributes="action string:${here/absolute_url}/collector_issue_edit"
         >
 
-    <span class="legend" i18n:translate="legend_issue_details">Issue details</span>    
+    <span class="legend" i18n:translate="legend_issue_details">Issue details</span>
 
 
     <div class="row">
-        <div class="label" i18n:translate="label_title">Title</div> 
+        <div class="label" i18n:translate="label_title">Title</div>
         <div class="field">
             <input name="title" value="TITLE" size="65"
                    tal:attributes="value python: here.Title()" />
@@ -62,11 +62,11 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_security">Security</div> 
+        <div class="label" i18n:translate="label_security">Security</div>
         <div class="field">
             <input class="noborder" id="security_related_checkbox"
-                   type="checkbox" 
-                   name="security_related:int" 
+                   type="checkbox"
+                   name="security_related:int"
                    value="1"
                    tal:attributes="checked here/security_related" />
 	    <label for="security_related_checkbox" i18n:translate="label_security_related">Security related</label>
@@ -74,7 +74,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_description">Description</div> 
+        <div class="label" i18n:translate="label_description">Description</div>
         <div class="field">
             <textarea name="description:text" rows="4" cols="60"
                       tal:content="here/description"></textarea>
@@ -82,7 +82,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_from_name">From (name)</div> 
+        <div class="label" i18n:translate="label_from_name">From (name)</div>
         <div class="field">
               <input name="submitter_name" value="NAME" size="25"
                      tal:attributes="value python: here.submitter_name" />
@@ -90,7 +90,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_from_login_name">From (login name)</div> 
+        <div class="label" i18n:translate="label_from_login_name">From (login name)</div>
         <div class="field">
             <input name="submitter_id" value="ID" size="25"
                    tal:attributes="value python: here.submitter_id" />
@@ -98,7 +98,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_from_alt_email">From (alt. email)</div> 
+        <div class="label" i18n:translate="label_from_alt_email">From (alt. email)</div>
         <div class="field">
                   <input name="submitter_email" value="EMAIL" size="25"
                          tal:attributes="value here/submitter_email|nothing" />
@@ -106,7 +106,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_topic">Topic</div> 
+        <div class="label" i18n:translate="label_topic">Topic</div>
         <div class="field">
             <select name="topic">
                 <option value=""
@@ -120,7 +120,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_classification">Classification</div> 
+        <div class="label" i18n:translate="label_classification">Classification</div>
         <div class="field">
             <select name="classification">
                 <option value=""
@@ -136,7 +136,7 @@
 
 
     <div class="row">
-        <div class="label" i18n:translate="label_importance">Importance</div> 
+        <div class="label" i18n:translate="label_importance">Importance</div>
         <div class="field">
             <select name="importance">
                 <option value=""
@@ -151,7 +151,7 @@
 
 
     <div class="row">
-        <div class="label" i18n:translate="label_version_info">Version info</div> 
+        <div class="label" i18n:translate="label_version_info">Version info</div>
         <div class="field">
             <textarea name="version_info" rows="2" cols="40"
                       tal:content="here/version_info"></textarea>
@@ -160,7 +160,7 @@
 
 
     <div class="row">
-        <div class="label" i18n:translate="label_upload">Upload</div> 
+        <div class="label" i18n:translate="label_upload">Upload</div>
         <div class="field" i18n:translate="">
         Use the issue folder_contents view (if accessible) to change the
         uploads.
@@ -169,14 +169,14 @@
 
 
     <div class="row">
-        <div class="label" i18n:translate="label_comment">Comment</div> 
+        <div class="label" i18n:translate="label_comment">Comment</div>
         <div class="field">
             <textarea name="comment" rows="3" cols="75"></textarea>
         </div>
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_collector_transcript">Transcript</div> 
+        <div class="label" i18n:translate="label_collector_transcript">Transcript</div>
         <div class="field" tal:define="transcript here/get_transcript">
           <textarea name="text" rows="10" cols="75" wrap="soft"
                     tal:content="transcript/text"></textarea>
@@ -185,7 +185,7 @@
 
 
     <div class="row">
-        <div class="label"> &nbsp; </div> 
+        <div class="label"> &nbsp; </div>
         <div class="field">
             <input class="context" type="submit" name="submit" value="Submit" i18n:attributes="value" />
             <input class="standalone" type="reset" name="reset" value="Reset" i18n:attributes="value" />

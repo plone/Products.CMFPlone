@@ -8,16 +8,16 @@
 
 <body>
 
-	   
+
 <div metal:fill-slot="main" i18n:domain="plone" tal:define="QI python:here.portal_url.getPortalObject().portal_quickinstaller">
     <h2> Products available for install </h2>
     <form action="installProducts" tal:attributes="action python:QI.absolute_url()+'/installProducts'" method="POST">
-    
+
         <table>
             <tr tal:repeat="product QI/listInstallableProducts">
                 <td><input class="noborder"
-                           type=checkbox 
-                           name=products:list 
+                           type=checkbox
+                           name=products:list
                            tal:attributes="value product/id"
                            /></td>
                 <td tal:content="product/id">product name</td>
@@ -27,36 +27,36 @@
             </tr>
         </table>
         <input class="context"
-               type=submit 
-               i18n:attributes="value" 
+               type=submit
+               i18n:attributes="value"
                value="Install"
                />
     </form>
 
     <h2> Installed products </h2>
     <form action="uninstallProducts" tal:attributes="action python:QI.absolute_url()+'/uninstallProducts'" method="POST">
-    
+
         <table>
             <tr tal:repeat="product QI/listInstalledProducts">
                 <td><input class="noborder"
-                           type=checkbox 
+                           type=checkbox
                            name=products:list tal:attributes="value product/id"
                            /></td>
                 <td>
                      <span tal:content="product/id" >product name</span>
-                     
+
                      (<a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">Install log</a>)
-                     
+
                 </td>
             </tr>
         </table>
         <input class="context"
-               type=submit 
-               i18n:attributes="value" 
+               type=submit
+               i18n:attributes="value"
                value="Uninstall"
                />
     </form>
 </div>
-	   
+
 </body>
 </html>

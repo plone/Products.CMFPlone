@@ -13,9 +13,9 @@
                                creation_url string:${here/absolute_url}/createObject?type_name=$type_name;
                                dummy python:request.response.redirect(creation_url); " />
      </metal:block>
-     
+
 	<h1 i18n:translate="heading_add_new_item">Add new item</h1>
-	
+
 	<p i18n:translate="description_add_new_item">
 	Select the type of item you want to add to your folder.
 	</p>
@@ -25,43 +25,43 @@
                    create_id id | nothing;
                    id_query string:&amp;id=$create_id;
                    query python:test(create_id, id_query, '');">
-    
+
       <span class="legend" i18n:translate="legend_items_available">Items Available</span>
-        
-      <div tal:repeat="ctype here/allowedContentTypes"> 
+
+      <div tal:repeat="ctype here/allowedContentTypes">
 
           <div class="row" tal:define="pss modules/Products/PythonScripts/standard; Title ctype/Title; Id ctype/getId"
                            tal:condition="python:test(Id not in filterOut, 1, 0)">
-    	
+
               <div class="label">
                   <span i18n:translate=""
                         tal:content="Title">
                         Title
                   </span>
                   <a href="#" tal:attributes="href python:'createObject?type_name='+pss.url_quote(Id)">
-                      <img src="" 
-                           alt="" 
-                           width="16" 
-                           height="16" 
+                      <img src=""
+                           alt=""
+                           width="16"
+                           height="16"
                            tal:attributes="src string:$portal_url/${ctype/getIcon}" />
                   </a>
               </div>
-    	
+
               <div class="field">
                   <form name="quickAdd" action="createObject" method="post">
-                      <input name="type_name" 
-                             type="hidden" 
-                             value="" 
+                      <input name="type_name"
+                             type="hidden"
+                             value=""
                              tal:attributes="value Id" />
-                      <input name="id" 
-                             type="hidden" 
-                             value="" 
-                             tal:attributes="value create_id" 
+                      <input name="id"
+                             type="hidden"
+                             value=""
+                             tal:attributes="value create_id"
                              tal:condition="create_id"
                              />
-                      <input class="standalone" 
-                             type="submit" 
-                             value="Add" 
+                      <input class="standalone"
+                             type="submit"
+                             value="Add"
                              tabindex=""
                              i18n:attributes="value"
                              tal:attributes="tabindex tabindex/next;"
@@ -72,13 +72,13 @@
                       </p>
                   </form>
               </div>
-    		 
+
           </div>
       </div>
-        
+
   </div>
 
 </div>
-	   
+
 </body>
 </html>

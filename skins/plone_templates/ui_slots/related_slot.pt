@@ -14,28 +14,28 @@
     <div class="box" id="portlet-related">
 
         <h5 i18n:translate="box_related">Related</h5>
-    
+
         <div class="body">
 
-            <div class="content odd" tal:condition="localContent" >        
-                <strong i18n:translate="box_local_resources">Local resources</strong> 
+            <div class="content odd" tal:condition="localContent" >
+                <strong i18n:translate="box_local_resources">Local resources</strong>
                 <br />
-                
+
                 <div tal:repeat="related localContent">
-                        <a href="" 
+                        <a href=""
                            tal:attributes="href string:${related/url}/view">
-                           <img src="" 
+                           <img src=""
                                 tal:attributes="src string:$portal_url/${related/icon};alt here/title" />
                                 &nbsp;<span tal:replace="related/title">Object related by keyword</span>
                         </a>
-                </div> 
+                </div>
             </div>
-          
+
             <div class="content even" tal:condition="remoteContent">
                 <strong i18n:translate="box_external_links">External links</strong>
                 <div tal:repeat="o remoteContent">
                         <a href=""
-                           tal:attributes="href python:o[1]" 
+                           tal:attributes="href python:o[1]"
                            tal:content="python:o[0]">Link object in same folder</a>
                 </div>
             </div>

@@ -8,41 +8,41 @@
 
 <div metal:define-macro="recentlyPublishedBox"
      tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
-                 results python:request.get('items', 
-                                            here.portal_catalog.searchResults(modified=last_login_time, 
+                 results python:request.get('items',
+                                            here.portal_catalog.searchResults(modified=last_login_time,
                                                                               modified_usage='range:min',
                                                                               sort_on='modified',
                                                                               sort_order='reverse',
                                                                               review_state='published')[:5]);">
 
     <div class="box" id="portlet-recently-published">
-    
+
         <h5 i18n:translate="box_recentlypublished">Recently Published</h5>
 
         <div class="body">
 
             <tal:block tal:repeat="obj results">
-                    
+
                 <div tal:define="oddrow repeat/obj/odd"
                      tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
-            
+
                     <a href=""
                        tal:attributes="href obj/getURL">
                         <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Item title </span>
                     </a>
-            
+
                     <div class="boxDetails"
                          tal:content="python:here.toPortalTime(obj.Date)">July 7, 08:11</div>
                 </div>
-        
+
             </tal:block>
-            
+
             <div class="content odd" tal:condition="not: results">
             No items published since your last log-in.
             </div>
-            
+
             <div class="content odd">
-            
+
                 <a href=""
                    class="more"
                    tal:attributes="href string:${portal_url}/recently_published"
@@ -51,12 +51,12 @@
                     More...
                 </a>
 
-            </div>            
-    
+            </div>
+
         </div>
 
     </div>
-        
+
 </div>
 
 </body>

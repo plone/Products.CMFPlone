@@ -11,36 +11,36 @@
     <h1 i18n:translate="heading_edit_item">
     Edit
         <span i18n:name="itemtype">
-              <span i18n:translate=""         
-                    tal:content="python:here.getTypeInfo().Title()" 
+              <span i18n:translate=""
+                    tal:content="python:here.getTypeInfo().Title()"
                     tal:omit-tag="">Item type</span>
-        </span> 
+        </span>
     </h1>
 
-    <p i18n:translate="description_edit_topic"> 
+    <p i18n:translate="description_edit_topic">
     A topic is a pre-defined search, showing all items matching
     criteria you specify. Topics may also contain sub-topics.
     </p>
-    
+
     <form class="group"
-          action="topic_editTopic" 
+          action="topic_editTopic"
           method="post"
           name="edit_form"
           tal:attributes="action python:here.portal_form_url(template.id)">
 
         <span class="legend" i18n:translate="legend_topic_details">Topic Details</span>
 
-        <div class="row" 
+        <div class="row"
              tal:condition="python: member.getProperty('visible_ids', None)"
              tal:define="error_id errors/id | nothing;
                          id python:request.get('id', test(here.show_id(),here.getId(),''));">
             <div class="label required">
-            
+
                 <span i18n:translate="label_name">Name</span>
-            
-                <div id="id_help" 
+
+                <div id="id_help"
                      i18n:translate="help_name"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Enter the Name of the topic. This is the part that will show up as part
                 of the web address. This should be short, descriptive
@@ -48,55 +48,55 @@
                 "expense-report-2002"
                 </div>
             </div>
-            
+
             <div class="field"
                   tal:attributes="class python:test(error_id, 'field error', 'field')" >
 
                 <div tal:replace="error_id" />
 
-                <input type="text" 
-                       name="id" 
+                <input type="text"
+                       name="id"
                        value="#"
-                       size="30" 
-                       tal:attributes="value id" 
+                       size="30"
+                       tal:attributes="value id"
                        tabindex="1"
-                       onfocus="formtooltip('id_help',1)" 
+                       onfocus="formtooltip('id_help',1)"
                        onblur="formtooltip('id_help',0)" />
             </div>
 
         </div>
-        <input type="hidden" 
-               name="id" 
+        <input type="hidden"
+               name="id"
                tal:condition="python: not member.getProperty('visible_ids', None)"
-               tal:attributes="value python:request.get('id', here.getId())" 
+               tal:attributes="value python:request.get('id', here.getId())"
                />
-        
+
         <div class="row"
              tal:define="error_title errors/title|nothing;
-                         Title request/title | here/Title;"> 
+                         Title request/title | here/Title;">
             <div class="label required">
                 <span i18n:translate="label_title">Title</span>
-                
-                <div id="title_help" 
+
+                <div id="title_help"
                      i18n:translate="help_title"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Enter the title of the topic.
                 </div>
             </div>
-            
+
             <div class="field"
                   tal:attributes="class python:test(error_title, 'field error', 'field')" >
 
                 <div tal:replace="error_title" />
 
-                <input type="text" 
-                       name="title" 
-                       value="#" 
-                       size="30" 
+                <input type="text"
+                       name="title"
+                       value="#"
+                       size="30"
                        tabindex="2"
-                       tal:attributes="value Title" 
-                       onfocus="formtooltip('title_help',1)" 
+                       tal:attributes="value Title"
+                       onfocus="formtooltip('title_help',1)"
                        onblur="formtooltip('title_help',0)" />
 
             </div>
@@ -105,24 +105,24 @@
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_description">Description</span>
-                
-                <div id="description_help" 
+
+                <div id="description_help"
                      i18n:translate="help_description"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
-                Enter a brief description of the topic. 
+                Enter a brief description of the topic.
                 </div>
             </div>
-            <div class="field" tal:define="description request/description | here/Description "> 
-                <textarea cols="40" 
-                          rows="5" 
+            <div class="field" tal:define="description request/description | here/Description ">
+                <textarea cols="40"
+                          rows="5"
                           tabindex="3"
                           name="description"
                           tal:content="description"
-                          onfocus="formtooltip('description_help',1)" 
+                          onfocus="formtooltip('description_help',1)"
                           onblur="formtooltip('description_help',0)"
                           >
-                Description 
+                Description
                 </textarea>
             </div>
         </div>
@@ -131,8 +131,8 @@
 	        <div class="label">
                 <span i18n:translate="label_inherit_criteria">Inherit Criteria</span>
                 <div id="acquire_criteria_help"
-                     i18n:translate="help_inherit_criteria" 
-                     class="help" 
+                     i18n:translate="help_inherit_criteria"
+                     class="help"
                      style="visibility:hidden">
                 Toggles inheritance of criteria. For example, if you
                 have specified that only items from the last three days
@@ -140,37 +140,37 @@
                 Topic will also have that criterion automatically.
                 </div>
             </div>
-            
+
             <div class="field">
                  <input type="checkbox"
                         class="noborder"
                         name="acquireCriteria"
-                        value="1" 
+                        value="1"
                         tabindex="4"
-                        onfocus="formtooltip('acquire_criteria_help',1)" 
-                        onblur="formtooltip('acquire_criteria_help',0)" 
+                        onfocus="formtooltip('acquire_criteria_help',1)"
+                        onblur="formtooltip('acquire_criteria_help',0)"
                         tal:attributes="checked python:here.acquireCriteria and 'checked' or None" />
-                 
+
                  <input type="hidden"
                         name="acquireCriteria:default"
                         value="" />
             </div>
 	    </div>
-         
+
         <div class="row">
             <div class="label">&nbsp;</div>
-            
+
             <div class="field">
                 <input class="context"
                        tabindex="5"
-		               type="submit" 
-                       name="Change Topic" 
+		               type="submit"
+                       name="Change Topic"
                        value="Save"
                        i18n:attributes="value"
                        />
             </div>
         </div>
-   
+
         <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>

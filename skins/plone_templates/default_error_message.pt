@@ -14,19 +14,19 @@
                  global err_traceback options/error_traceback|nothing;">
 
         <div tal:condition="python:test(err_type=='NotFound', 1, 0)">
-         
+
             <h1 i18n:translate="heading_site_error_apologies">Our apologies...</h1>
 
             <p i18n:translate="description_site_error_does_not_exist">
             The item you requested does not exist on this server or cannot be served.
             </p>
-            
+
             <p i18n:translate="description_site_error_double_check_or_search">
             Please double check the web address or use the search function on this page to find what you are looking for.
             </p>
-            
+
             <p i18n:translate="description_site_error_mail_admin">
-            If you know you have the correct web address but are encountering an error, please 
+            If you know you have the correct web address but are encountering an error, please
             send a mail to the administrator of this site.
             </p>
 
@@ -39,72 +39,72 @@
             <p i18n:translate="description_site_error_thank_you">
             Thank you.
             </p>
-            
+
             <code>
             404 Not Found
             </code>
 
         </div>
-    
+
         <div tal:condition="python:test(err_type!='NotFound', 1, 0)">
-        
+
         <h1 i18n:translate="heading_site_error">Site error</h1>
-        
+
         <p i18n:translate="description_site_error">
         This site encountered an error trying to fulfill your request.
         The errors were:
         </p>
-        
+
             <div class="group" >
-                
+
                 <span class="legend" i18n:translate="legend_error_details">Error Details</span>
-                
+
                 <div class="row">
                     <div class="label" i18n:translate="label_error_type">
                     Error Type
                     </div>
-            
+
                     <div class="field" i18n:translate=""
                           tal:content="structure err_type">
-                    The rendered error type                
+                    The rendered error type
                     </div>
-                </div>        
-            
+                </div>
+
                 <div class="row" tal:condition="err_message">
                     <div class="label" i18n:translate="label_error_message">
                     Error Message
                     </div>
-            
+
                     <div class="field" i18n:translate=""
                          tal:content="structure err_message|nothing">
                     The rendered error message
                     </div>
-                </div>        
-            
+                </div>
+
                 <div class="row" tal:condition="python:test(err_value and (err_value != err_message), 1, 0)">
                     <div class="label" i18n:translate="label_error_value">
                     Error Value
                     </div>
-            
+
                     <div class="field" i18n:translate=""
                          tal:content="structure err_value">
                     The rendered error value
                     </div>
-                </div>        
-                
+                </div>
+
                 <div class="row">
                     <div class="label" i18n:translate="label_error_time">
                     Request made at
                     </div>
-            
-                    <div class="field" 
+
+                    <div class="field"
                          tal:content="here/ZopeTime">
                     The time the error was encountered
                     </div>
-                </div>        
+                </div>
 
             </div>
-        
+
         </div>
 
 </div>

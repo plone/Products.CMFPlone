@@ -6,55 +6,55 @@
 <tal:head metal:fill-slot="head_slot"
           tal:define="dummy python:request.set('disable_border',1)"></tal:head>
 
-<metal:block metal:fill-slot="main">	  
+<metal:block metal:fill-slot="main">
 
     <h1 i18n:translate="heading_comment">Comment</h1>
 
     <div tal:condition="here/talkback|nothing">
 
         <small>
-            <span i18n:translate="description_above_in_comment_thread" tal:omit-tag="">Above in this comment thread:</span> 
+            <span i18n:translate="description_above_in_comment_thread" tal:omit-tag="">Above in this comment thread:</span>
             <span tal:replace="structure here/aboveInThread"></span>
         </small>
 
         <div class="comment">
-        
+
             <h2>
-                <img tal:replace="structure here/discussionitem_icon.gif" /> 
-                <span tal:replace="here/title_or_id">Comment title</span> 
+                <img tal:replace="structure here/discussionitem_icon.gif" />
+                <span tal:replace="here/title_or_id">Comment title</span>
             </h2>
-            
+
             <div class="byline">
                 <span i18n:translate="posted_by">Posted by</span>
                 <span tal:content="here/Creator">Poster Name</span>
-                <span i18n:translate="posted_on">at</span> 
+                <span i18n:translate="posted_on">at</span>
                 <span tal:replace="python: here.toPortalTime(here.modified(), long_format=1)">8/23/2001 12:40:44 PM</span>
             </div>
-            
+
             <div tal:content="structure here/CookedBody">
-            This is the body text of the comment. 
+            This is the body text of the comment.
             </div>
-    
+
             <metal:block use-macro="here/viewThreadsAtBottom/macros/discussionView" />
 
-            <form name="delete" 
-                  action="" 
+            <form name="delete"
+                  action=""
                   method="post"
                   style="display: inline;"
                   tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
-                  tal:attributes="action string:${here/absolute_url}/deleteDiscussion">       	
-        
-                <input class="destructive" 
-        	       type="submit" 
+                  tal:attributes="action string:${here/absolute_url}/deleteDiscussion">
+
+                <input class="destructive"
+        	       type="submit"
         	       value="Remove This Reply"
                    i18n:attributes="value"
                    />
             </form>
-    
-            
+
+
         </div>
 
-    </div>          
+    </div>
 </metal:block>
 
 <metal:block metal:fill-slot="sub">

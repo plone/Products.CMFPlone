@@ -5,7 +5,7 @@
 <metal:block metal:fill-slot="base">
   <base href="" tal:attributes="href string:${here/absolute_url}/" />
 </metal:block>
-  
+
 <body>
 
 <div metal:fill-slot="header"
@@ -23,23 +23,23 @@
     <form method="post"
           action="wikipage_create_handler"
     	  enctype="multipart/form-data">
-        
+
         <input type="hidden" name="page" value="page" tal:attributes="value page"/>
-        
+
         Format: <span tal:replace="here/page_type">page type</span><br />
 
         <textarea name="text"
                   rows="20"
 		          tal:attributes="readonly python:test(noedit, 'readonly', None);"
                   tal:content="text">wiki content</textarea>
-                  
-       
+
+
         <span tal:condition="noedit">Create Disabled</span>
 
-        <input type="submit" 
+        <input type="submit"
                class="context"
-               name="CreatePage" 
-               value="#" 
+               name="CreatePage"
+               value="#"
                tal:attributes="value string: Create $page"
 	           tal:condition="not: noedit" />
 
@@ -47,7 +47,7 @@
 
             <strong>Log Message</strong> <br />
 	        <textarea name="log"></textarea>
-            
+
 	        <p>
             Log for landmark changes - enter a note characterizing your
             change.  It will be connected with the page version,
@@ -55,8 +55,8 @@
 	        <a href="wikipage_history">page history</a>.
 	        </p>
         </div>
-    
-    </form>			 
+
+    </form>
 
 </div>
 

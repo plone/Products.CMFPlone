@@ -12,21 +12,21 @@
     </div>
 
     <img tal:condition="here/size"
-         src="#" 
+         src="#"
          tal:attributes="src here/absolute_url" />
 
     <p style="margin-top: 2em;" tal:content="here/Description">
     Description
     </p>
-    
+
     <small>
 
     <span i18n:translate="label_size">Size:</span>
 
         <span tal:define="size python:here.getObjSize(here)"
-              tal:content="size">                        
+              tal:content="size">
         File size
-        </span>            
+        </span>
 
         <span tal:condition="python:test(here.size, 0, 1)"
               i18n:translate="no_file_uploaded">

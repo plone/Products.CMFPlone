@@ -5,7 +5,7 @@
 
 <tal:head metal:fill-slot="head_slot"
           tal:define="dummy python:request.set('disable_border',1)"></tal:head>
-      
+
 <body>
 
 
@@ -14,48 +14,48 @@
                       Batch python:modules['Products.CMFPlone'].Batch;
                       DateTime python:modules['DateTime'].DateTime;
                       b_start python:request.get('b_start', 0);">
-    
+
         <h1 i18n:translate="heading_member_listing">Member Listing</h1>
-		
+
 		<p i18n:translate="description_member_listing">
-        A list of the visible members. 
+        A list of the visible members.
         </p>
 
 		<form name="search_results" action="#" method="post"
               tal:condition="members"
               tal:define="batch python:Batch(members, 20, int(b_start), orphan=1)">
-				
+
 		<p>
         <span i18n:translate="label_visible_members">Visible Members</span>:
-        <strong tal:content="python:len(members)">number of members</strong> 
+        <strong tal:content="python:len(members)">number of members</strong>
         </p>
-		  
-        <!-- Navigation -->
-        <div metal:use-macro="here/batch_macros/macros/navigation" />
-		  
-        <div>
-        <metal:block tal:repeat="result batch">
-            <span class="card" tal:define="home python:container.portal_membership.getHomeUrl(result['id'], verifyPermission=1);
-                                           portrait python: here.portal_membership.getPersonalPortrait(result['id']);"> 
-                <a href="#" tal:attributes="href home">                    
-                    <img src="defaultUser.gif" 
-                         alt="" 
-                         border="0" 
-                         width="75" 
-                         height="100" 
-                         tal:attributes="src portrait/absolute_url" />
-                    <br />  
-                    <span tal:content="python:result['id']"> member id</span>
-                </a>
-                <br />	
-            </span>
-        </metal:block>
-        </div>
-        
+
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-        </form>	    
+        <div>
+        <metal:block tal:repeat="result batch">
+            <span class="card" tal:define="home python:container.portal_membership.getHomeUrl(result['id'], verifyPermission=1);
+                                           portrait python: here.portal_membership.getPersonalPortrait(result['id']);">
+                <a href="#" tal:attributes="href home">
+                    <img src="defaultUser.gif"
+                         alt=""
+                         border="0"
+                         width="75"
+                         height="100"
+                         tal:attributes="src portrait/absolute_url" />
+                    <br />
+                    <span tal:content="python:result['id']"> member id</span>
+                </a>
+                <br />
+            </span>
+        </metal:block>
+        </div>
+
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+        </form>
 	<div class="spacer">&nbsp;</div>
     </div>
 </body>

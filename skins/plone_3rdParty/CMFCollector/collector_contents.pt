@@ -47,13 +47,13 @@
     <div tal:define="total here/length;
                      found python:len(items);"
          i18n:translate="collector_issue_number">
-        Found 
-        <span tal:replace="found" i18n:name="found">found</span> 
-        issues. In total there are 
+        Found
+        <span tal:replace="found" i18n:name="found">found</span>
+        issues. In total there are
         <span tal:replace="total" i18n:name="total">total</span>
         issues in this collector.
     </div>
-    
+
     <!-- Navigation -->
     <div metal:use-macro="here/batch_macros/macros/navigation" />
 
@@ -68,7 +68,7 @@
         <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_status">Status</span>&nbsp;</th>
       </tr>
       </thead>
-      
+
       <tbody>
         <metal:block tal:repeat="itemnum python: range(len(batch))">
         <tr tal:define="oddrow repeat/itemnum/odd"
@@ -117,7 +117,7 @@
               ><span tal:condition="numcmts"></span>
             <span tal:condition="not: item/submitter_id|nothing">?</span>
           </td>
-          
+
           <td>
             <span tal:replace="python: here.aCompact(crdate)">CREATEDATE
               </span><span tal:condition="python: datesdiff"> ...
@@ -137,7 +137,7 @@
                   parenthesizing indicates that a security-related item has not
                   yet reached a completed state, ie is still confidential. -->
             <font color="SECURITY COLOR"
-                  tal:attributes="color python: 
+                  tal:attributes="color python:
                                         (security and 'brown' or 'black')">
                 <span i18n:translate=""
 		              tal:content="python: (confidential and '(' or '')
@@ -146,16 +146,16 @@
                                            + (confidential and ')' or '')">
                   STATUS</span>
             </font>
-            
+
             <br />
-            
+
             <span tal:replace="python: '%s %s'
                                        % (item.topic, item.classification)">
               TOPIC/CLASSIFICATION
             </span>
-            
+
             <br />
-            
+
             <span tal:omit-tag="" i18n:translate=""><span tal:replace="item/importance">
               Importance
             </span></span>
@@ -163,7 +163,7 @@
             <span tal:condition="item/assigned_to|nothing"
 	              i18n:translate="collector_issue_assigned_to">,
               Assigned to
-               
+
               <span tal:content="python: ', '.join(item.assigned_to)" i18n:name="names">
                 SUPPORTERS
               </span>
@@ -181,7 +181,7 @@
     <div metal:use-macro="here/batch_macros/macros/navigation" />
 
 
-    <form class="group" 
+    <form class="group"
           action="RETURNHERE" method="get"
           tal:attributes="action python: here.absolute_url()
                                          + '/collector_contents'"
@@ -194,7 +194,7 @@
 
       <div class="row">
           <div class="label" i18n:translate="label_contains">Contains</div>
-    
+
           <div class="field">
              <input type="text" name="SearchableText" size="40"
                     value="TEXT"
@@ -207,7 +207,7 @@
 
           <div class="field">
                 <table>
-                  
+
                   <tr>
                     <th i18n:translate="listingheader_status">Status</th>
                     <th i18n:translate="listingheader_requester">Requester</th>
@@ -231,7 +231,7 @@
                     <td>
                       <select name="Creator:list:ignore_empty" multiple size="SIZE"
                               tal:define="values python: uniquevals('Creator')"
-                              tal:attributes="size python: min(max(len(values), 3), 
+                              tal:attributes="size python: min(max(len(values), 3),
                                                                5)">
                         <option value=""
                                 tal:repeat="creator values"
@@ -254,7 +254,7 @@
                                 tal:repeat="supporter values"
                                 tal:attributes="
                                     value supporter;
-                                    selected python: supporter 
+                                    selected python: supporter
                                              in request.get('supporters', [])"
                                 tal:content="supporter">
                         </option>
@@ -272,7 +272,7 @@
                           Yes </option>
                       </select>
                     </td>
-        
+
                   </tr>
                   <tr>
                     <th i18n:translate="listingheader_topic">Topic</th>
@@ -298,7 +298,7 @@
                     </td>
                     <td>
                       <select name="classifications:list:ignore_empty" multiple size="SIZE"
-                              tal:define="values python: 
+                              tal:define="values python:
                                                  ordered(uniquevals('classification'),
                                                          here.classifications)"
                               tal:attributes="size python: min(max(len(values), 3),
@@ -316,10 +316,10 @@
                     </td>
                     <td>
                       <select name="importances:list:ignore_empty" multiple size="SIZE"
-                              tal:define="values python: 
+                              tal:define="values python:
                                                  ordered(uniquevals('importance'),
                                                          here.importances)"
-                              tal:attributes="size python: min(max(len(values), 3), 
+                              tal:attributes="size python: min(max(len(values), 3),
                                                                5)">
                         <option value="" i18n:translate=""
                                 tal:repeat="importance values"
@@ -332,28 +332,28 @@
                         </option>
                      </select>
                   </td>
-                  
+
                   <td>
                   &nbsp;
                   </td>
-                  
+
                 </tr>
-        
-        
+
+
               </table>
         </div>
-     </div>   
-     
+     </div>
+
      <div class="row">
-     
-        <div class="label">&nbsp;</div>  
+
+        <div class="label">&nbsp;</div>
 
         <div class="field">
             <input class="context" type="Submit" value="Search" i18n:attributes="value" />
             <input class="standalone" type="reset" value="Reset" i18n:attributes="value" />
         </div>
     </div>
-    
+
 </form>
 
 </div>

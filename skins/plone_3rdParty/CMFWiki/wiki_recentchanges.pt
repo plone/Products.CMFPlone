@@ -7,7 +7,7 @@
 
 <h1> <span tal:replace="here/getId">PageID</span> Changes </h1>
 
-<p> Wiki page changes, most recent to least.  See also 
+<p> Wiki page changes, most recent to least.  See also
     <a href="wiki_allpages">All Pages</a>.
 </p>
 

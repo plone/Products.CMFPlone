@@ -16,20 +16,20 @@
 
 
     <form method="post" action="talkback">
-    
+
         <div class="box">
-        
+
             <h6 i18n:translate="box_comment_preview">Comment Preview</h6>
-    
+
             <div class="body">
-    
+
                 <div class="content">
-                
+
                     <h2 tal:content="python: request.form['title']"></h2>
-            
+
                     <div tal:define="pss modules/Products.PythonScripts.standard"
                          tal:replace="structure python: pss.structured_text(request.form['text'])">Text Body</div>
-                    
+
                     <input type="hidden" name="title" value=""
                            tal:attributes="value python: request.form['title']" />
                     <input type="hidden" name="text" value=""
@@ -40,33 +40,33 @@
                            tal:attributes="value python:  request.form['text']" />
                     <input type="hidden" name="Creator" value=""
                            tal:attributes="value member/getUserName" />
-                
+
                     <input class="standalone"
-                           type="submit" 
-                           value="Change Comment" 
+                           type="submit"
+                           value="Change Comment"
                            name=""
                            tabindex=""
                            i18n:attributes="value"
                            tal:define="hId here/getId"
             	           tal:attributes="name python: hId + '/discussion_reply_form:method';
                                            tabindex tabindex/next;" />
-                    
+
                     <input class="standalone"
-                           type="submit" 
-                           value="Add Comment" 
+                           type="submit"
+                           value="Add Comment"
                            name="discussion_reply:method"
                            i18n:attributes="value"
                            tabindex=""
                            tal:attributes="tabindex tabindex/next;" />
-    
-                
+
+
                 </div>
 
             </div>
-            
+
         </div>
-        
-        
+
+
     </form>
 
 </div>

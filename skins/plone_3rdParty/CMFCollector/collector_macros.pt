@@ -20,7 +20,7 @@
         <h1 i18n:translate="">
             <span tal:condition="here/Title" i18n:name="title"
                 tal:replace="here/Title">TITLE</span>
-    
+
             <span tal:condition="here/abbrev" i18n:name="abbrev">
                 [<span tal:replace="here/abbrev|nothing"></span>]
             </span>
@@ -35,18 +35,18 @@
 
     </div>  <!-- End macro: collector_header -->
 
-    
+
     <div metal:define-macro="issue_header"
          tal:define="TITLELEN python: 150;
                      split nocall: modules/string/split;
                      TRUNCDESCR python: 150;
-                     global artifacts 
-                            python:[i for i in here.objectValues() 
+                     global artifacts
+                            python:[i for i in here.objectValues()
                                       if i.getTypeInfo().getId() != 'Collector Issue Transcript']">
 
         <h1 i18n:translate="">
             Issue <tal:block content="here/id" i18n:name="id">ID</tal:block> of
-            <a href="" 
+            <a href=""
                i18n:name="collector_link"
                tal:attributes="href python:here.aq_parent.absolute_url()">
                 <span i18n:translate="collector_link">
@@ -56,7 +56,7 @@
                 </span>
             </a>
         </h1>
-        
+
        <table summary="Issue Characteristics" cellspacing="4">
 
 
@@ -86,13 +86,13 @@
                 </span></span>
            </td>
 
-           <td align="right"><tal:block i18n:translate="label_security_related">Security related</tal:block>:</td> 
+           <td align="right"><tal:block i18n:translate="label_security_related">Security related</tal:block>:</td>
            <td metal:define-slot="issue_security_slot">
              <span tal:condition="not: here/security_related" i18n:translate="">
                No
              </span>
              <span tal:condition="here/security_related" i18n:translate="">
-               Yes 
+               Yes
                <font color="BROWN or BLACK" i18n:name="confidential"
                      tal:attributes="color python:
                                           (here.confidential() and 'brown')
@@ -208,7 +208,7 @@
                              tal:attributes="src python: here.portal_url()
                                                          + '/' + icon;
                                              alt item/Title|nothing" /></a>
-                    </span>                
+                    </span>
                     <a href="ITEM URL" tal:attributes="href item_url"
                        tal:content="item/id">ITEM ID</a>
                     <span tal:replace="python: item.description[:45]
@@ -228,17 +228,17 @@
     </div>  <!-- End macro: collector_issue_header -->
 
     <div metal:define-macro="add_artifacts_table">
-        
+
         <!-- Deprecated in Plone, included for compatibility -->
         <div class="group">
-            <input class="noborder" type=radio name="filetype" value="File" checked /> File 
+            <input class="noborder" type=radio name="filetype" value="File" checked /> File
             <input class="noborder" type=radio name="filetype" value="Image" /> Image
             <br />
             <input type=file name="file" size="20" />
             (Optional) Id:
             <input type=text name="fileid" size="12" />
         </div>
-        
+
     </div>  <!-- End macro: add_artifacts_excerpt -->
 
   </body>

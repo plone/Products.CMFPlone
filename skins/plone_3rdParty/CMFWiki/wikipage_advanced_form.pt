@@ -20,44 +20,44 @@
       <span tal:condition="nothing"> In case master has no "header" macro. </span>
       <div tal:replace="structure here/wikipage_header"> </div>
     </div>
-    
+
     <table>
-    
+
      <tr>
       <th align="left" bgcolor="ffffcc">
           <em tal:content="here/getId"> PageID </em> Attributes
       </th>
      </tr>
-    
+
      <tr>
       <td colspan="2">
-    
+
         <table width="100%">
-    
+
          <tr>
-    
+
           <th> Name: </th>
           <td tal:content="here/getId"> PageID </td>
-    
+
           <th> Local Owner(s): </th>
           <td tal:content="pgowners"> owners </td>
-    
+
          </tr>
          <tr>
           <th> Type: </th>
           <td tal:content="here/page_type"> page_type </td>
          </tr>
         </table>
-    
+
       </td>
      </tr>
-    
+
      <tr>
       <th align="left" bgcolor="ffffcc">
           <em tal:content="here/getId"> PageID </em> Rename and Delete
       </th>
      </tr>
-    
+
      <tr>
       <td tal:define="isFP    python: here.getId() == 'FrontPage';
                       mover   python: here.isAllowed( 'move' );
@@ -68,66 +68,66 @@
                             can not be removed.
         </font>
        </span>
-    
+
        <span tal:condition="python: not mover">
             You can not rename or delete this page.
             <span tal:replace="python: here.whichWho('move')">
             movers </span> do so.
        </span>
-    
+
        <table width="100%" cellspacing="7" tal:condition="showRD" >
         <tr>
-    
-    
+
+
          <td width="50%" nowrap bgcolor="eeeeee">
-    
+
            Rename <strong tal:content="here/getId">PageID</strong> to: <br>
-    
+
            <form method="POST"
                  action="wikipage_deleterename_handler"
                  enctype="multipart/form-data"
 		 tal:attributes="action string:${here/getId}/wikipage_deleterename_handler">
-    
+
            <input type="text" name="new_id" size="25"
                   tal:attributes="value here/getId" /> &nbsp;
-    
+
            <input type="submit" name="Rename" value="Rename" />
-    
+
            </form>
-    
+
          </td>
-    
-    
+
+
          <td align="center" width="50%" nowrap bgcolor="eeeeee">
-    
+
            <form method="POST"
                  action="wikipage_deleterename_handler"
                  enctype="multipart/form-data"
 		 tal:attributes="action string:${here/getId}/wikipage_deleterename_handler">
-    
+
            <input type="hidden" name="confirm_delete:int:default" value="0" />
-    
+
            <input type="checkbox" name="confirm_delete:boolean" />
                   Confirm delete &nbsp;
-    
+
            <input type="submit" name="Delete" value="Delete" />
-    
+
            </form>
-    
+
          </td>
-    
+
         </tr>
        </table>
-    
+
       </td>
      </tr>
-    
+
      <tr>
       <th align="left" bgcolor="ffffcc">
           <em tal:content="here/getId"> PageID </em> Regulations
       </th>
      </tr>
-    
+
      <tr>
       <td>
        <p> This is where wiki page and folder owners choose who can do which of
@@ -137,32 +137,32 @@
            parents).   You can <span tal:condition="here/isRegSetter"> set </span>
            <span tal:condition="python: not here.isRegSetter()"> see </span>
            the page regulations below.
-    
+
        <p> <strong> See <a href="RegulatingYourPages" target="_blank">
            RegulatingYourPages</a> for more info.</strong>
        </p>
-    
+
        <form method="POST"
              action="wikipage_advanced_handler"
              enctype="multipart/form-data"
 	     tal:attributes="action string:${here/getId}/wikipage_advanced_handler">
-    
+
         <table class="group">
          <tr>
-    
+
           <td><br></td>
-    
+
           <th tal:repeat="op here/regOps"
               tal:content="python: modules['string'].capitalize( op )" >
             Operation
           </th>
-    
+
          </tr>
-    
+
          <tr>
-    
+
           <td> <br> </td>
-    
+
           <td align="center" valign="top"
               tal:repeat="op here/regOps"
           >
@@ -173,16 +173,16 @@
            </font>
           </td>
          </tr>
-    
+
          <tr>
-    
+
           <th align="right" valign="bottom">
                 Role categories:
           </th>
-    
+
           <td align="center" valign="middle"
               tal:repeat="op here/regOps">
-    
+
            <select size="1"
                    tal:attributes="name python: '%s-category:string' % op;
                                    disabled python: not here.isRegSetter();
@@ -200,13 +200,13 @@
            </select>
           </td>
          </tr>
-    
+
          <tr>
-    
+
           <th align="right" valign="middle">
               Additional allowed users:
           </th>
-    
+
           <td align="center"
               tal:repeat="op here/regOps"
           >
@@ -224,13 +224,13 @@
                 ></textarea>
             </td>
           </tr>
-    
+
           <tr>
-    
+
            <th align="right" valign="middle">
               Propagate to offspring:
            </th>
-    
+
            <td align="center"
                tal:repeat="op here/regOps"
            >
@@ -251,23 +251,23 @@
                                   "
             />
            </td>
-    
+
           </tr>
-    
+
           <tr>
             <td colspan="5"> <hr /> </td>
           </tr>
-    
+
           <tr>
-    
+
            <th align="right" valign="top">
               Who owns pages created <br>
               from this one:
            </th>
-    
+
            <td colspan="4"
                 tal:define="sub here/subOwner">
-    
+
               <span tal:repeat="who python: ('creator','original_owner','both')">
                <input type="radio" name="who_owns_subs"
                       value="owner"
@@ -281,16 +281,16 @@
                <br>
               </span>
            </td>
-    
+
           </tr>
-    
+
           <tr tal:condition="here/isRegSetter">
            <td colspan="5"> <hr> </td>
           </tr>
-    
+
           <tr tal:condition="here/isRegSetter">
-            <td align="right" colspan="3"> 
-              <input type="submit" 
+            <td align="right" colspan="3">
+              <input type="submit"
                      class="context"
                      name="regulate"
                      value="Set Regulations"
@@ -299,10 +299,10 @@
             </td>
             <td colspan="2"><br></td>
           </tr>
-    
+
         </table>
        </form>
-    
+
       </td>
      </tr>
     </table>

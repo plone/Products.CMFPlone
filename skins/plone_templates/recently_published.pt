@@ -4,9 +4,9 @@
       i18n:domain="plone">
 
   <metal:block fill-slot="head_slot"
-               tal:define="dummy python:request.set('disable_border', 1)" 
+               tal:define="dummy python:request.set('disable_border', 1)"
                />
-    
+
 <div metal:fill-slot="main"
      tal:define="results python:container.portal_catalog(sort_on='modified',sort_order='reverse',review_state='published');
                  Batch python:modules['Products.CMFPlone'].Batch;
@@ -15,7 +15,7 @@
 
 
     <h1 i18n:translate="heading_recently_published">Published items</h1>
-    
+
     <div i18n:translate="description_recently_published" id="description">All published items, latest first.</div>
 
     <form name="searchresults" action="" method="post" tal:condition="results"
@@ -24,54 +24,54 @@
         <tal:results tal:repeat="result batch">
 
             <tal:object define="resultObject result/getObject">
-                
+
 
             <dl>
                 <dt>
-                    <img src="" style="border: 0" 
-                         tal:attributes="src result/getIcon; 
+                    <img src="" style="border: 0"
+                         tal:attributes="src result/getIcon;
                                          alt result/Type" />
-        
-                    <a href="/view" 
+
+                    <a href="/view"
                        tal:content="result/Title"
                        tal:attributes="href resultObject/absolute_url">
                     Title
                     </a>
-                    
+
                 </dt>
-    
+
                 <div class="byline">
-                    by <span tal:replace="result/Creator"></span>, 
-                    <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="here/modified" /> 
+                    by <span tal:replace="result/Creator"></span>,
+                    <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="here/modified" />
                 </div>
 
-                <dd class="link"> 
-                    <a href="/view" 
+                <dd class="link">
+                    <a href="/view"
                        tal:content="structure result/Description"
                        tal:attributes="href resultObject/absolute_url">
                     Description
                     </a>
                 </dd>
             </dl>
-            
+
             </tal:object>
 
         </tal:results>
-        
+
         <div class="spacer">
         &nbsp;
         </div>
-            
+
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
         </form>
-          
+
     <p tal:condition="not: results" i18n:translate="no_new_news">
         No items have been published.
-    </p>		
- 
+    </p>
+
   </div>
 
-  
+
 </html>

@@ -62,7 +62,7 @@
         <input type="hidden" name="userid" value="userid"
 		tal:attributes="value user/getId" />
         </span>
-	
+
         <h4>Candidates</h4>
 	Search string: <span tal:content="request/searchstring | default">none specified</span>
         <table class="listing"

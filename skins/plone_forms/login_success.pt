@@ -25,7 +25,7 @@
                      validate_email here/validate_email;">
 
             <metal:block tal:on-error="nothing"
-                 tal:define="d_reg python: member.setProperties(last_login_time=login_time); 
+                 tal:define="d_reg python: member.setProperties(last_login_time=login_time);
                              ereg python: member.setProperties(login_time=here.ZopeTime());
                              global actions here/portal_actions/listFilteredActionsFor;">
             </metal:block>
@@ -39,34 +39,34 @@
                 </div>
 
                 <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
-                
+
                 <p i18n:translate="description_logged_in_explain">
                 You will notice that the top right bar has changed, it now
                 contains several personalized items. These will stay there
                 as long as you are logged in, and allow you to control your
                 settings and your personal area.
                 </p>
-                
+
                 <p i18n:translate="description_newbie_pointers">
                 You might want to head over to
-                
+
                     <span i18n:name="your_folder">
-                        <a href="" 
+                        <a href=""
                            i18n:translate="description_newbie_pointers_yourfolder_link"
                            tal:define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']"
                            tal:condition="mystuff" tal:attributes="href python:mystuff.pop()"
                            >your folder</a>
                     </span>
-                                
+
                 and add some content, or
-                 
+
                     <span i18n:name="set_up_your_preferences">
-                        <a href="" 
+                        <a href=""
                            i18n:translate="description_newbie_pointers_preferences_link"
                            tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
                            tal:condition="prefs" tal:attributes="href python:prefs.pop()"
                            >set up your Preferences</a></span>.
-                
+
                 </p>
 
 

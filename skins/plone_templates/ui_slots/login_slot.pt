@@ -3,7 +3,7 @@
       i18n:domain="plone">
 
 <body tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                  tabindex python:Iterator()"> 
+                  tabindex python:Iterator()">
 
 <!-- The Log in box -->
 
@@ -16,24 +16,24 @@
         <h5 i18n:translate="box_sign_in">Log in</h5>
 
         <div class="body">
-        
+
             <div class="content odd">
                 <form action="logged_in"
                       method="post"
                       tal:attributes="action string:$portal_url/logged_in">
-    
+
                     <input type="hidden" name="came_from" value=""
                            tal:condition="python:request.get('came_from', '')"
                            tal:attributes="value request/came_from;
                                            tabindex tabindex/next" />
-    
+
                     <label for="__ac_name"><strong i18n:translate="label_user_name">Name</strong> <br />
                     <input type="text" id="__ac_name" name="__ac_name" size="12"
                            tal:attributes="value python:request.get('__ac_name', ''); tabindex tabindex/next" alt="Username" accesskey="accesskeys-login" i18n:attributes="alt" />
 		    </label>
-    
+
                     <br />
-    
+
                     <label for="__ac_password"><strong i18n:translate="label_password">Password</strong>  <br />
                     <input tal:attributes="tabindex tabindex/next" type="password" id="__ac_password" name="__ac_password" size="12" alt="Password" accesskey="accesskeys-login" i18n:attributes="alt accesskey" />
 		    </label>
@@ -41,39 +41,39 @@
                     <br />
                     &nbsp;
                     <br />
-    
-                    <input class="context" 
-                           type="submit" 
+
+                    <input class="context"
+                           type="submit"
                            name="submit"
-                           value="Log in" 
+                           value="Log in"
                            tal:attributes="tabindex tabindex/next"
-                           accesskey="accesskeys-login" 
-			   i18n:attributes="value alt" 
+                           accesskey="accesskeys-login"
+			   i18n:attributes="value alt"
 			   />
                 </form>
             </div>
-    
-            <div class="content even"> 
+
+            <div class="content even">
                 <a href="mail_password_form"
                    tal:attributes="href string:$portal_url/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
                    <img tal:replace="structure portal_object/linkTransparent.gif" />
                    <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
                 </a>
             </div>
-    
+
             <div class="content odd"
                 tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
                 tal:condition="python:test(join and hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
-          
+
                 <a href="" tal:attributes="href python:join.pop()" accesskey="accesskeys-login" i18n:attributes="accesskey" >
                     <img tal:replace="structure portal_object/linkTransparent.gif" />
                     <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
                 </a>
-    
+
             </div>
 
         </div>
-        
+
     </div>
 
 </div>

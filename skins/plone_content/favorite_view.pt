@@ -6,17 +6,17 @@
 
   <div metal:fill-slot="main">
 
-	  <h1>  
-      <span i18n:translate="heading_link_to">Link to</span> 
-      <a href="#" 
+	  <h1>
+      <span i18n:translate="heading_link_to">Link to</span>
+      <a href="#"
          tal:attributes="href python:(container.portal_url.getPortalObject().absolute_url() + '/' + here.remote_url)"
 	     tal:content="here/title_or_id">zope.org</a>
       </h1>
 
 		<p>
-		<span i18n:translate="link_created_by">Created by</span> 
-        <a href="#" tal:content="here/Creator">bob</a>. 
-		<span i18n:translate="link_last_modified">Last modified:</span> 
+		<span i18n:translate="link_created_by">Created by</span>
+        <a href="#" tal:content="here/Creator">bob</a>.
+		<span i18n:translate="link_last_modified">Last modified:</span>
         <span tal:define="DateTime python:modules['DateTime'].DateTime;"
 		    				 tal:replace="python:DateTime(here.ModificationDate()).strftime('%m/%d/%Y %I:%M %p')">August 16, 2001 at 23:35:59</span>
 		</p>

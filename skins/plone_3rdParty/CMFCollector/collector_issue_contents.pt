@@ -34,17 +34,17 @@
     <div class="row" tal:define="entries here/action_number">
 
         <div class="box">
-    
-            <h6 i18n:translate="box_transcript_for_issue"> 
+
+            <h6 i18n:translate="box_transcript_for_issue">
                 Transcript for Issue
                 <tal:block content="here/id" i18n:name="id">ID</tal:block>
                 (<tal:block content="entries" i18n:name="num">7</tal:block>
-    
+
                  <tal:block condition="python:entries == 1">
                  <span i18n:name="listing_entry" i18n:translate="entry_singular">entry</span>
                  <tal:block i18n:name="listing_entries"></tal:block>
                  </tal:block>
-                 
+
                  <tal:block condition="python:entries != 1">
                  <tal:block i18n:name="listing_entry"></tal:block>
                  <span i18n:name="listing_entries" i18n:translate="entries_plural">entries</span>
@@ -56,10 +56,10 @@
                           TRANSCRIPT
                 </div>
             </div>
-                
+
         </div>
     </div>
-        
+
   </div>
 
 </div>

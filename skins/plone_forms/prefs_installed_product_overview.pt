@@ -3,7 +3,7 @@
       metal:use-macro="here/main_template/macros/master">
 
 <body>
-	   
+
 <div metal:fill-slot="main" i18n:domain="plone">
 
 <h1 tal:content="string:Status of Product ${here/id}"> Installed Product </h1>
@@ -28,12 +28,12 @@
     <tr tal:condition="here/hasError">
         <th> Error </th>
         <td tal:condition="here/hasError">
-            <img src="/misc_/PageTemplates/exclamation.gif"> 
-            There were Errors during install, check Transcript 
+            <img src="/misc_/PageTemplates/exclamation.gif">
+            There were Errors during install, check Transcript
         </td>
     </tr>
 
-    
+
 </table>
 
 <h2>Transcript</h2>

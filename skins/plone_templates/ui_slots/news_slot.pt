@@ -14,30 +14,30 @@
      tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
 
     <div class="box" id="portlet-news">
-    
+
         <h5 i18n:translate="box_news">News</h5>
 
         <div class="body">
 
             <tal:block tal:repeat="obj results">
-                    
+
                 <div tal:define="oddrow repeat/obj/odd"
                      tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
-            
+
                     <a href=""
                        tal:attributes="href obj/getURL">
                         <img tal:replace="structure here/newsitem_icon.gif" />
                         <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Extended Calendar Product </span>
                     </a>
-            
+
                     <div class="boxDetails"
                          tal:content="python:here.toPortalTime(obj.Date)">July 7, 08:11</div>
                 </div>
-        
+
             </tal:block>
 
             <div class="content odd">
-            
+
                 <a href=""
                    class="more"
                    tal:attributes="href string:${portal_url}/news"
@@ -46,12 +46,12 @@
                     More...
                 </a>
 
-            </div>            
-    
+            </div>
+
         </div>
 
     </div>
-        
+
 </div>
 
 </body>

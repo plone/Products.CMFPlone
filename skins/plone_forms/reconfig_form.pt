@@ -11,22 +11,22 @@
 
 <div metal:fill-slot="main"
      tal:define="errors python:request.get('errors', {})">
-	
+
     <h1 i18n:translate="heading_plone_setup">Plone Setup</h1>
-    
+
     <p i18n:translate="description_plone_setup">
     Here you configure some of the settings that affect Plone.
     </p>
-    
+
     <form class="group"
-          action="" 
-          name="reconfig" 
-          method="post" 
+          action=""
+          name="reconfig"
+          method="post"
           tal:attributes="action python:here.portal_form_url(template.id)"
           tal:define="props python:here.portal_properties;">
 
         <span class="legend" i18n:translate="legend_plone_details">Plone Details</span>
-		
+
         <div class="row"
              tal:define="email_from_name request/email_from_name|site_properties/email_from_name;
                          error_email_from_name errors/email_from_name | nothing;">
@@ -34,32 +34,32 @@
                 <span i18n:translate="label_portal_from_name">Portal 'From' name</span>
 
                 <div id="portal_from_name_help"
-                     i18n:translate="help_portal_from_name" 
-                     class="help" 
+                     i18n:translate="help_portal_from_name"
+                     class="help"
                      style="visibility:hidden">
                 When Plone generates mail, it uses this name
                 as its (apparent) sender.
                 </div>
             </div>
-            
-            <div class="field">                
-              
+
+            <div class="field">
+
                 <div tal:condition="error_email_from_name">
                     <tal:block i18n:translate="" content="error_email_from_name">Error</tal:block>
                     <br />
                 </div>
-                
+
                 <input name="email_from_name"
                        size="30"
                        value=""
                        tabindex=""
-                       onfocus="formtooltip('portal_from_name_help',1)" 
-                       onblur="formtooltip('portal_from_name_help',0)" 
+                       onfocus="formtooltip('portal_from_name_help',1)"
+                       onblur="formtooltip('portal_from_name_help',0)"
                        tal:attributes="value email_from_name;
                                        tabindex tabindex/next;" />
             </div>
         </div>
-		
+
         <div class="row"
              tal:define="email_from_address request/email_from_address|site_properties/email_from_address;
                          error_email_from_address errors/email_from_address | nothing;">
@@ -67,33 +67,33 @@
                 <span i18n:translate="label_portal_from_address">Portal 'From' address</span>
 
                 <div id="portal_from_address_help"
-                     i18n:translate="help_portal_from_address" 
-                     class="help" 
+                     i18n:translate="help_portal_from_address"
+                     class="help"
                      style="visibility:hidden">
                 When Plone generates mail, it uses this address
                 as its (apparent) return address.
                 </div>
             </div>
-            
+
             <div class="field"
                  tal:attributes="class python:test(error_email_from_address, 'field error', 'field')">
-            
+
                 <div tal:condition="error_email_from_address">
                     <tal:block i18n:translate="" content="error_email_from_address">Error</tal:block>
                     <br />
                 </div>
-                                 
+
                 <input name="email_from_address"
                        size="30"
                        value=""
                        tabindex=""
-                       onfocus="formtooltip('portal_from_address_help',1)" 
-                       onblur="formtooltip('portal_from_address_help',0)" 
+                       onfocus="formtooltip('portal_from_address_help',1)"
+                       onblur="formtooltip('portal_from_address_help',0)"
                        tal:attributes="value email_from_address;
                                        tabindex tabindex/next;" />
             </div>
         </div>
-		
+
         <div class="row"
              tal:define="smtp_server request/smtp_server | site_properties/smtp_server;
                          error_smtp_server errors/smtp_servers | nothing;">
@@ -101,63 +101,63 @@
                 <span i18n:translate="label_smtp_server">SMTP server</span>
 
                 <div id="smtp_server_help"
-                     i18n:translate="help_smtp_server" 
-                     class="help" 
+                     i18n:translate="help_smtp_server"
+                     class="help"
                      style="visibility:hidden">
                 This is the address of your local SMTP (outgoing
                 mail) server. Usually "localhost", unless you use an
                 external server to send mail.
                 </div>
             </div>
-            
+
             <div class="field"
                  tal:attributes="class python:test(error_smtp_server, 'field error', 'field')">
-            
+
                 <div tal:condition="error_smtp_server">
                     <tal:block i18n:translate="" content="error_smtp_server">Error</tal:block>
                     <br />
                 </div>
-                                                 
-                <input name="smtp_server" 
+
+                <input name="smtp_server"
                        value=""
                        size="30"
                        tabindex=""
-                       onfocus="formtooltip('smtp_server_help',1)" 
-                       onblur="formtooltip('smtp_server_help',0)" 
-                       tal:attributes="value smtp_server; 
+                       onfocus="formtooltip('smtp_server_help',1)"
+                       onblur="formtooltip('smtp_server_help',0)"
+                       tal:attributes="value smtp_server;
                                        tabindex tabindex/next;" />
             </div>
         </div>
 
-        <div class="row" 
+        <div class="row"
              tal:define="title request/title | props/title;
                          error_title errors/title | nothing;">
-                         
+
             <div class="label required">
                 <span i18n:translate="label_portal_title">Portal title</span>
 
                 <div id="portal_title_help"
-                     i18n:translate="help_portal_title" 
-                     class="help" 
+                     i18n:translate="help_portal_title"
+                     class="help"
                      style="visibility:hidden">
                 This is the title of your Plone portal.
                 </div>
             </div>
-            
+
             <div class="field"
                  tal:attributes="class python:test(error_title, 'field error', 'field')">
-            
+
                 <div tal:condition="error_title">
                     <tal:block i18n:translate="" content="error_title">Error</tal:block>
                     <br />
                 </div>
 
-                <input name="title" 
+                <input name="title"
                        size="30"
                        value=""
                        tabindex=""
-                       onfocus="formtooltip('portal_title_help',1)" 
-                       onblur="formtooltip('portal_title_help',0)" 
+                       onfocus="formtooltip('portal_title_help',1)"
+                       onblur="formtooltip('portal_title_help',0)"
                        tal:attributes="value title;
                                        tabindex tabindex/next;" />
             </div>
@@ -170,21 +170,21 @@
                 <span i18n:translate="label_portal_description">Portal description</span>
 
                 <div id="portal_description_help"
-                     i18n:translate="help_portal_description" 
-                     class="help" 
+                     i18n:translate="help_portal_description"
+                     class="help"
                      style="visibility:hidden">
                 This description is made available via syndicated
                 content and elsewhere.  It should be fairly brief.
                 </div>
             </div>
-            
+
             <div class="field">
-                <textarea cols="30" 
-                          rows="6" 
+                <textarea cols="30"
+                          rows="6"
                           name="description"
                           tabindex=""
-                          onfocus="formtooltip('portal_description_help',1)" 
-                          onblur="formtooltip('portal_description_help',0)" 
+                          onfocus="formtooltip('portal_description_help',1)"
+                          onblur="formtooltip('portal_description_help',0)"
                           tal:attributes="tabindex tabindex/next"
                           tal:content="description">Description</textarea>
             </div>
@@ -197,7 +197,7 @@
                     i18n:translate="help_default_language"
                     class="help"
                     style="visibility:hidden">
-               Specify the default language setting for newly created items. 
+               Specify the default language setting for newly created items.
                </div>
             </div>
             <div class="field">
@@ -217,7 +217,7 @@
                            tal:content="structure python:language[1]" />
                 </select>
             </div>
-        </div> 
+        </div>
 
         <div class="row"
              tal:define="localTimeFormat request/localTimeFormat | site_properties/localTimeFormat;
@@ -234,23 +234,23 @@
             </div>
             <div class="field"
                  tal:attributes="class python:test(error_localTimeFormat, 'field error', 'field')">
-                 
+
                 <div tal:condition="error_localTimeFormat">
                     <tal:block i18n:translate="" content="error_localTimeFormat">Error</tal:block>
                     <br />
                 </div>
-                     
+
                 <input type="text"
                        name="localTimeFormat"
                        value=""
                        tabindex=""
                        onfocus="formtooltip('short_date_format_help',1)"
-                       onblur="formtooltip('short_date_format_help',0)" 
+                       onblur="formtooltip('short_date_format_help',0)"
                        tal:attributes="value localTimeFormat;
                                        tabindex tabindex/next;" />
             </div>
         </div>
-        
+
         <div class="row"
             tal:define="localLongTimeFormat request/localLongTimeFormat | site_properties/localLongTimeFormat;
                         error_localLongTimeFormat errors/localLongTimeFormat | nothing;">
@@ -267,12 +267,12 @@
 
             <div class="field"
                  tal:attributes="class python:test(error_localLongTimeFormat, 'field error', 'field')">
-                 
+
                  <div tal:condition="error_localLongTimeFormat">
                      <tal:block i18n:translate="" content="error_localLongTimeFormat">Error</tal:block>
                      <br />
                  </div>
-                 
+
                  <input type="text"
                         name="localLongTimeFormat"
                         size="45"
@@ -282,11 +282,11 @@
                         onblur="formtooltip('long_date_format_help',0)"
                         tal:attributes="value localLongTimeFormat;
                                         tabindex tabindex/next;" />
-                        
+
             </div>
-               
+
         </div>
-        
+
         <div class="row"
             tal:define="default_skin request/default_skin | here/portal_skins/getDefaultSkin;
                         error_default_skin errors/default_skin | nothing;">
@@ -296,7 +296,7 @@
                     i18n:translate="help_default_look"
                     class="help"
                     style="visibility:hidden">
-               Specify the default site wide look to be used for users. 
+               Specify the default site wide look to be used for users.
                </div>
             </div>
             <div class="field">
@@ -316,51 +316,51 @@
                 </select>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_password_policy">Password policy</span>
 
                 <div id="password_policy_help"
-                     i18n:translate="help_password_policy" 
-                     class="help" 
+                     i18n:translate="help_password_policy"
+                     class="help"
                      style="visibility:hidden">
                 Selects if the users can choose their initial password or not. It's easier
-                to create bogus accounts if the password is not generated, so if this is a concern, 
+                to create bogus accounts if the password is not generated, so if this is a concern,
                 choose "Generate".
                 </div>
             </div>
-            
+
             <div class="field">
                 <span tal:define="validateChecked python:site_properties.validate_email;
                                   allowEnterChecked python:not site_properties.validate_email;
                                   tabindex tabindex/next;">
-                    <input class="noborder" 
-                           type="radio" 
+                    <input class="noborder"
+                           type="radio"
                            name="validate_email:int"
-                           id="validate_email_on" 
+                           id="validate_email_on"
                            value="1"
                            tabindex=""
-                           onfocus="formtooltip('password_policy_help',1)" 
-                           onblur="formtooltip('password_policy_help',0)" 
+                           onfocus="formtooltip('password_policy_help',1)"
+                           onblur="formtooltip('password_policy_help',0)"
                            tal:attributes="checked validateChecked;
                                            tabindex tabindex;" />
-                    
-                    <label for="validate_email_on" i18n:translate="label_generate_and_email_passwords">Generate and e-mail members' initial password</label> 
-                
+
+                    <label for="validate_email_on" i18n:translate="label_generate_and_email_passwords">Generate and e-mail members' initial password</label>
+
                     <br />
-                
-                    <input class="noborder" 
-                           type="radio" 
+
+                    <input class="noborder"
+                           type="radio"
                            name="validate_email:int"
                            id="validate_email_off"
                            value="0"
                            tabindex=""
-                           onfocus="formtooltip('password_policy_help',1)" 
-                           onblur="formtooltip('password_policy_help',0)" 
+                           onfocus="formtooltip('password_policy_help',1)"
+                           onblur="formtooltip('password_policy_help',0)"
                            tal:attributes="checked allowEnterChecked;
                                            tabindex tabindex;" />
-                
+
                     <label for="validate_email_off" i18n:translate="label_allow_members_to_create_password">Allow members to select their initial password</label>
                 </span>
             </div>
@@ -372,56 +372,56 @@
                 <span i18n:translate="label_allow_sendto">Enable 'Send this page to somebody' Feature</span>
 
                 <div id="allow_sendto_help"
-                     i18n:translate="help_allow_sendto" 
-                     class="help" 
+                     i18n:translate="help_allow_sendto"
+                     class="help"
                      style="visibility:hidden">
                 Select whether you want to enable the 'Send this page to somebody' feature.
-                </div>                
+                </div>
             </div>
             <div class="field"
                  tal:define="allow_sendto request/allow_sendto | site_properties/allow_sendto;
-                 tabindex tabindex/next;"> 
-                <input type="radio" 
-                       class="noborder" 
-                       name="allow_sendto" 
+                 tabindex tabindex/next;">
+                <input type="radio"
+                       class="noborder"
+                       name="allow_sendto"
                        value="on"
-                       id="cb_allow_sendto" 
+                       id="cb_allow_sendto"
                        tabindex=""
-                       onfocus="formtooltip('allow_sendto_help',1)" 
+                       onfocus="formtooltip('allow_sendto_help',1)"
                        onblur="formtooltip('allow_sendto_help',0)"
                        tal:attributes="tabindex tabindex;
-                                       checked allow_sendto" 
+                                       checked allow_sendto"
                        />
-                
+
                 <label for="cb_allow_sendto" i18n:translate="yes">Yes</label>
-                
+
                 <br />
-                
-                <input type="radio" 
-                       class="noborder" 
-                       name="allow_sendto" 
+
+                <input type="radio"
+                       class="noborder"
+                       name="allow_sendto"
                        value=""
                        id="cb_noallow_sendto"
                        tabindex=""
-                       onfocus="formtooltip('allow_sendto_help',1)" 
+                       onfocus="formtooltip('allow_sendto_help',1)"
                        onblur="formtooltip('allow_sendto_help',0)"
                        tal:attributes="tabindex tabindex;
                                        checked not:allow_sendto;"
                        />
-                
+
                 <label for="cb_noallow_sendto" i18n:translate="no">No</label>
             </div>
         </div>
-                
+
         <div class="row">
             <div class="label">&nbsp;</div>
             <div class="field">
                 <input class="context"
-                       tabindex="" 
-                       type="submit" 
-                       name="submit" 
+                       tabindex=""
+                       type="submit"
+                       name="submit"
                        value="Save"
-                       i18n:attributes="value" 
+                       i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>

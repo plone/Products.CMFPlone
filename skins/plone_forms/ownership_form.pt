@@ -4,27 +4,27 @@
       i18n:domain="plone">
 
 <div metal:fill-slot="main">
-        
+
     <h1 i18n:translate="heading_change_ownership">Change ownership</h1>
-    
+
     <p i18n:translate="description_change_ownership">
     You can change the current objects ownership to
-    another member easily from this form.  
+    another member easily from this form.
     </p>
 
     <form class="group"
           action="change_ownership"
-          name="ownership_form" 
+          name="ownership_form"
           method="post">
-        
+
         <span class="legend" i18n:translate="legend_change_ownership">Change Ownership</span>
 
         <div class="row" >
             <div class="label required">
                 <span i18n:translate="label_new_owner">New owner</span>
-                <div id="id_help" 
+                <div id="id_help"
                      i18n:translate="id_help"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Changes the ownership of the current object.
                 </div>
@@ -42,7 +42,7 @@
                 </select>
             </div>
         </div>
-     
+
         <div class="row">
             <div class="label required">
                 <span i18n:translate="label_subobjects">Subobjects</span>
@@ -60,25 +60,25 @@
                        onblur="formtooltip('id_recurse',0)" />
             </div>
         </div>
-        
+
         <metal:block tal:replace="nothing">
         XXX Noah complained about Creator being Owner.  This should be fixed.  it causes nightmares when
             not persistenting the Creator info seperate from Owner().  If it ever gets fixed this will
             break.
         </metal:block>
-        
+
         <div class="row">
             <div class="label">&nbsp;</div>
             <div class="field">
                 <input class="context"
-                       type="submit" 
-                       name="save" 
+                       type="submit"
+                       name="save"
                        value="Save"
                        i18n:attributes="value"
                        />
             </div>
         </div>
-    </form>   
+    </form>
 
 </div>
 

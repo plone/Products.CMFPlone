@@ -22,10 +22,10 @@
         <div class="row">
             <div class="label" i18n:translate="label_size">Size</div>
 
-            <div class="field" 
-                  tal:content="size">                        
+            <div class="field"
+                  tal:content="size">
             File size
-            </div>            
+            </div>
 
             <span tal:condition="python:test(size,0,1)" i18n:translate="no_file_uploaded">
               (No file has been uploaded)
@@ -37,7 +37,7 @@
             <div class="field" tal:content="here/content_type">
             Content type
             </div>
-        </div>    
+        </div>
 
         <div class="row">
             <div class="label">&nbsp;</div>
@@ -55,14 +55,14 @@
 
     <div class="row"
          tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
-            
+
             <h2 i18n:translate="heading_file_contents">File contents</h2>
-            
+
             <pre tal:content="here/data">
             </pre>
     </div>
-    
-    
+
+
 </div>
 
 </body>

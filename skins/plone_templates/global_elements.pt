@@ -4,7 +4,7 @@
 
 
 <!-- THE SKIN SWITCHER TABS DEFINITION -->
-<div id="switchbar" metal:define-macro="skin_tabs">   
+<div id="switchbar" metal:define-macro="skin_tabs">
   <tal:comment replace="nothing">
   <a href="/">Public View</a>
   <a href="./manage_main" class="selected">Admin View</a>
@@ -99,7 +99,7 @@
           i18n:translate="you_are_not_logged_in">
               You are not logged in
     </li>
-    <tal:actions tal:repeat="action python:display_actions"> 
+    <tal:actions tal:repeat="action python:display_actions">
         <li>
             <a href=""
                tal:attributes="href action/url"

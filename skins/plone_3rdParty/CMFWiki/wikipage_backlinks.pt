@@ -22,28 +22,28 @@
         <div tal:replace="structure here/wikipage_header"> </div>
 
     </div>
-    
+
     <h2> Backlinks and Nesting Information </h2>
-    
+
     <p> <a href="thispage" tal:attributes="href here/wiki_page_url"
         ><span tal:replace="thispage">thispage</span></a>
         is linked to from the following pages:
     </p>
-    
+
     <p tal:condition="python: not mover">
         <font color="gray"> (You're not allowed to change this page's lineage)
         </font>
     </p>
-    
+
     <form action="wikipage_reparent_handler">
-    
+
     <table>
-    
+
      <tr>
       <th align="left" width="10%"> Parent? </th>
       <th align="left" width="90%"> Backlink </th>
      </tr>
-    
+
      <tr tal:repeat="link here/backlinks">
       <td> <input type="checkbox"
                   name="parents"
@@ -59,7 +59,7 @@
            >referrer</a>
       </td>
      </tr>
-    
+
      <tr tal:condition="mover">
       <td colspan="2" align="left">
         <input type="submit" class="context" value="Re-parent" />
@@ -68,23 +68,23 @@
      </tr>
     </table>
     </form>
-    
+
     <div tal:replace="nothing">
       No time for this right now, but this is broken - chrism
       <p>
-    <a href="" 
+    <a href=""
        name="nesting"
        tal:attributes="href string:../${here/getId}"
        tal:content="here/getId"></a> nesting
     context in the Wiki folder, including offspring, ancestors, and siblings.
     (Branches are abbreviated with '...' elipses after the first time they're
     spelled out.)
-    
+
     <span tal:replace="python:here.wiki_context(request, with_siblings=1)" />
 
     </div>
-    
-    
+
+
 </div>
 </body>
 </html>

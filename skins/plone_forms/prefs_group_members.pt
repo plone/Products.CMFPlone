@@ -26,7 +26,7 @@
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<ul id="contentTabs"> 
+<ul id="contentTabs">
   <li class="">
     <a href=""
        tal:attributes="href string:prefs_group_details?groupname=${groupname}"
@@ -40,7 +40,7 @@
 </ul>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
-    
+
 <div class="document editable"
    tal:condition="not:group | nothing">
     <h1 i18n:translate="">Group Members</h1>
@@ -142,7 +142,7 @@
 	</div>
 
 </div>
-    
+
 </div>
 
 </body>

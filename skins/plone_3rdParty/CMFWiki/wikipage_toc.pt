@@ -5,7 +5,7 @@
 
 <div metal:fill-slot="header"
      tal:define="global wiki_header_present python:1">
-  
+
   <div tal:replace="structure here/wikipage_header">
   </div>
 
@@ -21,17 +21,17 @@
       <span tal:condition="nothing"> In case master has no "header" macro. </span>
       <div tal:replace="structure here/wikipage_header"> </div>
     </div>
-    
+
     <h1><span tal:replace="here/getId">PageID</span> contents</h1>
-    
+
     <!-- this should really not depend on nesting coming back as HTML,
          but I don't have time to fix it right now - chrism  -->
     <p tal:content="structure nesting"> Nesting goes here. </p>
-    
+
     <h1><span tal:replace="here/getId">PageID</span> singletons</h1>
-    
+
     <small>(singletons have no parents and no offspring)</small>
-    
+
     <ul>
      <li tal:repeat="single singletons">
       <a href="single"

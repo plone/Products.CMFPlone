@@ -12,7 +12,7 @@
      tal:define="editor python:here.isAllowed( 'edit' )">
 
     <div tal:condition="not: wiki_header_present|nothing">
-    
+
         <span tal:condition="nothing"> In case master has no "header" macro. </span>
         <div tal:replace="structure here/wikipage_header"> </div>
     </div>
@@ -20,7 +20,7 @@
     <h1>
         <span tal:condition="python: not editor"> View </span>
         <span tal:condition="editor"> Edit </span>
-        the <span tal:content="here/getId"> PageName </span> wiki page 
+        the <span tal:content="here/getId"> PageName </span> wiki page
     </h1>
 
     <p tal:condition="python: not editor">
@@ -42,11 +42,11 @@
                    tal:attributes="value here/getId" />
 
             <p>Format: <strong tal:content="here/page_type"> page_type </strong></p>
-        
+
             Title:<br />
             <input name="title"
                    tal:attributes="value here/title" />
-                   
+
             <br />
             Body:<br />
             <textarea wrap="soft" name="text"

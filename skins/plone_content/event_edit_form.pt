@@ -2,7 +2,7 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
-      
+
 <body>
 
     <div metal:fill-slot="main"
@@ -11,37 +11,37 @@
     <h1 i18n:translate="heading_edit_item">
     Edit
         <span i18n:name="itemtype">
-              <span i18n:translate=""         
-                    tal:content="python:here.getTypeInfo().Title()" 
+              <span i18n:translate=""
+                    tal:content="python:here.getTypeInfo().Title()"
                     tal:omit-tag="">Item type</span>
-        </span> 
+        </span>
     </h1>
-    
+
     <p i18n:translate="description_edit_event">
     Fill in the details of the event you want to add.
     </p>
 
-    
+
     <form class="group"
-          name="edit_form" 
-          action="event_edit" 
-          method="post" 
+          name="edit_form"
+          action="event_edit"
+          method="post"
           enctype="multipart/form-data"
           tal:attributes="action python:here.portal_form_url(template.id)" >
 
-    <span class="legend" i18n:translate="legend_event_details">Event Details</span>    
-      
-        <div class="row" 
+    <span class="legend" i18n:translate="legend_event_details">Event Details</span>
+
+        <div class="row"
              tal:condition="python:member.getProperty('visible_ids', None)"
              tal:define="error_id errors/id | nothing;
                          id python:request.get('id', test(here.show_id(),here.getId(),''));">
-			 
+
             <div class="label">
                 <span i18n:translate="label_name">Name</span>
-            
-                <div id="id_help" 
+
+                <div id="id_help"
                      i18n:translate="help_name"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Enter the Name of the event. This is the part that will show up as part
                 of the web address. This should be short, descriptive
@@ -49,38 +49,38 @@
                 "expense-report-2002"
                 </div>
             </div>
-	    
+
             <div class="field">
-                <input type="text" 
-                       name="id" 
+                <input type="text"
+                       name="id"
                        value="#"
-                       size="25" 
+                       size="25"
                        tabindex=""
                        tal:attributes="value id;
-                                       tabindex tabindex/next;" 
-                       onfocus="formtooltip('id_help',1)" 
+                                       tabindex tabindex/next;"
+                       onfocus="formtooltip('id_help',1)"
                        onblur="formtooltip('id_help',0)" />
             </div>
-	    
+
         </div>
-        <input type="hidden" 
-               name="id" 
+        <input type="hidden"
+               name="id"
                tal:condition="python:not member.getProperty('visible_ids', None)"
-               tal:attributes="value python:request.get('id', here.getId())" 
+               tal:attributes="value python:request.get('id', here.getId())"
                />
-        
+
 
         <div class="row"
              tal:define="error_title errors/title|nothing;
-                         Title request/title | here/Title;"> 
+                         Title request/title | here/Title;">
 
             <div class="label required">
             <span i18n:translate="label_title">Title</span>
-                <div id="title_help" 
+                <div id="title_help"
                      i18n:translate="help_title"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
-                Enter the title of this event. 
+                Enter the title of this event.
                 </div>
 
             </div>
@@ -93,30 +93,30 @@
                     <br />
                 </div>
 
-                <input type="text" 
-                       name="title" 
-                       value="#" 
-                       size="30" 
+                <input type="text"
+                       name="title"
+                       value="#"
+                       size="30"
                        tabindex=""
                        tal:attributes="value Title;
-                                       tabindex tabindex/next;" 
-                       onfocus="formtooltip('title_help',1)" 
+                                       tabindex tabindex/next;"
+                       onfocus="formtooltip('title_help',1)"
                        onblur="formtooltip('title_help',0)" />
 
             </div>
         </div>
 
-        <div class="row"> 
+        <div class="row">
             <div class="label">
                 <span i18n:translate="label_event_location">Event Location</span>
-                <div id="event_location_help" 
+                <div id="event_location_help"
                      i18n:translate="help_event_location"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
-                Enter the location where the event will take place. 
+                Enter the location where the event will take place.
                 </div>
             </div>
-            
+
             <div class="field">
                 <input type="text"
                        name="location"
@@ -125,33 +125,33 @@
                        tabindex=""
                        tal:attributes="value python: request.get('location',getattr(here,'location',''));
                                        tabindex tabindex/next"
-                       onfocus="formtooltip('event_location_help',1)" 
+                       onfocus="formtooltip('event_location_help',1)"
                        onblur="formtooltip('event_location_help',0)" />
             </div>
         </div>
-               
-        <div class="row"> 
+
+        <div class="row">
             <div class="label">
                 <span i18n:translate="label_event_type">Event Type</span>
-                <div id="event_type_help" 
+                <div id="event_type_help"
                      i18n:translate="help_event_type"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Select the type of event. Multiple event types possible.
                 </div>
             </div>
 
             <div class="field">
-                <select name="event_type:list" 
+                <select name="event_type:list"
                         multiple="multiple"
                         tabindex=""
                         size="6"
-                        onfocus="formtooltip('event_type_help',1)" 
+                        onfocus="formtooltip('event_type_help',1)"
                         onblur="formtooltip('event_type_help',0)"
                         tal:attributes="tabindex tabindex/next;"
-                        tal:define="contentSubject request/event_type | here/Subject; 
+                        tal:define="contentSubject request/event_type | here/Subject;
                                     allowedSubjects python:here.portal_metadata.listAllowedSubjects(here)">
-               
+
                    <option tal:replace="nothing">Event Type 1</option>
                    <option tal:replace="nothing">Event Type 2</option>
                    <option tal:replace="nothing">...</option>
@@ -162,52 +162,52 @@
                </select>
             </div>
         </div>
-               
+
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_description">Event Description</span>
-                
-                <div id="event_description_help" 
+
+                <div id="event_description_help"
                      i18n:translate="help_description"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
-                Enter a brief description of the event. 
+                Enter a brief description of the event.
                 </div>
             </div>
-            <div class="field" tal:define="description request/description | here/Description "> 
-                <textarea cols="40" 
-                          rows="5" 
+            <div class="field" tal:define="description request/description | here/Description ">
+                <textarea cols="40"
+                          rows="5"
                           tabindex=""
                           name="description"
-                          onfocus="formtooltip('event_description_help',1)" 
+                          onfocus="formtooltip('event_description_help',1)"
                           onblur="formtooltip('event_description_help',0)"
                           tal:attributes="tabindex tabindex/next;"
                           tal:content="description"
                           >
-                Description 
+                Description
                 </textarea>
             </div>
         </div>
 
-        <div class="row"> 
+        <div class="row">
             <div class="label">
                 <span i18n:translate="label_event_url">Event URL</span>
-                
-                <div id="event_url_help" 
+
+                <div id="event_url_help"
                      i18n:translate="help_event_url"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Enter the optional web address of a page containing more info about
-                the event. 
+                the event.
                 </div>
             </div>
             <div class="field">
-                <input type="text" 
+                <input type="text"
                       name="event_url"
-                      size="25" 
+                      size="25"
                       value="event_url"
                       tabindex=""
-                      onfocus="formtooltip('event_url_help',1)" 
+                      onfocus="formtooltip('event_url_help',1)"
                       onblur="formtooltip('event_url_help',0)"
                       tal:attributes="value python:request.get('event_url',getattr(here,'event_url',''));
                                       tabindex tabindex/next"
@@ -224,8 +224,8 @@
             <div class="label">
               <span i18n:translate="label_event_start">Event Starts</span>
                 <div id="start_date_help"
-                     i18n:translate="help_event_start" 
-                     class="help" 
+                     i18n:translate="help_event_start"
+                     class="help"
                      style="visibility:hidden">
                      Enter the starting date and time,
                      or click the calendar icon and select it.
@@ -236,7 +236,7 @@
 
                 <div tal:replace="error_start_date" />
 
-                <div tal:define="inputname  string:start_date; 
+                <div tal:define="inputname  string:start_date;
                                  formname   string:edit_form;
                                  inputvalue start_date;
                                  onfocus string:formtooltip('start_date_help',1);
@@ -257,8 +257,8 @@
             <div class="label">
               <span i18n:translate="label_event_end">Event Ends</span>
                 <div id="end_date_help"
-                     i18n:translate="help_event_end" 
-                     class="help" 
+                     i18n:translate="help_event_end"
+                     class="help"
                      style="visibility:hidden">
                      Enter the ending date and time,
                      or click the calendar icon and select it.
@@ -267,7 +267,7 @@
             <div class="field"
                 tal:attributes="class python:test(error_end_date, 'field error', 'field')" >
                 <div tal:replace="error_end_date" />
-                <div tal:define="inputname  string:end_date; 
+                <div tal:define="inputname  string:end_date;
                                  formname   string:edit_form;
                                  inputvalue end_date;
                                  onfocus string:formtooltip('end_date_help',1);
@@ -282,25 +282,25 @@
             </div>
         </div>
 
-        <div class="row"> 
+        <div class="row">
             <div class="label">
                 <span i18n:translate="label_contact_name">Contact Name</span>
-                
-                <div id="contact_name_help" 
+
+                <div id="contact_name_help"
                      i18n:translate="help_contact_name"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Enter a contact person or organization for the event.
                 </div>
-            
+
             </div>
             <div class="field">
                 <input type="text"
-                      name="contact_name" 
+                      name="contact_name"
                       size="25"
                       value="contact_name"
                       tabindex=""
-                      onfocus="formtooltip('contact_name_help',1)" 
+                      onfocus="formtooltip('contact_name_help',1)"
                       onblur="formtooltip('contact_name_help',0)"
                       tal:attributes="value python:request.get('contact_name',getattr(here,'contact_name',''));
                                       tabindex tabindex/next"
@@ -308,45 +308,45 @@
             </div>
         </div>
 
-        <div class="row"> 
+        <div class="row">
             <div class="label">
                 <span i18n:translate="label_contact_email">Contact E-mail</span>
-                
-                <div id="contact_email_help" 
+
+                <div id="contact_email_help"
                      i18n:translate="help_contact_email"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Enter an e-mail address to use for information regarding
                 the event.
                 </div>
-            
+
             </div>
             <div class="field">
                 <input type="text"
-                      name="contact_email" 
+                      name="contact_email"
                       size="25"
                       value="contact_email"
                       tabindex=""
-                      onfocus="formtooltip('contact_email_help',1)" 
-                      onblur="formtooltip('contact_email_help',0)" 
+                      onfocus="formtooltip('contact_email_help',1)"
+                      onblur="formtooltip('contact_email_help',0)"
                       tal:attributes="value python:request.get('contact_email',getattr(here,'contact_email',''));
                                       tabindex tabindex/next"
                       />
             </div>
         </div>
 
-        <div class="row"> 
+        <div class="row">
             <div class="label">
                 <span i18n:translate="label_contact_phone">Contact Phone</span>
-                
-                <div id="contact_phone_help" 
+
+                <div id="contact_phone_help"
                      i18n:translate="help_contact_phone"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Enter the phone number to call for information and/or
                 booking.
                 </div>
-            
+
             </div>
 
             <div class="field">
@@ -355,8 +355,8 @@
                       size="25"
                       value="contact_phone"
                       tabindex=""
-                      onfocus="formtooltip('contact_phone_help',1)" 
-                      onblur="formtooltip('contact_phone_help',0)" 
+                      onfocus="formtooltip('contact_phone_help',1)"
+                      onblur="formtooltip('contact_phone_help',0)"
                       tal:attributes="value python:request.get('contact_phone',getattr(here,'contact_phone',''));
                                       tabindex tabindex/next"
                       />
@@ -366,19 +366,19 @@
 
         <div class="row">
             <div class="label">&nbsp;</div>
-            <div class="field" 
-            tal:define="process_creation request/process_creation|nothing;"> 
-                <input class="context" 
+            <div class="field"
+            tal:define="process_creation request/process_creation|nothing;">
+                <input class="context"
                        tabindex=""
-                       type="submit" 
-                       name="Change" 
-                       value="Save" 
+                       type="submit"
+                       name="Change"
+                       value="Save"
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next"
                        />
             </div>
         </div>
-        
+
         <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>

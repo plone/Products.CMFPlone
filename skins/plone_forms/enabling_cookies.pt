@@ -39,7 +39,7 @@
 <ul>
    <li>Version 6.x</li>
    <ul>
-      <li>Click Edit on the menu at the top of your browser and select Preferences</li> 
+      <li>Click Edit on the menu at the top of your browser and select Preferences</li>
       <li>Find "Privacy &amp; Security" in the menu on the left.  If there is a triangle pointing to the right
           next to Privacy &amp; Security, click it.</li>
       <li>Select "Cookies" under "Privacy &amp; Security"</li>
@@ -49,7 +49,7 @@
    <ul>
       <li>Click Edit on the menu at the top of your browser and select Preferences</li>
       <li>Select "Advanced"</li>
-      <li>Select "Accept all cookies" or "Accept only cookies that get sent back to the originating server" and click OK</li>  
+      <li>Select "Accept all cookies" or "Accept only cookies that get sent back to the originating server" and click OK</li>
    </ul>
 </ul>
 <h3>Mozilla</h3>
@@ -63,6 +63,6 @@
       </ul>
 </ul>
 </div>
-		
+
 </body>
 </html>

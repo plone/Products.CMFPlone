@@ -3,8 +3,8 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<body>      
-      
+<body>
+
 <div tal:define="t python:here.setup_talkback_tree(here); height t/root/height">
 
     <div tal:repeat="row t/rows">
@@ -20,23 +20,23 @@
         <span tal:attributes="colspan python:height-row.depth"
               tal:define="obj nocall:row/object;url python:obj.absolute_url()">
 
-            <a tal:attributes="href url">        
+            <a tal:attributes="href url">
             <img tal:attributes="src python:obj.portal_url() + '/' + obj.getIcon()"
                  border="0" src="" /></a>
 
             <a tal:attributes="href url"
-               tal:content="obj/Title" 
-               href="">Title</a>, 
-               
+               tal:content="obj/Title"
+               href="">Title</a>,
+
                <span i18n:translate="label_comment_by">by</span>
 
-               <span tal:replace="obj/Creator">Me</span> 
-               
-               <span i18n:translate="label_commented_at">at</span> 
-               
+               <span tal:replace="obj/Creator">Me</span>
+
+               <span i18n:translate="label_commented_at">at</span>
+
                <span tal:replace="obj/CreationDate">Today</span>.
         </span>
-        </div> 
+        </div>
     </div>
 
 </div>

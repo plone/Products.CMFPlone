@@ -3,18 +3,18 @@
       metal:use-macro="here/main_template/macros/master">
 
 <body>
-	   
+
 <div metal:fill-slot="main">
 
-    <h1>Welcome to 
+    <h1>Welcome to
     <span tal:replace="here/title">Portal title</span>
     </h1>
- 
+
     <p tal:content="here/portal_url/description">
     Portal description
     </p>
 
 </div>
-	   
+
 </body>
 </html>

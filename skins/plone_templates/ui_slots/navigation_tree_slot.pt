@@ -30,16 +30,16 @@
 
         <div class="body">
             <div class="content odd">
-                     
+
                 <div tal:condition="tree/prev">
                     <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
                         <span i18n:translate="">...</span>
                     </a>
                 </div>
-                
+
                 <div style="white-space: nowrap;"
                      tal:repeat="te tree/list">
-            
+
                     <span tal:define="iscurrent te/iscurrent | python:0;
                                       sibling python:te['object'];
                                       typeInfo sibling/getTypeInfo;
@@ -49,13 +49,13 @@
                                       sibling_title python:' '.join(title[:croppingLength].split(' '));"
                                       tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                            >
-                               
+
                         <tal:block repeat="x python:range( te['indent'])">&nbsp;</tal:block>
 
                         <tal:block tal:condition="iscurrent">
                            <span class="currentNavItem">
                         </tal:block>
-                        <a href="" 
+                        <a href=""
                            tal:condition="python: sibling != portalObject"
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
@@ -63,20 +63,20 @@
 			   accesskey="accesskeys-navigation"
 			   i18n:attributes="accesskey"
                            class="plain">
-                
-                            <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
+
+                            <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))"
                                  tal:on-error="structure here/site_icon.gif"
                                     />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
                         </a>
-                        
-                        <a href="" 
+
+                        <a href=""
                            tal:condition="python: sibling == portalObject"
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');"
 			   accesskey="accesskeys-navigation"
 			   i18n:attributes="accesskey">
-                           
+
                             <img tal:replace="structure portal/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure string:Home" />
                         </a>
                     </span>
@@ -86,7 +86,7 @@
                         <span i18n:translate="">...</span>
                     </a>
                 </div>
-    
+
             </div>
 
         </div>
@@ -94,7 +94,7 @@
     </div>
 
 </div>
-    
+
 </body>
 
 </html>

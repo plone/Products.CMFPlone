@@ -12,7 +12,7 @@
     <script type="text/javascript" src="" tal:attributes="src here/stxPreview.js/absolute_url"></script>
 
     <h1 i18n:translate="heading_add_comment">Add Comment</h1>
-    
+
     <p i18n:translate="description_add_comment">
     You can add a comment by filling out the form below.
     </p>
@@ -28,30 +28,30 @@
 
         <input type="hidden" name="Creator" value=""
         	   tal:attributes="value member/getUserName" />
-    
+
         <div class="row">
-        
+
             <div class="label" i18n:translate="label_subject">
             Subject
             </div>
-            
+
             <div class="field">
-                <input name="title" 
-                       value="" 
+                <input name="title"
+                       value=""
                        size="40"
                        tabindex=""
                        tal:attributes="value request/title_override|nothing;
 											                 tabindex tabindex/next;" />
             </div>
-            
+
         </div>
 
         <div class="row">
-        
+
             <div class="label" i18n:translate="label_body_text">
             Body text
             </div>
-            
+
             <div class="field">
                 <textarea name="text"
                           cols="40"
@@ -61,44 +61,44 @@
                           tal:content="request/text_override | nothing"
                           ></textarea>
             </div>
-            
+
         </div>
 
         <div class="row">
-        
+
             <div class="label">
             &nbsp;
             </div>
-            
+
             <div class="field">
-            
-                <input class="context" 
-                       type="submit" 
-                       value="Add Comment" 
+
+                <input class="context"
+                       type="submit"
+                       value="Add Comment"
                        name=""
                        tabindex=""
                        i18n:attributes="value"
                        tal:attributes="name string:discussion_reply:method;
 											                 tabindex tabindex/next;" />
             </div>
-            
+
         </div>
-    
+
     </form>
 
     <p i18n:translate="description_preview_comment">To see how the comment
-    will look before submitting it, click 'Preview Comment'.   
+    will look before submitting it, click 'Preview Comment'.
     </p>
-    
+
     <form class="group" onsubmit="return false;">
         <span class="legend">Preview</span>
         <br />
         <span id="previewComment"></span>
         <br />
-        
+
         <input class="context"
-                       type="submit" 
-                       value="Preview Comment" 
+                       type="submit"
+                       value="Preview Comment"
                        name=""
                        tabindex=""
                        onclick="GetPreview(document.edit_form.text.value, 'previewComment')"

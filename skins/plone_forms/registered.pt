@@ -11,25 +11,25 @@
 
 <p i18n:translate="description_you_are_registered"> You have been registered as a member. </p>
 
-<p tal:condition="ve" i18n:translate="description_you_will_get_password"> 
-You will receive an email shortly containing your password 
-    and instructions on how to activate your membership. 
+<p tal:condition="ve" i18n:translate="description_you_will_get_password">
+You will receive an email shortly containing your password
+    and instructions on how to activate your membership.
 </p>
 
-<tal:block condition="python:not(ve)"> 
-    <span i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</span>       
+<tal:block condition="python:not(ve)">
+    <span i18n:translate="description_you_can_log_on_now">Click the button to log in immediately.</span>
     <form action=""
           method="post"
-          tal:define="username request/username; 
+          tal:define="username request/username;
 		                  password request/password;"
           tal:attributes="action python:'%s/logged_in' % here.portal_url()"
 	        >
-        <input type="hidden" 
-               name="came_from" 
+        <input type="hidden"
+               name="came_from"
                value=""
                tal:attributes="value request/came_from|nothing;" />
-        <input type="hidden" 
-               name="__ac_name" 
+        <input type="hidden"
+               name="__ac_name"
                value=""
                tal:attributes="value username;" />
         <input type="hidden"
@@ -38,10 +38,10 @@ You will receive an email shortly containing your password
                tal:attributes="value password;" />
         <input class="standalone"
                type="submit"
-               value="Log in" 
+               value="Log in"
                i18n:attributes="value"
                />
-    </form>         
+    </form>
 </tal:block>
 
 </div>

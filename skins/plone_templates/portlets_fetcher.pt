@@ -26,14 +26,14 @@
    tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                tabindex python:Iterator(pos=20000);"
    tal:condition="slots_mapping/right">
- 
+
     <metal:block tal:repeat="slot slots_mapping/right">
         <tal:block tal:define="global pathexpr python:slot[0];
                                global usemacro python:slot[1];"
                    tal:condition="usemacro">
             <metal:block metal:use-macro="python:path(pathexpr)" />
         </tal:block>
- 
+
         <span tal:condition="not: usemacro"
               tal:replace="structure python:path(pathexpr)" />
     </metal:block>

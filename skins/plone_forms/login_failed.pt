@@ -10,7 +10,7 @@
 
 <div metal:fill-slot="main">
 
-                 
+
     <div tal:define="p_props here/portal_properties;
                      success request/success|nothing;">
         <div tal:condition="not:success">
@@ -18,7 +18,7 @@
 
             <p>
             <span i18n:translate="description_sign_in_failure">
-            You are not currently logged in.  Your user name and/or password may 
+            You are not currently logged in.  Your user name and/or password may
             be incorrect.  <a href="mail_password_form">Click here</a> to have
             your password mailed to you if you have forgotten it or contact</span>
             <a href="mailto:admin@here.com" title="E-mail Administrator"
@@ -30,16 +30,16 @@
         </div>
         <div tal:condition="success">
             <h1 i18n:translate="heading_sign_in_failure">Cookies must be enabled</h1>
-            
-            <p>You are not currently signed in because you are not accepting 
-            cookies.  Please make sure that your browser is configured to 
+
+            <p>You are not currently signed in because you are not accepting
+            cookies.  Please make sure that your browser is configured to
             <a href="enabling_cookies">accept cookies</a>.
-            
-            <p>If you are still reaching this page after correctly configuring 
+
+            <p>If you are still reaching this page after correctly configuring
             your browser, here are some possible reasons:</p>
-            
+
             <ul>
-               <li>You may be running web filtering software that 
+               <li>You may be running web filtering software that
                disables cookies.  If so, you will need to configure the
                software so that it enables you to accept cookies from
                <span tal:replace="here/portal_url"/></li>

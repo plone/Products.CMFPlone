@@ -11,8 +11,8 @@
     <h1 i18n:translate="heading_edit_properties">Edit Properties</h1>
 
     <p i18n:translate="description_edit_properties">
-    This information, also referred to as <em>metadata</em> is the collection of information that is used to 
-    categorize an object, assign effectuation dates and expiration dates, 
+    This information, also referred to as <em>metadata</em> is the collection of information that is used to
+    categorize an object, assign effectuation dates and expiration dates,
     language, and keywords.
     <br />
     Change this item's metadata using the form below. Remember, metadata is
@@ -22,8 +22,8 @@
 
 
     <form class="group"
-          name="edit_form" 
-          action="metadata_edit" 
+          name="edit_form"
+          action="metadata_edit"
           method="post"
           tal:attributes="action python:here.portal_form_url(template.id)" >
 
@@ -32,62 +32,62 @@
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_allow_discussion">Allow Discussion</span>
-                <div id="allow_discussion_help" 
+                <div id="allow_discussion_help"
                      i18n:translate="help_allow_discussion"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Specifies whether discussion items and comments can be
                 added to this item. 'Default' will use the site-wide
                 setting for Discussion.
                 </div>
             </div>
-            
+
             <div class="field">
 	        <metal:block tal:define="val request/allowDiscussion | python: here.portal_discussion.isDiscussionAllowedFor(here);
                                    val python:test(not hasattr(here,'allow_discussion'),None,val);
                                    val python:test(val=='off',0,val);
                                    val python:test(val=='on',1,val);
                                    tabindex tabindex/next;">
-                <input class="noborder" 
-                       type="radio" 
+                <input class="noborder"
+                       type="radio"
                        name="allowDiscussion"
-                       value="default" 
+                       value="default"
                        tabindex=""
                        id="discussion_default"
-                       onfocus="formtooltip('allow_discussion_help',1)" 
-                       onblur="formtooltip('allow_discussion_help',0)" 
+                       onfocus="formtooltip('allow_discussion_help',1)"
+                       onblur="formtooltip('allow_discussion_help',0)"
 		                   tal:attributes="checked python:val is None;
                                            tabindex tabindex;"
                        />
                 <label for="discussion_default" i18n:translate="label_discussion_default">Default</label> <br />
 
-                <input class="noborder" 
-                       type="radio" 
+                <input class="noborder"
+                       type="radio"
                        name="allowDiscussion"
-                       value="on" 
+                       value="on"
                        tabindex=""
                        id="discussion_on"
-                       onfocus="formtooltip('allow_discussion_help',1)" 
-                       onblur="formtooltip('allow_discussion_help',0)" 
+                       onfocus="formtooltip('allow_discussion_help',1)"
+                       onblur="formtooltip('allow_discussion_help',0)"
                        tal:attributes="checked python:test(val == 1, '1', None);
                                        tabindex tabindex;"
                        />
                 <label for="discussion_on" i18n:translate="label_discussion_enabled">Enabled</label> <br />
 
-                <input class="noborder" 
-                       type="radio" 
+                <input class="noborder"
+                       type="radio"
                        name="allowDiscussion"
-                       value="off" 
+                       value="off"
                        tabindex=""
                        id="discussion_off"
-                       onfocus="formtooltip('allow_discussion_help',1)" 
-                       onblur="formtooltip('allow_discussion_help',0)" 
+                       onfocus="formtooltip('allow_discussion_help',1)"
+                       onblur="formtooltip('allow_discussion_help',0)"
                        tal:attributes="checked python:test(val == 0, '1', None);
                                        tabindex tabindex;"
                        />
                 <label for="discussion_off" i18n:translate="label_discussion_disabled">Disabled</label>
-                       
-                       
+
+
 	        </metal:block>
             </div>
         </div>
@@ -95,25 +95,25 @@
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_keywords">Keywords</span>
-    
-                <div id="keywords_help" 
+
+                <div id="keywords_help"
                      i18n:translate="help_keywords"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
-                Here you add the relevant keywords that describe this item. You can either 
+                Here you add the relevant keywords that describe this item. You can either
                 add new ones, or use some of the existing ones. We recommend using the existing
-                keywords, if possible. Try to avoid adding new keywords that are essentially the 
+                keywords, if possible. Try to avoid adding new keywords that are essentially the
                 same as the existing ones.
                 <br />
                 You can deselect entries by keeping the Ctrl key depressed while clicking an entry.
                 <br />
                 Each keyword must be on a separate line in the 'New Keywords' textbox.
                 <br />
-                Existing Keywords can be easily changed, but currently is all keywords 
+                Existing Keywords can be easily changed, but currently is all keywords
                 that have ever been used in the system.
                 </div>
             </div>
-            <div class="field" 
+            <div class="field"
                   tal:define="global contentSubjects here/Subject;
                               global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
                               global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
@@ -123,65 +123,65 @@
                     <tal:block tal:define="site_props here/portal_properties/site_properties;
                                            allowRolesToAddKeywords site_props/allowRolesToAddKeywords"
                                tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
-                          
+
                         <div style="width: 45%; float: right;">
-    
+
                             <span i18n:translate="label_new_keywords">New keywords</span>
                             <br />
                             <textarea id="entered_subjects"
-                              name="subject:lines" 
-                              rows="11" 
-                              cols="15" 
+                              name="subject:lines"
+                              rows="11"
+                              cols="15"
                               wrap="off"
                               tabindex=""
-                              onfocus="formtooltip('keywords_help',1)" 
+                              onfocus="formtooltip('keywords_help',1)"
                               onblur="formtooltip('keywords_help',0)"
                               tal:attributes="tabindex tabindex/next;"
                               tal:define="subject python:request.get('subject',[])"
                               tal:content="python:'\n'.join(subject)"
                               >selected keywords</textarea>&nbsp;
 
-                        </div>                    
+                        </div>
                     </tal:block>
 
                     <div style="width: 45%">
                         <span i18n:translate="label_existing_keywords">Existing keywords</span>
                         <br />
                         <select id="predefined_subjects"
-                                name="predefined_subjects:list" 
-                                size="14" 
+                                name="predefined_subjects:list"
+                                size="14"
                                 multiple="multiple"
                                 tabindex=""
-                                onfocus="formtooltip('keywords_help',1)" 
+                                onfocus="formtooltip('keywords_help',1)"
                                 onblur="formtooltip('keywords_help',0)"
                                 tal:attributes="tabindex tabindex/next;">
                           <option value="#" tal:repeat="subject allowedSubjects"
                                   tal:content="subject" tal:attributes="value subject;
-                                                                        selected python:test(subject in contentSubjects, 'selected', None)"> 
-                          an existing keyword 
-                          </option>                                
+                                                                        selected python:test(subject in contentSubjects, 'selected', None)">
+                          an existing keyword
+                          </option>
                         </select>
-                        
+
                     </div>
-                        
+
             </div>
 
-        </div>         
+        </div>
 
         <div class="row"
              tal:define="error errors/effective_date | nothing;">
             <div class="label">
                 <span i18n:translate="label_effective_date">Effective Date</span>
 
-                <div id="effective_date_help" 
+                <div id="effective_date_help"
                      i18n:translate="help_effective_date"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
-                The date when the item will be visible when it's published. This way, you can 
+                The date when the item will be visible when it's published. This way, you can
                 publish a item in advance, but it will not be visible before this date.
                 </div>
             </div>
-            
+
             <div class="field"
 	               tal:define="inputname  string:effective_date;
                              formname   string:edit_form;
@@ -190,7 +190,7 @@
                              inputvalue python:test(formvalue,formvalue,inputvalue);
                              onfocus string:formtooltip('effective_date_help',1);
                              onblur string:formtooltip('effective_date_help',0);
-                             tabindex tabindex/next;" 
+                             tabindex tabindex/next;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
 
                 <div tal:condition="error">
@@ -208,9 +208,9 @@
              tal:define="error errors/expiration_date | nothing;">
             <div class="label">
                 <span i18n:translate="label_expiration_date">Expiration Date</span>
-                <div id="expiration_date_help" 
+                <div id="expiration_date_help"
                      i18n:translate="help_expiration_date"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 The date when the item expires. This will automatically make the item
                 invisible for others at the given date.
@@ -225,9 +225,9 @@
                              inputvalue python:test(formvalue,formvalue,inputvalue);
                              onfocus string:formtooltip('expiration_date_help',1);
                              onblur string:formtooltip('expiration_date_help',0);
-                             tabindex tabindex/next;" 
+                             tabindex tabindex/next;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
-                
+
                 <div tal:condition="error">
                     <tal:block i18n:translate="" content="error">Error</tal:block>
                     <br />
@@ -242,23 +242,23 @@
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_format">Format</span>
-                
-                <div id="format_help" 
+
+                <div id="format_help"
                      i18n:translate="help_format"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 The MIME-type of the item. If you don't know what this does, just leave it. <br /> Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
                 </div>
             </div>
-            
+
             <div class="field">
-                <select name="format" 
-			                  tabindex="" 
-			                  onfocus="formtooltip('format_help',1)" 
+                <select name="format"
+			                  tabindex=""
+			                  onfocus="formtooltip('format_help',1)"
 			                  onblur="formtooltip('format_help',0)"
 			                  tal:attributes="tabindex tabindex/next;"
                         tal:define="format request/format | here/Format;">
-	            <option value="">Choose MIME-type</option> 
+	            <option value="">Choose MIME-type</option>
                     <option tal:repeat="mimetype here/plone_utils/availableMIMETypes"
                             tal:attributes="value python:mimetype;
                                             selected python:test(format == mimetype, 'selected', None);"
@@ -273,9 +273,9 @@
                          sel_language python:request.get('language',sel_language)">
             <div class="label">
                 <span i18n:translate="label_language">Language</span>
-                <div id="language_help" 
+                <div id="language_help"
                      i18n:translate="help_language"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 The language the item is written in.
                 </div>
@@ -284,39 +284,39 @@
                  tal:define="available_languages python:list(here.availableLanguages());
                              sorted python:available_languages.sort( lambda x, y: cmp(x[1],y[1]) )">
                 <!-- ISO-639-2 language selector for Plone -->
-                <select name="language" 
+                <select name="language"
                         tabindex=""
-                        onfocus="formtooltip('language_help',1)" 
+                        onfocus="formtooltip('language_help',1)"
                         onblur="formtooltip('language_help',0)"
                         tal:attributes="tabindex tabindex/next;"
                         >
-                    <option value="" i18n:translate="choose_language">Choose Language</option> 
-                    <option tal:repeat="language available_languages" 
+                    <option value="" i18n:translate="choose_language">Choose Language</option>
+                    <option tal:repeat="language available_languages"
 		                    tal:attributes="value python:language[0];
                                             selected python:test(sel_language == language[0], 'selected', None)"
                             tal:content="structure python:language[1]">Language</option>
                 </select>
             </div>
-        </div> 	
+        </div>
 
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_copyrights">Copyrights</span>
-                <div id="rights_help" 
+                <div id="rights_help"
                      i18n:translate="help_copyrights"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Copyright information on the item.
                 </div>
             </div>
-            
+
             <div class="field">
-                <input type="text" 
-                       name="rights" 
-                       size="25" 
-                       value="" 
+                <input type="text"
+                       name="rights"
+                       size="25"
+                       value=""
                        tabindex=""
-                       onfocus="formtooltip('rights_help',1)" 
+                       onfocus="formtooltip('rights_help',1)"
                        onblur="formtooltip('rights_help',0)"
                        tal:attributes="value request/rights | here/Rights;
                                        tabindex tabindex/next;"
@@ -327,9 +327,9 @@
         <div class="row">
             <div class="label">
                 <span i18n:translate="label_contributors">Contributors</span>
-                <div id="contributors_help" 
+                <div id="contributors_help"
                      i18n:translate="help_contributors"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 The names of people that have contributed to this item.
                 Each contributor should be on a separate line.
@@ -337,11 +337,11 @@
             </div>
 
             <div class="field">
-                <textarea name="contributors:lines" 
-                          rows="5" 
+                <textarea name="contributors:lines"
+                          rows="5"
                           cols="25"
-                          tabindex="" 
-                          onfocus="formtooltip('contributors_help',1)" 
+                          tabindex=""
+                          onfocus="formtooltip('contributors_help',1)"
                           onblur="formtooltip('contributors_help',0)"
                           tal:attributes="tabindex tabindex/next;"
                           tal:define="contributors request/contributors | here/Contributors;"
@@ -353,16 +353,16 @@
         <div class="row">
             <div class="label">&nbsp;</div>
             <div class="field">
-                <input class="context" 
-                       type="submit" 
+                <input class="context"
+                       type="submit"
                        tabindex=""
-                       name="change_and_view" 
+                       name="change_and_view"
                        value="Save"
                        i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>
-        </div>	
+        </div>
         <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>

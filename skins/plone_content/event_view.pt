@@ -9,16 +9,16 @@
         <div class="contentHeader">
       	<h1 tal:content="here/title_or_id">Title or id</h1>
         </div>
-        
+
         <p tal:content="here/Description">
             Description
         </p>
-        
+
         <p tal:condition="here/event_url|nothing">
         <span i18n:translate="event_for_more_info_go_to">For more information, visit</span>
-        
+
         <br />
-        
+
         <a href="event_url"
            tal:attributes="href here/event_url"
            tal:content="here/event_url">event_url</a>
@@ -50,8 +50,8 @@
                     <span tal:replace="here/location">location</span>
                 </div>
             </div>
-            
-        </div>    
+
+        </div>
 
         <div class="group">
             <span class="legend" i18n:translate="legend_contact_details">Contact details</span>
@@ -60,7 +60,7 @@
                 <div class="label" i18n:translate="contact_name">Name</div>
                 <div class="field" tal:content="here/contact_name">contact_name</div>
             </div>
-        
+
             <div class="row">
                 <div class="label" i18n:translate="contact_email">Contact Email</div>
                 <div class="field" tal:condition="here/contact_email">
@@ -72,12 +72,12 @@
 
             <div class="row">
                 <div class="label" i18n:translate="contact_phone">Contact Phone</div>
-                <div class="field" 
+                <div class="field"
                       tal:content="here/contact_phone">contact_phone</div>
             </div>
-            
+
         </div>
-        
+
 	</div>
     </body>
     </html>

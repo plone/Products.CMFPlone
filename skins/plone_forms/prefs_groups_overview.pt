@@ -117,8 +117,8 @@
             <td class="checkbox"
                 tal:define="group_roles python:this_group.getRoles();"
                 tal:repeat="portal_role portal_roles">
-            
-                <input type="checkbox" 
+
+                <input type="checkbox"
                        class="noborder"
                        name="name"
                        value="Manager"
@@ -134,16 +134,16 @@
                        value="value"
                        tal:attributes="value this_group/getGroupName" />
             </td>
-            
+
             </tal:block>
         </tr>
         </tal:block>
         </table>
 
         <input class="context"
-               tabindex="" 
-               type="submit" 
-               name="prefs_group_manage:method" 
+               tabindex=""
+               type="submit"
+               name="prefs_group_manage:method"
                value="Save Changes"
                tal:attributes="tabindex tabindex/next;"
                />
@@ -158,9 +158,9 @@
     but you normally only do that when you need to create a new discrete unit
     of permissions that you can combine to make up a Group.
     </p>
-    
+
 </div>
-    
+
 </div>
 
 </body>

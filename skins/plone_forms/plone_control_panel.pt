@@ -17,15 +17,15 @@
                     ">
 
     <h1>Plone Setup</h1>
-    
+
     <div id="description">
     Configuration area for Plone and add-on Products.
     </div>
-    
+
     <tal:block tal:repeat="g groups">
         <h2 tal:content="g/title"> Plone Configlet Group Title </h2>
         <p tal:define="configlets python:controlPanel.enumConfiglets(group=g['id'])">
-            
+
             <a href="" tal:repeat = "configl configlets" tal:attributes="href configl/url " >
             <img tal:attributes="src python:getIconFor('controlpanel',configl['id']);alt configl/description"  tal:on-error="string:" />
             <span tal:content="configl/name"    />

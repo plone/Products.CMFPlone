@@ -11,9 +11,9 @@
     <h1 tal:content="structure here/title_or_id">
     Title or id
     </h1>
-    
+
     <div id="description"
-         tal:content="structure here/Description"> 
+         tal:content="structure here/Description">
     description
     </div>
 
@@ -26,7 +26,7 @@
 
     <!-- Navigation -->
     <div metal:use-macro="here/batch_macros/macros/navigation" />
-                 
+
     <table class="listing"
            id="sortable"
            tal:condition="batch">
@@ -39,19 +39,19 @@
                 <th>&nbsp;Description&nbsp;</th>
             </tr>
         </thead>
-    
+
         <tbody>
         <metal:block tal:repeat="match batch">
-        <tr class="even" 
-            tal:define="oddrow repeat/match/odd" 
+        <tr class="even"
+            tal:define="oddrow repeat/match/odd"
             tal:attributes="class python:test(oddrow, 'even', 'odd')" >
-        <td>                
-        <a href="#" 
+        <td>
+        <a href="#"
            tal:attributes="href string:${match/getURL}/view" >
            <img src="#" tal:attributes="src string:${here/portal_url}/${match/getIcon}" />
            <span tal:replace="match/Title|match/id">Title or id</span>
         </a>
-        </td>   
+        </td>
         <td tal:content="match/Type">Type</td>
         <td tal:content="match/ModificationDate">Modification Date</td>
         <td tal:content="match/Description">Description</td>
@@ -66,7 +66,7 @@
     <metal:block tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
 
     <h2 i18n:translate="heading_sub_topics">Sub-topics</h2>
-    
+
     <ul>
         <li tal:repeat="topic topics">
             <p>
@@ -78,8 +78,8 @@
                 </a>
             </p>
         </li>
-    </ul>    
-    
+    </ul>
+
     </metal:block>
 
     <div tal:condition="not: results">
@@ -87,7 +87,7 @@
     </div>
 
     </metal:block>
-    
+
 </div>
 
 </body>

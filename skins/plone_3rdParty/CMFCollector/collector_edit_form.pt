@@ -15,27 +15,27 @@
 
 </div>
 
-<div metal:fill-slot="main">      
+<div metal:fill-slot="main">
 
 <form class="group"
-      action="" 
+      action=""
       method="post"
       tal:attributes="action string:${here/absolute_url}/collector_edit"
       >
 
     <span class="legend" i18n:translate="legend_collector_details">Collector Details</span>
-    
-    <div class="row" 
+
+    <div class="row"
          tal:condition="python: member.getProperty('visible_ids', None)"
          tal:define="error_id errors/id | nothing;
-                     id python:request.get('id', here.getId());"> 
+                     id python:request.get('id', here.getId());">
         <div class="label required">
-        
+
             <span i18n:translate="label_name">Name</span>
-        
-            <div id="id_help" 
+
+            <div id="id_help"
                  i18n:translate="help_name"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
             Enter the ID of the document. This is the part that will show up as part
             of the web address. This should be short, descriptive
@@ -49,26 +49,26 @@
 
             <div tal:replace="error_id" />
 
-            <input type="text" 
-                   name="id" 
+            <input type="text"
+                   name="id"
                    value="#"
-                   size="30" 
+                   size="30"
                    tabindex="1"
-                   onfocus="formtooltip('id_help',1)" 
+                   onfocus="formtooltip('id_help',1)"
                    onblur="formtooltip('id_help',0)"
                    tal:attributes="value id;"
                    />
         </div>
 
     </div>
-    <input type="hidden" 
-           name="id" 
+    <input type="hidden"
+           name="id"
            tal:condition="python: not member.getProperty('visible_ids', None)"
-           tal:attributes="value python:request.get('id', here.getId())" 
+           tal:attributes="value python:request.get('id', here.getId())"
            />
 
     <div class="row">
-        <div class="label" i18n:translate="label_title">Title</div> 
+        <div class="label" i18n:translate="label_title">Title</div>
         <div class="field">
             <input type="text"
                    name="title"
@@ -79,30 +79,30 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_abbreviation"> 
-        Abbreviation 
-        
-        </div> 
+        <div class="label" i18n:translate="label_abbreviation">
+        Abbreviation
+
+        </div>
         <div class="field">
             <input type="text"
                    name="abbrev"
                    value=""
-                   onfocus="formtooltip('abbrev_help',1)" 
+                   onfocus="formtooltip('abbrev_help',1)"
                    onblur="formtooltip('abbrev_help',0)"
                    tal:attributes="value here/abbrev|nothing"
                    size="5" />
-            <div id="abbrev_help" 
+            <div id="abbrev_help"
                  i18n:translate="help_abbreviation"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
             Abbreviation for the collector, used as the prefix of
             the subject line in mail from the collector.
             </div>
         </div>
     </div>
-  
+
     <div class="row">
-        <div class="label" i18n:translate="label_description">Description</div> 
+        <div class="label" i18n:translate="label_description">Description</div>
         <div class="field">
             <textarea name="description:text" rows="3"
                       cols="50"
@@ -110,44 +110,44 @@
             </textarea>
         </div>
     </div>
-      
+
     <div class="row">
-        <div class="label required" i18n:translate="label_collector_email">Collector email</div> 
+        <div class="label required" i18n:translate="label_collector_email">Collector email</div>
         <div class="field"
              tal:define="getpropemail python: hasattr(member, 'getProperty')
                                               and member.getProperty('email', '');
                          attremail python: getattr(member, 'email', '');
-                         email python: getattr(here, 'email', 
+                         email python: getattr(here, 'email',
                                                 getpropemail or attremail)">
-            
-            <input type="text" 
-                   name="email" 
+
+            <input type="text"
+                   name="email"
                    size=25
                    value="EMAIL"
-                   onfocus="formtooltip('email_help',1)" 
+                   onfocus="formtooltip('email_help',1)"
                    onblur="formtooltip('email_help',0)"
                    tal:attributes="value email" />
-        <div id="email_help" 
+        <div id="email_help"
                  i18n:translate="help_email"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
         This is the collector's email 'From' address.
         </div>
-                            
+
         </div>
     </div>
-  
+
     <div class="row">
-        <div class="label" i18n:translate="label_collector_managers">Managers</div> 
+        <div class="label" i18n:translate="label_collector_managers">Managers</div>
         <div class="field">
             <textarea name="managers:lines" rows="5" cols="15"
                       tal:define="mgrs python:'\n'.join([m for m in here.managers])"
-		      onfocus="formtooltip('managers_help',1)" 
+		      onfocus="formtooltip('managers_help',1)"
 		      onblur="formtooltip('managers_help',0)"
                       tal:content="mgrs"></textarea>
-            <div id="managers_help" 
+            <div id="managers_help"
                  i18n:translate="help_collector_managers"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
             Managers configure the collector, and receive request notices.
             Managers can accept issues, but must be on Supporters roster to be
@@ -158,16 +158,16 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_collector_supporters">Supporters</div> 
+        <div class="label" i18n:translate="label_collector_supporters">Supporters</div>
         <div class="field">
             <textarea name="supporters:lines" rows="5" cols="15"
-		      onfocus="formtooltip('supporters_help',1)" 
+		      onfocus="formtooltip('supporters_help',1)"
 		      onblur="formtooltip('supporters_help',0)"
                       tal:define="supporters python:'\n'.join([s for s in here.supporters])"
 		      tal:content="supporters"></textarea>
-            <div id="supporters_help" 
+            <div id="supporters_help"
                  i18n:translate="help_collector_supporters"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
             Supporters can be assigned to requests.  They may or may not
             receive initial request notifications, depending on the
@@ -175,26 +175,26 @@
             </div>
         </div>
     </div>
-  
+
     <div class="row">
-        <div class="label" i18n:translate="label_collector_dispatcher_mode">Dispatcher Mode</div> 
+        <div class="label" i18n:translate="label_collector_dispatcher_mode">Dispatcher Mode</div>
         <div class="field">
             <div style="float:left">
             <input class="noborder"
-                   type="radio" 
-                   name="dispatching:int" 
+                   type="radio"
+                   name="dispatching:int"
                    value="0"
                    tal:attributes="checked not: here/dispatching|nothing" />
             <span i18n:translate="label_collector_dispatcher_off">
         Off (Managers and supporters receive pending-issue notices)
         </span>
-            
+
 
             <br />
-            
+
             <input class="noborder"
-                   type="radio" 
-                   name="dispatching:int" 
+                   type="radio"
+                   name="dispatching:int"
                    value="1"
                    tal:attributes="checked here/dispatching|nothing" />
         <span i18n:translate="label_collector_dispatcher_on">
@@ -205,12 +205,12 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_collector_participation_mode">Participation Mode</div> 
+        <div class="label" i18n:translate="label_collector_participation_mode">Participation Mode</div>
         <div class="field">
             <div style="float: left">
-                <input class="noborder" 
-                       type="radio" 
-                       name="participation:string" 
+                <input class="noborder"
+                       type="radio"
+                       name="participation:string"
                        value="staff"
                        tal:attributes="checked python: here.participation
                                                        == 'staff'" />
@@ -222,9 +222,9 @@
           </span>
 
                 <br />
-                
-                <input class="noborder" 
-                       type="radio" 
+
+                <input class="noborder"
+                       type="radio"
                        name="participation:string"
                        value="authenticated"
                        tal:attributes="checked python: here.participation
@@ -236,10 +236,10 @@
           </span>
 
                 <br />
-                
-                <input class="noborder" 
-                       type="radio" 
-                       name="participation:string" 
+
+                <input class="noborder"
+                       type="radio"
+                       name="participation:string"
                        value="anyone"
                        tal:attributes="checked python: here.participation
                                                        == 'anyone'" />
@@ -253,69 +253,69 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_notifications">Notifications</div> 
+        <div class="label" i18n:translate="label_notifications">Notifications</div>
         <div class="field">
             <div style="float:left">
             <metal:block tal:define="states here/issue_states;"
                          tal:repeat="state states">
 
                 <span tal:omit-tag="" i18n:translate=""><span tal:replace="state">State:</span></span>
-                
+
                 <br />
-                
-                <input type="text" 
-                       size="30" 
-                       name="stateemail" 
+
+                <input type="text"
+                       size="30"
+                       name="stateemail"
                        value=""
-		       onfocus="formtooltip('notification_help',1)" 
+		       onfocus="formtooltip('notification_help',1)"
 		       onblur="formtooltip('notification_help',0)"
                        tal:attributes="name python: 'state_email.' + state
                                                     + ':record';
                                        value python: here.state_email.get(state, '')" />
                 <br />
-                                                
+
             </metal:block>
             </div>
-            <div id="notification_help" 
+            <div id="notification_help"
                  i18n:translate="help_collector_notifications"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
-            Fill in addresses next to the state names to have notifications for 
-            issues in that state sent to those addresses (this is in addition to 
+            Fill in addresses next to the state names to have notifications for
+            issues in that state sent to those addresses (this is in addition to
             normal issue-participant notifications)
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_selections">Selections</div> 
+        <div class="label" i18n:translate="label_selections">Selections</div>
         <div class="field">
             <div style="float: left">
 
             <span i18n:translate="label_collector_topics">Topics</span>
             <textarea name="topics:lines" rows="5" cols="15"
-                      onfocus="formtooltip('selections_help',1)" 
+                      onfocus="formtooltip('selections_help',1)"
                       onblur="formtooltip('selections_help',0)"
                       tal:define="topics python:'\n'.join([t for t in here.topics])"
                       tal:content="topics"></textarea>
-            
+
             <span i18n:translate="label_collector_classifications">Classifications</span>
             <textarea name="classifications:lines" rows="5" cols="15"
-                      onfocus="formtooltip('selections_help',1)" 
+                      onfocus="formtooltip('selections_help',1)"
                       onblur="formtooltip('selections_help',0)"
                       tal:define="classi python:'\n'.join([c for c in here.classifications])"
                       tal:content="classi"></textarea>
-            
+
             <span i18n:translate="label_collector_importance">Importance</span>
             <textarea name="importances:lines" rows="5" cols="15"
-                      onfocus="formtooltip('selections_help',1)" 
+                      onfocus="formtooltip('selections_help',1)"
                       onblur="formtooltip('selections_help',0)"
                       tal:define="imp python:'\n'.join([i for i in here.importances])"
                       tal:content="imp"></textarea>
             </div>
-            <div id="selections_help" 
+            <div id="selections_help"
                  i18n:translate="help_collector_selections"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
             Fill in the alternatives for issue categorization.
 	    </div>
@@ -323,64 +323,64 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_version_boilerplate">Version boilerplate</div> 
+        <div class="label" i18n:translate="label_version_boilerplate">Version boilerplate</div>
         <div class="field">
    <textarea name="version_info_spiel:text" rows="3" cols="50"
-             onfocus="formtooltip('version_bp_help',1)" 
+             onfocus="formtooltip('version_bp_help',1)"
 	     onblur="formtooltip('version_bp_help',0)"
              tal:content="here/version_info_spiel|nothing"></textarea>
-             
-            <div id="version_bp_help" 
+
+            <div id="version_bp_help"
                  i18n:translate="help_collector_version_boilerplate"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
             The text shown to users about what kind of version information they should include.
 	    </div>
         </div>
     </div>
- 
+
     <div class="row">
-        <div class="label" i18n:translate="label_reinstate_catalog">Reinstate catalog</div> 
+        <div class="label" i18n:translate="label_reinstate_catalog">Reinstate catalog</div>
         <div class="field">
             <div style="float: left">
-                <input class="noborder" 
+                <input class="noborder"
 		       id="reinstate_no"
                        type="radio"
-                       name="recatalog:int" 
-                       value="0" 
-                       checked="checked" 
-		       onfocus="formtooltip('reinstate_help',1)" 
+                       name="recatalog:int"
+                       value="0"
+                       checked="checked"
+		       onfocus="formtooltip('reinstate_help',1)"
 		       onblur="formtooltip('reinstate_help',0)"
                        />
-                
+
                 <label for="reinstate_no" i18n:translate="label_collector_reinstate_no">No</label><br />
-                
-                <input class="noborder" 
+
+                <input class="noborder"
 		       id="reinstate_internal"
                        type="radio"
-                       name="recatalog:int" 
+                       name="recatalog:int"
                        value="1"
-		       onfocus="formtooltip('reinstate_help',1)" 
+		       onfocus="formtooltip('reinstate_help',1)"
 		       onblur="formtooltip('reinstate_help',0)"
                        />
-                
+
                 <label for="reinstate_internal" i18n:translate="label_collector_reinstate_internal_only">Internal only</label><br />
-                
-                <input class="noborder" 
+
+                <input class="noborder"
 		       id="reinstate_sitewide"
                        type="radio"
-                       name="recatalog:int" 
+                       name="recatalog:int"
                        value="2"
-		       onfocus="formtooltip('reinstate_help',1)" 
+		       onfocus="formtooltip('reinstate_help',1)"
 		       onblur="formtooltip('reinstate_help',0)"
                        />
-               
+
                <label for="reinstate_sitewide" i18n:translate="label_collector_reinstate_sitewide">Internal &amp; Site-wide (slow)</label><br />
-            
+
             </div>
-            <div id="reinstate_help" 
+            <div id="reinstate_help"
                  i18n:translate="help_collector_reinstate"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
                 Occasionally, product updates require internal catalog reinit and
                 reindex and other existing-issue adjustment.  Collector product
@@ -390,7 +390,7 @@
     </div>
 
     <div class="row">
-        <div class="label"> &nbsp; </div> 
+        <div class="label"> &nbsp; </div>
         <div class="field">
             <input class="context" type="submit" value="Submit" i18n:attributes="value" />
             <input class="standalone" type="reset" value="Reset" i18n:attributes="value" />

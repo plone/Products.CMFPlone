@@ -42,19 +42,19 @@
     </span>
 </div>
 
-  
+
 <form class="group"
-      method="post" 
+      method="post"
       enctype="multipart/form-data"
       action=""
       tal:attributes="action string:${here/absolute_url}/collector_issue_followup"
       tal:define="actions_pairs here/valid_actions_pairs">
 
-    <span class="legend" i18n:translate="legend_follow_up_details">Follow-up details</span>    
+    <span class="legend" i18n:translate="legend_follow_up_details">Follow-up details</span>
 
 
     <div class="row" tal:condition="actions_pairs">
-        <div class="label" i18n:translate="label_collector_action">Action</div> 
+        <div class="label" i18n:translate="label_collector_action">Action</div>
         <div class="field">
             <input class="noborder"
                    type="radio" id="radio_action_comment"
@@ -66,9 +66,9 @@
 		                  widget_id
 				  string:radio_action_$name"
 				  tal:condition="python: text != 'Assign'">
-                    <input class="noborder" 
-                           type="radio" 
-                           name="action" 
+                    <input class="noborder"
+                           type="radio"
+                           name="action"
                            value="VALUE"
                            tal:attributes="value name; id widget_id"
                      /><label tal:content="python: text"
@@ -82,7 +82,7 @@
                 <input class="noborder"
                        type="radio"
 		       id="radio_action_Assign"
-                       name="action" 
+                       name="action"
                        value="Assign"
                        tal:attributes="value python:
 		       assigning[0]"/><label for="radio_action_Assign" i18n:translate="label_assign_to">Assign to:</label>
@@ -90,10 +90,10 @@
                                                      if i[1] == 'Assign'];
                                   supporters here/aq_parent/supporters"
                       tal:condition="assigning">
-              
+
                     <select name="assignees:list" MULTIPLE size="5"
                             tal:attributes="size python:min(max(len(supporters), 3), 8)">
-                        
+
                         <option tal:content="supporter"
                                 tal:repeat="supporter supporters"
                                 tal:attributes="selected python:supporter in here.assigned_to()">
@@ -106,7 +106,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="label_follow_up">Follow-up</div> 
+        <div class="label" i18n:translate="label_follow_up">Follow-up</div>
         <div class="field">
           <textarea name="comment" rows="10" cols="65" wrap="soft"
                     tal:content="python: (request.get('do_cite')
@@ -122,7 +122,7 @@
           </span>
 
     <div class="row">
-        <div class="label" i18n:translate="label_attachment_optional">Attachment (optional)</div> 
+        <div class="label" i18n:translate="label_attachment_optional">Attachment (optional)</div>
         <div class="field">
             <input type=file name="file" size="20" />
         </div>
@@ -139,14 +139,14 @@
 	    <label for="radio_attachment_type_image" i18n:translate="label_image">Image</label>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="label" i18n:translate="label_name_of_upload_optional">Name of upload (optional)</div>
         <div class="field">
             <input type=text name="fileid" size="12" />
         </div>
     </div>
-    
+
     <div class="row">
         <div class="label">&nbsp;</div>
         <div class="field">

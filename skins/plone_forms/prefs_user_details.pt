@@ -19,7 +19,7 @@
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<ul id="contentTabs"> 
+<ul id="contentTabs">
   <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}?userid=${userid}"
@@ -57,11 +57,11 @@
 
         <div class="portrait" style="float: right;"
              tal:define="portrait python: here.portal_membership.getPersonalPortrait(user.getId());">
-            <img src="" alt="" 
-                 tal:attributes="src portrait/absolute_url" />     
+            <img src="" alt=""
+                 tal:attributes="src portrait/absolute_url" />
         </div>
 
-        <input type="hidden" name="userid" value="username" 
+        <input type="hidden" name="userid" value="username"
                tal:attributes="value user/getId" />
 
          <tal:set tal:condition="targetobject/management_page_charset|nothing"
@@ -73,39 +73,39 @@
          </tal:set>
 
         <tal:properties repeat="property targetobject/propertyMap">
-        
+
           <div class="row">
 
-          <label for="value" 
+          <label for="value"
                  tal:define="global id property/id;
                              global type property/type;
                              global propertyvalue python:targetGetProperty(id, None);"
                  tal:attributes="for id"
                  tal:content="python:targetobject.propertyLabel(id)">Property Value</label>
 
-          
+
               <div class="field"
                    tal:define="propertyitem python:targetobject.getProperty(id)"
                tal:condition="python:'w' in property.get('mode', 'awd')">
-               
+
                <input type="text" name="id" size="35"
                       tal:condition="python:type in ('int', 'long')"
                       tal:attributes="name string:$id:$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
-           
+
                <input type="text" name="id" size="35"
                       tal:condition="python:type in ('float','date')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
- 
+
                <input type="text" name="string and ustring" size="35"
                       tal:condition="python:type in ('string','ustring')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
-               
-               <input type="checkbox" 
+
+               <input type="checkbox"
                       class="noborder"
-                      name="id" 
+                      name="id"
                       id="cb-checkbox"
                       tal:condition="python: type in ('boolean',)"
                       tal:attributes="name string:$id:$type;
@@ -117,21 +117,21 @@
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
 
-               <textarea name="text and utext" 
-                      rows="6" 
+               <textarea name="text and utext"
+                      rows="6"
                       cols="35"
                       tal:condition="python: type in ('text', 'utext')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
                       tal:content="propertyvalue">some data</textarea>
 
-               <textarea name="lines and ulines" 
-                      rows="6" 
+               <textarea name="lines and ulines"
+                      rows="6"
                       cols="35"
                       tal:condition="python: type in ('lines', 'ulines')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;"
-                      tal:content="propertyvalue"><tal:content 
+                      tal:content="propertyvalue"><tal:content
                 tal:repeat="line propertyvalue"><span tal:replace="string:line\n"/></tal:content>
-                </textarea>   
+                </textarea>
 
 
                 <tal:selections tal:condition="python:type in ('selection', 'multiple selection')"
@@ -157,23 +157,23 @@
                                 tal:content="option">value</option>
                     </tal:values>
                 </select>
-    
+
                 </tal:selections>
-    
+
               </div>
-              
+
             </div>
 
         </tal:properties>
 
         <input class="context"
-               type="submit" 
-               name="prefs_user_edit:method" 
+               type="submit"
+               name="prefs_user_edit:method"
                value="Save" />
     </form>
 
 </div>
-    
+
 </div>
 
 </body>

@@ -23,7 +23,7 @@
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<ul id="contentTabs"> 
+<ul id="contentTabs">
   <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}?groupname=${groupname}"
@@ -37,7 +37,7 @@
 </ul>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
-    
+
 <div class="document editable"
    tal:condition="not:group | nothing">
     <h1 i18n:translate="">Group Members</h1>
@@ -105,15 +105,15 @@
                       tal:condition="python:type in ('float','date')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
- 
+
                <input type="text" name="string and ustring" size="35"
                       tal:condition="python:type in ('string','ustring')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
-               
-               <input type="checkbox" 
+
+               <input type="checkbox"
                       class="noborder"
-                      name="id" 
+                      name="id"
                       id="cb-checkbox"
                       tal:condition="python: type in ('boolean',)"
                       tal:attributes="name string:$id:$type;
@@ -125,21 +125,21 @@
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
 
-               <textarea name="text and utext" 
-                      rows="6" 
+               <textarea name="text and utext"
+                      rows="6"
                       cols="35"
                       tal:condition="python: type in ('text', 'utext')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
                       tal:content="propertyvalue">some data</textarea>
 
-               <textarea name="lines and ulines" 
-                      rows="6" 
+               <textarea name="lines and ulines"
+                      rows="6"
                       cols="35"
                       tal:condition="python: type in ('lines', 'ulines')"
                       tal:attributes="name string:$id:${request/management_page_charset_tag}$type;"
-                      tal:content="propertyvalue"><tal:content 
+                      tal:content="propertyvalue"><tal:content
                 tal:repeat="line propertyvalue"><span tal:replace="string:line\n"/></tal:content>
-                </textarea>   
+                </textarea>
 
 
                 <tal:selections tal:condition="python:type in ('selection', 'multiple selection')"
@@ -165,18 +165,18 @@
                                 tal:content="option">value</option>
                     </tal:values>
                 </select>
-    
+
                 </tal:selections>
-    
+
               </div>
-              
+
             </div>
 
         </tal:properties>
 
         <input class="context"
-               type="submit" 
-               name="prefs_group_edit:method" 
+               type="submit"
+               name="prefs_group_edit:method"
                value="Save" />
     </form>
 <!--
@@ -186,16 +186,16 @@
           method="post"
           tal:attributes="action here/absolute_url">
 
-        <span class="legend">Group Properties</span>     
-          
+        <span class="legend">Group Properties</span>
+
         <div class="row">
             <div class="label">Group Name</div>
-    
-            <div class="field">   
-                <input type="text" name="groupname" value="" 
-                       tal:attributes="value groupname" 
+
+            <div class="field">
+                <input type="text" name="groupname" value=""
+                       tal:attributes="value groupname"
                        tal:condition="not: groupname"
-                       /> 
+                       />
 
                 <span tal:replace="groupname"
                       tal:condition="groupname">
@@ -203,11 +203,11 @@
                 </span>
             </div>
         </div>
-            
+
         <div class="row">
             <div class="label">Roles</div>
-    
-            <div class="field">   
+
+            <div class="field">
                 <select name="roles:list" multiple>
                   <tal:options repeat="role portal_roles">
                         <option tal:content="role"
@@ -220,14 +220,14 @@
         </div>
 
     <input class="context"
-           type="submit" 
-           name="prefs_group_edit:method" 
+           type="submit"
+           name="prefs_group_edit:method"
            value="Save" />
 
     </form>
 -->
 </div>
-    
+
 </div>
 
 </body>

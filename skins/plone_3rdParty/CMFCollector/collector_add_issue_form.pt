@@ -29,21 +29,21 @@ as possible.
 
 </div>
 
-<div metal:fill-slot="main">	  
+<div metal:fill-slot="main">
 
 <div tal:define="pm python: here.portal_membership;
                  authenticated python: member.has_role('Authenticated')
                                          or member.has_role('Member')">
 
-<form class="group" 
-        method="post" 
+<form class="group"
+        method="post"
         enctype="multipart/form-data"
         action=""
         tal:attributes="action string:${here/absolute_url}/collector_add_issue"
         >
 
-    <span class="legend" i18n:translate="legend_issue_details">Issue Details</span> 
-    
+    <span class="legend" i18n:translate="legend_issue_details">Issue Details</span>
+
     <div class="row">
         <div class="label" i18n:translate="label_title">Title</div>
 
@@ -51,13 +51,13 @@ as possible.
             <input type="text" name="title" value="" size="40" />
         </div>
     </div>
-    
+
     <div class="row">
         <div class="label" i18n:translate="label_security">Security</div>
         <div class="field">
             <input type="hidden" name="security_related:boolean" value="" />
-            <input class="noborder" 
-                   type=checkbox 
+            <input class="noborder"
+                   type=checkbox
                    name="security_related:boolean"
                    />
 
@@ -70,21 +70,21 @@ as possible.
         </div>
     </div>
 
-    <div class="row">    
+    <div class="row">
         <div class="label" i18n:translate="label_submitter">Submitter</div>
 
-        <div class="field" 
+        <div class="field"
              tal:condition="authenticated"
              tal:content="python: member.getProperty('full_name',
                                                       str(member))">
         </div>
 
-        <div class="field" 
+        <div class="field"
               tal:condition="not: authenticated">
             <input type="text" name="submitter_name" size="30" />
         </div>
     </div>
-    
+
     <div class="row">
         <div class="label" i18n:translate="label_email">Email</div>
 
@@ -100,7 +100,7 @@ as possible.
 
         </div>
     </div>
-            
+
     <div class="row">
         <div class="label" i18n:translate="label_topic"> Topic </div>
 
@@ -113,10 +113,10 @@ as possible.
             </select>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="label" i18n:translate="label_importance">Importance</div>
-        
+
         <div class="field">
          <select name="importance">
            <option value=""
@@ -128,9 +128,9 @@ as possible.
 
     </div>
 
-    <div class="row">    
+    <div class="row">
         <div class="label" i18n:translate="label_classification">Classification</div>
-        
+
         <div class="field">
          <select name="classification">
            <option value=""
@@ -139,9 +139,9 @@ as possible.
                    tal:content="it"></option>
          </select>
         </div>
-    
+
     </div>
-    
+
     <div class="row">
         <div class="label" i18n:translate="label_version_info">Version Info</div>
         <div class="field">
@@ -149,7 +149,7 @@ as possible.
                       tal:content="here/version_info_spiel"></textarea>
         </div>
     </div>
-    
+
 
     <metal:block tal:define="assigner python: pm.checkPermission(
                                               'Support collector issue', here);
@@ -162,10 +162,10 @@ as possible.
          </div>
 
     </div>
-     
+
     <div class="row" tal:condition="assigner">
-        <div class="label" i18n:translate="label_assign_to">Assign to</div> 
-        <div class="field">            
+        <div class="label" i18n:translate="label_assign_to">Assign to</div>
+        <div class="field">
            <select name="assignees:list" MULTIPLE size="5"
                    tal:attributes="size python:
                                         min(max(len(supporters), 3), 8)">
@@ -178,9 +178,9 @@ as possible.
     </div>
 
     </metal:block>
-    
+
     <div class="row">
-        <div class="label" i18n:translate="label_attachment_optional">Attachment (optional)</div> 
+        <div class="label" i18n:translate="label_attachment_optional">Attachment (optional)</div>
         <div class="field">
             <input type=file name="file" size="20" />
         </div>
@@ -195,21 +195,21 @@ as possible.
 	    <label for="radio_image" i18n:translate="">Image</label>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="label" i18n:translate="label_name_of_upload_optional">Name of upload (optional)</div>
         <div class="field">
             <input type=text name="fileid" size="12" />
         </div>
     </div>
-    
+
     <div class="row">
         <div class="label">&nbsp;</div>
         <div class="field">
          <input class="context" type="submit" value="Submit" i18n:attributes="value" />
         </div>
     </div>
-        
+
 </form>
 
 </div>

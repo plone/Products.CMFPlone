@@ -14,11 +14,11 @@
                 b_start python:request.get('b_start',0);
                 acl_users here/acl_users;"
      tal:condition="here/rejectAnonymous" >
-	
+
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<ul id="contentTabs"> 
-  <li class="selected"> 
+<ul id="contentTabs">
+  <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}"
     >Users</a>
@@ -31,8 +31,8 @@
 </ul>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
-    
-<div class="document editable">    
+
+<div class="document editable">
 
     <h1 i18n:translate="">User Management</h1>
 
@@ -62,7 +62,7 @@
     		 tal:attributes="tabindex tabindex/next;" />
 
     <p i18n:translate="">
-    Click the User Name to see and change the details of a specific user, or click 
+    Click the User Name to see and change the details of a specific user, or click
     the envelope to send a mail. You can edit the roles and e-mail address
     and remove users directly from this form.
     You can also access the user registration form to add new users.
@@ -81,7 +81,7 @@
 
         <table class="listing"
                tal:condition="portal_users">
-               
+
             <tr>
                 <th>User name</th>
                 <th>E-mail Address</th>
@@ -100,7 +100,7 @@
                the hazardous "getGroupPrefix()" stuff.
               Seems like it's time to document the whole GRUF API ! :-)
             </tal:comment>
-            
+
             <tal:block repeat="this_user batch">
 
             <tr tal:define="oddrow repeat/this_user/odd"
@@ -170,9 +170,9 @@
         </table>
 
         <input class="context"
-               tabindex="" 
-               type="submit" 
-               name="prefs_user_manage:method" 
+               tabindex=""
+               type="submit"
+               name="prefs_user_manage:method"
                value="Apply Changes"
                tal:attributes="tabindex tabindex/next;"
                />
@@ -180,7 +180,7 @@
     </form>
 
 </div>
-    
+
 </div>
 
 </body>

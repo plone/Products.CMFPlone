@@ -26,7 +26,7 @@ function cookiesEnabled() {
     return 1;
 }
 //-->
-</script> 
+</script>
 
 <body>
 
@@ -45,11 +45,11 @@ To access this part of the site, you need to log in with your username and passw
 If you do not have an account here, head over to the
 
 <span i18n:name="registration_form">
-    <a href="" 
+    <a href=""
        tal:attributes="href python:join.pop()"
        i18n:translate="description_no_account_registration_linktext">
         registration form
-    </a> 
+    </a>
 </span>
 
 to become a member.
@@ -64,22 +64,22 @@ to become a member.
 </script>
 
 <form class="group"
-      action="logged_in" 
+      action="logged_in"
       method="post">
 
-	<input type="hidden" 
-         name="came_from" 
+	<input type="hidden"
+         name="came_from"
          value=""
 	       tal:attributes="value request/came_from|request/HTTP_REFERER" />
 
 <span class="legend" i18n:translate="legend_account_details">Account details</span>
-	
+
 	<div class="row">
 			<div class="label">
                 <span i18n:translate="label_user_name">User Name</span>
-                <div id="user_name_help" 
+                <div id="user_name_help"
                      i18n:translate="help_user_name"
-                     class="help" 
+                     class="help"
                      style="visibility:hidden">
                 Enter the user name you use on this site. If you haven't
                 got a user name yet, or have forgotten it, use the links at the
@@ -88,14 +88,14 @@ to become a member.
             </div>
 
 			<div class="field">
-				<input type="text" 
-                       name="__ac_name" 
+				<input type="text"
+                       name="__ac_name"
                        size="15"
                        tabindex=""
-                       onfocus="formtooltip('user_name_help',1)" 
-                       onblur="formtooltip('user_name_help',0)" 
+                       onfocus="formtooltip('user_name_help',1)"
+                       onblur="formtooltip('user_name_help',0)"
                        tal:attributes="value python:request.get('__ac_name', '');
-                                       tabindex tabindex/next;" 
+                                       tabindex tabindex/next;"
                        />
 			</div>
 
@@ -103,24 +103,24 @@ to become a member.
 
 	<div class="row">
         <div class="label">
-            <span i18n:translate="label_password">Password</span> 
-            <div id="password_help" 
+            <span i18n:translate="label_password">Password</span>
+            <div id="password_help"
                  i18n:translate="help_password"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
             Enter your password. If you have forgotten it, use the
             links at the bottom of this form to request it again.
             </div>
         </div>
-        
+
         <div class="field">
-            <input type="password" 
-                   name="__ac_password" 
-                   size="15" 
+            <input type="password"
+                   name="__ac_password"
+                   size="15"
                    tabindex=""
-                   onfocus="formtooltip('password_help',1)" 
+                   onfocus="formtooltip('password_help',1)"
                    onblur="formtooltip('password_help',0)"
-                   tal:attributes="tabindex tabindex/next;" 
+                   tal:attributes="tabindex tabindex/next;"
                    />
         </div>
 	</div>
@@ -128,77 +128,77 @@ to become a member.
     <div class="row">
         <div class="label">
                 &nbsp;
-            <div id="remember_help" 
+            <div id="remember_help"
                  i18n:translate="help_remember_my_name"
-                 class="help" 
+                 class="help"
                  style="visibility:hidden">
             Setting the 'Remember my name' option will create a cookie with your username.
             When you log in later, your user name will already be filled in for you.
             </div>
         </div>
-        
+
         <div class="field">
-            <input type="checkbox" 
-                   class="noborder" 
-                   name="__ac_persistent" 
-                   value="1" 
-                   checked="checked" 
+            <input type="checkbox"
+                   class="noborder"
+                   name="__ac_persistent"
+                   value="1"
+                   checked="checked"
                    id="cb_remember"
-                   tabindex="" 
-                   onfocus="formtooltip('remember_help',1)" 
-                   onblur="formtooltip('remember_help',0)" 
-                   tal:attributes="tabindex tabindex/next;" 
+                   tabindex=""
+                   onfocus="formtooltip('remember_help',1)"
+                   onblur="formtooltip('remember_help',0)"
+                   tal:attributes="tabindex tabindex/next;"
                    />
 
             <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
         </div>
     </div>
-	
+
 	<div class="row">
     	<div class="label">&nbsp;</div>
     	<div class="field">
             <input class="context"
-                   tabindex="" 
-                   type="submit" 
-                   name="submit" 
-                   value="Log in" 
+                   tabindex=""
+                   type="submit"
+                   name="submit"
+                   value="Log in"
                    i18n:attributes="value"
-                   tal:attributes="tabindex tabindex/next;" 
+                   tal:attributes="tabindex tabindex/next;"
                    />
 
             <p i18n:translate="description_forgotten_your_password">
                 <strong>
                 Forgotten your password?
-                </strong> 
-                
+                </strong>
+
                 <span i18n:name="click_here">
                     <a href="mail_password_form" i18n:translate="description_forgotten_your_password_linktext">
                     Click here
-                    </a> 
+                    </a>
                 </span>
                 to have it mailed to you.
-                
+
             </p>
-            
-            <p>           
+
+            <p>
                 <strong i18n:translate="label_trouble_logging_in">
                 Having trouble logging in?
-                </strong> 
-                
+                </strong>
+
                 <span i18n:translate="description_trouble_logging_in">
-                Make sure to <a href="enabling_cookies">enable cookies</a> in your web browser. 
+                Make sure to <a href="enabling_cookies">enable cookies</a> in your web browser.
                 </span>
             </p>
-            
+
             <p i18n:translate="remember_to_log_out">
                 Don't forget to log out or exit your browser when you're done.
             </p>
     	</div>
-    </div>	
+    </div>
 
 </form>
 
 </div>
-		
+
 </body>
 </html>

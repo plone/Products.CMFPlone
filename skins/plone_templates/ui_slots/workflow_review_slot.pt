@@ -3,7 +3,7 @@
       i18n:domain="plone">
 
 <body>
-      
+
 <!-- The review box -->
 
 <div metal:define-macro="review_box"
@@ -19,7 +19,7 @@
             <tal:block repeat="o results">
             <div tal:define="oddrow repeat/o/odd"
                  tal:attributes="class python:test(oddrow, 'content odd','content even')">
-    
+
                     <a href="#"
                        class="marker"
                        tal:attributes="href string:${o/absolute_url}/view">
@@ -27,7 +27,7 @@
                         Extended Calendar Product
                         </span>
                     </a>
-    
+
                     <div class="boxDetails"
                          tal:content="python:here.toPortalTime(o.ModificationDate())">July 7, 08:11</div>
             </div>
