@@ -83,6 +83,10 @@ def initialize(context):
     ModuleSecurityInfo('Products.Formulator').declarePublic('StringField', 'EmailField')
     ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
 
+    # make unauthorized importable ttw
+    ModuleSecurityInfo('AccessControl').declarePublic('Unauthorized')
+
+
     from Products.Formulator.StandardFields import StringField, EmailField
     from Products.Formulator.Form import FormValidationError, BasicForm
     allow_class(StringField)
