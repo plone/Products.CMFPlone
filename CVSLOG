@@ -1,3 +1,35 @@
+2004-01-12 04:18  tiran
+
+	* SkinsTool.py (speedup-branch): wrong permissions - again
+
+2004-01-12 04:16  tiran
+
+	* Portal.py, SkinsCustomFolder.py, SkinsTool.py, __init__.py,
+	  www/addSkinsCustomFolder.zpt (speedup-branch): add patch from
+	  geoff and my reload/SkinCustomFolder code (this time to the right
+	  branch)
+
+2004-01-12 04:07  tiran
+
+	* Portal.py, SkinsCustomFolder.py, SkinsTool.py, __init__.py,
+	  www/addSkinsCustomFolder.zpt (Plone-2_0-branch): sorry, chances
+	  went to the wrong branch :(
+
+2004-01-12 03:54  plonista
+
+	* SkinsTool.py (Plone-2_0-branch): Fixed security declaration for
+	  reloadSkinsFromFS
+
+2004-01-12 03:39  tiran
+
+	* Portal.py, SkinsCustomFolder.py, SkinsTool.py, __init__.py,
+	  www/addSkinsCustomFolder.zpt (Plone-2_0-branch): add patch from
+	  geoff and my reload/SkinCustomFolder code
+
+2004-01-11 05:03  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-10 08:24  tiran
 
 	* SkinsTool.py (Plone-2_0-branch): fixed typo
