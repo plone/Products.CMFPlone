@@ -46,7 +46,7 @@
                       <span tal:define="begin python:begEndTimes[0].ISO();
                                         end python:begEndTimes[1].ISO();
                                         pss python:modules['Products'].PythonScripts.standard" tal:omit-tag="">
-                      <a href tal:attributes="href python:here.portal_url()+'/search?start:list:date=%s&start:list:date=%s&start_usage=range:min:max'%(pss.url_quote(begin),pss.url_quote(end))">
+                      <a href tal:attributes="href python:here.portal_url()+'/search?start:date=%s&start_usage=range:max&end:date=%s&end_usage=range:min'%(pss.url_quote(begin),pss.url_quote(end))">
                         <span tal:replace="python: day['day'] or default">&nbsp;</span>
                       </a>
                       </span>
