@@ -115,7 +115,7 @@
                 </div>
     
                 <tal:datetime define="today python:DateTime().earliestTime()">
-                <select name="created:date"
+                <select name="created.query:record:date"
                         id="created"
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;"
@@ -134,7 +134,7 @@
                 </select>
                 </tal:datetime>
 
-                <input type="hidden" name="created_usage" value="range:min" />
+                <input type="hidden" name="created.range:record" value="min" />
             </div>
     
             <div class="field">
