@@ -240,33 +240,33 @@ pre {
 ** Structural Elements
 */
 
-div.switchbar {
+div#switchbar {
     /* The skin switcher at the top, only shows up if you have multiple skins available */
     
 }
 
-div.switchbar a {
+div#switchbar a {
     display: block;
     float: left;
 }
 
-div.top {
+div#top {
     /* Top section */
     background: &dtml-topBackground;;
     margin: &dtml-topMargin;;
     padding: &dtml-topPadding;;
 }
-div.siteActions {
+div#siteActions {
     float: right;
     margin: 1em 1em 0.5em 1em;
 }
-.logo img {
+#logo img {
     /* Logo properties */
     margin: &dtml-logoMargin;;
     padding: &dtml-logoPadding;;
     display: block;
 }
-div.searchBox {
+div#searchBox {
     /*searchbox style and positioning */
     background-color: transparent;
     color: &dtml-searchFontColor;;
@@ -282,7 +282,7 @@ input.searchButton {
     font-size: 100% ! important;
     margin-bottom: 1px ! important;
 }
-ul.portaltabs {
+ul#portaltabs {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
     background: &dtml-mainTabBackdrop;;
     border-collapse: collapse;
@@ -294,14 +294,14 @@ ul.portaltabs {
     list-style: none;
     margin: 0;
 }
-ul.portaltabs li {
+ul#portaltabs li {
     /* Make the links inline using Fabrice's inversion to fix NS4 */
     display : inline;
     /*/*//*/
     display : none;
     /* */
 }
-li.portaltab a {
+ul#portaltabs li a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-mainTabBackgroundNotSelected;;
     border-color: &dtml-mainTabBorderColor;;
@@ -317,7 +317,7 @@ li.portaltab a {
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
-li.portaltab a.selected {
+ul#portaltabs li a.selected {
     /* The selected tab. There's only one of this */
     background: &dtml-mainTabBackground;;
     border: 1px solid &dtml-mainTabBorderColorSelected;;
@@ -325,13 +325,13 @@ li.portaltab a.selected {
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
 }
-li.portaltab a:hover {
+ul#portaltabs li a:hover {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-color: &dtml-mainTabBackground;;
     color: &dtml-mainTabFontColorSelected;;
 }
-div.personalBar {
+div#personalBar {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background: &dtml-mainTabBackground;;
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
@@ -342,19 +342,19 @@ div.personalBar {
     text-align: right;
     text-transform: &dtml-textTransform;;
 }
-div.personalBar a {
+div#personalBar a {
     background-color: transparent;
 	color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
 }
-div.personalBar img {
+div#personalBar img {
     vertical-align: top;
 }
 .caseSensitive {
     text-transform: none;
 }
-div.pathBar {
+div#pathBar {
     /* The path bar, including breadcrumbs and add to favorites */
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-style: solid;
@@ -451,7 +451,7 @@ div.byline {
     float: right;
     font-size: 80%;
 }
-.footer {
+#footer {
     background: &dtml-footerBackground;;
     border-top: &dtml-footerBorder;;
     border-bottom: &dtml-footerBorder;;

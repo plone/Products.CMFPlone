@@ -4,7 +4,7 @@
 
 
 <!-- THE SKIN SWITCHER TABS DEFINITION -->
-<div class="switchbar" metal:define-macro="skin_tabs">   
+<div class="switchbar" id="switchbar" metal:define-macro="skin_tabs">   
   <tal:comment replace="nothing">
   <a href="/">Public View</a>
   <a href="./manage_main" class="selected">Admin View</a>
@@ -15,7 +15,7 @@
 
 
 <!-- THE SEARCHBOX DEFINITION -->
-<div class="searchBox" metal:define-macro="quick_search">
+<div class="searchBox" id="searchBox" metal:define-macro="quick_search">
     <form name="searchform"
           action="search"
           tal:attributes="action string:${portal_url}/search" >
@@ -61,9 +61,11 @@
                  selected_tabs python:here.selectedTabs(template.getId(), here);
                  selected_portal_tab selected_tabs/portal;" >
     <ul id="portaltabs" class="portaltabs">
-       <li tal:repeat="tab portal_tabs" class="portaltab">
+       <tal:tabs tal:repeat="tab portal_tabs">
+       <li tal:define="firstitem repeat/tab/first;
+                       lastitem repeat/tab/last;">
           <a href="" class="" tal:attributes="href tab/url;
-                       class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');
+                       class python:test(selected_portal_tab==tab['id'], 'selected', 'plain') + test(firstitem, ' firstItem', '') + test(lastitem, ' lastItem', '');
 		       id string:portaltab-${tab/id}"
 		       accesskey="accesskeys-tabs" i18n:attributes="accesskey" >
           <tal:block omit-tag="" i18n:translate="">
@@ -71,6 +73,7 @@
           </tal:block>
           </a>
       </li>
+      </tal:tabs>
    </ul>
 </div>
 

@@ -1,6 +1,7 @@
 
 <div metal:define-macro="site_actions"
      class="siteActions"
+     id="siteActions"
      tal:define="site_actions actions/site_actions|nothing;
                  getIconFor nocall:putils/getIconFor"
      tal:condition="site_actions">
