@@ -92,8 +92,9 @@
 	    <label i18n:translate="label_effective_date">Effective Date</label>
 	    <div class="formHelp"
 		 i18n:translate="help_effective_date">
-	      The date when the item will be available (of course it needs to be published too).
-	      If no date is selected the item will be effective immediately.
+	      The date when the item will be available (of course it
+	      needs to be published too).  If no date is selected the
+	      item will be effective immediately.
 	    </div>
 
 	    <div tal:content="error">Validation error output</div>
@@ -116,8 +117,9 @@
 	    <label i18n:translate="label_expiration_date">Expiration Date</label>
 	    <div class="formHelp"
 		 i18n:translate="help_expiration_date">
-	      This will automatically make the item invisible for others at the given date.
-	      If no date is chosen, it will never expire.
+	      This will automatically make the item invisible for
+	      others at the given date.  If no date is chosen, it will
+	      never expire.
 	    </div>
 
 	    <div tal:content="error">Validation error output</div>
@@ -144,8 +146,8 @@
 	    <div class="formHelp"
 		 i18n:translate="help_publishing_comments">
 	      Will be added to the publishing history. If multiple
-	      items are selected, this comment will be attached to all of
-	      them.
+	      items are selected, this comment will be attached to all
+	      of them.
 	    </div>
 	    <textarea id="comment"
 		      name="comment"
@@ -256,7 +258,8 @@
 
 
 	  <span tal:replace="nothing">
-	    ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
+	    ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE
+	    THESE INTO YOUR FORM ####
 	  </span>
 	  <input type="hidden" name="form.submitted" value="1" />
 
