@@ -172,6 +172,7 @@ fieldset {
     margin: 1em 0em 1em 0em;
     padding: 0em 1em 1em 1em;
     line-height: 1.5em;
+    width: auto;
 }
 legend {
     background: &dtml-backgroundColor;;
@@ -184,11 +185,12 @@ form {
     margin: 0;
 }
 textarea {
+    font: 110% "Courier New", Courier, monospaced; 
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
     color: &dtml-inputFontColor;;
     background-color: white;
-    width: 98%;
-    padding: 0.1em;
+    width: 100%;
+    padding: 0em;
 }
 input {
     font-family: <dtml-var fontFamily>;
@@ -197,7 +199,7 @@ input {
     color: &dtml-inputFontColor;;
     background-color: white;
     vertical-align: middle;
-    padding: 0.1em;
+    padding: 0em;
 }
 select {
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  

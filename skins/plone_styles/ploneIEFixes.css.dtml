@@ -30,9 +30,8 @@ div#portal-columns div#portal-column-two {
     overflow: hidden;
 }
 
-fieldset {
-    width: 88%;
-    margin: 1em auto 1em auto;
+textarea {
+    width: 97%;
 }
 
 .visualOverflow {
