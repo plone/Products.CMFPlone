@@ -16,6 +16,12 @@ function registerPloneFunction(func){
     else if (window.attachEvent) window.attachEvent("onload",func);   
   }
 
+function unRegisterPloneFunction(func){
+    // uregisters a previous function to fire onload. 
+    if (window.removeEventListener) window.removeEventListener("load",func,false);
+    else if (window.detachEvent) window.detachEvent("onload",func);   
+  }
+
 function getContentArea(){
 	// to end all doubt on where the content sits. It also felt a bit silly doing this over and over in every
 	// function, even if it is a tiny operation. Just guarding against someone changing the names again, in the name
