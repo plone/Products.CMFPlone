@@ -61,6 +61,15 @@ default_configlets = (
      'permission': ManagePortal,
      'imageUrl':'group.gif'},
 
+    {'id':'UsersGroups2',
+     'appId':'UsersGroups',
+     'name':'Users and Groups Administration',
+     'action':'string:${portal_url}/prefs_groups_overview',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'visible' : 0,
+     'imageUrl':'group.gif'},
+
     {'id':'MemberPrefs',
      'appId':'Plone',
      'name':'Personal Preferences',
