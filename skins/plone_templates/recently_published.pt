@@ -43,7 +43,7 @@
 
                 <div class="documentByLine">
                     by <span tal:replace="result/Creator"></span>,
-                    <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="here/modified" />
+                    <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="result/modified" />
                 </div>
 
                 <dd class="link">
