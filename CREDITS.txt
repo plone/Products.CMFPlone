@@ -37,7 +37,7 @@ contributed code.
   Steve Alexander (SteveA) -- Helpful ZOPE Guru 
   - "Cat-Box":http://www.cat-box.net/steve
   
-  Lalo Martins (lalo) -- Zope Plumbing, initial PortalFactory, PTS
+  Lalo Martins (lalo) -- Zope Plumbing, initial PortalFactory, PTS, occasional guru
     - "Asteroid L":http://www.laranja.org
   
   Kapil Thangavelu (hazmat) -- Helpful ZOPE Guru
