@@ -59,6 +59,14 @@ def twothree(portal):
     policy=DefaultCustomizationPolicy()
     policy.addSiteProperties(portal)
 
+    #adding navigation properties
+    nav_tool=portal.portal_navigation
+    nav_tool.addTransitionFor('default', 'createObject', 'success', 'action:edit')
+    nav_tool.addTransitionFor('default', 'sendto_form', 'success', 'script:sendto')
+    nav_tool.addTransitionFor('default', 'sendto_form', 'failure', 'sendto_form')
+    nav_tool.addTransitionFor('default', 'sendto', 'success', 'action:view')
+    nav_tool.addTransitionFor('default', 'sendto', 'failure', 'action:view')
+
 def registerMigrations():
     # so the basic concepts is you put a bunch of migrations is here
     MigrationTool.registerUpgradePath(
