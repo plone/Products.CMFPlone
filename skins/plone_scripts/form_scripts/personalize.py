@@ -12,9 +12,9 @@ portrait_id='MyPortrait'
 
 member=context.portal_membership.getAuthenticatedMember()
 member.setProperties(context.REQUEST)
-    
+member_context=context.portal_membership.getHomeFolder(member.getId())
+
 context.portal_skins.updateSkinCookie()
-    
 #if a portait file was uploaded put it in the /Members/XXXX/.personal/MyPortrait
 if portrait and portrait.filename:
     personal=context.getPlonePersonalFolder()
@@ -30,4 +30,4 @@ if portrait and portrait.filename:
 tmsg=member.getUserName()+' personalized their settings.'
 transaction_note(tmsg)
 
-return ('success',  context, {})
+return ('success',  member_context, {})
