@@ -1,5 +1,5 @@
 from DateTime import DateTime
-from types import StringType, UnicodeType
+from types import StringType, UnicodeType, IntType
 
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1
