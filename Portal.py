@@ -52,6 +52,10 @@ class PloneSite(CMFSite):
     """
     manage_addPloneFolder = PloneFolder.addPloneFolder
 
+    def __browser_default__(self, request):
+        """ Set default so we can return whatever we want instead of index_html """
+        return self.browserDefault(request)
+
 class PloneGenerator(Portal.PortalGenerator):
 
     klass = PloneSite

@@ -110,6 +110,10 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 
     manage_addFolder = manage_addPloneFolder
 
+    def __browser_default__(self, request):
+        """ Set default so we can return whatever we want instead of index_html """
+        return self.browserDefault(request)
+
     security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): # XXX
         """
