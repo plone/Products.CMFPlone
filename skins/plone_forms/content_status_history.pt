@@ -111,10 +111,12 @@
 	            class="noborder"
 	            id="include_subfolders"
 	            name="include_subfolders"
-	            tabindex="2" 
+	            tabindex="" 
 	            onfocus="formtooltip('include_subfolders_help',1)" 
 	            onblur="formtooltip('include_subfolders_help',0)" 
-	            checked="checked" />
+	            checked="checked" 
+              tal:attributes="tabindex tabindex/next;"
+              />
 	     <label for="include_subfolders" i18n:id="include_subfolders">Include subfolders</label>
            </div>
    	</div>
@@ -137,7 +139,7 @@
                                  inputvalue python:test(here.effective_date, here.effective_date, 'None');
                                  onfocus string:formtooltip('effective_date_help',1);
                                  onblur string:formtooltip('effective_date_help',0);
-                                 tabindex string:3;">
+                                 tabindex tabindex/next;">
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
@@ -162,7 +164,7 @@
                                  inputvalue python:test(here.expiration_date, here.expiration_date, 'None');
                                  onfocus string:formtooltip('expiration_date_help',1);
                                  onblur string:formtooltip('expiration_date_help',0);
-                                 tabindex string:4;">
+                                 tabindex tabindex/next;">
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
@@ -188,9 +190,10 @@
                           name="comment" 
                           cols="60" 
                           rows="5"
-                          tabindex="5"
+                          tabindex=""
                           onfocus="formtooltip('publishing_comments_help',1)" 
-                          onblur="formtooltip('publishing_comments_help',0)" 
+                          onblur="formtooltip('publishing_comments_help',0)"
+                          tal:attributes="tabindex tabindex/next;" 
                           ></textarea>
             </div>
         </div>
