@@ -142,6 +142,9 @@ def checkPublished(o):
 #default function that finds the children out of a folderish object
 def childFinder(obj,folderishOnly=1):
     user=obj.REQUEST['AUTHENTICATED_USER']
+    # the 'important' users may see unpublished content
+    # who can see unpublished content may also see hidden files
+    showHiddenFiles=showUnpublishedContent=user.has_role(rolesSeeUnpublishedContent,obj)
     try:
 
         if obj.meta_type in parentMetaTypesNotToQuery:
@@ -160,7 +163,7 @@ def childFinder(obj,folderishOnly=1):
             
             folderishOnly= not showTopicResults #in order to view all topic results in the tree 
 
-            res=obj.getFolderContents(suppressHiddenFiles=1)
+            res=obj.getFolderContents(suppressHiddenFiles=not showHiddenFiles)
             subs=obj.queryCatalog()
             
             # get the objects out of the cat results
@@ -174,7 +177,7 @@ def childFinder(obj,folderishOnly=1):
         else:    
             #traversal to all 'CMFish' folders
             if hasattr(obj.aq_explicit,'listFolderContents'):
-                res=obj.getFolderContents(suppressHiddenFiles=1)
+                res=obj.getFolderContents(suppressHiddenFiles=not showHiddenFiles)
             else:
                 #and all other *CMF* folders
                 res=obj.contentValues()
@@ -197,7 +200,7 @@ def childFinder(obj,folderishOnly=1):
             permChk = context.portal_membership.checkPermission
             res = [o for o in objs if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
 
-        if not user.has_role(rolesSeeUnpublishedContent,obj):  # the 'important' users may see unpublished content
+        if not showUnpublishedContent:  # the 'important' users may see unpublished content
             res = [o for o in res if checkPublished(o) ]
         
     
