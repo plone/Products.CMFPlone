@@ -1,3 +1,4 @@
+from Products.ZCatalog.ZCatalog import ZCatalog
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.utils import _getAuthenticatedUser, _checkPermission
 from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
@@ -18,8 +19,31 @@ class CatalogTool(BaseTool):
     meta_type = ToolNames.CatalogTool
     security = ClassSecurityInfo()
 
+    def __init__(self):
+        ZCatalog.__init__(self, self.getId())
+        self._initIndexes()
+        
+#        if not hasattr(self, 'Vocabulary'):
+#            # As of 2.6, the Catalog no longer adds a vocabulary in itself
+#            from Products.PluginIndexes.TextIndex.Vocabulary import Vocabulary
+#            vocabulary = Vocabulary('Vocabulary', 'Vocabulary', globbing=1)
+#            self._setObject('Vocabulary', vocabulary)
+            
+    security.declarePublic( 'enumerateIndexes' ) 
+    def enumerateIndexes(self):
+        lst = BaseTool.enumerateIndexes(self)
+        return [ (idx, itype) for idx, itype in lst if itype != 'TextIndex']
+
+    def _removeIndex(self, index):
+        """ Safe removal of an index """
+        try: self.manage_delIndex(index)
+        except: pass
+               
     def manage_afterAdd(self, item, container):
-        # Makes sure the SearchableText index is a ZCTextIndex
+        """ In addition to the standard indexes we need to create 
+            'SearchableText', 'Title' and 'Description' either as
+            TextIndexNG2 or ZCTextIndex instance
+        """
 
         class args:
             def __init__(self, **kw):
@@ -27,22 +51,25 @@ class CatalogTool(BaseTool):
             def keys(self):
                 return self.__dict__.keys()
 
+        # We need to remove the indexes to keep the tests working...baaah
+        for idx in ('SearchableText', 'Title', 'Description'):
+            self._removeIndex(idx)
+
         if txng_version == 2:
-            """ Prefer TextIndexNG V2 if available instead of ZCTextIndex """
+            # Prefer TextIndexNG V2 if available instead of ZCTextIndex 
 
             extra = args(default_encoding='utf-8')
-            self.manage_delIndex(['SearchableText', 'Title', 'Description'])
             self.manage_addIndex('SearchableText', 'TextIndexNG2', 
                                   extra=args(default_encoding='utf-8', 
                                              use_converters=1, autoexpand=1))
             self.manage_addIndex('Title', 'TextIndexNG2', extra=extra)
             self.manage_addIndex('Description', 'TextIndexNG2', extra=extra)
-            self.manage_delObjects('Vocabulary')
 
         else:
 
-            if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
+            # ZCTextIndex as fallback
 
+            if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
 
                 self.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
                     'plone_lexicon',
@@ -57,8 +84,9 @@ class CatalogTool(BaseTool):
                               lexicon_id = 'plone_lexicon',
                               index_type  = 'Okapi BM25 Rank' )
 
-                self.manage_delIndex(['SearchableText'])
                 self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
+                self.manage_addIndex('Description', 'ZCTextIndex', extra=extra)
+                self.manage_addIndex('Title', 'ZCTextIndex', extra=extra)
 
     def _listAllowedRolesAndUsers( self, user ):
         # Makes sure the list includes the user's groups
