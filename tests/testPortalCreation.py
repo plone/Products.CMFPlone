@@ -14,6 +14,15 @@ from Acquisition import aq_base
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 
 
+from OFS.SimpleItem import SimpleItem
+class DummyObject(SimpleItem):
+    mbd_called = 0
+    def __init__(self, id='dummy'): 
+        self.id = id
+    def manage_beforeDelete(self, item, container): 
+        self.mbd_called = 1
+
+
 class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -72,6 +81,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             if action.id=='reply':
                 reply_visible=action.visible
         self.assertEqual(reply_visible, 0)
+
+    def testMAnageBeforeDeleteIsCalledRecursively(self):
+        # When the portal is deleted, all subobject should have 
+        # their manage_beforeDelete hook called.
+        self.folder._setObject('dummy', DummyObject())
+        self.dummy = self.folder.dummy
+        self.app._delObject(PloneTestCase.portal_name)
+        self.assertEqual(self.dummy.mbd_called, 1)
 
 
 if __name__ == '__main__':
