@@ -934,6 +934,7 @@ ul.configlets li a {
     background: &dtml-evenRowBackgroundColor;; 
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
     padding: 0 1em 0.5em 1em;
+    margin-bottom: 1em;
 }
 
 .comment h1,
