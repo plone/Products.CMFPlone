@@ -10,7 +10,7 @@ The following people contributed to help iron out wrinkles, gave feedback and co
 Geir Bækholt (http://elvix.com) 
 Stian Søiland (http://stain.portveien.to) 
 Magnus
-Manfred Ackman
+Manfred Ackermann 
 Andy Dawkins
 Ignacio Valdes
 Zope Corporation for producing ZOPE and CMF (especially Tres Seaver, Shane Hathaway, and Andrew Sawyers)
