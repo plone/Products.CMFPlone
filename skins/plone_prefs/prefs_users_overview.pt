@@ -67,9 +67,8 @@
                   tal:attributes="tabindex tabindex/next;"
                   />
     
-            <table class="listing"
-                   tal:condition="portal_users">
-                   
+	    <tal:block tal:condition="portal_users">
+	      <table class="listing">
                 <tr>
                     <th colspan="4">
                         <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
@@ -172,7 +171,7 @@
             </tal:block>
             </table>
     
-    	  <div metal:use-macro="here/batch_macros/macros/navigation" />
+	      <div metal:use-macro="here/batch_macros/macros/navigation" />
     
             <input class="context"
                    tabindex=""
@@ -182,7 +181,7 @@
                    i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;"
                    />
-    
+	    </tal:block>
         </form>
 
     </div>
