@@ -50,9 +50,9 @@ class CatalogTool(BaseTool):
         except: pass
 
     def manage_afterAdd(self, item, container):
-        self._createTextIndexes()
+        self._createTextIndexes(item, container)
                
-    def _createTextIndexes(self):
+    def _createTextIndexes(self, item, container):
         """ In addition to the standard indexes we need to create 
             'SearchableText', 'Title' and 'Description' either as
             TextIndexNG2 or ZCTextIndex instance
