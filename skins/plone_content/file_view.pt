@@ -7,7 +7,9 @@
 
 <div metal:fill-slot="main">
     <tal:main-macro metal:define-macro="main" 
-           tal:define="size python:here.getObjSize(here)">
+           tal:define="size python:here.getObjSize(here);
+                       content_type here/content_type;
+                      ">
         <h1 tal:content="here/title_or_id" class="documentFirstHeading">
             Title or id
         </h1>
@@ -57,12 +59,13 @@
         </small>
     
         <div class="row"
-             tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
+             tal:condition="python:test(content_type.find('text')>-1, 1,0)">
     
                 <h2 i18n:translate="heading_file_contents">File contents</h2>
     
-                <pre tal:content="here/data">
+                <pre tal:content="here/get_data|here/data|nothing">
                 </pre>
+
         </div>
     
         <div metal:use-macro="here/document_byline/macros/byline">
