@@ -401,7 +401,8 @@
                     </thead>
                     <tbody>
                         <tr tal:repeat="group grouplist">
-                        <td tal:define="global group_name group/getUserName">
+                        <td tal:define="global group_name group/getUserName;
+                                               group_id group/getUserId;">
                             <label class="hiddenLabel" for="member_ids:list"
                                    i18n:translate="label_select_group">
                                 select group <span tal:content="group_name" i18n:name="name"/>
@@ -412,7 +413,7 @@
                                 id="#"
                                 value=""
                                 tabindex=""
-                                tal:attributes="value group_name;
+                                tal:attributes="value group_id;
                                                 tabindex tabindex/next;"/>
                         </td>
                         <td tal:content="group/getUserNameWithoutGroupPrefix">
