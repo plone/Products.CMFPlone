@@ -21,14 +21,37 @@
          can be removed if you don't want to support those browsers
          specifically. Site will still be viewable, but look a bit 
          stripped :) --> 
-	  <link rel="Stylesheet" type="text/css" href="ploneBasicNS.css" tal:attributes="href string:$portal_url/ploneBasicNS.css" />
-	  <link rel="Stylesheet" type="text/css" href="ploneStructureNS.css" tal:attributes="href string:$portal_url/ploneStructureNS.css" />
-	  <link rel="Stylesheet" type="text/css" href="ploneWidgetsNS.css" tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
-	  <link rel="Stylesheet" type="text/css" href="ploneDeprecatedNS.css" tal:attributes="href string:$portal_url/ploneDeprecatedNS.css" />
-	  <link rel="Stylesheet" type="text/css" href="ploneCalendarNS.css" tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
+	  <link rel="Stylesheet" 
+	        type="text/css" 
+		href="ploneBasicNS.css" 
+		tal:attributes="href string:$portal_url/ploneBasicNS.css" />
+		
+	  <link rel="Stylesheet" 
+	        type="text/css" 
+		href="ploneStructureNS.css" 
+		tal:attributes="href string:$portal_url/ploneStructureNS.css" />
+		
+	  <link rel="Stylesheet" 
+	        type="text/css" 
+		href="ploneWidgetsNS.css" 
+		tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
+		
+	  <link rel="Stylesheet" 
+	        type="text/css" 
+		href="ploneDeprecatedNS.css" 
+		tal:attributes="href string:$portal_url/ploneDeprecatedNS.css" />
+		
+	  <link rel="Stylesheet" 
+	        type="text/css" 
+		href="ploneCalendarNS.css" 
+		tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
 
 	<!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
-    <style tal:replace="structure here/CSSImports"> </style>
+    <style tal:replace="structure here/CSSImports">
+      This block will be dynamically replaced withe the @import statements for use in IE4.0 and higher.
+      If you put the @imports in here (which you should do, CSSImports is a just a out-of-the-box useability artifact)
+      then your designers (with Macro expansion turned on) will be able to see styled content.
+    </style>
 	
     <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
 
@@ -86,8 +109,16 @@
                 
             	<form name="searchform" action="search">
 			    Search
-          		    <input id="searchGadget" name="SearchableText" type="text" size="15" />
-			        <input class="context" type="submit" value="GO" />
+          		    <input id="searchGadget" 
+			           name="SearchableText" 
+				   type="text" 
+				   size="15" 
+				   value=""
+				   tal:attributes="value request/SearchableText|nothing;" />
+				   
+			    <input class="context" 
+			           type="submit" 
+				   value="GO" />
             	</form>
 			</div>
 
