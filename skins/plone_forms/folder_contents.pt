@@ -11,18 +11,6 @@
   </metal:block>
 <body>
 
-<div metal:fill-slot="super">
-
-    <div metal:use-macro="here/portal_tabs/macros/folderTabs">
-    Content tabs
-    </div>
-
-    <div class="contentBar" tal:condition="show_border">        
-    &nbsp;
-    </div>	
-
-</div>
-
 <div metal:fill-slot="main"
      tal:define="dummy here/filterCookie;
                  folderfilter python:request.get('folderfilter', '');

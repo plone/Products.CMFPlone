@@ -6,18 +6,6 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-  <div metal:fill-slot="super">
-
-        <div metal:use-macro="here/portal_tabs/macros/folderTabs">
-        Content tabs
-        </div>
-        
-        <div class="contentBar">        
-        &nbsp;
-        </div>	
-
-  </div>
-																																											
   <div metal:fill-slot="main"
     tal:define="join python:modules['string'].join;
     search_submitted request/role_submit|nothing;

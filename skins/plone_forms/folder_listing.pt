@@ -14,18 +14,6 @@
 </head>
 
 <body>
-<div metal:fill-slot="super">
-
-    <div metal:use-macro="here/portal_tabs/macros/folderTabs">
-    Content tabs
-    </div>
-
-    <div class="contentBar">
-    &nbsp;
-    </div>
-
-</div>
-
 
     <div metal:fill-slot="main">
 

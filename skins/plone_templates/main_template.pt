@@ -49,7 +49,7 @@ Header stuff
 
                 <metal:block metal:define-slot="super"
 		             tal:condition="show_border" >
-                    
+                
                 <div class="contentTabs" metal:define-macro="contentTabs"
                      tal:define="obj_type python:here.getTypeInfo().id;">
     
@@ -57,14 +57,16 @@ Header stuff
                                       global wf_actions actions/workflow;
 				      global folder_actions actions/folder;
 				      global local_actions python:actions.get('object_tabs', []);
-                                      global historyForm python:here.getActionUrlById('history', actions['object']);" />
+				      global isFolder python:test(obj_type=='Folder',1,0);" />
+				      
+                    <span tal:define="dummy python:here.plone_debug('folder ' + str(folder_actions)) " />
 
                     <span tal:repeat="action python:test(obj_type=='Folder', folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
-                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"> 
-                            <span tal:replace="action/name" /> 
+                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');
+			                   href action/url;"> 
+                            <span tal:replace="action/name">Publishing</span>
                         </a> 
-                    
                         <span class="netscape4">&middot;</span>
                     </span>
     
