@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Fixed https://plone.org/collector/2749. 'groups' wasn't
+      initialized as an instance variable, so any changes to it would
+      vanish on restart.
+      [dreamcatcher]
+
     - Fixed https://plone.org/collector/2671. default_page as a string
       property would not work. Fixed this and added tests for basic
       behavior. More tests are needed IMHO.
