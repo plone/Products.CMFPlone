@@ -1,3 +1,34 @@
+2004-05-18 21:35  limi
+
+	* HISTORY.txt, skins/plone_portlets/portlet_login.pt
+	  (Plone-2_0-branch): Fix for http://plone.org/collector/3144 -
+	  Login portlet wasn't using the 'label' tag, corrected.
+
+2004-05-18 21:14  limi
+
+	* HISTORY.txt, skins/plone_portlets/portlet_recent.pt,
+	  skins/plone_portlets/portlet_related.pt (Plone-2_0-branch): Fix
+	  for http://plone.org/collector/3145	  - Added
+	  id="portlet-related" in the Related portlet (was missing),
+	  and renamed 'portlet-recent-items' to 'portlet-recent' to make
+	  the name consistent with the other portlets.
+
+2004-05-18 18:02  zopezen
+
+	* PloneTool.py (Plone-2_0-branch): Allow multiple to (vinsci)
+
+2004-05-18 18:02  zopezen
+
+	* PloneTool.py (Plone-1_0): Allow multiple to address (vinsci)
+
+2004-05-18 16:49  zopezen
+
+	* version.txt (Plone-1_0): Upgrade to 1.0.6
+
+2004-05-18 06:15  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-18 05:09  zopezen
 
 	* HISTORY.txt, INSTALL.txt, version.txt, migrations/__init__.py
