@@ -478,10 +478,11 @@ class PloneTool(UniqueObject, SimpleItem):
         for page in pages:
             if ids.has_key(page):
                 return obj, [page]
-        # we look for the default_page in the skins aswell.
+        # we look for the default_page in the portal and/or skins aswell.
+        # Use path/to/template to reference an object or a skin.
         for page in pages:
-            if hasattr(portal.portal_skins, page):
-                return obj, [page]
+            if portal.unrestrictedTraverse(page,None):
+                return obj, page.split('/')
 
         # Try the default sitewide default_page setting
         for page in portal.portal_properties.site_properties.getProperty('default_page', []):
