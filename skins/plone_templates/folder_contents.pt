@@ -66,7 +66,7 @@
             <metal:block metal:define-macro="folder_listing"
                               tal:define="locked here/lock_icon.gif;
                                           pencil_icon here/edit.gif;
-                                          use_folder_contents here/portal_properties/site_properties/use_folder_contents;
+                                          use_folder_contents site_properties/use_folder_contents;
                                           filterOut python:('Favorite',);
                                           filterValues decodedFilter/keys | nothing;
                                           types python:here.sortObjects(here.allowedContentTypes());
@@ -196,7 +196,7 @@
                                 <img alt="" tal:attributes="src python:item.getIcon(1)" 
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
-                            <tal:block tal:condition="python:test(here.portal_properties.site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
+                            <tal:block tal:condition="python:test(site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
 
                             <a href="absolute_url/external_edit"
                                tal:attributes="href string:${item/absolute_url}/external_edit">

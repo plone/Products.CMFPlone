@@ -6,7 +6,7 @@
       metal:define-macro="master"
       tal:define="member here/portal_membership/getAuthenticatedMember;
         portal here/portal_url/getPortalObject;
-	global portal_url portal;
+        global portal_url portal;
         actions python:here.portal_actions.listFilteredActionsFor(here);
         site_properties here/portal_properties/site_properties;
         ztu modules/ZTUtils;
