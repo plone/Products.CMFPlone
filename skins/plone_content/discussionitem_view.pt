@@ -28,7 +28,7 @@
                 <span i18n:translate="posted_by">Posted by</span>
                 <span tal:content="here/Creator">Poster Name</span>
                 <span i18n:translate="posted_on">at</span> 
-                <span tal:replace="here/modified">8/23/2001 12:40:44 PM</span>
+                <span tal:replace="python: here.toPortalTime(here.modified(), long_format=1)">8/23/2001 12:40:44 PM</span>
             </div>
             
             <div tal:content="structure here/CookedBody">

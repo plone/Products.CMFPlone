@@ -44,7 +44,7 @@
                         <span i18n:translate="label_comment_by">Posted by</span>
                         <span tal:content="reply/Creator">Poster Name</span>
                         <span i18n:translate="label_commented_at">at</span> 
-                        <span tal:replace="python: reply.modified()">8/23/2001 12:40:44 PM</span>
+                        <span tal:replace="python: here.toPortalTime(reply.modified(),long_format=1)">8/23/2001 12:40:44 PM</span>
                     </div>
             
                     <div tal:content="structure reply/CookedBody">
@@ -96,7 +96,7 @@
                             (<span i18n:translate="label_comment_by">Posted by</span> 
                             <span tal:replace="lst/object/Creator">username</span>
                             <span i18n:translate="label_commented_at">at</span> 
-                            <span tal:replace="python: here.toPortalTime(lst['object'].modified())">8/23/2001 12:49:08 PM</span>)
+                            <span tal:replace="python: here.toPortalTime(lst['object'].modified(), long_format=1)">8/23/2001 12:49:08 PM</span>)
                             </a>
                         </div>
             
