@@ -508,17 +508,18 @@ input.noborder {
 div.row {
     clear: both;
     min-height: 4em;
-    margin-top: 1em;
+    margin: 0em 0em 1em 0em;
     position: relative;
 }
 
 .group {
     border: &dtml-groupBorder;;
-    margin: 2em 0em 1em 0em;
+    margin: 1em 0em 1em 0em;
     padding: 0em 1em;
 }
 span.legend {
     background: &dtml-contentBackground;;
+    font-size: 80%;
     padding: 0.5em;
     position : relative;
     top: -0.8em;
@@ -544,6 +545,7 @@ div.help {
     text-align: left;
     position: absolute;
     left: -18em;
+    top: 1.5em;
     width: 16em;
     padding: 0.5em;
 }
