@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {})">
+
+    <h1 i18n:translate="heading_portal_properties">Properties Panel</h1>
+
+    <p i18n:translate="description_portal_properties">
+    description_portal_properties
+    </p>
+
+    <div tal:repeat="obj python:here.portal_properties.objectValues()">
+	
+              <dt><a tal:content="obj/title" 
+		     title="title"
+                     i18n:attributes="title"
+                     tal:attributes="title string:heading_${obj/id};
+		                     href string:prefs_portal_properties?attr=${obj/id}" /></dt>
+              <dd title="title"
+                  i18n:attributes="title"
+                  tal:attributes="title string:description_${obj/id}">description</dd>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
