@@ -317,10 +317,10 @@
               </td>
 
               <td>
-                <span tal:replace="python: items['time'].strftime(site_properties.localTimeFormat)" />
+                <span tal:replace="python: items['time']" />
                 <span tal:condition="items/effective_date|nothing">
                   (<span i18n:translate="label_publishing_effective" tal:omit-tag="">effective</span>:
-                  <span tal:replace="python: items['effective_date'].strftime(site_properties.localTimeFormat)"></span>)
+                  <span tal:replace="python: items['effective_date']"></span>)
                 </span>
               </td>
 
