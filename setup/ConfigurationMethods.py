@@ -40,7 +40,7 @@ def addSiteProperties(self, portal):
     if not hasattr(p,'localTimeFormat'):
         safeEditProperty(p, 'localTimeFormat', '%Y-%m-%d', 'string')
     if not hasattr(p,'localLongTimeFormat'):
-        safeEditProperty(p, 'localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
+        safeEditProperty(p, 'localLongTimeFormat', '%Y-%m-%d %H:%M', 'string')
     if not hasattr(p,'default_language'):
         safeEditProperty(p, 'default_language', 'en', 'string')
     if not hasattr(p,'default_charset'):

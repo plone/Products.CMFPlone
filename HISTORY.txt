@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Changed localLongTimeFormat to '%Y-%m-%d %H:%M'. Note: there is no migration,
+      only new sites will be affected.
+      [stefan]
+
     - Fixed http://plone.org/collector/3557 - Lines properties may still be lists
       if an old ZODB is upraded to newer Zopes. Catching such a case in migrations.
       Thanks to Xenru for the patch.
