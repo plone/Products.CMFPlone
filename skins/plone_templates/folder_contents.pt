@@ -168,6 +168,7 @@
                                                  name="selectButton"
                                                  title="Select all items"
                                                  onClick="toggleSelect(this); return false;"
+                                                 tal:define="portal_url here/portal_url"
                                                  tal:attributes="src string:$portal_url/select_all_icon.gif"
                                                  /></th>
                         <th>&nbsp;<span tal:omit-tag=""
@@ -201,7 +202,7 @@
                         </td>
     
                         <td tal:define="action python:item.getTypeInfo().getActionById('view');
-                                        use_folder_contents site_properties/use_folder_contents;
+                                        use_folder_contents here/portal_properties/site_properties/use_folder_contents;
                                         url python:test(item.getTypeInfo().getId() in use_folder_contents, 
                                                         item.absolute_url()+'/folder_contents',
                                                         item.absolute_url()+'/'+action);"> 
@@ -210,7 +211,7 @@
                                 <img tal:replace="structure python:path('here/%s' % item.getIcon(1))" 
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
-                            <tal:block tal:condition="python:test(site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
+                            <tal:block tal:condition="python:test(here.portal_properties.site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
 
                             <a href="absolute_url/external_edit"
                                tal:attributes="href string:${item/absolute_url}/external_edit"

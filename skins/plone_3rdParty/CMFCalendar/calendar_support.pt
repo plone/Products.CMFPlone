@@ -14,7 +14,7 @@
     the calendar UI widget can be found in plone_templates/ui_slots/calendar_slot
 
 <!-- calendar box picker -->        
-<div metal:define-macro="calendarDatePickerBox">
+<div metal:define-macro="calendarDatePickerBox" tal:define="portal_url here/portal_url">
 
  <comment tal:condition="nothing">
  
@@ -37,7 +37,8 @@
                                    value inputvalue;
                                    onfocus onfocus|nothing;
                                    onblur onblur|nothing;
-                                   tabindex tabindex|nothing" />
+                                   tabindex tabindex|nothing" 
+                                   />
 
   <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?inputname=${inputname}&formname=${formname}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
     <img tal:replace="structure here/popup_calendar.gif">
