@@ -28,6 +28,7 @@
     <span tal:repeat="crumb breadcrumbs">
         <tal:last tal:define="is_last repeat/crumb/end">
             <a href="#"
+               tal:omit-tag="python:not crumb[1]"
                tal:condition="python:not is_last"
                tal:attributes="href python:crumb[1]"
                tal:content="python:crumb[0]"
