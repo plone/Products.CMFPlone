@@ -40,19 +40,15 @@
                 </metal:block>
 				
                 <div tal:condition="request/came_from | nothing">
-                    <div tal:define="came_from request/came_from;
-                                     not_allowed python:('login_form','logged_out','registered', 'join_form');
-                                     came_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);
-                                     dummy python: request.RESPONSE.redirect(came_from)" />
+                    <div tal:define="came_from python:'';
+                                     came_from request/came_from|came_from;
+                                     not_allowed python:('login','login_success','login_password','login_failed','login_form','logged_in','logged_out','registered','mail_password','mail_password_form','join_form','require_login');"
+                         tal:condition="python:came_from.split('?')[0].split('/')[-1:][0] not in not_allowed;">
+                         <div tal:define="dummy python: request.RESPONSE.redirect(came_from)" />
+                    </div>
                 </div>
 
                 <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
-                
-                <p>
-                [<a i18n:translate="back_to_where_you_came_from" 
-                    href="" 
-                    tal:attributes="href request/HTTP_REFERER">Back to where you came from</a>]
-                </p>
                 
                 <p i18n:translate="description_logged_in_explain">
                 You will notice that the top right bar has changed, it now

@@ -9,6 +9,28 @@
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
 </tal:block>
 
+<script language="javascript" metal:fill-slot="javascript_head_slot">
+<!--
+function cookiesEnabled() {
+    // set test cookie
+    var c = "cookieTest=0";
+    document.cookie = c;
+    var dc = document.cookie;
+    // cookie not set?  fail
+    if (dc.indexOf(c) == -1) return 0;
+    // change test cookie
+    c = "cookieTest=1";
+    document.cookie = c
+    dc = document.cookie;
+    // cookie not changed?  fail
+    if (dc.indexOf(c) == -1) return 0;
+    // delete cookie
+    document.cookie = "cookieTest=; expires=Thu, 01-Jan-70 00:00:01 GMT";
+    return 1;
+}
+//-->
+</script> 
+
 <body>
 
 <div metal:fill-slot="main"
@@ -34,6 +56,14 @@ If you do not have an account here, head over to the
 
 to become a member.
 </p>
+
+<script language="javascript">
+<!--
+   if (cookiesEnabled && !cookiesEnabled()) {
+      document.writeln('<p><div align="center"><b><font color="red">Cookies must be enabled on your browser before you can sign in.</font></b><br><a href="enabling_cookies">How to enable cookies</a></div></p>');
+   }
+//-->
+</script>
 
 <form class="group"
       action="logged_in" 
@@ -158,11 +188,13 @@ to become a member.
                 </strong> 
                 
                 <span i18n:translate="description_trouble_logging_in">
-                Make sure to enable cookies in your web browser. 
-                Don't forget to log out or exit your browser when you're done.
+                Make sure to <a href="enabling cookies">enable cookies</a> in your web browser. 
                 </span>
             </p>
-                        
+            
+            <p>
+                Don't forget to log out or exit your browser when you're done.
+            </p>
     	</div>
     </div>	
 

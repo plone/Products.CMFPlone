@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<body>
+	   
+<div metal:fill-slot="main">
+   <div tal:define="p_props here/portal_properties/site_properties;">
+      <h1>Insufficient Privileges</h1>
+ 
+      <p>You do not have sufficient privileges to view this page.  If you believe
+      you are receiving this message in error, please send an e-mail to
+   
+      <a href="mailto:admin@here.com" title="E-mail Administrator"
+         tal:attributes="href string:mailto:${p_props/email_from_address}"
+         tal:content="p_props/email_from_name">Email Admin</a>.
+      </p>
+   </div>
+</div>
+	   
+</body>
+</html>

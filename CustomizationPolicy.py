@@ -290,6 +290,11 @@ class DefaultCustomizationPolicy:
             del skins_map['Basic']
         st.selections=skins_map
 
+        #set up cookie crumbler
+        cookie_authentication = getToolByName(portal, 'cookie_authentication')
+        cookie_authentication._updateProperty('auto_login_page', 'require_login')
+        
+
         self.setupDefaultSlots(portal)
         self.addSiteProperties(portal)
         self.assignTitles(portal)
