@@ -114,7 +114,7 @@
                    tal:condition="python: num_types"
                    tal:attributes="tabindex tabindex/next|nothing;
                                    value python:ttype and here.translate('Add New ${type}', {'type': ttype}) or
-                                                          here.translate('label_add_new_item')" />
+                                                          here.translate('label_add_new_item', default='Add New Item')" />
           </div>
 
 
