@@ -22,8 +22,9 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName, registerIcon
-from Products.CMFDefault import Portal
+from Products.CMFDefault import Portal, DublinCore
 from Products.ExternalMethod import ExternalMethod
+from PloneFolder import OrderedContainer
 import Globals
 import string
 import os, sys, re
@@ -57,13 +58,15 @@ Thanks for using our product.
 "The Plone Team":http://plone.org/about/team
 """
 
-class PloneSite(CMFSite):
+class PloneSite(CMFSite, OrderedContainer):
     """
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
     """
     meta_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
+    __implements__ = ( DublinCore.DefaultDublinCoreImpl.__implements__,
+                       OrderedContainer.__implements__ )
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead

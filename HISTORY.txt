@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+    Beta 2
+    
+    - CMFPlone.Portal.Site now uses the OrderedContainer mixin.
+      __implements__ the OrderContainer and DefaultDublinCoreImpl xface.
+
+    Beta 1
+
     - Content types in Plone now have the notion of both Views and
       Actions. Actions are show on the content bar, views are tabs, as
       earlier.
