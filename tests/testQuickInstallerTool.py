@@ -12,9 +12,36 @@ from Products.CMFPlone.tests import PloneTestCase
 from Acquisition import aq_base
 
 
-class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
+class InstanceHomeFixup:
+    '''Sigh, in Zope versions < 2.7.1 the Testing package changes
+       the INSTANCE_HOME variable. QuickInstaller now requires a 
+       valid INSTANCE_HOME so we have to restore it.
+    '''
+
+    # This is kinda lame but does the job
+    from Products.CMFPlone.tests import PACKAGE_HOME
+    instance_home = os.path.abspath(os.path.join(PACKAGE_HOME, os.pardir, os.pardir, os.pardir))
+    if not os.path.exists(os.path.join(instance_home, 'Extensions')):
+        instance_home = os.path.abspath(os.path.join(instance_home, os.pardir, os.pardir))
+        if not os.path.exists(os.path.join(instance_home, 'Extensions')):
+            instance_home = '' # punt
+
+    def setupLocalEnvironment(self):
+        builtins = getattr(__builtins__, '__dict__', __builtins__)
+        if self.instance_home:
+            self._saved = INSTANCE_HOME
+            builtins['INSTANCE_HOME'] = self.instance_home
+
+    def afterClear(self):
+        builtins = getattr(__builtins__, '__dict__', __builtins__)
+        if hasattr(self, '_saved'):
+            builtins['INSTANCE_HOME'] = self._saved
+
+
+class TestQuickInstallerTool(InstanceHomeFixup, PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
+        InstanceHomeFixup.setupLocalEnvironment(self)
         self.qi = self.portal.portal_quickinstaller
 
     def _installed(self):
