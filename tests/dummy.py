@@ -2,7 +2,7 @@
 # Helper objects for the Plone test suite
 #
 
-# $Id: dummy.py,v 1.1.2.1 2004/03/22 14:47:48 shh42 Exp $
+# $Id$
 
 from OFS.SimpleItem import SimpleItem
 

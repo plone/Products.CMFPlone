@@ -1,6 +1,6 @@
 ##parameters=templateId
 #!/usr/bin/python
-#$Id: controlPanelParentUrl.py,v 1.2 2003/11/18 10:59:14 longsleep Exp $
+#$Id$
 #Copyright: ClearWind Consulting Ltd
 
 # please someone fix this!

@@ -776,7 +776,7 @@
 2004-04-23 13:24  shh42
 
 	* FormTool.py, NavigationTool.py (Plone-2_0-branch), FormTool.py,
-	  NavigationTool.py: Remove $Id: $ as they cause conflicts when
+	  NavigationTool.py: Remove $Id$ as they cause conflicts when
 	  merging!?
 
 2004-04-23 12:12  elvix
