@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+</head>
+
+<body>
+
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="author python:request.traverse_subpath[0];
+                                portrait python: mtool.getPersonalPortrait(author);
+                                authorinfo python: here.getAuthorInfo(author);">
+
+        <div metal:use-macro="here/document_actions/macros/document_actions">
+            Document actions (print, sendto etc)
+        </div>
+
+        <tal:condition condition="authorinfo">
+            <h1 class="documentFirstHeading">
+                <tal:author content="authorinfo/fullname" />
+            </h1>
+
+            <div class="documentDescription">
+                <img src=""
+                 alt=""
+                 class="portraitPhoto"
+                 width="75"
+                 height="100"
+                 style="float: left"
+                 tal:attributes="src portrait/absolute_url" />
+              <tal:author content="string:This is ${authorinfo/fullname}" />
+            </div>
+
+        <!-- feedback form -->
+
+        <form name="feedback_form"
+            tal:condition="not: mtool/isAnonymousUser"
+            action=""
+            method="post"
+            tal:attributes="action string:$portal_url/${template/getId}/${author}">
+
+        <fieldset>
+
+        <div class="field">
+          <label for="subject">
+            Subject
+          </label>
+
+          <input type="text" 
+                 id="subject" 
+                 name="subject" 
+                 size="25" 
+                 value="" 
+                 tabindex="" 
+                 tal:attributes="tabindex tabindex/next"
+                 />
+        </div>
+        <div class="field">
+          <label for="message">
+            Message
+          </label>
+        
+          <textarea name="message"
+                    id="message"
+                    rows="5"
+                    cols="25"
+                    tabindex=""
+                    tal:attributes="tabindex tabindex/next;"
+                    > </textarea>
+        </div>
+        
+        <div class="formControls">
+
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="form.button.Send"
+                   value="Send"
+                   i18n:attributes="value"
+                   tal:attributes="tabindex tabindex/next;" />
+
+        </div>
+
+        </fieldset>
+
+        <input type="hidden" name="author" value="" tal:attributes="value author" />
+        <input type="hidden" name="referer" value="" tal:attributes="value python:request.get('HTTP_REFERER', 'unknown url')" />
+        <input type="hidden" name="form.submitted" value="1" />
+
+        </form>
+        <!-- listing of content created by this user -->
+        
+        </tal:condition>
+        <tal:condition condition="not: authorinfo">
+            <h1 class="documentFirstHeading">
+                No user by that name
+            </h1>
+        </tal:condition>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+

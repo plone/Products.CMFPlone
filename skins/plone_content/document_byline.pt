@@ -6,11 +6,12 @@
                  creator_home python:mtool.getHomeUrl(creator);">
 
   <tal:name tal:condition="creator"
+        tal:define="author python:here.getAuthorInfo(creator)"
         i18n:translate="label_author">
     By
       <a href="#"
          tal:attributes="href string:$portal_url/author/$creator"
-         tal:content="python: mtool.getMemberById(here.Creator()).getProperty('fullname')"
+         tal:content="author/fullname"
          tal:on-error="here/Creator"
          i18n:name="author">
         Bob Dobalina

@@ -1,0 +1,22 @@
+<div i18n:domain="plone" 
+     tal:omit-tag=""
+     tal:define="utool nocall:here/portal_url"
+><div i18n:translate="author_feedback_mailtemplate_body" tal:omit-tag="">
+This message is sent to you from <span i18n:name="portal_url" tal:omit-tag="" tal:content="utool" />
+
+You are receiving this mail because someone is sending feedback about content
+created by you at <span tal:replace="options/url" />
+
+It is sent by <span i18n:name="from_address" tal:omit-tag="" tal:content="options/sender_id"
+/> 
+
+message:
+
+<span i18n:name="message" tal:omit-tag="" tal:content="options/message | nothing" />
+
+<span i18n:name="document_url" tal:omit-tag="" tal:content="options/url | here/absolute_url" />
+</div>
+--
+<span tal:replace="here/email_from_name" />
+
+</div>
