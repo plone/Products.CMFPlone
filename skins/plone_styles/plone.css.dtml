@@ -151,6 +151,10 @@ ul a, ol a {
     text-decoration: underline;
 }
 
+li {
+    margin-bottom: 1em;
+}
+
 dl {
 }
 
@@ -347,6 +351,9 @@ div.personalBar a {
 
 div.personalBar img {
     vertical-align: top;
+}
+.case_sensitive {
+    text-transform: none;
 }
 
 div.pathBar {
