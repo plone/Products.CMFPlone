@@ -81,7 +81,9 @@
         </fieldset>
     </form>
 
-    <form action="uninstallProducts" tal:attributes="action python:QI.absolute_url()" method="post">
+    <form action="uninstallProducts" 
+        tal:condition="python:len([p for p in QI.listInstalledProducts() if not p['isHidden'] and not p['isLocked']])" 
+        tal:attributes="action python:QI.absolute_url()" method="post">
 
         <fieldset>
             <legend i18n:translate="legend_installed_products">Installed products</legend> 
