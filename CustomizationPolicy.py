@@ -48,6 +48,10 @@ class DefaultCustomizationPolicy:
         at.addAction('delete', 'Delete', 'string:folder_delete:method', '', 'List folder contents', 'local_buttons')
         at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', 'List folder contents', 'local_buttons')
 
+        #customize memberdata tool
+        md=getToolByName(portal, 'portal_memberdata')
+        md._setProperty('formtooltips', '1', 'boolean')
+
 	#customize membership tool
         mt=getToolByName(portal, 'portal_membership')
         m_actions=mt._cloneActions()

@@ -114,4 +114,9 @@ def migrate099to10(self):
     normalize_tabs(self)
     wt=getToolByName(self, 'portal_workflow')
     wt.manage_delObjects('default_workflow')
+
+    #customize memberdata tool
+    md=getToolByName(self, 'portal_memberdata')
+    md._setProperty('formtooltips', '1', 'boolean')
+
     return 'finished migraiton'

@@ -129,6 +129,69 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="label">
+                    <span i18n:id="formtooltips_status">Display form tooltips</span>
+
+                    <div id="formtooltips_help"
+                         i18n:id="formtooltips_help" 
+                         class="help" 
+                         style="visibility:hidden">
+                    Select whether you want form tooltips to be displayed.
+                    </div>                
+                </div>
+                <div class="field"> 
+                    <input type="radio" 
+                           class="noborder" 
+                           name="formtooltips" 
+                           value="on"
+                           id="cb_formtooltips" 
+                           checked="checked"
+                           tabindex="2"
+                           onfocus="formtooltip('formtooltips_help',1)" 
+                           onblur="formtooltip('formtooltips_help',0)" 
+                           tal:condition="python:member.formtooltips and ('checked' or '');" />
+                           
+                    <input type="radio" 
+                           class="noborder" 
+                           name="formtooltips" 
+                           value="on"
+                           id="cb_formtooltips"
+                           tabindex="2"
+                           onfocus="formtooltip('formtooltips_help',1)" 
+                           onblur="formtooltip('formtooltips_help',0)" 
+                           tal:condition="python:not(member.formtooltips) and 'checked' or '';" />
+                    
+                    <label for="cb_formtooltips">Yes</label>
+                    
+                    <br />
+                    
+                    <input type="radio" 
+                           class="noborder" 
+                           name="formtooltips" 
+                           value=""
+                           id="cb_noformtooltips"
+                           tabindex="2"
+                           onfocus="formtooltip('formtooltips_help',1)" 
+                           onblur="formtooltip('formtooltips_help',0)" 
+                           tal:condition="python:member.formtooltips and 'checked' or '';" />
+                    
+                    <input type="radio" 
+                           class="noborder" 
+                           name="formtooltips" 
+                           value=""
+                           id="cb_noformtooltips" 
+                           checked="checked"
+                           tabindex="2"
+                           onfocus="formtooltip('formtooltips_help',1)" 
+                           onblur="formtooltip('formtooltips_help',0)" 
+                           tal:condition="python:not(member.formtooltips) and 'checked' or '';" />		   
+                    
+                    <label for="cb_noformtooltips">No</label>
+                </div>
+            </div>
+
+
             <div class="row" 
                  tal:condition="here/portal_skins/allow_any">
                 

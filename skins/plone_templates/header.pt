@@ -48,6 +48,12 @@
     <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
     </metal:block>
     <script type="text/javascript" tal:attributes="src here/plone_javascripts.js/absolute_url"></script>
+    <tal:block tal:define="formtooltips python:getattr(here.portal_membership.getAuthenticatedMember(), 'formtooltips', 'true')" tal:omit-tag="">
+      <tal:block tal:replace="structure string:&lt;script language='javascript' type='text/javascript' &gt;" />
+        <metal:block tal:condition="formtooltips" tal:replace="structure here/plone_formtooltip.js" />
+        <metal:block tal:condition="not:formtooltips">function formtooltip(el,flag){}</metal:block>
+      <tal:block tal:replace="structure python:'&lt;/script&gt;'" />
+    </tal:block>
 </head>
 
 <div metal:define-macro="portal_header"
