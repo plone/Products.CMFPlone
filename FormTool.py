@@ -33,6 +33,13 @@ class FormTool(UniqueObject, SimpleItem):
     validation_status_key = 'validation_status'
 
 
+    def __before_publishing_traverse__(self, other, REQUEST):
+        stack = REQUEST.get('TraversalRequestNameStack', None)
+        import sys
+        sys.stdout.write('==========='+str(stack)+"\n")
+        REQUEST.set('TraversalRequestNameStack', [stack[-1]])
+
+
     def setValidators(self, form, validators = ['validate_id']):
         """Register a chain of validators for a form"""
         if type(validators) != type([]):
@@ -96,14 +103,13 @@ class FormTool(UniqueObject, SimpleItem):
 
         # see if we are handling validation for this form
         validators = self.getValidators(name)
-        self.log('VALIDATORS = %s' % (validators))
         if validators is None:
             # no -- do normal traversal
             target = getattr(aq_parent(self), name, None)
             if name.endswith('.js'):
-                self.log('name: %s, target: <Javascript>, context: %s' % (name, str(aq_parent(self))), '_traverseTo')
+                self.log('name: %s, target: <Javascript>, context: %s' % (name, str(aq_parent(self))), '__bobo_traverse__')
             else:
-                self.log('name: %s, target: %s, context: %s' % (name, target, str(aq_parent(self))), '_traverseTo')
+                self.log('name: %s, target: %s, context: %s' % (name, target, str(aq_parent(self))), '__bobo_traverse__')
             if target:
                 return target
             else:
@@ -131,8 +137,9 @@ class FormTool(UniqueObject, SimpleItem):
         # so that subsequent forms will operate on the FormTool's context and not
         # on the FormTool.
         do_validate = form_submitted and not errors
-        self.log('returning FormValidators(%s,%s,%s)' % (name, validators, do_validate), '__bobo_traverse__')
+        self.log('returning FormValidator(%s,%s,%s)' % (name, validators, do_validate), '__bobo_traverse__')
         self.log(REQUEST.URL)
+        self.log(aq_parent(self))
         return FormValidator(name, validators, do_validate).__of__(aq_parent(self)) # wrap in acquisition layer
 
 
@@ -176,16 +183,19 @@ class FormValidator(SimpleItem):
     security.declarePublic('__call__')
     def __call__(self, REQUEST, **kw):
         """ """
+        trace = ['\n']
         self.log('validator[%s] = \'%s\'' % (self.form, self.validators), '__call__')
 
         if self.do_validate:
+            trace.append('Invoking validation')
             context = self.aq_parent
             # invoke validation
-            (status, kwargs) = self._validate(context, REQUEST)
+            (status, kwargs, trace) = self._validate(context, REQUEST, trace)
             self.log('invoking validation, status = %s, kwargs = %s' % (status, kwargs))
 
-            return context.portal_navigation.getNext(context, self.form, status, **kwargs)
+            return context.portal_navigation.getNext(context, self.form, status, trace, **kwargs)
         else:
+            trace.append('No validation needed.  Going to %s.%s' % (str(aq_parent(self)), self.form))
             self.log('going to %s.%s' % (str(aq_parent(self)), self.form))
             target = getattr(aq_parent(self), self.form, None)
             return target(REQUEST, **kw)
@@ -194,13 +204,14 @@ class FormValidator(SimpleItem):
     index_html = None  # call __call__, not index_html
 
 
-    def _validate(self, context, REQUEST):
+    def _validate(self, context, REQUEST, trace):
         """Execute validators on the validation stack then sets up the REQUEST and returns a status.
            Places a dictionary of errors in the REQUEST that is accessed via REQUEST[FormTool.error_key]
         """
         errors = {}
         status = 'success'  # default return value if the validator list is empty
         for validator in self.validators:
+            trace.append('Invoking %s' % validator)
             self.log('calling validator [%s]' % (str(validator)))
             v = getattr(context, validator)
             (status, errors, kwargs) = mapply(v, REQUEST.args, REQUEST,
@@ -210,7 +221,9 @@ class FormValidator(SimpleItem):
             self.REQUEST.set('errors', errors)
             for key in kwargs.keys():
                 self.REQUEST.set(key, kwargs[key])
-        return (status, kwargs)
+            trace.append('\t -> (%s, %s, %s)' % (status, str(errors), str(kwargs)))
+        trace.append('Validation returned (%s, %s)' % (status, str(kwargs)))
+        return (status, kwargs, trace)
 
 
     security.declarePublic('log')

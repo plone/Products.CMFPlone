@@ -1,6 +1,12 @@
-# Script (Python) "reconfig"
-##title=Reconfigure Portal
+## Script (Python) "reconfig"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##parameters=
+##title=Reconfigure Portal
+
 REQUEST=context.REQUEST
 context.portal_properties.editProperties(REQUEST)
 default_skin=context.portal_skins.getDefaultSkin()

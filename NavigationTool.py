@@ -25,7 +25,7 @@ class NavigationTool (UniqueObject, SimpleItem):
 
 
     security.declarePublic('getNext')
-    def getNext(self, context, script, status, **kwargs):
+    def getNext(self, context, script, status, trace=['\n'], **kwargs):
         """ Perform the next action specified by in portal_properties.navigation_properties.
 
             context - the current context
@@ -37,16 +37,18 @@ class NavigationTool (UniqueObject, SimpleItem):
             kwargs - additional keyword arguments are passed to subsequent pages either in
                 the REQUEST or as GET parameters if a redirection needs to be done
         """
+        trace.append('Looking up transition for %s.%s.%s' % (context, script, status))
         (transition_type, transition) = self.getNavigationTransistion(context, script, status)
+        trace.append('Found transition: %s, %s' % (transition_type, transition))
         self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
         if transition_type == 'action':
-            return self._dispatchAction(context, transition, **kwargs)
+            return self._dispatchAction(context, transition, trace, **kwargs)
         elif transition_type == 'url':
-            return self._dispatchUrl(context, transition, **kwargs)
+            return self._dispatchUrl(context, transition, trace, **kwargs)
         elif transition_type == 'script':
-            return self._dispatchScript(context, transition, **kwargs)
+            return self._dispatchScript(context, transition, trace, **kwargs)
         else:
-            return self._dispatchPage(context, transition, **kwargs)
+            return self._dispatchPage(context, transition, trace, **kwargs)
 
 
     def addTransitionFor(self, content, script, status, destination):
@@ -199,7 +201,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         return self._parseTransition(transition)
 
 
-    def _dispatchPage(self, context, page, **kwargs):
+    def _dispatchPage(self, context, page, trace, **kwargs):
         # If any query parameters have been specified in the transition,
         # stick them into the request before calling getActionById()
         queryIndex = page.find('?')
@@ -212,13 +214,14 @@ class NavigationTool (UniqueObject, SimpleItem):
                     self.REQUEST[key] = query[key]
             page = page[0:queryIndex]
 
+        trace.append("dispatchPage: page = " + str(page) + ", context = " + str(context))
         self.log("page = " + str(page) + ", context = " + str(context), '_dispatchPage')
         if page is not None:
             return apply(context.restrictedTraverse(page), (context, context.REQUEST), kwargs)
         raise Exception, 'Argh! could not find the transition, ' + page
 
 
-    def _dispatchScript(self, context, script, **kwargs):
+    def _dispatchScript(self, context, script, trace, **kwargs):
         self.log('calling ' + script, '_dispatchScript')
 
         request = {}
@@ -228,24 +231,27 @@ class NavigationTool (UniqueObject, SimpleItem):
 
         script_object = getattr(context, script)
 
+        trace.append('dispatchScript: script = %s' % (str(script)))
         (status, context, kwargs) = \
             mapply(script_object, self.REQUEST.args, request,
                         call_object, 1, missing_name, dont_publish_class,
                         self.REQUEST, bind=1)
         self.log('status = %s, context = %s, kwargs = %s' % (str(status), str(context), str(kwargs)), '_dispatchScript')
-        return self.getNext(context, script, status, **kwargs)
+        return self.getNext(context, script, status, trace, **kwargs)
 
 
-    def _dispatchRedirect(self, context, url, **kwargs):
+    def _dispatchRedirect(self, context, url, trace, **kwargs):
         url = self._addUrlArgs(url, kwargs)
         self.log('url = ' + str(url), '_dispatchRedirect')
+        trace.append('dispatchRedirect: url = %s' % (str(url)))
         return self.REQUEST.RESPONSE.redirect(url)
 
 
-    def _dispatchAction(self, context, action_id, **kwargs):
+    def _dispatchAction(self, context, action_id, trace, **kwargs):
         next_action = context.getTypeInfo().getActionById(action_id)
         url = self._addUrlArgs(next_action, kwargs)
         self.log('url = ' + str(url), '_dispatchAction')
+        trace.append('dispatchAction: url = %s' % (str(url)))
         return self.REQUEST.RESPONSE.redirect('%s/%s' % (context.absolute_url(), url))
 
 
@@ -279,6 +285,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             debug_log(msg + ' - NavigationTool')
         else:
             debug_log(msg + ' - NavigationTool.'+loc)
+
 
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
     # USE GETNEXT() INSTEAD AND UPDATE THE NAVIGATION PROPERTIES FILE
