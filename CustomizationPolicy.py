@@ -13,8 +13,6 @@ class DefaultCustomizationPolicy:
     __implements__ = ICustomizationPolicy
 
     def customize(self, portal):
-        return
-
 	#make 'reply' tab unvisible
         dt=getToolByName(portal, 'portal_discussion') 
 	dt_actions=dt.listActions()        
