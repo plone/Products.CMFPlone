@@ -25,7 +25,9 @@
           method="post"
           tal:condition="transactions"
           tal:define="batch python:Batch(transactions, 15, int(b_start), orphan=1)">
+        
         <input type="hidden" name="came_from" value="" tal:attributes="value request/HTTP_REFERER" />
+        
         <h1 i18n:translate="heading_undo_actions">Undo actions</h1>
 
         <p i18n:translate="description_undo_action">
@@ -64,7 +66,7 @@
         </div>
  
 
-        <table class="listing nosort" 
+        <table class="listing" 
                summary="Undo history" 
                cellpadding="0" 
                cellspacing="0"> 
@@ -92,13 +94,15 @@
                                    name="transaction_info:list" value=""
                                    tabindex=""
                                    tal:attributes="value python:trx['id'];
-                                                   tabindex tabindex/next;">
+                                                   tabindex tabindex/next;" />
                         </td>
             
                         <td tal:define="has_description python:len(descriptions)>1">
-                        <span tal:condition="has_description"
-                              tal:replace="python:' '.join(descriptions[1:])">Title</span>
-                        <span tal:condition="not:has_description">&nbsp;</span>
+                        
+                            <span tal:condition="has_description"
+                                  tal:replace="python:' '.join(descriptions[1:])">Title</span>
+                            <span tal:condition="not:has_description">&nbsp;</span>
+                        
                         </td>
                         	
                         <td tal:content="python:descriptions[0]">
