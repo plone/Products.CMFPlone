@@ -7,7 +7,7 @@
 
 <body>
 
-<div metal:fill-slot="super1">
+<div metal:fill-slot="super">
 
     <div metal:use-macro="here/portal_tabs/macros/folderTabs">
     Content tabs

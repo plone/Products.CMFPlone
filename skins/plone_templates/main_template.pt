@@ -8,99 +8,95 @@
 
 <body tal:define="global filtered_actions python:here.portal_actions.listFilteredActionsFor(here)">
 
-    <div metal:use-macro="here/header/macros/portal_header">
-    Header stuff
-    </div>
+<div metal:use-macro="here/header/macros/portal_header">
+Header stuff
+</div>
 
 
-    <table class="columns">
-   
-        <tbody>
+<table class="columns">
+
+    <tbody>
+        <tr>
+            <td class="left">
+                <metal:block use-macro="here/main_left_column/macros/column">
+                Left Column of three-column Layout
+                </metal:block>
+
+                <metal:block use-macro="here/main_right_column/macros/column">
+                Right column of three-column layout
+                </metal:block>
+            </td>
             
-            <tr>
-    
-                <td class="left">
-                
-                    <metal:block use-macro="here/main_left_column/macros/column">
-                    Left Column of three-column Layout
-                    </metal:block>
+            <td class="main" 
+                tal:define="show_border python:here.showEditableBorder();">
 
-                    <metal:block use-macro="here/main_right_column/macros/column">
-    	            Right column of three-column layout
-                    </metal:block>
-
-                </td>
-                
-                
-                <td class="main" 
-                    tal:define="show_border python:here.showEditableBorder();">
-
-                    <metal:block metal:define-slot="super1" tal:condition="show_border">
-                        
-			<div class="contentTabs" metal:define-macro="contentTabs"
-			     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));">
-
-                            <span tal:define="global obj_actions actions/object;
-		                              global wf_actions actions/workflow;
-			                      global historyForm python:here.getActionUrlById('history', actions['object']);" />
-                            <span tal:repeat="action obj_actions">
-		                <a class="" href="" 
-				   tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"> 
-				   <span tal:replace="action/name" /> 
-				</a> 
-				<span class="netscape4">&middot;</span>
-	                    </span>
-
-
-			    <a class=""
-			       href="content_status_history"
-			       tal:condition="python:test( (not here.portal_membership.isAnonymousUser and here.getActionUrlById('status history', wf_actions ) or wf_actions ) , 1, 0)"
-			       tal:attributes="href string:${here/absolute_url}/content_status_history;
-			                       class python:test(request.URL0.find('content_status')!=-1, 'selected', 'plain');">
-			       Publishing</a> <span class="netscape4">&middot;</span>
-
-			</div>
-
-                        <div class="contentBar">        
-                        &nbsp;
-                        </div>	
-                
-                    </metal:block>
-                
-                    <div class="document"
-		         tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
-
-                        <div metal:use-macro="here/header/macros/portal_message">
-                        Message box
-                        </div>
-            
-                	<div metal:define-slot="main" tal:content="nothing">
-                        Page body text 
-                        </div>
-            
-                        <div metal:define-slot="sub">
-                        <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-                        </div> 
+                <metal:block metal:define-slot="super" tal:condition="show_border">
                     
-                    </div>   
-            
-                </td>
+                <div class="contentTabs" metal:define-macro="contentTabs"
+                     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));">
     
-                <td class="right">
+                    <span tal:define="global obj_actions actions/object;
+                                      global wf_actions actions/workflow;
+                                      global historyForm python:here.getActionUrlById('history', actions['object']);" />
 
-                </td>
+                    <span tal:repeat="action obj_actions">
+                        <a class="" href="" 
+                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"> 
+                            <span tal:replace="action/name" /> 
+                        </a> 
+                    
+                        <span class="netscape4">&middot;</span>
+                    </span>
+    
+    
+                    <a class=""
+                       href="content_status_history"
+                       tal:condition="python:test( (not here.portal_membership.isAnonymousUser and here.getActionUrlById('status history', wf_actions ) or wf_actions ) , 1, 0)"
+                       tal:attributes="href string:${here/absolute_url}/content_status_history;
+                                       class python:test(request.URL0.find('content_status')!=-1, 'selected', 'plain');">
+                       Publishing</a> <span class="netscape4">&middot;</span>
+    
+                </div>
+
+                <div class="contentBar">        
+                &nbsp;
+                </div>    
             
-            </tr>
-        
-        </tbody>
-        
-    </table>
+                </metal:block>
+            
+                <div class="document"
+                     tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
 
-    <hr size="" class="netscape4" />
+                    <div metal:use-macro="here/header/macros/portal_message">
+                    Message box
+                    </div>
+        
+                    <div metal:define-slot="header" tal:content="nothing">
+                    Header slot 
+                    </div>
 
-    <div class="footer" metal:use-macro="here/footer/macros/portal_footer">
-    Footer
-    </div>
+                    <div metal:define-slot="main" tal:content="nothing">
+                    Page body text 
+                    </div>
+        
+                    <div metal:define-slot="sub">
+                    <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                    </div> 
+                </div>
+            </td>
+
+            <td class="right">
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<hr size="" class="netscape4" />
+
+<div class="footer" metal:use-macro="here/footer/macros/portal_footer">
+Footer
+</div>
+
 
 </body>
 </html>
