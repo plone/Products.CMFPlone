@@ -1,5 +1,5 @@
 [default]
-title=Plone setup
+title=Portal setup
 
 [security]
 View=0:Authenticated

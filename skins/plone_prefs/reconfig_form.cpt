@@ -12,7 +12,7 @@
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors options/state/getErrors;">
 
-    <h1 i18n:translate="heading_plone_setup">Plone Setup</h1>
+    <h1 i18n:translate="heading_portal_setup">Portal Setup</h1>
 
     <p i18n:translate="description_plone_setup">
         Portal-wide settings.
