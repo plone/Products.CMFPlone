@@ -22,7 +22,7 @@
         workflow_actions actions/workflow;
         folder_actions actions/folder;
         global_actions actions/global;
-        wf_state python:wtool.getInfoFor(here,'review_state');
+        wf_state python:wtool.getInfoFor(here,'review_state',None);
         site_properties here/portal_properties/site_properties;
         ztu modules/ZTUtils;
         actions options/actions|actions;
