@@ -27,7 +27,7 @@ try:
              , expirationYear=dt_end.day()
              , start_time='%2.2d:%2.2d'%(dt_start.h_24(), dt_start.minute())
              , startAMPM=dt_start.ampm()
-             , stopAMPM=dt_start.ampm()
+             , stopAMPM=dt_end.ampm()
              , stop_time='%2.2d:%2.2d'%(dt_end.h_24(), dt_end.minute())
              , location=location
              , contact_name=contact_name
