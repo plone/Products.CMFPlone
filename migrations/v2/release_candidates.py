@@ -6,6 +6,8 @@ from Products.CMFCore.Expression import Expression
 from Acquisition import aq_base
 from oneX_twoBeta2 import addPloneTableless
 from plone2_base import addCatalogIndexes
+from Products.CMFPlone.migrations.migration_util import saveCloneActions
+import zLOG
 
 _permMap = {
     'rename' : CMFCorePermissions.AddPortalContent,
@@ -65,16 +67,12 @@ def rc3_rc4(portal):
                      permission='Manage properties',
                      category='object')
         actions = ()
-        try:
-            _actions = ptype._cloneActions()
-        except AttributeError:
-            # Stumbled across ancient dictionary actions
-            if not hasattr(aq_base(ptype), '_convertActions'):
-                out.append(('Can\'t convert actions of %s! Jumping to next action.' % ptype.getId(), zLOG.ERROR))
-                # XXX that's bad :[
-                continue
-            ptype._convertActions()
-            _actions = ptype._cloneActions()
+        success, retval = saveCloneActions(ptype)
+        if success:
+            _actions = retval
+        else:
+            out.append(retval)
+            continue
 
         for action in _actions:
             if action.getId()=='metadata':
@@ -106,7 +104,13 @@ def rc4_rc5(portal):
     out=[]
     typestool=getToolByName(portal, 'portal_types')
     for typeobj in typestool.objectValues():
-        _actions = typeobj._cloneActions()
+        success, retval = saveCloneActions(typeobj)
+        if success:
+            _actions = retval
+        else:
+            out.append(retval)
+            continue
+
         for action in _actions:
             if action.id=='local_roles':
                 action.title='Sharing'
