@@ -1,4 +1,5 @@
 CHANGES
+Plone 1.0 beta3
     - whether or not /folder_contents is appended to the url in folder_contents is now determined by site_properties/use_folder_contents
     - Issue #458 - portal_properties.site_properties is where all Plone/site-wide configuration data is now held
     - Moved changes from 1.2 to Portal.py to the migration
@@ -61,6 +62,7 @@ CHANGES
       that Members can still 'List folder contents' and get the folder_buttons (portal_actions)
       displayed in their home folder.  
       NOTE: at the end of CustomizationPolicies both catalog and workflow tool will be 'reindexed'
+    - file_view uses a href now instead of a input button
 
 Plone Beta 2
     - navigation slot/tree was made more resilient to exceptions thrown while traversing child nodes    
