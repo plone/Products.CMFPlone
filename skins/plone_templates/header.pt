@@ -81,7 +81,12 @@
              This is here just in case actions is not defined.  This would happen if you were calling from a DTML Document   
          </span>
      </tal:block>
-     
+
+<!--
+     <div id="statusMessage" style="position: absolute; top: -1.8em; left: 1em; font-size: 100%;" class="message">
+     Testing
+     </div>
+-->      
         <div class="top">
 
             <div class="searchBox">

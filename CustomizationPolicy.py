@@ -51,7 +51,7 @@ class DefaultCustomizationPolicy:
         if not hasattr(p,'use_folder_contents'): p._setProperty('use_folder_contents',('Folder',), 'lines')
         if not hasattr(p,'ext_editor'): p._setProperty('ext_editor', ExtInstalled, 'boolean')
         if not hasattr(p, 'available_editors'): 
-            p._setProperty('available_editors', ('None', 'XSDHTMLEditor'), 'lines')
+            p._setProperty('available_editors', ('None', 'Xopus', 'XSDHTMLEditor'), 'lines')
     
     def setupDefaultSlots(self, portal):
         """ sets up the slots on objectmanagers """
