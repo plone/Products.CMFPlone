@@ -20,14 +20,7 @@ default_user = PloneTestCase.default_user
 
 class TestGroupDataTool(PloneTestCase.PloneTestCase):
 
-    #def _setupUserFolder(self):
-    #    if hasattr(aq_base(self.portal), 'acl_users'):
-    #        self.portal._delObject('acl_users')
-    #    manage_addGroupUserFolder(self.portal)
-
     def afterSetUp(self):
-        #self.portal._setObject('portal_groupdata', GroupDataTool())
-        #self.portal._setObject('portal_groups', GroupsTool())
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
         self.groupdata = self.portal.portal_groupdata
@@ -54,14 +47,7 @@ class TestGroupDataTool(PloneTestCase.PloneTestCase):
 
 class TestGroupData(PloneTestCase.PloneTestCase):
 
-    #def _setupUserFolder(self):
-    #    if hasattr(aq_base(self.portal), 'acl_users'):
-    #        self.portal._delObject('acl_users')
-    #    manage_addGroupUserFolder(self.portal)
-
     def afterSetUp(self):
-        #self.portal._setObject('portal_groupdata', GroupDataTool())
-        #self.portal._setObject('portal_groups', GroupsTool())
         self.membership = self.portal.portal_membership
         self.memberdata = self.portal.portal_memberdata
         self.acl_users = self.portal.acl_users
