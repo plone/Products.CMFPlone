@@ -4,10 +4,12 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=acquireCriteria, id, title=None, description=None
+##parameters=acquireCriteria, id=None, title=None, description=None
 ##title=
 ##
-
+if not id:
+    id = context.getId()
+    
 new_context = context.portal_factory.doCreate(context, id)
 new_context.edit( acquireCriteria=acquireCriteria
                 , title=title
