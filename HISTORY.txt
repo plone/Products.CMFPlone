@@ -1,3 +1,6 @@
+    - Private plone sites now keep their portal_registration tool, resolving #243, #250.
+    - Anonymous users do not have Add portal member permission in private plone sites anymore.
+
 1.0 alpha3
     - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
     - reconfig_form for site wide configuraiton has form validation, and exposes loads of configuration options
