@@ -89,7 +89,7 @@ def migrate_portal(self, id):
         if not o.isPrincipiaFolderish:
             if o.getId() not in new_parent.objectIds():
                 new_parent.invokeFactory(id=o.getId(), type_name=type_id)
-                copyZopeAttributes(o, getattr(new_parent, o.getId()))
+            copyZopeAttributes(o, getattr(new_parent, o.getId()))
             return
 
         if o.getId() not in new_parent.objectIds():
