@@ -324,5 +324,75 @@ function scanforlinks(){
         }
     }
 }
+
 if (window.addEventListener) window.addEventListener("load",scanforlinks,false);
 else if (window.attachEvent) window.attachEvent("onload",scanforlinks);
+
+
+function climb(node, word){
+	 // traverse childnodes
+    if (node.hasChildNodes) {
+		var i;
+		for (i=0;i<node.childNodes.length;i++) {
+            climb(node.childNodes[i],word);
+		}
+        if (node.nodeType == 3){
+            checkforhighlight(node, word);
+           // check all textnodes. Feels inefficient, but works
+        }
+}
+function checkforhighlight(node,word) {
+        ind = node.nodeValue.toLowerCase().indexOf(word.toLowerCase())
+		if (ind != -1) {
+            if (node.parentNode.className != "higligthedSearchTerm"){
+                par = node.parentNode;
+                contents = node.nodeValue;
+			
+                // make 3 shiny new nodes
+                hiword = document.createElement("span");
+				hiword.className = "higligthedSearchTerm";
+				hiword.appendChild(document.createTextNode(contents.substr(ind,word.length)));
+				
+                par.insertBefore(document.createTextNode(contents.substr(0,ind)),node);
+				par.insertBefore(hiword,node);
+				par.insertBefore(document.createTextNode(contents.substr(ind+word.length)),node);
+
+                par.removeChild(node);
+		        }
+        	} 
+		}
+  
+}
+
+
+function highlightSearchTerm() {
+        // search-term-highlighter function --  Geir Bækholt
+        query = window.location.search
+        query = decodeURI(query)
+        if (query){
+            var qfinder = new RegExp()
+            qfinder.compile("searchterm=(.*)","gi")
+            qq = qfinder.exec(query)
+            if (qq && qq[1]){
+                query = qq[1]
+                
+                // the cleaner bit is not needed anymore, now that we travese textnodes. 
+                //cleaner = new RegExp
+                //cleaner.compile("[\\?\\+\\\\\.\\*]",'gi')
+                //query = query.replace(cleaner,'')
+                
+                if (!query){return false}
+                queries = query.replace(/\+/g,' ').split(/\s+/)
+                
+                // make sure we start the right place and not higlight menuitems or breadcrumb
+                theContents = document.getElementById('documentContent');
+                for (q=0;q<queries.length;q++) {
+                    climb(theContents,queries[q]);
+                }
+            }
+        }
+}
+if (window.addEventListener) window.addEventListener("load",highlightSearchTerm,false);
+else if (window.attachEvent) window.attachEvent("onload",highlightSearchTerm);
+
+

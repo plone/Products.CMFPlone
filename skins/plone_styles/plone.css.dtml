@@ -917,6 +917,14 @@ table.calendar td.todaynoevent {
 }
 
 
+/* for highlighting of serchTerms */
+span.higligthedSearchTerm{
+   background-color: #feff82;
+}
+
+
+
+
 
 
 /* </dtml-with> */

@@ -12,7 +12,8 @@
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;
                  desc_length python:here.portal_properties.site_properties.search_results_description_length;
-                 desc_ellipsis python:here.portal_properties.site_properties.ellipsis">
+                 desc_ellipsis python:here.portal_properties.site_properties.ellipsis;
+                 searchterm request/SearchableText|nothing">
 
     <h1 i18n:translate="heading_search_results">Search results</h1>
 
@@ -56,7 +57,7 @@
                 <tr class="even"
 		            tal:define="oddrow repeat/result/odd;
                                 result_url result/getURL;
-                                url string:$result_url/view;"
+                                url string:$result_url/view?searchterm=${searchterm};"
 		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
                     <td>
 		         <a href="#"
