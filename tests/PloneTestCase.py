@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: $
+# $Id: PloneTestCase.py,v 1.9.2.4 2003/10/05 18:38:01 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -14,6 +14,7 @@ ZopeTestCase.installProduct('DCWorkflow')
 ZopeTestCase.installProduct('CMFActionIcons')
 ZopeTestCase.installProduct('CMFQuickInstallerTool')
 ZopeTestCase.installProduct('CMFFormController')
+ZopeTestCase.installProduct('Formulator')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 ZopeTestCase.installProduct('CMFPlone')
