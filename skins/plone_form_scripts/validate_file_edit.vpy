@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Validates file_edit_form contents
 ##
-state = context.portal_form_controller.getState(script, is_validator=1)
 
 validator = context.portal_form.createForm()
 validator.addField('title', 'String', required=0)

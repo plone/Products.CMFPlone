@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=precondition='', file='', id='', title=None, description=None
 ##title=Edit an image
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 original_id=context.getId()
 filename=getattr(file,'filename', '')

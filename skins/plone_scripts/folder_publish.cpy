@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=workflow_action=None, ids=[], comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
 ##title=Publish objects from a folder
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 from Products.CMFPlone import transaction_note
 plone_utils=context.plone_utils

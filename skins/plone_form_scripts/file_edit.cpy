@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=precondition='', file='', id='', title=None, description=None, file_data=''
 ##title=Edit a file
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 from StringIO import StringIO
 

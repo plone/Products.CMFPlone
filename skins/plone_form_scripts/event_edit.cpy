@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=title=None, description=None, event_type=None, start_date=None, end_date=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, id='' 
 ##title=Edit an event
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 # if there is no id specified, keep the current one
 if not id:

@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=password='password', confirm='confirm', came_from_prefs=None
 ##title=Register a User
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 REQUEST=context.REQUEST
 

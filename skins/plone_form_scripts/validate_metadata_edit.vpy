@@ -3,13 +3,13 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=
 ##title=Validates an event metadata_edit_form contents
 ##
 from DateTime import DateTime
 REQUEST=context.REQUEST
-state = context.portal_form_controller.getState(script, is_validator=1)
 
 effective_date = None
 try:

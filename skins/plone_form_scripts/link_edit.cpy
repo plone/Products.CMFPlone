@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=remote_url, id='', title=None, description=None, subject=None
 ##title=Edit a link
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 # if there is no id specified, keep the current one
 if not id:

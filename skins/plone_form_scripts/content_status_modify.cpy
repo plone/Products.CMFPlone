@@ -3,6 +3,7 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=workflow_action, comment='', effective_date=None, expiration_date=None
 ##title=handles the workflow transitions of objects
@@ -11,7 +12,6 @@ newcontext=context
 contentEditSuccess=0
 portal_workflow=context.portal_workflow
 current_state=portal_workflow.getInfoFor(context, 'review_state')
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 if workflow_action!=current_state and not effective_date:
     effective_date=DateTime()

@@ -3,11 +3,11 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=id=None,type_name=None,script_id=None
 ##title=
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 from DateTime import DateTime
 from Products.CMFPlone import transaction_note

@@ -3,13 +3,13 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
 ##parameters=portrait=None
 ##title=Personalization Handler.
 
 from Products.CMFPlone import transaction_note
 #portrait_id='MyPortrait'
-state = context.portal_form_controller.getState(script, is_validator=0)
 
 member=context.portal_membership.getAuthenticatedMember()
 member.setProperties(context.REQUEST)
