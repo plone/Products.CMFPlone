@@ -27,7 +27,7 @@ if subjects:
                                    , sort_on = 'portal_type'
                                    , sort_order = 'reverse'  ):
         url=o.getURL()
-
+        if url == abs_url: continue # s/b if o is obj but fails
         rurl = o.getRemoteUrl
         title=''
         if o.Title:
