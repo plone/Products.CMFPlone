@@ -89,10 +89,10 @@ class PloneGenerator(Portal.PortalGenerator):
         
     def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow
-        if 'plone_workflow' not in wf_tool.objectIds():
-            wf_tool.manage_addWorkflow(id='plone_workflow', workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
-            wf_tool.setDefaultChain('plone_workflow')
-            wf_tool.updateRoleMappings()
+        wf_tool.manage_addWorkflow( id='plone_workflow'
+	                          , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
+        wf_tool.setDefaultChain('plone_workflow')
+        wf_tool.updateRoleMappings()
 
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):        
         path=[elem.strip() for elem in skin_tool.getSkinPath('Plone Default').split(',')]
@@ -124,25 +124,12 @@ class PloneGenerator(Portal.PortalGenerator):
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
         sk_tool.request_varname='plone_skin'
         
-    def setupExternalMethods(self, p):
-        em=ExternalMethod.ExternalMethod(id='getWorklists',
-                                           title='Plone worklists',
-                                           module='CMFPlone.PloneWorklists',
-                                           function='getWorklists')
-        em2=ExternalMethod.ExternalMethod(id='getAvailableTransitions',
-                                          title='Worflow transitions',
-                                          module='CMFPlone.PloneWorklists',
-                                          function='getTransitionsFor')
-        p._setObject('getWorklists', em)
-        p._setObject('getAvailableTransitions', em2)
-        
     def setupPlone(self, p): 
         self.customizePortalTypes(p)
         self.customizePortalOptions(p)
         self.setupPortalContent(p)
         self.setupPloneWorkflow(p)
         self.setupPloneSkins(p)
-        #self.setupExternalMethods(p) 
 	CalendarInstall.install(p)
         
     def create(self, parent, id, create_userfolder):
