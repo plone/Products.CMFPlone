@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=REQUEST, RESPONSE, field_title=None, description=None, event_type=None, effectiveDay=None, effectiveMo=None, effectiveYear=None, expirationDay=None, expirationMo=None, expirationYear=None, start_time=None, startAMPM=None, stop_time=None, stopAMPM=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, field_id='' 
+##parameters=REQUEST, RESPONSE, field_title=None, field_description=None, event_type=None, effectiveDay=None, effectiveMo=None, effectiveYear=None, expirationDay=None, expirationMo=None, expirationYear=None, start_time=None, startAMPM=None, stop_time=None, stopAMPM=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, field_id='' 
 ##title=
 ##
 
@@ -12,7 +12,7 @@ if not field_id:
     field_id=context.getId()
     REQUEST.set('field_id', field_id)
 
-id, title=field_id, field_title
+id, title, description=field_id, field_title, field_description
 
 try:
     context.edit(title=title
