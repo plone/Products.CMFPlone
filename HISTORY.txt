@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Reworked the way Content Views are constructed - now you can have 
+      multiple content areas with tabs on one page. Idea by [arnia], 
+      implementation by limi.
+
     - Reworked the default content views, they look much better now.
       [limi]
 
