@@ -8,9 +8,9 @@
 ##title=handles the workflow transitions of objects
 ##
 if effective_date or expiration_date:
-    context.plone_utils.contentEdit( context
-                                   , effective_date=effective_date
-                                   , expiration_date=expiration_date )
+    context.plone_utils.editMetadata( context
+                                    , effective_date=effective_date
+                                    , expiration_date=expiration_date )
                                    
 context.portal_workflow.doActionFor( context
                                    , workflow_action

@@ -65,7 +65,7 @@
     <!-- Common Plone ECMAScripts -->
     <script type="text/javascript" tal:attributes="src here/plone_javascripts.js/absolute_url"></script>
 
-    <tal:block tal:define="member member|here/portal_membership/getAuthenticatedMember;
+    <tal:block tal:define="member here/portal_membership/getAuthenticatedMember;
                            defaulttips python:here.portal_memberdata.getProperty('formtooltips');
                            showdefault python:test(defaulttips, 'true', 0);
                            formtooltips python:member.getProperty('formtooltips', showdefault)" 

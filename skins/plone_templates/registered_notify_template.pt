@@ -1,4 +1,4 @@
-To: <span tal:replace="request/email" />
+To: <span tal:replace="options/member/email" />
 From: "<span tal:replace="here/email_from_name" />" <<span tal:replace="here/email_from_address" />>
 Subject: <span i18n:translate="mailtemplate_registered_portal_membership_info" tal:omit-tag="">Portal Membership Information</span>
 Content-Type: text/plain; charset=<span tal:replace="here/portal_properties/site_properties/default_charset" />
@@ -15,7 +15,7 @@ Visit us at <span i18n:name="portal_url" tal:omit-tag="" tal:content="here/porta
 
 Your login name and password are:
 
-Login name : <span i18n:name="username" tal:omit-tag="" tal:content="options/member" />
+Login name : <span i18n:name="username" tal:omit-tag="" tal:content="options/member/getUserName" />
 Password   : <span i18n:name="password" tal:omit-tag="" tal:content="options/password" />
 </div>
 --
