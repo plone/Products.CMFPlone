@@ -1,10 +1,14 @@
 /*
 ** Plone style sheet for CSS2-capable browsers.
-** Copyright Alexander Limi (http://www.plonesolutions.com),
-** Joe Geldart & Tom Croucher (http://www.netalleynetworks.com),
-** Michael Zeltner (http://niij.org) 2001-2003.
 **
-** Thanks to Geir Bækholt, Stian Søiland for input and guidance.
+** Copyright Alexander Limi - http://www.plonesolutions.com
+**
+** Additional Plone 2 work:
+** Joe Geldart & Tom Croucher - http://www.netalleynetworks.com
+** Michael Zeltner - http://niij.org
+** Geir Bækholt - http://www.plonesolutions.com
+**
+** All you guys rock :)
 **
 ** Style sheet documentation can be found at http://plone.org/documentation
 **
@@ -243,6 +247,10 @@ pre {
 ** Structural Elements
 */
 
+#visual-portal-wrapper {
+}
+
+
 /* Logo properties */
  
 #portal-logo {
@@ -281,10 +289,8 @@ pre {
     padding: 0;
 }
 #portal-siteactions {
-    position: absolute;
-    top: 1.5em;
-    right: 2em;
-    width: 54px;
+    margin: 0.5em 1em;
+    float: right;
 }
 
 #portal-siteactions a {
@@ -302,7 +308,7 @@ pre {
     background-color: transparent;
     clear: right;
     float: right;
-    margin: -3.5em 0 0 0;
+    margin: -3em 0 0 0;
     padding: 0 2em 0 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
@@ -685,7 +691,7 @@ pre {
 input.searchButton {
     font-size: 100%;
     margin-bottom: &dtml-borderWidth; ! important;
-    background: &dtml-backgroundColor; url(search_icon.gif) 7px 1px no-repeat;
+    background: &dtml-backgroundColor; url(search_icon.gif) 2px 1px no-repeat;
     cursor: pointer;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
