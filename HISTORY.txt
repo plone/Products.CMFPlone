@@ -6,6 +6,7 @@ Plone 1.0
       Plone
     - Added more flexibility for add-on editors by moving format selector into
       wysiwyg_support.pt
+    - Netscape 4 support is back.
 
 Plone 1.0 rc2
     - removed the properties in site_properties that belong in the root
