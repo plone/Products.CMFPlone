@@ -58,6 +58,7 @@
           users.
         </p>
     
+        
            <input class="standalone add"
                   tabindex=""
                   type="submit"
@@ -65,6 +66,17 @@
                   value="Add New User"
                   i18n:attributes="value"
                   tal:attributes="tabindex tabindex/next;"
+                  tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+                  />
+
+           <input class="standalone add"
+                  tabindex=""
+                  type="submit"
+                  name="createMember:method"
+                  value="Add New User"
+                  i18n:attributes="value"
+                  tal:attributes="tabindex tabindex/next;"
+                  tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
                   />
     
 	    <tal:block tal:condition="portal_users">
