@@ -40,12 +40,10 @@ if success is None:
 login_failed = 'login_failed'
 login_changepassword = 'login_password'
 
-login_success = REQUEST.get('came_from', REQUEST.get('HTTP_REFERER'))
+login_success = REQUEST.get('came_from')
 
-# if we weren't called from something that set 'came_from' and we don't
-# have an HTTP_REFERER (extremely unlikely), or if either came_from or
-# HTTP_REFERER were the 'logged_out' page, return the default 'login_success'
-# form
+# if we weren't called from something that set 'came_from' or if HTTP_REFERER
+# is the 'logged_out' page, return the default 'login_success' form
 if login_success is None or login_success.endswith('logged_out'):
     login_success = '%s/%s' % (context.portal_url(), 'login_success')
 
