@@ -166,7 +166,7 @@
                     </td>
 
                     <td>
-                    <span i18n:translate="selected_keywords">
+                    <span i18n:translate="label_selected_keywords">
                     Selected keywords
                     </span>
                     <br />
