@@ -33,7 +33,11 @@
                      tal:define="url string:${sibling/absolute_url}/view;
 		                 sibling_title python:'&nbsp;;'.join(sibling.title_or_id()[:18].split(' '));"
                      tal:attributes="href url">
-                        <img src="" height="16" width="16" alt="dummy" 
+                        <img src="" 
+                             height="16" 
+                             width="16" 
+                             alt="dummy"
+                             border="0" 
                              tal:attributes="src string:$portal_url/${sibling/getIcon};
 		                             alt sibling/Title;" />&nbsp;<tal:block tal:content="structure sibling_title" />
                     </a>
