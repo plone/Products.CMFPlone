@@ -284,7 +284,7 @@ pre {
     position: absolute;
     top: 1.5em;
     right: 2em;
-    width: auto;
+    width: 54px;
 }
 
 #portal-siteactions a {
