@@ -60,7 +60,9 @@ class StatelessTreeBuilder:
         """
         
         count=0
-        par = object or self.object
+        par = object
+        if par is None:
+            par = self.object
         
         while ( hasattr(par,'meta_type') and str(par.meta_type) != str(self.topMetaType) 
             and self.topObject != par and count < int(self.maxcount) ) :
