@@ -4,8 +4,7 @@
       xml:lang="en"
       lang="en" 
       metal:define-macro="master"
-      tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
-                  global site_properties here/portal_properties/site_properties;
+      tal:define="global site_properties here/portal_properties/site_properties;
                   global ztu modules/ZTUtils"
       tal:attributes="lang site_properties/default_language|default;
                       xml:lang site_properties/default_language|default;"

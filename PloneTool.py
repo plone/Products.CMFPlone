@@ -15,7 +15,9 @@ import re
 import sys
 import traceback
 
-from zLOG import LOG, INFO, WARNING
+from StatelessTree import constructNavigationTreeViewBuilder, NavigationTreeViewBuilder
+
+from zLOG import LOG, INFO, WARNING 
 
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
@@ -272,6 +274,37 @@ class PloneTool (UniqueObject, SimpleItem):
             text='\n'.join(traceback.format_exception(*sys.exc_info())),
             log_level=WARNING)
         
-
+    #replaces navigation_tree_builder.py
+    def createNavigationTreeBuilder(self, tree_root,
+      navBatchStart=None,showMyUserFolderOnly=None,
+      includeTop=None,showFolderishSiblingsOnly=None,
+      showFolderishChildrenOnly=None,showNonFolderishObject=None,
+      topLevel=None,batchSize=None,showTopicResults=None,
+      rolesSeeUnpublishedContent=None,sortCriteria=None,
+      metaTypesNotToList=None,parentMetaTypesNotToQuery=None,
+      forceParentsInBatch=None,skipIndex_html=None,rolesSeeHiddenContent=None):
+        """ returns a structure that can be used by navigation_tree_slot.
+            We are being quite lazy because of massive signature. 
+        """        
+             
+        tree_builder=NavigationTreeViewBuilder(tree_root=tree_root, 
+          navBatchStart=navBatchStart, 
+          showMyUserFolderOnly=showMyUserFolderOnly, 
+          includeTop=includeTop, 
+          showFolderishSiblingsOnly=showFolderishSiblingsOnly, 
+          showFolderishChildrenOnly=showFolderishChildrenOnly, 
+          showNonFolderishObject=showNonFolderishObject, 
+          topLevel=topLevel, 
+          batchSize=batchSize, 
+          showTopicResults=showTopicResults,
+          rolesSeeUnpublishedContent=rolesSeeUnpublishedContent,
+          sortCriteria=sortCriteria, metaTypesNotToList=metaTypesNotToList, 
+          parentMetaTypesNotToQuery=parentMetaTypesNotToQuery, 
+          forceParentsInBatch=forceParentsInBatch, 
+          skipIndex_html=skipIndex_html, 
+          rolesSeeHiddenContent=rolesSeeHiddenContent )
+        ctx_tree_builder=tree_builder.__of__(self)
+        return ctx_tree_builder()
+        
 InitializeClass(PloneTool)
 

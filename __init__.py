@@ -28,6 +28,9 @@ ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
 from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted, \
   WorkflowException
 
+from StatelessTree import NavigationTreeViewBuilder
+allow_class(NavigationTreeViewBuilder)
+
 ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectMoved')
 ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectDeleted')
 ModuleSecurityInfo('WorkflowCore').declarePublic('WorkflowException')

@@ -7,6 +7,9 @@ Plone 1.1
       WorkflowException to PythonScripts.
     - folder_contents will show lock if portal_lock isLockedOut returns True
       also removed unnecessary traversal
+    - moved the navigation_tree_builder.py into StatelessTree.py; not sure
+      if profiling is correct (or I am reading it) but it said its faster.
+      the navigation_tree_slot now uses plone_utils.createNavigationTreeBuilder
 
 Plone 1.0
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
