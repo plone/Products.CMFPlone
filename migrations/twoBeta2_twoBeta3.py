@@ -23,13 +23,13 @@ def twoBeta2_twoBeta3(portal):
     if "Plone Site" not in pt.objectIds():
         pt.manage_addTypeInformation(
             fti_klass.meta_type,
-            id = factory_type_information['id'],
+            id = "Plone Site",
             typeinfo_name = "CMFPlone: Plone Site"
         )
 
     # and then in workflow remove any workflow from it
     wt = getToolByName(portal, "portal_workflow")
-    wt.setChainForPortalTypes((factory_type_information['id']), "")
+    wt.setChainForPortalTypes(("Plone Site"), "")
 
 
 if __name__=='__main__':
