@@ -19,9 +19,13 @@ class NavigationTreeViewBuilder(SimpleItem):
         for k, v in kwargs.items():
             setattr(self, k, v)
                     
+    def getContext(self):
+        return self.aq_parent.aq_parent
+    
     def __call__(self):
         """ return the data structure """
-        context=self.REQUEST.PARENTS[0]
+        context=self.getContext()
+        
         navtree_properties=getToolByName(self, 'portal_properties').navtree_properties
         props=getattr(context,'navtree_properties', navtree_properties)
         #XXX The above is highly inefficient I believe
@@ -117,7 +121,11 @@ class NavigationTreeViewBuilder(SimpleItem):
             else:    
                 #traversal to all 'CMFish' folders
                 if hasattr(obj.aq_explicit,'listFolderContents'):
-                    res=obj.listFolderContents(suppressHiddenFiles=not showHiddenFiles)
+                    try:
+                        res=obj.listFolderContents(suppressHiddenFiles=not showHiddenFiles)
+                    except TypeError:
+                        # if the suppressHiddenFiles param is not supported
+                        res=obj.listFolderContents()
                 else:
                     res=obj.contentValues()    #and all other *CMF* folders
             
