@@ -8,6 +8,29 @@ class MembershipTool( BaseTool ):
     meta_type='Plone Membership Tool'
     plone_tool = 1
 
+    def changeMemberPortrait(self, portrait, member_id=None):
+        """ 
+        given a portrait we will modify the users portrait
+        we put this method here because we do not want
+        .personal or portrait in the catalog
+
+        portraits are $MemberHomeFolder/.personal/MyPortrait
+        """
+        portrait_id='MyPortrait'
+        if portrait and portrait.filename:
+            catalog=getToolByName(self, 'portal_catalog')
+            personal=self.getPlonePersonalFolder()
+            if not personal:
+                home=self.getHomeFolder(member_id)
+                home.invokeFactory(id='.personal', type_name='Folder')
+                personal=getattr(home, '.personal')
+                catalog.unindexObject(personal) #remove persona folder from catalog
+            if not hasattr(personal, portrait_id):
+                personal.invokeFactory(id=portrait_id, type_name='Image')
+                portrait_obj=getattr(personal, portrait_id, None)
+                portrait_obj.edit(file=portrait)
+                catalog.unindexObject(portrait_obj) #remove portrait image from catalog
+                
     def createMemberarea(self, member_id):
         """
         since we arent using PortalFolders and invokeFactory will not work
@@ -62,3 +85,5 @@ class MembershipTool( BaseTool ):
             personal.changeOwnership(user)
             personal.manage_setLocalRoles(member_id, ['Owner'])
             
+            catalog = getToolByName(self, 'portal_catalog')
+            catalog.unindexObject(personal) #dont add .personal folders to catalog

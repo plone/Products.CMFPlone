@@ -3,6 +3,7 @@
     - topic has been changed to to make the icon clickable, it now uses title or id of the catalog brain
     - related box now has <br /> seperating elements and will not show related items that dont have a title - thanks kpm!
       added icons, sort by Type and changed up navigationLocal
+    - MembershipTool.changeMemberPortrait() method added and removed from personazlize
 
 1.0 alpha4
     - publishing now works without javascript. #202

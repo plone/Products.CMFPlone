@@ -15,17 +15,9 @@ member.setProperties(context.REQUEST)
 member_context=context.portal_membership.getHomeFolder(member.getId())
 
 context.portal_skins.updateSkinCookie()
-#if a portait file was uploaded put it in the /Members/XXXX/.personal/MyPortrait
+
 if portrait and portrait.filename:
-    personal=context.getPlonePersonalFolder()
-    if not personal:
-        home=context.portal_membership.getHomeFolder()
-        home.manage_addProduct['CMFCore'].manage_addContent(type='Portal Folder', id='.personal')
-        personal=getattr(home, '.personal')
-    if not hasattr(personal, portrait_id):
-        personal.invokeFactory(type_name='Image', id=portrait_id)
-    portrait_obj=getattr(personal, portrait_id, None)
-    portrait_obj.edit(file=portrait)
+    context.portal_membership.changeMemberPortrait(portrait)
 
 tmsg=member.getUserName()+' personalized their settings.'
 transaction_note(tmsg)
