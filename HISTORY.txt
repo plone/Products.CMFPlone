@@ -19,11 +19,15 @@ Plone 2.0.1 - Jello
       [tiran]
 
     - changed the registration of tools to provide different images in the ZMI
-      [helge,limi]
+      [tesdal,limi]
 
     - validate_document_edit assumed the Content-Type header is always
       present. This is not the case.
       [stefan]
+
+    - Fixed http://plone.org/collector/2980. Handle dates between 
+      PLONE_CEILING and CMF_CEILING.
+      [tesdal]
 
     - Added two classes to allow list without markers:
       'ul.visualNoMarker' and 'ol.visualNoMarker'.
