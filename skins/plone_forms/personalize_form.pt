@@ -72,6 +72,34 @@
 
             <div class="row">
                 <div class="label">
+                    <span i18n:id="wysiwyg_editor">WYSIWYG editor</span>
+                    
+                    <div id="wysiwyg_editor_help"
+                         i18n:id="wysiwyg_editor_help"
+                         class="help"
+                         style="visibility:hidden">
+                    Select the editor that you would like to use for editing
+                    content more easily.  What You See Is What You Get editors
+                    often have browser requirements.
+                    </div>
+                </div>
+                <div class="field"
+                     tal:define="wysiwyg_editor python:request.get('wysiwyg_editor', member.wysiwyg_editor)">
+                     <select name="wysiwyg_editor">
+                         <tal:block tal:repeat="editor here/portal_properties/available_editors">
+                         <option value="None"
+                                 tal:attributes="value editor;
+                                                 selected python:test(editor==wysiwyg_editor, 'selected', '');"
+                                 tal:content="editor">
+                         None
+                         </option>
+                         </tal:block>
+                     </select>
+                </div>
+             </div>
+             
+            <div class="row">
+                <div class="label">
                     <span i18n:id="listed_status">Listed status</span>
 
                     <div id="listed_status_help"

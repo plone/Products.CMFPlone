@@ -29,7 +29,7 @@
   </comment>
 
   <textarea cols="40"
-            rows="5"
+            rows="15"
             tabindex="3"
             name="description"
             tal:content="inputvalue"
@@ -39,12 +39,19 @@
                             onblur onblur|nothing;
                             tabindex tabindex|nothing;"></textarea>
 
-       <a href="" tal:attributes="onclick string:window.open('plone_wysiwyg/wysiwyg_popup?inputname=${inputname}&formname=${formname}&method=CookedBody','cal','dependent=yes,width=520,height=500,screenX=200,screenY=300,titlebar=yes');; return false">
-       <img src="edit.gif">
+       <a href="" 
+          tal:define="pps python:modules['Products.PythonScripts.standard'];
+                      editor python:here.portal_membership.getAuthenticatedMember().wysiwyg_editor;
+                      wysiwyg python:test(editor and (editor!='None'), editor, 'None');
+                      contentpath python:pps.url_quote(here.portal_url.getRelativeUrl(here));
+                      url2editor string:${here/portal_url}/$wysiwyg/wysiwyg_popup?inputname=$inputname&formname=$formname&contentpath=$contentpath&method=CookedBody;"
+          tal:condition="python:test(wysiwyg!='None', 1, 0)"
+          tal:attributes="onclick string:window.open('$url2editor','editor','dependent=yes,width=520,height=500,screenX=200,screenY=300,titlebar=yes');; return false">
+       <img src="edit.gif" tal:attributes="src string:${here/portal_url}/edit.gif"
+            alt="WYSIWYG Editor" />
        </a>
 
 </div>
-
 
 <div metal:define-macro="wysiwygEditorBoxPopup"
      class="container"
@@ -57,27 +64,19 @@ function fnInit() {
 }
 </script>
 
-<xs:XsDhtmlEditor 
-id="xsEditor"
-content=""
-fontList="Times New Roman,Arial,Georgia" 
-fontSizeDefault="small" 
-onSave="returndate(xsEditor.content);" 
-emoticonPath="IMAGES/emoticons/"
-emoticonList="emoticon-smile.gif,emoticon-wink.gif,emoticon-laugh.gif,emoticon-sad.gif,emoticon-ambivalent.gif,emoticon-tongue-in-cheek.gif,emoticon-surprised.gif,emoticon-unsure.gif,icon-error.gif,icon-info.gif,icon-warning.gif,emoticon-8.gif,emoticon-b.gif,emoticon-c.gif,emoticon-cat.gif,emoticon-d.gif,emoticon-e.gif,emoticon-f.gif,emoticon-g.gif,emoticon-h.gif,emoticon-i.gif,emoticon-k.gif,emoticon-l.gif,emoticon-u.gif,emoticon-n.gif,emoticon-y.gif,emoticon-s.gif,emoticon-star.gif,emoticon-t.gif,emoticon-m.gif,emoticon-p.gif,wiki-ftp.gif,wiki-mailto.gif,wiki-news.gif,wiki-wiki.gif,asp.gif,avi.gif,bmp.gif,chm.gif,doc.gif,gif.gif,gz.gif,html.gif,jpeg.gif,mov.gif,mp3.gif,mpeg.gif,pdf.gif,png.gif,ppt.gif,txt.gif,xls.gif,xml.gif,xsl.gif" 
-replaceTags="<strong>,<b>"
-
-tal:define="renderMethod string:here/${request/method};
-            renderedContent python:path(renderMethod);
-            pps python:modules['Products.PythonScripts.standard'];"
-tal:attributes="content renderedContent"
-/>
+<xs:XsDhtmlEditor id="xsEditor"
+                  content=""
+                  fontList="Times New Roman,Arial,Georgia" 
+                  fontSizeDefault="small" 
+                  onSave="returndate(xsEditor.content);" 
+                  replaceTags="<strong>,<b>"
+                  tal:define="pps python:modules['Products.PythonScripts.standard'];
+                              global contentpath request/contentpath;
+                              global content python:here.portal_url.getPortalObject().restrictedTraverse(contentpath);
+                              global content_path string:here/$contentpath/${request/method};
+                              renderedContent python:path(content_path);"
+                  tal:attributes="content renderedContent" />
      
-     <a href="" onclick="alert(docuement.getElementById('wysiwyg_source').value)"
-        tal:attributes="onclick string:returndate(document.getElementById('wysiwyg_source').value);;return false">
-     SAVE
-     </a>
-     
-</div>  <!-- end of the calendar datepicker box -->
+</div> 
 
 <html>

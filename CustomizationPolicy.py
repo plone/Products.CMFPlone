@@ -64,10 +64,14 @@ class DefaultCustomizationPolicy:
         at.addAction('delete', 'Delete', 'string:folder_delete:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
 
+        #add properties on portal object
+        portal._setProperty('available_editors', ('None', 'XSDHTMLEditor'), 'lines')
+
         #customize memberdata tool
         md=getToolByName(portal, 'portal_memberdata')
         md._setProperty('formtooltips', '1', 'boolean')
         md._setProperty('visible_ids', '', 'boolean')
+        md._setProperty('wysiwyg_editor', 'available_editors', 'selection')
 
         #customize membership tool
         mt=getToolByName(portal, 'portal_membership')
