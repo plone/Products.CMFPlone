@@ -120,8 +120,6 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool('Plone Migration Tool', None)
         if not exists('portal_configuration'):
             addPloneTool('Plone Control Panel', None)
-        if not exists('portal_actionicons'):
-            p.manage_addProduct['CMFActionIcons'].manage_addTool('Action Icons Tool', None)
         if not exists('portal_interface'):
             addPloneTool('Portal Interface Tool', None)
             
