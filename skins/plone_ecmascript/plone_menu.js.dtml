@@ -161,22 +161,10 @@ function depressButton(button) {
     
     button.className += " menuButtonActive";
     
-    // Position the associated drop down menu under the button and
-    // show it.
+    // Make the associated drop down menu visible
     
-    x = getPageOffsetLeft(button);
-    y = getPageOffsetTop(button) + button.offsetHeight;
-    
-    // For IE, adjust position.
-    
-    if (browser.isIE) {
-        x += button.offsetParent.clientLeft;
-        y += button.offsetParent.clientTop;
-    }
-    
-    button.menu.style.left = x + "px";
-    button.menu.style.top = y + "px";
-    button.menu.style.visibility = "visible";
+    vis = button.menu.style.visibility;
+    button.menu.style.visibility = (vis == "hidden" || vis == '') ? "visible" : "hidden";
 }
 
 function resetButton(button) {
