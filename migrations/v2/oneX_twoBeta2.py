@@ -16,7 +16,7 @@ from Products.CMFCore.Expression import Expression
 
 from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
-from Products.CMFPlone.setup.ConfigurationMethods import addSiteActions
+from Products.CMFPlone.setup.ConfigurationMethods import addSiteActions, addErrorLog, assignTitles
 from Products.CMFPlone import ToolNames
 
 from Acquisition import aq_base
@@ -88,6 +88,10 @@ def oneX_twoBeta2(portal):
     moveOldTemplates(portal)
     out.append("Updating nav tree")
     migrateNavTree(portal)
+    out.append("Adding error log")
+    addErrorLog(None, portal)
+    out.append("Assigning titles to tools")
+    assignTitles(None, portal)
     return out
 
 def doit(self):
@@ -394,7 +398,7 @@ def updateNavigationProperties(portal):
             nav_props._updateProperty(id, action)
         else:
             nav_props._setProperty(id, action)
-
+            
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
     MigrationTool.registerUpgradePath('1.0.2','1.1alpha2',upg_1_0_1_to_1_1)
