@@ -49,7 +49,16 @@
                tal:define="username python:here.portal_membership.getAuthenticatedMember().getUserName();">
             <thead>
             <tr>
-                <th>&nbsp;</th>
+                <th>
+                    <input type="checkbox"
+                       onclick="javascript:toggleSelect(this, 'member_ids:list', false, 'deleterole');"
+                       name="alr_toggle"
+                       value="#"
+                       id="alr_toggle"
+                       class="noborder"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex;"/>
+                </th>
                 <th i18n:translate="label_user_group_name">User/Group name</th>
                 <th i18n:translate="label_type">Type</th>
                 <th i18n:translate="label_roles">Role(s)</th>
@@ -150,7 +159,16 @@
                 <table class="listing" summary="Search results">
                     <thead>
                     <tr>
-                        <th>&nbsp;</th>
+                        <th>
+                            <input type="checkbox"
+                               onclick="javascript:toggleSelect(this, 'member_ids:list', false, 'change_type');"
+                               name="alr_toggle"
+                               value="#"
+                               id="alr_toggle"
+                               class="noborder"
+                               tabindex=""
+                               tal:attributes="tabindex tabindex;"/>
+                        </th>
                         <th i18n:translate="label_user_name">User Name</th>
                         <th i18n:translate="label_email_address">Email Address</th>
                     </tr>
@@ -310,7 +328,7 @@
           </p>
     
           <form method="post"
-                name="change_type"
+                name="change_type_group"
                 action="folder_localrole_edit"
                 tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
     
@@ -325,7 +343,16 @@
                     <table class="listing" summary="Available groups">
                     <thead>
                         <tr>
-                        <th>&nbsp;</th>
+                        <th>
+                            <input type="checkbox"
+                               onclick="javascript:toggleSelect(this, 'member_ids:list', false, 'change_type_group');"
+                               name="alr_toggle"
+                               value="#"
+                               id="alr_toggle"
+                               class="noborder"
+                               tabindex=""
+                               tal:attributes="tabindex tabindex;"/>
+                        </th>
                         <th i18n:translate="listingheader_name">Name</th>
                         </tr>
                     </thead>
