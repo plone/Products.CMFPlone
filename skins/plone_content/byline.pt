@@ -9,7 +9,8 @@
          tal:condition="python:lockable and here.wl_isLocked()"
          tal:replace="structure python:locked.tag(title='Locked')" />
 
-    <span i18n:translate="box_created_by">Created by</span>
+    <span tal:condition="creator"
+          i18n:translate="box_created_by">Created by</span>
 
     <a href="#" tal:condition="creator_home"
                 tal:attributes="href creator_home"
