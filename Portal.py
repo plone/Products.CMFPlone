@@ -92,9 +92,14 @@ class PloneGenerator(Portal.PortalGenerator):
         o.edit('structured-text', default_frontpage)
         
         skins=getToolByName(p, 'portal_skins')
-        skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
-        p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
-        p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
+        try:
+            skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
+            p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
+            p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
+        except:
+            pass #nesting Portals
+        skins.plone_templates.plone_scripts.form_scripts.navigation_properties.manage_doCustomize(folder_path='custom')
+        p.manage_pasteObjects( skins.custom.manage_cutObjects('navigation_properties') )
 
     def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow

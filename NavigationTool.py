@@ -109,5 +109,66 @@ class NavigationTool (UniqueObject, SimpleItem):
                                                              , action_id
                                                              , separator
                                                              , url_params) )
-    
+
+    def _availableStatus(self):
+        return ('success', 'failure')
+
+    def getContentFrom(self, content):
+        """ returns the internal representation of content type """
+        if content is None:
+            content = 'Default'
+        if hasattr(content, '_isPortalContent'): #XXX Contentish xface
+            content = content.getTypeInfo()
+        if hasattr(content, '_isTypeInformation'): #XXX use a xface
+            content = content.getId()
+        content = ''.join(content.split(' ')).lower() #normalize
+        return content
+
+    def addTransitionFor(self, content, action, status, destination):
+        """ adds a transition 
+
+            content - is a object or a TypeInfo that you would like to
+                      register a None content object will register Default values.
+
+            action - script that is used by content edit form
+                     XXX this kinda hokey and error prone
+
+            status - SUCCESS or FAILURE strings used in calculating destination
+
+            destination - is an action registed on the TypeInfo or a free-form script
+                          that would be appended to the url of the content
+        """
+
+        navprops = getattr(self, 'navigation_properties') #propertymanager that holds data
+        status = status.lower()
+        action = action.lower()
+
+        if status not in self._availableStatus():
+            raise KeyError, '%s status is not supported' % status
+
+        content=self.getContentFrom(content)
+
+        transition = '%s.%s.%s'%( content
+                                , action
+                                , status )
+
+        if navprops.hasProperty(transition):
+            navprops._updateProperty(transition, destination)
+        else:
+            navprops._setProperty(transition, destination)
+
+    security.declarePrivate('removeTransitionFor')
+    def removeTransitionFrom(self, content, action=None, status=None):
+        """ removes everything regarding a content/action combination """
+        navprops = getattr(self, 'navigation_properties') #propertymanager that holds data
+        transition = self.getContentFrom(content)
+        if action is not None:
+            transition += '.'+action
+        if status is not None:
+            tranistion += '.'+status
+        for prop in navprops.propertyIds():
+            if prop.startswith(transition):
+                navprops._delProperty(prop)
+
+            
 InitializeClass(NavigationTool)
