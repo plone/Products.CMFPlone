@@ -81,6 +81,7 @@
     <script language="JavaScript"
             type="text/javascript" 
             src="dummy"
+	    tal:condition="python:test(template.getId() in ('folder_listing', 'folder_contents'), 1, 0)"
             tal:attributes="src string:$portal_url/table_sort.js" >
     </script>     
 
