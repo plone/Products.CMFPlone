@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - unknown - unknown - unreleased
 
+    - added macro for viewing the related items in all content templates.
+      [_ender_,mrtopf]
+
     - added 2 new knob to jscalendar: 
 
       - show_hm: show hour and minute dropbox or not 
