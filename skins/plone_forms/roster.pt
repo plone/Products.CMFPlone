@@ -25,7 +25,7 @@
         Visible Members: <strong tal:content="python:len(members)">number of members</strong> 
         </p>
 		  
-		<div class="listingBar">		
+	<div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">		
             <span class="previous" tal:define="n batch/previous | nothing" tal:condition="python: not n"> &nbsp; </span>
             <span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
                 <a href="#" tal:attributes="href string:?b_start=${p/first}"> &laquo; previous members </a>
@@ -62,7 +62,7 @@
         </metal:block>
         </div>
         
-        <div class="listingBar">
+        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
             <span class="previous" tal:define="n batch/previous | nothing" tal:condition="python: not n"> &nbsp; </span>
             <span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
                 <a href="#" tal:attributes="href string:?b_start=${p/first}"> &laquo; previous members </a>

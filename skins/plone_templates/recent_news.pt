@@ -12,24 +12,24 @@
 		      b_start python:request.get('b_start',0);">
 
 
-		<form name="searchresults" action="" method="post"
-				tal:condition="results"
-          tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
+		<form name="searchresults" action="" method="post" tal:condition="results"
+                      tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 				
-		  
- 			<span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
+                <!--Navigation-->
+                <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
+ 			<span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
 				<a href="#" tal:attributes="href string:?b_start=${p/first}">
 				&laquo; more recent news
 				</a> 
 			</span>
 			
-			<span class="right" tal:define="n batch/next | nothing" tal:condition="n">
+			<span class="next" tal:define="n batch/next | nothing" tal:condition="n">
 				<a href="#" tal:attributes="href string:?b_start=${batch/end}">
 				older news &raquo;
 				</a>
 			</span> 
-			
-			<div tal:repeat="result batch" >
+		</div>	
+			<metal:block tal:repeat="result batch" >
 			<div class="row" tal:define="resultObject result/getObject">
 				
 				<h1 tal:content="result/Title">
@@ -65,21 +65,22 @@
                     </span>
 				</p>
                 
-			</div>
-            <hr />
-			</div>
-						
-			<span tal:define="p batch/previous | nothing" tal:condition="p"> 
+                       </div>
+                       <hr />
+                       </metal:block>
+		    <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">			
+			<span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
 				<a href="#" tal:attributes="href string:?b_start=${p/first}">
 				&laquo; more recent news
 				</a> 
 			</span>
 			
-			<span class="right" tal:define="n batch/next | nothing" tal:condition="n">
+			<span class="next" tal:define="n batch/next | nothing" tal:condition="n">
 				<a href="#" tal:attributes="href string:?b_start=${batch/end}">
 				older news &raquo;
 				</a>
 			</span> 
+                     </div>
  	  </form>
           
           <div class="row" tal:condition="not: results">

@@ -22,7 +22,7 @@
         <strong> Found <span tal:replace="python:len(results)" /> items matching your criteria. </strong> <br/>
         
         <!-- Navigation -->
-        <div class="listingBar">
+        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
             <span class="previous" 
               tal:define="p batch/previous | nothing" 
               tal:condition="p"> 
@@ -79,7 +79,7 @@
         </table>
 
         <!-- Navigation -->
-        <div class="listingBar">
+        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
             <span class="previous" 
               tal:define="p batch/previous | nothing" 
               tal:condition="p"> 
