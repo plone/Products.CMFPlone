@@ -37,13 +37,14 @@
                          id python:request.get('id', test(here.show_id(),here.getId(),''));">
 			 
             <div class="label">
-                <span i18n:translate="label_name">Name</span>
+
+                <span i18n:translate="label_short_name">Short Name</span>
             
                 <div id="id_help" 
                      i18n:translate="help_name"
                      class="help" 
                      style="visibility:hidden">
-                Enter the Name of the event. This is the part that will show up as part
+                Enter the Short Name of the event. This is the part that will show up as part
                 of the web address. This should be short, descriptive
                 and preferrably not contain spaces, underscores or mixed case. Example:
                 "expense-report-2002"

@@ -36,7 +36,7 @@
                          id python:request.get('id', test(here.show_id(),here.getId(),''));"> 
             <div class="label">
             
-                <span i18n:translate="label_name">Name</span>
+                <span i18n:translate="label_short_name">Short Name</span>
             
                 <div id="id_help" 
                      i18n:translate="help_name"
