@@ -108,6 +108,6 @@ class DefaultCustomizationPolicy:
         pp_actions=pp._cloneActions()
         for a in pp_actions:
             if a.id=='configPortal':
-                a.name='Plone Setup'
+                a.title='Plone Setup'
         pp._actions=pp_actions
 
