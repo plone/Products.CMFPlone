@@ -97,7 +97,6 @@ h1, h2, h3, h4, h5, h6 {	/* Style for the headlines */
     color: &dtml-headingFontColor;;
     font: &dtml-headingFont;;
     margin-top: 0;
-    clear: both;
 }
 
 h1 {
