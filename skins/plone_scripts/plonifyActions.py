@@ -16,9 +16,9 @@ if actions is None:
 actionlist=[]
 if same_type(actions, {}):
     if context.getTypeInfo().getId() in site_properties.use_folder_tabs:
-        actionlist=actions['folder']+actions['object']+actions['object_tabs']
+        actionlist=actions['folder']+actions['object']+actions.get('object_tabs',[])
     else:
-        actionlist=actions['object']+actions['object_tabs']
+        actionlist=actions['object']+actions.get('object_tabs',[])
    
 plone_actions=[]
 for action in actionlist:
