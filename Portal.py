@@ -147,7 +147,6 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_scripts/form_scripts'
                     , 'plone_styles'
                     , 'plone_templates'
-                    , 'plone_3rdParty/XSDHTMLEditor'
                     , 'plone_3rdParty/CMFTopic'
                     , 'plone_3rdParty/CMFCalendar'
                     , 'plone_templates/ui_slots'
