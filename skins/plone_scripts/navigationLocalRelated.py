@@ -8,11 +8,15 @@
 ##title=encapsulates the related box
 ##
 
-related=[]
+local = []
+remote = []
 subjects=None
 
 if obj is None:
     obj=context
+
+abs_url = obj.absolute_url()
+portal_url = context.portal_url.getPortalObject().absolute_url()
 
 if hasattr(obj.aq_explicit, 'Subject'):
     subjects=obj.Subject()
@@ -23,14 +27,19 @@ if subjects:
                                    , sort_on = 'portal_type'
                                    , sort_order = 'reverse'  ):
         url=o.getURL()
+        rurl = o.getRemoteUrl
         title=''
-        if url != obj.absolute_url(): #we need UIDs
-            if o.Title:
-                title=o.Title
-            else:
-                title=o.getId #getId() is indexed as the getId property
-            related.append( {'title':title
-                            ,'url':url
-                            ,'icon':o.getIcon} )
+        if o.Title:
+            title=o.Title
+        else:
+            title=o.getId #getId() is indexed as the getId property
+            
+        lnk = {'title':title
+               ,'url':url
+               ,'icon':o.getIcon}
+        if not rurl.startswith(portal_url): #we need UIDs
+            local.append(lnk)
+        else:
+            remote.append(lnk)
 
-return related
+return {'local':local, 'remote':remote}
