@@ -2,6 +2,8 @@ CHANGES
 
 Plone 1.0.2
 
+    - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
+
     - 'local roles' tab is now determined by 'Change Permissions' permission.
 
     - If you dont have access to a object you no longer get a login_form but 
