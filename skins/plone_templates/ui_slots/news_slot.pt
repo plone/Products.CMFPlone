@@ -31,7 +31,7 @@
                     </a>
             
                     <div class="boxDetails"
-                         tal:content="python:here.toPortalTime(obj.modified)">July 7, 08:11</div>
+                         tal:content="python:here.toPortalTime(obj.Date)">July 7, 08:11</div>
                 </div>
         
             </tal:block>

@@ -11,7 +11,7 @@
   </metal:block>
     
 <div metal:fill-slot="main"
-     tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='created',sort_order='reverse',review_state='published');
+     tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_start python:request.get('b_start',0);">
@@ -48,7 +48,7 @@
     
                     </a>                                 
     
-                  - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python:container.toPortalTime(result.Date)" /> 
+                  - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python:container.toPortalTime(result.modified)" /> 
                 
                 </h6>
 
