@@ -31,7 +31,8 @@ copytext = """\
 #DO NOT TOUCH Controlled/Python Scripts
 def change_py(file):
     res = notPresent(file, copytext)
-    if res.split('\n')[0].startswith('## '):
+    lines = res.split('\n')
+    if lines and lines[0].startswith('## '):
         return
     if res is not None:
 	res = copytext + res
