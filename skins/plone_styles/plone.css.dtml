@@ -19,20 +19,20 @@
 /* <dtml-with stylesheet_properties> (do not remove this :) */
 
 /* The column layout: */
-table.columns {
+table#columns {
 	width: 100%;
 }
-table.columns td.left {
+table#columns td#left {
     vertical-align: top;
     width: 15%;
     padding: 2em 0em 1em 2em;
 }
-table.columns td.main {
+table#columns td.main {
     vertical-align: top;
     padding: 0.5em 2em 1em 2em;
     margin: 0;
 }
-table.columns td.right {
+table#columns td#right {
     vertical-align: top;
     width: 15%;
     padding: 2em 2em 1em 0em;
@@ -282,7 +282,7 @@ input.searchButton {
     font-size: 100% ! important;
     margin-bottom: 1px ! important;
 }
-ul#portaltabs {
+ul#portalTabs {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
     background: &dtml-mainTabBackdrop;;
     border-collapse: collapse;
@@ -294,14 +294,14 @@ ul#portaltabs {
     list-style: none;
     margin: 0;
 }
-ul#portaltabs li {
+ul#portalTabs li {
     /* Make the links inline using Fabrice's inversion to fix NS4 */
     display : inline;
     /*/*//*/
     display : none;
     /* */
 }
-ul#portaltabs li a {
+ul#portalTabs li a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-mainTabBackgroundNotSelected;;
     border-color: &dtml-mainTabBorderColor;;
@@ -317,7 +317,7 @@ ul#portaltabs li a {
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
-ul#portaltabs li a.selected {
+ul#portalTabs li.selected a {
     /* The selected tab. There's only one of this */
     background: &dtml-mainTabBackground;;
     border: 1px solid &dtml-mainTabBorderColorSelected;;
@@ -325,7 +325,7 @@ ul#portaltabs li a.selected {
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
 }
-ul#portaltabs li a:hover {
+ul#portalTabs li a:hover {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-color: &dtml-mainTabBackground;;
@@ -370,15 +370,23 @@ div#pathBar {
 .addFavorite {
     vertical-align: bottom;
 }
-#contentTabs {
+ul#contentTabs {
     background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
     border-bottom: &dtml-contentTabBorder;;
     padding-left: 1em;
     margin-top: 1em;
     /* white-space: nowrap; */
+    list-style: none;
 }
-#contentTabs a {
+ul#contentTabs li {
+    /* Make the links inline using Fabrice's inversion to fix NS4 */
+    display : inline;
+    /*/*//*/
+    display : none;
+    /* */
+}
+#contentTabs li a {
     background: &dtml-contentTabBackgroundNotSelected;;
     border: &dtml-contentTabBorder;;
     border-style: solid solid solid solid;
@@ -389,13 +397,13 @@ div#pathBar {
     padding: 0em 2em;
     text-transform: &dtml-textTransform;;
 }
-#contentTabs a.selected {
+#contentTabs li.selected a {
     background: &dtml-contentTabBackground;;
     border-bottom: &dtml-contentTabBackground; 1px solid;
     color: &dtml-contentTabFontColorSelected;;
     font-weight: &dtml-contentTabFontWeight;;
 }
-#contentTabs a:hover {
+#contentTabs li a:hover {
     background-color: &dtml-contentTabBackground;;
     color: &dtml-contentTabFontColorSelected;;
 }

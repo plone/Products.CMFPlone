@@ -1,18 +1,22 @@
-<div metal:define-macro="content_tabs"
+<ul metal:define-macro="content_tabs"
      id="contentTabs" 
      i18n:domain="plone"
      tal:define="plone_actions python:here.plonifyActions(template_id=template_id, actions=actions)">
     <tal:actions repeat="action plone_actions">
+    <li tal:define="firstitem repeat/tab/first;
+                    lastitem repeat/tab/last;
+                    selected action/selected|nothing;"
+        tal:attributes="id string:contenttab-${tab/id};
+                        class python:test(selected, 'selected', 'plain') + test(firstitem, ' firstItem', '') + test(lastitem, ' lastItem', '');">
         <a class="" href=""
-           tal:define="selected action/selected|nothing"
-           tal:attributes="class python:test(selected, 'selected', 'plain'); href action/url; accesskey string:accesskeys-${action/name}"
+           tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
 	   i18n:attributes="accesskey" >
             <span tal:omit-tag="" i18n:translate="">
                 <span tal:replace="action/name">dummy</span>
             </span>
         </a>
     </tal:actions>
-</div>
+</ul>
 
 <div metal:define-macro="content_bar"
      i18n:domain="plone"
