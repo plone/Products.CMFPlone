@@ -52,7 +52,7 @@
                <li>You may be running web filtering software that 
                disables cookies.  If so, you will need to configure the
                software so that it enables you to accept cookies from
-               exchange.sigmaxi.org</li>
+               <span tal:replace="here/portal_url"/></li>
                <li>Your computer may be behind a firewall or proxy server
                that prevents cookies from being sent to or from your browser.
                If so, you will need to ask your systems administrator if the

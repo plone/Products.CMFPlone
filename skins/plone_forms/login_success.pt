@@ -39,10 +39,8 @@
                                          global actions python: here.portal_actions.listFilteredActionsFor(here);">
                 </metal:block>
 				
-                <div tal:condition="request/came_from | nothing">
-                    <div tal:define="came_from python:'';
-                                     came_from request/came_from|came_from;
-                                     not_allowed python:('login','login_success','login_password','login_failed','login_form','logged_in','logged_out','registered','mail_password','mail_password_form','join_form','require_login');"
+                <div tal:define="came_from request/came_from|nothing" tal:condition="came_from">
+                    <div tal:define="not_allowed python:('login','login_success','login_password','login_failed','login_form','logged_in','logged_out','registered','mail_password','mail_password_form','join_form','require_login');"
                          tal:condition="python:came_from.split('?')[0].split('/')[-1:][0] not in not_allowed;">
                          <div tal:define="dummy python: request.RESPONSE.redirect(came_from)" />
                     </div>
