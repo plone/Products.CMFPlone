@@ -679,6 +679,18 @@ pre {
     text-decoration: underline;
 }
 
+.productCredits {
+    text-align: right;
+    font-size: &dtml-fontSmallSize;;
+    clear: both;
+    font-weight: normal;
+    color: &dtml-discreetColor;;
+}
+
+.productCredits a {
+    text-decoration: underline;
+}
+
 #portal-footer {
     background-color: &dtml-globalBackgroundColor;;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
