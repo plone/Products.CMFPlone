@@ -20,10 +20,10 @@
           tal:attributes="name python:keyval[0];
                            content python:keyval[1];" />
 
-    <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support it. Site will still be viewable, but look a bit stripped. --> 
-<!--
+    <!-- Basic crude style for Netscape4.x - Removed until we have the time to update it. 
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
--->
+    -->
+
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css);"></style>
 
