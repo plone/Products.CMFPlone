@@ -1,7 +1,7 @@
-/*  Style sheet for RTL (right-to-left) languages - hard work done by 
+/*  Style sheet for RTL (right-to-left) languages - hard work done by
  *  Mohsen Moeeni <mohsen at schoolnet.ir>, integration work by
  *  Alexander Limi - http://www.plonesolutions.com
- */ 
+ */
 
 /* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> (do not remove this :) */
@@ -21,21 +21,40 @@ ol {
     margin: 0.75em 1.5em 0.75em 0em;
 }
 
- 
 #portal-skinswitcher a {
     float: right;
 }
- 
+
+/* start goofy horizontal scroll problem
+
+Ok, the rtl horizontal-scroll problem happens here. Removing the following
+two rules removes the problem. However, the item that actually gets pushed out
+in space is #portal-logo a. To make this clear enable the following rule.
+
+I thought it might have something to do with floats and clearing on the h1, but
+that seems not to be it. It doesn't appear to be the LIR on portal-logo either,
+since we are padding-top, not -left.
+
+Anyway, didn't get it fixed but at least we know what it is. :-/
+
+  -- Chad Whitacre (whit537)
+
+#portal-logo a {
+    background: orange;
+    }
+
+*/
 #portal-siteactions {
     float: left;
-    padding: 3px 0 3px 2em;    
+    padding: 3px 0 3px 2em;
 }
-
 #portal-searchbox {
     padding: 0 0 0 2em;
     float: left;
     clear: left;
 }
+/* end goofy horizontal scroll problem */
+
 
 #portal-globalnav {
     padding: 0em 2em 0em 0em;
@@ -53,7 +72,7 @@ ol {
     background: transparent url(&dtml-portal_url;/user.gif) center right no-repeat;
     padding-right: 15px;
 }
- 
+
 #portal-personaltools li {
     background: transparent url(&dtml-portal_url;/rtl-linkOpaque.gif) center right no-repeat;
     padding-right: 5px;
@@ -78,14 +97,14 @@ ol {
 .contentActions li {
     text-align: right;
 }
- 
+
 .contentActions li {
     float: left;
     background-position: center left;
     padding: 0 1em 0 0;
     margin: 0 0 0 1em;
 }
- 
+
 .contentActions .actionMenu {
     left: -1px;
 }
@@ -99,7 +118,7 @@ ol {
     float: left;
     text-align: left;
 }
- 
+
 .newsFooter li {
      display: inline;
     margin: 0 0 0 1em;
@@ -108,11 +127,11 @@ ol {
 .documentActions {
     float: left;
 }
- 
+
 .documentByLine {
     text-align: left;
 }
- 
+
 .productCredits {
     text-align: left;
 }
@@ -125,7 +144,7 @@ ol {
 
 }
 
- 
+
 .standalone,
 .documentEditable * .standalone {
     padding: 1px 15px 1px 1px;
@@ -147,17 +166,17 @@ ol {
 input.searchButton {
     padding: 1px 15px 1px 1px;
  }
- 
+
 .field {
     right: 0;
     margin: 0 0 1em 1em;
 }
- 
+
 .fieldRequired {
     background: url(&dtml-portal_url;/required.gif) center right no-repeat;
     padding: 0 8px 0 0;
-} 
- 
+}
+
 .card {
     float: right;
 }
@@ -181,16 +200,16 @@ input.searchButton {
 
 ul.configletDetails {
     margin: 0em 4em 1em 1em;
-} 
- 
+}
+
 .portletDetails {
     text-align: left;
 }
- 
+
 .portletMore {
     text-align: left;
 }
- 
+
 .portletClose {
     float: left;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
@@ -219,7 +238,7 @@ ul.configletDetails {
     padding: 1px 16px 1px 0;
 }
 
-/* No way to get these to work with IE, it seems - suggestions welcome --limi */ 
+/* No way to get these to work with IE, it seems - suggestions welcome --limi */
 .link-external,
 .link-https,
 .link-mailto,
@@ -235,7 +254,7 @@ ul.configletDetails {
     background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center right no-repeat;
     padding: 1px 16px 1px 0 !important;
 }
- 
+
 .hiddenStructure {
     margin: -1px -1px 0 0;
 }
@@ -248,11 +267,11 @@ ul.configletDetails {
     padding: 2em 0em 1em 2em;
 }
 
- 
+
 .contentActions .hiddenStructure {
     right: -200px;
 }
- 
+
 .visualClear {
     margin: -1px -1px 0 0;
 }
