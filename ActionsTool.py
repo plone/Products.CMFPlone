@@ -49,9 +49,8 @@ class ActionsTool(PloneBaseTool, BaseTool):
                     # found it.
                     break
                 else:
-                    # !!! This is the only change from CMFCore.ActionsTool.listFilteredActionsFor
-                    # If the parent of the object in hand is a TempFolder
-                    # don't strip off its outer acquisition context.
+                    # If the parent of the object at hand is a TempFolder
+                    # don't strip off its outer acquisition context (Plone)
                     parent = aq_parent(aq_inner(folder))
                     if getattr(parent, '__class__', None) == FactoryTool.TempFolder:
                         folder = aq_parent(folder)
@@ -64,8 +63,10 @@ class ActionsTool(PloneBaseTool, BaseTool):
 
         # Include actions from specific tools.
         for provider_name in self.listActionProviders():
-            provider = getattr(self, provider_name)
-            self._listActions(append,provider,info,ec)
+            # Skip missing or broken providers (Plone)
+            provider = getattr(self, provider_name, None)
+            if hasattr(aq_base(provider), 'listActions'):
+                self._listActions(append,provider,info,ec)
 
         # Include actions from object.
         if object is not None:

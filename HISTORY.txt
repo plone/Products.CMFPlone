@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - (Unreleased)
 
+    - Fixed http://plone.org/collector/3612 - listFilteredActionsFor of
+      ActionsTool now ignores missing or broken action providers.
+      [stefan]
+
     - Fixed http://plone.org/collector/3611 - Migration failed if the 'Folder'
       portal type did not have both 'edit' and 'local_roles' actions.
       [stefan]
