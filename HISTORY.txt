@@ -3,6 +3,17 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.1 - unknown - unknown - unreleased
+
+    - added 2 new knob to jscalendar: 
+
+      - show_hm: show hour and minute dropbox or not 
+
+      - show_jscalendar: show the jscalendar icon or not. If you hate the fat 
+        javascript, you can turn it off.
+      [panjunyong]
+
+    - old popup calender(plone 1.x) worked again.
+      [panjunyong]
  
     - Don't install SecureMailHost if already installed.
       [tiran]
