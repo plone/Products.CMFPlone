@@ -1,4 +1,4 @@
-from Products.CMFCore.utils import UniqueObject, getToolByName                        
+from Products.CMFCore.utils import UniqueObject, getToolByName
 from Globals import InitializeClass
 from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
 from AccessControl import ClassSecurityInfo
@@ -23,9 +23,9 @@ from OFS.ObjectManager import ObjectManager
 # the portal.
 class TempFolder(TempFolderBase):
     portal_type = meta_type = 'TempFolder'
-    
+
     parent = None
-    
+
     def __getitem__(self, id):
         if id in self.objectIds():
             return self._getOb(id).__of__(aq_parent(aq_parent(self)))
@@ -40,7 +40,7 @@ class TempFolder(TempFolderBase):
 #        membership_tool = getToolByName(self, 'portal_membership')
 #        member = membership_tool.getAuthenticatedMember()
 #        return {member.getUserName():['Owner']}
-        
+
 
 
 # ##############################################################################
@@ -108,7 +108,7 @@ class FactoryTool(UniqueObject, SimpleItem):
             self.REQUEST.set('URL%d' % n, '/'.join(url_list))
             url_list = url_list[:-1]
             n = n + 1
-        
+
         url_list = URL.split('/')
         m = 0
         while m < n:
@@ -119,8 +119,8 @@ class FactoryTool(UniqueObject, SimpleItem):
 
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""
-        parent=aq_parent(aq_inner(obj))
-        return getattr(parent, 'meta_type', 'None') == TempFolder.meta_type
+        ob = aq_parent(aq_inner(obj))
+        return hasattr(ob, 'meta_type') and ob.meta_type == TempFolder.meta_type
 
 
     def __before_publishing_traverse__(self, other, REQUEST):
@@ -159,7 +159,7 @@ class FactoryTool(UniqueObject, SimpleItem):
         path = '/'.join(stack[1:])
         obj = tempFolder.restrictedTraverse(path)
         return obj(*args, **kwargs)
-    
+
 
     index_html = None  # call __call__, not index_html
 
@@ -178,7 +178,7 @@ class FactoryTool(UniqueObject, SimpleItem):
             if not type_name in types_tool.TempFolder.allowed_content_types:
                 # update allowed types for tempfolder
                 types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
-    
+
             tempFolder = TempFolder(type_name)
             tempFolder.parent = aq_parent(self)
             tempFolder = aq_inner(tempFolder).__of__(self)
@@ -191,14 +191,14 @@ class FactoryTool(UniqueObject, SimpleItem):
         self.REQUEST.set('__factory_info__', factory_info)
         return tempFolder
 
-        
+
 
     def __bobo_traverse__(self, REQUEST, name):
         """ """
         # The portal factory intercepts URLs of the form
         #   .../portal_factory/TYPE_NAME/ID/...
         # where TYPE_NAME is a type from portal_types.listContentTypes() and
-        # ID is the desired ID for the object.  For intercepted URLs, 
+        # ID is the desired ID for the object.  For intercepted URLs,
         # portal_factory creates a temporary object of type TYPE_NAME with
         # id ID and puts it on the traversal stack.  The context for the
         # temporary object is set to portal_factory's context.
@@ -207,7 +207,7 @@ class FactoryTool(UniqueObject, SimpleItem):
         # portal_factory returns the existing object.
         #
         # All other requests are passed through unchanged.
-        # 
+        #
 
         # try to extract a type string from next piece of the URL
 
@@ -219,6 +219,10 @@ class FactoryTool(UniqueObject, SimpleItem):
             # nope -- do nothing
             return getattr(self, name)
         return self.getTempFolder(name)
-        
+
+<<<<<<< FactoryTool.py
 
 InitializeClass(FactoryTool)
+=======
+InitializeClass(FactoryTool)
+>>>>>>> 1.17.8.2
