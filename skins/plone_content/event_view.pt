@@ -37,11 +37,9 @@
                 <span class="label">When</span>
                 <span class="field">
                     Between
-                    <span tal:replace="python:DateTime.Date(here.start())">Start Date</span>
-                    <span tal:replace="python:DateTime.Time(here.start())">Start Time</span>
+                    <span tal:replace="python:here.toPortalTime(here.start())">Start Date Time</span>
                     and
-                    <span tal:replace="python:DateTime.Date(here.end())">End Date</span>
-                    <span tal:replace="python:DateTime.Time(here.end())">End Time</span>
+                    <span tal:replace="python:here.toPortalTime(here.end())">End Date Time</span>
                 </span>
             </div>
 
