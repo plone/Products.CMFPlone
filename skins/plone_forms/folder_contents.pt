@@ -139,7 +139,7 @@
                                 tal:condition="python:container.isExpired(item)">expired</span>
                         </td>
     
-                        <td tal:content="item/Title">
+                        <td tal:content="python:item.getTypeInfo().Title()">
                         folder
                         </td>
     
