@@ -18,19 +18,23 @@ slots={ 'left':[],
         'right':[],
         'item_actions':[] }
 
-for slot in [lslot for lslot in context.left_slots if lslot]:
+left_slots=getattr(context,'left_slots', [])
+right_slots=getattr(context,'right_slots', [])
+item_action_slots=getattr(context,'item_action_slots', [])
+
+for slot in [lslot for lslot in left_slots if lslot]:
     if slot.find('/macros/')!=-1:
         slots['left'].append( (slot, 1) )
     else:
         slots['left'].append( (slot, 0) )
 
-for slot in [rslot for rslot in context.right_slots if rslot]:
+for slot in [rslot for rslot in right_slots if rslot]:
     if slot.find('/macros/')!=-1:
         slots['right'].append( (slot, 1) )
     else:
         slots['right'].append( (slot, 0) )
 
-for slot in [iaction for iaction in context.item_action_slots if iaction]:
+for slot in [iaction for iaction in item_action_slots if iaction]:
     if slot.find('/macros/')!=-1:
         slots['item_actions'].append( (slot, 1) )
     else:

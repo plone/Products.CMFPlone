@@ -8,7 +8,10 @@
 
 <!-- The About box -->
 
-<div metal:define-macro="aboutBox" tal:condition="python:test(not site_properties.allowAnonymousViewAbout and site_properties.portal_membership.isAnonymousUser(), 0, 1)" tal:omit-tag="">
+<div metal:define-macro="aboutBox" 
+     tal:condition="python:test(not site_properties.allowAnonymousViewAbout and
+                                site_properties.portal_membership.isAnonymousUser(), 0, 1)" 
+     tal:omit-tag="">
 
     <div class="box">
 

@@ -5,9 +5,9 @@
       lang="en" 
       metal:define-macro="master"
       tal:define="member here/portal_membership/getAuthenticatedMember;
-        portal here/portal_url/getPortalObject;
-	global portal_url portal;
-        actions python:here.portal_actions.listFilteredActionsFor(here);
+        global portal here/portal_url/getPortalObject;
+        global portal_url portal/absolute_url;
+        global actions python:here.portal_actions.listFilteredActionsFor(here);
         site_properties here/portal_properties/site_properties;
         ztu modules/ZTUtils;
         actions options/actions|actions|nothing;
@@ -17,7 +17,7 @@
         local_actions python:actions.get('object_tabs', []);
         isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);
         template_id options/template_id|template_id|template/getId|nothing;
-        slots_mapping options/slots_mapping|template/prepare_slots|here/prepare_slots|nothing;" 
+        slots_mapping options/slots_mapping|template/prepare_slots|nothing;" 
       tal:attributes="lang site_properties/default_language|default;
                       xml:lang site_properties/default_language|default;">
 
