@@ -228,7 +228,7 @@ class NavigationTool (UniqueObject, SimpleItem):
 
         script_object = getattr(context, script)
 
-        (status, context, kwargs) = 
+        (status, context, kwargs) = \
             mapply(script_object, self.REQUEST.args, request,
                         call_object, 1, missing_name, dont_publish_class,
                         self.REQUEST, bind=1)

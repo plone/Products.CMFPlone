@@ -34,7 +34,6 @@ class FactoryTool(UniqueObject, SimpleItem):
             container = obj.getParentNode()
         if id is None:
             id = obj.getId()
-        self.log('ISTEMPORARY(OBJ=%s, CONTAINER=%s, ID=%s) -> %s' % (obj, container, id, not id in container.objectIds()))
         return not (id in container.objectIds())
 
 
