@@ -34,7 +34,7 @@ variables = { 'send_from_address' : REQUEST.send_from_address
             , 'comment'           : REQUEST.get('comment',None)
             }
 try:
-    plone_utils.sendto( variables )
+    plone_utils.sendto( **variables )
 except ConflictError:
     raise
 except: #XXX To many things could possibly go wrong. So we catch all.

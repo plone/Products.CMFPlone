@@ -73,72 +73,88 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         user=membership.getMemberById(member)
         user.setMemberProperties(properties)
 
+    security.declarePublic('getSiteEncoding')
+    def getSiteEncoding(self):
+        """Get the default_charset or fallback to utf8
+        """
+        pprop   = getToolByName(self, 'portal_properties')
+        default = 'utf-8'
+        try:
+            charset = pprop.site_properties.getProperty('default_charset', default)
+        except AttributeError:
+            charset = default
+        return charset
+
+    security.declarePublic('portal_utf8')
+    def portal_utf8(self, str, errors='strict'):
+        """Transforms an string in portal encoding to utf8
+        """
+        charset = self.getSiteEncoding()
+        if charset.lower() in ('utf-8', 'utf8'):
+            # test
+            unicode(str, 'utf-8', errors)
+            return str
+        else:
+            return unicode(str, charset, errors).encode('utf-8', errors)
+        
+    security.declarePublic('utf8_portal')
+    def utf8_portal(self, str, errors='strict'):
+        """Transforms an utf8 string to portal encoding
+        """
+        charset = self.getSiteEncoding()
+        if charset.lower() in ('utf-8', 'utf8'):
+            # test
+            unicode(str, 'utf-8', errors)
+            return str
+        else:
+            return unicode(str, 'utf-8', errors).encode(charset, errors)
+
+    security.declarePrivate('getMailHost')
+    def getMailHost(self):
+        """Get the MailHost
+        """
+        return getattr(aq_parent(self), 'MailHost')
+
     security.declarePublic('sendto')
-    def sendto( self, variables = {} ):
+    def sendto(self, send_to_address, send_from_address, comment, 
+               subject='Plone', **kwargs ):
         """Sends a link of a page to someone
         """
-        if not variables: return
-        mail_text = self.sendto_template( self, **variables)
-        host = self.MailHost
-        host.send( mail_text )
+        host = self.getMailHost()
+        template = getattr(self, 'sendto_template')
+        encoding = self.getSiteEncoding()
+        # cook from template
+        message = template(self, send_to_address=send_to_address,
+                           send_from_address=send_from_address,
+                           comment=comment, subject=subject, **kwargs
+                          )
+        result = host.secureSend(message, send_to_address,
+                                 send_from_address, subject=subject,
+                                 subtype='plain', charset=encoding,
+                                 debug=False
+                                )
+        #print result[2].as_string()
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
         """Lower-level function to validate a single normalized email address, see validateEmailAddress
         """
-        if type(address) is not StringType:
-            return False
-
-        sub = EMAIL_CUTOFF_RE.match(address);
-        if sub != None:
-            # Address contains two newlines (possible spammer relay attack)
-            return False
-
-        # sub is an empty string if the address is valid
-        sub = EMAIL_RE.sub('', address)
-        if sub == '':
-            return True
-        return False
-
+        host = self.getMailHost()
+        return host.validateSingleNormalizedEmailAddress(address)
+        
     security.declarePublic('validateSingleEmailAddress')
     def validateSingleEmailAddress(self, address):
         """Validate a single email address, see also validateEmailAddresses
         """
-        if type(address) is not StringType:
-            return False
-        
-        sub = EMAIL_CUTOFF_RE.match(address);
-        if sub != None:
-            # Address contains two newlines (spammer attack using "address\n\nSpam message")
-            return False
-        
-        if len(_getaddresses([address])) != 1:
-            # none or more than one address
-            return False
-        
-        # Validate the address
-        for name,addr in _getaddresses([address]):
-            if not self.validateSingleNormalizedEmailAddress(addr):
-                return False
-        return True
+        host = self.getMailHost()
+        return host.validateSingleEmailAddress(address)
 
     security.declarePublic('validateEmailAddresses')
     def validateEmailAddresses(self, addresses):
         """Validate a list of possibly several email addresses, see also validateSingleEmailAddress
         """
-        if type(addresses) is not StringType:
-            return False
-        
-        sub = EMAIL_CUTOFF_RE.match(addresses);
-        if sub != None:
-            # Addresses contains two newlines (spammer attack using "To: list\n\nSpam message")
-            return False
-        
-        # Validate each address
-        for name,addr in _getaddresses([addresses]):
-            if not self.validateSingleNormalizedEmailAddress(addr):
-                return False
-        return True
+        host = self.getMailHost()
+        return host.validateEmailAddresses(addresses)
 
     security.declarePublic('editMetadata')
     def editMetadata( self

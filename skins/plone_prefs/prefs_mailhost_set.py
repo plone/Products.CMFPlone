@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=smtp_server, smtp_port, RESPONSE=None
+##parameters=smtp_server, smtp_port, smtp_userid, smtp_pass, RESPONSE=None
 ##title=set mailhost prefs
 ##
 
@@ -12,7 +12,7 @@ REQUEST=context.REQUEST
 
 mh = context.MailHost
 
-mh.manage_makeChanges('Plone Mail Host', smtp_server ,smtp_port)
+mh.manage_makeChanges('Plone Mail Host', smtp_server, smtp_port, smtp_userid, smtp_pass)
 
 msg = 'Mail Host Updated'
 RESPONSE.redirect('prefs_mailhost_form?portal_status_message=' + msg)

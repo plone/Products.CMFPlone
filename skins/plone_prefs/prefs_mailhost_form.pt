@@ -79,6 +79,47 @@
                                        tabindex tabindex/next;" />
             </div>
     
+            <div class="field"
+                 tal:define="smtp_userid request/smtp_userid | here/MailHost/smtp_userid;
+                             error errors/smtp_userid | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label i18n:translate="label_smtp_userid">ESMTP user</label>
+
+                <div class="formHelp" i18n:translate="help_smtp_userid">
+                XXX
+                </div>
+
+                <div tal:content="error">Validation error output</div>
+
+                <input name="smtp_userid"
+                       value=""
+                       size="30"
+                       tabindex=""
+                       tal:attributes="value smtp_userid;
+                                       tabindex tabindex/next;" />
+            </div>
+            <div class="field"
+                 tal:define="smtp_pass request/smtp_pass | here/MailHost/smtp_pass;
+                             error errors/smtp_pass | nothing;"
+                 tal:attributes="class python:test(error, 'field error', 'field')">
+    
+                <label i18n:translate="label_smtp_pass">ESMTP password</label>
+
+                <div class="formHelp" i18n:translate="help_smtp_pass">
+                XXX
+                </div>
+
+                <div tal:content="error">Validation error output</div>
+
+                <input name="smtp_pass"
+                       value=""
+                       size="30"
+                       tabindex=""
+                       type="password"
+                       tal:attributes="value smtp_pass;
+                                       tabindex tabindex/next;" />
+            </div>
     
             <div class="formControls">
                 <input class="context"

@@ -1,29 +1,20 @@
 <div i18n:domain="plone" 
      tal:omit-tag=""
-     tal:define="charset site_properties/default_charset|string:utf-8;
-                 dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)"
->Date: <span tal:define="now python:modules['DateTime'].DateTime()"
-              tal:replace="now/rfc822" />
-To: <span tal:replace="request/send_to_address | options/send_to_address" />
-From: <span tal:replace="request/send_from_address | options/send_from_address" />
-Subject: <span tal:replace="options/title | here/Title" />
-Content-Type: text/plain; charset=<span tal:replace="charset" />
-
-
-<div i18n:translate="sendto_mailtemplate_body" tal:omit-tag="">
+     tal:define="utool nocall:here/portal_url"
+><div i18n:translate="sendto_mailtemplate_body" tal:omit-tag="">
 This link is sent to you from <span i18n:name="portal_url" tal:omit-tag="" tal:content="utool" />
 
 You are receiving this mail because someone read a page at
 <span i18n:name="portal_title" tal:omit-tag="" tal:content="utool/Title" />
 and thought it might interest you.
 
-It is sent by <span i18n:name="from_address" tal:omit-tag="" tal:content="request/send_from_address | options/send_from_address"
+It is sent by <span i18n:name="from_address" tal:omit-tag="" tal:content="options/send_from_address"
 /> with the following comment:
-"<span i18n:name="comment" tal:omit-tag="" tal:content="request/comment | options/comment | nothing" />"
+"<span i18n:name="comment" tal:omit-tag="" tal:content="options/comment | nothing" />"
 
 <span i18n:name="document_title" tal:omit-tag="" tal:content="options/title | here/Title" />
 
-<span i18n:name="document_description" tal:omit-tag="" tal:content="options/description | here/description" />
+<span i18n:name="document_description" tal:omit-tag="" tal:content="options/description | here/Description" />
 
 <span i18n:name="document_url" tal:omit-tag="" tal:content="options/url | here/absolute_url" />
 </div>
@@ -31,4 +22,3 @@ It is sent by <span i18n:name="from_address" tal:omit-tag="" tal:content="reques
 <span tal:replace="here/email_from_name" />
 
 </div>
-

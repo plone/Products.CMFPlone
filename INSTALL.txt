@@ -82,6 +82,11 @@ Installing Plone manually, step by step instructions.
      Included in the Plone tarball 
      http://sf.net/projects/collective 
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=90836 
+
+  - SecureMailHost
+     Included in the Plone tarball 
+     http://sf.net/projects/collective 
+
  
 ------------------------------------------------------------------------------- 
  
