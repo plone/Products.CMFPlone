@@ -32,10 +32,7 @@ function cookiesEnabled() {
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="auth nocall:here/cookie_authentication;
-                 ac_name auth/name_cookie;
-                 ac_password auth/pw_cookie;
-                 ac_persist auth/persist_cookie;">
+     tal:define="auth nocall:here/cookie_authentication|nothing">
 
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
@@ -68,10 +65,17 @@ to become a member.
 // ]]>
 </script>
 
-<form action="logged_in"
-      method="post">
+<div tal:condition="not: auth" i18n:translate="login_form_disabled">
+    While cookie authentication is disabled, cookie-based login is not available.
+</div>
 
-    <fieldset>
+<form action="logged_in"
+      method="post"
+      tal:condition="auth">
+
+    <fieldset tal:define="ac_name auth/name_cookie;
+                          ac_password auth/pw_cookie;
+                          ac_persist auth/persist_cookie">
 
         <legend i18n:translate="legend_account_details">Account details</legend>
 

@@ -10,14 +10,27 @@
 <div metal:define-macro="portlet"
      tal:omit-tag=""
      tal:define="pageloc python: request.URL.split('/')[-1];
-                 okToShowHere python: not pageloc in ('login_form', 'join_form');"
+                 okToShowHere python: not pageloc in ('login_form', 'join_form');
+                 auth nocall:here/cookie_authentication|nothing"
      tal:condition="python: isAnon and okToShowHere">
 
-    <div class="portlet" 
-         tal:define="auth nocall:here/cookie_authentication;
-                     ac_name auth/name_cookie;
-                     ac_password auth/pw_cookie;
-                     ac_persist auth/persist_cookie;"
+    <div class="portlet"
+         tal:condition="not: auth"
+         id="portlet-login">
+        <h5 i18n:translate="box_sign_in">Log in</h5>
+        <div class="portletBody">
+            <div class="portletContent" i18n:translate="login_portlet_disabled">
+            Cookie authentication disabled.  Login portlet
+            not available.
+            </div>
+        </div>
+    </div>
+
+    <div class="portlet"
+         tal:define="ac_name auth/name_cookie|nothing;
+                     ac_password auth/pw_cookie|nothing;
+                     ac_persist auth/persist_cookie|nothing;"
+         tal:condition="auth"
          id="portlet-login">
 
         <h5 i18n:translate="box_sign_in">Log in</h5>

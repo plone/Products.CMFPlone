@@ -17,8 +17,15 @@ path = '/' + context.absolute_url(1)
 if REQUEST.has_key(skinvar) and not context.portal_skins.getCookiePersistence():
     REQUEST.RESPONSE.expireCookie(skinvar, path=path)
 
-cookie_name=context.cookie_authentication.getProperty('auth_cookie')
-REQUEST.RESPONSE.expireCookie(cookie_name, path='/')
+cookie_auth=getattr(context, 'cookie_authentication')
+if cookie_auth is not None:
+    cookie_name=cookie_auth.getProperty('auth_cookie')
+    REQUEST.RESPONSE.expireCookie(cookie_name, path='/')
+
+# This sort of sucks.  If you do not have SESSIONS enabled
+# this throws an exception ;-(.  You can not try/except
+# around calling invalidate.  It will throw excpetion
+# regardless.  No idea how chrism managed that one *wink*
 REQUEST.SESSION.invalidate()
 
 from Products.CMFPlone import transaction_note

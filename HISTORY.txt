@@ -6,6 +6,12 @@ Plone 2.0 - Fyuti
 
    RC6
 
+    - Make portal more tolerant if admin removes cookie_authentication
+      object which enables form-based logins.  This is a response to
+      http://article.gmane.org/gmane.comp.web.zope.plone.user/13868
+      It does not full fix, just a hold over until it is addressed 
+      properly.
+  
     - Fix for http://plone.org/collector/2769
       You could not enable/disable green 'editable border'
       because this was being done in the 'head_slot' which
