@@ -10,10 +10,7 @@
 
 if (document.all && window.attachEvent) window.attachEvent("onload", fixWinIE);
 function fixWinIE() {
-        if (document.body.scrollHeight < document.all.main.offsetHeight) 
-        {
-           document.all.main.style.display = 'block';
-        }
+       document.all.main.style.display = 'block';
 }
 
 
