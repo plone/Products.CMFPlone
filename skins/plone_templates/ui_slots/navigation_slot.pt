@@ -55,7 +55,10 @@
             tal:condition="python:test(listContentsPermission and notFolderContents, 1, 0)">
             <td colspan="2"
                 tal:condition="notFolderContents">
-                <a href="folder_contents">Editor view</a>
+               <a tal:condition="here/isPrincipiaFolderish" href="folder_contents">Editor view</a>
+               <a href="../folder_contents"
+                  tal:condition="not: here/isPrincipiaFolderish" 
+                  tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents">Editor view</a>
             </td>
         </tr>
 
