@@ -25,17 +25,18 @@
 <div metal:fill-slot="main">
 
     <div tal:define="DateTime python:modules['DateTime'].DateTime;
-                     Batch python:modules['Products.CMFPlone'].Batch;">
-            <div tal:define="login_time python:member.getProperty('login_time', DateTime());
+                     Batch python:modules['Products.CMFPlone'].Batch;
+                     login_time python:member.getProperty('login_time', DateTime());
                      begin_time python:here.ZopeTime('2000/01/01');
-                     validate_email here/validate_email;"
-                     tal:condition="python: not(login_time == begin_time and validate_email)">
-                <metal:block tal:on-error="nothing"
-		             tal:define="d_reg python: member.setProperties(last_login_time=login_time); 
-                                 ereg python: member.setProperties(login_time=here.ZopeTime());
-                                 global actions here/portal_actions/listFilteredActionsFor;">
-                </metal:block>
-				
+                     validate_email here/validate_email;">
+
+            <metal:block tal:on-error="nothing"
+                 tal:define="d_reg python: member.setProperties(last_login_time=login_time); 
+                             ereg python: member.setProperties(login_time=here.ZopeTime());
+                             global actions here/portal_actions/listFilteredActionsFor;">
+            </metal:block>
+
+            <div tal:condition="python: not(login_time == begin_time and validate_email)">
                 <div tal:define="came_from request/came_from|nothing" tal:condition="came_from">
                     <div tal:define="not_allowed python:('login','login_success','login_password','login_failed','login_form','logged_in','logged_out','registered','mail_password','mail_password_form','join_form','require_login');"
                          tal:condition="python:came_from.split('?')[0].split('/')[-1:][0] not in not_allowed">
@@ -132,7 +133,9 @@
                 </tal:block>
 
 		</div>
-
+        <div tal:condition="python: login_time == begin_time and validate_email">
+            <metal:block tal:define="dummy python:request.RESPONSE.redirect(portal_url+'/portal_form/password_form');" />
+        </div>
 	</div>
 
 </div>
