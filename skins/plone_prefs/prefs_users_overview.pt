@@ -87,17 +87,17 @@
                 <tr>
                     <th colspan="4">
                         <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
-                        <input class="quickSearch"
-                            tabindex=""
-                            type="text"
-                            name="searchstring"
-                            value=""
-                            tal:attributes="value searchstring;
-                                    tabindex tabindex/next;"
+                        <input tabindex=""
+                               type="text"
+                               name="searchstring"
+                               value=""
+                               tal:attributes="value searchstring;
+                                               tabindex tabindex/next;"
                             />
 
                         <input type="hidden" name="searchonly" value="users" />
                         <input type="submit"
+                            class="searchButton"
                             name="prefs_user_group_search_form"
                             value="Search"
                             tabindex=""
@@ -144,16 +144,13 @@
 
                     <td tal:define="email python: this_user.getProperty('email')">
                         <a href="#"
-                        tal:attributes="href string:mailto:${email}">
-                        <img src=""
-                            tal:attributes="src string:${portal_url}/mail_icon.gif"
-                            alt=""
-                            title="Send a mail to this user"
-                            i18n:attributes="title"
-                            />
+                           tal:attributes="href string:mailto:${email}"
+                           title="Send a mail to this user"
+                           i18n:attributes="title">
+                        &nbsp;
                         </a>
                         <input type="text"
-                            size="20"
+                            size="15"
                             name=""
                             value=""
                             tal:attributes="name string:email_entered_$username;

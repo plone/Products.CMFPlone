@@ -24,7 +24,7 @@
 	
         <table class="listing">
 	  <tr>
-	    <th colspan="6">
+	    <th colspan="2">
 	      <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
                     <input class="quickSearch"
                            tabindex=""
@@ -37,6 +37,7 @@
                 
                     <input type="hidden" name="searchonly" value="groups" />
                     <input type="submit"
+                           class="searchButton"
                            name="prefs_user_group_search_form"
                            value="Search"
                            tabindex=""
@@ -47,12 +48,12 @@
 	    </th>
 	  </tr>
 	  <tr>
-	    <th tal:condition="takeaction | nothing">&nbsp;</th>
+	    <th tal:condition="takeaction | nothing">Add user</th>
 	    <th i18n:translate="listingheader_group_name">Name</th>
 	  </tr>
 
 	  <tr tal:condition="not:batch">
-	    <td colspan="6" i18n:translate="text_nomatches">No matches</td>
+	    <td colspan="2" i18n:translate="text_nomatches">No matches</td>
 	  </tr>
 
 	  <tal:block repeat="obj batch">
@@ -62,7 +63,7 @@
 
 	      <td class="listingCheckbox">
                 <input type="checkbox"
-                       class="noborder notify"
+                       class="noborder"
                        name="add:list"
                        value="value"
 		       tal:attributes="value obj/getGroupId | obj/getId" />

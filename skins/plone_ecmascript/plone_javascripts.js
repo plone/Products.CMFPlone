@@ -319,7 +319,7 @@ function scanforlinks(){
                 // we are here because the link is an absolute pointer internal to our host
                 // do nothing
             } else if (linkval.indexOf('http:') == -1){
-                // not a http-link. Possibly an internal relative link, but also possibly a mailto ot other snacks
+                // not a http-link. Possibly an internal relative link, but also possibly a mailto or other snacks
                 // add tests for all relevant protocols as you like.
                 
                 protocols = ['mailto', 'ftp' , 'irc', 'callto']

@@ -93,6 +93,7 @@
                     
                         <input type="hidden" name="searchonly" value="groups" />
                         <input type="submit"
+                               class="searchButton"
                                name="prefs_user_group_search_form"
                                value="Search"
                                tabindex=""
@@ -184,7 +185,8 @@
         
         <p i18n:translate="description_roles_zmi">
         Currently, if you want to add a new role, you'll have to use the 
-        Zope Management Interface.</p>
+        Zope Management Interface, as this is considered a development task.
+        </p>
     
     </div>
 

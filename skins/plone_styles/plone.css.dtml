@@ -309,15 +309,6 @@ pre {
     width: 30%;
     white-space: nowrap;
 }
-input.searchButton {
-    font-size: 100%;
-    margin-bottom: &dtml-borderWidth; ! important;
-    background: transparent url(search_icon.gif) 7px 1px no-repeat;
-    cursor: pointer;
-    padding: 1px 1px 1px 15px;
-    text-transform: &dtml-textTransform;;
-
-}
 #portal-globalnav {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
     background-color: transparent;
@@ -691,6 +682,15 @@ input.searchButton {
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
+input.searchButton {
+    font-size: 100%;
+    margin-bottom: &dtml-borderWidth; ! important;
+    background: &dtml-backgroundColor; url(search_icon.gif) 7px 1px no-repeat;
+    cursor: pointer;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+
+}
 .noborder,
 .documentEditable * .noborder {
     border: none;
@@ -798,7 +798,6 @@ input.searchButton {
     font-weight: normal;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
-    white-space: nowrap;
 }
 .listing .top {
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;

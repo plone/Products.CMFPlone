@@ -114,16 +114,14 @@
     
                         </a>
                     </td>
-    		  <td tal:define="email python: this_user.getProperty('email')">
-    		    <a href="#" tal:attributes="href string:mailto:${email}">
-    
-                    <img src=""
-                         tal:replace="structure portal/mail_icon.gif" />
-    		      <span tal:replace="email" />
-                    </a>
-    
-    
-                </td>
+
+                    <td tal:define="email python: this_user.getProperty('email')">
+                        <a href="#" tal:attributes="href string:mailto:${email}"
+                               title="Send a mail to this user"
+                               i18n:attributes="title">
+                        <span tal:replace="email" />
+                        </a>
+                    </td>
     
                     <td class="listingCheckbox">
                         <input type="checkbox"
