@@ -212,13 +212,13 @@ def install_PloneSkins(self, out):
         out.write( "Plone Default skin unable to install\n" )
     
     try:
-        install_SubSkin(self, out, 'Plone Mozilla', 'plone_mozilla')
+        install_SubSkin(self, out, 'Plone Mozilla', 'plone_styles/mozilla')
         out.write('Mozilla subskin successfully installed\n')
     except:
         out.write('Mozilla subskin unable to successfully install\n')
 
     try:
-        install_SubSkin(self, out, 'Plone XP', 'plone_xp')
+        install_SubSkin(self, out, 'Plone XP', 'plone_styles/winxp')
         out.write('XP subskin successfully installed\n')
     except:
         out.write('Plone XP subskin unable to install\n')
