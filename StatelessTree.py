@@ -94,7 +94,7 @@ class NavigationTreeViewBuilder(SimpleItem):
                 return []
             
             # shall all Members be listed or just myself!
-            if self.showMyUserFolderOnly and obj.id=='Members':
+            if self.showMyUserFolderOnly and obj == portal.portal_membership.getMembersFolder():
                 try:
                     return [getattr(obj,user.getId())]
                 except:

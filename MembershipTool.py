@@ -85,11 +85,23 @@ class MembershipTool( BaseTool ):
         we must do all of this ourself. ;(
         """
         parent = self.aq_inner.aq_parent
-        members =  getattr(parent, 'Members', None)
+        members =  self.getMembersFolder()
 
         if members is None:
-            parent.manage_addPloneFolder(id='Members', title='Members')
-            members = getattr(parent, 'Members', None)
+            parent.manage_addPloneFolder(id=self.membersfolder_id, title='Members')
+            members =  self.getMembersFolder()
+            if members:
+                # XXX This is the same code as in Portal.py 
+                members._setProperty('right_slots', (), 'lines')
+                
+                portal_catalog = getToolByName( self, 'portal_catalog' )
+                portal_catalog.unindexObject(members) #unindex Members folder
+                members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html',
+                                                                       'Member list',
+                                                                       '<dtml-return member_search_form>')
+                members._setPortalTypeName( 'Folder' )
+                members.setTitle('Members')
+                members.setDescription("Container for portal members' home directories")
             
         if members is not None and not hasattr(members, member_id):
             f_title = "%s's Home" % member_id

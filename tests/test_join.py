@@ -1,7 +1,7 @@
 """ 
 Tests for joining/registration of a user.
 
-$Id: test_join.py,v 1.1.2.1 2002/10/07 14:34:24 dreamcatcher Exp $
+$Id: test_join.py,v 1.2 2002/10/07 14:50:37 dreamcatcher Exp $
 """
 
 import Zope
@@ -33,7 +33,7 @@ class MembershipTests( TransactionalTest ):
         # test that wrapUser correctly creates member area
         site.portal_membership.setMemberareaCreationFlag()
         site.portal_membership.wrapUser(u)
-        memberfolder = getattr(site.Members, member_id)
+        memberfolder = getattr(site.portal_membership.getMembersFolder(), member_id)
         homepage = memberfolder.index_html
         self.assertEqual( memberfolder.Title(), "test_user's Home" )
         tool = site.portal_workflow

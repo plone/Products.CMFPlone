@@ -172,7 +172,7 @@ class DefaultCustomizationPolicy:
         at._actions=at_actions
 
         at.addAction('index_html','Welcome','portal_url','', 'View', 'portal_tabs')
-        at.addAction('Members','Members','string:$portal_url/Members','','View','portal_tabs')
+        at.addAction('Members','Members','python:portal.portal_membership.getMembersFolder().absolute_url()','python:portal.portal_membership.getMembersFolder()','View','portal_tabs')
         at.addAction('news','News','string:$portal_url/news','','View', 'portal_tabs')	
         at.addAction('search_form','Search','string:$portal_url/search_form','','View','portal_tabs')
 
