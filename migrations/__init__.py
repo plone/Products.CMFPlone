@@ -98,5 +98,5 @@ def registerMigrations():
                                       v2.two04_two05.two04_two05)
 
     MigrationTool.registerUpgradePath('2.0.5',
-                                      '2.1-beta1 (SVN/UNRELEASED)',
+                                      'trunk (SVN/UNRELEASED)',
                                       v2_1.betas.two0x_beta1)
