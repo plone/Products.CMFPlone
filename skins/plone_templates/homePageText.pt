@@ -1,4 +1,4 @@
-<metal:membercontent tal:define="member options/member">
+<metal:membercontent tal:define="member nocall:options/member">
 
 Home page for <span tal:replace="member/getId" />
 
