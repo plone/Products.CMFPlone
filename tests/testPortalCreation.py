@@ -42,18 +42,24 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.assertEqual(aq_base(members).__getattr__('index_html').meta_type, 'Page Template')
         self.assertEqual(members.__getattr__('index_html').meta_type, 'Page Template')
 
-    def testLargePloneFolderFuckup(self):
+    def testLargePloneFolderHickup(self):
+        # Attribute access for 'index_html' acquired the Document from the
+        # portal instead of returning the local Page Template. This was due to
+        # special treatment of 'index_html' in the PloneFolder base class and
+        # got fixed by hazmat.
         members = self.membership.getMembersFolder()
         self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
-        # This works now as hazmat fixed LargePloneFolder, hurray.
+        #self.assertEqual(members.index_html.meta_type, 'Document')
         self.assertEqual(members.index_html.meta_type, 'Page Template')
 
-    def testPortalActionProviders(self):
+    def testWorkflowIsNoActionProvider(self):
         # Remove portal_workflow by default.  We are falling back to
         # our use of the 'review_slot'.  There are no places using 
         # the worklist ui anymore directly from the listFilteredActionsFor
         at = self.portal.portal_actions
-        self.failUnless('portal_workflow' not in at.listActionProviders())
+        self.failIf('portal_workflow' in at.listActionProviders())
+
+    def testReplyTabIsOff(self):
         # Ensure 'reply' tab is turned off
         # XXX NOTE: ActionProviderBAse should have a 'getActionById' 
         # that does this for x in: if x == id
@@ -63,6 +69,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             if action.id=='reply':
                 reply_visible=action.visible
         self.assertEqual(reply_visible, 0)
+
 
 if __name__ == '__main__':
     framework()
