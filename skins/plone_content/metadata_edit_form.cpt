@@ -276,8 +276,7 @@
               The language of this item.
             </div>
 
-            <div tal:define="available_languages python:list(here.availableLanguages());
-                             sorted python:available_languages.sort( lambda x, y: cmp(x[1],y[1]) )">
+            <div>
               <!-- ISO-639-2 language selector for Plone -->
               <select name="language"
                       id="language"
@@ -288,7 +287,7 @@
                         i18n:translate="choose_language">
                   Choose Language
                 </option>
-                <option tal:repeat="language available_languages"
+                <option tal:repeat="language here/availableLanguages"
                         tal:attributes="value python:language[0];
                                         selected python:test(sel_language == language[0], 'selected', None)"
                         tal:content="structure python:language[1]">
