@@ -1,3 +1,25 @@
+2003-07-30  Geoff Davis <geoff@geoffdavis.net>
+
+    * FactoryTool.py: Complete rewrite.  Object ownership is now set properly
+      and it's a bit more efficient than it used to be.  Cleaned up the code,
+      etc.
+
+    * FormTool.py: Minor fixes to accomodate the fact that it gets called via
+      (un)restrictedTraverse when portal_factory is being used.
+
+    * Minor fixes to breadcrumbs.py and StatelessTreeNav to avoid weirdness 
+      with temporary objects.
+
+    * createObject now uses portal_factory for any type that is specified in
+      portal_properties/site_properties/portal_factory_types
+
+    * RegistrationTool.py: new password generation code eliminates characters
+      that look alike from passwords (e.g. 0 and O, 1 and l, etc).  Too many
+      users were complaining that their initial passwords didn't work.
+
+    * login_form: added a workaround for a ZServer cookie bug that affects
+      IE 5.0 when cookies are deleted.  Cookie testing now works for IE 5.0.
+
 2003-07-29  Sidnei da Silva  <sidnei@redesul.com.br>
 
 	* skins/plone_scripts/browserDefault.py (pages): Make limi
