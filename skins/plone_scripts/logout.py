@@ -9,6 +9,7 @@
 REQUEST = context.REQUEST
 if REQUEST.has_key('portal_skin'):
    context.portal_skins.clearSkinCookie()
-REQUEST.RESPONSE.expireCookie('__ac', path='/')
+cookie_name=context.cookie_authentication.getProperty('auth_cookie')
+REQUEST.RESPONSE.expireCookie(cookie_name, path='/')
 REQUEST.SESSION.invalidate()
 return REQUEST.RESPONSE.redirect(REQUEST.URL1+'/logged_out')
