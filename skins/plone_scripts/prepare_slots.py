@@ -16,11 +16,11 @@
 
 slots={ 'left':[],
         'right':[],
-        'item_actions':[] }
+        'document_actions':[] }
 
 left_slots=getattr(context,'left_slots', [])
 right_slots=getattr(context,'right_slots', [])
-item_action_slots=getattr(context,'item_action_slots', [])
+document_action_slots=getattr(context,'document_action_slots', [])
 
 #check if the *_slots attributes are callable so that they can be overridden
 #by methods or python scripts
@@ -31,8 +31,8 @@ if callable(left_slots):
 if callable(right_slots):
     right_slots=right_slots()
 
-if callable(item_action_slots):
-    item_action_slots=item_action_slots()
+if callable(document_action_slots):
+    document_action_slots=document_action_slots()
 
 for slot in [lslot for lslot in left_slots if lslot]:
     if slot.find('/macros/')!=-1:
@@ -46,11 +46,11 @@ for slot in [rslot for rslot in right_slots if rslot]:
     else:
         slots['right'].append( (slot, 0) )
 
-for slot in [iaction for iaction in item_action_slots if iaction]:
+for slot in [iaction for iaction in document_action_slots if iaction]:
     if slot.find('/macros/')!=-1:
-        slots['item_actions'].append( (slot, 1) )
+        slots['document_actions'].append( (slot, 1) )
     else:
-        slots['item_actions'].append( (slot, 0) )
+        slots['document_actions'].append( (slot, 0) )
 
 return slots
 
