@@ -21,5 +21,7 @@ try:
     contents = context.listFolderContents(contentFilter=contentFilter, suppressHiddenFiles=suppressHiddenFiles)
 except TypeError:
     #XXX Manually do suppression
+    context.plone_log('Manual fall back in getFolderContents - your Folder.listFolderContents method does not ' \
+                      'support suppressHiddenFiles')
     contents = [obj for obj in context.listFolderContents(contentFilter=contentFilter) if obj.getId()[:1]!='.']
 return contents
