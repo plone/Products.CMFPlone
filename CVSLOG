@@ -1,3 +1,43 @@
+2004-02-10 02:12  limi
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  Commented out the autofocus in forms for accessibility and
+	  usability reasons. Code is still in there, so just uncomment if
+	  you still want it. Tab puts you in the first form element.
+
+2004-02-10 01:32  plonista
+
+	* FactoryTool.py (Plone-2_0-branch): Fix for 2601
+
+2004-02-09 23:42  jok2
+
+	* skins/plone_forms/content_status_history.cpt (Plone-2_0-branch):
+	  redid alans last checkin, sorry
+
+2004-02-09 23:25  jok2
+
+	* skins/plone_forms/content_status_history.cpt (Plone-2_0-branch):
+	  check in fix for 2539 and 2630, this time on the right branch
+
+2004-02-09 21:57  tiran
+
+	* skins/plone_portlets/portlet_events.pt (Plone-2_0-branch): fixed
+	  problem with portal_events (merge from HEAD)
+
+2004-02-09 15:23  tiran
+
+	* skins/plone_portlets/portlet_events.pt: fixed the portlet (don't
+	  work with a brain)
+
+2004-02-09 14:09  runyaga
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): i18n fix
+	  issue #2626
+
+2004-02-09 04:54  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-09 02:44  jok2
 
 	* skins/plone_forms/content_status_history.cpt: Fix for
