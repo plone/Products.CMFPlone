@@ -55,9 +55,10 @@
             tal:attributes="class python:test(oddrow, 'even', 'odd')" >
         <td>                
         <a href="#" 
-           tal:attributes="href string:${match/getURL}/view" >
+           tal:attributes="href string:${match/getURL}/view"
+           tal:define="match_title match/Title/strip">
            <img src="#" tal:attributes="src string:${here/portal_url}/${match/getIcon}" />
-           <span tal:replace="match/Title|match/id">Title or id</span>
+           <span tal:replace="match_title|match/getId">Title or id</span>
         </a>
         </td>   
         <td tal:content="match/Type">Type</td>
