@@ -2,7 +2,7 @@
 <dtml-var wikipage_header>
 
     <form method="POST"
-          action="wikipage_deleterename_handler"
+          action="&dtml-getId;/wikipage_deleterename_handler"
           enctypE="multipart/form-data">
 
 <table border=1>
@@ -87,7 +87,7 @@
   RegulatingYourPages</a> for more info.</strong.>
   </p>
     <form method="POST"
-          action="wikipage_advanced_handler"
+          action="&dtml-getId;/wikipage_advanced_handler"
           enctype="multipart/form-data">
     <table width="100%" border="0" cellspacing="0" cellpadding="5"
            bgcolor="eeeeee">
