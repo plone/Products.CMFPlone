@@ -159,7 +159,7 @@
                        tal:attributes="checked validateChecked;
                                        tabindex tabindex;" />
     
-                <label for="validate_email_on" i18n:translate="label_generate_and_email_passwords">Generate and e-mail members' initial password</label>
+                <label for="validate_email_on" i18n:translate="label_generate_and_email_passwords">Generate and e-mail member's initial password</label>
     
                 <br />
     
