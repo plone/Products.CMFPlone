@@ -1,4 +1,4 @@
-from migration_utils import safeEditProperty
+from migration_util import safeEditProperty
 
 def upg_1_0_1_to_1_1(portal):
     """ Migrations from 1.0.1 to 1.1 """

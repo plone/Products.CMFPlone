@@ -34,6 +34,6 @@ def registerMigrations():
                                        '1.0.1',
                                        final_one_zero_one.onezeroone )
 
-    MigrationTool.registerUpgradePath( '1.0.1',
-                                       '1.1',
-                                       upg_1_0_1_to_1_1.upg_1_0_1_to_1_1 )
+#    MigrationTool.registerUpgradePath( '1.0.1',
+#                                       '1.1',
+#                                       upg_1_0_1_to_1_1.upg_1_0_1_to_1_1 )
