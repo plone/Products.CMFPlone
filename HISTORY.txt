@@ -4,6 +4,24 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Fixed http://plone.org/collector/2862. Added a listMetaTags script to
+      skins/plone_scripts to add automagically generated meta tags in the 
+      <header>
+      [tiran]
+
+    - Fixed http://plone.org/collector/2821. The user doesn't show up as
+      a member of that group after adding because the template was returned in
+      the same transaction. Now the add/delete script is using a redirect.
+      [tiran]
+
+    - Fixed http://plone.org/collector/2876.  Folder rename does not reindex
+      title. Added a explict reindex if only the title has been changed.
+      [tiran]
+
+    - Fixed http://plone.org/collector/2892 by using global_defines in the
+      calendar_popup template.
+      [tiran]
+
     - Fixed https://plone.org/collector/2749. 'groups' wasn't
       initialized as an instance variable, so any changes to it would
       vanish on restart.
