@@ -82,6 +82,11 @@ class MembershipTool(BaseTool):
         since we arent using PortalFolders and invokeFactory will not work
         we must do all of this ourself. ;(
         """
+
+        # do not create member_area for groups
+        if member_id in self.portal_groups.listGroupIds():
+            return
+
         parent = self.aq_inner.aq_parent
         members =  self.getMembersFolder()
 
@@ -169,7 +174,7 @@ class MembershipTool(BaseTool):
         '''Gets the list of all members.
         '''
         groups = []
-        # can we allways asume that there is a groups_tool
+        # can we allways asume that there is a groups_tool ??
         groups = self.portal_groups.listGroupIds()
         members = BaseTool.listMembers(self)
         result = []
