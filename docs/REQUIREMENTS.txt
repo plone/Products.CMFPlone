@@ -8,5 +8,8 @@ Plone 1.1 Requirements
 
   - Formulator found at http://www.zope.org/Members/faassen/Formulator  
 
-  - QuickInstaller found at (the collective) http://sourceforge.net/projects/collective
+  - CMFQuickInstallerTool found at (the collective) http://sourceforge.net/projects/collective
 
+  - CMFActionIcons found at http://cvs.zope.org/Products/CMFActionIcons
+    
+  - ExternalEditor found at http://www.zope.org/Members/Caseman/ExternalEditor

@@ -15,7 +15,7 @@ except ImportError:
 try:
     import Products.CMFActionIcons
 except ImportError:
-    log("CMFActionIcons not found.  Please download it from http://cvs.zope.org/CMF")
+    log("CMFActionIcons not found.  Please download it from http://cvs.zope.org/Products/")
 
 try:
     import Products.ExternalEditor
