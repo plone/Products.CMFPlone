@@ -10,7 +10,7 @@
 ##
 size = 0
 
-if file is None:
+if not file:
     filename=None
 else:
     filename=getattr(file, 'filename')
