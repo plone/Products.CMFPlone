@@ -1,0 +1,9 @@
+2002-07-25  Sidnei da Silva  <sidnei@x3ng.com.br>
+
+	* CustomizationPolicy: Added a condition to the publishing action to make it check for
+	if the object has a workflow attached when deciding whether to show the action or not.
+
+	* plone_3rdParty/CMFWiki: Added a plonish wikipage_compare_versions page.
+
+	* Dependencies: Now CMFPlone needs CMF from the cmf-1_3-branch or HEAD.
+	
