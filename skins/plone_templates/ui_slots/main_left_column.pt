@@ -1,11 +1,10 @@
 <metal:block metal:define-macro="column"
              tal:define="global portal_url here/portal_url">
 
-<!--
     <div metal:use-macro="here/navigation_tree_slot/macros/navigationBox">
       Tree-based Navigation
     </div>
--->
+
     <div metal:use-macro="here/navigation_slot/macros/navigationBox">
       Old Navigation
     </div>

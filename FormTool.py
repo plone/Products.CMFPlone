@@ -14,6 +14,7 @@ from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import getToolByName
 from NavigationTool import NavigationError
 
+from interfaces.FormTool import IFormTool, ICMFForm
 from PloneUtilities import log as debug_log
 
 validator_cache = {}  # a place to stash cached validators
@@ -25,6 +26,7 @@ class FormTool(UniqueObject, SimpleItem):
     id = 'portal_form'
     meta_type= 'Plone Form Tool'
     security = ClassSecurityInfo()
+    __implements__ = IFormTool,
 
     # special-purpose items used in the REQUEST
     error_key = 'errors'                    # a dictionary used for storing form validation errors
@@ -39,8 +41,10 @@ class FormTool(UniqueObject, SimpleItem):
         REQUEST.set('TraversalRequestNameStack', [stack[-1]])
 
 
-    def setValidators(self, form, validators = ['validate_id']):
+    def setValidators(self, form, validators=None):
         """Register a chain of validators for a form"""
+        if validators is None:
+            validators = ['validate_id']
         if type(validators) != type([]):
             validators = [validators]
         property_tool = getattr(self, 'portal_properties')
@@ -58,7 +62,6 @@ class FormTool(UniqueObject, SimpleItem):
         property_tool = getattr(self, 'portal_properties')
         form_props = getattr(property_tool, 'form_properties')
         validators = form_props.getProperty(form, None)
-#        self.log('getValidators: %s' % validators)
         if validators is None:
             return None
         validators = validators.strip()
@@ -102,13 +105,9 @@ class FormTool(UniqueObject, SimpleItem):
 
         # see if we are handling validation for this form
         validators = self.getValidators(name)
-        if validators is None:
+        if validators is none:
             # no -- do normal traversal
             target = getattr(aq_parent(self), name, None)
-#            if name.endswith('.js'):
-#                self.log('name: %s, target: <Javascript>, context: %s' % (name, str(aq_parent(self))), '__bobo_traverse__')
-#            else:
-#                self.log('name: %s, target: %s, context: %s' % (name, target, str(aq_parent(self))), '__bobo_traverse__')
             if target:
                 return target
             else:
@@ -130,15 +129,11 @@ class FormTool(UniqueObject, SimpleItem):
         if not type(errors) != type({}):
             errors = None
         form_submitted = REQUEST.get(FormTool.form_submitted_key, None)
-#        self.log('errors = '+str(errors) + ', form_submitted = ' + str(form_submitted), '__bobo_traverse__')
 
         # We wrap the object in the acquisition layer of the parent of the FormTool
         # so that subsequent forms will operate on the FormTool's context and not
         # on the FormTool.
         do_validate = form_submitted and not errors
-#        self.log('returning FormValidator(%s,%s,%s)' % (name, validators, do_validate), '__bobo_traverse__')
-#        self.log(REQUEST.URL)
-#        self.log(aq_parent(self))
         return FormValidator(name, validators, do_validate).__of__(aq_parent(self)) # wrap in acquisition layer
 
 
@@ -183,7 +178,6 @@ class FormValidator(SimpleItem):
     def __call__(self, REQUEST, **kw):
         """ """
         trace = ['\n']
-#        self.log('validator[%s] = \'%s\'' % (self.form, self.validators), '__call__')
 
         try:
             if self.do_validate:
@@ -191,12 +185,10 @@ class FormValidator(SimpleItem):
                 context = self.aq_parent
                 # invoke validation
                 (status, kwargs, trace) = self._validate(context, REQUEST, trace)
-#                self.log('invoking validation, status = %s, kwargs = %s' % (status, kwargs))
 
                 return context.portal_navigation.getNext(context, self.form, status, trace, **kwargs)
             else:
                 trace.append('No validation needed.  Going to %s.%s' % (str(aq_parent(self)), self.form))
-#                self.log('going to %s.%s' % (str(aq_parent(self)), self.form))
                 target = getattr(aq_parent(self), self.form, None)
                 if not target:
                     raise KeyError("Unable to find form '%s'.  Check your skins path." % (self.form))
@@ -220,7 +212,6 @@ class FormValidator(SimpleItem):
             kwargs = {}
             for validator in self.validators:
                 trace.append('Invoking %s' % validator)
-#                self.log('calling validator [%s]' % (str(validator)))
                 v = getattr(context, validator)
                 if not v:
                     raise KeyError("Unable to find validator '%s'.  Check your skins path." % (validator))
@@ -243,7 +234,6 @@ class FormValidator(SimpleItem):
         """ """
         if not debug:
             return
-        import sys
         prefix = 'FormValidator'
         if loc:
             prefix = prefix + '. ' + str(loc)
@@ -257,7 +247,8 @@ class CMFForm(BasicForm):
        make BasicForms easier to work with from external methods."""
     security = ClassSecurityInfo()
     security.declareObjectPublic()
-    
+    __implements__ = ICMFForm, 
+
     security.declarePublic('addField')
     def addField(self, field_id, fieldType, group=None, **kwargs):
         """
