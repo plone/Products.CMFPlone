@@ -9,16 +9,12 @@
  *
  *  -- Alexander Limi, http://www.plonesolutions.com
  */
-
-
  
- 
-/* <dtml-with base_properties> */
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
 
 /* DELETE THIS LINE AND PUT YOUR CUSTOM STUFF HERE */
-
-
 
 
 

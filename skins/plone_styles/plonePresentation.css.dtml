@@ -15,8 +15,8 @@
 */
 
 /* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
-<dtml-call "REQUEST.set('portal_url', portal_url())" >
 body {
     background: White url(&dtml-portal_url;/logo.jpg) no-repeat fixed 95% 95%;
     font-family: <dtml-var fontFamily>;
