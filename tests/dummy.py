@@ -2,7 +2,7 @@
 # Helper objects for the Plone test suite
 #
 
-# $Id: $
+# $Id$
 
 from OFS.SimpleItem import SimpleItem
 
