@@ -39,4 +39,4 @@ new_context.plone_utils.contentEdit( new_context
                                    , description=description )
 new_context.edit( precondition=precondition, file=file )
 
-return state.set(context=new_context, portal_status_message='File changes saved.'))
+return state.set(context=new_context, portal_status_message='File changes saved.')
