@@ -9,6 +9,9 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+from AccessControl.User import nobody
+from Acquisition import aq_base
+
 default_user = PloneTestCase.default_user
 
 
@@ -16,6 +19,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
+        self.membership.memberareaCreationFlag = 0
 
     def testGetPersonalFolder(self):
         # Should return the .personal folder
@@ -122,12 +126,31 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.membership.setPassword('geheim')
         self.failUnless(self.portal.acl_users.getUserById(default_user).getGroups() == ugroups)
 
+    def testCreateMembersFolder(self):
+        # Should create the Members folder 
+        self.membership.addMember('user2', 'secret', ['Member'], [])
+        self.portal._delObject('Members')
+        self.membership.memberareaCreationFlag = 1
+        self.membership.createMemberarea('user2')
+        members = self.membership.getMembersFolder()
+        self.failUnless(members, 'createMemberarea failed to create Members folder')
+
+    def testCreateMemberarea(self):
+        # Should create a memberarea for user2
+        self.membership.addMember('user2', 'secret', ['Member'], [])
+        members = self.membership.getMembersFolder()
+        self.membership.memberareaCreationFlag = 1
+        self.membership.createMemberarea('user2')
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.failUnless(memberfolder, 'createMemberarea failed to create memberarea')
+
     def testWrapUserCreatesMemberarea(self):
         # This test serves to trip us up should this ever change
         # Also see http://plone.org/collector/1697
-        uf = self.portal.acl_users
-        uf._doAddUser('user2', 'secret', ['Member'], [])
-        user = uf.getUserById('user2').__of__(uf)
+        self.membership.addMember('user2', 'secret', ['Member'], [])
+        members = self.membership.getMembersFolder()
+        user = self.portal.acl_users.getUserById('user2')
+        self.membership.memberareaCreationFlag = 1
         self.membership.wrapUser(user)
         memberfolder = self.membership.getHomeFolder('user2')
         self.failUnless(memberfolder, 'wrapUser failed to create memberarea')
@@ -140,10 +163,104 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         # and return None for users defined outside of the portal.
         self.assertEqual(self.membership.getMemberById(PloneTestCase.portal_owner), None)
 
-    def testGetCandidateLocalRoles(self):
-        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner',))
+    def testGetMemberByIdIsWrapped(self):
+        member = self.membership.getMemberById(default_user)
+        self.failIfEqual(member, None)
+        self.assertEqual(member.__class__.__name__, 'MemberData')
+        self.assertEqual(member.aq_parent.__class__.__name__, 'GRUFUser')
+
+    def testGetAuthenticatedMember(self):
+        member = self.membership.getAuthenticatedMember()
+        self.assertEqual(member.getUserName(), default_user)
+
+    def testGetAuthenticatedMemberIsWrapped(self):
+        member = self.membership.getAuthenticatedMember()
+        self.assertEqual(member.getUserName(), default_user)
+        self.assertEqual(member.__class__.__name__, 'MemberData')
+        self.assertEqual(member.aq_parent.__class__.__name__, 'GRUFUser')
+
+    def testGetAuthenticatedMemberIfAnonymous(self):
+        self.logout()
+        member = self.membership.getAuthenticatedMember()
+        self.assertEqual(member.getUserName(), 'Anonymous User')
+
+    def testIsAnonymousUser(self):
+        self.failIf(self.membership.isAnonymousUser())
+        self.logout()
+        self.failUnless(self.membership.isAnonymousUser())
+
+    def testWrapUserWrapsBareUser(self):
+        user = self.portal.acl_users.getUserById(default_user)
+        # XXX: GRUF users are wrapped
+        self.failUnless(hasattr(user, 'aq_base'))
+        user = aq_base(user)
+        user = self.membership.wrapUser(user)
+        self.assertEqual(user.__class__.__name__, 'MemberData')
+        self.assertEqual(user.aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+
+    def testWrapUserWrapsBareUser(self):
+        user = self.portal.acl_users.getUserById(default_user)
+        # XXX: GRUF users are wrapped
+        self.failUnless(hasattr(user, 'aq_base'))
+        user = aq_base(user)
+        user = self.membership.wrapUser(user)
+        self.assertEqual(user.__class__.__name__, 'MemberData')
+        self.assertEqual(user.aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+
+    def testWrapUserWrapsWrappedUser(self):
+        user = self.portal.acl_users.getUserById(default_user)
+        # XXX: GRUF users are wrapped
+        self.failUnless(hasattr(user, 'aq_base'))
+        user = self.membership.wrapUser(user)
+        self.assertEqual(user.__class__.__name__, 'MemberData')
+        self.assertEqual(user.aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+
+    def testWrapUserDoesntWrapMemberData(self):
+        user = self.portal.acl_users.getUserById(default_user)
+        user.getMemberId = lambda x: 1
+        user = self.membership.wrapUser(user)
+        self.assertEqual(user.__class__.__name__, 'GRUFUser')
+
+    def testWrapUserDoesntWrapAnonymous(self):
+        user = self.membership.wrapUser(nobody)
+        self.assertEqual(user.__class__.__name__, 'SpecialUser')
+        
+    def testWrapUserWrapsAnonymous(self):
+        self.failIf(hasattr(nobody, 'aq_base'))
+        user = self.membership.wrapUser(nobody, wrap_anon=1)
+        self.assertEqual(user.__class__.__name__, 'MemberData')
+        self.assertEqual(user.aq_parent.__class__.__name__, 'SpecialUser')
+        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
+        
+    def testGetCandidateLocalRoles(self):                                                                
+        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner',))                
+        self.setRoles(['Member', 'Reviewer'])                                                            
+        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner', 'Reviewer'))     
+
+    def testSetLocalRoles(self):
+        self.failUnless('Owner' in self.folder.get_local_roles_for_userid(default_user)) 
         self.setRoles(['Member', 'Reviewer'])
-        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner', 'Reviewer'))
+        self.membership.setLocalRoles(self.folder, [default_user, 'user2'], 'Reviewer')
+        self.assertEqual(self.folder.get_local_roles_for_userid(default_user), ('Owner', 'Reviewer'))
+        self.assertEqual(self.folder.get_local_roles_for_userid('user2'), ('Reviewer',))
+
+    def testDeleteLocalRoles(self):
+        self.setRoles(['Member', 'Reviewer'])
+        self.membership.setLocalRoles(self.folder, ['user2'], 'Reviewer')
+        self.assertEqual(self.folder.get_local_roles_for_userid('user2'), ('Reviewer',))
+        self.membership.deleteLocalRoles(self.folder, ['user2'])
+        self.assertEqual(self.folder.get_local_roles_for_userid('user2'), ())
+
+    def testGetHomeFolder(self):
+        self.failIfEqual(self.membership.getHomeFolder(), None)
+        self.assertEqual(self.membership.getHomeFolder('user2'), None)
+
+    def testGetHomeUrl(self):
+        self.failIfEqual(self.membership.getHomeUrl(), None)
+        self.assertEqual(self.membership.getHomeUrl('user2'), None)
 
 
 # Fake upload object
