@@ -3,11 +3,6 @@
       i18n:domain="plone"
       metal:use-macro="here/main_template/macros/master">
 
-<metal:block fill-slot="head_slot">
-  <span tal:replace="nothing"
-        tal:define="dummy python:request.set('enable_border', 1)" />
-</metal:block>
-
 <body>
 
 
@@ -55,7 +50,16 @@
                tal:condition="not:myfolder">
                description
             </p>
-
+            <p>
+            <small>
+                <a href=""
+                   tal:define="parent_url python:here.navigationParent(here, template.getId())"
+                   tal:attributes="href parent_url"
+                   i18n:translate="go_to_parent_url">
+                Up one level
+                </a>
+            </small>
+            </p>
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />
             <metal:block define-macro="folder_listing"
@@ -64,6 +68,8 @@
                                      use_folder_contents site_properties/use_folder_contents;
                                      filterOut here/getNotAddableTypes;
                                      filterValues decodedFilter/keys | nothing;
+                                     types allowedSortedContentTypes|nothing;
+                                     filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));
                                      isExpired nocall:here/isExpired;
                                      toPortalTime nocall:here/toPortalTime;
                                      getObjSize nocall:here/getObjSize;
@@ -74,19 +80,17 @@
                                      isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                                      nosortclass python:test(isOrderable, 'nosort', '')">
 
-            <tal:contentTypes condition="not: allowedSortedContentTypes|nothing">
-                <metal:block tal:define="global allowedSortedContentTypes python:here.sortObjects(here.allowedContentTypes());" />
+            <tal:contentTypes condition="not: types">
+                <metal:block tal:define="global allowedSortedContentTypes python:here.sortObjects(here.allowedContentTypes())" />
             </tal:contentTypes>
 
             <table id="sortable"
                    class="listing"
                    summary="Content listing"
-                   cellpadding="0" cellspacing="0"
-                   tal:define="types allowedSortedContentTypes;
-                               filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));">
+                   cellpadding="0" cellspacing="0">
 
                 <thead>
-                    <tr tal:define="num_types python: len(types)"
+                    <tr tal:define="no_types python:len(allowedSortedContentTypes)"
                         tal:condition="standalone|nothing">
                         <td class="top" colspan="6">
 
@@ -95,7 +99,7 @@
 			    <select id="select_add_item"
 				    name="type_name"
                                     tabindex=""
-                                    tal:condition="python: num_types > 1"
+                                    tal:condition="python:test(no_types > 1, 1, 0)"
                                     tal:attributes="tabindex tabindex/next|nothing"
 				    alt="Add an item" >
                                 <option value="Select" i18n:translate="label_select">Select</option>
@@ -112,7 +116,7 @@
                             <input type="hidden"
                                    name="type_name"
                                    value="Content Type Id"
-                                   tal:condition="python: num_types==1"
+                                   tal:condition="python:test(no_types==1, 1, 0)"
                                    tal:attributes="value python:types[0].getId()" />
 
                             <input class="standalone"
@@ -122,13 +126,10 @@
                                    tabindex=""
                                    style="font-size: 100%;"
                                    i18n:attributes="value"
-                                   tal:define="typename python:types[0].Title()"
-                                   tal:condition="python: num_types"
+                                   tal:condition="types"
                                    tal:attributes="tabindex tabindex/next|nothing;
-                                                   value python:test( num_types == 1
-                                                                    , translate('Add New ${type}',
-                                                                                {'type': typename},
-                                                                                default='Add new %s' % typename)
+                                                   value python:test( no_types == 1
+                                                                    , 'Add New ' + types[0].Title()
                                                                     , 'Add New Item');" />
                         </td>
                     </tr>
