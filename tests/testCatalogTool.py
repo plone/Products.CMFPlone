@@ -32,32 +32,6 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog.Indexes['SearchableText'].__class__.__name__,
                          'ZCTextIndex')
 
-    def testCanPastePortalIfLexiconExists(self):
-        # Should be able to copy/paste a portal containing
-        # a catalog tool. Triggers manage_afterAdd of portal_catalog
-        # thereby exposing a bug which is now going to be fixed.
-        self.loginPortalOwner()
-        cb = self.app.manage_copyObjects(['portal'])
-        self.app.manage_pasteObjects(cb)
-        self.failUnless(hasattr(self.app, 'copy_of_portal'))
-
-    def testCanPasteCatalog(self):
-        # Should be able to copy/paste a portal_catalog. Triggers
-        # manage_afterAdd of portal_catalog thereby exposing another bug :-/
-        self.setRoles(['Manager'])
-        self.catalog.__replaceable__ = REPLACEABLE
-        cb = self.portal.manage_copyObjects(['portal_catalog'])
-        self.folder.manage_pasteObjects(cb)
-        self.failUnless(hasattr(aq_base(self.folder), 'portal_catalog'))
-
-    def testCanRenamePortalIfLexiconExists(self):
-        # Should be able to rename a Plone portal
-        # This test is to demonstrate that http://plone.org/collector/1745 
-        # is fixed and can be closed.
-        self.loginPortalOwner()
-        self.app.manage_renameObjects(['portal'], ['foo'])
-        self.failUnless(hasattr(self.app, 'foo'))
-
 
 class TestCatalogSearch(PloneTestCase.PloneTestCase):
 
@@ -104,13 +78,46 @@ class TestCatalogSearch(PloneTestCase.PloneTestCase):
         self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
 
 
+class TestCatalogBugs(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+    
+    def testCanPastePortalIfLexiconExists(self):
+        # Should be able to copy/paste a portal containing
+        # a catalog tool. Triggers manage_afterAdd of portal_catalog
+        # thereby exposing a bug which is now going to be fixed.
+        self.loginPortalOwner()
+        cb = self.app.manage_copyObjects(['portal'])
+        self.app.manage_pasteObjects(cb)
+        self.failUnless(hasattr(self.app, 'copy_of_portal'))
+
+    def testCanPasteCatalog(self):
+        # Should be able to copy/paste a portal_catalog. Triggers
+        # manage_afterAdd of portal_catalog thereby exposing another bug :-/
+        self.setRoles(['Manager'])
+        self.catalog.__replaceable__ = REPLACEABLE
+        cb = self.portal.manage_copyObjects(['portal_catalog'])
+        self.folder.manage_pasteObjects(cb)
+        self.failUnless(hasattr(aq_base(self.folder), 'portal_catalog'))
+
+    def testCanRenamePortalIfLexiconExists(self):
+        # Should be able to rename a Plone portal
+        # This test is to demonstrate that http://plone.org/collector/1745 
+        # is fixed and can be closed.
+        self.loginPortalOwner()
+        self.app.manage_renameObjects(['portal'], ['foo'])
+        self.failUnless(hasattr(self.app, 'foo'))
+
+
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
+    from unittest import TestSuite, makeSuite
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestCatalogTool))
-        suite.addTest(unittest.makeSuite(TestCatalogSearch))
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestCatalogTool))
+        suite.addTest(makeSuite(TestCatalogSearch))
+        suite.addTest(makeSuite(TestCatalogBugs))
         return suite
 
