@@ -9,10 +9,6 @@
 ##title=Edit an event
 ##
 
-REQUEST = context.REQUEST
-start_date='%s-%s-%s %s:%s'%(REQUEST.start_date_year,REQUEST.start_date_month,REQUEST.start_date_day,REQUEST.start_date_hour,REQUEST.start_date_minute)
-end_date='%s-%s-%s %s:%s'%(REQUEST.end_date_year,REQUEST.end_date_month,REQUEST.end_date_day,REQUEST.end_date_hour,REQUEST.end_date_minute)
-
 # if there is no id specified, keep the current one
 if not id:
     id = context.getId()
