@@ -268,9 +268,25 @@ div.listingBar span.previous {
     float: left;
 }
 
-div listingBar span.next {
+div.listingBar span.next {
     text-align: right;
     float: right;
 }
+
+div.workspace {
+}
+
+div.workspace span.small {
+    float: left;
+    height: 30em;
+    width: 20em;	
+}
+
+div.workspace span.big {
+    float: left;
+    height: 40em;
+    width: 40em;	
+}
+
 
 </dtml-with>

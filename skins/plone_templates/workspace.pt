@@ -9,28 +9,35 @@
 	   
 <div metal:fill-slot="main">
 
-    <h1>Workspace test</h1>
-
 	    <div class="clock"
 		 tal:content="here/toPortalTime">05/02/2002 07:20 AM</div>
+    <h1>Workspace test</h1>
           
     <div class="workspace">
     
-        <div metal:use-macro="here/calendar_slot/macros/calendarBox">
-        Calendar box
-        </div>    
+        <span class="small">
+            <div metal:use-macro="here/calendar_slot/macros/calendarBox">
+            Calendar box
+            </div>    
+        </span>
+        
+        <span class="small">
+            <div metal:use-macro="here/news_slot/macros/newsBox">
+            News box
+            </div>
+        </span>
 
-        <div metal:use-macro="here/news_slot/macros/newsBox">
-        News box
-        </div>
-
-        <div metal:use-macro="here/workflow_review_slot/macros/review_box">
-        Review box
-        </div>
+        <span class="small">
+            <div metal:use-macro="here/workflow_review_slot/macros/review_box">
+            Review box
+            </div>
+        </span>
     
-        <div metal:use-macro="here/favorites_slot/macros/favoritesBox">
-        Favorites box
-        </div>
+        <span class="small">
+            <div metal:use-macro="here/favorites_slot/macros/favoritesBox">
+            Favorites box
+            </div>
+        </span>
     
     </div>
 
