@@ -9,7 +9,7 @@
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main" tal:condition="here/rejectAnonymous"  >
 
 <metal:bodytext metal:define-slot="prefs_configlet_main" tal:content="nothing">
 Here comes the content of a normal configlet
