@@ -212,7 +212,7 @@
                         </td>
 
                         <td tal:define="folderish item/isPrincipiaFolderish|nothing">
-                          <span tal:condition="folderish">&nbsp;</span>
+                          <span tal:condition="folderish"> &nbsp; </span>
                           <span tal:condition="not: folderish"
                             tal:define="size python:getObjSize(item)"
                             tal:content="structure python:test(size, size, '&nbsp;')"> size </span>
