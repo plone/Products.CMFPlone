@@ -74,7 +74,6 @@ function pageMousedown(event) {
     // If the active button was clicked on, exit.
     
     if (el == activeButton){
-        alert("active")
         return
         };
     
