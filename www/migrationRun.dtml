@@ -6,7 +6,10 @@
 <b>File system version:</b> &dtml-getFileSystemVersion; <br />
 </p>
 
-<p><b>Note:</b> please ensure you have a backup of your Plone site prior to performing this migration. Migrations perform a catalog and security update, this may take a long time on large sites.</p>
+<p><b>Note:</b> 
+<span style="background-color:red; color: white; font-weight: bold">
+Please ensure you have a backup of your Plone site before performing migration.</span> 
+Migrations perform a catalog and security update, this may take a long time on large sites. Be patient.</p>
 
 <hr />
 
@@ -33,7 +36,7 @@ Your Plone instance is up to date.
 
 <form action="upgrade">
 <p>
-However, if you're <strong>absolutely</strong> sure your Plone instance is not &dtml-getInstanceVersion;, choose the version you think it is below and click "force migrate". This will force the migration procedure from that version. You should not normally need to do this.
+If you're <strong>absolutely</strong> sure your Plone instance is not &dtml-getInstanceVersion;, choose the version you think it is below and click "force migrate". This will force the migration procedure from that version. <i>You should not normally need to do this.</i>
 </p>
 
 <select name="force_instance_version">
