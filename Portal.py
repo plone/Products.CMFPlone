@@ -125,9 +125,10 @@ class PloneGenerator(Portal.PortalGenerator):
         PloneFolder.addPloneFolder(p, 'Members')
 
         p.portal_catalog.unindexObject(p.Members) #unindex Members folder
-        p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
-                                                                , 'Member list'
-                                                                , '<dtml-return member_search_form>')
+        #if 'index_html' not in p.Members.objectIds():
+        #p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
+        #                                                         , 'Member list'
+        #                                                         , '<dtml-return member_search_form>')
         p.Members._setPortalTypeName( 'Folder' )
         Document.addDocument(p, 'index_html')
         o = p.index_html

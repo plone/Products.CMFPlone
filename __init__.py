@@ -75,8 +75,10 @@ tools = ( MembershipTool.MembershipTool
         , PropertiesTool.PropertiesTool
         , MigrationTool.MigrationTool )
 
-contentClasses = ( PloneFolder.PloneFolder , )
-contentConstructors = ( PloneFolder.addPloneFolder, )
+contentClasses = ( PloneFolder.PloneFolder ,
+                   PloneFolder.LargePloneFolder )
+contentConstructors = ( PloneFolder.addPloneFolder, 
+                        PloneFolder.addLargePloneFolder )
 
 DirectoryView.registerDirectory('skins', cmfplone_globals)
 this_module = sys.modules[ __name__ ]

@@ -1,0 +1,12 @@
+Plone 1.1 Requirements
+
+  - CMF1.4 (contains DCWorkflow) or above found at http://cmf.zope.org/
+  
+  - BTreeFolder2 found at http://cvs.zope.org/Products/BTreeFolder2
+
+  - PlacelessTranslationService found at http://www.zope.org/Members/lalo/PlacelessTranslationService
+
+  - Formulator found at http://cvs.infrae.org/
+  
+  - QuickInstaller found at (the collective) http://sourceforge.net/projects/collective
+

@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - IDs are not generated using a FSPythonScript, generateUniqueId
+
+    - We now require BTreeFolder2, created a 'Large Plone Folder'
+      If you have a folder, such as Members who has over a few hundred items 
+      you should consider using a 'Large Plone Folder'
+    
     - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
 
     - Fixed behaviour of the definition list and pre tags in presentation

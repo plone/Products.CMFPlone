@@ -14,9 +14,7 @@ REQUEST=context.REQUEST
 if type_name is None:
     raise Exception
 
-now=DateTime()
-if id is None:
-	id=type_name.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%M%S')
+id=context.generateUniqueId()
 
 context.invokeFactory(id=id, type_name=type_name)
 o=getattr(context, id, None)
