@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - added a PloneBaseTool that all other tools inherit from. Currently this does absolutely nothing, just a placeholder.
+      [tiran]
+
+    - changed the registration of tools to provide different images in the ZMI 
+      [helge,limi]
+
     - validate_document_edit assumed the Content-Type header is always
       present. This is not the case.
       [stefan]
