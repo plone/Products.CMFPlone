@@ -41,8 +41,5 @@
         global sr slots_mapping/right;
         global hidecolumns python:here.hide_columns(sl,sr);
         global default_language site_properties/default_language|nothing;
-        global translate python:(
-               lambda msgid, mapping, default=None:
-               modules['Products.CMFPlone.PloneUtilities'].translate_wrapper('plone', msgid, mapping, context=here, default=default));
         global is_editable python:here.showEditableBorder( template_id=template_id , actions=actions );
 " />

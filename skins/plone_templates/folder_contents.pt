@@ -114,7 +114,7 @@
                    tal:condition="python: num_types"
                    tal:attributes="tabindex tabindex/next|nothing;
                                    value python:test( num_types == 1
-                                   , translate('Add New ${type}', {'type': types[0].Title()},'Add New '+types[0].Title() )
+                                   , here.translate('Add New ${type}', {'type': types[0].Title()},'Add New '+types[0].Title() )
                                    , 'Add New Item');" />
           </div>
 
