@@ -7,8 +7,6 @@ import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
 import NavigationTool, FactoryTool, FormTool, PropertiesTool
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
 
-import CustomizationPolicy, PrivateSitePolicy
-
 import sys
 import StatelessTreeNav
 import Globals
@@ -98,6 +96,10 @@ def initialize(context):
                      , fti=PloneFolder.factory_type_information
                      ).initialize( context )
     Portal.register(context, cmfplone_globals)
+
+    import CustomizationPolicy
+    import PrivateSitePolicy
+
     CustomizationPolicy.register(context, cmfplone_globals)
     PrivateSitePolicy.register(context, cmfplone_globals)
 

@@ -6,13 +6,12 @@
 # which is letting anonymous members see some sort of content
 
 from Products.CMFPlone.Portal import addPolicy
+from Products.CMFPlone.interfaces.CustomizationPolicy import ICustomizationPolicy
+from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.CMFCorePermissions import AddPortalMember
-from CustomizationPolicy import DefaultCustomizationPolicy
-
-from interfaces.CustomizationPolicy import ICustomizationPolicy
 
 def register(context, app_state):
     addPolicy('Private Plone site', PrivateSitePolicy())
@@ -22,7 +21,7 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
     __implements__ = ICustomizationPolicy
 
     def customize(self, portal):
-        DefaultCustomizationPolicy.customize(self, portal)
+        DefaultCustomizationPolicy().customize(self, portal)
         wf_tool=getToolByName(portal,'portal_workflow')
         wf_tool._delObject('plone_workflow')
 

@@ -1,6 +1,6 @@
-from Interface import Base
+from interface import Interface
 
-class ICMFForm(Base):
+class ICMFForm(Interface):
     """ Wraps a Formulator BasicForm and provides convience methods to ease validation """
     
     def addField(field_id, fieldType, group=None, **kwargs):
@@ -16,7 +16,7 @@ class ICMFForm(Base):
             We will also strip the prefix of 'field_' in the REQUEST.form dictionary.
         """
         
-class IFormTool(Base):
+class IFormTool(Interface):
     """ FormTool handles Form validation, caching of Form validators and serves as a factory for portal_form objects.
     """
     

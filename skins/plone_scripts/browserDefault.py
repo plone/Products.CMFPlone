@@ -24,4 +24,6 @@ if pages:
 # dont have this you will have problems
 # with blank folders
 act = context.getTypeInfo().getActionById('view')
+if act.startswith('/'):
+    act = act[1:]
 return context, [act,]

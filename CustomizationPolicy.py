@@ -1,7 +1,7 @@
 #These CustomizationPolicies *are not* persisted!!
 from Products.CMFPlone.Portal import addPolicy
-from interfaces.CustomizationPolicy import ICustomizationPolicy
-import Configuration
+from Products.CMFPlone.interfaces.CustomizationPolicy import ICustomizationPolicy
+from Products.CMFPlone import Configuration
 
 class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """

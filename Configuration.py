@@ -41,7 +41,8 @@ def registerConfiguration(versions, configuration):
     else:
         _versions=versions
     for methodname in _methods:
-        setattr(configuration, methodname, getattr(ConfigurationMethods, methodname))
+        if not hasattr(configuration, methodname):
+            setattr(configuration, methodname, getattr(ConfigurationMethods, methodname))
     _registry[_versions]=configuration
 
 def getConfiguration(version):
@@ -177,7 +178,6 @@ class OriginalConfiguration:
 registerConfiguration(('1.1','1.2','1.3','1.3.1'), OriginalConfiguration)
 # Unreleased is CMF-HEAD. It should use OneFourConfiguration when the
 # types_tool_as_apb branch is merged.
-registerConfiguration(('Unreleased',), OriginalConfiguration)
 
 class OneFourConfiguration(OriginalConfiguration):
     _methods=_methods+('plonify_typeActions',)
@@ -191,8 +191,8 @@ class OneFourConfiguration(OriginalConfiguration):
                                permission=CMFCorePermissions.ModifyPortalContent,
                                category='object')
 
-    def _installExternalEditor(self, portal):
-        types_tool=getToolByName(self, 'portal_types')
+    def installExternalEditor(self, portal):
+        types_tool=getToolByName(portal, 'portal_types')
         methods=('PUT', 'manage_FTPget') 
         exclude=('Topic', 'Event', 'Folder')
         for ctype in types_tool.objectValues():
@@ -229,7 +229,26 @@ class OneFourConfiguration(OriginalConfiguration):
                 if action.id=='join':
                     action.action=Expression('string:${portal_url}/portal_form/join_form')
         actions_tool._actions=tuple(actions)
-registerConfiguration(('1.4',), OneFourConfiguration)
+
+    def modifySkins(self, portal):
+        #remove non Plone skins from skins tool
+        #since we implemented the portal_form proxy these skins will no longer work
+        st=getToolByName(portal, 'portal_skins')
+        tt=getToolByName(portal, 'portal_types')
+        skins_map=st._getSelections()
+        del skins_map['No CSS']
+        del skins_map['Nouvelle']
+        del skins_map['Basic']
+        st.selections=skins_map
+
+        for t in tt.objectValues():
+            _actions=t._cloneActions()
+            for a in _actions:
+                if a.id == 'metadata':
+                    a.name = 'Properties'
+            t._actions=_actions
+
+registerConfiguration(('1.4','Unreleased'), OneFourConfiguration)
 
 
 

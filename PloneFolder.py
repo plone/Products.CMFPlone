@@ -27,28 +27,28 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                              , 'actions'        :
                                 ( { 'id'            : 'view' 
                                   , 'name'          : 'View'
-                                  , 'action'        : 'index_html'
+                                  , 'action'        : 'string:${folder_url}/index_html'
                                   , 'permissions'   :
                                      (CMFCorePermissions.View,)
                                   , 'category'      : 'folder'
                                   }
                                 , { 'id'            : 'folderlisting'
                                   , 'name'          : 'Folder Listing'
-                                  , 'action'        : 'folder_listing'
+                                  , 'action'        : 'string:${folder_url}/folder_listing'
                                   , 'permissions'   :
                                      (Permissions.access_contents_information,)
                                   , 'category'      : 'folder'
                                   }
                                 , { 'id'            : 'local_roles'
                                   , 'name'          : 'Local Roles'
-                                  , 'action'        : 'folder_localrole_form'
+                                  , 'action'        : 'string:${folder_url}/folder_localrole_form'
                                   , 'permissions'   :
                                      (CMFCorePermissions.ChangePermissions,)
                                   , 'category'      : 'folder'
                                   }
                                 , { 'id'            : 'edit'
                                   , 'name'          : 'Edit'
-                                  , 'action'        : 'folder_edit_form'
+                                  , 'action'        : 'string:${folder_url}/folder_edit_form'
                                   , 'permissions'   :
                                      (CMFCorePermissions.ManageProperties,)
                                   , 'category'      : 'folder'
@@ -82,6 +82,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             return apply(view, (self, self.REQUEST))
         else:
              return view()
+
     ### DefaultDublinCoreImpl.editMetadata() has a very bad assumption
     ### which it does not declare in its interface which is 
     ### failIflocked
@@ -149,19 +150,19 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 def _getViewFor(obj, view='view', default=None):
     ti = obj.getTypeInfo()
     if ti is not None:
-        actions = ti.getActions()
+        actions = [a.getAction() for a in ti.getActions()]
         for action in actions:
             if action.get('id', None) == default:
                 default=action
             if action.get('id', None) == view:
-                if _verifyActionPermissions(obj, action) and action['action']!='':
-                    action = obj.restrictedTraverse(action['action'])
+                if _verifyActionPermissions(obj, action) and action['url']!='':
+                    action = obj.restrictedTraverse(action['url'])
                     if action is not None:
                         return action
 
         if default is not None:    
             if _verifyActionPermissions(obj, default):
-                return obj.restrictedTraverse(default['action'])
+                return obj.restrictedTraverse(default['url'])
 
         # "view" action is not present or not allowed.
         # Find something that's allowed.

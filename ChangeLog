@@ -1,3 +1,14 @@
+2003-04-23  Sidnei da Silva  <sidnei@x3ng.com>
+
+	* skins/plone_scripts/browserDefault.py (act): For some reason, I
+	was getting very strange behavior when the folder had no
+	'index.html'. It was being redirected to
+	http://localhost/plone//folder_contents, and generating a NotFound
+	error. If this breaks something, let me know and Ill find an alternative.
+
+	* PloneFolder.py (factory_type_information): Made it work with
+	CMF-HEAD (as a side-effect, it also requires CMF-HEAD). 
+
 2003-04-16  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* skins/plone_templates/main_template.pt: Add obj_actions to the
