@@ -7,7 +7,9 @@ x.x
 	- local_tabs (on all pages that showborder) are now object_tabs
 	- global_tabs (at the top of the page) are now portal_tabs
     - change status ('mass publishing') now works as expected
-    - personalize_form was reset values on form validation failure
+    - personalize_form was reseting values on form validation failure
+    - on the rename form you can now change the id and title (maybe the id should be optional)
+    
     
 1.0a - Boards of Canada Release:
     - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
