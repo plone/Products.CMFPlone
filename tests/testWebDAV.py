@@ -74,7 +74,7 @@ class TestDAVMetadata(PloneTestCase.PloneTestCase):
 
 def test_suite():
     from unittest import TestSuite, makeSuite
-    from Testing.ZopeTestCase.doctest import FunctionalDocFileSuite
+    from Testing.ZopeTestCase import FunctionalDocFileSuite
 
     suite = TestSuite()
     suite.addTest(makeSuite(TestDAVProperties))
