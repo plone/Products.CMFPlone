@@ -16,7 +16,7 @@ def upg_1_0_1_to_1_1(portal):
     addGroupUserFolder(portal)
 
     props = portal.portal_properties.site_properties
-    default_values = ['index_html', 'index.html', 'index.htm']
+    default_values = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(props, 'default_page', default_values, 'lines')
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
@@ -126,27 +126,39 @@ def addActionIcons(portal):
     ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
     ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
     ai.addActionIcon('plone', 'rss', 'rss.gif', 'Syndication')
+    ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
 
 def addDocumentActions(portal):
     at = portal.portal_actions
+
     at.addAction('sendto',
                  'Send this page to somebody',
                  'string:${object_url}/portal_form/sendto_form',
                  "python:hasattr(portal.portal_properties.site_properties, 'allow_sendto')",
                  'View',
                  'document_actions')
+
     at.addAction('print',
                  'Print this page',
                  'string:javascript:this.print();',
                  '',
                  'View',
                  'document_actions')
+
     at.addAction('rss',
                  'RSS feed of this folder\'s contents',
                  'string:${object_url}/RSS',
                  'python:portal.portal_syndication.isSyndicationAllowed(object)',
                  'View',
                  'document_actions')
+
+    at.addAction('extedit',
+                 'Edit this file in an external editor',
+                 'string:${object_url}/external_edit',
+                 '',
+                 'Modify portal content',
+                 'document_actions')
+
 
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
