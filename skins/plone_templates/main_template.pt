@@ -147,6 +147,18 @@ Header stuff
                                      tal:attributes="src string:$portal_url/print_icon.gif" 
                                      src="print_icon.gif" title="Print this page" />
                             </a>
+                            
+                            <a href=""
+                                 tal:condition="python: here.portal_syndication.isSyndicationAllowed(here)"
+                                 tal:attributes="href string:${here/absolute_url}/RSS">
+                                 <img 
+                                     i18n:attributes="title" 
+                                     tal:attributes="src string:$portal_url/xml.gif" 
+                                     src="xml.gif" 
+                                     alt="RSS Feed" 
+                                     title="RSS Feed of this folders contents" />
+                                </a>
+                                
                         </div>
     
                         <metal:block metal:define-slot="header" tal:content="nothing">
