@@ -1,3 +1,20 @@
+2004-02-07 17:19  gbjk
+
+	* HISTORY.txt (Plone-2_0-branch): Added "If a content type is
+	  listed in
+	  portal_properties/site_properties/useFolderContents then use
+	  'folder_contents' to display it, not ''" to RC6 history
+
+2004-02-07 16:58  gbjk
+
+	* skins/plone_portlets/portlet_navigation.pt (Plone-2_0-branch): If
+	  a sibling content type is in useFolderContents then the view
+	  should be 'folder_contents' not ''
+
+2004-02-07 04:55  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-06 22:59  jimroepcke
 
 	* skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt.metadata
