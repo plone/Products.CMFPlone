@@ -9,57 +9,19 @@ date, and have nice and funky pictures to go with them ;)
 
 - "Latest Plone":http://plone.org/download
 
+  - Plone comes with 3 Products that need to be installed in the Products directory: CMFPlone, DCWorkflow and Formulator.
+
 **The installation procedure:**
 
 - Install Zope
 
 - Unpack the CMF directories (CMFCore, CMFDefault etc) into your Products directory
 
-- Unpack the Plone directory (CMFPlone) into your Products directory (also include the DCWorkflow dir if you haven't installed it already)
+- Unpack the Plone directory (CMFPlone) into your Products directory (also include the DCWorkflow and Formulator products)
 
 - Start Zope
 
-- Add a CMF Site instance
-
-- Enter the details of your site
-
-- Now you have added a CMF instance in your Zope installation. To install Plone, enter the management screen:
-
-- We need to add an External method to run the Plone install script (we hope installing skins in the CMF will be 
-simpler in the future, but bear with us :)
-
-- Enter the following details, exactly as shown (mind the case difference in Install/install):
-
-  - id: install_plone
-
-  - Title: Installs Plone
-
-  - Module name: CMFPlone.Install
-
-  - Function name: install
-
-- Now we need to execute the External Method once to run the install script. Locate install_plone, and click it:
-
-- To run the script, click the tab labeled "Test" (also called "Try it" in older versions):
-
-- After a few seconds, it will show something like this:
-
-Added CMFPlone directory views to portal_skins
-Added Plone skin
-Added IE5.5Plone subskin successfully installed
-Added Mozilla subskin successfully installed
-Plone is now setting the immediate_view to the object's edit view
-Document has had its immediate view changed to document_edit_form
-Favorite has had its immediate view changed to link_edit_form
-File has had its immediate view changed to file_edit_form
-Folder has had its immediate view changed to folder_contents
-Image has had its immediate view changed to image_edit_form
-Link has had its immediate view changed to link_edit_form
-News Item has had its immediate view changed to newsitem_edit_form
-
-!!Extra Configuration Done!!
-the Plone skin has now been set as this portals default skin
-Memberarea Creation turned on - existing logins will have folders created upon login.
+- From /manage interface there should be a 'Select Type to Add' that says, Plone Site.  click on that, fill in information and voila!
 
 - This means that installation of Plone was successful. Go to the front page, and have a look at your new Plone site :)
 

@@ -30,14 +30,13 @@ show_border=0
 isPortalContent = getattr(context, 'isPortalContent', 0)
 checkPermission = container.portal_membership.checkPermission
 
-if folder_actions and \
-   template_id in ['folder_listing', 'folder_contents'] and \
-   checkPermission( 'List folder contents', context):
-    show_border = 1
-elif isPortalContent and idInActions(obj_actions, 'edit'): 
-    show_border = 1 
-
-#elif idInActions(folder_actions, 'edit'): #if you can edit the folder
+#if folder_actions and \
+#   template_id in ['folder_listing', 'folder_contents'] and \
+#   checkPermission( 'List folder contents', context):
 #    show_border = 1
+if isPortalContent and idInActions(obj_actions, 'edit'): 
+    show_border = 1 
+elif idInActions(folder_actions, 'edit'): #if you can edit the folder
+    show_border = 1
 
 return show_border
