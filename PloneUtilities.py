@@ -100,7 +100,7 @@ def localized_time(time = None, long_format = None, context = None):
     # retrieve date format via translation service
     dateFormat = translate_wrapper('plone', msgid, context = context)
 
-    if not dateFormat and context:
+    if not dateFormat and context is not None:
         # fallback to portal_properties if no msgstr received from
         # translation service
         properties=context.portal_properties.site_properties
