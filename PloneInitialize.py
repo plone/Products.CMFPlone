@@ -175,8 +175,8 @@ def _go(app):
 
     # 7. add in skins
     # go and install the skins...
-    sk = plone.portal_migration._getWidget('Skin Setup')
-    sk.addItems(sk.available())   
+#    sk = plone.portal_migration._getWidget('Skin Setup')
+#    sk.addItems(sk.available())   
 
     # 7.1 patch up the skins
     # Plone is a bad product
