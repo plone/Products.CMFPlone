@@ -202,7 +202,7 @@ def modifyMembershipTool(self, portal):
             a.title='Log out'
         if a.id=='preferences':
             a.title='My Preferences'
-            #a.action=Expression('string:${portal_url}/personalize_form')
+            a.action=Expression('string:${portal_url}/plone_memberprefs_panel')
             new_actions.insert(0, a)
         elif a.id in ('addFavorite', 'favorites'):
             a.visible=0
