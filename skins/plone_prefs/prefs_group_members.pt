@@ -93,9 +93,20 @@
             <h2 i18n:translate="heading_groupmembers_current">Current Group Members</h2>
     	<table class="listing">
                 <tr>
+                    <th i18n:translate="listingheader_remove_user_from_group">
+                        <input class="noborder"
+                               type="checkbox"
+                               src="select_all_icon.gif"
+                               name="selectButton"
+                               title="Select all items"
+                               onClick="toggleSelect(this, 'delete:list');"
+                               tal:attributes="src string:$portal_url/select_all_icon.gif"
+                               alt="Select all items"
+                               i18n:attributes="title alt"/>
+                               <!--Remove user from this group-->
+                    </th>
                     <th i18n:translate="listingheader_user_name">User name</th>
                     <th i18n:translate="listingheader_email_address">E-mail Address</th>
-                    <th i18n:translate="listingheader_remove_user_from_group">Remove user from this group</th>
                 </tr>
     
                 <tal:block tal:repeat="this_user group/getGroupMembers">
@@ -104,6 +115,11 @@
                   <tal:block tal:define="roles python: this_user.getRoles();
                                          username python: this_user.getUserName();
                                          fullname python: this_user.getProperty('fullname')">
+                    <td class="listingCheckbox">
+                        <input type="checkbox"
+                               class="noborder notify"
+                               name="delete:list" tal:attributes="value username" />
+                    </td>
                     <td>
                         <a tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$username">
                          <img src=""
@@ -123,11 +139,6 @@
                         </a>
                     </td>
     
-                    <td class="listingCheckbox">
-                        <input type="checkbox"
-                               class="noborder notify"
-                               name="delete:list" tal:attributes="value username" />
-                    </td>
     		</tal:block>
                 </tr>
     	    </tal:block>

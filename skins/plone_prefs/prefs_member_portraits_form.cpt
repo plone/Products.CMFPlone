@@ -63,7 +63,7 @@
                                                  src="select_all_icon.gif"
                                                  name="selectButton"
                                                  title="Select all items"
-                                                 onClick="toggleSelect(this); return false;"
+                                                 onClick="toggleSelect(this);"
                                                  tal:attributes="src string:$portal_url/select_all_icon.gif"
                                                  alt="Select all items"
                                                  i18n:attributes="title alt"

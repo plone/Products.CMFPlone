@@ -48,7 +48,18 @@
 	    </th>
 	  </tr>
 	  <tr>
-	    <th tal:condition="takeaction | nothing">Add user</th>
+	    <th tal:condition="takeaction | nothing">
+            <input class="noborder"
+                   type="checkbox"
+                   src="select_all_icon.gif"
+                   name="selectButton"
+                   title="Select all items"
+                   onClick="toggleSelect(this, 'add:list');"
+                   tal:attributes="src string:$portal_url/select_all_icon.gif"
+                   alt="Select all items"
+                   i18n:attributes="title alt"/>
+            </th>
+            
 	    <th i18n:translate="listingheader_group_name">Name</th>
 	  </tr>
 
