@@ -1,6 +1,6 @@
 /*
 ** Plone style sheet for CSS2-capable browsers.
-** Copyright Alexander Limi, 2001-2003 - http://limi.net
+** Copyright Alexander Limi, 2001-2003 - http://www.plonesolutions.com
 **
 ** Thanks to Geir Bækholt, Stian Søiland for input and guidance.
 **
@@ -104,27 +104,41 @@ h1, h2, h3, h4, h5, h6 {
     padding-top: 0.5em;
     border-bottom: 1px solid &dtml-mainTabBorderColor;;
 }
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a { color: &dtml-headingFontColor; ! important; }
+
+
 h1 {
     font-size: &dtml-headingSize1;;
 }
+
 h2 {
     font-size: &dtml-headingSize2;;
 }
+
 h3 {
     font-size: &dtml-headingSize3;;
     border-bottom: none;
     font-weight: bold;
 }
+
 h4 {
     font-size: &dtml-headingSize4;;
     border-bottom: none;
     font-weight: bold;
 }
+
 h5 {
     font-size: &dtml-headingSize5;;
     border-bottom: none;
     font-weight: bold;
 }
+
 h6 {
     font-size: &dtml-headingSize6;;
     border-bottom: none;
