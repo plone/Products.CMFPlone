@@ -15,6 +15,7 @@ Plone 1.1
       called item_action_slots which is a proper slot.  Also added a syndication
       widget and all of these are held in plone_templates/ui_slots/actions_slot.pt
     - imported nested_scopes in Portal.py and made pre-beta migrations possible
+    - main_template and header cleanup (needs to be re-aligned with CMFDefault) 
     
 Plone 1.0
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
