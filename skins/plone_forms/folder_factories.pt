@@ -37,7 +37,7 @@
                         Type
                     </span>
                     <a href="#" tal:attributes="href string:createObject?type_name=$Id">
-                        <img src="folder.gif" alt="" width="16" height="16" tal:attributes="src ctype/getIcon" />
+                        <img src="folder.gif" alt="" width="16" height="16" tal:attributes="src string:/${ctype/getIcon}" />
                     </a>
                 </span>
     	
