@@ -18,10 +18,12 @@ if hasattr(obj, 'Subject'):
     subjects=obj.Subject()
     
 if subjects is not None:  
-    for o in context.portal_catalog(Subject = {'query':subjects} ):
+    for o in context.portal_catalog(Subject = {'query':subjects}, sort_on='Type', sort_order='reverse'  ):
         url=o.getURL()
         if url.find(obj.absolute_url())==-1:
             if o.Title:
-                listing+=( (o.Title, url), )
+                listing+=( {'title':o.Title
+                           ,'url':url
+                           ,'icon':o.getIcon}, )
 return listing
   
