@@ -23,7 +23,7 @@ if homeFolder and '.trashcan' not in homeFolder.objectIds():
 # Get Trashcan
 
 status='failure'
-status_msg='Please select one or more items to delete.'
+message='Please select one or more items to delete.'
 
 if ids:
     if homeFolder:
