@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - **REMOVED** portal_form_validation (which has been deprecated in 1.0) is
+      no longer added to your Plone site on construction. the .py file still
+      ships with Plone and will be removed in 1.2
+
     - Changing your password now requires you enter your current password.
       Also changed the 'change_password' script id to 'plone_change_password'
       to lessen likelihood of clash (we clashed with gruf).  We now override
