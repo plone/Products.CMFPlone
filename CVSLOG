@@ -1,3 +1,465 @@
+2004-01-21 04:39  anajarian
+
+	* skins/plone_content/: file_view.pt, image_edit_form.cpt,
+	  image_view.pt (Plone-2_0-branch): Fixed Issue 2411 in
+	  Plone-2_0-branch: Different default content for msgid
+	  no_file_uploaded; changed 2 of the msgids to no_image_uploaded
+	  (new msgid)
+
+2004-01-21 04:33  anajarian
+
+	* skins/plone_prefs/prefs_workflow_advanced.pt (Plone-2_0-branch):
+	  Fixed Issue 2405 in Plone-2_0-branch: Different default content
+	  for msgid label_workflow_default
+
+2004-01-21 04:33  runyaga
+
+	* skins/plone_scripts/logged_in.py (Plone-2_0-branch): i believe
+	  this is a fix for, 2060 but i think it needs much more thought
+
+2004-01-21 04:29  anajarian
+
+	* skins/plone_forms/member_search_form.pt (Plone-2_0-branch): Fixed
+	  Issue 2400 in Plone-2_0-branch: Different default content for
+	  msgid label_roles
+
+2004-01-21 04:22  anajarian
+
+	* skins/: plone_prefs/password_form.pt, plone_forms/join_form.cpt
+	  (Plone-2_0-branch): Fixed Issue 2391 in Plone-2_0-branch:
+	  Different default content for msgid label_confirm_password
+
+2004-01-21 04:10  zworkb
+
+	* StatelessTreeNav.py (Plone-2_0-branch): closed #1133
+
+2004-01-21 04:05  anajarian
+
+	* skins/: plone_forms/join_form.cpt, plone_prefs/password_form.pt
+	  (Plone-2_0-branch): Fixed Issue 2391 in Plone-2_0-branch:
+	  Different default content for msgid label_confirm_password
+
+2004-01-21 03:49  limi
+
+	* skins/plone_prefs/prefs_group_details.pt (Plone-2_0-branch):
+	  Changes in layout, and fix for issue 2551.
+
+2004-01-21 03:47  anajarian
+
+	* skins/: plone_content/metadata_edit_form.cpt,
+	  plone_forms/content_status_history.cpt (Plone-2_0-branch): Fixed
+	  Issue 2365 in Plone-2_0-branch: Different default content for
+	  msgid help_expiration_date
+
+2004-01-21 03:42  anajarian
+
+	* skins/plone_content/metadata_edit_form.cpt (Plone-2_0-branch):
+	  Fixed Issue 2359 in Plone-2_0-branch: Different default content
+	  for msgid help_effective_date
+
+2004-01-21 03:30  zworkb
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch): closed http://plone.org/collector/2153 (hide
+	  uninstall button if no product is available for uninstall)
+
+2004-01-21 03:14  limi
+
+	* skins/plone_prefs/: prefs_group_details.pt,
+	  prefs_group_members.pt (Plone-2_0-branch): Fix for 2451. Never
+	  trust patches in the Collector without testing them.
+
+2004-01-21 03:00  anajarian
+
+	* skins/: plone_content/metadata_edit_form.cpt,
+	  plone_forms/content_status_history.cpt: Fixed Issue 2365: msgid
+	  help_expiration_date: 2 different defaults
+
+2004-01-21 03:00  limi
+
+	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch): Fix
+	  for 2114, folder_listing now works better under VHM setups.
+
+2004-01-21 02:35  limi
+
+	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
+	  Partial fix for 2126, now goes directly to group members when you
+	  click a group.
+
+2004-01-21 02:33  anajarian
+
+	* skins/plone_content/metadata_edit_form.cpt: Fixed Issue 2359:
+	  Different default content for msgid help_effective_date
+
+2004-01-21 02:30  limi
+
+	* skins/plone_templates/default_error_message.pt
+	  (Plone-2_0-branch): Fix for 1848, error message now works again.
+	  It's all Limi's fault. ;)
+
+	  Thanks to Jochen Knuth for finding my stupid error.
+
+2004-01-21 02:14  svincic
+
+	* skins/plone_form_scripts/: event_edit.cpy,
+	  validate_start_end_date.vpy (Plone-2_0-branch): Fix for 1950 with
+	  backward compability = testCases passes :)
+
+2004-01-21 02:10  anajarian
+
+	* skins/plone_content/: file_view.pt, image_edit_form.cpt,
+	  image_view.pt: Fixed Issue 2411: msgid no_file_uploaded with
+	  different default texts -> added msgid no_image_uploaded
+
+2004-01-21 01:53  limi
+
+	* skins/plone_prefs/prefs_group_details.pt (Plone-2_0-branch): Fix
+	  for issue 1982. Can't reproduce it, but since the fix is so
+	  simple, it shouldn't break anything. Famous last words? ;)
+
+2004-01-21 01:15  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Added some additional notes about
+	  why tableless isn't the default anymore.
+
+2004-01-21 00:51  svincic
+
+	* skins/plone_form_scripts/: event_edit.cpy,
+	  validate_start_end_date.vpy (Plone-2_0-branch): Fix for 1950
+
+2004-01-21 00:47  anajarian
+
+	* skins/plone_prefs/prefs_workflow_advanced.pt: Fixed Issue 2405:
+	  msgid label_workflow_default with 2 different texts
+
+2004-01-21 00:22  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): fix for
+	  space bug in moz on windows
+
+2004-01-20 23:54  anajarian
+
+	* skins/plone_forms/member_search_form.pt: Fixed Issue 2400: msgid
+	  label_roles: 2 different text choices
+
+2004-01-20 23:53  tiran
+
+	* migrations/: migration_util.py, v2/oneX_twoBeta2.py
+	  (Plone-2_0-branch): fixed missing/wrong portal_properties
+
+2004-01-20 23:47  anajarian
+
+	* skins/: plone_forms/login_password.pt,
+	  plone_prefs/password_form.pt: Fixed Issue 2391: msgid
+	  label_confirm_password: 3 default texts
+
+2004-01-20 23:16  svincic
+
+	* skins/plone_forms/synPropertiesForm.cpt (Plone-2_0-branch): Fix
+	  for 1074 & 1077
+
+2004-01-20 22:57  zopezen
+
+	* skins/plone_form_scripts/file_edit.cpy (Plone-2_0-branch): Bug
+	  #2168
+
+2004-01-20 22:56  eaon
+
+	* skins/plone_styles/: plone.css.dtml, ploneIEFixes.css.dtml
+	  (Plone-2_0-branch): forms look good again in ie
+
+2004-01-20 22:51  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): fixed bug
+	  #2180, now addding navtree_properties if they don't exist
+
+2004-01-20 22:41  svincic
+
+	* SyndicationTool.py (Plone-2_0-branch): Fix for 1495. The
+	  syndication tab has visible=1 but is not visible until
+	  syndication is enabled.
+
+2004-01-20 22:35  tiran
+
+	* setup/dependencies.py (Plone-2_0-branch): fixed bug #2158: CMF
+	  Version checking
+
+2004-01-20 22:17  vinsci
+
+	* skins/: plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt,
+	  plone_templates/registered_notify_template.pt,
+	  plone_templates/viewThreadsAtBottom.pt: Undo M's changes on HEAD.
+	  Bug fixes on Plone-2_0-branch get merged to HEAD later, so no
+	  separate fixing on HEAD this time, please. :-)
+
+2004-01-20 22:05  vinsci
+
+	* skins/: plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt,
+	  plone_templates/registered_notify_template.pt,
+	  plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch): Some
+	  undo's (this is on Plone-2_0-branch, more undo's on HEAD coming
+	  up). I'll "re-repair" this later tonight.
+
+2004-01-20 22:04  tiran
+
+	* migrations/v2/: oneX_twoBeta2.py, plone2_base.py
+	  (Plone-2_0-branch): calendar setup/migration
+
+2004-01-20 21:50  tiran
+
+	* migrations/v2/portlet_migration.py (Plone-2_0-branch): fixed
+	  portlet_review
+
+2004-01-20 21:48  eaon
+
+	* skins/plone_styles/ploneColumns.css.dtml (Plone-2_0-branch):
+	  table has now a width of 100& even if there is not enough content
+	  to push it to that value
+
+2004-01-20 21:41  tiran
+
+	* migrations/v2/: oneX_twoBeta2.py, portlet_migration.py
+	  (Plone-2_0-branch): added slots -> portlets migrations (thx to
+	  ender for his migration code)
+
+2004-01-20 21:29  eaon
+
+	* skins/plone_styles/plonePrint.css.dtml (Plone-2_0-branch): fix
+	  right print stylesheet margin for tablelayout
+
+2004-01-20 21:15  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): mark old fs
+	  directory views as deprecated and move them to the bottom of each
+	  skin after cmf_legacy
+
+2004-01-20 21:15  svincic
+
+	* skins/plone_scripts/: folder_copy.cpy.metadata,
+	  folder_cut.cpy.metadata, folder_delete.cpy.metadata,
+	  folder_paste.cpy.metadata, folder_publish.cpy.metadata,
+	  folder_rename.cpy.metadata (Plone-2_0-branch): Fix for 2377
+
+2004-01-20 21:14  tiran
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): fixed typo and
+	  double assignment
+
+2004-01-20 21:00  plonista
+
+	* PloneTool.py (Plone-2_0-branch): Fix for 2346
+
+2004-01-20 20:51  roeder
+
+	* skins/plone_prefs/prefs_user_memberships.pt (Plone-2_0-branch):
+	  Summary for table
+
+2004-01-20 20:47  roeder
+
+	* skins/plone_prefs/prefs_users_overview.pt: Better table summary
+
+2004-01-20 20:45  roeder
+
+	* skins/plone_prefs/prefs_users_overview.pt (Plone-2_0-branch):
+	  Table summary
+
+2004-01-20 20:37  roeder
+
+	* skins/plone_templates/registered_notify_template.pt
+	  (Plone-2_0-branch): Just made the top tag a div.
+
+2004-01-20 20:35  roeder
+
+	* skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Fixing alt and src on images
+
+2004-01-20 20:16  roeder
+
+	* skins/plone_prefs/prefs_search_macros.pt: Using "User management"
+	  as table summary
+
+2004-01-20 20:16  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): fixed: adding
+	  error log to portal assign titles to tools
+
+2004-01-20 20:11  roeder
+
+	* skins/plone_prefs/prefs_user_memberships.pt: Added summary to
+	  table
+
+2004-01-20 20:05  limi
+
+	* skins/plone_styles/: plonePresentation.css.dtml,
+	  plonePrint.css.dtml (Plone-2_0-branch): Fixed print and
+	  presentation style sheets.
+
+2004-01-20 20:05  roeder
+
+	* skins/plone_prefs/prefs_users_overview.pt: Added summary to table
+
+2004-01-20 19:58  ajung
+
+	* CatalogTool.py: - refactored creation of text indexes - migration
+	  added
+
+2004-01-20 19:56  roeder
+
+	* skins/plone_templates/registered_notify_template.pt: div is more
+	  logical, but anyway it is replaced. Hope this fixed the bug
+	  reportfor this template.
+
+2004-01-20 19:40  ajung
+
+	* CatalogTool.py: - using our own index set instead of depending on
+	  CMFCore - also changing all FieldIndex for date fields to
+	  DateIndex except   the 'expires' index which might raise an
+	  overflow error
+
+2004-01-20 19:37  roeder
+
+	* skins/plone_templates/viewThreadsAtBottom.pt: Added alt and src
+	  to images
+
+2004-01-20 19:33  shh42
+
+	* skins/plone_forms/roster.pt (Plone-2_0-branch): Zope 2.7.0-rc1
+	  complains about the semicolon in tal:replace. Caught by ZChecker.
+
+2004-01-20 18:52  dpunktnpunkt
+
+	* skins/plone_prefs/: password_form.pt, personalize_form.cpt,
+	  prefs_error_log_form.pt, prefs_error_log_showEntry.pt,
+	  prefs_group_details.pt, prefs_group_members.pt,
+	  prefs_groups_overview.pt, prefs_install_product_readme.pt,
+	  prefs_install_products_form.pt,
+	  prefs_installed_product_overview.pt, prefs_mailhost_form.pt,
+	  prefs_portalskin_form.pt, prefs_user_details.pt,
+	  prefs_user_memberships.pt, prefs_users_overview.pt,
+	  reconfig_form.cpt (Plone-2_0-branch): Large i18n cleanup for
+	  plone_prefs/
+
+2004-01-20 18:03  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Added
+	  productCredits class for product authors to use as a credits line
+	  in control panel templates.
+
+2004-01-20 17:45  dpunktnpunkt
+
+	* skins/plone_forms/search_form.pt (Plone-2_0-branch): "Toggle"
+	  made translatable.
+
+2004-01-20 17:22  dpunktnpunkt
+
+	* skins/plone_forms/login_form.pt (Plone-2_0-branch): Properly
+	  close CDATA section.
+
+2004-01-20 17:19  ajung
+
+	* skins/plone_portlets/: portlet_calendar.pt, portlet_events.pt,
+	  portlet_recent.pt: using record-style parameters for query
+
+2004-01-20 17:15  ajung
+
+	* skins/: plone_forms/search_form.pt,
+	  plone_portlets/calendar_slot.pt: using record-style parameters
+	  for query; fixed wrong name
+
+2004-01-20 17:07  ajung
+
+	* tests/testCatalogTool.py: merge from ajung-textindexn-branch
+
+2004-01-20 17:06  ajung
+
+	* CatalogTool.py: merge from ajung-textindexng-branch
+
+2004-01-20 17:05  ajung
+
+	* CatalogTool.py (ajung-textindexng-branch): removed dead code
+
+2004-01-20 17:01  ajung
+
+	* CatalogTool.py (ajung-textindexng-branch): major code cleanup
+
+2004-01-20 16:58  plonista
+
+	* ActionIconsTool.py (Plone-2_0-branch): Fix for 2378
+
+2004-01-20 16:50  dpunktnpunkt
+
+	* skins/plone_templates/recently_published.pt (Plone-2_0-branch):
+	  #2413
+
+2004-01-20 16:44  plonista
+
+	* FormTool.py (Plone-2_0-branch): Fix to fix for FormTool when
+	  validators are new-style CMFFormController validators.
+
+2004-01-20 16:43  plonista
+
+	* skins/plone_form_scripts/change_ownership.py (Plone-2_0-branch):
+	  Added transaction note to change_ownership
+
+2004-01-20 16:27  dpunktnpunkt
+
+	* skins/plone_templates/recently_published.pt (Plone-2_0-branch):
+	  Allow 'by' to be translated. #2393
+
+2004-01-20 16:23  ajung
+
+	* tests/PloneTestCase.py (ajung-textindexng-branch): removed
+	  unnecessary try..except
+
+2004-01-20 16:22  ajung
+
+	* CatalogTool.py, Portal.py, tests/PloneTestCase.py,
+	  tests/testCatalogTool.py (ajung-textindexng-branch): fixes for
+	  TextIndexNG2
+
+2004-01-20 16:02  dpunktnpunkt
+
+	* skins/plone_content/image_view.pt (Plone-2_0-branch): Moved colon
+	  out of span, #2402
+
+2004-01-20 15:59  dpunktnpunkt
+
+	* skins/plone_prefs/prefs_mailhost_form.pt (Plone-2_0-branch):
+	  Change of msgid, #2403.
+
+2004-01-20 15:55  dpunktnpunkt
+
+	* skins/plone_forms/synPropertiesForm.cpt (Plone-2_0-branch):
+	  Changed msgid from label_syndication_update_period to
+	  ..._updateperiod, #2404.
+
+2004-01-20 15:49  ajung
+
+	* CatalogTool.py: Making TextIndexNG2 the prefered fulltext index
+	  for SearchableText, Title and Description over ZCTextIndex
+
+2004-01-20 15:45  ajung
+
+	* CatalogTool.py (ajung-textindexng-branch): added support for
+	  TextIndexNG2 as prefered index
+
+2004-01-20 15:44  dpunktnpunkt
+
+	* skins/plone_portlets/about_slot.pt (Plone-2_0-branch): Fix #2419:
+	  msgid `time_expired': with and without parentheses
+
+2004-01-20 13:38  tiran
+
+	* migrations/__init__.py (Plone-2_0-branch): 2.0final isn't out so
+	  I disabled the migration to final to avoid problems
+
+2004-01-20 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-19 19:40  tiran
 
 	* Portal.py (Plone-2_0-branch): nicer import
