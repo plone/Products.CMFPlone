@@ -9,10 +9,6 @@ def onezerotwo(portal):
     cookie_authentication._updateProperty('auto_login_page', 'require_login')
     portal.portal_syndication.isAllowed=1
 
-    # give Owner the right to manage local roles
-    portal.manage_permission(CMFCorePermissions.ChangePermissions, ('Owner','Manager',), acquire=1)
-
-
 if __name__=='__main__':
     registerMigrations()
 
