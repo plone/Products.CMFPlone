@@ -575,10 +575,11 @@ pre {
 
 .newsItem {
     margin-bottom: 1em;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 .newsContent {
-    padding: 0 0em 1em 0em;
+    padding: 0 1em 1em 1em;
 }
 
 .newsContent ul,
