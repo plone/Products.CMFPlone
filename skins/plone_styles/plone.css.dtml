@@ -416,7 +416,7 @@ table.columns td.right {
 
 #contentTabs a:hover {
     background-color: &dtml-contentTabBackground;;
-    color: &dtml-contentTabFontColor;;
+    color: &dtml-contentTabFontColorSelected;;
 }
 
 #contentBar {
