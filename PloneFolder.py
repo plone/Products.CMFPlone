@@ -83,7 +83,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 class OrderedContainer(Folder):
     """Folder with subobject ordering support"""
 
-    __implements__ = IOrderedContainer
+    __implements__ = (IOrderedContainer,)
     security = ClassSecurityInfo()
 
     has_order_support = 1   # Show ordering interface in ZMI
