@@ -8,9 +8,7 @@
 
 <body>
 <div metal:fill-slot="main" 
-     tal:define="errors python:request.get('errors', {});
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+     tal:define="errors python:request.get('errors', {})">
         
     <h1 i18n:translate="heading_edit_item">
     Edit
@@ -56,8 +54,10 @@
             <div class="field"
                   tal:attributes="class python:test(error_id, 'field error', 'field')" >
 
-                <div tal:condition="error_id"
-                     tal:replace="structure string:$error_id <br />" />
+                <div tal:condition="error_id">
+                    <tal:block i18n:translate="" content="error_id">Error</tal:block>
+                    <br />
+                </div>
 
                 <input type="text" 
                        name="id" 
@@ -95,8 +95,10 @@
             <div class="field"
                   tal:attributes="class python:test(error_title, 'field error', 'field')" >
 
-                <div tal:condition="error_title"
-                     tal:replace="structure string:$error_title <br />" />
+                <div tal:condition="error_title">
+                    <tal:block i18n:translate="" content="error_title">Error</tal:block>
+                    <br />
+                </div>
 
                 <input type="text" 
                        name="title" 
@@ -154,8 +156,10 @@
             
             <div tal:attributes="class python:test(error_remote_url, 'field error', 'field')" >
 
-                <div tal:condition="error_remote_url"
-                     tal:replace="structure string: $error_remote_url <br />" />
+                <div tal:condition="error_remote_url">
+                    <tal:block i18n:translate="" content="error_remote_url">Error</tal:block>
+                    <br />
+                </div>
 
                 <input type="text" 
                        name="remote_url"

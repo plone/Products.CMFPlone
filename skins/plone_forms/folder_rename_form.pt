@@ -7,9 +7,7 @@
 
 <body>
 
-<div metal:fill-slot="main"
-     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+<div metal:fill-slot="main">
 
     <metal:block tal:condition="not: request/ids | nothing">
     <tal:block tal:replace="nothing"
@@ -57,8 +55,12 @@
                 </div>            
                 
                 <div class="field" tal:attributes="class python:test(error, 'field error', 'field')">
-                    <div tal:condition="error"
-                         tal:replace="structure string:$error <br />" />
+
+                    <div tal:condition="error">
+                        <tal:block i18n:translate="" content="error">Error</tal:block>
+                        <br />
+                    </div>
+
                     <input type="hidden"
                            name="ids:list"
                            value="fav_999816073"
@@ -83,8 +85,12 @@
                 </div>
                 
                 <div class="field" tal:attributes="class python:test(error, 'field error', 'field')">
-                    <div tal:condition="error"
-                         tal:replace="structure string:$error <br />" />
+
+                    <div tal:condition="error">
+                        <tal:block i18n:translate="" content="error">Error</tal:block>
+                        <br />
+                    </div>
+
                     <input type="text"
                            name="new_titles:list"
                            value="title"

@@ -17,9 +17,7 @@
 
 <div metal:fill-slot="main"
       tal:condition="here/rejectAnonymous"
-      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                  tabindex python:Iterator();
-                  errors request/errors | nothing;">
+      tal:define="errors request/errors | nothing">
 
     <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
     
@@ -226,8 +224,10 @@
                              target python:test(objs, objs, here);"
                  tal:attributes="class python:test(error_workflow_action, 'field error', 'field')">
                  
-                <div tal:condition="error_workflow_action"
-                     tal:replace="structure string:$error_workflow_action <br />" />
+                <div tal:condition="error_workflow_action">
+                    <tal:block i18n:translate="" content="error_workflow_action">Error</tal:block>
+                    <br />
+                </div>
                 
                 <metal:block tal:define="global transitions python:here.portal_workflow.getTransitionsFor(target, here)"
                              tal:repeat="transition transitions">

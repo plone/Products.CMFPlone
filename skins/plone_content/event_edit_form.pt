@@ -9,9 +9,7 @@
 
     <div metal:fill-slot="main"
          tal:define="rejection here/rejectAnonymous;
-                     errors python:request.get('errors', {});
-                     Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                     tabindex python:Iterator();" >
+                     errors python:request.get('errors', {});">
 
     <h1 i18n:translate="heading_edit_item">
     Edit
@@ -93,8 +91,10 @@
             <div class="field"
                   tal:attributes="class python:test(error_title, 'field error', 'field')" >
 
-                <div tal:condition="error_title"
-                     tal:replace="structure string:$error_title <br />" />
+                <div tal:condition="error_title">
+                    <tal:block i18n:translate="" content="error_title">Error</tal:block>
+                    <br />
+                </div>
 
                 <input type="text" 
                        name="title" 

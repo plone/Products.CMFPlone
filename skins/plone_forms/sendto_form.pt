@@ -13,10 +13,7 @@
     </metal:block>
 
 <div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {});
-                 member python:here.portal_membership.getAuthenticatedMember();
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();" >
+     tal:define="errors python:request.get('errors', {})">
 
 <h1 i18n:translate="heading_send_page_to">Send this page to somebody</h1>
 
@@ -65,8 +62,10 @@ Fill in the email address of your friend to send an email with the address.
         <div class="field"
              tal:attributes="class python:test(error_send_to_address, 'field error', 'field')">
            
-            <div tal:condition="error_send_to_address"
-                 tal:replace="structure string:$error_send_to_address <br />" />
+            <div tal:condition="error_send_to_address">
+                <tal:block i18n:translate="" content="error_send_to_address">Error</tal:block>
+                <br />
+            </div>
            
             <input type="text" 
                    name="send_to_address" 
@@ -96,8 +95,10 @@ Fill in the email address of your friend to send an email with the address.
         <div class="field"
              tal:attributes="class python:test(error_send_from_address, 'field error', 'field')">
         
-            <div tal:condition="error_send_from_address"
-                 tal:replace="structure string:$error_send_from_address <br />" />
+            <div tal:condition="error_send_from_address">
+                <tal:block i18n:translate="" content="error_send_from_address">Error</tal:block>
+                <br />
+            </div>
             
             <input type="text" 
                    name="send_from_address" 

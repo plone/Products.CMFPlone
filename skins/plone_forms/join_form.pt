@@ -8,9 +8,7 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {});
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();" > 
+     tal:define="errors python:request.get('errors', {})">
  
     <h1 i18n:translate="heading_registration_form">Please register</h1>
 
@@ -52,8 +50,10 @@
             <div class="field"
                   tal:attributes="class python:test(error_fullname, 'field error', 'field')" >
 
-                <div  tal:condition="error_fullname"
-                      tal:replace="structure string:$error_fullname<br />" />
+                <div tal:condition="error_fullname">
+                    <tal:block i18n:translate="" content="error_fullname">Error</tal:block>
+                    <br />
+                </div>
 
                 <input type="text" 
                        name="fullname" 
@@ -88,8 +88,10 @@
             <div class="field"
                   tal:attributes="class python:test(error_username, 'field error', 'field')" >
 
-                <div  tal:condition="error_username"
-                      tal:replace="structure string:$error_username<br />" />
+                <div tal:condition="error_username">
+                    <tal:block i18n:translate="" content="error_username">Error</tal:block>
+                    <br />
+                </div>
 
                 <input type="text" 
                        name="username" 
@@ -124,8 +126,10 @@
             <div class="field"
                   tal:attributes="class python:test(error_email, 'field error', 'field')" >
 		  
-                <div tal:condition="error_email"
-		     tal:replace="structure string:$error_email <br /> " />
+                <div tal:condition="error_email">
+                    <tal:block i18n:translate="" content="error_email">Error</tal:block>
+                    <br />
+                </div>
 
                 <input type="text" 
                        name="email" 
@@ -158,8 +162,10 @@
             <div class="field"
                   tal:attributes="class python:test(error_password, 'field error', 'field')" >
 		  
-               <div tal:condition="error_password"
-	            tal:replace="structure string:$error_password <br />" />
+                <div tal:condition="error_password">
+                    <tal:block i18n:translate="" content="error_password">Error</tal:block>
+                    <br />
+                </div>
 	       
                 <input type="password" 
                        name="password" 
@@ -191,8 +197,11 @@
             
             <div class="field"
                  tal:attributes="class python:test(error_confirm, 'field error', 'field')" >
-                <span tal:condition="error_confirm"
-		      tal:replace="structure string:$error_confirm<br/>" />
+                <div tal:condition="error_confirm">
+                    <tal:block i18n:translate="" content="error_confirm">Error</tal:block>
+                    <br />
+                </div>
+
                 <input type="password" 
                        name="confirm" 
                        size="10" 

@@ -6,10 +6,7 @@
 <body>
 
 <div metal:fill-slot="main" 
-     tal:define="errors python:request.get('errors', {});
-                 member here/portal_membership/getAuthenticatedMember;
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();" >
+     tal:define="errors python:request.get('errors', {})">
 
     <h1 i18n:translate="heading_edit_item">
     Edit

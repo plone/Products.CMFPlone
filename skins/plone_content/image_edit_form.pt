@@ -8,10 +8,7 @@
 <body>
 
 <div metal:fill-slot="main" 
-     tal:define="errors python:request.get('errors', {});
-                 member here/portal_membership/getAuthenticatedMember;
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+     tal:define="errors python:request.get('errors', {})">
 
     <h1 i18n:translate="heading_edit_item">
     Edit
@@ -155,8 +152,10 @@
             <div class="field"
    	             tal:attributes="class python:test(error_file, 'field error', 'field')">
               
-                <div tal:condition="error_file"
-                     tal:replace="structure string:$error_file <br />" />
+                <div tal:condition="error_file">
+                    <tal:block i18n:translate="" content="error_file">Error</tal:block>
+                    <br />
+                </div>
                 
                 <input type="file" 
                        name="file" 

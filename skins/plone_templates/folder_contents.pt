@@ -17,8 +17,6 @@
                  global portal_url here/portal_url;
                  global member here/portal_membership/getAuthenticatedMember;
                  standalone python:1;
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();
                  folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);">
 
     <form name="folderContentsForm"

@@ -8,9 +8,7 @@
 
 <body>
 
-<div metal:fill-slot="main"
-     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+<div metal:fill-slot="main">
 
 <h1> 
     <span i18n:translate="heading_criteria_for" tal:omit-tag="">

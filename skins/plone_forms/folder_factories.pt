@@ -8,9 +8,6 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();
-                 portal_url here/portal_url"
      tal:condition="here/rejectAnonymous" >
 
      <metal:block tal:condition="python:test(request.get('type_name', 'Select')!='Select', 1, 0)">
