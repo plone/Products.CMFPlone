@@ -113,6 +113,11 @@ class TempFolder(TempFolderBase):
         return aq_parent(aq_parent(self)).userCanTakeOwnership()
 
 
+    # delegate allowedContentTypes
+    def allowedContentTypes(self):
+        return aq_parent(aq_parent(self)).allowedContentTypes()
+
+
     # override __getitem__
     def __getitem__(self, id):
         # Zope's inner acquisition chain for objects returned by __getitem__ will be
@@ -320,8 +325,14 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         tempFolder = self.getTempFolder(stack[0])
 
-        path = '/'.join(stack[1:])
-        obj = tempFolder.restrictedTraverse(path)
+        # Get the first item in the stack by explicitly calling __getitem__ 
+        # This fixes some problematic interactions with SpeedPack.
+        temp_obj = tempFolder.__getitem__(stack[1])
+        stack = stack[2:]
+        if stack:
+            obj = temp_obj.restrictedTraverse('/'.join(stack))
+        else:
+            obj = temp_obj
 
         return mapply(obj, self.REQUEST.args, self.REQUEST,
                                call_object, 1, missing_name, dont_publish_class,
