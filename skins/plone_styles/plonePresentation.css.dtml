@@ -18,13 +18,15 @@
 
 body {
     background: White url(<dtml-var portal_url>/logo.jpg) no-repeat fixed 95% 95%;
-    font-family: Verdana Helvetica Arial sans-serif;
-    font-size: 60px ! important;
+    font: <dtml-var mainFont>;
+    font-size: 60px !important;
     color: Black;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
-	font-size: 60px  ! important;
+    font-size: 60px !important;
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
     border-style: solid;
@@ -33,29 +35,31 @@ h1 {
     padding-left: 0.5em;
     padding-right: 0.5em;
     margin-top: 1em;
-    page-break-before : always;
+    page-break-before: always;
 }
 
-div.documentActions+h1 { /* Trick to avoid getting an initial blank page */
+div.documentActions + h1 { 
+    /* Trick to avoid getting an initial blank page */
     page-break-before: avoid; 
 } 
 
 h2 {
-    font-size: 50px  ! important;	
+    font-size: 50px !important;	
 }
 
 dl, ol, ul {
-    font-size: 50px  ! important;
+    font-size: 50px !important;
     text-align: left;
 }
 
-p { /* This hides evertything that is a normal paragraph, so you can write 
-       presentations with additional notes that only show up in print/web */
+p {
+    /* This hides evertything that is a normal paragraph, so you can write 
+    presentations with additional notes that only show up in print/web */
     display: none;
 }
 
 .description {
-    font-size: 30px  ! important;
+    font-size: 30px !important;
     font-weight: normal;
 }
 
@@ -76,10 +80,11 @@ div.message,
 div.documentActions,
 .byline,
 .netscape4,
-.footer,
-.colophon,
+#footer,
+#colophon,
 input
-{ /* Hides all the elements irrelevant for presentations */
+.skipnav {
+    /* Hides all the elements irrelevant for presentations */
     display: none;
 }
 
@@ -94,8 +99,18 @@ pre {
     border: &dtml-preBorder;;
 }
 
-div.columns * {
+div#columns div#main-left,
+div#columns div#main-left div.main {
     width: 100%;
+}
+
+div#columns div#main-left div.main {
+    padding: 0;
+    margin: 0;
+}
+
+div#columns div#main-left div.main * {
+    text-align: justify;
 }
 
 .pageContent,
@@ -106,22 +121,21 @@ div.columns * {
     margin: 0;
 }
 
+.pageContent {
+    margin: 0 1em;
+}
+
 table.listing,
-table.listing td
- {
-	border: 1pt solid black;
+table.listing td {
+    border: 1pt solid black;
     border-collapse: collapse;
 }
 
 a:link, a:visited {
-	color: #520;
-	background: transparent;
-	font-weight: bold;
-	text-decoration: underline;
-	}
-
-a.skipnav { 
-    display: none;
+    color: #520;
+    background: transparent;
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 /* </dtml-with> */
