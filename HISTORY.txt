@@ -7,11 +7,11 @@ Plone 2.0.1 - Jello
     - Added years range properties in site_properties:
       [dtremea]
 
-      - calendar_starting_year: (default: 1999), the fixed minimun year
-        displayed on callendar widgets
+      - calendar_starting_year: (default: 1999), the fixed minimum year
+        displayed on calendar widgets
 
       - calendar_future_years_available: (default: 5), how many years
-        (from current year) are displayed on callendar widgets
+        (from current year) are displayed on calendar widgets
 
     - Added a 'portlet_prefs' that displays the different prefs panels
       available once you're inside the prefs area. This uses the portlet
@@ -32,7 +32,7 @@ Plone 2.0.1 - Jello
       requires adding new metadata in a default language to avoid
       a mess when translating. Plone does nothing to enforce this at the
       moment. Currently supported fields are Keywords (aka. Subject) and
-      Copyright (aka. Rights).
+      Copyright (aka. Rights). The 'search_form' was also updated.
       [limi]
 
     - Added a define-macro "list-item" to news.pt and folder_listing.pt, so
