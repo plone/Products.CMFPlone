@@ -12,13 +12,16 @@ if props.hasProperty('default_page'):
 if pages:
     # loop through each page given and 
     # return it as the default, if it is found
-    exp = context.aq_explicit
+    # exp = context.aq_explicit
+    ids = context.objectIds()
     for page in pages:
-        if hasattr(exp, page):
+        if page in ids:
+#        if hasattr(exp, page):
             return context, [page, ]
 
 # what if the page isnt found?
 # call the method on the folder, if you
 # dont have this you will have problems
 # with blank folders
-return context, ['view',]
+act = context.getTypeInfo().getActionById('view')
+return context, [act,]
