@@ -237,7 +237,7 @@
                        tabindex=""
                        onfocus="formtooltip('mail_password_help',1)" 
                        onblur="formtooltip('mail_password_help',0)" 
-                       tal:attributes="checked python:test(mail_me, 'checked', '');
+                       tal:attributes="checked python:test(mail_me, 'checked', None);
                                        tabindex tabindex/next;" 
                        />
                 <label for="cb_mailme" i18n:translate="label_yes_mail_me_password">Yes, mail me my password</label>

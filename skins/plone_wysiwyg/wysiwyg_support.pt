@@ -44,7 +44,7 @@
                id="cb_structuredtext"
                onfocus="formtooltip('format_help',1)" 
                onblur="formtooltip('format_help',0)" 
-               tal:attributes="checked python:test(text_format=='structured-text', 1, '');
+               tal:attributes="checked python:test(text_format=='structured-text', 1, None);
                                tabindex tabindex;" 
                />
         <label for="cb_structuredtext" i18n:translate="structured_text">Structured Text</label> <br />
@@ -55,7 +55,7 @@
                value="html" 
                tabindex=""
                id="cb_html"
-               tal:attributes="checked python:test(text_format=='html', 1, '');
+               tal:attributes="checked python:test(text_format=='html', 1, None);
                                tabindex tabindex;" 
                onfocus="formtooltip('format_help',1)" 
                onblur="formtooltip('format_help',0)" 
@@ -68,7 +68,7 @@
                value="plain" 
                tabindex=""
                id="cb_plain"
-               tal:attributes="checked python:test(text_format=='plain', 1, '');
+               tal:attributes="checked python:test(text_format=='plain', 1, None);
                                tabindex tabindex;" 
                onfocus="formtooltip('format_help',1)" 
                onblur="formtooltip('format_help',0)" 

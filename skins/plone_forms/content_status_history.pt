@@ -243,7 +243,7 @@
                            tal:attributes="value transition/id;
                                            id    transition/id;
                                            title transition/name;
-                                           checked python:test(transition.get('id') == request.get('workflow_action', ''), 'checked', '')" />
+                                           checked python:test(transition.get('id') == request.get('workflow_action', ''), 'checked', None)" />
                     <label for=""
                            i18n:translate=""
                            tal:attributes="for transition/id;"

@@ -112,7 +112,7 @@
                         <option value=""
                                 tal:repeat="period python:container.portal_syndication.buildUpdatePeriods()"
                                 tal:attributes="value python:period[0];
-                                selected python:test(period[0]==container.portal_syndication.getUpdatePeriod(here), 'selected', '');"
+                                selected python:test(period[0]==container.portal_syndication.getUpdatePeriod(here), 'selected', None);"
                                 tal:content="python:period[1]"> 
                                 update interval 
                         </option>

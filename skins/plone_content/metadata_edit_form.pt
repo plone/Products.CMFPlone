@@ -59,7 +59,7 @@
                        id="discussion_default"
                        onfocus="formtooltip('allow_discussion_help',1)" 
                        onblur="formtooltip('allow_discussion_help',0)" 
-		                   tal:attributes="checked python: test(val == None, '1', '');
+		                   tal:attributes="checked python: test(val == None, '1', None);
                                            tabindex tabindex;"
                        />
                 <label for="discussion_default" i18n:translate="label_discussion_default">Default</label> <br />
@@ -72,7 +72,7 @@
                        id="discussion_on"
                        onfocus="formtooltip('allow_discussion_help',1)" 
                        onblur="formtooltip('allow_discussion_help',0)" 
-                       tal:attributes="checked python:test(val == 1, '1', '');
+                       tal:attributes="checked python:test(val == 1, '1', None);
                                        tabindex tabindex;"
                        />
                 <label for="discussion_on" i18n:translate="label_discussion_enabled">Enabled</label> <br />
@@ -85,7 +85,7 @@
                        id="discussion_off"
                        onfocus="formtooltip('allow_discussion_help',1)" 
                        onblur="formtooltip('allow_discussion_help',0)" 
-                       tal:attributes="checked python:test(val == 0, '1', '');
+                       tal:attributes="checked python:test(val == 0, '1', None);
                                        tabindex tabindex;"
                        />
                 <label for="discussion_off" i18n:translate="label_discussion_disabled">Disabled</label>
@@ -136,7 +136,7 @@
                                 tal:attributes="tabindex tabindex/next;">
                           <option value="#" tal:repeat="subject allowedSubjects"
                                   tal:content="subject" tal:attributes="value subject;
-                                                                        selected python:test(subject in contentSubjects, 'selected', '')"> 
+                                                                        selected python:test(subject in contentSubjects, 'selected', None)"> 
                           an existing keyword 
                           </option>                                
                         </select>
@@ -263,7 +263,7 @@
 	            <option value="">Choose MIME-type</option> 
                     <option tal:repeat="mimetype here/plone_utils/availableMIMETypes"
                             tal:attributes="value python:mimetype;
-                                            selected python:test(format == mimetype, 'selected', '');"
+                                            selected python:test(format == mimetype, 'selected', None);"
                             tal:content="mimetype" />
                 </select>
             </div>
@@ -295,7 +295,7 @@
                     <option value="" i18n:translate="choose_language">Choose Language</option> 
                     <option tal:repeat="language available_languages" 
 		                    tal:attributes="value python:language[0];
-                                            selected python:test(sel_language == language[0], 'selected', '')"
+                                            selected python:test(sel_language == language[0], 'selected', None)"
                             tal:content="structure python:language[1]">Language</option>
                 </select>
             </div>
