@@ -1,3 +1,71 @@
+2003-11-14 21:42  limi
+
+	* skins/: plone_styles/plone.css.dtml, plone_images/phone_icon.gif
+	  (Plone-2_0-branch): Added phone image for the callto-links.
+
+2003-11-14 20:01  jimroepcke
+
+	* skins/plone_form_scripts/content_status_modify.cpy
+	  (Plone-2_0-branch): commented out debug call
+
+2003-11-14 19:30  limi
+
+	* skins/: plone_forms/search.pt, plone_images/plone_powered.gif,
+	  plone_images/search_icon.png, plone_images/sitemap_icon.gif,
+	  plone_styles/plone.css.dtml, plone_styles/ploneIEFixes.css.dtml,
+	  plone_templates/global_searchbox.pt (Plone-2_0-branch): Some IE
+	  CSS fixes for disappearing text, new icons.
+
+2003-11-14 18:40  vinsci
+
+	* skins/plone_3rdParty/CMFTopic/topic_view.pt (Plone-2_0-branch):
+	  Added msgid:s for i18n.
+
+2003-11-14 15:08  vinsci
+
+	* skins/plone_prefs/prefs_group_details.pt (Plone-2_0-branch): Typo
+	  - missing quote around attribute.
+
+2003-11-14 14:46  vinsci
+
+	* skins/: plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_user_details.pt,
+	  plone_prefs/prefs_user_group_search_form.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt,
+	  plone_prefs/prefs_workflow_advanced.pt,
+	  plone_prefs/prefs_workflow_basic.pt,
+	  plone_templates/index_html.pt,
+	  plone_templates/registered_notify_template.pt (Plone-2_0-branch):
+	  Add missing i18n:domain="plone" tags to files.
+
+2003-11-14 13:54  vinsci
+
+	* skins/plone_forms/insufficient_privileges.pt (Plone-2_0-branch):
+	  Add attribute i18n:domain="plone" <html> open tag.
+
+2003-11-14 10:58  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): Added a setGroups()
+	  API method to correspond to setRoles().
+
+2003-11-14 10:54  shh42
+
+	* tests/testCatalogTool.py (Plone-2_0-branch): Use portal_name
+	  constant instead of string literal for the portal name.
+
+2003-11-14 10:48  shh42
+
+	* tests/: testGroupDataTool.py, testGroupsTool.py
+	  (Plone-2_0-branch): Added tests for GroupsTool and GroupDataTool.
+
+2003-11-14 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-14 02:16  limi
 
 	* skins/plone_images/: discussionitem_icon.gif.metadata,
