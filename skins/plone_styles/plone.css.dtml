@@ -234,36 +234,36 @@ pre {
 ** Structural Elements
 */
 
-div#switchbar {
+#switchbar {
     /* The skin switcher at the top, only shows up if you have multiple skins available */
     
 }
 
-div#switchbar a {
+#switchbar a {
     display: block;
     float: left;
 }
 
-div#top {
+#top {
     /* Top section */
     background: &dtml-topBackground;;
     margin: &dtml-topMargin;;
     padding: &dtml-topPadding;;
 }
-div#siteActions {
+#siteActions {
     float: right;
     margin: 1em 1em 0.5em 1em;
 }
 
 /* Logo properties */
  
-h1#logo {
+#logo {
     background: url(<dtml-var portal_url>/logo.jpg) no-repeat;
     border: 0;
     margin: &dtml-logoMargin;;
     padding: &dtml-logoPadding;;
 }
-h1#logo a {
+#logo a {
     display: block;
     text-decoration: none;
     overflow: hidden;
@@ -277,7 +277,7 @@ h1#logo a {
     cursor: pointer;
 }
 
-div#searchBox {
+#searchBox {
     /*searchbox style and positioning */
     background-color: transparent;
     color: &dtml-searchFontColor;;
@@ -293,7 +293,7 @@ input.searchButton {
     font-size: 100% ! important;
     margin-bottom: 1px ! important;
 }
-ul#portalTabs {
+#portalTabs {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
     background: &dtml-mainTabBackdrop;;
     border-collapse: collapse;
@@ -307,10 +307,10 @@ ul#portalTabs {
     height: auto;
     line-height: normal;
 }
-ul#portalTabs li {
+#portalTabs li {
     display: inline;
 }
-ul#portalTabs li a {
+#portalTabs li a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-mainTabBackgroundNotSelected;;
     border-color: &dtml-mainTabBorderColor;;
@@ -324,7 +324,7 @@ ul#portalTabs li a {
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
-ul#portalTabs li.selected a {
+#portalTabs li.selected a {
     /* The selected tab. There's only one of this */
     background: &dtml-mainTabBackground;;
     border: 1px solid &dtml-mainTabBorderColorSelected;;
@@ -332,13 +332,13 @@ ul#portalTabs li.selected a {
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
 }
-ul#portalTabs li a:hover {
+#portalTabs li a:hover {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-color: &dtml-mainTabBackground;;
     color: &dtml-mainTabFontColorSelected;;
 }
-ul#personalBar {
+#personalBar {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background: &dtml-mainTabBackground;;
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
@@ -352,10 +352,10 @@ ul#personalBar {
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
-ul#personalBar li {
+#personalBar li {
     display: inline;
 }
-ul#personalBar li#personalBar-user {
+#personalBar #personalBar-user {
     background: transparent url(<dtml-var portal_url>/user.gif) center left no-repeat;
     padding-left: 15px;
 }
@@ -366,21 +366,21 @@ ul#personalBar li#personalBar-user {
     background: transparent;
 } /* Used on all descriptions relevant to those not logged in */
  
-ul#personalBar li {
+#personalBar li {
     background: transparent url(<dtml-var portal_url>/linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
 }
-ul#personalBar li a {
+#personalBar li a {
     text-decoration: none;
     color: &dtml-mainTabFontColorSelected;;
 }
 .caseSensitive {
     text-transform: none;
 }
-div#pathBar {
+#pathBar {
     /* The path bar, including breadcrumbs and add to favorites */
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-style: solid;
@@ -396,7 +396,7 @@ div#pathBar {
 .addFavorite {
     vertical-align: bottom;
 }
-ul.contentViews {
+.contentViews {
     background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
     padding-left: 1em;
@@ -410,7 +410,7 @@ ul.contentViews {
     border-left-width: 0px;
     border-right-width: 0px;
 }
-ul.contentViews li {
+.contentViews li {
     display: inline;
 }
 .contentViews li a {
@@ -427,7 +427,7 @@ ul.contentViews li {
     text-transform: &dtml-textTransform;;
     z-index: 1;
 }
-.contentViews li.selected a {
+.contentViews .selected a {
     background: &dtml-contentTabBackground;;
     border-bottom: &dtml-contentTabBackground; 1px solid;
     color: &dtml-contentTabFontColorSelected;;
@@ -478,22 +478,22 @@ ul.contentViews li {
     padding: 1em 2em !important;
 }
 
-div.contentContent {
+.contentContent {
     font: <dtml-var contentFont>;
     padding: 0em 1em 2em 1em ! important;
     background: &dtml-mainBackground;;
 }
 
-.editable div.contentContent {
+.editable .contentContent {
     background: &dtml-contentBackground; ! important;
     border: &dtml-contentTabBorder;;
     padding: 0;
 }
-div.documentActions {
+.documentActions {
     float: right; 
     margin-top: 1.5em;
 }
-div.message {
+.message {
     background: &dtml-messageBackground;;
     border: &dtml-messageBorder;;
     color: &dtml-mainFontColor;;
@@ -502,11 +502,11 @@ div.message {
     padding: 0.5em 1em;
     vertical-align: middle;
 }
-div.message a {
+.message a {
     color: &dtml-mainFontColor;;
     text-decoration: underline;
 }
-div.title {
+.title {
     margin-top: 1em;
 }
 .description {
@@ -523,7 +523,7 @@ div.title {
     font-weight: normal;
     color: #999999;
 }
-div#footer {
+#footer {
     background: &dtml-footerBackground;;
     border-top: &dtml-footerBorder;;
     border-bottom: &dtml-footerBorder;;
@@ -534,7 +534,7 @@ div#footer {
     text-align: center;
 }
 
-div#colophon {
+#colophon {
     color: &dtml-mainFontColor;;
     float: none;
     margin: 0em 0em 2em 0em;
@@ -542,9 +542,9 @@ div#colophon {
     text-align: center;
 }
 
-div#colophon ul,
-div#colophon ul li,
-div#colophon ul li a {
+#colophon ul,
+#colophon ul li,
+#colophon ul li a {
     list-style: none;
     display: inline;
     text-decoration: none;
@@ -554,8 +554,8 @@ div#colophon ul li a {
 ** Widgets
 */
 
-input.standalone,
-div.editableDocument * input.standalone {
+.standalone,
+.editable * .standalone {
     background: &dtml-standaloneButtonBackground;;
     color: &dtml-standaloneButtonFontColor;;
     cursor: pointer;
@@ -565,8 +565,8 @@ div.editableDocument * input.standalone {
     padding: &dtml-standaloneButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-input.context,
-div.editableDocument * input.context {
+.context,
+.editable * .context {
     background: &dtml-contextButtonBackground;;
     color: &dtml-contextButtonFontColor;;
     cursor: pointer;
@@ -576,8 +576,8 @@ div.editableDocument * input.context {
     padding: &dtml-contextButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-input.destructive,
-div.editableDocument * input.destructive {
+.destructive,
+.editable * .destructive {
     background: &dtml-destructiveButtonBackground;;
     border: &dtml-destructiveButtonBorder;;  
     color: &dtml-destructiveButtonFontColor;;
@@ -588,22 +588,22 @@ div.editableDocument * input.destructive {
     padding: &dtml-destructiveButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-input.noborder,
-div.editableDocument * input.noborder {
+.noborder,
+.editable * .noborder {
     border: &dtml-noBorder;;
     margin: 0;
     background-color: transparent;
 }
-input.add,
-div.editableDocument * input.add {
+.add,
+.editable * .add {
 }
-input.quickSearch {
+.quickSearch {
 }
-input.notify,
-div.editableDocument * input.notify {
+.notify,
+.editable * .notify {
     border: &dtml-destructiveButtonBorder;;  
 }
-div.row {
+.row {
     min-height: 4em;
     margin: 0em 0em 1em 0em;
     position: relative;
@@ -613,7 +613,7 @@ div.row {
     margin: 1em 0em 1em 0em;
     padding: 0em 1em;
 }
-span.legend {
+.legend {
     background: &dtml-contentBackground;;
     font-size: 80%;
     padding: 0.5em;
@@ -621,10 +621,10 @@ span.legend {
     top: -0.8em;
     left: 0em;
 }
-div.field {
+.field {
     margin-top: 0.2em;
 }
-div.help {
+.help {
     background-color: #FFFFE1; 
     border: 1px solid black; 
     font-size: 80%;
@@ -654,29 +654,32 @@ div.help {
 
 /* javascript menu (contentbar) */
 
-ul.menuBar {
+.menuBar {
     padding: 0;
     margin: 0;
     margin-bottom: 1px;
     color: &dtml-mainFontColor;;
 }
-ul.menuBar, ul.menuBar li.menuButton {
+.menuBar,
+.menuBar .menuButton {
     margin: 0;
     padding: 0;
     display: inline;
     list-style: none;
 }
 
-ul.menuBar li.menuButton {
+.menuBar .menuButton {
     border: &dtml-contentTabBorder;;
     border-style: none none none solid;
 } 
+
 /*  border-style: solid none solid solid; */
-ul.menuBar li.menuButton .menuIndicator {
+
+.menuBar .menuButton .menuIndicator {
     color: &dtml-mainFontColor;;
 }
 
-ul.menuBar li.menuButton a {
+.menuBar .menuButton a {
     background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: center right;
@@ -689,7 +692,7 @@ ul.menuBar li.menuButton a {
     text-transform: &dtml-textTransform;;
 }
 
-ul.menu {
+.menu {
     background: &dtml-contentTabBackground;;
     border: &dtml-contentTabBorder;;
     color: &dtml-contentTabFontColor;;
@@ -706,19 +709,19 @@ ul.menu {
     padding: 0;
     border-top: &dtml-contentTabBackground; 1px solid;
 }
-ul.menu, ul.menu li {
+.menu, .menu li {
     background: &dtml-contentTabBackground;;
     list-style: none;
     margin: 0;
     padding: 0;
     border-collapse: collapse;
 }
-ul.menu li {
+.menu li {
     margin: 0;
     padding: 0;
     border: none;
 }
-ul.menu li.menuItem a {
+.menu .menuItem a {
     color: &dtml-contentTabFontColorSelected;;
     background-image: none ! important;
     display: block;
@@ -729,16 +732,16 @@ ul.menu li.menuItem a {
     border: &dtml-contentTabBorder;;
     border-color: &dtml-contentTabBackground;
 }
-ul.menu li.menuItem a:hover {
+.menu .menuItem a:hover {
     background-color: &dtml-contentTabFontColor;;
     color: White;
 }
-ul.menu li.menuSep {
+.menu .menuSep {
     border-top: 1px solid &dtml-contentTabFontColor;;
 }
 
-span.card,
-div.portrait {
+.card,
+.portrait {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColor;;
     border-width: 1px;
@@ -748,8 +751,8 @@ div.portrait {
     text-align: center;
     width: 100px;
 }
-table.listing,
-div.stx table {
+.listing,
+.stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
     border-collapse: collapse;
     border-left: &dtml-listingBorder;;
@@ -757,8 +760,8 @@ div.stx table {
     font-size: 80%;
     margin: 1em 0em 1em 0em;
 }
-table.listing th,
-div.stx table th {
+.listing th,
+.stx table th {
     background: &dtml-listingHeaderBackground;;
     border-top: &dtml-listingBorder;;
     border-bottom: &dtml-listingBorder;;
@@ -769,60 +772,60 @@ div.stx table th {
     text-transform: &dtml-textTransform;;
     white-space: nowrap;
 }
-table.listing td.top {
+.listing .top {
     border-left: 1px solid &dtml-contentBackground;;
     border-top: 1px solid &dtml-contentBackground; ! important;
     border-right: 1px solid &dtml-contentBackground; ! important;
     text-align: right ! important;
     padding: 0em 0em 1em 0em;
 }
-table.listing tr.odd {
+.listing .odd {
     /*every second line should be shaded */
     background: &dtml-listingOddBackground;;
 }
-table.listing tr.even {
+.listing .even {
     background: &dtml-listingEvenBackground;;
 }
-table.listing td.checkbox {
+.listing .checkbox {
     text-align: center;
 }
-table.listing td,
-div.stx table td {
+.listing td,
+.stx table td {
     border-right: &dtml-listingBorder;;
     padding: 0em 1em;
     text-align: left;
 }
-table.listing a:hover {
+.listing a:hover {
     text-decoration: &dtml-listingLinkHover;;
 }
-table.listing img {
+.listing img {
 	vertical-align: middle;
 }
 /* Additional STX workaround classes */
-div.stx table p /* stupid STX table workaround */
+.stx table p /* stupid STX table workaround */
 {
     margin: 0;
     padding: 0;
 }
-div.stx table  /* stupid STX table workaround */
+.stx table  /* stupid STX table workaround */
 {
     border: &dtml-listingBorder; ! important;
 }
-div.stx table td {
+.stx table td {
     border-bottom: &dtml-listingBorder;;
 }
 
-div.box {
+.box {
     border: none;
     margin-bottom: 1em;
     padding: 0;
 }
-div.box h4 {
+.box h4 {
     font-size: 1em;
     font-weight: normal;
     white-space: nowrap;
 }
-div.box h5 { 
+.box h5 { 
     background: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
     border-style: solid solid none solid;
@@ -835,7 +838,7 @@ div.box h5 {
     font-weight: normal;
     white-space: nowrap;
 }
-div.box h6 { 
+.box h6 { 
     background: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
     border-style: solid solid none solid;
@@ -849,7 +852,7 @@ div.box h6 {
     white-space: nowrap;
 }
 
-div.box div.body {
+.box .body {
     background: transparent;
     border-collapse: collapse;
     border: &dtml-boxBorder;;
@@ -858,38 +861,38 @@ div.box div.body {
     text-align: right;
 }
 
-a.more {
+.more {
     display: block;
     text-align: right;
 }
 
-div.box div.content {
+.box .content {
     padding: 1em;
 }
-div.box a.close {
+.box .close {
     float: right;
     text-transform: none;
     border-left: &dtml-boxBorder;;
     padding: 0em 0.2em;
 }
-div.box h1, 
-div.box h2, 
-div.box h3, 
-div.box h4 {
+.box h1, 
+.box h2, 
+.box h3, 
+.box h4 {
     margin: 0;
     padding: 0;
 }
-div.box .even {
+.box .even {
     background-color: &dtml-boxEvenBackground;;
 }
-div.box .odd {
+.box .odd {
     background-color: &dtml-boxOddBackground;;
 }
-div.box input {
+.box input {
     font-size: 100%;
 }
 
-div.comment {
+.comment {
     background: &dtml-listingEvenBackground;; 
     border: 1px dashed gray; 
     padding: 0 1em 0.5em 1em;
@@ -897,18 +900,18 @@ div.comment {
     color: gray;
 }
 
-div.comment h1,
-div.comment h2,
-div.comment h3,
-div.comment h4, 
-div.comment h5,
-div.comment h6 {
+.comment h1,
+.comment h2,
+.comment h3,
+.comment h4, 
+.comment h5,
+.comment h6 {
     border-bottom: 1px dashed gray;
     color: gray;
 }
 
 
-div.spacer {
+.spacer {
 	margin: 1em;
 }
 .currentNavItem {
@@ -945,7 +948,7 @@ div.spacer {
     font-size: 80%;
 }
 
-div.listingBar {
+.listingBar {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
     border-style: solid;
@@ -956,15 +959,15 @@ div.listingBar {
     vertical-align: top;
     margin: 1em 0em;
 }
-div.listingBar span.previous {
+.listingBar span.previous {
     text-align: left;
     float: left;
 }
-div.listingBar span.next {
+.listingBar span.next {
     text-align: right;
     float: right;
 }
-div listingBar img {
+.listingBar img {
 	vertical-align: middle;
 }
 
@@ -972,11 +975,11 @@ div listingBar img {
 ** Accessibility and visual enhancement elements 
 */
 
-a.external {
+.external {
     background: White url(<dtml-var portal_url>/link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-div.hiddenlabel {
+.hiddenlabel {
     visibility: hidden;
 }
 .hiddenstructure {
@@ -988,10 +991,10 @@ div.hiddenlabel {
 .clear {
     clear: both;
 }
-label.hiddenlabel {
+.hiddenlabel {
     visibility: hidden;
 }
-div.label {
+.label {
     font-weight: bold;
     display: inline;
     padding-right: 0.5em;
@@ -1008,13 +1011,13 @@ div.label {
 }
 */
 
-.editable > * select:focus,
-.editable > * input:focus,
-.editable > * textarea:focus {
+.main .editable > * select:focus,
+.main .editable > * input:focus,
+.main .editable > * textarea:focus {
     border-color: #FFA500; 
-    border-width: 2px;
+    border-width: 1px;
 }
-div.overflow pre {
+.overflow pre {
     overflow: auto;
 }
 
@@ -1022,7 +1025,7 @@ div.overflow pre {
 ** Calendar elements - used in the calendar rendering 
 */
 
-div.day {
+.day {
     background-color: #FFFFBB;
     border: 1px solid Black;
     padding: 0.2em;
@@ -1031,58 +1034,58 @@ div.day {
     width: 12em;
     z-index: 2;
 }
-div.date {
+.date {
     font-weight: bold;
 }
 
-table.calendar {
+.calendar {
     border: &dtml-boxBorder;;
     margin: 1em 0em;
 }
-table.calendar a {
+.calendar a {
     text-decoration: none;
     color: &dtml-boxLinkColor;;
 }
-table.calendar a:hover {
+.calendar a:hover {
     text-decoration: none;
 }
-table.calendar th {
+.calendar th {
     background-color: &dtml-boxHeaderBackground;;
     color: &dtml-boxHeaderFontColor;;
     font-weight: bold;
     text-align: center;
     padding: 2px;
 }
-table.calendar td {
+.calendar td {
     background-color: transparent;
     width: 1.5em;
     text-align: right;
     padding: 2px;
 }
-table.calendar tr.weekdays td {
+.calendar .weekdays td {
     background-color: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
     border-style: solid none;
     text-align: center;
     padding: 2px;
 }
-table.calendar td.event {
+.calendar .event {
     background-color: &dtml-boxHeaderBackground;;
     font-weight: bold;
 }
-table.calendar td.todayevent {
+.calendar .todayevent {
     background-color: &dtml-boxHeaderBackground;;
     border: &dtml-boxHighlight;;
     font-weight: bold;
 }
-table.calendar td.todaynoevent {
+.calendar .todaynoevent {
     border-collapse: collapse;
     border: &dtml-boxHighlight;;
 }
 
 /* for highlighting of serchTerms */
 
-span.higligthedSearchTerm{
+.higligthedSearchTerm {
    background-color: #feff82;
 }
 
