@@ -123,9 +123,11 @@ h6 {
 ul { 
     line-height: 1.5em;
     list-style-type: square;
-    margin: 0.5em 0 0 2em;
+    margin: 0.5em 0 0 1.5em;
     padding:0;
+    list-style-image: url("bullet.gif");
 }
+
 ol {
     line-height: 1.5em;
     margin: 0.5em 0 0 2em;
