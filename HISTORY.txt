@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Fixed issue 2774 Clicking an event in the portlet_calendar results in an
+      Error.(shouldn't be in here in the first place, was fixed in the 2.0 branch)
+      [jladage]
+
     - Fixed a long-standing visual styling bug of the 'hr' element, it used
       to only work properly with regards to colors/size in IE, now it works
       in standards-compliant browsers too.

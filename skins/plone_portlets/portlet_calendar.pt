@@ -65,7 +65,7 @@
                       <span tal:define="begin python:DateTime(begEndTimes[0].timeTime()+86400).ISO();
                                         end python:DateTime(begEndTimes[1].strftime('%Y/%m/%d')).ISO();
                                         pss python:modules['Products'].PythonScripts.standard" tal:omit-tag="">
-                      <a href="" tal:attributes="href python:here.portal_url()+'/search?review_state=published&amp;start.query:record:date=%s&amp;start.range:record=max&amp;end.query:record:date=%s&amp;end.range:record=min'%(pss.url_quote(begin),pss.url_quote(end))">
+                      <a href="" tal:attributes="href python:here.portal_url()+'/search?review_state=published&amp;start:date=%s&amp;start_usage=range:max&amp;end:date=%s&amp;end_usage=range:min'%(pss.url_quote(begin),pss.url_quote(end))">
                         <span tal:replace="python: daynumber or default">&nbsp;</span>
                       </a>
                       </span>
@@ -94,7 +94,7 @@
              id="dummy"
              tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
              tal:condition="day/event">
-             <div class="date" tal:content="python:here.toLocalizedTime('%d/%0.2d/%0.2d' % (year, month, day['day']))">
+             <div class="date" tal:content="python:here.toPortalTime('%d/%0.2d/%0.2d' % (year, month, day['day']))">
              2001-04-11
              </div>
              <tal:event repeat="anevent day/eventslist">
@@ -109,3 +109,4 @@
 </body>
 
 </html>
+
