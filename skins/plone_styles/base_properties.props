@@ -5,9 +5,9 @@ plone_skin:string=Plone Default
 logoName:string=logo.jpg
 
 fontFamily:string="Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif
-fontBaseSize:string=70%
+fontBaseSize:string=69%
 fontColor:string=Black
-fontSmallSize:string=80%
+fontSmallSize:string=81%
 
 backgroundColor:string=White
 
