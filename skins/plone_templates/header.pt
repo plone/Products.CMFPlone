@@ -117,12 +117,11 @@
              tal:define="portal_url here/portal_url;
                          user_actions actions/user;
                          global_actions actions/global;
-                         my_stuff python:user_actions[0];
-                         display_actions python:user_actions[:-1]+global_actions+list((user_actions[-1],))">&nbsp;
+                         display_actions python:user_actions+global_actions;">&nbsp;
 
             <a href=""
                tal:condition="not: here/portal_membership/isAnonymousUser"
-               tal:attributes="href my_stuff/url">
+               tal:attributes="href python:user_actions[0]['url']">
                 <img src="dummy.gif" 
                      alt="User" 
                      border="0" 
