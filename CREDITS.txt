@@ -21,6 +21,7 @@ Luis Lavena - favicon
 David Harvey - python,ZPT,Makes sures things dont fall through the cracks ;)
 Geoff Davis (plonista) - form validation refactorings
 
+
 #zope on irc.openprojects.net for insight and soapbox to preach
 zopelabs.com for useful scripts 
 please help out the CMF and Plone community by becoming involved.  check out http://www.plone.org/ for more information
