@@ -228,16 +228,11 @@ class NavigationTool (UniqueObject, SimpleItem):
 
         script_object = getattr(context, script)
 
-        status = mapply(script_object, self.REQUEST.args, request,
+        (status, context, kwargs) = 
+            mapply(script_object, self.REQUEST.args, request,
                         call_object, 1, missing_name, dont_publish_class,
                         self.REQUEST, bind=1)
-        self.log('status = ' + str(status), '_dispatchScript')
-        kwargs = {}
-        if type(status) == type(()):
-            if len(status) == 2:
-                (status, context) = status
-            else:
-                (status, context, kwargs) = status
+        self.log('status = %s, context = %s, kwargs = %s' % (str(status), str(context), str(kwargs)), '_dispatchScript')
         return self.getNext(context, script, status, **kwargs)
 
 

@@ -18,6 +18,6 @@ if not filename and not size:
     errors['file']='You must upload a file'
 
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
-return ('success', errors, portal_status_message='Your image have been saved.')
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
+return ('success', errors, {'portal_status_message':'Your image have been saved.'})
 

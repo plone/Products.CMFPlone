@@ -35,6 +35,6 @@ if not errors.get('start_date') and not errors.get('end_date'):
             errors['start_date'] = 'An event must start before it ends.'
 
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
 
-return ('success', errors, 'Your event changes have been saved.')
+return ('success', errors, {'portal_status_message':'Your event changes have been saved.'})

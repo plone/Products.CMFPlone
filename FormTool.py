@@ -181,18 +181,10 @@ class FormValidator(SimpleItem):
         if self.do_validate:
             context = self.aq_parent
             # invoke validation
-            status = self._validate(context, REQUEST)
-            self.log('invoking validation, status = '+status)
+            (status, kwargs) = self._validate(context, REQUEST)
+            self.log('invoking validation, status = %s, kwargs = %s' % (status, kwargs))
 
-            # check for validation errors
-#            if status == 'success':
-#                # if no errors, create a new object if creation is pending and change the context
-#                if self.portal_factory.isTemporary(context):
-#                    self.log("new id = " + REQUEST[FormTool.id_key])
-#                    context.id = REQUEST[FormTool.id_key]
-#                    context = context.invokeFactory()
-
-            return context.portal_navigation.getNext(context, self.form, status, **kw)
+            return context.portal_navigation.getNext(context, self.form, status, **kwargs)
         else:
             self.log('going to %s.%s' % (str(aq_parent(self)), self.form))
             target = getattr(aq_parent(self), self.form, None)
@@ -211,13 +203,14 @@ class FormValidator(SimpleItem):
         for validator in self.validators:
             self.log('calling validator [%s]' % (str(validator)))
             v = getattr(context, validator)
-            (status, errors, message) = mapply(v, REQUEST.args, REQUEST,
+            (status, errors, kwargs) = mapply(v, REQUEST.args, REQUEST,
                             call_object, 1, missing_name, dont_publish_class,
                             REQUEST, bind=1)
             self.REQUEST.set('validation_status', status)
             self.REQUEST.set('errors', errors)
-            self.REQUEST.set('portal_status_message', message)
-        return status
+            for key in kwargs.keys():
+                self.REQUEST.set(key, kwargs[key])
+        return (status, kwargs)
 
 
     security.declarePublic('log')

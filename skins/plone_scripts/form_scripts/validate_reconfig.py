@@ -20,6 +20,6 @@ validator.addField('smtp_server', 'String', required=0)
 
 errors = validator.validate(context.REQUEST)
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
-return ('success', errors, None)
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
+return ('success', errors, {})
 

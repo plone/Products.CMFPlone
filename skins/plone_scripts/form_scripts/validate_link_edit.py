@@ -13,6 +13,6 @@ validator.addField('title', 'String', required=1)
 validator.addField('remote_url', 'String', required=1)
 errors = validator.validate(context.REQUEST, context.REQUEST.get('errors', None))
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
 else:
-    return ('success', errors, portal_status_message='Your link changes have been saved.')
+    return ('success', errors, {'portal_status_message':'Your link changes have been saved.'})

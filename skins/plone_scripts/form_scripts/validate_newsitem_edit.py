@@ -13,7 +13,7 @@ validator.addField('title', 'String', required=1, required_not_found='Please ent
 errors = validator.validate(context.REQUEST)
 
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
 else:
-    return ('success', errors, None)
+    return ('success', errors, {})
         

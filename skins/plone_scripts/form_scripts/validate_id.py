@@ -31,6 +31,6 @@ if id:
                 errors[self.id_key] = 'This id already exists.'
 
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
 else:
-    return ('success', errors, None)
+    return ('success', errors, {})

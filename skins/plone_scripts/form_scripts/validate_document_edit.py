@@ -21,5 +21,5 @@ if file and getattr(file, 'filename' ,''):
         errors.update( {'file':'This file is not text, To upload binary files create File content,'} )
 
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
-return ('success', errors, 'Your document changes have been saved.')
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
+return ('success', errors, {'portal_status_message':'Your document changes have been saved.'})

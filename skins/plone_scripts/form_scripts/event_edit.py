@@ -40,12 +40,6 @@ try:
                                        , id=id
                                        , description=description )
 except:
-    return ('failure', context) 
-#    msg='portal_status_message=Error+saving+event.'
-#    view='event_edit_form'
+    return ('failure', context, {'portal_status_message':'Error saving event.'})
 else:
-    return ('success', new_context) 
-#    msg='portal_status_message=Event+changes+saved.'
-#    view='event_view'
-
-#return ('success', new_context)
+    return ('success', new_context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Event changes saved.')}) 

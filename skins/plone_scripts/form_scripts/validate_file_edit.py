@@ -19,5 +19,5 @@ if not filename and not size:
     errors['file']='You must upload a file'
 
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
-return ('success', errors, None)
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
+return ('success', errors, {'portal_status_message':'Your file changes have been saved.'})

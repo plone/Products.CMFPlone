@@ -1,25 +1,12 @@
-Hi all--
-
-Here's a rundown of some of the additions to Plone 1.0 alpha 3 that I have
-contributed to.  Thanks to Alan Runyan (runyaga) and Kapil Thangavelu
-(hazmat) for lots of help via the #plone IRC channel!
-
-As this is relatively new code, there will probably be a few changes between
-now and the beta.  I really don't want to make any major changes, but I
-suspect people will suggest some good improvements.  For each object below I
-have indicated a few things that might need changing before the beta.  There
-may be other things I haven't thought of; hopefully my suggested changes
-will serve as a good starting point for thinking about the kinds of things
-that are missing from these tools.  I will try to introduce any code changes
-in as minimally disruptive a way as possible.
-
-
 ------------------------
 *** PORTAL_FORM:
 ------------------------
 The portal_form tool provides validation and navigation services for forms.
-I have wired up the form for editing Links in Plone alpha 3 to use
-portal_form to give you an idea of what it does.
+Most (all?) of the built-in objects in Plone are now wired up to use the
+portal_form tool.
+
+To see how portal_form works, let's take a look at the process of editing
+Links:
 
 The first thing to notice is that link editing occurs via a new type of URL.
 Before one edited links by visiting .../myLink/link_edit_form.  The action
@@ -42,47 +29,34 @@ update your object.
 Here's what you need to do to make portal_form work for your forms:
 
 (1) In your form: Change the action of your form so that it submits to
-itself (set the action to request/url).  Add a hidden variable called
-form_submitted and set its value to template/id.  (Portal_form tests
-REQUEST.form_submitted to determine whether a form has been submitted or
-not.)  The changes to link_edit_form are commented.
+itself (set the action to request/url -- see link_edit_form).
+Add a hidden variable called form_submitted and set its value to template/id.
+Portal_form tests REQUEST.form_submitted to determine whether a form has been
+ submitted or not.  The changes to link_edit_form are commented.
 
-(2) Your validator should work as before.  It should return a dictionary of
-errors called errors.  You will need to register your validator in
-portal_properties / form_properties.  Portal_form has a method setValidator
-that will let you do so programatically.
+(2) Register a set of validators for your form.  Registration takes place
+via a call to portal_form's setValidators() method.  The first argument is
+the name of the form, and the second is a list of validators.  For example,
 
-(3) Your form handler needs to modify an object and its metadata from the
+    portal_form.setValidators('link_edit_form', ['validate_id', 'validate_link_edit'])
+
+validate_id is used by most forms to check an object's id.  The validators
+in the list are called in order.  Each validator returns a status, a set of errors
+(stored in a dictionary), and a status message that is passed along to the next
+navigation state.  You can register validators manually through portal_properties/form_properties
+
+(3) Write a validator for your form.  Your validator should return (1) a status
+(usually either 'success' or 'failure'), (2) a set of errors in a dictionary, and (3) a
+status message to be displayed by the next navigation state.  If your validator is
+part of a chain, you may want to access the status / errors / status message returned
+by the previous validator in the chain.  These values are all available in the REQUEST
+as REQUEST['validation_status'], REQUEST['errors'], and REQUEST['portal_status_message']
+
+(4) Write a form handler.  The handler should modify your object and its metadata from the
 REQUEST and then return a status code.  Additional code for invoking the
 validator and for performing navigation should be deleted.
 
-(4) You will need to set up your form's desired navigation in
-portal_navigation (see the discussion of portal_navigation below).
-
-What might change in portal_form before the beta:
-
-* portal_form does some validation on your object's id (which must be called
-"id" on the form) in addition to invoking your validator.  However, it
-performs the additional tests _after_ calling your validator.  It's probably
-a better idea to make the call _before_ calling your validator so that your
-validator can modify the error messages if necessary.
-
-* portal_form uses some standard error messages for bad id's and id
-collisions that are set in the script
-skins/plone_scripts/form_scripts/errorMessages.py.  I think it would be
-better if these error messages were moved to a property sheet in
-portal_properties and could vary depending on the type of object being
-operated on and/or the specific form being used.
-
-* portal_form currently understands only 2 status outcomes for scripts it
-invokes: 'success' and 'failure'.  These should be made more flexible to
-allow for more complicated branching.
-
-* portal_form binds a validator to a form.  It might be better to have the
-binding able to depend on the form's context a la the navigation tool (see
-below)
-
-(Other suggestions welcome)
+(5) Set up your form's desired navigation in portal_navigation
 
 
 ---------------------------------
@@ -126,19 +100,6 @@ url:URL -- redirect to the specified (absolute) URL
 Furthermore, the transitions can incorporate data from the request via
 brackets.  For example, url:http://www.zope.org/?myId=[id] will send the
 user to the specified URL with [id] replaced by the value of REQUEST.id.
-
-What might change in portal_navigation before the beta:
-
-* url: currently requires an absolute URL.  It would be nice to allow
-relative URLs there, too.
-
-* portal_navigation currently uses only the status outcomes 'success' and
-'failure'.  These should be made more flexible to allow for more complicated
-branching.
-
-* There is no way to vary navigation if an object is in the process of
-creation (see below).  There probably should be some explicit mechanisms for
-letting one alter the behavior for such objects.
 
 
 -----------------------------

@@ -13,5 +13,5 @@ validator.addField('id', 'String', required=1)
 validator.addField('title', 'String', required=1)
 errors=validator.validate(context.REQUEST)
 if errors:
-    return ('failure', errors, 'Please correct the indicated errors.')
-return ('success', errors, 'Your folder propeties have been saved.')
+    return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
+return ('success', errors, {{'portal_status_message':'Your folder propeties have been saved.'})

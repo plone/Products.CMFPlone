@@ -13,4 +13,4 @@ new_context.edit( title=title
 new_context.plone_utils.contentEdit( context
                                    , id=id
                                    , description=description)
-return ('success', new_context)
+return ('success', new_context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Folder changes saved.')})
