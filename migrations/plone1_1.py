@@ -27,13 +27,6 @@ from Products.CMFCore.TypesTool import FactoryTypeInformation
 
 def make_plone(portal):
     typesTool = portal.portal_types
-    try:
-        typesTool.manage_addTypeInformation('Factory-based Type Information',
-                                            'BTree Folder',
-                                            'BTreeFolder2: CMF BTree Folder')
-    except:
-        pass # Products.BTreeFolder2 not installed.
-
     wf_tool=portal.portal_workflow
     folder_wf = wf_tool['folder_workflow']
     folder_wf.states.visible.permission_roles[ListFolderContents]=['Manager', 'Owner']

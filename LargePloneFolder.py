@@ -8,7 +8,8 @@ factory_type_information={}
 factory_type_information.update(PloneFolder_fti)
 factory_type_information.update( {'id':'Large Plone Folder',
                                   'meta_type':'Large Plone Folder',
-                                  'factory':'addLargePloneFolder'} )
+                                  'factory':'addLargePloneFolder',
+                                  'global_allow':0} )
 
 class LargePloneFolder(BTreeFolder2Base, PloneFolder):
     meta_type='Large Plone Folder'
