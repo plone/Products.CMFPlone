@@ -114,8 +114,6 @@ class PloneSite(CMFSite, OrderedContainer):
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__
 
-    security.declareProtected( 'View', 'listFolderContents')
-
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """

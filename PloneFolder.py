@@ -337,12 +337,10 @@ portal_skins tool and set the correct default skin.""" % default
 
         return values
 
-    security.declareProtected( 'View', 'listFolderContents')
+    security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
-        We have made lisFolderContents available if you have 'visible'.  This means
-        all content is visible for anonymous.  Private content will not be visible.
-        If you want to change the behavior you need to look at workflow permissions.
+        Optionally you can suppress "hidden" files, or files that begin with .
         """
         contents=SkinnedFolder.listFolderContents(self, 
                                                   spec=spec, 
