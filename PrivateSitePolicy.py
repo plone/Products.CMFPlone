@@ -37,10 +37,7 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
                                     ' (Private Folder Workflow [Plone])')
 
         wf_tool.doActionFor(portal,'show',comment='The portal object itself must be visible')
-        portal.index_html.manage_permission('View', ('Anonymous', 'Authenticated') )
-
-        wf_tool.doActionFor(portal,'show',comment='The portal object itself must be visible')
-        portal.index_html.manage_permission('View', ('Anonymous', 'Authenticated') )
+        wf_tool.doActionFor(portal.index_html,'show',comment='The frontpage should be public also.')
 
         portal.manage_permission(AddPortalMember,('Manager',))
         pa_tool=getToolByName(portal,'portal_actions')

@@ -1,6 +1,6 @@
-# $Id: NavigationTool.py,v 1.34 2002/10/30 22:39:38 lalo Exp $
+# $Id: NavigationTool.py,v 1.34.2.1 2002/11/10 20:22:19 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
-__version__ = "$Revision: 1.34 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.34.2.1 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -25,6 +25,10 @@ import sys
 from interfaces.NavigationController import INavigationController
 
 debug = 0  # enable/disable logging
+
+def custom_missing_name(name, request):
+    if name=='self': return request['PARENTS'][0]
+    raise 'Invalid request', 'The parameter %s is missing.' % name
 
 class NavigationTool (UniqueObject, SimpleItem):
     """ provides navigation related utilities """
@@ -279,8 +283,9 @@ class NavigationTool (UniqueObject, SimpleItem):
             if script_object is None:
                 raise KeyError("Unable to find script '%s' in context '%s'.  Check your skins path." % (script, str(context)))
 
-            script_status = mapply(script_object, self.REQUEST.args, request,
-                                   call_object, 1, missing_name, dont_publish_class,
+            script_status = mapply(script_object, self.REQUEST.args, request, \
+                                   call_object, 1, custom_missing_name, \
+                                   dont_publish_class, \
                                    self.REQUEST, bind=1)
 
             # The preferred return type for scripts will eventually be an object.
