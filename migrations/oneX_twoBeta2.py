@@ -14,6 +14,8 @@ from Products.CMFPlone.migrations.plone2_base import setupExtEditor
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Products.CMFPlone import ToolNames
 
+from Acquisition import aq_base
+
 def oneX_twoBeta2(portal):
     """ Migrations from 1.0.x to 2.x """
     #create the QuickInstaller
@@ -63,9 +65,12 @@ def oneX_twoBeta2(portal):
 
 def doit(self):
     oneX_twoBeta2(self)
+    swapPortalRoot(self)
+
+def swap(self):
+    swapPortalRoot(self)
 
 def _migrate(portal, toolid, name, attrs):
-    from Acquisition import aq_base
     from copy import deepcopy
     orig=getToolByName(portal, toolid)
     portal.manage_delObjects(toolid)
@@ -75,8 +80,59 @@ def _migrate(portal, toolid, name, attrs):
             setattr(tool, attr, aq_base(getattr(aq_base(orig), attr)))
     return orig
 
+def swapPortalRoot(portal):
+    """ We want to swap CMFDefault.PortalObject.Portal with CMFPlone.Portal.Portal """
+    from Products.CMFPlone.Portal import PloneSite
+    from StringIO import StringIO
+    import pdb; pdb.set_trace()
+    if portal.meta_type=='Plone Site':
+        return
+
+    parent=portal.getParentNode()
+    id = portal.getId()
+    old = portal
+
+    #parent.manage_delObjects(id)
+    parent._delOb(id)
+    parent._setOb(id, PloneSite(id, portal.Title()))
+    portal=parent[id]
+
+    # copy ObjectManager values
+    # NOTE: Collector items seem to crap so we catch their exceptions
+    #       We need to reindex Collector's catalog after we _setObject
+    for id, ob in old.objectItems():
+        try:
+            portal._setObject(id, aq_base(ob))   #copy ObjectManager values
+        except Exception, e:
+            pass #StringIO.write(str(e))
+
+  
+    #copy PropertManager values
+    for prop in old._properties:
+        propid = prop['id']
+        if not portal.hasProperty(propid):
+            portal.manage_addProperty(propid, old.getProperty(propid), prop['type'])
+
+    #copy Security settings
+    for permission in [perm for perm in dir(portal) if perm.endswith('_Permission')]:
+        setattr(portal, permission, getattr(old, permission))
+
+    #copy workflow
+    if hasattr(aq_base(old), 'workflow_history'):
+        setattr(portal, 'workflow_history', aq_base(old))
+
+    #We have a portal_type for Plone objects, Plone Site
+    #It has no workflow associate with it.
+    portal.portal_types.manage_addTypeInformation(FactoryTypeInformation.meta_type,
+                                    id='Plone Site',
+                                    typeinfo_name='CMFPlone: Plone Site')
+    portal._setPortalTypeName('Plone Site')
+    portal.portal_workflow._chains_by_type['Plone Site']=()
+
+    return portal 
+
+
 def migrateTools(portal):
-    from Acquisition import aq_base
     _migrate(portal, 'portal_actionicons', ToolNames.ActionIconsTool, ['_icons'])
     _migrate(portal, 'portal_actions', ToolNames.ActionsTool, ['_actions', 'action_providers'])
     _migrate(portal, 'portal_calendar', ToolNames.CalendarTool, [])
@@ -109,15 +165,14 @@ def migrateTools(portal):
     st.request_varname = orig.request_varname
 
     at = getToolByName(portal, 'portal_actions')
-    ap = at.action_providers
+    ap = list(at.action_providers)
     if 'portal_types' not in ap:
         ap.append('portal_types')
     if 'portal_properties' not in ap:
         ap.append('portal_properties')
-    at.action_providers = ap
+    at.action_providers = tuple(ap)
 
 def migrateMemberdataTool(portal):
-    from Acquisition import aq_base
     orig_md = getToolByName(portal, 'portal_memberdata')
     portal.manage_delObjects('portal_memberdata')
     portal.manage_addProduct['CMFPlone'].manage_addTool(ToolNames.MemberDataTool)
