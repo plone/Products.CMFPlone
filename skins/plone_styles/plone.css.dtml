@@ -373,6 +373,7 @@ ul#personalBar li {
 }
 ul#personalBar li a {
     text-decoration: none;
+    color: &dtml-mainTabFontColorSelected;;
 }
 .caseSensitive {
     text-transform: none;
@@ -642,6 +643,89 @@ div.help {
     background-position: left;
     padding-left: 8px;
 }
+
+/* javascript menu (contentbar) */
+
+ul.menuBar {
+    margin-bottom: 1px;
+    color: &mainFontColor;;
+ }
+ul.menuBar, ul.menuBar li.menuButton {
+    margin: 0;
+    padding: 0;
+    display: inline;
+    list-style: none;
+}
+
+ul.menuBar li.menuButton {
+    border-left: 1px dashed &dtml-contentTabFontColor;;
+} 
+
+ul.menuBar li.menuButton .menuIndicator {
+    color: &dtml-mainFontColor;;
+}
+
+ul.menuBar li.menuButton a {
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+    color: &dtml-contentTabFontColorSelected;;
+    cursor: pointer;
+    text-decoration: none;
+    z-index: 4;
+    margin: 0;
+    padding: 0 1em;
+    text-transform: &dtml-textTransform;;
+ 
+ul.menuBar li.menuButton a:hover {
+}
+ul.menu {
+    background: &dtml-contentTabBackground;;
+    border: &dtml-contentTabBorder;;
+    color: &dtml-contentTabFontColor;;
+    text-transform: &dtml-textTransform;;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    visibility: hidden;
+    text-align: left;
+    z-index: 5;
+    white-space: nowrap;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border-top: &dtml-contentTabBackground; 1px solid;
+}
+ul.menu, ul.menu li {
+    background: &dtml-contentTabBackground;;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+}
+ul.menu li {
+    margin: 0;
+    padding: 0;
+    text-transform: none;
+}
+ul.menu li.menuItem a {
+    color: &dtml-contentTabFontColorSelected;;
+    display: block;
+    background: &dtml-contentTabBackground;;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    border: &dtml-contentTabBorder;;
+    border-color: &dtml-contentTabBackground;
+}
+ul.menu li.menuItem a:hover {
+    background-color: &dtml-contentTabFontColor;;
+    color: White;
+}
+ul.menu li.menuSep {
+    border-top: 1px solid &dtml-contentTabFontColor;;
+}
+
 span.card,
 div.portrait {
     background: &dtml-mainTabBackground;;
@@ -820,20 +904,20 @@ div.spacer {
     color: &dtml-mainFontColor;;
     font-weight: bold;
 }
-.private {
+.state-private {
     color: Black;
 }
-.published {
+.state-published {
     color: #74AE0B;
 }
-.pending {
+.state-pending {
     color: #FFA500;
+}
+.state-expired {
+    color: Red;
 }
 .syndicated {
     color: #008000;
-}
-.expired {
-    color: Red;
 }
 .even {
     background-color: &dtml-evenRowBackground;;
@@ -992,77 +1076,6 @@ span.higligthedSearchTerm{
    background-color: #feff82;
 }
 
-/* javascript menu (contentbar) */
-
-ul.menuBar {
-    margin-bottom: 1px;
-    color: &dtml-contentTabFontColor;;
- }
-ul.menuBar, ul.menuBar li.menuButton {
-    margin: 0;
-    padding: 0;
-    display: inline;
-    list-style: none;
-}
-ul.menuBar li.menuButton a {
-    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
-    background-repeat: no-repeat;
-    background-position: center right;
-    text-transform: &dtml-textTransform;;
-    cursor: pointer;
-    text-decoration: none;
-    z-index: 4;
-    padding: 0 1em;
-    margin: 0;
-    border-left: 1px dashed &dtml-contentTabFontColor;;
-}
-ul.menuBar li.menuButton a:hover {
-}
-ul.menu {
-    background: &dtml-contentTabBackground;;
-    border: &dtml-contentTabBorder;;
-    color: &dtml-contentTabFontColor;;
-    text-transform: &dtml-textTransform;;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    visibility: hidden;
-    text-align: left;
-    z-index: 5;
-    white-space: nowrap;
-    width: auto;
-    margin: 0;
-    padding: 0;
-    border-top: &dtml-contentTabBackground; 1px solid;
-}
-ul.menu, ul.menu li {
-    background: &dtml-contentTabBackground;;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-collapse: collapse;
-}
-ul.menu li {
-    margin: 0;
-    padding: 0;
-    text-transform: none;
-}
-ul.menu li.menuItem a {
-    display: block;
-    background: &dtml-contentTabBackground;;
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
-    border: &dtml-contentTabBorder;;
-    border-color: &dtml-contentTabBackground;
-}
-ul.menu li.menuItem a:hover {
-    background-color: &dtml-contentTabFontColor;;
-    color: White;
-}
-ul.menu li.menuSep {
-    border-top: 1px solid &dtml-contentTabFontColor;;
-}
 
 /* javascript date selector */
 

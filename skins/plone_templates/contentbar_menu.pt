@@ -35,15 +35,22 @@
     </li>
     <li class="menuButton">
     
-        State:
     
         <a href="#"
            onclick="return buttonClick(event, 'statusMenu');"
            onmouseover="buttonMouseover(event, 'statusMenu');"
            tal:define="review_state wf_state"
-           tal:condition="review_state"
-           tal:content="review_state"          
-           i18n:translate="">Workflow state</a>
+           tal:condition="review_state">
+           
+           <span class="menuIndicator">State:</span>
+           
+           <span tal:content="review_state"
+                 tal:attributes="class string:state-${review_state}"
+                 i18n:translate="">
+            Workflow state
+           </span>
+           
+       </a>
 
         <ul class="menu"
             id="statusMenu"

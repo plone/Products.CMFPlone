@@ -7,7 +7,7 @@
      i18n:domain="plone"
      tal:define="view_actions python:here.plonifyActions(template_id=template_id, actions=actions)">
 
-    <tal:viewactions repeat="action view_actions">
+    <tal:views repeat="action view_actions">
     <li tal:define="selected action/selected|nothing;"
         tal:attributes="id string:contentview-${action/id};
                         class python:test(selected, 'selected', 'plain')">
@@ -19,7 +19,7 @@
             </span>
         </a>
     </li>
-    </tal:viewactions>
+    </tal:views>
 
 </ul>
 
