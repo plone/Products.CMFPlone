@@ -1,6 +1,7 @@
 import sys
 import Globals
 from os import path
+from Acquisition import aq_base
 
 cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
@@ -26,6 +27,11 @@ def transaction_note(note):
     """ Write human legible note """
     T=get_transaction()
     T.note(str(note))
+
+def base_hasattr(ob, name):
+    ob = aq_base(ob)
+    if hasattr(ob, name):
+        return 1
 
 # this patches OFS.Application 
 import PloneInitialize
@@ -86,6 +92,8 @@ def initialize(context):
     # make unauthorized importable ttw
     ModuleSecurityInfo('AccessControl').declarePublic('Unauthorized')
 
+    # make base_hasattr importable ttw
+    ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 
     from Products.Formulator.StandardFields import StringField, EmailField
     from Products.Formulator.Form import FormValidationError, BasicForm
