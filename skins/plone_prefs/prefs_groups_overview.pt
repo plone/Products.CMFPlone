@@ -135,7 +135,7 @@
     
                 <td>
                     <a href="prefs_group_details"
-                       tal:attributes="href string:${here/absolute_url}/prefs_group_details?groupname=${this_group/getGroupName}">
+                       tal:attributes="href string:${here/absolute_url}/prefs_group_members?groupname=${this_group/getGroupName}">
     
                         <tal:block replace="structure portal/group.gif"/>&nbsp;
     		    <tal:group tal:replace="this_group/getGroupName" />
