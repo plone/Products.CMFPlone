@@ -1,3 +1,73 @@
+2004-03-20 01:09  dpunktnpunkt
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  Added default translation for Add ${type}.
+
+2004-03-20 00:02  shh42
+
+	* HISTORY.txt (Plone-2_0-branch): Fix bare 'except:' statements in
+	  Plone.
+
+2004-03-19 23:50  shh42
+
+	* FormTool.py, MigrationTool.py, NavigationTool.py,
+	  PloneControlPanel.py, PloneTool.py, StatelessTree.py,
+	  StatelessTreeNav.py, WorkflowTool.py, migrations/v1/rc1_rc2.py,
+	  migrations/v2/oneX_twoBeta2.py, migrations/v2/plone2_base.py,
+	  setup/customization_policy.py,
+	  skins/plone_form_scripts/event_edit.cpy,
+	  skins/plone_form_scripts/sendto.cpy,
+	  skins/plone_scripts/extract_date_components.py,
+	  skins/plone_scripts/folder_paste.cpy,
+	  skins/plone_scripts/navigationParent.py,
+	  skins/plone_scripts/queryCatalog.py (Plone-2_0-branch): Fix bare
+	  'except:' statements in Plone. Repeat after me: "Bare excepts are
+	  bad".
+
+2004-03-19 23:04  shh42
+
+	* FormTool.py, NavigationTool.py (Plone-2_0-branch): Remove
+	  __version__ lines because they annoy me when merging.
+
+2004-03-19 23:04  shh42
+
+	* NavigationTool.py: Remove __version__ line because it annoys me
+	  when merging.
+
+2004-03-19 21:13  shh42
+
+	* HISTORY.txt, INSTALL.txt, skins/plone_content/event_view.pt,
+	  skins/plone_content/metadata_edit_form.cpt,
+	  skins/plone_forms/content_status_history.cpt,
+	  skins/plone_forms/folder_localrole_form.pt,
+	  skins/plone_images/discussionitem_icon.gif,
+	  skins/plone_images/user.gif,
+	  skins/plone_portlets/portlet_events.pt,
+	  skins/plone_scripts/breadcrumbs.py,
+	  skins/plone_styles/stylesheet_properties.props,
+	  skins/plone_templates/folder_listing.pt,
+	  tests/testContentTypeScripts.py,
+	  tests/testSecurityDeclarations.py: Merge Plone-2_0-branch to HEAD
+
+2004-03-19 18:34  shh42
+
+	* tests/testContentTypeScripts.py (Plone-2_0-branch): Also test
+	  creation of content types (not just editing).
+
+2004-03-19 18:11  shh42
+
+	* tests/testSecurityDeclarations.py (Plone-2_0-branch): Dang, fix
+	  the tests for Zope 2.7.
+
+2004-03-19 17:51  shh42
+
+	* tests/testSecurityDeclarations.py (Plone-2_0-branch): More tests
+	  for security-declarations.
+
+2004-03-19 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-19 02:40  dtremea
 
 	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch):
