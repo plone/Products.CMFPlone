@@ -158,7 +158,7 @@
                 <div class="formHelp" i18n:translate="help_password_policy">
                 Determines if users can choose their initial password. If the password
                 is selected by the user, it's easier for the user to create
-                to a bogus account. If this is a concern, choose "Generate".
+                a bogus account. If this is a concern, choose "Generate".
                 </div>
     
                 <input class="noborder"
