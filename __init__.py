@@ -90,19 +90,19 @@ def initialize(context):
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
     ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
 
-    # make Unauthorized importable ttw
+    # Make Unauthorized importable TTW
     ModuleSecurityInfo('AccessControl').declarePublic('Unauthorized')
 
-    # make ConflictError importable ttw
+    # Make ConflictError importable TTW
     ModuleSecurityInfo('ZODB.POSException').declarePublic('ConflictError')
 
-    # make ZCTextIndex ParseError importable ttw
+    # Make ZCTextIndex ParseError importable TTW
     ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
 
-    # make base_hasattr importable ttw
+    # Make base_hasattr importable TTW
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 
-    # Formulator
+    # Security declarations for Formulator components
     ModuleSecurityInfo('Products.Formulator').declarePublic('StringField', 'EmailField')
     ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
 
@@ -117,23 +117,23 @@ def initialize(context):
     import migrations
     migrations.registerMigrations()
 
-    import setup           # Configuration Machinery - Andy we need to fix
-                           # this at some point
-    import imagePatch      # WAII and 508 we need more properties on image
-                           # objects
-    import zserverPatch    # identify Plone in HTTP Headers - netcraft
-                           # here we come!
-    import UnicodeSplitter # registers unicode splitter w/ zctextindex
-                           # pipeline registry
-    import setFormatPatch  # patch DefaultDublinCoreImpl.setFormat to work
-                           # around http://plone.org/collector/1323
-    import verifyObjectPastePatch   # patch PortalFolder to work around
-                                    # http://plone.org/collector/2183
+    # Inititalize configuration machinery 
+    import setup
 
+    # Apply monkey patches
+    import patches
+
+    # Register unicode splitter w/ ZCTextIndex
+    # pipeline registry
+    import UnicodeSplitter
+
+    # Register Plone skins directory
     from Products.CMFCore import DirectoryView
     DirectoryView.registerDirectory('skins', cmfplone_globals)
 
-    import PloneContent, PloneFolder, PloneWorkflow, FolderWorkflow, Portal
+    # Plone content
+    import PloneContent, PloneFolder, PloneWorkflow, FolderWorkflow
+    import Portal
 
     contentClasses = ( PloneFolder.PloneFolder , )
     contentConstructors = ( PloneFolder.addPloneFolder, )
@@ -149,10 +149,10 @@ def initialize(context):
         contentConstructors += ( LargePloneFolder.addLargePloneFolder,)
         ftis += (LargePloneFolder.factory_type_information, )
 
-    # CMFCore and CMFDefault Tools
+    # CMFCore and CMFDefault tools
     from Products.CMFCore import CachingPolicyManager
 
-    # Plone Tools
+    # Plone tools
     import PloneTool, NavigationTool, FactoryTool
     import FormTool, InterfaceTool, MigrationTool, PloneControlPanel
     import MembershipTool, WorkflowTool, URLTool, MetadataTool
@@ -193,8 +193,8 @@ def initialize(context):
 
     from Products.CMFCore import utils
     from PloneUtilities import ToolInit
-    import Portal
 
+    # Register tools, content, and customization policies
     z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
     utils.initializeBasesPhase2( z_bases, context )
 

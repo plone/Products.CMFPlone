@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1-beta1 - Warp - Released (no date yet)
 
+    - Consolidated all monkey patches in the 'patches' sub-package.
+      [stefan]
+
     - Changed CatalogTool.catalog_object() and CatalogTool.reindexObject() to 
       support the new update_metadata protocol (Zope > 2.6.2). An optional
       'update_metadata' argument controls whether the object's metadata record
