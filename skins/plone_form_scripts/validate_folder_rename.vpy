@@ -26,7 +26,8 @@ if not new_ids:
     return state.set(status='failure',
                      portal_status_message='Need destination content ids.')
 
-check_id=context.check_id
+object_ids=context.objectIds()
+
 for x in range(0, len(new_ids)):
     id = ids[x]
     newid = new_ids[x]
@@ -36,13 +37,8 @@ for x in range(0, len(new_ids)):
         state.setError(id, 'You must enter a name.', 'input_required')
         continue
 
-    if id != newid:
-        try:
-            resp=check_id(newid)
-        #XXX Upon calling check_id various exceptions can be raised. 
-        #    catch all exceptions.
-        except:
-            resp='An error occurred validating new id'
+    if id != newid and newid in object_ids:
+        state.setError(id, 'There is already an item named \'%s\' in this folder.' % id, 'id_used')
 
     if resp is not None:
         return state.set(status='failure', portal_status_message=resp)
