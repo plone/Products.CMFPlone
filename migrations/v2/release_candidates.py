@@ -18,11 +18,11 @@ _condMap = {
 
 def rc2_rc3(portal):
     # this migration was never written so all code went to rc3_rc4
-    pass
+    return []
 
 def rc3_rc4(portal):
     out=[]
-    #
+
     pt=getToolByName(portal, 'portal_properties')
     _actions=pt._cloneActions()
     for action in _actions:
@@ -31,7 +31,6 @@ def rc3_rc4(portal):
             out.append('Setting portal_properties configPortal action.visible to 0')
     pt._actions=_actions
 
-    #
     at=getToolByName(portal, 'portal_actions')
     out.append('Fixing folder contents action')
     correctFolderContentsAction(at)
@@ -45,7 +44,6 @@ def rc3_rc4(portal):
            action.condition = Expression(_condMap[action.id])
     at._actions=_actions    
 
-    #
     out.append('Adding local_roles action to portal_actions')
     at.addAction('local_roles',
                  name='Sharing',
@@ -54,7 +52,6 @@ def rc3_rc4(portal):
                  permission='Manage properties',
                  category='object')
 
-    #
     out.append('Adding AddToFavorites to portal_actions and portal_actionicons')
     ai=getToolByName(portal, 'portal_actionicons')
     try:
@@ -68,7 +65,6 @@ def rc3_rc4(portal):
                  'View',
                  'document_actions')
 
-    #
     mt=getToolByName(portal, 'portal_membership')
     _actions=mt._cloneActions()
     for action in _actions:
@@ -77,10 +73,11 @@ def rc3_rc4(portal):
             action.action=Expression('string:${portal_url}/plone_memberprefs_panel')
     mt._actions=_actions
 
-    #
     tt=getToolByName(portal, 'portal_types')
     out.append('Removing local_roles from portal_types')
     tt._actions=[a for a in tt._cloneActions() if a.id!='local_roles']
+    return out
     
 def rc4_final(portal):
     out = []
+    return out
