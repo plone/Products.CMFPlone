@@ -157,6 +157,13 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         member = self.membership.getAuthenticatedMember()
         self.assertEqual(member.getUserName(), 'Anonymous User')
 
+    def testAnonymousMemberIsNotWrapped(self):
+        # Also see http://plone.org/collector/1851
+        self.logout()
+        member = self.membership.getAuthenticatedMember()
+        self.failIfEqual(member.__class__.__name__, 'MemberData')
+        self.assertEqual(member.__class__.__name__, 'SpecialUser')
+
     def testIsAnonymousUser(self):
         self.failIf(self.membership.isAnonymousUser())
         self.logout()
