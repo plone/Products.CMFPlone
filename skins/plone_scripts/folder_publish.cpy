@@ -13,6 +13,7 @@ from Products.CMFPlone import transaction_note
 plone_utils=context.plone_utils
 REQUEST=context.REQUEST
 workflow = context.portal_workflow
+content_status_modify=context.content_status_modify
 failed = {}
 success = {}
 
@@ -26,19 +27,18 @@ for id in ids:
     try:
         if o.isPrincipiaFolderish and include_subfolders:
             workflow.doActionFor(o, workflow_action, comment=comment)
-            o.folder_publish(workflow_action, 
-                             o.objectIds(), 
-                             comment=comment, 
-                             include_subfolders=include_subfolders, 
-                             effective_date=effective_date,
-                 expiration_date=expiration_date)       
+            o.folder_publish( workflow_action, 
+                              o.objectIds(), 
+                              comment=comment, 
+                              include_subfolders=include_subfolders, 
+                              effective_date=effective_date,
+                              expiration_date=expiration_date )
         else:
-            plone_utils.contentEdit(o, effective_date=effective_date,
-                                    expiration_date=expiration_date)
-            workflow.doActionFor(o, workflow_action, comment=comment)
+            o.content_status_modify( workflow_action,
+                                     comment,
+                                     effective_date=effective_date,
+                                     expiration_date=expiration_date )
             success[id]=comment
-        plone_utils.contentEdit(o, effective_date=effective_date, 
-                                expiration_date=expiration_date)
     except Exception, e:
         failed[id]=e
 
