@@ -4,10 +4,20 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Plone now supports translation of keywords. There is a separate
+      i18n:domain for this - 'plone-keywords'. Anything added into a
+      'plone-keywords-fr.po' file with the 'plone-keywords' domain will
+      be parsed on the metadata_edit_form, and replaced with the 
+      translated strings from the po-file. Please note that this usually
+      requires adding new keywords in a default language to avoid
+      a mess when translating. :)
+      [limi]
+
     - Added a define-macro "list-item" to news.pt and folder_listing.pt, so
       they can be reused in other templates. You have to define a repeat 
       statement outside it similar to the template in 
       'plone_templates/news.pt'. The macro itself renders one item.
+      [limi]
 
     - Added icons for left/leftmost/right/rightmost. Removed unused icons.
       Fixed alt-representations of images.

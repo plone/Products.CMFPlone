@@ -158,6 +158,8 @@
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;">
                   <option value="#"
+                          i18n:domain="plone-keywords"
+                          i18n:translate=""
                           tal:repeat="subject allowedSubjects"
                           tal:content="subject"
                           tal:attributes="value subject;
