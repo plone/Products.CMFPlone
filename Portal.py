@@ -70,6 +70,7 @@ class PloneGenerator(Portal.PortalGenerator):
         addPloneTool('CMF Workflow Tool', None) 
         addPloneTool('CMF Formulator Tool', None)
         addPloneTool('Plone Utility Tool', None)
+        addPloneTool('CMF Navigation Tool', None)
 
         p.manage_permission( CMFCorePermissions.ListFolderContents, ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'

@@ -17,7 +17,7 @@ context.portal_workflow.doActionFor( context
                                    , workflow_action
                                    , comment=comment )
 
-return context.plone_utils.getNextRequestFor( context
+return context.portal_navigation.getNextRequestFor( context
                                             , script.getId()
                                             , 'success'
                                             , portal_status_message='Status changed.' )

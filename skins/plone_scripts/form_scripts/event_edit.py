@@ -10,7 +10,7 @@
 
 errors=context.portal_form_validation.validate(context, 'validate_event_edit')
 if errors:
-    edit_form=context.plone_utils.getNextPageFor( context
+    edit_form=context.portal_navigation.getNextPageFor( context
                                                 , script.getId()
                                                 , 'failure' )    
     return edit_form()
@@ -54,7 +54,7 @@ else:
     msg='portal_status_message=Event+changes+saved.'
     view='event_view'
 
-return context.plone_utils.getNextRequestFor( context
+return context.portal_navigation.getNextRequestFor( context
                                             , script.getId()
                                             , 'success'
                                             , portal_status_message='Event changed.' ) 

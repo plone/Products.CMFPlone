@@ -3,7 +3,7 @@ custom_policies={} #stores the registered Policies
 
 from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
-import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
+import MembershipTool, FormulatorTool, PloneTool, WorkflowTool, NavigationTool
 import PloneFolder, Portal
 import CustomizationPolicy,PrivateSitePolicy
 
@@ -57,7 +57,8 @@ tools = ( MembershipTool.MembershipTool
         , FormulatorTool.FormulatorTool 
         , PloneTool.PloneTool
         , WorkflowTool.WorkflowTool
-        , CachingPolicyManager.CachingPolicyManager )
+        , CachingPolicyManager.CachingPolicyManager
+        , NavigationTool.NavigationTool )
 
 contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )

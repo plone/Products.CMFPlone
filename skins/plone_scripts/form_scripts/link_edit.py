@@ -10,7 +10,7 @@
 
 errors = context.portal_form_validation.validate(context, 'validate_link_edit')
 if errors:
-    edit_form=context.plone_utils.getNextPageFor( context
+    edit_form=context.portal_navigation.getNextPageFor( context
                                                 , script.getId()
                                                 , 'failure')
     return edit_form()
@@ -21,7 +21,7 @@ context.plone_utils.contentEdit( context
                                , id=id
                                , description=description)
 
-return context.plone_utils.getNextRequestFor( context
+return context.portal_navigation.getNextRequestFor( context
                                             , script.getId()
                                             , 'success'
                                             , portal_status_message='Link changed.')
