@@ -5,6 +5,7 @@ from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
+from types import TupleType
 
 class PloneTool (UniqueObject, SimpleItem):
     id = 'plone_utils'
@@ -23,14 +24,15 @@ class PloneTool (UniqueObject, SimpleItem):
                      , expiration_date=None
                      , format=None
                      , language=None
-                     , rights=None ):
+                     , rights=None
+                     ,  **kwargs):
         """ responsible for setting metadata on a content object 
             we assume the obj implemented IDublinCoreMetadata 
         """
         REQUEST=self.REQUEST
-        pfx=field_prefix
+        pfx=self.field_prefix
 	def tuplify( value ):
-            if not same_type( value, () ):
+            if not type(value) is TupleType:
                 value = tuple( value )
             temp = filter( None, value )
             return tuple( temp )
