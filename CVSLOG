@@ -1,3 +1,80 @@
+2003-11-05 04:43  eaon
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_styles/ploneColumns.css.dtml,
+	  plone_styles/ploneIEFixes.css.dtml,
+	  plone_templates/global_contentmenu.pt,
+	  plone_templates/global_contentviews.pt (Plone-2_0-branch): fixed
+	  the action menu :) - which adds work for elvix or me: we need it
+	  right aligned otherwise we have a scrollbar until you click on
+	  the state menu when you have just the left and the content
+	  columns :(
+
+2003-11-05 01:54  dpunktnpunkt
+
+	* skins/: plone_forms/discussion_reply_form.pt,
+	  plone_forms/search_form.pt, plone_portlets/calendar_slot.pt,
+	  plone_portlets/navigation_tree_slot.pt,
+	  plone_portlets/portlet_calendar.pt,
+	  plone_portlets/portlet_navigation.pt,
+	  plone_prefs/prefs_error_log_form.pt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_install_products_form.pt,
+	  plone_prefs/prefs_installed_product_overview.pt,
+	  plone_templates/registered_notify_template.pt (Plone-2_0-branch):
+	  Changed PTs here and there for validity's sake.
+
+2003-11-05 01:32  longsleep
+
+	* docs/squid/squid.conf.example (Plone-2_0-branch): added squid
+	  config from plone.org as first example
+
+2003-11-05 00:00  batlogg
+
+	* skins/plone_forms/calendar_popup.pt (Plone-2_0-branch): patch
+	  from http://plone.org/collector/1914
+
+2003-11-04 22:34  limi
+
+	* skins/plone_styles/: base_properties.props, plone.css.dtml
+	  (Plone-2_0-branch): Added the fontSmallSize property, which makes
+	  it easier to swap out the font base size for the small elements.
+
+2003-11-04 21:23  shh42
+
+	* FolderWorkflow.py, HISTORY.txt, PloneWorkflow.py
+	  (Plone-2_0-branch): PrivatePloneWorkflow and
+	  PrivateFolderWorkflow no longer register their workflow
+	  factories.
+
+2003-11-04 20:42  chrism
+
+	* skins/plone_forms/join_form.cpt (Plone-2_0-branch): Dont allow
+	  join_form to send user back to HTTP_REFERER (this makes no
+	  sense).
+
+	  Fix create_query_string so it replaces an existing k/v pair
+	  instead of adding to it.
+
+2003-11-04 20:15  chrism
+
+	* skins/plone_scripts/logged_in.py (Plone-2_0-branch): Hopefully
+	  fix permission problem dealing with createMemberArea...
+
+2003-11-04 13:10  shh42
+
+	* HISTORY.txt (Plone-2_0-branch): Forgot to update HISTORY with
+	  regard to the workflow fixes.
+
+2003-11-04 12:00  limi
+
+	* skins/plone_scripts/logged_in.py (Plone-2_0-branch): Small change
+	  of wording :]
+
+2003-11-04 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-04 00:43  shh42
 
 	* FolderWorkflow.py (Plone-2_0-branch): ListFolderContents was
