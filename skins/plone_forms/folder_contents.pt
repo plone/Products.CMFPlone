@@ -190,7 +190,7 @@
             <input tal:condition="here/cb_dataValid | nothing"
                    class="context" type="submit" name="folder_paste:method" value="Paste" />
             <input class="context" type="submit" name="folder_delete:method" value="Delete" tal:condition="folder_contents" />
-            <input class="context" type="submit" name="content_publishing_history:method" value="Change Status" tal:condition="folder_contents" />
+            <input class="context" type="submit" name="content_status_history:method" value="Change Status" tal:condition="folder_contents" />
     
         </td></tr></tbody></table>
     

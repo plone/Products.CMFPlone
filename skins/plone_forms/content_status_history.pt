@@ -5,11 +5,14 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
+<!-- 
+     NOTE: This form does two things.  It will allow you to publish multiple files (recursively) 
+     and it will allow for you to publish a specific piece of content.  This flexibility comes with
+     some minor complexity.  How we tell is if we have a list of 'ids' in the REQUEST to be published 
+-->
+
 <div metal:fill-slot="main"
-      tal:condition="here/rejectAnonymous"
-      tal:define="review_state python:here.portal_workflow.getInfoFor(here, 'review_state');
-                  review_history python:here.portal_workflow.getInfoFor(here, 'review_history');
-                  actions python:here.portal_actions.listFilteredActionsFor(here);">  
+      tal:condition="here/rejectAnonymous">
     
     <script language="JavaScript" 
             src="cmf_skin_tools/calendar.js"
@@ -34,7 +37,9 @@
          these dates, <em>even if its status is <strong>published</strong></em>.
     </p>
     
-    <div class="group">
+    <div class="group" tal:condition="not: request/ids|nothing">
+        <metal:block tal:define="global review_state python:here.portal_workflow.getInfoFor(here, 'review_state');
+                                 global review_history python:here.portal_workflow.getInfoFor(here, 'review_history');" />
         <span class="legend">Status</span>
     
         <div class="row">
@@ -65,9 +70,24 @@
           id="edit_form"
           name="edit_form" 
           method="post" 
-          action="content_status_modify">
+          action="content_status_modify"
+	  tal:attributes="action python:test(request.get('ids', None), 'folder_publish', 'content_status_modify')" >
         
         <span class="legend">Publishing Details</span>
+
+        <div class="row" tal:condition="request/ids|nothing">
+            <div class="label" i18n:id="affected_content">Affected content</div>
+            <div class="field"
+                 tal:define="Batch python:modules['ZTUtils'].Batch;
+		             physical_path python:'/'.join(here.getPhysicalPath());
+                             dummy python:request.set('ids_checked', 1);
+                             global batch python:Batch([b.getObject() for b in here.portal_catalog(path={'query':physical_path, 'level':0}, id=request.get('ids', ' ', path))], 50, int(0), orphan=0);
+                             global folders_in_publishing python:[o.getId() for o in batch if o.isPrincipiaFolderish];"
+                 tal:condition="batch">
+                <table metal:use-macro="here/folder_contents/macros/folder_listing">
+                </table>
+            </div>
+        </div>
 
         <div class="row">
             <span class="label">
@@ -122,15 +142,13 @@
                 <textarea id="comment" name="comment" cols="60" rows="5" wrap="soft" style="width: 100%"></textarea>
             </span>
         </div>
-    
+
         <div class="row">
             <input type="hidden" id="workflow_action" name="workflow_action" value="" />
             <span class="label">&nbsp;</span>
     
             <span class="field"
                   tal:define="wf_actions actions/workflow;
-                  review_history python:here.portal_workflow.getInfoFor(here, 'review_history', None);
-                  
                   publish python:here.getActionUrlById('publish', wf_actions);
                   submit python:here.getActionUrlById('submit', wf_actions);
                   retract python:here.getActionUrlById('retract', wf_actions);
@@ -139,25 +157,25 @@
                   visible python:here.getActionUrlById('visible', wf_actions);
 		  show python:here.getActionUrlById('show', wf_actions);">
 		  
-                <input class="context" type="submit" value="Show" tal:condition="show"
+                <input class="context" type="submit" value="Show" tal:condition="request/ids|show"
                        onclick="javascript:document.getElementById('workflow_action').value='show';" />
 		       
-                <input class="context" type="submit" value=" Publish this Item " tal:condition="publish"
+                <input class="context" type="submit" value=" Publish this Item " tal:condition="request/ids|publish"
                        onclick="javascript:document.getElementById('workflow_action').value='publish';" />
              
-                <input class="context" type="submit" value="Submit for review" tal:condition="submit"
+                <input class="context" type="submit" value="Submit for review" tal:condition="request/ids|submit"
                        onclick="javascript:document.getElementById('workflow_action').value='submit';" />
 
-                <input class="context" type="submit" value="Retract" tal:condition="retract"
-                       onclick="javascript:document.getElementById('workflow_action').value='retract';" >
+                <input class="context" type="submit" value="Retract" tal:condition="request/ids|retract"
+                       onclick="javascript:document.getElementById('workflow_action').value='retract';" />
 
-                <input class="context" type="submit" value="Hide" tal:condition="hide"
+                <input class="context" type="submit" value="Hide" tal:condition="request/ids|hide"
                        onclick="javascript:document.getElementById('workflow_action').value='hide';" />
 
-                <input class="context" type="submit" value="Reject" tal:condition="reject"
+                <input class="context" type="submit" value="Reject" tal:condition="request/ids|reject"
                        onclick="javascript:document.getElementById('workflow_action').value='reject';" />
 
-                <input class="context" type="submit" value="Visible" tal:condition="visible"
+                <input class="context" type="submit" value="Visible" tal:condition="request/ids|visible"
                        onclick="javascript:document.getElementById('workflow_action').value='visible';" />
     
             </span>
@@ -166,12 +184,12 @@
 
     </form>
 
-    <div class="group"
-         tal:define="review_history python: here.reverseList(review_history)">
-
+    <div class="group" tal:condition="not: request/ids|nothing">
+        
         <span class="legend">History</span>    
 
          <div class="row"
+	      tal:define="review_history python: here.reverseList(review_history)"
               tal:repeat="items review_history">
     
            <metal:block tal:define="global odd repeat/items/odd; global rhComments items/comments;"
