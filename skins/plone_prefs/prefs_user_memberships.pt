@@ -75,7 +75,7 @@
     	  <metal:block metal:fill-slot="removables">
     
     	<h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
-    	<table class="listing" summary="Group memberships">
+    	<table class="listing">
     
                 <tr>
     	      <th i18n:translate="listingheader_group_name">Group name</th>
