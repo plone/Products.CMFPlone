@@ -1,3 +1,30 @@
+2004-05-02 22:28  dtremea
+
+	* FactoryTool.py (Plone-2_0-branch): Removed unnecessary hook: it's
+	  handled by Archetypes itself now.
+
+2004-05-02 16:12  dpunktnpunkt
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): Fix
+	  for 3072: Add Item button in folder_contents has value of
+	  "label_add_new_item".
+
+2004-05-02 15:34  limi
+
+	* skins/: plone_portlets/calendar_slot.pt,
+	  plone_scripts/date_components_support.py (Plone-2_0-branch): No
+	  longer uses abbreviated month names. DateTime is f***ing ugly.
+	  This fixes http://plone.org/collector/2603
+
+2004-05-02 06:19  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2004-05-02 06:08  limi
+
+	* HISTORY.txt, setup/ConfigurationMethods.py (Plone-2_0-branch):
+	  Default position of the "Recent" portlet is now on the left.
+
 2004-05-01 22:36  limi
 
 	* skins/: plone_images/colophon_wai-aa.gif,
