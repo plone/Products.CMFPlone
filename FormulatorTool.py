@@ -20,7 +20,7 @@ class FormulatorTool (UniqueObject, SimpleItem):
     meta_type= 'CMF Formulator Tool'
     security = ClassSecurityInfo()
     plone_tool = 1
-                           
+
     security.declarePublic('createForm') # ( CMFCorePermissions.AddPortalContent, 'createForm' )
     def createForm(self):
         """ returns a BasicForm object """

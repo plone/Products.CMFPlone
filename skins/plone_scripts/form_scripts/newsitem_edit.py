@@ -4,28 +4,24 @@
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 
-id,description = field_id, field_description
-
 errors=context.validate_newsitem_edit()
-
-if REQUEST.has_key('errors'):
+if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
-
-REQUEST.set('title', field_title)
 qst='portal_status_message=News+Item+changed.'
 
-context.extended_edit()
-
-#XXX need to call edit after metadata edit or format will be reset to context's text_format
+#XXX eed to call edit after metadata edit or format will be reset to context's text_format
 context.edit( text 
-            , description
+            , field_description
             , text_format )
 
-context.rename_object(redirect=0, id=id)
+context.plone_utils.contentEdit( context
+                               , id=field_id
+                               , description=field_description)
+#context.rename_object(redirect=0, id=id)
+#tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
+#transaction_note(tmsg)
 
-tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
-transaction_note(tmsg)
 target_action = context.getTypeInfo().getActionById( 'view' )
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                                 , target_action
