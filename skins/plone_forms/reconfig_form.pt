@@ -294,18 +294,20 @@
                </div>
             </div>
             <div class="field">
-		<select name="default_skin"
-			tabindex=""
-			value=""
-			onfocus="formtooltip('skin_help',1)"
-			onblur="formtooltip('skin_help',0)"
-			tal:attributes="value here/portal_skins/getDefaultSkin;
-					tabindex tabindex/next;">
-		   <option tal:repeat="skin here/portal_skins/getSkinSelections"
-			   tal:attributes="value skin;
-                               selected python:test(default_skin == skin, 'selected', '')"
-			   tal:content="structure skin" />
-		</select>
+                <select name="default_skin"
+                        tabindex=""
+                        value=""
+                        onfocus="formtooltip('skin_help',1)"
+                        onblur="formtooltip('skin_help',0)"
+                        tal:attributes="value here/portal_skins/getDefaultSkin;
+                        tabindex tabindex/next;">
+                    <option value="#"
+                            i18n:translate=""
+                            tal:repeat="skin here/portal_skins/getSkinSelections"
+                            tal:attributes="value skin;
+                                            selected python:test(default_skin == skin, 'selected', '')"
+                            tal:content="structure skin" />
+                </select>
             </div>
         </div>
         
