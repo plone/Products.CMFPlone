@@ -8,11 +8,24 @@
 
 <p>
 <dtml-if needUpgrading>
-Your Plone instance is out of date. Click <a href="upgrade">here</a> to migrate to the latest version.
+Your Plone instance is out of date. Click "upgrade" to migrate to the latest version.
+
+<form action="upgrade">
+
+<p>Print the result of the migration without actually writing anything to the database.</p>
+
+<input name="dry_run" type="checkbox" value="1:int">Dry run</input><br/><br/>
+
+<input type="submit" value="Upgrade"/>
+
+</form>
+
 <dtml-else>
 Your Plone instance is up to date. 
 </dtml-if>
 </p>
+
+<hr/>
 
 <form action="upgrade">
 <p>
@@ -24,6 +37,10 @@ If, however, you're <strong>absolutely</strong> sure your instance is not &dtml-
     <option>&dtml-sequence-item;</option>
   </dtml-in>
 </select><br />
+
+<p>Print the result of the migration without actually writing anything to the database.</p>
+
+<input name="dry_run" type="checkbox" value="1:int">Dry run</input>
 
 <p><b>Note:</b> please ensure you have a backup of you Plone site prior to performing this and be aware you may break your site if you have the wrong version.</p>
 <input type="submit" value="Force migrate"/>

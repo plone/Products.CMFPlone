@@ -1,6 +1,7 @@
 CHANGES
 
 Plone 1.0.1
+    - Added "Dry run" option to portal_migration
     - Syndication is now using portal_form.
     - calendarDatePickerBox used tabindex instead of tabindex/next
     - validation of expiration_date and effective_date in content_status_history was broken
