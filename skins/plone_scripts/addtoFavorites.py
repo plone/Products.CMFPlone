@@ -11,7 +11,7 @@ new_id='fav_' + str(int( context.ZopeTime()))
 myPath=context.portal_url.getRelativeUrl(context)
 targetFolder.invokeFactory( 'Favorite', id=new_id, title=context.TitleOrId(), remote_url=myPath)
 
-msg = 'portal_status_message='+context.getId()+'+added+to+favorites'
+msg = 'portal_status_message=\''+context.title_or_id()+'\'+has+been+added+to+your+Favorites'
 return context.REQUEST.RESPONSE.redirect('%s/%s?%s' % ( context.absolute_url()
                                                       , context.getTypeInfo().getActionById('view')
                                                       , msg ))
