@@ -38,6 +38,9 @@
 
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
+    <link rel="home" href="" title="Front Page" tal:attributes="href string:$portal_url" />
+    <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
+    
     <!-- Disable IE6 image toolbar -->
     <meta http-equiv="imagetoolbar" content="no" />
 
