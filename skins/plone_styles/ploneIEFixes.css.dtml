@@ -15,5 +15,8 @@ div#columns div#left,
 div#columns div#right {
     overflow: hidden;
 }
+div.overflow {
+    overflow: auto;
+}
 
 /* </dtml-with> */

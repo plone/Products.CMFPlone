@@ -892,6 +892,9 @@ div.editableDocument > * textarea:focus {
     background: #ffffff;
     color: #000000;
 }
+div.overflow pre {
+    overflow: auto;
+}
 
 /*
 ** Calendar elements - used in the calendar rendering 
