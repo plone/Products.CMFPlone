@@ -1,3 +1,64 @@
+2004-01-25 01:35  shh42
+
+	* skins/plone_forms/roster.pt (Plone-2_0-branch): Fixed a TAL
+	  syntax error caught by ZChecker. Please run tests/zcheck.py
+	  before checking in.
+
+2004-01-23 17:08  limi
+
+	* skins/plone_prefs/password_form.pt (Plone-2_0-branch): Corrected
+	  spelling error. Fix for #2479.
+
+2004-01-23 13:09  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): fixed missing
+	  argument
+
+2004-01-23 12:13  tiran
+
+	* setup/dependencies.py (Plone-2_0-branch): shoot a warning when TS
+	  or Localizer are installed
+
+2004-01-23 12:11  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): remove TS but
+	  keep the Localizer
+
+2004-01-23 11:51  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): fixed: undo
+	  action, folder contents action
+
+2004-01-23 10:42  tiran
+
+	* migrations/v2/portlet_migration.py (Plone-2_0-branch): remove
+	  debug code
+
+2004-01-23 10:38  tiran
+
+	* migrations/v2/: plone2_base.py, release_candidates.py,
+	  twoBeta2_twoBeta3.py (Plone-2_0-branch): return migration
+	  informations to tool
+
+2004-01-23 10:33  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): Set portal
+	  type to "Plone Site" Remove old skins
+
+2004-01-23 10:31  tiran
+
+	* MigrationTool.py (Plone-2_0-branch): if you want to supress all
+	  exceptions pls make shure you abort the transaction to safe the
+	  zodb. Otherwise the zodb is filled with rubish
+
+2004-01-23 06:53  ajung
+
+	* CatalogTool.py: fixed missing parameters
+
+2004-01-23 05:37  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-23 02:41  limi
 
 	* skins/plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
