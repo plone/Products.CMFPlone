@@ -14,7 +14,9 @@ class PloneTool (UniqueObject, SimpleItem):
     security = ClassSecurityInfo()
     plone_tool = 1
     field_prefix = 'field_' #Formulator prefixes for forms
-    def _editMetadata( self
+
+    security.declarePublic('editMetadata')
+    def editMetadata( self
                      , obj
                      , allowDiscussion=None
                      , title=None
@@ -98,14 +100,27 @@ class PloneTool (UniqueObject, SimpleItem):
     security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):
         """ encapsulates how the editing of content occurs """
-        REQUEST=self.REQUEST
 
         if DublinCore.isImplementedBy(obj):
-            apply(self._editMetadata, (obj,), kwargs) #replaced extended_edit and metadata_edit
-	
-	self._renameObject(obj, id=kwargs['id']) #renamed rename_object.py
+            apply(self.editMetadata, (obj,), kwargs)
+
+        self._renameObject(obj, id=kwargs['id']) 
 	
 	self._makeTransactionNote(obj) #automated the manual transaction noting in xxxx_edit.py
+
+    security.declarePublic('availableMIMETypes')
+    def availableMIMETypes(self):
+        """ Return a map of mimetypes """
+        # This should probably be done in a more efficent way.
+        import mimetypes
+        
+        result = []
+        for mimetype in mimetypes.types_map.values():
+            if not mimetype in result:
+                result.append(mimetype)
+
+        result.sort()
+        return result
         
 InitializeClass(PloneTool)
 
