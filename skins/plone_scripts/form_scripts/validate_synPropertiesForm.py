@@ -19,6 +19,8 @@ try:
       REQUEST.updateBase != '':
         updateBase = DateTime(REQUEST.updateBase)
 except:
+    # note necessary evil, DateTime can raise many 
+    # different errors
     errors['updateBase'] = 'Please enter a valid date and time.'
     
 validator = context.portal_form.createForm()

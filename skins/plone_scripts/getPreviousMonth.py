@@ -8,14 +8,12 @@
 ##title=Calendar Presentation Helper
 ##
 
-try: month=int(month)
-except: pass
-try: year=int(year)
-except: pass
+month=int(month)
+year=int(year)
 
 if month==0 or month==1:
     month, year = 12, year - 1
 else:
     month-=1
 
-return DateTime(str(month) + '/1/' + str(year))
+return DateTime('%s/1/%s' % (month, year))
