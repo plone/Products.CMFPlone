@@ -75,7 +75,7 @@ def migrateToATCT(portal, out):
     get_transaction().commit(1)
     migrateFromCMFtoATCT = portal.migrateFromCMFtoATCT
     switchCMF2ATCT = portal.switchCMF2ATCT
-    out.append('Migrating and switching to ATContentTypes ...')
+    #out.append('Migrating and switching to ATContentTypes ...')
     result = migrateFromCMFtoATCT()
     out.append(result)
     try:
