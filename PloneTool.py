@@ -200,7 +200,7 @@ class PloneTool (UniqueObject, SimpleItem):
         # If any query parameters have been specified in the transition,
         # stick them into the request before calling getActionById()
         queryIndex = action_id.find('?')
-        if queryIndex:
+        if queryIndex > -1:
             query = parse_qs(action_id[queryIndex+1:])
             for key in query.keys():
                 if len(query[key]) == 1:
