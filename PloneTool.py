@@ -5,7 +5,6 @@ from types import TupleType, UnicodeType, DictType, StringType
 from urllib import urlencode
 import urlparse
 from cgi import parse_qs
-from email.Utils import getaddresses
 
 from zLOG import LOG, INFO, WARNING
 
@@ -45,6 +44,14 @@ def log(summary='', text='', log_level=INFO):
 EMAIL_RE = re.compile(r"^([0-9a-zA-Z_&.+-]+!)*[0-9a-zA-Z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$")
 EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]") # used to find double new line (in any variant)
 
+#XXX Remove this when we don't depend on python2.1 any longer, use email.Utils.getaddresses instead
+from rfc822 import AddressList
+def _getaddresses(fieldvalues):
+    """Return a list of (REALNAME, EMAIL) for each fieldvalue."""
+    all = ', '.join(fieldvalues)
+    a = AddressList(all)
+    return a.addresslist
+
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     id = 'plone_utils'
@@ -74,7 +81,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mail_text = self.sendto_template( self, **variables)
         host = self.MailHost
         host.send( mail_text )
-
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
@@ -106,12 +112,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # Address contains two newlines (spammer attack using "address\n\nSpam message")
             return False
         
-        if len(getaddresses([address])) != 1:
+        if len(_getaddresses([address])) != 1:
             # none or more than one address
             return False
         
         # Validate the address
-        for name,addr in getaddresses([address]):
+        for name,addr in _getaddresses([address]):
             if not self.validateSingleNormalizedEmailAddress(addr):
                 return False
         return True
@@ -132,7 +138,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             return False
         
         # Validate each address
-        for name,addr in getaddresses([addresses]):
+        for name,addr in _getaddresses([addresses]):
             if not self.validateSingleNormalizedEmailAddress(addr):
                 return False
         return True

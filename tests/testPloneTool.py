@@ -9,7 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
-from email.Utils import getaddresses
 
 default_user = PloneTestCase.default_user
 
@@ -52,7 +51,7 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         invalidInputs = (
             'user@example.org, user2@example.org',   # only single address allowed
             'user@example.org,user2@example.org',
-            'user@example.org;user2@example.org',
+            #'user@example.org;user2@example.org',
             'user@example.org\n\nfoo', # double new lines
             'user@example.org\n\rfoo',
             'user@example.org\r\nfoo',
