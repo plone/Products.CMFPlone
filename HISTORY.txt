@@ -12,7 +12,8 @@ Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
     - Implemented AM/PM support for the datetime-picker widget. Now, if
       your site_properties/localLongTimeFormat property contains the '%p'
       format specifier, the widget will display 12 hours and an additional
-      AM/PM dropdown. Resolves http://plone.org/collector/3264.
+      AM/PM dropdown. Resolves http://plone.org/collector/3264. Thanks to
+      alecm for the patch.
       [stefan]
 
     - Fixed http://plone.org/collector/3417 - because of acquisition, a
