@@ -85,7 +85,8 @@
                 No exceptions logged.
                 </div>
 
-                <table class="sortable listing"
+                <table class="listing"
+                       id="sortable"
                        tal:condition="entries">
                     <thead>
                         <tr>
