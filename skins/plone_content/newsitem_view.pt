@@ -10,15 +10,15 @@
          tal:define="len_text python:len(here.text)">
 
         <div class="contentHeader">
-	<h1 tal:content="here/title_or_id">Title or id</h1>
+	        <h1 tal:content="here/title_or_id">Title or id</h1>
         </div>
 
         <span class="description" tal:content="structure here/Description"> 
-	  News summary 
-	</span>
+	    News summary 
+	    </span>
 
         <p tal:condition="not: len_text"
-           i18n:translate="">
+           i18n:id="no_body_text">
           This document has yet to be written, click the edit button to write on document.
         </p>
       

@@ -22,7 +22,7 @@
         
         
       <p tal:condition="not: len_text"
-           i18n:translate="">
+           i18n:id="no_body_text">
       This document has yet to be written, click the edit tab to change the document.
       </p>
         
