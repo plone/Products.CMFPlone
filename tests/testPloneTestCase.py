@@ -1,7 +1,7 @@
 #
-# Tests the PloneTestCase
+# Example PloneTestCase
 #
-import pdb
+
 import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
@@ -11,7 +11,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 # Set up a portal
 app = ZopeTestCase.app()
-PloneTestCase.setupPloneSite(app, 'portal')
+PloneTestCase.setupPloneSite(app, id='portal')
 ZopeTestCase.close(app)
 
 
@@ -60,6 +60,7 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         assert self.folder.new.EditableBody() == ''
         self.folder.new.edit('plain', 'data', file='', safety_belt='')
         assert self.folder.new.EditableBody() == 'data'
+
 
 if __name__ == '__main__':
     framework()
