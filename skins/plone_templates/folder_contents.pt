@@ -257,9 +257,10 @@
         </tal:buttons>
     </form>
 
-    <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
+    <div tal:define="ids python:[obj.getId() for obj in here.contentValues()]"
+         tal:condition="python:not 'index_html' in ids and 
                         here.portal_membership.checkPermission('Add portal content', here) and
-						here.getTypeInfo().allowType('Document')">
+                        here.getTypeInfo().allowType('Document')">
 
         <p i18n:translate="description_no_default_folder_create_new">
         If you want to create a default page in this folder that will
