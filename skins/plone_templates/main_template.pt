@@ -12,7 +12,7 @@
 	                       lang language | site_properties/default_language;
                            charset site_properties/default_charset|string:utf-8">
 
-        <metal:headslot define-slot="head_slot" />
+    <metal:headslot define-slot="head_slot" />
     </metal:headslot>
 
     <metal:cssslot fill-slot="css_slot">
