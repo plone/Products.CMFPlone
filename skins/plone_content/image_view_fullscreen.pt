@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      i18n:domain="plone">
+
+<body style="background-color: white; color: white; font-family: 'Lucida Grande', Verdana, Lucida, Helvetica, Arial, sans-serif; font-size: 69%;">
+
+<div style="text-align:center;">
+    <a href=""
+       style="display:block; margin: 0.5em; color: #436976; text-decoration: underline;"
+       tal:attributes="href request/HTTP_REFERER"
+       tal:condition="request/HTTP_REFERER"
+       i18n:translate="">Back to site</a>
+
+    <a href=""
+       style="display:block; margin: 0.5em; color: #436976; text-decoration: underline;"
+       tal:attributes="href here/portal_url"
+       tal:condition="not: request/HTTP_REFERER"
+       i18n:translate="">Home</a>
+
+
+    <tal:block replace="structure here/tag" />
+
+</div>
+    
+</body>
+</html>
+
