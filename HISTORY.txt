@@ -6,6 +6,10 @@ Plone 2.0 - Fyuti
 
    RC6
 
+    - Fixed and re-fixed http://plone.org/collector/2246
+      Short name should be editable without specifying a file.
+      [achilles] [stefan] 
+
     - Added a monkey-patch workaround for http://plone.org/collector/1323
       This *may* be considered a CMF bug. See setFormatPatch.py.
       [stefan]
