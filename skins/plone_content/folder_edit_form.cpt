@@ -28,7 +28,7 @@
           
             <div class="field" 
                  tal:condition="python:member.getProperty('visible_ids', None) and
-                                       len(utool.getRelativeContentPath(getattr(here, id)))"
+                                       len(utool.getRelativeContentPath(getattr(here, here.getId())))"
                  tal:define="error errors/id | nothing;
                              id python:request.get('id', test(here.show_id(),here.getId(),''));"
                  tal:attributes="class python:test(error, 'field error', 'field')">
