@@ -3,7 +3,7 @@
 body {
     background: White;
     font-family: Georgia, Garamond, Times, serif;
-    font-size: 11pt;
+    font-size: 11pt !important;
     color: Black;
     margin: 0;
     padding: 0;
@@ -37,13 +37,16 @@ ul {
 .document,
 #description,
 .group,
+li,
+#content,
+.stx,
 p {
     background: transparent;
     border: none ! important;
     font-family: Georgia, Garamond, Times, serif;
     font-size: 11pt;
-    padding: 0;
-    margin: 0;
+    padding: 0 ! important;
+    margin: 0 ! important;
     text-align: left;
 }
 
@@ -60,7 +63,7 @@ h1, h2, h3, h4, h5, h6
 }
 
 p, #description {
-    margin: 1em 0;
+    margin: 1em 0 ! important;
     line-height: 1.2em;    
 }
 
