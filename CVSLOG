@@ -1,3 +1,37 @@
+2003-12-01 20:51  runyaga
+
+	* skins/plone_scripts/folder_delete.cpy (Plone-2_0-branch): status
+	  message should return title or idm not just id
+
+2003-12-01 19:44  runyaga
+
+	* Extensions/migrate.py (Plone-2_0-branch): add migrate external
+	  method for ease of migration
+
+2003-12-01 18:42  eaon
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): made
+	  move note more specific
+
+2003-12-01 18:40  eaon
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  added move note
+
+2003-12-01 18:30  eaon
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  welcome back usable ie 5.0! woo! thanks gwicke! :)
+
+2003-12-01 13:42  tiran
+
+	* skins/plone_content/metadata_edit_form.cpt (Plone-2_0-branch):
+	  fixed bug #2037: metadata_edit_form: i18n msgid twice
+
+2003-12-01 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-01 02:27  limi
 
 	* skins/plone_styles/base_properties.props (Plone-2_0-branch):
