@@ -111,6 +111,8 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool('Plone Properties Tool', None)
         if not exists('portal_migration'):
             addPloneTool('Plone Migration Tool', None)
+        if not exists('portal_configuration'):
+            addPloneTool('Plone Control Panel', None)
 
         p.manage_permission( CMFCorePermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )

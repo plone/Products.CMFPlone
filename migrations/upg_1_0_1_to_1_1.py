@@ -10,9 +10,15 @@ import os
 def upg_1_0_1_to_1_1(portal):
     """ Migrations from 1.0.1 to 1.1 """
 
+    #create the QuickInstaller
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
 
+    #create the PloneControlPanel if not present
+    addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
+    if not hasattr(portal.aq_explicit,'portal_configuration'):
+        addPloneTool('Plone Control Panel', None)
+    
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm']
     safeEditProperty(props, 'default_page', default_values, 'lines')

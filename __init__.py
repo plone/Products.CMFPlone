@@ -9,6 +9,7 @@ import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
 import NavigationTool, FactoryTool, FormTool, PropertiesTool
 import InterfaceTool
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
+import PloneControlPanel
 
 try:
     import LargePloneFolder
@@ -82,7 +83,9 @@ tools = ( MembershipTool.MembershipTool
         , FormTool.FormTool
         , PropertiesTool.PropertiesTool
         , MigrationTool.MigrationTool
-        , InterfaceTool.InterfaceTool)
+        , InterfaceTool.InterfaceTool
+        , PloneControlPanel.PloneControlPanel
+        )
 
 contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )
