@@ -85,7 +85,14 @@ class NavigationTool (UniqueObject, SimpleItem):
                 else:
                     self.REQUEST[key] = query[key]
             action_id = action_id[0:queryIndex]
-        next_action=context.getTypeInfo().getActionById(action_id)
+
+        # destination in the navigation properties that are enclosed in "
+        # are meant to be literal pagetemplate id that are valid
+        next_action=''
+        if action_id.find('"')==-1:
+            next_action=context.getTypeInfo().getActionById(action_id)
+        else:
+            next_action=action_id[1:len(action_id)-1]
         if next_action is not None:
             return context.restrictedTraverse(next_action)
         raise Exception, 'Argh! could not find the transition, ' + navTransition
@@ -101,12 +108,15 @@ class NavigationTool (UniqueObject, SimpleItem):
             
         url_params=urlencode(kwargs)
         redirect=None
-        try:
-            action_id=context.getTypeInfo().getActionById(action_id)
-        except: # XXX because ActionTool doesnt throw ActionNotFound exception ;(
-            pass
+        next_action=''
+        
+        if action_id.find('"')==-1:
+            next_action=context.getTypeInfo().getActionById(action_id)
+        else:
+            next_action=action_id[1:len(action_id)-1]
+            
         return self.REQUEST.RESPONSE.redirect( '%s/%s%s%s' % ( context.absolute_url()
-                                                             , action_id
+                                                             , next_action
                                                              , separator
                                                              , url_params) )
 

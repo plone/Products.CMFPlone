@@ -272,7 +272,9 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row"
+             tal:define="def_language here/portal_properties/default_language;
+                         sel_language python:test(here.Language(), here.Language(), def_language);">
             <div class="label">
                 <span i18n:id="language">Language</span>
                 <div id="language_help" 
@@ -295,7 +297,7 @@
                     <option value="">Choose Language</option> 
 	            <option tal:repeat="language here/availableLanguages" 
 		            tal:attributes="value python:language[0];
-                                            selected python:test(here.Language() == language[0], 'selected', '')"
+                                            selected python:test(sel_language == language[0], 'selected', '')"
                             tal:content="structure python:language[1]" />
                 </select>
             </div>

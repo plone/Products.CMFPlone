@@ -12,6 +12,9 @@
 <body>
 
 <div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {});
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();"
      tal:condition="here/rejectAnonymous" >
 	
     <h1 i18n:translate="">Plone Setup</h1>
@@ -29,7 +32,9 @@
 
         <span class="legend" i18n:translate="">Plone Details</span>
 		
-        <div class="row">
+        <div class="row"
+             tal:define="email_from_name request/email_from_name|props/email_from_name;
+                         error_email_from_name errors/email_from_name | nothing;">
             <div class="label">
                 <span i18n:id="portal_from_name">Portal 'From' name</span>
 
@@ -42,19 +47,25 @@
                 </div>
             </div>
             
-            <div class="field">
+            <div class="field">                
+              
+                <div tal:condition="error_email_from_name"
+                     tal:replace="structure string:$error_email_from_name <br />" />
+                
                 <input name="email_from_name"
                        size="30"
                        value=""
                        tabindex="1"
                        onfocus="formtooltip('portal_from_name_help',1)" 
                        onblur="formtooltip('portal_from_name_help',0)" 
-                       tal:attributes="value python:props.email_from_name" 
-                       />
+                       tal:attributes="value email_from_name;
+                                       tabindex tabindex/next;" />
             </div>
         </div>
 		
-        <div class="row">
+        <div class="row"
+             tal:define="email_from_address request/email_from_address|props/email_from_address;
+                         error_email_from_address errors/email_from_address | nothing;">
             <div class="label">
                 <span i18n:id="portal_from_address">Portal 'From' address</span>
 
@@ -68,17 +79,24 @@
             </div>
             
             <div class="field">
+            
+                <div tal:condition="error_email_from_address"
+                     tal:replace="structure string:$error_email_from_address <br />" />
+                                 
                 <input name="email_from_address"
                        size="30"
                        value=""
                        tabindex="2"
                        onfocus="formtooltip('portal_from_address_help',1)" 
                        onblur="formtooltip('portal_from_address_help',0)" 
-                       tal:attributes="value python:props.email_from_address" />
+                       tal:attributes="value email_from_address;
+                                       tabindex tabindex/next;" />
             </div>
         </div>
 		
-        <div class="row">
+        <div class="row"
+             tal:define="smtp_server request/smtp_server | props/smtp_server;
+                         error_smtp_server errors/smtp_servers | nothing;">
             <div class="label">
                 <span i18n:id="smtp_server">SMTP server</span>
 
@@ -93,19 +111,26 @@
             </div>
             
             <div class="field">
+            
+                <div tal:condition="error_smtp_server"
+                     tal:replace="structure string:$error_smtp_server <br />" />
+                                                 
                 <input name="smtp_server" 
                        value=""
                        size="30"
                        tabindex="3"
                        onfocus="formtooltip('smtp_server_help',1)" 
                        onblur="formtooltip('smtp_server_help',0)" 
-                       tal:attributes="value props/smtp_server" 
-                       />
+                       tal:attributes="value smtp_server; 
+                                       tabindex tabindex/next;" />
             </div>
         </div>
 
-        <div class="row">
-            <div class="label">
+        <div class="row" 
+             tal:define="title request/title | props/title;
+                         error_title errors/title | nothing;">
+                         
+            <div class="label required">
                 <span i18n:id="portal_title">Portal title</span>
 
                 <div id="portal_title_help"
@@ -116,18 +141,26 @@
                 </div>
             </div>
             
-            <div class="field">
+            <div class="field"
+                 tal:attributes="class python:test(error_title, 'field error', 'field')">
+            
+                <div tal:condition="error_title"
+                     tal:replace="structure string:$error_title <br />" />
+
                 <input name="title" 
                        size="30"
                        value=""
                        tabindex="4"
                        onfocus="formtooltip('portal_title_help',1)" 
                        onblur="formtooltip('portal_title_help',0)" 
-                       tal:attributes="value props/Title" />
+                       tal:attributes="value title;
+                                       tabindex tabindex/next;" />
             </div>
         </div>
 
-        <div class="row">
+        <div class="row"
+             tal:define="description request/description | props/description;
+                         error_description errors/description | nothing;">
             <div class="label">
                 <span i18n:id="portal_description">Portal description</span>
 
@@ -147,10 +180,38 @@
                           tabindex="5"
                           onfocus="formtooltip('portal_description_help',1)" 
                           onblur="formtooltip('portal_description_help',0)" 
-                          tal:content="python:props.description">Description</textarea>
+                          tal:attributes="tabindex tabindex/next"
+                          tal:content="description">Description</textarea>
             </div>
         </div>
 
+        <div class="row">
+            <div class="label">
+               <span i18n:id="language_help">Default Language</span>
+               <div id="language_help"
+                    i18n:id="language_help"
+                    class="help"
+                    style="visibility:hidden">
+               Specify the default language used in properties. 
+               </div>
+            </div>
+            <div class="field">
+            <!-- ISO-639-2 language selector for Plone -->
+            <select name="language"
+                    tabindex="6"
+                    value=""
+                    onfocus="formtooltip('language_help',1)"
+                    onblur="formtooltip('language_help',0)"
+                    tal:attributes="value here/portal_properties/default_language;
+                                    tabindex tabindex/next;">
+               <option value="">Choose Language</option>
+               <option tal:repeat="language here/availableLanguages"
+                       tal:attributes="value python:language[0];
+                                       selected python:test(here.portal_properties.default_language == language[0], 'selected', '')"
+                       tal:content="structure python:language[1]" />
+            </select>
+        </div> 
+                
         <div class="row">
             <div class="label">
                 <span i18n:id="password_policy">Password policy</span>
@@ -177,7 +238,8 @@
                            tabindex="6"
                            onfocus="formtooltip('password_policy_help',1)" 
                            onblur="formtooltip('password_policy_help',0)" 
-                           tal:attributes="checked validateChecked" />
+                           tal:attributes="checked validateChecked;
+                                           tabindex tabindex/next;" />
                     
                     <label for="validate_email_on" i18n:translate="">Generate and email members' initial password</label> 
                 
@@ -191,7 +253,8 @@
                            tabindex="6"
                            onfocus="formtooltip('password_policy_help',1)" 
                            onblur="formtooltip('password_policy_help',0)" 
-                           tal:attributes="checked allowEnterChecked" />
+                           tal:attributes="checked allowEnterChecked;
+                                           tabindex tabindex/next;" />
                 
                     <label for="validate_email_off">Allow members to select their initial password</label>
                 
@@ -212,7 +275,7 @@
         </div>
 
     </form>
-
+    <span tal:replace="structure request" />
 </div>
 
 </body>

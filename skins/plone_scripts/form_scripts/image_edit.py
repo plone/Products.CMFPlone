@@ -11,8 +11,8 @@
 errors = context.portal_form_validation.validate(context, 'validate_image_edit')
 if errors:
     edit_form=context.portal_navigation.getNextPageFor( context
-                                                , script.getId()
-                                                , 'failure' )
+                                                      , script.getId()
+                                                      , 'failure' )
     return edit_form()
 
 filename=getattr(file,'filename', '')

@@ -78,6 +78,7 @@ class PloneGenerator(Portal.PortalGenerator):
         p._setProperty('allowAnonymousViewAbout', 0, 'boolean')
         p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
         p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
+        p._setProperty('default_language', 'en', 'string')
         
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
@@ -92,12 +93,9 @@ class PloneGenerator(Portal.PortalGenerator):
         o.edit('structured-text', default_frontpage)
         
         skins=getToolByName(p, 'portal_skins')
-        try:
-            skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
-            p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
-            p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
-        except:
-            pass #nesting Portals
+        skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
+        p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
+        p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
         skins.plone_templates.plone_scripts.form_scripts.navigation_properties.manage_doCustomize(folder_path='custom')
         p.manage_pasteObjects( skins.custom.manage_cutObjects('navigation_properties') )
 
