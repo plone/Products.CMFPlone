@@ -16,6 +16,6 @@ new_context = context.portal_factory.doCreate(context, id)
 new_context.edit(remote_url=remote_url)
 new_context.plone_utils.contentEdit(new_context,
                                     id=id,
-                                    title = title,
+                                    title=title,
                                     description=description)
 return ('success', new_context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Link changes saved.')})

@@ -16,7 +16,6 @@
       <a href="mailto:admin@here.com" title="E-mail Administrator"
          tal:attributes="href string:mailto:${p_props/email_from_address}"
          tal:content="p_props/email_from_name">Email Admin</a>.
-      </p>
    </div>
 </div>
 
