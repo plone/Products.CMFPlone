@@ -7,6 +7,8 @@
 ##parameters=precondition='', file='', id='', title=None, description=None, file_data=''
 ##title=Edit a file
 ##
+from StringIO import StringIO
+
 original_id=context.getId()
 filename=getattr(file,'filename', '')
 
