@@ -10,10 +10,10 @@ from StringIO import StringIO
 def two0x_beta1(portal):
     """2.0.x -> 2.1-beta1
     """
-    out = StringIO()
+    out = []
     replaceMailHost(portal, out)
     
-    return out.getvalue()
+    return out
 
 def replaceMailHost(portal, out):
     """replaces the mailhost with a secure mail host
@@ -23,9 +23,9 @@ def replaceMailHost(portal, out):
     title = oldmh.title
     smtp_host = oldmh.smtp_host
     smtp_port = oldmh.smtp_port
-    print >>out, 'Removing old MailHost'
+    out.append('Removing old MailHost')
     portal.manage_delObjects([id])
     
-    print >>out, 'Adding new MailHost(SecureMailHost): %s:%s' % (smtp_host, smtp_port)
+    out.append('Adding new MailHost(SecureMailHost): %s:%s' % (smtp_host, smtp_port))
     addMailhost = portal.manage_addProduct['SecureMailHost'].manage_addMailHost
     addMailhost(id, title=title, smtp_host=smtp_host, smtp_port=smtp_port)
