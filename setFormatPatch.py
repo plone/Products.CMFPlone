@@ -14,5 +14,6 @@ def setFormat( self, format ):
         self.manage_changeProperties(content_type=format)
 
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
-DefaultDublinCoreImpl.__old_setFormat = DefaultDublinCoreImpl.setFormat
-DefaultDublinCoreImpl.setFormat = setFormat
+if not hasattr(DefaultDublinCoreImpl, '__old_setFormat'):
+    DefaultDublinCoreImpl.__old_setFormat = DefaultDublinCoreImpl.setFormat
+    DefaultDublinCoreImpl.setFormat = setFormat
