@@ -65,6 +65,13 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                      (CMFCorePermissions.ManageProperties,)
                                   , 'category'      : 'folder'
                                   }
+                                , { 'id'            : 'folderlisting'
+                                  , 'name'          : 'Folder Listing'
+                                  , 'action'        : 'string:${folder_url}/folder_listing'
+                                  , 'permissions'   :
+                                     (CMFCorePermissions.View,)
+                                  , 'category'      : 'folder'
+                                  }
                                 )
                              }
 
