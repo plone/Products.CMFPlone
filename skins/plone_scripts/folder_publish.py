@@ -7,6 +7,7 @@
 ##parameters=workflow_action, ids=[], comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
 ##title=Publish objects from a folder
 ##
+from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 workflow = context.portal_workflow
 
@@ -20,7 +21,6 @@ for id in ids:
             workflow.doActionFor(o, workflow_action, comment=comment)
             o.folder_publish(workflow_action, o.objectIds(), comment=comment, include_subfolders=include_subfolders)       
         else:
-            context.plone_debug(workflow_action + ', ' + o.absolute_url())
             workflow.doActionFor(o, workflow_action, comment=comment)
             success[id]=comment
     except Exception, e:
@@ -30,7 +30,9 @@ if not ids:
     REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                              , 'folder_contents'
                              , 'portal_status_message=You+must+select+content+to+change.') )
-			     
+
+transaction_note( str(ids) + ' transitioned ' + workflow_action )
+
 REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                         , 'folder_contents'
 					, 'portal_status_message=Content(s)+have+been+changed.') )
