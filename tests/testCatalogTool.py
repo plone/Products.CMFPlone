@@ -41,6 +41,18 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         self.app.manage_pasteObjects(cb)
         self.failUnless(hasattr(self.app, 'copy_of_portal'))
 
+    def testCanPasteCatalog(self):
+        # Should be able to copy/paste a portal containing
+        # a catalog tool. Triggers manage_afterAdd of portal_catalog
+        # thereby exposing a bug which is now going to be fixed.
+        from AccessControl.SecurityManagement import newSecurityManager
+        user = self.app.acl_users.getUserById('PloneTestCase').__of__(self.app.acl_users)
+        newSecurityManager(None, user)
+        cb = self.app.manage_copyObjects(['portal'])
+        self.app.manage_pasteObjects(cb)
+        self.failUnless(hasattr(self.app, 'copy_of_portal'))
+        self.portal.manage_delObjects(ids=['portal_catalog'])
+        self.portal.manage_pasteObjects(self.app.copy_of_portal.manage_copyObjects(ids=['portal_catalog']))
 
 class TestCatalogSearch(PloneTestCase.PloneTestCase):
 

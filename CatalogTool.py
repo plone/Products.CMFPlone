@@ -27,15 +27,19 @@ class CatalogTool(BaseTool):
             class args:
                 def __init__(self, **kw):
                     self.__dict__.update(kw)
-            
-            self.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
-                'plone_lexicon', 
-                elements=[
-                args(group= 'Case Normalizer' , name= 'Case Normalizer' ),
-                args(group= 'Stop Words' , name= " Don't remove stop words" ),
-                args(group= 'Word Splitter' , name= "Unicode Whitespace splitter" ),
-                ]
-                )
+
+            # when a catalog is pasted, there is allredy a ZCTextIndex
+            try:
+                self.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
+                    'plone_lexicon',
+                    elements=[
+                    args(group= 'Case Normalizer' , name= 'Case Normalizer' ),
+                    args(group= 'Stop Words' , name= " Don't remove stop words" ),
+                    args(group= 'Word Splitter' , name= "Unicode Whitespace splitter" ),
+                    ]
+                    )
+            except:
+                pass
 
             extra = args( doc_attr = 'SearchableText',
                           lexicon_id = 'plone_lexicon',
