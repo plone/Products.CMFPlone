@@ -19,16 +19,19 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
 
     def _installed(self):
         return [p['id'] for p in self.qi.listInstalledProducts()]
+
     def _available(self):
         return [p['id'] for p in self.qi.listInstallableProducts()]
 
     def testInstallUninstallProduct(self):
-        '''CMFFormController should be uninstalled, we install it and it should not show up as installable'''
+        # CMFFormController should be uninstalled, we install it and 
+        # it should not show up as installable
         self.qi.uninstallProducts(['CMFFormController',])
-        assert 'CMFFormController' not in self._installed()
-        assert 'CMFFormController' in self._available()
+        self.failIf('CMFFormController' in self._installed())
+        self.failUnless('CMFFormController' in self._available())
         self.qi.installProduct('CMFFormController')
-        assert 'CMFFormController' not in self._available()
+        self.failIf('CMFFormController' in self._available())
+        self.failUnless('CMFFormController' in self._installed())
         
     
 if __name__ == '__main__':

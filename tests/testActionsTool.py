@@ -16,7 +16,7 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.actions = self.portal.portal_actions
 
     def testAddAction(self):
-        '''addAction should work even though PloneTestCase patches _cloneActions'''
+        # addAction should work even though PloneTestCase patches _cloneActions
         action_infos = self.actions.listActions()
         length = len(action_infos)
         self.actions.addAction(id='foo',
@@ -27,11 +27,11 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
                                category='foo_category',
                                visible=1)
         action_infos = self.actions.listActions()
-        assert len(action_infos) == length + 1
-        assert action_infos[-1].id == 'foo'
-        assert action_infos[-1].title == 'foo_name'
-        assert action_infos[-1].permissions == ('foo_permission',)
-        assert action_infos[-1].category == 'foo_category'
+        self.assertEqual(len(action_infos), length + 1)
+        self.assertEqual(action_infos[-1].id, 'foo')
+        self.assertEqual(action_infos[-1].title, 'foo_name')
+        self.assertEqual(action_infos[-1].permissions, ('foo_permission',))
+        self.assertEqual(action_infos[-1].category, 'foo_category')
 
             
 if __name__ == '__main__':

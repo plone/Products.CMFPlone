@@ -16,7 +16,7 @@ class TestSomeProduct(PloneTestCase.PloneTestCase):
         pass
 
     def testSomething(self):
-        '''Test something'''
+        # Test something
         self.failUnless(1==1)
 
             

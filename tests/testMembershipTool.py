@@ -26,86 +26,86 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
 
     def testGetPersonalFolder(self):
-        '''Should return the .personal folder'''
+        # Should return the .personal folder
         personal = getattr(self.folder, self.membership.personal_id, None)
-        assert personal is not None
-        assert self.membership.getPersonalFolder(_user_name) == personal
+        self.failIfEqual(personal, None)
+        self.assertEqual(self.membership.getPersonalFolder(_user_name), personal)
          
     def testGetPersonalFolderIfMissing(self):
-        '''Should return None as the .personal folder is missing'''
+        # Should return None as the .personal folder is missing
         self.folder._delObject(self.membership.personal_id)
-        assert self.membership.getPersonalFolder(_user_name) is None       
+        self.assertEqual(self.membership.getPersonalFolder(_user_name), None)
 
     def testGetPersonalFolderIfNoHome(self):
-        '''Should return None as the user has no home folder'''
+        # Should return None as the user has no home folder
         members = self.membership.getMembersFolder()
         members._delObject(_user_name)
-        assert self.membership.getPersonalFolder(_user_name) is None       
+        self.assertEqual(self.membership.getPersonalFolder(_user_name), None)
 
     def testGetPersonalPortrait(self):
-        '''Should return the default portrait'''
-        assert self.membership.getPersonalPortrait(_user_name).getId() == 'defaultUser.gif'
+        # Should return the default portrait
+        self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), 'defaultUser.gif')
 
     def testChangeMemberPortrait(self):
-        '''Should change the portrait image'''
+        # Should change the portrait image
         self.membership.changeMemberPortrait(Portrait(), _user_name)
-        assert self.membership.getPersonalPortrait(_user_name).getId() == _user_name
-        assert self.membership.getPersonalPortrait(_user_name).meta_type == 'Image'
+        self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), _user_name)
+        self.assertEqual(self.membership.getPersonalPortrait(_user_name).meta_type, 'Image')
 
     def testdeletePersonalPortrait(self):
-        '''Should change the portrait image'''
+        # Should change the portrait image
         self.membership.changeMemberPortrait(Portrait(), _user_name)
         self.membership.deletePersonalPortrait(_user_name)
-        assert self.membership.getPersonalPortrait(_user_name).getId() == 'defaultUser.gif'
+        self.assertEqual(self.membership.getPersonalPortrait(_user_name).getId(), 'defaultUser.gif')
 
     def testGetPersonalPortraitWithoutPassingId(self):
-        '''Should return the logged in users portrait if no id is given'''
+        # Should return the logged in users portrait if no id is given
         self.membership.changeMemberPortrait(Portrait(), _user_name)
-        assert self.membership.getPersonalPortrait().getId() == _user_name
-        assert self.membership.getPersonalPortrait().meta_type == 'Image'
+        self.assertEqual(self.membership.getPersonalPortrait().getId(), _user_name)
+        self.assertEqual(self.membership.getPersonalPortrait().meta_type, 'Image')
 
     def testListMembers(self):
-        '''Should return the members list'''
+        # Should return the members list
         members = self.membership.listMembers()
-        assert len(members) == 1
-        assert members[0].getId() == _user_name
+        self.assertEqual(len(members), 1)
+        self.assertEqual(members[0].getId(), _user_name)
 
     def testListMembersSkipsGroups(self):
-        '''Should only return real members, not groups'''
+        # Should only return real members, not groups
         uf = self.portal.acl_users
         uf.changeOrCreateGroups(new_groups=['Foo', 'Bar'])
-        assert len(uf.getUserNames()) == 3
+        self.assertEqual(len(uf.getUserNames()), 3)
         members = self.membership.listMembers()
-        assert len(members) == 1
-        assert members[0].getId() == _user_name
+        self.assertEqual(len(members), 1)
+        self.assertEqual(members[0].getId(), _user_name)
 
     def testListMemberIds(self):
-        '''Should return the members ids list'''
+        # Should return the members ids list
         memberids = self.membership.listMemberIds()
-        assert len(memberids) == 1
-        assert memberids[0] == _user_name
+        self.assertEqual(len(memberids), 1)
+        self.assertEqual(memberids[0], _user_name)
 
     def testListMemberIdsSkipsGroups(self):
-        '''Should only return real members, not groups'''
+        # Should only return real members, not groups
         uf = self.portal.acl_users
         uf.changeOrCreateGroups(new_groups=['Foo', 'Bar'])
-        assert len(uf.getUserNames()) == 3
+        self.assertEqual(len(uf.getUserNames()), 3)
         memberids = self.membership.listMemberIds()
-        assert len(memberids) == 1
-        assert memberids[0] == _user_name
+        self.assertEqual(len(memberids), 1)
+        self.assertEqual(memberids[0], _user_name)
 
     def testCurrentPassword(self):
-        '''Password checking should work'''
-        assert self.membership.testCurrentPassword('secret')
-        assert not self.membership.testCurrentPassword('geheim')
+        # Password checking should work
+        self.failUnless(self.membership.testCurrentPassword('secret'))
+        self.failIf(self.membership.testCurrentPassword('geheim'))
 
     def testSetPassword(self):
-        '''Password should be changed'''
+        # Password should be changed
         self.membership.setPassword('geheim')
-        assert self.membership.testCurrentPassword('geheim')
+        self.failUnless(self.membership.testCurrentPassword('geheim'))
 
     def testSetPasswordIfAnonymous(self):
-        '''Anonymous should not be able to change password'''
+        # Anonymous should not be able to change password
         self.logout()
         try:
             self.membership.setPassword('geheim')

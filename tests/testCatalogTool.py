@@ -18,13 +18,14 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         self.catalog = self.portal.portal_catalog
 
     def testPloneLexiconIsZCTextLexicon(self):
-        '''Lexicon should be a ZCTextIndex lexicon'''
-        assert hasattr(aq_base(self.catalog), 'plone_lexicon')
-        assert self.catalog.plone_lexicon.meta_type == 'ZCTextIndex Lexicon'
+        # Lexicon should be a ZCTextIndex lexicon
+        self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
+        self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
 
     def testSearchableTextIsZCTextIndex(self):
-        '''SearchableText index should be a ZCTextIndex'''
-        assert self.catalog.Indexes['SearchableText'].__class__.__name__ == 'ZCTextIndex'
+        # SearchableText index should be a ZCTextIndex
+        self.assertEqual(self.catalog.Indexes['SearchableText'].__class__.__name__,
+                         'ZCTextIndex')
 
     
 if __name__ == '__main__':

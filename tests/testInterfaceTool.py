@@ -34,17 +34,17 @@ class B(PortalContent, DefaultDublinCoreImpl):
 class TestInterfaceResolution(ZopeTestCase.ZopeTestCase):
 
     def testResolveDublinCore(self):
-        '''DublinCore should be resolved'''
+        # DublinCore should be resolved
         dotted_name = getDottedName(DublinCore)
         self.assertEqual(resolveInterface(dotted_name), DublinCore)
 
     def testResolveContentish(self):
-        '''Contentish should be resolved'''
+        # Contentish should be resolved
         dotted_name = getDottedName(Contentish)
         self.assertEqual(resolveInterface(dotted_name), Contentish)
 
     def testResolveNonInterface(self):
-        '''Should raise ValueError when called with non-Interface'''
+        # Should raise ValueError when called with non-Interface
         dotted_name = getDottedName(PortalContent)
         self.assertRaises(ValueError, resolveInterface, dotted_name)
 
@@ -52,7 +52,7 @@ class TestInterfaceResolution(ZopeTestCase.ZopeTestCase):
 class TestInterfaceFinder(ZopeTestCase.ZopeTestCase):
 
     def testAvailableInterfaces(self):
-        '''Should find available interfaces'''
+        # Should find available interfaces
         from Products.CMFPlone.interfaces import InterfaceTool
         ifs = InterfaceFinder().findInterfaces(module=InterfaceTool)
         self.assertEqual(ifs, [getDottedName(InterfaceTool.IInterfaceTool)])

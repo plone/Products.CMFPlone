@@ -24,7 +24,6 @@ class TestDefaultWorkflow(PloneTestCase.PloneTestCase):
         self.portal.acl_users._doAddUser('reviewer', 'secret', ['Reviewer'], [])
         self.portal.acl_users._doAddUser('manager', 'secret', ['Manager'], [])
 
-        #self.catalog.addColumn('allowedRolesAndUsers')
         self.folder.invokeFactory('Document', id='doc')
 
     def testOwnerHidesVisibleDocument(self):

@@ -23,21 +23,21 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         # Should assing a local role
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
         member = self.membership.getMemberById('user2')
-        assert member.getRolesInContext(self.folder) == ('Authenticated', 'Foo', 'Member')
+        self.assertEqual(member.getRolesInContext(self.folder), 
+                         ('Authenticated', 'Foo', 'Member'))
 
     def testFolderLocalRoleDelete(self):
         # Should delete a local role
         self.folder.folder_localrole_edit('add', ['user2'], 'Foo')
         member = self.membership.getMemberById('user2')
-        assert member.getRolesInContext(self.folder) == ('Authenticated', 'Foo', 'Member')
+        self.assertEqual(member.getRolesInContext(self.folder),
+                         ('Authenticated', 'Foo', 'Member'))
         self.folder.folder_localrole_edit('delete', ['user2'])
-        assert member.getRolesInContext(self.folder) == ('Authenticated', 'Member')
+        self.assertEqual(member.getRolesInContext(self.folder),
+                         ('Authenticated', 'Member'))
 
     def testFolderLocalRoleView(self):
         # Folder_localrole_form should render
-        # WOOSHA! This bombs because of
-        # Unauthorized: You are not allowed to access getGroups in this context
-        # TODO: Someone look into this please...
         self.folder.folder_localrole_form()
 
             

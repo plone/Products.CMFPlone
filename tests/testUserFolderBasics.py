@@ -54,61 +54,61 @@ class TestUserFolderSecurity(TestBase):
     '''Test UF is working'''
 
     def testGetUser(self):
-        assert self.uf.getUser(_user_name) is not None
+        self.failIf(self.uf.getUser(_user_name) is None)
 
     def testGetUsers(self):
         users = self.uf.getUsers()
-        assert users != []
-        assert users[0].getUserName() == _user_name
+        self.failUnless(users)
+        self.assertEqual(users[0].getUserName(), _user_name)
 
     def testGetUserNames(self):
         names = self.uf.getUserNames()
-        assert names != []
-        assert names[0] == _user_name
+        self.failUnless(names)
+        self.assertEqual(names[0], _user_name)
 
     def testIdentify(self):
         auth = self._basicAuth(_user_name)
         name, password = self.uf.identify(auth)
-        assert name is not None
-        assert name == _user_name
-        assert password is not None
+        self.failIf(name is None)
+        self.assertEqual(name, _user_name)
+        self.failIf(password is None)
     
     def testGetRoles(self):
         user = self.uf.getUser(_user_name)
-        assert _user_role in user.getRoles()
+        self.failUnless(_user_role in user.getRoles())
     
     def testGetRolesInContext(self):
         user = self.uf.getUser(_user_name)
         self.folder.manage_addLocalRoles(_user_name, ['Owner'])
         roles = user.getRolesInContext(self.folder)
-        assert _user_role in roles
-        assert 'Owner' in roles
+        self.failUnless(_user_role in roles)
+        self.failUnless('Owner' in roles)
     
     def testHasRole(self):
         user = self.uf.getUser(_user_name)
-        assert user.has_role(_user_role, self.folder)
+        self.failUnless(user.has_role(_user_role, self.folder))
     
     def testHasLocalRole(self):
         user = self.uf.getUser(_user_name)
         self.folder.manage_addLocalRoles(_user_name, ['Owner'])
-        assert user.has_role('Owner', self.folder)
+        self.failUnless(user.has_role('Owner', self.folder))
     
     def testHasPermission(self):
         user = self.uf.getUser(_user_name)
         self.folder.manage_role(_user_role, _standard_permissions+['Add Folders'])
         self.login()   # !!! Fixed in Zope 2.6.2
-        assert user.has_permission('Add Folders', self.folder)
+        self.failUnless(user.has_permission('Add Folders', self.folder))
     
     def testHasLocalPermission(self):
         user = self.uf.getUser(_user_name)
         self.folder.manage_role('Owner', ['Add Folders'])
         self.folder.manage_addLocalRoles(_user_name, ['Owner'])
         self.login()   # !!! Fixed in Zope 2.6.2
-        assert user.has_permission('Add Folders', self.folder)
+        self.failUnless(user.has_permission('Add Folders', self.folder))
     
     def testAuthenticate(self):
         user = self.uf.getUser(_user_name) 
-        assert user.authenticate('secret', self.app.REQUEST)
+        self.failUnless(user.authenticate('secret', self.app.REQUEST))
 
     
 class TestUserFolderAccess(TestBase):
@@ -142,26 +142,26 @@ class TestUserFolderValidate(TestBase):
         request = self.app.REQUEST
         auth = self._basicAuth(_user_name)
         user = self.uf.validate(request, auth, [_user_role])
-        assert user is not None
-        assert user.getUserName() == _user_name
+        self.failIf(user is None)
+        self.assertEqual(user.getUserName(), _user_name)
 
     def testNotAuthorize(self):
         # Validate should fail without auth
         request = self.app.REQUEST
         auth = ''
-        assert self.uf.validate(request, auth, [_user_role]) is None
+        self.assertEqual(self.uf.validate(request, auth, [_user_role]), None)
 
     def testNotAuthorize2(self):
         # Validate should fail without roles
         request = self.app.REQUEST
         auth = self._basicAuth(_user_name)
-        assert self.uf.validate(request, auth) is None
+        self.assertEqual(self.uf.validate(request, auth), None)
 
     def testNotAuthorize3(self):
         # Validate should fail with wrong roles
         request = self.app.REQUEST
         auth = self._basicAuth(_user_name)
-        assert self.uf.validate(request, auth, ['Manager']) is None
+        self.assertEqual(self.uf.validate(request, auth, ['Manager']), None)
 
     def testAuthorize2(self):
         # Validate should allow us to call dm
@@ -169,8 +169,8 @@ class TestUserFolderValidate(TestBase):
         auth = self._basicAuth(_user_name)
         roles = self._call__roles__(self.folder[_pm])
         user = self.uf.validate(request, auth, roles)
-        assert user is not None
-        assert user.getUserName() == _user_name
+        self.failIf(user is None)
+        self.assertEqual(user.getUserName(), _user_name)
 
     def testNotAuthorize4(self):
         # Validate should deny us to call dm
@@ -180,7 +180,7 @@ class TestUserFolderValidate(TestBase):
         for p in _standard_permissions:
             pm.manage_permission(p, [], acquire=0)
         roles = self._call__roles__(pm)
-        assert self.uf.validate(request, auth, roles) is None
+        self.assertEqual(self.uf.validate(request, auth, roles), None)
 
 
 if __name__ == '__main__':

@@ -17,7 +17,7 @@ class TestSomeProduct(ZopeTestCase.ZopeTestCase):
         pass
 
     def testSomething(self):
-        '''Test something'''
+        # Test something
         self.failUnless(1==1)
 
             

@@ -14,15 +14,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         # The portal has already been set up, so there 
-        # is little to do.
+        # is little to do. :-|
         pass
 
     def testPloneSkins(self):
-        '''Plone skins should have been set up'''
-        assert hasattr(self.folder, 'plone_powered.gif')
+        # Plone skins should have been set up
+        self.failUnless(hasattr(self.folder, 'plone_powered.gif'))
 
     def testDefaultView(self):
-        '''index_html should render (slow test)'''
+        # index_html should render
         self.portal.index_html()
 
             

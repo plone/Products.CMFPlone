@@ -45,69 +45,69 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.folder.doc.talkback.discussion_reply('Foo', 'Blah', self.member)
         talkback = self.discussion.getDiscussionFor(self.folder.doc)
         reply = talkback.objectValues()[0]
-        assert reply.Title() == 'Foo'
-        assert reply.EditableBody() == 'Blah'
+        self.assertEqual(reply.Title(), 'Foo')
+        self.assertEqual(reply.EditableBody(), 'Blah')
 
     def testDocumentEdit(self):
         self.folder.invokeFactory('Document', id='doc')
         self.folder.doc.document_edit('plain', 'data')
-        assert self.folder.doc.EditableBody() == 'data'
+        self.assertEqual(self.folder.doc.EditableBody(), 'data')
 
     def testEventEdit(self):
         self.folder.invokeFactory('Event', id='event')
         self.folder.event.event_edit(title='Foo', 
                                      start_date='2003-09-18',
                                      end_date='2003-09-19')
-        assert self.folder.event.Title() == 'Foo'
-        assert self.folder.event.start().ISO() == '2003-09-18 00:00:00'
-        assert self.folder.event.end().ISO() == '2003-09-19 00:00:00'
+        self.assertEqual(self.folder.event.Title(), 'Foo')
+        self.assertEqual(self.folder.event.start().ISO(), '2003-09-18 00:00:00')
+        self.assertEqual(self.folder.event.end().ISO(), '2003-09-19 00:00:00')
 
     def testFavoriteEdit(self):
         self.folder.invokeFactory('Favorite', id='favorite')
         self.folder.favorite.link_edit('bar/baz.html')
-        assert self.folder.favorite.getRemoteUrl() == \
-                '%s/bar/baz.html' % self.portal.portal_url()
+        self.assertEqual(self.folder.favorite.getRemoteUrl(),
+                         '%s/bar/baz.html' % self.portal.portal_url())
 
     def testFileEdit(self):
         self.folder.invokeFactory('File', id='file')
         self.folder.file.file_edit(file=File())
-        assert str(self.folder.file) == 'file_contents'
+        self.assertEqual(str(self.folder.file), 'file_contents')
 
     def testFolderEdit(self):
         self.folder.invokeFactory('Folder', id='folder')
         self.folder.folder.folder_edit('Foo', 'Bar')
-        assert self.folder.folder.Title() == 'Foo'
-        assert self.folder.folder.Description() == 'Bar'
+        self.assertEqual(self.folder.folder.Title(), 'Foo')
+        self.assertEqual(self.folder.folder.Description(), 'Bar')
 
     def testImageEdit(self):
         self.folder.invokeFactory('Image', id='image')
         self.folder.image.image_edit(file=File())
-        assert str(self.folder.image.data) == 'file_contents'
+        self.assertEqual(str(self.folder.image.data), 'file_contents')
 
     def testLargePloneFolderEdit(self):
         LargePloneFolder.addLargePloneFolder(self.folder, 'lpf')
         self.folder.lpf.folder_edit('Foo', 'Bar')
-        assert self.folder.lpf.Title() == 'Foo'
-        assert self.folder.lpf.Description() == 'Bar'
+        self.assertEqual(self.folder.lpf.Title(), 'Foo')
+        self.assertEqual(self.folder.lpf.Description(), 'Bar')
 
     def testLinkEdit(self):
         self.folder.invokeFactory('Link', id='link')
         self.folder.link.link_edit('http://foo.com')
-        assert self.folder.link.getRemoteUrl() == 'http://foo.com'
+        self.assertEqual(self.folder.link.getRemoteUrl(), 'http://foo.com')
 
     def testNewsItemEdit(self):
         self.folder.invokeFactory('News Item', id='newsitem')
         self.folder.newsitem.newsitem_edit('data', 'plain')
-        assert self.folder.newsitem.EditableBody() == 'data'
+        self.assertEqual(self.folder.newsitem.EditableBody(), 'data')
 
     def testTopicEditTopic(self):
         self.folder.invokeFactory('Topic', id='topic')
         self.folder.topic.topic_editTopic(1, 'topic', title='Foo')
-        assert self.folder.topic.Title() == 'Foo'
+        self.assertEqual(self.folder.topic.Title(), 'Foo')
 
-    def testTopicEditCriteria(self):
-        self.folder.invokeFactory('Topic', id='topic')
-        # TODO: Analyze that funky data structure
+    #def testTopicEditCriteria(self):
+    #    self.folder.invokeFactory('Topic', id='topic')
+    #    # TODO: Analyze that funky data structure
 
 
 if __name__ == '__main__':
