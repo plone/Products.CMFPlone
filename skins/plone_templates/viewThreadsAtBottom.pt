@@ -53,7 +53,7 @@
         			      action="discussion_reply_form"
         			      method="post"
                           style="display: inline;"
-        			      tal:condition="python:test( getattr(here, 'isPortalContent', ''), here.isPortalContent, 0)" 
+        			      tal:condition="python:getattr(here, 'isPortalContent', 0)" 
         			      tal:attributes="action string:${reply/absolute_url}/discussion_reply_form" >
         			      
         			    <input class="standalone" 
