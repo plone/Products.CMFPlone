@@ -21,7 +21,7 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
     __implements__ = ICustomizationPolicy
 
     def customize(self, portal):
-        DefaultCustomizationPolicy().customize(self, portal)
+        DefaultCustomizationPolicy().customize(portal)
         wf_tool=getToolByName(portal,'portal_workflow')
         wf_tool._delObject('plone_workflow')
 
