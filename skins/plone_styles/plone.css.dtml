@@ -554,9 +554,21 @@ input.searchButton {
     padding: 0;
 }
 .documentActions {
-    float: right; 
-    margin-top: 1.5em;
+    float: right;
+    margin: -1.5em 0 0 0;
 }
+
+.documentActions ul,
+.documentActions li {
+    display: inline;
+    list-style: none;
+    list-style-image: none;
+}
+.documentActions a {
+    border: 0;
+    text-decoration: none;
+}
+
 .portalMessage {
     background-color: &dtml-notifyBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
@@ -705,7 +717,6 @@ input.searchButton {
 /* The new form elements */
 
 .field {
-    position: relative;
     top: 0;
     left: 0;
     margin: 0 1em 1em 0;    

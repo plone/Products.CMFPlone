@@ -6,17 +6,15 @@
 
 <div metal:fill-slot="main">
 
+    <h1 tal:content="here/title_or_id">Title or id</h1>
+
     <div metal:use-macro="here/document_actions/macros/document_actions">
         Document actions (print, sendto etc)
     </div>
 
-    <div class="contentHeader">
-  	<h1 tal:content="here/title_or_id">Title or id</h1>
-    </div>
-
     <div class="documentDescription"
          tal:content="here/Description">
-    description
+        description
     </div>
 
     <p tal:condition="here/event_url|nothing">
@@ -63,7 +61,7 @@
     </dl>
 
     <div metal:use-macro="here/document_byline/macros/byline">
-      Get the byline - contains details about author and modification date.
+        Get the byline - contains details about author and modification date.
     </div>
 
 </div>
