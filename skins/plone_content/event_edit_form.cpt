@@ -211,6 +211,10 @@
 
             <label for="end_date" i18n:translate="label_event_end">Event Ends</label>
             
+            <span class="fieldRequired" title="Required"
+                  i18n:attributes="title"
+                  i18n:translate="label_required">(Required)</span>
+                
             <div class="formHelp" i18n:translate="help_event_end">
             Click the calendar to select a date or browse the calendar.
             </div>
