@@ -13,13 +13,10 @@
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title portal_properties/title;
-                       here_title here/title_or_id;
-                       here_id here/getId;
-                       template_title template/title_or_id;
-                       here_title python: portal_title != here_title and here_title or template_title;
-                       here_title python: here_id != here_title and here_title or template_title;"
-           tal:content="string:$portal_title - $here_title">
-      Title of page
+                       page_title python:here.getPageTitle(here, template, portal_title)" >
+        <span tal:replace="page_title" />
+        &mdash;
+        <span tal:replace="portal_title" />
     </title>
 
     <metal:baseslot define-slot="base" />

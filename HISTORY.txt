@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - More Google tweaking. Factored out the page title to a separate
+      script and switched the order of the elements.
+      [limi][tesdal]
+
     - Did a few things to improve the Google ranking of all Plone sites:
       Put all the style sheet declarations inside HTML comments, so Google
       doesn't try to interpret them as text, and removed the non-working
