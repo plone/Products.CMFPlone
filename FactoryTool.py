@@ -24,8 +24,6 @@ class TempFolder(TempFolderBase):
     portal_type = meta_type = 'TempFolder'
     isPrincipiaFolderish = 0
 
-    parent = None
-
     # override getPhysicalPath so that temporary objects return a full path
     # that includes the acquisition parent of portal_factory (otherwise we get
     # portal_root/portal_factory/... no matter where the object will reside)
@@ -109,11 +107,9 @@ class TempFolder(TempFolderBase):
     def userCanTakeOwnership(self):
         return aq_parent(aq_parent(self)).userCanTakeOwnership()
 
-
     # delegate allowedContentTypes
     def allowedContentTypes(self):
         return aq_parent(aq_parent(self)).allowedContentTypes()
-
 
     # override __getitem__
     def __getitem__(self, id):
@@ -126,7 +122,7 @@ class TempFolder(TempFolderBase):
         intended_parent = aq_parent(portal_factory)
 
         # If the intended parent has an object with the given id, just do a passthrough
-        if hasattr(aq_base(intended_parent), id):
+        if hasattr(intended_parent, id):
             return getattr(intended_parent, id)
 
         # rewrap portal_factory
@@ -140,7 +136,7 @@ class TempFolder(TempFolderBase):
             type_name = self.getId()
             self.invokeFactory(id=id, type_name=type_name)
             obj = self._getOb(id)
-            obj.unindexObject()
+            obj.unindexObject()  # keep obj out of the catalog
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
     # ignore rename requests since they don't do anything
@@ -249,90 +245,13 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             return obj
 
 
-    def fixRequest(self):
-        """Our before_publishing_traverse call mangles URL0.  This fixes up
-        the REQUEST."""
-        factory_info = self.REQUEST.get('__factory_info__', {})
-        stack = factory_info.get('stack',[])
-        if stack:
-            URL = self.REQUEST.URL0 + '/' + '/'.join(stack)
-        else:
-            URL = self.REQUEST.URL0
-
-        self.REQUEST.set('URL', URL)
-
-        url_list = URL.split('/')
-        n = 0
-        while len(url_list) > 0 and url_list[-1] != '':
-            self.REQUEST.set('URL%d' % n, '/'.join(url_list))
-            url_list = url_list[:-1]
-            n = n + 1
-
-        url_list = URL.split('/')
-        m = 0
-        while m < n:
-            self.REQUEST.set('BASE%d' % m, '/'.join(url_list[0:len(url_list)-n+1+m]))
-            m = m + 1
-        # XXX fix URLPATHn here too
-
-
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""
         ob = aq_parent(aq_inner(obj))
         return hasattr(ob, 'meta_type') and ob.meta_type == TempFolder.meta_type
 
 
-    def __before_publishing_traverse__(self, other, REQUEST):
-        # prevent further traversal
-        stack = REQUEST.get('TraversalRequestNameStack')
-        stack.reverse()
-        REQUEST.set('TraversalRequestNameStack', [])
-        factory_info = {'stack':stack}
-        REQUEST.set('__factory_info__', factory_info)
-
-
-    security.declarePublic('__call__')
-    def __call__(self, *args, **kwargs):
-        """call method"""
-
-        factory_info = self.REQUEST.get('__factory_info__', {})
-        if not factory_info.get('fixed_request'):
-            self.fixRequest()
-            factory_info['fixed_request'] = 1
-            self.REQUEST.set('__factory_info__', factory_info)
-
-        stack = factory_info['stack']
-        # stack.reverse()
-        if len(stack) < 2:
-            obj = self.restrictedTraverse('/'.join(stack))
-            if args == ():
-                # XXX hideous hack -- why isn't REQUEST passed in in args??
-                args = (self.REQUEST, )
-            return mapply(obj, self.REQUEST.args, self.REQUEST,
-                               call_object, 1, missing_name, dont_publish_class,
-                               self.REQUEST, bind=1)
-        id = stack[1]
-
-        if id in aq_parent(self).objectIds():
-            return aq_parent(self).restrictedTraverse('/'.join(stack[1:]))(*args, **kwargs)
-
-        tempFolder = self.getTempFolder(stack[0])
-
-        # Get the first item in the stack by explicitly calling __getitem__ 
-        # This fixes some problematic interactions with SpeedPack.
-        temp_obj = tempFolder.__getitem__(stack[1])
-        stack = stack[2:]
-        if stack:
-            obj = temp_obj.restrictedTraverse('/'.join(stack))
-        else:
-            obj = temp_obj
-
-        return mapply(obj, self.REQUEST.args, self.REQUEST,
-                               call_object, 1, missing_name, dont_publish_class,
-                               self.REQUEST, bind=1)
-
-
-    index_html = None  # call __call__, not index_html
+#    index_html = None  # call __call__, not index_html
 
 
     def getTempFolder(self, type_name):
