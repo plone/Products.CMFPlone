@@ -28,7 +28,7 @@ if id:
         if checkForCollision:
             container = context.getParentNode()
             if id in container.objectIds():
-                errors[self.id_key] = 'This id already exists.'
+                errors['id'] = 'This id already exists.'
 
 if errors:
     return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
