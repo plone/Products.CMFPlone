@@ -18,7 +18,7 @@
 
 		<form name="search results" action="#" method="POST"
               tal:condition="members"
-              tal:define="batch python:Batch(members, 12, int(b_start), orphan=1)">
+              tal:define="batch python:Batch(members, 20, int(b_start), orphan=1)">
 				
 		<p>
         Visible Members: <strong tal:content="python:len(members)">number of members</strong> 
@@ -59,6 +59,7 @@
             </span>
         </span>
 
+        
         <div class="listingBar">
             <span class="previous" tal:define="n batch/previous | nothing" tal:condition="python: not n"> &nbsp; </span>
             <span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 

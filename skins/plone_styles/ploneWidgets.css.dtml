@@ -260,6 +260,7 @@ div.listingBar {
     text-align: right;
     text-transform: &dtml-textTransform;;
     height: 1em;
+    clear: both;
 }
 
 div.listingBar span.previous {
