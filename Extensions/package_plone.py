@@ -22,7 +22,8 @@ os.system("cd .. ; mkdir %s" % releasename)
 # copy products
 for product in ('CMFPlone', 'Formulator', 'CMFActionIcons', 'CMFQuickInstallerTool',
                 'BTreeFolder2', 'GroupUserFolder', 'CMFFormController',
-                ' PlacelessTranslationService',
+                'PlacelessTranslationService', 'Archetypes', 'generator', 'validation',
+                'PortalTransforms', )
                ):
     os.system("cd .. ; cp -rfL %s %s" % (product, releasename))
 
