@@ -10,7 +10,7 @@
 ##
 
 if not title:
-    state.setError('title', 'Input is required but no input given.', 'input_required')
+    state.setError('title', 'This field is required, please provide some information.', 'input_required')
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message='Please correct the indicated errors.')

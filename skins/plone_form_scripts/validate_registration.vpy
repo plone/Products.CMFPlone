@@ -10,7 +10,7 @@
 
 reg_tool=context.portal_registration
 def missing(field):
-    state.setError(field, 'Input is required but no input given.', 'input_required')
+    state.setError(field, 'This field is required, please provide some information.', 'input_required')
 def nomatch(field):
     state.setError(field, 'Passwords do not match.', 'nomatch_password')
 def minlimit(field):

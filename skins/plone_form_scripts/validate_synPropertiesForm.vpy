@@ -18,10 +18,10 @@ if updateBase and updateBase!='None':
         state.setError('updateBase', 'Please enter a valid date and time.')
 
 if updateFrequency is None:
-    state.setError('updateFrequency', 'Input is required but no input given.', 'input_required')
+    state.setError('updateFrequency', 'This field is required, please provide some information.', 'input_required')
 
 if max_items is None:
-    state.setError('max_items', 'Input is required but no input given.', 'input_required')
+    state.setError('max_items', 'This field is required, please provide some information.', 'input_required')
 
 if state.getErrors():
     return state.set(status='failure', portal_status_message='Please correct the indicated errors.')
