@@ -204,11 +204,15 @@ class DefaultCustomizationPolicy:
         st.selections=skins_map
 
         #add the slots to the portal folder
-        left_slots=( 'here/navigation_tree_slot/macros/navigationBox' 
+        left_slots=( 'here/login_slot/macros/loginBox'
+                   , 'here/navigation_tree_slot/macros/navigationBox' 
                    , 'here/about_slot/macros/aboutBox'
                    , 'here/related_slot/macros/relatedBox' )
         right_slots=( 'here/calendar_slot/macros/calendarBox' , )
 
         portal._setProperty('left_slots', left_slots, 'lines')
         portal._setProperty('right_slots', right_slots, 'lines')
+        
+        #be default have nothing on right hand column for members
+        portal.Members._setProperty('right_slots', (), 'lines')
 
