@@ -1168,6 +1168,11 @@ ul.configletDetails li label {
     padding: 1px 0px 1px 16px;
 }
 
+.link-news {
+    background: transparent url(&dtml-portal_url;/topic_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
 .link-ftp {
     background: transparent url(&dtml-portal_url;/file_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
