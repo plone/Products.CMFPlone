@@ -32,6 +32,8 @@ if workflow_action!=current_state:
     newcontext=context.portal_workflow.doActionFor( context,
                                                     workflow_action,
                                                     comment=comment )
+if not newcontext:
+    newcontext = context
 
 if not contentEditSuccess:
     #The object post-transition could now have ModifyPortalContent permission.
