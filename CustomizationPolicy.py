@@ -46,7 +46,7 @@ class DefaultCustomizationPolicy:
 	#we are changing it to View for workaround in CMF1.3 ActionsTool
         at.addAction('rename','Rename','string:folder_rename_form:method','', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('cut', 'Cut', 'string:folder_cut:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
-        at.addAction('copy', 'Copy', 'string:folder_copy:method', '', CMFCorePermissions.ListFolderContents, 'folder_buttons')
+        at.addAction('copy', 'Copy', 'string:folder_copy:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('paste', 'Paste', 'string:folder_paste:method', 'folder/cb_dataValid', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('delete', 'Delete', 'string:folder_delete:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
