@@ -6,17 +6,16 @@
       tal:attributes="lang site_properties/default_language|default;
                       xml:lang site_properties/default_language|default;">
 
+
 <head metal:use-macro="here/header/macros/html_header">
     <metal:headslot fill-slot="head_slot"
                tal:define="language here/Language;
                            lang language | site_properties/default_language;
                            charset site_properties/default_charset|string:utf-8">
 
-    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)" />
-    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Language', lang)" />
-    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')" />
-    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Pragma', 'no-cache')" />
-    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Last-Modified', DateTime().toZone('GMT').rfc822())" />
+    <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+      Get the global cache settings located in global_cache_settings.
+    </metal:cache>
 
     <metal:headslot define-slot="head_slot" />
     </metal:headslot>

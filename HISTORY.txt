@@ -4,15 +4,20 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Cache headers were moved to a separate file in plone_templates called 
+      global_cache_settings to make it easier to customize the caching options 
+      without changing main_template.
+      [limi]
+
     - GroupUserFolders' GroupsTool and GroupDataTool are now subclassed in
-      CMFPlone [alan]
+      CMFPlone [runyaga]
 
     - QuickInstallerTool is now installed in
       CMFPlone/Portal/PortalGenerator.setupTools()
       In the migrations for 1.1 QuickInstaller is notified that are installing 
       CMFActionIcons and CMFCalendar outside the framework.  Now they show
       installed.  QuickInstaller is now subclassed in Plone and has a test
-      that installs/uninstalls a product.  [alan]
+      that installs/uninstalls a product.  [runyaga]
 
     - MembershipTool's listMembers and listMemberIds now only return real users 
       (not groups) when GRUF is employed. The MembershipTool comes with tests!
