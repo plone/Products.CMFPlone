@@ -146,17 +146,18 @@
     
                 <tal:tabindex define="tabindex tabindex/next">
                 <input type="checkbox"
-                       onclick="javascript:toggleSelect(this, 'portal_type:list', true); return false;"
+                       onclick="javascript:toggleSelect(this, 'portal_type:list', true);"
                        name="pt_toggle"
                        value="#"
                        id="pt_toggle"
                        class="noborder"
                        tabindex=""
+                       checked="checked"
                        tal:attributes="tabindex tabindex;"/>
                 <label for=""
                        i18n:translate=""
                        tal:attributes="for string:pt_toggle"
-                       >toggle
+                       >Toggle
                 </label>
                 <br />
                 </tal:tabindex>
@@ -220,17 +221,18 @@
     
                 <tal:tabindex define="tabindex tabindex/next">
                 <input type="checkbox"
-                       onclick="javascript:toggleSelect(this, 'review_state', true); return false;"
+                       onclick="javascript:toggleSelect(this, 'review_state', true);"
                        name="rs_toggle"
                        value="#"
                        id="rs_toggle"
                        class="noborder"
+                       checked="checked"
                        tabindex=""
                        tal:attributes="tabindex tabindex;"/>
                 <label for=""
                        i18n:translate=""
                        tal:attributes="for string:rs_toggle"
-                       >toggle
+                       >Toggle
                 </label>
                 <br />
                 </tal:tabindex>
