@@ -56,7 +56,7 @@ as possible.
     </div>
     
     <div class="row">
-        <div class="label"i18n:translate="label_security">Security</div>
+        <div class="label" i18n:translate="label_security">Security</div>
         <div class="field">
             <input type=hidden name="security_related:boolean" value="">
             <input class="noborder" 
