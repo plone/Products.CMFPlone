@@ -19,6 +19,9 @@ Plone 2.1-beta1 - () - Released (TBA)
       is updated while cataloging. It defaults to yes.
       [stefan]
 
+    - Plone now uses SecureMailHost instead of plain old MailHost.
+      [tiran]
+
     - SearchableText, Title, and Description now use TextIndexNG2 if installed.
       All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
       not installed. Note that in Plone 2.0 Title and Description used to be plain 
