@@ -102,7 +102,7 @@ class PloneSite(CMFSite, OrderedContainer):
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
-        return self.browserDefault(request)
+        return self.browserDefault()
 
 class PloneGenerator(Portal.PortalGenerator):
 
