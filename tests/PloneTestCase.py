@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.8 2003/10/28 21:13:30 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.9.2.9 2003/11/03 21:31:56 dreamcatcher Exp $
 
 from Testing import ZopeTestCase
 
@@ -30,6 +30,7 @@ import time
 
 portal_name  = 'portal'
 portal_owner = 'portal_owner'
+default_user = ZopeTestCase.user_name
 
 
 class PloneTestCase(ZopeTestCase.PortalTestCase):
