@@ -243,6 +243,10 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     def listMembers(self):
         '''Gets the list of all members.
+        THIS METHOD MIGHT BE VERY EXPENSIVE ON LARGE USER FOLDERS AND MUST BE USED
+        WITH CARE! We plan to restrict its use in the future (ie. force large requests
+        to use searchForMembers instead of listMembers, so that it will not be
+        possible anymore to have a method returning several hundred of users :)
         '''
         uf = self.acl_users
         if hasattr(aq_base(uf), 'getPureUsers'): # GRUF

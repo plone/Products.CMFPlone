@@ -13,7 +13,8 @@
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size python:20;
-                acl_users here/acl_users;">
+                acl_users here/acl_users;
+                portal_roles here/getGlobalPortalRoles;">
 
 <div class="configlet">
 
@@ -62,25 +63,25 @@
             method="post"
             tal:attributes="action here/absolute_url">
 
-	        <input class="standalone add"
-	                tabindex=""
-	                type="submit"
-	                name="join_form:method"
-	                value="Add New User"
-	                i18n:attributes="value"
-	                tal:attributes="tabindex tabindex/next;"
-	                tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
-	                />
-	
-	        <input class="standalone add"
-	                tabindex=""
-	                type="submit"
-	                name="createMember:method"
-	                value="Add New User"
-	                i18n:attributes="value"
-	                tal:attributes="tabindex tabindex/next;"
-	                tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
-	                />
+            <input class="standalone add"
+                    tabindex=""
+                    type="submit"
+                    name="join_form:method"
+                    value="Add New User"
+                    i18n:attributes="value"
+                    tal:attributes="tabindex tabindex/next;"
+                    tal:condition="python:not portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+                    />
+    
+            <input class="standalone add"
+                    tabindex=""
+                    type="submit"
+                    name="createMember:method"
+                    value="Add New User"
+                    i18n:attributes="value"
+                    tal:attributes="tabindex tabindex/next;"
+                    tal:condition="python:portal.portal_quickinstaller.isProductInstalled('CMFMember')"
+                    />
         </form>
         
         <form action=""
@@ -96,7 +97,8 @@
                tal:attributes="value b_start"/>
             <table class="listing" summary="User Listing">
                 <tr>
-                    <th colspan="4">
+                    <th colspan="6"
+                        tal:attributes="colspan python:len(portal_roles)+4">
                         <span tal:omit-tag="" i18n:translate="label_user_search">User Search</span>:
                         <input tabindex=""
                                type="text"
@@ -118,16 +120,25 @@
 
                     </th>
                 </tr>
-
-                <tr>
-                    <th i18n:translate="listingheader_user_name">User name</th>
-                    <th i18n:translate="listingheader_email_address">E-mail Address</th>
-                    <th i18n:translate="listingheader_reset_password">Reset Password</th>
-                    <th i18n:translate="listingheader_remove_user">Remove user</th>
-                </tr>
-
+                <tal:block tal:condition="portal_users" >
+                    <tr>
+                        <th rowspan="2" i18n:translate="listingheader_user_name">User name</th>
+                        <th rowspan="2" i18n:translate="listingheader_email_address">E-mail Address</th>
+                        <th colspan="3" 
+                            tal:attributes="colspan python:len(portal_roles)"
+                            i18n:translate="listingheader_roles">Roles</th>
+                        <th rowspan="2" i18n:translate="listingheader_reset_password">Reset Password</th>
+                        <th rowspan="2" i18n:translate="listingheader_remove_user">Remove user</th>
+                    </tr>
+                    <tr>
+                        <tal:header repeat="portal_role portal_roles">
+                        <th tal:content="portal_role" i18n:translate="">Role</th>
+                        </tal:header>
+                    </tr>
+                </tal:block>
+                
                 <tal:block repeat="this_user batch">
-
+                    
                     <tr tal:define="oddrow repeat/this_user/odd"
                         tal:attributes="class python:test(oddrow,'odd','even')">
 
@@ -155,7 +166,8 @@
                            title="Send a mail to this user"
                            i18n:attributes="title"
                            ><tal:block replace="structure here/mail_icon.gif"/></a>
-                        <input type="text"
+                        <input style="margin:2px;"
+                            type="text"
                             size="15"
                             name=""
                             value=""
@@ -167,6 +179,19 @@
                                             value email" />
 
                     </td>
+                    
+                    <td class="listingCheckbox"
+                    tal:define="user_roles python:this_user.getRoles();"
+                    tal:repeat="portal_role portal_roles">
+    
+                    <input type="checkbox"
+                           class="noborder"
+                           name="name"
+                           value="Manager"
+                           tal:attributes="name string:user_${this_user/getUserName}:list;
+                                           value portal_role;
+                                           checked python:test(portal_role in user_roles, 'checked' ,'');" />
+                </td>
 
                     <td class="listingCheckbox">
                         <input type="checkbox"
@@ -187,21 +212,25 @@
                     </tal:block>
                 </tr>
             </tal:block>
+            <tal:block tal:condition="not:batch">
+                <tr>
+                    <td i18n:translate="text_nomatches" style="text-align:center;">No matches</td>
+                </tr>
+            </tal:block>
         </table>
 
-	<p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
 
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
         <input class="context"
-		tabindex=""
-		type="submit"
-		name="prefs_user_manage:method"
-		value="Apply Changes"
-		i18n:attributes="value"
-		tal:attributes="tabindex tabindex/next;"
-		tal:condition="batch" 
-		/>
+        tabindex=""
+        type="submit"
+        name="prefs_user_manage:method"
+        value="Apply Changes"
+        i18n:attributes="value"
+        tal:attributes="tabindex tabindex/next;"
+        tal:condition="batch" 
+        />
 
         </form>
 

@@ -16,6 +16,19 @@ generatepassword=context.portal_registration.generatePassword
 removed=REQUEST.get('delete', [])
 resetpw=REQUEST.get('resetpassword', [])
 
+users=[user[len('user_'):]
+        for user in REQUEST.keys()
+        if user.startswith('user_')]
+
+groupstool=context.portal_groups
+for user in users:
+    roles=REQUEST['user_' + user]
+    member=getMemberById(user)
+    domains=''
+    if hasattr(member, 'getDomains'):
+        domains=member.getDomains()
+    acl_users.userFolderEditUser(user, None, roles, domains)
+
 #parse REQUEST - yuk!
 originals={}
 entered={}
@@ -37,19 +50,6 @@ for key in REQUEST.keys():
 for userid,email in originals.items():
     if email!=entered[userid]:
         setMemberProperties(userid, email=entered[userid])
-
-
-#raise(context.REQUEST)
-
-for key in REQUEST.keys():
-    if key.startswith('roles-'):
-        userid=key[len('roles-'):]
-        member=getMemberById(userid)
-        roles=[role for role in REQUEST[key] if role]
-        domains=''
-        if hasattr(member, 'getDomains'):
-            domains=member.getDomains()
-        acl_users.userFolderEditUser(userid, None, roles, domains)
 
 #reset password has been checked; email password
 for userid in resetpw:

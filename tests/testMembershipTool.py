@@ -398,7 +398,7 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
         # Add some members
         self.addMember('fred', 'Fred Flintstone', 'fred@bedrock.com', ['Member', 'Reviewer'], '2002-01-01')
         self.addMember('barney', 'Barney Rubble', 'barney@bedrock.com', ['Member'], '2002-01-01')
-        self.addMember('bambam', 'Bambam Rubble', 'bambam@bambam.net', ['Member'], '2003-12-31')
+        self.addMember('brubble', 'Bambam Rubble', 'bambam@bambam.net', ['Member'], '2003-12-31')
         # MUST reset this
         self.memberdata._v_temps = None
 
@@ -407,6 +407,12 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
         member = self.membership.getMemberById(username)
         member.setMemberProperties({'fullname': fullname, 'email': email,
                                     'last_login_time': DateTime(last_login_time),})
+
+    def testSearchById(self):
+        search = self.membership.searchForMembers
+        self.assertEqual(len(search(name='brubble')), 1)
+        self.assertEqual(len(search(name='barney')), 1)
+        self.assertEqual(len(search(name='rubble')), 2)
 
     def testSearchByName(self):
         search = self.membership.searchForMembers
