@@ -27,7 +27,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                              , 'actions'        :
                                 ( { 'id'            : 'view' 
                                   , 'name'          : 'View'
-                                  , 'action'        : ''
+                                  , 'action'        : 'index_html'
                                   , 'permissions'   :
                                      (CMFCorePermissions.View,)
                                   , 'category'      : 'folder'
@@ -43,7 +43,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                   , 'name'          : 'Local Roles'
                                   , 'action'        : 'folder_localrole_form'
                                   , 'permissions'   :
-                                     (CMFCorePermissions.ManageProperties,)
+                                     (CMFCorePermissions.ChangePermissions,)
                                   , 'category'      : 'folder'
                                   }
                                 , { 'id'            : 'edit'
@@ -155,7 +155,9 @@ def _getViewFor(obj, view='view', default=None):
                 default=action
             if action.get('id', None) == view:
                 if _verifyActionPermissions(obj, action) and action['action']!='':
-                    return obj.restrictedTraverse(action['action'])
+                    action = obj.restrictedTraverse(action['action'])
+                    if action is not None:
+                        return action
 
         if default is not None:    
             if _verifyActionPermissions(obj, default):
