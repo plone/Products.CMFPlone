@@ -74,6 +74,21 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         assert len(members) == 1
         assert members[0].getId() == _user_name
 
+    def testListMemberIds(self):
+        '''Should return the members ids list'''
+        members = self.membership.listMemberIds()
+        assert len(members) == 1
+        assert members[0] == _user_name
+
+    def testListMemberIdsSkipsGroups(self):
+        '''Should only return real members, not groups'''
+        uf = self.portal.acl_users
+        uf.changeOrCreateGroups(new_groups=['Foo', 'Bar'])
+        assert len(uf.getUserNames()) == 3
+        members = self.membership.listMemberIds()
+        assert len(members) == 1
+        assert members[0] == _user_name
+
     def testCurrentPassword(self):
         '''Password checking should work'''
         assert self.membership.testCurrentPassword('secret')
