@@ -77,6 +77,19 @@
                 <th>Remove user</th>
             </tr>
             
+            <tal:comment replace="nothing">
+            Unfortunately alot of this stuff is tied to the GroupUserFolder.  Things like getUsers()
+            will return both groups and users 8-( - so you have to do alot of filtered like the below not:
+            </tal:comment>
+
+            <tal:comment replace="nothing">
+            pjgrizel->limi: GRUF already has several API methods to return the results you'd like to have:
+              - getPureUsers() behaves like getUsers() but returns no groups
+              - userobject.isGroup() method returns true if userobject is a group, then you can avoid 
+               the hazardous "getGroupPrefix()" stuff.
+              Seems like it's time to document the whole GRUF API ! :-)
+            </tal:comment>
+            
             <tal:block repeat="this_user batch">
 
             <tr tal:define="oddrow repeat/this_user/odd"
