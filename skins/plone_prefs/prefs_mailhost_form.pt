@@ -32,7 +32,7 @@
           tal:define="props python:here.portal_properties;">
 
         <fieldset>
-            <legend i18n:translate="legend_mailhost_details">MailHost Details</legend>
+            <legend i18n:translate="legend_mailhost_details">SMTP Server ('MailHost') Details</legend>
     
             <div class="field"
                  tal:define="smtp_server request/smtp_server | site_properties/smtp_server;
