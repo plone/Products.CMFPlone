@@ -7,6 +7,7 @@
 ##parameters=precondition='', field_file='', field_id='', title=None, description=None, file_data=''
 ##title=Edit a file
 ##
+from Products.CMFPlone import transaction_note
 from StringIO import StringIO
 REQUEST=context.REQUEST
 
@@ -46,7 +47,8 @@ if hasattr(context, 'extended_edit'):
     if response:
         return response
 context.rename_object(redirect=0, id=id)
-
+tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
+transaction_note(tmsg)
 target_action = context.getTypeInfo().getActionById( 'view' )
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                                 , target_action

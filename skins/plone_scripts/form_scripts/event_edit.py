@@ -8,6 +8,8 @@
 ##title=
 ##
 from Products.CMFPlone import transaction_note
+portal_url=context.portal_url
+
 if not field_id:
     field_id=context.getId()
     REQUEST.set('field_id', field_id)
@@ -42,6 +44,7 @@ else:
     view='event_view'
 
 context.rename_object(redirect=0, id=id)
-transaction_note(context.title_or_id()+' has been modified.')
+tmsg='/'.join(portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
+transaction_note(tmsg)
 return RESPONSE.redirect('%s/%s?%s' % (context.absolute_url(), view, msg) )
 

@@ -47,8 +47,8 @@ context.edit( text_format
 if id!=context.getId():
     context.rename_object(redirect=0, id=id)
 
-transaction_note(context.title_or_id() + ' was modified.' ) #label the title
-
+tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
+transaction_note(tmsg)
 target_action = context.getTypeInfo().getActionById( 'view' )
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                                 , target_action

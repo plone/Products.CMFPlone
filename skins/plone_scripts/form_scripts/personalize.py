@@ -2,6 +2,7 @@
 ##title=Personalization Handler.
 ##bind namespace=_
 ##parameters=portrait=None
+from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 portrait_id='MyPortrait'
 
@@ -19,23 +20,19 @@ except: #CMF1.3 below
 if REQUEST.has_key('portal_skin'):
     context.portal_skins.updateSkinCookie()
     
-qs = '/personalize_form?portal_status_message=Member+changed.'
-
 #if a portait file was upload put it in the /Members/XXXX/.personal/MyPortrait
 if portrait and portrait.filename:
-    
     personal=context.getPlonePersonalFolder()
-
     if not personal:
         home=context.portal_membership.getHomeFolder()
         home.manage_addProduct['CMFCore'].manage_addContent(type='Portal Folder', id='.personal')
         personal=getattr(home, '.personal')
-
     if not hasattr(personal, portrait_id):
         personal.invokeFactory(type_name='Image', id=portrait_id)
-    
     portrait_obj=getattr(personal, portrait_id, None)
     portrait_obj.edit(file=portrait)
 
-
-context.REQUEST.RESPONSE.redirect(context.portal_url() + qs)
+qs = '/personalize_form?portal_status_message=Member+changed.'
+tmsg=context.portal_membership.getAuthenticatedMember().getUserName()+' personalized their settings.'
+transaction_note(tmsg)
+REQUEST.RESPONSE.redirect(context.portal_url() + qs)

@@ -7,6 +7,7 @@
 ##parameters=precondition='', field_file='', field_id='', title=None, description=None
 ##title=Edit an image
 ##
+from Products.CMFPlone import transaction_note
 qst='portal_status_message=Image+changed.'
 REQUEST=context.REQUEST
 
@@ -42,7 +43,8 @@ if hasattr(context, 'extended_edit'):
         return response
 
 context.rename_object(redirect=0, id=id)
-
+tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
+transaction_note(tmsg)
 target_action = context.getTypeInfo().getActionById( 'view' )
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                                 , target_action

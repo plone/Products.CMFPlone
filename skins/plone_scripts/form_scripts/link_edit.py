@@ -7,7 +7,7 @@
 ##parameters=field_remote_url, field_id='', field_title=None, field_description=None, subject=None
 ##title=Edit a link
 ##
-
+from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 if not field_id:
     field_id=context.getId()
@@ -36,5 +36,6 @@ if hasattr(context, 'extended_edit'):
         return response
 		
 context.rename_object(redirect=0, id=id)
-
+tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
+transaction_note(tmsg)
 return REQUEST.RESPONSE.redirect( context.absolute_url() + '/link_view' + qst )

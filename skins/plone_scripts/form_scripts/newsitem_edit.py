@@ -1,6 +1,7 @@
 ## Script (Python) "newsitem_edit"
 ##parameters=text, text_format, field_title='', field_description='', choice=' Change ', subject=None, field_id=''
 ##title=Edit a news item
+from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 if not field_id:
     field_id=context.getId()
@@ -30,6 +31,8 @@ context.edit( text
 if id!=context.getId():
     context.rename_object(redirect=0, id=id)
 
+tmsg='/'.join(context.portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
+transaction_note(tmsg)
 target_action = context.getTypeInfo().getActionById( 'view' )
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                                 , target_action

@@ -11,7 +11,6 @@
 #ideally we will always be in the same context when we use this.  
 #this will go after any edit action, i.e. document_edit
 #change metadata if its changed
-
 REQUEST=context.REQUEST
 title=REQUEST.get('title', REQUEST.get('field_title', context.Title()))
 description=REQUEST.get('description', REQUEST.get('field_description', context.Description()))
@@ -27,6 +26,5 @@ if title or description or subject:
                           effective_date=effective_date, 
                           expiration_date=expiration_date, 
                           redirect=0)
-
 #moved the id/filename renaming to the xxx_edit scripts
 #use rename_object() script
