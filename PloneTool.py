@@ -271,7 +271,16 @@ class PloneTool (UniqueObject, SimpleItem):
             from AccessControl import getSecurityManager
             user= getSecurityManager().getUser()
 
-        object.changeOwnership(user, recursive) 
+        catalog_tool=getToolByName(self, 'portal_catalog')
+        object.changeOwnership(user, recursive)
+        catalog_tool.reindexObject(object)
+        if recursive:
+            _path=getToolByName(self, 'portal_url').getRelativeContentURL(object)
+            subobjects=[b.getObject() for b in catalog_tool( path={'query':_path,'level':1} )]
+            for obj in subobjects:
+                catalog_tool.reindexObject(obj)
+            
+            
     
     security.declarePublic('urlparse')
     def urlparse(self, url):
