@@ -463,10 +463,9 @@ class NavigationTool(UniqueObject, SimpleItem):
                 hint = hint + 'The script or validator on which mapply'\
                        'is operating may not be compiling properly.\n'
             import zLOG
-            zLOG.LOG('Plone: ', 0, ('%s \n\nNavigation trace: (version %s)'
+            zLOG.LOG('Plone: ', 0, ('%s \n\nNavigation trace:'
                                     '\n-----------------\n%s%s'
                                     ) % (exceptionString,
-                                         __version__.strip(),
                                          formattedTrace,
                                          hint))
             if clearTrace:
