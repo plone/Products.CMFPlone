@@ -153,7 +153,7 @@
                 <span tal:replace="user/getUserName">john</span>
             </a>
 
-            <span tal:condition="here/portal_membership/isAnonymousUser" i18n:translate="is_anonymous">you are not logged in</span>
+            <span tal:condition="here/portal_membership/isAnonymousUser" i18n:translate="you_are_not_logged_in">You are not logged in</span>
 
             <metal:block tal:repeat="action python:display_actions">
             <a href=""

@@ -131,6 +131,7 @@ table.listing {
     border-left: &dtml-listingBorder;;
     border-bottom: &dtml-listingBorder;;
     margin: 1em 0em 1em 0em;
+    clear: both;
 }
 
 table.listing th {

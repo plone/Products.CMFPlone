@@ -75,7 +75,7 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label">
-                <span i18n:translate="title">Title</span>
+                <span i18n:translate="label_title">Title</span>
                 
                 <div id="title_help" 
                      i18n:translate="help_title"

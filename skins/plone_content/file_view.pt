@@ -63,7 +63,7 @@
     <div class="row"
          tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
             
-            <h2 i18n:translate="file_contents">File contents</h2>
+            <h2 i18n:translate="heading_file_contents">File contents</h2>
             
             <pre tal:content="here/data">
             </pre>
