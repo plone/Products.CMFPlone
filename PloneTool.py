@@ -5,6 +5,7 @@ from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.interfaces.DublinCore import DublinCore
 from types import TupleType
 
 class PloneTool (UniqueObject, SimpleItem):
@@ -98,8 +99,9 @@ class PloneTool (UniqueObject, SimpleItem):
     def contentEdit(self, obj, **kwargs):
         """ encapsulates how the editing of content occurs """
         REQUEST=self.REQUEST
-	
-        apply(self._editMetadata, (obj,), kwargs) #replaced extended_edit and metadata_edit
+
+        if DublinCore.isImplementedBy(obj):
+            apply(self._editMetadata, (obj,), kwargs) #replaced extended_edit and metadata_edit
 	
 	self._renameObject(obj, id=kwargs['id']) #renamed rename_object.py
 	
