@@ -109,6 +109,7 @@ class PloneSite(CMFSite, OrderedContainer):
     def manage_beforeDelete(self, container, item):
         """ Should send out an Event before Site is being deleted """
         self.removal_inprogress=1
+        PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
 
 class PloneGenerator(Portal.PortalGenerator):
 
