@@ -1,6 +1,6 @@
 import os
 
-release='1.0'
+release='1.0.1'
 releasename='CMFPlone-%s' % release
 releasetar='CMFPlone%s.tar' % release
 

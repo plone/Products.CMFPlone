@@ -83,3 +83,7 @@ default.sendto_form.success = script:sendto
 default.sendto_form.failure = sendto_form
 default.sendto.success = action:view
 default.sendto.failure = action:view
+default.synPropertiesForm.success = script:editSynProperties
+default.synPropertiesForm.failure = synPropertiesForm
+default.editSynProperties.success = url:folder_contents
+default.editSynProperties.failure = synPropertiesForm

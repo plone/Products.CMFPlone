@@ -1,7 +1,7 @@
 
 try:
     from Products.CMFPlone import MigrationTool
-    import rc2_final, rc1_rc2, beta3_rc1, beta2_beta3, beta1_beta2, alpha_beta
+    import final_one_zero_one, rc2_final, rc1_rc2, beta3_rc1, beta2_beta3, beta1_beta2, alpha_beta
 except:
     print "Ack.  MigrationTool could not be found"
 
@@ -31,4 +31,7 @@ def registerMigrations():
     MigrationTool.registerUpgradePath( '1.0rc2',
                                        '1.0',
                                        rc2_final.rc2Final )
-                                       
+
+    MigrationTool.registerUpgradePath( '1.0',
+                                       '1.0.1',
+                                       final_one_zero_one.onezeroone )
