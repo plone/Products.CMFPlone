@@ -1,3 +1,21 @@
+2004-05-15 02:25  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Added the
+	  reST error indication classes.
+
+2004-05-15 00:17  dtremea
+
+	* __init__.py (Plone-2_0-branch): Fixed a small typo.
+
+2004-05-14 22:47  dreamcatcher
+
+	* PropertiesTool.py (Plone-2_0-branch): Make title a computed
+	  attribute and cleanup some formatting.
+
+2004-05-14 06:17  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-13 11:49  azy
 
 	* skins/plone_ecmascript/: plone_javascripts.js (Plone-2_0-branch),
