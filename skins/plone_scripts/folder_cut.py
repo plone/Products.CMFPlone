@@ -9,13 +9,13 @@
 ##
 REQUEST=context.REQUEST
 if REQUEST.has_key('ids'):
-  context.manage_cutObjects(REQUEST['ids'], REQUEST)
+    context.manage_cutObjects(REQUEST['ids'], REQUEST)
     return context.plone_utils.getNextRequestFor( context
                                                 , script.getId()
                                                 , 'success'
                                                 , portal_status_message='Item(s) Cut.' )
-else:
-    return context.plone_utils.getNextRequestFor( context
-                                                , script.getId()
-                                                , 'failure'
-                                                , portal_status_message='Please select one or more items to cut.' )
+                                                
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'failure'
+                                            , portal_status_message='Please select one or more items to cut.' )
