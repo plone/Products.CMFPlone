@@ -72,6 +72,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         members = self.membership.getMembersFolder()
         self.assertEqual(members._getPortalTypeName(), 'Large Plone Folder')
 
+    def testSecureMailHost(self):
+        # MailHost should be of the SMH variety
+        mailhost = self.portal.plone_utils.getMailHost()
+        self.assertEqual(mailhost.meta_type, 'Secure Mail Host')
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
