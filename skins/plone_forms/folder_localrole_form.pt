@@ -16,9 +16,9 @@
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    search_submitted request/role_submit|nothing;
-                   search_results python:test(search_submitted, here.portal_membership.searchMembers(
-                                             search_param=request.get('search_param',''),
-                                             search_term=request.get('search_term', '') ), None);">
+                   search_results python:test(search_submitted, here.portal_membership.searchForMembers(
+                                             {request.get('search_param',''):
+                                             request.get('search_term', '')}), None);">
 
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current shares for
@@ -129,7 +129,8 @@
             Select one or more Members, and a role to assign.
         </p>
 
-        <metal:block tal:define="batch python:Batch(search_results, b_size, int(b_start), orphan=3)">
+        <metal:block tal:define="batch python:Batch(search_results, b_size, int(b_start), orphan=3);
+                                 nResults python:len(search_results);">
 
         <form method="post"
               name="change_type"
@@ -158,7 +159,7 @@
                         <td class="field">
                             <label class="hiddenLabel" for="member_ids:list"
                                    i18n:translate="label_select_user">
-                                select user <span tal:content="member/username" i18n:name="user" />
+                                select user <span tal:content="python:member.getUserName()" i18n:name="user" />
                             </label>
                             <input class="formSelection"
                                    type="checkbox"
@@ -166,12 +167,13 @@
                                    id="#"
                                    value=""
                                    tabindex=""
-                                   tal:attributes="value member/username;
+                                   tal:attributes="value python:member.getUserName();
+                                                   checked python:nResults==1;
                                                    tabindex tabindex/next;"
                             />
                         </td>
 
-                        <td tal:content="member/username">username</td>
+                        <td tal:content="python:member.getUserName()">username</td>
                         <td tal:content="member/email">email</td>
                     </tr>
                     </tbody>
@@ -257,7 +259,7 @@
                             id="search_param"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
-                        <option value="username" i18n:translate="label_user_name">
+                        <option value="name" i18n:translate="label_user_name">
                             User Name
                         </option>
                         <option value="email" i18n:translate="label_email_address">
@@ -328,7 +330,7 @@
                     <td>
                         <label class="hiddenLabel" for="member_ids:list"
                                i18n:translate="label_select_group">
-                            select group <span tal:content="member/getUserName" i18n:name="name"/>
+                            select group <span tal:content="python:member.getUserName()" i18n:name="name"/>
                         </label>
                         <input class="formSelection"
                             type="checkbox"
@@ -336,7 +338,7 @@
                             id="#"
                             value=""
                             tabindex=""
-                            tal:attributes="value member/getUserName;
+                            tal:attributes="value python:member.getUserName();
                                             tabindex tabindex/next;"/>
                     </td>
                     <td tal:content="python:member.getUserNameWithoutGroupPrefix()">

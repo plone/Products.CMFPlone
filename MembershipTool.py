@@ -250,19 +250,19 @@ class MembershipTool(BaseTool):
         res = []
         portal = self.portal_url.getPortalObject()
 
-        for user in self.listMembers():
+        for member in self.listMembers():
             #user = md.wrapUser(u)
-            u = user.getUser()
-            if not (user.listed or is_manager):
+            u = member.getUser()
+            if not (member.listed or is_manager):
                 continue
             if name:
-                if (u.getUserName().lower().find(name) == -1) and (user.fullname.lower().find(name) == -1):
+                if (u.getUserName().lower().find(name) == -1) and (member.fullname.lower().find(name) == -1):
                     continue
             if email:
-                if user.email.lower().find(email) == -1:
+                if member.email.lower().find(email) == -1:
                     continue
             if roles:
-                user_roles = user.getRoles()
+                user_roles = member.getRoles()
                 found = 0
                 for r in roles:
                     if r in user_roles:
@@ -271,10 +271,9 @@ class MembershipTool(BaseTool):
                 if not found:
                     continue
             if last_login_time:
-                if user.last_login_time < last_login_time:
+                if member.last_login_time < last_login_time:
                     continue
-            res.append(user)
-
+            res.append(member)
         return res
 
     def testCurrentPassword(self, password, username=None):
