@@ -1,16 +1,17 @@
-from DateTime import DateTime
-REQUEST=context.REQUEST
-expires=DateTime()+7
-last_modified=DateTime()-14
-date_format = '%a, %d %b %Y %H:%M:%S'
+#from DateTime import DateTime
+#REQUEST=context.REQUEST
+#expires=DateTime()+7
+#last_modified=DateTime()-14
+#date_format = '%a, %d %b %Y %H:%M:%S'
 
-REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )
-REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )
-REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime(date_format) )
-REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime(date_format) )
+#REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )
+#REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )
+#REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime(date_format) )
+#REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime(date_format) )
 
 
-return r"""var ie = document.all != null;
+return r"""\
+var ie = document.all != null;
 var moz = !ie && document.getElementById != null && document.layers == null;
 
 /*
