@@ -37,7 +37,7 @@
                                    value inputvalue;
                                    onfocus onfocus|nothing;
                                    onblur onblur|nothing;
-                                   tabindex tabindex|nothing" 
+                                   tabindex tabindex/next|nothing" 
                                    />
 
   <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?inputname=${inputname}&amp;formname=${formname}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">

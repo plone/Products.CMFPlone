@@ -1,5 +1,8 @@
 CHANGES
 
+Plone xxx
+    - calendarDatePickerBox used tabindex instead of tabindex/next
+
 Plone 1.0
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
     - modified condition of 'state' action in portal_actions so that DTML objects work
