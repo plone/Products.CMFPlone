@@ -197,7 +197,7 @@ as possible.
     </div>
     
     <div class="row">
-        <div class="label" i18n:translate="name_of_upload_optional">Name of upload (optional)</div>
+        <div class="label" i18n:translate="label_name_of_upload_optional">Name of upload (optional)</div>
         <div class="field">
             <input type=text name="fileid" size="12" />
         </div>
