@@ -131,6 +131,20 @@ def addActionIcons(portal):
 def addDocumentActions(portal):
     at = portal.portal_actions
 
+    at.addAction('extedit',
+                 'Edit this file in an external application (Requires Zope ExternalEditor installed)',
+                 'string:${object_url}/external_edit',
+                 '',
+                 'Modify portal content',
+                 'document_actions')
+
+    at.addAction('rss',
+                 'RSS feed of this folder\'s contents',
+                 'string:${object_url}/RSS',
+                 'python:portal.portal_syndication.isSyndicationAllowed(object)',
+                 'View',
+                 'document_actions')
+
     at.addAction('sendto',
                  'Send this page to somebody',
                  'string:${object_url}/portal_form/sendto_form',
@@ -144,21 +158,6 @@ def addDocumentActions(portal):
                  '',
                  'View',
                  'document_actions')
-
-    at.addAction('rss',
-                 'RSS feed of this folder\'s contents',
-                 'string:${object_url}/RSS',
-                 'python:portal.portal_syndication.isSyndicationAllowed(object)',
-                 'View',
-                 'document_actions')
-
-    at.addAction('extedit',
-                 'Edit this file in an external editor',
-                 'string:${object_url}/external_edit',
-                 '',
-                 'Modify portal content',
-                 'document_actions')
-
 
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
