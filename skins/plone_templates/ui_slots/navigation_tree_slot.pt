@@ -77,7 +77,7 @@
 			   accesskey="accesskeys-navigation"
 			   i18n:attributes="accesskey">
                            
-                            <img tal:replace="structure portal/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure sibling_title" />
+                            <img tal:replace="structure portal/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure string:Home" />
                         </a>
                     </span>
                 </div>
