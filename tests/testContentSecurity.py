@@ -31,8 +31,6 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
     def testCreateOtherMemberContentFails(self):
         self.login('user1')
         folder = self.membership.getHomeFolder('user2')
-        #import pdb; pdb.set_trace()
-        #folder.invokeFactory('Document', 'new')
         self.assertRaises(Unauthorized, folder.invokeFactory, 'Document', 'new')
 
     def testCreateRootContentFails(self):
