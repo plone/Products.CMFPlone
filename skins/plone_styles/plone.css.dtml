@@ -422,6 +422,7 @@ div.pathBar {
     color: &dtml-contentTabFontColor;;
     text-align: right;
     text-transform: &dtml-textTransform;;
+    padding: 0 1em;
 }
 
 div.document {
@@ -471,6 +472,10 @@ div.title {
     display: block;
     margin: 1em 0em;
     line-height: 1.5em;
+}
+
+div.byline {
+    font-size: 80%;
 }
 
 .footer {

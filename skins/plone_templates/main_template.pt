@@ -77,7 +77,7 @@
 
         <metal:ifborder tal:condition="show_border" >
             <div metal:use-macro="here/view_tabs/macros/content_tabs"></div>
-            <div id="contentBar">&nbsp;</div>
+            <div metal:use-macro="here/view_tabs/macros/content_bar"></div>
         </metal:ifborder>
 
 

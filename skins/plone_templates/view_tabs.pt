@@ -1,5 +1,3 @@
-
-   
 <div metal:define-macro="content_tabs"
      id="contentTabs" 
      i18n:domain="plone"
@@ -13,4 +11,22 @@
             </span>
         </a>
     </tal:actions>
+</div>
+
+<div metal:define-macro="content_bar"
+     id="contentBar"
+     tal:define="review_state wf_state"
+     tal:condition="review_state">
+
+    <span class="private"
+          tal:content="review_state"
+          tal:attributes="class review_state"
+          i18n:translate="">
+    private
+    </span>
+
+    <span class="expired"
+          tal:condition="python:here.isExpired(here)">
+    (expired)
+    </span>
 </div>
