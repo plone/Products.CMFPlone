@@ -19,6 +19,8 @@
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
+                   metaTypesForcedFolderContents here/navtree_properties/metaTypesForcedFolderContents | here/portal_properties/navtree_properties/metaTypesForcedFolderContents | python:();
+                   m here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
                    rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner']
                    "
 
@@ -29,7 +31,6 @@
         <h5 i18n:translate="box_navigation">Navigation</h5>
 
         <div class="body">
-
             <tal:block tal:condition="python:request['AUTHENTICATED_USER'].has_role(rolesSeeContentsView, here)">
                 <div class="content even"
                      tal:condition="editorView">
@@ -75,9 +76,9 @@
             
                     <span tal:define="iscurrent te/iscurrent | python:0;
                                       sibling python:te['object'];
-                                      stdCommand python:test(template.getId()=='folder_contents' and  
-                                      sibling.isPrincipiaFolderish , 'folder_contents', 
-                                      test(sibling.isPrincipiaFolderish,'','view'));
+                                      stdCommand python:test(sibling.meta_type in metaTypesForcedFolderContents or (template.getId()=='folder_contents' and  
+                                          sibling.isPrincipiaFolderish ), 'folder_contents', 
+                                              test(sibling.isPrincipiaFolderish,'','view'));
                                       title python:te['object'].title_or_id();
                                       sibling_title python:' '.join(title[:croppingLength].split(' '));"
                                       tal:on-error="structure string:<!--Error in Navigation loop!!-->"
