@@ -7,10 +7,6 @@
 ##parameters=REQUEST, RESPONSE, field_title=None, field_description=None, event_type=None, start_date=None, end_date=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, field_id='' 
 ##title=
 ##
-from Products.CMFPlone import transaction_note
-portal_url=context.portal_url
-
-id, title, description=field_id, field_title, field_description
 
 # need to parse date string *before* passing to Event.edit since
 # it expects bite sized chunks....
@@ -20,8 +16,8 @@ dt_start = DateTime( start_date )
 dt_end = DateTime( end_date )
 
 try:
-    context.edit(title=title
-             , description=description
+    context.edit(title=field_title
+             , description=field_description
              , eventType=event_type
              , effectiveDay=dt_start.year()
              , effectiveMo=dt_start.month()
@@ -39,6 +35,11 @@ try:
              , contact_phone=contact_phone
              , event_url=event_url
              )
+
+    context.plone_utils.contentEdit( context
+                               , id=field_id
+                               , description=field_description)
+
 except:
     msg='portal_status_message=Error+saving+event.'
     view='event_edit_form'
@@ -46,9 +47,6 @@ else:
     msg='portal_status_message=Event+changes+saved.'
     view='event_view'
 
-context.rename_object(redirect=0, id=id)
-
-tmsg='/'.join(portal_url.getRelativeContentPath(context)[:-1])+'/'+context.title_or_id()+' has been modified.'
-transaction_note(tmsg)
-return RESPONSE.redirect('%s/%s?%s' % (context.absolute_url(), view, msg) )
+return RESPONSE.redirect('%s/%s?%s' % (context.absolute_url(),
+                                       view, msg) )
 

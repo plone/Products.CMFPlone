@@ -7,23 +7,22 @@
 ##parameters=REQUEST, RESPONSE, acquireCriteria, field_id, field_title=None, field_description=None
 ##title=
 ##
-REQUEST=context.REQUEST
-
-id, title, description = field_id, field_title, field_description
 
 errors=context.validate_topic_edit()
-if REQUEST.has_key('errors'):
+if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 
 context.edit(acquireCriteria=acquireCriteria,
-             title=title,
-             description=description)
-	     
-context.rename_object(redirect=0, id=id)
+             title=field_title,
+             description=field_description)
 
+context.plone_utils.contentEdit( context
+                               , id=field_id
+                               , description=field_description)
+	     
 qst='portal_status_message=Topic+changed.'
-target_action = context.getTypeInfo().getActionById( 'view' )
+
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                                , target_action
+                                                , context.getTypeInfo().getActionById( 'view' )
                                                 , qst) )
