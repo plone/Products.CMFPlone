@@ -92,7 +92,7 @@ topPadding:string=0
 logoMargin:string=1em 0em 1em 2em
 logoPadding:string=0
 
-searchMargin:string=1em 0em 0em 0em
+searchMargin:string=2em 0em 0em 0em
 searchPadding:string=0em 2em 0em 0em
 searchFontColor:string=Black
 
