@@ -1,3 +1,46 @@
+2004-04-02 01:44  limi
+
+	* skins/plone_content/document_byline.pt (Plone-2_0-branch): Wasn't
+	  calling the Python Method.
+
+2004-04-02 00:02  limi
+
+	* skins/plone_content/document_byline.pt (Plone-2_0-branch): Byline
+	  wasn't using the accessors, so Archetypes got permission errors.
+	  Fixed.
+
+2004-04-01 19:50  limi
+
+	* skins/plone_content/document_byline.pt (Plone-2_0-branch): Added
+	  Contributors and Rights to the byline, if they exist.
+
+2004-04-01 15:59  ajung
+
+	* PloneUtilities.py: better check if context is really a context.
+	  if len(context)==0 then the condition fails
+
+2004-04-01 15:55  ajung
+
+	* PloneUtilities.py (Plone-2_0-branch): a better fix: context can
+	  != None *but* if len(context) == 0 then this check will fail
+	  muuuuuuuuuuuuuuuuuuuuuuuuh
+
+2004-04-01 15:35  ajung
+
+	* PloneUtilities.py (Plone-2_0-branch): re-added support for
+	  long_format=1
+
+2004-04-01 14:55  elvix
+
+	* skins/plone_ecmascript/plone_javascripts.js
+	  (plip24-form-unload-confirm-branch): initial add of Danny's
+	  warn-user-before -navigating-away-from-a-form-in-progress
+	  javascripts.
+
+2004-04-01 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-31 15:10  limi
 
 	* HISTORY.txt, skins/plone_templates/folder_listing.pt,
