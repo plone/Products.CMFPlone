@@ -61,6 +61,10 @@ def make_plone(portal):
     default_pages = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(site_props,'default_page',default_pages,'lines')
 
+    #Support for cropping descriptions in search results
+    safeEditProperty(site_props,'search_results_description_length',160,'int')
+    safeEditProperty(site_props,'ellipsis','...','string')
+
     #We depend on CMFQuickInstaller
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         manage_addTool=portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool

@@ -47,6 +47,10 @@ def upg_1_0_1_to_1_1(portal):
     upgradePortalFactory(portal)
     updateNavigationProperties(portal)
 
+    #Support for cropping descriptions in search results
+    safeEditProperty(props,'search_results_description_length',160,'int')
+    safeEditProperty(props,'ellipsis','...','string')
+
 def upgradePortalFactory(portal):
     site_props = portal.portal_properties.site_properties
     if not hasattr(site_props,'portal_factory_types'):

@@ -10,7 +10,9 @@
        tal:define="results python:here.queryCatalog();
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
-                 b_size python:30;b_start python:0;b_start request/b_start | b_start;">
+                 b_size python:30;b_start python:0;b_start request/b_start | b_start;
+                 desc_length python:here.portal_properties.site_properties.search_results_description_length;
+                 desc_ellipsis python:here.portal_properties.site_properties.ellipsis">
 
     <h1 i18n:translate="heading_search_results">Search results</h1>
 
@@ -70,7 +72,7 @@
                     </td>
                     <td tal:content="result/Creator">Author </td>
                     <td tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>
-                    <td tal:content="result/Description"> Description </td>
+                    <td tal:content="python:here.cropText(result.Description, desc_length, desc_ellipsis)"> Description </td>
                 </tr>
 		</metal:block>
             </tbody>
