@@ -66,11 +66,11 @@ def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
     left_slots=( 'here/portlet_navigation/macros/portlet'
                , 'here/portlet_login/macros/portlet'
+               , 'here/portlet_recent/macros/portlet'
                , 'here/portlet_related/macros/portlet' )
     right_slots=( 'here/portlet_review/macros/portlet'
                 , 'here/portlet_news/macros/portlet'
                 , 'here/portlet_events/macros/portlet'
-                , 'here/portlet_recent/macros/portlet'
                 , 'here/portlet_calendar/macros/portlet' )
     safeEditProperty(portal, 'left_slots', left_slots, 'lines')
     safeEditProperty(portal, 'right_slots', right_slots, 'lines')

@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello - Released XX. April 2004
 
+    - Default position of the "Recent" portlet is now on the left.
+      [limi]
+
     - Added a new variable 'current_page_url' to 'global_defines'. Since it's 
       pretty much impossible to get the correct URL to the current page once
       you're inside CMF, the base tag and Zope and a VHM, I added this 
