@@ -16,7 +16,7 @@ if id is None:
     id=context.getId()
 
 try:
-    obj_type, date_created, random_number = id.split('.')
+    obj_type, date_created, random_number, suffix = id.split('.')
     type=' '.join(obj_type.split('_'))
     portaltypes=context.portal_types.objectIds()
     if type in portaltypes and DateTime(date_created) and float(random_number):

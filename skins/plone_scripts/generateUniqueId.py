@@ -7,8 +7,15 @@
 ##parameters=type_name=None
 ##title=
 ##
+from DateTime import DateTime
+from random import random
+
 now=DateTime()
 prefix=''
+suffix='.html'
+
 if type_name is not None:
     prefix = type_name.replace(' ', '_')+'.'
-return prefix+now.strftime('%Y-%m-%d')+'.'+now.strftime('%M%S')
+    
+id=now.strftime('%Y-%m-%d')+'.'+str(now.millis())[5:]+str(random())[2:4]
+return prefix+id+suffix

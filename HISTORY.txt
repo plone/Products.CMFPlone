@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - generateUniqueId and isIDUnique now are a bit more unique (with regards to randomness)
+      and we now suffix generated ID's with .html - issue #1343
+
     - Added Recently Published slot, and a complimentary Archive page.
     
     - Changed the comment structure and layout - it's much moresimple and 
