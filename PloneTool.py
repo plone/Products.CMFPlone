@@ -17,6 +17,7 @@ from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
+from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFPlone import ToolNames
 
 from OFS.SimpleItem import SimpleItem
