@@ -48,6 +48,8 @@
     - standard_html_header/footer are now in place for backwards compatibility. thanks Evan Simpson!
     - Collector and Wiki have been minimally skinned (plone_3rdParty)
     - added default content to the root of Plone, index_html
+    - moved most of the boxes into plone_ui_slots (trying to lighten portal_boxes), added FSDirectoryView for ui_slots
+    - suppressed empty comment history in content_status_history
     - many more changes and cleanups
 
 0.9.8 - Ulrich Schnauss Release:
