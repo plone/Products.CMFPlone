@@ -120,7 +120,7 @@
                                 <img src="" alt="Folder" border="0"
                                      height="16"
                                      width="16"
-                                     tal:attributes="src item/getIcon;
+                                     tal:attributes="src string:$portal_url/${item/getIcon};
                                                      alt item/Type;"
                              />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a> 

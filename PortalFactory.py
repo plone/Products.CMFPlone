@@ -168,6 +168,7 @@ def checkDependencies(self, outStream):
             if 'plone_workflow' not in wf_tool.objectIds():
                 wf_tool.manage_addWorkflow(id='plone_workflow', workflow_type='default_workflow (Web-configurable workflow [Revision 2])')            
                 wf_tool.setDefaultChain('plone_workflow')            
+		wf_tool.manage_delObjects('default_workflow')
                 wf_tool.updateRoleMappings()
                 outStream.write('Created plone_workflow in portal_workflow tool and set it to default.\n')        
     else:
