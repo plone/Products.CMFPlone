@@ -167,7 +167,7 @@ class StatelessTreeBuilder:
                 r['siblings']=self.getChildObjects(p.aq_parent,self.showFolderishSiblingsOnly)
                 r['siblingtitles']=map(lambda x:x.title_or_id(),r['siblings'])
 
-            if p not in r['siblings'] and (p != path[0] or self.includeTop):
+            if p not in r['siblings'] and (p.isPrincipiaFolderish or not self.showFolderishSiblingsOnly) and (p != path[0] or self.includeTop):
                 r['siblings'].append(p)
 
             res.append(r)
@@ -230,7 +230,7 @@ class StatelessTreeBuilder:
             for sibling in item['siblings'] :
                 current = 0
 
-                if self.skipIndex_html and sibling.getId()=='index_html':
+                if (self.skipIndex_html and sibling.getId()=='index_html') or sibling.getId()=='talkback':
                     continue
 
                 if (sibling == item['object']) :
