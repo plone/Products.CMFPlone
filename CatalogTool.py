@@ -12,34 +12,23 @@ class CatalogTool(BaseTool):
     meta_type = ToolNames.CatalogTool
     security = ClassSecurityInfo()
 
-    def catalogObject(self, object, uid, threshold=None, idxs=[]):
-        """ 
-        Unwraps the acquisition from an object before it is cataloged. 
-        """
-        if self.getProperty('unwrapobjects', None):
-            object=aq_base(object)
-
-        BaseTool.catalogObject(self, object, uid, threshold=None, idxs=[])
-        
     def manage_afterAdd(self, item, container):
+        # Makes sure the SearchableText index is a ZCTextIndex
 
-        if item is self:
+        if item is self and not hasattr(aq_base(self), 'plone_lexicon'):
             class args:
                 def __init__(self, **kw):
                     self.__dict__.update(kw)
 
             # when a catalog is pasted, there is allredy a ZCTextIndex
-            try:
-                self.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
-                    'plone_lexicon',
-                    elements=[
-                    args(group= 'Case Normalizer' , name= 'Case Normalizer' ),
-                    args(group= 'Stop Words' , name= " Don't remove stop words" ),
-                    args(group= 'Word Splitter' , name= "Unicode Whitespace splitter" ),
-                    ]
-                    )
-            except:
-                pass
+            self.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
+                'plone_lexicon',
+                elements=[
+                args(group= 'Case Normalizer' , name= 'Case Normalizer' ),
+                args(group= 'Stop Words' , name= " Don't remove stop words" ),
+                args(group= 'Word Splitter' , name= "Unicode Whitespace splitter" ),
+                ]
+                )
 
             extra = args( doc_attr = 'SearchableText',
                           lexicon_id = 'plone_lexicon',
@@ -47,7 +36,6 @@ class CatalogTool(BaseTool):
 
             self.manage_delIndex(['SearchableText'])
             self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
-
 
     def _listAllowedRolesAndUsers( self, user ):
         result = list( user.getRoles() )
