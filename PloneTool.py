@@ -183,7 +183,7 @@ class PloneTool (UniqueObject, SimpleItem):
 
     def getNavigationTransistion(self, context, action, status):
         navprops = getattr(self, 'navigation_properties')
-        fixedTypeName = ''.join(context.getTypeInfo().Title().lower().split(' '))
+        fixedTypeName = ''.join(context.getTypeInfo().getId().lower().split(' '))
         navTransition = fixedTypeName+'.'+action+'.'+status
         action_id = getattr(navprops.aq_explicit, navTransition, None)
         if action_id is None:
