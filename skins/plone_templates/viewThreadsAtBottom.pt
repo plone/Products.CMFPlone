@@ -55,7 +55,8 @@
                          action="discussion_reply_form"
                          method="post"
                          style="display: inline;"
-                         tal:attributes="action string:${reply/absolute_url}/discussion_reply_form">
+                         tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
+                         tal:condition="python: here.portal_membership.checkPermission('Reply to item', reply)">
                          
                         <input class="standalone" 
                                type="submit" 
