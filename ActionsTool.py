@@ -13,6 +13,10 @@ class ActionsTool(BaseTool):
     meta_type = ToolNames.ActionsTool
     security = ClassSecurityInfo()
 
+
+    # __init__ is derived from the corresponding method in CMFCore.ActionsTool.
+    # This code is licensed under the Zope Public License (see LICENSE.ZPL)
+    # (Hopefully this code will no longer be necessary in Plone 2.0.1)
     def __init__(self):
         correctFolderContentsAction(self)
 

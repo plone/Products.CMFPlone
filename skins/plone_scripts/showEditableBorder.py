@@ -37,7 +37,7 @@ REQUEST=context.REQUEST
 if actions is None:
     raise 'You must pass in the filtered actions'
 if allowed_types is None:
-    raise 'You must pass in the allowed types'
+    allowed_types = context.getAllowedTypes()
 
 if REQUEST.has_key('disable_border'): #short circuit
     return 0

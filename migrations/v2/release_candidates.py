@@ -6,7 +6,7 @@ from Products.CMFCore.Expression import Expression
 from Acquisition import aq_base
 from oneX_twoBeta2 import addPloneTableless
 from plone2_base import addCatalogIndexes
-from Products.CMFPlone.migrations.migration_util import saveCloneActions
+from Products.CMFPlone.migrations.migration_util import saveCloneActions, cleanupSkinPath
 import zLOG
 
 _permMap = {
@@ -223,6 +223,7 @@ def addTablelessSkin(portal):
     addPloneTableless(portal)
     st = getToolByName(portal, 'portal_skins')
     defaultName = 'Plone Default'
+    cleanupSkinPath(portal, defaultName)
     tablelessName = 'Plone Tableless'
     path = []
     selections = st._getSelections()
@@ -234,3 +235,6 @@ def addTablelessSkin(portal):
             path.append(p)
 
     st.manage_skinLayers(add_skin=1, skinname=tablelessName, skinpath=path)
+
+def rc6_finalfinal(portal):
+    pass

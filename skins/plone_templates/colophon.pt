@@ -42,11 +42,11 @@ This site conforms to the following standards:
         </a>
     </li>
     <li>
-        <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance"
+        <a href="http://www.w3.org/WAI/WCAG1AA-Conformance"
              title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
              i18n:translate=""
              i18n:attributes="title">
-        WAI-AAA
+        WAI-AA
         </a>
     </li>
     <li>

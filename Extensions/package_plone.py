@@ -8,8 +8,8 @@ def get_version():
 
 release=get_version()
 releasename='CMFPlone-%s' % release
-releasetar='CMFPlone%s.tar.gz' % release
-releasezip='CMFPlone%s.zip' % release
+releasetar='CMFPlone-%s.tar.gz' % release
+releasezip='CMFPlone-%s.zip' % release
 
 # cleans pyc, pyo, temp files, CVS files and compiled po files
 sh_clean = """find . -name *.py[co] -or -name *~ -or -name ~* -or -name CVS -or \
