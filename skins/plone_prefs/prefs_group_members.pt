@@ -26,12 +26,12 @@
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<ul id="contentTabs">
+<ul id="contentTabs" style="font-size: 96%">
   <li class="">
     <a href=""
        tal:attributes="href string:prefs_group_details?groupname=${groupname}"
        i18n:translate=""
-    >Group</a>
+    >Group Properties</a>
   </li>
   <li class="selected">
     <a href=""
@@ -43,8 +43,9 @@
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
 
-<div class="document editable"
-   tal:condition="not:group | nothing">
+<div id="documentContent"
+     class="editableDocument"
+     tal:condition="not:group | nothing">
     <h1 i18n:translate="">Group Members</h1>
 
     <p i18n:translate="label_no_group_specified">No group was specified.</p>
@@ -53,8 +54,9 @@
           i18n:translate="link_find_group">Find a group here</a></p>
 </div>
 
-<div class="document editable"
-   tal:condition="group | nothing">
+<div id="documentContent"
+     class="editableDocument"
+     tal:condition="group | nothing">
 
     <h1 i18n:translate="">Members of the <tal:group content="groupname">Groupname</tal:group> Group</h1>
 
@@ -64,9 +66,9 @@
     </p>
 
 
-    <h3 i18n:translate="">
+    <h2 i18n:translate="">
     Search for New Group Members
-    </h3>
+    </h2>
 
     <div metal:use-macro="here/prefs_search_macros/macros/search">
          <span metal:fill-slot="hiddens">
@@ -87,9 +89,9 @@
 
       <div metal:fill-slot="removables">
 
-        <h3 i18n:translate="">
+        <h2 i18n:translate="">
         Current Group Members
-        </h3>
+        </h2>
 
        <table class="listing">
 

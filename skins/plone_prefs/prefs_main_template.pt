@@ -11,6 +11,16 @@
 
 <div metal:fill-slot="main" tal:condition="here/rejectAnonymous"  >
 
+<small>
+    <a href=""
+       tal:attributes="href string:${portal_url}/plone_control_panel">
+    <img src="site_icon.gif"
+         alt="" 
+         tal:attributes="src string:${portal_url}/site_icon.gif" />
+    Back to Control Panel
+    </a>
+</small>
+
 <metal:bodytext metal:define-slot="prefs_configlet_main" tal:content="nothing">
 Here comes the content of a normal configlet
 </metal:bodytext>

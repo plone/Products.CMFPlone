@@ -23,12 +23,12 @@
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<ul id="contentTabs">
+<ul id="contentTabs" style="font-size: 96%">
   <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}?groupname=${groupname}"
        i18n:translate=""
-    >Group</a>
+    >Group Properties</a>
   </li>
   <li class="">
     <a href=""
@@ -40,8 +40,10 @@
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
 
-<div class="document editable"
-   tal:condition="not:group | nothing">
+<div id="documentContent"
+     class="editableDocument"
+     tal:condition="not:group | nothing">
+     
     <h1 i18n:translate="">Group Members</h1>
 
     <p i18n:translate="label_no_group_specified">No group was specified.</p>
@@ -50,7 +52,8 @@
           i18n:translate="link_find_group">Find a group here</a></p>
 </div>
 
-<div class="document editable"
+<div id="documentContent"
+     class="editableDocument"
    tal:condition="group | nothing">
 
     <h1 i18n:translate="">Edit Group Properties for <span tal:replace="group/getGroupName | default">#unavailable#</span></h1>

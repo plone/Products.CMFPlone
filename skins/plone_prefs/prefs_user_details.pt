@@ -20,19 +20,12 @@ we eventually might want to merge this form with personalize_form
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-     <h1 tal:content="userid"></h1>
-<ul id="contentTabs">
-  <li class="">
-    <a href="prefs_users_overview" i18n:translate="">
-      Users and Groups
-    </a>
-  </li>
-
+<ul id="contentTabs" style="font-size: 96%">
   <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}?userid=${userid}"
        i18n:translate="">
-      Edit User Details
+      User Properties
     </a>
   </li>
 
@@ -40,14 +33,15 @@ we eventually might want to merge this form with personalize_form
     <a href=""
        tal:attributes="href string: prefs_user_memberships?userid=${userid}"
        i18n:translate="">
-      Group Membership
+      Group Memberships
     </a>
   </li>
 </ul>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
 
-<div class="document editable">
+<div id="documentContent"
+     class="editableDocument">
 
     <h1 i18n:translate="heading_prefs_user_details">
       User Properties for
@@ -59,7 +53,6 @@ we eventually might want to merge this form with personalize_form
       Change member properties.
     </p>
 
-     <h1 tal:content="member/getId"></h1>
     <form class="group"
           action=""
           name="users"
@@ -79,10 +72,10 @@ we eventually might want to merge this form with personalize_form
             <input type="file"
                 size="30"
                 tabindex=""
-                name = "portrait"
+                name="portrait"
                 tal:attributes="tabindex tabindex/next" />
         </div>
-        <p/>
+
         <input type="hidden" name="userid" value="username"
                tal:attributes="value member/getId" />
 

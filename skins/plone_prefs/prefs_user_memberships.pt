@@ -21,30 +21,27 @@
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<ul id="contentTabs">
+<ul id="contentTabs" style="font-size: 96%">
   <li class="">
     <a href=""
        tal:attributes="href string: prefs_user_details?userid=${userid}"
        i18n:translate=""
-    >User</a>
+    >User Properties</a>
   </li>
   <li class="selected">
     <a href=""
        tal:attributes="href string:${template/id}?userid=${userid}"
        i18n:translate=""
-    >Group Membership</a>
+    >Group Memberships</a>
   </li>
 </ul>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
 
-<div class="document editable">
+<div id="documentContent"
+     class="editableDocument">
 
-    <h1 i18n:translate="">Group Membership for <span tal:replace="string: ${user/getId}"/></h1>
-
-    <h3 i18n:translate="">
-    Search for Groups to Join
-    </h3>
+    <h1 i18n:translate="">Group Memberships for <span tal:replace="string: ${user/getId}"/></h1>
 
     <div metal:use-macro="here/prefs_search_macros/macros/search">
          <span metal:fill-slot="hiddens">

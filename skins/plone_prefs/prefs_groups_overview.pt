@@ -17,11 +17,7 @@
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<ul id="contentTabs">
-  <li class="">
-    <a href="plone_control_panel"
-       i18n:translate="">Plone Setup</a>
-  </li>
+<ul id="contentTabs" style="font-size: 96%">
   <li class="">
     <a href=""
        tal:attributes="href string: prefs_users_overview"
@@ -36,7 +32,8 @@
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
 
-<div class="document editable">
+<div id="documentContent"
+     class="editableDocument">
 
     <h1 i18n:translate="heading_groups_management">Groups Management</h1>
 
@@ -45,28 +42,6 @@
           method="post"
           tal:attributes="action here/absolute_url"
           tal:define="groups python:Batch(here.portal_groups.listGroups(), 25, int(b_start), orphan=1)">
-
-    <!-- jcc says: this is my solution to a confusing situation. There
-    are other solutions, but this and the add form should not be
-    adjacent visually. Do we even need a quicksearch? -->
-
-    <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
-    <input class="quickSearch"
-           tabindex=""
-           type="text"
-           name="searchstring"
-           value=""
-           tal:attributes="tabindex tabindex/next;"
-           />
-
-    <input type="hidden" name="searchonly" value="groups" />
-    <input type="submit"
-           class="context"
-           name="prefs_user_group_search_form:method"
-           value="Search"
-           tabindex=""
-           i18n:attributes="value"
-           tal:attributes="tabindex tabindex/next;" />
 
     <p i18n:translate="description_groups_management">
       Groups are logical collections of users, like departments and
@@ -93,6 +68,28 @@
 
         <table class="listing"
                tal:condition="groups">
+               
+            <tr>
+                <th colspan="6">
+                    <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
+                    <input class="quickSearch"
+                           tabindex=""
+                           type="text"
+                           name="searchstring"
+                           value=""
+                           tal:attributes="tabindex tabindex/next;"
+                           />
+                
+                    <input type="hidden" name="searchonly" value="groups" />
+                    <input type="submit"
+                           name="prefs_user_group_search_form:method"
+                           value="Search"
+                           tabindex=""
+                           i18n:attributes="value"
+                           tal:attributes="tabindex tabindex/next;" />
+
+                </th>
+            </tr>
 
             <tr>
                 <th rowspan="2" i18n:translate="listingheader_group_name">Group name</th>
@@ -170,6 +167,9 @@
       need to create a new discrete unit of permissions that you can
       combine to make up a Group.
     </p>
+    
+    <p>Currently, if you want to add a new role, you'll have to use the 
+    Zope Management Interface.</p>
 
 </div>
 
