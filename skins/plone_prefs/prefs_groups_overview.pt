@@ -13,7 +13,7 @@
      tal:define="errors python:request.get('errors', {});
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
-                b_size python:2;
+                b_size python:20;
                 portal_roles mtool/getPortalRoles;"
      tal:condition="here/rejectAnonymous" >
 
