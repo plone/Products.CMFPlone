@@ -4,7 +4,7 @@
      tal:define="plone_actions python:here.plonifyActions(template_id=template_id, actions=actions)">
     <tal:actions repeat="action plone_actions">
     <li tal:define="selected action/selected|nothing;"
-        tal:attributes="id string:contenttab-${tab/id};
+        tal:attributes="id string:contenttab-${action/id};
                         class python:test(selected, 'selected', 'plain')">
         <a class="" href=""
            tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
