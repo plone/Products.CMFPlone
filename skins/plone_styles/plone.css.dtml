@@ -1155,6 +1155,13 @@ ul.configlets li a {
 
 .visualOverflow {
     overflow: auto;
+    margin: 0 0 1em 0;
+}
+
+.visualOverflow pre,
+.visualOverflow table,
+.visualOverflow img {
+    margin: 0;
 }
 
 /*
