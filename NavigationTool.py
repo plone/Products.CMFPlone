@@ -1,6 +1,6 @@
-# $Id$
-# $Source$
-__version__ = "$Revision$"[11:-2] + " " + "$Name$"[7:-2]
+# $Id: NavigationTool.py,v 1.35 2003/02/10 09:18:49 runyaga Exp $
+# $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
+__version__ = "$Revision: 1.35 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -59,7 +59,6 @@ class NavigationTool (UniqueObject, SimpleItem):
             trace.append('Getting next object for %s.%s.%s' % (context, script, status))
             (obj, kwargs) = self.getNextObject(context, script, status, trace, **kwargs)
             return apply(obj, (), {'REQUEST':context.REQUEST})
-
         except:
             self.logTrace(trace)
             raise
