@@ -1,4 +1,6 @@
-0.9.9 - Bola Release:   
+0.9.9 - Bola Release:
+    - New undo page
+    - New search results page   
     - All CSS and most HTML validate according to W3C's validators
     - fixed up MembershipTool which will add a homepage which will partcipate in workflow
     - added a FormulatorTool (portal_form_validation) which is a *thin* wrapper around Formulator and exposes
