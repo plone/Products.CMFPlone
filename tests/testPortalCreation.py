@@ -78,6 +78,16 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         props = self.portal.portal_properties.site_properties
         self.assertEqual(props.getProperty('use_folder_contents'), ())
 
+    def testFolderEditActionHasEditTitle(self):
+        # Edit tab of folders should be named 'edit', not 'properties'
+        folder = self.types.getTypeInfo('Folder')
+        for action in folder._cloneActions():
+            if action.id == 'edit':
+                self.assertEqual(action.title, 'Edit')
+                break
+        else:
+            self.fail("Folder has no 'edit' action")
+
     def testTopicHasFolderListingAction(self):
         # Topics should have a 'folderlisting' action
         topic = self.types.getTypeInfo('Topic')
