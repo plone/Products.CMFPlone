@@ -363,7 +363,7 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
         ]
 
         ampm = d.get('ampm')
-        for i in range(2):
+        for i in range(3):
             self.assertEqual(ampm[i], data[i])
 
     def testPM(self):
@@ -374,7 +374,7 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
         ]
 
         ampm = self.d.get('ampm')
-        for i in range(2):
+        for i in range(3):
             self.assertEqual(ampm[i], data[i])
 
 
