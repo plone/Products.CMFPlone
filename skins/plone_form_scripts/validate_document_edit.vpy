@@ -12,7 +12,7 @@ filename = getattr(file, 'filename' ,'')
 if file and filename:
     file.seek(0)
     headers = file.headers
-    if headers['Content-Type'].find('text')==-1:
+    if headers.get('Content-Type', 'text/plain').find('text')==-1:
         state.setError('file', 'This file is not text. To upload binary files create File content.')
 
 if context.CreationDate() == context.ModificationDate() and filename:
