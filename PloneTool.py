@@ -307,6 +307,9 @@ class PloneTool(UniqueObject, SimpleItem):
         catalog_tool=getToolByName(self, 'portal_catalog')
         object.changeOwnership(user, recursive)
 
+        #FIX for 1750
+        object.manage_setLocalRoles( user.getUserName(), ['Owner'] )
+
         catalog_tool.reindexObject(object)
         if recursive:
             purl = getToolByName(self, 'portal_url')
