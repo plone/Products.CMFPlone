@@ -4,7 +4,7 @@
 <p>The migration and setup tool allows you to handle migrating between versions of Plone and altering the setup of your Plone site.</p>
 
 <p>If you wish to upgrade to a new Plone instance, go to <a href="manage_migrate">migrate</a>.</p>
-<p>If you wish to alter how your exsiting Plone site is set up, go to <a href="manage_setup">setup</a>.</p>
+<p>If you wish to alter how your existing Plone site is set up, go to <a href="manage_setup">setup</a>.</p>
 
 <hr />
 
