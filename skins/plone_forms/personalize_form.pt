@@ -157,7 +157,10 @@
                 </div>
             </div>
 
-            <div class="row" tal:define="portrait here/getPlonePersonalPortait | nothing">
+            <div class="row"
+                 tal:define="portrait here/getPlonePersonalPortait | nothing;
+                             home python:container.portal_membership.getHomeUrl(member.getId())"
+                 tal:condition="home">
                 <div class="label">
                     <span i18n:id="portrait">Portrait</span>
                     <div id="portrait_help"
