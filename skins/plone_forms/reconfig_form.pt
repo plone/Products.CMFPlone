@@ -5,6 +5,10 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
 
+<tal:block metal:fill-slot="base">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
 <body>
 
 <div metal:fill-slot="main"

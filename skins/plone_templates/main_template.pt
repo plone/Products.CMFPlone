@@ -6,10 +6,14 @@
 <tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here)" />
 
 <head metal:use-macro="here/header/macros/html_header">
+  <metal:block metal:fill-slot="base">
+    <metal:block metal:define-slot="base" />
+  </metal:block>
+  
   <metal:block metal:fill-slot="head_slot">
     <META HTTP-EQUIV="pragma" CONTENT="no-cache">
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('pragma', 'no-cache')" />
-    <metal:block metal:define-slot="head_slot" tal:replace="nothing" />
+    <metal:block metal:define-slot="head_slot" />
   </metal:block>
   
   <metal:block metal:fill-slot="javascript_head_slot">

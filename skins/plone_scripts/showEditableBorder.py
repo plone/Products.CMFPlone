@@ -16,6 +16,11 @@ if actions is None:
     raise 'You must pass in the filtered actions'
     
 REQUEST=context.REQUEST
+if REQUEST.has_key('disable_border'): #short circuit
+    return 0 
+if REQUEST.has_key('enable_border'): #short circuit
+    return 1
+    
 for action in actions.get('object', []):
     if action.get('id', '')!='view':
         return 1
