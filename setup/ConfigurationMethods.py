@@ -178,8 +178,10 @@ def correctFolderContentsAction(actionTool):
             action.name=action.title='Contents'
             if action.condition.text.find('folder is not object') != -1:
                 action.condition=Expression('python:member and folder is not object')
-            action.permissions=(CMFCorePermissions.ModifyPortalContent,
-                                Permissions.copy_or_move)
+                action.permissions=(CMFCorePermissions.ListFolderContents,)
+            elif action.condition.text.file('folder is object') != -1:
+                action.permissions=(CMFCorePermissions.ModifyPortalContent,
+                                    Permissions.copy_or_move)
     actionTool._actions=_actions
     
 
