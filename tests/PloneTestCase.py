@@ -2,8 +2,6 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.17 2004/05/16 16:27:29 shh42 Exp $
-
 from Testing import ZopeTestCase
 
 ZopeTestCase.installProduct('CMFCore')
@@ -24,6 +22,7 @@ ZopeTestCase.installProduct('PythonScripts', quiet=1)
 ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 # This is safe to fail - TXNG2 is an optional addon
 ZopeTestCase.installProduct('TextIndexNG2')
+ZopeTestCase.installProduct('SecureMailHost')
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
