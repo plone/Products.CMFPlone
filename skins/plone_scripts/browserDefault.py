@@ -14,7 +14,7 @@ pages = not pages and props.hasProperty('default_page') \
         and props.getProperty('default_page') or pages
 
 # Always look for index_html
-pages.extend(default_pages)
+pages = pages + default_pages
 
 if pages:
     # loop through each page given and 
