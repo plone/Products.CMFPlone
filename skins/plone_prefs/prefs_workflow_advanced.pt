@@ -15,11 +15,11 @@
 
 <ul id="contentTabs">
   <li class="">
-    <a href="prefs_default_workflow_form"
+    <a href="prefs_workflow_basic"
        i18n:translate="link_workflow_default">Default workflow configuration</a>
   </li>
   <li class="selected">
-    <a href="prefs_advanced_workflow_form"
+    <a href="prefs_workflow_advanced"
        i18n:translate="link_workflow_advanced">Advanced</a>
   </li>
 </ul>
@@ -34,69 +34,69 @@
                                " />
      </metal:block>
 
-	<h1 i18n:translate="">Select workflow</h1>
+    <h1 i18n:translate="">Select workflow</h1>
 
-	<p i18n:translate="">
-	Select the type of workflow you want for each different content type.
-	</p>
+    <p i18n:translate="">
+        Select the type of workflow you want for each different content type.
+    </p>
 
 
-    <form class="group" name="change_workflow" action="change_workflow_settings" method="POST">
+    <form class="group" name="change_workflow" action="prefs_workflow_advanced_edit" method="POST">
 
-      <span class="legend" i18n:translate="">Content types</span>
+        <span class="legend" i18n:translate="">Content types</span>
 
-      <div tal:repeat="ctype here/allowedContentTypes">
+        <div tal:repeat="ctype here/allowedContentTypes">
 
-          <div class="row"
-               tal:define="Title ctype/Title;
-                           Id ctype/getId;
-			   current_wf python:wtool.getChainForPortalType(Id)[0]">
+            <div class="row"
+                tal:define="Title ctype/Title;
+                            Id ctype/getId;
+                    current_wf python:wtool.getChainForPortalType(Id)[0]">
 
-              <div class="label">
-                  <span i18n:translate=""
-                        tal:content="Title">
-                        Title
-                  </span>
-                      <img src=""
-                           alt=""
-                           width="16"
-                           height="16"
-                           tal:attributes="src string:$portal_url/${ctype/getIcon}" />
-              </div>
-
-              <select id="select_workflow"
-				    name="workflow_id"
-                                    tabindex=""
-                                    alt=""
-		      tal:attributes="name python:'wf.' + ctype.getId() + ':record'" >
-                  <option value="current"
-		  tal:attributes="value current_wf"><span tal:replace="current_wf"/></option>
-                  <metal:block tal:repeat="wf workflow_list">
-                      <option value="wf"
-                              
-                              tal:attributes="value wf"
-                              tal:content="wf"
-                              i18n:translate="">Simple workflow</option>
-                  </metal:block>
-              </select>
-
-          </div>
-      </div>
-
-      <div class="row">
-                <div class="label">&nbsp;</div>
-                <div class="field">
-                    <input class="context"
-                           tabindex=""
-                           type="submit"
-                           name="Change"
-                           value="Save"
-                           i18n:attributes="value"
-                           tal:attributes="tabindex tabindex/next;" />
+                <div class="label">
+                    <span i18n:translate=""
+                            tal:content="Title">
+                            Title
+                    </span>
+                        <img src=""
+                            alt=""
+                            width="16"
+                            height="16"
+                            tal:attributes="src string:$portal_url/${ctype/getIcon}" />
                 </div>
-      </div>
-  
-  </form>
+
+                <select id="select_workflow"
+                        name="workflow_id"
+                        tabindex=""
+                        alt=""
+                        tal:attributes="name python:'wf.' + ctype.getId() + ':record'" >
+                    <option value="current"
+                        tal:attributes="value current_wf"><span tal:replace="current_wf"/></option>
+                    <metal:block tal:repeat="wf workflow_list">
+                        <option value="wf"
+
+                                tal:attributes="value wf"
+                                tal:content="wf"
+                                i18n:translate="">Simple workflow</option>
+                    </metal:block>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="row">
+                    <div class="label">&nbsp;</div>
+                    <div class="field">
+                        <input class="context"
+                            tabindex=""
+                            type="submit"
+                            name="Change"
+                            value="Save"
+                            i18n:attributes="value"
+                            tal:attributes="tabindex tabindex/next;" />
+                    </div>
+        </div>
+
+    </form>
 
 </div>
 

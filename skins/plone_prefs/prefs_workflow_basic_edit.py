@@ -1,10 +1,10 @@
-## Script (Python) "change_default_workflow"
+## Script (Python) "prefs_workflow_basic_edit"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=default_workflow
+##parameters=default_workflow=None
 ##title=
 ##
 # Example code:
@@ -14,8 +14,9 @@ from Products.PythonScripts.standard import html_quote
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
-context.portal_workflow.setChainForPortalTypes(
-    context.portal_types.listContentTypes(),
-    default_workflow)
+if default_workflow:
+    context.portal_workflow.setChainForPortalTypes(
+        context.portal_types.listContentTypes(),
+        default_workflow)
 
-return 'ok'
+return context.prefs_workflow_basic()
