@@ -1,3 +1,79 @@
+2004-02-21 00:32  jok2
+
+	* HISTORY.txt (Plone-2_0-branch): Documented my last three
+	  checkins/bug fixes.
+
+2004-02-21 00:18  jok2
+
+	* skins/plone_prefs/prefs_search_macros.pt (Plone-2_0-branch): Fix
+	  for http://plone.org/collector/2600 .
+
+2004-02-20 23:19  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Added font
+	  size compensation class to make sure Epoz gets the correct font
+	  size in its editor. Requires Epoz 0.8.0 to have any effect.
+
+2004-02-20 20:19  jok2
+
+	* skins/plone_form_scripts/register.cpy.metadata
+	  (Plone-2_0-branch): Fix for 2704. Thanks to achilles.
+
+2004-02-20 19:44  jimroepcke
+
+	* skins/plone_scripts/: batchedFolderContents.py,
+	  getFolderContents.py, getFolderListingFolderContents.py
+	  (Plone-2_0-branch): added aq_explicit to calls to
+	  listFolderContents and folderlistingFolderContents as suggested
+	  by tesdal and runyaga
+
+2004-02-20 18:14  zopezen
+
+	* HISTORY.txt (Plone-2_0-branch): Note on related slot change
+
+2004-02-20 18:11  zopezen
+
+	* skins/: plone_portlets/portlet_related.pt,
+	  plone_scripts/navigationLocalRelated.py,
+	  plone_scripts/navigationRemoteResources.py (Plone-2_0-branch):
+	  Merge the fix of the related slot branch over into the main so it
+	  now makes sense and is a whole lot faster.
+
+2004-02-20 17:16  limi
+
+	* skins/plone_forms/mail_password_form.pt (Plone-2_0-branch):
+	  Explanatory text was referencing wrong button.
+
+2004-02-20 16:58  limi
+
+	* skins/plone_forms/content_status_history.cpt (Plone-2_0-branch):
+	  Made publication history show full date and time + timezone.
+
+2004-02-20 16:00  limi
+
+	* skins/plone_3rdParty/CMFTopic/friendlydatec_editform.pt
+	  (Plone-2_0-branch): Fixed the recersal of topic selection, bug
+	  #2581.
+
+2004-02-20 15:59  shh42
+
+	* tests/testQueryCatalog.py (Plone-2_0-branch): Render queryCatalog
+	  related forms
+
+2004-02-20 15:58  shh42
+
+	* skins/plone_scripts/queryCatalog.py (Plone-2_0-branch): REQUEST
+	  argument should still be optional, shouldn't it?
+
+2004-02-20 14:43  jok2
+
+	* skins/plone_scripts/folder_delete.cpy (Plone-2_0-branch): Fix for
+	  2462. Thanks to achilles.
+
+2004-02-20 04:50  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-20 04:36  limi
 
 	* version.txt (Plone-2_0-branch): Changing version number to
