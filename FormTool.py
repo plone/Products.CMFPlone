@@ -14,6 +14,8 @@ from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import getToolByName
 from string import join
 
+from PloneUtilities import log as debug_log
+
 validator_cache = {}  # a place to stash cached validators
 # (we don't want to persist them in the ZODB since that would make debugging a big pain)
 
@@ -146,11 +148,10 @@ class FormTool(UniqueObject, SimpleItem):
         """ """
         if not debug:
             return
-        import sys
         prefix = 'FormTool'
         if loc:
             prefix = prefix + '. ' + str(loc)
-        sys.stdout.write(prefix+': '+str(msg)+'\n')
+        debug_log(prefix+': '+str(msg))
 
 InitializeClass(FormTool)
 
@@ -225,7 +226,7 @@ class FormValidator(SimpleItem):
         prefix = 'FormValidator'
         if loc:
             prefix = prefix + '. ' + str(loc)
-        sys.stdout.write(prefix+': '+str(msg)+'\n')
+        debug_log(prefix+': '+str(msg))
 
 InitializeClass(FormValidator)
 
