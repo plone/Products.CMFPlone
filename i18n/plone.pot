@@ -3673,6 +3673,12 @@ msgstr "set up your preferences"
 msgid "description_logged_in"
 msgstr "This is the first time that you've logged in to ${here}."
 
+msgid "Plone setup changes have been saved."
+msgstr ""
+
+msgid "description_copyright"
+msgstr "Plone is Copyright © 2000-${current_year} by ${limi}, ${runyaga}, ${blacktar}."
+
 ##################################
 # End 20.11.2002 update          #
 ##################################
