@@ -41,7 +41,7 @@
     </metal:javascriptslot>
   </head>
 
-  <body>
+  <body tal:attributes="class here/getSectionFromURL">
 
     <div id="visual-portal-wrapper">
 
