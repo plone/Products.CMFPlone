@@ -118,7 +118,8 @@ class OrderedContainer(Folder):
     # here the implementing of IOrderedContainer starts
     # if plone sometime depends on zope 2.7 it should be replaced by mixing in
     # the 2.7 specific class OSF.OrderedContainer.OrderedContainer
-
+    # This code was taken from Zope 2.7 and is licensed under the ZPL
+    # The license can be found at: http://www.zope.org/Resources/ZPL
     security.declareProtected(ModifyPortalContent, 'moveObjectsByDelta')
     def moveObjectsByDelta(self, ids, delta):
         """ Move specified sub-objects by delta.
