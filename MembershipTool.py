@@ -285,8 +285,14 @@ class MembershipTool(BaseTool):
 
             if domains is None:
                 domains = []
-            acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
-            #member.setSecurityProfile(password=password, domains=domains)
+            user = acl_users.getUserById(member.getUserName())
+            # we must change the users password trough grufs changepassword
+            # to keep her  group settings
+            if hasattr(user, 'changePassword'):
+                user.changePassword(password)
+            else:
+                acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
+            self.credentialsChanged(password)
         else:
             raise 'Bad Request', 'Not logged in.'
 
