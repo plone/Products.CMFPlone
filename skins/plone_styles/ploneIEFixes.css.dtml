@@ -13,6 +13,10 @@ div.comment {
     display: none;
 }
 
+body {
+    width: expression(document.body.clientWidth < 795 ? "795px" : "auto");
+}
+
 input {
         margin-bottom: 1px; /* bug fix */
 }
