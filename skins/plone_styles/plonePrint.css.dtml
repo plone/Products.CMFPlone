@@ -140,5 +140,9 @@ a:link, a:visited {
 #portal-column-content #content {
     float: none !important;
     padding: 0em !important;
-    margin: 0 8em 0 0 !important;
+    margin: 0 !important;
+}
+
+div#portal-columns #portal-column-content #content {
+    margin-right: 8em !important;
 }
