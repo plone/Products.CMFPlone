@@ -13,6 +13,23 @@ class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """
     __implements__ = ICustomizationPolicy
 
+    def installExternalEditor(self, portal):
+        ''' responsible for doing whats necessary if 
+            external editor is found 
+        '''
+        types_tool=getToolByName(portal, 'portal_types')
+        methods=('PUT', 'manage_FTPget') #if a definition has these methods it shoudl work
+        exclude=('Topic', 'Event', 'Folder')
+        for ctype in types_tool.objectValues():
+            if ctype.getId() not in exclude:
+                ctype.addAction( 'external_edit'
+                               , 'External Edit'
+                               , 'external_edit'
+                               , CMFCorePermissions.ModifyPortalContent
+                               , 'object'
+                               , 0 )
+            
+        
     def customize(self, portal):
         #make 'reply' tab unvisible
         dt=getToolByName(portal, 'portal_discussion') 
@@ -71,6 +88,14 @@ class DefaultCustomizationPolicy:
         at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
 
         #add properties on portal object
+        
+        ExtInstalled=0
+        ExtEditProd=getattr(portal.Control_Panel.Products, 'ExternalEditor', None)
+        if ExtEditProd is not None and ExtEditProd.import_error_ is None:
+            ExtInstalled=1
+            self.installExternalEditor(portal)
+
+        portal._setProperty('ext_editor', ExtInstalled, 'boolean')
         portal._setProperty('available_editors', ('None', 'XSDHTMLEditor'), 'lines')
 
         #customize memberdata tool

@@ -18,7 +18,8 @@
                  global decodedFilter python:here.decodeFolderFilter(folderfilter);
                  global filterValues decodedFilter;
                  global filter decodedFilter;
-                 global portal_url here/portal_url">
+                 global portal_url here/portal_url;
+                 global member here/portal_membership/getAuthenticatedMember;">
 
 
     <form name="folderContentsForm"
@@ -126,7 +127,18 @@
                                      tal:attributes="src string:$portal_url/${item/getIcon};
                                                      alt item/Title;"
                              />&nbsp;<span tal:replace="item/title_or_id">Title</span>
-                            </a> 
+                            </a>
+                            <tal:block tal:condition="python:test(here.portal_url.getPortalObject().getProperty('ext_editor') and item.hasActionId('external_edit'), 1,0)">
+
+                            <a href="absolute_url/external_edit"
+                               tal:attributes="href string:${item/absolute_url}/external_edit">
+                               
+                               <img src="" 
+                                    border="0"
+                                    alt="External Editor"
+                                    tal:attributes="src string:${here/portal_url}/edit.gif" border="0" />
+                             </a>
+                            </tal:block>
     
                           <span class="expired"
                                 tal:condition="python:container.isExpired(item)">expired</span>
