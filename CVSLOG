@@ -1,3 +1,13 @@
+2003-10-24 09:53  yenzenz
+
+	* skins/plone_portlets/recently_published_slot.pt
+	  (Plone-2_0-branch): fixed bug http://plone.org/collector/1650
+	  "recently published slot items need to have /view appended"
+
+2003-10-24 01:17  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-10-24 00:33  longsleep
 
 	* CVSLOG: prepare creation of a cvslog (updated daily)
