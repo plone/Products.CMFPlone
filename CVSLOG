@@ -1,3 +1,85 @@
+2004-01-18 00:44  limi
+
+	* skins/plone_styles/plonePrint.css.dtml (Plone-2_0-branch): Added
+	  visualNoPrint class that can be inserted as a class on elements
+	  you don't want to see on print-outs.
+
+2004-01-18 00:09  eaon
+
+	* skins/plone_styles/plonePrint.css.dtml (Plone-2_0-branch): added
+	  moz/opera(?) print fix to the correct branch
+
+2004-01-18 00:07  vinsci
+
+	* skins/plone_forms/enabling_cookies.pt (Plone-2_0-branch): Minror
+	  correction in Mozilla instructions. Also verified to still be
+	  correct in Mozilla 1.6.
+
+2004-01-17 23:01  eaon
+
+	* skins/plone_styles/plonePrint.css.dtml: fixing print stylesheet
+	  for moz (opera users, please test for me)
+
+2004-01-17 20:17  tiran
+
+	* migrations/v2/release_candidates.py (speedup-branch): damn ... I
+	  forgot to import getToolByName
+
+2004-01-17 20:04  tiran
+
+	* migrations/__init__.py (speedup-branch): added migration path
+	  rc3-rc4, rc4-final
+
+2004-01-17 19:12  tiran
+
+	* migrations/v2/release_candidates.py (speedup-branch): added
+	  migration function migrateToSkinCustomFolder
+
+2004-01-17 17:29  vinsci
+
+	* skins/plone_prefs/prefs_user_group_search_form.pt
+	  (Plone-2_0-branch): Part of fixes for 2269.
+
+2004-01-17 17:07  vinsci
+
+	* skins/plone_prefs/prefs_portal_properties_list.pt
+	  (Plone-2_0-branch): HTML cleanup. Part of fix for 2269.
+
+2004-01-17 16:18  vinsci
+
+	* skins/plone_prefs/prefs_main_template.pt (Plone-2_0-branch):
+	  Simplify, remove invalid xml. Part of fix for 2269.
+
+2004-01-17 14:26  vinsci
+
+	* skins/plone_prefs/plone_memberprefs_panel.pt (Plone-2_0-branch):
+	  HTML cleanup. Part of fix for 2269.
+
+2004-01-17 14:05  vinsci
+
+	* skins/plone_forms/enabling_cookies.pt (Plone-2_0-branch): Part of
+	  fix for 2269. HTML cleanup, added full i18n (a bunch of new
+	  msgid:s) for the help texts. Thanks to interra for
+	  string:${request/URL} ;-)
+
+2004-01-17 09:47  tiran
+
+	* __init__.py, psyco_optimisation.py (speedup-branch): moved psyco
+	  optimisations to a seperate file
+
+2004-01-17 09:46  tiran
+
+	* SkinsCustomFolder.py, SkinsTool.py (speedup-branch): purge cache
+	  after/before an add, delete or clone operation
+
+2004-01-17 09:45  tiran
+
+	* .cvsignore (speedup-branch): added pyo to ignore list
+
+2004-01-17 05:02  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-17 00:45  vinsci
 
 	* skins/plone_prefs/prefs_syndication_form.pt (Plone-2_0-branch):
