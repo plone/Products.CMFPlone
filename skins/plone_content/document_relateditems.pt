@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      i18n:domain="plone">
+
+<body>
+
+<!-- RELATED ITEMS -->
+<div metal:define-macro="relatedItems"
+    id="relatedItems"
+    tal:define="hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
+                getInfoFor python:wtool.getInfoFor;
+                view_action python:hereTypeInfo.getActionById('view');
+                other_action python:hereTypeInfo.getActionById('folderlisting', '');
+                isViewTemplate python: template_id==view_action or view_action == 'view' or other_action==template_id;">
+    <tal:allowed condition="isViewTemplate">
+        <tal:relatedItems tal:define="related python:here.computeRelatedItems();">
+            <tal:block tal:condition="python:related">
+                <div class="visualClear" />
+                <fieldset id="relatedItemBox">
+                    <legend i18n:translate="">Related items</legend>
+                   
+                    <p>
+                    <tal:related tal:repeat="item related">
+                        <tal:relItem tal:define="
+                                desc                item/Description;
+                                item_wf_state       item/review_state|python: getInfoFor(item, 'review_state', '');
+                                item_wf_state_class python:here.getStateClassName(item_wf_state);">
+
+                            <a href="" 
+                                tal:attributes="href        item/absolute_url;
+                                                title       item/Description;">
+                                <img title="" alt="" src="" tal:attributes="src item/getIcon" /></a>
+                            <a href="" class=""
+                                tal:attributes="href        item/absolute_url;
+                                                class       item_wf_state_class;
+                                                title       item/Description;">
+                                <span tal:content="item/title_or_id" /></a><br />
+                        </tal:relItem>
+                    </tal:related>
+                    </p>
+                </fieldset>
+            </tal:block>
+        </tal:relatedItems>
+    </tal:allowed>
+</div>
+</body>
+</html>

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged plip79-RelatedItems r6128:HEAD into 2.1 branch. Adds a macro to
+      display related items in all content templates.
+      [stefan] [_ender_] [mrtopf]
+
     - Merged uiteam-plip73-sanitize-short-names r6113:HEAD into 2.1 branch. This
       removes "Allow editing of Short Names" from personal prefs and makes it a
       site-wide property.
@@ -11,7 +15,7 @@ Plone 2.1 - Plaid - (unreleased)
 
     - Merged plip72-LiveSearch r6110:HEAD into 2.1 branch. Adds LiveSearch by
       ObjectRealms to the search box.
-      [stefan] [_ender_] [MrTopf]
+      [stefan] [_ender_] [mrtopf]
 
     - Merged plip71-full-screen-mode r6124:HEAD into 2.1 branch. This adds a
       document_action to enter full screen mode.

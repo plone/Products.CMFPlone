@@ -32,6 +32,10 @@
                                                    'text/x-rst', ), 'stx', 'plain')">
             <div tal:replace="structure text" />
         </div>
+
+        <div metal:use-macro="here/document_relateditems/macros/relatedItems">
+            show related items if they exist
+        </div>
     
         <div metal:use-macro="here/document_byline/macros/byline">
           Get the byline - contains details about author and modification date.
