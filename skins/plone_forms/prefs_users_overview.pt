@@ -24,7 +24,7 @@
     >Users</a>
     <a class=""         
        href=""
-       tal:attributes="href string: prefs_group_management_form"
+       tal:attributes="href string: prefs_groups_overview"
     >Groups</a>
 </div>
 <div id="contentBar">&nbsp;</div>
@@ -98,8 +98,8 @@
                        value=""
                        tal:attributes="name string:roles-${username}:list" />
                 
-                <a href="XXX_prefs_user_management_individual_form"
-                    tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_management_individual_form?userid=$username">
+                <a href="XXX_prefs_user_details"
+                    tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$username">
                    
                     <img src=""
                          tal:replace="structure portal/user.gif" />&nbsp;<span 

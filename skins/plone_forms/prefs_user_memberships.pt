@@ -22,7 +22,7 @@
 <div id="contentTabs"> 
     <a class="" 
        href=""
-       tal:attributes="href string: prefs_group_management_individual_form?username=testuser"
+       tal:attributes="href string: prefs_group_details?username=testuser"
     >User</a>
     <a class="selected"         
        href=""
@@ -76,7 +76,7 @@
             
          
             <td>
-                <a href="http://localhost/Plone/prefs_group_management_individual_form?groupname=TestGroup">
+                <a href="http://localhost/Plone/prefs_group_details?groupname=TestGroup">
                    
                     <img src="http://localhost/Plone/group.gif" alt="Group icon" title="Group icon" height="16" width="16" border="0" />&nbsp;TestGroup
                 </a>

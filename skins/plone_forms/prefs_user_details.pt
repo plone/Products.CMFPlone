@@ -26,7 +26,7 @@
     >User</a>
     <a class=""         
        href=""
-       tal:attributes="href string: prefs_user_management_individual_groups_form?username=${user/getId}"
+       tal:attributes="href string: prefs_user_memberships?username=${user/getId}"
     >Group Membership</a>
 </div>
 <div id="contentBar">&nbsp;</div>

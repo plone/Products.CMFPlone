@@ -32,7 +32,7 @@
     >Group</a>
     <a class=""         
        href=""
-       tal:attributes="href string: prefs_group_management_individual_members_form?groupname=${groupname}"
+       tal:attributes="href string: prefs_group_members?groupname=${groupname}"
     >Members</a>
 </div>
 <div id="contentBar">&nbsp;</div>
