@@ -165,13 +165,17 @@ class PloneTool (UniqueObject, SimpleItem):
     def getNextRequestFor(self, context, action, status, **kwargs):
         """ takes object, action, and status and returns a RESPONSE redirect """
         action_id=self.getNavigationTransistion(context,action,status)
-        next_id,next_action='',''
+        url_params,next_id,next_action='','',''
         if action_id:
             next_action=context.getTypeInfo().getActionById(action_id)
+       
+        for key,value in kwargs.items():
+            url_params+=key+'='+value+'&'
+	    
 	if next_action:
             to_url='%s/%s?%s' % ( context.absolute_url()
                                 , next_action
-                                , '' )
+                                , url_params )
             return self.REQUEST.RESPONSE.redirect(to_url)
 
 InitializeClass(PloneTool)
