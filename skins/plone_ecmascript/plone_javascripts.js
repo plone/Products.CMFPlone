@@ -502,7 +502,12 @@ function highlightSearchTerm() {
                 // make sure we start the right place and not higlight menuitems or breadcrumb
                 contentarea = getContentArea();
 				for (q=0;q<queries.length;q++) {
-                    climb(contentarea,queries[q]);
+                                       // don't highlight reserved catalog search terms
+                                       if (queries[q].toLowerCase() != 'not'
+                                               && queries[q].toLowerCase() != 'and'
+                                               && queries[q].toLowerCase() != 'or') {
+                       climb(contentarea,queries[q]);
+                                       }
                 }
             }
         }
