@@ -58,7 +58,9 @@
 </div>
 
 <div class="pathBar" metal:define-macro="pathBar"
-     tal:define="breadcrumbs python:container.breadcrumbs(here)"
+     tal:define="breadcrumbs python:container.breadcrumbs(here);
+                 actions python:here.portal_actions.listFilteredActionsFor(here);
+                 portal_url here/portal_url;"
      tal:condition="breadcrumbs">
 
     <div class="clock" tal:content="python:here.toPortalTime()"></div>
@@ -78,7 +80,8 @@
         </span>   
 
         <a href="#"
-           tal:condition="python:'Authenticated' in user.getRoles()"
+           tal:define="add2favorites python:here.getActionUrlById('add to favorites', actions['user']);"
+           tal:condition="python:add2favorites"
            tal:attributes="href python:here.absolute_url()+'/addtoFavorites'">
         <img src="plone_ico/img/linkTransparent.gif" alt="&gt;" border="0" tal:attributes="src string:$portal_url/linkTransparent.gif" />
                      Add to My Favorites
