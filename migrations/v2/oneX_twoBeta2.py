@@ -55,7 +55,7 @@ def oneX_twoBeta2(portal):
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
     out.append("Altering skins to reflect plone 2 new skin paths")                                        
-    fixupPlone2SkinPaths(portal)
+    fixupPlone2SkinPaths(portal, out)
     # add portal_prefs
 
     out.append("Adding in a control panel")                                    
@@ -227,7 +227,7 @@ def migratePortraits(portal):
             buf.seek(0) #lovely Zope mixing OFS interfaces w/ HTTP interfaces
             mt.changeMemberPortrait(buf, id)
         
-def fixupPlone2SkinPaths(portal):
+def fixupPlone2SkinPaths(portal, out):
     def newDV(st, dir):
         from os import path
         createDirectoryView(st, path.join('CMFPlone', 'skins', dir))
@@ -249,8 +249,12 @@ def fixupPlone2SkinPaths(portal):
                 path.remove(old)
         for new in to_add:
             if new not in path:
-                path.insert(path.index('plone_forms'), new)
+                try:
+                    path.insert(path.index('plone_forms'), new)
+                except ValueError:
+                    out.append(("No path plone_forms was found, so couldn't add %s into skin %" % (new, skin), zLOG.ERROR)) 
         st.addSkinSelection(skin, ','.join(path))
+    return out
 
 def upgradePortalFactory(portal):
     site_props = portal.portal_properties.site_properties
