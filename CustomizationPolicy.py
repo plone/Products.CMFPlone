@@ -52,7 +52,8 @@ class DefaultCustomizationPolicy:
         if not hasattr(p,'ext_editor'): p._setProperty('ext_editor', ExtInstalled, 'boolean')
         if not hasattr(p, 'available_editors'): 
             p._setProperty('available_editors', ('None', 'Xopus', 'XSDHTMLEditor'), 'lines')
-    
+        if not hasattr(p, 'allowRolesToAddKeywords'): p._setProperty('allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'list')
+
     def setupDefaultSlots(self, portal):
         """ sets up the slots on objectmanagers """
         #add the slots to the portal folder
