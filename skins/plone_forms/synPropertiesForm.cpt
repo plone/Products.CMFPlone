@@ -79,7 +79,7 @@
             <legend i18n:translate="legend_syndication_details">Syndication Details</legend>
 
             <div class="field">
-              <label i18n:translate="label_syndication_update_period">Update Period</label>
+              <label i18n:translate="label_syndication_updateperiod">Update Period</label>
               
               <div class="formHelp" i18n:translate="help_syndication_update_period">
                 Controls how often the channel is updated.
