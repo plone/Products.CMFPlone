@@ -476,6 +476,7 @@ pre {
     text-transform: &dtml-textTransform;;
     padding: 0 1em;
     z-index: 2;
+    height: 1.2em;
 }
 
 .contentActions ul,
