@@ -84,6 +84,9 @@ contributed code.
   
   Michael Haubenwallner -- Small column hide script.
 
+  Leonard Norrgard (vinsci) -- i18n, plone.org editing, QA, bugfixing etc...
+  "Refactor":http://www.refactor.fi
+
 Companies (in randomized order):
 
   "Ingeniweb":http://www.ingeniweb.com -- 
@@ -130,6 +133,9 @@ Companies (in randomized order):
 
   "Tyrell":http://www.tyrell.com --
    Sponsoring Jim Roepcke's time.  
+
+  "Refactor":http://www.refactor.fi --
+  Sponsoring Leonard Norrgard's time.
 
   "gocept":http://www.gocept.com --
   LinkChecking and Christian Theune's time.
