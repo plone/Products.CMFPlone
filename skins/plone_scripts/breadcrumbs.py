@@ -19,7 +19,7 @@ relative_ids = context.portal_url.getRelativeContentPath(obj)
 template_id = context.REQUEST.get('PUBLISHED', None)
 
 if template_id and not relative_ids:
-    path_seq = ( ( 'home', o.absolute_url() )
+    path_seq = ( ( 'Home', o.absolute_url() )
                , ( template_id.title_or_id(), o.absolute_url()+'/'+template_id.getId()) )
     return path_seq
 
@@ -30,9 +30,9 @@ if template_id is not None and \
 
 if currentlyViewingFolderContents and \
     context.portal_membership.checkPermission('List folder contents', o):
-    path_seq = ( ('home', o.absolute_url()+'/folder_contents'), )
+    path_seq = ( ('Home', o.absolute_url()+'/folder_contents'), )
 else:
-    path_seq = ( ('home', o.absolute_url()), )
+    path_seq = ( ('Home', o.absolute_url()), )
 
 for id in relative_ids:
     try:
