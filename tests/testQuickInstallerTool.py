@@ -26,6 +26,7 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
     def testInstallUninstallProduct(self):
         # CMFFormController should be uninstalled, we install it and 
         # it should not show up as installable
+        self.qi.CMFFormController.locked = 0
         self.qi.uninstallProducts(['CMFFormController',])
         self.failIf('CMFFormController' in self._installed())
         self.failUnless('CMFFormController' in self._available())
