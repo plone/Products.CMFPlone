@@ -32,7 +32,8 @@
     </a>
 
     <a href="workspace"
-       tal:condition="my_stuff">
+       tal:condition="my_stuff"
+       tal:attributes="href string:${here/portal_membership/getHomeUrl}/workspace">
          <img src="img/linkOpaque.gif" alt="&gt;" 
 	      border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>
 	      My&nbsp;Workspace 
