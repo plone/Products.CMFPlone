@@ -1,10 +1,8 @@
 <html i18n:domain="plone">
 
 <!-- wysiwyg default widget, this is overridden by other editors -->
-<tal:block define="cols python:80;
-                   rows python:25">
-<div metal:define-macro="wysiwygEditorBox">
 
+<div metal:define-macro="wysiwygEditorBox">
   <textarea cols="80"
             rows="25"
             tabindex=""
@@ -15,10 +13,10 @@
                             onfocus onfocus|nothing;
                             onblur onblur|nothing;
                             tabindex tabindex|nothing;
-                            rows rows;
-                            cols cols;"></textarea>
+                            rows rows|default;
+                            cols cols|default;"></textarea>
 </div>
-</tal:block>
+
 
 <div metal:define-macro="textFormatSelector"
      class="field"
