@@ -102,7 +102,7 @@ class PloneSite(CMFSite, OrderedContainer):
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
     """
-    meta_type = 'Plone Site'
+    meta_type = portal_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__

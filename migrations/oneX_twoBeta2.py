@@ -58,12 +58,16 @@ def oneX_twoBeta2(portal):
     setupExtEditor(portal)
 
     addFormController(portal)
+    
+    addDocumentActions(portal)
+    addActionIcons(portal)
+    addSiteActions(portal, portal)
 
     #migrate Memberdata, Membership and Portraits
     migrateMemberdataTool(portal)
     migratePortraits(portal)
 
-    migrateTools(portal)
+    # migrateTools(portal)
 
 def doit(self):
     oneX_twoBeta2(self)
@@ -100,8 +104,6 @@ def removePortalFormFromActions(portal):
             fixActionsOn(ptype)
         except:
             print 'fixActionsOn, ', ptype.getId(), 'failed. '
-def swap(self):
-    return swapPortalRoot(self)
 
 def _migrate(portal, toolid, name, attrs):
     orig=getToolByName(portal, toolid)
@@ -119,61 +121,6 @@ def moveOldTemplates(portal):
     for id in custom.objectIds():
         if id in ('main_template', 'header', 'footer', 'folder_contents', 'plone.css'):
             st.custom.manage_renameObjects([id], ['premigration_'+id])
-
-def swapPortalRoot(portal):
-    """ We want to swap CMFDefault.PortalObject.Portal with CMFPlone.Portal.Portal """
-    from Products.CMFPlone.Portal import PloneSite
-    from StringIO import StringIO
-
-    parent=portal.getParentNode()
-    id = portal.getId()
-    old = portal
-
-    #parent.manage_delObjects(id)
-    parent._delOb(id)
-    parent._setOb(id, PloneSite(id, portal.Title()))
-    portal=parent[id]
-
-    # copy ObjectManager values
-    # NOTE: Collector items seem to crap so we catch their exceptions
-    #       We need to reindex Collector's catalog after we _setObject
-    for id, ob in old.objectItems():
-        try:
-            portal._setObject(id, aq_base(ob))   #copy ObjectManager values
-        except Exception, e:
-            pass #StringIO.write(str(e))
-
-  
-    #copy PropertManager values
-    for prop in old._properties:
-        propid = prop['id']
-        if not portal.hasProperty(propid):
-            portal.manage_addProperty(propid, old.getProperty(propid), prop['type'])
-
-    #copy Roles
-    portal.__ac_roles__=list(old.__ac_roles__)
-
-    #copy Security settings
-    for permission in [perm for perm in dir(portal) if perm.endswith('_Permission')]:
-        setattr(portal, permission, getattr(old, permission))
-
-    #copy workflow
-   
-    if hasattr(aq_base(old), 'workflow_history'):
-        setattr(portal, 'workflow_history', getattr(aq_base(old), 'workflow_history'))
-
-    #We have a portal_type for Plone objects, Plone Site
-    #It has no workflow associate with it.
-    portal.portal_types.manage_addTypeInformation(FactoryTypeInformation.meta_type,
-                                    id='Plone Site',
-                                    typeinfo_name='CMFPlone: Plone Site')
-    portal._setPortalTypeName('Plone Site')
-    portal.portal_workflow._chains_by_type['Plone Site']=()
-
-    #lastly give it new icon
-    portal.icon='misc_/CMFPlone/tool.gif'
-    return portal 
-
 
 def migrateTools(portal):
     _migrate(portal, 'portal_actionicons', ToolNames.ActionIconsTool, ['_icons'])
@@ -337,7 +284,7 @@ def addControlPanel(portal):
         addPloneTool(ControlPanelTool, None)
     # must be done here because controlpanel depends on
     # portal_actionicons concerning icon registration
-    portal.portal_controlpanel.registerDefaultConfiglets()
+    #portal.portal_controlpanel.registerDefaultConfiglets()
 
 
 def addCacheAccelerators(portal):
@@ -363,10 +310,11 @@ def addGroupUserFolder(portal):
     get_transaction().commit(1)
 
     qi=getToolByName(portal, 'portal_quickinstaller')
-    qi.installProduct('GroupUserFolder')
     addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool
-    addGRUFTool('CMF Groups Tool')
-    addGRUFTool('CMF Group Data Tool')
+    if "portal_groups" not in portal.objectIds():
+        qi.installProduct('GroupUserFolder')
+        addGRUFTool('CMF Groups Tool')
+        addGRUFTool('CMF Group Data Tool')
 
 def setupHelpSection(portal):
     # create and populate the 'plone_help' folder in the root of the plone
@@ -402,10 +350,11 @@ def addActionIcons(portal):
         qi.notifyInstalled('CMFActionIcons') #Portal.py got to it first
 
     ai=getToolByName(portal, 'portal_actionicons')
-    ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
-    ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
-    ai.addActionIcon('plone', 'rss', 'rss.gif', 'Syndication')
-    ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
+#    ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
+
+#ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
+#    ai.addActionIcon('plone', 'rss', 'rss.gif', 'Syndication')
+ #   ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
 
 def addDocumentActions(portal):
     at = portal.portal_actions
