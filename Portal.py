@@ -64,7 +64,7 @@ class PloneGenerator(Portal.PortalGenerator):
 
     def customizePortalOptions(self, p):
         p.manage_delObjects( 'portal_membership' )
-	p.manage_delObjects( 'portal_workflow' )
+        p.manage_delObjects( 'portal_workflow' )
         addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
         addPloneTool('Plone Membership Tool', None)
         addPloneTool('CMF Workflow Tool', None) 
@@ -74,8 +74,6 @@ class PloneGenerator(Portal.PortalGenerator):
         p.manage_permission( CMFCorePermissions.ListFolderContents, ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=1
-        #XXX CMF1.3 on by default
-	# p.portal_membership.setMemberareaCreationFlag()
         p._setProperty('allowAnonymousViewAbout', 0, 'boolean')
         p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
         p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
@@ -83,22 +81,28 @@ class PloneGenerator(Portal.PortalGenerator):
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
         p.invokeFactory('Folder', 'Members')
-	p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
-	                                                        , 'Member list', '<dtml-return roster>')
-        p.invokeFactory('Document', 'index_html')
-        o=p.index_html
+        p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
+                                                                , 'Member list'
+                                                                , '<dtml-return roster>')
+        p.invokeFactory('Document', 'frontpage')
+        o = p.frontpage
         o.setTitle('Welcome to Plone')
         o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
         o.edit('structured-text', default_frontpage)
         
+        skins=getToolByName(p, 'portal_skins')
+        skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
+        p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )
+        p.manage_renameObjects( ('frontpage_template',), ('index_html',) )
+
     def setupPloneWorkflow(self, p):      
         wf_tool=p.portal_workflow
         wf_tool.manage_addWorkflow( id='plone_workflow'
-	                          , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
+                                  , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
         wf_tool.setDefaultChain('plone_workflow')
 
-	wf_tool.manage_addWorkflow( id='folder_workflow'
-	                          , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
+        wf_tool.manage_addWorkflow( id='folder_workflow'
+                                  , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
         folder_wf = wf_tool['folder_workflow']
         folder_wf.states.deleteStates( ('pending', ) )
         state_priv=folder_wf.states['private']
@@ -126,12 +130,12 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_images'
                     , 'plone_forms'
                     , 'plone_scripts'
-		    , 'plone_scripts/form_scripts'
+                    , 'plone_scripts/form_scripts'
                     , 'plone_styles'
                     , 'plone_templates'
                     , 'plone_3rdParty'
                     , 'plone_calendar'
-		    , 'plone_templates/ui_slots'
+                    , 'plone_templates/ui_slots'
                     ):
             try:
                 path.insert( path.index( 'custom')+1, plonedir )
@@ -147,10 +151,10 @@ class PloneGenerator(Portal.PortalGenerator):
     def setupPlone(self, p): 
         self.customizePortalTypes(p)
         self.customizePortalOptions(p)
-        self.setupPortalContent(p)
         self.setupPloneWorkflow(p)
         self.setupPloneSkins(p)
-	CalendarInstall.install(p)
+        self.setupPortalContent(p)
+        CalendarInstall.install(p)
         
     def create(self, parent, id, create_userfolder):
         id = str(id)
@@ -170,7 +174,7 @@ def manage_addSite(self, id, title='Portal', description='',
                    email_from_address='postmaster@localhost',
                    email_from_name='Portal Administrator',
                    validate_email=0,
-		   custom_policy='',
+                   custom_policy='',
 		   RESPONSE=None):
     """ Plone Site factory """
     gen = PloneGenerator()

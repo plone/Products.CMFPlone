@@ -35,8 +35,10 @@ Header stuff
     <tbody>
         <tr>
             <td class="left">
-                <metal:block use-macro="here/main_left_column/macros/column">
-                Left Column boxes
+                <metal:block define-slot="left_column">
+                  <metal:block use-macro="here/main_left_column/macros/column">
+                  Left Column boxes
+                  </metal:block>
                 </metal:block>
             </td>
             
