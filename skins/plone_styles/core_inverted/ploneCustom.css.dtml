@@ -12,7 +12,9 @@
 */
 /* <dtml-with stylesheet_properties> */
 
-input, textarea, select {
+input, 
+textarea, 
+select {
       background-color: &dtml-mainBackground;;
       color: &dtml-mainFontColor;;
 }

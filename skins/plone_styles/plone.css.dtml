@@ -101,7 +101,7 @@ h1, h2, h3, h4, h5, h6 {
     clear: left;
     font: &dtml-headingFont;;
     margin: 0;
-    padding-top: 1em;
+    padding-top: 0.5em;
     border-bottom: 1px solid &dtml-mainTabBorderColor;;
 }
 
@@ -180,7 +180,7 @@ textarea {
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
     background-color: white;
-    width: 93%;
+    width: 88%;
     padding: 0.1em;
 }
 
@@ -431,12 +431,12 @@ div.editableDocument {
     border: &dtml-contentTabBorder;;
     font: &dtml-contentFont;;
     margin: 0em 0em 2em 0em;
-    padding: 0em 2em 2em 2em;
+    padding: 0em 1em 2em 1em;
 }
 
 div.documentActions {
     float: right; 
-    margin-top: 2em;
+    margin-top: 1.5em;
 }
 
 div.message {

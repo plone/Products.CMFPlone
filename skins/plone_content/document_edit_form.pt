@@ -62,7 +62,7 @@
                     <input type="text" 
                            name="id" 
                            value="#"
-                           size="60" 
+                           size="40" 
                            tabindex=""
                            onfocus="formtooltip('id_help',1)" 
                            onblur="formtooltip('id_help',0)"
@@ -101,7 +101,7 @@
                     <input type="text" 
                            name="title" 
                            value="#" 
-                           size="60" 
+                           size="40" 
                            tabindex=""
                            tal:attributes="value Title;
                                            tabindex tabindex/next;" 
