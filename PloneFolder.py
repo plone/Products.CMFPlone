@@ -1,13 +1,18 @@
-from Products.CMFCore.utils import _verifyActionPermissions, getToolByName, getActionContext
+from Products.CMFCore.utils import _verifyActionPermissions, \
+     getToolByName, getActionContext
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
-from Products.CMFCore.CMFCorePermissions import View, ManageProperties, ListFolderContents
-from Products.CMFCore.CMFCorePermissions import AddPortalFolders, AddPortalContent
+from Products.CMFCore.CMFCorePermissions import View, ManageProperties, \
+     ListFolderContents
+from Products.CMFCore.CMFCorePermissions import AddPortalFolders, \
+     AddPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFCore.interfaces.DublinCore import DublinCore as IDublinCore
-from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo, Unauthorized
+from Products.CMFCore.interfaces.Contentish import Contentish as IContentish
+from AccessControl import Permissions, getSecurityManager, \
+     ClassSecurityInfo, Unauthorized
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
@@ -67,7 +72,8 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 
     security=ClassSecurityInfo()
 
-    __implements__ = (DefaultDublinCoreImpl.__implements__ ,
+    __implements__ = (IContentish,
+                      DefaultDublinCoreImpl.__implements__ ,
                       WriteLockInterface)
 
     manage_options = Folder.manage_options + \
