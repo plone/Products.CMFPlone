@@ -51,6 +51,11 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.ob.keys = ['FrontPage']
         self.assertEquals(self.getDefault(), (self.ob, ['FrontPage']))
 
+    def testTemplateMixinLayout(self):
+        # Test assumes ATContentTypes + TemplateMixin + atct_album_view
+        self.folder.setLayout('atct_album_view')
+        self.assertEquals(self.portal.plone_utils.browserDefault(self.folder), 
+                            (self.folder, ['atct_album_view']))
 
 def test_suite():
     from unittest import TestSuite, makeSuite
