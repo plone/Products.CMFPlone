@@ -43,7 +43,8 @@
 
             <legend>
             <span tal:replace="item" />
-            (<span tal:replace="obj/Title" />)
+             <span tal:condition="obj/Title|nothing"
+                   tal:replace="string:(${obj/Title})" />
             </legend>
 
             <div class="field"
@@ -54,7 +55,8 @@
                 New Short Name
                 </label>
 
-                <div tal:content="error">Validation error output</div>
+                <div tal:condition="error"
+                     tal:content="error">Validation error output</div>
 
                 <input type="hidden"
                        name="ids:list"
@@ -79,7 +81,8 @@
                 New Title
                 </label>
 
-                <div tal:content="error|nothing">Validation error output</div>
+                <div tal:condition="error"
+                     tal:content="error">Validation error output</div>
 
                 <input type="text"
                        name="new_titles:list"

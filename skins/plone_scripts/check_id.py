@@ -55,7 +55,10 @@ else:
 
 # perform the actual check
 if checkForCollision:
+    #XXX We need to rethink this.  The problem is when you are looking at a View on a 
+    #    Folderish object.  
     container = context.getParentNode()
+
     if hasattr(container, 'objectIds'):
         try:
             if id in container.objectIds():

@@ -12,13 +12,14 @@
 from Products.CMFPlone import transaction_note
 
 for x in range(0, len(new_ids)):
+    new_id = new_ids[x]
     id = ids[x]
     new_title = new_titles[x]
     obj = context.restrictedTraverse(id)
-    if obj.Title() != new_title:
+    if new_title and obj.Title() != new_title:
         obj.setTitle(new_title)
+    if new_id and id != new_id:
+        context.manage_renameObjects((id,), (new_id,))
 
-context.manage_renameObjects(ids, new_ids)
 transaction_note( str(ids) + 'have been renamed' )
-
 return state.set(portal_status_message='Item(s) renamed.')
