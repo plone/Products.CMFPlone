@@ -37,6 +37,8 @@ Plone 1.0 rc2
       - Plone Prime
       - Plone Zed
       
+    - Fix for the printing problems which caused some text to disappear along the right edge.
+      
 Plone 1.0 rc1
     - added 'fullname' to portal_memberdata
     - 'properties' forms (metadata_edit_form) no longer allows anyone to add keywords.  this is now
