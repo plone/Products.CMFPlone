@@ -126,8 +126,8 @@
                          display_actions python:user_actions+global_actions;">&nbsp;
 
             <a href=""
-               tal:condition="not: here/portal_membership/isAnonymousUser"
-               tal:attributes="href python:user_actions[0]['url']">
+               tal:condition="not:here/portal_membership/isAnonymousUser"
+               tal:attributes="href string:${here/portal_membership/getHomeUrl}/folder_contents">
                 <img src="dummy.gif" 
                      alt="User" 
                      border="0" 
