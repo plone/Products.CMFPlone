@@ -45,7 +45,8 @@
                                                test(sibling.isPrincipiaFolderish,'','view'));
                                            
                                        
-                                       sibling_title python:'&nbsp;;'.join(te['object'].title_or_id()[:croppingLength].split(' '));"
+                                       title python:te['object'].title_or_id();
+                                       sibling_title python:'&nbsp;;'.join(title[:croppingLength].split(' '));"
                                        tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                        >
                            
@@ -56,7 +57,8 @@
                     <a href="" 
                        tal:condition="python: sibling.meta_type != 'CMF Site'"
                        tal:define="url string:${sibling/absolute_url}/${stdCommand}"
-                       tal:attributes="href url"
+                       tal:attributes="href url;
+                                       title python:test(title != sibling_title, title, '');"
                        class="plain">
             
                         <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" 
@@ -70,7 +72,8 @@
                     <a href="" 
                        tal:condition="python: sibling.meta_type == 'CMF Site'"
                        tal:define="url string:${sibling/absolute_url}"
-                       tal:attributes="href url">
+                       tal:attributes="href url;
+                                       title python:test(title != sibling_title, title, '');">
                        
                         <img tal:replace="structure here/site_icon.gif" />
                         <tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" />
