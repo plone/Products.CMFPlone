@@ -44,7 +44,16 @@ def upg_1_0_1_to_1_1(portal):
                  'python:portal.portal_syndication.isSyndicationAllowed(object)',
                  'View',
                  'document_actions')
-
+    
+    # trashcan, Maik
+    pm = portal.portal_membership
+    pm.addAction('mytrashcan',
+        'My Trashcan',
+        'string:${portal/portal_membership/getHomeUrl}/.trashcan/folder_contents',
+        'python:member and hasattr(portal.portal_membership.getHomeFolder(), ".trashcan")',
+        'View',
+        'user')
+        
     #Install CMFActionIcons and Plone action icons
     portal.portal_quickinstaller.installProduct('CMFActionIcons')
     get_transaction().commit(1)
