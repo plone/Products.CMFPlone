@@ -9,6 +9,7 @@ from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
+from OFS.ObjectManager import bad_id
 from copy import deepcopy
 
 class FormulatorTool (UniqueObject, SimpleItem):
@@ -40,10 +41,26 @@ class FormulatorTool (UniqueObject, SimpleItem):
         #
         # *** Form handlers should always call validate even if they require no additional
         # validation to check for id collisions and to set up the REQUEST ***
-        errors = {}
         if validator != None:
             errors = apply(getattr(context, validator), ())
-        context.validate_setupRequest(errors)
+        messages = context.errorMessages()
+        # make sure errors is a dictionary
+        if not type(errors) == type({}):
+            errors = {}
+        # do some basic id validation
+        id = context.REQUEST.get('id')
+        if bad_id(id):
+            errors['id'] = messages['illegal_id']
+        else:
+            if context.getId() != id:
+                if id in context.getParentNode().objectIds():
+                    errors['id'] = messages['id_exists']
+
+        # set a status message indicating errors
+        if errors:
+            context.REQUEST.set('portal_status_message', messages['error_exists'])
+
+        context.REQUEST.set('errors', errors)
         return errors
 
     security.declarePublic('createForm') # ( CMFCorePermissions.AddPortalContent, 'createForm' )
