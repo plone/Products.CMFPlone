@@ -63,7 +63,8 @@
                                 url string:$result_url/view;" 
 		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
                     <td>
-		                <img src="#" tal:attributes="src result/getIcon; alt result/Type;" />&nbsp;<a 
+		         <a href="#" 
+			    tal:attributes="href url"><img src="#" tal:attributes="src result/getIcon; alt result/Type;" border="0" /></a>&nbsp;<a 
                          href="#" tal:attributes="href url"
                                   tal:content="result/Title" />
                     </td>
