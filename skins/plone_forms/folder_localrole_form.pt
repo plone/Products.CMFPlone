@@ -5,7 +5,7 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-    <div metal:fill-slot="super">
+  <div metal:fill-slot="super">
 
         <div metal:use-macro="here/portal_tabs/macros/folderTabs">
         Content tabs
@@ -15,14 +15,22 @@
         &nbsp;
         </div>	
 
-    </div>
+  </div>
 
+  <div metal:fill-slot="main"
+       tal:define="join python:modules['string'].join;
+       search_submitted request/role_submit|nothing;
+       search_results python:test(search_submitted, here.portal_membership.searchMembers( search_param=request.search_param
+                                                                                        , search_term=request.search_term), None);">
 
-	<div metal:fill-slot="main"
-         tal:define="join python:modules['string'].join">
-
-	<div tal:condition="exists:request/role_submit">
-																																												
+    <metal:block tal:condition="python:test(search_submitted and not search_results, 1, 0)">
+                <h1>Search results</h1>
+		<p>No members were found using your <strong>Search Term(s)</strong></p>
+		<hr />
+    </metal:block>
+    
+    <metal:block tal:condition="python:test(search_submitted and search_results, 1, 0)">
+    
 		<h1>Search results</h1>
 
 		<p>Select one or more Members, and a role to assign.</p>
@@ -36,8 +44,7 @@
             
             <input type="hidden" name="change_type" value="add" />
 		
-		    <span class="card"
-                  tal:repeat="member python:container.portal_membership.searchMembers( search_param=request.search_param, search_term=request.search_term)">
+		    <span class="card" tal:repeat="member search_results">
 				
 				<img src="defaultUser.gif" alt="Blank Picture"> <br />
 				
@@ -70,7 +77,7 @@
     
                 <span class="field">
     
-    				<select name="member_role">
+                    <select name="member_role">
     
                         <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
                                 tal:content="lroles">
@@ -99,13 +106,12 @@
 		
 		</form>				
 
-	<hr />	
 
-	</div>
+	</metal:block>
 
 	
 	<div>
-		<span tal:condition="python:not request.has_key('role_submit')">
+		<span tal:condition="python:test(not search_submitted or (search_submitted and not search_results), 1, 0)">
  			<h1>Assign local roles to folder
 			<span tal:replace="here/title_or_id">title</span> 
 			</h1>
