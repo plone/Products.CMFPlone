@@ -15,6 +15,7 @@ ZopeTestCase.installProduct('ZChecker')
 
 _print = ZopeTestCase._print
 
+ignoredObjectIds = ['rssBody']
 
 class TestSkins(PloneTestCase.PloneTestCase):
 
@@ -25,6 +26,11 @@ class TestSkins(PloneTestCase.PloneTestCase):
     def testSkins(self):
         '''Runs the ZChecker on skins'''
         dirs = self.portal.portal_skins.objectValues()
+        # dont break old zchecker instances
+
+        if hasattr(self.portal.zchecker, 'setIgnoreObjIds'):
+            self.portal.zchecker.setIgnoreObjectIds(['ignoredObjectIds',])
+            
         for dir in dirs:
             results = self.portal.zchecker.checkObjects(dir.objectValues())
             for result in results:
