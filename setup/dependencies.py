@@ -69,9 +69,14 @@ except ImportError:
 
 
 try:
+    import Products.CMFFormController
+except ImportError:
+    log("CMFFormController not found. Please download if from http://sf.net/projects/collective")
+
+try:
     import Products.GroupUserFolder
 except ImportError:
-    log("GroupUserFolder not found. Please download it from http://sf.net/projects/collective", optional=1)
+    log("GroupUserFolder not found. Please download it from http://sf.net/projects/collective")
 
 try:
     import Products.CallProfiler
