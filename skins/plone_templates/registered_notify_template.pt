@@ -1,20 +1,22 @@
 To: <span tal:replace="request/email" />
 From: "<span tal:replace="here/email_from_name" />" <<span tal:replace="here/email_from_address" />>
-Subject: Portal Membership Information
+Subject: <span i18n:translate="mailtemplate_registered_portal_membership_info" tal:omit-tag="">Portal Membership Information</span>
+Content-Type: text/plain; charset=<span tal:replace="here/portal_properties/site_properties/default_charset" />
 
-You have been registered as a member of <span tal:replace="python:here.portal_url.getPortalObject().Title()" />, which
-allows you to personalize your view of the Portal website and participate in
+<div i18n:translate="mailtemplate_registered_body" tal:omit-tag="">
+You have been registered as a member of <span i18n:name="portal_name" tal:replace="python:here.portal_url.getPortalObject().Title()" />, which
+allows you to personalize your view of the website and participate in
 the community.
 
-This describes the purpose of the portal:
-<span tal:replace="here/description" />
+Description:
+<span i18n:name="description" tal:replace="here/description" />
 
-Visit us at <span tal:replace="here/portal_url" />
+Visit us at <span i18n:name="portal_url" tal:replace="here/portal_url" />
 
-Your sign-in name and password are:
+Your login name and password are:
 
-Sign-in name : <span tal:replace="options/member" />
-Password     : <span tal:replace="options/password" />
-
+Login name : <span i18n:name="username" tal:replace="options/member" />
+Password   : <span i18n:name="password" tal:replace="options/password" />
+</div>
 --
-Portal Admin
+<span tal:replace="here/email_from_name" />

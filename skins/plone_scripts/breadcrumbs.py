@@ -8,8 +8,6 @@
 ##title=used to make the breadcrumbs in the pathbar
 ##
 
-homeDirectoryName = 'Home'
-
 if obj is None:
     obj=context
     
@@ -24,12 +22,12 @@ currentlyViewingFolderContents = (published_id == 'folder_contents')
 o=context.portal_url.getPortalObject()
 
 # add the initial breadcrumb: the home directory
-if currentlyViewingFolderContents and \
-    context.portal_membership.checkPermission('List folder contents', o):
-    path_seq = ( (homeDirectoryName, o.absolute_url()+'/folder_contents'), )
-else:
-    path_seq = ( (homeDirectoryName, o.absolute_url()), )
-
+#if currentlyViewingFolderContents and \
+#    context.portal_membership.checkPermission('List folder contents', o):
+#    path_seq = ( (homeDirectoryName, o.absolute_url()+'/folder_contents'), )
+#else:
+#    path_seq = ( (homeDirectoryName, o.absolute_url()), )
+path_seq = ()
 view = None
 
 # add breadcrumbs for directories between the root and the published object

@@ -6,6 +6,13 @@
       i18n:domain="plone">
 <body>
 
+    <metal:block fill-slot="base">
+        <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+                   tal:replace="nothing">
+        Disable the tabs
+        </tal:block>
+    </metal:block>
+
 <div metal:fill-slot="main" 
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">	

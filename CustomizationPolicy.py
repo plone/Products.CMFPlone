@@ -192,7 +192,7 @@ class DefaultCustomizationPolicy:
         at.addAction('search_form','Search','string: $portal_url/search_form','','View','portal_tabs')
 
         at.addAction( 'content_status_history'
-                    , 'Workflow'
+                    , 'State'
                     , 'string:${object_url}/content_status_history'
                     , 'python:portal.portal_workflow.getTransitionsFor(object, object.getParentNode())'
                     , 'View'
