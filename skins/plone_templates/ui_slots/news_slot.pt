@@ -13,7 +13,7 @@
                                                                                      , review_state='published')[:5]);"
      tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
 
-    <div class="box">
+    <div class="box" id="portlet-news">
     
         <h5 i18n:translate="box_news">News</h5>
 

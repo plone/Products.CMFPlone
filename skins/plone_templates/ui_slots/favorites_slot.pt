@@ -13,7 +13,7 @@
      >
 
     <div class="box"
-         tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);">
+         tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);" id="portlet-favorites">
     
         <h5 i18n:translate="box_my_favorites">My Favorites</h5>
 

@@ -11,7 +11,7 @@
      tal:omit-tag=""
      tal:condition="isAnon">
 
-    <div class="box" tal:define="portal_url portal_url|here/portal_url">
+    <div class="box" tal:define="portal_url portal_url|here/portal_url" id="portlet-login">
 
         <h5 i18n:translate="box_sign_in">Log in</h5>
 

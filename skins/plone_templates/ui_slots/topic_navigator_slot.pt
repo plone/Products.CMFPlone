@@ -14,7 +14,7 @@
        <!-- We don't show this box when we are editing a Topic
             This is because it would lead to infinite recursion -->
 
-    <div class="box" tal:define="navExpand python:request.SESSION.get('navExpand', results[0].Title)">
+    <div class="box" tal:define="navExpand python:request.SESSION.get('navExpand', results[0].Title)" id="portlet-topic-navigator">
 
         <h5 i18n:translate="box_navigation">Navigation</h5>
 

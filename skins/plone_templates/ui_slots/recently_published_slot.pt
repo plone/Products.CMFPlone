@@ -15,7 +15,7 @@
                                                                               sort_order='reverse',
                                                                               review_state='published')[:5]);">
 
-    <div class="box">
+    <div class="box" id="portlet-recently-published">
     
         <h5 i18n:translate="box_recentlypublished">Recently Published</h5>
 
