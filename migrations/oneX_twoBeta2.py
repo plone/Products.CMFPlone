@@ -123,7 +123,7 @@ def swapPortalRoot(portal):
             portal.manage_addProperty(propid, old.getProperty(propid), prop['type'])
 
     #copy Roles
-    portal.__ac_roles__=old.__ac_roles__
+    portal.__ac_roles__=list(old.__ac_roles__)
 
     #copy Security settings
     for permission in [perm for perm in dir(portal) if perm.endswith('_Permission')]:
