@@ -181,12 +181,12 @@ def _go(app):
 
     # 7.1 patch up the skins
     # Plone is a bad product
-    skins = plone.portal_skins.getSkinSelections()
-    for skin in skins:
-        path = plone.portal_skins.getSkinPath(skin)
-        path = map(string.strip, string.split(path,','))
-        path.insert(1, 'plone_3rdParty/CMFCollector')
-        plone.portal_skins.addSkinSelection(skin, ','.join(path))
+#    skins = plone.portal_skins.getSkinSelections()
+#    for skin in skins:
+#        path = plone.portal_skins.getSkinPath(skin)
+#        path = map(string.strip, string.split(path,','))
+#        path.insert(1, 'plone_3rdParty/CMFCollector')
+#        plone.portal_skins.addSkinSelection(skin, ','.join(path))
     # Sigh, ok now CMFCollector should be in the path
 
     # 8. add in the languages
