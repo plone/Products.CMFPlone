@@ -190,16 +190,14 @@
                 <!--you can filter by subject keywords by filling in this value-->
             </span>
 
-            <metal:block tal:condition="folder_contents"
-	                 tal:define="pps modules/Products.PythonScripts.standard">
-              <tal:block tal:repeat="button actions/local_buttons|nothing">
-              <input class="context" 
-	             type="submit" 
-	             name="folder_rename_form:method" 
-		     value="Rename" 
-		     tal:attributes="value button/name; name button/url;" />
-              </tal:block>   
-            </metal:block>
+            <tal:block tal:repeat="button actions/local_buttons|nothing">
+            <input class="context" 
+	           type="submit" 
+	           name="folder_rename_form:method" 
+		   value="Rename" 
+                   tal:condition="python:folder_contents or (here.cb_dataValid and button['id'] == 'paste')"
+		   tal:attributes="value button/name; name button/url;" />
+            </tal:block>   
 
         </td></tr></tbody></table>
     
