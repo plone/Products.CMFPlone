@@ -174,6 +174,11 @@ class PloneGenerator(Portal.PortalGenerator):
                                   '(Folder Workflow [Plone])')
         wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
 
+        #if the CMF has put the ancient 'default_workflow' workflow in 
+        #portal_workflow we want to remove it.  It adds no value.
+        if 'default_workflow' in wf_tool.objectIds():
+            wf_tool.manage_delObjects('default_workflow')
+
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):
         path=[elem.strip() for elem in \
               skin_tool.getSkinPath('Plone Default').split(',')]
