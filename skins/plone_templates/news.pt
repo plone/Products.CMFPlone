@@ -19,7 +19,7 @@
 
     <h1 i18n:translate="heading_news">News</h1>
     
-    <div i18n:translate="description_news" class="description">The latest news, sorted in reverse chronological order.</div>
+    <div i18n:translate="description_news" id="description">The latest news, sorted in reverse chronological order.</div>
 
     <form name="searchresults" action="" method="post" tal:condition="results"
                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">

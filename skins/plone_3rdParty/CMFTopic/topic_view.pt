@@ -12,7 +12,7 @@
     Title or id
     </h1>
     
-    <div class="description"
+    <div id="description"
          tal:content="structure here/Description"> 
     description
     </div>

@@ -6,12 +6,15 @@
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
 </dtml-let>
 
-// Fix for bug in IE6.0 float handling (don't ask, don't tell ;)
+// Fix for bug in IE6.0 float handling, we refresh the body and description
+// content, as it sometimes disappears due to a bug.
+// More information on this: http://www.zeldman.com/daily/0103d.shtml#redesign2
 
 if (document.all && window.attachEvent) window.attachEvent("onload", fixWinIE);
 function fixWinIE() {
     try {
-        document.getElementById('content').style.display = 'block';
+        document.getElementById('bodyContent').style.display = 'block';
+        document.getElementById('description').style.display = 'block';
     } catch(er) {}
 }
 

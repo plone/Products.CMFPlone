@@ -38,7 +38,7 @@
     
         </div>    
 
-        <span class="description" tal:content="here/Description"> 
+        <span id="description" tal:content="here/Description"> 
             News summary 
         </span>
 

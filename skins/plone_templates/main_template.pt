@@ -51,30 +51,23 @@
     </div>
 </div>
 
-<div class="columns">
+<!-- The wrapper table. It contains the three columns. -->
+<table class="columns"><tbody><tr>
 
-    <!-- the left (by default at least) column -->
-    <!-- To move it , edit the css, not this html -->
-    <div class="left">
-        <div metal:use-macro="here/portlets_fetcher/macros/left_column">
-        </div>
-    </div>
-    <!-- the end of the left (by default at least) column -->
+    <!-- start of the left (by default at least) column -->
+    <td class="left">
+        <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
+        This instruction gets the portlets (boxes) for the left column.
+        </metal:leftportlets>
+    </td>
+    <!-- end of the left (by default at least) column -->
 
 
-    <!-- the right (by default at least) column -->
-    <div class="right">
-        <div metal:use-macro="here/portlets_fetcher/macros/right_column">
-        </div>
-    </div>
-    <!-- the right (by default at least) column -->
-
-    <!-- the main content block -->
-    <div class="main"
+    <!-- start of main content block -->
+    <td class="main"
          tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions );
                      Iterator python:modules['Products.CMFPlone'].IndexIterator;
                      tabindex python:Iterator(pos=0);">
-        <div class="innermain">
 
         <metal:ifborder tal:condition="show_border" >
             <div metal:use-macro="here/view_tabs/macros/content_tabs"></div>
@@ -83,40 +76,42 @@
 
 
         <div class="document"
-             tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
+             tal:attributes="class python:test(show_border, 'editable document', 'document')">
 
-            <div id="content">
-                <div metal:use-macro="here/global_elements/macros/portal_message">
-                    Portal message
-                </div>
-
-                <div metal:use-macro="here/document_actions/macros/document_actions">
-                    Document actions
-                </div>
-
-
-
-
-
-                <metal:header metal:define-slot="header" tal:content="nothing">
-                    Visual Header
-                </metal:header>
-
-                <metal:bodytext metal:define-slot="main" tal:content="nothing">
-                    Page body text
-                </metal:bodytext>
-
-                <metal:sub metal:define-slot="sub">
-                    <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-                </metal:sub>
+            <div metal:use-macro="here/global_elements/macros/portal_message">
+                Portal status message
             </div>
+
+            <div metal:use-macro="here/document_actions/macros/document_actions">
+                Document actions (print, sendto etc)
+            </div>
+
+
+
+            <metal:header metal:define-slot="header" tal:content="nothing">
+                Visual Header
+            </metal:header>
+
+            <metal:bodytext metal:define-slot="main" tal:content="nothing">
+                Page body text
+            </metal:bodytext>
+
+            <metal:sub metal:define-slot="sub">
+                <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+            </metal:sub>
         </div>
-    </div>
-    </div>
-    <!-- end main content block -->
+    </td>
+    <!-- end of main content block -->
 
+    <!-- start of right (by default at least) column -->
+    <td class="right">
+        <div metal:use-macro="here/portlets_fetcher/macros/right_column">
+        This instruction gets the portlets (boxes) for the right column.
+        </div>
+    </td>
+    <!-- end of the right (by default at least) column -->
 
-</div>
+</tr></tbody></table>
 <!-- end column wrapper -->
 
 <div class="footer" metal:use-macro="here/footer/macros/portal_footer">

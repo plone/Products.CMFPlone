@@ -26,7 +26,7 @@
     Edit Collector Issue
     </h1>
 
-    <div class="description" i18n:translate="description_edit_collector_issue">
+    <div id="description" i18n:translate="description_edit_collector_issue">
     Use this form to edit the data of an existing issue. Do not use this form
     to follow up or change the workflow status of an issue - use the issue follow
     up form for that.

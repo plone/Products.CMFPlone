@@ -17,8 +17,35 @@
 */
 
 
-/* <dtml-with stylesheet_properties> */
+/* <dtml-with stylesheet_properties> (do not remove this :) */
 
+
+
+/* The column layout: */
+
+table.columns {
+	width: 100%;
+}
+
+table.columns td.left {
+    vertical-align: top;
+    width: 15%;
+    padding: 0.5em 0.5em 1em 1em;
+}
+
+table.columns td.main {
+    vertical-align: top;
+    padding: 0.5em 0.5em 1em 0.5em;
+    margin: 0;
+}
+
+table.columns td.right {
+    vertical-align: top;
+    width: 15%;
+    padding: 0.5em 1em 1em 0.5em;
+}
+
+/* The basic elements: */
 
  body {
     font: <dtml-var mainFont>;
@@ -431,12 +458,10 @@ div.document {
     margin: 0em 0em 2em 0em;
 }
 
-div.editableDocument {
-    background: &dtml-contentBackground;;
+div.editable {
+    background: &dtml-contentBackground; ! important;
     border: &dtml-contentTabBorder;;
-    font: <dtml-var contentFont>;
-    margin: 0em 0em 2em 0em;
-    padding: 0em 1em 2em 1em;
+    padding: 0em 1em 2em 1em ! important;
 }
 
 div.documentActions {
@@ -465,7 +490,7 @@ div.title {
     margin-top: 1em;
 }
 
-.description {
+#description {
     /* The summary text describing the document */
     font: <dtml-var descriptionFont>;
     display: block;

@@ -26,7 +26,7 @@
             </span>
         </h1>
 
-        <div class="description"
+        <div id="description"
              tal:define="stx nocall:
                    modules/Products/PythonScripts/standard/structured_text"
              tal:content="structure here/description">

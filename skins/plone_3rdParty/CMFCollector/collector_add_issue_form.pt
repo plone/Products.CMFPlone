@@ -22,7 +22,7 @@ Add new issue to <tal:block content="here/title_or_id"
 i18n:name="collector_title">TITLE</tal:block>
 </h1>
 
-<div class="description" i18n:translate="description_add_new_issue">
+<div id="description" i18n:translate="description_add_new_issue">
 Use this form to add your issue to the Collector. Please provide as many details
 as possible.
 </div>

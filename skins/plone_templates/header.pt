@@ -28,13 +28,14 @@
 
     <!-- Basic crude style for Netscape4.x - This can be removed
          if you don't want the special NS4 look - it will still work,
-         just be plain text instead.  -->
+         just be plain text instead. 
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
-    
+     -->
 
-    <!-- Column layout stylesheet. Even works with Netscape4 without using tables. -->
+    <!-- Column layout stylesheet. Even works with Netscape4 without using tables. Experimental, not enabled.
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneColumns.css" />
-
+    -->
+    
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="all"
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>

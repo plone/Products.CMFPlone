@@ -4,8 +4,8 @@
       i18n:domain="plone">
 <body>
 
-<div metal:fill-slot="main"
-       tal:define="len_text python:len(here.text);">
+<metal:main fill-slot="main"
+   tal:define="len_text python:len(here.text);">
 
     <h1 tal:content="here/title_or_id">
     Title or id
@@ -28,17 +28,17 @@
     
         <span tal:condition="not: creator_home"
               tal:content="creator">bob</span>
-
-        <br />
               
-        <span i18n:translate="box_last_modified">Last modified</span>
+        -
+
+        <span i18n:translate="box_last_modified">last modified</span>
         <span tal:replace="here/ModificationDate">
         August 16, 2001 at 23:35:59
-        </span>    
+        </span>.    
 
     </div>    
                   
-    <div class="description"
+    <div id="description"
          tal:content="here/Description"> 
     description
     </div>
@@ -48,13 +48,14 @@
     This item does not have any body text, click the edit tab to change it.
     </p>
 
-    <div class="stx"
+    <div id="bodyContent"
+         class="stx"
          tal:condition="len_text"
-         tal:omit-tag="python:here.text_format != 'structured-text'">
+         tal:attributes="class python:test(here.text_format=='structured-text', 'stx', 'plain')">
         <div tal:replace="structure here/CookedBody" />
     </div>
     
-</div>
+</metal:main>
 
 </body>
 

@@ -1,3 +1,4 @@
+/* Experimental table-less column layout that also works with NS4. Not in use (yet :). */
 
 .columns{
 }
