@@ -341,28 +341,30 @@ ul#personalBar {
     padding-right: 3em;
     margin: 0;
     padding-bottom: 0;
+    padding-top: 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
 ul#personalBar li {
     float: right;
-    background: transparent url(linkOpaque.gif) center left no-repeat;
-    padding-left: 12px;
-    min-height: 16px;
+    padding-bottom: 0;
+    padding-top: 0;
     /* Make the links inline using Fabrice's inversion to fix NS4 */
     display : inline;
     /*/*//*/
     display : none;
     /* */
 }
-ul#personalBar li#personalBar-user {
+ul#personalBar li#personalBar-user a {
     background: transparent url(user.gif) center left no-repeat;
     padding-left: 19px;
 }
     
 ul#personalBar li a {
-    background-color: transparent;
+    background: transparent url(linkOpaque.gif) center left no-repeat;
+    padding-left: 12px;
+    min-height: 16px;
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
@@ -412,6 +414,8 @@ ul#contentTabs li {
     height: 1.2em;
     margin-right: 0.5em;
     padding: 0em 2em;
+    position: relative;
+    top: 2px; /* Cope with odd rounding bugs */
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
