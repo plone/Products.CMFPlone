@@ -176,7 +176,7 @@
         <div class="pathBar"
              metal:define-macro="pathBar"
              tal:define="breadcrumbs python:here.breadcrumbs(here);
-                         portal_url portal_urlhere/portal_url;">
+                         portal_url portal_url|here/portal_url;">
 
             <a href="#"
                tal:condition="here/portal_membership/getHomeFolder"
