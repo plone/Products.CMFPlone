@@ -1,0 +1,24 @@
+<html metal:use-macro="here/main_template/macros/master">
+  <div metal:fill-slot="left_navigation">
+      <a href="#" 
+         class="subNav"
+	 tal:repeat="o python:here.contentValues(here.display_types)"
+         tal:content="o/title_or_id"
+         tal:attributes="href o/absolute_url"> Gary Meshell Whips Ass </a> <br />
+  </div>
+
+  <div metal:fill-slot="main"
+       tal:define="logo here/partner_logo | nothing" >
+
+    <img src=""
+         tal:condition="logo"
+	 tal:attributes="src string:${here/absolute_url}/partner_logo" />
+	 
+      <p class="copy"
+         tal:content="structure here/CookedBody">
+      This is the client information.
+      </p>
+
+  </div>
+
+</html>

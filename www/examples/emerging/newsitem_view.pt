@@ -1,6 +1,6 @@
 <html metal:use-macro="here/main_template/macros/master">
   <div metal:fill-slot="left_navigation">
-     <metal:block tal:repeat="o python:here.contentValues('News Item')">
+     <metal:block tal:repeat="o python:here.contentValues(here.display_types)">
       <a href="#" 
          class="subNav"
          tal:content="o/title_or_id"

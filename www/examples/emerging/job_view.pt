@@ -1,0 +1,62 @@
+<html metal:use-macro="here/main_template/macros/master">
+  <div metal:fill-slot="left_navigation">
+     <metal:block tal:repeat="o python:here.contentValues(here.display_types)">
+      <a href="#" 
+         class="subNav"
+         tal:content="o/title_or_id"
+         tal:attributes="href o/absolute_url"> Gary Meshell Whips Ass </a> <br />
+      </metal:block>
+  </div>
+
+  <div metal:fill-slot="main"
+       tal:define="logo here/client_image | nothing; case_study here/case_study.pdf|nothing;" >
+
+       <img src="images/subheads/opportunities.gif" width="441" height="79" alt="opportunities">
+       
+       <p class="header">Position:</p>
+       <p class="copy"
+          tal:content="here/Title">Advanced Technologist</p>
+       
+       <p class="header">Date Posted:</p>
+       <p class="copy">Oct-01-2000</p>
+       
+       <p class="header">Responsibilities:</p>
+       <p class="copy"
+          tal:content="here/Description">
+          Advanced Technologists are leaders and role models for our technical staff. 
+	  They provide thought leadership for the technology practice and insights across 
+	  all technical architecture components of a technology process or technology line. 
+
+          Advanced Technologists are responsible for assessing operational capabilities and 
+	  defining opportunities to create business value. They also lead the identification, evaluation, and selection of operating alternatives that form the overall strategy and business architecture for clients and lead the definition of an delivery approach to close operating gaps to achieve value. 
+
+       </p>
+       
+       <p class="header">Preferred Qualifications:</p>
+       <p class="copy"
+          tal:content="structure here/qualifications">
+	  Advanced Technologists have 8+ years of experience in designing and implementing technical solutions. They should have a strong understanding of all design and technical disciplines involved in the application development process. They should possess exceptional technology skills, with working knowledge of complex languages and systems. 
+
+          Advanced Technologists must demonstrate thought leadership across all technical architecture components of a technology process or technology line (e.g. open source collaboration, Linux compatibility with various software groups). They must have excellent client interaction skills and be able to present and defend technical architectures and designs to our clients. 
+
+          Advanced Technologists must be capable of performing and supervising all aspects of a technical client engagement, from proposal through implementation. 
+
+          Bachelor's degree or equivalent experience required. 
+      </p>
+      
+      <p class="header">Locations:</p>
+      <p class="copy" 
+         tal:repeat="location here/locations"
+	 tal:content="location">U.S. - various</p>
+      
+      <p class="header">Contact:</p>
+      <p><a class="copy" 
+            tal:attributes="href string:mailto:${here/contact_email}"
+	    tal:content="here/contact_email"
+            href="mailto:careers@emerging.com">careers@emerging.com</a></p>
+      
+      <p>&nbsp;</p><!-- #EndEditable -->
+
+  </div>
+
+</html>

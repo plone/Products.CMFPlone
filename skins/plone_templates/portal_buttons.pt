@@ -5,16 +5,22 @@
      tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));
                  isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
 		 hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
-		 view_action python:test(hereTypeInfo, hereTypeInfo.getActionById('view'), '');
+		 view_action python:hereTypeInfo.getActionById('view');
+		 reply python:[oa for oa in actions['object'] if oa.get('id', '')=='reply'];
 		 isViewTemplate python:test(template.getId()==view_action, 1, 0);"
      tal:condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0) ">	
 
     <form name="reply" 
           action="" 
           method="post"
-          tal:define="reply python:here.getActionUrlById('reply', actions['object']);"
-          tal:condition="reply" tal:attributes="action reply">       
-        <input class="standalone" type="submit" value="Add Comment" />
+          tal:condition="reply" 
+	  tal:attributes="action python:reply[0]['url']">       	
+
+        <tal tal:define="discussion python:here.portal_discussion.getDiscussionFor(here)" />
+	
+        <input class="standalone" 
+	       type="submit" 
+	       value="Add Comment" />
     </form>
     
     <div class="spacer">
