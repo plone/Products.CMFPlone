@@ -104,9 +104,10 @@ class PloneTool (UniqueObject, SimpleItem):
         if DublinCore.isImplementedBy(obj):
             apply(self.editMetadata, (obj,), kwargs)
 
-        self._renameObject(obj, id=kwargs['id']) 
+        if kwargs.get('id', None) is not None: 
+            self._renameObject(obj, id=kwargs['id']) 
 	
-	self._makeTransactionNote(obj) #automated the manual transaction noting in xxxx_edit.py
+        self._makeTransactionNote(obj) #automated the manual transaction noting in xxxx_edit.py
 
     security.declarePublic('availableMIMETypes')
     def availableMIMETypes(self):

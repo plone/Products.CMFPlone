@@ -13,9 +13,9 @@ date, and have nice and funky pictures to go with them ;)
 
 **The installation procedure:**
 
-- Install Zope
+- Install Zope (2.5.1 or later)
 
-- Unpack the CMF directories (CMFCore, CMFDefault etc) into your Products directory
+- Unpack the CMF directories (CMFCore, CMFDefault etc) into your Products directory (CMF1.3b2 or later)
 
 - Unpack the Plone directory (CMFPlone) into your Products directory (also include the DCWorkflow and Formulator products)
 

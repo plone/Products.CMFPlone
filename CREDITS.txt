@@ -18,6 +18,7 @@ Steve Alexander - Helpful ZOPE Guru
 Lalo Martin - Zope Plumbing, PortalFactory, Translator Tool
 Kapil (hazmat) - Helpful ZOPE Guru
 Luis Lavena - favicon
+David Harvey - python,ZPT,Makes sures things dont fall through the cracks ;)
 
 #zope on irc.openprojects.net for insight and soapbox to preach
 zopelabs.com for useful scripts 

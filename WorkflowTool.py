@@ -38,10 +38,11 @@ class WorkflowTool( CoreWorkflowTool ):
         wf_tool=getToolByName(self, 'portal_workflow')
         if type(obj)==type([]):
             return self.flattenTransitions(objs=obj)
-        elif hasattr(obj, 'isPortalContent'):
+        #elif hasattr(obj, 'isPortalContent'):
+        else:
             obj=obj
-        else: 
-            obj=getattr(self.getParentNode(), obj)
+        #else: 
+        #    obj=getattr(self.getParentNode(), obj)
         wfs=()
         avail_trans=()
         objstate=None

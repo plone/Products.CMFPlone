@@ -9,8 +9,9 @@
 ##
 
 if effective_date or expiration_date:
-    context.metadata_edit(effective_date=effective_date,
-                          expiration_date=expiration_date)
+    context.plone_utils.contentEdit( context
+                                   , effective_date=effective_date
+                                   , expiration_date=expiration_date )
 
 context.portal_workflow.doActionFor(
     context,
