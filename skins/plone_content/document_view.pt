@@ -49,7 +49,7 @@
         <br />
 
         <span i18n:translate="box_last_modified">Last modified</span>
-        <span tal:replace="here/ModificationDate">
+        <span tal:replace="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
         August 16, 2001 at 23:35:59
         </span>
 

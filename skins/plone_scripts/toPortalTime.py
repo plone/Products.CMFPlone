@@ -8,22 +8,8 @@
 ##title=
 ##
 #given a time string convert it into a DateTime and then format it appropariately
-from DateTime import DateTime
-localized_time=None
-properties=context.portal_properties.site_properties
-
-if long_format:
-    format=properties.localLongTimeFormat
-else:
-    format=properties.localTimeFormat
-
-if not time:
-    time=DateTime().pCommon()
-
-try:
-    localized_time=DateTime(str(time)).strftime(format)
-except IndexError:
-    pass 
-
-return localized_time
+#
+# deprecated, use toLocalizedTime instead
+#
+return context.toLocalizedTime(time=time, long_format=long_format)
 

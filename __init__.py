@@ -14,6 +14,8 @@ misc_ = {'plone_icon': Globals.ImageFile(path.join('skins','plone_images','logoI
 
 # For plone_debug method
 import zLOG
+
+
 def log(message,summary='',severity=0):
     zLOG.LOG('MyDebugLog',severity,summary,message)
 
@@ -36,6 +38,7 @@ def initialize(context):
 
     ModuleSecurityInfo('zLOG').declarePublic('LOG')
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
+    ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
 
     import StatelessTreeNav
     from StatelessTree import NavigationTreeViewBuilder
