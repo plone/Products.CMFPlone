@@ -78,3 +78,7 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.0.2',
                                       '2.0.3',
                                       null)
+
+    MigrationTool.registerUpgradePath('2.0.3',
+                                      '2.0.4',
+                                      null)
