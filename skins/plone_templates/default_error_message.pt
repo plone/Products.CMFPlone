@@ -48,65 +48,52 @@
 
         <div tal:condition="python:test(err_type!='NotFound', 1, 0)">
 
-        <h1 i18n:translate="heading_site_error">Site error</h1>
-
-        <p i18n:translate="description_site_error">
-        This site encountered an error trying to fulfill your request.
-        The errors were:
-        </p>
-
-            <div class="group" >
-
-                <span class="legend" i18n:translate="legend_error_details">Error Details</span>
-
-                <div class="row">
-                    <div class="label" i18n:translate="label_error_type">
-                    Error Type
-                    </div>
-
-                    <div class="field" i18n:translate=""
-                          tal:content="structure err_type">
-                    The rendered error type
-                    </div>
-                </div>
-
-                <div class="row" tal:condition="err_message">
-                    <div class="label" i18n:translate="label_error_message">
-                    Error Message
-                    </div>
-
-                    <div class="field" i18n:translate=""
-                         tal:content="structure err_message|nothing">
-                    The rendered error message
-                    </div>
-                </div>
-
-                <div class="row" tal:condition="python:test(err_value and (err_value != err_message), 1, 0)">
-                    <div class="label" i18n:translate="label_error_value">
-                    Error Value
-                    </div>
-
-                    <div class="field" i18n:translate=""
-                         tal:content="structure err_value">
-                    The rendered error value
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="label" i18n:translate="label_error_time">
-                    Request made at
-                    </div>
-
-                    <div class="field"
-                         tal:content="here/ZopeTime">
-                    The time the error was encountered
-                    </div>
-                </div>
-
-            </div>
+            <h1 i18n:translate="heading_site_error">Site error</h1>
+    
+            <p i18n:translate="description_site_error">
+            This site encountered an error trying to fulfill your request.
+            The errors were:
+            </p>
+    
+            <dl>
+                <dt i18n:translate="label_error_type">
+                Error Type
+                </dt>
+        
+                <dd i18n:translate="" tal:content="structure err_type">
+                The rendered error type
+                </dd>
+    
+                <tal:error condition="err_message">
+                <dt i18n:translate="label_error_message">
+                Error Message
+                </dt>
+    
+                <dd i18n:translate="" tal:content="structure err_message|nothing">
+                The rendered error message
+                </dd>
+                </tal:error>
+    
+                <tal:value condition="python:test(err_value and (err_value != err_message), 1, 0)">
+                <dt i18n:translate="label_error_value">
+                Error Value
+                </dt>
+    
+                <dd i18n:translate="" tal:content="structure err_value">
+                The rendered error value
+                </dd>
+                </tal:value>
+    
+                <dt i18n:translate="label_error_time">
+                Request made at
+                </dt>
+    
+                <dd tal:content="here/ZopeTime">
+                The time the error was encountered
+                </dd>
+            </dl>
 
         </div>
-
 </div>
 
 </html>

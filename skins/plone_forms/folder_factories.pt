@@ -20,63 +20,65 @@
 	Select the type of item you want to add to your folder.
 	</p>
 
-  <div class="group" metal:define-macro="addlist"
-       tal:define="filterOut here/getNotAddableTypes;
-                   create_id id | nothing;
-                   id_query string:&amp;id=$create_id;
-                   query python:test(create_id, id_query, '');">
+    <div metal:define-macro="addlist"
+         tal:define="filterOut here/getNotAddableTypes;
+                     create_id id | nothing;
+                     id_query string:&amp;id=$create_id;
+                     query python:test(create_id, id_query, '');">
+                   
+        <fieldset>
 
-      <span class="legend" i18n:translate="legend_items_available">Items Available</span>
+            <legend i18n:translate="legend_items_available">Items Available</legend>
 
-      <div tal:repeat="ctype here/allowedContentTypes">
+            <tal:types tal:repeat="ctype here/allowedContentTypes">
 
-          <div class="row" tal:define="pss modules/Products/PythonScripts/standard; Title ctype/Title; Id ctype/getId"
-                           tal:condition="python:test(Id not in filterOut, 1, 0)">
+            <div class="field" tal:define="pss modules/Products/PythonScripts/standard; Title ctype/Title; Id ctype/getId"
+                               tal:condition="python:test(Id not in filterOut, 1, 0)">
 
-              <div class="label">
-                  <span i18n:translate=""
-                        tal:content="Title">
-                        Title
-                  </span>
-                  <a href="#" tal:attributes="href python:'createObject?type_name='+pss.url_quote(Id)">
-                      <img src=""
-                           alt=""
-                           width="16"
-                           height="16"
-                           tal:attributes="src string:$portal_url/${ctype/getIcon}" />
-                  </a>
-              </div>
+                <form name="quickAdd" action="createObject" method="post">
+    
+                    <a href="#" tal:attributes="href python:'createObject?type_name='+pss.url_quote(Id)">
+                        <img src=""
+                             alt=""
+                             width="16"
+                             height="16"
+                             tal:attributes="src string:$portal_url/${ctype/getIcon}" />
+                    </a>
+                  
+                    <label i18n:translate="" tal:content="Title">
+                    Title
+                    </label>
+    
+                    <input name="type_name"
+                         type="hidden"
+                         value=""
+                         tal:attributes="value Id" />
+                    <input name="id"
+                         type="hidden"
+                         value=""
+                         tal:attributes="value create_id"
+                         tal:condition="create_id"
+                         />
+                    <input class="standalone"
+                         type="submit"
+                         value="Add"
+                         tabindex=""
+                         i18n:attributes="value"
+                         tal:attributes="tabindex tabindex/next;"
+                         />
+                    <br />
+                    <p class="formHelp" tal:content="ctype/Description" i18n:translate="">
+                    Item description
+                    </p>
+                
+                </form>
+                    
+            </div>
 
-              <div class="field">
-                  <form name="quickAdd" action="createObject" method="post">
-                      <input name="type_name"
-                             type="hidden"
-                             value=""
-                             tal:attributes="value Id" />
-                      <input name="id"
-                             type="hidden"
-                             value=""
-                             tal:attributes="value create_id"
-                             tal:condition="create_id"
-                             />
-                      <input class="standalone"
-                             type="submit"
-                             value="Add"
-                             tabindex=""
-                             i18n:attributes="value"
-                             tal:attributes="tabindex tabindex/next;"
-                             />
-                      <br />
-                      <p tal:content="ctype/Description" i18n:translate="">
-                        Item description
-                      </p>
-                  </form>
-              </div>
+            </tal:types>
 
-          </div>
-      </div>
-
-  </div>
+        </fieldset>
+    </div>
 
 </div>
 

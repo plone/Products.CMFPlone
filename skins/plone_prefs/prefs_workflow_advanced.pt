@@ -8,7 +8,8 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main" tal:define="workflow_list wtool/listWorkflows;">
+<div metal:fill-slot="prefs_configlet_main"
+     tal:define="workflow_list wtool/listWorkflows">
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
@@ -16,7 +17,7 @@
 <ul id="contentTabs">
   <li class="">
     <a href="prefs_workflow_basic"
-       i18n:translate="link_workflow_default">Default workflow configuration</a>
+       i18n:translate="link_workflow_default">Workflow Configuration</a>
   </li>
   <li class="selected">
     <a href="prefs_workflow_advanced"
@@ -41,28 +42,28 @@
     </p>
 
 
-    <form class="group" name="change_workflow" action="prefs_workflow_advanced_edit" method="POST">
+    <form name="change_workflow" 
+          action="prefs_workflow_advanced_edit" 
+          method="post">
 
-        <span class="legend" i18n:translate="">Content types</span>
+        <fieldset>
 
-        <div tal:repeat="ctype here/allowedContentTypes">
+        <legend>Content types</legend>
 
-            <div class="row"
+
+            <div class="field"
+                tal:repeat="ctype here/allowedContentTypes"
                 tal:define="Title ctype/Title;
                             Id ctype/getId;
-                    current_wf python:wtool.getChainForPortalType(Id)[0]">
+                            current_wf python:wtool.getChainForPortalType(Id)[0]">
 
-                <div class="label">
-                    <span i18n:translate=""
-                            tal:content="Title">
-                            Title
-                    </span>
-                        <img src=""
-                            alt=""
-                            width="16"
-                            height="16"
-                            tal:attributes="src string:$portal_url/${ctype/getIcon}" />
-                </div>
+                <label tal:content="Title">Title</label>
+
+                <img src=""
+                    alt=""
+                    width="16"
+                    height="16"
+                    tal:attributes="src string:$portal_url/${ctype/getIcon}" />
 
                 <select id="select_workflow"
                         name="workflow_id"
@@ -81,21 +82,17 @@
                 </select>
 
             </div>
-        </div>
 
-        <div class="row">
-                    <div class="label">&nbsp;</div>
-                    <div class="field">
-                        <input class="context"
-                            tabindex=""
-                            type="submit"
-                            name="Change"
-                            value="Save"
-                            i18n:attributes="value"
-                            tal:attributes="tabindex tabindex/next;" />
-                    </div>
-        </div>
-
+            <div class="formControls">
+                <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="Change"
+                       value="Save"
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;" />
+            </div>
+        </fieldset>
     </form>
 
 </div>

@@ -21,7 +21,7 @@
 
         <div id="" 
              i18n:translate=""
-             class="help" 
+             class="formHelp" 
              style="visibility:hidden"
              tal:content="criterion/Description | here/Description"
              tal:attributes="id string:${criterionid}_help;"
@@ -51,8 +51,6 @@
                value=""
                tal:attributes="checked not:creversed;
                                id string:${criterionid}_ascending;
-                               onfocus string:formtooltip('${criterionid}_help',1);
-                               onblur  string:formtooltip('${criterionid}_help',0);
                                tabindex tabindex/next|nothing;"
                />
                
@@ -69,8 +67,6 @@
                value="1"
                tal:attributes="checked creversed;
                                id string:${criterionid}_descending;
-                               onfocus string:formtooltip('${criterionid}_help',1);
-                               onblur  string:formtooltip('${criterionid}_help',0);
                                tabindex tabindex/next|nothing;"
                />
 

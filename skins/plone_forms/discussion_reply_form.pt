@@ -12,120 +12,107 @@
     <h1 i18n:translate="heading_add_comment">Add Comment</h1>
 
     <p i18n:translate="description_add_comment">
-    You can add a comment by filling out the form below. Plain text formatting.
+        You can add a comment by filling out the form below. Plain text formatting.
     </p>
 
-    <form class="group"
-          name="edit_form"
+    <form name="edit_form"
           method="post"
           action="talkback"
-          tal:attributes="action string:${here/absolute_url}/talkback"
-          >
+          tal:attributes="action string:${here/absolute_url}/talkback" >
 
-        <span class="legend" i18n:translate="legend_comment_details">Comment Details</span>
+        <fieldset>
 
-        <input type="hidden" name="Creator" value=""
-        	   tal:attributes="value member/getUserName" />
+            <legend i18n:translate="legend_comment_details">Comment Details</legend>
 
-        <div class="portalMessage"
-             tal:condition="here/portal_membership/isAnonymousUser">
+            <input type="hidden" name="Creator" value=""
+                   tal:attributes="value member/getUserName" />
 
-        <img tal:replace="structure here/info.gif">
+            <div class="portalMessage"
+                 tal:condition="here/portal_membership/isAnonymousUser">
 
-        <span>
-        Note: you are not logged in.  You may optionally enter your username
-        and password below.  If you don't enter your username and
-        password below, this comment will be posted as the 'Anonymous User'.
-        </span>
+                <img tal:replace="structure here/info.gif">
 
-        <br/><br/>
+                <span>
+                    Note: you are not logged in.  You may optionally enter your username
+                    and password below.  If you don't enter your username and
+                    password below, this comment will be posted as the 'Anonymous User'.
+                </span>
 
-          <div class="row">
+                <br/><br/>
 
-            <div class="label" i18n:translate="label_name">
-            Name
+                <div class="field">
+
+                    <label for="username" i18n:translate="label_name">Name</label>
+
+                    <input name="username"
+                           value="" alt="Username" title="Name"
+                           size="40"
+                           tabindex=""
+                           tal:attributes="tabindex tabindex/next;" />
+
+                </div>
+
+                <div class="field">
+
+                    <label for="password" i18n:translate="label_password">Password</label>
+
+                    <input type="password"
+                           name="password"
+                           tabindex=""
+                           value="" alt="Password" title="Password"
+                           size="40"
+                           tal:attributes="tabindex tabindex/next;" />
+
+                </div>
+
             </div>
+
 
             <div class="field">
-                <input name="username"
-                       value="" alt="Username" title="Name"
-                       size="40"/>
-            </div>
 
-          </div>
+                <label for="title" i18n:translate="label_subject">Subject</label>
 
-          <div class="row">
-
-            <div class="label" i18n:translate="label_password">
-            Password
-            </div>
-
-            <div class="field">
-                <input type="password"
-                       name="password"
-                       value="" alt="Password" title="Password"
-                       size="40"/>
-            </div>
-
-          </div>
-
-         </div>
-
-
-        <div class="row">
-
-            <div class="label" i18n:translate="label_subject">
-            Subject
-            </div>
-
-            <div class="field">
                 <input name="title"
                        value=""
                        size="40"
-                       tal:attributes="value request/title_override|nothing;"/>
-            </div>
+                       tabindex=""
+                       tal:attributes="value request/title_override|nothing;
+                                       tabindex tabindex/next" />
 
-        </div>
-
-        <div class="row">
-
-            <div class="label" i18n:translate="label_body_text">
-            Body text
             </div>
 
             <div class="field">
+
+                <label for="text" i18n:translate="label_body_text">Body text</label>
+
                 <textarea name="text"
                           cols="40"
                           rows="8"
+                          tabindex=""
                           tal:content="request/text_override | nothing"
-                          ></textarea>
+                          tal:attributes="tabindex tabindex/next"
+                        ></textarea>
+
             </div>
 
-        </div>
-
-        <div class="row">
-
-            <div class="label">
-            &nbsp;
-            </div>
-
-            <div class="field">
+            <div class="formControls">
 
                 <input class="context"
+                       tabindex=""
                        type="submit"
                        value="Add Comment"
-                       name=""
+                       name="form.button.Save"
                        i18n:attributes="value"
-                       tal:attributes="name string:discussion_reply:method;"/>
+                       tal:attributes="tabindex tabindex/next;
+                                       name string:discussion_reply:method;" />
+
             </div>
 
-        </div>
+        </fieldset>
 
     </form>
-
 
 </div>
 
 </body>
 </html>
-

@@ -80,7 +80,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="full_name_help"
                         i18n:translate="help_full_name"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     You can change your full name here.
                     </div>
@@ -98,8 +98,6 @@ we eventually might want to merge this form with personalize_form
                         size="25"
                         tabindex=""
                         value="member.fullname html_quote"
-                        onfocus="formtooltip('full_name_help',1)"
-                        onblur="formtooltip('full_name_help',0)"
                         tal:attributes="value fullname;
                                         tabindex tabindex/next;"
                         />
@@ -116,7 +114,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="new_email_help"
                         i18n:translate="help_new_email"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Enter your new e-mail address here, if you want to change it.
                     </div>
@@ -133,8 +131,6 @@ we eventually might want to merge this form with personalize_form
                         size="25"
                         tabindex=""
                         value="member.email html_quote"
-                        onfocus="formtooltip('new_email_help',1)"
-                        onblur="formtooltip('new_email_help',0)"
                         tal:attributes="value email;
                                         tabindex tabindex/next;"
                         />
@@ -148,7 +144,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="wysiwyg_editor_help"
                         i18n:translate="help_content_editor"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Select the editor that you would like to use for editing
                     content more easily. Content editors
@@ -159,8 +155,6 @@ we eventually might want to merge this form with personalize_form
                     tal:define="wysiwyg_editor python:request.get('wysiwyg_editor',
                                                                 member.getProperty('wysiwyg_editor',''))">
                     <select name="wysiwyg_editor"
-                            onfocus="formtooltip('wysiwyg_editor_help',1)"
-                            onblur="formtooltip('wysiwyg_editor_help',0)"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
                         <tal:block tal:repeat="editor site_properties/available_editors">
@@ -191,7 +185,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="listed_status_help"
                         i18n:translate="help_listed_status"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Select whether you want to be listed on the public membership listing
                     or not.	Remember that your Member folder will still be publicly accessible unless
@@ -266,7 +260,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="formtooltips_help"
                         i18n:translate="help_form_help"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Select whether you want form help pop-ups to be displayed.
                     </div>
@@ -340,7 +334,7 @@ we eventually might want to merge this form with personalize_form
     
                     <div id="visible_ids_help"
                         i18n:translate="help_display_names"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Select whether you want Names (also known as IDs) to be
                     visible and editable when editing contents. If you choose not
@@ -420,7 +414,7 @@ we eventually might want to merge this form with personalize_form
                     <span i18n:translate="label_look">Look</span>
                     <div id="skin_help"
                         i18n:translate="help_look"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     Here you choose the appearance of the site. Several styles are available.
                     </div>
@@ -452,7 +446,7 @@ we eventually might want to merge this form with personalize_form
                     <span i18n:translate="label_portrait">Portrait</span>
                     <div id="portrait_help"
                         i18n:translate="help_portrait"
-                        class="help"
+                        class="formHelp"
                         style="visibility:hidden">
                     To add a new portrait, click the <strong>Browse</strong> button and select
                     a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />

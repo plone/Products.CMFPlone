@@ -36,13 +36,12 @@
 
     <h1 i18n:translate="">Select workflow</h1>
 
-    <form name="change_default_workflow" action="prefs_workflow_basic_edit" method="POST">
+    <form name="change_default_workflow" action="prefs_workflow_basic_edit" method="post">
 
         <p i18n:translate="description_workflow_common">
             Workflows let you manage the publication process in your site. Plone ships with 4 common workflows:
         </p>
 
-        <div class="group">
         <input class="noborder"
                         type="radio"
                         name="default_workflow"
@@ -70,9 +69,7 @@
                             i18n:translate="">public draft</option>
                 </metal:block>
         </select>
-        </div>
 
-        <div class="group">
             <input class="noborder"
                             type="radio"
                             name="default_workflow"
@@ -101,10 +98,7 @@
                                 i18n:translate="">public draft</option>
                     </metal:block>
             </select>
-        </div>
 
-        <div class="row">
-            <div class="label">&nbsp;</div>
             <div class="field">
                 <input class="context"
                     tabindex=""
@@ -114,7 +108,6 @@
                     i18n:attributes="value"
                     tal:attributes="tabindex tabindex/next;" />
             </div>
-        </div>
     </form>
 
 </div>

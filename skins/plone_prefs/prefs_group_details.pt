@@ -88,19 +88,17 @@
         use Roles for that - and let certain Groups have a particular role.
         </p>
     
-        <form class="group"
-              action=""
+        <form action=""
               name="groups"
               method="post"
               tal:attributes="action string:${here/portal_groups/absolute_url}"
               tal:define="targetobject gdtool;
                           targetGetProperty nocall:group/getProperty | nocall:here/returnNone;">
     
-            <span class="legend"
-                  i18n:translate="link_group_properties">Group Properties</span>
+            <legend i18n:translate="link_group_properties">Group Properties</legend>
     
-            <div class="row" metal:define-slot="name">
-               <label for="addname">name</label>
+            <div class="field" metal:define-slot="name">
+               <label for="addname">Name</label>
                <div class="field">
                   <strong><span tal:content="group/getGroupName | string:" /></strong>
                </div>

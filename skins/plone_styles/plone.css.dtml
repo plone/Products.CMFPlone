@@ -163,12 +163,14 @@ dd.link a {
 
 fieldset {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    margin: 2em 0em 1em 0em;
-    padding: 1em 0em;
+    margin: 1em 0em 1em 0em;
+    padding: 0em 1em 1em 1em;
+    line-height: 1.5em;
 }
 legend {
     background: &dtml-backgroundColor;;
     padding: 0.5em;
+    font-size: 90%;
 }
 
 form {
@@ -594,6 +596,9 @@ input.searchButton {
 .documentEditable * .notify {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
 }
+
+/* OLD FORMS CODE 
+
 .row {
     min-height: 4em;
     margin: 0em 0em 1em 0em;
@@ -628,6 +633,47 @@ input.searchButton {
     width: 16em;
     padding: 0.5em;
 }
+
+.required {
+    background: url(required.gif) left no-repeat;
+    padding-left: 8px;
+}
+
+*/
+
+/* The new form elements */
+
+.field {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 1em 1em 0 0;    
+}
+
+.field label {
+    font-size: 100%;
+    font-weight: bold;
+}
+
+.formSingleCheckbox label {
+    padding-left: 1.5em;
+}
+
+.formSingleCheckbox input {
+    position: absolute;
+    top: 0.2em;
+    left: 0;
+}
+
+.formHelp {
+    font-size: 90%;
+    color: &dtml-discreetColor;;
+}
+
+.formControls {
+    
+}
+
 .error {
     /* Class for error indication in forms */
     background-color: &dtml-notifyBackgroundColor;;
@@ -635,11 +681,6 @@ input.searchButton {
     padding: 1em;
     margin: 0;
     width: 68% !important;
-}
-.required {
-    /* Used in addition to class "label" on required elements */
-    background: url(required.gif) left no-repeat;
-    padding-left: 8px;
 }
 
 /* javascript menu (contentbar) */
@@ -805,16 +846,7 @@ ul.configlets {
 }
 
 ul.configlets li {
-    list-style: none;
     margin-bottom: 1em;
-    text-transform: &dtml-textTransform;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;  
-    background-color: &dtml-globalBackgroundColor;;
-    color: &dtml-fontColor;;
-    vertical-align: middle;
-    padding: 0.1em;
-    text-align: center;
-	
 }
 
 ul.configlets li a {
@@ -1057,18 +1089,9 @@ ul.configlets li a {
 
 .portalNotLoggedIn {} /* Used on all descriptions relevant to those not logged in */
 
-/*
-.documentEditable > * select,
-.documentEditable > * input,
-.documentEditable > * textarea {
-    background: #f3f3f3;
-    color: #3f3f3f;
-}
-*/
-
-#portal-column-content .documentEditable > * select:focus,
-#portal-column-content .documentEditable > * input:focus,
-#portal-column-content .documentEditable > * textarea:focus {
+#portal-column-content fieldset > * select:focus,
+#portal-column-content fieldset > * input:focus,
+#portal-column-content fieldset > * textarea:focus {
     border-color: &dtml-notifyBorderColor;; 
     border-width: &dtml-borderWidth;;
 }

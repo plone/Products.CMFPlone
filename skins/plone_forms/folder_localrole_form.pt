@@ -21,185 +21,193 @@
                                              search_term=request.get('search_term', '') ), None);">
 
     <h1 i18n:translate="heading_currently_assigned_shares">
-      Current shares for
-      <span tal:content="here/title_or_id" i18n:name="folder">title</span>
+        Current shares for
+        <span tal:content="here/title_or_id" i18n:name="folder">title</span>
     </h1>
 
     <p i18n:translate="description_current_shares">
-      These users currently have sharing rights in this folder:
+        These users currently have sharing rights in this folder:
     </p>
 
-    <form class="group"
-          method="post"
+    <form method="post"
           name="deleterole"
           action="folder_localrole_edit"
           tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
-    
-      <span class="legend" i18n:translate="legend_assigned_roles">
-        Assigned Roles
-        <span tal:content="here/title_or_id" i18n:name="folder">title</span>
-      </span>
 
-      <input type="hidden" name="change_type" value="delete" />
-      <input type="hidden" name="member_role" value="" />
+      <fieldset>
 
-      <table class="listing" summary="Currently assigned local roles"
-             tal:define="username python:here.portal_membership.getAuthenticatedMember().getUserName();">
-        <thead>
-          <tr>
-            <th>&nbsp;</th>
-            <th i18n:translate="label_user_group_name">User/Group name</th>
-            <th i18n:translate="label_type">Type</th>
-            <th i18n:translate="label_roles">Role(s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr tal:repeat="lrole python:here.acl_users.getLocalRolesForDisplay(here)">
-            <td>
-              <input class="noborder" 
-                     type="checkbox"
-                     name="member_ids:list"
-                     id="#"
-                     value=""
-                     tabindex=""
-                     tal:condition="python:lrole[0]!=username"
-                     tal:attributes="value python:lrole[3];
-                                     tabindex tabindex/next"
-                     />
-            </td>
+        <legend i18n:translate="legend_assigned_roles">
+            Assigned Roles
+            <span tal:content="here/title_or_id" i18n:name="folder">title</span>
+        </legend>
 
-            <td tal:content="python:lrole[0]">
-              groupname
-            </td>
+        <input type="hidden" name="change_type" value="delete" />
+        <input type="hidden" name="member_role" value="" />
 
-            <td tal:condition="python:lrole[2]=='group'"
-                i18n:translate="label_group">
-              Group
-            </td>
-            <td tal:condition="python:lrole[2]=='user'"
-                i18n:translate="label_user">
-              User
-            </td>
+        <table class="listing" summary="Currently assigned local roles"
+               tal:define="username python:here.portal_membership.getAuthenticatedMember().getUserName();">
+            <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th i18n:translate="label_user_group_name">User/Group name</th>
+                <th i18n:translate="label_type">Type</th>
+                <th i18n:translate="label_roles">Role(s)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr tal:repeat="lrole python:here.acl_users.getLocalRolesForDisplay(here)">
+                <td class="field">
+                    <label class="hiddenLabel" for="member_ids:list">
+                        select user/group <span tal:content="python:lrole[3]" />
+                    </label>
+                    <input class="formSelection"
+                           type="checkbox"
+                           name="member_ids:list"
+                           id="#"
+                           value=""
+                           tabindex=""
+                           tal:condition="python:lrole[0]!=username"
+                           tal:attributes="value python:lrole[3];
+                                           tabindex tabindex/next"
+                           />
+                </td>
 
-            <td>
-              <tal:block tal:repeat="role python:lrole[1]">
-                <span i18n:translate=""
-                      tal:content="role"
-                      tal:omit-tag="">Role</span>
-                <span tal:condition="not: repeat/role/end"
-                      tal:omit-tag="">, </span>
-              </tal:block>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <td tal:content="python:lrole[0]">
+                    groupname
+                </td>
 
-      <input class="context" 
-             type="submit" 
-             value="Delete Selected Role(s)"
-             i18n:attributes="value"
-             tabindex=""
-             tal:attributes="tabindex tabindex/next;" 
-             />
+                <td tal:condition="python:lrole[2]=='group'"
+                    i18n:translate="label_group">
+                    Group
+                </td>
+                <td tal:condition="python:lrole[2]=='user'"
+                    i18n:translate="label_user">
+                    User
+                </td>
+
+                <td>
+                <tal:block tal:repeat="role python:lrole[1]">
+                    <span i18n:translate=""
+                          tal:content="role"
+                          tal:omit-tag="">Role</span>
+                    <span tal:condition="not: repeat/role/end"
+                          tal:omit-tag="">, </span>
+                </tal:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="submit">
+            <input class="context"
+                type="submit"
+                value="Delete Selected Role(s)"
+                i18n:attributes="value"
+                tabindex=""
+                tal:attributes="tabindex tabindex/next;"
+                />
+        </div>
+
+        </fieldset>
+
     </form>
 
     <metal:block tal:condition="python:test(search_submitted and not search_results, 1, 0)">
-      <h1 i18n:translate="heading_search_results">Search results</h1>
-      <p i18n:translate="no_members_found">
-        No members were found using your <strong>Search Criteria</strong>
-      </p>
-      <hr />
+        <h1 i18n:translate="heading_search_results">Search results</h1>
+        <p i18n:translate="no_members_found">
+            No members were found using your <strong>Search Criteria</strong>
+        </p>
+        <hr />
     </metal:block>
 
     <metal:block tal:condition="python:test(search_submitted and search_results, 1, 0)">
 
-      <h1 i18n:translate="heading_search_results">Search results</h1>
+        <h1 i18n:translate="heading_search_results">Search results</h1>
 
-      <p i18n:translate="description_localrole_select_member">
-        Select one or more Members, and a role to assign.
-      </p>
+        <p i18n:translate="description_localrole_select_member">
+            Select one or more Members, and a role to assign.
+        </p>
 
-      <metal:block tal:define="batch python:Batch(search_results, b_size, int(b_start), orphan=3)">
+        <metal:block tal:define="batch python:Batch(search_results, b_size, int(b_start), orphan=3)">
 
-        <form class="group"
-              method="post" 
-              name="change_type" 
+        <form method="post"
+              name="change_type"
               action="folder_localrole_edit"
               tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
 
-          <span class="legend" i18n:translate="legend_available_members">
-            Available Members
-          </span>
+            <fieldset>
 
-          <input type="hidden" name="change_type" value="add" />
+                <legend i18n:translate="legend_available_members">Available Members</legend>
 
-          <!-- batch navigation -->
-          <div metal:use-macro="here/batch_macros/macros/navigation" />
+                <input type="hidden" name="change_type" value="add" />
 
-          <table class="listing" summary="Search results">
-            <thead>
-              <tr>
-                <th>&nbsp;</th>
-                <th i18n:translate="label_user_name">User Name</th>
-                <th i18n:translate="label_email_address">Email Address</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr tal:repeat="member batch">
-                <td>
-                  <input class="noborder" 
-                         type="checkbox"
-                         name="member_ids:list"
-                         id="#"
-                         value=""
-                         tabindex=""
-                         tal:attributes="value member/username;
-                                         tabindex tabindex/next;"
-                         />
-                </td>
+                <!-- batch navigation -->
+                <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-                <td tal:content="member/username">username</td>
-                <td tal:content="member/email">email</td>
-              </tr>
-            </tbody>
-          </table>
+                <table class="listing" summary="Search results">
+                    <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th i18n:translate="label_user_name">User Name</th>
+                        <th i18n:translate="label_email_address">Email Address</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr tal:repeat="member batch">
+                        <td class="field">
+                            <label class="hiddenLabel" for="member_ids:list">
+                                select user <span tal:content="member/username" />
+                            </label>
+                            <input class="formSelection"
+                                   type="checkbox"
+                                   name="member_ids:list"
+                                   id="#"
+                                   value=""
+                                   tabindex=""
+                                   tal:attributes="value member/username;
+                                                   tabindex tabindex/next;"
+                            />
+                        </td>
 
-          <!-- batch navigation -->
-          <div metal:use-macro="here/batch_macros/macros/navigation" />
+                        <td tal:content="member/username">username</td>
+                        <td tal:content="member/email">email</td>
+                    </tr>
+                    </tbody>
+                </table>
 
-          <div class="row">
+                <!-- batch navigation -->
+                <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-            <div class="label" i18n:translate="label_localrole_to_assign">
-              Role to assign
-            </div>
+                <div class="field">
 
-            <div class="field">
-              <select name="member_role"
-                      tabindex=""
-                      tal:attributes="tabindex tabindex/next;">
-                  <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
-                          tal:attributes="value lroles"
-                          tal:content="lroles"
-                          i18n:translate="">
-                    Role name
-                  </option>
-              </select>
-            </div>
+                    <label for="member_role" i18n:translate="label_localrole_to_assign">
+                        Role to assign
+                    </label>
 
-          </div>
+                    <select name="member_role"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;">
+                        <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
+                                tal:attributes="value lroles"
+                                tal:content="lroles"
+                                i18n:translate="">
+                            Role name
+                        </option>
+                    </select>
 
-          <div class="row">
-            <div class="label">&nbsp;</div>
-            <div class="field">
-              <input class="context" 
-                     type="submit" 
-                     value="Assign Local Role to Selected User(s)"
-                     i18n:attributes="value"
-                     tabindex=""
-                     tal:attributes="tabindex tabindex/next;"
-                     />
-            </div>
-          </div>
+                </div>
+
+                <div class="submit">
+                    <input class="context"
+                            type="submit"
+                            value="Assign Local Role to Selected User(s)"
+                            i18n:attributes="value"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;"
+                            />
+                </div>
+
+            </fieldset>
 
         </form>
 
@@ -219,72 +227,66 @@
         <p i18n:translate="description_sharing_folder">
         Sharing folders is an easy way to allow others access to edit and collaborate
         on your content.
-    
+
         To share the contents of this folder, search for the person's
         name or email address in the form below, and assign them an appropriate role.
         The most common use is to give people Manager permissions, which means they
         have full control in this folder.
         </p>
 
-        <form class="group"
-              method="post" 
-              name="localrole" 
-              action="folder_localrole_form" 
+        <form method="post"
+              name="localrole"
+              action="folder_localrole_form"
               tal:attributes="action string:${here/absolute_url}/${template/getId}" >
 
-          <span class="legend" i18n:translate="legend_search_terms">
-            Search Terms
-          </span>
+            <fieldset>
 
-          <input type="hidden" name="role_submit" value="role_submit" />
+                <legend i18n:translate="legend_search_terms">Search Terms</legend>
 
-          <div class="row">
-            <div class="label" i18n:translate="label_search_by">
-              Search by
-            </div>
-                          
-            <div class="field">
-              <select name="search_param"
-                      tabindex=""
-                      tal:attributes="tabindex tabindex/next;">
-                <option value="username" i18n:translate="label_user_name"> 
-                  User Name
-                </option>
-                <option value="email" i18n:translate="label_email_address">
-                  Email Address
-                </option>
-              </select>
-            </div>
-          </div>
-                      
-          <div class="row">
-            <div class="label"
-                 i18n:translate="label_search_term">
-              Search Term
-            </div>
+                <input type="hidden" name="role_submit" value="role_submit" />
 
-            <div class="field">
-              <input type="text"
-                     name="search_term"
-                     size="30"
-                     tabindex=""
-                     tal:attributes="tabindex tabindex/next;"
-                     />
-            </div>
-          </div>
+                <div class="field">
+                    <label for="search_param" i18n:translate="label_search_by">
+                        Search by
+                    </label>
 
-          <div class="row">
-            <div class="label">&nbsp;</div>
-            <div class="field">
-              <input class="context" 
-                     type="submit" 
-                     value="Perform Search"
-                     i18n:attributes="value"
-                     tabindex=""
-                     tal:attributes="tabindex tabindex/next;" 
-                     />
-            </div>
-          </div>
+                    <select name="search_param"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;">
+                        <option value="username" i18n:translate="label_user_name">
+                            User Name
+                        </option>
+                        <option value="email" i18n:translate="label_email_address">
+                            Email Address
+                        </option>
+                    </select>
+
+                </div>
+
+                <div class="field">
+                    <label for="search_term" i18n:translate="label_search_term">
+                        Search Term
+                    </label>
+
+                    <input type="text"
+                            name="search_term"
+                            size="30"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;"
+                            />
+                </div>
+
+                <div class="submit">
+                    <input class="context"
+                            type="submit"
+                            value="Perform Search"
+                            i18n:attributes="value"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;"
+                            />
+                </div>
+
+            </fieldset>
 
         </form>
       </tal:block>
@@ -295,80 +297,82 @@
         Groups are a convenient way share a folder to a common set of
         users. Select one or more Groups, and a role to assign.
       </p>
-        
-      <form class="group"
-            method="post" 
-            name="change_type" 
+
+      <form method="post"
+            name="change_type"
             action="folder_localrole_edit"
             tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
-            
-        <span class="legend" i18n:translate="legend_available_groups">
-          Available Groups
-        </span>
 
-        <input type="hidden" name="change_type" value="add" />
+        <fieldset>
 
-        <table class="listing" summary="Available groups">
-          <thead>
-            <tr>
-              <th>&nbsp;</th>
-              <th i18n:translate="">Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr tal:repeat="member here/portal_groups/listGroups">
-              <td>
-                <input class="noborder" 
-                       type="checkbox"
-                       name="member_ids:list"
-                       id="#"
-                       value=""
-                       tabindex=""
-                       tal:attributes="value member/getUserName;
-                                       tabindex tabindex/next;"/>
-              </td>
-              <td tal:content="python:member.getUserNameWithoutGroupPrefix()">
-                groupname
-              </td>
-            </tr>
-          </tbody>
-        </table>
-            
-        <div class="row">
-          <div class="label" i18n:translate="label_localrole_to_assign">
-            Role to assign
-          </div>
+                <legend i18n:translate="legend_available_groups">
+                    Available Groups
+                </legend>
 
-          <div class="field">
-            <select name="member_role"
-                    tabindex=""
-                    tal:attributes="tabindex tabindex/next;">
-              <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
-                      tal:attributes="value lroles"
-                      tal:content="lroles"
-                      i18n:translate="">
-                Role name
-              </option>
-            </select>
-          </div>        
-        </div>
-        
-        <div class="row">
-          <div class="label">&nbsp;</div>
-          <div class="field">
-            <input class="context" 
-                   type="submit" 
-                   value="Assign Local Role to Selected Group(s)"
-                   i18n:attributes="value"
-                   tabindex=""
-                   tal:attributes="tabindex tabindex/next;"
-                   />
-          </div>
-        </div>
+                <input type="hidden" name="change_type" value="add" />
 
-      </form>
+                <table class="listing" summary="Available groups">
+                <thead>
+                    <tr>
+                    <th>&nbsp;</th>
+                    <th i18n:translate="">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr tal:repeat="member here/portal_groups/listGroups">
+                    <td>
+                        <label class="hiddenLabel" for="member_ids:list">
+                            select group <span tal:content="member/getUserName" />
+                        </label>
+                        <input class="formSelection"
+                            type="checkbox"
+                            name="member_ids:list"
+                            id="#"
+                            value=""
+                            tabindex=""
+                            tal:attributes="value member/getUserName;
+                                            tabindex tabindex/next;"/>
+                    </td>
+                    <td tal:content="python:member.getUserNameWithoutGroupPrefix()">
+                        groupname
+                    </td>
+                    </tr>
+                </tbody>
+                </table>
 
-    </div>    
+                <div class="field">
+
+                    <label for="member_role" i18n:translate="label_localrole_to_assign">
+                        Role to assign
+                    </label>
+
+                    <select name="member_role"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;">
+                        <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
+                                tal:attributes="value lroles"
+                                tal:content="lroles"
+                                i18n:translate="">
+                            Role name
+                        </option>
+                    </select>
+                </div>
+
+                <div class="submit">
+                    <input class="context"
+                        type="submit"
+                        value="Assign Local Role to Selected Group(s)"
+                        i18n:attributes="value"
+                        tabindex=""
+                        tal:attributes="tabindex tabindex/next;"
+                        />
+                </div>
+
+            </fieldset>
+
+        </form>
+
+    </div>
 
   </div> <!-- fill-slot -->
 
