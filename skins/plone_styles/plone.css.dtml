@@ -631,6 +631,10 @@ pre {
     font-weight: normal;
     color: &dtml-discreetColor;;
 }
+.documentByLine a {
+    text-decoration: underline;
+}
+
 #portal-footer {
     background-color: &dtml-globalBackgroundColor;;
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
