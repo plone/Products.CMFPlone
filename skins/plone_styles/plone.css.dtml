@@ -485,6 +485,7 @@ input.searchButton {
     visibility: hidden;
     z-index: 5;
     position: absolute;
+    left: -1.2em;
     background: &dtml-contentViewBackgroundColor;;
     width: auto;
     height: auto;
