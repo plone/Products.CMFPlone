@@ -31,12 +31,6 @@ ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 ZopeTestCase.installProduct('Archetypes')
 ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
-
-# Unit tests are FU if LinguaPlone is available but not installed
-if ZopeTestCase.hasProduct('LinguaPlone'):
-    ZopeTestCase.installProduct('PloneLanguageTool')
-    ZopeTestCase.installProduct('LinguaPlone')
-
 ZopeTestCase.installProduct('ATContentTypes')
 
 # Install sessioning
