@@ -5,7 +5,7 @@ from OFS.Image import Image
 from Products.CMFCore.FSImage import FSImage
 
 def tag(self, height=None, width=None, alt=None,
-        scale=0, xscale=0, yscale=0, css_class=None, title=None, **args):
+        scale=0, xscale=0, yscale=0, css_class=None, title=None, longdesc=None, **args ):
     if not args.has_key('border'):
         args['border'] = None
 
@@ -24,12 +24,16 @@ def tag(self, height=None, width=None, alt=None,
     result='<img src="%s"' % (self.absolute_url())
 
     if alt is None:
-        alt=getattr(self, 'title', '')
+        alt=getattr(self, 'alt', '')
     result = '%s alt="%s"' % (result, escape(alt, 1))
 
     if title is None:
         title=getattr(self, 'title', '')
     result = '%s title="%s"' % (result, escape(title, 1))
+
+    if longdesc is None:
+        title=getattr(self, 'longdesc', '')
+    result = '%s longdesc="%s"' % (result, escape(title, 1))
 
     if height:
         result = '%s height="%s"' % (result, height)
