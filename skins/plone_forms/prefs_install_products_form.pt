@@ -5,6 +5,10 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
 
+<tal:block metal:fill-slot="base">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
 <body>
 
 	   
@@ -42,7 +46,11 @@
                            name=products:list tal:attributes="value product/id"
                            /></td>
                 <td>
-                     <a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview" tal:content="product/id" >product name</a></td>
+                     <span tal:content="product/id" >product name</span>
+                     
+                     (<a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">Install log</a>)
+                     
+                </td>
             </tr>
         </table>
         <input class="context"
