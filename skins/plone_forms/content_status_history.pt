@@ -170,8 +170,12 @@
               </span>
               
               <span class="info">
-                  <strong>Comment:</strong>
-                  <span tal:replace="rhComments" />
+                  <strong tal:condition="rhComments">
+		    Comment: <span tal:replace="rhComments"> Please review this ASAP </span>
+		  </strong>
+		  <strong tal:condition="not: rhComments">
+		    No comment
+		  </strong>
               </span>
 	    </metal:block>
 	   
