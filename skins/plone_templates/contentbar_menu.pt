@@ -21,8 +21,8 @@
                        width="16" 
                        height="16" 
                        tal:attributes="src string:$portal_url/${ctype/getIcon}" />
-                  <span i18n:translate=""
-                        tal:replace="ctype/Title">Title</span>
+                  <tal:title i18n:translate=""
+                             tal:content="ctype/Title">Title</tal:title>
                 </a>
             </li>
             </metal:block>
