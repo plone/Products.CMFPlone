@@ -51,6 +51,19 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.ob.keys = ['FrontPage']
         self.assertEquals(self.getDefault(), (self.ob, ['FrontPage']))
 
+    def testBrowserDefaultLayout(self):
+        # Test assumes ATContentTypes + BrowserDefaultMixin + atct_album_view
+        self.folder.setLayout('atct_album_view')
+        self.assertEquals(self.portal.plone_utils.browserDefault(self.folder), 
+                            (self.folder, ['atct_album_view']))
+
+    def testBrowserDefaultPage(self):
+        # Test assumes ATContentTypes + BrowserDefaultMixin
+        self.folder.invokeFactory('Document', 'd1', title='document 1')
+        self.folder.setDefaultPage('d1')
+        self.assertEquals(self.portal.plone_utils.browserDefault(self.folder),
+                            (self.folder, ['d1']))
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

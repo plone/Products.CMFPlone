@@ -18,6 +18,7 @@ from Products.CMFCore.WorkflowCore import WorkflowException
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone import ToolNames, transaction_note
+from Products.CMFPlone.interfaces.BrowserDefault import IBrowserDefault
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
@@ -645,21 +646,22 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         else:
                             return translation, ['view']
             return obj, [page]
-
-        # XXX: Must get rid of this!
-        # Look for Archetypes' template mixin
-        try:
-            from Products.Archetypes.interfaces.templatemixin import ITemplateMixin
-        except ImportError:
-            # Look for default_page on the object
-            pages = getattr(aq_base(obj), 'default_page', [])
-        else:
-            if ITemplateMixin.isImplementedBy(obj):
-                pages = [obj.getLayout(),]
-            else:
-                # Look for default_page on the object
-                pages = getattr(aq_base(obj), 'default_page', [])
-
+        
+        # Look for a default_page managed by an IBrowserDefault-implementing
+        # object - the behaviour is the same as setting default_page manually
+        # on the object, and the current BrowserDefaultMixin implementation
+        # actually stores it as the default_page property, but it's nicer to be 
+        # explicit about getting it from IBrowserDefault
+        if IBrowserDefault.isImplementedBy(obj):
+            page = obj.getDefaultPage()
+            # Be totally anal and triple-check...
+            if page and ids.has_key(page):
+                return returnPage(obj, page)
+            # IBrowserDefault only manages explicitly contained 
+            # default_page's, so don't look for the id in the skin layers
+        
+        # Look for default_page on the object
+        pages = getattr(aq_base(obj), 'default_page', [])
         # Make sure we don't break if default_page is a
         # string property instead of a sequence
         if type(pages) in (StringType, UnicodeType):
@@ -685,6 +687,14 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         for page in default_pages:
             if ids.has_key(page):
                 return returnPage(obj, page)
+        
+        # Look for layout page templates from IBrowserDefault implementations 
+        # This is checked after default_page and index_html, because we want
+        # explicitly created index_html's to override any templates set
+        if IBrowserDefault.isImplementedBy(obj):
+            page = obj.getLayout()
+            if page and portal.unrestrictedTraverse(page, None):
+                return obj, page.split('/')
 
         # what if the page isnt found?
         try:
@@ -700,6 +710,55 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             'Failed to get folderlisting action for folder "%s"' \
             % obj.absolute_url())
             return obj, ['folder_listing']
+            
+    security.declarePublic('isDefaultPage')
+    def isDefaultPage(self, obj):
+        """Find out if the given obj is the default page in its parent folder.
+        Only considers explicitly contained objects, either set as index_html,
+        with the default_page property, or using IBrowserDefault.
+        """
+        
+        parent = obj.aq_inner.aq_parent
+        
+        if not parent:
+            return False
+        
+        # Explicitly look at IBrowserDefault
+        if IBrowserDefault.isImplementedBy(parent):
+            page = parent.getDefaultPage()
+            if page and page == obj.getId():
+                return True
+
+        # Look for default_page on the object
+        pages = getattr(aq_base(obj), 'default_page', [])
+        
+        # Make sure we don't break if default_page is a
+        # string property instead of a sequence
+        if type(pages) in (StringType, UnicodeType):
+            pages = [pages]
+            
+        # And also filter out empty strings
+        pages = filter(None, pages)
+        for page in pages:
+            if page == obj.getId():
+                return True
+
+        utool = getToolByName(self, 'portal_url')
+        portal = utool.getPortalObject()
+
+        # Try the default sitewide default_page setting
+        for page in portal.portal_properties.site_properties.getProperty('default_page', []):
+            if page == obj.getId():
+                return True
+
+        # No luck, let's look for hardcoded defaults
+        default_pages = ['index_html', ]
+        for page in default_pages:
+            if page == obj.getId():
+                return True
+        
+        return False
+        
 
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):

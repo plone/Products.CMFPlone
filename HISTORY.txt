@@ -4,6 +4,28 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged uiteam-plip77-78-content-menu-browser-default-refactoring
+      6317:HEAD into 2.1 branch:
+      [tiran]
+
+    - PLIP-77: Constrain addable types on a per-folder basis
+     
+      - New menu item "settings" on "add new item" drop-down to select
+        which items to display, and how.
+    
+      [optilude]
+
+    - PLIP-78: "Display" menu to select default view
+
+      - Enable TemplateMixin and fix its UI (in ATContentTypes)
+
+      - Add a "display" drop-down where these can be chosen
+      
+      - On folderish items, an option "select item" - shows browser, select
+        default_page.
+         
+      [optilude, david convent]
+
     - Cleaned up listMetaTypes by moving the payload into PloneTool and
       cleaning up the code.
       [tiran]

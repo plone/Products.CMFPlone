@@ -1,0 +1,183 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<metal:block fill-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+  <body>
+
+    <div metal:fill-slot="main">
+
+      <h1 i18n:translate="heading_set_folder_type_restrictions">
+        Restrict addable types
+      </h1>
+
+      <p i18n:translate="description_set_folder_type_restrictions">
+        You may restrict which content types are available in this folder, either
+        by manually selecting them from the list below, by relying on the portal
+        default, or by using the settings from the parent folder. You can also
+        select a subset of the available types to be immediately available in
+        the "Add" menu. Any additional allowed types will be available from
+        a "More..." menu item, taking you to a new page where all enabled
+        types will be available for selection.
+      </p>
+
+
+      <form name="constraintypes_form"
+            action="."
+            method="post"
+            tal:attributes="action string:${here/absolute_url}/${template/getId}"
+            tal:define="errors options/state/getErrors;">
+
+        <input type="hidden" name="form.submitted" value="1"/>
+    
+        <tal:items define="currentMode    request/constrainTypesMode | here/getConstrainTypesMode;
+                           currentAllow   request/locallyAllowedTypes | here/getLocallyAllowedTypes;
+                           currentPrefer  request/immediatelyAddableTypes | here/getImmediatelyAddableTypes;
+                           availableTypes here/getDefaultAddableTypes;">
+    
+            <fieldset>
+
+                <legend i18n:translate="legend_constraintypes">Addable types options</legend>
+    
+                <div class="field">
+                    <label for="enableAddRestrictions" 
+                            i18n:translate="label_add_restriction_mode">
+                        Mode
+                    </label>
+
+                    <div class="formHelp" i18n:translate="help_add_restriction_mode">
+                       Please select how you would like to control which content 
+                       types are addable in this folder.
+                    </div>
+                    
+                    <tal:mode condition="python:here.aq_inner.aq_parent.portal_type == here.portal_type">
+                        <input type="radio"
+                               name="constrainTypesMode"
+                               id="mode_acquire"
+                               value="-1"
+                               class="noborder"
+                               tabindex=""
+                               tal:attributes="tabindex tabindex/next;
+                                               checked python:test('-1' == str(currentMode), 'checked', None)"/>
+                        <label for="mode_acquire" i18n:translate="constraintypes_mode_acquire">
+                            Use parent folder setting
+                        </label>
+                        <br />
+                    </tal:mode>
+                    
+                    <input type="radio"
+                           name="constrainTypesMode"
+                           id="mode_disable"
+                           value="0"
+                           class="noborder"
+                           tabindex=""
+                           tal:attributes="tabindex tabindex/next;
+                                           checked python:test('0' == str(currentMode), 'checked', None)"/>
+                    <label for="mode_disable" i18n:translate="constraintypes_mode_disable">
+                        Use portal default
+                    </label>
+                    <br />
+                    
+                    <input type="radio"
+                           name="constrainTypesMode"
+                           id="mode_enable"
+                           value="1"
+                           class="noborder"
+                           tabindex=""
+                           tal:attributes="tabindex tabindex/next;
+                                           checked python:test('1' == str(currentMode), 'checked', None)"/>
+                    <label for="mode_enable" i18n:translate="constraintypes_mode_enable">
+                        Select manually
+                    </label>
+                    <br />
+                    
+                </div>
+    
+                <div class="field">
+                    <label for="locallyAllowedTypes" 
+                            i18n:translate="label_locally_allowed_types">
+                        Addable types
+                    </label>
+
+                    <div class="formHelp" i18n:translate="help_locally_allowed_types">
+                           Select the content types that will be addable inside
+                           this folder.
+                    </div>
+
+                    <select name="locallyAllowedTypes:list"
+                            id="locallyAllowedTypes"
+                            size="7"
+                            multiple="multiple"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;">
+                        <option value="#"
+                                tal:repeat="type availableTypes"
+                                tal:content="type/title_or_id"
+                                tal:attributes="value type/getId;
+                                                selected python:test(type.getId() in currentAllow, 'selected', None);"
+                                >dummy</option>
+                    </select>
+                </div>
+                
+                <div class="field" 
+                     tal:define="error errors/immediatelyAddableTypes | nothing;"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+                    <label for="immediatelyAddableTypes" 
+                            i18n:translate="label_immediately_addable_types">
+                        Preferred types
+                    </label>
+
+                    <div class="formHelp" i18n:translate="help_immediately_addable_types">
+                        Of the types selected above, certain items may be
+                        made available through the standard "Add" drop-down
+                        menu. Any further types selected above will be addable 
+                        via a separate form accessible from the same menu.
+                    </div>
+                    
+                    <div tal:content="error">Validation error output</div>
+
+                    <select name="immediatelyAddableTypes:list"
+                            id="immediatelyAddableTypes"
+                            size="7"
+                            multiple="multiple"
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;">
+                        <option value="#"
+                                tal:repeat="type availableTypes"
+                                tal:content="type/title_or_id"
+                                tal:attributes="value type/getId;
+                                                selected python:test(type.getId() in currentPrefer, 'selected', None);"
+                                >dummy</option>
+                    </select>
+                </div>
+    
+                <div class="formControls">
+                    <input class="context"
+                       tabindex=""
+                       type="submit"
+                       name="form.button.Save"
+                       value="Save"
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+                    <input class="standalone"
+                       tabindex=""
+                       type="submit"
+                       name="form.button.Cancel"
+                       value="Cancel"
+                       i18n:attributes="value"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
+                </div>
+                
+            </fieldset>
+        
+        </tal:items>
+      </form>
+
+    </div>
+
+  </body>
+</html>
