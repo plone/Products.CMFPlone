@@ -22,11 +22,11 @@
 
     <div tal:define="p_props here/portal_properties">
 		
-            <h1 i18n:translate="heading_sign_in_failure">Sign-in failure</h1>
+            <h1 i18n:translate="heading_sign_in_failure">Log-in failure</h1>
             
             <p>
             <span i18n:translate="description_sign_in_failure">
-            You are not currently signed in.  Your user name and/or password may be incorrect.
+            You are not currently logged in.  Your user name and/or password may be incorrect.
             Your browser may also not be configured to accept HTTP cookies.  
             If you need help please try the 'Forgotten password' link or contact
             </span>

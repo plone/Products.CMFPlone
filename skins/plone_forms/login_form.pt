@@ -10,10 +10,10 @@
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();" >
 
-<h1 i18n:translate="heading_sign_in">Please sign in</h1>
+<h1 i18n:translate="heading_sign_in">Please log in</h1>
 
 <p i18n:translate="description_sign_in">
-To access this part of the site, you need to sign in with your username and password.
+To access this part of the site, you need to log in with your username and password.
 </p>
 
 <p i18n:translate="description_no_account"
@@ -100,7 +100,7 @@ to become a member.
                  class="help" 
                  style="visibility:hidden">
             Setting the 'Remember my name' option will create a cookie with your username.
-            When you sign in later, your user name will already be filled in for you.
+            When you log in later, your user name will already be filled in for you.
             </div>
         </div>
         
@@ -128,7 +128,7 @@ to become a member.
                    tabindex="" 
                    type="submit" 
                    name="submit" 
-                   value="Sign in" 
+                   value="Log in" 
                    i18n:translate=""
                    tal:attributes="tabindex tabindex/next;" 
                    />
@@ -154,7 +154,7 @@ to become a member.
                 
                 <span i18n:translate="description_trouble_logging_in">
                 Make sure to enable cookies in your web browser. 
-                Don't forget to sign out or exit your browser when you're done.
+                Don't forget to log out or exit your browser when you're done.
                 </span>
             </p>
                         
