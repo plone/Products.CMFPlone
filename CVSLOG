@@ -1,3 +1,195 @@
+2003-11-02 03:06  limi
+
+	* skins/: plone_content/document_edit_form.cpt,
+	  plone_styles/plone.css.dtml (limi-formageddon-branch): Adding the
+	  first example on how to do the new forms. Use document_edit_form
+	  as your reference point when implementing the new forms.
+
+2003-11-02 00:43  zopezen
+
+	* Extensions/: Upgrade.py, migration.py, nonmigrationFixes.py,
+	  setupSite.py (Plone-2_0-branch): Removing crufty files (I
+	  believe)
+
+	  Adding in experimental setupSite.py that needs to be called
+	  manually by the installer to create the correct sort of Plone
+	  site.
+
+2003-11-02 00:40  zopezen
+
+	* plone.ini (Plone-2_0-branch): No longer needed
+
+2003-11-02 00:39  zopezen
+
+	* PloneInitialize.py (Plone-2_0-branch): A much simplified version
+	  of Plone Initialize that does the bare bones needed to get the
+	  site up.
+
+2003-11-02 00:38  zopezen
+
+	* __init__.py (Plone-2_0-branch): Remove PloneInitialize import
+	  from Plone, that is now an extra script
+
+2003-11-01 21:05  limi
+
+	* skins/plone_styles/: base_properties.props, plone.css.dtml
+	  (Plone-2_0-branch): Added inputFontColor for forms.
+
+2003-11-01 20:34  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Fixed
+	  overflow name.
+
+2003-11-01 20:31  limi
+
+	* skins/plone_styles/plone.css.dtml: ?SYNTAX ERROR ;)
+
+2003-11-01 19:59  limi
+
+	* skins/plone_templates/global_searchbox.pt (Plone-2_0-branch):
+	  Bah, case-sensitivity sucks ;)
+
+2003-11-01 19:40  limi
+
+	* skins/plone_templates/global_searchbox.pt (Plone-2_0-branch):
+	  Corrected the search box positioning.
+
+2003-11-01 19:19  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Some small
+	  style tweaks, links inside pre tags now have underlines, the
+	  link/mail/irc/ftp/callto links now have transparent backgrounds.
+
+2003-11-01 19:09  elvix
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  updated javascripts to follow UIName-a-geddon changes
+
+2003-11-01 18:49  limi
+
+	* skins/: plone_content/byline.pt,
+	  plone_content/discussionitem_view.pt,
+	  plone_content/document_view.pt, plone_content/event_view.pt,
+	  plone_content/favorite_view.pt, plone_content/file_view.pt,
+	  plone_content/image_view.pt, plone_content/link_view.pt,
+	  plone_content/newsitem_view.pt,
+	  plone_ecmascript/plone_javascripts.js,
+	  plone_forms/discussion_reply_form.pt,
+	  plone_forms/discussion_reply_preview.pt,
+	  plone_forms/sendto_form.cpt, plone_portlets/about_slot.pt,
+	  plone_portlets/events_slot.pt, plone_portlets/favorites_slot.pt,
+	  plone_portlets/language_slot.pt, plone_portlets/login_slot.pt,
+	  plone_portlets/navigation_tree_slot.pt,
+	  plone_portlets/news_slot.pt, plone_portlets/portlet_events.pt,
+	  plone_portlets/portlet_favorites.pt,
+	  plone_portlets/portlet_language.pt,
+	  plone_portlets/portlet_login.pt,
+	  plone_portlets/portlet_navigation.pt,
+	  plone_portlets/portlet_news_.pt,
+	  plone_portlets/portlet_recent.pt,
+	  plone_portlets/portlet_related.pt,
+	  plone_portlets/portlet_review.pt,
+	  plone_portlets/recently_published_slot.pt,
+	  plone_portlets/related_slot.pt,
+	  plone_portlets/workflow_review_slot.pt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_portalskin_form.pt,
+	  plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_user_details.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt, plone_styles/plone.css.dtml,
+	  plone_styles/ploneColumns.css.dtml,
+	  plone_styles/ploneIEFixes.css.dtml,
+	  plone_styles/ploneNS4.css.dtml,
+	  plone_styles/plonePresentation.css.dtml,
+	  plone_styles/plonePrint.css.dtml, plone_templates/colophon.pt,
+	  plone_templates/folder_contents.pt, plone_templates/footer.pt,
+	  plone_templates/document_byline.pt,
+	  plone_templates/global_logo.pt,
+	  plone_templates/global_pathbar.pt,
+	  plone_templates/global_personalbar.pt,
+	  plone_templates/global_searchbox.pt,
+	  plone_templates/global_sections.pt,
+	  plone_templates/global_siteactions.pt,
+	  plone_templates/global_skinswitcher.pt,
+	  plone_templates/global_statusmessage.pt,
+	  plone_templates/main_template.pt, plone_templates/news.pt,
+	  plone_templates/recently_published.pt,
+	  plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Merging limi-css-nameageddon-branch. More info about the renaming
+	  here: http://plone.org/development/current/projects/UINameAgeddon
+
+2003-11-01 17:15  dreamcatcher
+
+	* PropertiesTool.py (mro-adventure-branch): Fixes to work with
+	  mro-adventure-branch
+
+2003-11-01 06:31  limi
+
+	* skins/: plone_content/byline.pt,
+	  plone_content/discussionitem_view.pt,
+	  plone_content/document_view.pt, plone_content/event_view.pt,
+	  plone_content/favorite_view.pt, plone_content/file_view.pt,
+	  plone_content/image_view.pt, plone_content/link_view.pt,
+	  plone_content/newsitem_view.pt,
+	  plone_ecmascript/plone_javascripts.js,
+	  plone_forms/discussion_reply_form.pt,
+	  plone_forms/discussion_reply_preview.pt,
+	  plone_forms/sendto_form.cpt, plone_portlets/about_slot.pt,
+	  plone_portlets/events_slot.pt, plone_portlets/favorites_slot.pt,
+	  plone_portlets/language_slot.pt, plone_portlets/login_slot.pt,
+	  plone_portlets/navigation_tree_slot.pt,
+	  plone_portlets/news_slot.pt, plone_portlets/portlet_events.pt,
+	  plone_portlets/portlet_favorites.pt,
+	  plone_portlets/portlet_language.pt,
+	  plone_portlets/portlet_login.pt,
+	  plone_portlets/portlet_navigation.pt,
+	  plone_portlets/portlet_news_.pt,
+	  plone_portlets/portlet_recent.pt,
+	  plone_portlets/portlet_related.pt,
+	  plone_portlets/portlet_review.pt,
+	  plone_portlets/recently_published_slot.pt,
+	  plone_portlets/related_slot.pt,
+	  plone_portlets/workflow_review_slot.pt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_portalskin_form.pt,
+	  plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_user_details.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt, plone_styles/plone.css.dtml,
+	  plone_styles/ploneColumns.css.dtml,
+	  plone_styles/ploneIEFixes.css.dtml,
+	  plone_styles/ploneNS4.css.dtml,
+	  plone_styles/plonePresentation.css.dtml,
+	  plone_styles/plonePrint.css.dtml, plone_templates/colophon.pt,
+	  plone_templates/document_byline.pt,
+	  plone_templates/folder_contents.pt, plone_templates/footer.pt,
+	  plone_templates/global_logo.pt,
+	  plone_templates/global_pathbar.pt,
+	  plone_templates/global_personalbar.pt,
+	  plone_templates/global_searchbox.pt,
+	  plone_templates/global_sections.pt,
+	  plone_templates/global_siteactions.pt,
+	  plone_templates/global_skinswitcher.pt,
+	  plone_templates/global_statusmessage.pt,
+	  plone_templates/main_template.pt, plone_templates/news.pt,
+	  plone_templates/recently_published.pt,
+	  plone_templates/site_actions.pt,
+	  plone_templates/standard_html_footer.dtml,
+	  plone_templates/standard_html_header.dtml,
+	  plone_templates/viewThreadsAtBottom.pt
+	  (limi-css-nameageddon-branch): Hold on to your butts, the CSS
+	  nameageddon is now complete :) More info about the renaming here:
+	  http://plone.org/development/current/projects/UINameAgeddon
+
+2003-11-01 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-01 03:58  limi
 
 	* skins/plone_templates/site_actions.pt (Plone-2_0-branch): Not in
