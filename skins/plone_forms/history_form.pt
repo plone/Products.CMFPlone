@@ -10,7 +10,7 @@
         tal:attributes="action here/absolute_url"
         tal:condition="history" >
 
-  <table tal:define="history_length python:len(history)">
+  <table summary="History" i18n:attributes="summary" tal:define="history_length python:len(history)">
      <tr>
        <td>
          <div class="list-nav" tal:condition="first_trx" tal:define="next python:(first_trx*2-last_trx)">
