@@ -36,7 +36,7 @@
      tal:define="content_actions actions/object_actions|nothing;
                  content_types python:here.sortObjects(here.allowedContentTypes());">
 
-    <h5 class="hiddenStructure" tal:condition="python: content_actions or content_types or wfstate">Actions</h5>
+    <h5 class="hiddenStructure" tal:condition="python: content_actions or content_types">Actions</h5>
 
     <ul tal:condition="content_actions" class="actionItems">
     <tal:contentactions repeat="action content_actions">
