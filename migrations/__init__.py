@@ -1,5 +1,7 @@
 from Products.CMFPlone import MigrationTool
-import v1, v2, v2_1
+
+def executeMigrations():
+    import v1, v2, v2_1
 
 def null(portal):
     """ This is a null migration, use it when nothing happens """

@@ -115,6 +115,7 @@ def initialize(context):
 
     # Setup migrations
     import migrations
+    migrations.executeMigrations()
     migrations.registerMigrations()
 
     # Inititalize configuration machinery 

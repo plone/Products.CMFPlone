@@ -52,6 +52,14 @@
            tal:attributes="href string:${current_page_url}#documentContent"
            i18n:translate="label_skiptocontent">Skip to content</a>
 
+           <div metal:use-macro="here/global_siteactions/macros/site_actions">
+             Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
+           </div>
+
+           <div metal:use-macro="here/global_searchbox/macros/quick_search">
+             The quicksearch box, normally placed at the top right
+           </div>
+
            <a metal:use-macro="here/global_logo/macros/portal_logo">
              The portal logo, linked to the portal root
            </a>
@@ -59,14 +67,6 @@
            <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
              The skin switcher tabs. Based on which role you have, you
              get a selection of skins that you can switch between.
-           </div>
-
-           <div metal:use-macro="here/global_siteactions/macros/site_actions">
-             Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
-           </div>
-
-           <div metal:use-macro="here/global_searchbox/macros/quick_search">
-             The quicksearch box, normally placed at the top right
            </div>
 
            <div metal:use-macro="here/global_sections/macros/portal_tabs">

@@ -10,19 +10,22 @@
                  selected_portal_tab selected_tabs/portal;"
      tal:condition="portal_tabs">
     <h5 class="hiddenStructure" i18n:translate="heading_sections">Sections</h5>
+
     <ul id="portal-globalnav">
-       <tal:tabs tal:repeat="tab portal_tabs">
-       <li tal:attributes="id string:portaltab-${tab/id};
-                           class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
-          <a href="" class="" tal:attributes="href tab/url;"
-		       accesskey="accesskeys-tabs" i18n:attributes="accesskey" >
-          <tal:block omit-tag="" i18n:translate="">
-               <span tal:replace="tab/name">Tab Name</span>
-          </tal:block>
-          </a>
-       </li>
-       </tal:tabs>
-   </ul>
+        <tal:tabs tal:repeat="tab portal_tabs">
+        <li tal:attributes="id string:portaltab-${tab/id};
+                            class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
+            <a href="" 
+               accesskey="accesskeys-tabs" 
+               tal:content="tab/name"
+               tal:attributes="href tab/url;"
+               i18n:translate=""
+               i18n:attributes="accesskey">
+            Tab Name
+            </a>
+        </li>
+        </tal:tabs>
+    </ul>
 </div>
 
 </body>

@@ -5,6 +5,7 @@
 // in the plone_javascript_variables.js file. Any other variables from Plone
 // that you want to pass into these scripts should be placed there.
 
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, js=1)"> (this is for http compression) */
 
 function registerPloneFunction(func){
     // registers a function to fire onload. 
@@ -678,8 +679,18 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
 
 
 
-
-
+function fullscreenMode() {
+    if (document.getElementById('portal-top').style.display == 'none') {
+        document.getElementById('portal-top').style.display = 'block';
+        document.getElementById('portal-column-one').style.display = 'block';
+        document.getElementById('portal-column-two').style.display = 'block';
+        }
+    else {
+        document.getElementById('portal-top').style.display = 'none';
+        document.getElementById('portal-column-one').style.display = 'none';
+        document.getElementById('portal-column-two').style.display = 'none';
+    }
+}
 
 
 // and finally : Mike Malloch's fixes for Internet Explorer 5 - 

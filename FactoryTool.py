@@ -124,6 +124,11 @@ class TempFolder(TempFolderBase):
         # So we need to rewrap...
         portal_factory = aq_parent(self)
         intended_parent = aq_parent(portal_factory)
+
+        # If the intended parent has an object with the given id, just do a passthrough
+        if hasattr(aq_base(intended_parent), id):
+            return getattr(intended_parent, id)
+
         # rewrap portal_factory
         portal_factory = aq_base(portal_factory).__of__(intended_parent)
         # rewrap self

@@ -2,6 +2,8 @@
 // of Plone. This is a quick fix that will be replaced with something more
 // elegant later.
 
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, js=1)"> (this is for http compression) */
+
 /*
 <dtml-let last_modified="_.DateTime()-14"
 expires="_.DateTime()+7" >

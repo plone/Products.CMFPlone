@@ -4,6 +4,7 @@
 ** Please reuse whatever you find useful here, and credit where credit is due :)
 */
 
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* Do not remove this, it's required to get the variables needed to render the CSS
 <dtml-with base_properties>
 */

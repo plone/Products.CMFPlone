@@ -15,16 +15,16 @@
                size="20"
                value=""
                alt="Search"
-	       title="Search"
-	       accesskey="accesskeys-search"
-	       i18n:attributes="alt accesskey title"
-	       tal:attributes="value request/SearchableText|nothing;
+               title="Search"
+               accesskey="accesskeys-search"
+               i18n:attributes="alt accesskey title"
+               tal:attributes="value request/SearchableText|nothing;
                                tabindex tabindex/next" class="visibility:visible" />
         <input class="searchButton"
                type="submit"
                value="Search"
-	       accesskey="accesskeys-search"
-	       tal:attributes="tabindex tabindex/next"
+           accesskey="accesskeys-search"
+           tal:attributes="tabindex tabindex/next"
                i18n:attributes="value accesskey" />
     </form>
 </div>

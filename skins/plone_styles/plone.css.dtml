@@ -22,6 +22,7 @@
 **
 */
 
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
 /* <dtml-with base_properties> (do not remove this :) */
 /* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
 
@@ -303,38 +304,57 @@ del {
     /* Top section */
     margin: 0;
     padding: 0;
-}
-#portal-siteactions {
-    position: absolute;
-    top: 11px;
-    right: 16px;
-    width: 54px;
-    margin: 0;
-    padding: 0;
-    z-index: 2;
+    background-color: transparent;
 }
 
-#portal-siteactions a {
-    display: block;
-    float: left;
-    padding: 18px 0 0 0;
-    width: 18px;
-    height: 0px !important;
-    height /**/: 18px;
-    overflow: hidden;
+
+/* Site-wide action menu - font size, contact, index, sitemap etc */
+#portal-siteactions {
+    background-color: transparent;
+    border-collapse: collapse;
+    white-space: nowrap;
+    list-style: none;
+    margin: 1px 0 0 0;
+    height: auto;
+    line-height: normal;
+    float: right;
+    padding: 3px 2em 3px 0;
 }
+#portal-siteactions li {
+    display: inline;
+}
+#portal-siteactions li a {
+    background-color: transparent;
+    border: 1px solid &dtml-backgroundColor;;
+    color: &dtml-discreetColor;;
+    height: auto;
+    padding: 0.2em;
+    margin-right: 0.2em;
+    text-decoration: none;
+    text-transform: &dtml-textTransform;;
+}
+#portal-siteactions li.selected a {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+#portal-siteactions li a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+
 
 /* searchbox style and positioning */
 #portal-searchbox {
-    position: absolute;
-    top: 45px;
-    right: 1.5em;
+    float: right;
+    clear: right;
     background-color: transparent;
-    margin: 0;
-    padding: 0;
+    margin: 1.5em 0 0 0;
+    padding: 0 2em 0 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
-    width: 50%;
     white-space: nowrap;
     z-index: 2;
 }
@@ -361,7 +381,7 @@ del {
     color: &dtml-globalFontColor;;
     height: auto;
     margin-right: 0.5em;
-    padding: 0em 2em;
+    padding: 0em 1.5em;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
@@ -457,7 +477,7 @@ del {
     color: &dtml-contentViewFontColor;;
     height: auto;
     margin-right: 0.5em;
-    padding: 0em 2em;
+    padding: 0em 1.5em;
     line-height: normal;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
@@ -692,9 +712,13 @@ del {
     color: &dtml-fontColor;;
     font-size: &dtml-fontSmallSize;;
     font-weight: bold;
-    margin: 2em 0em 1em 0em;
-    padding: 0.5em 1em;
+    margin: 1em 0em 0em 0em;
+    padding: 0.5em 1em 0.5em 3em;
     vertical-align: middle;
+    background-image: url(&dtml-portal_url;/info_icon.gif);
+    background-repeat: no-repeat;
+    background-position: 5px center ;
+
 }
 .portalMessage a {
     color: &dtml-fontColor;;
@@ -1128,10 +1152,73 @@ ol.visualNoMarker {
 .spacer {
 	margin: 1em;
 }
-.currentNavItem {
-    color: &dtml-fontColor;;
-    font-weight: bold;
+
+/* Navigation tree styling */
+
+.navIcon,
+.navIconRoot {
+    position: relative;
+    right: 20px;
 }
+
+.navItemText {
+    margin-left: -20px;
+}
+
+.navRootItem,
+.navItem {
+    margin: 0 0 0.2em 0;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+    padding: 0.1em 0.25em 0.2em 20px;
+}
+
+.currentNavItem,
+#portlet-navigation-tree a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.navLevel1 {
+    margin-left: 0em;
+}
+
+.navLevel2 {
+    margin-left: 1em;
+}
+
+.navLevel3 {
+    margin-left: 2em;
+}
+
+.navLevel4 {
+    margin-left: 3em;
+}
+
+.navLevel5 {
+    margin-left: 4em;
+}
+
+.navLevel6 {
+    margin-left: 4.5em;
+}
+
+.navLevel7 {
+    margin-left: 5em;
+}
+
+.navLevel8 {
+    margin-left: 5.5em;
+}
+
+/* Add more levels if needed. Then again, if you have more than 3-4 level deep
+   structures, you should definitely re-think your Information Architecture ;)*/
+
+/* workflow state colors */
+
 .state-private {
     color: Black;
 }
@@ -1274,6 +1361,12 @@ ol.visualNoMarker {
     padding: 1px 0px 1px 16px !important;
 }
 
+.link-anchor {
+    color: &dtml-discreetColor;;
+    text-decoration: none;
+    font-weight: normal;
+}
+
 .hiddenStructure {
     display: block;
     background: transparent;
@@ -1409,6 +1502,13 @@ ol.visualNoMarker {
 
 .highlightedSearchTerm {
    background-color: #feff82;
+}
+
+/* for highlighting current items, like the language or today in the calendar */
+.currentItem {
+    border-collapse: collapse;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+    padding: 1px;
 }
 
 /* </dtml-with> */
