@@ -37,7 +37,7 @@
 #
 ##############################################################################
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 # Save start state
 #
@@ -98,7 +98,6 @@ if 1:   # Create a new scope
     if not f:
         print 'Unable to locate %s.' % ztc_common
         sys.exit(1)
-
 
 # Debug
 #
