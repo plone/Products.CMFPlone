@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Permission settings were not being correctly copied to temp
+      folder because we were using 'self' instead of 'intended_parent'
+      for looking up permission roles, thus looking them in the factory
+      tool instead of the target container.
+      [dreamcatcher]
+
     - Fixed a long-standing visual styling bug of the 'hr' element, it used
       to only work properly with regards to colors/size in IE, now it works
       in standards-compliant browsers too.
