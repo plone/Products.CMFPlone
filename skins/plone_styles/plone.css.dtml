@@ -310,7 +310,7 @@ pre {
 input.searchButton {
     font-size: 100%;
     margin-bottom: &dtml-borderWidth; ! important;
-    background: transparent url(search_icon.png) 7px 1px no-repeat;
+    background: transparent url(search_icon.gif) 7px 1px no-repeat;
     cursor: pointer;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
