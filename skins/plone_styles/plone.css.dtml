@@ -471,6 +471,7 @@ ul.contentViews li {
 .pageContent {
     padding: 1em;
     margin: 0em 0em 2em 0em;
+    height: 100%;
 }
 
 .editable {
