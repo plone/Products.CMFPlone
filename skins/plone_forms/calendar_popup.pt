@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xml:lang="en"
       lang="en" 
-      tal:define="inputname request/inputname;
-                  formname  request/formname;
+      tal:define="input_id request/input_id;
                   global site_properties here/portal_properties/site_properties;"
       tal:attributes="lang site_properties/default_language|default;
                       xml:lang site_properties/default_language|default;"
@@ -15,7 +14,7 @@
     <title i18n:translate="label_calendar">Calendar</title>
 
     <script type="text/javascript" language="javascript" 
-            tal:content="python: here.getPopupScript(inputname=inputname, formname=formname)">
+            tal:content="python: here.getPopupScript(input_id=input_id)">
       
     </script>
 
@@ -34,7 +33,7 @@
         Choose a date
         </div>
 
-        <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBoxPopup">
+        <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBoxPopup">
             Show calendar
         </div>
         
