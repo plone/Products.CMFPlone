@@ -100,10 +100,8 @@
         </span>
       </span>
     </span>
-<!--
     <style type="text/css" tal:content="python: here.getPopupPositionStyles(weeks=weeks, year=year, month=month)">
     </style>
--->
 
 
 </div>
