@@ -143,7 +143,8 @@
                         <th name="nosort"><input class="noborder" 
                                                  type="image"
                                                  src="select_all_icon.gif" 
-                                                 name="selectButton" 
+                                                 name="selectButton"
+                                                 title="Select all items"
                                                  onClick="toggleSelect(this); return false;"
                                                  /></th>
                         <th>Title <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
