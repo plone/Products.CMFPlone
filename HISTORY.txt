@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Password generation code now eliminates characters that look alike from 
+      passwords (e.g. 0 and O, 1 and l, etc).  This should reduce the number of
+      user complaints about their initial passwords. [geoffd]
+
+    - Cookie testing now works for IE 5.0.[geoffd]
+
     - Added ExternalEditor as an action in the documentActions 
       area.
       [limi]
