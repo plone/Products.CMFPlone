@@ -1,6 +1,4 @@
-# $Id: NavigationTool.py,v 1.36 2003/05/27 20:27:36 runyaga Exp $
-# $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
-__version__ = "$Revision: 1.36 $"[11:-2] + " " + "$Name:  $"[7:-2]
+# $Id: NavigationTool.py,v 1.37 2003/09/14 17:33:29 dreamcatcher Exp $
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
