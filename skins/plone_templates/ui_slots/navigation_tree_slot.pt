@@ -13,7 +13,8 @@
                    tree python:here.plone_utils.createNavigationTreeBuilder(portalObject,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;
-                   listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
+                   checkPerm python:here.portal_membership.checkPermission;
+                   listContentsPermission python:checkPerm('List folder contents', here);
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
@@ -42,10 +43,11 @@
                     <span tal:define="iscurrent te/iscurrent | python:0;
                                       sibling python:te['object'];
                                       typeInfo sibling/getTypeInfo;
-                                      stdCommand python:test(notFolderContents,test(typeInfo.id in useFolderContents,'',typeInfo.immediate_view),'folder_contents');
+                                      stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'',typeInfo.immediate_view));
+                                      stdCommand python:test(stdCommand in ('folder_contents','folder_listing'),test(checkPerm('List folder contents',sibling) ,stdCommand,''),typeInfo.immediate_view);
                                       title python:te['object'].title_or_id();
                                       sibling_title python:' '.join(title[:croppingLength].split(' '));"
-                                      tal:on-error="structure string:<!--Error in Navigation loop!!-->"
+                                      rtal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                            >
                                
                         <tal:block repeat="x python:range( te['indent'])">&nbsp;</tal:block>
