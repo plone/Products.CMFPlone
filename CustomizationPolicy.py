@@ -41,7 +41,7 @@ class DefaultCustomizationPolicy:
         at.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','global_tabs')
         at.addAction('news','News','string: $portal_url/news','','View', 'global_tabs')	
         at.addAction('search_form','Search','string: $portal_url/search_form','','View','global_tabs')
-        at.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','','View','local_tabs')
+        at.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','python:portal.portal_workflow.getChainForPortalType(object.Type())','View','local_tabs')
 	#local_buttons should have permission 'List folder contents'
 	#we are changing it to View for workaround in CMF1.3 ActionsTool
         at.addAction('rename','Rename','string:folder_rename_form:method','', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
