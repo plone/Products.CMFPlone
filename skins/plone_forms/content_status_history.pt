@@ -94,6 +94,30 @@
             </div>
         </div>
 
+        <div class="row"
+	     tal:condition="folders_in_publishing|nothing">
+	   <div class="label">
+	     <span i18n:id="subfolders">Subfolders</span>
+	     <div id="include_subfolders_help" 
+	          i18n:id="include_subfolders_help"
+	          class="help" 
+	          style="visibility:hidden">
+	          If checked, will attempt to publish all content in subfolders.
+	     </div>	
+	   </div>
+	   <div class="field">
+	     <input type="checkbox"
+	            class="noborder"
+	            id="include_subfolders"
+	            name="include_subfolders"
+	            tabindex="2" 
+	            onfocus="formtooltip('include_subfolders_help',1)" 
+	            onblur="formtooltip('include_subfolders_help',0)" 
+	            checked="checked" />
+	     <label for="include_subfolders" i18n:id="include_subfolders">Include subfolders</label>
+           </div>
+   	</div>
+
         <div class="row">
             <span class="label">
               Effective Date
@@ -152,37 +176,21 @@
             <input type="hidden" id="workflow_action" name="workflow_action" value="" />
             <span class="label">&nbsp;</span>
     
-            <span class="field"
-                  tal:define="wf_actions actions/workflow;
-                  publish python:here.getActionUrlById('publish', wf_actions);
-                  submit python:here.getActionUrlById('submit', wf_actions);
-                  retract python:here.getActionUrlById('retract', wf_actions);
-                  hide python:here.getActionUrlById('hide', wf_actions);
-                  reject python:here.getActionUrlById('reject', wf_actions);
-                  visible python:here.getActionUrlById('visible', wf_actions);
-		  show python:here.getActionUrlById('show', wf_actions);">
-		  
-                <input class="context" type="submit" value="Show" tal:condition="request/ids|show"
-                       onclick="javascript:document.getElementById('workflow_action').value='show';" />
-		       
-                <input class="context" type="submit" value=" Publish this Item " tal:condition="request/ids|publish"
-                       onclick="javascript:document.getElementById('workflow_action').value='publish';" />
-             
-                <input class="context" type="submit" value="Submit for review" tal:condition="request/ids|submit"
-                       onclick="javascript:document.getElementById('workflow_action').value='submit';" />
+            <span class="field">
+		<span tal:define="objs request/ids|nothing;
+		                  target python:request.get('ids',here.getId())">
+		 <tal:block tal:define="global transitions python:here.getAvailableTransitions(obj=target)"
+		            tal:repeat="transition transitions">
+                 <input class="context" 
+		        type="submit" 
+			value="action" 
+			onclick="javascript:document.getElementById('workflow_action').value='show';"
+			tal:define="action transition/id; name transition/name;"
+			tal:attributes="value name;
+			                onclick string:javascript:document.getElementById('workflow_action').value='$action';;" />
+	         </tal:block>
+		</span>
 
-                <input class="context" type="submit" value="Retract" tal:condition="request/ids|retract"
-                       onclick="javascript:document.getElementById('workflow_action').value='retract';" />
-
-                <input class="context" type="submit" value="Hide" tal:condition="request/ids|hide"
-                       onclick="javascript:document.getElementById('workflow_action').value='hide';" />
-
-                <input class="context" type="submit" value="Reject" tal:condition="request/ids|reject"
-                       onclick="javascript:document.getElementById('workflow_action').value='reject';" />
-
-                <input class="context" type="submit" value="Visible" tal:condition="request/ids|visible"
-                       onclick="javascript:document.getElementById('workflow_action').value='visible';" />
-    
             </span>
             
         </div>

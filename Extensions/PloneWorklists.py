@@ -1,12 +1,64 @@
 #NOTE: that workflows are 'chains' that can progress from workflow to workflow
 
 from Products.CMFCore.utils import getToolByName
+from AccessControl import getSecurityManager
+from Products.CMFCore.WorkflowCore import WorkflowException
 
 debug = 1
 
 def log(msg):
     import sys
     sys.stdout.write( str(msg) + '\n' )
+
+#XXX this should not make it into 1.0 
+# Refactor me, my maker was tired
+def flattenTransitions(self, objs): 
+    """ this is really hokey - hold on!!"""
+    if hasattr(objs, 'startswith'): return ()
+    transitions=()
+    for o in [getattr(self, oid, None) for oid in objs]:
+        trans=()
+        try:
+            trans=getTransitionsFor(self, obj=o)
+	except: #yikes
+	    pass
+	if trans:
+            for t in trans:
+               t_names=[]
+               if transitions:
+                   t_names = [transition.values() for transition in transitions]
+               if t['name'] not in t_names:
+                  transitions+=(t,)
+    return transitions
+
+def getTransitionsFor(self, obj=None, REQUEST=None):	
+    wf_tool=getToolByName(self, 'portal_workflow')
+    if type(obj)==type([]):
+        return flattenTransitions(self, objs=obj)
+    elif hasattr(obj, 'isPortalContent'):
+        obj=obj
+    else: 
+        obj=getattr(self.getParentNode(), obj)
+    wfs=()
+    avail_trans=()
+    objstate=None
+    try:
+        objstate=wf_tool.getInfoFor(obj, 'review_state')
+        wfs=wf_tool.getWorkflowsFor(obj)
+    except WorkflowException, e:
+	return avail_trans
+
+    for wf in wfs:
+        stdef=wf.states[objstate]
+	for tid in stdef.transitions:
+            trans=wf.transitions[tid]
+	    if trans.getGuard().check(getSecurityManager(), wf, obj):
+                t={}
+		t['title']=trans.title
+		t['id']=trans.id
+		t['name']=trans.actbox_name
+		avail_trans+=(t, )
+    return avail_trans
 
 def workflows_in_use(self):
     """ gathers all the available workflow chains (sequence of workflow ids, ).  """

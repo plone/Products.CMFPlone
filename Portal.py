@@ -127,8 +127,13 @@ class PloneGenerator(Portal.PortalGenerator):
                                            title='Plone worklists',
                                            module='CMFPlone.PloneWorklists',
                                            function='getWorklists')
+        em2=ExternalMethod.ExternalMethod(id='getAvailableTransitions',
+                                          title='Worflow transitions',
+                                          module='CMFPlone.PloneWorklists',
+                                          function='getTransitionsFor')
+        
         p._setObject('getWorklists', em)
-
+        p._setObject('getAvailableTransitions', em2)
         
         
     def setupPlone(self, p): 
