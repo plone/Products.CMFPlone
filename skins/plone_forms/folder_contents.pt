@@ -189,7 +189,7 @@ i18n:translate="">Title</span> <img tal:replace="structure here/arrowUp.gif" /><
                                         url python:test(action, item.absolute_url()+'/'+action, item.absolute_url()+'/folder_contents');"> 
     
                             <a href="#" tal:attributes="href url">
-                                <img tal:replace="structure python:path('here/%s' % item.getIcon())" 
+                                <img tal:replace="structure python:path('here/%s' % item.getIcon(1))" 
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
                             <tal:block tal:condition="python:test(here.portal_url.getPortalObject().getProperty('ext_editor') and item.hasActionId('external_edit'), 1,0)">
