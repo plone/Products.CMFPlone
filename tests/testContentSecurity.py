@@ -29,18 +29,15 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         folder = self.membership.getHomeFolder('user1')
         folder.invokeFactory('Document', id='new')
         self.failUnless(hasattr(aq_base(folder), 'new'))
-        self.logout()
 
     def testCreateOtherMemberContentFails(self):
         self.login('user1')
         folder = self.membership.getHomeFolder('user2')
         self.assertRaises(Unauthorized, folder.invokeFactory, 'Document', 'new')
-        self.logout()
 
     def testCreateRootContentFails(self):
         self.login('user1')
         self.assertRaises(Unauthorized, self.portal.invokeFactory, 'Document', 'new')
-        self.logout()
 
     def testDeleteMemberContent(self):
         self.login('user1')
@@ -48,18 +45,15 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         folder.invokeFactory('Document', id='new')
         folder.manage_delObjects(['new'])
         self.failIf(hasattr(aq_base(folder), 'new'))
-        self.logout()
 
     def testDeleteOtherMemberContent(self):
         self.login('user1')
         folder = self.membership.getHomeFolder('user1')
         folder.invokeFactory('Document', id='new')
-        self.logout()
 
         self.login('user2')
         folder = self.membership.getHomeFolder('user1')
         self.assertRaises(Unauthorized, folder.manage_delObjects, ['new'])
-        self.logout()
 
 
 if __name__ == '__main__':
