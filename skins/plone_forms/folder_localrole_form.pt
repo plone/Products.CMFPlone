@@ -11,6 +11,8 @@
   <div metal:fill-slot="main"
        tal:define="join python:modules['string'].join;
                    Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                   Batch python:modules['Products.CMFPlone'].Batch;
+                   b_size python:18;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    search_submitted request/role_submit|nothing;
                    search_results python:test(search_submitted, here.portal_membership.searchMembers( search_param=request.get('search_param','')
@@ -29,17 +31,23 @@
 
 		    <p i18n:translate="description_localrole_select_member">Select one or more Members, and a role to assign.</p>
 	
+        <metal:block tal:define="batch python:Batch(search_results, b_size, int(b_start), orphan=3)">
+
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+
 	      <form class="group"
               method="post" 
               name="change_type" 
               action="folder_localrole_edit"
               tal:attributes="action string:${here/absolute_url}/folder_localrole_edit" >
  		
+
             <span class="legend" i18n:translate="legend_available_members">Available Members</span>
                 
             <input type="hidden" name="change_type" value="add" />
     		
-    		    <span class="card" tal:repeat="member search_results">
+    		    <span class="card" tal:repeat="member batch">
     				
                         <img src="defaultUser.gif" alt="Blank picture" border="0" width="75" height="100"
                              tal:attributes="src python:here.portal_membership.getPersonalPortrait(member['username']).absolute_url()" />
@@ -70,8 +78,7 @@
         		        
                 <span tal:condition="python:not member['email']">&nbsp;</span>
     		    </span>
-    		
-    		
+
         		<div class="row">
         				
           			<div class="label" i18n:translate="label_localrole_to_assign">
@@ -108,8 +115,10 @@
         		
         		</div>			
 		
-		    </form>				
-
+		    </form>
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+        </metal:block>				
 
     </metal:block>
 
