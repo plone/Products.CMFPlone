@@ -1,8 +1,9 @@
-<dtml-comment> 
+<span tal:replace="nothing"> 
   Some ECMAScript magic to control the sticky notes :) 
   NOTE: iiemu.js is a PythonScript so we must render it 
-</dtml-comment>
-<dtml-var "_.getattr(this(), 'ieemu.js')()" >
+</span>
+
+<metal:block tal:replace="structure here/ieemu.js" />
 
   if (moz) {
     extendElementModel();
@@ -10,7 +11,7 @@
     emulateEventHandlers(["mouseover", "mouseout"]);
   }
 
-<dtml-var "_.getattr(this(), 'styley.js')(this(), REQUEST)" >
+<metal:block tal:replace="structure here/styley.js" />
 
   function showDay(date) {
     tempX = document.body.offsetWidth - event.x;
@@ -40,12 +41,11 @@
       elem.parentNode.parentNode.style.border='none';
       elem.style.visibility='hidden' };
   }
-  
-<dtml-comment> Table sorting script </dtml-comment>			      
-<dtml-if "REQUEST.PUBLISHED.getId() in ('folder_listing', 'folder_contents')">
-  <dtml-var "_.getattr(this(), 'table_sort.js')(this(), REQUEST)" >
-</dtml-if>
 
-<dtml-comment> folder_contents actions </dtml-comment>
-<dtml-var "_.getattr(this(), 'folder_actions.js')(this(), REQUEST)" >
+<span tal:replace="nothing"> Table sorting script </span>
+<metal:block tal:condition="python:test(template.getId() in ('folder_listing', 'folder_contents'),1,0)"
+             tal:replace="structure here/table_sort.js" />
+
+<span tal:replace="nothing"> folder_contents actions </span>
+<metal:block tal:replace="structure here/folder_actions.js" />
 
