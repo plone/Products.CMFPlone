@@ -26,13 +26,12 @@
             If you know you have the correct web address but are encountering an error, please 
             send a mail to the administrator of this site.
 
-<!-- runyaga: Can this be made to work here?            
             <a href="mailto:admin@here.com" title="Email Administrator"
                tal:attributes="href string:mailto:${here/portal_properties/email_from_address}"
                tal:content="string:${here/portal_properties/email_from_address}">
             Email Admin
             </a>.
--->
+
             Thank you.
             </p>
             
