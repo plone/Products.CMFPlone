@@ -49,9 +49,7 @@
 	  </a>
 	</li>
 	<li>
-	  <a href="http://www.w3.org/WAI/WCAG1AA-Conformance"
-	     title="Explanation of WCAG Conformance"
-	     i18n:attributes="title">
+	  <a href="http://www.w3.org/WAI/WCAG1AA-Conformance">
 	    <img src=""
 		 height="15"
 		 width="80"
