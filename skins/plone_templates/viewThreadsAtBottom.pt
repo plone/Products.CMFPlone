@@ -6,11 +6,12 @@
 <div metal:define-macro="discussionView"
      class="discussion"
      tal:define="userHasReplyPermission python: checkPermission('Reply to item', here);
-                 isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
-                 userIsAnonymous python: here.portal_membership.isAnonymousUser();
+                 portal_discussion portal/portal_discussion;
+                 isDiscussionAllowed python:portal_discussion.isDiscussionAllowedFor(here);
+                 userIsAnonymous isAnon;
                  hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
                  view_action python:hereTypeInfo.getActionById('view');
-                 isViewTemplate python: template.getId()==view_action;
+                 isViewTemplate python: template_id==view_action;
                  ">
     
     <tal:allowed condition="python: isDiscussionAllowed and isViewTemplate">
@@ -19,7 +20,7 @@
               action="" 
               method="post"
               tal:condition="userHasReplyPermission" 
-              tal:attributes="action string:${here/absolute_url}/discussion_reply_form">       	
+              tal:attributes="action string:$here_url/discussion_reply_form">       	
 
             <input class="standalone" 
     	       type="submit" 
@@ -28,19 +29,25 @@
                />
         </form>
 
-        <div tal:condition="python: userIsAnonymous and not userHasReplyPermission"
-             tal:define="pss modules/Products/PythonScripts/standard">
-          You can add comments to this item if you <a href="" tal:attributes="href python: '%s/login_form?came_from=%s' % (here.portal_url(), pss.url_quote(request['URL']))">log in</a>.
-        </div>
+        <form tal:condition="python: userIsAnonymous and not userHasReplyPermission"
+              tal:define="pss modules/Products/PythonScripts/standard"
+              tal:attributes="action python: '%s/login_form?came_from=%s' % (here.portal_url(), pss.url_quote(request['URL']))">
+
+            <input class="standalone" 
+    	       type="submit" 
+    	       value="Log in to add comments"
+               i18n:attributes="value"
+               />
+        </form>
     
         <a name="comments"> </a>
 
-        <tal:getreplies repeat="reply python:container.sort_modified_ascending(here.portal_discussion.getDiscussionFor(here).getReplies())">
+        <tal:getreplies repeat="reply python:portal.sort_modified_ascending(portal_discussion.getDiscussionFor(here).getReplies())">
 
                 <div class="comment">
             
                     <h3>
-                        <img tal:replace="structure here/discussionitem_icon.gif" />
+                        <tal:block replace="structure portal/discussionitem_icon.gif"/>
                         <span tal:replace="reply/title_or_id">Comment title</span> 
                     </h3>
                     
@@ -94,7 +101,7 @@
                                   tal:content="structure python: '&nbsp;' * lst['depth']" />                                
                             <a href="" 
                                tal:attributes="href string:${lst/object/absolute_url}/discussionitem_view">
-                            <img tal:replace="structure here/discussionitem_icon.gif" />
+                            <tal:block replace="structure here/discussionitem_icon.gif"/>
                             <span tal:replace="lst/object/Title">Comment title</span>   
                             (<span i18n:translate="label_comment_by">Posted by</span> 
                             <span tal:replace="lst/object/Creator">username</span>

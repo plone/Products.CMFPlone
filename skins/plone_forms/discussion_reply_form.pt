@@ -18,7 +18,7 @@
     <form name="edit_form"
           method="post"
           action="talkback"
-          tal:attributes="action string:${here/absolute_url}/talkback" >
+          tal:attributes="action string:$here_url/talkback" >
 
         <fieldset>
 
@@ -28,9 +28,9 @@
                    tal:attributes="value member/getUserName" />
 
             <div class="portalMessage"
-                 tal:condition="mtool/isAnonymousUser">
+                 tal:condition="isAnon">
 
-                <img tal:replace="structure here/info.gif"/>
+                <tal:block replace="structure here/info.gif"/>
 
                 <span i18n:translate="legend_note_reply_anonymous">
                     Note: you are not logged in.  You may optionally enter your username

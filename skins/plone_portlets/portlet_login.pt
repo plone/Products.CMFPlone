@@ -12,8 +12,7 @@
      tal:condition="isAnon">
 
     <div class="portlet" 
-         tal:define="portal_url portal_url|utool;
-                     auth nocall:here/cookie_authentication;
+         tal:define="auth nocall:here/cookie_authentication;
                      ac_name auth/name_cookie;
                      ac_password auth/pw_cookie;
                      ac_persist auth/persist_cookie;"
@@ -26,7 +25,7 @@
             <div class="portletContent odd">
                 <form action="logged_in"
                       method="post"
-                      tal:attributes="action string:$portal_url/logged_in">
+                      tal:attributes="action string:${utool}/logged_in">
 
                     <input type="hidden" name="came_from" value=""
                            tal:attributes="value request/URL;
@@ -68,8 +67,8 @@
 
             <div class="portletContent even">
                 <a href="mail_password_form"
-                   tal:attributes="href string:$portal_url/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
-                   <img tal:replace="structure portal_object/linkTransparent.gif" />
+                   tal:attributes="href string:${utool}/mail_password_form" accesskey="accesskeys-login" i18n:attributes="accesskey" >
+                   <tal:block replace="structure portal_object/linkTransparent.gif"/>
                    <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
                 </a>
             </div>
@@ -79,7 +78,7 @@
                 tal:condition="python:test(join and hasattr(here,'portal_registration') and checkPermission('Add portal member', here), 1, 0)">
 
                 <a href="" tal:attributes="href python:join.pop()" accesskey="accesskeys-login" i18n:attributes="accesskey" >
-                    <img tal:replace="structure portal_object/linkTransparent.gif" />
+                    <tal:block replace="structure portal_object/linkTransparent.gif"/>
                     <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
                 </a>
 

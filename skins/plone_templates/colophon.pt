@@ -69,8 +69,8 @@
         <img src="" 
              height="15"
              width="80"
-             alt="Valid CSS and tableless layout"
-             title="This Plone site was built with valid CSS and semantically correct use of tables."
+             alt="Valid CSS"
+             title="This Plone site was built with valid CSS."
              tal:attributes="src string:$portal_url/colophon_css.png" 
              i18n:attributes="alt title" />
         </a>

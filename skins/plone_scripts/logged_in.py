@@ -15,28 +15,6 @@ membership_tool=context.portal_membership
 
 isAnonymous = membership_tool.isAnonymousUser()
 
-# If you log in with cookies disabled, you will appear to be logged
-# in when you hit login.py.  To make sure you are really logged in,
-# we force the page to reload and then test for login status.
-#
-# Look for the REQUEST variable 'success' -- if it's not present,
-# redirect to the current page.
-#
-# Commented out the code below because it broke older IE's and
-# most importantly Safari
-"""
-success = REQUEST.get('success',None)
-if success is None:
-    # 'success' variable not found -- create it and reload the page
-    args = REQUEST.form
-    args['success'] = int(not isAnonymous)
-    url = '%s?%s' % (REQUEST.URL, ZTUtils.make_query(args))
-    # make sure the redirect header we are about to send isn't cached!
-    REQUEST.RESPONSE.setHeader('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')
-    REQUEST.RESPONSE.setHeader('Pragma', 'no-cache')
-    return REQUEST.RESPONSE.redirect(url)
-"""
-
 login_failed = 'login_failed'
 login_changepassword = 'login_password'
 
@@ -78,9 +56,25 @@ if hasattr(membership_tool, 'createMemberArea'):
 
     membership_tool.createMemberArea()
 
+# I'm not quite sure where QUERY_STRING is supposed to be.
+# What we will do is say if REFERER startswith REQUEST['came_from']
+# then lets use that instead of came_from. REFERER contains the URL
+# args.  
+
 qs = context.create_query_string(
     REQUEST.get('QUERY_STRING', ''),
     portal_status_message=("Welcome! You are now logged in.")
     )
 
-return REQUEST.RESPONSE.redirect('%s?%s' % (login_success, qs))
+REFERER=REQUEST.get('HTTP_REFERER')
+if REFERER and REFERER.startswith(login_success):
+    URL=REFERER
+else:
+    URL=login_success
+
+if URL.find('?')==-1:
+    dest = '%s?%s' % (URL, qs)
+else:
+    dest = '%s&%s' % (URL, qs)
+
+return REQUEST.RESPONSE.redirect(dest)

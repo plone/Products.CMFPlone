@@ -46,7 +46,8 @@
             <a class="" href=""
                tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
                i18n:attributes="accesskey" >
-                <img tal:define="actionid action/id;
+                <img alt="" src=""
+                     tal:define="actionid action/id;
                                  icon python:aitool.renderActionIcon('content_actions', actionid, None);"
                      tal:condition="icon"
                      tal:replace="structure icon" />

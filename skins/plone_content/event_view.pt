@@ -50,9 +50,7 @@
             <tal:email condition="here/contact_email">
                 <dt i18n:translate="contact_email">Contact Email</dt>
                 <dd>
-                    <a tal:attributes="href python:'mailto:' + here.contact_email"
-                    tal:content="here/contact_email"
-                    href="mailto:contact_email">contact_email</a>
+                    <a tal:replace="structure python: here.spamProtect(here.contact_email)" />
                 </dd>
             </tal:email>
     

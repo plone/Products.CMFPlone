@@ -11,8 +11,8 @@
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;
-                 desc_length python:here.portal_properties.site_properties.search_results_description_length;
-                 desc_ellipsis python:here.portal_properties.site_properties.ellipsis;
+                 desc_length site_properties/search_results_description_length;
+                 desc_ellipsis site_properties/ellipsis;
                  searchterm request/SearchableText|nothing">
 
     <h1 i18n:translate="heading_search_results">Search results</h1>
@@ -38,7 +38,7 @@
         <span i18n:translate="batch_x_items_matching_your_criteria"><span i18n:name="number" tal:content="python:len(results)">234</span> items matching your criteria.</span>
         </strong>
 
-        <a href="" tal:attributes="href string:${here/absolute_url}/search_rss?${request/QUERY_STRING}">
+        <a href="" tal:attributes="href string:$here_url/search_rss?${request/QUERY_STRING}">
         <img i18n:attributes="title alt"
              tal:attributes="src string:$portal_url/rss.gif"
              src="rss.gif"

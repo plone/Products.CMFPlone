@@ -4,14 +4,13 @@
 
 
 <head metal:define-macro="html_header"
-      tal:define="global portal_url portal_url|utool;
-                  ztu ztu|modules/ZTUtils;
+      tal:define="ztu ztu|modules/ZTUtils;
                   skinrequest python:request.get(here.portal_skins.getRequestVarname(), '');">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
           tal:define="charset site_properties/default_charset|string:utf-8"
           tal:attributes="content string:text/html;;charset=${charset}" />
 
-    <title tal:define="portal_title here/portal_properties/title;
+    <title tal:define="portal_title portal_properties/title;
                        here_title here/title_or_id;
                        template_title template/title_or_id;
                        here_title python:test( portal_title != here_title,
@@ -19,7 +18,7 @@
                                                template_title )"
            tal:content="string:$portal_title - $here_title">Title of page</title>
 
-    <metal:block metal:define-slot="base" />
+    <metal:baseslot define-slot="base" />
 
     <meta name="generator" content="Plone - http://plone.org" />
     
@@ -78,7 +77,7 @@
        <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
     </tal:comment>
     <link rel="up" href="" title="Up one level" 
-          tal:define="parent python:here.navigationParent(here, template.getId())"
+          tal:define="parent python:here.navigationParent(here, template_id)"
           tal:attributes="href python:test(parent, parent, '#')" />
     <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
     <link rel="author" href="" title="Author information" tal:attributes="href string:author" />
@@ -104,14 +103,7 @@
 
     <!-- Common Plone ECMAScripts -->
 
-    <!-- IE min-width support -->
-    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
-    <script type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
-    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
-
-     
-    <!-- ECMAScript menu -->
+    <!-- Pull-down ECMAScript menu -->
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_menu.js"></script>
 

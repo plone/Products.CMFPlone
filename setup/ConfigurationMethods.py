@@ -56,8 +56,6 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
     if not hasattr(p, 'auth_cookie_length'):
         safeEditProperty(p, 'auth_cookie_length', 0, 'int')
-    if not hasattr(p,'allow_sendto'):
-        safeEditProperty(p, 'allow_sendto', 1, 'boolean')
 
 
 def setupDefaultLeftRightSlots(self, portal):
@@ -224,7 +222,6 @@ def modifySkins(self, portal):
     # this should be run through the skins setup widget :)
     st=getToolByName(portal, 'portal_skins')
     skins_map=st._getSelections()
-    skins_map=st._getSelections()
 
     if skins_map.has_key('No CSS'):
         del skins_map['No CSS']
@@ -246,8 +243,9 @@ def modifySkins(self, portal):
                 a.title = 'Sharing'
             if a.id == 'content_status_history':
                 a.visible = 0
-        #in 2.0 teh Sharing tab is on portal_actions ActionProvider
-        t._actions=[a for a in _actions if a.id!='local_roles']
+        #in 2.0 the Sharing tab is on portal_actions ActionProvider
+        #this was reverted - yay!
+        #t._actions=[a for a in _actions if a.id!='local_roles']
 
 def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')
@@ -313,12 +311,6 @@ def addNewActions(self, portal):
                  condition='',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
-    at.addAction('local_roles',
-                 name='Sharing',
-                 action="string:${object_url}/folder_localrole_form",
-                 condition='',
-                 permission='Manage properties',
-                 category='object')
 
 def addSiteActions(self, portal):
     # site_actions which have icons associated with them as well

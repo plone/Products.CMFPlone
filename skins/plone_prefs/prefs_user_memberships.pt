@@ -14,8 +14,8 @@
                 member python:mtool.getMemberById(userid);
                 mdata here/portal_memberdata;
                 errors python:request.get('errors', {});
-		searchonly string:groups;
-		takeaction string:prefs_user_membership_edit;">
+		        searchonly string:groups;
+		        takeaction string:prefs_user_membership_edit;">
 
 <div class="configlet">
 
@@ -51,7 +51,7 @@
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/prefs_users_overview"
-           i18n:translate="">
+           i18n:translate="label_up_to_usersoverview">
         Up to Users Overview
         </a>
 
@@ -83,13 +83,12 @@
                 </tr>
     
     	  <tr tal:repeat="groupid member/getGroups" class="odd">
-    	      <tal:block tal:define="group python:here.portal_groups.getGroupById(groupid);
+    	      <tal:block tal:define="group python:gtool.getGroupById(groupid);
     		                     groupname group/getGroupName">
                 <td>
                     <a href="prefs_group_details"
                        tal:attributes="href string:prefs_group_details?groupname=$groupname">
-    		    <img src=""
-                             tal:replace="structure portal/group.gif" />&nbsp;<span
+    		    <tal:block replace="structure portal/group.gif"/>&nbsp;<span
                              tal:replace="groupname">group name</span>
                     </a>
                 </td>

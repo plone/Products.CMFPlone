@@ -24,13 +24,13 @@
 
             <a tal:attributes="href url">
             <img tal:attributes="src python:obj.portal_url() + '/' + obj.getIcon()"
-                 border="0" src="" /></a>
+                 border="0" src="" alt=""/></a>
 
             <a tal:attributes="href url"
                tal:content="obj/Title"
                href="">Title</a>,
 
-               <span i18n:translate="label_comment_by">by</span>
+               <span i18n:translate="label_comment_by">Posted by</span>
 
                <span tal:replace="obj/Creator">Me</span>
 

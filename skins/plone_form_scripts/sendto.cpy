@@ -11,11 +11,18 @@
 REQUEST=context.REQUEST
 
 from Products.CMFPlone import transaction_note
+from Products.CMFCore.utils import getToolByName
 
 plone_utils=context.plone_utils
 site_properties=context.portal_properties.site_properties
 
-if not site_properties.allow_sendto:
+# need to check visible state of 'sendto' action in portal_actions
+# but I couldn't figure out how - update collector issue #1490
+# when implemented
+at = getToolByName(context, 'portal_actions')
+
+#if not sendto_action.visible :
+if 0:
     return state.set(status='failure', portal_status_message='You are not allowed to send this link.')
 
 variables = { 'send_from_address' : REQUEST.send_from_address

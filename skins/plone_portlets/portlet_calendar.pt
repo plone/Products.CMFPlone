@@ -13,11 +13,11 @@
                  prevMonthTime python:here.getPreviousMonth(month, year);
                  nextMonthTime python:here.getNextMonth(month, year);
                  weeks python:here.portal_calendar.getEventsForCalendar(month=month, year=year);
-                 anchor_url request/anchor_url | here/absolute_url;
+                 anchor_url request/anchor_url | here_url;
                  anchor_method request/anchor_method | template/getId;">
     <!-- The calendar, rendered as a table -->
 
-    <table cellspacing="0" class="ploneCalendar" id="thePloneCalendar">
+    <table cellspacing="0" class="ploneCalendar" id="thePloneCalendar" summary="Calendar" i18n:attributes="summary">
         <thead>
             <tr>
                 <th id="calendar-previous">

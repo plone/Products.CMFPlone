@@ -26,7 +26,11 @@ for product in ('CMFPlone', 'Formulator', 'CMFActionIcons', 'CMFQuickInstallerTo
                ):
     os.system("cd .. ; cp -rfL %s %s" % (product, releasename))
 
-os.system("cd .. ; tar -cvf %s %s" % ( releasetar
+# clean up
+os.system("cd ../%s; %s"  % (releasename, sh_clean))
+
+# make tar.gz
+os.system("cd .. ; tar -f %s -czv %s " % ( releasetar
                                      , releasename ) )
 # make zip
 os.system("cd .. ; zip -r %s %s" % (releasezip

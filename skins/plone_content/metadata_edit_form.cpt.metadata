@@ -1,6 +1,9 @@
 [default]
 title=Edit Properties
 
+[security]
+View=0:Authenticated
+
 [validators]
 validators..Save=validate_metadata_edit
 validators..Cancel=

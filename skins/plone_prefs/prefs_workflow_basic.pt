@@ -54,7 +54,7 @@
                         tal:attributes="tabindex tabindex;" />
         <label for="one_step_workflow" i18n:translate="label_one_step_workflow">One step publication workflow</label> <br />
         <p i18n:translate="description_workflow_one_step">if you want to have all the contents immediately available for everyone,
-                without having any review process you shoud use this One step publication.
+                without having any review process you should use this One step publication.
         </p>
         <span i18n:translate="label_workflow_default_state">You can also change the starting state of all documents: </span>
         <select id="select_default_state"
@@ -83,7 +83,7 @@
                             />
             <label for="one_step_workflow" i18n:translate="label_community_workflow">Community workflow</label> <br />
             <p i18n:translate="description_workflow_community">if you want to have all the contents immediately available for everyone,
-                but you also want to have a review process you shoud use this!
+                but you also want to have a review process you should use this!
             </p>
             <span i18n:translate="label_workflow_default_state">You can also change the starting state of all documents: </span>
             <select id="select_default_state"

@@ -64,6 +64,5 @@ for userid in resetpw:
 if removed:
     acl_users.userFolderDelUsers(removed)
 
-url='%s?%s' % (REQUEST.HTTP_REFERER,
-               'portal_status_message=Changes+made.')
-return REQUEST.RESPONSE.redirect(url)
+portal_status_message="Changes made"
+return state.set(portal_status_message=portal_status_message)

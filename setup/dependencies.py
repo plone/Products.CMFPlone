@@ -3,6 +3,7 @@
 #in the config file
 
 import zLOG
+import os
 
 def log(message,summary='',severity=zLOG.ERROR, optional=None):
     if optional:
@@ -31,7 +32,9 @@ if cmfcore:
     try:
         file = join(package_home(cmfcore_globals), 'version.txt')
         CMF_VERSION = open(file, 'r').read().strip()
-        version = CMF_VERSION
+        version = CMF_VERSION.strip()
+        if version.lower().startswith('cmf-'):
+            version = version[4:]
         filtered = ''
         for v in version:
             if v in ['0','1','2','3','4','5','6','7','8','9','.']:
@@ -88,6 +91,41 @@ except ImportError:
         severity=zLOG.INFO, optional=1)
 
 try:
+    import Products.Localizer
+except ImportError:
+    pass
+else:
+    log(("Localizer found. Plone 2 is using the PlacelessTranslationService"
+         "for translation. Please deinstall the Localizer after you have saved"
+         "your po catalogs."),
+        severity=zLOG.WARNING, optional=1)
+
+try:
+    import Products.TranslationService
+except ImportError:
+    pass
+else:
+    log(("TranslationService found. Plone 2 is using the PlacelessTranslationService"
+         "for translation. Please deinstall the TranslationService."),
+        severity=zLOG.WARNING, optional=1)
+
+try:
+    import Products.CMFPlone
+    plonePath = Products.CMFPlone.__path__[0]
+except ImportError, AttributeError:
+    i18nPath = None
+else:
+    i18nPath = os.path.join(plonePath, 'i18n')
+
+if not (i18nPath and os.path.isdir(i18nPath) and \
+  os.path.isfile(os.path.join(i18nPath, 'plone-en.po')) ):
+    log(("Plone i18n files not found. Plone "
+         "runs without this, but if you want multilingual "
+         "interface or access keys, you must download it from "
+         "http://www.sourceforge.net/projects/plone-i18n"),
+        severity=zLOG.INFO, optional=1)  
+
+try:
     import Products.CMFFormController
 except ImportError:
     log(("CMFFormController not found. Please "
@@ -123,3 +161,5 @@ try:
 except ImportError:
     log(("Formulator not found. Please download it "
          "from http://sourceforge.net/projects/formulator"))
+
+  

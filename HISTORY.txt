@@ -4,6 +4,83 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+   RC6/Final?
+ 
+    - Fix bug 2373 so folder_contents items goto
+      getTypeInfo.getActionById('view')
+	[runyaga]
+
+    - Removed the ability to edit short names while adding a file,
+      since users have problems remembering that the extension has to be
+      included. They are also very surprised when the file they uploaded
+      has a different file name. Removing this will give them a sensible
+      default. If you want to re-enable short names for files for your 
+      site, remove the comments around the code. 
+      [limi]
+
+    - Added the Creator/Modified indicator to the edit forms too.
+      [limi]
+
+    - Added security checks for viewing the view forms. There was no 
+      security problem, since you couldn't save the document, but now we 
+      also check that you are logged in, so you can't invoke the URL 
+      directly to look at the edit form anymore either.
+
+   RC5
+
+    - Removed false 'required' indicators for Title attribute on file/image
+      edit forms.  You simply need to upload a file.  Thats it.
+      [runyaga]
+
+    - Added extra check for dictionary-based actions. Will work better 
+      with old sites being migrated.
+      [tesdal]
+
+    - The base slots were being filled in the wrong order, causing it to 
+      not work as expected. Fixed.
+      [tesdal]
+
+    - Added macro names for the left/right slots, so you can override them
+      by filling the slots from a template. Example::
+
+      <metal:override fill-slot="column_one_slot" />
+      <metal:override fill-slot="column_two_slot" />
+
+      This enables you to "turn off" the slots from a template, thus
+      eliminating the need to create a folder to do it.
+      [limi]
+
+   RC4
+
+    - CMFPlone.FormTool.BasicForm.get_field signature has changed.
+      def get_field(self, id):
+      to 
+      def get_field(self, id, include_disabled=0):
+      Issue 2498
+      FormTool is deprecated or will be deprecated in 2.0. Bug #2498
+ 
+    - For those of you who were running tableless designs in the RC3 
+      and earlier releases and want to keep it that way - simply add
+      a DirectoryView for 'plone_tableless' in 'portal_skins', and 
+      add it to the skinpath. This will activate the tableless versions
+      of:
+
+      - main_template
+
+      - ploneColumns.css
+
+      Apart from adding these two, no other changes are needed. The reason for
+      this change were numerous, the most important ones being crash bugs in IE
+      and bugs in Safari. Tableless will probably return as the default if we can
+      get it stable enough, but it wasn't good enough for 2.0.
+      [limi]
+
+    - Made sure there are no naked mailto: links for spambots, all mail addresses
+      are now using the spamProtect script. Syntax:
+      '<a tal:replace="structure python: here.spamProtect(Person.email)" />'
+      - this will return a complete a href tag with the mail address spam-
+      protected. [limi]
+
     RC3
 
     - WARNING: Some changes had to be made permission-wise to make the default 

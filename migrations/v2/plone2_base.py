@@ -13,6 +13,9 @@
 # one02_one03
 # upg_1_0_1_to_1_1
 
+from cStringIO import StringIO
+from Acquisition import aq_base
+
 from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCacheManager
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 
@@ -201,13 +204,19 @@ def addGroupUserFolder(portal):
         so that you can manipulate the acl_users folders.
     """
     get_transaction().commit(1)
-
+    out=[]
+    out.append('Adding GroupUserFolder to portal')
     qi=getToolByName(portal, 'portal_quickinstaller')
     qi.installProduct('GroupUserFolder',locked=1)
     addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
-    if 'portal_groups' not in portal.objectIds():
+    portal_ids = aq_base(portal).objectIds()
+    if 'portal_groups' not in portal_ids:
+        out.append('Adding portal_groups tool to portal')
         addPloneTool(ToolNames.GroupsTool)
+    if 'portal_groupdata' not in portal_ids:
+        out.append('Adding portal_groupdata tool to portal')
         addPloneTool(ToolNames.GroupDataTool)
+    return out
 
 def addDocumentActions(portal):
     at = portal.portal_actions
@@ -229,7 +238,7 @@ def addDocumentActions(portal):
     at.addAction('sendto',
                  'Send this page to somebody',
                  'string:$object_url/sendto_form',
-                 "python:test(hasattr(portal.portal_properties.site_properties, 'allow_sendto') and portal.portal_properties.site_properties.allow_sendto, 1, 0)",
+                 '',
                  'View',
                  'document_actions')
 
@@ -301,8 +310,6 @@ def setupHelpSection(portal):
 def setupCalendar(portal):
     """ Copied directly from CMFCalendar/Extensions/Install.py """
     self=portal
-    from StringIO import StringIO
-    from Acquisition import aq_base
     from Products.CMFCalendar import Event
     from Products.CMFCore.TypesTool import ContentFactoryMetadata
 
@@ -372,8 +379,9 @@ def setupCalendar(portal):
     except:
         pass
     qi = getToolByName(portal, 'portal_quickinstaller')
-    qi.notifyInstalled('CMFCalendar')
+    qi.notifyInstalled('CMFCalendar', locked=1)
     out.write('Event added to Metadata element Policies\n')
+    return out.getvalue()
 
 
 def addActionIcons(portal):
@@ -424,14 +432,13 @@ def addActionsToPortalTypes(portal):
                  condition='python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())',
                  permission='View',
                  category='object_tabs' )
-        #This was moved centrally into portal_actions
-        #if ptype.getId() not in ('Folder', 'Plone Site'):
-        #    ptype.addAction('local_roles',
-        #             name='Sharing',
-        #             action="string:${object_url}/folder_localrole_form",
-        #             condition='',
-        #             permission='Manage properties',
-        #             category='object')
+        if ptype.getId() not in ('Folder', 'Plone Site'):
+            ptype.addAction('local_roles',
+                     name='Sharing',
+                     action="string:${object_url}/folder_localrole_form",
+                     condition='',
+                     permission='Manage properties',
+                     category='object')
 
 def setupExtEditor(portal):
     """ sets the ext_editor property in site properties if the ext editor is available"""

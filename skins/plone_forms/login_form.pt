@@ -60,11 +60,11 @@ to become a member.
 </p>
 
 <script type="text/javascript">
-<!--
+//<![CDATA[
    if (cookiesEnabled && !cookiesEnabled()) {
       document.writeln('<div class="portalMessage"><img src="info.gif">Cookies are not enabled. You can not log in if they are turned off. <a href="enabling_cookies">How to enable cookies</a>.</div>');
    }
-//-->
+//]]>
 </script>
 
 <form action="logged_in"

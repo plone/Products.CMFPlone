@@ -17,7 +17,7 @@
     <a href=""
        class="link-parent"
        tal:attributes="href string: $portal_url/plone_control_panel"
-       i18n:translate="">
+       i18n:translate="label_up_to_plone_setup">
     Up to Plone Setup
     </a>
 
@@ -28,14 +28,13 @@
     <form action=""
           name="reconfig"
           method="post"
-          tal:attributes="action string:${here/getId}/${template/getId}"
-          tal:define="props python:here.portal_properties;">
+          tal:attributes="action string:${here/getId}/${template/getId}">
         
         <fieldset>
             <legend i18n:translate="legend_plone_details">Plone Details</legend>
     
             <div class="field"
-                 tal:define="title request/title | props/title;
+                 tal:define="title request/title | portal_properties/title;
                              error errors/title | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
     
@@ -184,42 +183,6 @@
                                        tabindex tabindex;" />
     
                 <label for="validate_email_off" i18n:translate="label_allow_members_to_create_password">Allow members to select their initial password</label>
-            </div>
-    
-            <div class="field"
-                 tal:condition="exists:site_properties/allow_sendto"
-                 tal:define="allow_sendto request/allow_sendto | site_properties/allow_sendto;
-                             tabindex tabindex/next;">
-    
-                <label i18n:translate="label_allow_sendto">Enable 'Send this page to somebody' Feature</label>
-                
-                <div class="formHelp"></div>
-    
-                <input type="radio"
-                       class="noborder"
-                       name="allow_sendto"
-                       value="on"
-                       id="cb_allow_sendto"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex;
-                                       checked allow_sendto"
-                       />
-    
-                <label for="cb_allow_sendto" i18n:translate="yes">Yes</label>
-    
-                <br />
-    
-                <input type="radio"
-                       class="noborder"
-                       name="allow_sendto"
-                       value=""
-                       id="cb_noallow_sendto"
-                       tabindex=""
-                       tal:attributes="tabindex tabindex;
-                                       checked not:allow_sendto;"
-                       />
-    
-                <label for="cb_noallow_sendto" i18n:translate="no">No</label>
             </div>
     
             <div class="field"

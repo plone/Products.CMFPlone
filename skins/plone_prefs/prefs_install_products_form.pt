@@ -11,16 +11,17 @@
 
 <div metal:fill-slot="prefs_configlet_main" i18n:domain="plone" tal:define="QI python:here.portal_url.getPortalObject().portal_quickinstaller">
     
-    <h1 i18n:translate="">Add/Remove Products</h1>
+    <h1 i18n:translate="heading_addremove_products">Add/Remove Products</h1>
 
     <a href=""
        class="link-parent"
        tal:attributes="href string: $portal_url/plone_control_panel"
-       i18n:translate="">
+       i18n:translate="label_up_to_plone_setup">
     Up to Plone Setup
     </a>
 
-    <div class="documentDescription">
+    <div class="documentDescription"
+         i18n:translate="description_addremove_products">
     This is the Add-on Products install section, you can add and remove products 
     in the lists below. 
     </div>
@@ -42,7 +43,7 @@
     
                     <label for="" tal:attributes="for pid">
 
-                        <img tal:replace="structure here/product_icon.gif" />
+                        <tal:block replace="structure here/product_icon.gif"/>
                      
                         <span tal:replace="pid">
                         Product Name
@@ -56,14 +57,14 @@
                     <ul class="configletDetails">
                         <li tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">
-                            <img tal:replace="structure here/book_icon.gif" />
+                            <tal:block replace="structure here/book_icon.gif"/>
                             Product Description</a>
                         </li>
                         
                         <li tal:condition="product/hasError">    
                             <a tal:attributes="href string:${QI/absolute_url}/${pid}/prefs_installed_product_overview">
-                                <img tal:replace="structure here/error_icon.gif" />
-                                <tal:producterror i18n:translate="">
+                                <tal:block replace="structure here/error_icon.gif"/>
+                                <tal:producterror i18n:translate="text_broken_product">
                                 This Product is broken
                                 </tal:producterror>
                             </a>
@@ -81,7 +82,9 @@
         </fieldset>
     </form>
 
-    <form action="uninstallProducts" tal:attributes="action python:QI.absolute_url()" method="post">
+    <form action="uninstallProducts" 
+        tal:condition="python:len([p for p in QI.listInstalledProducts() if not p['isHidden'] and not p['isLocked']])" 
+        tal:attributes="action python:QI.absolute_url()" method="post">
 
         <fieldset>
             <legend i18n:translate="legend_installed_products">Installed products</legend> 
@@ -103,7 +106,7 @@
                            />
                         
                     <label for="" tal:attributes="for pid">
-                        <img tal:replace="structure here/product_icon.gif" />
+                        <tal:block replace="structure here/product_icon.gif"/>
                         <span tal:replace="product/id" />
                         
                         <span tal:replace="product/installedVersion">
@@ -116,14 +119,14 @@
                             <a 
                                tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}" 
                                >
-                               <img tal:replace="structure here/book_icon.gif" />
+                               <tal:block replace="structure here/book_icon.gif"/>
                                Product Description</a>
                         </li>
                         
                         <li>
                             <a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview"
                                i18n:translate="link_install_products_log">
-                               <img tal:replace="structure here/document_icon.gif" />
+                               <tal:block replace="structure here/document_icon.gif"/>
                                Install log</a>
                         </li>
                         

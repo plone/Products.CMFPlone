@@ -11,7 +11,8 @@
                                                                                      , sort_on='Date'
                                                                                      , sort_order='reverse'
                                                                                      , review_state='published')[:5]);
-                 portal_url utool;"
+		"
+                 
      tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
 
     <div class="portlet" id="portlet-news">
@@ -28,7 +29,7 @@
                     <a href=""
                        tal:attributes="href obj/getURL;
                                        title obj/Description">
-                        <img tal:replace="structure here/newsitem_icon.gif" />
+                        <tal:block replace="structure here/newsitem_icon.gif"/>
                         <span tal:replace="python:test(obj.Title, obj.Title, obj.getId)"> Extended Calendar Product </span>
                     </a>
 
@@ -42,7 +43,7 @@
 
                 <a href=""
                    class="portletMore"
-                   tal:attributes="href string:${portal_url}/news"
+                   tal:attributes="href string:${utool}/news"
                    i18n:translate="box_morelink"
                    >
                     More...

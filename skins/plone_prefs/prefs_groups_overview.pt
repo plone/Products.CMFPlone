@@ -47,11 +47,10 @@
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/plone_control_panel"
-           i18n:translate="">
+           i18n:translate="label_up_to_plone_setup">
         Up to Plone Setup
         </a>
 
-    
         <p i18n:translate="description_groups_management">
           Groups are logical collections of users, such as departments and
           business units. Groups are not directly related to permissions on
@@ -62,7 +61,7 @@
         <form action=""
               name="groups_add"
               method="post"
-              tal:attributes="action here/absolute_url">
+              tal:attributes="action here_url">
 
 	       <input class="standalone add"
 	              tabindex=""
@@ -78,16 +77,18 @@
         <form action=""
               name="groups_search"
               method="post"
-              tal:attributes="action here/absolute_url"
+              tal:attributes="action here_url"
               tal:define="searchstring request/searchstring | nothing;
                           groups python:here.prefs_user_group_search(searchstring, 'groups');
                           batch python:Batch(groups, b_size, int(b_start), orphan=1)">
 
-            <table class="listing">
+          <input type="hidden" value="b_start" name="b_start" 
+	             tal:attributes="value b_start"/>
+            <table class="listing" summary="Select roles for each group" i18n:attributes="summary">
                    
                 <tr>
                     <th colspan="6">
-                        <span tal:omit-tag="" i18n:translate="label_quick_search">Group Search</span>:
+                        <span tal:omit-tag="" i18n:translate="label_group_search">Group Search</span>:
                         <input class="quickSearch"
                                tabindex=""
                                type="text"
@@ -133,9 +134,9 @@
     
                 <td>
                     <a href="prefs_group_details"
-                       tal:attributes="href string:${here/absolute_url}/prefs_group_details?groupname=${this_group/getGroupName}">
+                       tal:attributes="href string:$here_url/prefs_group_members?groupname=${this_group/getGroupName}">
     
-                        <img src="" tal:replace="structure portal/group.gif" />&nbsp;
+                        <tal:block replace="structure portal/group.gif"/>&nbsp;
     		    <tal:group tal:replace="this_group/getGroupName" />
                     </a>
                 </td>

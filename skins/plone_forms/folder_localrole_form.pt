@@ -10,15 +10,15 @@
 <body>
 
   <div metal:fill-slot="main"
-       tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                   Batch python:modules['Products.CMFPlone'].Batch;
+       tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+                   username member/getUserName;
                    group_submit request/group_submit|nothing;
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    search_submitted request/role_submit|nothing;
-                   search_results python:test(search_submitted, here.portal_membership.searchForMembers(
-                                             {request.get('search_param',''):
-                                             request.get('search_term', '')}), None);">
+                   search_results python:search_submitted and mtool.searchForMembers(
+                                         {request.get('search_param',''):
+                                         request.get('search_term', '')}) or None;">
 
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current sharing permissions for
@@ -31,10 +31,9 @@
     </p>
 
   
-    <fieldset tal:define="iroles python:here.plone_utils.getInheritedLocalRoles(here); 
-                          username python:here.portal_membership.getAuthenticatedMember().getUserName();"
+    <fieldset tal:define="iroles python:here.plone_utils.getInheritedLocalRoles(here);"
               tal:condition="iroles">
-        <legend i18n:translate="limi">
+        <legend i18n:translate="legend_acquired_roles">
             Acquired roles
         </legend>
 
@@ -79,7 +78,7 @@
     <form method="post"
           name="deleterole"
           action="folder_localrole_edit"
-          tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
+          tal:attributes="action string:$here_url/folder_localrole_edit">
 
       <fieldset>
 
@@ -91,8 +90,7 @@
         <input type="hidden" name="change_type" value="delete" />
         <input type="hidden" name="member_role" value="" />
 
-        <table class="listing" summary="Currently assigned local roles"
-               tal:define="username python:here.portal_membership.getAuthenticatedMember().getUserName();">
+        <table class="listing" summary="Currently assigned local roles">
             <thead>
             <tr>
                 <th>
@@ -191,7 +189,7 @@
         <form method="post"
               name="change_type"
               action="folder_localrole_edit"
-              tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
+              tal:attributes="action string:$here_url/folder_localrole_edit">
 
             <fieldset>
 
@@ -221,10 +219,10 @@
                     </thead>
                     <tbody>
                     <tr tal:repeat="member batch">
-                        <td class="field">
+                        <td class="field" tal:define="global member_username member/getUserName">
                             <label class="hiddenLabel" for="member_ids:list"
                                    i18n:translate="label_select_user">
-                                select user <span tal:content="python:member.getUserName()" i18n:name="user" />
+                                select user <span tal:content="member_username" i18n:name="user" />
                             </label>
                             <input class="formSelection"
                                    type="checkbox"
@@ -232,13 +230,13 @@
                                    id="#"
                                    value=""
                                    tabindex=""
-                                   tal:attributes="value python:member.getUserName();
+                                   tal:attributes="value member_username;
                                                    checked python:nResults==1;
                                                    tabindex tabindex/next;"
                             />
                         </td>
 
-                        <td tal:content="python:member.getUserName()">username</td>
+                        <td tal:content="python:member_username">username</td>
                         <td tal:content="member/email">email</td>
                     </tr>
                     </tbody>
@@ -257,7 +255,7 @@
                             id="user_member_role"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
-                        <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
+                        <option tal:repeat="lroles python:mtool.getCandidateLocalRoles(here)"
                                 tal:attributes="value lroles"
                                 tal:content="lroles"
                                 i18n:translate="">
@@ -307,7 +305,7 @@
         <form method="post"
               name="localrole"
               action="folder_localrole_form"
-              tal:attributes="action string:${here/absolute_url}/${template/getId}" >
+              tal:attributes="action string:$here_url/${template/getId}" >
 
             <fieldset>
 
@@ -376,7 +374,7 @@
           <form method="post"
                 name="change_type_group"
                 action="folder_localrole_edit"
-                tal:attributes="action string:${here/absolute_url}/folder_localrole_edit">
+                tal:attributes="action string:$here_url/folder_localrole_edit">
     
             <fieldset>
     
@@ -403,11 +401,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr tal:repeat="member grouplist">
-                        <td>
+                        <tr tal:repeat="group grouplist">
+                        <td tal:define="global group_name group/getUserName">
                             <label class="hiddenLabel" for="member_ids:list"
                                    i18n:translate="label_select_group">
-                                select group <span tal:content="python:member.getUserName()" i18n:name="name"/>
+                                select group <span tal:content="group_name" i18n:name="name"/>
                             </label>
                             <input class="formSelection"
                                 type="checkbox"
@@ -415,10 +413,10 @@
                                 id="#"
                                 value=""
                                 tabindex=""
-                                tal:attributes="value python:member.getUserName();
+                                tal:attributes="value group_name;
                                                 tabindex tabindex/next;"/>
                         </td>
-                        <td tal:content="python:member.getUserNameWithoutGroupPrefix()">
+                        <td tal:content="group/getUserNameWithoutGroupPrefix">
                             groupname
                         </td>
                         </tr>
@@ -435,7 +433,7 @@
                                 id="group_member_role"
                                 tabindex=""
                                 tal:attributes="tabindex tabindex/next;">
-                            <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
+                            <option tal:repeat="lroles python:mtool.getCandidateLocalRoles(here)"
                                     tal:attributes="value lroles"
                                     tal:content="lroles"
                                     i18n:translate="">
@@ -459,6 +457,10 @@
             </form>
 
         </tal:groupshares>
+
+      <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+      </div>
         
     </div>
 

@@ -13,7 +13,7 @@
         <span i18n:name="itemtype">
           <span i18n:translate=""
                 tal:content="python:here.getTypeInfo().Title()"
-          tal:omit-tag="">Item type</span>
+                tal:omit-tag="">Item type</span>
         </span>
       </h1>
 
@@ -35,14 +35,14 @@
           <div class="field"
                tal:condition="python:member.getProperty('visible_ids', None)"
                tal:define="error errors/id | nothing;
-               id python:request.get('id', test(here.show_id(),here.getId(),''));"
+                           id python:request.get('id', test(here.show_id(),here.getId(),''));"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="id" i18n:translate="label_short_name">Short Name</label>
 
             <div class="formHelp" i18n:translate="help_shortname">
-              Should not contain spaces, underscores or mixed case.
-              Short Name is part of the image's web address.
+	           Short Name is part of the item's web address. 
+		   Should not contain spaces, upper case, underscores or other special characters.
             </div>
 
             <div tal:content="error">Validation error output</div>
@@ -54,7 +54,7 @@
                    size="40"
                    tabindex=""
                    tal:attributes="value id;
-                   tabindex tabindex/next;"
+                                   tabindex tabindex/next;"
                    />
 
           </div>
@@ -67,26 +67,22 @@
 
           <div class="field"
                tal:define="error errors/title|nothing;
-               Title request/title | here/Title;"
+                           Title request/title | here/Title;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="title" i18n:translate="label_title">Title</label>
 
-            <span class="fieldRequired" title="Required"
-                  i18n:attributes="title"
-            i18n:translate="label_required">(Required)</span>
+                  <div tal:content="error">Validation error output</div>
 
-            <div tal:content="error">Validation error output</div>
-
-            <input type="text"
-                   id="title"
-                   name="title"
-                   value=""
-                   size="40"
-                   tabindex=""
-                   tal:attributes="value Title;
-                   tabindex tabindex/next;"
-                   />
+                  <input type="text"
+                         id="title"
+                         name="title"
+                         value=""
+                         size="40"
+                         tabindex=""
+                         tal:attributes="value Title;
+                                         tabindex tabindex/next;"
+                         />
 
           </div>
 
@@ -95,8 +91,8 @@
 
             <label for="description" i18n:translate="label_description">Description</label>
 
-            <div class="formHelp" i18n:translate="help_description">
-              A brief description of the image.
+            <div class="formHelp" i18n:translate="help_description_image">
+              A brief description of the item.
             </div>
 
             <textarea cols="80"
@@ -113,14 +109,14 @@
 
           <div class="field"
                tal:define="error errors/file|nothing;
-               file request/file | here/file | nothing;"
+                           file request/file | here/file | nothing;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="file" i18n:translate="label_image">Image</label>
 
             <span class="fieldRequired" title="Required"
                   i18n:attributes="title"
-            i18n:translate="label_required">(Required)</span>
+                  i18n:translate="label_required">(Required)</span>
 
             <div class="formHelp" i18n:translate="help_image">
               Select the image to be added by clicking the 'Browse' button.
@@ -167,6 +163,10 @@
         <input type="hidden" name="form.submitted" value="1" />
 
       </form>
+
+      <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+      </div>
 
     </div>
 

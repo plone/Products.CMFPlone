@@ -3,29 +3,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
-      tal:attributes="lang site_properties/default_language|default;
-                      xml:lang site_properties/default_language|default;">
+      tal:attributes="lang default_language|default;
+                      xml:lang default_language|default;">
 
 
 <head metal:use-macro="here/header/macros/html_header">
 
-    <metal:baseslot define-slot="base">
-      <metal:fillbase fill-slot="base">
-        <base href="" tal:attributes="href here/renderBase" />
-      </metal:fillbase>
-    </metal:baseslot>
+    <metal:fillbase fill-slot="base">
+        <metal:baseslot define-slot="base">
+            <base href="" tal:attributes="href here/renderBase" />
+        </metal:baseslot>
+    </metal:fillbase>
 
     <metal:headslot fill-slot="head_slot"
                tal:define="language here/Language;
-                           lang language | site_properties/default_language;
+                           lang language | default_language;
                            charset site_properties/default_charset|string:utf-8">
 
-    <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
-      Get the global cache headers located in global_cache_settings.
-    </metal:cache>
+        <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+          Get the global cache headers located in global_cache_settings.
+        </metal:cache>
 
-    <metal:headslot define-slot="head_slot" />
-      <!-- A slot where you can insert elements in the header from a template -->
+        <metal:headslot define-slot="head_slot" />
+          <!-- A slot where you can insert elements in the header from a template -->
     </metal:headslot>
 
     <metal:cssslot fill-slot="css_slot">
@@ -43,7 +43,7 @@
 
 <div id="visual-portal-wrapper">
 
-<div id="portal-top" i18n:domain="plone">
+<div id="portal-top" i18n:domain="plone" >
 
     <a href="#documentContent" class="hiddenStructure"
        i18n:translate="label_skiptocontent">Skip to content.</a>
@@ -81,20 +81,34 @@
 
 <div class="visualClear"></div>
 
-<!-- The wrapper div. It contains the three columns. -->
-<div id="portal-columns" tal:attributes="class string:${hidecolumns}">
-
-    <!-- start of the main and left columns -->
-    <div id="visual-column-wrapper">
+<!-- The wrapper table. It contains the three columns. There's a table-less
+     alternative in the plone_tableless skin layer that you can use if you 
+     prefer layouts that don't use tables. -->
+<table id="portal-columns">
+    <tbody>
+        <tr>
+            <!-- start of the left (by default at least) column -->
+            <td id="portal-column-one"
+                metal:define-slot="column_one_slot"
+                tal:condition="slots_mapping/left">
+                <div class="visualPadding">
+                    <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
+                        This instruction gets the portlets (boxes) for the left column.
+                    </metal:leftportlets>
+                    &nbsp;
+                </div>
+            </td>
+            <!-- end of the left (by default at least) column -->
 
         <!-- start of main content block -->
-        <div id="portal-column-content"
-             tal:define="global is_editable python:here.showEditableBorder( template_id=template_id , actions=actions );
-             tabindex python:Iterator(pos=0)">
+            <td id="portal-column-content"
+             tal:define="tabindex python:Iterator(pos=0)">
 
-            <div id="content" tal:attributes="class python:test(is_editable,'documentEditable','')">
+            <div id="content" 
+                tal:define="show_border python:here.showEditableBorder( template_id=template_id , actions=actions );" 
+                tal:attributes="class python:test(show_border,'documentEditable','')">
 
-                <metal:ifborder tal:condition="is_editable" >
+                <metal:ifborder tal:condition="show_border" >
                     <div metal:use-macro="here/global_contentviews/macros/content_views">
                         The content views (View, Edit, Properties, Workflow)
                     </div>
@@ -128,40 +142,28 @@
 
             </div>
 
-        </div>
+            </td>
         <!-- end of main content block -->
 
-        <!-- start of the left (by default at least) column -->
-        <div id="portal-column-one"
-            tal:condition="slots_mapping/left">
-            <div class="visualPadding">
-                <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
-                    This instruction gets the portlets (boxes) for the left column.
-                </metal:leftportlets>
+        <!-- start of right (by default at least) column -->
+            <td id="portal-column-two"
+                metal:define-slot="column_two_slot"
+                tal:condition="slots_mapping/right">
+                <div class="visualPadding">
+                <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
+                    This instruction gets the portlets (boxes) for the right column.
+                </metal:rightportlets>
                 &nbsp;
-            </div>
-        </div>
-        <!-- end of the left (by default at least) column -->
-
-    </div>
-    <!-- end of the main and left columns -->
-
-    <!-- start of right (by default at least) column -->
-    <div id="portal-column-two"
-        tal:condition="slots_mapping/right">
-        <div class="visualPadding">
-            <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
-                This instruction gets the portlets (boxes) for the right column.
-            </metal:rightportlets>
-            &nbsp;
-        </div>
-    </div>
+                </div>
+            </td>
     <!-- end of the right (by default at least) column -->
-
-    <div class="visualClear">&nbsp;</div>
-
-</div>
+        </tr>
+    </tbody>
+</table>
 <!-- end column wrapper -->
+
+<div class="visualClear">&nbsp;</div>
+
 
 <hr class="netscape4" />
 

@@ -57,7 +57,7 @@ we eventually might want to merge this form with personalize_form
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/prefs_users_overview"
-           i18n:translate="">
+           i18n:translate="label_up_to_usersoverview">
         Up to Users Overview
         </a>
 
@@ -343,9 +343,9 @@ we eventually might want to merge this form with personalize_form
                         i18n:translate="help_display_names"
                         class="formHelp"
                         style="visibility:hidden">
-                    Select whether you want Names (also known as IDs) to be
-                    visible and editable when editing contents. If you choose not
-                    to display Names, they will be generated automatically.
+                    Determines if Short Names (also known as IDs) are visible
+                    and editable when editing contents. If Short Names are not
+                    displayed, they will be generated automatically.
                     </div>
                 </div>
                 <div class="field"
@@ -455,13 +455,14 @@ we eventually might want to merge this form with personalize_form
                         i18n:translate="help_portrait"
                         class="formHelp"
                         style="visibility:hidden">
-                    To add a new portrait, click the <strong>Browse</strong> button and select
-                    a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
+                                To add or change the portrait: click the "Browse" button;
+                                select a picture of yourself. Recommended image size is 75
+		                pixels wide by 100 pixels tall.
                     </div>
     
                 </div>
                 <div class="portrait">
-                    <img src=""
+                    <img src="" alt=""
                         height="100"
                         width="75"
                         style="border: 1px solid black"
@@ -479,15 +480,15 @@ we eventually might want to merge this form with personalize_form
                     tal:attributes="tabindex tabindex/next;"
                     />
                 <br />
-                <br />
-                <input class="standalone add"
+                <input class="noborder"
                     tabindex=""
-                    type="submit"
-                    name="prefs_portrait_delete:method"
+                    type="checkbox"
+		    id="pdelete"
                     value="Delete Portrait"
-                    i18n:attributes="value"
+                    name="delete_portrait"
                     tal:attributes="tabindex tabindex/next;"
                     />
+                <label for="pdelete" i18n:translate="label_delete_portrait">Delete Portrait</label>
                 <br />
 
             </div>

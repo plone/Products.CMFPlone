@@ -26,7 +26,7 @@
 
             <metal:block tal:on-error="nothing"
                  tal:define="d_reg python: member.setProperties(last_login_time=login_time);
-                             reg python: member.setProperties(login_time=here.ZopeTime());">
+                             ereg python: member.setProperties(login_time=here.ZopeTime());">
             </metal:block>
 
             <div tal:condition="python: not(login_time == begin_time and validate_email)">

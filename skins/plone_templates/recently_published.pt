@@ -31,7 +31,7 @@
 
             <dl>
                 <dt>
-                    <img src="" style="border: 0"
+                    <img src="" alt="" style="border: 0"
                          tal:attributes="src result/getIcon;
                                          alt result/Type" />
 
@@ -41,9 +41,9 @@
                     Title
                     </a>
 
-                    <span class="discreet">
-                        by <span tal:replace="result/Creator"></span>,
-                        <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="result/modified" />
+                    <span class="discreet" i18n:translate="text_creator_date">
+                        by <span tal:replace="result/Creator" i18n:name="creator" />,
+                        last updated: <span tal:replace="result/modified" i18n:name="date" />
                     </span>
                 </dt>
 
@@ -70,7 +70,7 @@
 
         </form>
 
-    <p tal:condition="not: results" i18n:translate="no_new_news">
+    <p tal:condition="not: results" i18n:translate="text_no_new_items">
         No items have been published.
     </p>
 

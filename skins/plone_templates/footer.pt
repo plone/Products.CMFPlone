@@ -3,8 +3,7 @@
 
 <body>
 
-<div id="portal-footer" metal:define-macro="portal_footer" i18n:domain="plone"
-     tal:define="portal_url utool">
+<div id="portal-footer" metal:define-macro="portal_footer" i18n:domain="plone">
 
 <span i18n:translate="description_copyright" tal:omit-tag="">
 Plone and its visual design is Copyright &copy; 2000-<span i18n:name="current_year" tal:define="now modules/DateTime/DateTime" tal:content="now/year" />

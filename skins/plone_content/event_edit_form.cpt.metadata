@@ -1,6 +1,9 @@
 [default]
 title=View Event
 
+[security]
+View=0:Authenticated
+
 [validators]
 validators..Save=validate_id,validate_title,validate_start_end_date,validate_event_edit
 validators..Cancel=

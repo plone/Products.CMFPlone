@@ -5,8 +5,8 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="size python:len(allowedSortedContentTypes);
-                filterOut here/getNotAddableTypes;">
+<ul tal:define="contentTypes python:here.getAllowedTypes();
+		size python:len(contentTypes);">
 
     <tal:dropdown tal:condition="python: size>1">
 
@@ -20,9 +20,8 @@
 
         <ul class="actionMenu" id="objectMenu"
             onmouseover="menuMouseover(event)">
-            <metal:block tal:repeat="ctype allowedSortedContentTypes"> 
-            <li tal:define="Title ctype/Title;Id ctype/getId"
-                tal:condition="python:Id not in filterOut">
+            <metal:block tal:repeat="ctype contentTypes"> 
+            <li tal:define="Title ctype/Title;Id ctype/getId">
                 <a href="#" 
                    onMouseUp="if (activeButton != null) resetButton(activeButton);"
                    tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
@@ -44,7 +43,7 @@
     <li tal:condition="python: size==1 and allowedSortedContentTypes[0].getId() not in filterOut"
         class="actionSingular">
         <a href="#" 
-           tal:define="portaltype python: allowedSortedContentTypes[0];
+           tal:define="portaltype python: contentTypes[0];
                        folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());"
            tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId}"
            >
@@ -53,7 +52,7 @@
                  width="16" 
                  height="16" 
                  tal:attributes="src string:$portal_url/${portaltype/getIcon}"/>
-            <span tal:omit-tag="" i18n:translate="Add New ${type}">Add new
+            <span tal:omit-tag="" i18n:translate="Add ${type}">Add 
                 <tal:title i18n:name="type"
                            tal:content="portaltype/Title">Title</tal:title>
             </span>
@@ -85,12 +84,12 @@
                    onMouseUp="if (activeButton != null) resetButton(activeButton);" 
                    i18n:translate=""
                    tal:content="transition/name"
-                   tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=${transition/id}">File Menu Item 1</a>
+                   tal:attributes="href string:$here_url/content_status_modify?workflow_action=${transition/id}">File Menu Item 1</a>
             </li>
             </tal:block>
             <li class="actionSeperator">
                 <a href="#" 
-                   tal:attributes="href string:${here/absolute_url}/content_status_history"
+                   tal:attributes="href string:$here_url/content_status_history"
                    i18n:translate="label_advanced">Advanced</a>
             </li>
         </ul>

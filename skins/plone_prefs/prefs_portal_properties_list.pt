@@ -18,19 +18,19 @@
     description_portal_properties
     </p>
 
-    <div tal:repeat="obj python:here.portal_properties.objectValues()">
-	
-              <dt><a tal:content="obj/title" 
-		     title="title"
-                     i18n:attributes="title"
-                     tal:attributes="title string:heading_${obj/id};
-		                     href string:prefs_portal_properties?attr=${obj/id}" /></dt>
-              <dd title="title"
-                  i18n:attributes="title"
-                  tal:attributes="title string:description_${obj/id}">description</dd>
+    <dl>
+        <tal:block repeat="obj python:here.portal_properties.objectValues()">
 
-    </div>
-
+            <dt><a tal:content="obj/title" 
+                   title="title"
+                   i18n:attributes="title"
+                   tal:attributes="title string:heading_${obj/id};
+                                   href string:prefs_portal_properties?attr=${obj/id}" /></dt>
+            <dd title="title"
+                i18n:attributes="title"
+                tal:attributes="title string:description_${obj/id}">description</dd>
+        </tal:block>
+    </dl>
 </div>
 
 </body>

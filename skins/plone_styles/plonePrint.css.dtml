@@ -32,8 +32,8 @@ div.top,
 #portal-globalnav,
 #portal-personaltools,
 #portal-breadcrumbs,
-#portal-columns div#portal-column-one,
-#portal-columns div#portal-column-two,
+#portal-column-one,
+#portal-column-two,
 .contentViews,
 .contentActions,
 .help,
@@ -45,7 +45,8 @@ div.documentActions,
 #portal-footer,
 #portal-colophon,
 input,
-.skipnav {
+.skipnav,
+.visualNoPrint {
     /* Hides all the elements irrelevant for presentations */
     display: none;
 }
@@ -130,14 +131,18 @@ a:link, a:visited {
     margin: 0 !important;
     float: none !important;
 }
-
+ 
 #portal-column-content {
     float: none !important;
     margin: 0 !important;
 }
-
+ 
 #portal-column-content #content {
     float: none !important;
     padding: 0em !important;
-    margin: 0 8em 0 0 !important;
+    margin: 0 !important;
+}
+
+div#portal-columns #portal-column-content #content {
+    margin-right: 8em !important;
 }

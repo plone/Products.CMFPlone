@@ -342,7 +342,8 @@ function scanforlinks(){
     if (! document.getElementsByTagName){return false};
     if (! document.getElementById){return false};
     // Quick utility function by Geir Bækholt
-    // Scan all links in the document and set classes on them dependant on whether they point to the current site or are external links
+    // Scan all links in the document and set classes on them dependant on 
+    // whether they point to the current site or are external links
     
     contentarea = document.getElementById('content')
     if (! contentarea){return false}
@@ -359,7 +360,7 @@ function scanforlinks(){
                 // not a http-link. Possibly an internal relative link, but also possibly a mailto ot other snacks
                 // add tests for all relevant protocols as you like.
                 
-                protocols = ['mailto', 'ftp' , 'irc', 'h323', 'sip', 'callto', 'https']
+                protocols = ['mailto', 'ftp', 'news', 'irc', 'h323', 'sip', 'callto', 'https']
                 // h323, sip and callto are internet telephony VoIP protocols
                 
                 for (p=0; p < protocols.length; p++){  
@@ -537,6 +538,10 @@ function readCookie(name) {
 
 if (window.addEventListener) window.addEventListener("load",setStyle,false);
 else if (window.attachEvent) window.attachEvent("onload",setStyle);
+
+
+
+
 
 // jscalendar glue -- Leonard Norrgård <vinsci@*>
 // This function gets called when the user clicks on some date.

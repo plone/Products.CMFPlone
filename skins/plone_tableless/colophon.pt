@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
+
+<body>
+
+<div id="portal-colophon" metal:define-macro="colophon" i18n:domain="plone">
+<!-- 
+     
+     Please keep the Plone Powered button (or a textual link to us) if you use 
+     Plone on your site. It's a nice token of gratitude, and we appreciate your
+     help in promoting the Plone name. 
+     
+     Plone is powered by the combined forces of Zope and CMF, two absolutely
+     great systems made by Zope Corporation (http://zope.com) and they in turn
+     are based on the best programming language in the world - Python
+     (http://www.python.org). We owe these guys a lot, thanks for making Plone
+     possible!
+     
+ -->
+<ul>
+    <li>
+        <a href="http://plone.org">
+        <img src="" 
+             height="15"
+             width="80"
+             alt="Powered by Plone"
+             title="This Plone site was built using the Plone Content Management System. Click for more information."
+             tal:attributes="src string:$portal_url/plone_powered.gif" 
+             i18n:attributes="alt title" />
+        </a>
+    </li>
+    <li>
+        <a href="http://www.section508.gov">
+        <img src="" 
+             height="15"
+             width="80"
+             alt="Section 508"
+             title="This Plone site conforms to the US Government Section 508 Accessibility Guidelines."
+             tal:attributes="src string:$portal_url/colophon_sec508.gif" 
+             i18n:attributes="alt title" />
+        </a>
+    </li>
+    <li>
+        <a href="http://www.w3.org/WAI/WCAG1AAA-Conformance"
+           title="Explanation of Level Triple-A Conformance"
+           i18n:attributes="title">
+        <img src="" 
+             height="15"
+             width="80"
+             alt="WCAG Triple-A conformance"
+             title="This Plone site conforms to the W3C-WAI Web Content Accessibility Guidelines."
+             tal:attributes="src string:$portal_url/colophon_wai-aaa.gif" 
+             i18n:attributes="alt title" />
+        </a>
+    </li>
+    <li>
+        <a href="http://validator.w3.org/check/referer">
+        <img src="" 
+             height="15"
+             width="80"
+             alt="Valid XHTML"
+             title="This Plone site is valid XHTML."
+             tal:attributes="src string:$portal_url/colophon_xhtml.png" 
+             i18n:attributes="alt title" />
+        </a>
+    </li>
+    <li>
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        <img src="" 
+             height="15"
+             width="80"
+             alt="Valid CSS and tableless layout"
+             title="This Plone site was built with valid CSS and semantically correct use of tables."
+             tal:attributes="src string:$portal_url/colophon_css.png" 
+             i18n:attributes="alt title" />
+        </a>
+    </li>
+    <li>
+        <a href="http://www.anybrowser.org/campaign/">
+        <img src="" 
+             height="15"
+             width="80"
+             alt="Usable in any browser"
+             title="This Plone site is usable in any web browser."
+             tal:attributes="src string:$portal_url/colophon_anybrowser.png" 
+             i18n:attributes="alt title" />
+        </a>
+    </li>
+</ul>
+ 
+</div>
+
+</body>
+</html>

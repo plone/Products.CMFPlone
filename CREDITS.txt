@@ -143,6 +143,10 @@ Companies (in randomized order):
   "Netalley Networks":http://www.netalleynetworks.com -- 
   Tom Croucher and Joseph Geldart for CSS, JS, Section 508 and WAI-AAA compliance.
 
+  "COM.lounge":http://comlounge.net -- 
+  Excellent work on the migration scripts from 1.0 to 2.0, special thanks to Christian
+  'Tiran' Heimes.
+
   #plone and #zope on irc.openprojects.net for insight and soapbox to preach from.
 
   "ZopeLabs":http://zopelabs.com/ for useful scripts 

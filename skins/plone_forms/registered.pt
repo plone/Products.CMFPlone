@@ -9,7 +9,7 @@
                  ac_password auth/pw_cookie;
                  ac_persist auth/persist_cookie;">
 
-<div tal:define="pprops here/portal_properties/site_properties; ve pprops/validate_email">
+<div tal:define="ve site_properties/validate_email">
 
 <h1 i18n:translate="heading_welcome">Welcome!</h1>
 
@@ -26,7 +26,7 @@ You will receive an email shortly containing your password
           method="post"
           tal:define="username request/username;
                       password request/password;"
-          tal:attributes="action python:'%s/logged_in' % here.portal_url()"
+          tal:attributes="action python:'%s/logged_in' % portal_url"
 	        >
         <input type="hidden"
                name="came_from"

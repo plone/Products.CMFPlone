@@ -1,70 +1,43 @@
 /*
-** Tableless Column Layout for CSS2 capable Browsers
-** Based on http://www.positioniseverything.net/ordered-floats.html by Big John.
-** Fixed width modifications by Tonico Strasser (http://www.webproducer.at) and
-** Michael Zeltner (http://niij.org).
+** Table-based column layout for all browsers.
+** By Alexander Limi, http://www.plonesolutions.com
+**
+** There's a table-less column layout alternative in the plone_tableless
+** skin layer, if you prefer layouts without tables.
 */
 
 /* <dtml-with base_properties> */
 
-body {
-    min-width: <dtml-var portalMinWidth missing="70em">;
-}
 #portal-columns {
-    width: auto;
-    margin: 0;
-}
-#visual-column-wrapper {
-    float: left;
-    width: 100%;
-    margin-right: -<dtml-var columnTwoWidth missing="16em">;
-}
-#portal-column-content {
-    width: 100%;
-    float: right;
-    margin-left: -<dtml-var columnOneWidth missing="16em">;
-}
-
-#portal-column-content #content {
-    margin: 0 <dtml-var columnTwoWidth missing="16em"> 0 <dtml-var columnOneWidth missing="16em">;
+    width: 100% !important;
 }
 
 #portal-column-one {
-    float: left;
+    vertical-align: top;
     width: <dtml-var columnOneWidth missing="16em">;
-    overflow: hidden;
+}
+
+#portal-column-content {
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
 }
 
 #portal-column-two {
-    float: right;
+    vertical-align: top;
     width: <dtml-var columnTwoWidth missing="16em">;
-    overflow: hidden;
 }
 
-/* padding - thanks to the w3c box model :P */
+/* Padding for the columns */
 
-#portal-column-content .visualPadding {
-    padding: 1em 2em 1em 2em;
-}
 #portal-column-one .visualPadding {
     padding: 2em 0em 1em 2em;
 }
+#portal-column-content .visualPadding {
+    padding: 0em 2em 1em 2em;
+}
 #portal-column-two .visualPadding {
     padding: 2em 2em 1em 0em;
-}
-
-/* hide columns */
-
-.visualColumnHideOneTwo #portal-column-content #content {
-    margin: 0;
-}
-
-.visualColumnHideOne #portal-column-content #content {
-    margin: 0 <dtml-var columnTwoWidth missing="16em"> 0 0;
-}
-
-.visualColumnHideTwo #portal-column-content #content {
-    margin: 0 0 0 <dtml-var columnOneWidth missing="16em">;
 }
 
 /* </dtml-with> */

@@ -120,7 +120,13 @@ class PloneTool(UniqueObject, SimpleItem):
 
         if Discussable.isImplementedBy(obj) or \
             getattr(obj, '_isDiscussable', None):
-            if allowDiscussion and type(allowDiscussion)==StringType:
+            disc_tool = getToolByName(self, 'portal_discussion')
+            if allowDiscussion is None:
+                allowDiscussion = disc_tool.isDiscussionAllowedFor(obj)
+                if not hasattr(obj, 'allow_discussion'):
+                    allowDiscussion = None
+                allowDiscussion = REQUEST.get('allowDiscussion', allowDiscussion)
+            if type(allowDiscussion)==StringType:
                 allowDiscussion=allowDiscussion.lower().strip()
             if allowDiscussion=='default':
                 allowDiscussion=None
@@ -128,7 +134,6 @@ class PloneTool(UniqueObject, SimpleItem):
                 allowDiscussion=0
             elif allowDiscussion=='on':
                 allowDiscussion=1
-            disc_tool = getToolByName(self, 'portal_discussion')
             disc_tool.overrideDiscussionFor(obj, allowDiscussion)
 
         if MutableDublinCore.isImplementedBy(obj):

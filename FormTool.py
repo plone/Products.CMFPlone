@@ -1,6 +1,4 @@
-# $Id: FormTool.py,v 1.28.4.5 2003/12/24 00:17:18 pupq Exp $
-# $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.28.4.5 $"[11:-2] + " " + "$Name:  $"[7:-2]
+# $Id: FormTool.py,v 1.32 2004/01/07 00:39:02 runyaga Exp $
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -303,7 +301,17 @@ class FormValidator(SimpleItem):
                 # handle CMFFormController validators properly
                 if getattr(v, 'is_validator', 0):
                     # get a controller_state object and populate it
-                    controller_state = getToolByName(context, 'portal_form_controller').getState(context, 1)
+                    form_controller = getToolByName(context, 'portal_form_controller')
+                    try:
+                        controller_state = form_controller.getState(context, 1)
+                    except ValueError:
+                        controller_state = ControllerState()
+                        controller_state.set(context=context)
+                        controller_state.setButton(None)
+                        for k in REQUEST.keys():
+                            if k.startswith('form.button.'):
+                                controller_state.setButton(k[len('form.button.'):])
+                                break
                     controller_state.setStatus(REQUEST.get('validation_status', 'success'))
                     controller_state.setErrors(REQUEST.get('errors', {}))
                     # XXX this is a bit of a hack -- lots of REQUEST keys could be
@@ -402,7 +410,7 @@ class CMFForm(BasicForm):
     __implements__ = ICMFForm,
 
     security.declareProtected('View', 'get_field')
-    def get_field(self, id):
+    def get_field(self, id, include_disabled=0):
         """Get a field of a certain id, wrapping in context of self
         """
         return self.fields[id].__of__(self)

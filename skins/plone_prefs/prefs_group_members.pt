@@ -29,18 +29,18 @@
 
     <!-- simulating views on the groups/user pages until we have real objects. -->
     <ul class="contentViews">
-        <li class="">
-            <a href=""
-               tal:attributes="href string:prefs_group_details?groupname=${groupname}"
-               i18n:translate="label_group_properties"
-            >Group Properties</a>
-        </li>
-            
         <li class="selected">
             <a href=""
                tal:attributes="href string:${template/id}?groupname=${groupname}"
                i18n:translate="label_group_members"
             >Group Members</a>
+        </li>
+
+        <li class="">
+            <a href=""
+               tal:attributes="href string:prefs_group_details?groupname=${groupname}"
+               i18n:translate="label_group_properties"
+            >Group Properties</a>
         </li>
     </ul>
     
@@ -56,7 +56,7 @@
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/prefs_groups_overview"
-           i18n:translate="">
+           i18n:translate="label_up_to_groups_overview">
         Up to Groups Overview
         </a>
 
@@ -74,7 +74,7 @@
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/prefs_groups_overview"
-           i18n:translate="">
+           i18n:translate="label_up_to_groups_overview">
         Up to Groups Overview
         </a>
 
@@ -105,7 +105,7 @@
             <h2 i18n:translate="heading_groupmembers_current">Current Group Members</h2>
     	<table class="listing">
                 <tr>
-                    <th i18n:translate="listingheader_remove_user_from_group">
+                    <th>
                         <input class="noborder"
                                type="checkbox"
                                src="select_all_icon.gif"

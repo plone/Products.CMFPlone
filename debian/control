@@ -1,0 +1,39 @@
+Source: zope-cmfplone
+Section: web
+Priority: optional
+Maintainer: Christian Heimes <heimes@faho.rwth-aachen.de>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.0
+
+Package: zope-cmfplone
+Architecture: any
+Depends: zope-formulator (>= 1.6), zope-cmf (>= 1.4.2), zope-pts (>= 1.0),
+ zope-cmfactionicons (>= 0.9), zope-groupuserfolder (>= 2.0), zope-cmfquickinstaller (>= 1.4),
+ zope-btreefolder2 (>= 1.0), zope-cmfformcontroller
+Conflicts: zope-localizer, zope-translationservice
+Description: Zope CMF Plone Portal Software 2
+ Plone is a highly advanced and powerfull for internet portals based on Zope's
+ CMF (content management framework). It adds a lot of features to CMF and 
+ integrates other CMF and Plone software to an easy-to-use and out-of-the-box
+ content management system.
+ .
+ Plone 2 features:
+  * Group user folder integration for sharing content between both users and groups
+  * Integration of dublin core (DC) metadata
+  * DCWorkflow
+  * A highly advanced Tableless CSS layout following css standards
+  * Fully XHTML compatible html sources
+
+Package: plone2
+Architecture: any
+Depends: python, zope (>= 2.6), zope-formulator (>= 1.6), zope-cmf (>= 1.4.2), zope-cmfcore (>= 1.4.2), 
+ zope-cmfcalendar (>= 1.4.2), zope-cmftopic (>= 1.4.2), zope-cmfdefault (>= 1.4.2),
+ zope-dcworkflow (>= 1.4.2), zope-pts (>= 1.0), zope-cmfactionicons (>= 0.9),
+ zope-groupuserfolder (>= 2.0), zope-cmfquickinstaller (>= 1.4), zope-btreefolder2 (>= 1.0),
+ zope-cmfformcontroller, zope-cmfphoto (>= 0.4), zope-cmfphotoalbum (>= 0.4),
+ zope-cmfplonetypes (>= 0.2), zope-cmfarchetypes (>= 1.2), zope-cmfplone (>= 2.0)
+Conflicts: plone
+Replaces: plone
+Description: CMF Plone 2 meta package
+ Plone 2 meta package containing all software to make your own portal based
+ on plone.

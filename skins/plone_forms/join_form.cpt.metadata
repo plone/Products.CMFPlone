@@ -2,8 +2,8 @@
 title=Please sign in
 
 [validators]
-validators..Register = validate_emailaddr,validate_registration
+validators = validate_emailaddr,validate_registration
 
 [actions]
-action.success..Register = traverse_to:string:register
+action.success = traverse_to:string:register
 action.failure = traverse_to:string:join_form

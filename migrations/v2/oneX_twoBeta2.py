@@ -15,17 +15,23 @@ from Products.CMFCore.DirectoryView import createDirectoryView, manage_listAvail
 from Products.CMFCore.Expression import Expression
 
 from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
-from Products.CMFPlone.migrations.migration_util import safeEditProperty
-from Products.CMFPlone.setup.ConfigurationMethods import addSiteActions
+from Products.CMFPlone.migrations.migration_util import safeEditProperty, addLinesToProperty
+from Products.CMFPlone.setup import ConfigurationMethods
 from Products.CMFPlone import ToolNames
+from Products.CMFPlone.StatelessTreeNav import setupNavTreePropertySheet
+from portlet_migration import upgradeSlots2Portlets
+import plone2_base
 
 from Acquisition import aq_base
 
 def oneX_twoBeta2(portal):
     """ Migrations from 1.0.x to 2.x """
-    #create the QuickInstaller
     out = []
 
+    out.append("Setting type of plone portal to 'Plone Site")
+    portal._setPortalTypeName('Plone Site')
+
+    #create the QuickInstaller
     out.append("Creating a quick installer")
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
@@ -40,6 +46,12 @@ def oneX_twoBeta2(portal):
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(props, 'default_page', default_values, 'lines')
+    if props.hasProperty('allow_sendto'):
+        props._delProperty('allow_sendto')
+    addLinesToProperty(props, 'use_folder_tabs', 'Plone Site')
+    if props.hasProperty('portal_factory_types'):
+        props._delProperty('portal_factory_types')
+    
     out.append("Turning on syndication")
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
@@ -75,7 +87,7 @@ def oneX_twoBeta2(portal):
     addFormController(portal)
 
     out.append("Adding in site actions")
-    addSiteActions(portal, portal)
+    ConfigurationMethods.addSiteActions(portal, portal)
 
     out.append("Moving portraits into the memberdata tool")
     #migrate Memberdata, Membership and Portraits
@@ -84,10 +96,33 @@ def oneX_twoBeta2(portal):
 
     out.append("Moving all tools to the new Plone base classes")
     migrateTools(portal)
-    out.append(("Moving some old templates out of the way, such as header and footer, since these will cause breakage", zLOG.ERROR))
+    out.append(("Moving some old templates out of the way, such as header and footer, since these will cause breakage", zLOG.WARNING))
     moveOldTemplates(portal)
     out.append("Updating nav tree")
     migrateNavTree(portal)
+    out.append("Adding error log")
+    ConfigurationMethods.addErrorLog(None, portal)
+    out.append("Assigning titles to tools")
+    ConfigurationMethods.assignTitles(None, portal)
+
+    out.append(("Marking old fs directory views out-dated", zLOG.WARNING))
+    deprFsViews(portal)
+    removed = removeOldSkins(portal)
+    out.append(("Setting default skin to Plone Default and removing old skin from portal_skins. Removed: %s" % ','.join(removed), zLOG.WARNING))
+
+    out.append("Updating slots to portlets")
+    upgradeSlots2Portlets(portal)
+    out.append("Setting up calendar tool")
+    plone2_base.setupCalendar(portal)
+    out.append("Fixing portal_undo actions")
+    fixUndoActions(portal)
+    out.append("Fixing folder contents action")
+    fixFolderActions(portal)
+    removed = removeTranslationService(portal)
+    if removed:
+        out.append(("Removing deprecated translation service. Plone 2 is using the PlacelessTranslationService for translation. Your old translation data is still stored in the Localizer.", zLOG.WARNING))
+    out.append('Adding plone tableless directory view')
+    addPloneTableless(portal)    
     return out
 
 def doit(self):
@@ -145,6 +180,12 @@ def migrateTools(portal):
     _migrate(portal, 'portal_catalog', ToolNames.CatalogTool, ['_actions', '_catalog'])
     _migrate(portal, 'portal_metadata', ToolNames.MetadataTool, ['_actions', 'element_specs'])
     _migrate(portal, 'portal_syndication', ToolNames.SyndicationTool, [])
+    _migrate(portal, 'portal_discussion', ToolNames.DiscussionTool, ['_actions'])
+    _migrate(portal, 'portal_groups', ToolNames.GroupsTool, ['_actions',
+        'groupworkspaces_id', 'groupWorkspacesCreationFlag',
+        'groupWorkspaceType', ]) # XXX 'groupworkspaces_title', 'groupWorkspaceContainerType'
+    _migrate(portal, 'portal_groupdata', ToolNames.GroupDataTool, ['_actions',
+        '_members']) # XXX properties
 
     orig=_migrate(portal, 'portal_types', ToolNames.TypesTool, ['_actions', 'meta_types']) #XXX
     tt = getToolByName(portal, 'portal_types')
@@ -177,7 +218,11 @@ def migrateTools(portal):
     at.action_providers = tuple(ap)
 
 def migrateNavTree(portal):
-    p=getToolByName(portal,'portal_properties').navtree_properties
+    pp=getToolByName(portal,'portal_properties')
+    p = getattr(pp , 'navtree_properties', None)
+    
+    if not p:
+        setupNavTreePropertySheet(pp)
 
     # these won't set the property... so they won't change a existing navtree
     # since it has them already, so this is pointless. What I believe we want to do
@@ -195,6 +240,10 @@ def migrateNavTree(portal):
         p._setProperty('bottomLevel', 65535 , 'int')
     if not p.hasProperty('idsNotToList'):
         p._setProperty('idsNotToList', [] , 'lines')
+    addLinesToProperty(p, 'metaTypesNotToList', 'TempFolder')
+    addLinesToProperty(p, 'parentMetaTypesNotToQuery', 'TempFolder')
+    safeEditProperty(p, 'croppingLength', 256, 'int')
+    
 
 def migrateMemberdataTool(portal):
     orig_md = getToolByName(portal, 'portal_memberdata')
@@ -227,16 +276,15 @@ def migratePortraits(portal):
             buf.seek(0) #lovely Zope mixing OFS interfaces w/ HTTP interfaces
             mt.changeMemberPortrait(buf, id)
 
-def fixupPlone2SkinPaths(portal, out):
-    def newDV(st, dir):
-        from os import path
-        createDirectoryView(st, path.join('CMFPlone', 'skins', dir))
+def _newDV(st, dir):
+    createDirectoryView(st, os.path.join('CMFPlone', 'skins', dir))
 
+def fixupPlone2SkinPaths(portal, out):
     st=getToolByName(portal, 'portal_skins')
     to_add=['cmf_legacy','plone_portlets', 'plone_form_scripts', 'plone_prefs']
     for item in to_add:
         if item not in portal.portal_skins.objectIds():
-            newDV(st, item)
+            _newDV(st, item)
 
     to_remove=['plone_templates/ui_slots', 'plone_scripts/form_scripts',
                'plone_3rdParty/CMFCollector', 'plone_3rdParty/CMFCalendar']
@@ -252,7 +300,7 @@ def fixupPlone2SkinPaths(portal, out):
                 try:
                     path.insert(path.index('plone_forms'), new)
                 except ValueError:
-                    out.append(("No path plone_forms was found, so couldn't add %s into skin %" % (new, skin), zLOG.ERROR))
+                    out.append(("No path plone_forms was found, so couldn't add %s into skin %s" % (new, skin), zLOG.ERROR))
         st.addSkinSelection(skin, ','.join(path))
     return out
 
@@ -310,7 +358,7 @@ def addGroupUserFolder(portal):
     qi=getToolByName(portal, 'portal_quickinstaller')
     addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool
     if "portal_groups" not in portal.objectIds():
-        qi.installProduct('GroupUserFolder')
+        qi.installProduct('GroupUserFolder', locked=1)
         addGRUFTool('CMF Groups Tool')
         addGRUFTool('CMF Group Data Tool')
 
@@ -333,7 +381,7 @@ def addFormController(portal):
     """ """
     try:
         qi=getToolByName(portal, 'portal_quickinstaller')
-        qi.installProduct('CMFFormController')
+        qi.installProduct('CMFFormController', locked=1)
     except AlreadyInstalled:
         qi.notifyInstalled('CMFFormController') #Portal.py got to it first
 
@@ -343,7 +391,7 @@ def addActionIcons(portal):
     """
     try:
         qi=getToolByName(portal, 'portal_quickinstaller')
-        qi.installProduct('CMFActionIcons')
+        qi.installProduct('CMFActionIcons', locked=1)
     except AlreadyInstalled:
         qi.notifyInstalled('CMFActionIcons') #Portal.py got to it first
 
@@ -374,7 +422,7 @@ def addDocumentActions(portal):
     at.addAction('sendto',
                  'Send this page to somebody',
                  'string:$object_url/portal_form/sendto_form',
-                 "python:hasattr(portal.portal_properties.site_properties, 'allow_sendto')",
+                 '',
                  'View',
                  'document_actions')
 
@@ -395,6 +443,80 @@ def updateNavigationProperties(portal):
         else:
             nav_props._setProperty(id, action)
 
+def deprFsViews(portal):
+    st = getToolByName(portal, 'portal_skins')
+    fsViewIds = ['Images', 'actionicons', 'calendar', 'content', 'control',
+        'generic', 'no_css', 'nouvelle', 'topic', 'zpt_calendar', 'zpt_content', 
+        'zpt_control', 'zpt_generic', 'zpt_topic', 
+        ]
+    for fsViewId in fsViewIds:
+        view = getattr(st, fsViewId, None)
+        if view:
+            view.title += 'Deprecated, can safely be deleted'
+        
+    for skin in st.getSkinSelections():
+        oldpath = st.getSkinPath(skin)
+        oldpath = [p.strip() for p in oldpath.split(',')]
+        # all non depr pathes
+        newpath = [p for p in oldpath if p not in fsViewIds and p != 'cmf_legacy' ]
+        # all depr pathes that are in oldpath
+        deprpath = [p for p in oldpath if p in fsViewIds ]
+        # add depr pathes to the end after cmf_legacy
+        newpath.append('cmf_legacy')
+        newpath.extend(deprpath)
+        # remove all plone_styles/ subdirs
+        newpath = [ p for p in newpath if not p.startswith('plone_styles/') ]
+        
+        path = ','.join(newpath)
+        st.addSkinSelection(skin, path)
+        
+def removeOldSkins(portal):
+    st = getToolByName(portal, 'portal_skins')
+    st.default_skin = 'Plone Default'
+    removed = []
+    skins = ['Plone Autumn', 'Plone Core', 'Plone Core Inverted',
+             'Plone Corporate', 'Plone Greensleeves', 'Plone Kitty', 
+             'Plone Mozilla', 'Plone Mozilla New', 'Plone Prime',
+             'Plone Zed', ]
+    skinList = st._getSelections()
+    for skin in skins:
+        if skinList.has_key(skin):
+            del skinList[skin]
+            removed.append(skin)
+    return removed
+
+def fixUndoActions(portal):
+    st = getToolByName(portal, 'portal_undo')
+    # remove old actions
+    for action in st._actions:
+        if action.id in ('undo',):
+            del action
+    st.addAction('undo',
+                 'Undo',
+                 'string: ${portal_url}/undo_form',
+                 'member',
+                 'List undoable changes',
+                 'user')
+
+def fixFolderActions(portal):
+    st = getToolByName(portal, 'portal_actions')
+    for action in st._actions:
+        if action.id == 'folderContents':
+            action.visible = 1
+
+def removeTranslationService(portal):
+    """remove old translation service
+    """
+    ts = 'translation_service'
+    if hasattr(portal.aq_explicit, ts):
+        portal.manage_delObjects(ts)
+        return 1
+
+def addPloneTableless(portal):
+    st = getToolByName(portal, 'portal_skins')
+    if not hasattr(aq_base(st), 'plone_tableless'):
+        _newDV(st, 'plone_tableless')
+            
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
     MigrationTool.registerUpgradePath('1.0.2','1.1alpha2',upg_1_0_1_to_1_1)

@@ -1,3 +1,5 @@
+try: from zExceptions import NotFound
+except ImportError: NotFound = 'NotFound' # Zope < 2.7
 from Products.CMFCore.utils import _verifyActionPermissions, \
      getToolByName, getActionContext, _checkPermission
 from Products.CMFCore.Skinnable import SkinnableObjectManager
@@ -182,7 +184,7 @@ class OrderedContainer(Folder):
         if om: # only 1 in list if any
             return om[0]
 
-        raise NotFound('Object %s was not found'%str(id))
+        raise NotFound, 'Object %s was not found' % str(id)
 
     security.declareProtected(ModifyPortalContent, 'moveObjectsUp')
     def moveObjectsUp(self, ids, delta=1, RESPONSE=None):
@@ -312,6 +314,11 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         of index_html """
         try:
             return self.browserDefault()
+        except Unauthorized:
+            # Temporary hack, try index_html or folder_listing
+            if 'index_html' in list(self.objectIds()):
+                return self, ['index_html']
+            return self,['folder_listing']
         except AttributeError:
             skins = getToolByName(self, "portal_skins")
             default = skins.default_skin

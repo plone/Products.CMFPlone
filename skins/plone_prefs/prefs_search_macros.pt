@@ -14,7 +14,7 @@
           tal:attributes="action here/absolute_url"
 	  tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                       b_start request/b_start | python:0;
-                      b_size python:15;
+                      b_size python:20;
                       searchstring request/searchstring | nothing;
 	              searchonly searchonly | nothing;
                       results python:here.prefs_user_group_search(searchstring, searchonly);
@@ -78,7 +78,7 @@
 
 	      <td>
 		<tal:block tal:condition="obj/getGroupName | nothing">
-		  <img src="group.gif" />
+		  <img src="group.gif" alt="" />
 		  <a href="" tal:attributes="href string:prefs_group_details?groupname=${obj/getGroupName}"
 			tal:content="obj/getGroupName | default"
                         i18n:translate="link_groupname_not_available">
@@ -86,7 +86,7 @@
 		  </a>
 		</tal:block>
 		<tal:block tal:condition="not:obj/getGroupName | nothing">
-		  <img src="user.gif" />
+		  <img src="user.gif" alt="" />
 		  <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
 			tal:content="obj/getUserName | default"
                         i18n:translate="link_username_not_available">
@@ -99,6 +99,9 @@
         </table>
 
 	<p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
+
+    <input type="hidden" value="b_start" name="b_start" 
+           tal:attributes="value b_start"/>
 
 	<div metal:use-macro="here/batch_macros/macros/navigation" />
 	

@@ -25,7 +25,7 @@
 
     <label for="text_format" i18n:translate="label_format">Format</label>
 
-    <div class="formHelp" i18n:translate="help_format">
+    <div class="formHelp" i18n:translate="help_format_wysiwyg">
     If you are unsure of which format to use, just select Plain
     Text and type the document as you usually do.
     </div>

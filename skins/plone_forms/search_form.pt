@@ -124,7 +124,7 @@
                                     lastmonth python:(today-31).Date();
                                     ever string:1970/02/01 00:00:00 GMT;">
                     <option value="#"
-                            tal:condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1)"
+                            tal:condition="not: isAnon"
                             tal:attributes="value python:member.getProperty('last_login_time')"
                             i18n:translate="last_login">Last log-in</option>
                     <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday"> Yesterday </option>
@@ -137,7 +137,7 @@
                 <input type="hidden" name="created.range:record" value="min" />
             </div>
     
-            <div class="field">
+            <div class="field" tal:define="portal_types portal/portal_types;">
                 <label i18n:translate="label_item_type">Item type</label>
 
                 <div class="formHelp" i18n:translate="help_search_item_type">
@@ -155,13 +155,13 @@
                        checked="checked"
                        tal:attributes="tabindex tabindex;"/>
                 <label for=""
-                       i18n:translate=""
+                       i18n:translate="label_toggle"
                        tal:attributes="for string:pt_toggle"
-                       >Select All/None
+                       >Toggle
                 </label>
                 <br />
                 </tal:tabindex>
-                <tal:contenttypes repeat="type python:container.portal_types.listContentTypes()">
+                <tal:contenttypes repeat="type python:portal_types.listContentTypes()">
                     <tal:tabindex define="tabindex tabindex/next">
                     <input type="checkbox"
                            name="portal_type:list"
@@ -175,7 +175,7 @@
                     <label for=""
                            i18n:translate=""
                            tal:attributes="for string:portal_type_${tabindex}"
-                           tal:content="python:here.portal_types.getTypeInfo(type).Title()"
+                           tal:content="python: portal_types.getTypeInfo(type).Title()"
                            />
                     <br />
                     </tal:tabindex>
@@ -189,7 +189,7 @@
                 Return items created by a particular person.
                 </div>
     
-                <tal:creators tal:define="creators python:here.portal_catalog.uniqueValuesFor('Creator')">
+                <tal:creators tal:define="creators python:portal.portal_catalog.uniqueValuesFor('Creator')">
                     <select name="Creator"
                             id="Creator"
                             tabindex=""
@@ -230,13 +230,13 @@
                        tabindex=""
                        tal:attributes="tabindex tabindex;"/>
                 <label for=""
-                       i18n:translate=""
+                       i18n:translate="label_toggle"
                        tal:attributes="for string:rs_toggle"
                        >Toggle
                 </label>
                 <br />
                 </tal:tabindex>
-                <tal:states tal:repeat="state python:here.portal_catalog.uniqueValuesFor('review_state')">
+                <tal:states tal:repeat="state python:portal.portal_catalog.uniqueValuesFor('review_state')">
                     <metal:block tal:define="tabindex tabindex/next">
                     <input type="checkbox"
                            name="review_state"
