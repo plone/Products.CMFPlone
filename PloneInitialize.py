@@ -32,7 +32,8 @@ def go(app):
     # that would truly suck
     try: 
         _go(app)
-    except: 
+    except:
+        # TODO: could we remove this?
         # oh dear
         out.append('Database init failed miserably [%s, %s]' % _get_error())
 
@@ -55,7 +56,7 @@ def _go(app):
         cfg = ConfigParser()
         cfg.readfp(fh)
         fh.close()
-    except: 
+    except IOError: 
         # no file found
         return
 
@@ -104,7 +105,7 @@ def _go(app):
                 get_transaction().commit()
             else:
                 out.append("No inituser file found")
-    except:
+    except IOError: 
         out.append("Adding admin user failed [%s, %s]" %  _get_error())
 
     # 2 .now get that user, it could be that one already exists
