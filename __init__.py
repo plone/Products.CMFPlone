@@ -89,6 +89,9 @@ def initialize(context):
     # make ConflictError importable ttw
     ModuleSecurityInfo('ZODB.POSException').declarePublic('ConflictError')
 
+    # make ZCTextIndex ParseError importable ttw
+    ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
+
     # make base_hasattr importable ttw
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 
@@ -103,9 +106,6 @@ def initialize(context):
     allow_class(FormValidationError)
     allow_class(BasicForm)
     
-    # for queryCatalog
-    ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
-
     # Setup migrations
     import migrations
     migrations.registerMigrations()
