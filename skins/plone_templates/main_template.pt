@@ -43,7 +43,7 @@
 
 <div id="visual-portal-wrapper">
 
-<div id="portal-top" i18n:domain="plone">
+<div id="portal-top" i18n:domain="plone" >
 
     <a href="#documentContent" class="hiddenStructure"
        i18n:translate="label_skiptocontent">Skip to content.</a>
@@ -103,9 +103,11 @@
             <td id="portal-column-content"
              tal:define="tabindex python:Iterator(pos=0)">
 
-            <div id="content" tal:attributes="class python:test(is_editable,'documentEditable','')">
+            <div id="content" 
+                tal:define="show_border python:here.showEditableBorder( template_id=template_id , actions=actions );" 
+                tal:attributes="class python:test(show_border,'documentEditable','')">
 
-                <metal:ifborder tal:condition="is_editable" >
+                <metal:ifborder tal:condition="show_border" >
                     <div metal:use-macro="here/global_contentviews/macros/content_views">
                         The content views (View, Edit, Properties, Workflow)
                     </div>
