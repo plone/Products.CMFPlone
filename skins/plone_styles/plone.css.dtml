@@ -571,17 +571,47 @@ pre {
     margin-bottom: 1em;
 }
 
-#content-news .portlet {
-    margin-bottom: 1.5em;
+.newsItem {
+    margin-bottom: 2.5em;
 }
 
-#content-news .portlet ul,
-#content-news .portlet li {
+.newsContent {
+    padding: 0 1em 1em 1em;
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations;  &dtml-globalBorderColor;;
+}
+
+.newsContent ul,
+.newsContent li {
     display: block; 
     list-style: none;
     list-style-image: none;
     margin: 0;
     padding: 0;
+}
+
+.newsAbout {
+    display: block;
+    color: &dtml-discreetColor;;
+    padding: 0;
+    margin: 0;
+    float: right;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    list-style-image: none;
+}
+
+.newsAbout li {
+    font-size: &dtml-fontSmallSize;;
+    text-align: right;
+    float: none;
+    display: inline;
+    margin: 0;
+}
+
+.newsAbout li a {
+    text-decoration: none;
 }
 
 .documentEditable {
@@ -1088,6 +1118,11 @@ ul.configlets li a {
     background: transparent url("<dtml-var portal_url>/arrowUp.gif") 4px 5px no-repeat;
     padding: 1px 0px 1px 16px;
     font-size: &dtml-fontSmallSize;;
+}
+
+.link-user {
+    background: transparent url("<dtml-var portal_url>/user.gif") 0 1px no-repeat;
+    padding: 1px 0px 1px 16px;
 }
 
 .link-external {
