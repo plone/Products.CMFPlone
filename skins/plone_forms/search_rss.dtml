@@ -17,11 +17,10 @@
 <rdf:li resource="<dtml-var absolute_url>" />
 
 </channel>
-<dtml-comment>End Items Elements</dtml-comment>
 
 <dtml-comment>Start Item Elements</dtml-comment>
   <dtml-in queryCatalog prefix="obj">
-    <dtml-var expr="itemRSS(obj_item)">
+    <dtml-var expr="itemRSS(obj_item.getObject())">
   </dtml-in>
 <dtml-comment>End Item Elements</dtml-comment>
 </rdf:RDF>
