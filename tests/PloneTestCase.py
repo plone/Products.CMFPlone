@@ -20,7 +20,8 @@ ZopeTestCase.installProduct('ZCTextIndex')
 ZopeTestCase.installProduct('CMFPlone')
 
 
-from AccessControl.SecurityManagement import newSecurityManager, noSecurityManager
+from AccessControl.SecurityManagement import newSecurityManager
+from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
 import time
 
@@ -28,7 +29,7 @@ import time
 class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def getPortal(self):
-        return self.app.portal
+        return self.app['portal']
 
     def createMemberarea(self, member_id):
         '''Creates a minimal, no-nonsense memberarea.'''
@@ -101,6 +102,6 @@ optimize()
 
 # Create a Plone site in the test (demo-) storage
 app = ZopeTestCase.app()
-setupPloneSite(app, id='portal')
+setupPloneSite(app)
 ZopeTestCase.close(app)
 
