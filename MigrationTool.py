@@ -220,7 +220,13 @@ class MigrationTool( UniqueObject, SimpleItem):
         while newv is not None:
             out.append(("Attempting to upgrade from: %s" % newv, zLOG.INFO))
             try:
-                newv = self._upgrade(newv)
+                newv, res = self._upgrade(newv)
+                if res:
+                    newv, msgs = newv
+                    for msg in msgs:
+                        if len(msg) == 1:
+                            msg.append(zLOG.INFO)
+                        out.append(*msg)
                 if newv is not None:
                     out.append(("Upgrade to: %s, completed" % newv, zLOG.INFO))
                     self.setInstanceVersion(newv)
@@ -290,8 +296,8 @@ class MigrationTool( UniqueObject, SimpleItem):
             return None
 
         newversion, function = _upgradePaths[version]
-        function(self.aq_parent)
-        return newversion
+        res = function(self.aq_parent)
+        return newversion, res
     
 def registerUpgradePath(oldversion, newversion, function): 
     """ Basic register func """
