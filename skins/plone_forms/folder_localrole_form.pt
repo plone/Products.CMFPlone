@@ -294,7 +294,7 @@
       <h1 i18n:translate="heading_group_shares">Adding group shares</h1>
 
       <p i18n:translate="description_group_shares">
-        Groups are a convenient way share a folder to a common set of
+        Groups are a convenient way to share a folder to a common set of
         users. Select one or more Groups, and a role to assign.
       </p>
 
