@@ -26,6 +26,7 @@ from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo, Unauthorized
 from StatelessTree import constructNavigationTreeViewBuilder, \
      NavigationTreeViewBuilder as NTVB
+from ZODB.POSException import ConflictError
 
 _marker = ()
 _icons = {}
@@ -210,7 +211,9 @@ class PloneTool(UniqueObject, SimpleItem):
         wfs=()
         try:
             wfs=wftool.getChainFor(object)
-        except: #XXX ick
+        except ConflictError:
+            raise
+        except:
             pass
         return wfs
 
@@ -526,7 +529,9 @@ class PloneTool(UniqueObject, SimpleItem):
             if act.startswith('/'):
                 act = act[1:]
             return obj, [act]
-        except: #XXX FIX ME! I SHOULD NOT CATCH ALL!
+        except ConflictError:
+            raise
+        except:
             portal.plone_log("plone_utils.browserDefault",
             'Total failure getting the folderlisting action for the folder, "%s"' \
             % obj.absolute_url())

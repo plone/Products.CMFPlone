@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 from AccessControl.User import nobody
 from Acquisition import aq_base
@@ -45,20 +46,20 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
 
     def testChangeMemberPortrait(self):
         # Should change the portrait image
-        self.membership.changeMemberPortrait(Portrait(), default_user)
+        self.membership.changeMemberPortrait(dummy.File(), default_user)
         self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), default_user)
         self.assertEqual(self.membership.getPersonalPortrait(default_user).meta_type, 'Image')
 
     def testDeletePersonalPortrait(self):
         # Should delete the portrait image
-        self.membership.changeMemberPortrait(Portrait(), default_user)
+        self.membership.changeMemberPortrait(dummy.File(), default_user)
         self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), default_user)
         self.membership.deletePersonalPortrait(default_user)
         self.assertEqual(self.membership.getPersonalPortrait(default_user).getId(), 'defaultUser.gif')
 
     def testGetPersonalPortraitWithoutPassingId(self):
         # Should return the logged in users portrait if no id is given
-        self.membership.changeMemberPortrait(Portrait(), default_user)
+        self.membership.changeMemberPortrait(dummy.File(), default_user)
         self.assertEqual(self.membership.getPersonalPortrait().getId(), default_user)
         self.assertEqual(self.membership.getPersonalPortrait().meta_type, 'Image')
 
@@ -271,9 +272,8 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
 
     def testNotifyScriptIsCalled(self):
         # The notify script should be called
-        def notify_script(): raise FooException
-        self.portal.notifyMemberAreaCreated = notify_script
-        self.assertRaises(FooException, self.membership.createMemberarea, 'user2')
+        self.portal.notifyMemberAreaCreated = dummy.Raiser(dummy.Error)
+        self.assertRaises(dummy.Error, self.membership.createMemberarea, 'user2')
 
     def testCreateMemberareaAlternateName(self):
         # Alternate method name 'createMemberaArea' should work
@@ -451,17 +451,6 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
         self.assertEqual(len(search(roles=['Member'], last_login_time=DateTime('2002-01-01'))), 3)
         self.assertEqual(len(search(roles=['Reviewer'], last_login_time=DateTime('2002-01-01'))), 1)
         self.assertEqual(len(search(roles=['Member'], last_login_time=DateTime('2003-01-01'))), 1)
-
-
-# Fake upload object
-
-class Portrait:
-    filename = 'foo.gif'
-    def seek(*args): pass
-    def tell(*args): return 0
-    def read(*args): return 'bar'
-
-class FooException: pass
 
 
 if __name__ == '__main__':

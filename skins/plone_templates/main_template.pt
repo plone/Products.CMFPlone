@@ -8,180 +8,187 @@
                       xml:lang default_language|default;">
 
 
-<head metal:use-macro="here/header/macros/html_header">
+  <head metal:use-macro="here/header/macros/html_header">
 
     <metal:fillbase fill-slot="base">
-        <metal:baseslot define-slot="base">
-            <base href="" tal:attributes="href here/renderBase" />
-        </metal:baseslot>
+      <metal:baseslot define-slot="base">
+        <base href="" tal:attributes="href here/renderBase" />
+      </metal:baseslot>
     </metal:fillbase>
 
     <metal:headslot fill-slot="head_slot"
-               tal:define="language here/Language;
-                           lang language | default_language;
-                           charset site_properties/default_charset|string:utf-8">
+                    tal:define="language here/Language;
+                                lang language | default_language;
+                                charset site_properties/default_charset|string:utf-8">
 
-        <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
-          Get the global cache headers located in global_cache_settings.
-        </metal:cache>
+      <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+        Get the global cache headers located in global_cache_settings.
+      </metal:cache>
 
-        <metal:headslot define-slot="head_slot" />
-          <!-- A slot where you can insert elements in the header from a template -->
+      <metal:headslot define-slot="head_slot" />
+      <!-- A slot where you can insert elements in the header from a template -->
     </metal:headslot>
 
     <metal:cssslot fill-slot="css_slot">
       <!-- A slot where you can insert CSS in the header from a template -->
-        <metal:cssslot define-slot="css_slot" />
+      <metal:cssslot define-slot="css_slot" />
     </metal:cssslot>
 
     <metal:javascriptslot fill-slot="javascript_head_slot">
       <!-- A slot where you can insert javascript in the header from a template -->
-        <metal:javascriptslot define-slot="javascript_head_slot" />
+      <metal:javascriptslot define-slot="javascript_head_slot" />
     </metal:javascriptslot>
-</head>
+  </head>
 
-<body metal:use-macro="here/global_bodytag/macros/body_tag"><metal:fillbodytag fill-slot="bodytag_body">
+  <body metal:use-macro="here/global_bodytag/macros/body_tag"><metal:fillbodytag fill-slot="bodytag_body">
 
-<div id="visual-portal-wrapper">
+    <div id="visual-portal-wrapper">
 
-<div id="portal-top" i18n:domain="plone" >
+      <div id="portal-top" i18n:domain="plone" >
 
-    <a class="hiddenStructure"
-       tal:define="url request/VIRTUAL_URL|string:${request/SERVER_URL}${request/PATH_TRANSLATED}"
-       tal:attributes="href string:${url}#documentContent"
-       i18n:translate="label_skiptocontent">Skip to content.</a>
+        <a class="hiddenStructure"
+           tal:define="url request/VIRTUAL_URL|string:${request/SERVER_URL}${request/PATH_TRANSLATED}"
+           tal:attributes="href string:${url}#documentContent"
+           i18n:translate="label_skiptocontent">Skip to content.</a>
 
-    <a metal:use-macro="here/global_logo/macros/portal_logo">
-        The portal logo, linked to the portal root
-    </a>
+           <a metal:use-macro="here/global_logo/macros/portal_logo">
+             The portal logo, linked to the portal root
+           </a>
 
-    <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
-        The skin switcher tabs. Based on which role you have, you
-        get a selection of skins that you can switch between.
-    </div>
+           <div metal:use-macro="here/global_skinswitcher/macros/skin_tabs">
+             The skin switcher tabs. Based on which role you have, you
+             get a selection of skins that you can switch between.
+           </div>
 
-    <div metal:use-macro="here/global_siteactions/macros/site_actions">
-        Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
-    </div>
+           <div metal:use-macro="here/global_siteactions/macros/site_actions">
+             Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
+           </div>
 
-    <div metal:use-macro="here/global_searchbox/macros/quick_search">
-        The quicksearch box, normally placed at the top right
-    </div>
+           <div metal:use-macro="here/global_searchbox/macros/quick_search">
+             The quicksearch box, normally placed at the top right
+           </div>
 
-    <div metal:use-macro="here/global_sections/macros/portal_tabs">
-        The global sections tabs. (Welcome, News etc)
-    </div>
+           <div metal:use-macro="here/global_sections/macros/portal_tabs">
+             The global sections tabs. (Welcome, News etc)
+           </div>
 
 
-    <div metal:use-macro="here/global_personalbar/macros/personal_bar">
-        The personal bar. (log in, logout etc...)
-    </div>
+           <div metal:use-macro="here/global_personalbar/macros/personal_bar">
+             The personal bar. (log in, logout etc...)
+           </div>
 
-    <div metal:use-macro="here/global_pathbar/macros/path_bar">
-        The breadcrumb navigation ("you are here")
-    </div>
-</div>
+           <div metal:use-macro="here/global_pathbar/macros/path_bar">
+             The breadcrumb navigation ("you are here")
+           </div>
+      </div>
 
-<div class="visualClear"></div>
+      <div class="visualClear"></div>
 
-<!-- The wrapper table. It contains the three columns. There's a table-less
-     alternative in the plone_tableless skin layer that you can use if you 
-     prefer layouts that don't use tables. -->
-<table id="portal-columns">
-    <tbody>
-        <tr>
+      <!-- The wrapper table. It contains the three columns. There's a table-less
+           alternative in the plone_tableless skin layer that you can use if you
+           prefer layouts that don't use tables. -->
+      <table id="portal-columns">
+        <tbody>
+          <tr>
             <!-- start of the left (by default at least) column -->
             <td id="portal-column-one"
                 metal:define-slot="column_one_slot"
                 tal:condition="slots_mapping/left">
-                <div class="visualPadding">
-                    <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
-                        This instruction gets the portlets (boxes) for the left column.
-                    </metal:leftportlets>
-                    &nbsp;
-                </div>
+              <div class="visualPadding">
+                <metal:portlets define-slot="portlets_one_slot">
+                  <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
+                    This instruction gets the portlets (boxes) for the left column.
+                  </metal:leftportlets>
+                </metal:portlets>
+                &nbsp;
+              </div>
             </td>
             <!-- end of the left (by default at least) column -->
 
-        <!-- start of main content block -->
+            <!-- start of main content block -->
             <td id="portal-column-content"
-             tal:define="tabindex python:Iterator(pos=0)">
+                tal:define="tabindex python:Iterator(pos=0)">
 
-            <div id="content" 
-                tal:define="show_border is_editable;" 
-                tal:attributes="class python:test(show_border,'documentEditable','')">
+              <metal:block define-slot="content">
+                <div id="content"
+                     metal:define-macro="content"
+                     tal:define="show_border is_editable;"
+                     tal:attributes="class python:test(show_border,'documentEditable','')">
 
-                <metal:ifborder tal:condition="show_border" >
+                  <metal:ifborder tal:condition="show_border" >
                     <div metal:use-macro="here/global_contentviews/macros/content_views">
-                        The content views (View, Edit, Properties, Workflow)
+                      The content views (View, Edit, Properties, Workflow)
                     </div>
 
                     <div metal:use-macro="here/global_contentviews/macros/content_actions">
-                        The content bar
+                      The content bar
                     </div>
-                </metal:ifborder>
+                  </metal:ifborder>
 
-                <div class="documentContent">
+                  <div class="documentContent">
 
                     <a name="documentContent"></a>
 
                     <div metal:use-macro="here/global_statusmessage/macros/portal_message">
-                        Portal status message
+                      Portal status message
                     </div>
 
                     <metal:header metal:define-slot="header" tal:content="nothing">
-                        Visual Header
+                      Visual Header
                     </metal:header>
 
                     <metal:bodytext metal:define-slot="main" tal:content="nothing">
-                        Page body text
+                      Page body text
                     </metal:bodytext>
 
                     <metal:sub metal:define-slot="sub">
-                        <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                      <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
                     </metal:sub>
+
+                  </div>
 
                 </div>
 
-            </div>
-
+              </metal:block>
             </td>
-        <!-- end of main content block -->
+            <!-- end of main content block -->
 
-        <!-- start of right (by default at least) column -->
+            <!-- start of right (by default at least) column -->
             <td id="portal-column-two"
                 metal:define-slot="column_two_slot"
                 tal:condition="slots_mapping/right">
-                <div class="visualPadding">
-                <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
+              <div class="visualPadding">
+                <metal:portlets define-slot="portlets_two_slot">
+                  <metal:rightportlets use-macro="here/portlets_fetcher/macros/right_column">
                     This instruction gets the portlets (boxes) for the right column.
-                </metal:rightportlets>
+                  </metal:rightportlets>
+                </metal:portlets>
                 &nbsp;
-                </div>
+              </div>
             </td>
-    <!-- end of the right (by default at least) column -->
-        </tr>
-    </tbody>
-</table>
-<!-- end column wrapper -->
+            <!-- end of the right (by default at least) column -->
+          </tr>
+        </tbody>
+      </table>
+      <!-- end column wrapper -->
 
-<div class="visualClear">&nbsp;</div>
+      <div class="visualClear">&nbsp;</div>
 
 
-<hr class="netscape4" />
+      <hr class="netscape4" />
 
-<div id="portal-footer" metal:use-macro="here/footer/macros/portal_footer">
-  Footer
-</div>
+      <div id="portal-footer" metal:use-macro="here/footer/macros/portal_footer">
+        Footer
+      </div>
 
-<div id="portal-colophon" metal:use-macro="here/colophon/macros/colophon">
-  The colophon area - contains details about the production of
-  the site. Typically "powered by" buttons, standards, tools used.
-</div>
+      <div id="portal-colophon" metal:use-macro="here/colophon/macros/colophon">
+        The colophon area - contains details about the production of
+        the site. Typically "powered by" buttons, standards, tools used.
+      </div>
 
-</div>
+    </div>
 
-</metal:fillbodytag></body>
+  </metal:fillbodytag></body>
 </html>
 </metal:page>
 

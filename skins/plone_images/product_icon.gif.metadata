@@ -1,4 +1,3 @@
-
 [default]
-title=Product icon
+title=Product
 cache=HTTPCache

@@ -25,9 +25,12 @@
     in the lists below. 
     </div>
 
-    <form action="installProducts" tal:attributes="action python:QI.absolute_url()+'/installProducts'" method="post">
+    <form style="float: left;"
+          action="installProducts" 
+          tal:attributes="action python:QI.absolute_url()+'/installProducts'" 
+          method="post">
 
-        <fieldset>
+        <fieldset style="float: left; margin-right: 1em;">
             <legend i18n:translate="legend_install_products_available">Products available for install</legend>
 
             <ul class="configlets">
@@ -59,17 +62,19 @@
                     <ul class="configletDetails">
                         <li tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">
-                                <tal:block replace="structure here/book_icon.gif"/>
-                                <span i18n:translate="text_product_description">Product Description</span>
+                                <img tal:replace="structure here/book_icon.gif" 
+                                />&nbsp;<span i18n:translate="text_product_description">
+                                        Product Description
+                                        </span>
                             </a>
                         </li>
                         
                         <li tal:condition="product/hasError">    
                             <a tal:attributes="href string:${QI/absolute_url}/${pid}/prefs_installed_product_overview">
-                                <tal:block replace="structure here/error_icon.gif"/>
-                                <tal:producterror i18n:translate="text_broken_product">
-                                This Product is broken
-                                </tal:producterror>
+                                <img tal:replace="structure here/error_icon.gif" 
+                                />&nbsp;<tal:producterror i18n:translate="text_broken_product">
+                                        This Product is broken
+                                        </tal:producterror>
                             </a>
                         </li>
                     </ul>
@@ -85,11 +90,12 @@
         </fieldset>
     </form>
 
-    <form action="uninstallProducts" 
-        tal:condition="python:len([p for p in QI.listInstalledProducts() if not p['isHidden'] and not p['isLocked']])" 
-        tal:attributes="action python:QI.absolute_url()" method="post">
+    <form style="float: left;"
+          action="uninstallProducts" 
+          tal:condition="python:len([p for p in QI.listInstalledProducts() if not p['isHidden'] and not p['isLocked']])" 
+          tal:attributes="action python:QI.absolute_url()" method="post">
 
-        <fieldset>
+        <fieldset style="float: left;">
             <legend i18n:translate="legend_installed_products">Installed products</legend> 
 
             <ul class="configlets">
@@ -122,27 +128,33 @@
                     <ul class="configletDetails">
                         <li tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}" >
-                               <tal:block replace="structure here/book_icon.gif"/>
-                               <span i18n:translate="text_product_description">Product Description</span></a>
+                                <img tal:replace="structure here/book_icon.gif" 
+                                />&nbsp;<span i18n:translate="text_product_description">Product Description</span>
+                            </a>
                         </li>
                         
                         <li>
-                            <a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview"
-                               i18n:translate="link_install_products_log">
-                               <tal:block replace="structure here/document_icon.gif"/>
-                               Install log</a>
+                            <a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">
+                                <img tal:replace="structure here/document_icon.gif" 
+                                />&nbsp;<span i18n:translate="link_install_products_log">Install log</span>
+                            </a>
                         </li>
                         
                         <li tal:condition="python:QI.isProductAvailable(product['id'])"> 
                             <a tal:condition="python:prodver != product['installedVersion']" 
-                               tal:attributes="href string:${QI/absolute_url}/reinstallProducts?products=${pid}"
-                               i18n:translate="label_outdated_product_reinstall"> 
-                            This product is outdated, click here to reinstall</a>
+                               tal:attributes="href string:${QI/absolute_url}/reinstallProducts?products=${pid}"> 
+                                <img tal:replace="structure here/error_icon.gif" 
+                                />&nbsp;<span i18n:translate="label_outdated_product_reinstall">
+                                        This product has been upgraded, click here to reinstall
+                                        </span>
+                            </a>
                         </li>
                         
-                        <li tal:condition="python:not QI.isProductAvailable(product['id'])" 
-                                i18n:translate="text_product_unavailable">
-                         This Product has been removed from the file system
+                        <li tal:condition="python:not QI.isProductAvailable(product['id'])">
+                            <img tal:replace="structure here/error_icon.gif" 
+                             />&nbsp;<span i18n:translate="text_product_unavailable">
+                                     This Product has been removed from the file system
+                                     </span>
                         </li>
                     </ul>
                 </li>

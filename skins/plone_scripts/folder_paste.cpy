@@ -9,6 +9,9 @@
 ##title=Paste objects into a folder
 ##
 
+from AccessControl import Unauthorized
+from ZODB.POSException import ConflictError
+
 msg='Copy or cut one or more items to paste.' 
 
 if context.cb_dataValid:
@@ -17,9 +20,11 @@ if context.cb_dataValid:
         from Products.CMFPlone import transaction_note
         transaction_note('Pasted content to %s' % (context.absolute_url()))
         return state.set(portal_status_message='Item(s) pasted.')
+    except ConflictError:
+        raise
     except ValueError: 
         msg="Disallowed to paste item(s)."
-    except 'Unauthorized':
+    except (Unauthorized, 'Unauthorized'):
         msg="Unauthorized to paste item(s)."
     except: # fallback
         msg='Paste could not find clipboard content.'

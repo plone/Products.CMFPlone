@@ -21,8 +21,12 @@
              tal:content="here/Description">
         description
         </div>
-    
-        <tal:block condition="size" replace="structure here/tag" />
+
+        <a href=""
+           tal:attributes="href string:${here/absolute_url}/image_view_fullscreen">
+            <tal:block condition="size" replace="structure here/tag" />
+        </a>
+
 
         <div>    
             <small>

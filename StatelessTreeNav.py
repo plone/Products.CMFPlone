@@ -4,6 +4,7 @@
 import string
 from Globals import HTML
 from AccessControl import ClassSecurityInfo,ModuleSecurityInfo,allow_class,allow_module
+from ZODB.POSException import ConflictError
 
 # to be able to import this stuff into python scripts
 ModuleSecurityInfo('Products.CMFPlone').declarePublic('StatelessTreeNav')
@@ -160,6 +161,8 @@ class StatelessTreeBuilder:
 
             try:
                 r['level']=self.getLevel(p)
+            except ConflictError:
+                raise
             except:
                 pass
 

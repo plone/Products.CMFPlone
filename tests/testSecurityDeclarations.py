@@ -9,6 +9,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 from OFS.SimpleItem import SimpleItem
 from AccessControl import Unauthorized
@@ -39,7 +40,7 @@ class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
 
 class TestSecurityDeclarations(RestrictedPythonTest):
 
-    # NOTE: This testcase is a bit hairy. Security declarations
+    # NOTE: This test case is a bit hairy. Security declarations
     # "stick" once a module has been imported into the restricted
     # environment. Therefore the tests are not truly independent.
     # Be careful when adding new tests to this class.
@@ -179,16 +180,30 @@ except ConflictError: pass
                       (e.__class__.__name__, e, e.__module__))
 
     def testCatch_ConflictErrorRaisedByPythonModule(self):
-        self.folder._setObject('er', ExceptionRaiser(ConflictError))
+        self.folder._setObject('raiseConflictError', 
+                               dummy.Raiser(ConflictError))
         try:
             self.check('''
 from ZODB.POSException import ConflictError
-try: context.er()
+try: context.raiseConflictError()
 except ConflictError: pass
 ''')
         except Exception, e:
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
+
+    def testImport_getToolByName(self):
+        self.check('from Products.CMFCore.utils import getToolByName')
+
+    def testAccess_getToolByName(self):
+        # XXX: Note that this is NOT allowed!
+        self.checkUnauthorized('from Products.CMFCore import utils;'
+                               'print utils.getToolByName')
+
+    def testUse_getToolByName(self):
+        self.app.manage_addFolder('portal_membership') # Fake a portal tool
+        self.check('from Products.CMFCore.utils import getToolByName;'
+                   'print getToolByName(context, "portal_membership")')
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):
@@ -213,15 +228,6 @@ class TestAcquisitionMethods(RestrictedPythonTest):
 
     def test_aq_acquire(self):
         self.checkUnauthorized('print context.aq_acquire')
-
-
-# Test helpers
-
-class ExceptionRaiser(SimpleItem):
-    def __init__(self, e): 
-        self.e = e
-    def __call__(self): 
-        raise self.e
 
 
 if __name__ == '__main__':

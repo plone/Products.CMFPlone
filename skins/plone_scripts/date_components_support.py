@@ -57,18 +57,23 @@ if date is None:
 elif not same_type(date, now):
     date=DateTime(date)
 
-#Now we need to convert from CEILING to Plone CEILING
-if date.equalTo(CEILING):
+#Anything above PLONE_CEILING should be PLONE_CEILING
+if date.greaterThan(PLONE_CEILING):
     date = PLONE_CEILING
 
 year=int(date.strftime('%Y'))
+
+#Get portal year range
+site_properties = context.portal_properties.site_properties
+min_year = site_properties.getProperty('calendar_starting_year', 1999)
+max_year = site_properties.getProperty('calendar_future_years_available', 5) + year
 
 #if default:
 #    years.append(empty_selected)
 #else:
 #    years.append(empty)
 
-for x in range(year-5, year+6):
+for x in range(min_year, max_year):
     d={'id':x,
        'value':x,
        'selected':None}

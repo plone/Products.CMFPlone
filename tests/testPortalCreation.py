@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from OFS.SimpleItem import SimpleItem
@@ -91,28 +92,65 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testManageBeforeDeleteIsCalledRecursively(self):
         # When the portal is deleted, all subobject should have
         # their manage_beforeDelete hook called. Fixed by geoffd.
-        self.folder._setObject('dummy', DummyObject())
-        self.dummy = self.folder.dummy
+        self.folder._setObject('foo', dummy.Item())
+        self.foo = self.folder.foo
         self.app._delObject(PloneTestCase.portal_name)
-        self.assertEqual(self.dummy.mbd_called, 1)
+        self.failUnless(self.foo.manage_before_delete_called)
 
 
-# Test helpers
+class TestManagementPageCharset(PloneTestCase.PloneTestCase):
 
-class DummyObject(SimpleItem):
-    mbd_called = 0
-    def __init__(self, id='dummy'):
-        self.id = id
-    def manage_beforeDelete(self, item, container):
-        self.mbd_called = 1
+    def afterSetUp(self):
+        self.properties = self.portal.portal_properties
 
+    def testManagementPageCharsetEqualsDefaultCharset(self):
+        # Checks that 'management_page_charset' attribute of the portal
+        # reflects 'portal_properties/site_properties/default_charset'.
+        default_charset = self.properties.site_properties.getProperty('default_charset', None) 
+        self.failUnless(default_charset)
+        manage_charset = getattr(self.portal, 'management_page_charset', None)
+        self.failUnless(manage_charset)
+        self.assertEqual(manage_charset, default_charset)
+        self.assertEqual(manage_charset, 'utf-8')
+        
+    def testManagementPageCharsetIsComputedAttribute(self):
+        # Checks that 'management_page_charset' attribute of the portal
+        # is a ComputedAttribute and always follows the default_charset property.
+        self.properties.site_properties.manage_changeProperties(default_charset='latin1')
+        default_charset = self.properties.site_properties.getProperty('default_charset', None) 
+        manage_charset = getattr(self.portal, 'management_page_charset', None)
+        self.assertEqual(manage_charset, default_charset)
+        self.assertEqual(manage_charset, 'latin1')
+
+    def testManagementPageCharsetFallbackNoProperty(self):
+        self.properties.site_properties._delProperty('default_charset')
+        manage_charset = getattr(self.portal, 'management_page_charset', None)
+        self.assertEqual(manage_charset, 'utf-8')
+
+    def testManagementPageCharsetFallbackNoPropertySheet(self):
+        self.properties._delObject('site_properties')
+        manage_charset = getattr(self.portal, 'management_page_charset', None)
+        self.assertEqual(manage_charset, 'utf-8')
+
+    def testManagementPageCharsetFallbackNotAPropertySheet(self):
+        self.properties._delObject('site_properties')
+        self.properties.site_properties = 'foo'
+        manage_charset = getattr(self.portal, 'management_page_charset', None)
+        self.assertEqual(manage_charset, 'utf-8')
+
+    def testManagementPageCharsetFallbackNoPropertyTool(self):
+        self.portal._delObject('portal_properties')
+        manage_charset = getattr(self.portal, 'management_page_charset', None)
+        self.assertEqual(manage_charset, 'utf-8')
+
+
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestPortalCreation))
+    suite.addTest(makeSuite(TestPortalBugs))
+    suite.addTest(makeSuite(TestManagementPageCharset))
+    return suite
 
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestPortalCreation))
-        suite.addTest(makeSuite(TestPortalBugs))
-        return suite

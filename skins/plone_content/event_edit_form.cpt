@@ -3,6 +3,7 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
+<head>
   <metal:calendar fill-slot="javascript_head_slot">
     <!-- ECMAScript calendar -->
     <style type="text/css" media="all"
@@ -13,6 +14,7 @@
 	    tal:condition="exists: portal/jscalendar/calendar-en.js"
 	    tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
   </metal:calendar>
+</head>
 
   <body>
 
@@ -53,7 +55,8 @@
 
             <div class="formHelp" i18n:translate="help_shortname">
                    Short Name is part of the item's web address. 
-		   Should not contain spaces, upper case, underscores or other special characters.
+		           For accessibility reasons, do not use spaces, upper case, 
+                   underscores, or special characters.
             </div>
 
             <div tal:content="error">Validation error output</div>

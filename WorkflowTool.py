@@ -6,6 +6,7 @@ from Products.CMFCore.WorkflowTool import WorkflowTool as BaseTool
 from Products.CMFPlone import ToolNames
 from AccessControl import getSecurityManager
 from Products.CMFCore.WorkflowCore import WorkflowException
+from ZODB.POSException import ConflictError
 
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
@@ -44,7 +45,9 @@ class WorkflowTool(BaseTool):
             trans=()
             try:
                 trans=self.getTransitionsFor(o, container)
-            except: #yikes
+            except ConflictError:
+                raise
+            except:
                 pass
             if trans:
                 for t in trans:

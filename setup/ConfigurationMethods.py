@@ -6,10 +6,10 @@ from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Acquisition import aq_get
 from AccessControl import Permissions
 from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
+from DateTime import DateTime
 
 from zLOG import INFO, ERROR
 from SetupBase import SetupWidget
-
 
 def addErrorLog(self, portal):
     if "error_log" not in portal.objectIds():
@@ -27,8 +27,9 @@ def installPortalTools(self,portal):
 
 def addSiteProperties(self, portal):
     """ adds site_properties in portal_properties """
-    id='site_properties'
-    title='Site wide properties'
+    id = 'site_properties'
+    title = 'Site wide properties'
+    year = DateTime().year()
     p=PropertyManager('id')
     if id not in portal.portal_properties.objectIds():
         portal.portal_properties.addPropertySheet(id, title, p)
@@ -56,7 +57,10 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
     if not hasattr(p, 'auth_cookie_length'):
         safeEditProperty(p, 'auth_cookie_length', 0, 'int')
-
+    if not hasattr(p, 'calendar_starting_year'):
+        safeEditProperty(p, 'calendar_starting_year', 1999, 'int')
+    if not hasattr(p, 'calendar_future_years_available'):
+        safeEditProperty(p, 'calendar_future_years_available', 5, 'int')
 
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """

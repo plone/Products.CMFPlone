@@ -85,7 +85,10 @@
                     <option value="#"
                             tal:repeat="subject usedSubjects"
                             tal:content="subject"
-                            tal:attributes="value subject">dummy</option>
+                            tal:attributes="value subject"
+                            i18n:domain="plone-metadata"
+                            i18n:translate=""
+                            >dummy</option>
                 </select>
             </div>
     

@@ -1,4 +1,3 @@
-
 [default]
-title=Edit object
+title=Pencil
 cache=HTTPCache

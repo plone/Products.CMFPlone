@@ -1,4 +1,3 @@
-
 [default]
-title=Alternative up arrow
+title=Up
 cache=HTTPCache

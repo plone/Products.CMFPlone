@@ -1,4 +1,3 @@
-
 [default]
-title=Discussion
+title=Comment
 cache=HTTPCache

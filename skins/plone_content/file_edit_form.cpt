@@ -51,8 +51,9 @@
             <label for="id" i18n:translate="label_short_name">Short Name</label>
 
             <div class="formHelp" i18n:translate="help_shortname">
-	           Short Name is part of the item's web address. 
-		   Should not contain spaces, upper case, underscores or other special characters.
+                   Short Name is part of the item's web address. 
+		           For accessibility reasons, do not use spaces, upper case, 
+                   underscores, or special characters.
             </div>
 
             <div tal:content="error">Validation error output</div>

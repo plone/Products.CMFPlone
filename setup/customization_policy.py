@@ -2,6 +2,7 @@ from Products.CMFPlone.Portal import listPolicies, custom_policies
 from zLOG import INFO, ERROR
 from SetupBase import SetupWidget
 from types import StringType
+from ZODB.POSException import ConflictError
 
 import sys
 import traceback
@@ -36,6 +37,8 @@ class CustomizationPolicySetup(SetupWidget):
                         out.extend(res)
 
             out.append(("The customisation policy has been applied", INFO))
+        except ConflictError: 
+            raise
         except:
             out.append(("An error has occured", INFO))
             for line in traceback.format_tb(sys.exc_traceback):

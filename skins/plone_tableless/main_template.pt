@@ -139,11 +139,13 @@
 
         <!-- start of the left (by default at least) column -->
         <div id="portal-column-one"
-             metal:define-slot="column_one_slot"
-             tal:condition="slots_mapping/left">
+             tal:condition="slots_mapping/left"
+             metal:define-slot="column_one_slot">
             <div class="visualPadding">
-                <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
-                    This instruction gets the portlets (boxes) for the left column.
+                <metal:portlets define-slot="portlets_one_slot">
+                    <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
+                        This instruction gets the portlets (boxes) for the left column.
+                    </metal:leftportlets>
                 </metal:leftportlets>
                 &nbsp;
             </div>
@@ -155,14 +157,17 @@
 
     <!-- start of right (by default at least) column -->
     <div id="portal-column-two"
-         metal:define-slot="column_two_slot"
-         tal:condition="slots_mapping/right">
+         tal:condition="slots_mapping/right"
+         metal:define-slot="column_two_slot">
         <div class="visualPadding">
-            <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
-                This instruction gets the portlets (boxes) for the right column.
-            </metal:rightportlets>
+            <metal:portlets define-slot="portlets_two_slot">
+                <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
+                    This instruction gets the portlets (boxes) for the right column.
+                </metal:rightportlets>
+            </metal:portlets>
             &nbsp;
         </div>
+        </metal:columntwo>
     </div>
     <!-- end of the right (by default at least) column -->
 

@@ -195,7 +195,8 @@
                 <img src="" alt=""
                      height="100"
                      width="75"
-                     style="border: 1px solid black; float: right;"
+                     class="portraitPhoto"
+                     style="float: right;"
                      tal:condition="portrait"
                      tal:attributes="src portrait/absolute_url"
                      />

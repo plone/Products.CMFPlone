@@ -1,4 +1,3 @@
-
 [default]
-title=Link
+title=
 cache=HTTPCache

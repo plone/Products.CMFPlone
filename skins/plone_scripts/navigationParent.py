@@ -8,6 +8,8 @@
 ##title=returns the appropriate url for the parent object
 ##
 
+from ZODB.POSException import ConflictError
+
 if obj is None:
     obj=context
 
@@ -18,7 +20,9 @@ if obj.getId()=='index_html': #XXX hardcoded method name
 
 try: # nail in the fuze:if I dont get aq_parent (Unauth), lets take the portal
     parent=obj.aq_parent
-except :
+except ConflictError:
+    raise
+except:
     parent=context.portal_url
 
 relative_ids = context.portal_url.getRelativeContentPath(obj)

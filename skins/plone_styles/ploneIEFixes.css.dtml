@@ -11,6 +11,14 @@
     width: auto;
 }
 
+/* Fix for IE float bug */
+* html .visualIEFloatFix {
+    float: left;
+    clear: both;
+    width: 99%;
+}
+
+
 input {
     margin-bottom: 1px; /* bug fix */
 }
@@ -78,9 +86,11 @@ h5,
 h6,
 .documentDescription,
 .portalMessage,
+.link-parent,
 #documentContent dl,
 #documentContent ul,
-#documentContent ol {
+#documentContent ol,
+{
     height: 100%;
 }
 

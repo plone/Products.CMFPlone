@@ -48,7 +48,7 @@ contributed code.
   
   Stian Søiland -- CSS tips
   
-  Michael Zeltner (eaon) -- CSS wizardry, neverending patience and persistence
+  Michael Zeltner (eaon) -- CSS wizardry, XHTML, neverending patience and persistence - "niij*":http://niij.org/
   
   Manfred Ackermann -- Persistent and faithful tester
   
@@ -86,6 +86,8 @@ contributed code.
 
   Leonard Norrgard (vinsci) -- i18n, plone.org editing, QA, bugfixing etc...
   "Refactor":http://www.refactor.fi
+
+  Chad Whitacre -- Action Menu Fixes - "Zetaweb":http://www.zetaweb.com/
 
 Companies (in randomized order):
 

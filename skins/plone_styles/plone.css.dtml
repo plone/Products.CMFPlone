@@ -238,6 +238,17 @@ pre {
 .pre a {
     text-decoration: underline;
 }
+
+ins {
+    color: green;
+    text-decoration: none;
+}
+
+del {
+    color: red;
+    text-decoration: line-through;
+}
+
 .netscape4 {
     display: none;
 }
@@ -875,11 +886,17 @@ input.searchButton {
     border-color: &dtml-globalBorderColor;;
     border-width: &dtml-borderWidth;;
     border-style: &dtml-borderStyle;;
-    margin: 1em;
-    padding: 1em;
+    font-size: &dtml-fontSmallSize;;
+    margin: 0.5em;
+    padding: 1em 0 0.5em 0;
     text-align: center;
     width: 100px;
 }
+
+.portraitPhoto {
+    border: 1px solid black;
+}
+
 .listing,
 .stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
@@ -965,6 +982,16 @@ ul.configletDetails li a {
 ul.configletDetails li label {
     font-weight: bold;
 }
+
+/* List classes without markers */
+
+ul.visualNoMarker, 
+ol.visualNoMarker { 
+    list-style-type: none;
+    list-style-image: none;
+    margin: 0.5em 0 0 0;
+}
+
 
 
 /* Additional STX workaround classes */

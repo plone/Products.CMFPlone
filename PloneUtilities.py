@@ -136,3 +136,16 @@ def localized_time(time = None, long_format = None, context = None):
     localized_time = localized_time.replace('${MINUTE}', str(minute))
 
     return localized_time
+
+class ToolIconOverride:
+    def om_icons(self):
+        assert hasattr(self, "iconlist")
+        iconlist = getattr(self, "iconlist", [])
+        lst = []
+        for icon in iconlist:
+           lst.append({
+                    "path":"%s/%s" % (self.portal_url(1), icon),
+                    "alt":self.title_or_id,
+                    "title":self.title_or_id,
+                    })
+        return tuple(lst)
