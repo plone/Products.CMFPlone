@@ -24,6 +24,10 @@ date, and have nice and funky pictures to go with them ;)
 
   - "DCWorkflow":http://cvs.zope.org/Products
 
+  - "Placeless Translation Service":http://www.sourceforge.net/projects/collective
+    - Plone runs without this, but if you want 
+      multilingual interface or access keys, you must download it.
+
 **The installation procedure:**
 
 - Install Zope

@@ -67,6 +67,10 @@ try:
 except ImportError:
     log("Epoz not found.  If you want WYSIWYG capabilities in Plone, you can download it from http://www.zope.org/Members/mjablonski/Epoz/", severity=zLOG.INFO, optional=1)
 
+try:
+    import Products.PlacelessTranslationService
+except ImportError:
+    log("Placeless Translation Service not found. Plone runs without this, but if you want multilingual interface or access keys, you must download it from http://www.sourceforge.net/projects/collective", severity=zLOG.INFO, optional=1)
 
 try:
     import Products.CMFFormController
