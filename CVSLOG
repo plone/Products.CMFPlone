@@ -1,3 +1,53 @@
+2004-04-07 20:15  limi
+
+	* HISTORY.txt, skins/plone_forms/search_form.pt (Plone-2_0-branch):
+	  Updated search form to support the translation of keywords.
+
+2004-04-07 19:17  dtremea
+
+	* skins/plone_scripts/date_components_support.py,
+	  migrations/v2/final_two01.py, setup/ConfigurationMethods.py,
+	  HISTORY.txt (Plone-2_0-branch): I hope to not have forgot
+	  anything this time... ;-)
+
+	  - Added years range properties in site_properties:
+
+	    - calendar_starting_year: (default: 1999), the fixed minimun
+	  year
+	      displayed on callendar widgets
+
+	    - calendar_future_years_available: (default: 5), how many years
+	      (from current year) are displayed on callendar widgets
+
+2004-04-07 18:32  dtremea
+
+	* skins/plone_scripts/date_components_support.py
+	  (Plone-2_0-branch): Added fallback values to year range, so it
+	  doesn't break Plone sites.
+
+2004-04-07 12:08  limi
+
+	* HISTORY.txt, skins/plone_prefs/prefs_main_template.pt,
+	  skins/plone_tableless/main_template.pt,
+	  skins/plone_portlets/portlet_prefs.pt,
+	  skins/plone_templates/main_template.pt (Plone-2_0-branch):	 -
+	  Added a 'portlet_prefs' that displays the different prefs panels
+		available once you're inside the prefs area. This uses the
+	  portlet
+		slots introduced below.
+		[limi]
+
+	      - Added 'portlets_one_slot' and 'portlets_two_slot' to make
+	  it
+		possible to fill the portlets areas with content. This way,
+	  you
+		don't have to know what kind of layout you are in.
+		[limi]
+
+2004-04-07 04:59  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-06 21:31  limi
 
 	* HISTORY.txt, skins/plone_content/metadata_edit_form.cpt
