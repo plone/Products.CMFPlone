@@ -29,7 +29,7 @@ if failMessage:
 
 member=mt.getAuthenticatedMember()
 mt.setPassword(password, domains)
-mt.credentialsChanged(password)
+#mt.credentialsChanged(password) now in setPassword
 
 url='%s/%s?portal_status_message=%s' % ( context.absolute_url()
                                       , 'personalize_form'
