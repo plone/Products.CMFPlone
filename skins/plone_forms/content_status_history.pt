@@ -133,7 +133,7 @@
             <div class="field">
                 <div tal:define="inputname  string:effective_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:test(here.EffectiveDate() and here.EffectiveDate()!='None', here.EffectiveDate(), '');
+                                 inputvalue python:test(here.EffectiveDate() and here.EffectiveDate()!='None', here.EffectiveDate(), request.get('effective_date', ''));
                                  onfocus string:formtooltip('effective_date_help',1);
                                  onblur string:formtooltip('effective_date_help',0);
                                  tabindex tabindex/next;">
@@ -158,7 +158,7 @@
             <div class="field">
                 <div tal:define="inputname  string:expiration_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:test(here.ExpirationDate() and here.ExpirationDate()!='None', here.ExpirationDate(), '');
+                                 inputvalue python:test(here.ExpirationDate() and here.ExpirationDate()!='None', here.ExpirationDate(), request.get('expiration_date', ''));
                                  onfocus string:formtooltip('expiration_date_help',1);
                                  onblur string:formtooltip('expiration_date_help',0);
                                  tabindex tabindex/next;">
@@ -191,6 +191,7 @@
                           onfocus="formtooltip('publishing_comments_help',1)" 
                           onblur="formtooltip('publishing_comments_help',0)"
                           tal:attributes="tabindex tabindex/next;" 
+                          tal:content="request/comment|nothing"
                           ></textarea>
             </div>
         </div>
