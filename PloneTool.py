@@ -208,7 +208,6 @@ class PloneTool (UniqueObject, SimpleItem):
                 else:
                     self.REQUEST[key] = query[key]
             action_id = action_id[0:queryIndex]
-        log('action='+action_id+', query='+str(query))
         next_action=context.getTypeInfo().getActionById(action_id)
         if next_action is not None:
             return context.restrictedTraverse(next_action)
