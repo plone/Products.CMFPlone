@@ -18,7 +18,7 @@ from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocum
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Products.CMFPlone.setup import ConfigurationMethods
 from Products.CMFPlone import ToolNames
-
+from Products.CMFPlone.StatelessTreeNav import setupNavTreePropertySheet
 from portlet_migration import upgradeSlots2Portlets
 import plone2_base
 
@@ -190,7 +190,11 @@ def migrateTools(portal):
     at.action_providers = tuple(ap)
 
 def migrateNavTree(portal):
-    p=getToolByName(portal,'portal_properties').navtree_properties
+    pp=getToolByName(portal,'portal_properties')
+    p = getattr(pp , 'navtree_properties', None)
+    
+    if not p:
+        setupNavTreePropertySheet(pp)
 
     # these won't set the property... so they won't change a existing navtree
     # since it has them already, so this is pointless. What I believe we want to do
