@@ -16,7 +16,10 @@
                 <strong tal:condition="localContent">Local resources</strong>
 
                 <span tal:repeat="content localContent">
-                        <a href="" tal:attributes="href python:content[1]+'/view'" tal:content="python:content[0]">
+                        <a href=""
+                           class="marker"
+                           tal:attributes="href python:content[1]+'/view'" 
+                           tal:content="python:content[0]">
                            Object related by keyword
                         </a>
                 </span>
@@ -26,7 +29,10 @@
             <td colspan="2">
             <strong>External links</strong>
             <span tal:repeat="o remoteContent">
-                    <a href="" tal:attributes="href python:o[1]" tal:content="python:o[0]">Link object in same folder</a>
+                    <a href=""
+                       class="marker" 
+                       tal:attributes="href python:o[1]" 
+                       tal:content="python:o[0]">Link object in same folder</a>
             </span>
             </td>
         </tr>
