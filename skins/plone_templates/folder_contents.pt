@@ -211,9 +211,11 @@
                                 i18n:translate="time_expired">expired</span>
                         </td>
 
-                        <td tal:define="size python:getObjSize(item)"
-                            tal:content="structure python:test(size, size, '&nbsp;')">
-                        size
+                        <td tal:define="folderish item/isPrincipiaFolderish|nothing">
+                          <span tal:condition="folderish">&nbsp;</span>
+                          <span tal:condition="not: folderish"
+                            tal:define="size python:getObjSize(item)"
+                            tal:content="structure python:test(size, size, '&nbsp;')"> size </span>
                         </td>
 
                         <td tal:content="item/ModificationDate">
