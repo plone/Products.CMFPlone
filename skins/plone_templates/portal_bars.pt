@@ -31,6 +31,14 @@
 	      My&nbsp;Stuff 
     </a>
 
+    <a href="workspace"
+       tal:condition="my_stuff">
+         <img src="img/linkOpaque.gif" alt="&gt;" 
+	      border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>
+	      My&nbsp;Workspace 
+    </a>
+    
+    
     <a href=""
        tal:condition="undo" 
        tal:attributes="href python:undo[0]['url']">

@@ -18,8 +18,10 @@
     Related box
     </div>
 
+<!--
     <div metal:use-macro="here/news_slot/macros/newsBox">
     News box
     </div>
+-->
 
 </metal:block>
