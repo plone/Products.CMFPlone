@@ -7,14 +7,18 @@ from Products.CMFCore.Expression import createExprContext
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFPlone import ToolNames, FactoryTool
 from setup.ConfigurationMethods import correctFolderContentsAction
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
-class ActionsTool(BaseTool):
+class ActionsTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.ActionsTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/confirm_icon.gif'
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
 
-    # __init__ is derived from the corresponding method in CMFCore.ActionsTool.
+    # XXX __init__ is derived from the corresponding method in CMFCore.ActionsTool.
     # This code is licensed under the Zope Public License (see LICENSE.ZPL)
     # (Hopefully this code will no longer be necessary in Plone 2.0.1)
     def __init__(self):

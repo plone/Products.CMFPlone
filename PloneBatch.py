@@ -118,33 +118,33 @@ class Batch(ZTUBatch):
 
 # Calculate start, end, batchsize
 # This is copied from ZTUtils.Batch.py because orphans were not correct there.
+# 04/16/04 modified by Danny Bloemendaal (_ender_). Removed try/except structs because
+# in some situations they cause some unexpected problems. Also fixed some problems with the orphan stuff. Seems to work now.
 def opt(start,end,size,orphan,sequence):
+    length = len(sequence)
     if size < 1:
         if start > 0 and end > 0 and end >= start:
             size = end + 1 - start
         else: size = 25
-
-    if start > 0:
-
-        try: sequence[ start - 1 ]
-        except IndexError: start=len(sequence)
-
+    if start > 0: 
+        if start>length: 
+            start = length
         if end > 0:
             if end < start: end = start
         else:
             end = start + size - 1
-            try: sequence[ end + orphan ]
-            except IndexError: end = len(sequence)
+            if (end+orphan)>=length:
+                end = length
     elif end > 0:
-        try: sequence[ end - 1 ]
-        except IndexError: end = len(sequence)
+        if (end)>length:
+            end = length
         start = end + 1 - size
         if start - 1 < orphan: start = 1
     else:
         start = 1
         end = start + size - 1
-        try: sequence[ end + orphan ]
-        except IndexError: end = len(sequence)
+        if (end+orphan)>=length:
+            end = length
     return start,end,size
 
 def calculate_pagenumber(elementnumber, batchsize, overlap=0):

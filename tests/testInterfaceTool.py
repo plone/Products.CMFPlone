@@ -18,6 +18,7 @@ from Products.CMFDefault.Document import Document
 
 from Products.CMFPlone.InterfaceTool import resolveInterface, getDottedName
 from Products.CMFPlone.InterfaceTool import InterfaceTool, InterfaceFinder
+from Products.CMFPlone.interfaces import PloneBaseTool
 
 
 class MyPortalContent(Contentish): pass
@@ -55,7 +56,8 @@ class TestInterfaceFinder(ZopeTestCase.ZopeTestCase):
         # Should find available interfaces
         from Products.CMFPlone.interfaces import InterfaceTool
         ifs = InterfaceFinder().findInterfaces(module=InterfaceTool)
-        self.assertEqual(ifs, [getDottedName(InterfaceTool.IInterfaceTool)])
+        self.failUnless(getDottedName(InterfaceTool.IInterfaceTool) in ifs)
+        self.failUnless(getDottedName(PloneBaseTool.IPloneBaseTool) in ifs)
 
 
 class TestInterfaceTool(PloneTestCase.PloneTestCase):

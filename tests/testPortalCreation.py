@@ -20,6 +20,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.workflow = self.portal.portal_workflow
+        self.cp = self.portal.portal_controlpanel
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -28,6 +29,12 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testDefaultView(self):
         # index_html should render
         self.portal.index_html()
+
+    def testControlPanelGroups(self):
+        # Test for https://plone.org/collector/2749
+        # Wake up object, in the case it was deactivated.
+        dir(self.cp); dir(self.cp)
+        self.failUnless(self.cp.__dict__.has_key('groups'))
 
     def testWorkflowIsActionProvider(self):
         # XXX: This change has been backed out and the test inverted!
@@ -106,18 +113,18 @@ class TestManagementPageCharset(PloneTestCase.PloneTestCase):
     def testManagementPageCharsetEqualsDefaultCharset(self):
         # Checks that 'management_page_charset' attribute of the portal
         # reflects 'portal_properties/site_properties/default_charset'.
-        default_charset = self.properties.site_properties.getProperty('default_charset', None) 
+        default_charset = self.properties.site_properties.getProperty('default_charset', None)
         self.failUnless(default_charset)
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.failUnless(manage_charset)
         self.assertEqual(manage_charset, default_charset)
         self.assertEqual(manage_charset, 'utf-8')
-        
+
     def testManagementPageCharsetIsComputedAttribute(self):
         # Checks that 'management_page_charset' attribute of the portal
         # is a ComputedAttribute and always follows the default_charset property.
         self.properties.site_properties.manage_changeProperties(default_charset='latin1')
-        default_charset = self.properties.site_properties.getProperty('default_charset', None) 
+        default_charset = self.properties.site_properties.getProperty('default_charset', None)
         manage_charset = getattr(self.portal, 'management_page_charset', None)
         self.assertEqual(manage_charset, default_charset)
         self.assertEqual(manage_charset, 'latin1')

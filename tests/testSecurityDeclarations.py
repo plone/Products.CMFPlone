@@ -14,6 +14,7 @@ from Products.CMFPlone.tests import dummy
 from OFS.SimpleItem import SimpleItem
 from AccessControl import Unauthorized
 from ZODB.POSException import ConflictError
+from Products.ZCTextIndex.ParseTree import ParseError
 
 
 class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
@@ -196,8 +197,7 @@ except ConflictError: pass
                       (e.__class__.__name__, e, e.__module__))
 
     def testCatch_ConflictErrorRaisedByPythonModule(self):
-        self.folder._setObject('raiseConflictError', 
-                               dummy.Raiser(ConflictError))
+        self.folder._setObject('raiseConflictError', dummy.Raiser(ConflictError))
         try:
             self.check('''
 from ZODB.POSException import ConflictError
@@ -220,6 +220,25 @@ except ConflictError: pass
         self.app.manage_addFolder('portal_membership') # Fake a portal tool
         self.check('from Products.CMFCore.utils import getToolByName;'
                    'print getToolByName(context, "portal_membership")')
+
+    def testImport_ParseError(self):
+        self.check('from Products.ZCTextIndex.ParseTree import ParseError')
+
+    def testAccess_ParseError(self):
+        self.check('import Products.ZCTextIndex.ParseTree;'
+                   'print Products.ZCTextIndex.ParseTree.ParseError')
+
+    def testCatch_ParseErrorRaisedByPythonModule(self):
+        self.folder._setObject('raiseParseError', dummy.Raiser(ParseError))
+        try:
+            self.check('''
+from Products.ZCTextIndex.ParseTree import ParseError
+try: context.raiseParseError()
+except ParseError: pass
+''')
+        except Exception, e:
+            self.fail('Failed to catch: %s %s (module %s)' %
+                      (e.__class__.__name__, e, e.__module__))
 
 
 class TestAcquisitionMethods(RestrictedPythonTest):

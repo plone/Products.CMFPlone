@@ -1,8 +1,8 @@
+<metal:block use-macro="here/global_defines/macros/defines" />
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
-      tal:define="input_id request/input_id;
-                  global site_properties here/portal_properties/site_properties;"
+      tal:define="input_id request/input_id;"
       tal:attributes="lang site_properties/default_language|default;
                       xml:lang site_properties/default_language|default;"
        i18n:domain="plone">

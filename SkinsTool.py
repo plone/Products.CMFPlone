@@ -3,6 +3,7 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.CMFCore import DirectoryView
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 _skincache = {}
 
@@ -10,10 +11,16 @@ _skincache = {}
 # override SkinsContainer.getSkinByName.  This
 # is about a 10% speed increase.
 
-class SkinsTool(BaseTool):
+class SkinsTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.SkinsTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/skins_icon.gif'
+
+    default_skin = ''
+    request_varname = 'plone_skin'
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     security.declarePrivate('getSkinByName')
     def __getSkinByName(self, name):

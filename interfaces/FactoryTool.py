@@ -1,4 +1,5 @@
 from interface import Interface
+from PloneBaseTool import IPloneBaseTool
 
 class ITempFolder(Interface):
     """ """
@@ -7,7 +8,7 @@ class ITempFolder(Interface):
     def __getitem__(id):
         """ """
 
-class IFactoryTool(Interface):
+class IFactoryTool(IPloneBaseTool):
     """ """
 
     def docs():

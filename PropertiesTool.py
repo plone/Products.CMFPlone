@@ -13,14 +13,19 @@ from Globals import InitializeClass
 from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
-
-class PropertiesTool(Folder, BaseTool):
+class PropertiesTool(PloneBaseTool, Folder, BaseTool):
 
     id = BaseTool.id
+    toolicon = 'skins/plone_images/topic_icon.gif'
+
     meta_type = ToolNames.PropertiesTool
     meta_types = all_meta_types =  ( ( { 'name' : 'Plone Property Sheet'
                                        , 'action' : 'manage_addPropertySheetForm' }, ) )
+
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, 
+                      Folder.__implements__, )
 
     manage_options = ( (Folder.manage_options[0], ) +
                         BaseTool.manage_options  )

@@ -1,5 +1,7 @@
 from __future__ import nested_scopes
 
+from ComputedAttribute import ComputedAttribute
+
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
 from Products.CMFPlone import PloneFolder
@@ -130,7 +132,6 @@ class PloneSite(CMFSite, OrderedContainer):
                     return getProperty('default_charset', 'utf-8')
         return 'utf-8'
 
-    from ComputedAttribute import ComputedAttribute
     management_page_charset = ComputedAttribute(_management_page_charset, 1)
 
 Globals.InitializeClass(PloneSite)
@@ -296,8 +297,6 @@ class PloneGenerator(Portal.PortalGenerator):
 
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
 
-        sk_tool.request_varname='plone_skin'
-
     def setupForms(self, p):
         """ This is being deprecated.  Please see CMFFormController """
 
@@ -444,15 +443,25 @@ def manage_addSite(self, id, title='Portal', description='',
                    custom_policy='Default Plone',
                    RESPONSE=None):
     """ Plone Site factory """
-    gen = PloneGenerator()
+
+    customization_policy=None
+    gen=None
+    
+    if listPolicies() and custom_policy:
+        customization_policy=custom_policies[custom_policy]
+
+    if customization_policy:
+        gen=customization_policy.getPloneGenerator()
+
+    if not gen: #no generator provided by the cust policy
+        gen = PloneGenerator()
+
     p = gen.create(self, id.strip(), create_userfolder)
     gen.setupDefaultProperties(p, title, description,
                                email_from_address, email_from_name,
                                validate_email)
-    customization_policy=None
-    if listPolicies() and custom_policy:
-        customization_policy=custom_policies[custom_policy]
-        # Save customization policy results on a object
+
+    if customization_policy:
         result = customization_policy.customize(p)
         if result:
             p.invokeFactory(type_name='Document', id='CustomizationLog')

@@ -11,11 +11,13 @@ from DateTime import DateTime
 from random import random
 
 now=DateTime()
+time='%s.%s' % (now.strftime('%Y-%m-%d'), str(now.millis())[7:])
+rand=str(random())[2:6]
 prefix=''
 suffix=''
 
 if type_name is not None:
     prefix = type_name.replace(' ', '_')+'.'
+prefix=prefix.lower()
 
-id=now.strftime('%Y-%m-%d')+'.'+str(now.millis())[5:]+str(random())[2:4]
-return prefix+id+suffix
+return prefix+time+rand+suffix

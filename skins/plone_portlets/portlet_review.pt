@@ -22,15 +22,16 @@
 
                     <a href="#"
                        class="marker"
-                       tal:attributes="href string:${o/absolute_url}/view;
+                       tal:attributes="href string:${o/getURL}/view;
                                        title o/Description">
-                        <span tal:replace="o/title_or_id">
+                        <span tal:replace="o/Title|o/getId">
                         Extended Calendar Product
                         </span>
                     </a>
 
                     <div class="portletDetails"
-                         tal:content="python:here.toLocalizedTime(o.ModificationDate())">July 7, 08:11</div>
+                         tal:define="moddate o/ModificationDate;"
+                         tal:content="python:here.toLocalizedTime(moddate)">July 7, 08:11</div>
             </div>
             </tal:block>
 

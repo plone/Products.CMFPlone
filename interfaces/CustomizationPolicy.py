@@ -19,3 +19,8 @@ class ICustomizationPolicy(Interface):
         DefaultCustomizationPolicy, you would call its customize()
         method and then continue on customization the portal.
         """
+
+    def getPloneGenerator():
+        """ returns a PloneGenerator, can be overloaded,
+            this method is called _before_ the portal is instanciated
+        """

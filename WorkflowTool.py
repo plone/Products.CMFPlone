@@ -13,12 +13,16 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
 from Products.DCWorkflow.Transitions import TRIGGER_USER_ACTION
 from PloneUtilities import log
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
-class WorkflowTool(BaseTool):
+class WorkflowTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.WorkflowTool
     security = ClassSecurityInfo()
     plone_tool = 1
+    toolicon = 'skins/plone_images/workflow_icon.gif'
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     security.declarePublic('doActionFor')
     def doActionFor(self, ob, action, wf_id=None, *args, **kw):

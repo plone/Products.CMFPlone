@@ -9,16 +9,21 @@ from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation, oai
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.TypesTool import TypeInformation
-from Products.CMFCore.CMFCorePermissions import ManagePortal, SetOwnProperties, SetOwnPassword, View
-from Products.CMFCore.utils import _checkPermission, _dtmldir, getToolByName, SimpleItemWithProperties, UniqueObject
+from Products.CMFCore.CMFCorePermissions import ManagePortal, \
+     SetOwnProperties, SetOwnPassword, View
+from Products.CMFCore.utils import _checkPermission, _dtmldir, \
+     getToolByName, SimpleItemWithProperties, UniqueObject
 
-from Products.CMFCore.interfaces.portal_actions import portal_actions as IActionsTool
+from Products.CMFCore.interfaces.portal_actions \
+     import portal_actions as IActionsTool
 
 import ToolNames
 from interfaces.PloneControlPanel import IControlPanel
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 class PloneConfiglet(ActionInformation):
-    def __init__(self,appId,**kwargs):
+
+    def __init__(self, appId, **kwargs):
         self.appId=appId
         ActionInformation.__init__(self,**kwargs)
 
@@ -148,18 +153,22 @@ default_configlets = (
 
 
 
-class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManager):
-    """
-        Weave together the various sources of "actions" which are apropos
-        to the current user and context.
+class PloneControlPanel(PloneBaseTool, UniqueObject,
+                        Folder, ActionProviderBase, PropertyManager):
+    """Weave together the various sources of "actions" which
+    are apropos to the current user and context.
     """
 
-    __implements__ = (IControlPanel, ActionProviderBase.__implements__)
+    __implements__ = (PloneBaseTool.__implements__,
+                      IControlPanel,
+                      ActionProviderBase.__implements__,
+                      SimpleItem.__implements__, )
 
     security = ClassSecurityInfo()
 
     id = 'portal_controlpanel'
     title = 'Control Panel'
+    toolicon = 'skins/plone_images/site_icon.gif'
     meta_type = ToolNames.ControlPanelTool
     _actions_form = DTMLFile( 'www/editPloneConfiglets', globals() )
 
@@ -167,38 +176,58 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
         {'id':'groups','type':'lines'},
     )
 
-    manage_options=ActionProviderBase.manage_options + PropertyManager.manage_options
+    manage_options = (ActionProviderBase.manage_options +
+                      PropertyManager.manage_options)
 
-    groups=['site|Plone|Plone Configuration','site|Products|Add-on Product Configuration','member|Member|Plone Member Preferences']
+    groups = ['site|Plone|Plone Configuration',
+              'site|Products|Add-on Product Configuration',
+              'member|Member|Plone Member Preferences']
 
-    def __init__(self,**kw):
+    def __init__(self, **kw):
         if kw:
             self.__dict__.update(**kw)
+        if not self.__dict__.has_key('groups'):
+            self.__dict__['groups'] = self.groups
 
     security.declareProtected( ManagePortal, 'registerConfiglets' )
     def registerConfiglets(self,configlets):
-        ''' attention: must be called AFTER portal_actionicons is installed '''
+        """ ATTENTION: must be called AFTER portal_actionicons
+        is installed
+        """
         for conf in configlets:
             self.registerConfiglet(**conf)
 
     security.declareProtected( ManagePortal, 'registerDefaultConfiglets' )
     def registerDefaultConfiglets(self):
-        """ We need to bootstrap the default_configlets into the control panel """
+        """ We need to bootstrap the default_configlets
+        into the control panel
+        """
         self.registerConfiglets(default_configlets)
 
     security.declareProtected( ManagePortal, 'getGroupIds' )
-    def getGroupIds(self,category=''):
-        return [g.split('|')[1] for g in self.groups if category=='' or g.split('|')[0]==category]
+    def getGroupIds(self, category=''):
+        return [g.split('|')[1] for g in self.groups
+                if category=='' or g.split('|')[0]==category]
 
     security.declareProtected( View, 'getGroups' )
     def getGroups(self,category=''):
-        return [{'id':g.split('|')[1],'title':g.split('|')[2]} for g in self.groups if category=='' or g.split('|')[0]==category]
+        return [{'id':g.split('|')[1], 'title':g.split('|')[2]}
+                for g in self.groups
+                if category=='' or g.split('|')[0]==category]
 
     security.declareProtected( SetOwnProperties, 'enumConfiglets' )
     def enumConfiglets(self,group=None):
         portal=getToolByName(self,'portal_url').getPortalObject()
+        mtool = getToolByName(self,'portal_membership')
         context=createExprContext(self,portal,self)
-        res = [a.getAction(context) for a in self.listActions() if a.category==group and a.testCondition(context)]
+        res = []
+        for a in self.listActions():
+            verified = 0
+            for permission in a.permissions:
+                if _checkPermission(permission, portal):
+                    verified = 1
+            if verified and a.category==group and a.testCondition(context):
+                res.append(a.getAction(context))
         res.sort(lambda a,b:cmp(a['name'],b['name']))
         return res
 
@@ -221,13 +250,12 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
         actionicons=getToolByName(self,'portal_actionicons')
         for a in acts:
-            if a.appId == appId and actionicons.queryActionInfo('controlpanel', a.id, None):
+            if (a.appId == appId and
+                actionicons.queryActionInfo('controlpanel', a.id, None)):
                 actionicons.removeActionIcon('controlpanel', a.id)
 
 
-
     def _extractAction( self, properties, index ):
-
         """ Extract an ActionInformation from the funky form properties.
         """
         id          = str( properties.get( 'id_%d'          % index, '' ) )
@@ -287,7 +315,6 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
                  ):
         """ Add an action to our list.
             attention: must be called AFTER portal_actionicons is installed
-
         """
         if not name:
             raise ValueError('A name is required.')
@@ -316,7 +343,8 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
         if imageUrl:
             actionicons=getToolByName(self,'portal_actionicons')
-            actionicons.addActionIcon('controlpanel',new_action.id,imageUrl,new_action.title)
+            actionicons.addActionIcon('controlpanel', new_action.id,
+                                      imageUrl, new_action.title)
 
 
         if REQUEST is not None:
@@ -327,7 +355,6 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     security.declareProtected( ManagePortal, 'manage_editActionsForm' )
     def manage_editActionsForm( self, REQUEST, manage_tabs_message=None ):
-
         """ Show the 'Actions' management tab.
         """
         actions = []

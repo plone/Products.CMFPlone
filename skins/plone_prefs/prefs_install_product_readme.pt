@@ -22,7 +22,7 @@
        i18n:translate="label_back_to_addremove_products">
     Back to Add/Remove Products
     </a>
-   
+
     <div class="stx" tal:content="structure python:modules['Products.CMFCore.utils'].format_stx(container.portal_quickinstaller.getProductFile(request['filereadme']))" />
 
     <a href=""
@@ -31,8 +31,8 @@
        i18n:translate="label_back_to_addremove_products">
     Back to Add/Remove Products
     </a>
-        
-   
+
+
 </div>
 
 </body>

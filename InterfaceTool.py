@@ -11,18 +11,20 @@ from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore import CMFCorePermissions
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 def log(summary='', text='', log_level=INFO):
     LOG('InterfaceTool', log_level, summary, text)
 
 _marker = ('module_finder',)
 
-class InterfaceTool(UniqueObject, SimpleItem):
+class InterfaceTool(PloneBaseTool, UniqueObject, SimpleItem):
     """ This tool exposes the interface package for TTW applications,
     by accepting a dotted name of an interface and exporting the
     IInterface API """
-
-    __implements__ = IInterfaceTool
+  
+    __implements__ = (PloneBaseTool.__implements__, IInterfaceTool, 
+                      SimpleItem.__implements__, )
 
     id = 'portal_interface'
     meta_type= 'Portal Interface Tool'

@@ -3,13 +3,15 @@ from Products.GroupUserFolder.GroupsTool import GroupsTool as BaseTool
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from Products.CMFPlone.PloneUtilities import ToolIconOverride
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
-class GroupsTool(BaseTool, ToolIconOverride):
+class GroupsTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.GroupsTool
     security = ClassSecurityInfo()
-    iconlist = ["group.gif",]
+    toolicon = 'skins/plone_images/group.gif'
+
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
 GroupsTool.__doc__ = BaseTool.__doc__
 

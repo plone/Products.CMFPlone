@@ -123,7 +123,8 @@ def assignTitles(self, portal):
      'portal_catalog':'Indexes all content in the site',
      'portal_form_validation':'Deprecated, not in use',
      'portal_factory':'Responsible for the creation of content objects',
-     'portal_calendar':'Controls how Events are shown'
+     'portal_calendar':'Controls how Events are shown',
+     'portal_quickinstaller':'Allows to Install/Uninstall products'
      }
 
     for oid in portal.objectIds():

@@ -185,7 +185,7 @@ form {
     margin: 0;
 }
 textarea {
-    font: 110% "Courier New", Courier, monospaced; 
+    font: 110% "Courier New", Courier, monospace; 
     border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
     color: &dtml-inputFontColor;;
     background-color: white;
@@ -485,7 +485,7 @@ del {
     color: &dtml-contentViewFontColor;;
     text-align: right;
     text-transform: &dtml-textTransform;;
-    padding: 0 1em;
+    padding: 0 0 0 1em;
     z-index: 2;
     height: 1.2em;
 }
@@ -514,6 +514,7 @@ del {
     z-index: 4;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0 0 0 1em;
+    margin: 0 1em 0 0;
 }
 
 .menuPosition {

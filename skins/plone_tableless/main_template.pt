@@ -110,7 +110,7 @@
                     </div>
                 </metal:ifborder>
 
-                <div class="documentContent">
+                <div class="documentContent" id="region-content">
 
                     <a name="documentContent"></a>
 
@@ -146,7 +146,7 @@
                     <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
                         This instruction gets the portlets (boxes) for the left column.
                     </metal:leftportlets>
-                </metal:leftportlets>
+                </metal:portlets>
                 &nbsp;
             </div>
         </div>
@@ -167,7 +167,6 @@
             </metal:portlets>
             &nbsp;
         </div>
-        </metal:columntwo>
     </div>
     <!-- end of the right (by default at least) column -->
 

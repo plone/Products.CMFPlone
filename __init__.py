@@ -30,8 +30,8 @@ def transaction_note(note):
 
 def base_hasattr(ob, name):
     ob = aq_base(ob)
-    if hasattr(ob, name):
-        return 1
+    return hasattr(ob, name)
+
 
 def initialize(context):
 
@@ -96,6 +96,9 @@ def initialize(context):
     # make ConflictError importable ttw
     ModuleSecurityInfo('ZODB.POSException').declarePublic('ConflictError')
 
+    # make ZCTextIndex ParseError importable ttw
+    ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
+
     # make base_hasattr importable ttw
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 
@@ -109,7 +112,7 @@ def initialize(context):
     allow_class(EmailField)
     allow_class(FormValidationError)
     allow_class(BasicForm)
-
+    
     # Setup migrations
     import migrations
     migrations.registerMigrations()
@@ -124,6 +127,8 @@ def initialize(context):
                            # pipeline registry
     import setFormatPatch  # patch DefaultDublinCoreImpl.setFormat to work
                            # around http://plone.org/collector/1323
+    import verifyObjectPastePatch   # patch PortalFolder to work around
+                                    # http://plone.org/collector/2183
 
     from Products.CMFCore import DirectoryView
     DirectoryView.registerDirectory('skins', cmfplone_globals)
@@ -187,14 +192,15 @@ def initialize(context):
             )
 
     from Products.CMFCore import utils
+    from PloneUtilities import ToolInit
     import Portal
 
     z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
     utils.initializeBasesPhase2( z_bases, context )
 
-    utils.ToolInit('Plone Tool', tools=tools,
-                   product_name='CMFPlone', icon='tool.gif',
-                   ).initialize( context )
+    ToolInit('Plone Tool', tools=tools,
+             product_name='CMFPlone', icon='tool.gif',
+             ).initialize( context )
 
     utils.ContentInit( 'Plone Content'
                      , content_types=contentClasses

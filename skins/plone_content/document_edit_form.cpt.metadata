@@ -1,5 +1,5 @@
 [default]
-title=edit form
+title=Edit Document
 
 [security]
 View=0:Authenticated

@@ -7,6 +7,7 @@ from AccessControl import ClassSecurityInfo
 from Acquisition import aq_base
 from Globals import InitializeClass
 from DateTime import DateTime
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 try: 
     import Products.TextIndexNG2
@@ -14,10 +15,13 @@ try:
 except ImportError:
     txng_version = 0
 
-class CatalogTool(BaseTool):
+class CatalogTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.CatalogTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/book_icon.gif'
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     def __init__(self):
         ZCatalog.__init__(self, self.getId())

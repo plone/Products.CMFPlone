@@ -7,15 +7,14 @@
 <!-- The events box -->
 
 <div metal:define-macro="portlet"
-     tal:define="brains python:here.portal_catalog.searchResults( portal_type_operator='or'
+     tal:define="results python:here.portal_catalog.searchResults( portal_type_operator='or'
                                                                  , portal_type=('Event', 'ATEvent')
-                                                                 , end={'query':here.ZopeTime(),
+                                                                 , end={'query': here.ZopeTime(),
                                                                         'range': 'min'}
                                                                  , sort_on='start'
                                                                  , review_state='published')[:5];
-                results python:[brain.getObject() for brain in brains if brain.getObject()]
                 "
-     tal:condition="python:test(results, 1, 0)">
+     tal:condition="results">
 
     <div class="portlet" id="portlet-events">
 
@@ -29,15 +28,17 @@
                      tal:attributes="class python:test(oddrow, 'portletContent even', 'portletContent odd')">
 
                     <a href=""
-                       tal:attributes="href obj/absolute_url;
+                       tal:attributes="href obj/getURL;
                                        title obj/Description">
                         <tal:block replace="structure here/event_icon.gif"/>
-                        <span tal:replace="python:test(obj.Title(), obj.Title(), obj.getId())"> Event </span>
+                        <span tal:replace="python:test(obj.Title, obj.Title, obj.getId)"> Event </span>
                     </a>
 
                     <div class="portletDetails">
-                        <tal:location content="obj/location">Location</tal:location>, <br />
-                        <tal:date content="python:here.toLocalizedTime(obj.start())">July 7, 08:11</tal:date>
+                        <tal:condition condition="obj/location">
+                            <tal:location content="obj/location">Location</tal:location>, <br />
+		        </tal:condition>
+                        <tal:date content="python:here.toLocalizedTime(obj.start)">July 7, 08:11</tal:date>
                     </div>
                 </div>
 

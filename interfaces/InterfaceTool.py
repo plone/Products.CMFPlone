@@ -1,6 +1,7 @@
 from interface import Interface, Attribute
+from PloneBaseTool import IPloneBaseTool
 
-class IInterfaceTool(Interface):
+class IInterfaceTool(IPloneBaseTool):
     """ This tool exposes the interface package for TTW applications,
     by accepting a dotted name of an interface and exporting the
     IInterface API """

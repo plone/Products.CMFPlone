@@ -7,7 +7,7 @@
 ##parameters=
 ##title=Return a dict with all names
 
-return (
+value = [
     ('aa', 'Afar'),
     ('ab', 'Abkhazian'),
     ('af', 'Afrikaans'),
@@ -151,4 +151,7 @@ return (
     ('za', 'Zhuang'),
     ('zh', 'Chinese'),
     ('zu', 'Zulu')
-    )
+]
+
+value.sort(lambda x,y:cmp(x[1], y[1]))
+return value

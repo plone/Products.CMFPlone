@@ -10,6 +10,7 @@ from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 default_portrait = 'defaultUser.gif'
 
@@ -23,14 +24,17 @@ Default page for %s
   tab above.
 """
 
-class MembershipTool(BaseTool):
+class MembershipTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.MembershipTool
+    toolicon = 'skins/plone_images/user.gif'
     plone_tool = 1
     personal_id = '.personal'
     portrait_id = 'MyPortrait'
     default_portrait = 'defaultUser.gif'
     security = ClassSecurityInfo()
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     #XXX I'm not quite sure why getPortalRoles is declared 'Managed'
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)

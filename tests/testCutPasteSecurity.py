@@ -16,7 +16,7 @@ from Acquisition import aq_base
 from Products.CMFCore.utils import getToolByName
 
 
-class TestContentSecurity(PloneTestCase.PloneTestCase):
+class TestCutPasteSecurity(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
@@ -95,46 +95,63 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         get_transaction().commit(1)
 
         self.login('user2')
-        # FIXME: This doesn't work.  I don't know why CopyError isn't
-        # being raised.  Unauthorized isn't raised either.  In fact, the paste succeeds :(
-        # Somehow the test fixture has permissions it shouldn't....
-        #self.assertRaises(CopyError, src.manage_cutObjects, 'testcut')
         self.assertRaises(Unauthorized, src.restrictedTraverse, 'manage_cutObjects')
 
     def test_Bug2183_PastingIntoFolderFailsForNotAllowedContentTypes(self):
         # XXX This test is related to the '_verifyObjectPaste' change
         # in PloneFolder.py. With the move of the bug fix to CMFCore
         # this test will move also and could the be removed from here.
-        
-        # we have to do things as manager to not be bothered 
-        # by permission issues
-        self.portal.acl_users._doAddUser('manager1', 'secret', ['Manager'], [])
-        self.login('manager1')
-        
+        # http://plone.org/collector/2183
+
         # add the document to be copy and pasted later
-        self.portal.invokeFactory('Document', 'doc')
-        
+        self.folder.invokeFactory('Document', 'doc')
+
         # add the folder where we try to paste the document later
-        self.portal.invokeFactory('Folder', 'folder')
-        folder = self.portal.folder
-        
+        self.folder.invokeFactory('Folder', 'subfolder')
+        subfolder = self.folder.subfolder
+
         # now disallow adding Document globaly
-        pt = getToolByName(self.portal, 'portal_types')
-        pt.Document.manage_changeProperties(global_allow=0)
-        
-        # copy and pasting the object into the folder should raise
-        # an exception
+        types = self.portal.portal_types
+        types.Document.manage_changeProperties(global_allow=0)
+
+        # copy and pasting the object into the subfolder should raise
+        # a ValueError.
         self.assertRaises(
-            ValueError, 
-            folder.manage_pasteObjects,
-            self.portal.manage_copyObjects(ids=['doc'])
+            ValueError,
+            subfolder.manage_pasteObjects,
+            self.folder.manage_copyObjects(ids=['doc'])
         )
-        
+
+    def test_Bug2183_PastingIntoPortalFailsForNotAllowedContentTypes(self):
+        # XXX This test is related to the '_verifyObjectPaste' change
+        # in PloneFolder.py. With the move of the bug fix to CMFCore
+        # this test will move also and could the be removed from here.
+        # http://plone.org/collector/2183
+
+        # add the document to be copy and pasted later
+        self.folder.invokeFactory('Document', 'doc')
+
+        # now disallow adding Document globaly
+        types = self.portal.portal_types
+        types.Document.manage_changeProperties(global_allow=0)
+
+        # need to be manager to paste into portal
+        self.setRoles(['Manager'])
+
+        # copy and pasting the object into the portal should raise
+        # a ValueError.
+        self.assertRaises(
+            ValueError,
+            self.portal.manage_pasteObjects,
+            self.folder.manage_copyObjects(ids=['doc'])
+        )
+
+
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestCutPasteSecurity))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    def test_suite():
-        from unittest import TestSuite, makeSuite
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestContentSecurity))
-        return suite

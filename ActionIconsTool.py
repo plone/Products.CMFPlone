@@ -4,7 +4,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 from Products.CMFPlone.PloneTool import _icons as iconcache
 
@@ -12,10 +12,13 @@ def removeAICacheEntry(category, id):
     if (category, id) in iconcache.keys():
         del iconcache[(category,id)]
 
-class ActionIconsTool(BaseTool):
+class ActionIconsTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.ActionIconsTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/confirm_icon.gif'
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     security.declareProtected(View, 'renderActionIcon')
     def renderActionIcon( self,

@@ -16,6 +16,7 @@
          tal:define="standalone python:1;
                      myfolder python: here_url==mtool.getHomeUrl();
                      contentTypes python: here.getAllowedTypes();
+                     contentTypeIds python:[t.getId() for t in contentTypes];
                      num_types python: len(contentTypes)">
 
       <form name="folderContentsForm"
@@ -109,11 +110,11 @@
                    name="folder_factories:method"
                    value="Add New Item"
                    tabindex=""
-                   i18n:attributes="value"
                    tal:define="ttype python: num_types==1 and here.translate(types[0].Title())"
                    tal:condition="python: num_types"
                    tal:attributes="tabindex tabindex/next|nothing;
-                                   value python:ttype and here.translate('Add New ${type}', {'type': ttype} ) or 'Add New Item'" />
+                                   value python:ttype and here.translate('Add New ${type}', {'type': ttype}) or
+                                                          here.translate('label_add_new_item')" />
           </div>
 
 
@@ -170,7 +171,9 @@
                                   item_title_or_id item/title_or_id;
                                   item_typeinfo item/getTypeInfo;
                                   arrowUp portal/arrowUp.gif;
-                                  arrowDown portal/arrowDown.gif;"
+                                  arrowDown portal/arrowDown.gif;
+                                  browserDefaultResult here/browserDefault;
+                                  isBrowserDefault python:len(browserDefaultResult[1]) == 1 and item.id == here.browserDefault()[1][0]"
                       tal:attributes="class python:test(oddrow, 'even', 'odd')" >
 
                     <td>
@@ -192,11 +195,10 @@
 
                       <a href="#" tal:attributes="href url; title item/Description;">
 
-                        <img tal:define="icon python:item.getIcon(1); iconObject python:getattr(here,icon)"
-                             tal:attributes="src string:$portal_url/$icon;
-                                             alt iconObject/title_or_id;
-                                             title item_typeinfo/Title"
-                             />&nbsp;<span tal:replace="item/title_or_id">Title</span>
+                        <img tal:attributes="src item/getIcon;
+                                             alt item_typeinfo/Title; 
+                                             title item_typeinfo/Title;"
+                             />&nbsp;<strong tal:omit-tag="python:not isBrowserDefault"><span tal:replace="item/title_or_id">Title</span></strong>
                       </a>
 
                       <a href="absolute_url/external_edit"
@@ -271,7 +273,7 @@
 
       <tal:defaultview condition="python: not 'index_html' in here.contentIds() and
                                   checkPermission('Add portal content', here) and
-                                  'Document' in contentTypes and
+                                  'Document' in contentTypeIds and
                                   here.getTypeInfo().allowType('Document')">
 
         <p i18n:translate="description_no_default_folder_create_new">

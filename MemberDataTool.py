@@ -7,11 +7,15 @@ from AccessControl import ClassSecurityInfo
 from BTrees.OOBTree import OOBTree
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
-class MemberDataTool(BaseTool):
+class MemberDataTool(PloneBaseTool, BaseTool):
 
     meta_type = ToolNames.MemberDataTool
     security = ClassSecurityInfo()
+    toolicon = 'skins/plone_images/user.gif'
+    
+    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
     def __init__(self):
         BaseTool.__init__(self)

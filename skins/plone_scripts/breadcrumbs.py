@@ -107,8 +107,13 @@ while 1:
                     if id in portal.plone_utils.browserDefault(parent)[1]:
                         continue
                 if hasattr(parent, 'getTypeInfo'):
-                    if id == parent.getTypeInfo().getActionById('view'):
-                        continue
+                    # The types tool has a getTypeInfo method, but with a 
+                    # different signature. http://plone.org/collector/2998
+                    try:
+                        if id == parent.getTypeInfo().getActionById('view'):
+                            continue
+                    except TypeError:
+                        pass
         except Unauthorized:
             if id in ['view', 'index_html', 'folder_listing']:
                 continue

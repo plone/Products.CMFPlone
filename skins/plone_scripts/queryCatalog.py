@@ -8,6 +8,7 @@
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 from ZODB.POSException import ConflictError
+from Products.ZCTextIndex.ParseTree import ParseError
 
 results=[]
 catalog=context.portal_catalog
@@ -70,7 +71,7 @@ for k, v in second_pass.items():
 if show_query:
     try:
         results=catalog(query)
-    except:
-        return None
+    except ParseError:
+        pass
 
 return results

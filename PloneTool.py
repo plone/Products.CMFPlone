@@ -27,6 +27,7 @@ from AccessControl import ClassSecurityInfo, Unauthorized
 from StatelessTree import constructNavigationTreeViewBuilder, \
      NavigationTreeViewBuilder as NTVB
 from ZODB.POSException import ConflictError
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 _marker = ()
 _icons = {}
@@ -34,13 +35,17 @@ _icons = {}
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
 
-class PloneTool(UniqueObject, SimpleItem):
+class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     id = 'plone_utils'
     meta_type= ToolNames.UtilsTool
+    toolicon = 'skins/plone_images/site_icon.gif'
     security = ClassSecurityInfo()
     plone_tool = 1
     field_prefix = 'field_' # Formulator prefixes for forms
+
+    __implements__ = (PloneBaseTool.__implements__,
+                      SimpleItem.__implements__, )
 
     security.declareProtected(CMFCorePermissions.ManagePortal,
                               'setMemberProperties')
@@ -113,12 +118,6 @@ class PloneTool(UniqueObject, SimpleItem):
                                             obj.ExpirationDate())
             if expiration_date == '':
                 expiration_date = 'None'
-            if format is None:
-                format=REQUEST.get('text_format', obj.Format())
-            if language is None:
-                language=REQUEST.get(pfx+'language', obj.Language())
-            if rights is None:
-                rights=REQUEST.get(pfx+'rights', obj.Rights())
 
         if Discussable.isImplementedBy(obj) or \
             getattr(obj, '_isDiscussable', None):
@@ -139,15 +138,15 @@ class PloneTool(UniqueObject, SimpleItem):
             disc_tool.overrideDiscussionFor(obj, allowDiscussion)
 
         if MutableDublinCore.isImplementedBy(obj):
-            obj.setTitle(title)
-            obj.setDescription(description)
-            obj.setSubject(subject)
-            obj.setContributors(contributors)
-            obj.setEffectiveDate(effective_date)
-            obj.setExpirationDate(expiration_date)
-            obj.setFormat(format)
-            obj.setLanguage(language)
-            obj.setRights(rights)
+            if title: obj.setTitle(title)
+            if description: obj.setDescription(description)
+            if subject: obj.setSubject(subject)
+            if effective_date: obj.setEffectiveDate(effective_date)
+            if expiration_date: obj.setExpirationDate(expiration_date)
+            if contributors: obj.setContributors(contributors)
+            if format: obj.setFormat(format)
+            if language: obj.setLanguage(language)
+            if rights: obj.setRights(rights)
             # make the catalog aware of changes.
             obj.reindexObject()
 
@@ -502,6 +501,12 @@ class PloneTool(UniqueObject, SimpleItem):
 
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])
+        # Make sure we don't break if default_page is a
+        # string property instead of a sequence
+        if type(pages) in (StringType, UnicodeType):
+            pages = [pages]
+        # And also filter out empty strings
+        pages = filter(None, pages)
         for page in pages:
             if ids.has_key(page):
                 return obj, [page]
