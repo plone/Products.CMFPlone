@@ -12,4 +12,4 @@ if page in context.objectIds():
 # call the method on the folder, if you
 # dont have this you will have problems
 # with blank folders
-return context, [None,]
+return context, ['view',]
