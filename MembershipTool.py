@@ -1,4 +1,4 @@
-from Products.CMFDefault.MembershipTool import MembershipTool
+from Products.CMFDefault.MembershipTool import MembershipTool as DefaultMembershipTool
 from Products.CMFDefault import Document
 from Products.CMFCore.utils import getToolByName
 import PloneFolder 
@@ -12,10 +12,12 @@ default_member_content = '''Default page for %s
   in the tabs along the top of this form.
 '''
 
-class MembershipTool(MembershipTool):
+class MembershipTool(DefaultMembershipTool):
     """ Plone customized Membership Tool """
     meta_type='Plone Membership Tool'
     plone_tool = 1
+
+    memberareaCreationFlag = 1
 
     def createMemberarea(self, member_id):
         """
