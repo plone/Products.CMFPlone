@@ -266,6 +266,7 @@
                            value=""
                            onfocus="formtooltip('change_status_help',1)" 
                            onblur="formtooltip('change_status_help',0)" 
+                           i18n:attributes="title"
                            tal:attributes="value transition/id;
                                            id    transition/id;
                                            title transition/name;
