@@ -238,6 +238,17 @@ pre {
 .pre a {
     text-decoration: underline;
 }
+
+ins {
+    color: green;
+    text-decoration: none;
+}
+
+del {
+    color: red;
+    text-decoration: line-through;
+}
+
 .netscape4 {
     display: none;
 }
