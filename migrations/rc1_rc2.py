@@ -16,9 +16,8 @@ def rc1rc2(portal):
     pg=PloneGenerator()
     sk_tool=getToolByName(portal, 'portal_skins')
     setup_skins=pg.setupSecondarySkin
-    #original
     setup_skins(sk_tool, 'Plone Core',          'plone_styles/core')
-    setup_skins(sk_tool, 'Plone Corporate',     'plone_styles/corporate') #formerly PloneXP
+    setup_skins(sk_tool, 'Plone Corporate',     'plone_styles/corporate') 
     #new for 1.0/RC2
     setup_skins(sk_tool, 'Plone Autumn',        'plone_styles/autumn')
     setup_skins(sk_tool, 'Plone Core Inverted', 'plone_styles/core_inverted')

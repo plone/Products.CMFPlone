@@ -25,22 +25,6 @@ class DefaultCustomizationPolicy:
             
         p=getattr(portal.portal_properties, id)
         
-        #First we will deal with the CMF defaults.  This is ugly!
-        pid='email_from_address'
-        if not p.hasProperty(pid):  
-            p._setProperty(pid, portal[pid], 'string')
-            if hasattr(portal, pid):
-                portal._delProperty(pid)    
-        pid='email_from_name'
-        if not p.hasProperty(pid): 
-            p._setProperty(pid, portal[pid], 'string')
-            if hasattr(portal, pid):
-                portal._delProperty(pid)
-        pid='validate_email'
-        if not p.hasProperty(pid): 
-            p._setProperty(pid, portal[pid], 'boolean')
-            if hasattr(portal, pid):
-                portal._delProperty(pid)
         #Now we add the lagniappe
         if not hasattr(p,'allowAnonymousViewAbout'): p._setProperty('allowAnonymousViewAbout', 1, 'boolean')
         if not hasattr(p,'localTimeFormat'): p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
