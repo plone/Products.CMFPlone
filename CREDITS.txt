@@ -80,7 +80,9 @@ contributed code.
   Paul Everitt (ev) -- PR, help, advice and enthusiasm 
   - "Zope Europe":http://www.zope-europe.org
   
-  Christian Heimes (Tiran) -- Bug hunting 'till dawn and small improvements
+  Christian Heimes (Tiran) -- Bug hunting 'till dawn and small improvements.
+  
+  Michael Haubenwallner -- Small column hide script.
 
 Companies (in randomized order):
 
