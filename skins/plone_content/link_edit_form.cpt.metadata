@@ -1,6 +1,9 @@
 [default]
 title=Edit Link
 
+[security]
+View=0:Authenticated
+
 [validators]
 validators..Save = validate_id,validate_title,validate_link_edit
 validators..Cancel=

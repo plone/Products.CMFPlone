@@ -1,6 +1,9 @@
 [default]
 title=Edit File
 
+[security]
+View=0:Authenticated
+
 [validators]
 validators..Save=validate_id,validate_file_edit
 validators..Cancel=

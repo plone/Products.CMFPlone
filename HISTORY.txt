@@ -21,6 +21,11 @@ Plone 2.0 - Fyuti
     - Added the Creator/Modified indicator to the edit forms too.
       [limi]
 
+    - Added security checks for viewing the view forms. There was no 
+      security problem, since you couldn't save the document, but now we 
+      also check that you are logged in, so you can't invoke the URL 
+      directly to look at the edit form anymore either.
+
    RC5
 
     - Removed false 'required' indicators for Title attribute on file/image
