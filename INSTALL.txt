@@ -1,59 +1,248 @@
-For nicer install docs, try http://plone.org/documentation. They are more up to
-date, and have nice and funky pictures to go with them ;)
+mproved docs: 
 
-**REQUIREMENTS**
+=============================================================================== 
+**SUMMARY** 
 
-  - "Zope 2.6.2 or later":http://www.zope.org/Products
+  1) Download and install Zope2.6.2 or later 
+  2) Download and install CMF1.4.2 or later 
+  3) Download and install CMFPlone 
 
-  - "CMF 1.4.2 or later":http://cmf.zope.org
+  For alternative install docs, try http://plone.org/documentation. They may be 
+  more up to date date, and have useful illustrations to go with them. 
+   
+   
+=============================================================================== 
 
-  - "Formulator 1.4.0 or later":http://www.zope.org/Members/faassen/Formulator
 
-  - "CMFActionsIcons":http://cvs.zope.org/Products/CMFActionIcons/ (get tarball)
+**ASSUMPTIONS** 
 
-  - "CMFQuickInstallerTool":http://sf.net/projects/collective
+  1) You are running a *nix server 
+  2) You are comfortable with standard Unix commands, including 
+     * wget or cvs 
+     * tar 
+     * symlinking 
+  3) You are familiar with logging into the Zope Management Interface 
 
-  - "GroupUserFolder 1.32 or later":http://sf.net/projects/collective
- 
-  - "BTreeFolder2":http://cvs.zope.org/Products/BTreeFolder2/ (get tarball)
- 
-  - "CMFFormController":http://sf.net/projects/collective
 
-  - (optional, but recommended) 
-    "ExternalEditor 0.6 or later":http://www.zope.org/Members/Caseman/ExternalEditor
+=============================================================================== 
 
-  - "DCWorkflow":http://cvs.zope.org/Products
 
-  - "Placeless Translation Service":http://www.sourceforge.net/projects/collective
-    - Plone runs without this, but if you want 
-      multilingual interface or access keys, you must download it.
+**REQUIREMENTS** 
 
-**The installation procedure:**
+  **MANDATORY** 
+   
+  - "Zope 2.6.2 or later": 
+     http://www.zope.org/Products 
+     http://zope.org/Products/Zope/2.6.4rc1 
 
-- Install Zope
+  - "CMF 1.4.2 or later": 
+     http://cmf.zope.org/download 
+     http://cmf.zope.org/download/CMF-1.4.2/CMF-1.4.2.tar.gz 
 
-- Unpack the CMF directories (CMFCore, CMFDefault etc) into your Products 
-  directory. Note: when you unpack the CMF, you will get a folder like CMF-xxxx 
-  where x is the version. You need the contents of that directory.
+  - "DCWorkflow" 
+     Normally part of the CMF tarball 
+     http://cvs.zope.org/Products/DCWorkflow/ 
+     http://cvs.zope.org/Products/DCWorkflow/DCWorkflow.tar.gz?tarball=1 
 
-- Unpack the *contents* of your Plone directory into your Products directory 
-  (also include the other products inside the dir in addition to CMFPlone).
+  - "Formulator 1.4.0 or later": 
+     Normally part of the Plone tarball 
+     http://www.zope.org/Members/infrae/Formulator 
+     http://zope.org/Members/infrae/Formulator/Formulator-1.6.1/Formulator-1.6.1.tgz 
 
-- Unpack all the other Products listed above into your Products dir
+  - "CMFActionsIcons": 
+     Normally part of the Plone tarball 
+     http://cvs.zope.org/Products/CMFActionIcons/ 
+     http://cvs.zope.org/Products/CMFActionIcons/CMFActionIcons.tar.gz?tarball=1 
 
-- Start Zope
+  - "CMFQuickInstallerTool": 
+     Normally part of the Plone tarball 
+     http://sf.net/projects/collective 
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78893 
+     http://prdownloads.sourceforge.net/collective/CMFQuickInstallerTool_1.4.tgz?download 
 
-- From /manage interface there should be a 'Select Type to Add' that says
-  Plone Site.  Click on that, fill in information and voilá!
+  - "GroupUserFolder 1.32 or later": 
+     Normally part of the Plone tarball 
+     http://sf.net/projects/collective 
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=81576 
+     http://prdownloads.sourceforge.net/collective/GroupUserFolder-1.32.tar.gz?download 
+  
+  - "BTreeFolder2": 
+     Normally part of the Plone tarball 
+     http://cvs.zope.org/Products/BTreeFolder2/ 
+     http://cvs.zope.org/Products/BTreeFolder2/BTreeFolder2.tar.gz?tarball=1 
+  
+  - "CMFFormController": 
+     Normally part of the Plone tarball 
+     http://sf.net/projects/collective 
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=90836 
 
-- This means that installation of Plone was successful. Go to the front page, 
-  and have a look at your new Plone site.
+------------------------------------------------------------------------------- 
 
-- If you want to set up translations for your Plone site, make sure you have 
-  the PlacelessTranslationService installed. Plone comes with a lot of
-  language files, have a look in the i18n directory.
+  **OPTIONAL BUT USEFUL** 
+   
+  - "ExternalEditor 0.6 or later": 
+     The ExternalEditor is a Zope product and configurable helper application that  
+     allows you to drop into your favorite editor(s) directly from the ZMI to modify  
+     Zope objects. 
+     http://www.zope.org/Members/Caseman/ExternalEditor 
+   
+   - "Placeless Translation Service": 
+      Normally part of the Plone tarball 
+      Required to support multilingual interface and access keys. Note that it is 
+      a bzip file, not gzip. 
+      http://plone.org/development/i18n/existing-translations 
+      http://www.sourceforge.net/projects/collective 
+      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=91854 
+      http://sourceforge.net/project/shownotes.php?release_id=190716 
+       
+    - "I18NLayer": 
+       Supports multiple translations of Content 
+       http://www.sourceforge.net/projects/collective 
+       http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=91583    
+       
+    - "CMFSin": 
+       Supports inbound syndication of RSS and RDF 
+       http://sourceforge.net/projects/collective 
+       http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78774 
+        
+    - "PloneCollectorNG": 
+       Provides issue tracking 
+       http://sourceforge.net/projects/collective 
+       http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=96051 
+     
+    - "Archetypes": 
+       Enables the easy creation of new content types. It's a prerequisite for an 
+       increasing number of new Plone products 
+       http://sourceforge.net/projects/archetypes/ 
+       http://sourceforge.net/project/showfiles.php?group_id=75272&package_id=75683 
+        
+    - "CMFNewsletter": 
+       Enables you to send out newsletters of site content 
+       http://plone.org/newsitems/News_Item.2004-01-23.6802201272 
+       http://sourceforge.net/projects/collective 
+       http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=107732 
 
-- Have fun, and don't forget to report any bugs or inconsistencies in the 
-  "Plone Collector":http://plone.org/collector
 
-Thank you for helping us improve Plone!
+=============================================================================== 
+
+
+ **INSTALLATION PROCEDURE:** 
+
+
+------------------------------------------------------------------------------- 
+
+1. Install Zope and start it, and check it's running. 
+
+------------------------------------------------------------------------------- 
+
+2. Find your instance's Products directory. The location of this varies from 
+   system to system, so to avoid hunting for it, go to the Zope Management  
+   Interface (ZMI) Control Panel in your Zope's root, which will likely be at  
+   one of the following URLs 
+   
+   http://yourhost:8080/Control_Panel/manage_main 
+   http://yourhost:9673/Control_Panel/manage_main (if you're using Debian) 
+   http://yourhost/Control_Panel/manage_main (if you're proxying through a front 
+  end webserver) 
+   
+   This page will tell you your INSTANCE_HOME. There is a Products folder in each  
+   site's INSTANCE_HOME folder. This is the best place to install add-on Products  
+   for a site. 
+
+      $SOFTWARE_HOME/Products folder 
+
+   Sometimes a Product's documentation will instruct you to install it in  
+   SOFTWARE_HOME/Products.  SOFTWARE_HOME refers to the lib/python sub-folder of  
+   the Zope folder. We strongly discourage installing packages in these places for  
+   two reasons: 
+
+    * These folders affect all Plone 2 sites using that version of Zope. 
+    * If you reinstall Plone 2 or a newer version of Plone 2, Zope will 
+      be replaced. 
+
+   Any time you're asked to place packages into a Products folder, choose 
+   the INSTANCE_HOME/Products folder instead. Thank you! 
+
+------------------------------------------------------------------------------- 
+
+3. Unpack the CMF tarball, normally with the command 
+   
+    tar xfz CMF-1.4.2.tar.gz 
+
+   The unpacked tarball will be a directory named CMF-xxxx where xxxx is the version,  
+   and should contain the following subdirectories: 
+   
+    * CMFCalendar 
+    * CMFCore 
+    * CMFDefault 
+    * CMFTopic 
+    * DCWorkflow 
+   (correct for CMF1.4.2 but may vary for other versions) 
+   
+  as well as documentation. Move (or symlink) these subdirectories into your 
+  $INSTANCE_HOME/Products directory.  
+   
+  ***************************************************************************** 
+  * Note that each of these is a Product in its own right and *must* be       * 
+  * directly within $INSTANCE_HOME/Products. If you just move the entire CMF  * 
+  * directory into $INSTANCE_HOME/Products, your Zope Instance will *not* be  * 
+  * able to find these required products, and you will not be able to run     * 
+  * Plone.                                                                    * 
+  ***************************************************************************** 
+
+  It's probably A Good Idea at this point to restart your Zope to load these 
+  Products, then test that they have installed correctly. You can do this by 
+  logging into the ZMI - you should have  
+   
+    1) The CMF Products (CMFCalendar etc) listed in the Products section of the 
+       Control_Panel 
+    2) "CMF Site" as one of the options in the "Add" dropdown in the ZMI Root 
+       Folder 
+
+------------------------------------------------------------------------------- 
+
+4. Unpack the Plone tarball 
+
+   Like the CMF tarball, the results will be a directory named CMFPlone-xxxx where 
+   xxxx is the version. This should contain the following subdirectories: 
+    
+     BTreeFolder2                    CMFQuickInstallerTool 
+     CMFActionIcons                  Formulator 
+     CMFFormController               GroupUserFolder 
+     CMFPlone                        PlacelessTranslationService 
+   
+  As with the CMF subdirectories, move (or symlink) each of these subdirectories 
+  into your $INSTANCE_HOME/Products directory. 
+
+  ***************************************************************************** 
+  * Note that each of these is a Product in its own right and *must* be       * 
+  * directly within $INSTANCE_HOME/Products. If you just move the entire CMF  * 
+  * directory into $INSTANCE_HOME/Products, your Zope Instance will *not* be  * 
+  * able to find these required products, and you will not be able to run     * 
+  * Plone.                                                                    * 
+  ***************************************************************************** 
+
+  It's probably A Good Idea at this point to restart your Zope to load these 
+  Products, then test that they have installed correctly. You can do this by 
+  logging into the ZMI - you should have  
+   
+    1) The Plone Products (BTreeFolder2 etc) listed in the Products section of  
+       the Control_Panel 
+    2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI Root 
+       Folder 
+  
+  Complete the install test by adding a Plone Site. A correctly installed Plone  
+  should ask you to complete a form, specifying the site's Id, Title, Description  
+  and where your members' user folder should be. Complete these fields and hit 
+  the "Add Plone Site" button. After a short while, you should be looking at a 
+  basic Plone site containing the details you entered. 
+
+------------------------------------------------------------------------------- 
+
+5. Unpack any the other Productsinto your Products dir, restart Zope and test. 
+
+=============================================================================== 
+Have fun, and don't forget to report any bugs or inconsistencies in the 
+"Plone Collector":http://plone.org/collector 
+
+Thank you for using Plone! 
