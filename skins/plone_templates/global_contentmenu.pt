@@ -19,6 +19,7 @@
             <li tal:define="Title ctype/Title;Id ctype/getId"
                 tal:condition="python:test(Id not in filterOut, 1, 0)">
                 <a href="#" 
+                   onMouseUp="if (activeButton != null) resetButton(activeButton);"
                    tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
                    tal:attributes="href python:folder.absolute_url()+'/createObject?type_name='+Id">
                   <img src="folder.gif" 
@@ -59,6 +60,7 @@
             <tal:block repeat="transition transitions">
             <li>
                 <a href="#"
+                   onMouseUp="if (activeButton != null) resetButton(activeButton);" 
                    i18n:translate=""
                    tal:content="transition/name"
                    tal:attributes="href string:${here/absolute_url}/content_status_modify?workflow_action=${transition/id}">File Menu Item 1</a>

@@ -1,3 +1,7 @@
+// Do *NOT* depend on this menu code, it *will* be rewritten in later versions
+// of Plone. This is a quick fix that will be replaced with something more
+// elegant later.
+
 /*
 <dtml-let last_modified="_.DateTime()-14"
 expires="_.DateTime()+7" >
