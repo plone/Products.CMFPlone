@@ -1,5 +1,7 @@
-<html tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone" tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                   tabindex python:Iterator();">
+
 
 <head metal:define-macro="html_header"
       tal:define="global portal_url portal_url|here/portal_url;

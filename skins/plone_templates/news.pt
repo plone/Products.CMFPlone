@@ -6,7 +6,7 @@
   <metal:block fill-slot="head_slot"
                tal:define="dummy python:request.set('disable_border', 1)"
                />
-
+<body>
 <div metal:fill-slot="main"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
                  Batch python:modules['Products.CMFPlone'].Batch;
@@ -105,5 +105,5 @@
 
   </div>
 
-
+</body>
 </html>

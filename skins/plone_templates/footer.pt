@@ -1,4 +1,7 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
 
+<body>
 
 <div id="footer" metal:define-macro="portal_footer" i18n:domain="plone"
      tal:define="portal_url here/portal_url">
@@ -13,4 +16,5 @@ by
  
 </div>
 
- 
+</body>
+</html>

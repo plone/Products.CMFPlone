@@ -1,3 +1,8 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
+
+<body>
+
 <div id="colophon" metal:define-macro="colophon" i18n:domain="plone">
 <!-- 
      
@@ -85,3 +90,5 @@
  
 </div>
 
+</body>
+</html>

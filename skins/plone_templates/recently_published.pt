@@ -6,6 +6,7 @@
   <metal:block fill-slot="head_slot"
                tal:define="dummy python:request.set('disable_border', 1)"
                />
+<body>
 
 <div metal:fill-slot="main"
      tal:define="results python:container.portal_catalog(sort_on='modified',sort_order='reverse',review_state='published');
@@ -73,5 +74,6 @@
 
   </div>
 
+</body>
 
 </html>
