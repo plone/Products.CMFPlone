@@ -31,10 +31,10 @@
 
         <thead>
             <tr>
-                <th>&nbsp;<tal:block i18n:translate="">Title</tal:block>&nbsp;</th>
-                <th>&nbsp;<tal:block i18n:translate="">Type</tal:block>&nbsp;</th>
-                <th>&nbsp;<tal:block i18n:translate="">Last Modified</tal:block>&nbsp;</th>
-                <th>&nbsp;<tal:block i18n:translate="">Description</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="heading_title">Title</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="heading_type">Type</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="heading_last_modified">Last Modified</tal:block>&nbsp;</th>
+                <th>&nbsp;<tal:block i18n:translate="heading_description">Description</tal:block>&nbsp;</th>
             </tr>
         </thead>
 
