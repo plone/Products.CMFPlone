@@ -57,7 +57,9 @@
     - CMFTopics pretty much work, there is a bit more work to do.
     - personalize.py and other CMF1.3 issues have been resolved (setting a member properties API has changed in 1.2->1.3)
     - showEditableBorder has gone through quite a bit of changes.. still is wrong
-    - Lucas Marshall pointed out a javascript error on MacOSX and a fix
+    - Comments have been modified - they are still unuseable ;(
+    - Lucas Marshall pointed out a javascript error in the calendar slot on MacOS and a fix 8)
+    - News items can now use structured-text in the edit_form
     - many more changes and cleanups
 
 0.9.8 - Ulrich Schnauss Release:
