@@ -74,7 +74,7 @@ def _installLocalizer(plone):
     lObj = plone._getOb(lName)
 
     # nuke out the accept_path
-    lObj.accept_methods = 'accept_cookie'
+    lObj.accept_methods = ['accept_cookie',]
 
     # ok so now we should have valid localizer
     # and translation service objects...
