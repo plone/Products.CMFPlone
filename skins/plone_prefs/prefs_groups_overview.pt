@@ -83,7 +83,9 @@
                           groups python:here.prefs_user_group_search(searchstring, 'groups');
                           batch python:Batch(groups, b_size, int(b_start), orphan=1)">
 
-            <table class="listing">
+          <input type="hidden" value="b_start" name="b_start" 
+	             tal:attributes="value b_start"/>
+           <table class="listing">
                    
                 <tr>
                     <th colspan="6">

@@ -13,7 +13,7 @@
     tal:define="errors python:request.get('errors', {});
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
-                b_size python:15;
+                b_size python:20;
                 acl_users here/acl_users;">
 
 <div class="configlet">
@@ -93,6 +93,8 @@
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
 
         <input type="hidden" value="1" name="came_from_prefs" />
+        <input type="hidden" value="b_start" name="b_start" 
+               tal:attributes="value b_start"/>
             <table class="listing">
                 <tr>
                     <th colspan="4">

@@ -22,6 +22,5 @@ for group in groups:
 delete=REQUEST.get('delete',[])
 groupstool.removeGroups(delete)
 
-url='%s?%s' % (REQUEST.HTTP_REFERER,
-               'portal_status_message=Changes+made.')
-return REQUEST.RESPONSE.redirect(url)
+portal_status_message="Changes made"
+return state.set(portal_status_message=portal_status_message)

@@ -14,7 +14,7 @@
           tal:attributes="action here/absolute_url"
 	  tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                       b_start request/b_start | python:0;
-                      b_size python:15;
+                      b_size python:20;
                       searchstring request/searchstring | nothing;
 	              searchonly searchonly | nothing;
                       results python:here.prefs_user_group_search(searchstring, searchonly);
@@ -99,6 +99,9 @@
         </table>
 
 	<p tal:condition="not:batch" i18n:translate="text_nomatches">No matches</p>
+
+    <input type="hidden" value="b_start" name="b_start" 
+           tal:attributes="value b_start"/>
 
 	<div metal:use-macro="here/batch_macros/macros/navigation" />
 	
