@@ -110,7 +110,7 @@
                         
                         <a href="" 
                            tal:condition="python: sibling.meta_type == 'CMF Site'"
-                           tal:define="url string:${sibling/absolute_url}"
+                           tal:define="url string:${sibling/absolute_url}/${stdCommand}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');">
                            
