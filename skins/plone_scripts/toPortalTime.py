@@ -9,21 +9,12 @@
 ##
 #given a time string convert it into a DateTime and then format it appropariately
 from DateTime import DateTime
-format='%m/%d/%Y %I:%M %p'
-
-if time is None:
+format=context.portal_properties.localTimeFormat
+portal_time=None
+if time is None: 
     time=DateTime()
-
-proper_format=DateTime().strftime(format)
-if same_type(time, ''): #best effort
-    try:
-        proper_format=DateTime(str(time)).strftime(format)
-    except:
-        proper_format=time
-elif isinstance(time, DateTime):
-    proper_format=time.strftime(format)
-else:
-    proper_format=time
-
-return proper_format
-
+try:
+    portal_time=DateTime(str(time)).strftime(format)
+except:
+    portal_time=time
+return portal_time

@@ -69,6 +69,7 @@ def addSupportOptions(self, outStream):
     skinstool.allow_any=1 #allow people to arbitrarily select skins
     
     portal._setProperty('allowAnonymousViewAbout', 0, 'boolean')
+    portal._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
     outStream.write( "By default anonymous is not allowed to see the About box \n" )
 
 def loadEmergingExample(self, outStream):
