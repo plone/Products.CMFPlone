@@ -23,6 +23,7 @@ Plone 1.0 beta3
       with PortalFolder.  Since it does not provide a suppressHiddenFiles arg we will
       manually apply the suppression in the script.
       navtree_builder has been modified as well so that we will not show these in the navigation tree
+    - added verifyPermission argument in MembershipTool.py according to Issue 551 thanks to mitja
 
     *NOTE*
     We released a beta3 tarball and then decided to fix the above before a final beta3 tarball release

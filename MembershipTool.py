@@ -1,4 +1,4 @@
-from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
 from Acquisition import aq_base
@@ -23,7 +23,7 @@ class MembershipTool( BaseTool ):
     portrait_id = 'MyPortrait'
     default_portrait = 'defaultUser.gif'
     
-    def getPersonalPortrait(self, member_id=None):
+    def getPersonalPortrait(self, member_id=None, verifyPermission=0):
         """
         returns the Portait for a member_id
         """
@@ -34,7 +34,8 @@ class MembershipTool( BaseTool ):
             portrait=getattr( personal
                             , self.portrait_id
                             , None )
-
+            if verifyPermission and not _checkPermission('View', portrait):
+                return None
         if portrait is None:
             portal = getToolByName(self, 'portal_url').getPortalObject()
             portrait = getattr(portal, default_portrait)
