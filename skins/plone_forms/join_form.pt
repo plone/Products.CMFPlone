@@ -197,7 +197,7 @@
                        tal:attributes="checked python:test(mail_me, 'checked', '');
                                        tabindex tabindex/next;" 
                        />
-                <label for="cb_mailme">Yes, mail me my password</label>
+                <label for="cb_mailme" i18n:translate="">Yes, mail me my password</label>
             </div>
         </div>
 
@@ -215,6 +215,7 @@
                 <input class="context" 
                 type="submit"
                 tabindex="" 
+                i18n:translate=""
                 name="submit" 
                 value="Register"
                 tal:attributes="tabindex tabindex/next;">

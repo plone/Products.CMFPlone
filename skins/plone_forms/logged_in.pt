@@ -175,7 +175,7 @@
                 <h1 i18n:translate="">You are now logged in</h1>
                 
                 <p>
-                [<a href="" tal:attributes="href request/HTTP_REFERER">back to where you came from</a>]
+                [<a i18n:translate="" href="" tal:attributes="href request/HTTP_REFERER">back to where you came from</a>]
                 </p>
                 
                 <p i18n:translate="">
@@ -206,11 +206,11 @@
                    >set up your Preferences</a>.
 		        
                 
-                <p>
+                <p i18n:translate="">
                 We wish you a pleasant stay here.
                 If you have any questions or comments, visit the 
-                <a href="help">Help section</a> or
-                <a href="mailto:admin@here.com" title="Email Admin"
+                <a href="help" i18n:translate="">Help section</a> or
+                <a href="mailto:admin@here.com" i18n:translate="" title="Email Admin"
                 tal:attributes="href string:mailto:${p_props/email_from_address}">
                 send us a mail</a>.
                 </p>	 

@@ -35,7 +35,7 @@
         to a &quot;snapshot&quot; of its state at a previous point in time. 
         </p>
 
-        <p>
+        <p i18n:translate="">
         Select one or more transactions below and then click on the &quot;Undo&quot;
         button to undo the transactions.  Note that even though a transaction
         is shown below, you will not be able to undo it if later transactions
@@ -48,7 +48,7 @@
                   tal:define="p batch/previous | nothing"
                   tal:condition="p"> 
     
-                <a href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
+                <a i18n:translate="" href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
                 &laquo;&nbsp;Newer&nbsp;transactions
                 </a>
     
@@ -58,7 +58,7 @@
                   tal:define="n batch/next | nothing"
                   tal:condition="n">
     
-                <a href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
+                <a i18n:translate="" href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
                 Older&nbsp;transactions&nbsp;&raquo;
                 </a>
             </span>
@@ -133,7 +133,7 @@
                   tal:define="p batch/previous | nothing"
                   tal:condition="p"> 
     
-                <a href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
+                <a i18n:translate="" href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
                 &laquo;&nbsp;Newer&nbsp;transactions
                 </a>
     
@@ -143,7 +143,7 @@
                   tal:define="n batch/next | nothing"
                   tal:condition="n">
     
-                <a href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
+                <a i18n:translate="" href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
                 Older&nbsp;transactions&nbsp;&raquo;
                 </a>
             </span>

@@ -40,7 +40,7 @@
               tal:condition="member"
               tal:attributes="action request/URL">
         
-            <span class="legend">Member Details</span>
+            <span class="legend" i18n:translate="">Member Details</span>
 		
             <div class="row"
 	         tal:define="error_email errors/email | nothing;
@@ -149,7 +149,7 @@
                            tal:condition="not: listed" 
                            />
                     
-                    <label for="cb_listed">Listed</label>
+                    <label for="cb_listed" i18n:translate="">Listed</label>
                     
                     <br />
                     
@@ -178,7 +178,7 @@
                            tal:condition="not: listed " 
                            />		   
                     
-                    <label for="cb_unlisted">Unlisted</label>
+                    <label for="cb_unlisted" i18n:translate="">Unlisted</label>
                 </div>
             </div>
 
@@ -221,7 +221,7 @@
                            tal:condition="not: formtooltips" 
                            />
                     
-                    <label for="cb_formtooltips">Yes</label>
+                    <label for="cb_formtooltips" i18n:translate="">Yes</label>
                     
                     <br />
                     
@@ -250,7 +250,7 @@
                            tal:condition="not: formtooltips" 
                            />		   
                     
-                    <label for="cb_noformtooltips">No</label>
+                    <label for="cb_noformtooltips" i18n:translate="">No</label>
                 </div>
             </div>
 
@@ -294,7 +294,7 @@
                            tal:condition="not: visible_ids" 
                            />
                     
-                    <label for="cb_visible_ids">Yes</label>
+                    <label for="cb_visible_ids" i18n:translate="">Yes</label>
                     
                     <br />
                     
@@ -323,7 +323,7 @@
                            tal:condition="not: visible_ids" 
                            />		   
                     
-                    <label for="cb_invisible_ids">No</label>
+                    <label for="cb_invisible_ids" i18n:translate="">No</label>
                 </div>
             </div>
 
@@ -402,6 +402,7 @@
                     <input class="context"
                            tabindex="" 
                            type="submit" 
+                           i18n:translate=""
                            value="Apply" 
                            tal:attributes="tabindex tabindex/next;" 
                            />

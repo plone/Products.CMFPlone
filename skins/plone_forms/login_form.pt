@@ -130,6 +130,7 @@ If you do not have an account here, head over to the <a href="join_form">registr
                    type="submit" 
                    name="submit" 
                    value="Sign in" 
+                   i18n:translate=""
                    tal:attributes="tabindex tabindex/next;" 
                    />
 
