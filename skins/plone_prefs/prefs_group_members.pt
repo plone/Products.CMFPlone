@@ -46,7 +46,7 @@
 <div id="documentContent"
      class="editableDocument"
      tal:condition="not:group | nothing">
-    <h1 i18n:translate="">Group Members</h1>
+	<h1 i18n:translate="">Group Members</h1>
 
     <p i18n:translate="label_no_group_specified">No group was specified.</p>
 
@@ -59,42 +59,33 @@
      tal:condition="group | nothing">
 
     <h1 i18n:translate="">Members of the <tal:group content="groupname">Groupname</tal:group> Group</h1>
-
+	
     <p i18n:translate="">
     You can add or remove users from this particular group here. Note that this
     doesn't actually delete the user, it is only removed from this group.
     </p>
 
 
-    <h2 i18n:translate="">
-    Search for New Group Members
-    </h2>
+	<h2>Search for new group members</h2>
+	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
+	  <metal:block metal:fill-slot="hiddens">
+	    <input type="hidden" name="groupname" value="groupname" tal:attributes="value group/getGroupName" />
+	  </metal:block>
 
-    <div metal:use-macro="here/prefs_search_macros/macros/search">
-         <span metal:fill-slot="hiddens">
+	  <metal:block metal:fill-slot="actions" >
+	    <input class="context"
+                   tabindex=""                                 
+               	   type="submit"                               
+               	   name="prefs_group_members_edit:method"
+               	   value="Add selected users to this group"
+	       	   tal:condition="batch" 
+               	   tal:attributes="tabindex tabindex/next;"    
+               	   i18n:attributes="value" />
+	  </metal:block>
 
-         <input type="hidden" name="groupname" value="groupname"
-		tal:attributes="value group/getGroupName" />
-
-	 </span>
-    </div>
-
-    <div metal:use-macro="here/prefs_search_macros/macros/display">
-         <span metal:fill-slot="hiddens">
-
-         <input type="hidden" name="groupname" value="groupname"
-		tal:attributes="value group/getGroupName" />
-
-	 </span>
-
-      <div metal:fill-slot="removables">
-
-        <h2 i18n:translate="">
-        Current Group Members
-        </h2>
-
-       <table class="listing">
-
+	  <metal:block metal:fill-slot="removables">
+        <h2 i18n:translate="">Current Group Members</h2>
+	<table class="listing">
             <tr>
                 <th i18n:translate="listingheader_user_name">User name</th>
                 <th i18n:translate="listingheader_email_address">E-mail Address</th>
@@ -143,14 +134,9 @@
                name="prefs_group_members_edit:method"
                value="Delete selected users"
                i18n:attributes="value" />
-	  </div>
-
+	  </metal:block>
 	</div>
-
-</div>
-
-</div>
-
-</body>
+      </div>
+    </div>
+  </body>
 </html>
-

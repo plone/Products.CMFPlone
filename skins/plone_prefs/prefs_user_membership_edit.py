@@ -14,7 +14,7 @@ for groupname in delete:
     group = context.portal_groups.getGroupById(groupname)
     group.removeMember(userid)
 
-add = REQUEST.get('id', [])
+add = REQUEST.get('add', [])
 for groupname in add:
     group = context.portal_groups.getGroupById(groupname)
     group.addMember(userid)

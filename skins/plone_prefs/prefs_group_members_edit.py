@@ -14,7 +14,7 @@ delete = REQUEST.get('delete', [])
 for u in delete:
     group.removeMember(u)
 
-add = REQUEST.get('id',[])
+add = REQUEST.get('add',[])
 for u in add:
    group.addMember(u)
 

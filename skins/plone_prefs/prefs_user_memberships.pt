@@ -10,11 +10,9 @@
 
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="userid python:request.get('userid', member.getId());
-                user python:mtool.getMemberById(userid);
+                member python:mtool.getMemberById(userid);
                 mdata here/portal_memberdata;
                 errors python:request.get('errors', {});
-                Batch python:modules['ZTUtils'].Batch;
-                b_start python:request.get('b_start',0);
 		searchonly string:groups;
 		takeaction string:prefs_user_membership_edit;"
      tal:condition="here/rejectAnonymous" >
@@ -41,30 +39,29 @@
 <div id="documentContent"
      class="editableDocument">
 
-    <h1 i18n:translate="">Group Memberships for <span tal:replace="string: ${user/getId}"/></h1>
+    <h1 i18n:translate="">Group Memberships for <span tal:replace="string:${member/getUserName}"/></h1>
 
-    <div metal:use-macro="here/prefs_search_macros/macros/search">
-         <span metal:fill-slot="hiddens">
+	
+	<h2>Search for new groups</h2>
+	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
+	  <metal:block metal:fill-slot="hiddens">
+	    <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />
+	  </metal:block>
 
-        <input type="hidden" name="userid" value="userid"
-		tal:attributes="value user/getId" />
+	  <metal:block metal:fill-slot="actions" >
+	    <input class="context"
+                   tabindex=""                                 
+               	   type="submit"                               
+               	   name="prefs_user_membership_edit:method"
+               	   value="Add user to selected groups"                     
+	       	   tal:condition="batch" 
+               	   tal:attributes="tabindex tabindex/next;"    
+               	   i18n:attributes="value" />
+	  </metal:block>
 
-	 </span>
-    </div>
+	  <metal:block metal:fill-slot="removables">
 
-    <div metal:use-macro="here/prefs_search_macros/macros/display">
-         <span metal:fill-slot="hiddens">
-
-        <input type="hidden" name="userid" value="userid"
-		tal:attributes="value user/getId" />
-
-	 </span>
-
-      <div metal:fill-slot="removables">
-        <h3 i18n:translate="">
-        Current Group Memberships
-        </h3>
-
+	<h2>Current Group Memberships</h2>
 	<table class="listing">
 
             <tr>
@@ -72,7 +69,7 @@
 	      <th i18n:translate="listingheader_group_remove">Remove Group</th>
             </tr>
 
-	  <tr tal:repeat="groupid user/getGroups" class="odd">
+	  <tr tal:repeat="groupid member/getGroups" class="odd">
 	      <tal:block tal:define="group python:here.portal_groups.getGroupById(groupid);
 		                     groupname group/getGroupName">
             <td>
@@ -96,15 +93,13 @@
 
         </table>
 
-        <input class="destructive"
-               type="submit"
-               name="deleteaction"
-               value="Remove selected groups"
-               i18n:attributes="value" />
-	  </div>
-
+	    <input class="destructive"
+	           type="submit"
+	           name="prefs_user_membership_edit:method"
+                   value="Remove selected groups"
+                   i18n:attributes="value" />
+	  </metal:block>
 	</div>
-
       </div>
     </div>
   </body>

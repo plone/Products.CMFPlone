@@ -4,139 +4,104 @@
 	</head>
 	<body>
 
-<div metal:define-macro="search">
-<form action=""
-          name="groupsearch"
+    <div metal:define-macro="user_group_search">
+      <form action=""
+          name="groups"
           method="post"
-          tal:attributes="action string:${request/URL}"
-	  tal:define="b2_start python:request.get('b_start',0);
-		searchstring request/searchstring | nothing;
-		searchfor searchonly | request/searching | nothing;">
+          tal:attributes="action here/absolute_url"
+	  tal:define="Batch python:modules['Products.CMFPlone'].Batch;
+                      b_start request/b_start | python:0;
+                      b_size python:15;
+                      searchstring request/searchstring | nothing;
+	              searchonly searchonly | nothing;
+                      results python:here.prefs_user_group_search(searchstring, searchonly);
+                      batch python:Batch(results, b_size, int(b_start), orphan=1)">
 
-	<span metal:define-slot="hiddens">
-        <input type="hidden" name="userid" value="userid"
-		tal:attributes="value user/getId" />
-        </span>
+	<span metal:define-slot="hiddens" />
+	
+        <table class="listing">
+	  <tr>
+	    <th colspan="6">
+	      <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
+                    <input class="quickSearch"
+                           tabindex=""
+                           type="text"
+                           name="searchstring"
+                           value=""
+                           tal:attributes="value searchstring;
+		                           tabindex tabindex/next;"
+                           />
+                
+                    <input type="hidden" name="searchonly" value="groups" />
+                    <input type="submit"
+                           name="prefs_user_group_search_form"
+                           value="Search"
+                           tabindex=""
+                           i18n:attributes="value"
+                           tal:attributes="name string:${template/id}:method;
+		                           tabindex tabindex/next;" />
 
-        <span omit-tag="" i18n:translate="label_show_me">Show me</span>
+	    </th>
+	  </tr>
+	  <tr>
+	    <th tal:condition="takeaction | nothing">&nbsp;</th>
+	    <th i18n:translate="listingheader_group_name">Name</th>
+	  </tr>
 
-        <select name="searching"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
-		tal:condition="python: not here.prefs_valid_search_restriction(searchonly)">
-            <option value="both" i18n:translate="">Users and groups</option>
-            <option value="users" i18n:translate="">Users</option>
-            <option value="groups" i18n:translate="">Groups</option>
-        </select>
-	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['users'])"
-              tal:omit-tag=""
-              i18n:translate="">Users</span>
-	<span tal:condition="python: here.prefs_valid_search_restriction(searchonly,['groups'])"
-              tal:omit-tag=""
-              i18n:translate="">Groups</span>
+	  <tr tal:condition="not:batch">
+	    <td colspan="6">No matches</td>
+	  </tr>
 
-        <span omit-tag=""
-              i18n:translate="label_names_containing">with names containing</span>
+	  <tal:block repeat="obj batch">
 
-        <input tabindex=""
-               type="text"
-               name="searchstring"
-               value=""
-               tal:attributes="tabindex tabindex/next;" />
-        <input class="context"
-               tabindex=""
-               type="submit"
-               name="search"
-               value="Search"
-               tal:attributes="tabindex tabindex/next;"
-               i18n:attributes="value" />
-</form>
+            <tr tal:define="oddrow repeat/obj/odd"
+	        tal:attributes="class python:test(oddrow,'odd','even')">
 
-</div>
+	      <td class="checkbox">
+                <input type="checkbox"
+                       class="noborder notify"
+                       name="add:list"
+                       value="value"
+		       tal:attributes="value obj/getGroupId | obj/getId" />
+	      </td>
 
-<div metal:define-macro="display">
-
-<form action=""
-          name="groupsearch"
-          method="post"
-          tal:attributes="action takeaction"
-	  tal:define="b2_start python:request.get('b_start',0);
-		searchstring request/searchstring | nothing;
-		searchfor searchonly | request/searching | nothing;">
-
-	<span metal:define-slot="hiddens">
-        <input type="hidden" name="userid" value="userid"
-		tal:attributes="value user/getId" />
-        </span>
-
-        <h4 i18n:translate="heading_candidates">Candidates</h4>
-	<span omit-tag="" i18n:translate="description_search_string"
-             >Search string</span>:
-        <span tal:content="request/searchstring | default"
-              i18n:translate="">none specified</span>
-        <table class="listing"
-               id="sortable"
-	       tal:condition="exists:request/searchstring"
-	       tal:define="searchresults python:Batch(here.prefs_user_group_search(searchstring, searchfor), 25, int(b2_start), orphan=1)">
-
-            <tr>
-                <th tal:condition="takeaction | nothing">&nbsp;</th>
-                <th i18n:translate="listingheader_name">Name</th>
-                <th i18n:translate="listingheader_type">Type</th>
-            </tr>
-
-	    <tr class="odd"
-		tal:repeat="usergroup searchresults"
-		tal:attributes="class python:repeat['usergroup'].even and 'even' or 'odd';">
-                <td tal:condition="takeaction | nothing">
-                <input class="noborder"
-			type="checkbox"
-			selected="selected"
-			name="id:list"
-			tal:attributes="value usergroup/getGroupId | usergroup/getId" />
-                </td>
-
-                <td>
-                <img src="user.gif" tal:condition="not:usergroup/getGroupName | nothing" />
-                <img src="group.gif" tal:condition="usergroup/getGroupName | nothing" />
-
-                <a href="" tal:condition="not:usergroup/getGroupName | nothing"
-			tal:attributes="href string:prefs_user_details?userid=${usergroup/getId}"
-			tal:content="usergroup/getUserName | default"
-                        i18n:translate="link_username_not_available">
-			username not available
-		</a>
-                <a href="" tal:condition="usergroup/getGroupName | nothing"
-			tal:attributes="href string:prefs_group_details?groupname=${usergroup/getGroupName}"
-			tal:content="usergroup/getGroupName | default"
+	      <td>
+		<tal:block tal:condition="obj/getGroupName | nothing">
+		  <img src="group.gif" />
+		  <a href="" tal:attributes="href string:prefs_group_details?groupname=${obj/getGroupName}"
+			tal:content="obj/getGroupName | default"
                         i18n:translate="link_groupname_not_available">
 			groupname not available
-		</a>
-		</td>
-
-                <td tal:condition="not:usergroup/getGroupName | nothing"
-                    i18n:translate="">User</td>
-                <td tal:condition="usergroup/getGroupName | nothing"
-                    i18n:translate="">Group</td>
-           </tr>
-
+		  </a>
+		</tal:block>
+		<tal:block tal:condition="not:obj/getGroupName | nothing">
+		  <img src="user.gif" />
+		  <a href="" tal:attributes="href string:prefs_user_details?userid=${obj/getId}"
+			tal:content="obj/getUserName | default"
+                        i18n:translate="link_username_not_available">
+			username not available
+		  </a>
+		</tal:block>
+	      </td>
+	    </tr>
+	  </tal:block>
         </table>
 
-	<tal:hide condition="takeaction | nothing">
+	<div metal:use-macro="here/batch_macros/macros/navigation" />
+	
+	<metal:block metal:define-slot="actions" >
         <input class="context"
                tabindex=""
                type="submit"
                name="addingaction"
                value="Use Selected..."
-	       tal:condition="exists:request/searchstring"
+	       tal:condition="batch"
                tal:attributes="tabindex tabindex/next;"
                i18n:attributes="value" />
-	</tal:hide>
+	</metal:block>
 
-	<div metal:define-slot="removables" />
-
-</form>
-
-</div>
-	</body>
+	<metal:block metal:define-slot="removables" />
+    </form>
+    </div>
+  </body>
 </html>
