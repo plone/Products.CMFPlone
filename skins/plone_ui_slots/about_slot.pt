@@ -1,0 +1,56 @@
+<!-- The About box -->
+
+<table metal:define-macro="aboutBox"
+       class="box"
+       summary="About" cellpadding="0" cellspacing="0">
+
+    <thead>
+        <tr><th>About</th><th class="empty">&nbsp;</th></tr>
+    </thead>
+
+    <tbody>
+        <tr class="odd">
+            <td colspan="2">
+
+            <img src="img/icons/folder.gif" alt=""
+                 tal:attributes="src here/getIcon;
+                 alt here/meta_type;" />&nbsp;<span tal:replace="python:here.getTypeInfo().Type()">Object type</span>
+            </td>
+        </tr>
+
+        <tr class="even">
+            <td colspan="2">
+
+            <strong>Created&nbsp;by:</strong> <br />
+            <a href="#" tal:content="here/Creator"
+                        tal:attributes="href python:here.portal_membership.getHomeUrl(here.Creator())">bob</a>
+            </td>
+        </tr>
+
+        <tr class="odd">
+            <td colspan="2">
+                <strong>Last&nbsp;modified:</strong> <br />
+                <span tal:replace="python:here.toPortalTime(here.ModificationDate())">
+                August 16, 2001 at 23:35:59
+                </span>
+            </td>
+        </tr>
+
+        <tr class="even">
+            <td colspan="2">
+                <strong>Status:</strong> <br />
+                <span class="private"
+                      tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state', '')"
+                      tal:content="review_state"
+                      tal:attributes="class review_state">
+                </span>
+
+                <span class="expired" tal:condition="python:container.isExpired(here)">
+                (expired)
+                </span>
+
+            </td>
+        </tr>
+    </tbody>
+
+</table>

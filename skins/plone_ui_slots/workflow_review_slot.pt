@@ -1,0 +1,37 @@
+<!-- The review box -->
+
+<table metal:define-macro="review_box"
+       class="box"
+       summary="Review listing"
+       cellpadding="0" cellspacing="0"
+       tal:define="DateTime python:modules['DateTime'].DateTime;
+                   results here/my_worklist;"
+       tal:condition="results" >
+
+    <thead>
+        <tr><th>Review List</th><th class="empty">&nbsp;</th></tr>
+    </thead>
+
+    <tbody tal:repeat="o results">
+
+        <tr tal:define="oddrow repeat/o/odd"
+            tal:attributes="class python:test(oddrow, 'odd','even')" class="#">
+
+            <td colspan="2"
+                tal:define="actions python:container.portal_actions.listFilteredActionsFor(o);">
+
+                <a href="#" tal:attributes="href python:container.getActionUrlById('view', actions['object'])">
+                    <span tal:replace="python:test(o.Title(), o.Title(), o.id)">
+                    Extended Calendar Product
+                    </span>
+                </a>
+
+                <div class="boxDetails"
+                     tal:content="python:DateTime(o.ModificationDate()).strftime('%B %d, %H:%M')">July 7, 08:11</div>
+            </td>
+
+        </tr>
+
+    </tbody>
+
+</table>

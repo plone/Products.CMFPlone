@@ -1,0 +1,64 @@
+<table metal:define-macro="navigationBox"
+       tal:define="isContainer here/isPrincipiaFolderish|nothing;
+                   parent_url python:here.navigationParent(here, template.getId());
+                   siblings here/navigationCurrent;
+                   showOtherNav python:0;
+                   showNav python:0;
+                   showOtherNav here/portal_url/CMFTopic_navigator | showNav;"
+       tal:condition="python:parent_url and not(showOtherNav)"
+       class="box"
+       summary="Navigation"
+       cellpadding="0"
+       cellspacing="0">
+
+    <thead>
+        <tr><th>Navigation</th><th class="empty">&nbsp;</th></tr>
+    </thead>
+
+    <tbody tal:define="listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
+                       notFolderContents python:test(template.getId()!='folder_contents', 1, 0);">
+        <tr class="odd">
+            <td colspan="2">
+            <strong tal:content="here/title_or_id">Current title</strong>
+            </td>
+        </tr>
+
+        <tr class="even" tal:condition="siblings">
+            <td colspan="2">
+            <div>
+                <strong>Other items</strong>
+                <span tal:repeat="sibling siblings">
+                    <a href="#" class="plain"
+                     tal:define="actions python:here.portal_actions.listFilteredActionsFor(sibling);
+                     action python:here.getActionUrlById('view', actions['object']);
+                     url python:test(action, action,sibling.absolute_url()+'/folder_contents');"
+                     tal:attributes="href url"><img src="" height="16" width="16" tal:attributes="src sibling/getIcon"/>&nbsp;<span tal:replace="sibling/title_or_id"/></a>
+                </span>
+            </div>
+            </td>
+        </tr>
+
+        <tr class="odd" tal:condition="parent_url">
+            <td colspan="2">
+                <a href="" tal:attributes="href parent_url">Up one level</a>
+            </td>
+        </tr>
+
+        <tr class="even"
+            tal:condition="python:test(listContentsPermission and notFolderContents, 1, 0)">
+            <td colspan="2"
+                tal:condition="notFolderContents">
+                <a href="folder_contents">Editor view</a>
+            </td>
+        </tr>
+
+        <tr class="even"
+            tal:condition="not: notFolderContents">
+            <td colspan="2" >
+                <a href="">Ordinary view</a>
+            </td>
+        </tr>
+
+    </tbody>
+
+</table>

@@ -142,33 +142,35 @@
 
     </form>
 
-    <div class="group">
+    <div class="group"
+         tal:define="review_history python: here.reverseList(review_history)">
 
         <span class="legend">History</span>    
 
          <div class="row"
-              tal:repeat="items python: here.reverseList(review_history)">
+              tal:repeat="items review_history">
     
-            <span tal:define="global odd repeat/items/odd; global rhComments items/comments;"
-                   tal:replace="nothing" />
+           <metal:block tal:define="global odd repeat/items/odd; global rhComments items/comments;"
+	                tal:condition="items/action"> 
+              <span class="label"> 
+                 <span tal:replace="items/action" /> 
+              </span>
             
-            <span class="label"> 
-                <span tal:replace="items/action" /> 
-             </span>
-            
-            <span class="field">
-                was performed by <span tal:replace="items/actor" /> 
-                on <span tal:replace="python: items['time'].aCommon()" />
-                <span tal:condition="items/effective_date|nothing">
-                (effective: 
-                <span tal:replace="python: items['effective_date'].aCommon()"></span>)
-                </span>
-            </span>
+              <span class="field">
+                  was performed by <span tal:replace="items/actor" /> 
+                  on <span tal:replace="python: items['time'].aCommon()" />
+                  <span tal:condition="items/effective_date|nothing">
+                  (effective: 
+                  <span tal:replace="python: items['effective_date'].aCommon()"></span>)
+                  </span>
+              </span>
               
-            <span class="info">
-                <strong>Comment:</strong>
-                <span tal:replace="rhComments" />
-            </span>
+              <span class="info">
+                  <strong>Comment:</strong>
+                  <span tal:replace="rhComments" />
+              </span>
+	    </metal:block>
+	   
         </div>
 
     </div>

@@ -1,0 +1,35 @@
+<!-- The Favorites Box -->
+
+<table metal:define-macro="favoritesBox"
+       tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None)"
+       tal:condition="folder"
+       class="box" summary="Favorites" cellpadding="0" cellspacing="0">
+
+    <thead>
+        <tr><th>My&nbsp;Favorites</th><th class="empty">&nbsp;</th></tr>
+    </thead>
+
+
+    <tbody>
+        <tr class="odd">
+            <td colspan="2">
+
+                <strong>Favorites</strong>
+
+                <span tal:repeat="o python:folder.objectValues(['Favorite'])">
+                    <a tal:attributes="href o/getRemoteUrl" href="" tal:content="o/title_or_id">Favorite title</a>
+                </span>
+
+            </td>
+        </tr>
+
+        <tr class="even">
+            <td colspan="2">
+
+                <a href="" tal:attributes="href string:${folder/absolute_url}/folder_contents">Organize Favorites</a>
+
+            </td>
+        </tr>
+    </tbody>
+
+</table>

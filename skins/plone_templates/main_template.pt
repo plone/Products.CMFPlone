@@ -20,21 +20,21 @@
     
                 <td class="left">
                 
-                    <div metal:use-macro="here/portal_boxes/macros/navigationBox">
+                    <div metal:use-macro="here/navigation_slot/macros/navigationBox">
                     Navigation box			
                 	</div>
                 
                     <div tal:condition="python:test(not here.portal_membership.isAnonymousUser() or here.portal_properties.allowAnonymousViewAbout, 1, 0)">
-                      <span metal:use-macro="here/portal_boxes/macros/aboutBox">
+                      <span metal:use-macro="here/about_slot/macros/aboutBox">
                       About box
                       </span>
                     </div>
             
-                    <div metal:use-macro="here/portal_boxes/macros/relatedBox">
+                    <div metal:use-macro="here/related_slot/macros/relatedBox">
                     Related box
                     </div>
             
-                    <div metal:use-macro="here/portal_boxes/macros/newsBox">
+                    <div metal:use-macro="here/news_slot/macros/newsBox">
                     News box
                     </div>
 
@@ -78,19 +78,19 @@
     
                 <td class="right">
             
-                    <div metal:use-macro="here/portal_boxes/macros/loginBox">
+                    <div metal:use-macro="here/login_slot/macros/loginBox">
                     Login box
                     </div>
             
-                    <div metal:use-macro="here/portal_boxes/macros/review_box">
+                    <div metal:use-macro="here/workflow_review_slot/macros/review_box">
                     Review box
                     </div>	
             
-                    <div metal:use-macro="here/portal_boxes/macros/favoritesBox">
+                    <div metal:use-macro="here/favorites_slot/macros/favoritesBox">
                     Favorites box
                     </div>
                 
-                    <div metal:use-macro="here/portal_boxes/macros/calendarBox">
+                    <div metal:use-macro="here/calendar_slot/macros/calendarBox">
                     Calendar box
                     </div>
             

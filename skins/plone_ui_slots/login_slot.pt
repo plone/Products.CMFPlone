@@ -1,0 +1,65 @@
+<!-- The Login box -->
+
+<table metal:define-macro="loginBox"
+       class="box" cellpadding="0" cellspacing="0"
+       summary="Login"
+       tal:condition="here/portal_membership/isAnonymousUser" >
+
+    <thead>
+        <tr><th>Sign in</th><th class="empty">&nbsp;</th></tr>
+    </thead>
+
+    <tbody>
+        <tr class="odd">
+            <td colspan="2">
+
+                <form action="logged_in" method="post"
+                      tal:attributes="action python: container.portal_url()+'/logged_in'">
+
+                        <input type="hidden" name="came_from" value=""
+                       tal:condition="python:request.get('came_from', '')"
+                       tal:attributes="value request/came_from" />
+
+                    <strong>Name:</strong> <br />
+                    <input type="text" name="__ac_name" size="10"
+                                         tal:attributes="value python:request.get('__ac_name', '')" />
+
+                    <br />
+
+                    <strong>Password:</strong>  <br />
+                    <input type="password" name="__ac_password" size="10" />
+
+                    <br />
+                    &nbsp;
+                    <br />
+
+                    <input class="context" type="submit" name="submit" value="Sign in" />
+
+                </form>
+
+            </td>
+        </tr>
+
+        <tr class="even"> 
+	    <td colspan="2">
+
+                <a href="mail_password_form">
+                Forgot your password?
+                </a>
+
+            </td>
+        </tr>
+
+        <tr class="odd"
+            tal:condition="python:here.portal_membership.checkPermission('Add portal member', here)" >
+            <td colspan="2">
+
+                <a href="join_form">
+                New user?
+                </a>
+
+            </td>
+        </tr>
+    </tbody>
+
+</table>

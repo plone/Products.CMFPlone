@@ -195,6 +195,7 @@ def install_PloneSkins(self, out):
                     , 'plone_templates'
                     , 'plone_3rdParty'
                     , 'plone_calendar'
+		    , 'plone_ui_slots'
                     ):
         try:
             path.insert( path.index( 'custom')+1, plonedir )
