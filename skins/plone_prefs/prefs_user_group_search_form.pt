@@ -15,8 +15,7 @@
                 b_start python:request.get('b_start',0);
         searchonly request/searchonly | nothing;
         searchstring request/searchstring | nothing;
-        searchfor request/searchonly | request/searching | nothing;"
-    tal:condition="here/rejectAnonymous" >
+        searchfor request/searchonly | request/searching | nothing;">
 
     <h1 i18n:translate="heading_search_usersandgroups">Search for Users and Groups</h1>
 

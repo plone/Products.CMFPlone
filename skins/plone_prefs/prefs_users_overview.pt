@@ -14,8 +14,7 @@
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size python:15;
-                acl_users here/acl_users;"
-    tal:condition="here/rejectAnonymous" >
+                acl_users here/acl_users;">
 
 <div class="configlet">
 

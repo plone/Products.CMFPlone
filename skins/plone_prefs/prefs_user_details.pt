@@ -16,8 +16,7 @@ we eventually might want to merge this form with personalize_form
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="userid python:request.get('userid', member.getId());
                  member python:mtool.getMemberById(userid);
-                 errors python:request.get('errors', {})"
-     tal:condition="here/rejectAnonymous" >
+                 errors python:request.get('errors', {})">
 
 <div class="configlet">
 

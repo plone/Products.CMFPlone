@@ -9,7 +9,7 @@
 
 <body>
 
-<div metal:fill-slot="main" tal:condition="here/rejectAnonymous"  >
+<div metal:fill-slot="main">
 
 <tal:parent
     tal:define="parent python: here.controlPanelParentUrl(template.getId())">

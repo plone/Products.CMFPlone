@@ -1,5 +1,5 @@
 [default]
-title=User Memberships
+title=Group Properties
 
 [security]
 View=0:Authenticated

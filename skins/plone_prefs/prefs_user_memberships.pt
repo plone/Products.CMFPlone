@@ -15,8 +15,7 @@
                 mdata here/portal_memberdata;
                 errors python:request.get('errors', {});
 		searchonly string:groups;
-		takeaction string:prefs_user_membership_edit;"
-     tal:condition="here/rejectAnonymous" >
+		takeaction string:prefs_user_membership_edit;">
 
 <div class="configlet">
 

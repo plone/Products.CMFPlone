@@ -9,8 +9,7 @@
 
 <body>
 
-<div metal:fill-slot="prefs_configlet_main"
-         tal:condition="here/rejectAnonymous" >
+<div metal:fill-slot="prefs_configlet_main">
 
     <h1 i18n:translate="heading_error_log">Error log</h1>
          
