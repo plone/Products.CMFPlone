@@ -648,8 +648,8 @@ div.help {
 
 ul.menuBar {
     margin-bottom: 1px;
-    color: &mainFontColor;;
- }
+    color: &dtml-mainFontColor;;
+}
 ul.menuBar, ul.menuBar li.menuButton {
     margin: 0;
     padding: 0;
@@ -676,7 +676,7 @@ ul.menuBar li.menuButton a {
     margin: 0;
     padding: 0 1em;
     text-transform: &dtml-textTransform;;
- 
+}
 ul.menuBar li.menuButton a:hover {
 }
 ul.menu {
