@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+   - Fixed http://plone.org/collector/3457 - review portlet was not showing ID
+     for items without Title. Thanks to Sjors for the patch.
+     [limi]
+
     - Fixed http://plone.org/collector/3038. Search terms "and", "or", and "not"
       are no longer highlighted in documents.
       [rohrer]
