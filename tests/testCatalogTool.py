@@ -12,8 +12,10 @@ from Products.CMFPlone.tests import PloneTestCase
 from Acquisition import aq_base
 from Globals import REPLACEABLE
 
-user1 = PloneTestCase.default_user
-user2 = 'u2'
+portal_name = PloneTestCase.portal_name
+
+user1  = PloneTestCase.default_user
+user2  = 'u2'
 group2 = 'g2'
 
 
@@ -88,9 +90,9 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         # a catalog tool. Triggers manage_afterAdd of portal_catalog
         # thereby exposing a bug which is now going to be fixed.
         self.loginPortalOwner()
-        cb = self.app.manage_copyObjects(['portal'])
+        cb = self.app.manage_copyObjects([portal_name])
         self.app.manage_pasteObjects(cb)
-        self.failUnless(hasattr(self.app, 'copy_of_portal'))
+        self.failUnless(hasattr(self.app, 'copy_of_'+portal_name))
 
     def testCanPasteCatalog(self):
         # Should be able to copy/paste a portal_catalog. Triggers
@@ -106,7 +108,7 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         # This test is to demonstrate that http://plone.org/collector/1745
         # is fixed and can be closed.
         self.loginPortalOwner()
-        self.app.manage_renameObjects(['portal'], ['foo'])
+        self.app.manage_renameObjects([portal_name], ['foo'])
         self.failUnless(hasattr(self.app, 'foo'))
 
 
