@@ -237,6 +237,64 @@ span.folderName {
     font-weight: bold;
 }
 
+div.category {
+	float: left;
+    margin-right: 1em;
+    margin-bottom: 2em;
+    width: 20em;
+}
+
+div.category a.heading {
+    display: block;
+    padding: 0em 0em 0.5em 0em;
+    font-size: &dtml-headingSize1;;
+    text-decoration: underline;
+}
+
+div.category a {
+    text-decoration: underline;
+}
+
+div.box {
+	float: left;
+    margin-right: 1em;
+    margin-bottom: 2em;
+    width: 20em;
+    background: transparent;
+    border-collapse: collapse;
+    border: &dtml-boxBorder;;
+}
+
+div.box div.heading {
+    background: &dtml-boxHeaderBackground;;
+    border-bottom: &dtml-boxBorder;;
+    color: &dtml-boxHeaderFontColor;;
+    font-weight: normal;
+    padding: 0em 0em 0em 1em;
+    text-align: left;
+    text-transform: &dtml-textTransform;;
+}
+
+div.box a.close {
+	float: right;
+    text-transform: none;
+    border-left: &dtml-boxBorder;;
+    padding: 0em 0.2em;
+}
+
+div.box div.odd {
+    background: &dtml-boxOddBackground;;
+    padding: 1em;
+}
+
+div.box div.even {
+    background-color: &dtml-boxEvenBackground;;
+    padding: 1em;
+}
+
+
+
+
 div.spacer {
 	margin: 3em;
 }
