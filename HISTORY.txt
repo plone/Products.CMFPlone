@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - http://plone.org/collector/3334.  Added a break statement to the
+      javascript for checking link protocols
+      [bmh]
+
     - Fixed http://plone.org/collector/3325 and related. Plone calendar got
       confused when "datetime-format international" was set in zope.conf.
       [stefan]
