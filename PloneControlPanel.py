@@ -166,7 +166,9 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
     def enumConfiglets(self,group=None):
         portal=getToolByName(self,'portal_url').getPortalObject()
         context=createExprContext(self,portal,self)
-        return [a.getAction(context) for a in self.listActions() if a.category==group and a.testCondition(context)]
+        res = [a.getAction(context) for a in self.listActions() if a.category==group and a.testCondition(context)]
+        res.sort(lambda a,b:cmp(a['name'],b['name']))
+        return res
 
     security.declareProtected( ManagePortal, 'unregisterConfiglet' )
     def unregisterConfiglet(self,id):
