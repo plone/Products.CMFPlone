@@ -7,16 +7,27 @@
 ##parameters=obj
 ##title=
 ##
-size=''
-if hasattr(obj, 'get_size'):
-    size=obj.get_size()
 
-    if same_type(size, 0):
-        if size<1024:
-            return '1 K'
-        elif size>1048576:
-            return '%.02f M' % float(size/1048576.0)
-        else:
-            return str(int(size)/1024)+' K'
+size=''
+
+const = {'kB':1024,
+         'MB':1024*1024,
+         'GB':1024*1024*1024}
+order = ('GB', 'MB', 'kB')
+smaller = order[-1]
+
+if hasattr(obj, 'get_size'):
+    size = obj.get_size()
+
+    if not size:
+        return '0 %s' % smaller
+
+    if same_type(size, 0) or same_type(size, 0L):
+        if size < const[smaller]:
+            return '1 %s' % smaller
+        for c in order:
+            if size/const[c] > 0:
+                break
+        return '%.1f %s' % (float(size/float(const[c])), c)
 
 return size

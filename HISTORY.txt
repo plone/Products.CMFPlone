@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Fixed https://plone.org/collector/2907. 'get_size' can return
+      long. Also, improved the script a bit to be more correct with
+      regard to sizes, include GB, use 'kB' instead of 'K' (which
+      stands for Kelvin), return '0 kb' if size is null or 0, and add
+      tests for all of this.
+      [dreamcatcher]
+
     - Fixed http://plone.org/collector/2998. The types tool has a getTypeInfo
       method, but with different signature.
       [stefan]

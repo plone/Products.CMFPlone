@@ -1,7 +1,7 @@
 <div class="documentByLine"
      metal:define-macro="byline"
      i18n:domain="plone"
-     tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon)"
+     tal:condition="python: site_properties.allowAnonymousViewAbout or not isAnon"
      tal:define="creator here/Creator;
                  creator_home python:mtool.getHomeUrl(creator);">
 
@@ -9,7 +9,8 @@
        tal:define="locked portal_object/lock_icon.gif;
                    lockable python:hasattr(here, 'wl_isLocked');"
        tal:condition="python:lockable and here.wl_isLocked()"
-       tal:replace="structure python:locked.tag(title='Locked')" />
+       tal:replace="structure python:locked.tag(title='Locked')"
+       />
 
   <span tal:condition="creator"
         i18n:translate="box_created_by">
