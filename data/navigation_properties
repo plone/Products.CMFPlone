@@ -1,0 +1,51 @@
+# Initial navigation properties
+#
+# Format is TYPE.PAGE.OUTCOME = NEXT PAGE / ACTION / SCRIPT / URL
+#
+# New style actions
+Default.link_edit_form.failure = link_edit_form
+Default.link_edit_form.success = script:link_edit
+Default.link_edit.failure = link_edit_form
+Default.link_edit.success = action:view
+# Old style actions (will be changed soon)
+Default.document_edit.success = action:view
+Default.document_edit.failure = action:edit
+Default.newsitem_edit.success = action:view
+Default.newsitem_edit.failure = action:edit
+Default.image_edit.success = action:view
+Default.image_edit.failure = action:edit
+Default.file_edit.success = action:view
+Default.file_edit.failure = action:edit
+Default.folder_copy.success = "folder_contents"
+Default.folder_copy.failure = "folder_contents"
+Default.folder_paste.success = "folder_contents"
+Default.folder_paste.failure = "folder_contents"
+Default.folder_cut.success = "folder_contents" 
+Default.folder_cut.failure = "folder_contents"
+Default.folder_delete.success = "folder_contents"
+Default.folder_delete.failure = "folder_contents"
+Default.folder_rename.success = "folder_contents"
+Default.folder_rename.failure = "folder_contents"
+Default.folder_edit.success = "folder_contents"
+Default.folder_edit.failure = action:edit
+Default.reconfig.success = "reconfig_form"
+Default.reconfig.failure = "reconfig_form"
+Topic.topic_editCriteria.success = action:criteria
+Topic.topic_editTopic.success = action:view
+Topic.topic_editTopic.failure = action:edit
+Topic.folder_cut.success = action:subtopics
+Topic.folder_cut.failure = action:subtopics
+Topic.folder_rename.success = action:subtopics
+Topic.folder_rename.failure = action:subtopics
+Topic.folder_delete.success = action:subtopics
+Topic.folder_delete.failure = action:subtopics
+Topic.folder_copy.success = action:subtopics
+Topic.folder_copy.failure = action:subtopics
+Topic.folder_paste.success = action:subtopics
+Topic.folder_paste.failure = action:subtopics
+Default.event_edit.success = action:view
+Default.event_edit.failure = action:edit
+Default.metadata_edit.success = action:view
+Default.metadata_edit.failure = action:metadata
+Default.content_status_modify.success = action:view
+Default.content_status_modify.failure = action:publishing
