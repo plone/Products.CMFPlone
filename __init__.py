@@ -8,7 +8,7 @@ from AccessControl import ModuleSecurityInfo, ClassSecurityInfo, allow_module, a
 
 #CMFCore and CMFDefault Tools
 import MembershipTool, WorkflowTool, URLTool, MetadataTool, RegistrationTool
-import PropertiesTool, ActionsTool, SyndicationTool, TypesTool, UndoTool
+import PropertiesTool, ActionsTool, TypesTool, UndoTool
 
 #Plone Tools
 import FormulatorTool, PloneTool, NavigationTool, FactoryTool, FormTool, InterfaceTool
@@ -94,7 +94,6 @@ tools = ( MembershipTool.MembershipTool,
           URLTool.URLTool,
           MetadataTool.MetadataTool,
           ActionsTool.ActionsTool,
-          SyndicationTool.SyndicationTool,
           TypesTool.TypesTool,
           UndoTool.UndoTool,
         )
