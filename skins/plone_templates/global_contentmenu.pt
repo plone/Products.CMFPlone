@@ -6,6 +6,7 @@
 <metal:menubarmacro define-macro="contentMenu">
 
 <ul tal:define="contentTypes allowed_types;
+        filterOut here/getNotAddableTypes;
 		size python:len(contentTypes);">
 
     <tal:states define="review_state wf_state;
