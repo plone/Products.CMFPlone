@@ -594,7 +594,6 @@ span.legend {
 }
 
 div.label,
-label
 {
     font-weight: bold;
     display: inline;
