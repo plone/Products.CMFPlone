@@ -15,6 +15,7 @@ from AccessControl import User
 
 from App.Extensions import getObject
 
+import string
 import glob 
 import OFS
 import os
