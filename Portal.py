@@ -192,7 +192,8 @@ class PloneGenerator(Portal.PortalGenerator):
             if layer in existing_layers and remove: sk_tool.manage_delObjects(ids=[layer])
 
         # add plone layers
-        for plonedir in ( 'plone_content'
+        for plonedir in ( 'cmf_legacy'
+                    , 'plone_content'
                     , 'plone_images'
                     , 'plone_forms'
                     , 'plone_scripts'
@@ -206,8 +207,7 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_portlets'
                     , 'plone_prefs'
                     , 'plone_wysiwyg'
-                    , 'plone_ecmascript'
-                    , 'cmf_legacy' ):
+                    , 'plone_ecmascript' ):
             try:
                 path.insert( path.index( 'custom')+1, plonedir )
             except ValueError:
