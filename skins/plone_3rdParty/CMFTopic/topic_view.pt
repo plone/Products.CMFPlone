@@ -59,7 +59,7 @@
         <img src="#" tal:attributes="src string:${here/portal_url}/${match/getIcon}" />
         <a href="#" 
            tal:attributes="href string:${match/getURL}/view"
-           tal:content="match/Title" />
+           tal:content="match/title_or_id" />
                 </td>   
                 <td tal:content="match/Type">Type</td>
                 <td tal:content="match/ModificationDate">Modification Date</td>

@@ -18,7 +18,10 @@
     - news form now has links to Creators homepage
     - first cut at a migration script look Extensions/migration.py
     - many more changes 
-    
+    - made a second release of alpha4 with input from Jon Lim - thanks!
+    - FormTool had typo
+    - removed old CMF skins in portal_skins
+    - if your object didnt have a title in a topic it wouldnt show the id
     
 1.0 alpha3
     - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
