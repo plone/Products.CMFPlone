@@ -1,3 +1,38 @@
+2003-11-10 03:02  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): fixed logo
+	  link width/height issues - thanks to sm :)
+
+2003-11-10 02:40  eaon
+
+	* skins/plone_templates/main_template.pt (Plone-2_0-branch): added
+	  visual wrapper to ease customization via css
+
+2003-11-10 02:20  eaon
+
+	* skins/: plone_content/document_view.pt,
+	  plone_content/event_view.pt, plone_content/favorite_view.pt,
+	  plone_content/file_view.pt, plone_content/image_view.pt,
+	  plone_content/link_view.pt, plone_content/newsitem_view.pt,
+	  plone_styles/plone.css.dtml, plone_templates/document_actions.pt
+	  (Plone-2_0-branch): moved documentActions below the first heading
+	  (for accessibility and semanticness)
+
+2003-11-09 14:16  shh42
+
+	* tests/framework.py (Plone-2_0-branch): Upgrade framework.py to
+	  version 0.2.2 proper.
+
+2003-11-09 06:24  vinsci
+
+	* setup/dependencies.py (Plone-2_0-branch): Test for CMF-1.4.2
+	  rather than CMF-1.4. Make log append \n to messages to clean up
+	  the log file.
+
+2003-11-09 05:09  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-08 20:13  zopezen
 
 	* setup/dependencies.py (Plone-2_0-branch): The CMF version is not
