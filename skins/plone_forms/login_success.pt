@@ -72,7 +72,7 @@
 
 		</div>
         <div tal:condition="python: login_time == begin_time and validate_email">
-            <metal:block tal:define="dummy python:request.RESPONSE.redirect(portal_url+'/portal_form/password_form');" />
+            <metal:block tal:define="dummy python:request.RESPONSE.redirect(portal_url+'/password_form');" />
         </div>
 	</div>
 

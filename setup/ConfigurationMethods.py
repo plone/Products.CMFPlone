@@ -170,7 +170,7 @@ def modifyMembershipTool(self, portal):
             a.title='Log out'
         if a.id=='preferences':
             a.title='My Preferences'
-            #a.action=Expression('string:${portal_url}/portal_form/personalize_form')
+            #a.action=Expression('string:${portal_url}/personalize_form')
             new_actions.insert(0, a)
         if a.id in ('addFavorite', 'favorites'):
             a.visible=0

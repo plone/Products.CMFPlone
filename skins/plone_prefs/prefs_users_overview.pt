@@ -61,7 +61,7 @@
            <input class="standalone add"
                   tabindex=""
                   type="submit"
-                  name="portal_form/join_form:method"
+                  name="join_form:method"
                   value="Add New User"
                   i18n:attributes="value"
                   tal:attributes="tabindex tabindex/next;"
