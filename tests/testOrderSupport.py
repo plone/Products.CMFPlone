@@ -170,25 +170,39 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('baz'), 1)
         self.assertEqual(self.folder.getObjectPosition('bar'), 2)
 
+    def testSubsetIds(self):
+        self.folder.moveObjectsByDelta(['baz'], -1, ['foo', 'bar', 'baz'])
+        self.assertEqual(self.folder.getObjectPosition('foo'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 2)
+
+    def testSkipObjectsNotInSubsetIds(self):
+        self.folder.moveObjectsByDelta(['baz'], -1, ['foo', 'baz'])
+        self.assertEqual(self.folder.getObjectPosition('baz'), 0)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 1) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('foo'), 2)
+
     def testMoveCMFObjectsOnly(self):
         # Plone speciality
         self.folder.manage_addDTMLMethod('wilma', file='')
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 3)
-        self.folder.moveObjectToPosition('wilma', 1)
-        self.assertEqual(self.folder.getObjectPosition('foo'), 0)
-        self.assertEqual(self.folder.getObjectPosition('bar'), 1)
-        self.assertEqual(self.folder.getObjectPosition('baz'), 2)
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 3) # Did not move
+        self.folder.moveObject('wilma', 2)
+        # Non-CMF object should keep position
+        self.folder.moveObjectToPosition('foo', 2)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('foo'), 3)
 
     def testMoveUpCMFObjectsOnly(self):
         # Plone speciality
         self.folder.manage_addDTMLMethod('wilma', file='')
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 3)
-        self.folder.moveObjectsUp(['baz', 'wilma'])
+        self.folder.moveObject('wilma', 2)
+        # Non-CMF object should keep position
+        self.folder.moveObjectsUp(['baz'])
         self.assertEqual(self.folder.getObjectPosition('foo'), 0)
-        self.assertEqual(self.folder.getObjectPosition('baz'), 1) # Moved
-        self.assertEqual(self.folder.getObjectPosition('bar'), 2)
-        self.assertEqual(self.folder.getObjectPosition('wilma'), 3) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('bar'), 3)
 
 
 class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):

@@ -138,12 +138,7 @@ class OrderedContainer(Folder):
         counter = 0
 
         for id in ids:
-            # XXX: Plone. Either we misunderstand the subset_ids feature
-            # or this is a bug in OFS.OrderSupport?
-            try:
-                old_position = subset_ids.index(id)
-            except ValueError:
-                continue # id not in subset_ids
+            old_position = subset_ids.index(id)
             new_position = max( old_position - abs(delta), min_position )
             if new_position == min_position:
                 min_position += 1
