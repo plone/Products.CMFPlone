@@ -1,8 +1,6 @@
 CHANGES
 
 Plone 1.0.2
-    - Wrapped catalog() in queryCatalog.py in try/except. 
-      catalog() may return an exception, and we don't want to expose that to the user.
     - added on-error for search results when path('here/%s'%result.getIcon) 
     raises a AttributeError
     - making less assumptions in Portal/Customization Policy for migrations of very old Plones
