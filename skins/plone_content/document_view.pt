@@ -28,7 +28,9 @@
     
         <div class="stx"
              tal:condition="len_text"
-             tal:attributes="class python:test(here.text_format=='structured-text', 'stx', 'plain')">
+             tal:attributes="class python:test(here.Format() not in ('text/plain',
+                                                   'text/plain-pre', 'plain', ),
+                                               'stx', 'plain')">
             <div tal:replace="structure python:here.CookedBody(stx_level=2)" />
         </div>
     
