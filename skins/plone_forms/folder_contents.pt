@@ -138,9 +138,7 @@
       
 	  <tbody>
       <metal:block tal:repeat="item batch"> 
-      <tr 
-          tal:define="oddrow repeat/item/odd;
-                      actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(item));"
+      <tr tal:define="oddrow repeat/item/odd"
           tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
         <td>
           <input type="checkbox" class="noborder" name="ids:list" id="#"
@@ -150,8 +148,8 @@
 				 checked request/ids_checked|nothing;"/>
         </td>
         
-        <td tal:define="action python:here.getActionUrlById('view', actions['object']);
-			            url python:test(action, action,item.absolute_url()+'/folder_contents');"> 
+        <td tal:define="action python:item.getTypeInfo().getActionById('view');
+			url python:test(action, item.absolute_url()+'/'+action, item.absolute_url()+'/folder_contents');"> 
           <a href="#" tal:attributes="href url">
            <img src="" alt="Folder" border="0"
                 height="16"
