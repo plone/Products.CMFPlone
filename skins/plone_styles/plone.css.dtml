@@ -16,25 +16,17 @@
 **
 */
 
-/* <dtml-with stylesheet_properties> (do not remove this :) */
+/* <dtml-with base_properties> (do not remove this :) */
 
 /* The basic elements: */
 body {
-    font: <dtml-var mainFont>;
-    background: &dtml-mainBackground;;
-    color: &dtml-mainFontColor;;
+    font: &dtml-fontBaseSize; <dtml-var fontFamily>;
+    background-color: &dtml-backgroundColor;;
+    color: &dtml-fontColor;;
     margin: 0;
     padding: 0;
-/* These work in IE only, changes the look of the scrollbar + textareas 
-    scrollbar-base-color: &dtml-mainTabBackground;;
-    scrollbar-highlight-color: &dtml-mainTabBackground;;
-    scrollbar-track-color: &dtml-evenRowBackground;;
-    scrollbar-darkshadow-color: &dtml-evenRowBackground;;
-    scrollbar-3dlight-color: &dtml-mainTabBorderColorSelected;;
-    scrollbar-shadow-color: &dtml-mainTabBorderColorSelected;;
-    scrollbar-arrow-color: &dtml-mainTabFontColorSelected;;
-*/
 }
+
 table {
     font-size: 100%;
 }
@@ -42,7 +34,7 @@ table {
 
 a {
     text-decoration: none;
-    color: &dtml-mainLinkColor;;
+    color: &dtml-linkColor;;
     background-color: transparent;
 }
 img {
@@ -58,32 +50,34 @@ p a {
     text-decoration: underline;
 }
 p a:visited {
-    color: &dtml-contentLinkVisitedColor;;
+    color: &dtml-linkVisitedColor;;
     background-color: transparent;
 }
 p a:active {
-    color: &dtml-contentLinkActiveColor;;
+    color: &dtml-linkActiveColor;;
     background-color: transparent;
 }
 p img {
-    border: &dtml-contentImageBorder;;
+    border: 0;
     margin: 0;
 }
 
 hr {
-    height: 1px;
-    color: &dtml-mainTabBorderColorSelected;;
+    height: &dtml-borderWidth;;
+    color: &dtml-globalBorderColor;;
     background-color: transparent;
 }
 
 
 h1, h2, h3, h4, h5, h6 {
-    color: &dtml-headingFontColor;;
+    color: &dtml-fontColor;;
     background-color: transparent;
-    font: <dtml-var headingFont>;
+    font-family: <dtml-var headingFontFamily>;
+    font-size: &dtml-headingFontBaseSize;;
+    font-weight: normal;
     margin: 0;
     padding-top: 0.5em;
-    border-bottom: 1px solid &dtml-mainTabBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
 h1 a,
@@ -92,37 +86,37 @@ h3 a,
 h4 a,
 h5 a,
 h6 a {
-    color: &dtml-headingFontColor; ! important; 
+    color: &dtml-fontColor; ! important; 
 }
 
 h1 {
-    font-size: &dtml-headingSize1;;
+    font-size: 160%;
 }
 
 h2 {
-    font-size: &dtml-headingSize2;;
+    font-size: 150%;
 }
 
 h3 {
-    font-size: &dtml-headingSize3;;
+    font-size: 140%;
     border-bottom: none;
     font-weight: bold;
 }
 
 h4 {
-    font-size: &dtml-headingSize4;;
+    font-size: 120%;
     border-bottom: none;
     font-weight: bold;
 }
 
 h5 {
-    font-size: &dtml-headingSize5;;
+    font-size: 100%;
     border-bottom: none;
     font-weight: bold;
 }
 
 h6 {
-    font-size: &dtml-headingSize6;;
+    font-size: 80%;
     border-bottom: none;
     font-weight: bold;
 }
@@ -131,9 +125,11 @@ h6 {
 ul { 
     line-height: 1.5em;
     list-style-type: square;
-    margin: 0.5em 0 0 2em;
+    margin: 0.5em 0 0 1.5em;
     padding:0;
+    list-style-image: url("bullet.gif");
 }
+
 ol {
     line-height: 1.5em;
     margin: 0.5em 0 0 2em;
@@ -162,16 +158,16 @@ dd a {
 
 dd.link a {
     text-decoration: none;
-    color: &dtml-mainFontColor;;
+    color: &dtml-fontColor;;
 }
 
 fieldset {
-    border: &dtml-groupBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 2em 0em 1em 0em;
     padding: 1em 0em;
 }
 legend {
-    background: &dtml-mainBackground;;
+    background: &dtml-backgroundColor;;
     padding: 0.5em;
 }
 
@@ -180,30 +176,28 @@ form {
     margin: 0;
 }
 textarea {
-    border: &dtml-inputBorder;;  
-    color: &dtml-mainFontColor;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
+    color: &dtml-fontColor;;
     background-color: white;
     width: 98%;
     padding: 0.1em;
 }
 input {
+    font-family: <dtml-var fontFamily>;
     visibility: visible;
-    font: <dtml-var inputFont>;
-    border: &dtml-inputBorder;;  
-    color: &dtml-mainFontColor;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
+    color: &dtml-fontColor;;
     background-color: white;
     vertical-align: middle;
-    margin-bottom: 1px; /* IE bug fix */
     padding: 0.1em;
 }
 select {
-    font: <dtml-var inputFont>;
-    border: &dtml-inputBorder;;  
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;  
     vertical-align: top;
 }
 abbr, acronym, .explain {
-    border-bottom: 1px dotted &dtml-mainFontColor;;
-    color: &dtml-mainFontColor;;
+    border-bottom: &dtml-borderWidth; dotted &dtml-fontColor;;
+    color: &dtml-fontColor;;
     background-color: transparent;
     cursor: help;
 }
@@ -219,15 +213,18 @@ blockquote {
 }
 code {
     font-size: 120%;
-    color: &dtml-mainFontColor;;
-    background-color: &dtml-preBackground;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
 }
 pre {
     font-size: 120%;
     padding: 1em;
-    border: &dtml-preBorder;;
-    color: &dtml-mainFontColor;;
-    background-color: &dtml-preBackground;;
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
+    color: &dtml-fontColor;;
+    background-color: &dtml-globalBackgroundColor;;
+}
+.pre a {
+    text-decoration: underline;
 }
 .netscape4 {
     display: none;
@@ -241,36 +238,35 @@ pre {
 ** Structural Elements
 */
 
-div#switchbar {
+#portal-skinswitcher {
     /* The skin switcher at the top, only shows up if you have multiple skins available */
     
 }
 
-div#switchbar a {
+#portal-skinswitcher a {
     display: block;
     float: left;
 }
 
-div#top {
+#portal-top {
     /* Top section */
-    background: &dtml-topBackground;;
-    margin: &dtml-topMargin;;
-    padding: &dtml-topPadding;;
+    margin: 0;
+    padding: 0;
 }
-div#siteActions {
+#portal-siteactions {
     float: right;
     margin: 1em 1em 0.5em 1em;
 }
 
 /* Logo properties */
  
-h1#logo {
-    background: url(<dtml-var portal_url>/logo.jpg) no-repeat;
+#portal-logo {
+    background: url(<dtml-var portal_url>/<dtml-var logoName>) no-repeat;
     border: 0;
-    margin: &dtml-logoMargin;;
-    padding: &dtml-logoPadding;;
+    margin: 0.75em 0em 0.5em 1.5em;
+    padding: 0;
 }
-h1#logo a {
+#portal-logo a {
     display: block;
     text-decoration: none;
     overflow: hidden;
@@ -284,268 +280,267 @@ h1#logo a {
     cursor: pointer;
 }
 
-div#searchBox {
+#portal-searchbox {
     /*searchbox style and positioning */
     background-color: transparent;
-    color: &dtml-searchFontColor;;
     clear: right;
     float: right;
-    margin: &dtml-searchMargin;;
-    padding: &dtml-searchPadding;;
+    margin: -4em 0em 0em 0em;
+    padding: 0em 2em 0em 0em;
     text-align: right;
     text-transform: &dtml-textTransform;;
     width: 30%;
 }
 input.searchButton {
     font-size: 100% ! important;
-    margin-bottom: 1px ! important;
+    margin-bottom: &dtml-borderWidth; ! important;
 }
-ul#portalTabs {
+#portal-globalnav {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
-    background: &dtml-mainTabBackdrop;;
+    background-color: transparent;
     border-collapse: collapse;
-    border-bottom-color: &dtml-mainTabBorderColorSelected;;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
     padding: 0.5em 0em 0em 2em;
     white-space: nowrap;
     list-style: none;
     margin: 0;
+    height: auto;
+    line-height: normal;
 }
-ul#portalTabs li {
+#portal-globalnav li {
     display: inline;
-    line-height: 1.2em;
 }
-ul#portalTabs li a {
+#portal-globalnav li a {
     /* The normal, unselected tabs. They are all links */
-    background: &dtml-mainTabBackgroundNotSelected;;
-    border-color: &dtml-mainTabBorderColor;;
-    border-width: 1px; 
-    border-style: solid solid none solid;
-    color: &dtml-mainTabFontColor;;
-    font-weight: &dtml-mainTabFontWeight;;
-    height: 1.2em;
+    background-color: transparent;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;; 
+    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
+    color: &dtml-globalFontColor;;
+    height: auto;
     margin-right: 0.5em;
     padding: 0em 2em;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
-ul#portalTabs li.selected a {
+#portal-globalnav li.selected a {
     /* The selected tab. There's only one of this */
-    background: &dtml-mainTabBackground;;
-    border: 1px solid &dtml-mainTabBorderColorSelected;;
-    border-bottom: &dtml-mainTabBackground; 1px solid;
-    color: &dtml-mainTabFontColorSelected;;
-    font-weight: &dtml-mainTabFontWeight;;
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-globalBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
+    color: &dtml-globalFontColor;;
 }
-ul#portalTabs li a:hover {
-    background: &dtml-mainTabBackground;;
-    border-color: &dtml-mainTabBorderColorSelected;;
-    border-bottom-color: &dtml-mainTabBackground;;
-    color: &dtml-mainTabFontColorSelected;;
+#portal-globalnav li a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-bottom-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
 }
-ul#personalBar {
+#portal-personaltools {
     /* Bar with personalized menu (user preferences, favorites etc) */
-    background: &dtml-mainTabBackground;;
-    border-bottom-color: &dtml-mainTabBorderColorSelected;;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    background-color: &dtml-globalBackgroundColor;;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
     line-height: 1.2em;
-    color: &dtml-mainFontColor;;
+    color: &dtml-fontColor;;
     padding: 0em 3em 0em 3em;
     margin: 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
-ul#personalBar li {
+#portal-personaltools li {
     display: inline;
 }
-ul#personalBar li#personalBar-user {
+#portal-personaltools .portalUser {
     background: transparent url(<dtml-var portal_url>/user.gif) center left no-repeat;
     padding-left: 15px;
 }
 
-#personalBar .notLoggedIn {
-    color: &dtml-mainFontColor;;
+#portal-personaltools .portalNotLoggedIn {
+    color: &dtml-fontColor;;
     padding: 0;
     background: transparent;
 } /* Used on all descriptions relevant to those not logged in */
  
-ul#personalBar li {
+#portal-personaltools li {
     background: transparent url(<dtml-var portal_url>/linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
-    color: &dtml-mainTabFontColorSelected;;
-    font-weight: &dtml-mainTabFontWeight;;
+    color: &dtml-globalFontColor;;
     margin-left: 1em;
 }
-ul#personalBar li a {
+#portal-personaltools li a {
     text-decoration: none;
+    color: &dtml-globalFontColor;;
 }
-.caseSensitive {
+.visualCaseSensitive {
     text-transform: none;
 }
-div#pathBar {
+#portal-breadcrumbs {
     /* The path bar, including breadcrumbs and add to favorites */
-    border-bottom-color: &dtml-mainTabBorderColorSelected;;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    border-bottom-color: &dtml-globalBorderColor;;
+    border-bottom-style: &dtml-borderStyle;;
+    border-bottom-width: &dtml-borderWidth;;
     padding-left: 2em;
     padding-right: 2em;
-    text-transform: &dtml-textTransform;;
-}
-.breadcrumbs {
-    float: left;
     text-transform: &dtml-textTransform;;
 }
 .addFavorite {
     vertical-align: bottom;
 }
-ul.contentViews {
-    background: &dtml-contentTabBackdrop;;
+.contentViews {
+    background-color: transparent;
     border-collapse: collapse;
     padding-left: 1em;
-    line-height: 1.2em;
+    line-height: normal;
     margin-top: 1em;
     margin-left: 0;
     /* white-space: nowrap; */
     list-style: none;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
 }
-ul.contentViews li {
+.contentViews li {
     display: inline;
 }
 .contentViews li a {
-    background: &dtml-contentTabBackgroundNotSelected;;
-    border: &dtml-contentTabBorder;;
-    border-style: solid solid solid solid;
-    color: &dtml-contentTabFontColor;;
-    font-weight: &dtml-contentTabFontWeight;;
-    height: 1.2em;
+    background-color: transparent;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-style: &dtml-borderStyle;;
+    color: &dtml-contentViewFontColor;;
+    height: auto;
     margin-right: 0.5em;
     padding: 0em 2em;
-    line-height: 1.2em;
+    line-height: normal;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
     z-index: 1;
 }
-.contentViews li.selected a {
-    background: &dtml-contentTabBackground;;
-    border-bottom: &dtml-contentTabBackground; 1px solid;
-    color: &dtml-contentTabFontColorSelected;;
-    font-weight: &dtml-contentTabFontWeight;;
+.contentViews .selected a {
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-bottom: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
+    color: &dtml-contentViewFontColor;;
 }
 .contentViews li a:hover {
-    background-color: &dtml-contentTabBackground;;
-    color: &dtml-contentTabFontColorSelected;;
+    background-color: &dtml-contentViewBackgroundColor;;
+    color: &dtml-contentViewFontColor;;
 }
+
+.configlet .contentViews {
+    font-size: 90%;
+} 
 .contentActions {
     border-collapse: collapse;
-    border-top: &dtml-contentTabBorder;;
-    background: &dtml-contentTabBackground;;
-    border-left: &dtml-contentTabBorder;;
-    border-right: &dtml-contentTabBorder;;
-    color: &dtml-contentTabFontColor;;
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    color: &dtml-contentViewFontColor;;
     text-align: right;
     text-transform: &dtml-textTransform;;
     padding: 0 1em;
     z-index: 2;
 }
+
+.contentActions a {
+    text-decoration: none;
+    color: &dtml-contentViewFontColor;
+}
+
 .contentActions ul {
-    background: &dtml-contentTabBackdrop;;
+    background-color: transparent;
     border: none;
-    padding-left: 1em;
     line-height: 1.2em;
-    margin-right: 1em;
-    /* white-space: nowrap; */
     list-style: none;
     display: inline;
 }
-.contentActions ul.contentActions li {
+.contentActions ul li {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
+    border-style: none none none &dtml-borderStyle;;
     display: inline;
-    margin-right: 1em;
+    padding: 0 1em;
+    margin: 0;
 }
 
-
-
-
-.pageContent {
+#content {
     padding: 1em;
     margin: 0em 0em 2em 0em;
-/* Fix for a bug in IE6 where text becomes invisible: */
-    height: 100%;
 }
 
-.editable {
+.documentEditable {
     padding: 1em 2em !important;
 }
 
-div.contentContent {
-    font: <dtml-var contentFont>;
-    padding: 0em 1em 2em 1em ! important;
-    background: &dtml-mainBackground;;
+.configlet .documentEditable {
+    padding: 0em !important;
 }
 
-.editable div.contentContent {
-    background: &dtml-contentBackground; ! important;
-    border: &dtml-contentTabBorder;;
+.documentContent {
+    font-size: 110%;
+    padding: 0em 1em 2em 1em !important;
+    background: &dtml-backgroundColor;;
+}
+
+.documentEditable .documentContent {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     padding: 0;
 }
-div.documentActions {
+.documentActions {
     float: right; 
     margin-top: 1.5em;
 }
-div.message {
-    background: &dtml-messageBackground;;
-    border: &dtml-messageBorder;;
-    color: &dtml-mainFontColor;;
-    font: <dtml-var messageFont>;
+.portalMessage {
+    background-color: &dtml-notifyBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
+    color: &dtml-fontColor;;
+    font-size: 80%;
+    font-weight: bold;
     margin: 2em 0em 1em 0em;
     padding: 0.5em 1em;
     vertical-align: middle;
 }
-div.message a {
-    color: &dtml-mainFontColor;;
+.portalMessage a {
+    color: &dtml-fontColor;;
     text-decoration: underline;
 }
-div.title {
-    margin-top: 1em;
-}
-#description {
+.documentDescription {
     /* The summary text describing the document */
-    font: <dtml-var descriptionFont>;
+    font-weight: bold;
     display: block;
     margin: 1em 0em;
     line-height: 1.5em;
 }
-#byline {
+.documentByLine {
     text-align: right;
     font-size: 80%;
     clear: both;
     font-weight: normal;
-    color: #999999;
+    color: &dtml-discreetColor;;
 }
-div#footer {
-    background: &dtml-footerBackground;;
-    border-top: &dtml-footerBorder;;
-    border-bottom: &dtml-footerBorder;;
-    color: &dtml-mainFontColor;;
+#portal-footer {
+    background-color: &dtml-globalBackgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     float: none;
     margin: 2em 0em 1em 0em;
     padding: 0.5em 0em 1em 0em;
     text-align: center;
 }
 
-div#colophon {
-    color: &dtml-mainFontColor;;
+#portal-colophon {
     float: none;
     margin: 0em 0em 2em 0em;
     padding: 0.5em 0em 1em 0em;
     text-align: center;
 }
 
-div#colophon ul,
-div#colophon ul li,
-div#colophon ul li a {
+#portal-colophon ul,
+#portal-colophon ul li,
+#portal-colophon ul li a {
     list-style: none;
     display: inline;
     text-decoration: none;
@@ -555,79 +550,73 @@ div#colophon ul li a {
 ** Widgets
 */
 
-input.standalone,
-div.editableDocument * input.standalone {
-    background: &dtml-standaloneButtonBackground;;
-    color: &dtml-standaloneButtonFontColor;;
+.standalone,
+.documentEditable * .standalone {
+    background: &dtml-globalBackgroundColor; url(linkOpaque.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: 80%;
-    font-weight: &dtml-buttonWeight;;
     margin-bottom: 1em;
-    padding: &dtml-standaloneButtonPadding;;
+    padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
-input.context,
-div.editableDocument * input.context {
-    background: &dtml-contextButtonBackground;;
-    color: &dtml-contextButtonFontColor;;
+.context,
+.documentEditable * .context {
+    background: transparent url(linkTransparent.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: 80%;
-    font-weight: &dtml-buttonWeight;;
     margin-bottom: 1em;
-    padding: &dtml-contextButtonPadding;;
+    padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
-input.destructive,
-div.editableDocument * input.destructive {
-    background: &dtml-destructiveButtonBackground;;
-    border: &dtml-destructiveButtonBorder;;  
-    color: &dtml-destructiveButtonFontColor;;
+.destructive,
+.documentEditable * .destructive {
+    background: &dtml-notifyBackgroundColor; url(linkTransparent.gif) 9px 1px no-repeat;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
     cursor: pointer;
     font-size: 80%;
-    font-weight: &dtml-buttonWeight;;
     margin-bottom: 1em;
-    padding: &dtml-destructiveButtonPadding;;
+    padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
 }
-input.noborder,
-div.editableDocument * input.noborder {
-    border: &dtml-noBorder;;
+.noborder,
+.documentEditable * .noborder {
+    border: none;
     margin: 0;
     background-color: transparent;
 }
-input.add,
-div.editableDocument * input.add {
+.add,
+.documentEditable * .add {
 }
-input.quickSearch {
+.quickSearch {
 }
-input.notify,
-div.editableDocument * input.notify {
-    border: &dtml-destructiveButtonBorder;;  
+.notify,
+.documentEditable * .notify {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
 }
-div.row {
+.row {
     min-height: 4em;
     margin: 0em 0em 1em 0em;
     position: relative;
 }
 .group {
-    border: &dtml-groupBorder;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em 1em 0em;
     padding: 0em 1em;
 }
-span.legend {
-    background: &dtml-contentBackground;;
+.legend {
+    background: &dtml-backgroundColor;;
     font-size: 80%;
     padding: 0.5em;
     position : relative;
     top: -0.8em;
     left: 0em;
 }
-div.field {
+.field {
     margin-top: 0.2em;
 }
-div.help {
-    background-color: #FFFFE1; 
-    border: 1px solid black; 
+.help {
+    background-color: &dtml-helpBackgroundColor;; 
+    border: &dtml-borderWidth; &dtml-borderStyle; black; 
     font-size: 80%;
     font-weight: normal;
     line-height: normal;
@@ -640,375 +629,25 @@ div.help {
 }
 .error {
     /* Class for error indication in forms */
-    background: &dtml-messageBackground;;
-    border: &dtml-messageBorder;;
+    background-color: &dtml-notifyBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1em;
     margin: 0;
     width: 68% !important;
 }
 .required {
     /* Used in addition to class "label" on required elements */
-    background: &dtml-requiredField;;
-    background-position: left;
+    background: url(required.gif) left no-repeat;
     padding-left: 8px;
-}
-span.card,
-div.portrait {
-    background: &dtml-mainTabBackground;;
-    border-color: &dtml-mainTabBorderColor;;
-    border-width: 1px;
-    border-style: solid;
-    margin: 1em;
-    padding: 1em;
-    text-align: center;
-    width: 100px;
-}
-table.listing,
-div.stx table {
-    /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
-    border-collapse: collapse;
-    border-left: &dtml-listingBorder;;
-    border-bottom: &dtml-listingBorder;;
-    font-size: 80%;
-    margin: 1em 0em 1em 0em;
-}
-table.listing th,
-div.stx table th {
-    background: &dtml-listingHeaderBackground;;
-    border-top: &dtml-listingBorder;;
-    border-bottom: &dtml-listingBorder;;
-    border-right: &dtml-listingBorder;;
-    color: &dtml-listingHeaderFontColor;;
-    font-weight: normal;
-    padding: 0em 1em 0em 1em;
-    text-transform: &dtml-textTransform;;
-    white-space: nowrap;
-}
-table.listing td.top {
-    border-left: 1px solid &dtml-contentBackground;;
-    border-top: 1px solid &dtml-contentBackground; ! important;
-    border-right: 1px solid &dtml-contentBackground; ! important;
-    text-align: right ! important;
-    padding: 0em 0em 1em 0em;
-    /* insane IE row bug workaround */
-    position: relative;
-    left: -1px;
-    top: -1px;
-}
-table.listing tr.odd {
-    /*every second line should be shaded */
-    background: &dtml-listingOddBackground;;
-}
-table.listing tr.even {
-    background: &dtml-listingEvenBackground;;
-}
-table.listing td.checkbox {
-    text-align: center;
-}
-table.listing td,
-div.stx table td {
-    border-right: &dtml-listingBorder;;
-    padding: 0em 1em;
-    text-align: left;
-}
-table.listing a:hover {
-    text-decoration: &dtml-listingLinkHover;;
-}
-table.listing img {
-	vertical-align: middle;
-}
-/* Additional STX workaround classes */
-div.stx table p /* stupid STX table workaround */
-{
-    margin: 0;
-    padding: 0;
-}
-div.stx table  /* stupid STX table workaround */
-{
-    border: &dtml-listingBorder; ! important;
-}
-div.stx table td {
-    border-bottom: &dtml-listingBorder;;
-}
-
-div.box {
-    border: none;
-    margin-bottom: 1em;
-    padding: 0;
-}
-div.box h4 {
-    font-size: 1em;
-    font-weight: normal;
-    white-space: nowrap;
-}
-div.box h5 { 
-    background: &dtml-boxHeaderBackground;;
-    border: &dtml-boxBorder;;
-    border-style: solid solid none solid;
-    color: &dtml-boxHeaderFontColor;;
-    padding: 0em 1em 0em 1em;
-    text-transform: &dtml-textTransform;;
-    display: inline;
-    font-size: 1em;
-    height: 1em;
-    font-weight: normal;
-    white-space: nowrap;
-}
-div.box h6 { 
-    background: &dtml-boxHeaderBackground;;
-    border: &dtml-boxBorder;;
-    border-style: solid solid none solid;
-    color: &dtml-boxHeaderFontColor;;
-    padding: 0em 1em 0em 1em;
-    text-transform: &dtml-textTransform;;
-    display: block;
-    font-size: 1em;
-    height: 1.2em;
-    font-weight: normal;
-    white-space: nowrap;
-}
-
-div.box div.body {
-    background: transparent;
-    border-collapse: collapse;
-    border: &dtml-boxBorder;;
-}
-.boxDetails {
-    text-align: right;
-}
-
-a.more {
-    display: block;
-    text-align: right;
-}
-
-div.box div.content {
-    padding: 1em;
-}
-div.box a.close {
-    float: right;
-    text-transform: none;
-    border-left: &dtml-boxBorder;;
-    padding: 0em 0.2em;
-}
-div.box h1, 
-div.box h2, 
-div.box h3, 
-div.box h4 {
-    margin: 0;
-    padding: 0;
-}
-div.box .even {
-    background-color: &dtml-boxEvenBackground;;
-}
-div.box .odd {
-    background-color: &dtml-boxOddBackground;;
-}
-div.box input {
-    font-size: 100%;
-}
-
-div.comment {
-    background: &dtml-listingEvenBackground;; 
-    border: 1px dashed gray; 
-    padding: 0 1em 0.5em 1em;
-    border-style: dashed;
-    color: gray;
-    /* Fix for the IE6 disappearing float bug */
-    height: 100%;
-}
-
-div.comment h1,
-div.comment h2,
-div.comment h3,
-div.comment h4, 
-div.comment h5,
-div.comment h6 {
-    border-bottom: 1px dashed gray;
-    color: gray;
-}
-
-
-div.spacer {
-	margin: 1em;
-}
-.currentNavItem {
-    color: &dtml-mainFontColor;;
-    font-weight: bold;
-}
-.private {
-    color: Black;
-}
-.published {
-    color: #74AE0B;
-}
-.pending {
-    color: #FFA500;
-}
-.syndicated {
-    color: #008000;
-}
-.expired {
-    color: Red;
-}
-.even {
-    background-color: &dtml-evenRowBackground;;
-}
-.odd {
-    background-color: &dtml-oddRowBackground;;
-}
-.highlight {
-    background-color: &dtml-evenRowBackground;;
-}
-
-.discreet {
-    color: #999999;
-    font-size: 80%;
-}
-
-div.listingBar {
-    background: &dtml-mainTabBackground;;
-    border-color: &dtml-mainTabBorderColorSelected;;
-    border-style: solid;
-    border-width: 1px;
-    padding: 0em 1em;
-    text-align: center;
-    text-transform: &dtml-textTransform;;
-    vertical-align: top;
-    margin: 1em 0em;
-}
-div.listingBar span.previous {
-    text-align: left;
-    float: left;
-}
-div.listingBar span.next {
-    text-align: right;
-    float: right;
-}
-div listingBar img {
-	vertical-align: middle;
-}
-
-/*
-** Accessibility and visual enhancement elements 
-*/
-
-a.external {
-    background: White url(<dtml-var portal_url>/link_icon.gif) 0px 1px no-repeat;
-    padding: 1px 0px 1px 16px;
-}
-div.hiddenlabel {
-    visibility: hidden;
-}
-.hiddenstructure {
-    border: none;
-    height: 0px;
-    overflow: hidden;
-    padding-top: 0px;
-}
-.clear {
-    clear: both;
-}
-label.hiddenlabel {
-    visibility: hidden;
-}
-div.label {
-    font-weight: bold;
-    display: inline;
-    padding-right: 0.5em;
-}
-
-.notLoggedIn {} /* Used on all descriptions relevant to those not logged in */
-
-div.editableDocument > * select,
-div.editableDocument > * input,
-div.editableDocument > * textarea {
-    background: #f3f3f3;
-    color: #3f3f3f;
-}
-div.editableDocument > * select:focus,
-div.editableDocument > * input:focus,
-div.editableDocument > * textarea:focus {
-    background: #ffffff;
-    color: #000000;
-}
-div.overflow pre {
-    overflow: auto;
-}
-
-/*
-** Calendar elements - used in the calendar rendering 
-*/
-
-div.day {
-    background-color: #FFFFBB;
-    border: 1px solid Black;
-    padding: 0.2em;
-    position: absolute;
-    visibility: hidden;
-    width: 12em;
-    z-index: 2;
-}
-div.date {
-    font-weight: bold;
-}
-
-table.calendar {
-    border: &dtml-boxBorder;;
-    margin: 1em 0em;
-}
-table.calendar a {
-    text-decoration: none;
-    color: &dtml-boxLinkColor;;
-}
-table.calendar a:hover {
-    text-decoration: none;
-}
-table.calendar th {
-    background-color: &dtml-boxHeaderBackground;;
-    color: &dtml-boxHeaderFontColor;;
-    font-weight: bold;
-    text-align: center;
-}
-table.calendar td {
-    background-color: transparent;
-    width: 1.5em;
-    padding: 2px;
-    text-align: right;
-}
-table.calendar td.weekdays {
-    background-color: &dtml-boxHeaderBackground;;
-    border: &dtml-boxBorder;;
-    border-style: solid none;
-    text-align: center;
-}
-table.calendar td.event {
-    background-color: &dtml-boxHeaderBackground;;
-    font-weight: bold;
-}
-table.calendar td.noevent {
-    background-color: transparent;
-}
-table.calendar td.todayevent {
-    background-color: &dtml-boxHeaderBackground;;
-    border: &dtml-boxHighlight;;
-    font-weight: bold;
-}
-table.calendar td.todaynoevent {
-    border-collapse: collapse;
-    border: &dtml-boxHighlight;;
-}
-
-/* for highlighting of serchTerms */
-
-span.higligthedSearchTerm{
-   background-color: #feff82;
 }
 
 /* javascript menu (contentbar) */
 
 ul.menuBar {
+    padding: 0;
+    margin: 0;
     margin-bottom: 1px;
+    color: &dtml-fontColor;;
 }
 ul.menuBar, ul.menuBar li.menuButton {
     margin: 0;
@@ -1016,25 +655,36 @@ ul.menuBar, ul.menuBar li.menuButton {
     display: inline;
     list-style: none;
 }
+
+ul.menuBar li.menuButton {
+    border-color: &dtml-contentViewBorderColor;;
+    border-style: none none none &dtml-borderStyle;;
+    border-width: &dtml-borderWidth;
+} 
+/*  border-style: solid none solid solid; */
+ul.menuBar li.menuButton .menuIndicator {
+    color: &dtml-fontColor;;
+}
+
 ul.menuBar li.menuButton a {
-    background-image: url(<dtml-var portal_url>/arrowDown.gif);
+    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: center right;
-    text-transform: &dtml-textTransform;;
-    color: #000000;
+    color: &dtml-contentViewFontColor;;
     cursor: pointer;
     text-decoration: none;
     z-index: 4;
-    padding-right: 1em;
     margin: 0;
+    padding: 0 1em;
+    text-transform: &dtml-textTransform;;
 }
-ul.menuBar li.menuButton a:hover {
-    background-color: transparent;
-    color: #000000;
-}
+
 ul.menu {
-    background: &dtml-contentTabBackground;;
-    color: &dtml-contentTabFontColor;;
+    background-color: &dtml-contentViewBackgroundColor;;
+    border-style: &dtml-borderStyle;;
+    border-color: &dtml-contentViewBorderColor;;
+    border-width: &dtml-borderWidth;;
+    color: &dtml-contentViewFontColor;;
     text-transform: &dtml-textTransform;;
     position: absolute;
     top: 0px;
@@ -1044,39 +694,460 @@ ul.menu {
     z-index: 5;
     white-space: nowrap;
     width: auto;
+    margin: 0;
+    padding: 0;
+    border-top: &dtml-contentViewBackgroundColor; &dtml-borderWidth; &dtml-borderStyle;;
 }
 ul.menu, ul.menu li {
-    background: &dtml-contentTabBackground;;
+    background: &dtml-contentViewBackgroundColor;;
     list-style: none;
     margin: 0;
     padding: 0;
     border-collapse: collapse;
 }
 ul.menu li {
-    padding: 0.2em;
-}
-ul.menu li.menuItem a {
-    display: block;
-    background: &dtml-contentTabBackground;;
     margin: 0;
     padding: 0;
-    color: #000000;
+    border: none;
+}
+ul.menu li.menuItem a {
+    color: &dtml-contentViewFontColor;;
+    background-image: none ! important;
+    display: block;
+    margin: 0;
+    padding: 0;
+    text-transform: none ! important;
     text-decoration: none;
 }
 ul.menu li.menuItem a:hover {
-    background: #00008b;
-    color: white;
+    background-color: &dtml-contentViewBorderColor;;
+    color: White;
 }
 ul.menu li.menuSep {
-    border-top: 1px solid &dtml-contentTabFontColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
+
+.card {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;;
+    border-style: &dtml-borderStyle;;
+    float: left;
+    margin: 1em;
+    text-align: center;
+    width: 110px;
+    padding: 1em 0;
+}
+
+.portrait {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;;
+    border-style: &dtml-borderStyle;;
+    margin: 1em;
+    padding: 1em;
+    text-align: center;
+    width: 100px;
+}
+.listing,
+.stx table {
+    /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
+    border-collapse: collapse;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    font-size: 80%;
+    margin: 1em 0em 1em 0em;
+}
+.listing th,
+.stx table th {
+    background: &dtml-globalBackgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    font-weight: normal;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    white-space: nowrap;
+}
+.listing .top {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
+    text-align: right ! important;
+    padding: 0em 0em 1em 0em;
+}
+.listing .odd {
+    /*every second line should be shaded */
+    background-color: &dtml-oddRowBackgroundColor;;
+}
+.listing .even {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+.listing .listingCheckbox {
+    text-align: center;
+}
+.listing td,
+.stx table td {
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 1em;
+    text-align: left;
+}
+.listing a:hover {
+    text-decoration: underline;
+}
+.listing img {
+    vertical-align: middle;
+}
+
+ul.configlets {
+    margin: 0;
+}
+
+ul.configlets li {
+    list-style: none;
+    margin-bottom: 1em;
+    text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;  
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-fontColor;;
+    vertical-align: middle;
+    padding: 0.1em;
+    text-align: center;
+	
+}
+
+ul.configlets li a {
+	text-decoration: none;
+}
+
+/* Additional STX workaround classes */
+.stx table p /* stupid STX table workaround */
+{
+    margin: 0;
+    padding: 0;
+}
+.stx table  /* stupid STX table workaround */
+{
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; ! important;
+}
+.stx table td {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.portlet {
+    border: none;
+    margin-bottom: 1em;
+    padding: 0;
+}
+.portlet h4 {
+    font-size: 1em;
+    font-weight: normal;
+    white-space: nowrap;
+}
+.portlet h5 { 
+    background: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: inline;
+    font-size: 1em;
+    height: 1em;
+    font-weight: normal;
+    white-space: nowrap;
+}
+.portlet h6 { 
+    background: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: block;
+    font-size: 1em;
+    height: 1.2em;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.portletBody {
+    background: transparent;
+    border-collapse: collapse;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+.portletDetails {
+    text-align: right;
+}
+
+.portletMore {
+    display: block;
+    text-align: right;
+}
+
+.portletContent {
+    padding: 1em;
+}
+.portletClose {
+    float: right;
+    text-transform: none;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 0.2em;
+}
+.portlet h1, 
+.portlet h2, 
+.portlet h3, 
+.portlet h4 {
+    margin: 0;
+    padding: 0;
+}
+.portlet .even {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+.portlet .odd {
+    background-color: &dtml-oddRowBackgroundColor;;
+}
+.portlet input {
+    font-size: 100%;
+}
+
+.comment {
+    background: &dtml-evenRowBackgroundColor;; 
+    border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;; 
+    padding: 0 1em 0.5em 1em;
+    color: &dtml-discreetColor;
+}
+
+.comment h1,
+.comment h2,
+.comment h3,
+.comment h4, 
+.comment h5,
+.comment h6 {
+    border-bottom: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-discreetColor;;
+    color: gray;
+}
+
+
+.spacer {
+	margin: 1em;
+}
+.currentNavItem {
+    color: &dtml-fontColor;;
+    font-weight: bold;
+}
+.state-private {
+    color: Black;
+}
+.state-published {
+    color: #74AE0B;
+}
+.state-pending {
+    color: &dtml-notifyBorderColor;;
+}
+.state-expired {
+    color: Red;
+}
+.syndicated {
+    color: #008000;
+}
+.role-Member {
+    
+}
+.role-Reviewer {
+    
+}
+.role-Manager {
+    
+}
+.role-Translator {
+    
+}
+.location-frontpage {
+    
+}
+.location-news {
+    
+}
+.location-members {
+    
+}
+.even {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+.odd {
+    background-color: &dtml-oddRowBackgroundColor;;
+}
+.visualHighlight {
+    background-color: &dtml-evenRowBackgroundColor;;
+}
+
+.discreet {
+    color: &dtml-discreetColor;;
+    font-size: 80%;
+}
+
+.listingBar {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle;;
+    border-width: &dtml-borderWidth;;
+    padding: 0em 1em;
+    text-align: center;
+    text-transform: &dtml-textTransform;;
+    vertical-align: top;
+    margin: 1em 0em;
+}
+.listingBar span.previous {
+    text-align: left;
+    float: left;
+}
+.listingBar span.next {
+    text-align: right;
+    float: right;
+}
+.listingBar img {
+	vertical-align: middle;
+}
+
+/*
+** Accessibility and visual enhancement elements 
+*/
+
+.link-external {
+    background: transparent url(<dtml-var portal_url>/link_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-mailto {
+    background: transparent url(<dtml-var portal_url>/mail_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-ftp {
+    background: transparent url(<dtml-var portal_url>/file_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-irc {
+    background: transparent url(<dtml-var portal_url>/discussionitem_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
+
+.link-callto {
+    
+}
+
+.hiddenStructure {
+    border: none;
+    height: 0px;
+    overflow: hidden;
+    padding-top: 0px;
+}
+.visualClear {
+    clear: both;
+}
+.hiddenLabel {
+    visibility: hidden;
+}
+.label {
+    font-weight: bold;
+    display: inline;
+    padding-right: 0.5em;
+}
+
+.portalNotLoggedIn {} /* Used on all descriptions relevant to those not logged in */
+
+/*
+.documentEditable > * select,
+.documentEditable > * input,
+.documentEditable > * textarea {
+    background: #f3f3f3;
+    color: #3f3f3f;
+}
+*/
+
+#portal-column-content .documentEditable > * select:focus,
+#portal-column-content .documentEditable > * input:focus,
+#portal-column-content .documentEditable > * textarea:focus {
+    border-color: &dtml-notifyBorderColor;; 
+    border-width: &dtml-borderWidth;;
+}
+.visualOverflow {
+    overflow: auto;
+}
+
+/*
+** Calendar elements - used in the calendar rendering 
+*/
+
+.dayPopup {
+    background-color: &dtml-helpBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; Black;
+    padding: 0.2em;
+    position: absolute;
+    visibility: hidden;
+    width: 12em;
+    z-index: 2;
+}
+.date {
+    font-weight: bold;
+}
+
+.calendar {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    margin: 1em 0em;
+}
+.calendar a {
+    text-decoration: none;
+}
+.calendar a:hover {
+    text-decoration: none;
+}
+.calendar th {
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: bold;
+    text-align: center;
+    padding: 2px;
+}
+.calendar td {
+    background-color: transparent;
+    width: 1.5em;
+    text-align: right;
+    padding: 2px;
+}
+.calendar .weekdays td {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    border-style: &dtml-borderStyle; none;
+    text-align: center;
+    padding: 2px;
+}
+.calendar .event {
+    background-color: &dtml-globalBackgroundColor;;
+    font-weight: bold;
+}
+.calendar .todayevent {
+    background-color: &dtml-globalBackgroundColor;;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+    font-weight: bold;
+}
+.calendar .todaynoevent {
+    border-collapse: collapse;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+}
+
+/* for highlighting of search terms */
+
+.highlightedSearchTerm {
+   background-color: #feff82;
+}
+
 
 /* javascript date selector */
 
 .inplacecalendar {
   position: relative;
   display: none;
-  border: 1px solid;
+  border: &dtml-borderWidth; &dtml-borderStyle;;
   border-color: #fff #000 #000 #fff;
   font-size: 11px;
   cursor: default;
@@ -1086,7 +1157,7 @@ ul.menu li.menuSep {
 }
 
 .inplacecalendar table {
-  border: 1px solid;
+  border: &dtml-borderWidth; solid;
   border-color: #fff #000 #000 #fff;
   font-size: 11px;
   cursor: default;
@@ -1102,7 +1173,7 @@ ul.menu li.menuSep {
   padding: 1px;
   border: 1px solid;
   border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
-  background: &dtml-boxHeaderBackground;;
+  background: &dtml-globalBackgroundColor;;
 }
 
 .inplacecalendar thead .title { /* This holds the current "month, year" */
@@ -1124,7 +1195,7 @@ ul.menu li.menuSep {
   border-bottom: 1px solid ButtonShadow;
   padding: 2px;
   text-align: center;
-  background: &dtml-boxHeaderBackground;;
+  background: &dtml-globalBackgroundColor;;
   color: ButtonText;
 }
 
@@ -1154,7 +1225,7 @@ ul.menu li.menuSep {
 .inplacecalendar table .wn {
   padding: 2px 3px 2px 2px;
   border-right: 1px solid ButtonShadow;
-  background: &dtml-boxHeaderBackground;;
+  background: &dtml-globalBackgroundColor;;
   color: ButtonText;
 }
 
@@ -1209,7 +1280,7 @@ ul.menu li.menuSep {
 }
 
 .inplacecalendar tfoot .ttip { /* Tooltip (status bar) cell <TD> */
-  background: &dtml-boxHeaderBackground;;
+  background: &dtml-globalBackgroundColor;;
   padding: 1px;
   border: 1px solid;
   border-color: ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;
