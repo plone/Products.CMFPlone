@@ -196,10 +196,10 @@
                              name="file" 
                              size="30" 
                              tabindex="" 
+                             value=""
                              onfocus="formtooltip('upload_help',1)" 
                              onblur="formtooltip('upload_help',0)"
-                             tal:attributes="tabindex tabindex/next;
-                                             value python:here.getFilenameFromRequest('file')" 
+                             tal:attributes="tabindex tabindex/next" 
                              />
                 </div>
             </div>
