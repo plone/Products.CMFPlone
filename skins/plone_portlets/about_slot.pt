@@ -2,6 +2,8 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
 
+<!-- This slot is deprecated, its functionality is now built into the page of an item. -->
+      
 <body>
 
 <!-- The About box -->
