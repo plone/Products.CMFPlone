@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<content>
+  <Title><dtml-var Title></Title>
+  <Description><dtml-var Description></Description>
+  <Text><p><dtml-var CookedBody></p></Text>
+</content>
