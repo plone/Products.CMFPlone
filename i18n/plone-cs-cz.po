@@ -2708,6 +2708,3 @@ msgstr "Nový Název"
 
 msgid "label_new_title"
 msgstr "Nový Nadpis"
-
-
---PNTmBPCT7hxwcZjr--
