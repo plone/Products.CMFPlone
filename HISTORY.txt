@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - 'prefs_user_details' is now a Controller Page Template, and has better
+       validation. Don't forget to re-customize if you have customized the
+       old, non-cpt version.
+       [geoffd] 
+
     - Fixed http://plone.org/collector/3385 - tableless skin wasn't updated
       to the new header structure, causing the site actions to be positioned
       wrongly. This is an update to main_template for the people using
