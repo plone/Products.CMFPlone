@@ -1,3 +1,74 @@
+2004-03-05 20:31  shh42
+
+	* HISTORY.txt, INSTALL.txt, PloneTool.py, imagePatch.py,
+	  Extensions/package_plone.py, skins/plone_forms/join_form.cpt,
+	  skins/plone_forms/talkback_tree.pt,
+	  skins/plone_prefs/plone_memberprefs_panel.pt,
+	  skins/plone_prefs/prefs_group_manage.cpy,
+	  skins/plone_prefs/prefs_install_products_form.pt,
+	  skins/plone_prefs/prefs_user_manage.cpy,
+	  skins/plone_scripts/breadcrumbs.py,
+	  skins/plone_scripts/date_components_support.py,
+	  skins/plone_scripts/queryCatalog.py,
+	  skins/plone_scripts/setup_talkback_tree.py,
+	  skins/plone_scripts/translate.py,
+	  skins/plone_styles/ploneTextSmall.css,
+	  skins/plone_tableless/ReadMe-Tableless.txt,
+	  skins/plone_tableless/colophon.pt,
+	  skins/plone_tableless/main_template.pt,
+	  skins/plone_templates/colophon.pt,
+	  skins/plone_templates/global_contentmenu.pt,
+	  skins/plone_templates/main_template.pt,
+	  tests/testContentTypeScripts.py, tests/testPloneFolder.py,
+	  tests/testQueryCatalog.py: Merge Plone-2_0-branch to HEAD
+
+2004-03-05 19:33  limi
+
+	* HISTORY.txt, skins/plone_tableless/main_template.pt
+	  (Plone-2_0-branch): The tableless skin didn't have the top_slot
+	  defined.
+
+2004-03-05 17:47  dreamcatcher
+
+	* HISTORY.txt, PloneTool.py (Plone-2_0-branch): Use the real
+	  object, not the tool as context.
+
+2004-03-05 16:19  tiran
+
+	* HISTORY.txt (Plone-2_0-branch): updated for #2808
+
+2004-03-05 16:15  zworkb
+
+	* HISTORY.txt (Plone-2_0-branch): added my bugfix for #2804 to
+	  history
+
+2004-03-05 15:06  tiran
+
+	* skins/plone_scripts/date_components_support.py
+	  (Plone-2_0-branch): fix for #2808
+
+2004-03-05 11:40  dpunktnpunkt
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  Fix for 2807?
+
+2004-03-05 11:11  dpunktnpunkt
+
+	* skins/plone_scripts/translate.py (Plone-2_0-branch): Added
+	  default value {} for mapping argument.
+
+2004-03-05 05:14  dtremea
+
+	* skins/plone_prefs/: prefs_group_manage.cpy, prefs_user_manage.cpy
+	  (Plone-2_0-branch): Added a trailling. 'Changes made' so we don't
+	  need to have two msgid's. It's a temp fix. For 2.0.1 I'm planning
+	  to convert all those portal_status_message to use
+	  context.translate and msgid's.
+
+2004-03-05 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-05 02:59  zworkb
 
 	* skins/plone_prefs/plone_memberprefs_panel.pt (Plone-2_0-branch):
