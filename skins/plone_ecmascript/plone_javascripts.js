@@ -399,7 +399,7 @@ function highlightSearchTerm() {
                 queries = query.replace(/\+/g,' ').split(/\s+/)
                 
                 // make sure we start the right place and not higlight menuitems or breadcrumb
-                theContents = document.getElementById('documentContent');
+                theContents = document.getElementById('bodyContent');
                 for (q=0;q<queries.length;q++) {
                     climb(theContents,queries[q]);
                 }
