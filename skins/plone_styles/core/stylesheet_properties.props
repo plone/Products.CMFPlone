@@ -25,7 +25,7 @@ headingSize6:string=80%
 descriptionFont:string=bold 100% Verdana, Helvetica, Arial, sans-serif
 
 contentFont:string=120% Verdana, Helvetica, Arial, sans-serif
-contentBackground:string=#D6D6D6
+contentBackground:string=White
 contentImageBorder:string=0
 contentLinkActiveColor:string=Red
 contentLinkVisitedColor:string=Purple
