@@ -45,8 +45,8 @@
 
                 <table class="listing"
                        id="sortable"
-                       summary=""
-                       i18n:attributes="summary legend_logexception"
+                       summary="Exception Log (most recent first)"
+                       i18n:attributes="summary"
                        tal:condition="entries">
                     <thead>
                         <tr>
