@@ -7,7 +7,7 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-    <div metal:fill-slot="main"
+    <div metal:fill-slot="main">
 
         <div class="contentHeader"
              metal:use-macro="here/portal_boxes/macros/contentHeader">
@@ -18,7 +18,8 @@
             tal:content="structure here/Description"> description </div>
 
        <div tal:condition="python:not hasattr(here.aq_explicit, 'index_html')">
-          This folder does not have a default page.  <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document">Click here</a>
+          This folder does not have a default page.
+          <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document">Click here</a>
 	  to create a default page in this folder. 
        </div>
 
