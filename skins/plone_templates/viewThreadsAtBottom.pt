@@ -6,11 +6,12 @@
 <div metal:define-macro="discussionView"
      class="discussion"
      tal:define="userHasReplyPermission python: checkPermission('Reply to item', here);
-                 isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
+                 portal_discussion portal/portal_discussion;
+                 isDiscussionAllowed python:portal_discussion.isDiscussionAllowedFor(here);
                  userIsAnonymous python: here.portal_membership.isAnonymousUser();
                  hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
                  view_action python:hereTypeInfo.getActionById('view');
-                 isViewTemplate python: template.getId()==view_action;
+                 isViewTemplate python: template_id==view_action;
                  ">
     
     <tal:allowed condition="python: isDiscussionAllowed and isViewTemplate">
@@ -35,7 +36,7 @@
     
         <a name="comments"> </a>
 
-        <tal:getreplies repeat="reply python:container.sort_modified_ascending(here.portal_discussion.getDiscussionFor(here).getReplies())">
+        <tal:getreplies repeat="reply python:container.sort_modified_ascending(portal_discussion.getDiscussionFor(here).getReplies())">
 
                 <div class="comment">
             

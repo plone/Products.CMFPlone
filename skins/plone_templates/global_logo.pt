@@ -7,7 +7,7 @@
 <h1 id="portal-logo" metal:define-macro="portal_logo">
     <a href="/"
        tal:attributes="href portal_url"
-       tal:define="portal_title here/portal_properties/title;"
+       tal:define="portal_title portal_properties/title;"
        tal:content="string:$portal_title">
         Plone
     </a>
