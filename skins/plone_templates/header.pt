@@ -2,23 +2,25 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <head metal:define-macro="html_header" 
-      tal:define="global portal_url here/portal_url;
-                  baseHREF python:test(here.isPrincipiaFolderish, here.absolute_url()+'/', here.absolute_url());
-                  base_href string:${here/absolute_url}/${template/getId}">
+      tal:define="global portal_url here/portal_url">
 
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 
     <title tal:content="string:${here/portal_properties/title} - ${here/title_or_id}">Title of page</title>
 
     <base href="http://yoursite/folder/content/template_id" 
-          tal:attributes="href string:$base_href" />
+          tal:attributes="href string:${here/absolute_url}/${template/getId}" />
 
     <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support  
          it. Site will still be viewable, but look a bit stripped :) --> 
-    <link rel="Stylesheet" type="text/css" href="dummy"     tal:attributes="href string:$portal_url/ploneBasicNS.css" />
-    <link rel="Stylesheet" type="text/css" href="dummy" tal:attributes="href string:$portal_url/ploneStructureNS.css" />
-    <link rel="Stylesheet" type="text/css" href="dummy"   tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
-    <link rel="Stylesheet" type="text/css" href="dummy"  tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
+    <link rel="Stylesheet" type="text/css" href="dummy" 
+          tal:attributes="href string:$portal_url/ploneBasicNS.css" />
+    <link rel="Stylesheet" type="text/css" href="dummy" 
+          tal:attributes="href string:$portal_url/ploneStructureNS.css" />
+    <link rel="Stylesheet" type="text/css" href="dummy"
+          tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
+    <link rel="Stylesheet" type="text/css" href="dummy"
+          tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
 
     <!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
     <style tal:replace="structure here/CSSImports">
@@ -29,7 +31,8 @@
     </style>
 
     <!-- Style sheet used for printing -->
-    <link rel="stylesheet" type="text/css" media="print" href="dummy" tal:attributes="href string:$portal_url/plonePrint.css"/>
+    <link rel="stylesheet" type="text/css" media="print" href="dummy" 
+          tal:attributes="href string:$portal_url/plonePrint.css"/>
 
     <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
 
@@ -39,6 +42,11 @@
 	    tal:content="structure here/plone_javascripts.js">
     </script>
 
+    <metal:block metal:define-slot="header_slot" tal:replace="nothing">
+    Flexibility for published templates to inject stuff into HEADER
+    For instance, folder_listing, folder_contents needs to inject javascript into the header
+    </metal:block>
+    
 </head>
 
 <div metal:define-macro="portal_header"

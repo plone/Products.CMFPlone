@@ -13,8 +13,8 @@
 #change metadata if its changed
 
 REQUEST=context.REQUEST
-title=REQUEST.get('title', REQUEST.get('field_title', ''))
-description=REQUEST.get('description', REQUEST.get('field_description', ''))
+title=REQUEST.get('title', REQUEST.get('field_title', context.Title()))
+description=REQUEST.get('description', REQUEST.get('field_description', context.Description()))
 subject=REQUEST.get('subject', REQUEST.get('field_subject', context.Subject()))
 effective_date=REQUEST.get('effective_date', None)
 expiration_date=REQUEST.get('expiration_date', None)

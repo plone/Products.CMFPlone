@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=file=None
 ##title=Validates a document edit_form contents
 ##
 REQUEST=context.REQUEST
@@ -19,8 +19,7 @@ titleField=fv.createField('String', 'title', title='title', required=1, display_
 form.add_field(titleField)
 errors=fv.validate(form)
 
-file=REQUEST.get('file', '')
-if file and hasattr(file,'read'): 
+if file and getattr(file, 'filename' ,''): 
     file.seek(0)
     headers = file.headers
     if headers['Content-Type'].find('text')==-1:

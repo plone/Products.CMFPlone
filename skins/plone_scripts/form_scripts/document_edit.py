@@ -10,7 +10,7 @@ if not field_id:
 
 id, text, title, description = field_id, field_text, field_title, field_description
 
-errors=context.validate_document_edit()
+errors=context.validate_document_edit(file=file)
 
 if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
