@@ -26,7 +26,7 @@ if ids:
     transaction_note(message)
     context.manage_delObjects(ids)
     from Products.CMFPlone import transaction_note
-    transaction_note('Deleted %s from %s' % (str(REQUEST['ids']), context.absolute_url()))
+    transaction_note('Deleted %s from %s' % (str(ids), context.absolute_url()))
 
 return state.set(status=status, portal_status_message=message)
 
