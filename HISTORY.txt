@@ -1,6 +1,15 @@
 CHANGES
 
 Plone 1.0.2
+    - Added javascript to warn people that they have cookies disabled before they try to log in.
+    - Added graceful handling of logins when cookies aren't enabled.  You now get an error message
+      that says something to the effect of "You weren't successful logging in because you don't have
+      cookies enabled"
+    - Added a page that walks people through the process of enabling cookies.
+    - Fixed up the code that sends users on to their destination when they log in.
+    - When you are logged in and visit a page for which you don't have sufficient privileges, you now 
+      get a message that says "you have insufficient privileges to view this page" rather than a login
+      prompt. 
     - Removed "(No Description)" string in news.pt
     - creates an object to hold customization policy results, if any.
     - The IE6 fix for invisible text was broken, should work now.
