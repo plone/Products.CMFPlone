@@ -19,20 +19,19 @@
 */
 
 /* Basic Elements */
-body, td, th, div, span { font-family: Verdana, Helvetica, sans-serif; }
+body, td, th, div, span, table { font-family: Verdana, Helvetica, sans-serif; }
 body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; }
 a { text-decoration: none; color: &dtml-mainLinkColor;; }
-table { font: &dtml-mainFont;; }
 p { font-family: Verdana, Helvetica, sans-serif; }
 p a { text-decoration: underline; }
 p img { border: &dtml-contentImageBorder;; }
 hr { margin:0; padding: 0; }
-h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;;  }
+h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;; }
 ul { list-style-image: url("bullet.gif"); }
 form { border: none; }
-textarea { font: &dtml-inputFont;; width: 100%; }
-input { font: &dtml-inputFont;; }
-select { font: &dtml-inputFont;; }
+textarea {  }
+input {  }
+select {  }
 abbr, acronym, .explain { border-bottom: 1px dotted &dtml-mainLinkColor;; cursor: help; }
 code { }
 pre { padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
