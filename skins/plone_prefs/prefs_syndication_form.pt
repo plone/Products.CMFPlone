@@ -122,6 +122,7 @@
                        />
                 <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
             </div>
+          </fieldset>
         </form>
     
         <form action="" 
@@ -141,6 +142,7 @@
               tal:attributes="action string:prefs_syndication_set">
             <input class="standalone" type="submit" value="Enable Syndication" />
             <input type="hidden" name="isAllowed:int" value="1" />
+
         </form>
     </p>
 
