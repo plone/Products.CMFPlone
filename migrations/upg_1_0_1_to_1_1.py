@@ -12,7 +12,6 @@ def upg_1_0_1_to_1_1(portal):
 
     # change the action in portal_types for
     # viewing a folder
-    portal.portal_types.
 
     
     
