@@ -6,7 +6,9 @@
   <body>
 
     <div metal:fill-slot="main"
-         tal:define="errors options/state/getErrors">
+         tal:define="errors options/state/getErrors;
+                     lockable python:hasattr(here, 'wl_isLocked');
+                     isLocked python:lockable and here.wl_isLocked();">
 
       <h1 i18n:translate="heading_edit_item">
         Edit
@@ -143,13 +145,23 @@
 
           <div class="formControls"
                tal:define="process_creation request/process_creation|nothing;">
+
+            <img src="" class="context"
+                   tal:define="locked portal_object/lock_icon.gif;"
+                   tal:condition="isLocked"
+                   tal:replace="structure python:locked.tag(title='This item is locked')"
+                   alt="Object locked"
+                   i18n:attributes="alt"/>
+
             <input class="context"
                    tabindex=""
                    type="submit"
                    name="form.button.Save"
                    value="Save"
                    i18n:attributes="value"
-                   tal:attributes="tabindex tabindex/next;" />
+                   tal:attributes="tabindex tabindex/next;
+                                   disabled python:test(isLocked, 'disabled', None);" />
+
 
             <input class="standalone"
                    tabindex=""

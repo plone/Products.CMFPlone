@@ -3,7 +3,12 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.0.1 - Jello
-      Fixed http://plone.org/collector/2948. Auto generated ids are now lower
+
+    - Fixed http://plone.org/collector/2859.  plonifyActions accepts javascript
+      urls
+      [tiran]
+
+    - Fixed http://plone.org/collector/2948. Auto generated ids are now lower
       case and the number is more random.
       [tiran]
 
