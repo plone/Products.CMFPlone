@@ -12,26 +12,25 @@
      tal:define="errors python:request.get('errors', {});
                 Batch python:modules['ZTUtils'].Batch;
                 b_start python:request.get('b_start',0);
-                acl_users here/acl_users;
                 portal_roles mtool/getPortalRoles;"
      tal:condition="here/rejectAnonymous" >
-	
+
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<div id="contentTabs"> 
-    <a class="" 
+<div id="contentTabs">
+    <a class=""
        href=""
        tal:attributes="href string: prefs_users_overview"
     >Users</a>
-    <a class="selected"         
+    <a class="selected"
        href=""
-       tal:attributes="href here/absolute_url"
+       tal:attributes="href string:${template/id}"
     >Groups</a>
 </div>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
-    
-<div class="document editable">    
+
+<div class="document editable">
 
     <h1 i18n:translate="">Groups Management</h1>
 
@@ -44,18 +43,22 @@
     <form action=""
           name="groups"
           method="post"
-          tal:condition="python:hasattr(acl_users,'getGroupNames')"
           tal:attributes="action here/absolute_url"
-          tal:define="groups python:Batch(acl_users.getGroupNames(), 25, int(b_start), orphan=1)">
+          tal:define="groups python:Batch(here.portal_groups.listGroups(), 25, int(b_start), orphan=1)">
 
+<!-- jcc: hiding until it actually does something
        <input class="standalone add"
               tabindex=""
               type="submit"
-              name="prefs_group_detail:method"
+              name="prefs_group_details:method"
               value="Add New Group"
               tal:attributes="tabindex tabindex/next;"
               />
+-->
+	<!-- jcc says: this is confusing. I think quicksearch should right-aligned. There are other solutions, but these two should not
+	be adjacent visually. -->
 
+<!-- jcc: hiding until it actually works
        <input class="quickSearch"
               tabindex=""
               type="text"
@@ -63,14 +66,14 @@
               value="Quick Search"
               tal:attributes="tabindex tabindex/next;"
               />
-               
+-->
 
         <table class="listing"
                tal:condition="groups">
-               
+
             <tr>
                 <th rowspan="2">Group name</th>
-                <th colspan="3" 
+                <th colspan="3"
                     tal:attributes="colspan python:len(portal_roles)">Roles</th>
                 <th rowspan="2">Remove Group</th>
             </tr>
@@ -79,34 +82,25 @@
                 <th tal:content="portal_role">Role</th>
                 </tal:header>
             </tr>
-            
-            <metal:block 
-                         tal:repeat="this_group python:[acl_users.getGroup(group) for group in groups]">
 
-            <tr 
+            <tal:block repeat="this_group groups">
+
+            <tr
                 tal:define="oddrow repeat/this_group/odd"
                  tal:attributes="class python:test(oddrow,'odd','even')">
-            
-            <metal:block tal:define="roles python:['this'];
-                                     groupname python:this_group">
-         
+
+            <tal:block define="roles python:['this']">
+
             <td>
                 <a href="prefs_group_details"
-                   tal:define="removeprefix python:groupname.getId()[len(acl_users.getGroupPrefix()):]"
-                   tal:attributes="href string:${here/absolute_url}/prefs_group_details?groupname=$removeprefix">
-                   
-                    <img src=""
-                         tal:replace="structure portal/group.gif" />&nbsp;<span 
-                         tal:replace="python:groupname.getUserName()[len('group_'):]">group name</span>
+                   tal:attributes="href string:${here/absolute_url}/prefs_group_details?groupname=${this_group/getGroupName}">
+
+                    <img src="" tal:replace="structure portal/group.gif" />&nbsp;
+		    <span  tal:replace="this_group/getGroupName">group name</span>
                 </a>
             </td>
-            
-            
-            <!-- XXX - Somebody has to make this iterate over the available
-                       roles and show the correct roles for a group - and make it capable of
-                       writing them back -->
 
-            <td class="checkbox" 
+            <td class="checkbox"
                 tal:define="group_roles python:this_group.getRoles();"
                 tal:repeat="portal_role portal_roles">
             
@@ -114,22 +108,22 @@
                        class="noborder"
                        name="name"
                        value="Manager"
-                       tal:attributes="name string:$this_group:list;
+                       tal:attributes="name string:group_${this_group/getGroupName}:list;
                                        value portal_role;
                                        checked python:test(portal_role in group_roles, 'checked' ,'');" />
             </td>
-            
+
             <td class="checkbox">
                 <input type="checkbox"
                        class="noborder notify"
                        name="delete:list"
                        value="value"
-                       tal:attributes="value python:groupname" />
+                       tal:attributes="value this_group/getGroupName" />
             </td>
             
-            </metal:block>
+            </tal:block>
         </tr>
-        </metal:block>
+        </tal:block>
         </table>
 
         <input class="context"

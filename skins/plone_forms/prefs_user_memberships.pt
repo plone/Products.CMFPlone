@@ -22,11 +22,11 @@
 <div id="contentTabs"> 
     <a class="" 
        href=""
-       tal:attributes="href string: prefs_group_details?username=testuser"
+       tal:attributes="href string: prefs_user_details?userid=${userid}"
     >User</a>
     <a class="selected"         
        href=""
-       tal:attributes="href here/absolute_url"
+       tal:attributes="href string:${template/id}?userid=${userid}"
     >Group Membership</a>
 </div>
 <div id="contentBar">&nbsp;</div>
@@ -34,109 +34,67 @@
 
 <div class="document editable">    
 	
-    <h1 i18n:translate="">Group Membership for <span tal:replace="string: TestUser"/></h1>
+    <h1 i18n:translate="">Group Membership for <span tal:replace="string: ${user/getId}"/></h1>
 
     <p i18n:translate="">
-    This user is a member of the following groups. 
+    This user is a member of the following groups:
     </p>
 
-<!-- Again, dead code below, should reuse existing Group listing -->    
+    <form action=""
+          name="groups"
+          method="post"
+          tal:attributes="action here/absolute_url">
+
 
        <input class="standalone add"
               type="submit" 
               name="prefs_user_group_search_form" 
               value="Add New Group Membership" />
 
+        <input type="hidden" name="userid" value="userid" 
+               tal:attributes="value user/getId" />
                
 
         <table class="listing">
                
             <tr>
-                <th rowspan="2">Group name</th>
-                <th colspan="4">Roles</th>
-                <th rowspan="2">Remove Group</th>
+	      <th>Group name</th>
+	      <th>Remove Group</th>
             </tr>
-            <tr>
-                
-                <th>Member</th>
-                
-                
-                <th>Reviewer</th>
-                
-                
-                <th>Manager</th>
-                
-                
-                <th>Owner</th>
-                
-            </tr>
-            
-            
 
-            <tr class="even">
-            
-            
-         
+	  <tr tal:repeat="groupid user/getGroups" class="odd">
+<!-- FIXME: the memberdata tool ought to wrap the groups for us so we -->
+<!-- don't need to do this -->
+	      <tal:block tal:define="group python:here.portal_groups.getGroupById(groupid);
+		                     groupname group/getGroupName">
             <td>
-                <a href="http://localhost/Plone/prefs_group_details?groupname=TestGroup">
-                   
-                    <img src="http://localhost/Plone/group.gif" alt="Group icon" title="Group icon" height="16" width="16" border="0" />&nbsp;TestGroup
+                <a href="prefs_group_details"
+                   tal:attributes="href string:prefs_group_details?groupname=$groupname">
+		    <img src=""
+                         tal:replace="structure portal/group.gif" />&nbsp;<span 
+                         tal:replace="groupname">group name</span>
                 </a>
             </td>
             
-            
-            <!-- XXX - Somebody has to make this iterate over the available
-                       roles and show the correct roles for a group - and make it capable of
-                       writing them back -->
-
-            <td class="checkbox">
-            
-                <input type="checkbox" class="noborder"
-                       name="group_TestGroup:list"
-                       value="Member" checked="checked" />
-            </td>
-            <td class="checkbox">
-            
-                <input type="checkbox" class="noborder"
-                       name="group_TestGroup:list"
-                       value="Reviewer" checked="checked" />
-            </td>
-            <td class="checkbox">
-            
-                <input type="checkbox" class="noborder"
-                       name="group_TestGroup:list"
-                       value="Manager" />
-            </td>
-            <td class="checkbox">
-            
-                <input type="checkbox" class="noborder"
-                       name="group_TestGroup:list"
-                       value="Owner" />
-            </td>
             
             <td class="checkbox">
                 <input type="checkbox"
                        class="noborder notify"
                        name="delete:list"
-                       value="group_TestGroup" />
+                       tal:attributes="value groupname" />
             </td>
-            
-            
+            </tal:block>
         </tr>
         
         </table>
 
-        <input class="destructive" tabindex="30005"
+        <input class="destructive"
                type="submit"
-               name="prefs_group_manage:method"
+               name="prefs_user_membership_edit:method"
                value="Remove selected groups" />
-
-<!-- End dead code -->            
-
-</div>
-    
-</div>
-
-</body>
+	</form>
+<!-- End dead code -->
+      </div>
+    </div>
+  </body>
 </html>
-

@@ -22,11 +22,11 @@
 <div id="contentTabs"> 
     <a class="selected" 
        href=""
-       tal:attributes="href here/absolute_url"
+       tal:attributes="href string:${template/id}?userid=${userid}"
     >User</a>
     <a class=""         
        href=""
-       tal:attributes="href string: prefs_user_memberships?username=${user/getId}"
+       tal:attributes="href string: prefs_user_memberships?userid=${userid}"
     >Group Membership</a>
 </div>
 <div id="contentBar">&nbsp;</div>
