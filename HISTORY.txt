@@ -14,6 +14,18 @@ Plone 1.0 rc2
          etc.
     - Added skin variable to end of CSS file name, avoids caching problems when 
       switching skins on the fly.
+    - Added several new skins. Plone now contains the skins:
+      - Plone Autumn
+      - Plone Core
+      - Plone Core Inverted
+      - Plone Corporate
+      - Plone Default
+      - Plone Greensleeves
+      - Plone Kitty
+      - Plone Mozilla
+      - Plone Mozilla New
+      - Plone Prime
+      - Plone Zed
       
 Plone 1.0 rc1
     - added 'fullname' to portal_memberdata
