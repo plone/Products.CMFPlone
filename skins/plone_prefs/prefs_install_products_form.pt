@@ -20,7 +20,8 @@
     Up to Plone Setup
     </a>
 
-    <div class="documentDescription">
+    <div class="documentDescription"
+         i18n:translate="description_addremove_products">
     This is the Add-on Products install section, you can add and remove products 
     in the lists below. 
     </div>
