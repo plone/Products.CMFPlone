@@ -4,6 +4,15 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/2171 - accessibility headers for the
+      document actions were missing.
+      [limi]
+
+    - Removed the Add to Favorites icon from the breadcrumbs, since it is 
+      already in the document actions area. Favorites still suck, but will
+      hopefully get some love in 2.1. ;)
+      [limi]
+
     - 'prefs_user_details' is now a Controller Page Template, and has better
        validation. Don't forget to re-customize if you have customized the
        old, non-cpt version.
