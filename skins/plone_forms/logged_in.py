@@ -25,7 +25,7 @@ success = REQUEST.get('success',None)
 if success is None:
     # 'success' variable not found -- create it and reload the page
     args = REQUEST.form
-    args['success'] = not isAnonymous
+    args['success'] = int(not isAnonymous)
     url = '%s?%s' % (REQUEST.URL, ZTUtils.make_query(args))
     # make sure the redirect header we are about to send isn't cached!
     REQUEST.RESPONSE.setHeader('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')
