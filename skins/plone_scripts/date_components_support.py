@@ -18,6 +18,11 @@ from DateTime import DateTime
 empty={'id':'----', 'value':None, 'selected':None}
 empty_selected={'id':'----', 'value':None, 'selected':'selected'}
 
+#Get portal year range
+site_properties = context.portal_properties.site_properties
+min_year = site_properties.min_year
+max_year = site_properties.max_year
+
 default=0
 years=[]
 days=[]
@@ -68,7 +73,7 @@ year=int(date.strftime('%Y'))
 #else:
 #    years.append(empty)
 
-for x in range(year-5, year+6):
+for x in range(min_year, max_year):
     d={'id':x,
        'value':x,
        'selected':None}
