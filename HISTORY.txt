@@ -9,7 +9,9 @@ Plone 1.0 rc1
       In previous versions we got a reference to allowedContentTypes and then did a .sort() 
       and it seemed ZPT was not cleaning up after itself. ;'( introduced sortObjects (was
       sortObjectValues) and I think its "Doing The Right Thing"
-      
+    - added lock icon to folder_contents (which automatically will show up in content_status_history)
+      and about_slot
+
 Plone 1.0 beta3
     - Added all missing i18n strings, merged some strings to better facilitate translations to
       Japanese, Chinese and Korean.

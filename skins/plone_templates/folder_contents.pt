@@ -77,9 +77,10 @@
                    class="listing"
                    summary="Content listing"
                    cellpadding="0" cellspacing="0"
-                   metal:define-macro="folder_listing">
+                   metal:define-macro="folder_listing"
+                   tal:define="locked here/lock_icon.gif">
                    
-                <thead >
+                <thead>
                     <tr tal:condition="standalone|nothing">
                         <td class="top" colspan="6"
                             tal:define="types python:here.sortObjects(here.allowedContentTypes());
@@ -213,9 +214,13 @@
                             <a href="absolute_url/external_edit"
                                tal:attributes="href string:${item/absolute_url}/external_edit"
                                tal:define="edit here/edit.gif">
-                               
                                <img tal:replace="structure python:edit.tag(title='Edit with External Editor')" />
                              </a>
+                             
+                            <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
+                                 tal:condition="python:lockable and item.wl_isLocked()"
+                                 tal:replace="structure python:locked.tag(title='Locked by External Editor')" />
+
                             </tal:block>
     
                           <span class="expired"
