@@ -2,7 +2,6 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.Expression import Expression
 from Products.ExternalMethod import ExternalMethod
-from copy import deepcopy
 
 def upgrade(self):
     portal = getToolByName(self, 'portal_url').getPortalObject()
@@ -71,11 +70,11 @@ def normalize_tabs(self):
 				 , category='global_tabs'
 				 , permissions=('List portal members',)
 				 , action=Expression('string: $portal_url/Members/roster'))
-	news=ActionInformation( 'recent_news'
+	news=ActionInformation( 'news'
 	                      , title='News'
 			      , category='global_tabs'
 			      , permissions=('View',)
-			      , action=Expression('string: $portal_url/recent_news'))
+			      , action=Expression('string: $portal_url/news'))
 	search=ActionInformation( 'search_form'
 	                        , title='Search'
 				, category='global_tabs'
