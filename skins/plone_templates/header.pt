@@ -2,7 +2,9 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <head metal:define-macro="html_header" 
-      tal:define="global portal_url here/portal_url">
+      tal:define="global portal_url here/portal_url;
+                  ztu modules/ZTUtils;
+                  current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
           tal:define="charset here/portal_properties/site_properties/default_charset|string:iso-8859-1"
           tal:attributes="content string:text/html;;charset=${charset}" />
@@ -77,7 +79,9 @@
 
 <div metal:define-macro="portal_header"
      i18n:domain="plone"
-     tal:define="portal_url here/portal_url" >
+     tal:define="portal_url here/portal_url;
+                 ztu modules/ZTUtils;
+                 current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
 
      <tal:block tal:condition="not: actions|nothing">     
          <span tal:define="global actions here/portal_actions/listFilteredActionsFor"
@@ -120,7 +124,7 @@
                      class="logo"
                      tal:attributes="width logo/width;
                                      height logo/height;
-                                     src string:${logo/absolute_url}?skin=$current_skin" />
+                                     src string:${logo/absolute_url}?$current_skin" />
             </a>
         </div>
 

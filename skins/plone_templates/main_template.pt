@@ -5,8 +5,8 @@
       lang="en-US" 
       metal:define-macro="master"
       tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
-                  global site_properties here/portal_properties/site_properties;                  global ztu modules/ZTUtils;
-                  global current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(),None));" >
+                  global site_properties here/portal_properties/site_properties;
+                  global ztu modules/ZTUtils" >
 
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="base">
@@ -43,14 +43,17 @@ Header stuff
 
 
 <table class="columns"
-       tal:define="slots_mapping here/prepare_slots;">
+       tal:define="slots_mapping options/slots_mapping|here/prepare_slots|nothing;">
 
     <tbody>
         <tr>
-            <td class="left" tal:condition="slots_mapping/left">
-                <metal:block tal:repeat="slot slots_mapping/left">
+            <td class="left" metal:define-macro="left_column"
+	                     tal:condition="options/slots_mapping/left|slots_mapping/left|nothing">
+                <metal:block tal:repeat="slot options/slots_mapping/left|slots_mapping/left">
                 <tal:block tal:define="global pathexpr python:slot[0];
-                                       global usemacro python:slot[1];"
+                                       global usemacro python:slot[1];
+	                               site_properties here/portal_properties/site_properties;
+	                               portal_url here/portal_url;"
                            tal:condition="usemacro">
                     <metal:block metal:use-macro="python:path(pathexpr)" />
                 </tal:block>
@@ -68,23 +71,19 @@ Header stuff
                 <div id="contentTabs" metal:define-macro="contentTabs"
                      i18n:domain="plone">
    
-                    <tal:block tal:condition="not:actions|nothing">
-                        <comment tal:define="global actions here/portal_actions/listFilteredActionsFor"
-                                 tal:replace="nothing">
-                          In case we are called from DTML
-                        </comment>
-                    </tal:block>
-                    
-                    <tal:block tal:define="global obj_actions actions/object;
+                    <tal:block tal:define="global actions options/actions|actions|nothing;
+	                                   global obj_actions actions/object;
                                            global wf_actions actions/workflow;
                                            global folder_actions actions/folder;
                                            global local_actions python:actions.get('object_tabs', []);
-                                           global isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);" />
+	                                   site_properties here/portal_properties/site_properties;
+                                           global isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);
+	                                   global template_id options/template_id|template_id|template/getId|nothing;" />
 
                     <tal:block tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
-                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');
-			                   href action/url;"> 
+                           tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template_id, 'selected', 'plain');
+			                   href action/url;">
                             <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
                         </a> 
                     </tal:block>
@@ -104,7 +103,9 @@ Header stuff
                     Message box
                     </metal:block>
         
-                    <div class="documentActions">
+                    <div class="documentActions"
+                         metal:define-macro="documentActions"
+                         tal:define="portal_url portal_url|here/portal_url">
 
                         <metal:block metal:define-slot="documentActions" tal:content="nothing">
                         Document actions slot
