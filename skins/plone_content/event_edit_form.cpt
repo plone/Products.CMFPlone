@@ -188,7 +188,7 @@
                   i18n:translate="label_required">(Required)</span>
 
             <div class="formHelp" i18n:translate="help_event_start">
-            Click the calendar to select a date or browse the calendar.
+            Click the calendar icon to select a date or browse the calendar.
             </div>
 
             <div tal:content="error">Validation error output</div>
@@ -216,7 +216,7 @@
                   i18n:translate="label_required">(Required)</span>
                 
             <div class="formHelp" i18n:translate="help_event_end">
-            Click the calendar to select a date or browse the calendar.
+            Click the calendar icon to select a date or browse the calendar.
             </div>
 
             <div tal:content="error">Validation error output</div>
@@ -237,7 +237,7 @@
             <label for="contact_name" i18n:translate="label_contact_name">Contact Name</label>
                 
             <div class="formHelp" i18n:translate="help_contact_name">
-            Enter a contact person or organization for the event.
+            Optional contact person or organization for the event.
             </div>
             
             <input type="text"
@@ -255,7 +255,7 @@
             <label for="contact_email" i18n:translate="label_contact_email">Contact E-mail</label>
                 
             <div class="formHelp" i18n:translate="help_contact_email">
-            An e-mail address to display for information regarding
+            Optional e-mail address to display for information regarding
             the event.
             </div>
             
@@ -274,7 +274,7 @@
             <label for="contact_phone" i18n:translate="label_contact_phone">Contact Phone</label>
                 
             <div class="formHelp" i18n:translate="help_contact_phone">
-            Phone number to call for information and/or booking.
+            Optional phone number to call for information and/or booking.
             </div>
             
             <input type="text"
