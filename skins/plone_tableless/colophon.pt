@@ -65,14 +65,6 @@ This site conforms to the following standards:
 	Valid CSS and tableless layout
         </a>
     </li>
-    <li>
-        <a href="http://www.anybrowser.org/campaign/"
-             title="This Plone site is usable in any web browser."
-             i18n:translate=""
-             i18n:attributes="title">
-        Usable in any browser
-        </a>
-    </li>
 </ul>
  
 </div>
