@@ -192,6 +192,19 @@ except ConflictError: pass
             self.fail('Failed to catch: %s %s (module %s)' %
                       (e.__class__.__name__, e, e.__module__))
 
+    def testImport_getToolByName(self):
+        self.check('from Products.CMFCore.utils import getToolByName')
+
+    def testAccess_getToolByName(self):
+        # XXX: Note that this is NOT allowed!
+        self.checkUnauthorized('from Products.CMFCore import utils;'
+                               'print utils.getToolByName')
+
+    def testUse_getToolByName(self):
+        self.app.manage_addFolder('portal_membership') # Fake a portal tool
+        self.check('from Products.CMFCore.utils import getToolByName;'
+                   'print getToolByName(context, "portal_membership")')
+
 
 class TestAcquisitionMethods(RestrictedPythonTest):
 
