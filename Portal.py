@@ -94,6 +94,10 @@ class PloneGenerator(Portal.PortalGenerator):
         o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
         o.edit('structured-text', default_frontpage)
         
+        o = p.Members
+        o.setTitle('Members')
+        o.setDescription("Container for portal members' home directories")
+        
         skins=getToolByName(p, 'portal_skins')
         skins.plone_templates.frontpage_template.manage_doCustomize(folder_path='custom')
         p.manage_pasteObjects( skins.custom.manage_cutObjects('frontpage_template') )

@@ -5,6 +5,7 @@
     - added 'use_folder_tabs' property on portal object.  portal_type ids that are listed will get folder_actions instead of
       object_actions in main_template.
     - fixed edit_topicCriteria (has debug code in it) added navprops entry and modified script to use getNextRequestFor
+    - Members now have default Title/Description Issue 206
 
 1.0alpha2
 
