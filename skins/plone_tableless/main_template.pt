@@ -20,6 +20,12 @@
                            lang language | default_language;
                            charset site_properties/default_charset|string:utf-8">
 
+    <!-- min-width support for IE via Javascript, required for tableless -->
+    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
+    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
+
     <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
       Get the global cache headers located in global_cache_settings.
     </metal:cache>
@@ -81,26 +87,14 @@
 
 <div class="visualClear"></div>
 
-<!-- The wrapper table. It contains the three columns. There's a table-less
-     alternative in the plone_tableless skin layer that you can use if you 
-     prefer layouts that don't use tables. -->
-<table id="portal-columns" tal:attributes="class string:${hidecolumns}">
-    <tbody>
-        <tr>
-            <!-- start of the left (by default at least) column -->
-            <td id="portal-column-one"
-                tal:condition="slots_mapping/left">
-                <div class="visualPadding">
-                    <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
-                        This instruction gets the portlets (boxes) for the left column.
-                    </metal:leftportlets>
-                    &nbsp;
-                </div>
-            </td>
-            <!-- end of the left (by default at least) column -->
+<!-- The wrapper div. It contains the three columns. -->
+<div id="portal-columns" tal:attributes="class string:${hidecolumns}">
+
+    <!-- start of the main and left columns -->
+    <div id="visual-column-wrapper">
 
         <!-- start of main content block -->
-            <td id="portal-column-content"
+        <div id="portal-column-content"
              tal:define="tabindex python:Iterator(pos=0)">
 
             <div id="content" tal:attributes="class python:test(is_editable,'documentEditable','')">
@@ -139,11 +133,26 @@
 
             </div>
 
-            </td>
+        </div>
         <!-- end of main content block -->
 
+        <!-- start of the left (by default at least) column -->
+        <div id="portal-column-one"
+            tal:condition="slots_mapping/left">
+            <div class="visualPadding">
+                <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
+                    This instruction gets the portlets (boxes) for the left column.
+                </metal:leftportlets>
+                &nbsp;
+            </div>
+        </div>
+        <!-- end of the left (by default at least) column -->
+
+    </div>
+    <!-- end of the main and left columns -->
+
     <!-- start of right (by default at least) column -->
-            <td id="portal-column-two"
+    <div id="portal-column-two"
         tal:condition="slots_mapping/right">
         <div class="visualPadding">
             <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
@@ -151,15 +160,13 @@
             </metal:rightportlets>
             &nbsp;
         </div>
-            </td>
+    </div>
     <!-- end of the right (by default at least) column -->
-        </tr>
-    </tbody>
-</table>
+
+    <div class="visualClear">&nbsp;</div>
+
+</div>
 <!-- end column wrapper -->
-
-<div class="visualClear">&nbsp;</div>
-
 
 <hr class="netscape4" />
 

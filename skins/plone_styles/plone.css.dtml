@@ -562,7 +562,7 @@ pre {
 }
  
 #content {
-    padding: 1em;
+    padding: 0 1em;
     margin: 0em 0em 2em 0em;
 }
 
@@ -614,7 +614,7 @@ pre {
 }
 
 .documentEditable {
-    padding: 1em 2em !important;
+    padding: 1em 2em 1em 2em !important;
 }
 
 .configlet .documentEditable {

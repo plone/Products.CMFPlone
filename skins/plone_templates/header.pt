@@ -103,14 +103,7 @@
 
     <!-- Common Plone ECMAScripts -->
 
-    <!-- IE min-width support -->
-    <tal:comment replace="structure string:&lt;!--[if IE]&gt;" />
-    <script type="text/javascript"
-            tal:attributes="src string:$portal_url/plone_minwidth.js"></script>
-    <tal:comment replace="structure string:&lt;![endif]--&gt;" />
-
-     
-    <!-- ECMAScript menu -->
+    <!-- Pull-down ECMAScript menu -->
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_menu.js"></script>
 
