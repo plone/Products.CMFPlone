@@ -128,14 +128,4 @@ import PloneInitialize
 # setup migrations
 migrations.registerMigrations()
 
-# patch Image.py
-from OFS.Image import Image
-
-oldImageTag = Image.tag
-
-def patchedImageTag(*args, **kwargs):
-    if not kwargs.has_key('border'):
-        kwargs['border'] = None
-    return oldImageTag(*args, **kwargs)
-    
-Image.tag = patchedImageTag
+import imagePatch
