@@ -693,20 +693,20 @@ function update_date_field(field, year, month, day, hour, minute, ampm)
         // Note: This relies heavily on what date_components_support.py puts into the form.
         field.value = year.value + "-" + month.value + "-" + day.value + " " + hour.value + ":" + minute.value
         // Handle optional AM/PM
-        if (ampm.value)
+        if (ampm && ampm.value)
             field.value = field.value + " " + ampm.value
     } 
     else 
     {
+        // Return empty string
+        field.value = ''
         // Reset widgets
         month.options[0].selected = 1
         day.options[0].selected = 1
         hour.options[0].selected = 1
         minute.options[0].selected = 1
-        if (ampm.options)
+        if (ampm && ampm.options)
             ampm.options[0].selected = 1
-        // Return empty string
-        field.value = ''
     }
 }
 
