@@ -61,7 +61,14 @@ def rc3_rc4(portal):
                      condition='',
                      permission='Manage properties',
                      category='object')
-        _actions = ptype._cloneActions()
+        actions = ()
+        try:
+            _actions = ptype._cloneActions()
+        except AttributeError:
+            # Stumbled across ancient dictionary actions
+            ptype._convertActions()
+            _actions = ptype._cloneActions()
+
         for action in _actions:
             if action.getId()=='metadata':
                  action.title='properties'
