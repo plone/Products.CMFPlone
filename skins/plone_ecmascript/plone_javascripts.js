@@ -311,15 +311,29 @@ function scanforlinks(){
     for (i=0; i < links.length; i++){      
         if (links[i].getAttribute('href')){
             var linkval = links[i].getAttribute('href')
+            
             // check if the link href is a relative link, or an absolute link to the current host.
-            if ((linkval.indexOf('http:') == -1)|| (linkval.indexOf(window.location.protocol+'//'+window.location.host)==0)){
-                // we are here because the link is internal to the site. Do nothing for now
-                // uncomment the next line for nice debugging alerts
-                // alert(linkval + 'is internal')
+            if (linkval.indexOf(window.location.protocol+'//'+window.location.host)==0){
+                // we are here because the link is an absolute pointer internal to our host
+                // do nothing
+            } else if (linkval.indexOf('http:') == -1){
+                // not a http-link. Possibly an internal relative link, but also possibly a mailto ot other snacks
+                // add tests for all relevant protocols as you like.
+                
+                protocols = ['mailto', 'ftp' , 'irc', 'callto']
+                // callto is a proprietary protocol to the SKYPE-application, but we happen to like it ;)
+                
+                for (p=0; p < protocols.length; p++){  
+                     if (linkval.indexOf(protocols[p]+':') != -1){
+                    // this link matches the protocol . add a classname protocol+link
+                    links[i].className = protocols[p]+'-link'
+                    }
+                }
             }else{
-                links[i].className = 'external'
-                links[i].setAttribute('target','_blank')
                 // we are in here if the link points to somewhere else than our site.
+                if ( links[i].getElementsByTagName('img').length == 0 ){links[i].className = 'external'}
+                links[i].setAttribute('target','_blank')
+                
             }
         }
     }
