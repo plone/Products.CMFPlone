@@ -24,7 +24,6 @@ from ConfigParser import ConfigParser
 old_initialize = OFS.Application.initialize
 
 def patch():
-    return
     # patch away!
     OFS.Application.initialize = go
 
