@@ -119,8 +119,6 @@
         </a>
     </li>
 
-
-
     <tal:templateMixin define="contextHasIndexHtml context/hasIndexHtml;
                                folderHasIndexHtml folder/hasIndexHtml;
                                parentVocab folder/getSelectableViews;
