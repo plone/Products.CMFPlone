@@ -1,0 +1,4 @@
+
+[default]
+title=Shopping cart
+cache=HTTPCache
