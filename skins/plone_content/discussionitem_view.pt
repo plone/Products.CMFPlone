@@ -23,10 +23,6 @@
             
             <tr>
                 <td colspan="2">
-                    
-                    This is the current discussion being viewed.  
-                    it should somehow be offset from its comments. 
-
 
                     <h2><img src="discussionitem_icon.gif" alt="Comment" /> <span tal:replace="here/title_or_id">Comment title</span> </h2>
                     Posted by:
