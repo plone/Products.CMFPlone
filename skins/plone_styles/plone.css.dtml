@@ -137,13 +137,13 @@ h6 {
 ul { 
     line-height: 1.5em;
     list-style-type: square;
-    margin-left: 2em;
+    margin: 0.5em 0 0 2em;
     padding:0;
 }
 
 ol {
     line-height: 1.5em;
-    margin-left: 2em;
+    margin: 0.5em 0 0 2em;
     padding:0;
 }
 
@@ -764,10 +764,6 @@ div.box .even {
 
 div.box .odd {
     background-color: &dtml-boxOddBackground;;
-}
-
-div.box .highlight {
-    background-color: &dtml-boxHighlight;;
 }
 
 div.box input {
