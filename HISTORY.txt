@@ -10,6 +10,15 @@ Plone 2.1 - unknown - unknown - unreleased
 
       - show_jscalendar: show the jscalendar icon or not. If you hate the fat 
         javascript, you can turn it off.
+
+      - starting_year: starting year
+
+      - ending_year: ending year
+
+      - future_year: future years after this year
+
+      - show_single_year: when year is fixed (min_year==max_year), sometimes we don't
+        need to show the single year.
       [panjunyong]
 
     - old popup calender(plone 1.x) worked again.
