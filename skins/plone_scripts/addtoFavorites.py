@@ -8,7 +8,7 @@
 ##parameters=
 homeFolder=context.portal_membership.getHomeFolder()
 if not hasattr(homeFolder, 'Favorites'):
-    homeFolder.manage_addPortalFolder(id='Favorites', title='Favorites')
+    homeFolder.invokeFactory( 'Folder', id='Favorites', title='Favorites')
 
 targetFolder = getattr( homeFolder, 'Favorites' )
 new_id='fav_' + str(int( context.ZopeTime()))
