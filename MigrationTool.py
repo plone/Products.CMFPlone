@@ -88,7 +88,7 @@ class MigrationTool( UniqueObject, SimpleItem):
 
     def _upgrade(self, version):
         if not _upgradePaths.has_key(version): 
-            log('No upgrade path found for version "%s"' % version)
+            log('No upgrade path found for version "%s"\n' % version)
             return None
 
         newversion, function = _upgradePaths[version]
