@@ -52,13 +52,6 @@
 
     <metal:block define-slot="head_slot" />
 
-    <metal:block tal:define="test_cookie_name site_properties/test_cookie_name|nothing" 
-                 tal:condition="test_cookie_name">
-      <metal:block tal:define="test_cookie python:request.cookies.get(test_cookie_name,None)"
-                   tal:condition="python:test_cookie is None">
-        <metal:block tal:define="dummy python:request.RESPONSE.setCookie(test_cookie_name,'1')" />
-      </metal:block>
-    </metal:block>
   </metal:block>
 
   <metal:block fill-slot="css_slot">
