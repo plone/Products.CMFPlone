@@ -54,12 +54,9 @@
 			<a href="#" tal:attributes="href string:${obj/absolute_url}/view"
                            tal:content="obj/title_or_id" />
                     </td>   
-                    <td tal:condition="not: obj/isPrincipiaFolderish | nothing"
-                        tal:content="python:here.getObjSize(obj)">Size</td>
+                    <td tal:content="python:test(hasattr(obj, 'get_size'), here.getObjSize(obj), 'n/a')">Size</td>
                     <td tal:content="python:here.toPortalTime(obj.ModificationDate())">Modification Date</td>
-                    <td tal:condition="here/Description"
-		        tal:content="here/Description"> description </td>
-		    <td tal:condition="not: here/Description"> &nbsp; </td>
+                    <td tal:content="structure python:test(here.Description(), here.Description(), '&nbsp;')"> description </td>
                 </tr>
 		</metal:block>
             </tbody>

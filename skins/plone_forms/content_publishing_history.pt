@@ -34,11 +34,11 @@
         <div class="row">
             <span class="label">Status</span>
             <span class="field">
-           		This item is currently in <strong>review_state;</strong> status.
+	    You can change the status below
             </span>
-            <span class="info"></span>
+            <span class="info"> &nbsp; </span>
         </div>
-    
+
     </div>
 
     <form class="group"
