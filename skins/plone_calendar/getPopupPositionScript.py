@@ -45,9 +45,9 @@ function setpositions() {
   var calposX = findPosX(document.getElementById('thecalendar'));
 
 //alert (calposX + ", " + calposY);"""
-jstemplate = """document.getElementById('day%d%0.2d%0.2d').style.top = %d + calposY; // + "em";
-document.getElementById('day%d%0.2d%0.2d').style.left = %d + calposX; // + "em";
-alert (document.getElementById('day%d%0.2d%0.2d').style.top + ", " + document.getElementById('day%d%0.2d%0.2d').style.left);
+jstemplate = """document.getElementById('day%d%0.2d%0.2d').style.pixelTop = %d + calposY; // + "em";
+document.getElementById('day%d%0.2d%0.2d').style.pixelLeft = %d + calposX; // + "em";
+alert (document.getElementById('day%d%0.2d%0.2d').style.pixelTop + ", " + document.getElementById('day%d%0.2d%0.2d').style.pixelLeft);
 """
 for weekdays in weeks:
     for day in weekdays:
