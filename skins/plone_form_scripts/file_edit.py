@@ -4,12 +4,17 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=precondition='', field_file='', field_id='', title=None, description=None
+##parameters=precondition='', field_file='', field_id='', title=None, description=None, file_data=''
 ##title=Edit a file
 ##
+from Products.CMFPlone import StringIO
 REQUEST=context.REQUEST
+
 file=field_file
 id=field_id
+
+if file_data and not hasattr(field_file, 'filename'):
+    file=StringIO(file_data)
 
 context.edit(
      precondition=precondition,

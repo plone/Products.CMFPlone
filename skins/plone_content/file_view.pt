@@ -16,7 +16,7 @@
     <span class="description" tal:content="structure here/Description">
     Description
     </span>
-
+ 
     <div class="group">
         <span class="legend">File details</span>
 
@@ -50,6 +50,16 @@
             </span>
         </div>
 
+        <div class="row"
+	     tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
+	    <span class="label">&nbsp;</span>
+	    <span class="field">
+	      <pre tal:content="here/data">
+	      </pre>
+	    </span>
+	    <span class="info">&nbsp;</span>
+	</div>
+	
     </div>
 
 </div>
