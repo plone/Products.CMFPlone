@@ -1,7 +1,7 @@
 ## Script (Python) "addtoFavorites"
-##title=Add item to favourites
+##title=Add item to favourites (Plone Version)
 ##bind namespace=_
-##parameters=plone version
+##parameters=
 homeFolder=context.portal_membership.getHomeFolder()
 if not hasattr(homeFolder, 'Favorites'):
   homeFolder.manage_addPortalFolder(id='Favorites', title='Favorites')
