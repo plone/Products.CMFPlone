@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+	
+<body>
+    <span metal:fill-slot="main"
+          tal:define="members python:container.portal_membership.getRoster();
+                      DateTime python:modules['DateTime'].DateTime;
+                      Batch python:modules['ZTUtils'].Batch;
+                      DateTime python:modules['DateTime'].DateTime;
+                      b_start python:request.get('b_start', 0);">
+	
+        <h1>Member Listing</h1>
+		
+		<p> Here is a list of the members that are visible. </p>
+
+		<form name="search results" action="#" method="POST"
+              tal:condition="members"
+              tal:define="batch python:Batch(members, 15, int(b_start), orphan=1)">
+				
+		<p>
+        Visible Members: <strong tal:content="python:len(members)">number of members</strong> 
+        </p>
+		  
+		<div class="row">		
+            <span class="left" tal:define="n batch/previous | nothing" tal:condition="python: not n"> &nbsp; </span>
+            <span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
+                <a href="#" tal:attributes="href string:?b_start=${p/first}"> &laquo; previous 15 members </a>
+            </span>
+            <span class="right" tal:define="n batch/next | nothing" tal:condition="n">
+                <a href="#" tal:attributes="href string:?b_start=${batch/end}"> next 15 members &raquo;  </a>
+            </span>
+            <span class="right" tal:define="n batch/next | nothing" tal:condition="python: not n"> &nbsp; </span>
+        </div>
+		  
+        <span tal:repeat="result batch">
+            <span class="card" tal:define="home python:container.portal_membership.getHomeUrl(result['id'], verifyPermission=1);
+                                           portrait python: here.getPlonePersonalPortait(result['id']);"> 
+                <a href="#" tal:attributes="href home">                    
+                    <img src="defaultUser.gif" alt="Blank picture" border="0" tal:condition="portrait" tal:attributes="src portrait/absolute_url">
+                    <img src="defaultUser.gif" alt="Blank picture" border="0" tal:condition="not: portrait"> <br />  
+                    <span tal:content="python:result['id']"> member id</span>
+                </a>
+                <br />	
+            </span>
+        </span>
+
+        <div class="row">
+            <span class="left" tal:define="n batch/previous | nothing" tal:condition="python: not n"> &nbsp; </span>
+            <span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
+                <a href="#" tal:attributes="href string:?b_start=${p/first}"> &laquo; previous 15 members </a>
+            </span>
+            <span class="right" tal:define="n batch/next | nothing" tal:condition="n">
+                <a href="#" tal:attributes="href string:?b_start=${batch/end}"> &nbsp; next 15 members &raquo; </a>
+            </span>
+            <span class="right" tal:define="n batch/next | nothing" tal:condition="python: not n"> &nbsp; </span>
+        </div>		
+
+        </form>	    
+    </span>
+</body>
+</html>

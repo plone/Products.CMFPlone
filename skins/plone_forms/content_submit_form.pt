@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+      
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state');
+					         review_history python:container.portal_workflow.getInfoFor(here, 'review_history');
+								   member python:container.portal_membership.getAuthenticatedMember();">
+
+    <h1>Submit Item for Review</h1>
+
+    <p>
+    To make an item published, it
+    has to be reviewed by one of the site's reviewers. 
+    A <strong>published</strong> item is available to the general
+    member base and anonymous visitors. <br />
+    Another way to control the visibility of an item is with its <strong>effective
+    date</strong>.  An item is not publicly available before its effective date,
+    <em>even if its status is <strong>published</strong></em>.
+    </p>
+    
+    <form class="group"
+          method="post" 
+          action="content_status_modify">
+        
+        <span class="legend">Item comments</span>
+        
+        <input type="hidden" name="workflow_action" value="submit">
+        
+        <div class="row">
+            <span class="label">Status</span>
+            <span class="field" tal:define="review_state python:here.portal_workflow.getInfoFor(here, 'review_state')">
+           		This item is currently in <strong tal:content="review_state">review_state;</strong> status.
+            </span>
+            <span class="info">&nbsp;</span>
+        </div>
+        
+        <div class="row">
+            <span class="label">Comments</span>
+            <span class="field">
+                <textarea name="comment" cols="60" rows="5" wrap="soft" style="width: 100%"></textarea>
+            </span>
+            <span class="info">
+            Here you add comments that only the reviewer can read. 
+            Information about current status, requests for comments etc.
+            </span>
+        </div>
+        
+        <div class="row">
+            <span class="label">&nbsp;</span>
+            <span class="field"><input class="context" type="submit" value=" Submit Item "></span>
+        </div>
+
+    </form>
+
+</div>
+	   
+</body>
+</html>
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      metal:use-macro="here/content_template/macros/master">
+<body>
+
+<div metal:fill-slot="main" tal:define="errors python:request.get('errors', {})">
+
+    <h1>Edit file</h1>
+    
+    <p>
+    Add the relevant details of the file to be added in the form below,
+    select the file with the "Browse" button, and press "Save".
+    </p>
+	
+    <form class="group"
+          name="edit_form" 
+          action="file_edit" 
+          method="post" 
+          enctype="multipart/form-data"
+          tal:attributes="action string:${here/getId}/file_edit">
+            
+        <span class="legend">File details</span>
+        
+        <div class="row" 
+             tal:define="error_id errors/id | nothing;
+                         id request/id | here/getId;"> 
+            <span class="label required">ID</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_id, 'field error', 'field')" >
+
+                <div tal:condition="error_id"
+                      tal:replace="error_id" />
+
+                <input type="text" 
+                       name="field_id" 
+                       value="#"
+                       size="25" 
+                       tal:attributes="value id" />
+            </span>
+            <span class="info">
+            Enter the ID of the file. If you don't know what this means, 
+            just leave it at the supplied value.
+            </span>
+        </div>
+        
+        <div class="row"
+             tal:define="error_title errors/title|nothing;
+                         Title request/title | here/Title;"> 
+            <span class="label required">Title</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_title, 'field error', 'field')" >
+
+                <div tal:condition="error_title"
+                      tal:replace="error_title" />
+
+                <input type="text" 
+                       name="field_title" 
+                       value="#" 
+                       tal:attributes="value Title" />
+
+            </span>
+            <span class="info">
+            Enter the title of the file. 
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Description</span>
+            <span class="field" 
+                  tal:define="description request/description | here/Description">
+                <textarea name="field_description:text" 
+                          rows="10" 
+                          cols="34"
+                          tal:content="description">
+                Some descriptive text
+                </textarea>
+            </span>
+            <span class="info">A short description of the item.</span>
+        </div>
+    
+        <div class="row"
+             tal:define="error_file errors/file|nothing;
+                         file request/file | here/file | nothing;">
+    
+            <span class="label required">
+            File
+            </span>
+            
+            <span class="field" 
+                  tal:attributes="class python:test(error_file, 'field error', 'field')" >
+
+                <div tal:condition="error_file"
+                      tal:replace="error_file" />
+
+                <input type="file" 
+                       name="field_file" 
+                       size="20" />
+
+                <span tal:condition="python:test(here.size, 0, 1)">
+                  <br /> (No file has been uploaded)
+                </span>
+
+            </span>
+            
+            <span class="info">
+            Select the file to be added by clicking the "Browse" button.
+            </span>
+        
+        </div>
+
+    
+        <div class="row">
+    
+            <span class="label"> &nbsp; </span>
+            <span class="field" tal:define="process_creation request/process_creation|nothing;"> 
+                <input class="context" type="submit" name="Change" value="Save" /> 
+                <input class="context" type="submit" name="cancel_edit:method" value="Cancel" />
+            </span>
+    
+        </div>
+    
+    </form>
+
+</div>
+  
+</body>
+</html>

@@ -1,0 +1,103 @@
+<dtml-call "REQUEST.set('content/type', 'text/css')">
+/*
+ * Plone Calendar CSS v1
+ *
+ * Zope CMF style sheet by Alexander Limi (http://limi.net)
+ * 
+ * Special thanks to Geir Bækholt (http://elvix.com) and 
+ * Stian Søiland (http://stain.portveien.to) for invaluable 
+ * input and code examples. You guys rock! :)
+ *
+ * I've tried to comment everything as concisely as possible. If there's anything
+ * that you find confusing or just plain wrong, contact me and I'll fix it before the
+ * next release.
+ *
+ */
+ 
+ 
+ /* Calendar elements - used in the calendar rendering */
+
+div.container {
+    font-family: Verdana, Helvetica, Arial, Sans-Serif;
+    font-size: 9px;
+}
+
+div.day {
+    background-color: #FFFFBB;
+    border: 1px solid #8CACBB;
+    padding: 0.2em;
+    visibility: hidden;
+    width: 12em;
+    z-index: 2;
+}
+
+div.date {
+}
+
+  
+table.calendar {
+    border-collapse: collapse;
+    border: 1px solid #8CACBB;
+    font-family: Verdana, Helvetica, Arial, Sans-Serif;
+    font-size: 10px;
+    text-align: right;
+}
+
+table.calendar a {
+    text-decoration: none;
+}
+
+table.calendar a:hover {
+    text-decoration: none;
+}
+
+table.calendar th {
+    background-color: #DEE7EC;
+    font-weight: bold;
+    text-align: center;
+}
+
+table.calendar td {
+    background-color: white;
+    width: 1.5em;
+    padding: 2px;
+}
+
+table.calendar td.weekdays {
+    background-color: #DEE7EC;
+    border-width: 1px;
+    border-style: solid none;
+    border-color: #8CACBB;
+    text-align: center;
+}
+
+table.calendar td.event {
+    background-color: #DEE7EC;
+    font-weight: bold;
+}
+
+table.calendar td.noevent {
+    background-color: #FFFFFF;
+}
+
+table.calendar td.othermonth {
+    background-color: #FFFFFF;
+    border: 1px solid #8CACBB;
+    vertical-align: bottom;
+}
+
+table.calendar td.holiday {
+    background-color: #CF6060;
+    border: 1px solid #8CACBB;
+}
+
+table.calendar td.todayevent {
+    background-color: #DEE7EC;
+    border: 2px solid #CF6060;
+    font-weight: bold;
+}
+
+table.calendar td.todaynoevent {
+    border-collapse: collapse;
+    border: 2px solid #CF6060;
+}

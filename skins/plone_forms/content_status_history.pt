@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/content_template/macros/master">
+<body>
+
+<div metal:fill-slot="main"
+      tal:define="review_state python:here.portal_workflow.getInfoFor(here, 'review_state');
+                  review_history python:here.portal_workflow.getInfoFor(here, 'review_history');
+                  actions python:here.portal_actions.listFilteredActionsFor(here);">  
+    
+    <script language="JavaScript" src="cmf_skin_tools/calendar.js"></script>
+
+    <h1>Publishing process</h1>
+    
+    <p>
+    An item's status (also called its review state) determines who can see it.
+    A <strong>private</strong> item can only be viewed by its Owner and by the site
+    management. Only <strong>published</strong> items are available to the general
+    member base and anonymous visitors. To make an item published, it
+    has to be reviewed by one of the site's Reviewers. You can request
+    that an item be reviewed by setting its status to <strong>pending</strong>. <br />
+        
+    Another way to control the visibility of an item is with its <strong>effective
+    date</strong>. An item is not publicly available before its effective date,
+    <em>even if its status is <strong>published</strong></em>.
+
+    </p>
+    
+    <div class="group">
+        <span class="legend">Status</span>
+    
+        <div class="row">
+            <span class="label">Status</span>
+            <span class="field">
+           		This item is currently in <strong
+                tal:content="review_state">review_state;</strong> status.
+            </span>
+            <span class="info"></span>
+        </div>
+    
+    </div>
+
+    
+    <form class="group"
+          id="edit_form"
+          name="edit_form" 
+          method="post" 
+          action="content_status_modify"
+          tal:attributes="action string:${here/getId}/content_status_modify">
+        
+        <span class="legend">Publishing Details</span>
+
+        <div class="row">
+            <span class="label">
+              Effective Date
+            </span>
+            <span class="field">
+                <div tal:define="inputname  string:effective_date; 
+                                 formname   string:edit_form;
+                                 inputvalue python:test(here.effective_date, here.effective_date, '')">
+                  <div metal:use-macro="here/portal_boxes/macros/calendarDatePickerBox">
+                    a calendar, hopefully
+                  </div>
+                </div>
+            </span>
+            <span class="info">
+            The date when the document will be visible when it's published. This way, you can 
+            publish a document in advance, but it will not be visible before this date.  If no date is select 
+            the document will be effective immediately.
+            </span>
+        </div>
+        
+        <div class="row">
+            <span class="label">
+              Expiration Date
+            </span>
+            <span class="field">
+                <div tal:define="inputname  string:expiration_date; 
+                                 formname   string:edit_form;
+                                 inputvalue python:test(here.expiration_date, here.expiration_date, '')">
+                  <div metal:use-macro="here/portal_boxes/macros/calendarDatePickerBox">
+                    a calendar, hopefully
+                  </div>
+                </div>
+            
+            </span>
+            <span class="info">
+            The date when the document expires. This will automatically make the document
+            invisible for others at the given date. If no date as selected it will never expire.
+            </span>
+        </div>
+    
+        <div class="row">
+            <span class="label">Comments</span>
+            <span class="field">
+                <textarea id="comment" name="comment" cols="60" rows="5" wrap="soft" style="width: 100%"></textarea>
+            </span>
+        </div>
+    
+        <div class="row">
+            <input type="hidden" id="workflow_action" name="workflow_action" value="" />
+            <span class="label"></span>
+    
+            <span class="field"
+                  tal:define="wf_actions actions/workflow;
+                  review_history python:here.portal_workflow.getInfoFor(here, 'review_history', None);
+                  
+                  publish python:here.getActionUrlById('publish', wf_actions);
+                  submit python:here.getActionUrlById('submit', wf_actions);
+                  retract python:here.getActionUrlById('retract', wf_actions);
+                  hide python:here.getActionUrlById('hide', wf_actions);
+                  reject python:here.getActionUrlById('reject', wf_actions);
+                  visible python:here.getActionUrlById('visible', wf_actions);">
+
+                <input class="context" type="submit" value=" Publish this Item " tal:condition="publish"
+                       onclick="javascript:document.getElementById('workflow_action').value='publish';" />
+             
+                <input class="context" type="submit" value="Submit for review" tal:condition="submit"
+                       onclick="javascript:document.getElementById('workflow_action').value='submit';" />
+
+                <input class="context" type="submit" value="Retract" tal:condition="retract"
+                       onclick="javascript:document.getElementById('workflow_action').value='retract';" >
+
+                <input class="context" type="submit" value="Hide" tal:condition="hide"
+                       onclick="javascript:document.getElementById('workflow_action').value='hide';" />
+
+                <input class="context" type="submit" value="Reject" tal:condition="reject"
+                       onclick="javascript:document.getElementById('workflow_action').value='reject';" />
+
+                <input class="context" type="submit" value="Visible" tal:condition="visible"
+                       onclick="javascript:document.getElementById('workflow_action').value='visible';" />
+    
+            </span>
+            
+        </div>
+
+    </form>
+
+    <div class="group">
+
+        <span class="legend">History</span>    
+
+         <div class="row"
+              tal:repeat="items python: here.reverseList(review_history)">
+    
+            <span tal:define="global odd repeat/items/odd; global rhComments items/comments;"
+                   tal:replace="nothing" />
+            
+            <span class="label"> 
+                <span tal:replace="items/action" /> 
+             </span>
+            
+            <span class="field">
+                was performed by <span tal:replace="items/actor" /> 
+                on <span tal:replace="python: items['time'].aCommon()" />
+                <span tal:condition="items/effective_date|nothing">
+                (effective: 
+                <span tal:replace="python: items['effective_date'].aCommon()"></span>)
+                </span>
+            </span>
+              
+            <span class="info">
+                <strong>Comment:</strong>
+                <span tal:replace="rhComments" />
+            </span>
+        </div>
+
+    </div>
+
+</div>
+  
+</body>
+</html>
+

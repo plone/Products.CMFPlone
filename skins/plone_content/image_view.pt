@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/content_template/macros/master">
+	
+<body>
+
+<span metal:fill-slot="main">
+
+    <div class="contentHeader"
+         metal:use-macro="here/portal_boxes/macros/contentHeader">
+    content header
+    </div>
+   
+    <span class="description" tal:content="structure here/Description">
+    Description
+    </span>
+
+    <div class="group">
+        <span class="legend">Image details</span>
+
+        
+        <div class="row">
+            <span class="label">Size</span>
+            <span class="field" 
+                  tal:define="size python:here.getObjSize(here)"
+                  tal:content="size">                        
+            File size
+            </span>            
+            <span class="info" tal:condition="python:test(here.size, 0, 1)">
+              (No file has been uploaded)
+            </span>
+        </div>
+        
+        <div class="row">
+            <span class="label">File type</span>
+            <span class="field" tal:content="here/content_type">
+            Content type
+            </span>
+        </div>    
+    
+        <div class="row">
+            <span class="label"></span>
+            <span class="field" tal:condition="here/size">
+                <img src="#" tal:attributes="src here/absolute_url" />
+            </span>
+        </div>
+
+    </div>
+
+</span>
+
+</body>
+</html>

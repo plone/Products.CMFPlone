@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+<body>
+
+<div metal:fill-slot="main">
+
+    <h1>Advanced search for content</h1>
+    
+    <p>
+    This search form enables you to find content on the site by
+    specifying one or more criterions to be met. 
+    </p>
+    
+    <p>
+    Remember that you can use the quick search anytime, it's normally
+    good enough, this search form is just if you want to be more specific.
+    </p>
+  
+  	<form class="group"
+          action="search" 
+          method="post" 
+          name="search" 
+          tal:define="DateTime python:modules['DateTime'].DateTime">
+
+        <span class="legend">Search Terms</span>
+			 
+        <div class="row">
+            <span class="label">Text</span>
+            
+            <span class="field">
+                <input type="text" name="SearchableText" size="25">
+            </span>
+            
+            <span class="info">
+            For a simple text search, enter your search term
+            here. Multiple words may be found by combining
+            them with <strong>AND</strong> and <strong>OR</strong>. 
+            The text in this field will be matched with
+            items' contents, title and description.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Title</span>
+            
+            <span class="field"><input type="text" name="Title" size="25"></span>
+            
+            <span class="info">
+            Return items matching this title.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Subject</span>
+            
+            <span class="field"
+                  tal:define="contentSubjects here/Subject;
+                  allowedSubjects python:container.portal_metadata.listAllowedSubjects(here);">
+            
+                <textarea name="subject:lines" rows="3" cols="25"><span tal:repeat="subject contentSubjects" tal:replace="python:subject+'\n'">Subject of the item</span></textarea>
+                
+                <br />
+                
+                <select name="subject:list" size="7" multiple>
+                    <option value="fix"
+                            tal:repeat="subject allowedSubjects"
+                            tal:replace="subject">fix</option>
+                </select>
+                
+            </span>
+		
+            <span class="info">
+            Return items matching one or more of these subjects.
+            Multiple words may be found
+            by combining them with <strong>AND</strong> and <strong>OR</strong>.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Description</span>
+	
+            <span class="field">
+                <input type="text" name="Description" size="25">
+            </span>
+	
+            <span class="info">
+            Return items matching this description.
+            Multiple words may be found
+            by combining them with <strong>AND</strong> and <strong>OR</strong>.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">New items since</span>
+	
+            <span class="field">
+            
+                <span tal:define="today python:DateTime().earliestTime()">
+                
+                    <select name="created:date"
+                            tal:define="yesterday python:(today-1).Date();
+                                        lastweek python:(today-7).Date();
+                                        lastmonth python:(today-31).Date();
+                                        ever string:1970/01/01 00:00:00 GMT;">
+                        <option value="#"
+                                tal:condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1);"
+                                tal:attributes="value python:container.portal_membership.getAuthenticatedMember().last_login_time"> Last login </option>
+                        <option value="#" tal:attributes="value yesterday"> Yesterday </option>
+                        <option value="#" tal:attributes="value lastweek"> Last week </option>
+                        <option value="#" tal:attributes="value lastmonth"> Last month </option>
+                        <option value="#" tal:attributes="value ever" selected> Ever </option>
+                    </select>
+                
+                </span>
+            
+                <input type="hidden" name="created_usage" value="range:min" />  
+            
+            </span>
+		
+            <span class="info">
+            Return items added since you were last logged on, the last week, etc.
+            </span>
+		
+        </div>
+
+        <div class="row">
+            <span class="label">Item type</span>
+            
+            <span class="field">
+                <span tal:repeat="type python:container.portal_types.listContentTypes()">
+                    <input type="checkbox" 
+                           name="Type:list" 
+                           value="#"
+                           class="noborder"
+                           checked="checked"
+                           tal:attributes="value type"/> 
+                    <span tal:replace="type" /> <br />
+                </span>       
+            </span>
+            
+            <span class="info">
+            Return items of a specific type.
+            </span>
+        </div>
+	
+        <div class="row">
+            <span class="label">Creator</span>
+            
+            <span class="field" tal:define="creators python:here.portal_catalog.uniqueValuesFor('Creator')"> 
+                <select name="Creator"> 
+                    <option name="" value="" /> 
+                    <span tal:repeat="creator creators"> 
+                        <option value="" tal:attributes="value creator" tal:content="creator"> username </option> 
+                    </span>
+                </select> 
+            </span>
+            
+            <span class="info">
+            Return items created by a particular person.
+            </span>
+        </div>
+
+        <div class="row"
+             tal:condition="python: container.portal_membership.checkPermission('Review portal content', here)">
+        
+            <span class="label">Review status</span>
+
+            <span class="field">
+                <span tal:repeat="state python:here.portal_catalog.uniqueValuesFor('review_state')">
+                    <input type="checkbox" 
+                           name="review_state" 
+                           value="#" 
+                           checked="checked"
+                           class="noborder"
+                           tal:attributes="value state"/> 
+                    <span tal:replace="state" /> <br />
+                </span> 
+            </span>
+
+            <span class="info">
+            As a reviewer, you may search for items based on their
+            review state. If you wish to constrain results to items
+            in certain states, select them from this list.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label"></span>
+            <span class="field">
+                <input class="context" type="submit" name="submit" value=" Search ">
+            </span>
+        </div>
+
+    </form>
+	
+</div>
+	   
+</body>
+</html>

@@ -1,0 +1,3 @@
+<dtml-call "REQUEST.set('content/type', 'text/css')">
+
+/* Later :) */

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+	
+<body>
+    <span metal:fill-slot="main"
+          tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
+		      Batch python:modules['ZTUtils'].Batch;
+		      DateTime python:modules['DateTime'].DateTime;
+		      b_start python:request.get('b_start',0);">
+	
+		<form name="search results" action="#" method="POST"
+				tal:condition="results"
+          tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
+				
+		  
+			<span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
+				<a href="#" tal:attributes="href string:?b_start=${p/first}">
+				&laquo; more recent news
+				</a> 
+			</span>
+			
+			<span class="right" tal:define="n batch/next | nothing" tal:condition="n">
+				<a href="#" tal:attributes="href string:?b_start=${batch/end}">
+				older news &raquo;
+				</a>
+			</span> 
+			
+			<span tal:repeat="result batch" >
+			<div class="row" tal:define="resultObject result/getObject">
+				
+				<h1 tal:content="result/Title">
+					Title
+				</h1>
+				
+				Posted by <p tal:replace="result/Creator" />, 
+				
+				last updated at <p tal:replace="python:container.toPortalTime(result.Date)"/> 
+						 
+				<!-- Type: <p tal:replace="result/meta_type" /> -->
+				
+				
+				<p>
+   			    <strong tal:content="python:test(result.Description, result.Description, '(No Description)')">
+					Description
+				</strong>
+                </p>
+                
+				<p>
+          	    <img src="" alt="Folder" style="border: 0" 
+    				 tal:attributes="src result/getIcon; alt result/Type;"/>
+
+	                <a href="/view" tal:attributes="href resultObject/absolute_url">
+					Read more...
+					</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span tal:condition="python: here.portal_discussion.isDiscussionAllowedFor(resultObject)">
+                        <img style="border: 0" src="discussion.gif" alt="Comments" /> 
+                        <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)"> 
+                             <span tal:replace="python:talkback.replyCount(resultObject)" /> comments
+                        </span>
+                    </span>
+				</p>
+                
+			</div>
+            <hr />
+			</span>
+						
+			<span tal:define="p batch/previous | nothing" tal:condition="p"> 
+				<a href="#" tal:attributes="href string:?b_start=${p/first}">
+				&laquo; more recent news
+				</a> 
+			</span>
+			
+			<span class="right" tal:define="n batch/next | nothing" tal:condition="n">
+				<a href="#" tal:attributes="href string:?b_start=${batch/end}">
+				older news &raquo;
+				</a>
+			</span> 
+			
+		  </form>
+
+          <div class="row" tal:condition="not: results">
+            No news have been posted.
+          </div>		
+ 
+  </span>
+
+  
+</body>
+</html>

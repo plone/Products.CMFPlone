@@ -1,0 +1,74 @@
+<dtml-call "REQUEST.set('content/type', 'text/css')">
+
+/*  A table to do positioning. Necessary to make Netscape 4.x look acceptable.
+ *  Used above and below the content-listings.
+ */
+
+div.title {
+    /* This is the object title, the one next the type icon. Also contains status */
+    background-color: transparent;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    vertical-align: bottom;
+}
+
+table.positioning {
+    width: 100%;
+    border: none;
+}
+
+table.positioning td.left {
+    text-align: left;
+    border: none;
+    vertical-align: middle;
+}
+
+table.positioning td.center {
+    text-align: center;
+    border: none;
+    vertical-align: middle;
+}
+
+table.positioning td.right {
+    text-align: right;
+    border: none;
+    vertical-align: middle;
+}
+
+div.globalActionsBottom {
+	margin-bottom: 2em;
+    margin-top: 2em;
+	clear: both;
+}
+
+.inline {
+    display: inline;
+}
+
+
+
+div.listingActions {
+	margin-bottom: 2em;
+    margin-top: 2em;
+}
+
+div.viewFilter {
+	float: right;
+	font-weight: normal;
+	font-size: 10px;
+	text-align: right;
+}
+
+fieldset {
+    border: 1px solid red;
+    width: 90%;
+}
+
+legend {
+    color: red;    
+}
+
+
+
+
+

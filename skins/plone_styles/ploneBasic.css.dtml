@@ -1,0 +1,164 @@
+<dtml-call "REQUEST.set('content/type', 'text/css')">
+
+<dtml-call setupTestREQUEST>
+
+/*
+ * Plone Basic CSS v1
+ *
+ * Zope CMF style sheet by Alexander Limi (http://limi.net)
+ * 
+ * Special thanks to Geir Bækholt (http://elvix.com) and 
+ * Stian Søiland (http://stain.portveien.to) for invaluable 
+ * input and code examples. You guys rock! :)
+ *
+ * I've tried to comment everything as concisely as possible. If there's anything
+ * that you find confusing or just plain wrong, contact me and I'll fix it before the
+ * next release.
+ *
+ */
+ 
+body {
+    font: &dtml-mainFont;;
+    background: &dtml-mainBackground;;
+    color: &dtml-mainTextColor;;
+    margin: 0;
+    padding: 0;
+/* These work in IE only, change the look of the scrollbar + textareas */
+    scrollbar-base-color: #dee7ec;
+    scrollbar-highlight-color: #dee7ec;
+    scrollbar-track-color: #f7f9fa;
+    scrollbar-darkshadow-color: #f7f9fa;
+    scrollbar-3dlight-color: #8cacbb;
+    scrollbar-shadow-color: #8cacbb;
+    scrollbar-arrow-color: #8cacbb;
+}
+
+
+a {
+	text-decoration: none;
+    color: &dtml-mainLinkColor;;
+}
+
+table {
+}
+
+
+img {
+/* turn off image borders. */
+    border: none;
+}
+
+
+p {
+/* Default paragraph style*/
+    font: &dtml-contentFont;;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+p a {
+    text-decoration: underline;
+}
+p img {
+    border: &dtml-contentImageBorder;;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #8cacbb;
+}
+
+
+h1, h2, h3, h4, h5, h6 {	/* Style for the headlines */
+    font: &dtml-headingFont;;
+}
+
+h1 {
+    font-size: &dtml-headingSize1;;
+}
+
+h2 {
+    font-size: &dtml-headingSize2;;
+}
+
+h3 {
+    font-size: &dtml-headingSize3;;
+}
+
+h4 {
+    font-size: &dtml-headingSize4;;
+}
+
+h5 {
+    font-size: &dtml-headingSize5;;
+}
+
+h6 {
+    font-size: &dtml-headingSize6;;
+}
+
+ul { 
+    list-style-image: url("bullet.gif"); 
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+
+form {
+    border: none;
+}
+
+textarea {
+/* Small cosmetic hack which makes textarea gadgets look nicer.*/
+    font: &dtml-inputFont;;
+    border: &dtml-inputBorder;;  
+    width: 100%;
+}
+
+input {
+/* Small cosmetic fix which makes input gadgets look nicer. */
+    font: &dtml-inputFont;;
+    border: &dtml-inputBorder;;  
+    background-color: white;
+}
+
+select {
+    font: &dtml-inputFont;;
+    border: &dtml-inputBorder;;  
+}
+
+abbr, acronym, .help {
+/* Help classes */
+    border-bottom: 1px dotted &dtml-mainLinkColor;;
+    cursor: help;
+}
+
+
+
+code {
+    font-size: 120%;
+}
+
+pre {
+    font-size: 120%;
+    padding: 1em;
+    border: &dtml-preBorder;;
+    background-color: &dtml-preBackground;;
+}
+
+.netscape4 {
+/* This hides elements necessary for getting Netscape 4.x to look better. Mostly strategically placed hr tags and &middot;'s */
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+<dtml-call "REQUEST.set('content/type', 'text/css')">
+
+/*
+ * Plone Forum CSS v1
+ *
+ * Zope CMF style sheet by Alexander Limi (http://limi.net)
+ * 
+ * Special thanks to Geir Bækholt (http://elvix.com) and 
+ * Stian Søiland (http://stain.portveien.to) for invaluable 
+ * input and code examples. You guys rock! :)
+ *
+ * I've tried to comment everything as concisely as possible. If there's anything
+ * that you find confusing or just plain wrong, contact me and I'll fix it before the
+ * next release.
+ *
+ *              * { border: 1px solid red }
+ */

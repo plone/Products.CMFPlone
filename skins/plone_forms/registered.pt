@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/portal_template/macros/master">
+<body>
+<div metal:fill-slot="main">
+
+<div tal:define="pprops here/portal_properties; ve pprops/validate_email">
+
+<h1>Welcome!</h1>
+
+<p> You have been registered as a member. </p>
+
+<p tal:condition="ve"> You will receive an email shortly containing your password 
+    and instructions on how to activate your membership. </p>
+
+<p tal:condition="python:not(ve)"> You can log on immediately by clicking
+    <a href=""
+	   tal:define="pss modules/Products.PythonScripts.standard; uname request/username; username python:pss.url_quote(uname); pword request/password; password python:pss.url_quote(pword)"
+	   tal:attributes="href python: here.portal_url() + '/logged_in?__ac_name=' + username + '&__ac_password=' + password">here</a>.  
+</p>
+
+<p> 
+    <a href="" tal:attributes="href python:here.portal_url() + '/index_html'">Return to homepage</a> 
+</p>
+
+</div>
+
+</div>
+</body>
+</html>

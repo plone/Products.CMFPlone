@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+<body>
+
+    <div metal:fill-slot="super1">
+
+        <div metal:use-macro="here/portal_tabs/macros/folderTabs">
+        Content tabs
+        </div>
+        
+        <div metal:use-macro="here/portal_bars/macros/contentBar">        
+        Content bar
+        </div>	
+
+    </div>
+
+
+	<div class="editableDocument" 
+         metal:fill-slot="main"
+         tal:define="join python:modules['string'].join">
+
+	<div tal:condition="exists:request/role_submit">
+																																												
+		<h1>Search results</h1>
+
+		<p>Select one or more Members, and a role to assign.</p>
+	
+  		<form class="group"
+              method="post" 
+              name="change_type" 
+              action="folder_localrole_edit">
+ 		
+            <span class="legend">Available Members</span>
+            
+            <input type="hidden" name="change_type" value="add" />
+		
+		    <span class="card"
+                  tal:repeat="member python:container.portal_membership.searchMembers( search_param=request.search_param, search_term=request.search_term)">
+				
+				<img src="defaultUser.gif" alt="Blank Picture"> <br />
+				
+				<input class="noborder" type="checkbox"
+                       name="member_ids:list" value=""
+                       tal:attributes="value member/username">
+				<br />
+				
+				<strong tal:condition="python:member['username']"
+                        tal:content="python:member['username']">
+				username
+				</strong>
+
+				<br />
+				
+				<span tal:condition="python:member['email']"
+                      tal:replace="python:member['email']">
+				email
+				</span>						    
+		        
+                <span tal:condition="python:not member['email']">&nbsp;</span>
+		    </span>
+		
+		
+    		<div class="row">
+    				
+    			<span class="label">
+    			Role to assign:
+    			</span>
+    
+                <span class="field">
+    
+    				<select name="member_role">
+    
+                        <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
+                                tal:content="lroles">
+    					Role name
+                        </option>
+    
+                    </select>
+    
+                </span>
+    
+                <span class="info"></span>
+                
+    		</div>
+
+    		<div class="row">
+    		
+    			<span class="label"></span>
+    			
+    			<span class="field">
+                    <input class="context" type="submit" value="Assign Local Role to Selected User(s)" />
+                </span>
+    		
+    			<span class="info"></span>
+    			
+    		</div>			
+		
+		</form>				
+
+	<hr />	
+
+	</div>
+
+	
+	<div>
+		<span tal:condition="python:not request.has_key('role_submit')">
+ 			<h1>Assign local roles to folder
+			<span tal:replace="here/title_or_id">title</span> 
+			</h1>
+			
+			<p>
+			A local role is a way of allowing other users into some or all of your
+			folders. These users can edit items, publish them - et cetera, depending
+			on what permissions you give them.
+			</p>
+			
+			<p>
+			Local roles are ideal in cooperation projects, and as every item has a
+			history and an undo option, it's easy to keep track of the changes.
+			</p>
+			
+			<p>
+			To give a person a local role in this folder, just search for the person's
+			name or email address in the form below, and you will be presented with a
+			page that will show you the options available.
+			</p>
+			
+			<form class="group"
+                  method="post" 
+                  name="localrole" 
+                  action="folder_localrole_form">
+			
+                <span class="legend">Search Terms</span>
+			
+                <input type="hidden" name="role_submit" value="role_submit" />
+			
+    			<div class="row">
+    			
+    				<span class="label">
+    				Search by
+    				</span>
+    				
+    				<span class="field">
+    					<select name="search_param">
+    						<option value="username">User Name</option>
+    						<option value="email">Email Address</option>
+    					</select>
+    				</span>
+    			
+    			</div>
+    			
+    			<div class="row">
+    			
+    				<span class="label">
+    				Search Term
+    				</span>
+    				
+    				<span class="field">
+    					<input type="text" name="search_term" size="30" />
+    				</span>
+    			
+    			</div>
+    
+    			<div class="row">
+    			
+    				<span class="label">
+    				</span>
+    				
+    				<span class="field">
+    					<input class="context" type="submit" value="Perform Search" />
+    				</span>
+    			
+    			</div>
+            			
+			</form>
+
+	    </span>
+
+	    <hr />
+
+    	<h1>Currently assigned local roles in folder
+    		<span tal:replace="here/title_or_id">title</span>
+    	</h1>
+    
+    	<p>These users currently have local roles assigned in this folder:</p>
+    
+    	<form class="group"
+              method="post" 
+              name="deleterole" 
+              action="folder_localrole_edit">
+
+            <span class="legend">Assigned Roles</span>
+
+	        <input type="hidden" name="change_type" value="delete">
+	        <input type="hidden" name="member_role" value="">
+
+	
+        	<div class="row">
+        	
+        	
+        	    <span class="card" tal:repeat="lrole here/get_local_roles"
+                      tal:define="username python:container.portal_membership.getAuthenticatedMember().getUserName()">
+        		
+        
+            		<span>
+            			<img src="defaultUser.gif" alt="Blank picture" />
+            			<br />
+            
+            			<input class="noborder" type="checkbox"
+            					name="member_ids:list" value="sequence-key"
+            					tal:condition="python:lrole[0]!=username"
+            					tal:attributes="value python:lrole[0]" />
+            
+            		</span>
+            			
+            		<br />
+            		
+            		<strong class="field" tal:content="python:lrole[0]">
+            		sequence-key; 
+            		</strong>
+            
+            		<br />
+            			
+            		Role(s): <br />	
+            		
+            		<span class="field"
+            				tal:replace="python:join(lrole[1], ', ')">
+            		_.string.join( _['sequence-item'], ', ')
+            		</span>
+        
+            	</span>
+        	
+        	</div>
+
+        	<div class="row">
+        		
+        		<span class="label"></span>
+        		
+        		<span class="field">
+        			<input class="context" type="submit" value="Delete Selected Role(s)" />
+        		</span>
+        		
+        	</div>
+    
+    	</form>
+
+    </div>	
+
+
+</div>
+	   
+</body>
+</html>

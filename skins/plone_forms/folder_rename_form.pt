@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+
+<body>
+
+<div metal:fill-slot="main">
+
+    <h1>Rename item</h1>
+
+    <p>To rename an item, enter the new name below.</p>
+
+    <form class="group"
+          name="folder_rename" 
+          action="folder_rename" 
+          method="post"
+          tal:define="items request/ids|nothing"
+          tal:condition="items">
+
+        <span class="legend">Rename Details</span>
+
+        <div class="row" tal:repeat="item items">
+
+            <span class="label">
+                Rename
+                <span tal:replace="item">fav_999816073</span>
+                to
+            </span>
+
+            <span class="field">
+                <input type="hidden" name="ids:list" value="fav_999816073"
+                      tal:attributes="value item">
+                <input type="text" name="new_ids:list" value="" size="25"> <br />
+            </span>
+
+        </div>
+
+        <div class="row">
+
+            <span class="label"></span>
+            
+            <span class="field">
+                <input type="hidden" name="here" value=""
+                       tal:attributes="value here/absolute_url">
+                <input class="context" type="submit" value="Rename" />
+                <input class="context" type="submit" value="Cancel"
+                       onClick="javascript:document.folder_rename.action=document.folder_rename.here.value+'/folder_contents';document.folder_rename.submit();" />
+            </span>
+
+        </div>
+
+    </form>
+
+
+</div>
+
+</body>
+
+</html>

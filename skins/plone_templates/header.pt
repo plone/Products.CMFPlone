@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<head metal:define-macro="html_header" 
+      tal:define="global portal_url here/portal_url;
+                  baseHREF python:test(here.isPrincipiaFolderish, here.absolute_url(), here.aq_parent.absolute_url());">
+
+	<title tal:content="here/title_or_id">Title of page</title>
+
+    <BASE href="" tal:attributes="href string:$baseHREF/" tal:condition="python:here.portal_url.getRelativeContentPath(here)" />
+
+	<span tal:condition="python:test(request['HTTP_USER_AGENT'].find('MSIE')!=-1, 1, 0)">
+            <?import namespace="xs" implementation="XS/htmlEditor" />
+        </span>
+
+	<!-- Basic crude style for Netscape4.x and other CSS1 browsers - 
+         can be removed if you don't want to support those browsers
+         specifically. Site will still be viewable, but look a bit 
+         stripped :) --> 
+	  <link rel="Stylesheet" type="text/css" href="ploneBasicNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneBasicNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneStructureNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneStructureNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneWidgetsNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneWidgetsNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneDeprecatedNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneDeprecatedNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneCalendarNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneCalendarNS.css" />
+
+	<!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
+	<style type="text/css" media="all"> 
+		@import "ploneBasic.css";
+		@import "ploneStructure.css";
+		@import "ploneWidgets.css";
+		@import "ploneDeprecated.css";
+		@import "ploneCalendar.css";
+    /*
+		@import "ploneForum.css";
+     */
+        </style>
+	
+    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
+    <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
+
+    <!-- Some ECMAScript magic to control the sticky notes :) -->
+    
+    <script language="javascript" src="ieemu.js"></script>
+    <script language="javascript">
+      if (moz) {
+      	extendElementModel();
+        extendEventObject();
+      	emulateEventHandlers(["mouseover", "mouseout"]);
+      }
+    </script>
+
+    <!-- External script from Apple(!), will need to move into code and tweak.
+    (No problem licence-wise, it's free and modifiable) --> 
+    
+    <script type="text/javascript" 
+      src="http://developer.apple.com/internet/javascript/styley.js"></script>     
+
+    <script language='JavaScript1.3' type='text/javascript'><!--
+
+      function showDay(date) {
+        tempX = document.body.offsetWidth - event.x;
+        tempY = event.clientY + document.body.scrollTop;
+
+        document.getElementById('day' + date).style.top = tempY - 20;
+        document.getElementById('day' + date).style.right = tempX + 12;
+        document.getElementById('day' + date).style.visibility = 'visible';
+        return true;
+      }
+
+      function hideDay(date) {
+        document.getElementById('day' + date).style.visibility = 'hidden';
+        return true;
+      }
+      // -->
+    </script>
+    
+</head>
+
+<div metal:define-macro="portal_header">
+
+		<div class="top">
+			
+			<div class="searchBox">
+                
+            	<form name="searchform" action="search">
+			    Search
+          		    <input id="searchGadget" name="SearchableText" type="text" size="15" />
+			        <input class="context" type="submit" value="GO" />
+            	</form>
+			</div>
+
+            <a href="#" tal:attributes="href portal_url" >
+            	<img src="img/logo.png" class="logo" alt="Zope CMF" border="0" tal:attributes="src string:$portal_url/logo.png" />
+            </a>
+		
+
+		</div>
+	
+		<!-- A tiny script to focus on the search gadget automatically 
+		<script language="JavaScript" type="text/javascript">
+			document.searchform.searchGadget.focus();
+		</script>
+	    -->
+			
+	<hr size="" class="netscape4" />
+
+	<div class="tabs"  metal:use-macro="here/portal_tabs/macros/portal_tabs" >
+          Portal Tabs are here       
+        </div>
+
+
+	<div class="personalBar"
+         metal:use-macro="here/portal_bars/macros/personalBar"
+         tal:define="actions python:here.portal_actions.listFilteredActionsFor(here);">
+	</div>
+
+	<hr size="" class="netscape4" />
+
+	<div class="pathBar"
+         metal:use-macro="here/portal_bars/macros/pathBar"
+         tal:define="actions python:here.portal_actions.listFilteredActionsFor(here);">
+	</div>
+
+</div>
+
+
+
+
+<div metal:define-macro="portal_message" class="message"
+     tal:define="portal_message request/portal_status_message | nothing"
+     tal:condition="portal_message"> 
+    <img src="img/info.gif" alt="Portal information" tal:attributes="src string:$portal_url/plone_images/info.gif">
+    <strong tal:content="portal_message">Object changed.</strong> 
+</div>
+
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/content_template/macros/master">
+<body>
+
+<div metal:fill-slot="main">	
+
+    <h1>Post Comment</h1>
+    
+    <p>
+    You can add a comment by filling out the form below. To see how the posting 
+    will look before submitting it, click "Preview Comment".   
+    </p>
+
+    <form class="group"
+          name="edit_form"
+          method="post" action="" 
+          tal:attributes="action string:${here/absolute_url}/talkback">
+
+        <span class="legend">Comment Details</span>
+
+        <input type="hidden" name="Creator" value=""
+        	   tal:attributes="value here/portal_membership/getAuthenticatedMember" />
+    
+        <div class="row">
+        
+            <span class="label">
+            Subject
+            </span>
+            
+            <span class="field">
+                <input name="title" value=""
+                       tal:attributes="value request/title_override|nothing" />
+            </span>
+            
+            <span class="info">
+            &nbsp;
+            </span>
+            
+        </div>
+
+        <div class="row">
+        
+            <span class="label">
+            Body text
+            </span>
+            
+            <span class="field">
+                <textarea name="text"
+                          cols="40"
+                          rows="8"
+			              tal:content="request/text_override | nothing"></textarea>
+            </span>
+            
+            <span class="info">
+            &nbsp;
+            </span>
+            
+        </div>
+    
+        <div class="row">
+        
+            <span class="label">
+            &nbsp;
+            </span>
+            
+            <span class="field">
+            
+                <input class="context"
+                       type="submit" value="Preview Comment" name=""
+                       tal:define="hId here/getId"
+                       tal:attributes="name string:$hId/discussion_reply_preview:method" />
+                      
+            </span>
+            
+            <span class="info">
+                <input class="context" type="submit" value="Submit Comment" name=""
+                       tal:attributes="name string:discussion_reply:method" />
+            </span>
+            
+        </div>
+    
+    </form>
+
+</div>
+
+</body>
+</html>
+

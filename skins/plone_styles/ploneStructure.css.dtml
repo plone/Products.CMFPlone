@@ -1,0 +1,224 @@
+<dtml-call "REQUEST.set('content/type', 'text/css')">
+
+<dtml-call setupTestREQUEST>
+
+/*
+ * Plone Structure CSS v1
+ *
+ * The Structure CSS contains elements that make up the structure of Plone,
+ * generally stuff that is used once on a page - general layout, opposed to the Widgets, that are
+ * used several times in a page.
+ *
+ * Zope CMF style sheet by Alexander Limi (http://limi.net)
+ * 
+ * Special thanks to Geir Bækholt (http://elvix.com) and 
+ * Stian Søiland (http://stain.portveien.to) for invaluable 
+ * input and code examples. You guys rock! :)
+ *
+ * I've tried to comment everything as concisely as possible. If there's anything
+ * that you find confusing or just plain wrong, contact me and I'll fix it before the
+ * next release.
+ *
+ * KNOWN BUG: The selected tab cannot have image backdrop. FIXME
+ *
+ */
+ 
+div.top {
+    /* Top section */
+    background: &dtml-topBackground;;
+    margin: &dtml-topMargin;;
+    padding: &dtml-topPadding;;
+    width: 100%;
+}
+
+.logo {
+    /* Logo properties */
+    margin: &dtml-logoMargin;;
+    padding: &dtml-logoPadding;;
+}
+
+div.searchBox {
+    /*searchbox style and positioning */
+    float: right;
+    margin: &dtml-searchMargin;;
+    padding: &dtml-searchPadding;;
+    text-align: right;
+    text-transform: lowercase;
+}
+
+input.searchGadget {
+}
+
+div.tabs {
+    /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
+    background: &dtml-mainTabBackdrop;;
+    border-collapse: collapse;
+    border-bottom: &dtml-mainTabBorder;;
+    padding: 0.5em 0em 0em 2em;
+}
+
+div.tabs a {
+    /* The normal, unselected tabs. They are all links */
+    background: &dtml-mainTabBackgroundNotSelected;;
+    border: 1px solid #8CACBB;
+    color: &dtml-mainTabLinkColor;;
+    margin-right: 0.5em;
+    padding: 0em 2em;
+    text-transform: lowercase;
+}
+
+div.tabs a.selected {
+    /* The selected tab. There's only one of this */
+    background: &dtml-mainTabBackground;;
+    border-bottom: &dtml-mainTabBackground; 1px solid;
+}
+
+div.tabs a:hover {
+    background: &dtml-mainTabBackground;;
+}
+
+div.personalBar {
+    /* Bar with personalized menu (user preferences, favorites etc) */
+    background: &dtml-mainTabBackground;;
+    border-bottom: &dtml-mainTabBorder;;
+    padding-right: 2em;
+    text-align: right;
+    text-transform: lowercase;
+}
+
+div.pathBar {
+    /* The path bar, including breadcrumbs and add to favorites */
+    border-bottom: &dtml-mainTabBorder;;
+    padding-left: 2em;
+    padding-right: 2em;
+    text-transform: lowercase;
+}
+
+.breadcrumbs {
+    float: left;
+    text-transform: lowercase;
+}
+
+.addFavorite {
+    text-transform: lowercase;
+}
+
+.clock {
+    /* The portal time indicator */
+    float: right;
+    text-transform: lowercase;
+    white-space: nowrap;
+}
+
+table.columns {
+	width: 100%;
+}
+
+table.columns td.left {
+    vertical-align: top;
+    padding-left: 2em;
+    padding-right: 1em;
+    padding-top: 2em;
+    width: &dtml-leftColumnWidth;;
+}
+
+table.columns td.main {
+    vertical-align: top;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 2em;
+    width: &dtml-mainColumnWidth;;
+}
+
+table.columns td.right {
+    vertical-align: top;
+    padding-left: 1em;
+    padding-right: 2em;
+    padding-top: 2em;
+    width: &dtml-rightColumnWidth;;
+}
+
+div.contentTabs {
+    /* Local Plone Tabs(tm), used in the content display */
+    border-collapse: collapse;
+    border-bottom: &dtml-contentTabBorder;;
+    padding-left: 1em;
+}
+
+div.contentTabs a {
+    /* The normal, unselected tabs. They are all links */
+    background: &dtml-contentTabBackgroundNotSelected;;
+    border: &dtml-contentTabBorder;;
+    color: &dtml-contentTabLinkColor;;
+    margin-right: 0.5em;
+    padding: 0em 2em;
+    text-transform: lowercase;
+}
+
+div.contentTabs a.selected {
+    /* The selected tab. There's only one of this */
+    background: &dtml-contentTabBackground;;
+    border-bottom: &dtml-contentTabBackground; 1px solid;
+}
+
+div.contentTabs a:hover {
+    background-color: &dtml-contentTabBackground;;
+}
+
+div.contentBar {
+    background: &dtml-contentTabBackground;;
+    border-left: &dtml-contentTabBorder;;
+    border-right: &dtml-contentTabBorder;;
+    text-align: right;
+    text-transform: lowercase;
+}
+
+div.document {
+    /* The document class encloses the object content when editing is not permitted */
+    margin: 0;
+    margin-bottom: 2em;
+    padding: 2em;
+    padding-top: 0;
+}
+
+div.editableDocument {
+    /* The class surrounding content when editing is permitted */
+    border: &dtml-contentTabBorder;;
+    margin: 0em 0em 2em 0em;
+    padding: 1em 2em 2em 2em;
+}
+
+div.message {
+    /* The portal messages for cut/paste operations etc */
+    background: &dtml-messageBackground;;
+    border: &dtml-messageBorder;;
+    font: &dtml-messageFont;;
+    margin: 1em 0em;
+    padding: 0.5em 1em;
+    vertical-align: middle;
+    
+}
+
+
+.description {
+    /* The summary text describing the document */
+    font: &dtml-descriptionFont;;
+}
+
+.footer {
+    background: &dtml-footerBackground;;
+    border-top: &dtml-footerBorder;;
+    border-bottom: &dtml-footerBorder;;
+    clear: both;
+    float: none;
+    margin: 2em 0em;
+    padding: 0.5em 0em 1em 0em;
+    text-align: center;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/content_template/macros/master">
+<body>
+
+    <div metal:fill-slot="main">
+
+        <div class="contentHeader"
+             metal:use-macro="here/portal_boxes/macros/contentHeader">
+        content header
+        </div>
+        
+        <p tal:content="here/Description">
+            Description
+        </p>
+        
+        <p tal:condition="here/event_url|nothing">
+        For more information, visit
+        <a href="event_url"
+           tal:attributes="href here/event_url"
+           tal:content="here/event_url">event_url</a>
+        </p>
+
+        <div class="group">
+            <span class="legend">Event Details</span>
+
+            <div class="row">
+                <span class="label">What</span>
+                <span class="field">
+                    <span tal:content="python:modules['string'].join(here.Subject(), ' ')"></span>
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">When</span>
+                <span class="field">
+                    Between
+                    <span tal:replace="python:DateTime.Date(here.start())">Start Date</span>
+                    <span tal:replace="python:DateTime.Time(here.start())">Start Time</span>
+                    and
+                    <span tal:replace="python:DateTime.Date(here.end())">End Date</span>
+                    <span tal:replace="python:DateTime.Time(here.end())">End Time</span>
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Where</span>
+                <span class="field">
+                    <span tal:replace="here/location">location</span>
+                </span>
+            </div>
+            
+        </div>    
+
+        <div class="group">
+            <span class="legend">Contact details</span>
+
+            <div class="row">
+                <span class="label">Name</span>
+                <span class="field" tal:content="here/contact_name">contact_name</span>
+            </div>
+        
+            <div class="row">
+                <span class="label">Contact Email</span>
+                <span class="field" tal:condition="here/contact_email">
+                    <a tal:attributes="href python:'mailto:' + here.contact_email"
+                    tal:content="here/contact_email"
+                    href="mailto:contact_email">contact_email</a>
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Contact Phone</span>
+                <span class="field" 
+                      tal:content="here/contact_phone">contact_phone</span>
+            </div>
+            
+        </div>
+        
+	</div>
+    </body>
+    </html>

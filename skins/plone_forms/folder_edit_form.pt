@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/portal_template/macros/master">
+<body>
+
+    <div metal:fill-slot="super1">
+
+        <div metal:use-macro="here/portal_tabs/macros/folderTabs">
+        Content tabs
+        </div>
+        
+        <div metal:use-macro="here/portal_bars/macros/contentBar">        
+        Content bar
+        </div>	
+
+    </div>
+
+
+    <div class="editableDocument" metal:fill-slot="main" tal:define="errors python:request.get('errors', {})">	  
+    
+    <h1>Edit Folder Properties</h1>
+ 
+
+    <form class="group"
+          name="edit_form" 
+          action="folder_edit" 
+          method="post">
+
+        <span class="legend">Folder Details</span>
+
+        <div class="row" 
+             tal:define="error_id errors/id | nothing;
+                         id request/id | here/getId;
+                         readonly python:test( here.portal_membership.getHomeUrl()==here.absolute_url(), 1, 0);" >
+            <span class="label required">ID</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_id, 'field error', 'field')" >
+
+                <div tal:condition="error_id"
+                      tal:replace="error_id" />
+
+                <input type="text" 
+                       name="field_id" 
+                       value="#"
+                       size="25" 
+                       readonly="#"
+                       tal:attributes="value id;
+                                       readonly python:test(readonly, 'readonly', '');" />
+            </span>
+            <span class="info">
+            Enter the ID of the folder. If you don't know what this means, 
+            just leave it at the supplied value.
+            </span>
+        </div>
+        
+        <div class="row"
+             tal:define="error_title errors/title|nothing;
+                         Title request/title | here/Title;"> 
+            <span class="label required">Title</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_title, 'field error', 'field')" >
+
+                <div tal:condition="error_title"
+                      tal:replace="error_title" />
+
+                <input type="text" 
+                       name="field_title" 
+                       value="#" 
+                       tal:attributes="value Title" />
+
+            </span>
+            <span class="info">
+            Enter the title of the folder. 
+            </span>
+        </div>
+    
+        <div class="row">
+            <span class="label">Description</span>
+            <span class="field" tal:define="description request/description | here/description">
+                <textarea name="field_description:text" rows="5"
+                          cols="25"
+    			          tal:content="description"></textarea>
+            </span>
+            <span class="info">The folder description, used in syndication etc.</span>
+        </div>
+    
+        <div class="row">
+            <span class="label"></span>
+            <span class="field">
+                <input class="context" type="submit" value="Save">
+            </span>
+            <span class="info"></span>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<div tal:condition="here/talkback|nothing">
+    
+    <div tal:repeat="reply here/talkback/getReplies">
+
+        <table class="box"
+               cellpadding="0"
+               cellspacing="0">
+            <tr>
+                <th>Comment</th><th class="empty">&nbsp;</th>	
+            </tr>
+            
+            <tr>
+                <td colspan="2">
+                    <h2><img src="discussion.gif" alt="Comment" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
+                    Posted by:
+                    <span tal:content="reply/Creator">Poster Name</span>
+                    at 
+                    <span tal:replace="python: here.toPortalTime(reply.modified())">8/23/2001 12:40:44 PM</span>
+                    
+                    <p tal:content="structure reply/text">
+        		    This is the body text of the comment. 
+        		    </p>
+                    
+                    <form name="reply"
+                          action=""
+                          method="post"
+                          tal:attributes="action string:${reply/absolute_url}/discussion_reply_form">
+                          
+                        <input class="standalone" type="submit" value="Reply to this" />
+                    
+                    </form>
+                    
+                    <div class="spacer">
+                    &nbsp;
+                    </div>
+
+                    <div class="group" tal:condition="python: here.talkback.hasReplies(reply)">
+                        <span class="legend">Replies</span>
+
+                        <span> 
+                             <span tal:repeat="child python:reply.talkback.getReplies()">
+                                <a href="" 
+                                   class="comment" 
+                                   tal:attributes="href string:${reply/absolute_url}/discussionitem_view">
+                                <span tal:replace="child/Title">Comment title</span>   
+                                (by <span tal:replace="child/Creator">username</span>
+                                at <span tal:replace="python: here.toPortalTime(child.modified())">8/23/2001 12:49:08 PM</span>)
+                                </a>
+                             </span>
+                        </span>
+                    </div>
+                                
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+
+</div>
+

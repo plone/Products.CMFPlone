@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/content_template/macros/master">
+<body>
+
+<div metal:fill-slot="main">	  
+
+    <div>
+        <span tal:replace="structure here/aboveInThread"></span>
+    </div>
+    
+    <h1> <img src="discussion.gif" alt="Comment" /> <span tal:replace="here/Title">My Title</span> </h1>
+    
+    <div class="group">
+        <span class="legend">Comment</span>
+        <div tal:replace="structure here/CookedBody">Body</div>
+    </div>
+      
+      
+</div>
+
+</body>
+</html>

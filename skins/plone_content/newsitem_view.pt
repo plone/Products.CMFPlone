@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/content_template/macros/master">
+<body>
+
+    <div metal:fill-slot="main">
+
+        <div class="contentHeader"
+             metal:use-macro="here/portal_boxes/macros/contentHeader">
+        content header
+        </div>
+
+        <span class="description" tal:content="structure here/Description"> News summary </span>
+
+        <p tal:condition="python:len(here.text)==0">
+          This document has yet to be written, click the edit button to write on document.
+        </p>
+      
+        <p tal:condition="python:len(here.text)!=0"
+            tal:content="structure here/text">News body text
+        </p>
+        
+    </div>
+	   
+
+
+
+</body>
+</html>

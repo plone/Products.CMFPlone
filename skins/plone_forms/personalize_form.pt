@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+<body>
+			
+<div class="document">
+
+<div metal:fill-slot="main">
+    <span tal:define="dummy python:request.response.setHeader('pragma','no-cache')" />
+    <h1>Member Preferences</h1>
+
+    <p> <a href="password_form">Click here</a> to change your password. </p>
+      
+  
+    <span tal:define="member python:container.portal_membership.getAuthenticatedMember()">
+
+        <form class="group"
+              action="personalize" 
+              method="POST"
+              enctype="multipart/form-data" >
+        
+            <span class="legend">Member Details</span>
+		
+            <div class="row">
+                <span class="label">Email address</span>
+                <span class="field"> 
+                    <input type="text" 
+                           name="email" 
+                           size="25"
+                           value="member.email html_quote"
+                           tal:attributes="value member/email" />
+                </span>
+                <span class="info">
+                Enter your new email address here, if you want to change it.
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">Listed status</span>
+
+                <span class="field"> 
+                    <input type="radio" 
+                           class="noborder" 
+                           name="listed" 
+                           value="on"
+                           id="cb_listed" 
+                           checked
+                           tal:condition="python:member.listed and ('checked' or '');">
+                           
+                    <input type="radio" 
+                           class="noborder" 
+                           name="listed" 
+                           value="on"
+                           id="cb_listed"
+                           tal:condition="python:not(member.listed) and 'checked' or '';">
+                    
+                    <label for="cb_listed">Listed</label>
+                    
+                    <br />
+                    
+                    <input type="radio" 
+                           class="noborder" 
+                           name="listed" 
+                           value=""
+                           id="cb_unlisted"
+                           tal:condition="python:member.listed and 'checked' or '';">
+                    
+                    <input type="radio" 
+                           class="noborder" 
+                           name="listed" 
+                           value=""
+                           id="cb_unlisted" 
+                           checked
+                           tal:condition="python:not(member.listed) and 'checked' or '';">		   
+                    
+                    <label for="cb_unlisted">Unlisted</label>
+                </span>
+
+                <span class="info">
+                Select whether you want to be listed on the public membership listing
+                or not.	Remember that your Member folder will still be publicly accessible unless
+                you change its security settings, even if you select "unlisted" here.
+                </span>
+            </div>
+
+            <div class="row" tal:condition="here/portal_skins/allow_any">
+                <span class="label">Skin</span>
+                <span class="field"> 
+                    <select name="portal_skin">
+                    <option value="#"
+                            tal:repeat="skin python:container.portal_skins.getSkinSelections()"
+                            tal:attributes="value skin;
+                            selected python:test(request.get('portal_skin', here.portal_skins.getDefaultSkin())==skin, 'selected', '');"
+                            tal:content="skin">Plone</option>
+                    </select>
+                </span>
+                <span class="info">
+                Here you choose the appearance of the site. Several styles are available,
+                and you can always change it back to the default if you do not like a skin.
+                </span>
+            </div>
+
+            <div class="row" tal:define="portrait here/getPlonePersonalPortait">
+                <span class="label">Portrait</span>
+                <span class="field"> 
+                    <img src="" tal:condition="portrait" tal:attributes="src portrait/absolute_url" style="border: 1px solid black" />
+                    <br />
+                    <input type="file" name="portrait" size="15" /> <br />
+                </span>
+                <span class="info">
+                To add a new portrait, click the <strong>Browse</strong> button and select
+                a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">&nbsp;</span>
+                <span class="field">
+                    <input class="context" type="submit" value="Apply">
+                </span>
+            </div>
+        		
+		</form>
+    
+    </span>
+	
+    
+</div>
+	   
+</body>
+</html>

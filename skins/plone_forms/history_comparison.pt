@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html metal:use-macro="here/content_template/macros/master">
+  <body>
+  <div metal:fill-slot="main" tal:define="results request/historyComparisonResults|nothing;">
+
+    <div tal:condition="results">
+      <span tal:replace="structure results" />
+    </div>
+
+    <div tal:condition="python:test(results, 0, 1)">
+      <p class="form-text">This object does not provide comparison support.</p>
+    </div> 
+
+  </div>
+  </body>
+</html>
+

@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<div tal:condition="exists: here/portal_skins | nothing"
+     tal:replace="nothing">
+
+    <div tal:condition="here/portal_skins/updateSkinCookie | nothing"
+       tal:define="dummy here/setupCurrentSkin">
+    </div>
+
+</div>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+
+<body>
+
+<div metal:fill-slot="main">
+
+    <div tal:define="p_props here/portal_properties">
+		
+        <div tal:condition="here/portal_membership/isAnonymousUser | nothing">
+		
+            <span tal:define="dummy python: request['RESPONSE'].expireCookie('__ac', path='/')">
+            </span>
+		
+            <h1>Sign-in failure</h1>
+            
+            <p>
+            You are not currently signed in.  Your user name and/or password may be incorrect.
+            Your browser may also not be configured to accept HTTP cookies.  
+            If you need help please contact 
+            <a href="mailto:admin@here.com" title="Email Administrator"
+            tal:attributes="href string:mailto:${p_props/email_from_address}"
+            tal:content="p_props/email_from_name">
+            Email Admin
+            </a>.
+            </p>
+		
+        </div>
+		
+        <div tal:condition="python: not(here.portal_membership.isAnonymousUser())"
+             tal:define="member python: here.portal_membership.getAuthenticatedMember()">
+            
+            <div tal:condition="python: member.login_time == here.ZopeTime('2000/01/01') and p_props.validate_email"
+                 tal:define="dum_reg python: here.portal_registration.setProperties(last_login_time=here.ZopeTime(),login_time=here.ZopeTime())">
+			
+                <h1>Welcome!</h1>
+                
+                <p>
+                This is the first time that you've logged in to 
+                <span replace="p_props/title">Here</span>. 
+                Before you start exploring you need to change your original password. 
+                This will ensure that the password we sent you via email cannot be used in a malicious manner.
+                </p>
+                
+                <p>
+                Please use the form below to change your password.
+                </p>
+				
+                <form class="group"
+                      action="logged_in" 
+                      method="post"
+                      tal:attributes="action python: container.portal_url()+'/logged_in'">
+
+                    <span class="legend">Password Details</span>
+                                    
+                    <input type="hidden" name="came_from" value=""
+                    tal:condition="python:request.get('came_from', '')"
+                    tal:attributes="value request/came_from" />
+                
+                    <div class="row">
+                        <span class="label">Name</span>
+                        <span class="field">
+                            <input type="text" 
+                                   name="__ac_name" 
+                                   size="20"
+                                   tal:attributes="value python:request.get('__ac_name', '')" />
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <span class="label">Password</span>
+                        <span class="field">
+                            <input type="password" 
+                            name="__ac_password" 
+                            size="10" />
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <span class="label">&nbsp;</span>
+                        <span class="field">
+                            <input type="checkbox" class="noborder" name="__ac_persistent" value="1" checked id="cb_remember" />
+                            <label for="cb_remember">Remember my name.</label>
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <span class="label"></span>
+                        <span class="field">
+                            <input type="submit" name="submit" value="Login">
+                        </span>
+                    </div>
+
+                </form>
+			
+            </div>
+			
+            
+            <div tal:condition="python: not(member.login_time == here.ZopeTime('2000/01/01') and here.validate_email)">
+				
+                <div tal:define="d_reg python: here.portal_registration.setProperties(last_login_time=member.login_time); 
+                                 ereg python: here.portal_registration.setProperties(login_time=here.ZopeTime());
+                                 global actions python: here.portal_actions.listFilteredActionsFor(here);">
+                </div>
+				
+                <div tal:condition="request/came_from | nothing ">
+                    <div tal:define="dummy python: request.RESPONSE.redirect(request.get('came_from'))">
+                    </div>
+                </div>
+
+                <h1>You are now logged in</h1>
+                
+                <p>Welcome!</p>
+                
+                <p>
+                You will notice that the top right bar has changed, it now
+                contains several personalized items. These will stay there
+                as long as you are logged in, and allow you to control your
+                settings and your personal area.
+                </p>
+                
+                <p>
+                You might want to head over to
+                <a href="metadata_form" 
+                   tal:define="mystuff python:here.getActionUrlById('my stuff', actions['user']);"
+                   tal:condition="mystuff" tal:attributes="href mystuff"
+                   >My Stuff</a>
+                and add some content, 
+                or 
+                <a href="metadata_form" 
+                   tal:define="prefs python:here.getActionUrlById('preferences', actions['user']);"
+                   tal:condition="prefs" 
+                   tal:attributes="href prefs"
+                   >set up your Preferences</a>.
+                </p>
+                
+                <p>We wish you a pleasant stay here.
+                If you have any questions or comments, visit the <a href="help">Help section</a> or 
+                <a href="mailto:admin@here.com" title="Email Admin"
+                tal:attributes="href string:mailto:${p_props/email_from_address}">
+                send us a mail</a>.
+	 
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+</body>
+</html>
+

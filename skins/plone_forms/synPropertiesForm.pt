@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+
+<div metal:fill-slot="super1">
+
+    <div metal:use-macro="here/portal_tabs/macros/folderTabs">
+    Content tabs
+    </div>
+    
+    <div metal:use-macro="here/portal_bars/macros/contentBar">        
+    Content bar
+    </div>	
+
+</div>
+
+
+<body>
+
+<div class="editableDocument" 
+      metal:fill-slot="main"
+      tal:define="syndicateInfo here/syndication_information | nothing">
+
+    <div metal:use-macro="here/header/macros/portal_message">
+    Message box
+    </div>
+
+    <h1>Syndication Properties</h1>
+    
+    <p>
+    Syndication enables you to syndicate this folder so it can
+    be synchronized from other web sites.
+    </p>
+
+    <script language="JavaScript" src="cmf_skin_tools/calendar.js"></script>
+    
+    <form action="disableSyndication" 
+          name="disable" 
+          method="post"
+          tal:condition="syndicateInfo">
+          
+        <input type="hidden" name="isAllowed:int" value="0" />
+
+        <input class="standalone" type="submit" value="Disable Syndication" />
+    </form>
+
+    <form action="enableSyndication" 
+          name="enable" 
+          method="post"
+          tal:condition="python:not syndicateInfo">
+        
+        <input type="hidden" name="isAllowed:int" value="1"> 
+
+        <input class="standalone" type="submit" value="enable syndication" />
+    </form>
+
+
+    <span tal:condition="python:container.portal_syndication.isSiteSyndicationAllowed()">
+
+        <span tal:condition="python:container.portal_syndication.isSyndicationAllowed(here)">
+
+            <div class="group">
+                <span class="legend">Channel Details</span>
+
+                <div class="row">
+                    <span class="label">Channel Title</span>
+                    <span class="info" tal:content="here/Title">title</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Channel Description</span>
+                    <span class="info" tal:content="here/Description">description</span>
+                </div>
+            </div>
+
+            <form class="group"
+                  action="editSynProperties" 
+                  name="syndication" 
+                  method="post">
+
+                <span class="legend">Syndication Details</span>
+
+                <div class="row">
+                    <span class="label">
+                    Update Period
+                    </span>
+                    
+                    <span class="field">
+                        <select name="updatePeriod">
+                            <option value=""
+                                    tal:repeat="period python:container.portal_syndication.buildUpdatePeriods()"
+                                    tal:attributes="value python:period[0];
+                                    selected python:test(period[0]==container.portal_syndication.getUpdatePeriod(here), 'selected', '');"
+                                    tal:content="python:period[1]"> 
+                                    update interval 
+                            </option>
+                        </select>
+                    </span>
+                    
+                    <span class="info">
+                    Controls how often the channel is updated.
+                    </span>
+                </div>
+
+                <div class="row">
+                    <span class="label">
+                    Update Frequency
+                    </span>
+                    
+                    <span class="field">
+                        <input type="text" 
+                               name="updateFrequency" 
+                               size="3"
+                               value="#" 
+                               tal:attributes="value python:container.portal_syndication.getUpdateFrequency(here)" />
+                    </span>
+                    
+                    <span class="info">
+                    Controls the frequency of the updates. For example, if you wnat it to update every second week,
+                    select "weekly" above, and "2" here.
+                    </span>	
+                </div>
+			
+    			<div class="row">
+    			
+                    <span class="label">
+                    Update Base
+                    </span>
+    				
+                    <span class="field">
+                        <input type="text" 
+                               name="updateBase:date" 
+                               size="20" 
+                               value="2000-12-31 00:00:00" 
+                               tal:attributes="value python:container.portal_syndication.getUpdateBase(here)"><a href="javascript:doNothing()" onclick="setDateField(document.forms['syndication'].elements[4]);top.newWin = window.open('cmf_skin_tools/calendar.html','cal','dependent=yes,width=310,height=230,screenX=200,screenY=300,titlebar=yes')"><img src="popup_calendar.gif"></a>
+                    </span>
+    				
+                    <span class="info">
+                    This is the date the updater starts counting from. 
+                    So if you want to update weekly every Tuesday,
+                    make sure this starts on a Tuesday.
+                    </span>
+    			
+                </div>
+    
+                <div class="row">
+                    <span class="label">
+                    Maximum Items
+                    </span>
+                    
+                    <span class="field">
+                        <input type="text" 
+                               name="max_items"	
+                               value="#" 
+                               size="3"
+                               tal:attributes="value python:container.portal_syndication.getMaxItems(here)" />
+                    </span>
+                    
+                    <span class="info">
+                    Maximum number of items that will be syndicated. 
+                    </span>
+                </div>
+    			
+                <div class="row">
+                    <span class="label"></span>
+                    <span class="field">
+                        <input class="context" type="submit" value="Save" />
+                    </span>
+                </div>
+
+            </form>
+
+        </span>
+
+ </span>
+
+</div>
+
+
+<div tal:condition="python:not container.portal_syndication.isSiteSyndicationAllowed()">
+  Syndication has not been enabled by site administrator.
+</div>
+
+
+</body>
+</html>

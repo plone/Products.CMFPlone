@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      metal:use-macro="here/content_template/macros/master">
+<body>
+
+  <div metal:fill-slot="main">
+
+	  <h1>  Link to 
+      <a href="#" 
+         tal:attributes="href python:(container.portal_url.getPortalObject().absolute_url() + '/' + here.remote_url)"
+	     tal:content="here/title_or_id">zope.org</a>
+      </h1>
+	  
+		<p>
+		Created by <a href="#" tal:content="here/Creator">bob</a>. 
+		Last modified: <span tal:define="DateTime python:modules['DateTime'].DateTime;"
+		    				 tal:replace="python:DateTime(here.ModificationDate()).strftime('%m/%d/%Y %I:%M %p')">August 16, 2001 at 23:35:59</span>
+		</p>
+
+  </div>
+  
+</body>
+</html>

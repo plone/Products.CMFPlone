@@ -1,0 +1,42 @@
+        <table cellpadding="2" cellspacing="0" border="0" class="calendar" metal:define-macro="icoCalendar"
+               tal:define="DateTime python:modules['DateTime'].DateTime;
+                           current python:DateTime();
+                           month python:request.get('month', DateTime().month());
+                           year python:request.get('year', DateTime().year());
+                           prevMonthTime python:here.getPreviousMonth(month, year);
+                           nextMonthTime python:here.getNextMonth(month, year);">
+            <tr tal:define="global weeks python:here.getEventCalendarData(month=month, year=year);">
+                <th><a href="" tal:attributes="href string:/cmf/calendar_demo?month=${prevMonthTime/month}&year=${prevMonthTime/year}">&laquo;</a></th>
+                <th colspan="5" tal:define="date string:$month/1/$year"><span tal:replace="python:DateTime(date).Month()"/> - <span tal:replace="python:DateTime(date).year()"/></th>
+                <th><a href="" tal:attributes="href string:/cmf/calendar_demo?month=${nextMonthTime/month}&year=${nextMonthTime/year}">&raquo;</a></th>
+            </tr>
+            <tr>
+             <td class="days">Mon</td>
+             <td class="days">Tue</td>
+             <td class="days">Wed</td>
+             <td class="days">Thu</td>
+             <td class="days">Fri</td>
+             <td class="days">Sat</td>
+             <td class="days">Sun</td>
+            </tr>
+            <tr tal:repeat="week weeks">
+              <span tal:define="days week">
+                <span tal:repeat="day days">
+                  <td class tal:attributes="class python:test(day['event'], 'events', '')" >
+                      <span tal:condition="day/event">                        
+                        <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=day['day'], month=month, year=year)" >
+                        <span tal:define="begin python:begEndTimes[0].ISO();
+                                          end python:begEndTimes[1].ISO();
+                                          pss python:modules['Products'].PythonScripts.standard" >
+                        <a href tal:attributes="href python:'/search?start:list:date=%s&start:list:date=%s&start_usage=range:min:max'%(pss.url_quote(begin),pss.url_quote(end))"> 
+                          <span tal:replace="day/day">day</span>
+                        </a>
+                        </span>
+                        </span>
+                      </span>
+                      <span tal:condition="not: day/event" tal:replace="day/day">day</span>
+                  </td>
+                </span>
+              </span>
+            </tr>
+        </table>

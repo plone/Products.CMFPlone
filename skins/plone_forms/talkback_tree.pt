@@ -1,0 +1,33 @@
+
+<div tal:define="t python:here.setup_talkback_tree(here); height t/root/height">
+    
+    <div tal:repeat="row t/rows">
+      
+	 
+	    <span tal:define="indent python:row.depth - 1"
+              tal:condition="indent"
+              tal:attributes="colspan indent"></span>
+              <!-- ^- We need to solve this in a span-related way, currently no indenting is done -->
+          
+        <span tal:define="rlink row/branch">
+            <a tal:condition="rlink"
+               tal:attributes="name row/id;href rlink/link"
+               tal:content="structure rlink/img" href name><img src="/p_/pl" alt="+" /></a>
+        </span>
+      
+        <span tal:attributes="colspan python:height-row.depth"
+              tal:define="obj nocall:row/object;url python:obj.absolute_url()">
+            <a tal:attributes="href url">        
+            <img tal:attributes="src python:obj.portal_url() + '/' + obj.getIcon()"
+                 border="0" src="" /></a>
+            <a tal:attributes="href url"
+               tal:content="obj/Title" 
+               href="">Title</a>, by
+                
+               <span tal:replace="obj/Creator">Me</span> on 
+               <span tal:replace="obj/CreationDate">Today</span>.
+        </span>
+    
+    </div>
+    
+</div>

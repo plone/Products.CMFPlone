@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+
+<body>
+
+<div metal:fill-slot="main">
+
+	<h1>Add new item</h1>
+	
+	<p>
+	Select the type of item you want to add to your folder.
+	</p>
+
+    <div class="group" 
+         tal:define="filterOut python:['Favorite']">
+    
+        <span class="legend">Items Available</span>
+        
+        <div tal:repeat="ctype here/allowedContentTypes"> 
+
+    		<div class="row" tal:define="Type ctype/Type;Id ctype/getId"
+                         tal:condition="python:test(Type not in filterOut, 1, 0)">
+    	
+                <span class="label" >
+                    <span for="#" tal:attributes="for string:cb_${repeat/ctype/number}" tal:replace="Type">
+                        Type
+                    </span>
+                    <a href="#" tal:attributes="href string:createObject?type_name=$Id">
+                        <img src="folder.gif" alt="" tal:attributes="src ctype/getIcon" />
+                    </a>
+                </span>
+    	
+                <span class="field">
+                    <form name="quickAdd" action="createObject" method="post">
+        				<input name="type_name" type="hidden" value="" tal:attributes="value Id">
+                        <input class="standalone" type="submit" value="Add" />
+                    </form>
+    			</span>
+    		 
+                <span class="info" tal:content="ctype/Description">
+                Description
+                </span>
+                           
+            </div>
+        </div>
+        
+        <div class="spacer">
+        &nbsp;
+        </div>
+    
+    </div>
+
+</div>
+	   
+</body>
+</html>

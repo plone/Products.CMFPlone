@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/content_template/macros/master">
+
+<body>
+
+<div metal:fill-slot="main" 
+     tal:define="errors python:request.get('errors', {})">
+    
+    <h1>Edit Link item</h1>
+    
+    <p>
+    A link is a pointer to a location on the internet or intranet.
+    Enter the relevant details below, and press "Save".
+    </p>
+
+	<form class="group"
+          name="edit_form" 
+          action="link_edit" 
+          method="post"
+          tal:attributes="action string:${here/getId}/link_edit">
+        
+        <span class="legend">Link Details</span>
+
+        <div class="row" 
+             tal:define="error_id errors/id | nothing;
+                         id request/id | here/getId;"> 
+            <span class="label required">ID</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_id, 'field error', 'field')" >
+
+                <div tal:condition="error_id"
+                      tal:replace="error_id" />
+
+                <input type="text" 
+                       name="field_id" 
+                       value="#"
+                       size="25" 
+                       tal:attributes="value id" />
+            </span>
+            <span class="info">
+            Enter the ID of the link. If you don't know what this means, 
+            just leave it at the supplied value.
+            </span>
+        </div>
+
+        <div class="row"
+             tal:define="error_title errors/title|nothing;
+                         Title request/title | here/Title;"> 
+            <span class="label required">Title</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_title, 'field error', 'field')" >
+
+                <div tal:condition="error_title"
+                      tal:replace="error_title" />
+
+                <input type="text" 
+                       name="field_title" 
+                       value="#" 
+                       tal:attributes="value Title" />
+
+            </span>
+            <span class="info">
+            Enter the title of the link. 
+            </span>
+        </div>
+        
+        <div class="row">
+            <span class="label">Description</span>
+            <span class="field" tal:define="Description request/field_description | here/Description">
+                <textarea name="field_description:text" 
+                          rows="10"
+                          cols="25"
+                          tal:content="Description">Some descriptive text</textarea>
+            </span>
+            <span class="info">A short description of the link.</span>
+        </div>
+        
+        <div class="row" 
+             tal:define="error_remote_url errors/remote_url | nothing;
+                         remote_url request/remote_url | here/remote_url;">
+            <span class="label required">URL</span>
+            <span tal:attributes="class python:test(error_remote_url, 'field error', 'field')" >
+
+                <div tal:condition="error_remote_url"
+                      tal:replace="error_remote_url" />
+
+                <input type="text" 
+                       name="field_remote_url"
+                       size="25"
+                       value="#"
+                       tal:attributes="value remote_url" />                  
+            </span>
+            <span class="info">
+            The actual URL address. Prefix optional, but will default
+            to HTTP. FTP and other protocols are also valid types.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label"></span>
+            <span class="field">
+                <input class="context" type="submit" name="Change Link" value="Save" />
+            </span>
+        </div>
+        
+    </form>   
+    <span tal:replace="structure request" />
+ 
+</div>
+	   
+</body>
+</html>

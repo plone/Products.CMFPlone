@@ -1,0 +1,9 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<div class="footer" metal:define-macro="portal_footer">
+Layout, Graphic Design, Code and User Interface Design by <a href="http://limi.net">Alexander Limi</a>, <a href="http://www.blacktar.com">Vidar Andersen</a> and <a href="http://www.runyaga.com">Alan Runyan</a>. <br />
+Copyright &copy; 2001. All rights reserved.<br />
+For bug reports and suggestions, visit the <a href="http://www.zope.org/Members/runyaga/skinTracker">Skin Tracker</a>. <br />
+This site is powered by <a href="http://www.zope.org">Zope</a> and the <a href="http://cmf.zope.org">Content Management Framework</a> from <a href="http://www.zope.com">Zope Corporation</a>. <br />
+</div>

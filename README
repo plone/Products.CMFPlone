@@ -1,0 +1,20 @@
+Plone CMF Skin 0.5 - 12/3/01
+Layout, Graphic Design, HTML Code and User Interface Design by Alexander Limi, Vidar Andersen and Alan Runyan. 
+
+INSTALLATION:
+* read Extensions/Install.py 
+* you need CMF1.2 and Zope2.4 or higher.
+
+COMMENTS:
+
+ - i was thinking to provide a 'custom' edit view i would have to create a method that would get one.  obviously, on install if you wanted
+to change the view of a object you could just goto the types_tool and edit the existing View action for a type.  this needs to be cleaned out
+
+- getImage was the same, i didnt think of getIcon
+
+- getPortalTime(o) is attempt to provide 1 place to define DateTime cstrtime() formats, is ther ea better way to do this?
+
+CONTACT:
+  * email list: metazope@zopists.org
+  * website: http://www.plone.org/
+

@@ -1,0 +1,143 @@
+<!--
+##############################################
+#         WebFX Dynamic Webboard 2.0         #
+#       By Emil A Eklund (eae@eae.net)       #
+#      and Erik Arvidson (erik@eae.net)      #
+#           http://webfx.eae.net             #
+#              April 13, 1999                #
+##############################################
+# Feel free to use this script for personal  #
+# and non profit web sites, as long as you   #
+# are giving us credits for it, in other     #
+# words, not removing nor modifying this     #
+# notice in any of the files it appears in   #
+##############################################
+#  For commercial use contact Emil or Erik   #
+##############################################
+-->
+
+<html>
+<head>
+<style> 
+ <!--
+ body  {background : buttonface; margin: 5; margin-top: 2;
+ 		border-top: 1 solid buttonhighlight;
+		border-left: 1 solid buttonhighlight;
+		border-right: 1 solid buttonshadow;
+		border-bottom: 1 solid buttonshadow;}
+td		{width : 10px; height : 10px; font-size : 1px; cursor: hand;}
+ -->
+ </style>
+<script type="text/javascript">
+<!--
+
+var ie5 = document.getElementById != null;
+
+function doOver() {
+	var el = window.event.srcElement;
+	bgc = el.style.backgroundColor;
+
+	if (bgc != "") {
+		el.style.borderTopColor = "white";
+		el.style.borderLeftColor = "white";
+		el.style.borderRightColor = "black";
+		el.style.borderBottomColor = "black";
+	
+		colorBox.style.backgroundColor = bgc;
+		colorName.innerHTML = bgc;
+	}
+}
+function doClick() {
+	bgc = window.event.srcElement.style.backgroundColor;
+	window.event.srcElement.style.borderColor = bgc;
+	if (bgc != "") {
+		window.external.raiseEvent("colorchange", bgc);
+	}
+}
+function doOut() {
+	var el = window.event.fromElement;
+	bgc = el.style.backgroundColor;
+
+	if (bgc != "") {
+		el.style.borderColor = bgc;
+	}
+}
+window.onload = init;
+
+function init() {
+//	document.all.container.style.pixelWidth = 172;
+//	document.all.container.style.pixelHeight = 186;
+	fixTitle();
+}
+
+function fixTitle() {
+//	document.title = parent.document.title;
+	document.title = parent.document.title;
+}
+
+
+var colors = new Array("aliceblue","antiquewhite","aqua","aquamarine","azure","beige","bisque","black",
+"blanchedalmond","blue","blueviolet","brown","burlywood","cadetblue","chartreuse","chocolate","coral",
+"cornflowerblue","cornsilk","crimson","cyan","darkblue","darkcyan","darkgoldenrod","darkgray","darkgreen",
+"darkkhaki","darkmagenta","darkolivegreen","darkorange","darkorchid","darkred","darksalmon","darkseagreen",
+"darkslateblue","darkslategray","darkturquoise","darkviolet","deeppink","deepskyblue","dimgray",
+"dodgerblue","firebrick","floralwhite","forestgreen","fuchsia","gainsboro","ghostwhite","gold","goldenrod",
+"gray","green","greenyellow","honeydew","hotpink","indianred","indigo","ivory","khaki","lavender",
+"lavenderblush","lawngreen","lemonchiffon","lightblue","lightcoral","lightcyan","lightgoldenrodyellow",
+"lightgreen","lightgrey","lightpink","lightsalmon","lightseagreen","lightskyblue","lightslategray",
+"lightsteelblue","lightyellow","lime","limegreen","linen","magenta","maroon","mediumaquamarine",
+"mediumblue","mediumorchid","mediumpurple","mediumseagreen","mediumslateblue","mediumspringgreen",
+"mediumturquoise","mediumvioletred","midnightblue","mintcream","mistyrose","moccasin","navajowhite","navy",
+"oldlace","olive","olivedrab","orange","orangered","orchid","palegoldenrod","palegreen","paleturquoise",
+"palevioletred","papayawhip","peachpuff","peru","pink","plum","powderblue","purple","red","rosybrown",
+"royalblue","saddlebrown","salmon","sandybrown","seagreen","seashell","sienna","silver","skyblue",
+"slateblue","slategray","snow","springgreen","steelblue","tan","teal","thistle","tomato","turquoise",
+"violet","wheat","white","whitesmoke","yellow","yellowgreen");
+
+var sysColors = new Array("activeborder","activecaption","appworkspace","background","buttonface",
+"buttonhighlight","buttonshadow","buttontext","captiontext","graytext","highlight","highlighttext",
+"inactiveborder","inactivecaption","inactivecaptiontext","infobackground","infotext","menu","menutext",
+"scrollbar","threeddarkshadow","threedface","threedhighlight","threedlightshadow","threedshadow","window",
+"windowframe","windowtext");
+
+function writeRow(ar) {
+	var cells = 15;
+	var str = "";
+	
+	for (var i=0; i<ar.length; ) {
+		str += "<tr>"
+		for (var j=0; j<=cells && i<ar.length; j++) {
+			str += "<td style='background-color: " + ar[i] + "; border: 1px outset " + ar[i] + ";'>";
+			str += "&nbsp;</td>\n";
+			i++;
+		}
+		str += "</tr>\n";
+	}
+	return str;
+}
+	
+	
+//-->
+</script>
+</head>
+<body>
+
+<table cellspacing="0" cellpadding="0" onmouseover="doOver()" onmouseout="doOut()" onclick="doClick()" style="width: 180;">
+<tr>
+<td colspan="15" style="font-family: verdana, helvetica; font-size: 9px; color: button-text; cursor: default; height: 15px;"><nobr>Named Colors:</nobr></td>
+</tr>
+<script>
+document.write(writeRow(colors));
+</script>
+
+</table>
+
+<hr>
+
+<table>
+<tr>
+<td id="colorBox" style="border: 1px inset window;  width: 15; height: 15; font-size: 2px; cursor: default;">&nbsp;</td>
+<td id="colorName" style="border: 0; font-family: verdana, helvetica; font-size: 9px; color: button-text; cursor: default;">ColorName</td>
+</tr>
+</table>
+</body></html>

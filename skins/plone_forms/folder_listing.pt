@@ -1,0 +1,22 @@
+<!-- presents a directory like listing of apache -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/portal_template/macros/master">
+<body>
+  <div metal:fill-slot="main"
+       tal:define="DateTime python:modules['DateTime'].DateTime">
+      <div tal:repeat="obj here/contentValues">
+        <span tal:replace="python:here.toPortalTime(obj.ModificationDate())" />
+        <span tal:condition="obj/isPrincipiaFolderish | nothing"
+              tal:content="string: &lt;dir&gt;" />
+        <span tal:condition="not: obj/isPrincipiaFolderish | nothing"
+              tal:content="python:here.getObjSize(obj)" />
+        <a href="#" tal:attributes="href string:${obj/absolute_url}/folder_listing"
+           tal:content="obj/title_or_id" />   
+      </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/content_template/macros/master">
+<body>
+
+<div metal:fill-slot="main">
+
+    <h1>Comment Preview</h1>
+
+    <p>
+    This is how your comment will look when posted.
+    </p>
+
+
+    <form class="group"
+          method="post" 
+          action=""
+          tal:attributes="action python: here.absolute_url() + '/talkback'">
+    
+        <span class="legend">Comment Preview</span>
+
+        <h3 tal:content="python: request.form['title']"></h3>
+
+        <div tal:define="pss modules/Products.PythonScripts.standard"
+             tal:replace="structure python: pss.structured_text(request.form['text'])">Text Body</div>
+        
+        <input type="hidden" name="title" value=""
+               tal:attributes="value python: request.form['title']">
+        <input type="hidden" name="text" value=""
+               tal:attributes="value python: request.form['text']">
+        <input type="hidden" name="title_override" value=""
+               tal:attributes="value python:  request.form['title']">
+        <input type="hidden" name="text_override" value=""
+               tal:attributes="value python:  request.form['text']">
+        <input type="hidden" name="Creator" value=""
+               tal:attributes="value python: here.portal_membership.getAuthenticatedMember()">
+
+        <div class="row">         
+            <input class="standalone"
+                   type="submit" 
+                   value="Change comment" 
+                   name=""
+                   tal:define="hId here/getId"
+    		       tal:attributes="name python: hId + '/discussion_reply_form:method'">
+            
+            <input class="standalone"
+                    type="submit" 
+                    value="Submit comment" 
+                    name="discussion_reply:method">
+        </div>
+        
+    </form>
+
+</div>
+
+<div metal:fill-slot="sub"> &nbsp; </div>
+
+</body>
+</html>
+

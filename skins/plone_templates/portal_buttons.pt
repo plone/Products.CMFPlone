@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<div metal:define-macro="discussionView"
+     tal:define="actions python:here.portal_actions.listFilteredActionsFor(here)"
+     tal:condition="python:test(container.portal_discussion.isDiscussionAllowedFor(here) and template.getId()==here.portal_types.getTypeInfo(here.Type()).getActionById('view') , 1, 0) ">	
+
+    <form name="reply" 
+          action="" 
+          method="post"
+          tal:define="reply python:here.getActionUrlById('reply', actions['object']);"
+          tal:condition="reply" tal:attributes="action reply">       
+        <input class="standalone" type="submit" value="Add Comment" />
+    </form>
+    
+    <div class="spacer">
+    &nbsp;
+    </div>
+
+    <div>
+        <span tal:replace="structure here/viewThreadsAtBottom|nothing"> 
+           tree-view of  threaded discussion is here
+         </span>
+    </div>
+
+
+</div>
+        
