@@ -78,6 +78,7 @@ class PloneGenerator(Portal.PortalGenerator):
 	# p.portal_membership.setMemberareaCreationFlag()
         p._setProperty('allowAnonymousViewAbout', 0, 'boolean')
         p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
+        p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
         
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
@@ -95,6 +96,18 @@ class PloneGenerator(Portal.PortalGenerator):
         wf_tool.manage_addWorkflow( id='plone_workflow'
 	                          , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
         wf_tool.setDefaultChain('plone_workflow')
+
+	wf_tool.manage_addWorkflow( id='folder_workflow'
+	                          , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
+        folder_wf = wf_tool['folder_workflow']
+        folder_wf.states.deleteStates( ('pending', ) )
+        folder_wf.transitions.deleteTransitions( ('submit', 'reject') )
+        trans_publish=folder_wf.transitions['publish']
+        trans_publish_guard=trans_publish.getGuard()
+        trans_publish_guard.permissions=(CMFCorePermissions.ModifyPortalContent, )
+        trans_publish_guard.roles=('Owner', 'Manager')
+        wf_tool.setChainForPortalTypes( ('Folder',), 'folder_workflow')
+
         wf_tool.updateRoleMappings()
 
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):        
