@@ -13,7 +13,7 @@ from DateTime import DateTime
 
 try:
   date = DateTime(date)
-except (TypeError,AttributeError,IndexError):
+except: #Combination of string/instances can be raised. catach all.
   pass
 
 try:
