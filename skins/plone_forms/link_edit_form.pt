@@ -18,8 +18,6 @@
     Enter the relevant details below, and press "Save".
     </p>
 
-<p>Form action: <b tal:content="request/form_action | nothing"></b></p>
-
         <form class="group"
               action=""
               name="edit_form" 
