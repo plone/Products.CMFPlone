@@ -18,7 +18,8 @@ from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore import CMFCorePermissions
-
+from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
+from Products.CMFCore.interfaces.Discussions import Discussable
 from StatelessTree import constructNavigationTreeViewBuilder, \
      NavigationTreeViewBuilder as NTVB
 
@@ -70,50 +71,58 @@ class PloneTool (UniqueObject, SimpleItem):
             temp = filter( None, value )
             return tuple( temp )
 
-        if title is None:
-            title=REQUEST.get(pfx+'title', obj.Title())
-        if subject is None:
-            subject=REQUEST.get(pfx+'subject', obj.Subject())
-        if description is None:
-            description=REQUEST.get(pfx+'description', obj.Description())
-        if contributors is None:
-            contributors=tuplify(REQUEST.get(pfx+'contributors',
-                                             obj.Contributors()))
-        else:
-            contributors=tuplify(contributors)
-        if effective_date is None:
-            effective_date=REQUEST.get(pfx+'effective_date',
-                                       obj.EffectiveDate())
-        if effective_date == '':
-            effective_date = 'None'
-        if expiration_date is None:
-            expiration_date=REQUEST.get(pfx+'expiration_date',
-                                        obj.ExpirationDate())
-        if expiration_date == '':
-            expiration_date = 'None'
-        if format is None:
-            format=REQUEST.get('text_format', obj.Format())
-        if language is None:
-            language=REQUEST.get(pfx+'language', obj.Language())
-        if rights is None:
-            rights=REQUEST.get(pfx+'rights', obj.Rights())
-        if allowDiscussion and hasattr(allowDiscussion, 'lower'):
-            allowDiscussion=allowDiscussion.lower().strip()
-            if allowDiscussion=='default': allowDiscussion=None
-            elif allowDiscussion=='off': allowDiscussion=0
-            elif allowDiscussion=='on': allowDiscussion=1
+        if DublinCore.isImplementedBy(obj):
+            if title is None:
+                title=REQUEST.get(pfx+'title', obj.Title())
+            if subject is None:
+                subject=REQUEST.get(pfx+'subject', obj.Subject())
+            if description is None:
+                description=REQUEST.get(pfx+'description', obj.Description())
+            if contributors is None:
+                contributors=tuplify(REQUEST.get(pfx+'contributors',
+                                                 obj.Contributors()))
+            else:
+                contributors=tuplify(contributors)
+                
+            if effective_date is None:
+                effective_date=REQUEST.get(pfx+'effective_date',
+                                           obj.EffectiveDate())
+            if effective_date == '':
+                effective_date = 'None'
+            if expiration_date is None:
+                expiration_date=REQUEST.get(pfx+'expiration_date',
+                                            obj.ExpirationDate())
+            if expiration_date == '':
+                expiration_date = 'None'
+            if format is None:
+                format=REQUEST.get('text_format', obj.Format())
+            if language is None:
+                language=REQUEST.get(pfx+'language', obj.Language())
+            if rights is None:
+                rights=REQUEST.get(pfx+'rights', obj.Rights())
+
+        if Discussable.isImplementedBy(obj):
+            if allowDiscussion and hasattr(allowDiscussion, 'lower'):
+                allowDiscussion=allowDiscussion.lower().strip()
+            if allowDiscussion=='default': 
+                allowDiscussion=None
+            elif allowDiscussion=='off': 
+                allowDiscussion=0
+            elif allowDiscussion=='on': 
+                allowDiscussion=1
             disc_tool = getToolByName(self, 'portal_discussion')
             disc_tool.overrideDiscussionFor(obj, allowDiscussion)
 
-        obj.editMetadata( title=title
-                        , description=description
-                        , subject=subject
-                        , contributors=contributors
-                        , effective_date=effective_date
-                        , expiration_date=expiration_date
-                        , format=format
-                        , language=language
-                        , rights=rights )
+        if MutableDublinCore.isImplementedBy(obj):
+            obj.setTitle(title)
+            obj.setDescription(description)
+            obj.setSubject(subject)
+            obj.setContributors(contributors)
+            obj.setEffectiveDate(effective_date)
+            obj.setExpirationDate(expiration_date)
+            obj.setFormat(format)
+            obj.setLanguage(language)
+            obj.setRights(rights)
 
     def _renameObject(self, obj, id):
         if not id:

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - PloneTool.editMetadata made a really bad asssumption.  We now use interface packages to
+      assert that a object implements the interfaces before attempting to set DublinCore attributes
+      *or* Discussable attributes
+
     - Now require CMFActionIcons Product from cvs.zope.org.  We register document_action icons
       for such actions as: Send to friend, Print this page, and RSS.  Please use the
       putils (in global_defines.pt) getIconFor which will return the id of the icon.
