@@ -9,12 +9,12 @@
         <tr><th>Sign in</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
-    <tbody>
+    <tbody tal:define="portal_url here/portal_url">
         <tr class="odd">
             <td colspan="2">
 
                 <form action="logged_in" method="post"
-                      tal:attributes="action python: container.portal_url()+'/logged_in'">
+                      tal:attributes="action string:$portal_url/logged_in">
 
                         <input type="hidden" name="came_from" value=""
                        tal:condition="python:request.get('came_from', '')"
@@ -54,7 +54,8 @@
             tal:condition="python:here.portal_membership.checkPermission('Add portal member', here)" >
             <td colspan="2">
 
-                <a href="join_form">
+                <a href="join_form" 
+		   tal:attributes="href string:$portal_url/join_form">
                 New user?
                 </a>
 
