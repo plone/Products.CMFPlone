@@ -29,7 +29,7 @@ if ( 'edit' in [ o.get('id', '') for o in actions.get('object', ()) ] or \
    
     if ( template_id in [ o.get('action', '') for o in actions.get('object', ()) ] or \
          template_id in [ f.get('action', '') for f in actions.get('folder', ()) ] or \
-         template_id in ['folder_contents', 'folder_listing'] or \
+         template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing'] or \
 	 actions.get('workflow', ()) ) :
         return 1
 
