@@ -297,7 +297,6 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
         self.folder[self.image_id].image_edit(id='barney', file=dummy.File())
         self.failUnless('barney.gif' in self.folder.objectIds())
 
-
 class DummySize:
 
     __allow_access_to_unprotected_subobjects__ = 1
@@ -345,6 +344,62 @@ class TestGetObjSize(PloneTestCase.PloneTestCase):
         size = self.getSize()
         self.assertEquals(size, '1.1 GB')
 
+class DummyDefaultPage:
+
+    __allow_access_to_unprotected_subobjects__ = 1
+
+    def __init__(self, default_page=['test'], keys=['index_html']):
+        self.keys = keys
+        self.set_default(default_page)
+
+    def set_default(self, default, has_key=True):
+        self.default_page = default
+        self.hk = has_key
+
+    def has_key(self, key):
+        return self.hk or key in self.keys
+
+class TestDefaultPage(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.ob = DummyDefaultPage()
+        self.util = self.portal.plone_utils
+        sp = self.portal.portal_properties.site_properties
+        self.default = sp.getProperty('default_page', [])
+
+    def getDefault(self):
+        return self.util.browserDefault(self.ob)
+
+    def testDefaultPageSetting(self):
+        self.assertEquals(self.default, ('index_html', 'index.html',
+                                         'index.htm', 'FrontPage'))
+
+    def testDefaultPageStringExist(self):
+        # Test for https://plone.org/collector/2671
+        self.ob.set_default('test')
+        self.assertEquals(self.getDefault(), (self.ob, ['test']))
+
+    def testDefaultPageStringNotExist(self):
+        # Test for https://plone.org/collector/2671
+        self.ob.set_default('test', False)
+        self.assertEquals(self.getDefault(), (self.ob, ['index_html']))
+
+    def testDefaultPageSequenceExist(self):
+        # Test for https://plone.org/collector/2671
+        self.ob.set_default(['test'])
+        self.assertEquals(self.getDefault(), (self.ob, ['test']))
+
+    def testDefaultPageSequenceNotExist(self):
+        # Test for https://plone.org/collector/2671
+        self.ob.set_default(['test'], False)
+        self.assertEquals(self.getDefault(), (self.ob, ['index_html']))
+        self.ob.keys = ['index.html']
+        self.assertEquals(self.getDefault(), (self.ob, ['index.html']))
+        self.ob.keys = ['index.htm']
+        self.assertEquals(self.getDefault(), (self.ob, ['index.htm']))
+        self.ob.keys = ['FrontPage']
+        self.assertEquals(self.getDefault(), (self.ob, ['FrontPage']))
+
 if __name__ == '__main__':
     framework()
 else:
@@ -356,4 +411,5 @@ else:
         suite.addTest(makeSuite(TestEditFileKeepsMimeType))
         suite.addTest(makeSuite(TestFileExtensions))
         suite.addTest(makeSuite(TestGetObjSize))
+        suite.addTest(makeSuite(TestDefaultPage))
         return suite

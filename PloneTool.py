@@ -478,6 +478,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])
+        # Make sure we don't break if default_page is a
+        # string property instead of a sequence
+        if type(pages) in (StringType, UnicodeType):
+            pages = [pages]
+        # And also filter out empty strings
+        pages = filter(None, pages)
         for page in pages:
             if ids.has_key(page):
                 return obj, [page]

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Fixed https://plone.org/collector/2671. default_page as a string
+      property would not work. Fixed this and added tests for basic
+      behavior. More tests are needed IMHO.
+      [dreamcatcher]
+
     - Fixes for http://plone.org/collector/2914.  Although I could
       not reproduce.  We now have a unit test showing that this
       behavior should not regress. Some logic in PloneTool was changed.
