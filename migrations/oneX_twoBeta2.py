@@ -120,8 +120,9 @@ def swapPortalRoot(portal):
         setattr(portal, permission, getattr(old, permission))
 
     #copy workflow
+   
     if hasattr(aq_base(old), 'workflow_history'):
-        setattr(portal, 'workflow_history', aq_base(old))
+        setattr(portal, 'workflow_history', getattr(aq_base(old), 'workflow_history'))
 
     #We have a portal_type for Plone objects, Plone Site
     #It has no workflow associate with it.
