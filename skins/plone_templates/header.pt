@@ -76,6 +76,21 @@
       }
       // -->
     </script>
+
+    <!-- Table sorting script -->
+    <script language="JavaScript"
+            type="text/javascript" 
+            src="dummy"
+            tal:attributes="src string:$portal_url/table_sort.js" >
+    </script>     
+
+    <!-- folder_contents actions -->
+    <script language="JavaScript"
+            type="text/javascript" 
+            src="dummy"
+            tal:attributes="src string:$portal_url/folder_actions.js" >
+    </script>     
+
     
 </head>
 
