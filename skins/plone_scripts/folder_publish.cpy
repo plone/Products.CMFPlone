@@ -9,6 +9,7 @@
 ##title=Publish objects from a folder
 ##
 
+from ZODB.POSException import ConflictError
 from Products.CMFPlone import transaction_note
 plone_utils=context.plone_utils
 REQUEST=context.REQUEST
@@ -28,8 +29,8 @@ for id in ids:
         if o.isPrincipiaFolderish and include_subfolders:
             # call the script to do the workflow action
             # catch it if there is not workflow action for this object
-            # but continu with subobjects.
-            # Since we can have mixed portal_type objects it can occure
+            # but continue with subobjects.
+            # Since we can have mixed portal_type objects it can occur
             # quite easily that the workflow_action doesn't work for some objects
             # but we need to keep on going.
             try:
@@ -37,10 +38,11 @@ for id in ids:
                                          comment,
                                          effective_date=effective_date,
                                          expiration_date=expiration_date )
-
-		    except Exception, e:
-		        # skip this object but continue with sub-objects.
-		        failed[id]=e
+            except ConflictError:
+                raise
+            except Exception, e:
+                # skip this object but continue with sub-objects.
+                failed[id]=e
             
             o.folder_publish( workflow_action, 
                               o.objectIds(), 
@@ -54,6 +56,8 @@ for id in ids:
                                      effective_date=effective_date,
                                      expiration_date=expiration_date )
             success[id]=comment
+    except ConflictError:
+        raise
     except Exception, e:
         failed[id]=e
 
