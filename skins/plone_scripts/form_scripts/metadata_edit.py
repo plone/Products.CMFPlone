@@ -18,4 +18,7 @@ context.plone_utils.editMetadata(context,
                                  format=format,
                                  language=language,
                                  rights=rights)
-return ('success', context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Metadata changes saved.')})
+return ( 'success'
+       , context
+       , { 'portal_status_message':context.REQUEST.get( 'portal_status_message'
+                                                      , 'Metadata changes saved.') } )
