@@ -25,15 +25,12 @@
                    siblings here/navigationCurrent;
                    showOtherNav python:0;
                    showNav python:0;
-                   showOtherNav here/portal_url/CMFTopic_navigator | showNav"
+                   showOtherNav here/portal_url/CMFTopic_navigator | showNav;"
        tal:condition="python:parent_url and not(showOtherNav)"
-       class="box" summary="Navigation" cellpadding="0" cellspacing="0">
-                   siblings here/navigationCurrent;"
        class="box" 
        summary="Navigation" 
        cellpadding="0" 
-       cellspacing="0"
-       tal:condition="python:test( (parent_url and here.portal_membership.isAnonymousUser()) or (not here.portal_membership.isAnonymousUser()), 1, 0)" >
+       cellspacing="0">
   
     <thead>
         <tr><th>Navigation</th><th class="empty">&nbsp;</th></tr>
