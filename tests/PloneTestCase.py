@@ -19,6 +19,8 @@ ZopeTestCase.installProduct('ZCTextIndex')
 if ZopeTestCase.hasProduct('TextIndexNG2'):
     ZopeTestCase.installProduct('TextIndexNG2')
 ZopeTestCase.installProduct('SecureMailHost')
+if ZopeTestCase.hasProduct('ExternalEditor'):
+    ZopeTestCase.installProduct('ExternalEditor')
 ZopeTestCase.installProduct('CMFPlone')
 ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('PageTemplates', quiet=1)
