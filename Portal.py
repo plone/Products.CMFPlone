@@ -288,15 +288,56 @@ class PloneGenerator(Portal.PortalGenerator):
 
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
 
-    def setupForms(self, p):
-        """ This is being deprecated.  Please see CMFFormController """
-
+    def setupNavTree(self,p):
+        ''' sets up the default propertysheet for the navtree '''
         prop_tool = p.portal_properties
+        prop_tool.manage_addPropertySheet('navtree_properties', 'NavigationTree properties')
 
-        #set up properties for StatelessTreeNav
-        from Products.CMFPlone.StatelessTreeNav \
-             import setupNavTreePropertySheet
-        setupNavTreePropertySheet(prop_tool)
+        ntp=prop_tool.navtree_properties
+        ntp._setProperty('typesToList', ['Folder'], 'lines')
+        ntp._setProperty('sortAttribute', 'getFolderOrder', 'string')
+        ntp._setProperty('sortOrder', 'asc', 'string')
+        ntp._setProperty('sitemapDepth', 3, 'int')
+        # old properties
+        ntp._setProperty('showMyUserFolderOnly', 1, 'boolean')
+        ntp._setProperty('includeTop', 1, 'boolean')
+        ntp._setProperty('showFolderishSiblingsOnly', 1, 'boolean')
+        ntp._setProperty('showFolderishChildrenOnly', 1, 'boolean')
+        ntp._setProperty('showNonFolderishObject', 0, 'boolean')
+        ntp._setProperty('topLevel', 0, 'int')
+        ntp._setProperty('batchSize', 30, 'int')
+        ntp._setProperty('showTopicResults', 1, 'boolean')
+        ntp._setProperty('rolesSeeUnpublishedContent', ['Manager','Reviewer','Owner'] , 'lines')
+        ntp._setProperty('sortCriteria', ['isPrincipiaFolderish,desc']  , 'lines')
+        ntp._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')
+        ntp._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
+        ntp._setProperty('croppingLength',256,'int')
+        ntp._setProperty('forceParentsInBatch',0,'boolean')
+        ntp._setProperty('skipIndex_html',1,'boolean')
+        ntp._setProperty('rolesSeeContentsView', ['Manager','Reviewer','Owner'] , 'lines')
+        ntp._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
+        ntp._setProperty('bottomLevel', 65535 , 'int')
+        ntp._setProperty('idsNotToList', [] , 'lines')
+
+        #replace path index with ExtendedPathIndex
+        ct = p.portal_catalog
+        ct.delIndex('path')
+        ct.addIndex('path', 'ExtendedPathIndex')
+
+        # Add indexes
+        if 'getFolderOrder' not in ct.indexes():
+            ct.addIndex('getFolderOrder', 'FieldIndex')
+        if 'isDefaultPage' not in ct.indexes():
+            ct.addIndex('isDefaultPage', 'FieldIndex')
+
+        # Refresh skins to make the getFolderOrder available to catalog
+        if hasattr(p, '_v_skindata'):
+            p._v_skindata = None
+        if hasattr(p, 'setupCurrentSkin'):
+            p.setupCurrentSkin()
+
+        ct.refreshCatalog(clear=1)
+
 
     def setupPlone(self, p):
         self.customizePortalTypes(p)
@@ -304,7 +345,7 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupPloneWorkflow(p)
         self.setupPloneSkins(p)
         self.setupPortalContent(p)
-        self.setupForms(p)
+        self.setupNavTree(p)
 
         m = p.portal_migration
 

@@ -34,6 +34,9 @@ ZopeTestCase.installProduct('PortalTransforms', quiet=1)
 ZopeTestCase.installProduct('ATReferenceBrowserWidget', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 
+# NavTree dependencies
+ZopeTestCase.installProduct('ExtendedPathIndex')
+
 # Install sessioning
 ZopeTestCase.utils.setupCoreSessions()
 

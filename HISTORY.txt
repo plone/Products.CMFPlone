@@ -4,7 +4,10 @@ Changelog for Plone
 
 Plone 2.1 - unknown - unknown - unreleased
 
-    - added 2 new knob to jscalendar: 
+      - refactored Navigation Tree
+        [jladage]
+
+      - added 2 new knob to jscalendar: 
 
       - show_hm: show hour and minute dropbox or not 
 

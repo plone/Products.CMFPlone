@@ -500,6 +500,84 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                          bottomLevel=bottomLevel  )
         ctx_tree_builder=t_builder.__of__(self)
         return ctx_tree_builder()
+        
+    security.declarePublic('createNavTree')
+    def createNavTree(self, context, sitemap=False):
+        """Returns a structure that can be used by
+        navigation_tree_slot."""
+        ct=getToolByName(self, 'portal_catalog')
+        ntp=getToolByName(self, 'portal_properties').navtree_properties
+        if not context:
+            context = self.getCallingContext()
+        currentPath = None
+        query = {}
+
+        # XXX check if isDefaultPage is in the catalogs
+        query['isDefaultPage'] = 0
+
+        if context == self or sitemap:
+            currentPath = getToolByName(self, 'portal_url').getPortalPath()
+            query['path'] = {'query':currentPath, 'depth':ntp.sitemapDepth}
+        else:
+            currentPath = '/'.join(context.getPhysicalPath())
+            query['path'] = {'query':currentPath, 'navtree':1}
+
+        if ntp.typesToList:
+            query['portal_type'] = ntp.typesToList
+
+        if ntp.sortAttribute:
+            query['sort_on'] = ntp.sortAttribute
+
+        if ntp.sortAttribute and ntp.sortOrder:
+            query['sort_order'] = ntp.sortOrder
+        
+        rawresult = ct(**query)
+
+        # Build result dict
+        result = {}
+        foundcurrent = False
+        for item in rawresult:
+            path = item.getPath()
+            currentItem = path == currentPath
+            if currentItem:
+                foundcurrent = path
+            data = {'Title':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+                    'currentItem':currentItem,
+                    'absolute_url': item.getURL(),
+                    'getURL':item.getURL(),
+                    'path': path,
+                    'icon':item.getIcon,
+                    'creation_date': item.CreationDate,
+                    'review_state': item.review_state,
+                    'Description':item.Description,
+                    'children':[]}
+            parentpath = '/'.join(path.split('/')[:-1])
+            # Tell parent about self
+            if result.has_key(parentpath):
+                result[parentpath]['children'].append(data)
+            else:
+                result[parentpath] = {'children':[data]}
+            # If we have processed a child already, make sure we register it
+            # as a child
+            if result.has_key(path):
+                data['children'] = result[path]['children']
+            result[path] = data
+
+        portalpath = getToolByName(self, 'portal_url').getPortalPath()
+
+        if not foundcurrent:
+            #    result['/'.join(currentPath.split('/')[:-1])]['currentItem'] = True
+            for i in range(1, len(currentPath.split('/')) - len(portalpath.split('/')) + 1):
+                p = '/'.join(currentPath.split('/')[:-i])
+                if result.has_key(p) and not foundcurrent:
+                    foundcurrent = p
+                    result[p]['currentItem'] = True
+                    continue
+
+        if result.has_key(portalpath):
+            return result[portalpath]
+        else:
+            return {}
 
     # expose ObjectManager's bad_id test to skin scripts
     security.declarePublic('good_id')
