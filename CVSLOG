@@ -1,3 +1,338 @@
+2003-10-25 05:30  limi
+
+	* skins/plone_content/: document_edit_form.cpt,
+	  event_edit_form.cpt, file_edit_form.cpt, folder_edit_form.cpt,
+	  image_edit_form.cpt, link_edit_form.cpt, newsitem_edit_form.cpt
+	  (Plone-2_0-branch): Changed all "Name" to "Short Name".
+
+2003-10-25 05:17  limi
+
+	* skins/plone_forms/discussion_reply_form.pt (Plone-2_0-branch):
+	  Removed the XML-RPC preview of comments, somebody needs to force
+	  comments to always be plain text. I tried overriding the
+	  DiscussionTool, but I'm not a Python coder, so somebody else
+	  should step up :)
+
+2003-10-25 04:50  limi
+
+	* Portal.py, migrations/plone2_base.py, migrations/rc1_rc2.py
+	  (Plone-2_0-branch): Migrations are super confusing. Ended up with
+	  commenting out the skins everywhere, the code that actually did
+	  the skin install was in Portal.py.
+
+2003-10-25 04:32  limi
+
+	* migrations/plone2_base.py (Plone-2_0-branch): Removed the
+	  generation of additional skins, not sure whether this should go
+	  here or in a later migration - I'm guessing here, since it's rude
+	  to remove people's skins in a migration. :)
+
+2003-10-25 04:14  limi
+
+	* skins/plone_styles/: autumn/bullet.gif,
+	  autumn/bullet.gif.metadata, autumn/linkOpaque.gif,
+	  autumn/linkOpaque.gif.metadata, autumn/linkTransparent.gif,
+	  autumn/linkTransparent.gif.metadata,
+	  autumn/stylesheet_properties.props, autumn/user.gif,
+	  autumn/user.gif.metadata, core/bullet.gif,
+	  core/bullet.gif.metadata, core/dump.txt, core/linkOpaque.gif,
+	  core/linkOpaque.gif.metadata, core/logo.jpg,
+	  core/stylesheet_properties.props, core/user.gif,
+	  core/user.gif.metadata, core_inverted/arrowDown.gif,
+	  core_inverted/arrowDown.gif.metadata, core_inverted/arrowUp.gif,
+	  core_inverted/arrowUp.gif.metadata, core_inverted/bullet.gif,
+	  core_inverted/bullet.gif.metadata, core_inverted/linkOpaque.gif,
+	  core_inverted/linkOpaque.gif.metadata,
+	  core_inverted/linkTransparent.gif,
+	  core_inverted/linkTransparent.gif.metadata,
+	  core_inverted/logo.jpg, core_inverted/ploneCustom.css.dtml,
+	  core_inverted/stylesheet_properties.props,
+	  core_inverted/user.gif, core_inverted/user.gif.metadata,
+	  corporate/arrowDown.gif, corporate/arrowDown.gif.metadata,
+	  corporate/arrowUp.gif, corporate/arrowUp.gif.metadata,
+	  corporate/bullet.gif, corporate/bullet.gif.metadata,
+	  corporate/linkOpaque.gif, corporate/linkOpaque.gif.metadata,
+	  corporate/linkTransparent.gif,
+	  corporate/linkTransparent.gif.metadata, corporate/logo.jpg,
+	  corporate/stylesheet_properties.props, corporate/user.gif,
+	  corporate/user.gif.metadata, greensleeves/linkOpaque.gif,
+	  greensleeves/linkOpaque.gif.metadata,
+	  greensleeves/linkTransparent.gif,
+	  greensleeves/linkTransparent.gif.metadata,
+	  greensleeves/stylesheet_properties.props, kitty/arrowDown.gif,
+	  kitty/arrowDown.gif.metadata, kitty/arrowUp.gif,
+	  kitty/arrowUp.gif.metadata, kitty/bullet.gif,
+	  kitty/bullet.gif.metadata, kitty/linkOpaque.gif,
+	  kitty/linkOpaque.gif.metadata, kitty/linkTransparent.gif,
+	  kitty/linkTransparent.gif.metadata, kitty/logo.jpg,
+	  kitty/stylesheet_properties.props, kitty/user.gif,
+	  kitty/user.gif.metadata, mozilla/bullet.gif,
+	  mozilla/bullet.gif.metadata, mozilla/linkOpaque.gif,
+	  mozilla/linkOpaque.gif.metadata, mozilla/linkTransparent.gif,
+	  mozilla/linkTransparent.gif.metadata, mozilla/logo.jpg,
+	  mozilla/readme.txt, mozilla/stylesheet_properties.props,
+	  mozilla/user.gif, mozilla/user.gif.metadata,
+	  mozilla_new/arrowDown.gif, mozilla_new/arrowDown.gif.metadata,
+	  mozilla_new/arrowUp.gif, mozilla_new/arrowUp.gif.metadata,
+	  mozilla_new/bullet.gif, mozilla_new/bullet.gif.metadata,
+	  mozilla_new/linkOpaque.gif, mozilla_new/linkOpaque.gif.metadata,
+	  mozilla_new/logo.jpg, mozilla_new/stylesheet_properties.props,
+	  mozilla_new/user.gif, mozilla_new/user.gif.metadata,
+	  prime/arrowDown.gif, prime/arrowDown.gif.metadata,
+	  prime/arrowUp.gif, prime/arrowUp.gif.metadata, prime/bullet.gif,
+	  prime/bullet.gif.metadata, prime/linkOpaque.gif,
+	  prime/linkOpaque.gif.metadata, prime/linkTransparent.gif,
+	  prime/linkTransparent.gif.metadata, prime/logo.jpg,
+	  prime/stylesheet_properties.props, prime/user.gif,
+	  prime/user.gif.metadata, zed/arrowDown.gif, zed/arrowUp.gif,
+	  zed/bullet.gif, zed/linkOpaque.gif, zed/logo.jpg,
+	  zed/ploneCustom.css.dtml, zed/stylesheet_properties.props,
+	  zed/user.gif (Plone-2_0-branch): Removed the old skins, they are
+	  now in PloneSkins in the Collective.
+
+2003-10-25 03:46  zopezen
+
+	* skins/plone_scripts/deleteDiscussion.py (Plone-2_0-branch):
+	  Redirect to the specific view, bug #663
+
+2003-10-25 03:01  zworkb
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch): display product versions in the overview.
+	  Attention: newest QuickInstaller CVS (1.4 devel) needed
+
+2003-10-25 01:59  zopezen
+
+	* PloneInitialize.py (Plone-2_0-branch): added out
+
+2003-10-25 01:56  zopezen
+
+	* PloneFolder.py (Plone-2_0-branch): Easier just to do it myself,
+	  set the permission to ModifyPortalContent
+
+2003-10-25 01:53  limi
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): Added
+	  deprecation notes for portal_form and portal_navigation.
+
+2003-10-25 01:36  zopezen
+
+	* skins/plone_prefs/: prefs_group_details.metadata,
+	  prefs_group_details.pt.metadata, prefs_group_members.metadata,
+	  prefs_group_members.pt.metadata, prefs_groups_overview.metadata,
+	  prefs_install_products.pt.metadata,
+	  prefs_install_products_form.metadata,
+	  prefs_installed_product_overview.metadata,
+	  prefs_installed_product_overview.pt.metadata,
+	  prefs_user_details.metadata, prefs_user_details.pt.metadata,
+	  prefs_user_group_search_form.metadata,
+	  prefs_user_group_search_form.pt.metadata,
+	  prefs_user_memberships.metadata,
+	  prefs_user_memberships.pt.metadata (Plone-2_0-branch): Oh look
+	  all the .metatdata files were all misnamed for the control panel
+	  meaning none of them worked and there was no security. Someone
+	  did test this right?
+
+2003-10-25 01:20  yenzenz
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  changed static 'Members' to dynamic getHomeUrl
+
+2003-10-25 01:13  sh1mmer
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Rewind.
+	  z-index causing bugs.
+
+2003-10-25 01:08  zopezen
+
+	* skins/: plone_forms/password_form.pt,
+	  plone_forms/personalize_form.cpt,
+	  plone_prefs/prefs_main_template.pt,
+	  plone_scripts/controlPanelParentUrl.py (Plone-2_0-branch): Add in
+	  the horrific controlPanelParentURL, please someone fix that
+	  insanity. Make the user templates use the prefs template so we
+	  get the little back to...
+
+2003-10-25 01:01  yenzenz
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  fixed  Issue 1806:  folder_contents should not check for personal
+	  folder instead of disabling the feature i now ask if
+	  parentobjects id is Members
+
+2003-10-25 00:47  sh1mmer
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Added
+	  z-index to inplacecalander (popup calander) to fix it appearing
+	  under text boxes in IE.
+
+2003-10-25 00:06  zopezen
+
+	* setup/dependencies.py (Plone-2_0-branch): You cant do multiple
+	  exceptions in one line, thats not how python works. Secondly
+	  looks like filtered was not actually being used. This works ok in
+	  testing here, and doesnt blow up with CVS version of CMF
+
+2003-10-24 23:56  limi
+
+	* skins/plone_portlets/recently_published_slot.pt
+	  (Plone-2_0-branch): Fix for #1728, title on recently published
+	  box.
+
+2003-10-24 23:44  zworkb
+
+	* StatelessTree.py (Plone-2_0-branch): fixed bug #1742
+
+2003-10-24 23:16  plonista
+
+	* PropertiesTool.py (Plone-2_0-branch): Removed hardcoded strict
+	  dependency on smtp_server in editProperties
+
+2003-10-24 23:12  yenzenz
+
+	* setup/customization_policy.py (Plone-2_0-branch): applied patch
+	  from gerrykirk Issue 1787
+
+2003-10-24 23:02  limi
+
+	* skins/plone_styles/stylesheet_properties.props
+	  (Plone-2_0-branch): Added Lucida Grande for the Mac people,
+	  restored the 11px size equivalent in px.
+
+2003-10-24 23:00  zopezen
+
+	* skins/plone_scripts/browserDefault.py (Plone-2_0-branch): Add
+	  some useful comments explaining how the heck it works
+
+2003-10-24 22:53  sh1mmer
+
+	* skins/plone_styles/stylesheet_properties.props
+	  (Plone-2_0-branch): Font are relative not absolute. Accessibility
+	  says its so.
+
+2003-10-24 22:51  plonista
+
+	* setup/dependencies.py (Plone-2_0-branch): Trying again... sigh...
+
+2003-10-24 22:48  plonista
+
+	* setup/dependencies.py (Plone-2_0-branch): Cooler version check
+
+2003-10-24 22:41  limi
+
+	* skins/: plone_form_scripts/validate_reconfig.vpy,
+	  plone_prefs/reconfig_form.cpt,
+	  plone_prefs/reconfig_form.cpt.metadata,
+	  plone_forms/reconfig_form.cpt,
+	  plone_forms/reconfig_form.cpt.metadata (Plone-2_0-branch): Moved
+	  reconfig form inside the prefs dir, removed LocalTimeFormat and
+	  mailhost settings. still broken, need geoffd to look at it.
+
+2003-10-24 22:39  yenzenz
+
+	* PloneFolder.py (Plone-2_0-branch): fixed (hopefully) #1823:
+	  Finish OrderedSupport implementation
+
+2003-10-24 22:33  plonista
+
+	* setup/dependencies.py (Plone-2_0-branch): Unbreaking the unit
+	  tests
+
+2003-10-24 22:23  zworkb
+
+	* setup/dependencies.py (Plone-2_0-branch): setup/dependencies: the
+	  conversion of version numbers has to ignore all dots except the
+	  first one (1.4.1 -> 1.41)
+
+2003-10-24 22:05  limi
+
+	* skins/plone_prefs/prefs_mailhost_set.py (Plone-2_0-branch): Fix
+	  for 1618, made the status message i18n-able.
+
+2003-10-24 22:00  limi
+
+	* skins/plone_portlets/login_slot.pt (Plone-2_0-branch): Reduced
+	  the textfield width slightly.
+
+2003-10-24 21:49  plonista
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  Fix from Jeroen Janssen for 1727
+
+2003-10-24 21:38  limi
+
+	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch): Lets
+	  images show inside Plone, bug 1601, I was on HEAD instead of on
+	  this branch.
+
+2003-10-24 21:34  plonista
+
+	* setup/dependencies.py (Plone-2_0-branch): Added CMF version check
+
+2003-10-24 21:31  limi
+
+	* skins/plone_templates/folder_listing.pt: Lets images show inside
+	  Plone, bug 1601
+
+2003-10-24 21:27  zopezen
+
+	* migrations/twoBeta2_twoBeta3.py (Plone-2_0-branch): Add in file
+
+2003-10-24 21:25  plonista
+
+	* setup/dependencies.py: Added CMF version check
+
+2003-10-24 21:18  zopezen
+
+	* skins/plone_form_scripts/reconfig.cpy.metadata
+	  (Plone-2_0-branch): Bug 1654, thanks jok2
+
+2003-10-24 21:07  zopezen
+
+	* skins/: plone_form_scripts/reconfig.cpy,
+	  plone_forms/reconfig_form.cpt (Plone-2_0-branch): Bug number 1619
+	  on behalf of jok2, thanks.
+
+2003-10-24 21:01  yenzenz
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  fixing Issue 1718: Ordering a folder and being able to sort a
+	  table is confusing
+
+2003-10-24 20:49  zopezen
+
+	* MigrationTool.py, WorkflowTool.py, version.txt,
+	  docs/REQUIREMENTS.txt, docs/SiteTypes.txt, migrations/__init__.py
+	  (Plone-2_0-branch): Fix earlier change to make migration messages
+	  nicer which didn't work. Fix returning messages. Add in 2.0 beta
+	  3 migration. Add in new version.txt and finally fix limi's bug
+	  1600.
+
+	  Remove siteTypes its no longer used
+
+	  Fix Requirements
+
+2003-10-24 20:12  zopezen
+
+	* MigrationTool.py (Plone-2_0-branch): Allow a migration to return
+	  a log of messages to the user. We'll need this in 2.0 to say
+	  things like, you've modified this, hence we have no idea how to
+	  change it.
+
+2003-10-24 18:48  zopezen
+
+	* skins/plone_prefs/prefs_error_log_setProperties.py
+	  (Plone-2_0-branch): Fix bug 1651, check in on behalf of jok2
+
+2003-10-24 13:59  limi
+
+	* skins/plone_images/print_icon.gif (Plone-2_0-branch): Removed
+	  stray pixels.
+
+2003-10-24 10:37  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-10-24 09:53  yenzenz
 
 	* skins/plone_portlets/recently_published_slot.pt
