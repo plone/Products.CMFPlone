@@ -1,5 +1,10 @@
 CHANGES
 Plone 1.1
+    - integrated browser_default, the default_page variable can be set in site properties
+      and cna be a list of pages to look up in order to find the default: 
+      eg index.html, index.htm, index_html
+    - added migration to future to add in default_page
+    - changed meta_type for portal to be 'Plone Site'
     - content_status_history (state tab) form now displays
       the current state in the state list.  This is a usability
       decision. All options should have a default state. Now
