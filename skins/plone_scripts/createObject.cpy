@@ -13,8 +13,8 @@ from DateTime import DateTime
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 
-
-id=context.generateUniqueId(type_name)
+if id is None:
+    id=context.generateUniqueId(type_name)
 
 # XXX This needs to be moved out of createObject
 # its not generic really at all.  
