@@ -9,6 +9,7 @@
 ##title=handles the workflow transitions of objects
 ##
 from DateTime import DateTime
+from Products.CMFPlone import transaction_note
 
 contentEditSuccess=0
 plone_log=context.plone_log
@@ -37,6 +38,10 @@ except 'Unauthorized':
     pass
 
 wfcontext = context
+
+# Create the note while we still have access to wfcontext
+note = 'Changed status of %s at %s' % (wfcontext.title_or_id(), wfcontext.absolute_url())
+
 if workflow_action!=current_state:
     wfcontext=new_context.portal_workflow.doActionFor( context,
                                                        workflow_action,
@@ -52,8 +57,7 @@ if not contentEditSuccess:
     except 'Unauthorized':
         pass
 
-from Products.CMFPlone import transaction_note
-transaction_note('Changed status of %s at %s' % (wfcontext.title_or_id(), wfcontext.absolute_url()))
+transaction_note(note)
 
 return state.set(context=wfcontext,
                  portal_status_message='Your contents status has been modified.')

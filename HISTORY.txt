@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3030 - content_status_modify.py now
+      assembles the  transaction note before performing the transaction.
+      Thanks to raphael (Ritz?).
+      [stefan]
+
     - Fixed http://plone.org/collector/2857 - changed show_id.py to accomodate 
       postback of a submitted id in the case where validation fails on the first 
       edit of a newly created content object. Thanks to zenwryly.
