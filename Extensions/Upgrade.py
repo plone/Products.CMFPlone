@@ -141,4 +141,10 @@ def normalize_tabs(self):
     #get_transaction().commit(1)
     import time
     return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
- 
+
+def migrate099to10(self):
+    portal=getToolByName(self, 'portal_url').getPortalObject()
+    if not hasattr(portal, 'localTimeFormat'):
+        portal._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
+    normalize_tabs(self)
+    return 'finished migraiton'
