@@ -147,6 +147,13 @@ def modifyActionProviders(self, portal):
             action.category='user'
     mt._actions=_actions
 
+    ut=getToolByName(portal, 'portal_undo')
+    _actions=ut._cloneActions()
+    for action in _actions:
+        if action.id=='undo':
+            action.category='user'
+    ut._actions=_actions
+
     at=getToolByName(portal, 'portal_actions')
     _actions=at._cloneActions()
     for action in _actions:
