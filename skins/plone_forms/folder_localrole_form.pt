@@ -274,8 +274,9 @@
                         <br />	
                 		
                 		<span class="field"
-                          tal:replace="python:join(lrole[1], ', ')">
-                		_.string.join( _['sequence-item'], ', ')
+                          i18n:translate=""
+                          tal:content="python:join(lrole[1], ', ')">
+                		Role, Another role
                 		</span>
             
                 </span>

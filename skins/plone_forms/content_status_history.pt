@@ -280,7 +280,7 @@
 	                        global odd repeat/items/odd; global rhComments items/comments;"
                 tal:attributes="class python:test(odd, 'even', 'odd')"
                 tal:condition="items/action">
-                <td> 
+                <td i18n:translate=""> 
                 <span tal:replace="items/action" /> 
                 </td>
             

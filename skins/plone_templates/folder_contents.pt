@@ -62,7 +62,7 @@
             </metal:block>
      
             <p tal:condition="python:user.getUserName()==here.getId()" 
-                  i18n:translate="">
+                  i18n:translate="description_contains_items_by">
             Contains the items created and collected by <span tal:replace="python:user.getUserName()" i18n:name="name">User</span>
             </p> 
 
