@@ -162,7 +162,12 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
         for i in range(13):
             self.assertEqual(minutes[i], data[i])
 
-    def testAMPM(self):
+    def testAM(self):
+        d = DateTime(2002, 8, 1, 3, 0, 0)
+        d = self.portal.date_components_support(d)
+        self.assertEqual(d.get('ampm'), [])
+
+    def testPM(self):
         ampm = self.d.get('ampm')
         self.assertEqual(ampm, [])
 
@@ -347,10 +352,25 @@ class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
         for i in range(13):
             self.assertEqual(hours[i], data[i])
 
-    def testAMPM(self):
+    def testAM(self):
+        d = DateTime(2002, 8, 1, 3, 0, 0)
+        d = self.portal.date_components_support(d, use_ampm=1)
+
         data = [
-            {'selected': None, 'id': 'AM', 'value': 'AM'},
-            {'selected': 1,    'id': 'PM', 'value': 'PM'},
+            {'selected': None, 'id': '----', 'value': 'AM'},
+            {'selected': 1,    'id': 'AM',   'value': 'AM'},
+            {'selected': None, 'id': 'PM',   'value': 'PM'},
+        ]
+
+        ampm = d.get('ampm')
+        for i in range(2):
+            self.assertEqual(ampm[i], data[i])
+
+    def testPM(self):
+        data = [
+            {'selected': None, 'id': '----', 'value': 'AM'},
+            {'selected': None, 'id': 'AM',   'value': 'AM'},
+            {'selected': 1,    'id': 'PM',   'value': 'PM'},
         ]
 
         ampm = self.d.get('ampm')
@@ -390,13 +410,29 @@ class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
 
     def testAMPM(self):
         data = [
-            {'selected': None, 'id': 'AM', 'value': 'AM'},
-            {'selected': None, 'id': 'PM', 'value': 'PM'},
+            {'selected': 1,    'id': '----', 'value': 'AM'},
+            {'selected': None, 'id': 'AM',   'value': 'AM'},
+            {'selected': None, 'id': 'PM',   'value': 'PM'},
         ]
 
         ampm = self.d.get('ampm')
         for i in range(2):
             self.assertEqual(ampm[i], data[i])
+
+
+class TestSpecialCases(PloneTestCase.PloneTestCase):
+
+    def testNoneUsesDefault(self):
+        d = self.portal.date_components_support(None)
+        hours = d.get('hours')
+        # default == 1
+        self.failUnless(hours[0]['selected'])
+
+    def testEmptyStringUsesDefault(self):
+        d = self.portal.date_components_support('')
+        hours = d.get('hours')
+        # default == 1
+        self.failUnless(hours[0]['selected'])
 
 
 def test_suite():
@@ -406,6 +442,7 @@ def test_suite():
     suite.addTest(makeSuite(TestDateComponentsSupportDefault))
     suite.addTest(makeSuite(TestDateComponentsSupportAMPM))
     suite.addTest(makeSuite(TestDateComponentsSupportAMPMDefault))
+    suite.addTest(makeSuite(TestSpecialCases))
     return suite
 
 if __name__ == '__main__':

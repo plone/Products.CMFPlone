@@ -132,6 +132,11 @@ for x in range(0, 60, 5):
 if use_ampm:
     p=date.strftime('%p')
 
+    if default:
+        ampm.append({'id': '----', 'value': 'AM', 'selected': 1})
+    else:
+        ampm.append({'id': '----', 'value': 'AM', 'selected': None})
+
     for x in ('AM', 'PM'):
         d={'id': x, 'value': x, 'selected': None}
         if x==p and not default:

@@ -687,7 +687,7 @@ function update_date_field(field, year, month, day, hour, minute, ampm)
     var minute = document.getElementById(minute)
     var ampm   = document.getElementById(ampm)
 
-    if (year.value > 0) 
+    if (0 < year.value)
     {
         // Return ISO date string
         // Note: This relies heavily on what date_components_support.py puts into the form.
@@ -703,6 +703,8 @@ function update_date_field(field, year, month, day, hour, minute, ampm)
         day.options[0].selected = 1
         hour.options[0].selected = 1
         minute.options[0].selected = 1
+        if (ampm.options)
+            ampm.options[0].selected = 1
         // Return empty string
         field.value = ''
     }
