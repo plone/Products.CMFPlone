@@ -9,7 +9,7 @@ The following people contributed to help iron out wrinkles, gave feedback and co
 
 Geir Bækholt (http://elvix.com) 
 Stian Søiland (http://stain.portveien.to) 
-Magnus (??lastname??) - python guru 
+Magnus Heino - python guru 
 Manfred Ackermann - persistent and faithful tester
 Andy Dawkins - Calendar and general Zopista 
 Ignacio Valdes - documetnation, questions
