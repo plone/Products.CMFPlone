@@ -37,7 +37,7 @@ class TestFolderLocalRole(PloneTestCase.PloneTestCase):
         '''Folder_localrole_form should render'''
         # WOOSHA! This bombs because of
         # Unauthorized: You are not allowed to access getGroups in this context
-        # Someone look into this please...
+        # TODO: Someone look into this please...
         #self.folder.folder_localrole_form()
         pass
 

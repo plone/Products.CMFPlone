@@ -11,6 +11,7 @@ from Products.CMFPlone.tests import PloneTestCase
 
 _user_name = ZopeTestCase._user_name
 
+
 from OFS.Image import Image
 # Fake upload object
 class Portrait:
