@@ -12,13 +12,7 @@
 <div metal:fill-slot="main"
      tal:define="errors options/state/getErrors;">
 
-    <h1 i18n:translate="heading_registration_form">Please register</h1>
-
-    <p i18n:translate="description_registration_form">
-    By registering with us, you will have your own account with the
-    possibility to have personalized content, and you will be able to add
-    your own documents, images and files to the site.
-    </p> 
+    <h1 i18n:translate="heading_registration_form">Registration Form</h1>
 
     <form action="" 
           method="post"
@@ -47,7 +41,7 @@
                 <label i18n:translate="label_full_name">Full Name</label>
     
                 <div class="formHelp" i18n:translate="help_full_name_creation">
-                Enter your full name, eg. John Smith.
+                Enter full name, eg. John Smith.
                 </div>
                 
                 <div tal:content="error">Validation error output</div>
@@ -76,11 +70,11 @@
     
                 <div i18n:translate="help_user_name_creation_casesensitive"
                      class="formHelp">
-                Enter the user name you want, usually something like
+                Enter a user name, usually something like
                 'jsmith'. No spaces or special characters. 
                 Usernames and passwords are case sensitive, 
                 make sure the caps lock key is not enabled.
-                This is the name you use to log in.
+                This is the name used to log in.
                 </div>
                 
                 <div tal:content="error">Validation error output</div>
@@ -107,8 +101,8 @@
                       i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_email_creation">
-                Enter your email address. This is necessary in case you lose your
-                password. We respect your privacy, and will not give the address
+                Enter an email address. This is necessary in case the password
+                is lost. We respect your privacy, and will not give the address
                 away to any third parties or expose it anywhere.
                 </div>
     
@@ -137,7 +131,7 @@
                       i18n:translate="label_required">(Required)</span>
     
                 <div class="formHelp" i18n:translate="help_password_creation">
-                Enter the password you want. Minimum 5 characters.
+                Minimum 5 characters.
                 </div>
     	       
                 <div tal:content="error">Validation error output</div>
