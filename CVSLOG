@@ -1,3 +1,33 @@
+2004-05-19 17:44  pjgrizel
+
+	* MemberDataTool.py: Inhibated the new MemberData class while the
+	  migration script isn't done.
+
+2004-05-19 14:33  pjgrizel
+
+	* MemberDataTool.py: Improved MemberDataTool:  - Plone's MemberData
+	  class is now actually used; in previous versions, it was always
+	  CMF class that was used.   - Now it's possible for a member to
+	  delegate its data storage to the underlying user folder.     By
+	  now this works only for GRUF3+LDAPUserFolder combination.	If
+	  the underlying user folder cannot store user attributes, then the
+	  old behaviour is used.
+
+	  Because of this change, existing Plone sites HAVE to migrate.
+	  One solution is to call the purgeMemberDataContents() method.
+	  This will, unfortunately, delete ALL current member data values.
+	  We should provide a smooth migration script that will migrate
+	  former CMF MemberData objects to new Plone MemberData objects.
+
+	  If no migration is operated, the already existing members will
+	  continue to work as before, storing their values in the old
+	  MemberData objects (and, then, never in the underlying user
+	  object).
+
+2004-05-19 06:15  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-18 21:35  limi
 
 	* HISTORY.txt, skins/plone_portlets/portlet_login.pt
