@@ -98,7 +98,7 @@
 
 
         <div id="documentContent"
-             tal:attributes="class python:test(show_border,'editable document','document')">
+             tal:attributes="class python:test(show_border,'editableDocument','document')">
 
 	    <a name="documentContent"></a>
 

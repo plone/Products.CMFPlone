@@ -430,13 +430,13 @@ ul#contentTabs li {
     text-transform: &dtml-textTransform;;
     padding: 0 1em;
 }
-div.document {
+div.document, div.editableDocument {
     background: &dtml-mainBackground;;
     font: <dtml-var contentFont>;
     padding: 0;
     margin: 0em 0em 2em 0em;
 }
-div.editable {
+div.editableDocument {
     background: &dtml-contentBackground; ! important;
     border: &dtml-contentTabBorder;;
     padding: 0em 1em 2em 1em ! important;
