@@ -7,11 +7,13 @@
 <!-- The events box -->
 
 <div metal:define-macro="portlet"
-     tal:define="results python:here.portal_catalog.searchResults( portal_type='Event'
-                                                                 , end=here.ZopeTime()
-                                                                 , end_usage='range:min'
+     tal:define="brains python:here.portal_catalog.searchResults( portal_type='Event'
+                                                                 , end={'query':here.ZopeTime(),
+                                                                        'range': 'min'}
                                                                  , sort_on='start'
-                                                                 , review_state='published')[:5];"
+                                                                 , review_state='published')[:5];
+                results python:[brain.getObject() for brain in brains if brain.getObject()]
+                "
      tal:condition="python:test(results, 1, 0)">
 
     <div class="portlet" id="portlet-events">
@@ -26,15 +28,15 @@
                      tal:attributes="class python:test(oddrow, 'portletContent even', 'portletContent odd')">
 
                     <a href=""
-                       tal:attributes="href obj/getURL;
+                       tal:attributes="href obj/absolute_url;
                                        title obj/Description">
                         <tal:block replace="structure here/event_icon.gif"/>
-                        <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Event </span>
+                        <span tal:replace="python:test(obj.Title(), obj.Title(), obj.getId())"> Event </span>
                     </a>
 
                     <div class="portletDetails">
                         <tal:location content="obj/location">Location</tal:location>, <br />
-                        <tal:date content="python:here.toPortalTime(obj.start)">July 7, 08:11</tal:date>
+                        <tal:date content="python:here.toLocalizedTime(obj.start())">July 7, 08:11</tal:date>
                     </div>
                 </div>
 
