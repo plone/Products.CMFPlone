@@ -117,6 +117,16 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
             else:
                 raise
 
+    def testWrapUserCreatesMemberarea(self):
+        # This test serves to trip us up should this ever change
+        # Also see http://plone.org/collector/1697
+        uf = self.portal.acl_users
+        uf._doAddUser('user2', 'secret', ['Member'], [])
+        user = uf.getUserById('user2').__of__(uf)
+        self.membership.wrapUser(user)
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.failUnless(memberfolder, 'wrapUser failed to create memberarea')
+
 
 if __name__ == '__main__':
     framework()
