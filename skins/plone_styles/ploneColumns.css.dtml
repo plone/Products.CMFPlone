@@ -1,13 +1,14 @@
 /*
 ** Tableless Column Layout for CSS2 capable Browsers
 ** Based on http://www.positioniseverything.net/ordered-floats.html by Big John.
-** Fixed width modifications by Tonico Strasser (http://www.webproducer.at).
+** Fixed width modifications by Tonico Strasser (http://www.webproducer.at) and
+** Michael Zeltner (http://niij.org).
 */
 
 /* <dtml-with base_properties> */
 
-body {
-    min-width: 58em;
+#visual-portal-wrapper {
+    min-width: 56em;
 }
 #portal-columns {
     width: auto;
@@ -21,7 +22,6 @@ body {
 #portal-column-content {
     width: 100%;
     float: right;
-    margin-left: -1em;
 }
 
 #portal-column-content #content {
@@ -30,7 +30,7 @@ body {
 
 #portal-column-one {
     float: left;
-    margin-right: -15em;
+    margin-right: -16em;
     width: 16em;
     overflow: hidden;
 }
