@@ -15,7 +15,7 @@ from Products.CMFCore.DirectoryView import createDirectoryView, manage_listAvail
 from Products.CMFCore.Expression import Expression
 
 from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
-from Products.CMFPlone.migrations.migration_util import safeEditProperty
+from Products.CMFPlone.migrations.migration_util import safeEditProperty, addLinesToProperty
 from Products.CMFPlone.setup import ConfigurationMethods
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.StatelessTreeNav import setupNavTreePropertySheet
@@ -43,6 +43,11 @@ def oneX_twoBeta2(portal):
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(props, 'default_page', default_values, 'lines')
+    safeEditProperty(props, 'allow_sendto', 1, 'boolean')
+    addLinesToProperty(props, 'use_folder_tabs', 'Plone Site')
+    if props.hasProperty('portal_factory_types'):
+        props._delProperty('portal_factory_types')
+    
     out.append("Turning on syndication")
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
@@ -212,6 +217,10 @@ def migrateNavTree(portal):
         p._setProperty('bottomLevel', 65535 , 'int')
     if not p.hasProperty('idsNotToList'):
         p._setProperty('idsNotToList', [] , 'lines')
+    addLinesToProperty(p, 'metaTypesNotToList', 'TempFolder')
+    addLinesToProperty(p, 'parentMetaTypesNotToQuery', 'TempFolder')
+    safeEditProperty(p, 'croppingLength', 256, 'int')
+    
 
 def migrateMemberdataTool(portal):
     orig_md = getToolByName(portal, 'portal_memberdata')
