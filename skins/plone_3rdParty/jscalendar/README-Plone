@@ -38,12 +38,21 @@ Plone integration
 
   jscalendar uses its own translations, i.e. not plone-i18n. The
   jscalendar translations are available in the various calendar-*js
-  files.
+  files. At the moment, the language is hardcoded in Plone's header.pt.
+  This will be resolved soon, until then, here's the first aid (see
+  skins/plone_portlets/portlet_language.pt):
+
+       tal:define="PTS modules/Products/PlacelessTranslationService;
+                   plone_langs python:PTS.getLanguages('plone');
+                   current_lang python:PTS.negotiate(plone_langs, request)"
 
 - skins
 
   jscalendar comes with several default skins, if you want to change
-  the skin, please customize Plone's plone_templates/header.pt.
+  the skin, please customize Plone's plone_templates/header.pt. The
+  default skin is calendar-system.css, which uses standard CSS features
+  to make the calendar look similar to other user interface components
+  of the operating system that the web browser is running on.
 
 - references in Plone files:
 
@@ -69,7 +78,20 @@ Plone integration
     - add a vertical offset of 2, so the calendar doesn't obscure (and
       then autohide) the other date/time controls.
     - Add a style definition to all style sheets. This closes issue 1628,
-      http://plone.org/collector/1628
+      http://plone.org/collector/1628. This is due to line 1228 of the
+      plone.css stylesheet, which changes the layout for all label
+      elements to be inline. Removing the line "display: inline" is how
+      this problem will probably be fixed for later Plone versions, as it
+      seems to be unneeded (no negative effects could be found). It is
+      however too late in the release cycle to risk breaking something
+      else. The preferred plone.css fix in future Plone versions:
+
+		.label {
+		    font-weight: bold;
+		    /* display: inline; */
+		    padding-right: 0.5em;
+		}
+
 
 Index: calendar.js
 ===================================================================
