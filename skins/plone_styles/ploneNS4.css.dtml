@@ -23,19 +23,19 @@ body, td, th, div, span { font-family: Verdana, Helvetica, sans-serif; }
 body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; }
 a { text-decoration: none; color: &dtml-mainLinkColor;; }
 table { font: &dtml-mainFont;; }
-p { font: 12px Verdana, Helvetica, sans-serif; }
+p { font-family: Verdana, Helvetica, sans-serif; }
 p a { text-decoration: underline; }
 p img { border: &dtml-contentImageBorder;; }
 hr { margin:0; padding: 0; }
-h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;; font: &dtml-headingFont;; }
+h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;;  }
 ul { list-style-image: url("bullet.gif"); }
 form { border: none; }
 textarea { font: &dtml-inputFont;; width: 100%; }
 input { font: &dtml-inputFont;; }
 select { font: &dtml-inputFont;; }
 abbr, acronym, .explain { border-bottom: 1px dotted &dtml-mainLinkColor;; cursor: help; }
-code { font-size: 12px; }
-pre { font-size: 12px; padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
+code { }
+pre { padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
 
 /* Structural elements */
 div.top { background: &dtml-topBackground;; width: 100%; }
@@ -58,7 +58,7 @@ div.contentBar {  }
 div.document { background: &dtml-contentBackground;; }
 div.editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
 div.message { background: &dtml-messageBackground;; font: &dtml-messageFont;; padding: 0.5em 1em; vertical-align: middle; }
-.description { font: bold 12px Verdana, Helvetica, Arial, sans-serif; display: block; }
+.description { font-family: Verdana, Helvetica, Arial, sans-serif; display: block; }
 .footer { clear: both; float: none; padding: 0em 0em 0em 0em; text-align: center; }
 
 /* Widgets */
