@@ -1,3 +1,119 @@
+2004-02-01 03:16  dpunktnpunkt
+
+	* skins/plone_prefs/: prefs_error_log_form.pt,
+	  prefs_install_products_form.pt (Plone-2_0-branch): Tagged for
+	  translation, #2540
+
+2004-01-31 23:13  tiran
+
+	* skins/plone_form_scripts/personalize.cpy (Plone-2_0-branch): I
+	  killed that beast of a bug
+
+2004-01-31 22:04  tiran
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): fixed for
+	  #2519: portal_action contains duplicate "addtofavorites" actions
+
+2004-01-31 21:54  limi
+
+	* skins/: plone_form_scripts/personalize.cpy,
+	  plone_prefs/personalize_form.cpt (Plone-2_0-branch): Partial fix
+	  for issue 2332, losing values in personalize_form. However, I'm
+	  not sure this keeps the values properly, checking in so Tiran can
+	  have a look.
+
+2004-01-31 21:46  tiran
+
+	* skins/plone_forms/member_search_results.pt (Plone-2_0-branch):
+	  fixed #2521
+
+2004-01-31 18:53  runyaga
+
+	* HISTORY.txt (Plone-2_0-branch): fix bug and document i t
+
+2004-01-31 18:44  runyaga
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): fix
+	  for 2373
+
+2004-01-31 18:09  shh42
+
+	* skins/cmf_legacy/RSS.dtml (Plone-2_0-branch): Committing a tiny
+	  change just to test if merging is sane. Cough, cough.
+
+2004-01-31 17:38  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): added
+	  plone_tableless dv
+
+2004-01-31 17:10  tiran
+
+	* skins/: plone_tableless/colophon.pt, plone_templates/colophon.pt
+	  (Plone-2_0-branch): the standard layout isn't tableless any more
+
+2004-01-31 17:02  tiran
+
+	* Portal.py (Plone-2_0-branch): fixed: 2x plone_templates in the
+	  skin list
+
+2004-01-31 16:57  shh42
+
+	* tests/: testGroupDataTool.py, testInterfaces.py
+	  (Plone-2_0-branch): Bring tests in line with HEAD.
+
+2004-01-31 16:38  tiran
+
+	* skins/: plone_3rdParty/CMFTopic/topic_view.pt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_forms/calendar_popup.pt, plone_forms/login_failed.pt,
+	  plone_forms/login_success.pt, plone_portlets/about_slot.pt,
+	  plone_portlets/calendar_slot.pt, plone_portlets/login_slot.pt,
+	  plone_portlets/navigation_tree_slot.pt,
+	  plone_portlets/news_slot.pt, plone_portlets/portlet_login.pt,
+	  plone_portlets/portlet_news.pt,
+	  plone_templates/folder_listing.pt,
+	  plone_templates/global_pathbar.pt, plone_templates/index_html.pt,
+	  plone_templates/registered_notify_template.pt,
+	  plone_templates/sendto_template.pt (Plone-2_0-branch): first part
+	  of fixing #2537:  some pt are *not* using the new names
+	  introduced by global_defines
+
+2004-01-31 16:20  tiran
+
+	* skins/: plone_3rdParty/CMFTopic/topic_view.pt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_forms/calendar_popup.pt,
+	  plone_forms/discussion_reply_form.pt,
+	  plone_forms/folder_localrole_form.pt,
+	  plone_forms/login_failed.pt, plone_forms/login_success.pt,
+	  plone_forms/ownership_form.pt, plone_portlets/calendar_slot.pt,
+	  plone_portlets/portlet_login.pt,
+	  plone_portlets/portlet_navigation.pt,
+	  plone_portlets/portlet_news.pt, plone_prefs/personalize_form.cpt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_templates/folder_contents.pt,
+	  plone_templates/folder_listing.pt, plone_templates/footer.pt,
+	  plone_templates/global_defines.pt,
+	  plone_templates/global_pathbar.pt,
+	  plone_templates/global_personalbar.pt, plone_templates/header.pt,
+	  plone_templates/index_html.pt,
+	  plone_templates/registered_notify_template.pt,
+	  plone_templates/sendto_template.pt: first part of fixing #2537:
+	  some pt are *not* using the new names introduced by
+	  global_defines
+
+2004-01-31 15:41  limi
+
+	* CREDITS.txt (Plone-2_0-branch): Added com.lounge and Christian
+	  Heimes to the credits.
+
+2004-01-31 04:57  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-30 21:11  shh42
 
 	* tests/: testUserFolderBasics.py (Plone-2_0-branch),
