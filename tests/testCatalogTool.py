@@ -56,6 +56,14 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         self.folder.manage_pasteObjects(cb)
         self.failUnless(hasattr(aq_base(self.folder), 'portal_catalog'))
 
+    def testCanRenamePortalIfLexiconExists(self):
+        # Should be able to rename a Plone portal
+        # This test is to demonstrate that http://plone.org/collector/1745 
+        # is fixed and can be closed.
+        self.loginAsPortalOwner()
+        self.app.manage_renameObjects(['portal'], ['foo'])
+        self.failUnless(hasattr(self.app, 'foo'))
+
 
 class TestCatalogSearch(PloneTestCase.PloneTestCase):
 
