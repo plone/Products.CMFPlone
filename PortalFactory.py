@@ -74,6 +74,8 @@ def addSupportOptions(self, outStream):
 def loadEmergingExample(self, outStream):
     """ 
     installs a sample Website Content and supporting skin 
+
+    PLEASE REMOVE ME.  I DO NOT BELONG HERE.
     """
     return
 
@@ -112,7 +114,7 @@ def loadEmergingExample(self, outStream):
 
 def populatePortalWithContent(self, outStream):
     """ eventually this will need to be moved out into a seperate module """
-    loadEmergingExample(self, outStream)
+    #loadEmergingExample(self, outStream)
 
     id = 'index_html'
     root = getToolByName(self, 'portal_url').getPortalObject()
