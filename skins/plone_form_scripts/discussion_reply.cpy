@@ -9,6 +9,9 @@
 ##title=Reply to content
 
 from Products.PythonScripts.standard import url_quote_plus
+from Products.CMFCore.utils import getToolByName
+mtool = getToolByName(context, 'portal_membership')
+dtool = getToolByName(context, 'portal_discussion')
 req = context.REQUEST
 
 if username or password:
@@ -38,15 +41,14 @@ if username or password:
 # they posted without typing a username or password into the form), we do
 # the following
 
-creator = context.portal_membership.getAuthenticatedMember().getUserName()
-tb = context.talkback
+creator = mtool.getAuthenticatedMember().getUserName()
+tb = dtool.getDiscussionFor(context)
 id = tb.createReply(title=subject, text=body_text, Creator=creator)
 reply = tb.getReply(id)
 
 #XXX THIS NEEDS TO GO AWAY!
-portal_discussion=context.portal_discussion
-if hasattr(portal_discussion.aq_explicit, 'cookReply'):
-    portal_discussion.cookReply(reply, text_format='plain')
+if hasattr(dtool.aq_explicit, 'cookReply'):
+    dtool.cookReply(reply, text_format='plain')
 
 parent = tb.aq_parent
 
