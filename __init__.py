@@ -119,8 +119,6 @@ def initialize(context):
                            # here we come!
     import UnicodeSplitter # registers unicode splitter w/ zctextindex
                            # pipeline registry
-    import setFormatPatch  # patch DefaultDublinCoreImpl.setFormat to work
-                           # around http://plone.org/collector/1323
     import verifyObjectPastePatch   # patch PortalFolder to work around
                                     # http://plone.org/collector/2183
 
