@@ -48,9 +48,10 @@ portal_discussion=context.portal_discussion
 if hasattr(portal_discussion.aq_explicit, 'cookReply'):
     portal_discussion.cookReply(reply, text_format='plain')
 
-from Products.CMFPlone import transaction_note
-transaction_note('Added comment to %s at %s' % (tb.title_or_id(), tb.absolute_url()))
+parent = tb.aq_parent
 
-p = tb.aq_parent
-target = '%s/%s' % (p.absolute_url(),p.getTypeInfo().getActionById('view'))
+from Products.CMFPlone import transaction_note
+transaction_note('Added comment to %s at %s' % (parent.title_or_id(), reply.absolute_url()))
+
+target = '%s/%s' % (parent.absolute_url(), parent.getTypeInfo().getActionById('view'))
 return req.RESPONSE.redirect(target)
