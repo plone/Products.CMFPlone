@@ -1,5 +1,5 @@
 #
-# Tests the default workflow
+# Tests content security
 #
 
 import os, sys
