@@ -78,28 +78,31 @@
                    summary="Content listing"
                    cellpadding="0" cellspacing="0"
                    metal:define-macro="folder_listing"
-                   tal:define="locked here/lock_icon.gif">
+                   tal:define="locked here/lock_icon.gif;
+                               pencil_icon here/edit.gif;
+                               use_folder_contents here/portal_properties/site_properties/use_folder_contents;
+                               filterOut python:('Favorite',);
+                               filterValues decodedFilter/keys | nothing;
+                               types python:here.sortObjects(here.allowedContentTypes());
+                               no_types python:len(types);
+                               filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));
+                               isExpired nocall:here/isExpired;
+                               toPortalTime nocall:here/toPortalTime;
+                               getObjSize nocall:here/getObjSize;">
                    
                 <thead>
                     <tr tal:condition="standalone|nothing">
-                        <td class="top" colspan="6"
-                            tal:define="types python:here.sortObjects(here.allowedContentTypes());
-                                        no_types python:len(types);" >
-
+                        <td class="top" colspan="6">
                             <!-- Filter pulldown -->
                             <tal:block tal:condition="no_types">
                             <span style="float: left"
-                                  tal:define="filterValues decodedFilter/keys | nothing;"
                                   tal:condition="python:folder_contents and types">
                     
                                 <select id="filter_selection" 
                                         name="filter_by_portal_type:list" 
                                         onChange="submitFilterAction()"
                                         tabindex=""
-                                        tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" 
-                                        tal:attributes="tabindex tabindex/next|nothing;"
-                                        >
-                    
+                                        tal:attributes="tabindex tabindex/next|nothing;">
                                     <option value="#" 
                                             tal:attributes="selected
                                             python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');"
@@ -127,8 +130,7 @@
                                     tal:condition="python:test(no_types > 1, 1, 0)"
                                     tal:attributes="tabindex tabindex/next|nothing;">
                                 <option value="Select" i18n:translate="label_select">Select</option>
-                                <metal:block tal:repeat="ctype types"
-                                             tal:define="global filterOut  python:['Favorite']">
+                                <metal:block tal:repeat="ctype types">
                                 <option value="Document"
                                         tal:condition="python: ctype.getId() not in filterOut"
                                         tal:attributes="value ctype/getId"
@@ -166,7 +168,6 @@
                                                  name="selectButton"
                                                  title="Select all items"
                                                  onClick="toggleSelect(this); return false;"
-                                                 tal:define="portal_url here/portal_url"
                                                  tal:attributes="src string:$portal_url/select_all_icon.gif"
                                                  /></th>
                         <th>&nbsp;<span tal:omit-tag=""
@@ -200,7 +201,6 @@
                         </td>
     
                         <td tal:define="action python:item.getTypeInfo().getActionById('view');
-                                        use_folder_contents here/portal_properties/site_properties/use_folder_contents;
                                         url python:test(item.getTypeInfo().getId() in use_folder_contents, 
                                                         item.absolute_url()+'/folder_contents',
                                                         item.absolute_url()+'/'+action);"> 
@@ -212,9 +212,8 @@
                             <tal:block tal:condition="python:test(here.portal_properties.site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
 
                             <a href="absolute_url/external_edit"
-                               tal:attributes="href string:${item/absolute_url}/external_edit"
-                               tal:define="edit here/edit.gif">
-                               <img tal:replace="structure python:edit.tag(title='Edit with External Editor')" />
+                               tal:attributes="href string:${item/absolute_url}/external_edit">
+                               <img tal:replace="structure python:pencil_icon.tag(title='Edit with External Editor')" />
                              </a>
                              
                             <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
@@ -224,24 +223,24 @@
                             </tal:block>
     
                           <span class="expired"
-                                tal:condition="python:container.isExpired(item)">expired</span>
+                                tal:condition="python:isExpired(item)">expired</span>
                         </td>
     
                         <td i18n:translate="" tal:content="python:item.getTypeInfo().Title()">
                         folder
                         </td>
     
-                        <td tal:define="size python:here.getObjSize(item)"
+                        <td tal:define="size python:getObjSize(item)"
                             tal:content="structure python:test(size, size, '&nbsp;')">
                         size
                         </td>
     
-                        <td tal:content="python:here.toPortalTime(item.ModificationDate())">
+                        <td tal:content="python:toPortalTime(item.ModificationDate())">
                         08/19/2001 03:01 AM 
                         </td>
     
                         <td class="private"
-                            tal:define="review_state python:container.portal_workflow.getInfoFor(item, 'review_state', '')"
+                            tal:define="review_state python:here.portal_workflow.getInfoFor(item, 'review_state', '')"
                             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
                             tal:attributes="class python:test(review_state, review_state, 'private')"
                             i18n:translate="">&nbsp;

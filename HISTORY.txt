@@ -11,6 +11,9 @@ Plone 1.0 rc1
       sortObjectValues) and I think its "Doing The Right Thing"
     - added lock icon to folder_contents (which automatically will show up in content_status_history)
       and about_slot
+    - minor optimizations of folder_contents and folder_listing.  
+      lookup references to objects and then use them instead of repeating lookups.  its pretty
+      obvious looking at the table tag what has been defined before being used.  Just Good Practice(tm)
 
 Plone 1.0 beta3
     - Added all missing i18n strings, merged some strings to better facilitate translations to

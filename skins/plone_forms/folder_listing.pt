@@ -56,8 +56,9 @@
         <table class="listing"
                id="sortable"
                tal:condition="here/contentValues">
-        
-            <thead>
+         
+            <thead tal:define="global getObjSize nocall:here/getObjSize;
+                               global toPortalTime nocall:here/toPortalTime;">
                 <tr>
                     <th>&nbsp;<span i18n:translate="listingheaders_title" tal:omit-tag="">Title</span>&nbsp;</th>
                     <th>&nbsp;<span i18n:translate="listingheaders_type" tal:omit-tag="">Type</span>&nbsp;</th>
@@ -78,8 +79,8 @@
                            tal:content="obj/title_or_id" />
                     </td>   
                     <td tal:content="obj/Type">Type</td>
-                    <td tal:content="python:test(hasattr(obj, 'get_size'), here.getObjSize(obj), 'n/a')">Size</td>
-                    <td tal:content="python:here.toPortalTime(obj.ModificationDate())">Modification Date</td>
+                    <td tal:content="python:test(hasattr(obj, 'get_size'), getObjSize(obj), 'n/a')">Size</td>
+                    <td tal:content="python:toPortalTime(obj.ModificationDate())">Modification Date</td>
                     <td tal:content="structure python:test(obj.Description(), obj.Description(), 'n/a')"> description </td>
                 </tr>
 		</metal:block>
