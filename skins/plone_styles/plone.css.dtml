@@ -96,7 +96,8 @@ hr {
 h1, h2, h3, h4, h5, h6 {
     color: &dtml-headingFontColor;;
     font: &dtml-headingFont;;
-    margin: 1em 0em 0em 0em;
+    margin: 0;
+    padding-top: 1em;
     border-bottom: 1px solid &dtml-mainTabBorderColor;;
 }
 
