@@ -10,7 +10,7 @@
      tal:omit-tag=""
      tal:condition="isAnon"
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator()">
+                 tabindex tabindex|Iterator">
 
     <div class="box" 
          tal:define="portal_url portal_url|here/portal_url;
