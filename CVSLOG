@@ -1,3 +1,22 @@
+2004-05-04 02:37  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Added Dorneles' change to the
+	  FactoryTool to HISTORY
+
+2004-05-03 19:26  azy
+
+	* HISTORY.txt: added comment for a small bug that prevents the
+	  highlight of the search term in simple searchs
+
+2004-05-03 19:01  azy
+
+	* skins/plone_ecmascript/plone_javascripts.js: fixed a small glitch
+	  that prevents highlight in simple searchs
+
+2004-05-03 06:19  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-02 22:28  dtremea
 
 	* FactoryTool.py (Plone-2_0-branch): Removed unnecessary hook: it's
