@@ -5,6 +5,7 @@ Changelog for Plone
 Plone 2.0 - Fyuti
 
    RC6
+
     - Fix for http://plone.org/collector/2769
       You could not enable/disable green 'editable border'
       because this was being done in the 'head_slot' which
@@ -170,7 +171,7 @@ Plone 2.0 - Fyuti
       - this will return a complete a href tag with the mail address spam-
       protected. [limi]
 
-    RC3
+   RC3
 
     - WARNING: Some changes had to be made permission-wise to make the default 
       behaviour make sense. It was very inconsistent in 1.0, and we decided to do 
@@ -251,7 +252,7 @@ Plone 2.0 - Fyuti
       global_contentXXXX and folder_contents.  This should make the experience
       a tad snappier
 
-    RC2 
+   RC2 
 
     - Renamed portal_control_panel_actions to 'portal_controlpanel' and made
       it use ToolNames instead of hardcoded strings.
@@ -289,7 +290,7 @@ Plone 2.0 - Fyuti
       been renamed to 'portlet'.  The old slot code still exists and has 
       deprecation comments in the PageTemplates.
 
-    RC1
+   RC1
 
     - PrivatePloneWorkflow and PrivateFolderWorkflow no longer register their 
       workflow factories. They will disappear from Plone core.
@@ -303,7 +304,7 @@ Plone 2.0 - Fyuti
       private state (FolderWorkflow).
       [stefan]
 
-    Beta 3
+   Beta 3
 
     - WARNING! If you attempt to add several Plone sites back-to-back you will
       encounter some problems.  The system works fine for adding a single
@@ -362,7 +363,7 @@ Plone 2.0 - Fyuti
       Sites with large worklists would benefit most from this.  We no longer
       put worklist states in the 'personalBar'.  We use the 'review_slot'.  
 
-    Beta 2
+   Beta 2
 
     - now shipping with Formulator 1.5
 
@@ -452,7 +453,7 @@ Plone 2.0 - Fyuti
     - CMFPlone.Portal.Site now uses the OrderedContainer mixin.
       __implements__ the OrderContainer and DefaultDublinCoreImpl xface.
 
-    Beta 1
+   Beta 1
 
     - Content types in Plone now have the notion of both Views and
       Actions. Actions are show on the content bar, views are tabs, as
@@ -502,17 +503,16 @@ Plone 2.0 - Fyuti
       administrators.
       [limi]
     
-    - Bug fix for http://plone.org/collector/1154 (SearchableText should be ZCTextIndex)
+    - Bug fix for http://plone.org/collector/1154 (SearchableText should be       ZCTextIndex)
       [kapil]
      
-    - Added unicode splitter for zctextindex element pipeline from silva (w/ license).
+    - Added unicode splitter for zctextindex element pipeline from silva (w/       license).
       [kapil]
      
     - Added lexicon addition to migration.
       [kapil]
      
-    - Added lexicon addition and recreation of searchabletext index as zctext to catalog
-      tool's manage_afterAdd.
+    - Added lexicon addition and recreation of searchabletext index as zctext to       catalog tool's manage_afterAdd.
       [kapil]
 
     - Added new directories: 'plone_portlets' (formerly 'plone_templates/ui_slots'),
@@ -531,16 +531,15 @@ Plone 2.0 - Fyuti
     - Events now show location and from/to-date in the default folder view.
       [limi]
 
-    - Changed the behaviour of deleting objects in PloneFolder, so the object is checked
-      for the Delete Object permission instead of the folder. This means that the workflow
-      can restrict the Owner from deleting an object (for example in a published state).
+    - Changed the behaviour of deleting objects in PloneFolder, so the object is       checked for the Delete Object permission instead of the folder. This means 
+      that the workflow can restrict the Owner from deleting an object (for example 
+      in a published state).
       [dreamcatcher]
     
     - Subclassed all CMFCore and CMFDefault tools for easier extension in the future.
       [dreamcatcher]
 
-    - generateUniqueId and isIDUnique now are a bit more unique (with regards to randomness)
-      and we now suffix generated ID's with .html - issue #1343
+    - generateUniqueId and isIDUnique now are a bit more unique (with regards to       randomness) and we now suffix generated ID's with .html - issue #1343
       [runyaga]
 
     - Added Recently Published slot, and a complimentary Archive page.
@@ -943,7 +942,7 @@ Plone 1.0.2 - Vert Release
     - 'local roles' tab is now determined by 'Change Permissions' permission.
 
     - If you dont have access to a object you no longer get a login_form but 
-    a "permission denied" view [gdavis]
+      a "permission denied" view [gdavis]
 
     - added vcXMLRPC lib
 
