@@ -21,9 +21,9 @@
                  is_manager python:test(here.portal_membership.checkPermission('Manage portal', here), 1, 0);
                  ">
 
-    <h1 i18n:translate="heading_advanced_search">Search for members</h1>
+    <h1 i18n:translate="heading_member_search">Search for members</h1>
     
-    <p i18n:translate="description_advanced_search">
+    <p i18n:translate="description_member_search">
     This search form enables you to find members by specifying one or more 
     search criteria. 
     </p>
@@ -34,7 +34,7 @@
           name="search" 
           tal:define="DateTime python:modules['DateTime'].DateTime">
 
-        <span class="legend" i18n:translate="legend_search_terms">Member Search Criteria</span>
+        <span class="legend" i18n:translate="legend_member_search_criteria">Member Search Criteria</span>
 
         <div class="row">
             <div class="label">
@@ -61,7 +61,7 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="label_email">Email</span>
+                <span i18n:translate="label_email">E-mail</span>
                 <div id="email_search_help"
                      i18n:translate="help_search_email" 
                      class="help" 
@@ -85,9 +85,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="label_last_login_since">Logged in since</span>
+                <span i18n:translate="label_last_logged_in">Last logged in</span>
                 <div id="last_login_since_search_help"
-                     i18n:translate="help_search_last_login_since" 
+                     i18n:translate="help_search_last_logged_in" 
                      class="help" 
                      style="visibility:hidden">
                 Return members who have logged in since yesterday, last week, etc.
@@ -126,9 +126,6 @@
                      class="help" 
                      style="visibility:hidden">
                 Return members with all of the selected roles.
-                Multiple roles may be selected
-                by pressing <strong>Ctrl</strong> while 
-                <strong>left clicking</strong> the roles.
                 </div>
             </div>
             
@@ -145,9 +142,10 @@
                         tal:attributes="tabindex tabindex/next;" 
                         >
                     <option value="#"
+                            i18n:translate=""
                             tal:repeat="role portalRoles"
                             tal:content="role"
-                  			    tal:attributes="value role">dummy</option>
+                  	        tal:attributes="value role">dummy</option>
                 </select>
                 
             </div>
