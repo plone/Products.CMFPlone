@@ -16,7 +16,7 @@
                 <strong tal:condition="localContent">Local resources</strong>
 
                 <span tal:repeat="content localContent">
-                        <a href="" tal:attributes="href python:content[1]" tal:content="python:content[0]">
+                        <a href="" tal:attributes="href python:content[1]+'/view'" tal:content="python:content[0]">
                            Object related by keyword
                         </a>
                 </span>
