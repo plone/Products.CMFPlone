@@ -57,7 +57,10 @@ def rc3_rc4(portal):
     #
     out.append('Adding AddToFavorites to portal_actions and portal_actionicons')
     ai=getToolByName(portal, 'portal_actionicons')
-    ai.addActionIcon('plone', 'addtofavorites', 'site_icon.gif', 'AddToFavorites')
+    try:
+        ai.addActionIcon('plone', 'addtofavorites', 'site_icon.gif', 'AddToFavorites')
+    except KeyError:
+        pass #Duplicate definition!
     at.addAction('addtofavorites',
                  'Add to Favorites',
                  'string:${request/URL1}/addtoFavorites',
