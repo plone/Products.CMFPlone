@@ -5,7 +5,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 
 def rc1rc2(portal):
-    """ Upgrade from Plone 1.0 RC1 to RC1 """
+    """ Upgrade from Plone 1.0 RC1 to RC2 """
 
     #adding navigation properties
     nav_props=portal.portal_properties.navigation_properties
