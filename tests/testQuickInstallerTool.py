@@ -18,13 +18,18 @@ class InstanceHomeFixup:
        valid INSTANCE_HOME so we have to restore it.
     '''
 
-    # This is kinda lame but does the job
     from Products.CMFPlone.tests import PACKAGE_HOME
-    instance_home = os.path.abspath(os.path.join(PACKAGE_HOME, os.pardir, os.pardir, os.pardir))
-    if not os.path.exists(os.path.join(instance_home, 'Extensions')):
-        instance_home = os.path.abspath(os.path.join(instance_home, os.pardir, os.pardir))
-        if not os.path.exists(os.path.join(instance_home, 'Extensions')):
-            instance_home = '' # punt
+    instance_home = os.path.join(PACKAGE_HOME, os.pardir, os.pardir, os.pardir)
+    instance_home = os.path.abspath(instance_home)
+    if os.path.exists(os.path.join(instance_home, 'Products')):
+        # We may be installed below SOFTWARE_HOME
+        d, e = os.path.split(instance_home)
+        if e == 'python':
+            d, e = os.path.split(d)
+            if e == 'lib':
+                instance_home = d
+    if not os.path.exists(os.path.join(instance_home, 'Products')):
+        instance_home = '' # punt
 
     def setupLocalEnvironment(self):
         builtins = getattr(__builtins__, '__dict__', __builtins__)
