@@ -7,7 +7,7 @@
 
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors;
-                     syndicateInfo here/syndication_information | nothing">
+                     syndicateInfo python:container.portal_syndication.isSyndicationAllowed(here);">
 
       <h1 i18n:translate="heading_syndication_properties">Syndication Properties</h1>
 
@@ -18,7 +18,7 @@
 
 
       <form action="disableSyndication"
-            tal:attributes="action string:${here/getId}/${template/getId}"
+            tal:attributes="action string:${template/getId}"
             name="disable"
             method="post"
             tal:condition="syndicateInfo">
@@ -39,7 +39,7 @@
       </form>
 
       <form action="enableSyndication"
-            tal:attributes="action string:${here/getId}/${template/getId}"
+            tal:attributes="action string:${template/getId}"
             name="enable"
             method="post"
             tal:condition="python:not syndicateInfo">
@@ -60,7 +60,7 @@
       </form>
 
 
-      <tal:block condition="python:container.portal_syndication.isSyndicationAllowed(here)">
+      <tal:block condition="syndicateInfo">
         <form id="edit_form"
               action="editSynProperties"
               tal:attributes="action string:${here/getId}/${template/getId}"
