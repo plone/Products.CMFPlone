@@ -321,7 +321,7 @@ pre {
     text-align: right;
     text-transform: &dtml-textTransform;;
     width: 50%;
-    whitespace: nowrap;
+    whitespace: no-wrap;
     z-index: 2;
 }
 #portal-globalnav {
