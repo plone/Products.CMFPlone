@@ -15,21 +15,21 @@
         </div>
 
         <span class="description" tal:content="here/Description"> 
-	    News summary 
-	    </span>
+            News summary 
+        </span>
 
         <p tal:condition="not: len_text"
            i18n:translate="no_body_text">
-          This item does not have any body text, click the edit tab to change it.
+        This item does not have any body text, click the edit tab to change it.
         </p>
 
-        <p tal:condition="len_text"
-            tal:content="structure here/CookedBody">
-        News body text
-        </p>
+        <div class="stx"
+             tal:condition="len_text"
+             tal:omit-tag="python:here.text_format != 'structured-text'">
+            <div tal:replace="structure here/CookedBody" />
+        </div>
 
     </div>
-
 </body>
 
 </html>
