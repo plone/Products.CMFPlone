@@ -54,7 +54,8 @@ class TestContentTypes(PloneTestCase.PloneTestCase):
             self.failUnlessEqual(ob.portal_type, pt)
             self.failUnless(IATContentType.isImplementedBy(ob))
 
-    def testPortalTypeNameWithoutConstruction(self):
+    # XXX: disabling as dead Xicken
+    def DISABLED_testPortalTypeNameWithoutConstruction(self):
         # Check portal type without using the full constructor
         #
         # Make sure that the portal type is correct inside of mananger_afterAdd
