@@ -100,21 +100,21 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testFileCreate(self):
         self.folder.invokeFactory('File', id='file', file=dummy.File())
-        self.assertEqual(str(self.folder.file), 'file data')
+        self.assertEqual(str(self.folder.file), dummy.TEXT)
 
     def testFileEdit(self):
         self.folder.invokeFactory('File', id='file')
         self.folder.file.file_edit(file=dummy.File())
-        self.assertEqual(str(self.folder.file), 'file data')
+        self.assertEqual(str(self.folder.file), dummy.TEXT)
 
     def testImageCreate(self):
         self.folder.invokeFactory('Image', id='image', file=dummy.File())
-        self.assertEqual(str(self.folder.image.data), 'file data')
+        self.assertEqual(str(self.folder.image.data), dummy.TEXT)
 
     def testImageEdit(self):
         self.folder.invokeFactory('Image', id='image')
         self.folder.image.image_edit(file=dummy.File())
-        self.assertEqual(str(self.folder.image.data), 'file data')
+        self.assertEqual(str(self.folder.image.data), dummy.TEXT)
 
     def testFolderCreate(self):
         self.folder.invokeFactory('Folder', id='folder', title='Foo', description='Bar')
@@ -186,25 +186,25 @@ class TestEditShortName(PloneTestCase.PloneTestCase):
         self.folder.file.file_edit(file=None, title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.file), 'file data')
+        self.assertEqual(str(self.folder.file), dummy.TEXT)
 
     def testImageEditNone(self):
         self.folder.image.image_edit(file=None, title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.image.data), 'file data')
+        self.assertEqual(str(self.folder.image.data), dummy.TEXT)
 
     def testFileEditEmptyString(self):
         self.folder.file.file_edit(file='', title='Foo')
         self.assertEqual(self.folder.file.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.file), 'file data')
+        self.assertEqual(str(self.folder.file), dummy.TEXT)
 
     def testImageEditEmptyString(self):
         self.folder.image.image_edit(file='', title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
         # Data is not changed
-        self.assertEqual(str(self.folder.image.data), 'file data')
+        self.assertEqual(str(self.folder.image.data), dummy.TEXT)
 
     def testFileEditString(self):
         self.folder.file.file_edit(file='foo')
@@ -233,15 +233,15 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('File', id='file')
         self.folder.file.file_edit(file=dummy.File('foo.pdf'))
         self.folder.invokeFactory('Image', id='image')
-        self.folder.image.image_edit(file=dummy.File('foo.tiff'))
+        self.folder.image.image_edit(file=dummy.File('foo.gif'))
 
     def testFileMimeType(self):
         self.assertEqual(self.folder.file.Format(), 'application/pdf')
         self.assertEqual(self.folder.file.content_type, 'application/pdf')
 
     def testImageMimeType(self):
-        self.assertEqual(self.folder.image.Format(), 'image/tiff')
-        self.assertEqual(self.folder.image.content_type, 'image/tiff')
+        self.assertEqual(self.folder.image.Format(), 'image/gif')
+        self.assertEqual(self.folder.image.content_type, 'image/gif')
 
     def testFileEditKeepsMimeType(self):
         self.folder.file.file_edit(title='Foo')
@@ -252,8 +252,8 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
     def testImageEditKeepsMimeType(self):
         self.folder.image.image_edit(title='Foo')
         self.assertEqual(self.folder.image.Title(), 'Foo')
-        self.assertEqual(self.folder.image.Format(), 'image/tiff')
-        self.assertEqual(self.folder.image.content_type, 'image/tiff')
+        self.assertEqual(self.folder.image.Format(), 'image/gif')
+        self.assertEqual(self.folder.image.content_type, 'image/gif')
 
     def testFileRenameKeepsMimeType(self):
         get_transaction().commit(1) # make rename work
@@ -264,8 +264,8 @@ class TestEditFileKeepsMimeType(PloneTestCase.PloneTestCase):
     def testImageRenameKeepsMimeType(self):
         get_transaction().commit(1) # make rename work
         self.folder.image.image_edit(id='foo')
-        self.assertEqual(self.folder.foo.Format(), 'image/tiff')
-        self.assertEqual(self.folder.foo.content_type, 'image/tiff')
+        self.assertEqual(self.folder.foo.Format(), 'image/gif')
+        self.assertEqual(self.folder.foo.content_type, 'image/gif')
 
 
 class TestFileExtensions(PloneTestCase.PloneTestCase):
@@ -279,8 +279,8 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
 
     def testUploadFile(self):
         get_transaction().commit(1) # make rename work
-        self.folder[self.file_id].file_edit(file=dummy.File('fred.gif'))
-        self.failUnless('fred.gif' in self.folder.objectIds())
+        self.folder[self.file_id].file_edit(file=dummy.File('fred.txt'))
+        self.failUnless('fred.txt' in self.folder.objectIds())
 
     def testUploadImage(self):
         get_transaction().commit(1) # make rename work
@@ -288,38 +288,25 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
         self.failUnless('fred.gif' in self.folder.objectIds())
 
     def DISABLED_testFileRenameKeepsExtension(self):
+        # XXX Wishful thinking
         get_transaction().commit(1) # make rename work
-        self.folder[self.file_id].file_edit(id='barney', file=dummy.File())
-        self.failUnless('barney.gif' in self.folder.objectIds())
+        self.folder[self.file_id].file_edit(id='barney')
+        self.failUnless('barney.txt' in self.folder.objectIds())
 
     def DISABLED_testImageRenameKeepsExtension(self):
+        # XXX Wishful thinking
         get_transaction().commit(1) # make rename work
-        self.folder[self.image_id].image_edit(id='barney', file=dummy.File())
+        self.folder[self.image_id].image_edit(id='barney')
         self.failUnless('barney.gif' in self.folder.objectIds())
-
-
-class DummySize:
-
-    __allow_access_to_unprotected_subobjects__ = 1
-
-    def __init__(self, size=0):
-        self.set_size(size)
-
-    def get_size(self):
-        return self.size
-
-    def set_size(self, size):
-        self.size = size
 
 
 class TestGetObjSize(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.ob = DummySize()
-        self.getObjSize = self.portal.getObjSize
+        self.ob = dummy.SizedItem()
 
     def getSize(self):
-        return self.getObjSize(obj=self.ob)
+        return self.portal.getObjSize(obj=self.ob)
 
     def testZeroSize(self):
         self.ob.set_size(0)
@@ -353,32 +340,15 @@ class TestGetObjSize(PloneTestCase.PloneTestCase):
         self.assertEquals(size, '1.1 GB')
 
 
-class DummyDefaultPage:
-
-    __allow_access_to_unprotected_subobjects__ = 1
-
-    def __init__(self, default_page=['test'], keys=['index_html']):
-        self.keys = keys
-        self.set_default(default_page)
-
-    def set_default(self, default, has_key=1):
-        self.default_page = default
-        self.hk = has_key
-
-    def has_key(self, key):
-        return self.hk or key in self.keys
-
-
 class TestDefaultPage(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.ob = DummyDefaultPage()
-        self.util = self.portal.plone_utils
+        self.ob = dummy.DefaultPage()
         sp = self.portal.portal_properties.site_properties
         self.default = sp.getProperty('default_page', [])
 
     def getDefault(self):
-        return self.util.browserDefault(self.ob)
+        return self.portal.plone_utils.browserDefault(self.ob)
 
     def testDefaultPageSetting(self):
         self.assertEquals(self.default, ('index_html', 'index.html',
@@ -386,7 +356,7 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
 
     def testDefaultPageStringExist(self):
         # Test for https://plone.org/collector/2671
-        self.ob.set_default('test')
+        self.ob.set_default('test', 1)
         self.assertEquals(self.getDefault(), (self.ob, ['test']))
 
     def testDefaultPageStringNotExist(self):
@@ -396,7 +366,7 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
 
     def testDefaultPageSequenceExist(self):
         # Test for https://plone.org/collector/2671
-        self.ob.set_default(['test'])
+        self.ob.set_default(['test'], 1)
         self.assertEquals(self.getDefault(), (self.ob, ['test']))
 
     def testDefaultPageSequenceNotExist(self):

@@ -9,6 +9,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from Products.CMFPlone.tests import dummy
 
 from AccessControl import Unauthorized, getSecurityManager
 from Acquisition import aq_base
@@ -96,10 +97,8 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
 
     def testInstaPublishingTextFile(self):
         self.folder.invokeFactory('File', id='lyrics.txt')
-        _file = StringIO(text)
-        _file.filename='lyrics.txt'
         lyrics = self.folder['lyrics.txt']
-        lyrics.file_edit(file=_file)
+        lyrics.file_edit(file=dummy.File('lyrics.txt', data=text))
         lyrics.metadata_edit(**props)
         self._checkMD(lyrics)
         lyrics.content_status_modify(workflow_action='submit')
@@ -108,11 +107,9 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self._checkMD(lyrics)
         
     def testInstaPublishingWordFile(self):
-        _file = StringIO(text)
-        _file.filename='lyrics.doc'
         self.folder.invokeFactory('File', id='lyrics.doc')
         lyrics = self.folder['lyrics.doc']
-        lyrics.file_edit(file=_file)
+        lyrics.file_edit(file=dummy.File('lyrics.doc', data='foo'))
         self.failUnless(lyrics.Format()=='application/msword')
         lyrics.metadata_edit(description='great song')
         self.failUnless(lyrics.Format()=='application/msword')
