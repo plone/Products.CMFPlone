@@ -1,5 +1,5 @@
 <div metal:define-macro="blogroll"  id="blogroll"
-    tal:define="ids python:here.objectIds(); 
+    tal:define="ids python:here.objectIds();
     blogLinks python:here.portal_catalog(id=ids,Type='Link',sort_on='Subject');
     global linkSubject nothing">
 
@@ -18,9 +18,9 @@
 
 </div>
 
-             
 
-     
 
-            
+
+
+
 

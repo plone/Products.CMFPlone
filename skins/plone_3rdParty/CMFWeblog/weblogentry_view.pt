@@ -4,11 +4,11 @@
  <base tal:attributes="href string:${here/aq_parent/absolute_url}/weblog/" />
 </metal:block>
 
-<div metal:fill-slot="header" tal:define="t_s options/t_s | traverse_subpath;global blogdata python:here.portal_weblog.getMonthData(here.aq_parent,t_s); global postdate string:0">
-    <br tal:replace="structure python: blogdata['calendar']" tal:condition="blogdata" />
-</div>
+<div metal:fill-slot="main"
+     tal:define="t_s options/t_s | traverse_subpath;
+                 global blogdata blogdata|python:here.portal_weblog.getMonthData(here.aq_parent,t_s);
+                 global postdate postdate|string:0">
 
-<div metal:fill-slot="main">
     <div id="blogs" tal:condition="blogdata">
         <div class="blogPost">
             <a id="" tal:attributes="id here/id">&nbsp;</a>
@@ -19,12 +19,12 @@
             <p tal:content="structure here/CookedBody">
             Posting text
             </p>
-            
+
             <a tal:define="permaLink python:here.portal_weblog.makePermaLink(here)"
                 tal:condition="permaLink"
                 tal:attributes="href permaLink;
                 title string:Permament Link;">Permanent link to this</a>
-                
+
                 <strong tal:content="python:here.created().aCommon()">July 11th 2002 11:54 PM</strong>
 
                 <div class="Discussion">

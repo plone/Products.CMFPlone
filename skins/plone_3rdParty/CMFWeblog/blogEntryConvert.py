@@ -30,5 +30,5 @@ for blogEntry in blogRec:
        context.portal_workflow.doActionFor(weblogObject, 'publish')
        print 'republishing %s' % entryId
 return printed
-    
-    
+
+

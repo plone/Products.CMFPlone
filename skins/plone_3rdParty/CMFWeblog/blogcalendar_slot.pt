@@ -1,0 +1,5 @@
+<div metal:define-macro="blogcalendar" tal:define="t_s options/t_s | traverse_subpath;
+global blogdata blogdata|python:here.portal_weblog.getMonthData(here.aq_parent,t_s);
+global postdate postdate|string:0">
+<span tal:replace="structure python: blogdata['calendar']" tal:condition="blogdata" />
+</div>

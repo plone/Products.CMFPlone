@@ -4,10 +4,10 @@
 <html>
 
     !! NOTICE !!
-    This PageTemplate is being deprecated.  We have moved all 
-    macros to their own PageTemplates in portal_templates/ui_slots.  
+    This PageTemplate is being deprecated.  We have moved all
+    macros to their own PageTemplates in portal_templates/ui_slots.
     Eventually this PageTemplate will be gone.
-    
+
     the calendar UI widget can be found in plone_templates/ui_slots/calendar_slot
 
 <metal:relic define-macro="calendarDatePickerBox">

@@ -77,7 +77,7 @@
     <!-- The sticky notes -->
     <tal:block repeat="week weeks">
       <tal:block repeat="day week">
-        <div class="day" 
+        <div class="day"
              id="dummy"
              tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
              tal:condition="day/event">
@@ -99,8 +99,8 @@
 	   input_id string:${formname}_${inputname}_${tabindex}">
 
  <comment tal:condition="nothing">
- 
- This template relies on the presence of an 'inputname' variable, 
+
+ This template relies on the presence of an 'inputname' variable,
  which contains the name of the element whose value should be
  altered when the calendar returns a result.
  Similarly it requires a 'formname' variable - the name
@@ -108,8 +108,8 @@
  Also it should be provided with inputvalue which is the
  current or default value for the field.
 
- onfocus and/or onblur are setup as attributes if availabe. 
- 
+ onfocus and/or onblur are setup as attributes if availabe.
+
  tabindex is setup is provided.
 
  </comment>
@@ -128,7 +128,7 @@
   <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?input_id=${input_id}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
     <img tal:replace="structure here/popup_calendar.gif" />
   </a>
- 
+
 </div>
 
 
@@ -152,12 +152,12 @@
                 <span tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag=""> <span i18n:name="year" tal:content="python:DateTime(date).year()" tal:omit-tag="" /> </span>
               </span>
             </th>
-        
+
             <th>
                 <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
             </th>
         </tr>
-        
+
         <tr tal:define="weekdays here/portal_calendar/getDays">
           <tal:block repeat="weekday weekdays">
             <td class="weekdays" i18n:translate="" tal:content="weekday">Su</td>
@@ -179,7 +179,7 @@
                 </tal:block>
               </tal:block>
             </tr>
-    
+
     </table>
 
 </div>  <!-- end of the calendar datepicker box -->
