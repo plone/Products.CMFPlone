@@ -20,12 +20,12 @@
                            lang language | default_language;
                            charset site_properties/default_charset|string:utf-8">
 
-    <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
-      Get the global cache headers located in global_cache_settings.
-    </metal:cache>
+        <metal:cache use-macro="here/global_cache_settings/macros/cacheheaders">
+          Get the global cache headers located in global_cache_settings.
+        </metal:cache>
 
-    <metal:headslot define-slot="head_slot" />
-      <!-- A slot where you can insert elements in the header from a template -->
+        <metal:headslot define-slot="head_slot" />
+          <!-- A slot where you can insert elements in the header from a template -->
     </metal:headslot>
 
     <metal:cssslot fill-slot="css_slot">
@@ -88,6 +88,7 @@
     <tbody>
         <tr>
             <!-- start of the left (by default at least) column -->
+            <metal:leftslot define-slot="left_portlets_slot">
             <td id="portal-column-one"
                 tal:condition="slots_mapping/left">
                 <div class="visualPadding">
@@ -97,6 +98,7 @@
                     &nbsp;
                 </div>
             </td>
+            </metal:leftslot>
             <!-- end of the left (by default at least) column -->
 
         <!-- start of main content block -->
@@ -144,16 +146,18 @@
             </td>
         <!-- end of main content block -->
 
-    <!-- start of right (by default at least) column -->
+        <!-- start of right (by default at least) column -->
+            <metal:rightslot define-slot="right_portlets_slot">
             <td id="portal-column-two"
-        tal:condition="slots_mapping/right">
-        <div class="visualPadding">
-            <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
-                This instruction gets the portlets (boxes) for the right column.
-            </metal:rightportlets>
-            &nbsp;
-        </div>
+                tal:condition="slots_mapping/right">
+                <div class="visualPadding">
+                <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
+                    This instruction gets the portlets (boxes) for the right column.
+                </metal:rightportlets>
+                &nbsp;
+                </div>
             </td>
+            </metal:rightslot>
     <!-- end of the right (by default at least) column -->
         </tr>
     </tbody>
