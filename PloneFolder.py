@@ -1,3 +1,4 @@
+import Acquisition
 from Products.CMFCore.utils import _verifyActionPermissions, getToolByName, getActionContext
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
@@ -25,7 +26,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                              , 'filter_content_types' : 0
                              , 'immediate_view' : 'folder_listing'
                              , 'actions'        :
-                                ( { 'id'            : 'view' 
+                                ( { 'id'            : 'view'
                                   , 'name'          : 'View'
                                   , 'action'        : 'string:${folder_url}/index_html'
                                   , 'permissions'   :
@@ -59,54 +60,36 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                            )
 
 class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
-    meta_type = 'Plone Folder' 
+    meta_type = 'Plone Folder'
+
     security=ClassSecurityInfo()
-    
+
     __implements__ = (DefaultDublinCoreImpl.__implements__ ,
                       WriteLockInterface)
 
     manage_options = Folder.manage_options + \
                      CMFCatalogAware.manage_options
-
     # fix permissions set by CopySupport.py
     __ac_permissions__=(
         ('Modify portal content',
          ('manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjects',
           'manage_renameForm', 'manage_renameObject', 'manage_renameObjects',)),
         )
-    
+
     def __init__(self, id, title=''):
         DefaultDublinCoreImpl.__init__(self)
         self.id=id
         self.title=title
 
     def __call__(self):
-        '''
-        Invokes the default view.
-        '''
+        """ Invokes the default view. """
         view = _getViewFor(self, 'view', 'folderlisting')
         if getattr(aq_base(view), 'isDocTemp', 0):
             return apply(view, (self, self.REQUEST))
         else:
              return view()
 
-    ### DefaultDublinCoreImpl.editMetadata() has a very bad assumption
-    ### which it does not declare in its interface which is 
-    ### failIflocked
-    def failIfLocked(self):
-        """ failIfLocked is used for WEBDAV locking """
-        plone=getToolByName(self, 'plone_utils')
-        #log(self.absolute_url() + " failIfLocked called on Plone Folder" )
-        return 0
-    
-    ### FIXME! SkinnedFolder Creator method doesnt work when creating
-    ### objects via Python (eg: on a unittest) apparently because of
-    ### a missing context
-    Creator = DefaultDublinCoreImpl.Creator
-            
-    security.declareProtected( CMFCorePermissions.View, 'view' )    
-    view = __call__
-    index_html = None
+    index_html = Acquisition.Acquired
 
     security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
@@ -123,15 +106,15 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         return self.browserDefault(request)
 
     security.declareProtected( ListFolderContents, 'listFolderContents')
-    def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): 
+    def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
         Hook around 'contentValues' to let 'folder_contents'
         be protected.  Duplicating skip_unauthorized behavior of dtml-in.
-        
+
         In the world of Plone we do not want to show objects that begin with a .
         So we have added a simply check.  We probably dont want to raise an
         Exception as much as we want to not show it.
-        
+
         """
 
         items = self.contentValues(spec=spec, filter=contentFilter)
@@ -140,7 +123,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             id = obj.getId()
             v = obj
             try:
-                if suppressHiddenFiles and id[:1]=='.': 
+                if suppressHiddenFiles and id[:1]=='.':
                     raise Unauthorized(id, v)
                 if getSecurityManager().validate(self, self, id, v):
                     l.append(obj)
@@ -148,16 +131,10 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
                 pass
         return l
 
-    ### FIXME! SkinnedFolder Creator method doesnt work when creating
-    ### objects via Python (eg: on a unittest) apparently because of
-    ### a missing context
-
-    Creator = DefaultDublinCoreImpl.Creator
-
 def _getViewFor(obj, view='view', default=None):
     ti = obj.getTypeInfo()
     context = getActionContext(obj)
-    
+
     if ti is not None:
         actions = ti.listActions()
         for action in actions:
@@ -170,7 +147,7 @@ def _getViewFor(obj, view='view', default=None):
                     if computed_action is not None:
                         return computed_action
 
-        if default is not None:    
+        if default is not None:
             _action = default.getAction(context)
             if _verifyActionPermissions(obj, default):
                 return obj.restrictedTraverse(_action['url'])
