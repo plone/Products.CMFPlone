@@ -7,7 +7,7 @@ from Products.CMFPlone import ToolNames
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from Acquisition import aq_base
+from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
 
 default_portrait = 'defaultUser.gif'
@@ -284,16 +284,37 @@ class MembershipTool(BaseTool):
         REQUEST=getattr(self, 'REQUEST', {})
         if username is None:
             username=self.getAuthenticatedMember().getUserName()
-        return portal.acl_users.authenticate(username, password, REQUEST)
+        acl_users = self._findUsersAclHome(username)
+        if not acl_users:
+            return 0
+        return acl_users.authenticate(username, password, REQUEST)
+
+
+    def _findUsersAclHome(self, userid):
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        acl_users=portal.acl_users
+        parent = acl_users
+        while parent:
+            if acl_users.aq_explicit.getUserById(userid, None) is not None:
+                break
+            parent = aq_parent(aq_inner(parent)).aq_parent
+            acl_users = getattr(parent, 'acl_users')
+        if parent:
+            return acl_users
+        else:
+            return None
 
     security.declareProtected(SetOwnPassword, 'setPassword')
     def setPassword(self, password, domains=None):
         '''Allows the authenticated member to set his/her own password.
         '''
         registration = getToolByName(self, 'portal_registration', None)
-        acl_users = self.acl_users
         if not self.isAnonymousUser():
             member = self.getAuthenticatedMember()
+            acl_users = self._findUsersAclHome(member.getUserName())#self.acl_users
+            if not acl_users:
+                # should not possibly ever happen
+                raise 'Bad Request', 'did not find current user in any user folder'
             if registration:
                 failMessage = registration.testPasswordValidity(password)
                 if failMessage is not None:
