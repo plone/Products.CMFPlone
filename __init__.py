@@ -26,7 +26,10 @@ def log(message,summary='',severity=0):
 def transaction_note(note):
     """ Write human legible note """
     T=get_transaction()
-    T.note(str(note))
+    if (len(T.description)+len(note))>=65535:
+        log('Transaction note too large omitting %s' % str(note))
+    else:
+        T.note(str(note))
 
 def base_hasattr(ob, name):
     ob = aq_base(ob)

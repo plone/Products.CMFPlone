@@ -1,3 +1,6 @@
+from __future__ import nested_scopes
+import new
+
 import os
 import urllib
 import Globals
@@ -12,6 +15,36 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+
+
+
+# Use the following to patch a single class instance (courtesy of 
+# http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66543)
+# Do not try this at home.  I mean it.
+def patch_instance_method(klass, method_name, new_method):
+    old_method = getattr(klass, method_name)
+    # bind the old method to the new
+    bound_new_method = lambda *args, **kwds: new_method(old_method, *args, **kwds)
+    # now patch the instance
+    setattr(klass, method_name, new.instancemethod(bound_new_method, klass, klass.__class__))
+
+# patched version of __ac_local_roles__ used for portal_factory created objects
+# We need the patch because the object is created during traversal, when the
+# currently authenticated user is unknown, so the owner is not set correctly.
+def patched__ac_local_roles__(__ac_local_roles__, self):
+    member = getToolByName(self, 'portal_membership').getAuthenticatedMember()
+    username = member.getUserName()
+    # try to get original __ac_local_roles__
+    local_roles = __ac_local_roles__
+    if callable(local_roles):
+        local_roles = local_roles(self)
+    local_roles = local_roles or {}
+    # amend original local roles (if any)
+    if not local_roles.has_key(username):
+        local_roles[username] = []
+    if not 'Owner' in local_roles[username]:
+        local_roles[username].append('Owner')
+    return local_roles
 
 
 # ##############################################################################
@@ -144,6 +177,9 @@ class TempFolder(TempFolderBase):
                 raise
             obj = self._getOb(id)
             obj.unindexObject()  # keep obj out of the catalog
+
+            # patch object's __ac_local_roles__ method (see above)
+            patch_instance_method(obj, '__ac_local_roles__', patched__ac_local_roles__)
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
     # ignore rename requests since they don't do anything
@@ -204,8 +240,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_setPortalFactoryTypes')
     def manage_setPortalFactoryTypes(self, REQUEST=None, listOfTypeIds=None):
-        """
-        """
+        """Set the portal types that should use the factory."""
         if listOfTypeIds is not None:
             dict = {}
             for l in listOfTypeIds:
@@ -234,7 +269,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             if hasattr(obj, 'getId') and callable(getattr(obj, 'getId')):
                 obj_id = obj.getId()
             else:
-                obj_id = getattr(id, 'id', None)
+                obj_id = getattr(obj, 'id', None)
             if obj_id is None:
                 raise Exception  # XXX - FIXME
             if not id:
