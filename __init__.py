@@ -6,6 +6,7 @@ from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
 import MembershipTool, FormulatorTool, PloneTool, WorkflowTool, NavigationTool, FactoryTool, FormTool, PropertiesTool
 import PloneFolder, Portal
 import CustomizationPolicy,PrivateSitePolicy
+import sys
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
@@ -67,8 +68,11 @@ contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )
 
 DirectoryView.registerDirectory('skins', globals())
+this_module = sys.modules[ __name__ ]
+z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
 
 def initialize(context):
+    utils.initializeBasesPhase2( z_bases, context )    
     utils.ToolInit('Plone Tool', tools=tools,
                    product_name='CMFPlone', icon='tool.gif',
                    ).initialize( context )
