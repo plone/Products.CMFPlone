@@ -41,3 +41,8 @@ def registerMigrations():
     MigrationTool.registerUpgradePath( '2.0-beta2',
                                       '2.0-beta3',
                                       twoBeta2_twoBeta3.twoBeta2_twoBeta3)
+
+    MigrationTool.registerUpgradePath( '2.0-beta2',
+                                       '2.0-RC2',
+                                       null)
+
