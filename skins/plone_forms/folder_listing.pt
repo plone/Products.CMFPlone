@@ -55,7 +55,7 @@
                     <td tal:condition="not: obj/isPrincipiaFolderish | nothing"
                         tal:content="python:here.getObjSize(obj)">Size</td>
                     <td tal:content="python:here.toPortalTime(obj.ModificationDate())">Modification Date</td>
-                    <td tal:content="obj/Description">Description</td>
+                    <td tal:content="string:${obj/Description}&nbsp;;">Description</td>
                 </tr>
 		</metal:block>
             </tbody>
