@@ -17,6 +17,9 @@ if obj.getId()=='index_html': #XXX hardcoded method name
 parent=obj.aq_parent
 relative_ids = context.portal_url.getRelativeContentPath(obj)
 
+if not relative_ids:
+    return
+    
 if not relative_ids and context.portal_membership.checkPermission('List folder contents', context):
     return context.absolute_url() + '/folder_contents'
 

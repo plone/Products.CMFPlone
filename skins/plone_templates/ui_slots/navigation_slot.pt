@@ -4,7 +4,6 @@
                    siblings here/navigationCurrent;
                    showOtherNav python:0;
                    showNav python:0;"
-       tal:condition="parent_url"
        class="box"
        summary="Navigation"
        cellpadding="0"
@@ -43,10 +42,12 @@
             </div>
             </td>
         </tr>
-
-        <tr class="odd" tal:condition="parent_url">
+        <tr class="odd" 
+	    tal:condition="parent_url">
             <td colspan="2">
-                <a class="marker" href="" tal:attributes="href parent_url">Up one level</a>
+                <a class="marker" 
+		   href="" 
+		   tal:attributes="href parent_url">Up one level</a>
             </td>
         </tr>
 
