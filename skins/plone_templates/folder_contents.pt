@@ -16,7 +16,11 @@
                  folder_contents python:here.getFolderContents(suppressHiddenFiles=1);
                  mtool mtool|here/portal_membership;
                  myfolder python:here.absolute_url()==mtool.getHomeUrl();
-                 num_types python: len(allowedSortedContentTypes)">
+                 num_types python: 0;" >
+
+    <tal:types condition="allowedSortedContentTypes|nothing">
+        <metal:assign tal:define="global num_types python:len(allowedSortedContentTypes)" />
+    </tal:types>
                  
     <form name="folderContentsForm"
           method="post"
