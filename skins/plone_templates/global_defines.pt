@@ -5,13 +5,13 @@
         global portal_object nocall:portal;
         global portal_url utool;
         global mtool nocall:portal/portal_membership;
-        global gtool nocall:portal/portal_groups;
-        global gdtool nocall:portal/portal_groupdata;
+        global gtool nocall:portal/portal_groups | nothing;
+        global gdtool nocall:portal/portal_groupdata | nothing;
         global atool nocall:portal/portal_actions;
-        global aitool nocall:portal/portal_actionicons;
+        global aitool nocall:portal/portal_actionicons | nothing;
         global putils nocall:portal/plone_utils;
         global wtool nocall:portal/portal_workflow;
-        global ifacetool nocall:portal/plone_interface;
+        global ifacetool nocall:portal/plone_interface | nothing;
         global portal_title portal_object/Title;
         global object_title here/Title;
         global member mtool/getAuthenticatedMember;
