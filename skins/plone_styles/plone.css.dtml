@@ -902,6 +902,30 @@ ul.configlets li a {
 	text-decoration: none;
 }
 
+ul.configlets li label {
+    font-weight: bold;
+}
+
+ul.configletDetails {
+    margin: 0em 1em 1em 4em;
+    list-style-image: none;
+    list-style: none;
+}
+
+ul.configletDetails li {
+    margin-bottom: 1em;
+    display: inline;
+}
+
+ul.configletDetails li a {
+	text-decoration: none;
+}
+
+ul.configletDetails li label {
+    font-weight: bold;
+}
+
+
 /* Additional STX workaround classes */
 .stx table p /* stupid STX table workaround */
 {

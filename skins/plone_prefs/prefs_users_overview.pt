@@ -42,7 +42,7 @@
 
     <div class="documentContent">
 
-        <h1 i18n:translate="heading_user_management">User Management</h1>
+        <h1 i18n:translate="heading_users_overview">Users Overview</h1>
 
         <form action=""
             name="users"
@@ -52,12 +52,18 @@
                         portal_users python:here.prefs_user_group_search(searchstring, 'users');
                         batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
 
+        <a href=""
+           class="link-parent"
+           tal:attributes="href string: $portal_url/plone_control_panel"
+           i18n:translate="">
+        Up to Plone Setup
+        </a>
+
         <p i18n:translate="description_user_management">
-        Click the User Name to see and change the details of a specific
-        user, or click the envelope to send a mail. You can edit the
-        and e-mail address and remove users directly from this
-        form. You can also access the user registration form to add new
-        users.
+        Click the user's name to see and change the details of a specific
+        user. Click the envelope icon to send a mail to the user. 
+        You can also edit 
+        the e-mail addresses, and add/remove users.
         </p>
 
         <input class="standalone add"

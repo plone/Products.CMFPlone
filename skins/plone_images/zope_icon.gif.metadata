@@ -1,4 +1,3 @@
-
 [default]
-title=Zope powered icon
+title=Zope
 cache=HTTPCache
