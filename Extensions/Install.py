@@ -195,13 +195,13 @@ def install_PloneSkins(self, out):
     for plonedir in ( 'plone_content'
                     , 'plone_images'
                     , 'plone_forms'
-                    , 'plone_form_scripts'
                     , 'plone_scripts'
+		    , 'plone_scripts/form_scripts'
                     , 'plone_styles'
                     , 'plone_templates'
                     , 'plone_3rdParty'
                     , 'plone_calendar'
-		    , 'plone_templates/plone_ui_slots'
+		    , 'plone_templates/ui_slots'
                     ):
         try:
             path.insert( path.index( 'custom')+1, plonedir )
