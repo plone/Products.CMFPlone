@@ -127,7 +127,7 @@
                         <span i18n:translate="label_existing_keywords">Existing keywords</span>
                         <br />
                         <select id="predefined_subjects"
-                                name="predefined_subjects" 
+                                name="predefined_subjects:list" 
                                 size="14" 
                                 multiple="multiple"
                                 tabindex=""

@@ -6,11 +6,13 @@
 ##bind subpath=traverse_subpath
 ##title=Update Content Metadata
 ##parameters=allowDiscussion=None,title=None,subject=None,description=None,contributors=None,effective_date=None,expiration_date=None,format=None,language=None,rights=None,predefined_subjects=None
-if not same_type(predefined_subjects, []):
+if subject is None:
+    subject = []
+if predefined_subjects is None:
+    predefined_subjects = []
+elif not same_type(predefined_subjects, []):
     predefined_subjects=[predefined_subjects,]
-subject=context.unique([ps for ps in predefined_subjects if ps]+[s for s in subject if s])
-
-context.plone_debug(str(subject))
+subject=[ps for ps in predefined_subjects if ps]+[s for s in subject if s]
 
 if not effective_date:
    effective_date='None'
