@@ -4,7 +4,7 @@
       i18n:domain="plone">
 
   <metal:block fill-slot="top_slot"
-               tal:define="dummy python:request.set('disable_border1',1)" />
+               tal:define="dummy python:request.set('disable_border',1)" />
 
   <body>
 
