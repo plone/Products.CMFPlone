@@ -34,6 +34,7 @@ def setupNavTreePropertySheet(prop_tool):
     p._setProperty('forceParentsInBatch',0,'boolean')
     p._setProperty('skipIndex_html',1,'boolean')
     p._setProperty('rolesSeeContentsView', ['Manager','Reviewer','Owner'] , 'lines')
+    p._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
 
 class StatelessTreeBuilder:
     """ builds a stateless tree structure for objects """

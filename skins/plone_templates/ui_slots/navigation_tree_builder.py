@@ -1,5 +1,5 @@
 ## Script (Python) "navigation_tree_builder"
-##parameters=tree_root,navBatchStart=None,showMyUserFolderOnly=None,includeTop=None,showFolderishSiblingsOnly=None,showFolderishChildrenOnly=None,showNonFolderishObject=None,topLevel=None,batchSize=None,showTopicResults=None,rolesSeeUnpublishedContent=None,sortCriteria=None,metaTypesNotToList=None,parentMetaTypesNotToQuery=None,forceParentsInBatch=None,skipIndex_html=None
+##parameters=tree_root,navBatchStart=None,showMyUserFolderOnly=None,includeTop=None,showFolderishSiblingsOnly=None,showFolderishChildrenOnly=None,showNonFolderishObject=None,topLevel=None,batchSize=None,showTopicResults=None,rolesSeeUnpublishedContent=None,sortCriteria=None,metaTypesNotToList=None,parentMetaTypesNotToQuery=None,forceParentsInBatch=None,skipIndex_html=None,rolesSeeHiddenContent=None
 ##title=Standard Tree
 ##
 #Stateless Tree Navigation
@@ -75,6 +75,11 @@ if forceParentsInBatch is None:
 if skipIndex_html is None:
     skipIndex_html=getattr(props, 'skipIndex_html', 1)
 
+# these (local) roles can see hidden content (staring with '.')
+if rolesSeeHiddenContent is None:
+    rolesSeeHiddenContent=getattr(props,'rolesSeeHiddenContent',  ['Manager',])
+
+
 # go through sortCriteria and check that each line is not a string 
 # if it is make a duple out of it (necessary because a lines-property contains strings)
 # and sortcriteria should contain tuples as seen in the statement above
@@ -144,9 +149,9 @@ def childFinder(obj,folderishOnly=1):
     user=obj.REQUEST['AUTHENTICATED_USER']
     # the 'important' users may see unpublished content
     # who can see unpublished content may also see hidden files
-    showHiddenFiles=showUnpublishedContent=user.has_role(rolesSeeUnpublishedContent,obj)
+    showHiddenFiles = user.has_role(rolesSeeHiddenContent,obj)
+    showUnpublishedContent = user.has_role(rolesSeeUnpublishedContent,obj)
     try:
-
         if obj.meta_type in parentMetaTypesNotToQuery:
             return []
         
