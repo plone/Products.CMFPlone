@@ -22,12 +22,6 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
 
-    def loginAsPortalOwner(self):
-        from AccessControl.SecurityManagement import newSecurityManager
-        uf = self.app.acl_users
-        user = uf.getUserById('portal_owner').__of__(uf)
-        newSecurityManager(None, user)
-
     def testPloneLexiconIsZCTextLexicon(self):
         # Lexicon should be a ZCTextIndex lexicon
         self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
@@ -42,7 +36,7 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         # Should be able to copy/paste a portal containing
         # a catalog tool. Triggers manage_afterAdd of portal_catalog
         # thereby exposing a bug which is now going to be fixed.
-        self.loginAsPortalOwner()
+        self.loginPortalOwner()
         cb = self.app.manage_copyObjects(['portal'])
         self.app.manage_pasteObjects(cb)
         self.failUnless(hasattr(self.app, 'copy_of_portal'))
@@ -60,7 +54,7 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         # Should be able to rename a Plone portal
         # This test is to demonstrate that http://plone.org/collector/1745 
         # is fixed and can be closed.
-        self.loginAsPortalOwner()
+        self.loginPortalOwner()
         self.app.manage_renameObjects(['portal'], ['foo'])
         self.failUnless(hasattr(self.app, 'foo'))
 
