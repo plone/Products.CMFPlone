@@ -678,7 +678,9 @@ del {
     text-decoration: none;
 }
 
-.portalMessage {
+.portalMessage,
+.system-message,  /* These two last ones are reST error indicators */
+#error-handling {
     background-color: &dtml-notifyBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     color: &dtml-fontColor;;
