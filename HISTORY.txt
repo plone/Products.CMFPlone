@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Fixed http://plone.org/collector/3542 - queryCatalog script ignored
+      'sort_limit' argument. Thanks to kaib for the patch!
+      [stefan]
+
     - Fixed http://plone.org/collector/3541 - folder rename gave wrong
       error message. Thanks to Varun for the patch!
       [stefan]

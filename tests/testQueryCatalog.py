@@ -73,6 +73,11 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
         expected = {'modified': {'query': '2004-01-01', 'range': 'min'}}
         self.assertEqual(self.folder.queryCatalog(request), expected)
 
+    def testSortLimit(self):
+        # the script ignored 'sort_limit'; test to show it no longer does.
+        request = {'SearchableText':'bar','sort_on':'foozle','sort_limit':50}
+        self.assertEqual(self.folder.queryCatalog(request), request)
+
 
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     """Test logic quoting features queryCatalog script.
