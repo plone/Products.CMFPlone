@@ -4,9 +4,12 @@ Changelog for Plone
 
 Plone 2.0.3 - Noname
 
+    - Login portlet wasn't using the 'label' tag, corrected.
+
     - Added id="portlet-related" in the Related portlet (was missing),
       and renamed 'portlet-recent-items' to 'portlet-recent' to make
       the name consistent with the other portlets.
+      [limi]
 
     - Hardened any send mail sending utilities and readying CMF 1.4.4.
       [andym]
