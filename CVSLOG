@@ -1,3 +1,17 @@
+2004-04-11 04:27  limi
+
+	* skins/plone_content/: image_view.pt, image_view_fullscreen.pt
+	  (Plone-2_0-branch): Adding full-screen view for images.
+
+2004-04-11 02:50  limi
+
+	* skins/plone_images/product_icon.gif (Plone-2_0-branch): More
+	  stray pixels removed.
+
+2004-04-10 04:57  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-09 21:20  shh42
 
 	* tests/testPortalCreation.py (Plone-2_0-branch): Test for
