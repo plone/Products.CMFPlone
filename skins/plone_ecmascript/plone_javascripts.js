@@ -1,5 +1,3 @@
-
-
 // Heads up! August 2003  - Geir Bækholt
 // This file now requires the javascript variable portal_url to be set 
 // in the plone_javascript_variables.js file. Any other variables from Plone
@@ -57,9 +55,6 @@ function nodeContained(innernode, outernode){
     }
 
 
-
-
-
 // The calendar popup show/hide:
 
     function showDay(date) {
@@ -71,9 +66,6 @@ function nodeContained(innernode, outernode){
         return true;
     }
 
-
-
-	
 // Focus on error or tabindex=1 
 function setFocus() {
     var xre = new RegExp(/\berror\b/);
@@ -104,9 +96,6 @@ function setFocus() {
     }
 }
 registerPloneFunction(setFocus)
-
-
-
 
 
 /********* Table sorter script *************/
@@ -719,23 +708,39 @@ function update_date_field(field, year, month, day, hour, minute, ampm)
     }
 }
 
-
-
-function fullscreenMode() {
-    if (document.getElementById('portal-top').style.display == 'none') {
-        document.getElementById('portal-top').style.display = 'block';
-        document.getElementById('portal-column-one').style.display = 'block';
-        document.getElementById('portal-column-two').style.display = 'block';
-        }
-    else {
-        document.getElementById('portal-top').style.display = 'none';
-        document.getElementById('portal-column-one').style.display = 'none';
-        document.getElementById('portal-column-two').style.display = 'none';
+function setDisplayMode(item, state) {
+// change the display prop of a div to none/block if the div exists
+    if (document.getElementById(item) != null) {
+        document.getElementById(item).style.display = state;
     }
 }
 
+function fullscreenMode() {
+    // toggle the display prop of divs none/block    
+	if (document.getElementById('portal-top').style.display == 'none') {        
+	    setDisplayMode('portal-top', 'block');
+        setDisplayMode('portal-column-one', 'table-cell');
+        setDisplayMode('portal-column-two', 'table-cell');
+        // set cookie        
+	    createCookie('fullscreenMode', '');        
+	}    else {    
+	    setDisplayMode('portal-top', 'none');
+        setDisplayMode('portal-column-one', 'none');
+        setDisplayMode('portal-column-two', 'none');        
+	    createCookie('fullscreenMode', '1');    
+	}
+}
 
+function fullscreenModeLoad() {
+// based on cookie hide div
+    	if (readCookie('fullscreenMode') == '1') {        
+	    setDisplayMode('portal-top', 'none');
+        setDisplayMode('portal-column-one', 'none');
+        setDisplayMode('portal-column-two', 'none');    
+	}
+}
 
+registerPloneFunction(fullscreenModeLoad)
 
 function activateCollapsables(){
     // a script that searches for sections that can be (or are already) collapsed

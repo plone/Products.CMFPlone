@@ -2,12 +2,16 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Plaid - unreleased
+Plone 2.1 - Plaid - (unreleased)
 
-    - Use 'structure' in sendto_template.pt. Email text don't need any transforms.
+    - Merged plip71-full-screen-mode r6124:HEAD into 2.1 branch. This adds a
+      document_action to enter full screen mode.
+      [stefan] [arjen] [elvix]
+
+    - Use 'structure' in sendto_template.pt. Email text doesn't need any transforms.
       [panjunyong]
 
-    - added some knobs to jscalendar: 
+    - Added some knobs to jscalendar:
 
       - show_hm: show hour and minute dropbox or not 
 
@@ -24,9 +28,9 @@ Plone 2.1 - Plaid - unreleased
         need to show the single year.
       [panjunyong]
 
-    - old popup calender(plone 1.x) worked again.
+    - Old popup calender (Plone 1.x) works again.
       [panjunyong]
- 
+
     - Don't install SecureMailHost if already installed.
       [tiran]
 
@@ -35,7 +39,7 @@ Plone 2.1 - Plaid - unreleased
       of ATContentTypes at portal creation time for e.g. migration tests.
       [tiran]
 
-    - Use images in plone_tabless/colophon.pt just like the one in 
+    - Use images in plone_tableless/colophon.pt just like the one in
       plone_templates.
       [panjunyong]
 
@@ -44,7 +48,7 @@ Plone 2.1 - Plaid - unreleased
       mixin.
       [tiran]
 
-Plone 2.1 - Plaid - Alpha1 - Released March 12, 2005 
+   Alpha1 - Released March 12, 2005
 
     - No longer uncatalog the Members folder on installation so that the new
       NavTreePortlet (not included) works out of the box.

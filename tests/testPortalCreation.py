@@ -22,6 +22,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         self.workflow = self.portal.portal_workflow
         self.types = self.portal.portal_types
         self.cp = self.portal.portal_controlpanel
+        self.actions = self.portal.portal_actions
+        self.icons = self.portal.portal_actionicons
 
     def testPloneSkins(self):
         # Plone skins should have been set up
@@ -154,6 +156,22 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testNoNavigationProperties(self):
         # navigation_properties should have been removed
         self.failIf('navigation_properties' in self.portal.portal_properties.objectIds())
+
+    def testFullScreenAction(self):
+        # There should be a full_screen action
+        for action in self.actions.listActions():
+            if action.getId() == 'full_screen':
+                break
+        else:
+            self.fail("Actions tool has no 'full_screen' action")
+
+    def testFullScreenActionIcon(self):
+        # There should be a full_screen action icon
+        for icon in self.icons.listActionIcons():
+            if icon.getActionId() == 'full_screen':
+                break
+        else:
+            self.fail("Action icons tool has no 'full_screen' icon")
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

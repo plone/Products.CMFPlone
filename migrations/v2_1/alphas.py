@@ -1,6 +1,8 @@
 import os
 
 from Acquisition import aq_base
+from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
 
@@ -35,6 +37,18 @@ def two05_alpha1(portal):
 
         # Switch over to ATCT
         migrateToATCT(portal, out)
+
+    return out
+
+
+def alpha1_alpha2(portal):
+    """2.1-alpha1 -> 2.1-alpha2
+    """
+    out = []
+
+    # Add full_screen action
+    addFullScreenAction(portal, out)
+    addFullScreenActionIcon(portal, out)
 
     return out
 
@@ -98,4 +112,40 @@ def migrateToATCT(portal, out):
         switchCMF2ATCT(skip_rename=True)
     get_transaction().commit(1)
     #out.append('Switched portal to ATContentTypes.')
+
+
+def addFullScreenAction(portal, out):
+    """Adds the full screen mode action."""
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        for action in actionsTool.listActions():
+            if action.getId() == 'full_screen':
+                break # We already have the action
+        else:
+            actionsTool.addAction('full_screen',
+                name='Full Screen',
+                action='string:javascript:fullscreenMode();',
+                condition='member',
+                permission=CMFCorePermissions.View,
+                category='document_actions',
+                visible=1,
+                )
+        out.append("Added 'full_screen' action to actions tool.")
+
+
+def addFullScreenActionIcon(portal, out):
+    """Adds an icon for the full screen mode action. """
+    iconsTool = getToolByName(portal, 'portal_actionicons', None)
+    if iconsTool is not None:
+        for icon in iconsTool.listActionIcons():
+            if icon.getActionId() == 'full_screen':
+                break # We already have the icon
+        else:
+            iconsTool.addActionIcon(
+                category='plone',
+                action_id='full_screen',
+                icon_expr='full_screen.gif',
+                title='Full Screen',
+                )
+        out.append("Added 'full_screen' icon to actionicons tool.")
 
