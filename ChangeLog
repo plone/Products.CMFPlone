@@ -1,3 +1,11 @@
+2003-04-15  Sidnei da Silva  <sidnei@x3ng.com>
+
+	* MembershipTool.py (MembershipTool.createMemberarea): Added a
+	hook for doing things after the Member Area gets created. Just
+	create a script called 'notifyMemberAreaCreated' somewere on your
+	hierarchy and it will be called with the member folder as context
+	when a member area is created.
+
 2003-04-12  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* skins/plone_scripts/add_ext_editor.py (omit_types): Added

@@ -157,6 +157,11 @@ class MembershipTool( BaseTool ):
             catalog = getToolByName(self, 'portal_catalog')
             catalog.unindexObject(personal) #dont add .personal folders to catalog
 
+            # Hook to allow doing other things after memberarea creation.
+            notify_script = getattr(member_folder, 'notifyMemberAreaCreated', None)
+
+            if notify_script is not None:
+                notify_script()
 
     # this should probably be in MemberDataTool.py
     #security.declarePublic( 'searchForMembers' )
