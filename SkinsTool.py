@@ -64,7 +64,7 @@ class SkinsTool(BaseTool):
         """
         self._v_skincache = {}
 
-    security.declareProtected(ManagePortal, 'refreshSkins')
+    security.declareProtected(ManagePortal, 'reloadSkinsFromFS')
     def reloadSkinsFromFS(self):
         """reload all files in the skin directories
         """
