@@ -57,10 +57,10 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
     if not hasattr(p, 'auth_cookie_length'):
         safeEditProperty(p, 'auth_cookie_length', 0, 'int')
-    if not hasattr(p, 'min_year'):
-        safeEditProperty(p, 'min_year', year - 5, 'int')
-    if not hasattr(p, 'max_year'):
-        safeEditProperty(p, 'max_year', year + 6, 'int')
+    if not hasattr(p, 'calendar_starting_year'):
+        safeEditProperty(p, 'calendar_starting_year', 1999, 'int')
+    if not hasattr(p, 'calendar_future_years_available'):
+        safeEditProperty(p, 'calendar_future_years_available', 5, 'int')
 
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """

@@ -65,8 +65,8 @@ year=int(date.strftime('%Y'))
 
 #Get portal year range
 site_properties = context.portal_properties.site_properties
-min_year = site_properties.getProperty('min_year', year - 5)
-max_year = site_properties.getProperty('max_year', year + 6)
+min_year = site_properties.getProperty('calendar_starting_year', 1999)
+max_year = site_properties.getProperty('calendar_future_years_available', 5) + year
 
 #if default:
 #    years.append(empty_selected)
