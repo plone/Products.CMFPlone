@@ -19,10 +19,8 @@ context.plone_utils.editMetadata(context,
                                  language=language,
                                  rights=rights)
 
-action_path = context.getTypeInfo().getActionById( 'view' )   
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'success'
+                                            , portal_status_message='Metadata changed.' )
 
-context.REQUEST['RESPONSE'].redirect(
-    '%s/%s?portal_status_message=Metadata+changed.'
-    % ( context.absolute_url(), action_path ) )
-    
-    

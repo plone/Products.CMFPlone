@@ -165,17 +165,15 @@ class PloneTool (UniqueObject, SimpleItem):
     security.declarePublic('getNextRequestFor')
     def getNextRequestFor(self, context, action, status, **kwargs):
         """ takes object, action, and status and returns a RESPONSE redirect """
-        url_parms=urlencode(kwargs)
+        url_params=urlencode(kwargs)
         action_id=self.getNavigationTransistion(context,action,status)
+        redirect=None
         try:
-            next_action=context.getTypeInfo().getActionById(action_id)
-            return self.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                                                , next_action
-                                                                , url_params ) )
+            action_id=context.getTypeInfo().getActionById(action_id)
         except: # XXX because ActionTool doesnt throw ActionNotFound exception ;(
             pass
-        return self.REQUEST.RESPONSE.redirect( '%s/%s' % ( context.absolute_url()
-                                                         , action_id ) )
-
+        return self.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
+                                                            , action_id
+                                                            , url_params) )
 InitializeClass(PloneTool)
 

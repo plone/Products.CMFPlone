@@ -10,8 +10,9 @@
 
 errors=context.portal_form_validation.validate(context, 'validate_event_edit')
 if errors:
-    # get and return the relevant edit form
-    edit_form = getattr(context, context.getTypeInfo().getActionById('edit'))
+    edit_form=context.plone_utils.getNextPageFor( context
+                                                , script.getId()
+                                                , 'failure' )    
     return edit_form()
 
 # need to parse date string *before* passing to Event.edit since
@@ -53,6 +54,7 @@ else:
     msg='portal_status_message=Event+changes+saved.'
     view='event_view'
 
-return RESPONSE.redirect('%s/%s?%s' % (context.absolute_url(),
-                                       view, msg) )
-
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'success'
+                                            , portal_status_message='Event changed.' ) 

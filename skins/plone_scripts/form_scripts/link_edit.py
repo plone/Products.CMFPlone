@@ -24,5 +24,5 @@ context.plone_utils.contentEdit( context
 return context.plone_utils.getNextRequestFor( context
                                             , script.getId()
                                             , 'success'
-                                            , portal_status_message='Link+changed')
+                                            , portal_status_message='Link changed.')
 

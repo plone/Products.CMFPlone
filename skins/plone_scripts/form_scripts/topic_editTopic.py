@@ -10,7 +10,9 @@
 
 errors=context.portal_form_validation.validate(context, 'validate_topic_edit')
 if errors:
-    edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
+    edit_form=context.plone_utils.getNextPageFor( context
+                                                , script.getId()
+                                                , 'failure' )
     return edit_form()
 
 context.edit(acquireCriteria=acquireCriteria,
@@ -20,9 +22,8 @@ context.edit(acquireCriteria=acquireCriteria,
 context.plone_utils.contentEdit( context
                                , id=id
                                , description=description)
-	     
-qst='portal_status_message=Topic+changed.'
 
-context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                                , context.getTypeInfo().getActionById( 'view' )
-                                                , qst) )
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'success'
+                                            , portal_status_message='Topic changed.')

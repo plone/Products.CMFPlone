@@ -10,7 +10,9 @@
 
 errors=context.portal_form_validation.validate(context, 'validate_folder_edit')
 if errors:
-    edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
+    edit_form=context.plone_utils.getNextPageFor( context
+                                                , script.getId()
+                                                , 'failure')
     return edit_form()
 
 context.edit( title=title,
@@ -20,9 +22,7 @@ context.plone_utils.contentEdit( context
                                , id=id
                                , description=description)
 
-qst='portal_status_message=Folder+changed.'
-
-context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                        , 'folder_contents'
-                                        , qst
-                                        ) )
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'success'
+                                            , portal_status_message='Folder changed.' )

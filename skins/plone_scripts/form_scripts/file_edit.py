@@ -10,8 +10,9 @@
 
 errors=context.portal_form_validation.validate(context, 'validate_file_edit')
 if errors:
-    # get and return the relevant edit form
-    edit_form = getattr(context, context.getTypeInfo().getActionById('edit'))
+    edit_form=context.plone_utils.getNextPageFor( context
+                                                , script.getId()
+                                                , 'failure')
     return edit_form()
 
 filename=getattr(file,'filename','')
@@ -30,10 +31,8 @@ context.plone_utils.contentEdit( context
                                , id=id
                                , description=description )
 
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'success'
+                                            , portal_status_message='File changed.' )
 
-qst='portal_status_message=File+has+changed.'
-
-context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                                , context.getTypeInfo().getActionById( 'view' )
-                                                , qst
-                                                ) )
