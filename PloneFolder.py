@@ -29,13 +29,13 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                      (Permissions.access_contents_information,)
                                   , 'category'      : 'folder'
                                   }
-                                #, { 'id'            : 'foldercontents'
-                                #  , 'name'          : 'Folder Contents'
-                                #  , 'action'        : 'folder_contents'
-                                #  , 'permissions'   :
-                                #     (CMFCorePermissions.ListFolderContents,)
-                                #  , 'category'      : 'folder'
-                                #  }
+                                , { 'id'            : 'local_roles'
+                                  , 'name'          : 'Local Roles'
+                                  , 'action'        : 'folder_localroles_form'
+                                  , 'permissions'   :
+                                     (CMFCorePermissions.ManageProperties,)
+                                  , 'category'      : 'folder'
+                                  }
                                 , { 'id'            : 'edit'
                                   , 'name'          : 'Edit'
                                   , 'action'        : 'folder_edit_form'
