@@ -18,10 +18,9 @@
     <p i18n:translate="label_plone_setup_readme">
     In this document you can find informations about <span tal:content="request/filereadme"></span> product
     </p>
-<textarea rows="50" readonly="" tal:content="python:container.portal_quickinstaller.getProductFile(request['filereadme'])">
-  
-</textarea>
    
+    <div class="stx" tal:content="structure python:modules['Products.CMFCore.utils'].format_stx(container.portal_quickinstaller.getProductFile(request['filereadme']))" />
+
         <div class="row">
             <div class="label">&nbsp;</div>
             <div class="field">
