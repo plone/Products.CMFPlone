@@ -118,6 +118,9 @@ def oneX_twoBeta2(portal):
     fixUndoActions(portal)
     out.append("Fixing folder contents action")
     fixFolderActions(portal)
+    removed = removeTranslationService()
+    if removed:
+        out.append(("Removing deprecated translation service. Plone 2 is using the PlacelessTranslationService for translation. Your old translation data is still stored in the Localizer.", zLOG.WARNING))
     return out
 
 def doit(self):
@@ -504,6 +507,14 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
     MigrationTool.registerUpgradePath('1.0.2','1.1alpha2',upg_1_0_1_to_1_1)
     MigrationTool.registerUpgradePath('1.0.3','1.1alpha2',upg_1_0_1_to_1_1)
+
+def removeTranslationService(portal):
+    """remove old translation service
+    """
+    ts = 'translation_service'
+    if hasattr(portal.aq_explicit, ts):
+        portal.manage_delObjects(ts)
+        return 1
 
 if __name__=='__main__':
     registerMigrations()
