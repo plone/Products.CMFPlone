@@ -47,7 +47,9 @@
       thanks ronnix for pointing this out.
       We do this by adding properties on the filesystem i.e.
       search.pt.properties to give search the title=Search results
-      
+    - <shiver> added more logic to breadcrumbs so you can see templates i.e. search tab will show
+      home >> search form - fixes issue 211 </shiver>
+
 1.0 alpha4
     - publishing now works without javascript. #202
     - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will need updating if migrate)

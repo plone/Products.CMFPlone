@@ -14,9 +14,15 @@ o=context.portal_url.getPortalObject()
 
 if obj is None:
     obj=context
+    
 relative_ids = context.portal_url.getRelativeContentPath( obj)
-
 template_id = context.REQUEST.get('PUBLISHED', None)
+
+if template_id and not relative_ids:
+    path_seq = ( ( 'home', o.absolute_url() )
+               , ( template_id.title_or_id(), o.absolute_url()+'/'+template_id.getId()) )
+    return path_seq
+
 if template_id is not None and \
     hasattr(template_id, 'getId') and \
     template_id.getId()=='folder_contents':
