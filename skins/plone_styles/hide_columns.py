@@ -12,9 +12,9 @@ column_left=sl
 column_right=sr
 
 if column_right==[] and column_left==[]:
-    return "hideboth"
+    return "visualColumnHideOneTwo"
 if column_right!=[]and column_left==[]:
-    return "hideleft"
+    return "visualColumnHideOne"
 if column_right==[]and column_left!=[]:
-    return "hideright"
+    return "visualColumnHideOne"
 return "hidenone"
