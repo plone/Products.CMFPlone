@@ -92,3 +92,6 @@ def initialize(context):
     Portal.register(context, cmfplone_globals)
     CustomizationPolicy.register(context, cmfplone_globals)
     PrivateSitePolicy.register(context, cmfplone_globals)
+
+# setup default Plone
+import PloneInitialize
