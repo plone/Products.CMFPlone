@@ -25,6 +25,23 @@
         <tal:block tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
 
             <ul class="configlets">
+                <tal:configlet repeat="configlet configlets">
+                    <li tal:condition="configlet/visible">
+                        <a href=""
+                           tal:attributes="href configlet/url">
+                            <img src="" alt=""
+                                 tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
+                                                 alt configlet/description"
+                                 i18n:attributes="alt"
+                                 tal:on-error="string:" />
+                            <tal:configletname tal:content="configlet/name"
+                                               i18n:translate=""></tal:configletname>
+                        </a>
+                    </li>
+                </tal:configlet>
+            </ul>
+
+            <ul class="configlets">
                 <li tal:repeat="configlet configlets">
                     <a href=""
                        tal:attributes="href configlet/url"
