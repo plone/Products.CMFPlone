@@ -1,3 +1,81 @@
+2004-01-16 04:49  vinsci
+
+	* skins/plone_forms/history_form.pt (Plone-2_0-branch): Added
+	  summary="History" attribute to table and i18n for it. But is
+	  history_form.pt actually in use? There are no references in Plone
+	  to it, as far as I can see.
+
+2004-01-16 04:05  vinsci
+
+	* skins/plone_forms/content_status_history.cpt (Plone-2_0-branch):
+	  Add table summaries (one dummy, one real). Partial fix for issue
+	  2269.
+
+2004-01-16 02:25  vinsci
+
+	* skins/plone_prefs/prefs_search_macros.pt (Plone-2_0-branch): Fix
+	  edit error from yesterday (missing "<ht" at beginning of file).
+
+2004-01-16 02:00  zopezen
+
+	* skins/plone_scripts/getObjSize.py: Catch TypeError too
+
+2004-01-15 21:28  zopezen
+
+	* skins/plone_scripts/getObjSize.py, tests/testMisc.py: Allow
+	  getObjSize to be passed an arbitrary size.
+
+	  Cope with large file sizes that might be floats, which used to
+	  come out as blank.
+
+	  Corresponding simple unittest.
+
+2004-01-15 20:04  limi
+
+	* skins/plone_portlets/: portlet_recent.pt,
+	  recently_published_slot.pt (Plone-2_0-branch): Fixed a serious
+	  performance issue in Plone. The Recently Published slot was being
+	  evaluated even if it wasn't shown. This used a lot of resources
+	  unnecessarily.
+
+2004-01-15 06:16  vinsci
+
+	* skins/: plone_content/image_view.pt,
+	  plone_forms/discussion_reply_form.pt, plone_forms/roster.pt,
+	  plone_forms/talkback_tree.pt, plone_portlets/about_slot.pt,
+	  plone_portlets/events_slot.pt, plone_portlets/login_slot.pt,
+	  plone_portlets/navigation_tree_slot.pt,
+	  plone_portlets/news_slot.pt, plone_portlets/portlet_events.pt,
+	  plone_portlets/portlet_login.pt,
+	  plone_portlets/portlet_navigation.pt,
+	  plone_portlets/portlet_news.pt,
+	  plone_portlets/portlet_related.pt,
+	  plone_portlets/related_slot.pt,
+	  plone_prefs/plone_control_panel.pt,
+	  plone_prefs/plone_memberprefs_panel.pt,
+	  plone_prefs/prefs_install_products_form.pt,
+	  plone_prefs/prefs_installed_product_overview.pt,
+	  plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_user_details.pt,
+	  plone_prefs/prefs_user_group_search_form.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt,
+	  plone_templates/document_actions.pt,
+	  plone_templates/document_byline.pt,
+	  plone_templates/folder_contents.pt,
+	  plone_templates/folder_listing.pt,
+	  plone_templates/global_contentviews.pt,
+	  plone_templates/global_pathbar.pt,
+	  plone_templates/recently_published.pt,
+	  plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Partial fix for issue 2269. Adding missing <img> attributes,
+	  mostly by using <tal:block replace="structure here/..."/>
+	  instead. Touched 31 templates.
+
+2004-01-15 05:02  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-15 04:15  vinsci
 
 	* skins/plone_content/discussionitem_view.pt (Plone-2_0-branch):
