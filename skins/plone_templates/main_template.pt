@@ -100,7 +100,7 @@ Header stuff
 	                              template_id options/template_id|template_id|nothing"
 	                  i18n:domain="plone">
    
-                    <tal:block tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
+                    <tal:block tal:repeat="action python:test(isFolder, folder_actions+obj_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template_id, 'selected', 'plain');
 			                   href action/url;">
