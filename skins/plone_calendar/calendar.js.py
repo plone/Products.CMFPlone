@@ -1,11 +1,19 @@
-<dtml-let last_modified="_.DateTime()-14"
-          expires="_.DateTime()+7" >
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/javascript' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
-</dtml-let>
+## Script (Python) "calendar.js"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=
+##
 
+last_modified=DateTime()-14
+expires=DateTime()+7
+context.REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/javascript' )
+context.REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )
+context.REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )
+context.REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )
 
 return r"""//<%@language = "JScript" %><%
 // JavaScript Calendar Component
