@@ -33,46 +33,47 @@ mproved docs:
    
   - "Zope 2.6.2 or later": 
      http://www.zope.org/Products 
-     http://zope.org/Products/Zope/2.6.4rc1 
+     http://zope.org/Products/Zope/2.6.4rc2 
+     http://zope.org/Products/Zope/2.7.0rc2
 
   - "CMF 1.4.2 or later": 
      http://cmf.zope.org/download 
      http://cmf.zope.org/download/CMF-1.4.2/CMF-1.4.2.tar.gz 
 
   - "DCWorkflow" 
-     Normally part of the CMF tarball 
+     Part of the CMF tarball 
      http://cvs.zope.org/Products/DCWorkflow/ 
      http://cvs.zope.org/Products/DCWorkflow/DCWorkflow.tar.gz?tarball=1 
 
   - "Formulator 1.4.0 or later": 
-     Normally part of the Plone tarball 
+     Part of the Plone tarball 
      http://www.zope.org/Members/infrae/Formulator 
      http://zope.org/Members/infrae/Formulator/Formulator-1.6.1/Formulator-1.6.1.tgz 
 
   - "CMFActionsIcons": 
-     Normally part of the Plone tarball 
+     Part of the Plone tarball 
      http://cvs.zope.org/Products/CMFActionIcons/ 
      http://cvs.zope.org/Products/CMFActionIcons/CMFActionIcons.tar.gz?tarball=1 
 
   - "CMFQuickInstallerTool": 
-     Normally part of the Plone tarball 
+     Part of the Plone tarball 
      http://sf.net/projects/collective 
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78893 
      http://prdownloads.sourceforge.net/collective/CMFQuickInstallerTool_1.4.tgz?download 
 
   - "GroupUserFolder 1.32 or later": 
-     Normally part of the Plone tarball 
+     Part of the Plone tarball 
      http://sf.net/projects/collective 
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=81576 
      http://prdownloads.sourceforge.net/collective/GroupUserFolder-1.32.tar.gz?download 
   
   - "BTreeFolder2": 
-     Normally part of the Plone tarball 
+     Part of the Plone tarball 
      http://cvs.zope.org/Products/BTreeFolder2/ 
      http://cvs.zope.org/Products/BTreeFolder2/BTreeFolder2.tar.gz?tarball=1 
   
   - "CMFFormController": 
-     Normally part of the Plone tarball 
+     Part of the Plone tarball 
      http://sf.net/projects/collective 
      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=90836 
 
@@ -86,43 +87,60 @@ mproved docs:
      Zope objects. 
      http://www.zope.org/Members/Caseman/ExternalEditor 
    
-   - "Placeless Translation Service": 
-      Normally part of the Plone tarball 
-      Required to support multilingual interface and access keys. Note that it is 
-      a bzip file, not gzip. 
-      http://plone.org/development/i18n/existing-translations 
-      http://www.sourceforge.net/projects/collective 
-      http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=91854 
-      http://sourceforge.net/project/shownotes.php?release_id=190716 
+  - "Placeless Translation Service": 
+     Part of the Plone tarball 
+     Required to support multilingual interface and access keys.
+     http://plone.org/development/i18n/existing-translations 
+     http://www.sourceforge.net/projects/collective 
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=91854 
        
-    - "I18NLayer": 
-       Supports multiple translations of Content 
-       http://www.sourceforge.net/projects/collective 
-       http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=91583    
+  - "I18NLayer": 
+     Supports multiple translations of Content 
+     http://www.sourceforge.net/projects/collective 
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=91583    
        
-    - "CMFSin": 
-       Supports inbound syndication of RSS and RDF 
-       http://sourceforge.net/projects/collective 
-       http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78774 
+  - "CMFSin": 
+     Supports inbound syndication of RSS and RDF 
+     http://sourceforge.net/projects/collective 
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78774 
         
-    - "PloneCollectorNG": 
-       Provides issue tracking 
-       http://sourceforge.net/projects/collective 
-       http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=96051 
+  - "PloneCollectorNG": 
+     Provides issue tracking 
+     http://sourceforge.net/projects/collective 
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=96051 
      
-    - "Archetypes": 
-       Enables the easy creation of new content types. It's a prerequisite for an 
-       increasing number of new Plone products 
-       http://sourceforge.net/projects/archetypes/ 
-       http://sourceforge.net/project/showfiles.php?group_id=75272&package_id=75683 
+  - "Archetypes": 
+     Enables the easy creation of new content types. It's a prerequisite for an 
+     increasing number of new Plone products 
+     http://sourceforge.net/projects/archetypes/ 
+     http://sourceforge.net/project/showfiles.php?group_id=75272&package_id=75683 
         
-    - "CMFNewsletter": 
-       Enables you to send out newsletters of site content 
-       http://plone.org/newsitems/News_Item.2004-01-23.6802201272 
-       http://sourceforge.net/projects/collective 
-       http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=107732 
+  - "CMFNewsletter": 
+     Enables you to send out newsletters of site content 
+     http://sourceforge.net/projects/collective 
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=107732 
 
+  - "CMFPhoto" + "CMFPhotoAlbum": 
+     A basic photo album and photo product with thumbnails autogeneration / scaling
+     http://sourceforge.net/projects/collective
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=76062
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=76063
 
+  - "TTWType": 
+     Create new types throught the web without any coding
+     http://sourceforge.net/projects/collective
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=104621
+
+  - "SpeedPack": 
+     Increase the speed of Plone, CMF and Zope from 20% to 100% plus (depends on
+     your system, setup, processor and wether the debug mode of zope is enabled)
+     http://sourceforge.net/projects/collective
+     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=107326
+
+  - "Epoz": 
+     Epoz allows you to edit Zope- or Plone-objects with a wysiwyg-editor.
+     http://zope.org/Members/mjablonski/Epoz
+ 
 =============================================================================== 
 
 
