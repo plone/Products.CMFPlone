@@ -8,7 +8,7 @@
 <ul tal:define="contentTypes allowed_types;
         filterOut here/getNotAddableTypes;
         size python:len(contentTypes);
-		folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());">
+        folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());">
 
     <tal:states define="review_state wf_state;
                         transitions workflow_actions;"
@@ -125,6 +125,10 @@
     <tal:layout define="field python:here.getField('layout');
                        vocab python:field.Vocabulary(here);"
          condition="python:len(vocab) > 1">
+              <li tal:condition="here/isDefaultPageInFolder">
+                  is default page
+              </li>
+
     <li tal:define="fieldvalue here/getLayout">
         <div class="menuPosition">
             <a href="#"
@@ -170,10 +174,6 @@
                          Select
                     </a>
               </li>
-              <li>
-                  toto
-              </li>
-
             </ul>
         </div>
     </li>
