@@ -21,7 +21,7 @@
                 tal:define="actions python:container.portal_actions.listFilteredActionsFor(o);">
 
                 <a href="#" tal:attributes="href python:container.getActionUrlById('view', actions['object'])">
-                    <span tal:replace="python:test(o.Title(), o.Title(), o.id)">
+                    <span tal:replace="python:test(o.Title(), o.Title(), o.id())">
                     Extended Calendar Product
                     </span>
                 </a>
