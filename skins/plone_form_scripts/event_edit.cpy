@@ -20,17 +20,19 @@ from DateTime import DateTime
 dt_start = DateTime(start_date)
 dt_end = DateTime(end_date)
 
+# Note: year/day and day/year hack copying below, due to bug in CMFCalendar
+# Further details in http://plone.org/collector/1950
 try:
     new_context = context.portal_factory.doCreate(context, id)
     new_context.edit( title=title
                     , description=description
                     , eventType=event_type
-                    , effectiveYear=dt_start.year()
+                    , effectiveDay=dt_start.year()
                     , effectiveMo=dt_start.month()
-                    , effectiveDay=dt_start.day()
-                    , expirationYear=dt_end.year()
+                    , effectiveYear=dt_start.day()
+                    , expirationDay=dt_end.year()
                     , expirationMo=dt_end.month()
-                    , expirationDay=dt_end.day()
+                    , expirationYear=dt_end.day()
                     , start_time='%2.2d:%2.2d'%(dt_start.h_24(), dt_start.minute())
                     , startAMPM=dt_start.ampm()
                     , stopAMPM=dt_end.ampm()
