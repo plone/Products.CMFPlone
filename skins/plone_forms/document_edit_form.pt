@@ -19,8 +19,7 @@
           name="edit_form"
           action="document_edit" 
           method="post" 
-          enctype="multipart/form-data"
-          tal:attributes="action string:${here/getId}/document_edit">
+          enctype="multipart/form-data" >
 
         <span class="legend">Document Details</span>    
       

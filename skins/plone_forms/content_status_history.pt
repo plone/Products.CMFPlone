@@ -51,8 +51,7 @@
           id="edit_form"
           name="edit_form" 
           method="post" 
-          action="content_status_modify"
-          tal:attributes="action string:${here/getId}/content_status_modify">
+          action="content_status_modify">
         
         <span class="legend">Publishing Details</span>
 

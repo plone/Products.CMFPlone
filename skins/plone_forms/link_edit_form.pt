@@ -18,10 +18,9 @@
     </p>
 
 	<form class="group"
-          name="edit_form" 
-          action="link_edit" 
-          method="post"
-          tal:attributes="action string:${here/getId}/link_edit">
+              name="edit_form" 
+              action="link_edit" 
+              method="post" >
         
         <span class="legend">Link Details</span>
 

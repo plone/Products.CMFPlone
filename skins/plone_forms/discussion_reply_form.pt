@@ -16,8 +16,8 @@
 
     <form class="group"
           name="edit_form"
-          method="post" action="" 
-          tal:attributes="action string:${here/absolute_url}/talkback">
+          method="post"
+	  action="talkback">
 
         <span class="legend">Comment Details</span>
 

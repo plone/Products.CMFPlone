@@ -20,7 +20,7 @@
     good enough, this search form is just if you want to be more specific.
     </p>
   
-  	<form class="group"
+    <form class="group"
           action="search" 
           method="post" 
           name="search" 

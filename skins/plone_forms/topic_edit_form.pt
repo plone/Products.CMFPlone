@@ -11,10 +11,9 @@
     <p> <!-- what topics are --> </p>
     
     <form class="group"
-          action="" 
+          action="topic_editTopic" 
           method="post"
-	  name="edit_form"
-	  tal:attributes="action string:${here/getId}/topic_editTopic">
+	   name="edit_form" >
 
         <span class="legend"> Topic Details </span>
 

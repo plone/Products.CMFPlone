@@ -23,9 +23,8 @@
         		    </p>
                     
                     <form name="reply"
-                          action=""
+                          action="discussion_reply_form"
                           method="post"
-                          tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
 			  tal:condition="python:test( getattr(here, 'isPortalContent', ''), here.isPortalContent, 0)" >
                           
                         <input class="standalone" type="submit" value="Reply to this" />

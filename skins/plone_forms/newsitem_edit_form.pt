@@ -17,8 +17,7 @@
     <form class="group"
           name="edit_form" 
           action="newsitem_edit" 
-          method="post"
-          tal:attributes="action string:${here/getId}/newsitem_edit">
+          method="post" >
 
         <span class="legend">News Details</span>
         

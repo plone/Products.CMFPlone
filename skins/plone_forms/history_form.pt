@@ -5,7 +5,9 @@
   <body>
    <div metal:fill-slot="main"
         tal:define="HistoryBatchSize python:request.get('HistoryBatchSize',20);first_trx python:request.get('first_transaction',0); last_trx python:20;history here/manage_change_history|nothing;">
-    <form action="#" method="POST" tal:attributes="action request/URL1"
+    <form action="#" 
+          method="POST"
+          tal:attributes="action here/absolute_url"
           tal:condition="history" tal:define="history_length python:len(history)" >
           <table width="100%" cellspacing="0" cellpadding="2" border="0">
    <table>

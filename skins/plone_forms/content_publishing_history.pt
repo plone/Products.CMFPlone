@@ -53,8 +53,7 @@
           id="edit_form"
           name="edit_form" 
           method="post" 
-          action="content_status_modify"
-          tal:attributes="action string:${here/getId}/folder_publish"
+          action="folder_publish"
 	  tal:define="physical_path python:'/'.join(here.getPhysicalPath())">
        
         <span class="legend">Publishing Details</span>

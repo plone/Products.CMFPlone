@@ -10,7 +10,9 @@
 
 <h2> Topic Criteria: <span tal:replace="here/getId" /> </h2>
 
-<form action="" method="post" tal:attributes="action here/absolute_url">
+<form action="" 
+      method="post" 
+      tal:attributes="action here/absolute_url">
 <span tal:define="criteria here/listCriteria">
     <span tal:repeat="criterion criteria">
         <span tal:define="editform string:criterion/${criterion/getEditForm}"
@@ -25,7 +27,8 @@
 </form>
 
 
-<form action="" method="post" tal:attributes="action string:${here/absolute_url}/topic_addCriterion">
+<form action="topic_addCriterion" 
+      method="post" >
 <h2> Add New Topic Criteria: </h2>
 <table class="FormLayout">
 <tr valign="top">

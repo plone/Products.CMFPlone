@@ -63,8 +63,7 @@
     <form class="group"
           name="edit_form" 
           action="metadata_edit" 
-          method="post"
-          tal:attributes="action string:${here/getId}/metadata_edit">
+          method="post">
 
         <span class="legend">Item Details</span>
 

@@ -19,8 +19,7 @@
           name="edit_form" 
           action="event_edit" 
           method="post" 
-          enctype="multipart/form-data"
-          tal:attributes="action string:${here/getId}/event_edit">
+          enctype="multipart/form-data">
 
     <span class="legend">Event Details</span>    
       

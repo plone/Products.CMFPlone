@@ -17,8 +17,7 @@
           name="edit_form" 
           action="file_edit" 
           method="post" 
-          enctype="multipart/form-data"
-          tal:attributes="action string:${here/getId}/file_edit">
+          enctype="multipart/form-data">
             
         <span class="legend">File details</span>
         <div class="row"

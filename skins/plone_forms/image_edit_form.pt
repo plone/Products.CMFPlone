@@ -20,9 +20,8 @@
           action="image_edit" 
           name="edit_form" 
           method="post" 
-          enctype="multipart/form-data"
-          tal:attributes="action string:${here/getId}/image_edit">
-    
+          enctype="multipart/form-data" >
+
         <span class="legend">Image Details</span>
         
         <div class="row" 

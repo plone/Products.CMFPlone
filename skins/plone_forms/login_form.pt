@@ -16,8 +16,7 @@ head over to the <a href="join_form">registration form</a> to become a member.
 
 <form class="group"
       action="logged_in" 
-      method="post"
-      tal:attributes="action python: container.portal_url()+'/logged_in'">
+      method="post">
 
 		<input type="hidden" name="came_from" value=""
 	       tal:condition="python:request.get('came_from', '')"

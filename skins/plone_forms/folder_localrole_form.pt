@@ -27,7 +27,7 @@
 
 		<p>Select one or more Members, and a role to assign.</p>
 	
-  		<form class="group"
+	<form class="group"
               method="post" 
               name="change_type" 
               action="folder_localrole_edit">
