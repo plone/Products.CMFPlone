@@ -10,6 +10,10 @@
       show login box if available
       </metal:block>
 
+      <metal:block metal:use-macro="here/calendar_slot/macros/calendarBox">
+      show calendar box if available
+      </metal:block>
+                  
       <metal:block metal:use-macro="here/main_left_column/macros/column">
       default left navigation column
       </metal:block>     
