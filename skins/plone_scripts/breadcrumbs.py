@@ -21,7 +21,7 @@ o=context.portal_url.getPortalObject()
 if published is not None and hasattr(published, 'getId'):
     published_id = published.getId()
 
-currentlyViewingFolderContents = (published_id == 'folder_contents')
+currentlyViewingFolderContents = (published_id in ['folder_contents', 'folderContents'])
 path_seq = []
 
 # add breadcrumbs for directories between the root and the published object
@@ -34,7 +34,7 @@ for id in relative_ids:
     if id in dont_show: # I'm sorry ;(
         # talkbacks would clutter our precious breadcrumbs
         continue
-        
+
     if o.isPrincipiaFolderish and \
       currentlyViewingFolderContents and \
       checkPermission('List folder contents', o):
@@ -44,16 +44,21 @@ for id in relative_ids:
         # and if every object is derived from PortalObject, it
         # must have a method called view, so I think its pretty
         # safe to make this assumption, and adds a speed increase
-        if id != 'index_html':
+        if str(id) != 'index_html':
             path_seq.append( ( o.title_or_id(), o.absolute_url()+'/view' ) )
 
 # if the published object was not added to breadcrumbs above and
 #    it is not a view template, add a breadcrumb for it
 
+# under some circunstances (read ZWiki :P) 'published' may
+# be a method. A method doesnt have title_or_id, and even if it had
+# it would not be accessible from here.
+
 if published != o and not \
     currentlyViewingFolderContents and \
-    published_id not in  ('view', 'index_html'):
-        url = published.absolute_url() + '/view'
-        path_seq.append( (published.title_or_id(), url) )
+    published_id not in  ('view', 'index_html') and \
+    hasattr(published, 'title_or_id'):
+      url = published.absolute_url() + '/view'
+      path_seq.append( (published.title_or_id(), url) )
 
 return path_seq
