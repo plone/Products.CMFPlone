@@ -4,9 +4,18 @@
 
 # golly this could be index.html
 # return context, ['index.html',]
-page = 'index_html'
-if page in context.objectIds():
-    return context, [page, ]
+props = context.portal_properties.site_properties
+pages = ['index_html', ]
+if props.hasProperty('default_page'):
+    pages = props.getProperty('default_page')
+
+if pages:
+    # loop through each page given and 
+    # return it as the default, if it is found
+    exp = context.aq_explicit
+    for page in pages:
+        if hasattr(exp, page):
+            return context, [page, ]
 
 # what if the page isnt found?
 # call the method on the folder, if you
