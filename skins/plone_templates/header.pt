@@ -61,6 +61,13 @@
 <div metal:define-macro="portal_header"
      tal:define="portal_url here/portal_url" >
 
+     <tal:block tal:condition="not: actions|nothing">     
+         <comment tal:define="global actions here/portal_actions/listFilteredActionsFor"
+                  tal:replace="nothing" >
+             This is here just in case actions is not defined.  This would happen if you were calling from a DTML Document   
+         </comment>
+     </tal:block>
+     
         <div class="top">
 
             <div class="searchBox">

@@ -5,6 +5,8 @@
       lang="en-US">
       
 <dtml-call "REQUEST.set('portal_url', portal_url())">
+
+
 <dtml-var "macro_renderer(template='here/header', macro='html_header')" >
 
 <body>
@@ -21,18 +23,16 @@
                    
                     <dtml-var "macro_renderer(template='here/main_left_column', macro='column')" >
 
-		    <dtml-var "macro_renderer(template='here/main_right_column', macro='column')" >
-            
                 </td>
                 
                 
                 <td class="main" >
 
                     <dtml-let actions="portal_actions.listFilteredActionsFor(this())"
-                              show_border="showEditableBorder()">
+                              show_border="showEditableBorder(this().getId(), actions=actions)">
 
                     <dtml-if show_border>
-                        <dtml-var "macro_renderer(template='here/portal_tabs', macro='contentTabs')" >
+                        <dtml-var "macro_renderer(template='here/main_template', macro='contentTabs')" >
                         
                         <div class="contentBar">
 			&nbsp;
@@ -56,3 +56,4 @@
                            * this td
                            * this tr, and table
                         </dtml-comment>
+

@@ -50,7 +50,14 @@ Header stuff
                 
                 <div class="contentTabs" metal:define-macro="contentTabs"
                      tal:define="obj_type python:here.getTypeInfo().id;">
-    
+   
+                    <tal:block tal:condition="not:actions|nothing">
+                        <comment tal:define="global actions here/portal_actions/listFilteredActionsFor"
+                                 tal:replace="nothing">
+                          In case we are called from DTML
+                        </comment>
+                    </tal:block>
+                    
                     <span tal:define="global obj_actions actions/object;
                                       global wf_actions actions/workflow;
 				      global folder_actions actions/folder;
