@@ -80,9 +80,13 @@
     <tal:fixme tal:replace="nothing">
       <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
       <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
-    <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
-    <link rel="author" href="" title="Author information" tal:attributes="href string:author" />
+      <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
+      <link rel="author" href="" title="Author information" tal:attributes="href string:author" />
     </tal:fixme>
+
+    <link rel="alternate" href="" title="RSS 1.0" type="application/rss+xml"  
+          tal:condition="python: syntool.isSyndicationAllowed(here)"
+          tal:attributes="href string:$here_url/RSS" />
 
     <link rel="up" href="" title="Up one level"
           tal:define="parent python:here.navigationParent(here, template_id)"
