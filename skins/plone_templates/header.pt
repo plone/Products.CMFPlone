@@ -1,19 +1,16 @@
+<metal:block use-macro="here/global_defines/macros/defines" />
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       lang="en"
-      i18n:domain="plone"
-      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                  tabindex python:Iterator();">
+      i18n:domain="plone">
 
   <head metal:define-macro="html_header"
-        tal:define="ztu ztu|modules/ZTUtils;
-                    skinrequest python:request.get(here.portal_skins.getRequestVarname(), '');">
+        tal:define="skinrequest python:request.get(here.portal_skins.getRequestVarname(), '');">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
           tal:define="charset site_properties/default_charset|string:utf-8"
           tal:attributes="content string:text/html;;charset=${charset}" />
 
-    <title tal:define="portal_title portal_properties/title;
-                       here_title here/title_or_id;
+    <title tal:define="  here_title here/title_or_id;
                        here_id here/getId;
                        template_title template/title_or_id;
                        here_title python: portal_title != here_title and here_title or template_title;
@@ -47,10 +44,8 @@
            tal:content="string: @import url($portal_url/plone.css);">
     </style>
 
-    <!-- RTL style sheet for right-to-left languages 
-         XXX: This should only be inserted if PlacelessTranslationService 
-              reports back an RTL language (requires PTS change) -->
-    <style type="text/css" media="screen"
+    <!-- RTL style sheet for right-to-left languages -->
+    <style type="text/css" media="screen" tal:condition="isRTL"
            tal:content="string: @import url($portal_url/plone-rtl.css);">
     </style>
 
