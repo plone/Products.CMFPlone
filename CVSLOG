@@ -1,3 +1,87 @@
+2003-10-28 22:15  shh42
+
+	* tests/testPortalCreation.py (Plone-2_0-branch): Create default
+	  portal content only if a test requires it.
+
+2003-10-28 22:13  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): Yet again reduce
+	  portal creation time by omitting index_html from the Members
+	  folder.
+
+2003-10-28 22:12  dpunktnpunkt
+
+	* setup/dependencies.py: The CMF version check failed with an
+	  exception for CMF 1.4.1 because of float('1.4.1')
+
+2003-10-28 20:48  tiran
+
+	* CREDITS.txt (Plone-2_0-branch): added myself
+
+2003-10-28 20:35  shh42
+
+	* tests/testContentSecurity.py (Plone-2_0-branch): Rectified a
+	  comment.
+
+2003-10-28 20:32  shh42
+
+	* tests/: testContentTypeScripts.py, testPloneTestCase.py
+	  (Plone-2_0-branch): Watch me being a total sucker for consistency
+	  ;)
+
+2003-10-28 20:19  shh42
+
+	* tests/testCatalogTool.py (Plone-2_0-branch): Move
+	  loginPortalOwner() from TestCatalogTool to base class.
+
+2003-10-28 20:19  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): - Introduce
+	  portal_name and portal_owner constants for cleanlyness.  - Move
+	  loginPortalOwner() from TestCatalogTool to base class.
+
+2003-10-28 19:27  buehlmann
+
+	* skins/plone_portlets/calendar_slot.pt (Plone-2_0-branch): the
+	  separator between month and day was on the wrong side of the day
+	  field.
+
+2003-10-28 18:30  runyaga
+
+	* HISTORY.txt (Plone-2_0-branch): add WARNING about AndyM's
+	  persistent refernce holding
+
+2003-10-28 14:50  tiran
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  <lurker> Tiran: top/bottom buttons have been vetoed by runyaga...
+
+2003-10-28 14:34  tiran
+
+	* skins/: plone_images/arrowBottom.gif, plone_images/arrowTop.gif,
+	  plone_templates/folder_contents.pt (Plone-2_0-branch): finished
+	  ordered folder ui: added top/bottom arrows. Could someone check
+	  out wether the two icons are beautiful enough for plone? :)
+
+2003-10-28 13:20  plonista
+
+	* skins/plone_prefs/prefs_error_log_setProperties.py
+	  (Plone-2_0-branch): Fix for error log preference setting failure
+
+2003-10-28 05:35  tiran
+
+	* PloneFolder.py (Plone-2_0-branch): manage_delObjects: fixed ftp
+	  deletion. ids is converted to a list if it's only one id
+
+2003-10-28 05:11  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2003-10-28 05:09  tiran
+
+	* LargePloneFolder.py (Plone-2_0-branch): use manage_delObjects
+	  from BasePloneFolder to allow deletion with ftp
+
 2003-10-28 03:37  tiran
 
 	* MembershipTool.py (Plone-2_0-branch): createMemberarea: member_id
