@@ -64,8 +64,8 @@
             <!-- Navigation -->
             <div metal:use-macro="here/batch_macros/macros/navigation" />
             <metal:block metal:define-macro="folder_listing"
-                              tal:define="locked here/lock_icon.gif;
-                                          pencil_icon here/edit.gif;
+                              tal:define="locked portal/lock_icon.gif;
+                                          pencil_icon portal/edit.gif;
                                           use_folder_contents site_properties/use_folder_contents;
                                           filterOut python:('Favorite',);
                                           filterValues decodedFilter/keys | nothing;
@@ -194,7 +194,7 @@
                                                         item.absolute_url()+'/'+action);">
 
                             <a href="#" tal:attributes="href url">
-                                <img alt="" tal:attributes="src python:item.getIcon(1)"
+                                <img alt="" tal:attributes="src string:$portal_url/${item/getIcon}"
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
                             <tal:block tal:condition="python:test(site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
