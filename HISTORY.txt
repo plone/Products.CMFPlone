@@ -6,6 +6,12 @@ Plone 2.0 - Fyuti
 
     RC3
 
+    - [FEATURE] Added 'sharing' action for all nonFolderish types in portal_types
+      If you have a problem with this bring it up w/ alex or dannyb
+
+    - If you have any object actions besides 'view' you will not get the
+      greenborder.  before we suppressed if it was 'view' or 'folderContents'
+   
     - Permissions changes.  The folder_buttons, copy,paste,rename,delete,cut
       were protected by CMFCorePermission.ModifyPortalContent which is
       incorrect.  Moved it to AccessControl.Permissions.copy_or_move.  I am

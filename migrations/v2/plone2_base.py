@@ -82,7 +82,7 @@ def make_plone(portal):
     upgradePortalFactory(portal)
 
     #Add State tabs to portal_types individually instead of globally
-    addStateActionToTypes(portal)
+    addActionsToPortalTypes(portal)
 
     #Add Form Controller - yay for features!
     addFormController(portal)
@@ -401,7 +401,7 @@ def makePortalRootPortalType(portal):
     use_folder_tabs=sprops.getProperty('use_folder_tabs')
     sprops._updateProperty('use_folder_tabs', use_folder_tabs+('Plone Site',))
 
-def addStateActionToTypes(portal):
+def addActionsToPortalTypes(portal):
     """ Deprecated.  We are now using a drop-down box on the contentBar """
     typesTool=portal.portal_types
     for ptype in typesTool.objectValues():
@@ -411,6 +411,13 @@ def addStateActionToTypes(portal):
                  condition='python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())',
                  permission='View',
                  category='object_tabs' )
+        if ptype.getId() not in ('Folder', 'Plone Site'):
+            ptype.addAction('local_roles',
+                     name='Sharing',
+                     action="string:${folder_url}/folder_localrole_form",
+                     condition='',
+                     permission='Manage properties',
+                     category='object')
 
 def setupExtEditor(portal):
     """ sets the ext_editor property in site properties if the ext editor is available"""

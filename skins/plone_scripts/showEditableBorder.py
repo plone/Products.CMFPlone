@@ -36,7 +36,7 @@ if REQUEST.has_key('enable_border'): #short circuit
     return 1
 
 for action in actions.get('object', []):
-    if action.get('id', '')!='view' and action.get('id', '')!='folderContents':
+    if action.get('id', '')!='view':
         return 1
 
 if template_id is None and hasattr(REQUEST['PUBLISHED'], 'getId'):
