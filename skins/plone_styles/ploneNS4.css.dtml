@@ -2,21 +2,41 @@
 ** Plone style sheet for Netscape 4 and other non-CSS2-compatible browsers.
 ** Alexander Limi, 2002 - http://limi.net
 **
-** Tip: don't use margins or floats in NS4 - it freaks out.
 */
 
 /*
 <dtml-with stylesheet_properties>
 */
 
+/* Columns for Netscape 4 */
 
+#columns{
+}
 
+#columns #left {
+    float: left;
+    clear: left;
+    width: 15%;
+    padding: 2em 0em 1em 2em;
+}
 
+#columns #right {
+    float: left;
+    clear: right;
+    width: 15%;
+    padding: 2em 2em 1em 0em;
+}
 
+#columns .main {
+    float: left;
+    clear: none;
+    width: 62%;
+    padding: 0.5em 2em 1em 2em;
+}
 
 /* Basic Elements */
 body, td, th, div, span, table { /*font: <dtml-var mainFont>*/ }
-body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; }
+body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; font: <dtml-var mainFont>; }
 a { text-decoration: none; color: &dtml-mainLinkColor;; }
 p { /*font: <dtml-var mainFont>*/ }
 p a { text-decoration: underline; }
@@ -32,28 +52,34 @@ code { }
 pre { padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
 
 /* Structural elements */
-div.top { background: &dtml-topBackground;; width: 100%; }
-div.searchBox { float: right; text-align: right; }
-div.tabs { padding: 0 0 0 1em; margin: 0; }
-div.tabs a { background: &dtml-mainTabBackgroundNotSelected;; color: &dtml-mainTabFontColor;; font-weight: &dtml-mainTabFontWeight;; }
-div.tabs a.selected { background: &dtml-mainTabBackground;; color: &dtml-mainTabFontColorSelected;; font-weight: &dtml-mainTabFontWeight;; }
-div.personalBar { text-align: right; margin: 0; }
-div.personalBar a{ font-weight: &dtml-mainTabFontWeight;; }
-div.pathBar { padding: 0 0 0 1em; margin: 0;}
+
+#portalTabs li, #personalbar li, #contentTabs li {
+  display: inline;
+  display: none;
+}
+
+div#top { background: &dtml-topBackground;; width: 100%; }
+div#searchBox { float: right; text-align: right; }
+ul#portalTabs { padding: 0 0 0 1em; margin: 0; }
+ul#portalTabs a { background: &dtml-mainTabBackgroundNotSelected;; color: &dtml-mainTabFontColor;; font-weight: &dtml-mainTabFontWeight;; }
+ul#portalTabs a.selected { background: &dtml-mainTabBackground;; color: &dtml-mainTabFontColorSelected;; font-weight: &dtml-mainTabFontWeight;; }
+ul#personalBar { text-align: right; margin: 0; }
+ul#personalBar a{ font-weight: &dtml-mainTabFontWeight;; }
+div#pathBar { padding: 0 0 0 1em; margin: 0;}
 table.columns { width: 100%; }
 table.columns td.left { vertical-align: top; padding-top: 2em; width: 15%; }
 table.columns td.main { vertical-align: top; padding-top: 2em; width: 70%; }
 table.columns td.right { vertical-align: top; padding-top: 2em; width: 15%; }
-div.contentTabs { padding: 0;}
-div.contentTabs a { background: &dtml-contentTabBackgroundNotSelected;; color: &dtml-contentTabFontColor;; font-weight: &dtml-contentTabFontWeight;; }
-div.contentTabs a.selected { background: &dtml-contentTabBackground;; color: &dtml-contentTabFontColorSelected;; font-weight: &dtml-contentTabFontWeight;; }
-div.contentTabs a:hover { background-color: &dtml-contentTabBackground;; }
-div.contentBar {  }
-div.document { background: &dtml-contentBackground;; }
-div.editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
-div.message { background: &dtml-messageBackground;; font: &dtml-messageFont;; padding: 0.5em 1em; vertical-align: middle; }
-.description { /*font: <dtml-var mainFont>;*/ display: block; }
-.footer { float: none; padding: 0em 0em 0em 0em; text-align: center; }
+#contentTabs { padding: 0;}
+#contentTabs a { background: &dtml-contentTabBackgroundNotSelected;; color: &dtml-contentTabFontColor;; font-weight: &dtml-contentTabFontWeight;; }
+#contentTabs a.selected { background: &dtml-contentTabBackground;; color: &dtml-contentTabFontColorSelected;; font-weight: &dtml-contentTabFontWeight;; }
+#contentTabs a:hover { background-color: &dtml-contentTabBackground;; }
+#contentBar {  }
+#document { background: &dtml-contentBackground;; }
+#editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
+div.message { background: &dtml-messageBackground;; font: <dtml-var messageFont>; padding: 0.5em 1em; vertical-align: middle; }
+#description { /*font: <dtml-var mainFont>;*/ display: block; }
+div#footer { float: none; padding: 0em 0em 0em 0em; text-align: center; }
 
 /* Widgets */
 div.row {  }
@@ -120,3 +146,4 @@ table.calendar td.todaynoevent { border-collapse: collapse; border: 2px solid #F
 /*
 </dtml-with>
 */
+

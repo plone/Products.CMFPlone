@@ -15,7 +15,6 @@
         </a>
     </li>
     </tal:actions>
-    <div class="clear"></div>
 </ul>
 
 <div metal:define-macro="content_bar"
@@ -44,3 +43,4 @@
     (expired)
     </span>
 </div>
+

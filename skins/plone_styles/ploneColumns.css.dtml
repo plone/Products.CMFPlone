@@ -1,31 +1,66 @@
-/* Experimental table-less column layout that also works with NS4. Not in use (yet :). */
+/* <dtml-with stylesheet_properties> 
+**
+** Column Layout for CSS2 capable Browsers
+** Based on http://www.redmelon.net/tstme/3colpercent/ from Douglas Livingstone.
+**
+*/
 
-.columns{
+div#columns {
+    text-align: center;
+    padding: 0;
+}
+div#columns div#fixwrap {
+    text-align: justify;
+}
+div#columns div#main-left {
+    float: left;
+    width: 83%;
+    clear: none;
+}
+div#columns div#main-left div.main {
+    float: right;
+    width: 80%;
+    clear: none;
+    padding: 0;
+}
+div#columns div#main-left div#left {
+    float: left;
+    width: 20%;
+    clear: none;
+    padding: 0;
+}
+div#columns div#right {
+    width: 17%;
+    float: right;
+    clear: none;
+    padding: 0;
 }
 
+/* padding - thanks to the w3c box model :P */
 
-.columns .left{
-	float				: left;
-	width				: 17%;
+div#columns div#main-left div.main div.padding {
+    padding: 0.5em 2em 1em 2em;
+}
+div#columns div#main-left div#left div.padding {
+    padding: 2em 0em 1em 2em;
+}
+div#columns div#right div.padding {
+    padding: 2em 2em 1em 0em;
 }
 
-.columns .right{
-   width : 17%;
-   float : right;   
+/* hide columns */
+
+div.hideleft div#fixwrap div#main-left div.main,
+div.hideleft div#fixwrap div#main-left div#contentwrapper,
+div.hideright div#fixwrap div#main-left,
+div.hideboth div#fixwrap div#main-left,
+div.hideboth div#fixwrap div#main-left div.main {
+    width: 100%;
 }
-
-.columns .main{
-   float:left;
-   width : 64%
-	}
-
-.columns .innermain{
-   float : none;
-   padding : 0 25px;
-   margin: 1px;
-
+div.hideright div#fixwrap div#main-left div#left {
+    width: 20%;
 }
-
-
-.columns .innermain a:link{
+div.hideright div#fixwrap div#main-left div.main {
+    width: 80%;
 }
+/* </dtml-with> */

@@ -18,25 +18,6 @@
 
 /* <dtml-with stylesheet_properties> (do not remove this :) */
 
-/* The column layout: */
-table#columns {
-    width: 100%;
-}
-table#columns td#left {
-    vertical-align: top;
-    width: 15%;
-    padding: 2em 0em 1em 2em;
-}
-table#columns td.main {
-    vertical-align: top;
-    padding: 0.5em 2em 1em 2em;
-    margin: 0;
-}
-table#columns td#right {
-    vertical-align: top;
-    width: 15%;
-    padding: 2em 2em 1em 0em;
-}
 /* The basic elements: */
 body {
     font: <dtml-var mainFont>;
@@ -110,8 +91,9 @@ h2 a,
 h3 a,
 h4 a,
 h5 a,
-h6 a { color: &dtml-headingFontColor; ! important; }
-
+h6 a {
+    color: &dtml-headingFontColor; ! important; 
+}
 
 h1 {
     font-size: &dtml-headingSize1;;
@@ -314,6 +296,7 @@ ul#portalTabs {
 }
 ul#portalTabs li {
     display: inline;
+    line-height: 1.2em;
 }
 ul#portalTabs li a {
     /* The normal, unselected tabs. They are all links */
@@ -325,8 +308,6 @@ ul#portalTabs li a {
     font-weight: &dtml-mainTabFontWeight;;
     height: 1.2em;
     margin-right: 0.5em;
-    position: relative;
-    top: 2px; /* Cope with odd rounding bugs */
     padding: 0em 2em;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
@@ -351,7 +332,7 @@ ul#personalBar {
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    line-height: 1em;
+    line-height: 1.2em;
     color: &dtml-mainFontColor;;
     padding: 0em 3em 0em 3em;
     margin: 0;
@@ -363,12 +344,12 @@ ul#personalBar li {
     display: inline;
 }
 ul#personalBar li#personalBar-user a {
-    background: transparent url(user.gif) top left no-repeat;
+    background: transparent url(user.gif) center left no-repeat;
     padding-left: 15px;
 }
     
 ul#personalBar li a {
-    background: transparent url(linkOpaque.gif) top left no-repeat;
+    background: transparent url(linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
@@ -398,6 +379,7 @@ ul#contentTabs {
     background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
     padding-left: 1em;
+    line-height: 1.2em;
     margin-top: 1em;
     margin-left: 0;
     /* white-space: nowrap; */
@@ -415,8 +397,7 @@ ul#contentTabs li {
     height: 1.2em;
     margin-right: 0.5em;
     padding: 0em 2em;
-    position: relative;
-    top: 2px; /* Cope with odd rounding bugs */
+    line-height: 1.2em;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
     z-index: 1;
@@ -474,7 +455,7 @@ div.message {
     vertical-align: middle;
 }
 div.message a {
-	color: &dtml-mainFontColor;;
+    color: &dtml-mainFontColor;;
     text-decoration: underline;
 }
 
@@ -929,6 +910,6 @@ table.calendar td.todaynoevent {
 
 
 
-
 /* </dtml-with> */
+
 

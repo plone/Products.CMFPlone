@@ -9,7 +9,7 @@
 <head metal:use-macro="here/header/macros/html_header">
     <metal:headslot fill-slot="head_slot"
                tal:define="language here/Language;
-	                       lang language | site_properties/default_language;
+                           lang language | site_properties/default_language;
                            charset site_properties/default_charset|string:utf-8">
 
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)" />
@@ -33,9 +33,6 @@
 <body>
 
 <div id="top" i18n:domain="plone">
-
-    <a class="skipnav"
-       href="#documentContent">Skip to content</a>
 
     <div metal:use-macro="here/global_elements/macros/skin_tabs">
         The skin switcher tabs. Based on which role you have, you
@@ -68,79 +65,103 @@
     </div>
 </div>
 
-<!-- The wrapper table. It contains the three columns. -->
-<table id="columns"><tbody><tr>
+<div class="clear"></div>
 
-    <!-- start of the left (by default at least) column -->
-    <td id="left"
-        tal:condition="slots_mapping/left">
-        <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
-        This instruction gets the portlets (boxes) for the left column.
-        </metal:leftportlets>
-    </td>
-    <!-- end of the left (by default at least) column -->
+<!-- The wrapper div. It contains the three columns. -->
+<div id="columns" tal:attributes="class string:${hidecolumns}">
 
+    <!-- start of the IE-fix wrap -->
+    <div id="fixwrap">
 
-    <!-- start of main content block -->
-    <td class="main"
-        id="contentWrapper"
-         tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions )">
+    <!-- start of the main and left columns -->
+    <div id="main-left">
 
-        <metal:ifborder tal:condition="show_border" >
-            <div metal:use-macro="here/view_tabs/macros/content_tabs">
-            The content tabs (View, Edit, Properties, Workflow)
+        <!-- start of main content block -->
+        <div class="main"
+            id="contentWrapper"
+            tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions )">
+
+            <div class="padding">
+
+                <metal:ifborder tal:condition="show_border" >
+                    <div metal:use-macro="here/view_tabs/macros/content_tabs">
+                        The content tabs (View, Edit, Properties, Workflow)
+                    </div>
+
+                    <div metal:use-macro="here/view_tabs/macros/content_bar">
+                        The content bar
+                    </div>
+                </metal:ifborder>
+
+                <div id="documentContent"
+                     tal:attributes="class python:test(show_border,'editableDocument','document')">
+
+                    <div metal:use-macro="here/global_elements/macros/portal_message">
+                        Portal status message
+                    </div>
+
+                    <div metal:use-macro="here/document_actions/macros/document_actions">
+                        Document actions (print, sendto etc)
+                    </div>
+
+                    <metal:header metal:define-slot="header" tal:content="nothing">
+                        Visual Header
+                    </metal:header>
+
+                    <metal:bodytext metal:define-slot="main" tal:content="nothing">
+                        Page body text
+                    </metal:bodytext>
+
+                    <metal:sub metal:define-slot="sub">
+                        <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                    </metal:sub>
+
+                </div>
+
             </div>
 
-            <div metal:use-macro="here/view_tabs/macros/content_bar">
-            The content bar
-            </div>
-        </metal:ifborder>
-
-
-        <div id="documentContent"
-             tal:attributes="class python:test(show_border,'editableDocument','document')">
-
-	    <a name="documentContent"></a>
-
-            <div metal:use-macro="here/global_elements/macros/portal_message">
-                Portal status message
-            </div>
-
-            <div metal:use-macro="here/document_actions/macros/document_actions">
-                Document actions (print, sendto etc)
-            </div>
-
-            <metal:header metal:define-slot="header" tal:content="nothing">
-                Visual Header
-            </metal:header>
-
-            <metal:bodytext metal:define-slot="main" tal:content="nothing">
-                Page body text
-            </metal:bodytext>
-
-            <metal:sub metal:define-slot="sub">
-                <metal:discussion use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-            </metal:sub>
         </div>
-    </td>
-    <!-- end of main content block -->
+        <!-- end of main content block -->
+
+        <!-- start of the left (by default at least) column -->
+        <div id="left"
+            tal:condition="slots_mapping/left">
+            <div class="padding">
+                <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
+                    This instruction gets the portlets (boxes) for the left column.
+                </metal:leftportlets>
+            </div>
+        </div>
+        <!-- end of the left (by default at least) column -->
+
+    </div>
+    <!-- end of the main and left columns -->
 
     <!-- start of right (by default at least) column -->
-    <td id="right"
+    <div id="right"
         tal:condition="slots_mapping/right">
-        <div metal:use-macro="here/portlets_fetcher/macros/right_column">
-        This instruction gets the portlets (boxes) for the right column.
+        <div class="padding">
+        <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
+            This instruction gets the portlets (boxes) for the right column.
+        </metal:rightportlets>
         </div>
-    </td>
+    </div>
     <!-- end of the right (by default at least) column -->
 
-</tr></tbody></table>
+    </div>
+    <!-- end of the IE-fix wrap -->
+</div>
+
+<div class="clear"></div>
 <!-- end column wrapper -->
 
+<hr class="netscape4" />
+
 <div id="footer" metal:use-macro="here/footer/macros/portal_footer">
-    Footer
+  Footer
 </div>
 
 </body>
 </html>
 </metal:page>
+

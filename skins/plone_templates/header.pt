@@ -28,13 +28,12 @@
 
     <!-- Basic crude style for Netscape4.x - This can be removed
          if you don't want the special NS4 look - it will still work,
-         just be plain text instead.
+         just be plain text instead. Column layout for Netscape4.x included -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
-     -->
 
-    <!-- Column layout stylesheet. Even works with Netscape4 without using tables. Experimental, not enabled.
-    <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneColumns.css" />
-    -->
+    <!-- Column style sheet. -->
+    <style type="text/css" media="all" tal:condition="exists: portal/ploneColumns.css"
+           tal:content="string:@import url($portal_url/ploneColumns.css);"></style>
 
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="screen"
@@ -67,7 +66,6 @@
     <metal:block metal:define-slot="rel_slot" tal:replace="nothing">
     Inserts rel links specified from a page.
     </metal:block>
-
 
     <!-- Disable IE6 image toolbar -->
     <meta http-equiv="imagetoolbar" content="no" />
@@ -109,3 +107,4 @@
 </head>
 
 </html>
+
