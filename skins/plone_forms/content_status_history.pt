@@ -132,7 +132,7 @@
             <div class="field">
                 <div tal:define="inputname  string:effective_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:test(here.effective_date, here.effective_date, 'None');
+                                 inputvalue here/EffectiveDate | nothing;
                                  onfocus string:formtooltip('effective_date_help',1);
                                  onblur string:formtooltip('effective_date_help',0);
                                  tabindex tabindex/next;">
@@ -157,7 +157,7 @@
             <div class="field">
                 <div tal:define="inputname  string:expiration_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:test(here.expiration_date, here.expiration_date, 'None');
+                                 inputvalue here/ExpirationDate | nothing;
                                  onfocus string:formtooltip('expiration_date_help',1);
                                  onblur string:formtooltip('expiration_date_help',0);
                                  tabindex tabindex/next;">

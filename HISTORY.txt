@@ -50,7 +50,7 @@
     - Issue 204 fixed
     - Sigve Tjora fixed the migration machinery - incredible job! 
       CMFPlone/Extensions/migration.py
-      Alan fixed it so Ownership is carried over properly and reindexes newsite 
+      Ownership is carried over properly and reindexes newsite 
       after migration
     - portal_status_message is shown when a object is created, type_name has 
       been created.
@@ -65,6 +65,7 @@
     - <shiver> added more logic to breadcrumbs so you can see templates i.e. 
       search tab will show
       home >> search form - fixes issue 211 </shiver>
+    - content_status_history.pt now uses Effective/Expiration data accessors
 
 1.0 alpha4
     - publishing now works without javascript. #202
