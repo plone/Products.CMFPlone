@@ -33,7 +33,6 @@ from AccessControl import ClassSecurityInfo
 from Acquisition import aq_inner, aq_parent, aq_base
 from ComputedAttribute import ComputedAttribute
 from webdav.NullResource import NullResource
-from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 __version__='1.1'
@@ -118,7 +117,7 @@ class PloneSite(CMFSite, OrderedContainer):
                 # Very likely a WebDAV client trying to create something
                 return ReplaceableWrapper(NullResource(self, 'index_html'))
         # Acquire from skin.
-        _target = SkinnableObjectManager.__getattr__(self, 'index_html')
+        _target = self.__getattr__('index_html')
         return ReplaceableWrapper(aq_base(_target).__of__(self))
 
     index_html = ComputedAttribute(index_html, 1)
