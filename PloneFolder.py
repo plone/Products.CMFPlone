@@ -3,7 +3,7 @@ from Products.CMFCore.Skinnable import SkinnableObjectManager
 from Products.CMFCore.CMFCorePermissions import View, ManageProperties, ListFolderContents
 from Products.CMFCore.CMFCorePermissions import AddPortalFolders, AddPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
-from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo
+from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo, Unauthorized
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base
 from Globals import InitializeClass
@@ -92,10 +92,10 @@ class PloneFolder ( SkinnedFolder ):
             v = obj
             try:
                 if id[0]=='.' and suppressHiddenFiles:
-                    raise 'Unauthorized'
+                    raise Unauthorized(id, v)
                 if getSecurityManager().validate(self, self, id, v):
                     l.append(obj)
-            except "Unauthorized":
+            except Unauthorized:
                 pass
         return l
 
