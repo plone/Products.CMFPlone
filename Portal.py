@@ -62,15 +62,14 @@ class PloneGenerator(Portal.PortalGenerator):
                 typeObj._setPropValue('immediate_view', view)
 
     def customizePortalOptions(self, p):
-        mt='portal_membership'
-        if hasattr(p, mt):
-            p.manage_delObjects( 'portal_membership' )
-	    p.manage_delObjects( 'portal_workflow' )
-            addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
-            addPloneTool('Plone Membership Tool', None)
-            addPloneTool('CMF Workflow Tool', None) 
-            addPloneTool('CMF Formulator Tool', None)
-            addPloneTool('Plone Utility Tool', None)
+        p.manage_delObjects( 'portal_membership' )
+	p.manage_delObjects( 'portal_workflow' )
+        addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
+        addPloneTool('Plone Membership Tool', None)
+        addPloneTool('CMF Workflow Tool', None) 
+        addPloneTool('CMF Formulator Tool', None)
+        addPloneTool('Plone Utility Tool', None)
+
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=1
         p.portal_membership.setMemberareaCreationFlag()
