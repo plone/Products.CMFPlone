@@ -312,6 +312,12 @@ def addNewActions(self, portal):
                  condition='python:portal.portal_workflow.getTransitionsFor(object)',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
+    at.addAction('local_roles',
+                 name='Sharing',
+                 action="string:${object_url}/folder_localrole_form",
+                 condition='',
+                 permission='Manage properties',
+                 category='object')
 
 def addSiteActions(self, portal):
     # site_actions which have icons associated with them as well
