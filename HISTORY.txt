@@ -4,6 +4,22 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3500 - Modified .metadata files to
+      make FormController do something appropriate when someone submits a
+      for using the return key in IE.
+
+    - Fixed http://plone.org/collector/3406 - Did a big makeover of 
+      FactoryTool.py that fixes a lot of permissions problems.  Objects are
+      now created after traversal so their owner and creator are set
+      correctly.  Parent folder permissions are copied to the TempFolder in
+      which temporary objects are created, so temp object creation should
+      behave the same way as regular object creation.  ExternalMethods and 
+      scripts called with relative links are handed off to during traversal, 
+      so mapply headaches don't occur anymore.  doCreate method now checks 
+      for and calls if present an object method called 
+      'manage_afterPortalFactoryCreate' so any extra post-instantiation 
+      initialization can take place. [geoffd]
+
     - Fixed http://plone.org/collector/3458 - Images in folder_contents and 
       navtree have wrong paths in VirtualHosted sites. It worked anyway
       because of acquisition, but is correct now. Thanks to mjm for the patch.
