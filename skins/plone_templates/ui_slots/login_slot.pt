@@ -15,15 +15,15 @@
             <td colspan="2">
 
                 <form action="logged_in" method="post"
-                      tal:attributes="action string:$portal_url/logged_in">
+                      tal:translate="action string:$portal_url/logged_in">
 
-                        <input type="hidden" name="came_from" value=""
-                       tal:condition="python:request.get('came_from', '')"
-                       tal:attributes="value request/came_from" />
+                    <input type="hidden" name="came_from" value=""
+                           tal:condition="python:request.get('came_from', '')"
+                           tal:attributes="value request/came_from" />
 
-                    <strong i18n:attributes="">Name:</strong> <br />
+                    <strong i18n:translate="">Name:</strong> <br />
                     <input type="text" name="__ac_name" size="10"
-                                         tal:attributes="value python:request.get('__ac_name', '')" />
+                           tal:attributes="value python:request.get('__ac_name', '')" />
 
                     <br />
 
@@ -34,9 +34,11 @@
                     &nbsp;
                     <br />
 
-                    <input class="context" type="submit" name="submit"
-		    value="Sign in" i18n:attributes="value"/>
-
+                    <input class="context" 
+                           type="submit" 
+                           name="submit"
+                           value="Sign in" 
+                           i18n:attributes="value"/>
                 </form>
 
             </td>
@@ -46,12 +48,10 @@
 	    <td colspan="2">
 
                 <a href="mail_password_form">
-                   <img tal:replace="structure here/linkTransparent.gif" 
-			/>
-                <span tal:omit-tag="" i18n:translate="">Forgot your password?</span>
+                   <img tal:replace="structure here/linkTransparent.gif" />
+                   <span tal:omit-tag="" i18n:translate="">Forgot your password?</span>
                 </a>
-
-            </td>
+        </td>
         </tr>
 
         <tr class="odd"
