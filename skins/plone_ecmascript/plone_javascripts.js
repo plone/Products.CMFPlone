@@ -334,7 +334,8 @@ function scanforlinks(){
             }else{
                 // we are in here if the link points to somewhere else than our site.
                 if ( links[i].getElementsByTagName('img').length == 0 ){links[i].className = 'link-external'}
-                links[i].setAttribute('target','_blank')
+                // if you want the external links to open in a new window, uncomment this:
+                // links[i].setAttribute('target','_blank')
                 
             }
         }
