@@ -355,6 +355,7 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
 InitializeClass(BasePloneFolder)
 
 class PloneFolder( BasePloneFolder, OrderedContainer ):
+    """ A Plone Folder """
     meta_type = 'Plone Folder'
 
     __implements__ = BasePloneFolder.__implements__ + \

@@ -14,6 +14,7 @@ factory_type_information.update( {'id':'Large Plone Folder',
                                   'global_allow':0} )
 
 class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
+    """ A large plone folder """
     meta_type='Large Plone Folder'
 
     # BTreeFolder2Base has no __implements__
