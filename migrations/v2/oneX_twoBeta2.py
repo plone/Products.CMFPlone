@@ -26,9 +26,12 @@ from Acquisition import aq_base
 
 def oneX_twoBeta2(portal):
     """ Migrations from 1.0.x to 2.x """
-    #create the QuickInstaller
     out = []
 
+    out.append("Setting type of plone portal to 'Plone Site")
+    portal._setPortalTypeName('Plone Site')
+
+    #create the QuickInstaller
     out.append("Creating a quick installer")
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
@@ -93,7 +96,7 @@ def oneX_twoBeta2(portal):
 
     out.append("Moving all tools to the new Plone base classes")
     migrateTools(portal)
-    out.append(("Moving some old templates out of the way, such as header and footer, since these will cause breakage", zLOG.ERROR))
+    out.append(("Moving some old templates out of the way, such as header and footer, since these will cause breakage", zLOG.WARNING))
     moveOldTemplates(portal)
     out.append("Updating nav tree")
     migrateNavTree(portal)
@@ -101,11 +104,15 @@ def oneX_twoBeta2(portal):
     ConfigurationMethods.addErrorLog(None, portal)
     out.append("Assigning titles to tools")
     ConfigurationMethods.assignTitles(None, portal)
-    out.append("Mark old fs directory views out-dated")
+
+    out.append(("Marking old fs directory views out-dated", zLOG.WARNING))
     deprFsViews(portal)
-    out.append("Update slots to portlets")
+    removed = removeOldSkins(portal)
+    out.append(("Setting default skin to Plone Default and removing old skin from portal_skins. Removed: %s" % ','.join(removed), zLOG.WARNING))
+
+    out.append("Updating slots to portlets")
     upgradeSlots2Portlets(portal)
-    out.append("Setup calendar tool")
+    out.append("Setting up calendar tool")
     plone2_base.setupCalendar(portal)
     return out
 
@@ -453,21 +460,21 @@ def deprFsViews(portal):
         
         path = ','.join(newpath)
         st.addSkinSelection(skin, path)
-
-def fixToolClasses(portal):
-    # yes that's strange bug it works under python ... I love python :)
-    import Products.CMFPlone.DiscussionTool
-    pd = getToolByName(portal, 'portal_discussion')
-    pd = aq_base(pd)
-    pd.__class__ = Products.CMFPlone.DiscussionTool.DiscussionTool
-
-    import Products.CMFPlone.GroupsTool
-    pg = getToolByName(portal, 'portal_groups')
-    pg.__class__ = Products.CMFPlone.GroupsTool.GroupsTool
-    
-    import Products.CMFPlone.GroupDataTool
-    pgd = getToolByName(portal, 'portal_groupdata')
-    pgd.__class__ = Products.CMFPlone.GroupDataTool.GroupDataTool
+        
+def removeOldSkins(portal):
+    st = getToolByName(portal, 'portal_skins')
+    st.default_skin = 'Plone Default'
+    removed = []
+    skins = ['Plone Autumn', 'Plone Core', 'Plone Core Inverted',
+             'Plone Corporate', 'Plone Greensleeves', 'Plone Kitty', 
+             'Plone Mozilla', 'Plone Mozilla New', 'Plone Prime',
+             'Plone Zed', ]
+    skinList = st._getSelections()
+    for skin in skins:
+        if skinList.has_key(skin):
+            del skinList[skin]
+            removed.append(skin)
+    return removed
             
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
