@@ -355,6 +355,7 @@ ul#personalBar li {
     /*/*//*/
     display : none;
     /* */
+    margin-bottom: 0;
 }
 ul#personalBar li#personalBar-user a {
     background: transparent url(user.gif) center left no-repeat;
@@ -368,7 +369,7 @@ ul#personalBar li a {
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
-    test-decoration: none;
+    text-decoration: none;
 }
 .caseSensitive {
     text-transform: none;
@@ -810,6 +811,7 @@ div.hiddenlabel {
 .hiddenstructure {
     height: 0px;
     overflow: hidden;
+    padding-top: 0px;
 }
 .clear {
     clear: both;
