@@ -37,7 +37,7 @@ def rc3_rc4(portal):
     out.append('Renaming control panel to \'portal_controlpanel\'')
     if hasattr(aq_base(portal), 'portal_control_panel_actions'):
         at.deleteActionProvider('portal_control_panel_actions')
-        portal.manage_rename('portal_control_panel_actions', 'portal_controlpanel')
+        portal.manage_renameObject('portal_control_panel_actions', 'portal_controlpanel')
         at.addActionProvider('portal_controlpanel')
     
     out.append('Fixing folder contents action')
