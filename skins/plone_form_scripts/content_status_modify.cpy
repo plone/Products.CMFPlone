@@ -32,6 +32,7 @@ except 'Unauthorized':
     #You can transition content but not have the permission to ModifyPortalContent
     pass
 
+wfcontext = context
 if workflow_action!=current_state:
     wfcontext=new_context.portal_workflow.doActionFor( context,
                                                        workflow_action,
