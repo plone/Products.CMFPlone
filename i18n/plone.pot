@@ -3537,9 +3537,6 @@ msgstr "This item is currently in the ${review_state} state"
 msgid "label_state"
 msgstr "State"
 
-msgid "label_selected_keywords"
-msgstr "Selected Keywords"
-
 msgid "label_new_keywords"
 msgstr "New Keywords"
 
