@@ -455,8 +455,12 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             text='\n'.join(traceback.format_exception(*sys.exc_info())),
             log_level=WARNING)
 
+    security.declarePublic('createSitemap')
+    def createSitemap(self, context):
+        return self.createNavTree(context, sitemap=1)
+        
     security.declarePublic('createNavTree')
-    def createNavTree(self, context, sitemap=False):
+    def createNavTree(self, context, sitemap=None):
         """Returns a structure that can be used by
         navigation_tree_slot."""
         ct=getToolByName(self, 'portal_catalog')

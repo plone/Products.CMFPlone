@@ -1,6 +1,7 @@
 import os
 
 from Acquisition import aq_base
+from Products.CMFCore.CMFCorePermissions import View
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
 
 
@@ -40,6 +41,53 @@ def two05_alpha1(portal):
 
     return out
 
+def alpha1_alpha2(portal):
+    """2.1-alpha1 -> 2.1-alpha2
+    """
+    out =[]
+    ntp = portal.portal_properties.navtree_properties
+    # Plone Setup has changed because of the new Nav Tree implementation
+    # StatelessTreeNav had a createNavTreePropertySheet method which is now
+    # in Portal.py (including the new properties)
+    # If typesTolist is not there were dealing with a real migration
+    if not ntp.hasProperty('typesToList'):
+        ntp._setProperty('typesToList', ['Folder'], 'lines')
+        ntp._setProperty('sortAttribute', 'getFolderOrder', 'string')
+        ntp._setProperty('sortOrder', 'asc', 'string')
+        ntp._setProperty('sitemapDepth', 3, 'int')
+    out.append('Updated properties to navtree')
+            
+    #replace path index with ExtendedPathIndex
+    ct = portal.portal_catalog
+    ct.delIndex('path')
+    ct.addIndex('path', 'ExtendedPathIndex')
+    out.append('Replaced path index')
+    
+    # Add indexes
+    if 'getFolderOrder' not in ct.indexes():
+        ct.addIndex('getFolderOrder', 'FieldIndex')
+    if 'isDefaultPage' not in ct.indexes():
+        ct.addIndex('isDefaultPage', 'FieldIndex')
+    out.append('Added indexes')
+    
+    # Refresh skins to make the getFolderOrder available to catalog
+    if hasattr(portal, '_v_skindata'):
+        portal._v_skindata = None
+    if hasattr(portal, 'setupCurrentSkin'):
+        portal.setupCurrentSkin()
+
+    ct.refreshCatalog(clear=1)
+    
+    at = portal.portal_actions
+    at.addAction('sitemap',
+                 'Sitemap',
+                 'string:$portal_url/sitemap',
+                 '', #condition
+                 View,
+                 'site_actions')
+    out.append('Added Sitemap action')
+
+    return out
 
 def replaceMailHost(portal, out):
     """Replaces the mailhost with a secure mail host."""

@@ -5,10 +5,8 @@
 <div metal:define-macro="portlet"
        i18n:domain="plone"
        tal:omit-tag=""
-       tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);
-                   currentPath python:context.getPhysicalPath();">
+       tal:define="data python:here.plone_utils.createNavTree(here, sitemap=None);">
     <div class="portlet" id="portlet-navigation-tree">
-    <div>
         <h5 i18n:translate="box_navigation">Navigation</h5>
         <div class="portletBody">
             <div class="portletContent odd">
@@ -27,7 +25,6 @@
                      </span>
 			    </a>
 			        </li>
-			        
 			        <li tal:replace="structure python:here.portlet_navtree_macro(children=data.get('children', []), level=1)">
 			        SUBTREE
 			        </li>
@@ -35,7 +32,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 </body>
 </html>

@@ -303,6 +303,7 @@ class PloneGenerator(Portal.PortalGenerator):
         # TODO: needs to be supported
         ntp._setProperty('topLevel', 0, 'int')
         ntp._setProperty('idsNotToList', [] , 'lines')
+        ntp._setProperty('skipIndex_html',1,'boolean')
 
         # Canditates to be implemented
         ntp._setProperty('showMyUserFolderOnly', 1, 'boolean')
@@ -322,26 +323,6 @@ class PloneGenerator(Portal.PortalGenerator):
         ntp._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
         ntp._setProperty('bottomLevel', 65535 , 'int')
  
-        #replace path index with ExtendedPathIndex
-        ct = p.portal_catalog
-        ct.delIndex('path')
-        ct.addIndex('path', 'ExtendedPathIndex')
-
-        # Add indexes
-        if 'getFolderOrder' not in ct.indexes():
-            ct.addIndex('getFolderOrder', 'FieldIndex')
-        if 'isDefaultPage' not in ct.indexes():
-            ct.addIndex('isDefaultPage', 'FieldIndex')
-
-        # Refresh skins to make the getFolderOrder available to catalog
-        if hasattr(p, '_v_skindata'):
-            p._v_skindata = None
-        if hasattr(p, 'setupCurrentSkin'):
-            p.setupCurrentSkin()
-
-        ct.refreshCatalog(clear=1)
-
-
     def setupPlone(self, p):
         self.customizePortalTypes(p)
         self.customizePortalOptions(p)
