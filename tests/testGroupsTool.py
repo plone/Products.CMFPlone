@@ -20,14 +20,7 @@ default_user = PloneTestCase.default_user
 
 class TestGroupsTool(PloneTestCase.PloneTestCase):
 
-    #def _setupUserFolder(self):
-    #    if hasattr(aq_base(self.portal), 'acl_users'):
-    #        self.portal._delObject('acl_users')
-    #    manage_addGroupUserFolder(self.portal)
-
     def afterSetUp(self):
-        #self.portal._setObject('portal_groupdata', GroupDataTool())
-        #self.portal._setObject('portal_groups', GroupsTool())
         self.membership = self.portal.portal_membership
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
@@ -145,14 +138,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
 
 class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
 
-    #def _setupUserFolder(self):
-    #    if hasattr(aq_base(self.portal), 'acl_users'):
-    #        self.portal._delObject('acl_users')
-    #    manage_addGroupUserFolder(self.portal)
-
     def afterSetUp(self):
-        #self.portal._setObject('portal_groupdata', GroupDataTool())
-        #self.portal._setObject('portal_groups', GroupsTool())
         self.membership = self.portal.portal_membership
         self.acl_users = self.portal.acl_users
         self.groups = self.portal.portal_groups
@@ -207,6 +193,40 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
     #    self.acl_users._updateUser(default_user, groups=['foo'])
     #    self.login(default_user)
     #    self.failIfEqual(self.groups.getGroupareaFolder(), None)
+
+    def testAddGroup(self):
+        self.groups.addGroup('foo', '', [], [])
+        self.assertEqual(self.groups.listGroupIds(), ['foo'])
+        # No group workspace should have been created
+        self.failIf(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
+
+    def testAddGroupWithWorkspace(self):
+        self.groups.toggleGroupWorkspacesCreation()
+        self.groups.addGroup('foo', '', [], [])
+        self.assertEqual(self.groups.listGroupIds(), ['foo'])
+        # A group workspace should have been created
+        self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
+
+    def testRemoveGroups(self):
+        self.groups.addGroup('foo', '', [], [])
+        self.groups.removeGroups(['foo'])
+        self.assertEqual(len(self.groups.listGroupIds()), 0)
+
+    def testRemoveGroupsWithWorkspace(self):
+        self.groups.toggleGroupWorkspacesCreation()
+        self.groups.addGroup('foo', '', [], [])
+        self.groups.removeGroups(['foo'])
+        self.assertEqual(len(self.groups.listGroupIds()), 0)
+        # Group workspace should have been removed
+        self.failIf(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
+
+    def testRemoveGroupsKeepingWorkspaces(self):
+        self.groups.toggleGroupWorkspacesCreation()
+        self.groups.addGroup('foo', '', [], [])
+        self.groups.removeGroups(['foo'], keep_workspaces=1)
+        self.assertEqual(len(self.groups.listGroupIds()), 0)
+        # Group workspace should still be present
+        self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
 
 if __name__ == '__main__':
