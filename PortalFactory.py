@@ -1,7 +1,7 @@
 """
 Instantiate a CMF Portal with Plone installed and preconfigured in it
 """
-from Products.CMFCore.TypesTool import ContentFactoryMetadata
+from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews
 from Products.CMFCore.utils import getToolByName
 from Products.ExternalMethod import ExternalMethod
@@ -144,7 +144,11 @@ def checkDependencies(self, outStream):
     #try:
     typesTool = getToolByName(self, 'portal_types')
     typesTool._delObject( 'Folder' )
-    typesTool.manage_addTypeInformation(id='Folder', typeinfo_name='CMFPlone: Plone Folder') 
+    try:
+        typesTool.manage_addTypeInformation(id='Folder', typeinfo_name='CMFPlone: Plone Folder')
+    except:
+        # CMF1.3
+        typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type, id='Folder', typeinfo_name='CMFPlone: Plone Folder') 
     outStream.write('Plone folder substituted for default Folder\n')
     #except:
     #    outStream.write('could not substitute Plone folder for default Folder impl\n')
