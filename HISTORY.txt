@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Applied patch from http://plone.org/collector/3159. Missing 
+      form fields should not cause user prefs to be set to None.
+      [stefan]
+
     - Added a simple check for the existence of the template 
       'global_languageselector' - this will allow the different
       multilingual implementations to hook into the area just below

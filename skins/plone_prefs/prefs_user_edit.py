@@ -22,7 +22,8 @@ processed={}
 for id, property in context.portal_memberdata.propertyItems():
     if id == 'last_login_time':
         continue
-    processed[id]=REQUEST.get(id, None)
+    if REQUEST.has_key(id):
+        processed[id] = REQUEST.get(id)
 
 context.plone_utils.setMemberProperties(member, **processed)
 
