@@ -1266,6 +1266,10 @@ ol.visualNoMarker {
     font-size: 90%;
 }
 
+.portal-sitemap ul {
+    margin-left: 2em;
+}
+
 .role-Member {
     
 }
