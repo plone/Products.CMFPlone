@@ -1,7 +1,7 @@
 class IndexIterator:
     __allow_access_to_unprotected_subobjects__ = 1 
 
-    def __init__(self, upper=100):
+    def __init__(self, upper=10000):
         self.upper=upper
         self.pos=0
 
