@@ -208,7 +208,7 @@
                       </a>
 
                       <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
-                           tal:condition="python:(lockable and item.wl_isLocked()) or (lock_tool and lock_tool.isLockedOut(item))"
+                           tal:condition="python:(lockable and item.wl_isLocked()) or (lock_tool and lock_tool.canLock(item) and lock_tool.isLockedOut(item))"
                            tal:replace="structure python:locked.tag(title='Locked')" />
 
                       <span class="state-expired"
