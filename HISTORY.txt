@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Fixed bare 'except:' statements in Plone so we don't swallow
+      ZODB ConflictErrors. Mostly by adding 'except ConflictError: raise'. 
+      [stefan]
+
     - Inserted a metal definition that enables the folder_listing to be
       used from other templates. [limi] 
       Example::
