@@ -35,10 +35,7 @@ if o is None:
     raise Exception
 
 if o.getTypeInfo().getActionById('edit', None) is None:
-    if workspaces:
-        state.setStatus('success_workspaces_no_edit')
-    else:
-        state.setStatus('success_no_edit')
+    state.setStatus('success_no_edit')
 
 if script_id:
     state.setId(script_id)

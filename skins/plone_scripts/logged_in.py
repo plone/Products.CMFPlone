@@ -42,6 +42,10 @@ login_changepassword = 'login_password'
 
 login_success = REQUEST.get('came_from')
 
+# If someone has something on their clipboard, expire it.
+if REQUEST.get('__cp', None) is not None:
+    REQUEST.RESPONSE.expireCookie('__cp', path='/')
+
 # if we weren't called from something that set 'came_from' or if HTTP_REFERER
 # is the 'logged_out' page, return the default 'login_success' form
 if login_success is None or login_success.endswith('logged_out'):
