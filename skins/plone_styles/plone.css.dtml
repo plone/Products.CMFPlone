@@ -39,7 +39,6 @@ table {
     font-size: 100%;
 }
 
-
 a {
     text-decoration: none;
     color: &dtml-linkColor;;
@@ -312,7 +311,6 @@ del {
 /* Site-wide action menu - font size, contact, index, sitemap etc */
 #portal-siteactions {
     background-color: transparent;
-    border-collapse: collapse;
     white-space: nowrap;
     list-style: none;
     margin: 1px 0 0 0;
@@ -360,9 +358,8 @@ del {
     z-index: 2;
 }
 #portal-globalnav {
-    /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
+    /* Navigational Plone Tabs(tm). The power of CSS runs strong in these :) */
     background-color: transparent;
-    border-collapse: collapse;
     padding: 0em 0em 0em 2em;
     white-space: nowrap;
     list-style: none;
@@ -456,12 +453,10 @@ del {
 }
 .contentViews {
     background-color: transparent;
-    border-collapse: collapse;
     padding-left: 1em;
     line-height: normal;
     margin-top: 2.1em;
     margin-left: 0;
-    /* white-space: nowrap; */
     list-style: none;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     border-top-width: 0px;
@@ -470,6 +465,7 @@ del {
 }
 .contentViews li {
     display: inline;
+    padding-top: 0.5em;
 }
 .contentViews li a {
     background-color: transparent;
@@ -499,7 +495,6 @@ del {
 */
 
 .contentActions {
-    border-collapse: collapse;
     background-color: &dtml-contentViewBackgroundColor;;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
     border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
@@ -1049,39 +1044,42 @@ ol.visualNoMarker {
     font-size: 94%;
 }
 
-.portlet h4 {
-    font-size: 1em;
-    font-weight: normal;
-    white-space: nowrap;
-}
-.portlet h5 { 
+.portlet h4 { /* The new base portlet header, h5 and h6 will be for use inside
+                 the portlet in the upcoming versions. */
     background: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
-    padding: 0em 1em 0em 1em;
-    text-transform: &dtml-textTransform;;
-    display: inline;
-    font-size: 1em;
-    height: 1em;
-    font-weight: normal;
-    white-space: nowrap;
-}
-.portlet h6 { 
-    background: &dtml-globalBackgroundColor;;
-    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
     padding: 0em 0.3em 0em 1em;
     text-transform: &dtml-textTransform;;
     display: block;
     font-size: 1em;
-    height: 1.2em;
+    font-weight: normal;
+}
+.portlet h5 { 
+    background: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: inline;
+    font-size: 1em;
     font-weight: normal;
     white-space: nowrap;
+    position: relative;
+    top: -&dtml-borderWidth;;
+}
+.portlet h6 { 
+    background: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    padding: 0em 0.3em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    display: block;
+    font-size: 1em;
+    font-weight: normal;
 }
 
 .portletBody {
+    position: relative;
+    top: -&dtml-borderWidth;;
     background: transparent;
-    border-collapse: collapse;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 .portletDetails {
@@ -1093,18 +1091,14 @@ ol.visualNoMarker {
 }
 .portletAction {
     float: right;
+    width: 0.8em;
+    text-align: center;
+    display: block;
     text-transform: none;
     border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     padding-left: 0.3em;
 }
 
-.portlet h1, 
-.portlet h2, 
-.portlet h3, 
-.portlet h4 {
-    margin: 0;
-    padding: 0;
-}
 .portlet .even {
     background-color: &dtml-evenRowBackgroundColor;;
 }
@@ -1153,6 +1147,7 @@ ol.visualNoMarker {
     background-repeat: no-repeat;
     background-position: 0 1px;
     padding: 0.1em 0.25em 0.2em 20px;
+    margin: 1px 0;
 }
 
 .currentNavItem,
@@ -1160,7 +1155,10 @@ ol.visualNoMarker {
     background-color: &dtml-globalBackgroundColor;;
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    margin: 1px 0;
 }
+
+/* The deprecated navtree levels. These will go away once we ship with new navtree */
 
 .navLevel1 {
     margin-left: 0em;
@@ -1219,7 +1217,7 @@ ol.visualNoMarker {
     padding: 0.5em 0 0.5em 1.75em;
     background-repeat: no-repeat;
     background-position: 0 3px;
-    border: &dtml-borderWidth; solid transparent;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
 }
 
 .portletNavigationTreeItem a:hover,
@@ -1228,6 +1226,14 @@ ol.visualNoMarker {
     color: &dtml-globalFontColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor; !important;
 }
+
+/* The new navtree level structure. */
+
+.portletNavigationLevel0 {
+    margin: 0;
+}
+
+
 
 .comment {
     background: &dtml-evenRowBackgroundColor;; 
