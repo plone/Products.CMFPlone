@@ -12,6 +12,9 @@ Plone 1.0 beta3
     - removed a useless conditional check on search_form.pt thanks sspickle!
     - Xopus technology preview has been checked in.  It only works on document_edit_forms currently.
       Thanks to q42.nl for the revolutionary technology.  http://xopus.org/
+      !!WARNING!!: Careful if you use Mozilla, it swallows the first paragraph when you save at
+      the moment. Will be fixed in a later release, this is just to get a feel of how things will
+      work.
     - turned on the 'SuppressHiddenFiles' in folder_contents and folder_listing.  
       Now folders that begin with a . will not show up.  Ideally we would want this turned 
       off if we were a Manager.  This is something people can customize themself.  
