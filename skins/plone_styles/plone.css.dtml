@@ -405,11 +405,15 @@ ul.contentViews {
     background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
     padding-left: 1em;
-    line-height: 1.2em;
+    line-height: normal;
     margin-top: 1em;
     margin-left: 0;
     /* white-space: nowrap; */
     list-style: none;
+    border: &dtml-contentTabBorder;;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
 }
 ul.contentViews li {
     display: inline;
@@ -420,10 +424,10 @@ ul.contentViews li {
     border-style: solid solid solid solid;
     color: &dtml-contentTabFontColor;;
     font-weight: &dtml-contentTabFontWeight;;
-    height: 1.2em;
+    height: auto;
     margin-right: 0.5em;
     padding: 0em 2em;
-    line-height: 1.2em;
+    line-height: normal;
     text-decoration: none;
     text-transform: &dtml-textTransform;;
     z-index: 1;
@@ -440,7 +444,6 @@ ul.contentViews li {
 }
 .contentActions {
     border-collapse: collapse;
-    border-top: &dtml-contentTabBorder;;
     background: &dtml-contentTabBackground;;
     border-left: &dtml-contentTabBorder;;
     border-right: &dtml-contentTabBorder;;
