@@ -40,8 +40,22 @@
     <textarea name="description" cols="60" rows="10"
      style="width: 95%"></textarea>
 
-    <p>After adding the site you can access the portal_migration tool to set up languages, skins, workflows.</p>
+    <div class="form-label">
+    Customisation policy setup
+    </div>
+    <span tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies()">
+      <select name="custom_policy">
+        <tal:block tal:repeat="policy policies">
+	<option tal:attributes="name policy" tal:content="policy"> Custom Policy </option>
+	</tal:block>
+      </select>
+    </span>
    
+    <p>
+    <b>Please note:</b> the customisation policy setup is the type of site you would
+    like to make, you can run this later and see other configuration options in portal_migration if
+    you wish.
+    </p>
     <div class="form-element">
     <input class="form-element" type="submit" name="submit" 
      value=" Add Plone Site " />

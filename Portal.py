@@ -5,7 +5,14 @@ from Products.CMFPlone import custom_policies
 from Products.CMFPlone import PloneFolder
 from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDefault import Document
-def listPolicies(): return custom_policies.keys()
+
+def listPolicies(): 
+    """ Float default plone to the top """
+    keys = custom_policies.keys()
+    del keys[keys.index('Default Plone')]
+    keys.insert(0, 'Default Plone')
+    return keys
+    
 def addPolicy(label, klass): custom_policies[label]=klass
 
 from Products.CMFCore import CMFCorePermissions

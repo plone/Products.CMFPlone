@@ -11,7 +11,6 @@ import sys
 import types
 
 def log(message,summary='',severity=0):
-    print severity, message
     zLOG.LOG('Plone: ',severity, summary, message)
 
 _upgradePaths = {}

@@ -2,8 +2,10 @@ from OFS.PropertyManager import PropertyManager
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.Expression import Expression
-from migrations.migration_util import safeEditProperty
+from Products.CMFPlone.migrations.migration_util import safeEditProperty
 
+from zLOG import INFO, ERROR
+from SetupBase import SetupWidget
 
 def modifyAuthentication(self, portal):
     #set up cookie crumbler
@@ -13,7 +15,6 @@ def modifyAuthentication(self, portal):
 def installPortalTools(self,portal):
     ''' thats the place to install custom tools '''
     pass
-
 
 def addSiteProperties(self, portal):
     """ adds site_properties in portal_properties """
@@ -45,7 +46,7 @@ def addSiteProperties(self, portal):
     if not hasattr(p, 'allowRolesToAddKeywords'):
         safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
 
-def setupDefaultSlots(self, portal):
+def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
     left_slots=( 'here/navigation_tree_slot/macros/navigationBox'
                , 'here/login_slot/macros/loginBox'
@@ -54,35 +55,31 @@ def setupDefaultSlots(self, portal):
                 , 'here/news_slot/macros/newsBox' 
                 , 'here/calendar_slot/macros/calendarBox' 
                 , 'here/events_slot/macros/eventsBox' )
+    safeEditProperty(portal, 'left_slots', left_slots, 'lines')
+    safeEditProperty(portal, 'right_slots', right_slots, 'lines')
+    safeEditProperty(portal.Members, 'right_slots', (), 'lines')
+
+def setupDefaultItemActionSlots(self, portal):                
+    """ Sets up the default action item slots """
     item_action_slots=( 'here/actions_slot/macros/print'
                       , 'here/actions_slot/macros/sendto'
           , 'here/actions_slot/macros/syndication' )
-    safeEditProperty(portal, 'left_slots', left_slots, 'lines')
-    safeEditProperty(portal, 'right_slots', right_slots, 'lines')
     safeEditProperty(portal, 'item_action_slots', item_action_slots, 'lines')
-    safeEditProperty(portal.Members, 'right_slots', (), 'lines')
 
 def installExternalEditor(self, portal):
     ''' responsible for doing whats necessary if external editor is found '''
     types_tool=getToolByName(portal, 'portal_types')
-
-    ExtEditProd=getattr(portal.Control_Panel.Products, 'ExternalEditor', None)
-    INSTALLED=0
-    if ExtEditProd is not None and ExtEditProd.import_error_ is None:
-        INSTALLED=1
-        methods=('PUT', 'manage_FTPget') #if a definition has these methods it shoudl work
-        exclude=('Topic', 'Event', 'Folder')
-        for ctype in types_tool.objectValues():
-            if ctype.getId() not in exclude:
-                ctype.addAction( 'external_edit'
-                               , 'External Edit'
-                               , 'external_edit'
-                               , CMFCorePermissions.ModifyPortalContent
-                               , 'object'
-                               , 0 )
-    site_props=getToolByName(portal, 'portal_properties').site_properties
-    if not hasattr(site_props, 'ext_editor'):
-        safeEditProperty('ext_editor', INSTALLED, 'boolean')
+    methods=('PUT', 'manage_FTPget')
+    exclude=('Topic', 'Event', 'Folder')
+    for ctype in types_tool.objectValues():
+        if ctype.getId() not in exclude:
+            ctype.addAction( 'external_edit',
+                            name='External Edit',
+                            action='external_edit',
+                            condition='',
+                            permission=CMFCorePermissions.ModifyPortalContent,
+                            category='object',
+                            visible=0 )
 
 def assignTitles(self, portal):
     titles={'portal_actions':'Contains custom tabs and buttons',
@@ -163,6 +160,8 @@ def modifyMembershipTool(self, portal):
 def modifySkins(self, portal):
     #remove non Plone skins from skins tool
     #since we implemented the portal_form proxy these skins will no longer work
+    
+    # this should be run through the skins setup widget :)
     st=getToolByName(portal, 'portal_skins')
     tt=getToolByName(portal, 'portal_types')
     skins_map=st._getSelections()
@@ -173,14 +172,14 @@ def modifySkins(self, portal):
     if skins_map.has_key('Basic'):        
         del skins_map['Basic']
     st.selections=skins_map
-
+    
     for t in tt.objectValues():
         _actions=t._cloneActions()
         for a in _actions:
-            if a['id']=='metadata':
-                a['name']='Properties'
+            if a.id == 'metadata':
+                a.name = 'Properties'
         t._actions=_actions
-
+            
 def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')
 
@@ -252,3 +251,46 @@ def addNewActions(self, portal):
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
 
+functions = {
+    'addSiteProperties': addSiteProperties,
+    'setupDefaultLeftRightSlots': setupDefaultLeftRightSlots,
+    'setupDefaultItemActionSlots': setupDefaultItemActionSlots,
+    'installExternalEditor': installExternalEditor,
+    'assignTitles': assignTitles,
+    'addMemberdata': addMemberdata,
+    'modifyMembershipTool': modifyMembershipTool,
+    'addNewActions': addNewActions,
+    'modifySkins': modifySkins,
+    'installPortalTools': installPortalTools,
+    'modifyAuthentication': modifyAuthentication,
+    }
+
+class GeneralSetup(SetupWidget):
+    type = 'General Setup'
+   
+    description = """This applies a function to the site. These functions are some of the basic 
+set up features of a site. The chances are you will not want to apply these again. <b>Please note</b> 
+these functions do not have a uninstall function."""
+    
+    def setup(self):
+        pass
+    
+    def delItems(self, fns):
+        out = []          
+        out.append(('Currently there is no way to remove a function', INFO))
+        return out
+
+    def addItems(self, fns):   
+        out = []         
+        for fn in fns:
+            functions[fn](self, self.portal)
+            out.append(('Function %s has been applied' % fn, INFO))
+        return out
+
+    def installed(self):
+        return []
+        
+    def available(self):
+        """ Go get the functions """
+        return functions.keys()
+    
