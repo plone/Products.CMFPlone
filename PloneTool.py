@@ -179,43 +179,39 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                      , language=None
                      , rights=None
                      ,  **kwargs):
-        """ responsible for setting metadata on a content object
-            we assume the obj implemented IDublinCoreMetadata
+        """ Responsible for setting metadata on a content object
+            we assume the obj implements IDublinCoreMetadata.
         """
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
-            raise 'Unauthorized' #Hooray!  You can not import Unauthorized in TTW Scripts
+            raise 'Unauthorized'    # FIXME: Some scripts rely on this being string?
 
         REQUEST=self.REQUEST
-        pfx=self.field_prefix
 
-        def tuplify( value ):
-            if not type(value) is TupleType:
-                value = tuple( value )
-            temp = filter( None, value )
-            return tuple( temp )
+        def getfield(request, name, default=None):
+            name = '%s%s' % (self.field_prefix, name)
+            return request.form.get(name, default)
+
+        def tuplify(value):
+            return tuple(filter(None, value))
 
         if DublinCore.isImplementedBy(obj):
             if title is None:
-                title=REQUEST.get(pfx+'title', obj.Title())
-            if subject is None:
-                subject=REQUEST.get(pfx+'subject', obj.Subject())
+                title = getfield(REQUEST, 'title')
             if description is None:
-                description=REQUEST.get(pfx+'description', obj.Description())
+                description = getfield(REQUEST, 'description')
+            if subject is None:
+                subject = getfield(REQUEST, 'subject')
             if contributors is None:
-                contributors=tuplify(REQUEST.get(pfx+'contributors',
-                                                 obj.Contributors()))
-            else:
-                contributors=tuplify(contributors)
-
+                contributors = getfield(REQUEST, 'contributors')
+            if contributors is not None:
+                contributors = tuplify(contributors)
             if effective_date is None:
-                effective_date=REQUEST.get(pfx+'effective_date',
-                                           obj.EffectiveDate())
+                effective_date = getfield(REQUEST, 'effective_date')
             if effective_date == '':
                 effective_date = 'None'
             if expiration_date is None:
-                expiration_date=REQUEST.get(pfx+'expiration_date',
-                                            obj.ExpirationDate())
+                expiration_date = getfield(REQUEST, 'expiration_date')
             if expiration_date == '':
                 expiration_date = 'None'
 
@@ -238,16 +234,25 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             disc_tool.overrideDiscussionFor(obj, allowDiscussion)
 
         if MutableDublinCore.isImplementedBy(obj):
-            if title: obj.setTitle(title)
-            if description: obj.setDescription(description)
-            if subject: obj.setSubject(subject)
-            if effective_date: obj.setEffectiveDate(effective_date)
-            if expiration_date: obj.setExpirationDate(expiration_date)
-            if contributors: obj.setContributors(contributors)
-            if format: obj.setFormat(format)
-            if language: obj.setLanguage(language)
-            if rights: obj.setRights(rights)
-            # make the catalog aware of changes.
+            if title is not None: 
+                obj.setTitle(title)
+            if description is not None: 
+                obj.setDescription(description)
+            if subject is not None: 
+                obj.setSubject(subject)
+            if contributors is not None: 
+                obj.setContributors(contributors)
+            if effective_date is not None: 
+                obj.setEffectiveDate(effective_date)
+            if expiration_date is not None: 
+                obj.setExpirationDate(expiration_date)
+            if format is not None: 
+                obj.setFormat(format)
+            if language is not None: 
+                obj.setLanguage(language)
+            if rights is not None: 
+                obj.setRights(rights)
+            # Make the catalog aware of changes
             obj.reindexObject()
 
     def _renameObject(self, obj, id):

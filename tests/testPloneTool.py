@@ -9,6 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from DateTime import DateTime
 
 default_user = PloneTestCase.default_user
 
@@ -123,46 +124,280 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.content_type, 'image/gif')
 
-    def testEditFormatMetadataOfDocument(self):
+    def testEditFormatMetadataOfLink(self):
         # Test workaround for http://plone.org/collector/1323
         # Also see setFormatPatch.py
-        self.folder.invokeFactory('Document', id='doc',
-                                  text_format='text/plain', text='foo')
-        # Documents don't have a content_type property!
-        self.failIf(self.folder.doc.hasProperty('content_type'))
-        self.assertEqual(self.folder.doc.Format(), 'text/plain')
-        self.assertEqual(self.folder.doc.content_type(), 'text/plain')
+        self.folder.invokeFactory('Link', id='link')
+        # Links don't have a content_type property!
+        self.failIf(self.folder.link.hasProperty('content_type'))
+        self.assertEqual(self.folder.link.Format(), 'text/url')
         # Changing the format should not create the property
-        self.utils.editMetadata(self.folder.doc, format='text/html')
-        self.failIf(self.folder.doc.hasProperty('content_type'))
-        self.assertEqual(self.folder.doc.Format(), 'text/html')
-        self.assertEqual(self.folder.doc.content_type(), 'text/html')
+        self.utils.editMetadata(self.folder.link, format='text/html')
+        self.failIf(self.folder.link.hasProperty('content_type'))
+        self.assertEqual(self.folder.link.Format(), 'text/html')
 
 
-class TestExceptionsImport(ZopeTestCase.ZopeTestCase):
-    '''We may be able to avoid raising 'Unauthorized' as string exception'''
+class TestEditMetadata(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        dispatcher = self.folder.manage_addProduct['PythonScripts']
-        dispatcher.manage_addPythonScript('ps')
-        self.ps = self.folder['ps']
+        self.utils = self.portal.plone_utils
+        self.folder.invokeFactory('Document', id='doc')
+        self.doc = self.folder.doc
 
-    def testImportAccessControlUnauthorizedInPythonScript(self):
-        # PythonScripts can import from AccessControl
-        self.ps.ZPythonScript_edit('', 'from AccessControl import Unauthorized')
-        self.ps()
+    def testSetTitle(self):
+        self.assertEqual(self.doc.Title(), '')
+        self.utils.editMetadata(self.doc, title='Foo')
+        self.assertEqual(self.doc.Title(), 'Foo')
 
-    def testImportzExceptionsUnauthorizedInPythonScript(self):
-        # PythonScripts can NOT import from zExceptions
-        self.ps.ZPythonScript_edit('', 'from zExceptions import Unauthorized')
-        self.assertRaises(ImportError, self.ps)
+    def testClearTitle(self):
+        self.utils.editMetadata(self.doc, title='Foo')
+        self.assertEqual(self.doc.Title(), 'Foo')
+        self.utils.editMetadata(self.doc, title='')
+        self.assertEqual(self.doc.Title(), '')
+
+    def testSetDescription(self):
+        self.assertEqual(self.doc.Description(), '')
+        self.utils.editMetadata(self.doc, description='Foo')
+        self.assertEqual(self.doc.Description(), 'Foo')
+
+    def testClearDescription(self):
+        self.utils.editMetadata(self.doc, description='Foo')
+        self.assertEqual(self.doc.Description(), 'Foo')
+        self.utils.editMetadata(self.doc, description='')
+        self.assertEqual(self.doc.Description(), '')
+
+    def testSetSubject(self):
+        self.assertEqual(self.doc.Subject(), ())
+        self.utils.editMetadata(self.doc, subject=['Foo'])
+        self.assertEqual(self.doc.Subject(), ('Foo',))
+
+    def testClearSubject(self):
+        self.utils.editMetadata(self.doc, subject=['Foo'])
+        self.assertEqual(self.doc.Subject(), ('Foo',))
+        self.utils.editMetadata(self.doc, subject=[])
+        self.assertEqual(self.doc.Subject(), ())
+
+    def testSetContributors(self):
+        self.assertEqual(self.doc.Contributors(), ())
+        self.utils.editMetadata(self.doc, contributors=['Foo'])
+        self.assertEqual(self.doc.Contributors(), ('Foo',))
+
+    def testClearContributors(self):
+        self.utils.editMetadata(self.doc, contributors=['Foo'])
+        self.assertEqual(self.doc.Contributors(), ('Foo',))
+        self.utils.editMetadata(self.doc, contributors=[])
+        self.assertEqual(self.doc.Contributors(), ())
+
+    def testSetFormat(self):
+        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.text_format, 'structured-text')
+        self.utils.editMetadata(self.doc, format='text/html')
+        self.assertEqual(self.doc.Format(), 'text/html')
+        self.assertEqual(self.doc.text_format, 'html')
+
+    def testClearFormat(self):
+        self.utils.editMetadata(self.doc, format='text/html')
+        self.assertEqual(self.doc.Format(), 'text/html')
+        self.assertEqual(self.doc.text_format, 'html')
+        self.utils.editMetadata(self.doc, format='')
+        self.assertEqual(self.doc.Format(), 'text/plain')
+        self.assertEqual(self.doc.text_format, 'structured-text')
+
+    def testSetLanguage(self):
+        self.assertEqual(self.doc.Language(), '')
+        self.utils.editMetadata(self.doc, language='de')
+        self.assertEqual(self.doc.Language(), 'de')
+
+    def testClearLanguage(self):
+        self.utils.editMetadata(self.doc, language='de')
+        self.assertEqual(self.doc.Language(), 'de')
+        self.utils.editMetadata(self.doc, language='')
+        self.assertEqual(self.doc.Language(), '')
+
+    def testSetRights(self):
+        self.assertEqual(self.doc.Rights(), '')
+        self.utils.editMetadata(self.doc, rights='Foo')
+        self.assertEqual(self.doc.Rights(), 'Foo')
+
+    def testClearRights(self):
+        self.utils.editMetadata(self.doc, rights='Foo')
+        self.assertEqual(self.doc.Rights(), 'Foo')
+        self.utils.editMetadata(self.doc, rights='')
+        self.assertEqual(self.doc.Rights(), '')
+
+    # Also test the various dates
+
+    def testSetEffectiveDate(self):
+        self.assertEqual(self.doc.EffectiveDate(), 'None')
+        self.utils.editMetadata(self.doc, effective_date='2001-01-01')
+        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+
+    def testClearEffectiveDate(self):
+        self.utils.editMetadata(self.doc, effective_date='2001-01-01')
+        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+        self.utils.editMetadata(self.doc, effective_date='None')
+        self.assertEqual(self.doc.EffectiveDate(), 'None')
+        self.assertEqual(self.doc.effective_date, None)
+
+    def testSetExpirationDate(self):
+        self.assertEqual(self.doc.ExpirationDate(), 'None')
+        self.utils.editMetadata(self.doc, expiration_date='2001-01-01')
+        self.assertEqual(self.doc.ExpirationDate(), '2001-01-01 00:00:00')
+
+    def testClearExpirationDate(self):
+        self.utils.editMetadata(self.doc, expiration_date='2001-01-01')
+        self.assertEqual(self.doc.ExpirationDate(), '2001-01-01 00:00:00')
+        self.utils.editMetadata(self.doc, expiration_date='None')
+        self.assertEqual(self.doc.ExpirationDate(), 'None')
+        self.assertEqual(self.doc.expiration_date, None)
+
+    # Test special cases of tuplization (and tuplification)
+
+    def testTuplifySubject_1(self):
+        self.utils.editMetadata(self.doc, subject=['Foo', 'Bar', 'Baz'])
+        self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
+        
+    def testTuplifySubject_2(self):
+        self.utils.editMetadata(self.doc, subject=['Foo', '', 'Bar', 'Baz'])
+        # Note that empty entries are allowed
+        self.assertEqual(self.doc.Subject(), ('Foo', '', 'Bar', 'Baz'))
+
+    def testTuplifySubject_3(self):
+        self.utils.editMetadata(self.doc, subject='Foo Bar Baz')
+        # XXX: CMFDefault.utils.tuplize() is probably borked
+        #self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
+        self.assertEqual(self.doc.Subject(), ('F','o','o','','B','a','r','','B','a','z'))
+        
+    def testTuplifyContributors_1(self):
+        self.utils.editMetadata(self.doc, contributors=['Foo', 'Bar', 'Baz'])
+        self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
+        
+    def testTuplifyContributors_2(self):
+        self.utils.editMetadata(self.doc, contributors=['Foo', '', 'Bar', 'Baz'])
+        # Note that empty entries are filtered
+        self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
+
+    def testTuplifyContributors_3(self):
+        self.utils.editMetadata(self.doc, contributors='Foo Bar Baz')
+        # XXX: Our own tuplify() doesn't pretend to care about strings anyway
+        #self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
+        self.assertEqual(self.doc.Contributors(), ('F','o','o','','B','a','r','','B','a','z'))
+        
+
+class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.folder.invokeFactory('Document', id='doc')
+        self.doc = self.folder.doc
+        self.utils.editMetadata(self.doc, 
+                                title='Foo',
+                                subject=('Bar',),
+                                description='Baz',
+                                contributors=('Fred',),
+                                effective_date='2001-01-01',
+                                expiration_date='2003-01-01',
+                                format='text/html',
+                                language='de',
+                                rights='Copyleft',
+                               )
+
+    def testEditTitleOnly(self):
+        self.utils.editMetadata(self.doc, title='Oh Happy Day')
+        self.assertEqual(self.doc.Title(), 'Oh Happy Day')
+        # Other elements must not change
+        self.assertEqual(self.doc.Subject(), ('Bar',))
+        self.assertEqual(self.doc.Description(), 'Baz')
+        self.assertEqual(self.doc.Contributors(), ('Fred',))
+        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(), '2003-01-01 00:00:00')
+        self.assertEqual(self.doc.Format(), 'text/html')
+        self.assertEqual(self.doc.Language(), 'de')
+        self.assertEqual(self.doc.Rights(), 'Copyleft')
+
+    def testEditSubjectOnly(self):
+        self.utils.editMetadata(self.doc, subject=('Oh', 'Happy', 'Day'))
+        self.assertEqual(self.doc.Subject(), ('Oh', 'Happy', 'Day'))
+        # Other elements must not change
+        self.assertEqual(self.doc.Title(), 'Foo')
+        self.assertEqual(self.doc.Description(), 'Baz')
+        self.assertEqual(self.doc.Contributors(), ('Fred',))
+        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(), '2003-01-01 00:00:00')
+        self.assertEqual(self.doc.Format(), 'text/html')
+        self.assertEqual(self.doc.Language(), 'de')
+        self.assertEqual(self.doc.Rights(), 'Copyleft')
+
+    def testEditEffectiveDateOnly(self):
+        self.utils.editMetadata(self.doc, effective_date='2001-12-31')
+        self.assertEqual(self.doc.EffectiveDate(), '2001-12-31 00:00:00')
+        # Other elements must not change
+        self.assertEqual(self.doc.Title(), 'Foo')
+        self.assertEqual(self.doc.Subject(), ('Bar',))
+        self.assertEqual(self.doc.Description(), 'Baz')
+        self.assertEqual(self.doc.Contributors(), ('Fred',))
+        self.assertEqual(self.doc.ExpirationDate(), '2003-01-01 00:00:00')
+        self.assertEqual(self.doc.Format(), 'text/html')
+        self.assertEqual(self.doc.Language(), 'de')
+        self.assertEqual(self.doc.Rights(), 'Copyleft')
+
+    def testEditLanguageOnly(self):
+        self.utils.editMetadata(self.doc, language='fr')
+        self.assertEqual(self.doc.Language(), 'fr')
+        # Other elements must not change
+        self.assertEqual(self.doc.Title(), 'Foo')
+        self.assertEqual(self.doc.Subject(), ('Bar',))
+        self.assertEqual(self.doc.Description(), 'Baz')
+        self.assertEqual(self.doc.Contributors(), ('Fred',))
+        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+        self.assertEqual(self.doc.ExpirationDate(), '2003-01-01 00:00:00')
+        self.assertEqual(self.doc.Format(), 'text/html')
+        self.assertEqual(self.doc.Rights(), 'Copyleft')
+
+
+class TestFormulatorFields(PloneTestCase.PloneTestCase):
+    '''This feature should probably go away entirely.'''
+
+    def afterSetUp(self):
+        self.utils = self.portal.plone_utils
+        self.folder.invokeFactory('Document', id='doc')
+        self.doc = self.folder.doc
+
+    def setField(self, name, value):
+        form = self.app.REQUEST.form
+        pfx = self.utils.field_prefix
+        form[pfx+name] = value
+
+    def testTitleField(self):
+        self.setField('title', 'Foo')
+        self.utils.editMetadata(self.doc)
+        self.assertEqual(self.doc.Title(), 'Foo')
+
+    def testSubjectField(self):
+        self.setField('subject', ['Foo', 'Bar', 'Baz'])
+        self.utils.editMetadata(self.doc)
+        self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
+
+    def testEffectiveDateField(self):
+        self.setField('effective_date', '2001-01-01')
+        self.utils.editMetadata(self.doc)
+        self.assertEqual(self.doc.EffectiveDate(), '2001-01-01 00:00:00')
+
+    def testLanguageField(self):
+        self.setField('language', 'de')
+        self.utils.editMetadata(self.doc)
+        # XXX: Note that language, format, and rights do not 
+        #      receive the Formulator treatment.
+        self.assertEqual(self.doc.Language(), '')
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestPloneTool))
-    suite.addTest(makeSuite(TestExceptionsImport))
+    suite.addTest(makeSuite(TestEditMetadata))
+    suite.addTest(makeSuite(TestEditMetadataIndependence))
+    suite.addTest(makeSuite(TestFormulatorFields))
     return suite
 
 if __name__ == '__main__':

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Fixed http://plone.org/collector/3240 and related issues.
+      Metadata elements like description and keywords (subject) could 
+      not be cleared.
+      [stefan]
+
     - Backported fixes for http://plone.org/collector/3253 from the trunk.
       folder_paste should return better error messages.
       [stefan]
