@@ -87,7 +87,7 @@ def rc3_rc4(portal):
     if 'addtofavorites' not in [action.getId() for action in at.listActions()]:
         at.addAction('addtofavorites',
                      'Add to Favorites',
-                     'string:${request/URL1}/addtoFavorites',
+                     'string:${object_url}/addtoFavorites',
                      'member',
                      'View',
                      'document_actions')

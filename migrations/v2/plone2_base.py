@@ -251,7 +251,7 @@ def addDocumentActions(portal):
 
     at.addAction('addtofavorites',
                  'Add to Favorites',
-                 'string:${request/URL1}/addtoFavorites',
+                 'string:${object_url}/addtoFavorites',
                  'member',
                  'View',
                  'document_actions')

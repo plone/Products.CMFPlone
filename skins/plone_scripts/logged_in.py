@@ -28,6 +28,8 @@ if REQUEST.get('__cp', None) is not None:
 # is the 'logged_out' page, return the default 'login_success' form
 if came_from is None or \
    came_from.endswith('logged_out') or \
+   came_from.endswith('mail_password') or \
+   came_from.endswith('member_search_results') or \
    came_from.endswith('login_form'):
     login_success = '%s/%s' % (context.portal_url(), 'login_success')
 

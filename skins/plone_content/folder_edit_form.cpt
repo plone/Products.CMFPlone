@@ -18,7 +18,7 @@
             action="."
             method="post"
             enctype="multipart/form-data"
-            tal:attributes="action string:${here/getId}/${template/getId}" >
+            tal:attributes="action string:${here_url}/${template/getId}" >
 
 
 
