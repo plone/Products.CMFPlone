@@ -58,7 +58,7 @@
                          tal:replace="structure string:$error_email <br />" />					  
                     
                     <input type="text" 
-                           name="field_email" 
+                           name="email" 
                            size="25"
                            tabindex="1"
                            value="member.email html_quote"

@@ -45,7 +45,7 @@
                 <div tal:replace="error_id" />
 
                 <input type="text" 
-                       name="field_id" 
+                       name="id" 
                        value="#"
                        size="30" 
                        tal:attributes="value id" 
@@ -75,7 +75,7 @@
                 <div tal:replace="error_title" />
 
                 <input type="text" 
-                       name="field_title" 
+                       name="title" 
                        value="#" 
                        size="30" 
                        tabindex="2"
@@ -101,7 +101,7 @@
                 <textarea cols="40" 
                           rows="5" 
                           tabindex="3"
-                          name="field_description"
+                          name="description"
                           tal:content="description"
                           onfocus="formtooltip('description_help',1)" 
                           onblur="formtooltip('description_help',0)">
