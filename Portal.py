@@ -117,6 +117,20 @@ class PloneSite(CMFSite, OrderedContainer):
         self.removal_inprogress=1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
 
+    def _management_page_charset(self):
+        """ Returns default_charset for management screens """
+        properties = getToolByName(self, 'portal_properties', None)
+        # Let's be a bit careful here because we don't want to break the ZMI
+        # just because people screw up their Plone sites (however thoroughly).
+        if properties is not None:
+            site_properties = getattr(properties, 'site_properties', None)
+            if site_properties is not None:
+                return site_properties.getProperty('default_charset', 'utf-8')
+        return 'utf-8'
+
+    from ComputedAttribute import ComputedAttribute
+    management_page_charset = ComputedAttribute(_management_page_charset, 1)
+
 Globals.InitializeClass(PloneSite)
 
 class PloneGenerator(Portal.PortalGenerator):

@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Implemented 'management_page_charset' as ComputedAttribute returning
+      the value of portal_properties/site_properties/default_charset.
+      Also see http://plone.org/collector/2778.
+      [stefan]
+
     - Added years range properties in site_properties:
       [dtremea]
 
