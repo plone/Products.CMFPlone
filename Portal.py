@@ -161,6 +161,7 @@ class PloneGenerator(Portal.PortalGenerator):
         path=','.join(path)
         sk_tool.addSkinSelection('Plone Default', path)
 
+        self.setupSecondarySkin(sk_tool, 'Plone Mozilla',     'plone_styles/mozilla')
         self.setupSecondarySkin(sk_tool, 'Plone Corporate',     'plone_styles/corporate')
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
         
