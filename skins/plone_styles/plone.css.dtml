@@ -478,6 +478,7 @@ pre {
     padding: 0 1em;
     z-index: 2;
     height: 1.2em;
+    font-size: 98%;
 }
 
 .contentActions ul,
