@@ -10,6 +10,9 @@ Plone 1.0.3 - Brazil Soundtrack
 
     - DTML support is now working again (NOTE: deprecated in Plone 1.1)
 
+    - added a property in portal_properties/site_properties called invalid_ids
+    which will not be allowed to be used in the CMF/Plone site.
+
 Plone 1.0.2 - Vert Release
 
     - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
