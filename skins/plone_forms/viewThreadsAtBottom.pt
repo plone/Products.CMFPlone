@@ -59,12 +59,26 @@
                        />
 			
 			</form>
-			
-			<div class="group" tal:condition="python: here.talkback.hasReplies(reply)">
+		
+            <div tal:define="crap python:request.set('searchForRepliesTo', reply)"></div>
+            <tal metal:use-macro="here/viewThreadsAtBottom/macros/repliesView" />
+		    </td>
+		</tr>
+	    </table>
+	    
+	</div>
+    </div>
+    
+</div>
+</div>
+
+
+<div metal:define-macro="repliesView">
+			<div class="group" tal:condition="python: here.talkback.hasReplies(request.get('searchForRepliesTo', ''))">
 			    <span class="legend">Replies</span>
 
 			    <span> 
-				 <span tal:repeat="child python:container.sort_modified_ascending(reply.talkback.getReplies())">
+				 <span tal:repeat="child python:container.sort_modified_ascending(request.get('searchForRepliesTo', None).talkback.getReplies())">
 				    <a href="" 
 				       class="comment" 
 				       tal:attributes="href string:${child/absolute_url}/discussionitem_view">
@@ -74,16 +88,14 @@
 				    <span i18n:translate="label_commented_at">at</span> 
                     <span tal:replace="python: here.toPortalTime(child.modified())">8/23/2001 12:49:08 PM</span>)
 				    </a>
-				 </span>
+            
+                   
+            <div tal:define="crap python:request.set('searchForRepliesTo', child)"></div>
+            <div tal:condition="python: here.talkback.hasReplies(request.get('searchForRepliesTo', ''))">
+            <tal metal:use-macro="here/viewThreadsAtBottom/macros/repliesView" />
+            </div>
+			
+                   </span>
 			    </span>
 			</div>
-				    
-		    </td>
-		</tr>
-	    </table>
-	    
-	</div>
-    </div>
-    
-</div>
 </div>
