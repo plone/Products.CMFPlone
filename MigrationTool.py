@@ -220,20 +220,24 @@ class MigrationTool( UniqueObject, SimpleItem):
         while newv is not None:
             out.append(("Attempting to upgrade from: %s" % newv, zLOG.INFO))
             try:
-                newv, res = self._upgrade(newv)
-                if res:
-                    newv, msgs = newv
+                newv, msgs = self._upgrade(newv)
+                if msgs:
                     for msg in msgs:
+                        # if string make list
+                        if type(msg) == type(''):
+                            msg = [msg,]
+                        # if no status, add one
                         if len(msg) == 1:
                             msg.append(zLOG.INFO)
-                        out.append(*msg)
+                        out.append(msg)
                 if newv is not None:
                     out.append(("Upgrade to: %s, completed" % newv, zLOG.INFO))
                     self.setInstanceVersion(newv)
-                else:
-                    out.append(("Your ZODB and Filesystem Plone instances are up-to-date.", zLOG.INFO))
+ 
             except:
                 out.append(("Upgrade aborted", zLOG.ERROR))
+                out.append(("Error type: %s" % sys.exc_type, zLOG.ERROR))
+                out.append(("Error value: %s" % sys.exc_value, zLOG.ERROR))
                 for line in traceback.format_tb(sys.exc_traceback):
                     out.append((line, zLOG.ERROR))
                     
@@ -249,6 +253,8 @@ class MigrationTool( UniqueObject, SimpleItem):
         if self.needUpgrading():
             out.append(("The upgrade path did NOT reach current version", zLOG.PROBLEM))
             out.append(("Migration has failed", zLOG.PROBLEM))
+        else:
+            out.append(("Your ZODB and Filesystem Plone instances are now up-to-date.", zLOG.INFO))
 
         # do this once all the changes have been done
         if self.needRecatalog():
@@ -293,7 +299,7 @@ class MigrationTool( UniqueObject, SimpleItem):
     def _upgrade(self, version):
         version = version.lower()
         if not _upgradePaths.has_key(version): 
-            return None
+            return None, ("No upgrade path found from %s" % version,)
 
         newversion, function = _upgradePaths[version]
         res = function(self.aq_parent)

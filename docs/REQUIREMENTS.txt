@@ -1,4 +1,4 @@
-Plone 1.1 Requirements
+Plone 2.0 Requirements
 
   - CMF1.4 (contains DCWorkflow) found at http://cmf.zope.org/download/CMF-1.4
   

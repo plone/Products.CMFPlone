@@ -75,6 +75,7 @@ class WorkflowTool(BaseTool):
                             result[tdef.id] = {
                                     'id': tdef.id,
                                     'title': tdef.title,
+                                    'title_or_id': tdef.title_or_id(),
                                     'name': tdef.actbox_name
                                     }
         return tuple(result.values())

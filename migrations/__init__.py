@@ -5,6 +5,7 @@ import one02_one03
 import one01_one02
 import final_one_zero_one
 import oneX_twoBeta2
+import twoBeta2_twoBeta3
 
 def null(portal):
     """ This is a null migration, use it when nothing happens """
@@ -37,6 +38,6 @@ def registerMigrations():
                                        '2.0-beta2',
                                        oneX_twoBeta2.oneX_twoBeta2)
     
-#   MigrationTool.registerUpgradePath( '2.0-beta2',
-#                                      '2.0-beta3',
-#                                      null)
+    MigrationTool.registerUpgradePath( '2.0-beta2',
+                                      '2.0-beta3',
+                                      twoBeta2_twoBeta3.twoBeta2_twoBeta3)
