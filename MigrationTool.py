@@ -86,9 +86,10 @@ class MigrationTool( UniqueObject, SimpleItem):
         # do this once all the changes have been done
         try:
             self.portal_catalog.refreshCatalog()
+            self.portal_workflow.updateRoleMappings()
         except:
-            pass #this can happen
-        self.portal_workflow.updateRoleMappings()
+            out.append("Exception was thrown while cataloging")
+            pass
         return '\n'.join(out)
         
 
