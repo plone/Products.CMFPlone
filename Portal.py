@@ -20,7 +20,6 @@ from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInform
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName, registerIcon
 from Products.CMFDefault import Portal
-from Products.CMFCalendar.Extensions import Install as CalendarInstall
 from Products.ExternalMethod import ExternalMethod
 import Globals
 import string
@@ -118,10 +117,6 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool('Plone Properties Tool', None)
         if not exists('portal_migration'):
             addPloneTool('Plone Migration Tool', None)
-        if not exists('portal_configuration'):
-            addPloneTool('Plone Control Panel', None)
-        if not exists('portal_interface'):
-            addPloneTool('Portal Interface Tool', None)
             
         p.manage_permission( CMFCorePermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
@@ -302,12 +297,14 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupPloneSkins(p)
         self.setupPortalContent(p)
         self.setupForms(p)
-        CalendarInstall.install(p)
 
         m = p.portal_migration
         # XXX we need to make this read version.txt
         m.setInstanceVersion('1.0beta2') #.1')
         m.upgrade(swallow_errors=0)
+
+        installer=getToolByName(p, 'portal_quickinstaller')
+        installer.installProduct('CMFCalendar')
 
     def create(self, parent, id, create_userfolder):
         id = str(id)
