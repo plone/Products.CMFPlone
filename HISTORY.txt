@@ -19,6 +19,7 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
       should be 'language' inside the template. See PloneLanguageTool
       for an example. This is the recommended location for language
       switchers.
+      [limi]
 
 Plone 2.0.3 - Noname - Released 20. May 2004
 
