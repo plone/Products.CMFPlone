@@ -1,3 +1,78 @@
+2004-01-30 00:46  jimroepcke
+
+	* PloneFolder.py (Plone-2_0-branch): explicitly check for
+	  index_html in folders before returning it for __browser_default__
+
+2004-01-29 17:26  runyaga
+
+	* HISTORY.txt, Extensions/package_plone.py (Plone-2_0-branch): fix
+	  package script
+
+2004-01-29 16:52  runyaga
+
+	* HISTORY.txt, skins/plone_content/file_edit_form.cpt,
+	  skins/plone_content/image_edit_form.cpt (Plone-2_0-branch): fix
+	  for 2514 which made people think they have up add a title.  to
+	  image/file objects
+
+2004-01-29 16:42  runyaga
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): typo
+
+2004-01-29 16:40  runyaga
+
+	* migrations/: __init__.py, v2/release_candidates.py
+	  (Plone-2_0-branch): rc4->rc5 migrations
+
+2004-01-29 16:27  runyaga
+
+	* version.txt (Plone-2_0-branch): increment version #
+
+2004-01-29 16:26  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): OK,
+	  IE is officially on crack. Changed the fix back to referencing
+	  the #documentContent ID. If I try to reference it *correctly* as
+	  a class (which it is), the fix doesn't work. Scary.
+
+2004-01-29 16:24  runyaga
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): fix issue 2517
+
+2004-01-29 16:12  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  Undoing fix, turns out the main_template I saw was outdated.
+
+2004-01-29 16:03  tesdal
+
+	* PloneFolder.py (Plone-2_0-branch): #2485 - partial fix
+
+2004-01-29 15:47  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Updated history.
+
+2004-01-29 15:25  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Updated history.
+
+2004-01-29 14:35  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  Fixed the disappearing list markers for ordered, unordered list +
+	  disappearing definition lists.
+
+2004-01-29 13:24  limi
+
+	* skins/: plone_tableless/main_template.pt,
+	  plone_templates/header.pt, plone_templates/main_template.pt
+	  (Plone-2_0-branch): The base slots were being filled in the wrong
+	  order, causing it to not work as expected. Fixed.
+
+2004-01-29 04:59  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-28 21:51  shh42
 
 	* tests/testMembershipTool.py (Plone-2_0-branch): Shut up
