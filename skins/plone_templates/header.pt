@@ -42,11 +42,10 @@
     <style type="text/css" media="screen"
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
 
-    <!-- Old style sheet from Plone 1.0, uncomment if you need to use the old styles. -->
-    <!--
+    <!-- Old style sheet from Plone 1.0, remove tal:condition="nothing" if you need to use the old styles. -->
     <style type="text/css" media="screen"
+           tal:condition="nothing"
            tal:content="string: @import url($portal_url/ploneDeprecated.css?$current_skin);"></style>
-    -->
     
     <!-- Alternate style sheets for the bigger/smaller text switcher -->
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
