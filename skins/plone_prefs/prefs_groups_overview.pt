@@ -51,7 +51,6 @@
         Up to Plone Setup
         </a>
 
-    
         <p i18n:translate="description_groups_management">
           Groups are logical collections of users, such as departments and
           business units. Groups are not directly related to permissions on
