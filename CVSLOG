@@ -1,3 +1,13 @@
+2003-11-23 00:03  tiran
+
+	* skins/plone_content/folder_edit_form.cpt (Plone-2_0-branch): use
+	  getRelativeContentPath instead of portal. I added the len()
+	  method for more verbosity - only the length is important
+
+2003-11-22 05:06  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-22 02:46  zopezen
 
 	* CustomizationPolicy.py, MigrationTool.py (Plone-2_0-branch):
