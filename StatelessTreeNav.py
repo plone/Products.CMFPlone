@@ -164,13 +164,11 @@ class StatelessTreeBuilder:
                 pass
 
             if self.listSiblings == 1:
-                if self.includeTop and p==path[0]:
-                    r['siblings']=[p]
-                else:
-                    r['siblings']=self.getChildObjects(p.aq_parent,self.showFolderishSiblingsOnly)
-                    r['siblingtitles']=map(lambda x:x.title_or_id(),r['siblings'])
-                    if p not in r['siblings']:
-                        r['siblings'].append(p)
+                r['siblings']=self.getChildObjects(p.aq_parent,self.showFolderishSiblingsOnly)
+                r['siblingtitles']=map(lambda x:x.title_or_id(),r['siblings'])
+
+            if p not in r['siblings'] and (p != path[0] or self.includeTop):
+                r['siblings'].append(p)
 
             res.append(r)
             itemcount=itemcount+1
