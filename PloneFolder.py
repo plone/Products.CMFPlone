@@ -124,21 +124,21 @@ class OrderedContainer(Folder):
             self.getObjectPosition(id) + int(steps)
             )
         if RESPONSE is not None:
-            RESPONSE.redirect('manage_workspace')        
-            
+            RESPONSE.redirect('manage_workspace')
+
     security.declareProtected(Permissions.copy_or_move, 'moveObjectTop')
     def moveObjectTop(self, id, RESPONSE=None):
         """ move an object to the top """
         self.moveObject(id, 0)
         if RESPONSE is not None:
-            RESPONSE.redirect('manage_workspace')        
+            RESPONSE.redirect('manage_workspace')
 
     security.declareProtected(Permissions.copy_or_move, 'moveObjectBottom')
     def moveObjectBottom(self, id, RESPONSE=None):
         """ move an object to the bottom """
         self.moveObject(id, sys.maxint)
         if RESPONSE is not None:
-            RESPONSE.redirect('manage_workspace')        
+            RESPONSE.redirect('manage_workspace')
 
     def manage_renameObject(self, id, new_id, REQUEST=None):
         " "
@@ -148,8 +148,8 @@ class OrderedContainer(Folder):
         self.moveObject(new_id, objidx)
 
         return result
-        
-InitializeClass(OrderedContainer)  
+
+InitializeClass(OrderedContainer)
 
 class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
     meta_type = 'Plone Folder'
@@ -195,21 +195,27 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
         ob=PloneFolder(id, title)
     	self._setObject(id, ob)
     	if REQUEST is not None:
-            return self.folder_contents(self, REQUEST, portal_status_message='Folder added') #XXX HARDCODED FIXME!
+            #XXX HARDCODED FIXME!
+            return self.folder_contents(self, REQUEST,
+                                        portal_status_message='Folder added')
 
     manage_addFolder = manage_addPloneFolder
     manage_renameObject = OrderedContainer.manage_renameObject
 
-    security.declareProtected(Permissions.delete_objects, 'manage_beforeDelete')
-    def manage_beforeDelete(self, item, container):
+    security.declareProtected(Permissions.delete_objects, 'manage_delObjects')
+    def manage_delObjects(self, ids):
         """ We need to enforce security. """
         mt=getToolByName(self, 'portal_membership')
-        if not mt.checkPermission(Permissions.delete_objects, item):
-            raise BeforeDeleteException, "Do not have permissions to remove this object"
-        SkinnedFolder.manage_beforeDelete(self, item, container)
-        
+        for id in ids:
+            item = self._getOb(id)
+            if not mt.checkPermission(Permissions.delete_objects, item):
+                raise BeforeDeleteException, (
+                    "Do not have permissions to remove this object")
+        SkinnedFolder.manage_delObjects(self, ids)
+
     def __browser_default__(self, request):
-        """ Set default so we can return whatever we want instead of index_html """
+        """ Set default so we can return whatever we want instead of
+        index_html """
         return self.browserDefault(request)
 
     security.declarePublic('contentValues')
@@ -253,6 +259,7 @@ class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
             except (Unauthorized, 'Unauthorized'):
                 pass
         return l
+
 InitializeClass(PloneFolder)
 
 def safe_cmp(x, y):

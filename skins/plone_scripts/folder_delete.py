@@ -19,7 +19,7 @@ if ids:
 
     status='success'
     message=', '.join(ids)+' has been deleted.'
-    transaction_note(message)        
+    transaction_note(message)
     context.manage_delObjects(ids)
 
 
