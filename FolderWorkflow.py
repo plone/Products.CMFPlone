@@ -4,6 +4,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.DCWorkflow.Default import setupDefaultWorkflowRev2
 
 def setupFolderWorkflow(wf):
+	setupDefaultWorkflowRev2(wf)
         #Published folders means that anonymous should be able to 'list the folder contents'
         wf.permissions+=(CMFCorePermissions.ListFolderContents, )
         wf.states.published.permission_roles[CMFCorePermissions.ListFolderContents]=['Anonymous',]
@@ -21,7 +22,6 @@ def setupFolderWorkflow(wf):
     
 def createFolderWorkflow(id):
     ob=DCWorkflowDefinition(id)
-    setupDefaultWorkflowRev2(ob)
     setupFolderWorkflow(ob)
     ob.setProperties(title='Folder Workflow [Plone]')
     return ob
@@ -31,7 +31,8 @@ addWorkflowFactory( createFolderWorkflow, id='folder_workflow'
 
 
 def setupPrivateFolderWorkflow(wf):
-        wf.states.visible.permission_roles['View'] = ('Member', 'Reviewer', 'Manager')
+	setupFolderWorkflow(wf)
+	wf.states.visible.permission_roles['View'] = ('Member', 'Reviewer', 'Manager')
         wf.states.published.permission_roles['List folder contents'] = ('Authenticated', 'Manager')
         wf.states.published.permission_roles['View'] = ('Member', 'Reviewer', 'Manager')
         wf.states.setInitialState(id='private')
@@ -60,7 +61,6 @@ def setupPrivateFolderWorkflow(wf):
 
 def createPrivateFolderWorkflow(id):
     ob=DCWorkflowDefinition(id)
-    setupDefaultWorkflowRev2(ob)
     setupPrivateFolderWorkflow(ob)
     ob.setProperties(title='Private Folder Workflow [Plone]')
     return ob
