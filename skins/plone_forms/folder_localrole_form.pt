@@ -172,8 +172,8 @@
                         <input type="checkbox" name="member_roles:list" 
                                 tal:condition="lrole"
                                 tal:attributes="tabindex tabindex/next;
-                                                value lrole">
-                            <span tal:condition="lrole" tal:content="lrole">role</span>
+                                                value lrole"/>
+                        <span tal:condition="lrole" tal:content="lrole">role</span>
                     </td>
                 </tr>
             </table>
@@ -513,7 +513,7 @@
             <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
                 tal:attributes="checked     python:test(inheritanceActive,1,None)"
                 /> 
-            <label for="inherit">inherit roles from higher levels <label />
+            <label for="inherit">inherit roles from higher levels </label>
             <div class="formHelp" i18n:translate="help_use_acquisition">
                 Determines if the roles given to users and groups from higher levels are in
                 effect in this context.
