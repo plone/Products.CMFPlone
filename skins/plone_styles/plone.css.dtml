@@ -972,6 +972,16 @@ ul.configletDetails li label {
     font-weight: bold;
 }
 
+/* List classes without markers */
+
+ul.visualNoMarker, 
+ol.visualNoMarker { 
+    list-style-type: none;
+    list-style-image: none;
+    margin: 0.5em 0 0 0;
+}
+
+
 
 /* Additional STX workaround classes */
 .stx table p /* stupid STX table workaround */

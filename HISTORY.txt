@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Added two classes to allow list without markers: 
+      'ul.visualNoMarker' and 'ol.visualNoMarker'.
+      [limi]
+
     - Added Full Screen view for images.
       [limi]
 
