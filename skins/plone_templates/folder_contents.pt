@@ -220,12 +220,22 @@
                         </td>
                         <td tal:condition="isOrderable">
                             <a href=""
+                               tal:attributes="href string:${here/absolute_url}/folder_position?position=top&id=${item/getId}">
+                            <img tal:replace="structure here/portal_url/arrowUp.gif" />
+                            </a>
+                            &nbsp;
+                            <a href=""
                                tal:attributes="href string:${here/absolute_url}/folder_position?position=up&id=${item/getId}">
                             <img tal:replace="structure here/portal_url/arrowUp.gif" />
                             </a>
                             &nbsp;
                             <a href=""
                                tal:attributes="href string:${here/absolute_url}/folder_position?position=down&id=${item/getId}">
+                            <img tal:replace="structure here/portal_url/arrowDown.gif" />
+                            </a>
+                            &nbsp;
+                            <a href=""
+                               tal:attributes="href string:${here/absolute_url}/folder_position?position=bottom&id=${item/getId}">
                             <img tal:replace="structure here/portal_url/arrowDown.gif" />
                             </a>
                         </td>

@@ -1,3 +1,4 @@
+from sys import maxint
 from Products.CMFCore.utils import _verifyActionPermissions, \
      getToolByName, getActionContext
 from Products.CMFCore.Skinnable import SkinnableObjectManager
@@ -17,6 +18,10 @@ from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
+
+# this import can change with Zope 2.7 to 
+# from OSF.Ordersupport import IOrderedContainer
+# atm its safer defining an own
 from interfaces.OrderedContainer import IOrderedContainer
 
 # from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
@@ -99,6 +104,51 @@ class OrderedContainer(Folder):
         metadata.insert(position, obj_meta)
         self._objects = tuple(metadata)
 
+    # here the implementing of IOrderedContainer starts
+    # if plone sometime depends on zope 2.7 it should be replaced by mixing in
+    # the 2.7 specific class OSF.OrderedContainer.OrderedContainer
+
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectsByDelta')
+    def moveObjectsByDelta(self, ids, delta):
+        """ Move specified sub-objects by delta.
+        """
+        if type(ids) is StringType:
+            ids = (ids,)
+        min_position = 0
+        objects = list(self._objects)
+        obj_dict = {}
+        for obj in self._objects:
+            obj_dict[ obj['id'] ] = obj
+        # unify moving direction
+        if delta > 0:
+            ids = list(ids)
+            ids.reverse()
+            objects.reverse()
+        counter = 0
+
+        for id in ids:
+            try:
+                object = obj_dict[id]
+            except KeyError:
+                raise ValueError('The object with the id "%s" does not exist.'
+                                 % id)
+            old_position = objects.index(object)
+            new_position = max( old_position - abs(delta), min_position )
+            if new_position == min_position:
+                min_position += 1
+            if not old_position == new_position:
+                objects.remove(object)
+                objects.insert(new_position, object)
+                counter += 1
+
+        if counter > 0:
+            if delta > 0:
+                objects.reverse()
+            self._objects = tuple(objects)
+
+        return counter
+
+
     security.declareProtected(Permissions.copy_or_move, 'getObjectPosition')
     def getObjectPosition(self, id):
 
@@ -130,19 +180,39 @@ class OrderedContainer(Folder):
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectTop')
-    def moveObjectTop(self, id, RESPONSE=None):
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectToTop')
+    def moveObjectToTop(self, id, RESPONSE=None):
         """ move an object to the top """
         self.moveObject(id, 0)
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectBottom')
-    def moveObjectBottom(self, id, RESPONSE=None):
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectToBottom')
+    def moveObjectToBottom(self, id, RESPONSE=None):
         """ move an object to the bottom """
-        self.moveObject(id, sys.maxint)
+        self.moveObject(id, maxint)
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
+
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectToPosition')
+    def moveObjectToPosition(self, id, position):
+        """ Move specified object to absolute position.
+        """        
+        delta = position - self.getObjectPosition(id)
+        return self.moveObjectsByDelta(id, delta)
+
+    security.declareProtected(Permissions.copy_or_move, 'orderObjects')
+    def orderObjects(self, key, reverse=None):
+        """ Order sub-objects by key and direction.
+        """
+        ids = [ id for id, obj in sort( self.objectItems(),
+                                        ( (key, 'cmp', 'asc'), ) ) ]
+        if reverse:
+            ids.reverse()
+        return self.moveObjectsByDelta( ids, -len(self._objects) )
+
+    # here the implementing of IOrderedContainer ends
+
 
     def manage_renameObject(self, id, new_id, REQUEST=None):
         " "
@@ -154,6 +224,7 @@ class OrderedContainer(Folder):
         return result
 
 InitializeClass(OrderedContainer)
+
 
 class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
     meta_type = 'Plone Folder'
