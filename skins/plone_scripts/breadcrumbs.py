@@ -47,7 +47,7 @@ o = current = context
 first_object = 1
 
 # Add breadcrumbs for directories between the root and the published object.
-while current and current is not portal:
+while current and (first_object or current is not portal):
     if not first_object:
         # If the user doesn't have 'Access contents information'
         # at some level, then it will append '...' to breadcrumbs
@@ -85,9 +85,10 @@ while current and current is not portal:
     else:
         first_object = 0
 
-    id = o.getId()
-    if id in dont_show:
-        continue
+    if hasattr(o, 'getId'):
+        id = o.getId()
+        if id in dont_show:
+            continue
 
     # don't show temporary folders or other excluded types
     if getattr(o, 'meta_type', None) in dont_show_metatypes:
