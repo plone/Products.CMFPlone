@@ -82,6 +82,10 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         newSecurityManager(None, user)
 
 
+class FunctionalTestCase(ZopeTestCase.Functional, PloneTestCase):
+    '''Convenience class for functional unit testing'''
+
+
 def setupPloneSite(app=None, id=portal_name, quiet=0, with_default_memberarea=1):
     '''Creates a Plone site.'''
     if not hasattr(aq_base(app), id):
