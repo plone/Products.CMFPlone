@@ -164,7 +164,7 @@
                            i18n:attributes="value"
                            tal:attributes="tabindex tabindex/next;" /> 
                            
-                    <input class="context" 
+                    <input class="standalone" 
                            tabindex=""
                            type="submit" 
                            name="form.button.Cancel" 
