@@ -2,17 +2,16 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1-beta1 - (TBA) - (Unreleased)
+Plone 2.1 - (TBA) - (Unreleased)
 
-    - Added changes for Gruf 3 compatibility. Plone now requires Gruf 3.1.1 Thanks to pjgrizel to the patches. [jladage]
-
+    - Plone now supports/requires GRUF 3.1.1. Thanks to pjgrizel for the patches.
+      [jladage]
 
     - Removed the dependency on Formulator as well as FormTool and NavigationTool.
       [stefan]
 
-    - It was impossible to create a item named 'index_html' on Portal
-      root or inside a folder via WebDAV. Added a functional doctest
-      for it.
+    - It was impossible to create an item named 'index_html' in the portal
+      root or inside a folder via WebDAV. Added a functional doctest for it.
       [dreamcatcher]
 
     - Removed headingFontBaseSize from base_properties and plone.css.dtml

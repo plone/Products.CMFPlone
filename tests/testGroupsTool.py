@@ -22,12 +22,6 @@ def sortTuple(t):
     l.sort()
     return tuple(l)
 
-# Test the right group class according to GRUF version
-try:
-    from Products.GroupUserFolder.GRUFUser import GRUFGroup
-    GRUFGroup_class = "GRUFGroup"
-except:
-    GRUFGroup_class = "GRUFUser"
 
 class TestGroupsTool(PloneTestCase.PloneTestCase):
 
@@ -57,16 +51,16 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo', [], [])
         g = self.groups.getGroupById('foo')
         self.assertEqual(g.__class__.__name__, 'GroupData')
-        self.assertEqual(g.aq_parent.__class__.__name__, GRUFGroup_class)
+        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
     def testEditGroup(self):
         self.groups.addGroup('foo', )
-        self.groups.editGroup('foo', roles = ['Reviewer'], )    # ['foo.com']) => no domain on groups
+        self.groups.editGroup('foo', roles = ['Reviewer'])  #, ['foo.com']) => no domains on groups
         g = self.groups.getGroupById('foo')
         self.assertEqual(sortTuple(g.getRoles()), ('Authenticated', 'Reviewer'))
-##        self.assertEqual(g.getDomains(), ('foo.com',))                  # Nonsense: no domain on groups
-##        self.assertEqual(g.getGroup()._getPassword(), 'secret')         # Nonsense: no password for groups
+        ##self.assertEqual(g.getDomains(), ('foo.com',))                  # No domains on groups
+        ##self.assertEqual(g.getGroup()._getPassword(), 'secret')         # No password for groups
 
     def testEditBadGroup(self):
         # Error type depends on the user folder...
@@ -77,7 +71,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         except ValueError:
             pass        # Ok, this is the wanted behaviour
         else:
-            raise AssertionError, "Should raise here"
+            self.fail("Should have raised KeyError or ValueError")
 
     def testRemoveGroups(self):
         self.groups.addGroup('foo', [], [])
@@ -102,7 +96,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.acl_users._updateUser(default_user, groups=['foo'])
         gs = self.groups.getGroupsByUserId(default_user)
         self.assertEqual(gs[0].__class__.__name__, 'GroupData')
-        self.assertEqual(gs[0].aq_parent.__class__.__name__, GRUFGroup_class)
+        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
     def testListGroups(self):
@@ -116,27 +110,27 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups.addGroup('foo', [], [])
         gs = self.groups.listGroups()
         self.assertEqual(gs[0].__class__.__name__, 'GroupData')
-        self.assertEqual(gs[0].aq_parent.__class__.__name__, GRUFGroup_class)
+        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
     # This should not be in a groups tool!
-##    def testGetPureUserNames(self):
-##        self.groups.addGroup('foo', [], [])
-##        self.assertEqual(len(self.acl_users.getUserNames()), 2)
-##        self.assertEqual(len(self.groups.getPureUserNames()), 1)
+    ##def testGetPureUserNames(self):
+    ##    self.groups.addGroup('foo', [], [])
+    ##    self.assertEqual(len(self.acl_users.getUserNames()), 2)
+    ##    self.assertEqual(len(self.groups.getPureUserNames()), 1)
 
     # This should not be in a groups tool!
-##    def testGetPureUsers(self):
-##        self.groups.addGroup('foo', [], [])
-##        self.assertEqual(len(self.acl_users.getUsers()), 2)
-##        self.assertEqual(len(self.groups.getPureUsers()), 1)
+    ##def testGetPureUsers(self):
+    ##    self.groups.addGroup('foo', [], [])
+    ##    self.assertEqual(len(self.acl_users.getUsers()), 2)
+    ##    self.assertEqual(len(self.groups.getPureUsers()), 1)
 
     # This should not be in a groups tool!
-##    def testPureUsersAreNotWrapped(self):
-##        self.groups.addGroup('foo', [], [])
-##        us = self.groups.getPureUsers()
-##        self.assertEqual(us[0].__class__.__name__, GRUFGroup_class)
-##        self.assertEqual(us[0].aq_parent.__class__.__name__, 'GroupUserFolder')
+    ##def testPureUsersAreNotWrapped(self):
+    ##    self.groups.addGroup('foo', [], [])
+    ##    us = self.groups.getPureUsers()
+    ##    self.assertEqual(us[0].__class__.__name__, 'GRUFGroup')
+    ##    self.assertEqual(us[0].aq_parent.__class__.__name__, 'GroupUserFolder')
 
     def testSetGroupOwnership(self):
         self.groups.addGroup('foo', [], [])
@@ -152,10 +146,10 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
     def testWrapGroup(self):
         self.groups.addGroup('foo', [], [])
         g = self.acl_users.getGroup(self.prefix + 'foo')
-        self.assertEqual(g.__class__.__name__, GRUFGroup_class)
+        self.assertEqual(g.__class__.__name__, 'GRUFGroup')
         g = self.groups.wrapGroup(g)
         self.assertEqual(g.__class__.__name__, 'GroupData')
-        self.assertEqual(g.aq_parent.__class__.__name__, GRUFGroup_class)
+        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
 
