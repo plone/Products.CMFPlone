@@ -41,22 +41,6 @@
                 </tal:configlet>
             </ul>
 
-            <ul class="configlets">
-                <li tal:repeat="configlet configlets">
-                    <a href=""
-                       tal:attributes="href configlet/url"
-                       tal:condition="configlet/visible">
-                        <img src="" alt=""
-                             tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
-                                             alt configlet/description"
-                             i18n:attributes="alt"
-                             tal:on-error="string:" />
-                        <tal:configletname tal:content="configlet/name"
-                                           i18n:translate=""></tal:configletname>
-                    </a>
-                </li>
-            </ul>
-
             <p tal:condition="not:configlets"
                i18n:translate="label_no_panels_available">
               No Preference Panels available.
