@@ -398,7 +398,6 @@ def makePortalRootPortalType(portal):
         portal root (since its a folder).
     """
     #make Portal portal_type
-    #import pdb; pdb.set_trace()
     portal.portal_types.manage_addTypeInformation(FactoryTypeInformation.meta_type,
                                                   id='Plone Site',
                                                   typeinfo_name='CMFPlone: Plone Site')
@@ -409,6 +408,11 @@ def makePortalRootPortalType(portal):
     sprops=portal.portal_properties.site_properties
     use_folder_tabs=sprops.getProperty('use_folder_tabs')
     sprops._updateProperty('use_folder_tabs', use_folder_tabs+('Plone Site',))
+
+    #By default Members do not have List folder contents to the root.  I believe this
+    # happenes because it starts out with a Folder's workflow.  We could fix this.
+    # But I think we can change permission for now and then redo the portal cosntruction.
+    portal.manage_permission(ListFolderContents, ('Manager', 'Owner'), acquire=1)
 
 def addActionsToPortalTypes(portal):
     """ Deprecated.  We are now using a drop-down box on the contentBar """

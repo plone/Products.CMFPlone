@@ -337,31 +337,20 @@ portal_skins tool and set the correct default skin.""" % default
 
         return values
 
-    security.declareProtected( ListFolderContents, 'listFolderContents')
+    security.declareProtected( 'View', 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
-        Hook around 'contentValues' to let 'folder_contents'
-        be protected.  Duplicating skip_unauthorized behavior of dtml-in.
-
-        In the world of Plone we do not want to show objects that begin with a .
-        So we have added a simply check.  We probably dont want to raise an
-        Exception as much as we want to not show it.
-
+        We have made lisFolderContents available if you have 'visible'.  This means
+        all content is visible for anonymous.  Private content will not be visible.
+        If you want to change the behavior you need to look at workflow permissions.
         """
-
-        items = self.contentValues(spec=spec, filter=contentFilter)
-        l = []
-        for obj in items:
-            id = obj.getId()
-            v = obj
-            try:
-                if suppressHiddenFiles and id[:1]=='.':
-                    raise Unauthorized(id, v)
-                if getSecurityManager().validate(self, self, id, v):
-                    l.append(obj)
-            except (Unauthorized, 'Unauthorized'):
-                pass
-        return l
+        contents=SkinnedFolder.listFolderContents(self, 
+                                                  spec=spec, 
+                                                  contentFilter=contentFilter)
+        if suppressHiddenFiles:
+            contents=[obj for obj in contents if obj.getId()[:1]!='.']
+   
+        return contents
 
     # Override CMFCore's invokeFactory to return the id returned by the
     # factory in case the factory modifies the id

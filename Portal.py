@@ -36,7 +36,7 @@ import Globals
 import string
 import os, sys, re
 
-from AccessControl import getSecurityManager
+from AccessControl import getSecurityManager, ClassSecurityInfo
 
 __version__='1.1'
 
@@ -108,10 +108,13 @@ class PloneSite(CMFSite, OrderedContainer):
     Make PloneSite subclass CMFSite and add some methods.
     This will be useful for adding more things later on.
     """
+    security=ClassSecurityInfo()
     meta_type = portal_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__
+
+    security.declareProtected( 'View', 'listFolderContents')
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
@@ -131,6 +134,8 @@ portal_skins tool and set the correct default skin.""" % default
         """ Should send out an Event before Site is being deleted """
         self.removal_inprogress=1
         PloneSite.inheritedAttribute('manage_beforeDelete')(self, container, item)
+
+Globals.InitializeClass(PloneSite)
 
 class PloneGenerator(Portal.PortalGenerator):
 
