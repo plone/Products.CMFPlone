@@ -18,6 +18,8 @@ ZopeTestCase.installProduct('CMFFormController')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
 ZopeTestCase.installProduct('CMFPlone')
+ZopeTestCase.installProduct('PageTemplates', quiet=1)
+ZopeTestCase.installProduct('PythonScripts', quiet=1)
 
 
 from AccessControl.SecurityManagement import newSecurityManager
