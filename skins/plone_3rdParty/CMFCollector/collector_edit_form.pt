@@ -63,7 +63,7 @@
     </div>
     <input type="hidden" 
            name="id" 
-           tal:condition="python: not member.getProperty('visible_ids')"
+           tal:condition="python: not member.getProperty('visible_ids', None)"
            tal:attributes="value python:request.get('id', here.getId())" 
            />
 
