@@ -43,7 +43,10 @@
         <div class="row">
             <span class="label"></span>
             <span class="field">
-            <form name="download" action="" method="post"
+            <form name="download"
+	          action=""
+		  method="GET"
+		  target="top"
                   tal:attributes="action here/getId"> 
                 <input class="standalone" type="submit" value="Download file" />
             </form>
