@@ -12,8 +12,7 @@ listing=()
 if obj is None: 
     obj=context 
 
-if not obj.isPrincipiaFolderish: 
-    obj=obj.aq_parent
+obj=obj.aq_parent
 
 try:
     for o in obj.listFolderContents(spec='Folder'):
