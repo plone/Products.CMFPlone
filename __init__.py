@@ -44,9 +44,15 @@ def initialize(context):
     from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
     from AccessControl import allow_module, allow_class, allow_type
 
+    # zLOG is deprecated in Zope >2.7.0, use logger instead
+    ModuleSecurityInfo('logging').declarePublic('getLogger')
+    from logging import Logger
+    allow_class(Logger)
+    
     ModuleSecurityInfo('zLOG').declarePublic('LOG')
     ModuleSecurityInfo('zLOG').declarePublic('INFO')
     ModuleSecurityInfo('zLOG').declarePublic('WARNING')
+    
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('localized_time')
     allow_module('Products.CMFPlone.PloneUtilites')
