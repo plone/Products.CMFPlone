@@ -73,9 +73,10 @@
                 </p>
 				
                 <form class="group"
-                      action="logged_in" 
+                      action="change_password"
+                      name="change_password" 
                       method="post"
-                      tal:attributes="action python: container.portal_url()+'/logged_in'">
+                      tal:attributes="action python: container.portal_url()+'/change_password'">
 
                     <span class="legend" i18n:translate="">Password Details</span>
                                     
@@ -85,44 +86,51 @@
                            tal:condition="python:request.get('came_from', '')"
                            tal:attributes="value request/came_from" 
                            />
-                
+                           
+               
                     <div class="row">
-                        <div class="label">Name</div>
-                        <div class="field">
-                            <input type="text" 
-                                   name="__ac_name" 
-                                   size="20"
-                                   tabindex=""
-                                   tal:attributes="value python:request.get('__ac_name', '');
-                                                   tabindex tabindex/next;" 
-                                                   />
+                        <div class="label">
+                            <span i18n:id="new_password">New password</span>
+                            <div id="new_password_help"
+                                 i18n:id="new_password_help" 
+                                 class="help" 
+                                 style="visibility:hidden">
+                            Enter your new password. Minimum 5 characters.
+                            </div>                
+                            
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="label">Password</div>
-                        <div class="field">
+                        <div class="field"> 
                             <input type="password" 
-                                   name="__ac_password" 
+                                   name="password" 
                                    size="10"
                                    tabindex=""
+                                   onfocus="formtooltip('new_password_help',1)" 
+                                   onblur="formtooltip('new_password_help',0)"
                                    tal:attributes="tabindex tabindex/next;" 
                                    />
                         </div>
                     </div>
-
+            
                     <div class="row">
-                        <div class="label">&nbsp;</div>
-                        <div class="field">
-                            <input type="checkbox" 
-                                   class="noborder" 
-                                   name="__ac_persistent" 
-                                   value="1" 
-                                   checked id="cb_remember"
+                        <div class="label">
+                            <span i18n:id="confirm_password">Confirm password</span>
+                            <div id="confirm_password_help" 
+                                 i18n:id="confirm_password_help"
+                                 class="help" 
+                                 style="visibility:hidden">
+                            Re-enter the password. Make sure the passwords are identical.
+                            </div>
+                            
+                        </div>
+                        <div class="field"> 
+                            <input type="password" 
+                                   name="confirm" 
+                                   size="10"
                                    tabindex=""
+                                   onfocus="formtooltip('confirm_password_help',1)" 
+                                   onblur="formtooltip('confirm_password_help',0)"
                                    tal:attributes="tabindex tabindex/next;" 
                                    />
-                            <label for="cb_remember">Remember my name.</label>
                         </div>
                     </div>
 
@@ -131,7 +139,7 @@
                         <div class="field">
                             <input type="submit" 
                                    name="submit" 
-                                   value="Login"
+                                   value="Change Password"
                                    tabindex=""
                                    tal:attributes="tabindex tabindex/next;">
                         </div>
