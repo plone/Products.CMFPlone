@@ -181,6 +181,8 @@
                              tabindex tabindex/next;">
     
                 <label i18n:translate="label_allow_sendto">Enable 'Send this page to somebody' Feature</label>
+                
+                <div class="formHelp"></div>
     
                 <input type="radio"
                        class="noborder"
