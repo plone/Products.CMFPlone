@@ -1,15 +1,16 @@
+
 <div metal:define-macro="document_actions"
      class="documentActions"
-     tal:define="document_actions actions/document_actions|nothing"
+     tal:define="document_actions actions/document_actions|nothing;
+                 getIconFor nocall:putils/getIconFor"
      tal:condition="document_actions">
     
-    <tal:actions define="getIconFor nocall:portal/plone_utils/getIconFor"
-               repeat="daction document_actions">
+    <tal:actions repeat="daction document_actions">
 
         <a href="" 
            tal:attributes="href daction/url"
            tal:define="title daction/name;
-                       icon python:getIconFor(daction, nothing)">
+                       icon python:getIconFor('plone', daction['id'], 'site_icon.gif')">
             
             <img i18n:attributes="title" title="#"
                  tal:condition="icon"

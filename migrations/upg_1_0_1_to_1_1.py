@@ -33,14 +33,21 @@ def upg_1_0_1_to_1_1(portal):
                  'View',
                  'document_actions')
 
-    props = portal.portal_properties
-    if 'action_to_icon_mapping' not in props.objectIds():
-        props.manage_addPropertySheet('action_to_icon_mapping',
-                                      'Maps documentActions to Icons')
-    p = props.action_to_icon_mapping
-    p._setProperty('document_actions.sendto', 'mail_icon.gif', 'string')
-    p._setProperty('document_actions.print', 'print_icon.gif', 'string')
-    p._setProperty('document_actions.rss', 'xml.gif', 'string')
+    #Need to add quickinstaller
+    portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
+    #XXX FIX THIS
+    #Install CMFActionIcons and Plone action icons
+    #portal.portal_quickinstaller.installProduct('CMFActionIcons')
+    #Quickinstaller wants lfet/right slots which we dont have as of yet
+    from Products.ExternalMethod.ExternalMethod import ExternalMethod
+    installmethod=ExternalMethod('tmp', 'tmp', 'CMFActionIcons.Install', 'install').__of__(portal)
+    installmethod()
+    get_transaction().commit()
+
+    actionicons=portal.portal_actionicons
+    actionicons.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
+    actionicons.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
+    actionicons.addActionIcon('plone', 'rss', 'xml.gif', 'Syndication')
 
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
@@ -77,8 +84,7 @@ def upg_1_0_1_to_1_1(portal):
 
     # create portal_interface tool.
     if 'portal_interface' not in portal.objectIds():
-        addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
-        addPloneTool('Portal Interface Tool')
+        portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
 def registerMigrations():
     MigrationTool.registerUpgradePath(

@@ -23,6 +23,7 @@ from StatelessTree import constructNavigationTreeViewBuilder, \
      NavigationTreeViewBuilder as NTVB
 
 _marker = ()
+_icons = {}
 
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
@@ -178,23 +179,27 @@ class PloneTool (UniqueObject, SimpleItem):
         return wfs
 
     security.declareProtected(CMFCorePermissions.View, 'getIconFor')
-    def getIconFor(self, actinfo, default=_marker):
-        """ This does the mapping from ActionInformation instance of a
-        'filtered' ActionInformation (dictionary) to its value in the
-        'action_to_icon mapping table in portal_properties """
+    def getIconFor(self, category, id, default=_marker):
+        """ Cache point for actionicons.getActionIcon call
+            also we want to allow for a default icon to be 
+            passed in.
+        """
+        #short circuit the lookup
+        if (category, id) in _icons.keys(): 
+            return getattr(self, _icons[ (category, id) ])
 
-        if type(actinfo) is DictType:
-            _category=actinfo['category']
-            _id=actinfo['id']
-        else:
-            _category=actinfo.getCategory()
-            _id=actinfo.getId()
+        try:
+            actionicons=getToolByName(self, 'portal_actionicons')
+            iconinfo=actionicons.getActionIcon(category, id)
+            icon=_icons.setdefault( (category, id), iconinfo )
+        except KeyError:
+            if default is not _marker:
+                icon=default
+            else:
+                raise
 
-        iconmap=self.portal_properties.action_to_icon_mapping
-        iconid=iconmap.getProperty('%s.%s' % (_category, _id), default)
-        if iconid==_marker:
-            raise KeyError, "Icon could not be found for category %s, with action %s" % (_category, _id)
-        return getattr(self, iconid) #return the icon instance
+        #we want to return the actual object
+        return getattr(self, icon) 
 
     security.declareProtected(CMFCorePermissions.View, 'getReviewStateTitleFor')
     def getReviewStateTitleFor(self, obj):

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Now require CMFActionIcons Product from cvs.zope.org.  We register document_action icons
+      for such actions as: Send to friend, Print this page, and RSS.  Please use the
+      putils (in global_defines.pt) getIconFor which will return the actual object.
+      
     - Groups support via GRUF
       [runyaga]
 
@@ -111,9 +115,7 @@ Plone 1.1 - Fyuti
       a slot.
       [limi] [elvix]
 
-    - Added 'document_actions' category and a propertysheet called 
-      'action_to_icon_mapping' in portal_properties - you can now map icons to 
-      any category/id for an action. [runyaga]
+    - Added 'document_actions' category in portal_actions [runyaga]
 
     - Added check on advanced search form, it now shows a pulldown for authors 
       if there are less than 30, and a text input field if there are more.

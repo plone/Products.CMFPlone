@@ -3,6 +3,7 @@
         global utool nocall:here/portal_url;
         global mtool here/portal_membership;
         global atool here/portal_actions;
+        global putils nocall:here/plone_utils;
         global wtool here/portal_workflow;
         global portal_object utool/getPortalObject;
         global portal_title portal_object/Title;
