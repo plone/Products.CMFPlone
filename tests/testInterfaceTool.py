@@ -9,8 +9,6 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
-import unittest
-
 
 from Products.CMFCore.interfaces.DublinCore import DublinCore
 from Products.CMFCore.interfaces.Contentish import Contentish
@@ -33,7 +31,7 @@ class B(PortalContent, DefaultDublinCoreImpl):
                      DefaultDublinCoreImpl.__implements__
 
 
-class TestInterfaceResolution(unittest.TestCase):
+class TestInterfaceResolution(ZopeTestCase.ZopeTestCase):
 
     def testResolveDublinCore(self):
         '''DublinCore should be resolved'''
@@ -51,8 +49,8 @@ class TestInterfaceResolution(unittest.TestCase):
         self.assertRaises(ValueError, resolveInterface, dotted_name)
 
 
-class TestInterfaceFinder(unittest.TestCase):
-    
+class TestInterfaceFinder(ZopeTestCase.ZopeTestCase):
+
     def testAvailableInterfaces(self):
         '''Should find available interfaces'''
         from Products.CMFPlone.interfaces import InterfaceTool
