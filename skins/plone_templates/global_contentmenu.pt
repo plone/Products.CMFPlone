@@ -40,13 +40,23 @@
     </li>
     </tal:dropdown>
 
-    <tal:singular tal:condition="python: size==1">
+    <li tal:condition="python: size==1"
+        class="actionSingular">
         <a href="#" 
            tal:define="portaltype python: allowed[0];
                        folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode());"
            tal:attributes="href string:${folder/absolute_url}/createObject?type_name=${portaltype/getId}"
-           tal:content="string: Add New ${portaltype/Title}">Add New Foo</a>
-    </tal:singular>
+           >
+            <img src="folder.gif" 
+                 alt="" 
+                 width="16" 
+                 height="16" 
+                 tal:attributes="src string:$portal_url/${portaltype/getIcon}" />
+            Add new
+            <tal:title i18n:translate=""
+                       tal:content="portaltype/Title">Title</tal:title>
+        </a>
+    </li>
 
     <li tal:define="review_state wf_state"
         tal:condition="review_state">

@@ -493,6 +493,10 @@ pre {
     padding: 0 0 0 1em;
 }
 
+.actionSingular {
+    background-image: none !important;
+}
+
 .actionItems li {
     background-image: none;
 }
@@ -503,7 +507,7 @@ pre {
     padding: 0 1em 0 0;
 }
 
-.contentActions .actionMenu {
+.actionMenu {
     visibility: hidden;
     z-index: 5;
     position: absolute;
