@@ -3,12 +3,10 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-  <metal:block fill-slot="base">
-      <tal:block tal:define="dummy python:request.set('disable_border', 1)"
-                 tal:replace="nothing">
-      Disable the tabs
-      </tal:block>
-  </metal:block>
+<tal:head metal:fill-slot="head_slot"
+          tal:define="dummy python:request.set('disable_border',1)">
+    Disables tabs and content border
+</tal:head>
                                
 <div metal:fill-slot="main"
        tal:define="results python:here.portal_membership.searchForMembers(request);

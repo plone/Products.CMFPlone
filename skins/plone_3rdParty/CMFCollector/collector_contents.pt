@@ -8,7 +8,6 @@
 </tal:block>
 
 <body>
-<metal:block fill-slot="base"> <tal:block tal:define="dummy python:request.set('enable_border',1)" /> </metal:block>
 
 <div metal:fill-slot="header"
      tal:define="global collector_header_present python: 1">
