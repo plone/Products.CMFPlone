@@ -3,6 +3,7 @@
 from Products.CMFPlone.Portal import addPolicy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
+from Products.CMFCore import CMFCorePermissions
 from interfaces.CustomizationPolicy import ICustomizationPolicy
 
 def register(context, app_state):
@@ -43,12 +44,12 @@ class DefaultCustomizationPolicy:
         at.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','','View','local_tabs')
 	#local_buttons should have permission 'List folder contents'
 	#we are changing it to View for workaround in CMF1.3 ActionsTool
-        at.addAction('rename','Rename','string:folder_rename_form:method','','View', 'local_buttons')
-        at.addAction('cut', 'Cut', 'string:folder_cut:method', '', 'View', 'local_buttons')
-        at.addAction('copy', 'Copy', 'string:folder_copy:method', '', 'View', 'local_buttons')
-        at.addAction('paste', 'Paste', 'string:folder_paste:method', 'folder/cb_dataValid', 'View', 'local_buttons')
-        at.addAction('delete', 'Delete', 'string:folder_delete:method', '', 'View', 'local_buttons')
-        at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', 'View', 'local_buttons')
+        at.addAction('rename','Rename','string:folder_rename_form:method','', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
+        at.addAction('cut', 'Cut', 'string:folder_cut:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
+        at.addAction('copy', 'Copy', 'string:folder_copy:method', '', CMFCorePermissions.ListFolderContents, 'folder_buttons')
+        at.addAction('paste', 'Paste', 'string:folder_paste:method', 'folder/cb_dataValid', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
+        at.addAction('delete', 'Delete', 'string:folder_delete:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
+        at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
 
         #customize memberdata tool
         md=getToolByName(portal, 'portal_memberdata')

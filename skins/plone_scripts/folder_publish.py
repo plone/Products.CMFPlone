@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=ids, workflow_action, comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
+##parameters=workflow_action, ids=[], comment='No comment', expiration_date=None, effective_date=None, include_subfolders=0
 ##title=Publish objects from a folder
 ##
 REQUEST=context.REQUEST
@@ -24,10 +24,12 @@ for id in ids:
     except Exception, e:
         failed[id]=e
 
+if not ids:
+    REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
+                             , 'folder_contents'
+                             , 'portal_status_message=You+must+select+content+to+change.') )
+			     
 REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
                                         , 'folder_contents'
 					, 'portal_status_message=Content(s)+have+been+changed.') )
 				
-#view = getattr(context, 'folder_contents')
-#return view(REQUEST, failed, success)
-

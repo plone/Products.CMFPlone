@@ -3,6 +3,7 @@ from Products.CMFPlone import custom_policies
 def listPolicies(): return custom_policies.keys()
 def addPolicy(label, klass): custom_policies[label]=klass
 
+from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName
@@ -70,9 +71,11 @@ class PloneGenerator(Portal.PortalGenerator):
         addPloneTool('CMF Formulator Tool', None)
         addPloneTool('Plone Utility Tool', None)
 
+        p.manage_permission( CMFCorePermissions.ListFolderContents, ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=1
-        p.portal_membership.setMemberareaCreationFlag()
+        #XXX CMF1.3 on by default
+	# p.portal_membership.setMemberareaCreationFlag()
         p._setProperty('allowAnonymousViewAbout', 0, 'boolean')
         p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
         
