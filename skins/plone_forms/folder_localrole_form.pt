@@ -16,9 +16,9 @@
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
                    search_submitted request/role_submit|nothing;
-                   search_results python:test(search_submitted, mtool.searchForMembers(
-                                             {request.get('search_param',''):
-                                             request.get('search_term', '')}), None);">
+                   search_results python:search_submitted and mtool.searchForMembers(
+                                         {request.get('search_param',''):
+                                         request.get('search_term', '')}) or None;">
 
     <h1 i18n:translate="heading_currently_assigned_shares">
         Current sharing permissions for
