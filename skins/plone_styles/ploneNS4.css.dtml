@@ -2,7 +2,7 @@
 ** Plone style sheet for Netscape 4 and other non-CSS2-compatible browsers.
 ** Alexander Limi, 2002 - http://limi.net
 **
-** Tip: don't use margins or floats
+** Tip: don't use margins or floats in NS4 - it freaks out.
 */
 
 /* DTML instructions to set caching headers.
@@ -27,7 +27,6 @@ p a { text-decoration: underline; }
 p img { border: &dtml-contentImageBorder;; }
 hr { margin:0; padding: 0; }
 h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;; }
-ul { list-style-image: url("bullet.gif"); }
 form { border: none; }
 textarea {  }
 input {  }
