@@ -12,7 +12,7 @@
                  view_action python:hereTypeInfo.getActionById('view');
                  isViewTemplate python: template.getId()==view_action;
                  ">
-    
+
     <tal:allowed condition="python: isDiscussionAllowed and isViewTemplate">
 
         <form name="reply" 
@@ -22,8 +22,8 @@
               tal:attributes="action string:${here/absolute_url}/discussion_reply_form">       	
 
             <input class="standalone" 
-    	       type="submit" 
-    	       value="Add Comment"
+                   type="submit" 
+                   value="Add Comment"
                i18n:attributes="value"
                />
         </form>
@@ -32,15 +32,15 @@
              tal:define="pss modules/Products/PythonScripts/standard">
           You can add comments to this item if you <a href="" tal:attributes="href python: '%s/login_form?came_from=%s' % (here.portal_url(), pss.url_quote(request['URL']))">log in</a>.
         </div>
-    
+
         <a name="comments"> </a>
 
         <tal:getreplies repeat="reply python:container.sort_modified_ascending(here.portal_discussion.getDiscussionFor(here).getReplies())">
 
                 <div class="comment">
-            
+
                     <h3>
-                        <img tal:replace="structure here/discussionitem_icon.gif" />
+                        <img alt="Comment" src="#" tal:replace="structure here/discussionitem_icon.gif" />
                         <span tal:replace="reply/title_or_id">Comment title</span> 
                     </h3>
                     
@@ -50,51 +50,51 @@
                         <span i18n:translate="label_commented_at">at</span> 
                         <span tal:replace="python: here.toPortalTime(reply.modified(),long_format=1)">8/23/2001 12:40:44 PM</span>
                     </div>
-            
+
                     <div class="commentBody"
                          tal:content="structure reply/CookedBody">
                         This is the body text of the comment. 
                     </div>
-            
+
                     <form name="reply"
                          action="discussion_reply_form"
                          method="post"
                          style="display: inline;"
                          tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
                          tal:condition="python: checkPermission('Reply to item', reply)">
-                         
+
                         <input class="standalone" 
                                type="submit" 
                                value="Reply to this" 
                                i18n:attributes="value"
                                />
                     </form>
-            
+
                     <form name="delete" 
                           action="" 
                           method="post"
                           style="display: inline;"
                           tal:condition="python: checkPermission('Manage portal', here)"
                           tal:attributes="action string:${reply/absolute_url}/deleteDiscussion">       	
-                
+
                         <input class="destructive" 
-                	           type="submit" 
-                	           value="Remove This Discussion"
+                               type="submit" 
+                               value="Remove This Discussion"
                                i18n:attributes="value"
                                />
                     </form>
-            
+
                     <div tal:define="replies python: here.getReplyReplies(reply)"
                          tal:condition="replies">
 
                         <h4 i18n:translate="legend_replies_to_this_comment">Replies to this comment</h4>
-            
+
                         <div tal:repeat="lst replies">
                             <span tal:omit-tag=""
-                                  tal:content="structure python: '&nbsp;' * lst['depth']" />                                
+                                  tal:content="structure python: '&nbsp;' * lst['depth']" />
                             <a href="" 
                                tal:attributes="href string:${lst/object/absolute_url}/discussionitem_view">
-                            <img tal:replace="structure here/discussionitem_icon.gif" />
+                            <img alt="Comment" src="#" tal:replace="structure here/discussionitem_icon.gif" />
                             <span tal:replace="lst/object/Title">Comment title</span>   
                             (<span i18n:translate="label_comment_by">Posted by</span> 
                             <span tal:replace="lst/object/Creator">username</span>
@@ -102,17 +102,17 @@
                             <span tal:replace="python: here.toPortalTime(lst['object'].modified(), long_format=1)">8/23/2001 12:49:08 PM</span>)
                             </a>
                         </div>
-            
+
                     </div>
 
                 </div>
 
             </tal:getreplies>
-        
+
     </tal:allowed>
 
 </div>
-    
+
 </body>
 
 </html>
