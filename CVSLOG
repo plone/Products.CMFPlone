@@ -1,3 +1,71 @@
+2004-02-04 04:44  tiran
+
+	* skins/plone_scripts/getFolderContents.py (Plone-2_0-branch):
+	  beautify
+
+2004-02-04 04:35  tiran
+
+	* migrations/: __init__.py, v2/release_candidates.py
+	  (Plone-2_0-branch): added Plone Tableless fixed migration added
+	  migration path
+
+2004-02-04 04:15  tiran
+
+	* skins/plone_templates/global_defines.pt (Plone-2_0-branch): added
+	  "or nothing" fallback for portal tools that are new to plone. I
+	  hope this will prevent some problems while migrationg.
+
+2004-02-04 04:09  tiran
+
+	* MigrationTool.py, skins/plone_forms/failsafe_login.pt,
+	  skins/plone_forms/failsafe_login.pt.metadata,
+	  skins/plone_scripts/breadcrumbs.py,
+	  skins/plone_scripts/require_login.py,
+	  skins/plone_templates/global_defines.pt (Plone-2_0-branch): added
+	  failsafe login (works even with corrupted templates) use failsafe
+	  login if the instance is still plone 1
+
+2004-02-04 04:08  tiran
+
+	* migrations/v2/oneX_twoBeta2.py (Plone-2_0-branch): fixed format
+	  error
+
+2004-02-04 03:14  tiran
+
+	* skins/plone_scripts/displayContentsTab.py (Plone-2_0-branch):
+	  fixed #2508: breadcrumbs ignore security
+
+2004-02-04 01:39  tiran
+
+	* skins/: plone_scripts/breadcrumbs.py,
+	  plone_templates/global_pathbar.pt (Plone-2_0-branch): committing
+	  sids breadcrump patch http://plone.org/collector/2508
+
+2004-02-04 00:58  limi
+
+	* skins/plone_3rdParty/jscalendar/calendar_stripped.js
+	  (Plone-2_0-branch): Fix for JS error in IE5, issue #2549. Have to
+	  make sure this makes it to the upstream author, so it won't break
+	  again when we upgrade the calendar the next time.
+
+2004-02-03 22:38  pjgrizel
+
+	* tests/testGroupsTool.py (Plone-2_0-branch): Added a test of the
+	  'View Groups' permission within a group folder
+
+2004-02-03 15:15  gbjk
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): Add
+	  default document conditions should respect contentTypes list,
+	  which takes getNotAddableType s into account, before offering to
+	  add a new 'Document'.  I felt comfortable hard coding the
+	  Document type in as a test as it was already done in another cond
+	  ition.
+
+2004-02-03 04:57  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-03 02:44  seanupton
 
 	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
