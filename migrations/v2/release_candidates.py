@@ -75,13 +75,14 @@ def rc3_rc4(portal):
             if action.getId()=='content_status_history':
                  action.visible=0
         ptype._actions = _actions
- 
-    at.addAction('addtofavorites',
-                 'Add to Favorites',
-                 'string:${request/URL1}/addtoFavorites',
-                 'member',
-                 'View',
-                 'document_actions')
+
+    if 'addtofavorites' not in [action.getId() for action in at.listActions()]:
+        at.addAction('addtofavorites',
+                     'Add to Favorites',
+                     'string:${request/URL1}/addtoFavorites',
+                     'member',
+                     'View',
+                     'document_actions')
 
     mt=getToolByName(portal, 'portal_membership')
     _actions=mt._cloneActions()
@@ -104,9 +105,23 @@ def rc4_rc5(portal):
                 action.title='Sharing'
         typeobj._actions = _actions
     out.append('Change local_roles label to Sharing')
+    
     return out
  
 def rc5_final(portal):
     out = []
+
+    at=getToolByName(portal, 'portal_actions')
+    hasFavorites=0
+    _actions = at._cloneActions()
+    for action in _actions:
+        if action.getId() == 'addtofavorites':
+            if hasFavorites:
+                del action
+                out.append('Removed doubled add to favorites action')
+            else:
+                hasFavorites=1
+    at._actions=_actions
+
     return out
 
