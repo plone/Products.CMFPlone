@@ -109,7 +109,7 @@ def initialize(context):
 
     # CMFCore and CMFDefault Tools
     from Products.CMFCore import CachingPolicyManager
-    import MembershipTool, WorkflowTool, URLTool, MetadataTool, RegistrationTool
+    import MembershipTool, WorkflowTool, URLTool, MetadataTool, RegistrationTool, MemberDataTool
     import PropertiesTool, ActionsTool, TypesTool, UndoTool
 
     # Plone Tools
@@ -117,6 +117,7 @@ def initialize(context):
            InterfaceTool, MigrationTool, PloneControlPanel
 
     tools = ( MembershipTool.MembershipTool,
+              MemberDataTool.MemberDataTool,
               FormulatorTool.FormulatorTool,
               PloneTool.PloneTool,
               WorkflowTool.WorkflowTool,
