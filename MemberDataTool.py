@@ -27,6 +27,11 @@ class MemberDataTool(BaseTool):
             self.portraits._delObject(member_id)
         self.portraits._setObject(id= member_id, object=portrait)
 
+    def _deletePortrait(self, member_id):
+        " remove member_id's portrait "
+        if self.portraits.has_key(member_id):
+            self.portraits._delObject(member_id)
+
     security.declarePrivate('pruneMemberDataContents')
     def pruneMemberDataContents(self):
         '''

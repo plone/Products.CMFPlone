@@ -52,6 +52,17 @@ class MembershipTool(BaseTool):
 
         return portrait
 
+    def deletePersonalPortrait(self, member_id = None):
+        """
+        deletes the Portait of member_id
+        """
+        membertool   = getToolByName(self, 'portal_memberdata')
+
+        if not member_id:
+            member_id = self.getAuthenticatedMember().getUserName()
+
+        membertool._deletePortrait(member_id)
+
     def getPersonalFolder(self, member_id=None):
         """
         returns the Personal Item folder for a member
