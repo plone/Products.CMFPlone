@@ -68,6 +68,17 @@ p {
 p a {
     text-decoration: underline;
 }
+
+p a:visited {
+	color: &dtml-contentLinkVisitedColor;;
+    background-color: transparent;
+}
+
+p a:active {
+	color: &dtml-contentLinkActiveColor;;
+    background-color: transparent;
+}
+
 p img {
     border: &dtml-contentImageBorder;;
 }
