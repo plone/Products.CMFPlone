@@ -30,7 +30,7 @@
                tal:content="obj/Title"
                href="">Title</a>,
 
-               <span i18n:translate="label_comment_by">by</span>
+               <span i18n:translate="label_comment_by">Posted by</span>
 
                <span tal:replace="obj/Creator">Me</span>
 
