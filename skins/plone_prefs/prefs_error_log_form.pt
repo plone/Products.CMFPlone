@@ -54,7 +54,7 @@
                         </tr>
                     </thead>
 
-                    <tbody tal:define="updatetime python:float(member.getProperty('error_log_update',''))">
+                    <tbody tal:define="updatetime python:float(member.getProperty('error_log_update', 0.0))">
                         
                         <tal:entry tal:repeat="entry entries">
                         <tr tal:define="oddrow repeat/entry/odd;"
