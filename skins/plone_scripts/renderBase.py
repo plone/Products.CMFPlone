@@ -1,5 +1,5 @@
 # returns correct base href
-if context.isPrincipiaFolderish:
+if getattr(context.aq_explicit, 'isPrincipiaFolderish', 0):
     return context.absolute_url()+'/'
 else:
     path = '/'.join(context.portal_url.getRelativeContentPath(context)[:-1])
