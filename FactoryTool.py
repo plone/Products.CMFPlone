@@ -42,24 +42,51 @@ class TempFolder(TempFolderBase):
 
         return path
 
-    # delegate local roles methods
+    # override / delegate local roles methods
     def __ac_local_roles__(self):
-        return getattr(aq_parent(aq_parent(self)), '__ac_local_roles__', None)
+        """__ac_local_roles__ needs to be handled carefully.  
+        Zope's and GRUF's User.getRolesInContext both walk up the
+        acquisition hierarchy using aq_parent(aq_inner(obj)) when
+        they gather local roles, and this process will result in
+        their walking from TempFolder to portal_factory to the portal root.
+        XXX If we implement PLIP16, this will have to be modified!!!"""
+        object = aq_parent(aq_parent(self))
+        local_roles = {}
+        while 1:
+            # Get local roles for this user
+            lr = getattr(object, '__ac_local_roles__', None)
+            if lr:
+                if callable(lr):
+                    lr=lr()
+                lr = lr or {}
+                for k, v in lr.items():
+                    if not local_roles.has_key(k):
+                        local_roles[k] = []
+                    for role in v:
+                        if not role in local_roles[k]:
+                            local_roles[k].append(role)
+
+            # Prepare next iteration
+            inner = getattr(object, 'aq_inner', object) 
+            parent = getattr(inner, 'aq_parent', None)
+            if parent is not None:
+                object = parent
+                continue
+            if hasattr(object, 'im_self'):
+                object=object.im_self
+                object=getattr(object, 'aq_inner', object)
+                continue
+            break
+        return local_roles
     
     def has_local_roles(self):
-        return aq_parent(aq_parent(self)).has_local_roles()
+        return len(self.__ac_local_roles__())
 
-    def get_local_roles(self):
-        return aq_parent(aq_parent(self)).get_local_roles()
-
-    def users_with_local_role(self, role):
-        return aq_parent(aq_parent(self)).users_with_local_role(role)
+    def get_local_roles_for_userid(self, userid):
+        return tuple(self.__ac_local_roles__().get(userid, []))
 
     def get_valid_userids(self):
         return aq_parent(aq_parent(self)).get_valid_userids()
-
-    def get_local_roles_for_userid(self, userid):
-        return aq_parent(aq_parent(self)).get_local_roles_for_userid(userid)
 
     def valid_roles(self):
         return aq_parent(aq_parent(self)).valid_roles()
@@ -147,6 +174,7 @@ class FactoryTool(UniqueObject, SimpleItem):
         if not hasattr(self, '_factory_types'):
             self._factory_types = {}
         return self._factory_types
+
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_setPortalFactoryTypes')
     def manage_setPortalFactoryTypes(self, REQUEST=None, listOfTypeIds=None):
