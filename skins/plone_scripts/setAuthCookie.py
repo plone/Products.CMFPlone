@@ -7,12 +7,15 @@ try:
 except AttributeError:
     length = 0
 
-try: length = int(length)
-except ValueError: length = 0
+try: 
+    length = int(length)
+except ValueError: 
+    length = 0
 
+cookie_path = self.portal_url.getPortalPath()
 if length:
     expires = (DateTime() + length).toZone('GMT').rfc822()
-    resp.setCookie( cookie_name, cookie_value, path='/', expires=expires)
+    resp.setCookie( cookie_name, cookie_value, path=cookie_path, expires=expires)
 else:
-    resp.setCookie( cookie_name, cookie_value, path='/')
+    resp.setCookie( cookie_name, cookie_value, path=cookie_path)
 
