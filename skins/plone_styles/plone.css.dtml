@@ -1259,15 +1259,23 @@ ol.visualNoMarker {
 
 /* Sitemap styling */
 
-.portal-sitemap {
+ul.portal-sitemap {
     list-style: none;
     list-style-image: none;
     margin: 0;
     font-size: 90%;
+    border: none;
 }
 
 .portal-sitemap ul {
-    margin-left: 2em;
+    padding-left: 1em;
+    border-left: 0.5em solid &dtml-globalBorderColor;;
+    margin: 0 0 0 0.7em;
+}
+
+.portal-sitemap ul ul {
+    padding-left: 1em;
+    border-left: 0.5em solid &dtml-globalBackgroundColor;;
 }
 
 .role-Member {
