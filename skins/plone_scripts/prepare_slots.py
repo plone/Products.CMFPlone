@@ -34,19 +34,22 @@ if callable(right_slots):
 if callable(document_action_slots):
     document_action_slots=document_action_slots()
 
-for slot in [lslot for lslot in left_slots if lslot]:
+for slot in left_slots:
+    if not slot: continue
     if slot.find('/macros/')!=-1:
         slots['left'].append( (slot, 1) )
     else:
         slots['left'].append( (slot, 0) )
 
-for slot in [rslot for rslot in right_slots if rslot]:
+for slot in right_slots:
+    if not slot: continue
     if slot.find('/macros/')!=-1:
         slots['right'].append( (slot, 1) )
     else:
         slots['right'].append( (slot, 0) )
 
-for slot in [iaction for iaction in document_action_slots if iaction]:
+for slot in document_action_slots:
+    if not slot: continue
     if slot.find('/macros/')!=-1:
         slots['document_actions'].append( (slot, 1) )
     else:
