@@ -110,10 +110,10 @@
                                     <metal:block tal:repeat="type types">
                                         <option value="#"
                                                 tal:define="typetitle type/Title; typeid type/getId"
-                                                i18n:translate=""
+                                                i18n:translate="label_show_x_only"
                                                 tal:attributes="value typeid;
                                                                 selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', '');"
-                                        ><span i18n:name="type" tal:content="string:${typetitle}"/>s only</option>
+                                        ><span i18n:name="type"><span i18n:translate="" tal:content="string:${typetitle}"/></span>s only</option>
                                     </metal:block>
                                 </select>
                     
