@@ -6,7 +6,8 @@ from Acquisition import aq_base
 from Products.CMFCore.FSImage import FSImage
 
 def tag(self, height=None, width=None, alt=None,
-        scale=0, xscale=0, yscale=0, css_class=None, title=None, longdesc=None, **args ):
+        scale=0, xscale=0, yscale=0, css_class=None,
+        title=None, longdesc=None, **args ):
     """
     monkey-patched by Plone to add auto-scaling support,
     long description, etc.
@@ -30,16 +31,22 @@ def tag(self, height=None, width=None, alt=None,
     result='<img src="%s"' % (self.absolute_url())
 
     if alt is None:
-        alt=getattr(aq_base(self), 'alt', '')
+        alt = ''
+        if hasattr(aq_base(self), 'alt'):
+            alt = self.alt
     result = '%s alt="%s"' % (result, escape(alt, 1))
 
     if title is None:
-        title=getattr(aq_base(self), 'title', '')
+        title = ''
+        if hasattr(aq_base(self), 'title'):
+            title = self.title
     result = '%s title="%s"' % (result, escape(title, 1))
 
     if longdesc is None:
-        title=getattr(aq_base(self), 'longdesc', '')
-    result = '%s longdesc="%s"' % (result, escape(title, 1))
+        longdesc = ''
+        if hasattr(aq_base(self), 'longdesc'):
+            longdesc = self.longdesc
+    result = '%s longdesc="%s"' % (result, escape(longdesc, 1))
 
     if height:
         result = '%s height="%s"' % (result, height)

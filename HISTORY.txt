@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Changed imagePatch to use hasattr(aq_base(ob)...) and then
+      getattr(ob, ...) in order to fix a problem with Archetypes
+      ImageField which have a ComputedAttribute for
+      title/alt. ComputedAttributes don't get computed on the
+      absence of an acquisition wrapper.
+      [dreamcatcher]
+
     - Fixed http://plone.org/collector/3542 - queryCatalog script ignored
       'sort_limit' argument. Thanks to kaib for the patch!
       [stefan]

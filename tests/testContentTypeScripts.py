@@ -438,9 +438,27 @@ class TestDefaultPage(PloneTestCase.PloneTestCase):
         self.assertEquals(self.getDefault(), (self.ob, ['FrontPage']))
 
 
+class TestImagePatch(PloneTestCase.PloneTestCase):
+
+    def testImagePatchComputedProps(self):
+        from Products.CMFPlone.imagePatch import tag
+        kw = {'_title':'some title',
+              '_alt':'alt tag',
+              '_longdesc':'stupid longdesc',
+              'height':100,
+              'width':100}
+        # Wrap object so that ComputedAttribute gets executed.
+        self.ob = dummy.ImageComputedProps(**kw).__of__(self.folder)
+
+        expected = ('<img src="http://nohost/portal/Members/test_user_1_/dummy" '
+                    'alt="alt tag" title="some title" longdesc="stupid longdesc" '
+                    'height="100" width="100" />')
+        self.assertEquals(tag(self.ob), expected)
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
+    suite.addTest(makeSuite(TestImagePatch))
     suite.addTest(makeSuite(TestContentTypeScripts))
     suite.addTest(makeSuite(TestEditShortName))
     suite.addTest(makeSuite(TestEditFileKeepsMimeType))
