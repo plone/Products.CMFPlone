@@ -52,8 +52,7 @@ for id in relative_ids:
         # and if every object is derived from PortalObject, it
         # must have a method called view, so I think its pretty
         # safe to make this assumption, and adds a speed increase
-        if str(id) != 'index_html':
-            path_seq.append( ( o.title_or_id(), o.absolute_url()+'/view' ) )
+        path_seq.append( ( o.title_or_id(), o.absolute_url()+'/view' ) )
 
 # if the published object was not added to breadcrumbs above and
 #    it is not a view template, add a breadcrumb for it
