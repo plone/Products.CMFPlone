@@ -200,10 +200,10 @@ def modifyMembershipTool(self, portal):
             a.title='My Preferences'
             #a.action=Expression('string:${portal_url}/personalize_form')
             new_actions.insert(0, a)
-        if a.id in ('addFavorite', 'favorites'):
+        elif a.id in ('addFavorite', 'favorites'):
             a.visible=0
             new_actions.insert(1,a)
-        if a.id=='mystuff':
+        elif a.id=='mystuff':
             a.title='My Folder'
             new_actions.insert(0, a)
         elif a.id=='myworkspace':
