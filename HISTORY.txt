@@ -2,6 +2,13 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone unknown
+
+    - Fixed ATContentTypes bug [ 1158950 ] ATTopic default view wrong.
+      PloneUtils.browseDefault wasn't playing nice with folders and template
+      mixin.
+      [tiran]
+
 Plone 2.1 - Ms. Bumblebee - Alpha1 - Released March 12, 2005 
 
     - No longer uncatalog the Members folder on installation so that the new
