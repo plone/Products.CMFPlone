@@ -45,10 +45,26 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(reply.Title(), 'Foo')
         self.assertEqual(reply.EditableBody(), 'blah')
 
+    def testDocumentCreate(self):
+        self.folder.invokeFactory('Document', id='doc', text='data')
+        self.assertEqual(self.folder.doc.EditableBody(), 'data')
+        self.assertEqual(self.folder.doc.Format(), 'text/plain')
+
     def testDocumentEdit(self):
         self.folder.invokeFactory('Document', id='doc')
-        self.folder.doc.document_edit('plain', 'data', title='Foo')
+        self.folder.doc.document_edit('html', 'data', title='Foo')
         self.assertEqual(self.folder.doc.EditableBody(), 'data')
+        self.assertEqual(self.folder.doc.Format(), 'text/html')
+        self.assertEqual(self.folder.doc.Title(), 'Foo')
+
+    def testEventCreate(self):
+        self.folder.invokeFactory('Event', id='event',
+                                  title = 'Foo',
+                                  start_date='2003-09-18',
+                                  end_date='2003-09-19')
+        self.assertEqual(self.folder.event.Title(), 'Foo')
+        self.assertEqual(self.folder.event.start().ISO(), '2003-09-18 00:00:00')
+        self.assertEqual(self.folder.event.end().ISO(), '2003-09-19 00:00:00')
 
     def testEventEdit(self):
         self.folder.invokeFactory('Event', id='event')
@@ -59,21 +75,50 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.event.start().ISO(), '2003-09-18 00:00:00')
         self.assertEqual(self.folder.event.end().ISO(), '2003-09-19 00:00:00')
 
+    def testFavoriteCreate(self):
+        # Ugh, addFavorite traverses to remote_url, so make sure it can.
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', id='bar')
+        self.portal.bar.invokeFactory('Document', id='baz.html')
+        self.setRoles(['Member'])
+        # back to normal
+        self.folder.invokeFactory('Favorite', id='favorite',
+                                  remote_url='bar/baz.html', 
+                                  title='Foo')
+        self.assertEqual(self.folder.favorite.getRemoteUrl(),
+                         '%s/bar/baz.html' % self.portal.portal_url())
+        self.assertEqual(self.folder.favorite.Title(), 'Foo')
+
     def testFavoriteEdit(self):
+        # Note: link_edit does not traverse to remote_url
         self.folder.invokeFactory('Favorite', id='favorite')
         self.folder.favorite.link_edit('bar/baz.html', title='Foo')
         self.assertEqual(self.folder.favorite.getRemoteUrl(),
                          '%s/bar/baz.html' % self.portal.portal_url())
+        self.assertEqual(self.folder.favorite.Title(), 'Foo')
+
+    def testFileCreate(self):
+        self.folder.invokeFactory('File', id='file', file=File())
+        self.assertEqual(str(self.folder.file), 'upload_data')
 
     def testFileEdit(self):
         self.folder.invokeFactory('File', id='file')
         self.folder.file.file_edit(file=File())
         self.assertEqual(str(self.folder.file), 'upload_data')
 
+    def testImageCreate(self):
+        self.folder.invokeFactory('Image', id='image', file=File())
+        self.assertEqual(str(self.folder.image.data), 'upload_data')
+
     def testImageEdit(self):
         self.folder.invokeFactory('Image', id='image')
         self.folder.image.image_edit(file=File())
         self.assertEqual(str(self.folder.image.data), 'upload_data')
+
+    def testFolderCreate(self):
+        self.folder.invokeFactory('Folder', id='folder', title='Foo', description='Bar')
+        self.assertEqual(self.folder.folder.Title(), 'Foo')
+        self.assertEqual(self.folder.folder.Description(), 'Bar')
 
     def testFolderEdit(self):
         self.folder.invokeFactory('Folder', id='folder')
@@ -81,21 +126,42 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.folder.Title(), 'Foo')
         self.assertEqual(self.folder.folder.Description(), 'Bar')
 
+    def testLargePloneFolderCreate(self):
+        LargePloneFolder.addLargePloneFolder(self.folder, id='lpf', title='Foo', description='Bar')
+        self.assertEqual(self.folder.lpf.Title(), 'Foo')
+        self.assertEqual(self.folder.lpf.Description(), 'Bar')
+
     def testLargePloneFolderEdit(self):
         LargePloneFolder.addLargePloneFolder(self.folder, id='lpf')
         self.folder.lpf.folder_edit('Foo', 'Bar')
         self.assertEqual(self.folder.lpf.Title(), 'Foo')
         self.assertEqual(self.folder.lpf.Description(), 'Bar')
 
+    def testLinkCreate(self):
+        self.folder.invokeFactory('Link', id='link', remote_url='http://foo.com', title='Foo')
+        self.assertEqual(self.folder.link.Title(), 'Foo')
+        self.assertEqual(self.folder.link.getRemoteUrl(), 'http://foo.com')
+
     def testLinkEdit(self):
         self.folder.invokeFactory('Link', id='link')
         self.folder.link.link_edit('http://foo.com', title='Foo')
+        self.assertEqual(self.folder.link.Title(), 'Foo')
         self.assertEqual(self.folder.link.getRemoteUrl(), 'http://foo.com')
+
+    def testNewsItemCreate(self):
+        self.folder.invokeFactory('News Item', id='newsitem', text='data', title='Foo')
+        self.assertEqual(self.folder.newsitem.EditableBody(), 'data')
+        self.assertEqual(self.folder.newsitem.Title(), 'Foo')
 
     def testNewsItemEdit(self):
         self.folder.invokeFactory('News Item', id='newsitem')
         self.folder.newsitem.newsitem_edit('data', 'plain', title='Foo')
         self.assertEqual(self.folder.newsitem.EditableBody(), 'data')
+        self.assertEqual(self.folder.newsitem.Title(), 'Foo')
+
+    def testTopicCreate(self):
+        self.folder.invokeFactory('Topic', id='topic', title='Foo')
+        self.assertEqual(self.folder.topic.Title(), 'Foo')
 
     def testTopicEditTopic(self):
         self.folder.invokeFactory('Topic', id='topic')
