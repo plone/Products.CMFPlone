@@ -92,6 +92,99 @@
                 </dd>
             </dl>
 
+          <div tal:condition="python:checkPermission('Manage portal', here) or request.get('HTTP_HOST','').split(':')[0].lower() in ['127.0.0.1', 'localhost']">
+            <ul>
+              <tal:entries tal:define="entries portal/error_log/getLogEntries|nothing" tal:condition="entries">
+                <li><a tal:define="entry_id python:entries[0]['id'];"
+                       tal:attributes="href string:$portal_url/prefs_error_log_showEntry?id=$entry_id">View error</a></li>
+              </tal:entries>
+              <li><a tal:attributes="href string:$portal_url/prefs_error_log_form">View error log</a></li>
+            </ul>
+
+            <h4>How to report this issue</h4>
+            <ul>
+              <li><b>Step 1:</b> Is the error related to Plone or a Plone add-on product?
+                <ul>
+                  <li>If the error is a Plone error, continue to Step 2.</li>
+                  <li>If the error comes from a Plone add-on product, contact the product's maintainer directly.
+                    <ul>
+                      <li>Report bugs in products from the <a href="http://sourceforge.net/projects/collective">Collective</a>
+                        <a href="http://sourceforge.net/tracker/?group_id=55262">here</a>.</li>
+                      <li>Report <a href="http://sourceforge.net/projects/archetypes">Archetypes</a> bugs 
+                        <a href="http://sourceforge.net/tracker/?group_id=75272">here</a>.</li>
+                    </ul>
+                  </li>
+                </ul>
+              <li><b>Step 2:</b> Check the plone.org bug collector to see if the issue has already been reported.  
+                If it has, there may be information about a fix or workaround.
+                <ul>
+                  <li tal:define="message python:test(str(err_message), str(err_message)+' ', '');
+                                  message python:test(str(err_value) and str(err_value) != str(err_message), message + str(err_value), message);
+                                  err_message_search python: ' and '.join((str(err_type) + ' ' + message).strip().split(' '));">
+                    <a target="_blank" 
+                       tal:attributes="href python:'http://www.plone.org/collector/collector_contents?'+modules['ZTUtils'].make_query(searching='yep',SearchableText=err_message_search)">
+                      Search the collector for the error <span tal:content="python:str(err_type)" />:<span tal:content="message" />
+                    </a>
+                  </li>
+                  <li tal:define="template_from_url python:request.get('URL','').split('/')[-1];
+                                  template_search python: ' and '.join((str(err_type) + ' ' + template_from_url).strip().split(' '));">
+                    <a target="_blank" 
+                       tal:attributes="href python:'http://www.plone.org/collector/collector_contents?'+modules['ZTUtils'].make_query(searching='yep',SearchableText=template_search)">
+                      Search the collector for <span tal:content="python:str(err_type)" /> on template <span tal:content="template_from_url" />
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+              <li><b>Step 3:</b> <a target="_blank" href="http://www.plone.org/collector/collector_add_issue_form">Add a new issue</a> 
+                to the collector.  Be sure to:
+                <ul>
+                   <li>Include your <b>email address</b> so you can be notified you the problem is fixed.</li>
+                   <li>Paste the <b>version information</b> below into the Version field.</li>
+                   <li><b>Describe, step-by-step, how to reproduce the problem</b> in the Description field.</li>
+                   <li>Paste the <b>traceback and product information</b> into the Description field below your description.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <br /><b>Version information</b>
+            <textarea name="version_info" rows="7" cols="60"
+                      tal:define="version here/plone_utils/getZopeVersionInfo;
+                                  products here/plone_utils/getProducts;
+                                  plone python:products.get('CMFPlone', None);
+                                  cmf python:products.get('CMFCore', None);
+                                  browser request/HTTP_USER_AGENT|nothing;">
+Plone version: <span tal:condition="plone" tal:replace="plone/version" />
+Zope version: <span tal:replace="version/zope" />
+Apache version:
+CMF version (if known): <span tal:condition="cmf" tal:replace="cmf/version" />
+Browser(s) and version(s): <span tal:replace="browser" />
+Operating system: <span tal:replace="version/platform" />
+Python version: <span tal:replace="version/python" />
+            </textarea><br />
+
+            <br /><b>Traceback and product information</b>
+            <textarea name="traceback_info" rows="15" cols="60">
+<span tal:replace="python:err_tb.replace('<p>','').replace('</p>','').replace('<li>','').replace('</li>','').replace('<b>','').replace('</b>','').replace('<ul>','').replace('</ul>','').replace('<br />','').replace('&lt;','<').replace('&gt;','>').replace('\n\n','\n')" />
+
+Installed Products:
+<metal:products tal:define="products here/plone_utils/getProducts;
+                            product_ids python:products.keys();
+                            dummy python:product_ids.sort();"><tal:loop 
+tal:repeat="pid product_ids"><tal:product 
+tal:define="product python:products[pid]"><span 
+tal:replace="product/id" /> <span 
+tal:replace="product/version" /> <span 
+tal:replace="product/status|nothing" /> <span 
+tal:define="err product/haserror|nothing" 
+     tal:condition="err" tal:omit-tag="">error</span><span 
+tal:define="iv product/installedversion|nothing; 
+                 v product/version|nothing;" 
+     tal:condition="python:v and iv and v != iv" tal:omit-tag="">installed=<span 
+tal:replace="iv" /></span>
+</tal:product></tal:loop></metal:products>
+</textarea>
+          </div>
         </div>
 </div>
 

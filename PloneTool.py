@@ -447,4 +447,27 @@ class PloneTool(UniqueObject, SimpleItem):
     
         return result
 
+    security.declareProtected(CMFCorePermissions.ManagePortal,'getProductVersions')
+    def getProducts(self):
+        """Provide information about installed products for error reporting"""
+        zope_products = self.getPhysicalRoot().Control_Panel.Products.objectValues()
+        installed_products = getToolByName(self, 'portal_quickinstaller').listInstalledProducts(showHidden=1)
+        products = {}
+        for p in zope_products:
+            product_info = {'id':p.id, 'version':p.version}
+            for ip in installed_products:
+                if ip['id'] == p.id:
+                    product_info['status'] = ip['status']
+                    product_info['hasError'] = ip['hasError']
+                    product_info['installedVersion'] = ip['installedVersion']
+                    break
+            products[p.id] = product_info
+        return products
+    
+    security.declareProtected(CMFCorePermissions.ManagePortal,'getZopeVersion')
+    def getZopeVersionInfo(self):
+        """Provide information about the current versions of Zope, python, and the OS for error reporting"""
+        cp = self.getPhysicalRoot().Control_Panel
+        return {'zope':cp.version_txt(), 'python':cp.sys_version(), 'platform':cp.sys_platform()}
+
 InitializeClass(PloneTool)
