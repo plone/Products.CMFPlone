@@ -27,6 +27,59 @@
         file(s).
     </p>
 
+        <form action="prefs_error_log_update" method="get">
+        
+            <fieldset tal:define="entries here/error_log/getLogEntries">
+            
+                <legend i18n:translate="legend_logexception">Exception Log (most recent first)</legend>
+        
+                <div class="field" tal:condition="not:entries" i18n:translate="legend_lognoexceptions">
+                No exceptions logged.
+                </div>
+
+                <div class="formControls">
+                    <input class="standalone" type="submit" name="submit" value="Refresh" i18n:attributes="value" />
+                    <input class="standalone" type="submit" name="submit" value="Clear Displayed Entries" i18n:attributes="value" />
+                    <input class="standalone" type="submit" name="submit" value="Show all entries" i18n:attributes="value" />
+                </div>
+
+                <table class="listing"
+                       id="sortable"
+                       tal:condition="entries">
+                    <thead>
+                        <tr>
+                            <th i18n:translate="label_time">Time</th>
+                            <th i18n:translate="label_user_name">User Name</th>
+                            <th i18n:translate="label_exception">Exception</th>
+                        </tr>
+                    </thead>
+
+                    <tbody tal:define="updatetime python:float(member.getProperty('error_log_update',''))">
+                        
+                        <tal:entry tal:repeat="entry entries">
+                        <tr tal:define="oddrow repeat/entry/odd;"
+                            tal:attributes="class python:test(oddrow, 'even', 'odd')"
+                            tal:condition="python: test(entry['time'] > updatetime,1,0)">
+                        
+                            <td tal:content="python: DateTime(entry['time'])">13:04:41</td>
+                            <td tal:content="string: ${entry/username} (${entry/userid})">joe</td>
+                            <td>
+                                <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
+                                    <span tal:replace="entry/type">AttributeError</span>:
+                                    <span tal:define="value entry/value"
+                                          tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
+                                    Application object has no attribute "gak"
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tal:entry>
+                    </tbody>
+                </table>
+                
+            </fieldset>
+        </form>
+
     <form action="prefs_error_log_setProperties" method="post">
     
         <fieldset tal:define="props here/error_log/getProperties">
@@ -74,58 +127,7 @@
             </fieldset>
 
         </form>
-        
-        <form action="prefs_error_log_update" method="get">
-        
-            <fieldset tal:define="entries here/error_log/getLogEntries">
-            
-                <legend i18n:translate="legend_logexception">Exception Log (most recent first)</legend>
-        
-                <div class="field" tal:condition="not:entries" i18n:translate="legend_lognoexceptions">
-                No exceptions logged.
-                </div>
 
-                <table class="listing"
-                       id="sortable"
-                       tal:condition="entries">
-                    <thead>
-                        <tr>
-                            <th i18n:translate="label_time">Time</th>
-                            <th i18n:translate="label_user_name">User Name</th>
-                            <th i18n:translate="label_exception">Exception</th>
-                        </tr>
-                    </thead>
-
-                    <tbody tal:define="updatetime python:float(member.getProperty('error_log_update',''))">
-                        
-                        <tal:entry tal:repeat="entry entries">
-                        <tr tal:define="oddrow repeat/entry/odd;"
-                            tal:attributes="class python:test(oddrow, 'even', 'odd')"
-                            tal:condition="python: test(entry['time'] > updatetime,1,0)">
-                        
-                            <td tal:content="python: DateTime(entry['time'])">13:04:41</td>
-                            <td tal:content="string: ${entry/username} (${entry/userid})">joe</td>
-                            <td>
-                                <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
-                                    <span tal:replace="entry/type">AttributeError</span>:
-                                    <span tal:define="value entry/value"
-                                          tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
-                                    Application object has no attribute "gak"
-                                    </span>
-                                </a>
-                            </td>
-                        </tr>
-                        </tal:entry>
-                    </tbody>
-                </table>
-                
-                <div class="formControls">
-                    <input class="standalone" type="submit" name="submit" value="Refresh" i18n:attributes="value" />
-                    <input class="standalone" type="submit" name="submit" value="Remove Displayed Entries" i18n:attributes="value" />
-                    <input class="standalone" type="submit" name="submit" value="Show all entries" i18n:attributes="value" />
-                </div>
-            </fieldset>
-        </form>
     </div>
     
 </body>
