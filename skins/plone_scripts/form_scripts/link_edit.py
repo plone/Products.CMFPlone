@@ -10,18 +10,19 @@
 
 errors = context.portal_form_validation.validate(context, 'validate_link_edit')
 if errors:
-    edit_form=context.plone_utils.getNextPageFor(context, script.getId(), 'failure')
+    edit_form=context.plone_utils.getNextPageFor( context
+                                                , script.getId()
+                                                , 'failure')
     return edit_form()
-
+    
 context.edit(remote_url=remote_url)
 
 context.plone_utils.contentEdit( context
                                , id=id
                                , description=description)
 
-qst='?portal_status_message=Link+changed.'
+return context.plone_utils.getNextRequestFor( context
+                                            , script.getId()
+                                            , 'success'
+                                            , portal_status_message='Link+changed')
 
-return context.plone_utils.getNextRequestFor(context, script.getId(), 'success')
-#return context.REQUEST.RESPONSE.redirect( context.absolute_url()
-#                                          + '/link_view'
-#                                          + qst )
