@@ -364,7 +364,7 @@
                 <input class="context"
                        tabindex="" 
                        type="submit" 
-                       name="reconfig:method" 
+                       name="submit" 
                        value="Save settings" 
 											 tal:attributes="tabindex tabindex/next;"
                        />
