@@ -9,8 +9,8 @@
 ##
 from DateTime import DateTime
 import ZTUtils
+
 REQUEST=context.REQUEST
-properties_tool=context.portal_properties.site_properties
 membership_tool=context.portal_membership
 
 isAnonymous = membership_tool.isAnonymousUser()
@@ -39,8 +39,15 @@ if success is None:
 
 login_failed = 'login_failed'
 login_changepassword = 'login_password'
-login_success = 'login_success'
-pagetemplate=None
+
+login_success = REQUEST.get('came_from', REQUEST.get('HTTP_REFERER'))
+
+# if we weren't called from something that set 'came_from' and we don't
+# have an HTTP_REFERER (extremely unlikely), or if either came_from or
+# HTTP_REFERER were the 'logged_out' page, return the default 'login_success'
+# form
+if login_success is None or login_success.endswith('logged_out'):
+    login_success = '%s/%s' % (context.portal_url(), 'login_success')
 
 if isAnonymous:
     REQUEST.RESPONSE.expireCookie('__ac', path='/')
@@ -48,7 +55,16 @@ if isAnonymous:
 
 member = membership_tool.getAuthenticatedMember()
 
-if str(member.getProperty('login_time', None)) == '2000/01/01' and context.validate_email:
+if  ( str(member.getProperty('login_time', None)) == '2000/01/01' and
+      context.validate_email ):
     return context.restrictedTraverse(login_changepassword)()
 
-return context.restrictedTraverse(login_success)()
+# this will create the memberarea if necessary, but the called code
+# doesn't blow up if the memberarea already exists
+membership_tool.createMemberArea()
+
+qs = context.create_query_string(REQUEST.get('QUERY_STRING', ''),
+                                 portal_status_message="You're logged in now")
+return REQUEST.RESPONSE.redirect('%s?%s' % (login_success, qs))
+
+
