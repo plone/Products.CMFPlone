@@ -17,11 +17,11 @@
 
 
 <div metal:fill-slot="main">
-
-                 
+                
     <div tal:define="p_props here/portal_properties;
                      success request/success|nothing;">
-        <div tal:condition="not:success">
+
+        <div tal:condition="not:request/no_cookies|nothing">
             <h1 i18n:translate="heading_sign_in_failure">Sign-in failure</h1>
 
             <p>
@@ -36,12 +36,14 @@
             </a>
             </p>
         </div>
-        <div tal:condition="success">
+        <div tal:condition="request/no_cookies|nothing">
             <h1 i18n:translate="heading_sign_in_failure">Cookies must be enabled</h1>
             
             <p>You are not currently signed in because you are not accepting 
             cookies.  Please make sure that your browser is configured to 
-            <a href="enabling_cookies">accept cookies</a>.
+            <a href="enabling_cookies">accept cookies</a>.  After you have enabled
+            cookies, press your browser's reload button on any page in the site and
+            then log in again.</p>
             
             <p>If you are still reaching this page after correctly configuring 
             your browser, here are some possible reasons:</p>

@@ -2,6 +2,13 @@ CHANGES
 
 Plone 1.0.4 - Zita Swoon Release
 
+    - Removed code that appeared to be causing login problems with IE 5.0.
+      To enable testing to see if cookies are enabled when a user logs in,
+      you will need to set the property 'test_cookie_name' to some non-empty
+      string in portal_properties/site_properties and make sure that your 
+      main_template actually sets a cookie with the name you have specified.
+      See the standard main_template for some sample code.
+
     - Backported Print CSS fixes from HEAD. All browsers now print properly, 
       apart from Mozilla, which still has some way to go before it understands
       print CSS properly, it seems. Tested in IE and Opera 7.
