@@ -19,5 +19,5 @@ if not filename and not size:
 
 if errors:
     return ('failure', errors, 'Please correct the indicated errors.')
-return ('success', errors, None)
+return ('success', errors, portal_status_message='Your image have been saved.')
 

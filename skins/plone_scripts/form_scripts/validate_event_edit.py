@@ -8,23 +8,24 @@
 ##title=Validates an event edit_form contents
 ##
 from DateTime import DateTime
+REQUEST=context.REQUEST
 
 validator = context.portal_form_validation.createForm()
 validator.addField('id', 'String', required=1)
 validator.addField('title', 'String', required=1)
 validator.addField('start_date', 'String', required=1)
 validator.addField('end_date', 'String', required=1)
-errors = validator.validate(context.REQUEST)
+errors = validator.validate(REQUEST)
 
 if not errors.get('start_date') and not errors.get('end_date'):
     start_date = None
     try:
-        start_date = DateTime(context.REQUEST.start_date)
+        start_date = DateTime(REQUEST.start_date)
     except:
         errors['start_date'] = 'Please enter a valid date and time.'
     end_date = None
     try:
-        end_date = DateTime(context.REQUEST.end_date)
+        end_date = DateTime(REQUEST.end_date)
     except:
         errors['end_date'] = 'Please enter a valid date and time.'
     
@@ -35,5 +36,5 @@ if not errors.get('start_date') and not errors.get('end_date'):
 
 if errors:
     return ('failure', errors, 'Please correct the indicated errors.')
-else:
-    return ('success', errors, None)
+
+return ('success', errors, 'Your event changes have been saved.')

@@ -22,5 +22,4 @@ if file and getattr(file, 'filename' ,''):
 
 if errors:
     return ('failure', errors, 'Please correct the indicated errors.')
-else:
-    return ('success', errors, None)
+return ('success', errors, 'Your document changes have been saved.')
