@@ -1,12 +1,14 @@
 CHANGES
 
-Plone 1.0.3 - Brazil Soundtrack Release
+Plone 1.0.3 - Brazil Soundtrack
 
-    - 1.0.2 ERRATA fixes
+    - Fixed ERRATA in 1.0.2
+
+    - various bug fixes such as favorites_slot, discussion edit problems
 
     - WorkflowTool.doActionFor was not returning objects if they were moved
 
-    - favorites_slot was recurssing infinitely - fixed
+    - DTML support is now working again (NOTE: deprecated in Plone 1.1)
 
 Plone 1.0.2 - Vert Release
 
