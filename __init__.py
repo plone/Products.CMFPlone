@@ -119,8 +119,6 @@ def initialize(context):
 
     import setup           # Configuration Machinery - Andy we need to fix
                            # this at some point
-    import imagePatch      # WAII and 508 we need more properties on image
-                           # objects
     import zserverPatch    # identify Plone in HTTP Headers - netcraft
                            # here we come!
     import UnicodeSplitter # registers unicode splitter w/ zctextindex
