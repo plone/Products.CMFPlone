@@ -11,12 +11,13 @@ REQUEST=context.REQUEST
 validator = context.portal_form.createForm()
 validator.addField('username', 'String', required=1)
 validator.addField('email', 'Email')
+
 if not context.portal_properties.validate_email:
     # if we are validating email we aren't letting people pick their own passwords.
     validator.addField('password', 'Password', required=1)
     validator.addField('confirm', 'Password', required=1)
-errors=validator.validate(REQUEST)
 
+errors=validator.validate(REQUEST)
 password, confirm = REQUEST.get('password', ''), REQUEST.get('confirm', '')
 
 #manual validation ;(
