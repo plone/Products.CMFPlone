@@ -23,7 +23,7 @@
 
         <form class="group"
               action="personalize" 
-              method="POST"
+              method="post"
               enctype="multipart/form-data" 
               tal:condition="member" >
         
@@ -52,15 +52,15 @@
                            name="listed" 
                            value="on"
                            id="cb_listed" 
-                           checked
-                           tal:condition="python:member.listed and ('checked' or '');">
+                           checked="checked"
+                           tal:condition="python:member.listed and ('checked' or '');" />
                            
                     <input type="radio" 
                            class="noborder" 
                            name="listed" 
                            value="on"
                            id="cb_listed"
-                           tal:condition="python:not(member.listed) and 'checked' or '';">
+                           tal:condition="python:not(member.listed) and 'checked' or '';" />
                     
                     <label for="cb_listed">Listed</label>
                     
@@ -71,15 +71,15 @@
                            name="listed" 
                            value=""
                            id="cb_unlisted"
-                           tal:condition="python:member.listed and 'checked' or '';">
+                           tal:condition="python:member.listed and 'checked' or '';" />
                     
                     <input type="radio" 
                            class="noborder" 
                            name="listed" 
                            value=""
                            id="cb_unlisted" 
-                           checked
-                           tal:condition="python:not(member.listed) and 'checked' or '';">		   
+                           checked="checked"
+                           tal:condition="python:not(member.listed) and 'checked' or '';" />		   
                     
                     <label for="cb_unlisted">Unlisted</label>
                 </span>
@@ -128,7 +128,7 @@
             <div class="row">
                 <span class="label">&nbsp;</span>
                 <span class="field">
-                    <input class="context" type="submit" value="Apply">
+                    <input class="context" type="submit" value="Apply" />
                 </span>
             </div>
         		
@@ -141,4 +141,4 @@
 	   
 </body>
 </html>
-.
+
