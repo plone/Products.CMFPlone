@@ -202,6 +202,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 description = getfield(REQUEST, 'description')
             if subject is None:
                 subject = getfield(REQUEST, 'subject')
+            if subject is not None:
+                subject = tuplify(subject)
             if contributors is None:
                 contributors = getfield(REQUEST, 'contributors')
             if contributors is not None:

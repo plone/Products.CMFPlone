@@ -251,7 +251,7 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.ExpirationDate(), 'None')
         self.assertEqual(self.doc.expiration_date, None)
 
-    # Test special cases of tuplization (and tuplification)
+    # Test special cases of tuplification
 
     def testTuplifySubject_1(self):
         self.utils.editMetadata(self.doc, subject=['Foo', 'Bar', 'Baz'])
@@ -259,14 +259,14 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         
     def testTuplifySubject_2(self):
         self.utils.editMetadata(self.doc, subject=['Foo', '', 'Bar', 'Baz'])
-        # Note that empty entries are allowed
-        self.assertEqual(self.doc.Subject(), ('Foo', '', 'Bar', 'Baz'))
+        # Note that empty entries are filtered
+        self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
 
     def testTuplifySubject_3(self):
-        self.utils.editMetadata(self.doc, subject='Foo Bar Baz')
-        # XXX: CMFDefault.utils.tuplize() is probably borked
+        self.utils.editMetadata(self.doc, subject='Foo, Bar, Baz')
+        # XXX: Wishful thinking
         #self.assertEqual(self.doc.Subject(), ('Foo', 'Bar', 'Baz'))
-        self.assertEqual(self.doc.Subject(), ('F','o','o','','B','a','r','','B','a','z'))
+        self.assertEqual(self.doc.Subject(), ('F','o','o',',','','B','a','r',',','','B','a','z'))
         
     def testTuplifyContributors_1(self):
         self.utils.editMetadata(self.doc, contributors=['Foo', 'Bar', 'Baz'])
@@ -278,10 +278,10 @@ class TestEditMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
 
     def testTuplifyContributors_3(self):
-        self.utils.editMetadata(self.doc, contributors='Foo Bar Baz')
-        # XXX: Our own tuplify() doesn't pretend to care about strings anyway
+        self.utils.editMetadata(self.doc, contributors='Foo; Bar; Baz')
+        # XXX: Wishful thinking
         #self.assertEqual(self.doc.Contributors(), ('Foo', 'Bar', 'Baz'))
-        self.assertEqual(self.doc.Contributors(), ('F','o','o','','B','a','r','','B','a','z'))
+        self.assertEqual(self.doc.Contributors(), ('F','o','o',';','','B','a','r',';','','B','a','z'))
         
 
 class TestEditMetadataIndependence(PloneTestCase.PloneTestCase):
