@@ -69,9 +69,11 @@ p img {
 }
 
 hr {
+    border: 0;
     height: &dtml-borderWidth;;
     color: &dtml-globalBorderColor;;
-    background-color: transparent;
+    background-color: &dtml-globalBorderColor;;
+    margin: 0.5em 0 1em 0;
 }
 
 
