@@ -91,6 +91,25 @@ except ImportError:
         severity=zLOG.INFO, optional=1)
 
 try:
+    import Products.Localizer
+except ImportError:
+    pass
+else:
+    log(("Localizer found. Plone 2 is using the PlacelessTranslationService"
+         "for translation. Please deinstall the Localizer after you have saved"
+         "your po catalogs."),
+        severity=zLOG.WARNING, optional=1)
+
+try:
+    import Products.TranslationService
+except ImportError:
+    pass
+else:
+    log(("TranslationService found. Plone 2 is using the PlacelessTranslationService"
+         "for translation. Please deinstall the TranslationService."),
+        severity=zLOG.WARNING, optional=1)
+
+try:
     import Products.CMFPlone
     plonePath = Products.CMFPlone.__path__[0]
 except ImportError, AttributeError:
