@@ -50,10 +50,8 @@ class PloneTool (UniqueObject, SimpleItem):
             effective_date=REQUEST.get(pfx+'effective_date', obj.EffectiveDate())
         if expiration_date is None:
             expiration_date=REQUEST.get(pfx+'expiration_date', obj.ExpirationDate())
-        print format
         if format is None:
             format=REQUEST.get('text_format', obj.Format())
-        print format
         if language is None:
             language=REQUEST.get(pfx+'language', obj.Language())
         if rights is None:
