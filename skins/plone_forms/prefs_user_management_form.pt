@@ -53,16 +53,10 @@
                tal:condition="portal_users">
                
             <tr>
-                <th rowspan="2">User name</th>
-                <th rowspan="2">E-mail Address</th>
-                <th colspan="3">Roles</th>
-                <th rowspan="2">Reset<br />Password</th>
-                <th rowspan="2">Remove user</th>
-            </tr>
-            <tr>
-                <th>Manager</th>
-                <th>Member</th>
-                <th>Reviewer</th>
+                <th>User name</th>
+                <th>E-mail Address</th>
+                <th>Reset<br />Password</th>
+                <th>Remove user</th>
             </tr>
             
             <metal:block tal:repeat="this_user batch">
@@ -110,34 +104,7 @@
                                        value email" />
 
             </td>
-            
-            <td class="checkbox">
-                <input type="checkbox" 
-                       class="noborder"
-                       name="name"
-                       value="Manager"
-                       tal:attributes="checked python:test( 'Manager' in roles, 'checked', '');
-                                       name string:roles-${username}:list" />
-            </td>
-            
-            <td class="checkbox">
-                <input type="checkbox"
-                       class="noborder"
-                       name="name"
-                       value="Member"
-                       tal:attributes="checked python:test( 'Member' in roles, 'checked', '');
-                                       name string:roles-${username}:list" />
-            </td>
-            
-            <td class="checkbox">
-                <input type="checkbox"
-                       class="noborder"
-                       name="name" 
-                       value="Reviewer"
-                       tal:attributes="checked python:test( 'Reviewer' in roles, 'checked', '');
-                                       name string:roles-${username}:list" />
-            </td>
-            
+
             <td class="checkbox">
                 <input type="checkbox"
                        class="noborder"
