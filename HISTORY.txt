@@ -4,19 +4,36 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/2512 - folder_localrole_form role
+      assignment pulldowns should be multiple select. Thanks to teix.
+      [dtremea]
+
+    - Fixed http://plone.org/collector/2386 - Misc political incorrectness
+      for msgid 'help_search_keywords'.
+      [dtremea]
+
+    - Fixed http://plone.org/collector/3142 - Swedish translation in search
+      page translates "by" into "efter".
+      [dtremea]
+
+    - Fixed issues http://plone.org/collector/3495,
+      http://plone.org/collector/3508 and http://plone.org/collector/3509
+      French translation errors.
+      [dtremea]
+
     - Fixed http://plone.org/collector/2171 - accessibility headers for the
       document actions were missing.
       [limi]
 
-    - Removed the Add to Favorites icon from the breadcrumbs, since it is 
+    - Removed the Add to Favorites icon from the breadcrumbs, since it is
       already in the document actions area. Favorites still suck, but will
       hopefully get some love in 2.1. ;)
       [limi]
 
     - 'prefs_user_details' is now a Controller Page Template, and has better
-       validation. Don't forget to re-customize if you have customized the
-       old, non-cpt version.
-       [geoffd] 
+      validation. Don't forget to re-customize if you have customized the
+      old, non-cpt version.
+      [geoffd]
 
     - Fixed http://plone.org/collector/3385 - tableless skin wasn't updated
       to the new header structure, causing the site actions to be positioned
@@ -29,7 +46,7 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       from the tableless skin.
       [limi]
 
-    - Fixed http://plone.org/collector/3086 - there is now an 
+    - Fixed http://plone.org/collector/3086 - there is now an
       unRegisterPloneFunction in the plone_javascripts that allows you to
       unregister an onload event. Thanks to acamargo for the patch!
       [limi]
@@ -54,20 +71,20 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       for using the return key in IE.
       [geoffd]
 
-    - Fixed http://plone.org/collector/3406 - Did a big makeover of 
+    - Fixed http://plone.org/collector/3406 - Did a big makeover of
       FactoryTool.py that fixes a lot of permissions problems.  Objects are
       now created after traversal so their owner and creator are set
       correctly.  Parent folder permissions are copied to the TempFolder in
       which temporary objects are created, so temp object creation should
-      behave the same way as regular object creation.  ExternalMethods and 
-      scripts called with relative links are handed off to during traversal, 
-      so mapply headaches don't occur anymore.  doCreate method now checks 
-      for and calls if present an object method called 
-      'manage_afterPortalFactoryCreate' so any extra post-instantiation 
+      behave the same way as regular object creation.  ExternalMethods and
+      scripts called with relative links are handed off to during traversal,
+      so mapply headaches don't occur anymore.  doCreate method now checks
+      for and calls if present an object method called
+      'manage_afterPortalFactoryCreate' so any extra post-instantiation
       initialization can take place.
       [geoffd]
 
-    - Fixed http://plone.org/collector/3458 - Images in folder_contents and 
+    - Fixed http://plone.org/collector/3458 - Images in folder_contents and
       navtree have wrong paths in VirtualHosted sites. It worked anyway
       because of acquisition, but is correct now. Thanks to mjm for the patch.
       [limi]
@@ -85,8 +102,8 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       for items without Title. Thanks to Sjors for the patch.
       [limi]
 
-    - Fixed http://plone.org/collector/2857 - changed show_id.py to accomodate 
-      postback of a submitted id in the case where validation fails on the first 
+    - Fixed http://plone.org/collector/2857 - changed show_id.py to accomodate
+      postback of a submitted id in the case where validation fails on the first
       edit of a newly created content object. Thanks to zenwryly.
       [stefan]
 
@@ -99,7 +116,7 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       [limi]
 
     - Fixed http://plone.org/collector/3494. Description was used with 'structure'
-      in some templates, notably news.pt and folder_listing. Note that Dublin Core 
+      in some templates, notably news.pt and folder_listing. Note that Dublin Core
       defines this element as plain text. If your site relies on the old behavior
       refer to the patch in the collector issue. Patch by mathie, thanks.
       [stefan]
@@ -124,16 +141,16 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       for upper-case characters.
       [rohrer]
 
-    - Added border-collapse to the columns, so pixel/bitmap layouts that 
-      depend on the columns having 0 margin will work automatically. This 
+    - Added border-collapse to the columns, so pixel/bitmap layouts that
+      depend on the columns having 0 margin will work automatically. This
       is cleaner than the cellspacing="0" cellpadding="0" HTML approach
       that people seem to use.
       Fixes http://plone.org/collector/3511
       [limi]
-      
+
     - Fixed HTML escape codes in password for special characters in
       registered_notify_template (http://plone.org/collector/3499)
-      [jladage] 
+      [jladage]
 
     - Polished up the datetime-picker widget.  Now provides default values
       for month ('01') and day ('01').  Also new is the option to unset a
@@ -141,20 +158,21 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       Fixes http://plone.org/collector/2291
       [stefan]
 
-    - Made it so that headlines can't be obscured by the document action 
+    - Made it so that headlines can't be obscured by the document action
       icons anymore.
       [limi]
 
-    - Made the check_id script work in the presence of incomplete 
+    - Made the check_id script work in the presence of incomplete
       Plone sites and missing permissions.
+      [stefan]
 
     - Fixed ownership on objects created by portal_factory.  The
-      changes to portal_factory in 2.0.4 fix problems with mapply, but 
-      they mess up object ownership and potentially have side effects 
-      if an object tries to look up its owner during initialization.  
+      changes to portal_factory in 2.0.4 fix problems with mapply, but
+      they mess up object ownership and potentially have side effects
+      if an object tries to look up its owner during initialization.
       The pre-2.0.4 portal_factory breaks Epoz; the 2.0.4 portal_factory
       breaks PloneHelpCenter.  The current fix should enable both to
-      work.  The Right Way to fix this would be to perform object 
+      work.  The Right Way to fix this would be to perform object
       construction in a post-traversal hook (pre-2.0.4 object construction
       happened at publication time; 2.0.4 constructs during traversal),
       but that means abandoning support for Zope 2.6.x.
@@ -162,17 +180,17 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
 
     - Added title attribute to links in action menus.
       [gotcha]
- 
+
     - Fixed transaction_notes overflowing struct size in ZODB.
       Also made there be 1 entry point into transaction_note instead
       of stray in PloneTool. Publishing hundreds of thousands of items
       would cause the trnx.description string to get larger than 65535
-      which would cause FileStorage to fail on _notify 
+      which would cause FileStorage to fail on _notify
       [runyaga]
 
 Plone 2.0.4 - Warp - Released August 16, 2004
 
-    - Fixed http://plone.org/collector/3329. Results of breadcrumbs.py 
+    - Fixed http://plone.org/collector/3329. Results of breadcrumbs.py
       are no longer translated in global_pathbar.pt.
       [stefan]
 
@@ -213,7 +231,7 @@ Plone 2.0.4 - Warp - Released August 16, 2004
       [tiran]
 
     - Fixed http://plone.org/collector/3240 and related issues.
-      Metadata elements like description and keywords (subject) could 
+      Metadata elements like description and keywords (subject) could
       not be cleared.
       [stefan]
 
@@ -227,40 +245,40 @@ Plone 2.0.4 - Warp - Released August 16, 2004
       with ATContentTypes.
       [tiran]
 
-    - Changed the visual rendering of the nav tree. It now uses CSS instead 
-      of fixed values wherever possible. 
+    - Changed the visual rendering of the nav tree. It now uses CSS instead
+      of fixed values wherever possible.
       [limi]
 
       If you want the old look back, put the following in your
       ploneCustom.css::
-      
+
         .currentNavItem,
         #portlet-navigation-tree a:hover {
         background-color: transparent;
         border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
         }
-        
+
         .currentNavItem {
         font-weight: bold;
         color: &dtml-fontColor;;
         }
-        
+
         .navItem {
         padding: 0 0 0 20px;
         }
-        
+
     - Nav tree now displays Description for its items as a tooltip.
       [limi]
 
     - Changed the behaviour of the site-wide actions (currently
       only used for text size) - so if you use or have a custom
       variant of this, you will need to re-customize this part.
-      It was just too broken to not require template 
+      It was just too broken to not require template
       modification. It changed position in main_template, and
       produces more sane HTML now. Site actions have IDs now too.
       [limi]
 
-    - Changed the search box behaviour too - it shouldn't be 
+    - Changed the search box behaviour too - it shouldn't be
       absolutely positioned. If you have customized, you will need
       to move the main_template invocation of the search box, plus
       re-do the CSS, if any. Sanity was needed, sorry for the
@@ -269,7 +287,7 @@ Plone 2.0.4 - Warp - Released August 16, 2004
 
     - Added 'navtreeItem' and 'navLevelX' classes to the navigation
       tree, so it's possible to do funky stuff using only CSS to
-      customizing the nav tree - for example make the only the 
+      customizing the nav tree - for example make the only the
       top-level folders have bold text and dividers.
       [limi]
 
@@ -277,24 +295,24 @@ Plone 2.0.4 - Warp - Released August 16, 2004
       skinning of the nav tree.
       [limi]
 
-    - The body tag now has an HTML 'class' 
+    - The body tag now has an HTML 'class'
       attribute, so you can skin different sections of the site
       with different styles. Prefix is "section-" and then the
       Short Name (partial URL) of the item in the root folder.
       This can easily be customized if you want this to
-      work on all levels instead of just the root level, or to 
+      work on all levels instead of just the root level, or to
       return multiple classes.
       [limi]
 
-    - Backported fix for http://plone.org/collector/3098. 
+    - Backported fix for http://plone.org/collector/3098.
       getObjSize() should handle floats.
       [stefan]
 
-    - Applied patch from http://plone.org/collector/3159. Missing 
+    - Applied patch from http://plone.org/collector/3159. Missing
       form fields should not cause user prefs to be set to None.
       [stefan]
 
-    - Added a simple check for the existence of the template 
+    - Added a simple check for the existence of the template
       'global_languageselector' - this will allow the different
       multilingual implementations to hook into the area just below
       the documentActions to display language switchers. Macro name
@@ -306,6 +324,7 @@ Plone 2.0.4 - Warp - Released August 16, 2004
 Plone 2.0.3 - Noname - Released May 20, 2004
 
     - Login portlet wasn't using the 'label' tag, corrected.
+      [limi]
 
     - Added id="portlet-related" in the Related portlet (was missing),
       and renamed 'portlet-recent-items' to 'portlet-recent' to make
@@ -321,9 +340,10 @@ Plone 2.0.3 - Noname - Released May 20, 2004
 
 Plone 2.0.2 - Hicks - Released May 13, 2004
 
-    - Added the 'listingNext' and 'listingPrevious' class for the batch 
-      navigator. The old span.next/previous will still work, but are 
+    - Added the 'listingNext' and 'listingPrevious' class for the batch
+      navigator. The old span.next/previous will still work, but are
       deprecated. Please update any batch listings to the new format.
+      [limi]
 
     - Added a email address validator to the Plone tool and validate the email
       addresses for the send to feature, fix for http://plone.org/collector/2975
@@ -1146,7 +1166,7 @@ Plone 2.0 - Fyuti - Released March 23, 2004
     - Added lexicon addition to migration.
       [kapil]
 
-    - Added lexicon addition and recreation of searchabletext index as zctext to catalog 
+    - Added lexicon addition and recreation of searchabletext index as zctext to catalog
       tool's manage_afterAdd.
       [kapil]
 
