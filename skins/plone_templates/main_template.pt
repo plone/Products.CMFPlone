@@ -6,7 +6,7 @@
 <head metal:use-macro="here/header/macros/html_header">
 </head>
 
-<body>
+<body tal:define="dummy python:request.set('filtered_actions', here.portal_actions.listFilteredActionsFor(here))">
 
     <div metal:use-macro="here/header/macros/portal_header">
     Header stuff

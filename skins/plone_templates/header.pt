@@ -146,15 +146,13 @@
 	<hr size="" class="netscape4" />
 
 	<div class="personalBar"
-         metal:use-macro="here/portal_bars/macros/personalBar"
-         tal:define="actions python:here.portal_actions.listFilteredActionsFor(here);">
+         metal:use-macro="here/portal_bars/macros/personalBar">
 	</div>
 
 	<hr size="" class="netscape4" />
 
 	<div class="pathBar"
-         metal:use-macro="here/portal_bars/macros/pathBar"
-         tal:define="actions python:here.portal_actions.listFilteredActionsFor(here);">
+         metal:use-macro="here/portal_bars/macros/pathBar">
 	</div>
 
 	<hr size="" class="netscape4" />

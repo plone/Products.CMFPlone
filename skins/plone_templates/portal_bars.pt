@@ -2,7 +2,7 @@
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <div class="personalBar" metal:define-macro="personalBar"
-     tal:define="actions python:here.portal_actions.listFilteredActionsFor(here); portal_url here/portal_url;">
+     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here)); portal_url here/portal_url;">
 
     &nbsp;
      

@@ -4,19 +4,6 @@
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
 
-<div metal:fill-slot="super1">
-
-    <div metal:use-macro="here/portal_tabs/macros/folderTabs">
-    Content tabs
-    </div>
-    
-    <div metal:use-macro="here/portal_bars/macros/contentBar">        
-    Content bar
-    </div>	
-
-</div>
-
-
 <body>
 
 <div metal:fill-slot="main"
