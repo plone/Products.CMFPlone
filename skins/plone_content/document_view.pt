@@ -31,10 +31,12 @@
     This item does not have any body text, click the edit tab to change it.
     </p>
 
-    <div tal:condition="len_text"
-         tal:replace="structure here/CookedBody">
+    <div class="stx"
+         tal:condition="len_text"
+         tal:omit-tag="python:here.text_format != 'structured-text'">
+        <div tal:replace="structure here/CookedBody" />
     </div>
-
+    
 </div>
 
 </body>
