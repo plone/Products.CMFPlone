@@ -1,3 +1,136 @@
+2003-11-03 04:57  limi
+
+	* skins/plone_forms/join_form.cpt (limi-formageddon-branch): New
+	  forms style.
+
+2003-11-03 04:18  limi
+
+	* skins/plone_forms/sendto_form.cpt (limi-formageddon-branch): New
+	  forms style. Thanks, geojeff :)
+
+2003-11-03 04:01  ronnix
+
+	* skins/plone_templates/recently_published.pt (Plone-2_0-branch):
+	  Fixed the display of modification dates.
+
+2003-11-03 04:00  limi
+
+	* skins/plone_forms/search_form.pt (limi-formageddon-branch): New
+	  forms style. Thanks, geojeff :)
+
+2003-11-03 02:48  limi
+
+	* skins/plone_styles/hide_columns.py (Plone-2_0-branch): Sloppy
+	  testing, fixed the overlapping of the columns.
+
+2003-11-03 02:35  limi
+
+	* skins/plone_forms/folder_rename_form.cpt
+	  (limi-formageddon-branch): New forms style. Spits out { } for
+	  empty error messages, though - somebody needs to look at this.
+
+2003-11-03 02:06  limi
+
+	* skins/plone_content/: document_edit_form.cpt,
+	  newsitem_edit_form.cpt (limi-formageddon-branch): New forms
+	  style. Why on earth is it not supported to upload news items, but
+	  it's allowed in documents?
+
+2003-11-03 01:36  limi
+
+	* skins/plone_content/metadata_edit_form.cpt
+	  (limi-formageddon-branch): New forms style. Bad-ass form :]
+
+2003-11-03 00:38  batlogg
+
+	* skins/plone_forms/folder_localrole_form.pt
+	  (limi-formageddon-branch): new form style, and yes :) indentation
+	  was a little bit messy.  FIXME: labels are not i18n aware yet.
+
+2003-11-03 00:04  limi
+
+	* skins/plone_content/link_edit_form.cpt (limi-formageddon-branch):
+	  New forms style.
+
+2003-11-02 23:41  limi
+
+	* skins/plone_content/: event_edit_form.cpt, file_edit_form.cpt,
+	  folder_edit_form.cpt, image_edit_form.cpt
+	  (limi-formageddon-branch): Oops, stomped some i18n stuff. Fixed.
+
+2003-11-02 23:27  limi
+
+	* skins/plone_content/image_edit_form.cpt
+	  (limi-formageddon-branch): New forms style.
+
+2003-11-02 23:12  limi
+
+	* skins/plone_content/: document_edit_form.cpt,
+	  event_edit_form.cpt, folder_edit_form.cpt
+	  (limi-formageddon-branch): New forms style, plus changed
+	  "document" to the neutral "item".
+
+2003-11-02 22:38  batlogg
+
+	* skins/plone_forms/discussion_reply_form.pt
+	  (limi-formageddon-branch): new form style
+
+2003-11-02 21:56  zopezen
+
+	* Extensions/setupSite.py (Plone-2_0-branch): Fix typo
+
+2003-11-02 21:43  limi
+
+	* README.txt (Plone-2_0-branch): STX formatting the Readme
+
+2003-11-02 20:43  eaon
+
+	* skins/: plone_forms/login_form.pt, plone_styles/plone.css.dtml
+	  (limi-formageddon-branch):  login_form in new form style, and css
+	  for the new form style
+
+2003-11-02 20:18  limi
+
+	* skins/plone_content/event_edit_form.cpt
+	  (limi-formageddon-branch): New forms style.
+
+2003-11-02 19:26  limi
+
+	* skins/plone_content/file_edit_form.cpt (limi-formageddon-branch):
+	  file_edit_form in new format.
+
+2003-11-02 19:07  limi
+
+	* skins/plone_wysiwyg/wysiwyg_support.pt (limi-formageddon-branch):
+	  missing label.
+
+2003-11-02 19:04  limi
+
+	* skins/plone_styles/hide_columns.py (Plone-2_0-branch): Was
+	  returning wrong class names.
+
+2003-11-02 18:58  limi
+
+	* skins/plone_content/document_edit_form.cpt
+	  (limi-formageddon-branch): for="" was missing from labels.
+
+2003-11-02 18:33  limi
+
+	* skins/: plone_content/document_edit_form.cpt,
+	  plone_wysiwyg/wysiwyg_support.pt (limi-formageddon-branch):
+	  document_edit_form had a few bugs.
+
+2003-11-02 17:26  limi
+
+	* skins/plone_styles/: base_properties.props,
+	  stylesheet_properties.props (Plone-2_0-branch): Added back
+	  stylesheet_properties.props with deprecation warning, added title
+	  to base_properties.
+
+2003-11-02 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-02 03:06  limi
 
 	* skins/: plone_content/document_edit_form.cpt,
