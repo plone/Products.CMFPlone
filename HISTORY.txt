@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1-beta1 - (TBA) - (Unreleased)
 
+    - Removed the dependency on Formulator as well as FormTool and NavigationTool.
+      [stefan]
+
     - It was impossible to create a item named 'index_html' on Portal
       root or inside a folder via WebDAV. Added a functional doctest
       for it.
