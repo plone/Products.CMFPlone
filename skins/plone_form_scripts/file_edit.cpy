@@ -36,6 +36,7 @@ new_context = context.portal_factory.doCreate(context, id)
 
 new_context.plone_utils.contentEdit( new_context
                                    , id=id
+                                   , title=title
                                    , description=description )
 new_context.edit( precondition=precondition, file=file )
 
