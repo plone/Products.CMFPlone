@@ -888,7 +888,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             base = base + "." + ext
         return base
 
-    security.declarePublic('listMetaTas')
+    security.declarePublic('listMetaTags')
     def listMetaTags(self, context):
         """List meta tags helper
         
