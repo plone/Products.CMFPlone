@@ -26,7 +26,7 @@
                  tabindex python:Iterator();">
 
     <span tal:replace="python:user.getUserName()">user</span>
-    <span tal:contents="python:user.getUserName()">user</span>
+    <span tal:content="python:user.getUserName()">user</span>
 
     <form name="folderContentsForm"
           method="post"
@@ -69,11 +69,11 @@ user.getUserName()==here.getId()" i18n:translate="">
             </p>						    
             </metal:block>
      
-            <tal:block tal:condition="python:
-user.getUserName()==here.getId()" i18n:translate="">
+            <span tal:condition="python:user.getUserName()==here.getId()" 
+                  i18n:translate="">
 Home page area that contains the items created and collected by <span tal:replace="python:user.getUserName()" i18n:name="name">User</span>
  
-            </tal:block> 
+            </span> 
 
             <p tal:content="structure here/Description"
                tal:condition="python:not user.getUserName()==here.getId()">
