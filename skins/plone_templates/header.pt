@@ -47,13 +47,6 @@
            tal:content="string: @import url($portal_url/plone.css);">
     </style>
 
-    <!-- Old style sheet from Plone 1.0, remove tal:condition="nothing" if you need to use the old styles.
-         Will be removed in Plone 2.1. -->
-    <style type="text/css" media="screen"
-           tal:condition="nothing"
-           tal:content="string: @import url($portal_url/ploneDeprecated.css);">
-    </style>
-
     <!-- Alternate style sheets for the bigger/smaller text switcher -->
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextLarge.css" title="Large Text" />
@@ -128,26 +121,6 @@
             tal:attributes="src string:$portal_url/plone_javascripts.js">
     </script>
 
-    <tal:block tal:define="showdefault python:test(portal.portal_memberdata.getProperty('formtooltips'), 'true', 0);
-                           formtooltips python:member.getProperty('formtooltips', showdefault)"
-               tal:omit-tag="">
-
-      <!-- Old JS from Plone 1.0, remove tal:condition="nothing" if you need to use the old pop-ups.
-           Will be removed in Plone 2.1 -->
-      <tal:oldjs tal:condition="nothing">
-        <script type="text/javascript"
-                tal:condition="formtooltips"
-                tal:attributes="src string:$portal_url/plone_formtooltip.js">
-        </script>
-
-        <tal:block tal:condition="not:formtooltips">
-          <tal:block tal:replace="structure string:&lt;script language='javascript' type='text/javascript' &gt;" />
-          <metal:block >function formtooltip(el,flag){}</metal:block>
-          <tal:block tal:replace="structure python:'&lt;/script&gt;'" />
-        </tal:block>
-      </tal:oldjs>
-
-    </tal:block>
   </head>
 
   <body>
