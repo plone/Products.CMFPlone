@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Did a few things to improve the Google ranking of all Plone sites:
+      Put all the style sheet declarations inside HTML comments, so Google
+      doesn't try to interpret them as text, and removed the non-working
+      meta links for author and copyright (scheduled for 2.1). Also
+      changed the rel link for up to not show up if you are at the portal
+      root.
+      [limi]
+
     - Plone was not showing the correct language in the header for an
       object, it was always using the site default, even if you had specified
       language on an object. Fixed.
