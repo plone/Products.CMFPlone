@@ -84,3 +84,8 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.0.3',
                                       '2.0.4',
                                       null)
+
+    MigrationTool.registerUpgradePath('2.0.4',
+                                      '2.0.5 (SVN/UNRELEASED)',
+                                      null)
+
