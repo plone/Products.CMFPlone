@@ -8,6 +8,7 @@ if __name__ == '__main__':
 
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
+from AccessControl.SecurityManagement import newSecurityManager
 
 def sortTuple(t):
     l = list(t)
@@ -52,6 +53,21 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         temp_object2 = self.folder.folder2.restrictedTraverse('portal_factory/Document/tmp_id')
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object2)),
                          ('Authenticated', 'Foo', 'Member', 'Reviewer'))
+
+
+    def testTempObjectLocalRoles(self):
+        self.membership = self.portal.portal_membership
+        self.membership.addMember('user2', 'secret', ['Member'], [])
+        member = self.membership.getMemberById('user2')
+        user = member.getUser()
+        
+        # assume identify of new user
+        newSecurityManager(None, user)
+
+        temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        # make sure user is owner of temporary object
+        self.assertEqual(sortTuple(member.getRolesInContext(temp_object)),
+                         ('Authenticated', 'Member', 'Owner'))
 
 
 def test_suite():
