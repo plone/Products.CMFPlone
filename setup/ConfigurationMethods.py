@@ -382,6 +382,8 @@ class GeneralSetup(SetupWidget):
 set up features of a site. The chances are you will not want to apply these again. <b>Please note</b>
 these functions do not have a uninstall function."""
 
+    functions = functions
+
     def setup(self):
         pass
 
@@ -393,7 +395,7 @@ these functions do not have a uninstall function."""
     def addItems(self, fns):
         out = []
         for fn in fns:
-            functions[fn](self, self.portal)
+            self.functions[fn](self, self.portal)
             out.append(('Function %s has been applied' % fn, INFO))
         return out
 
@@ -402,4 +404,4 @@ these functions do not have a uninstall function."""
 
     def available(self):
         """ Go get the functions """
-        return functions.keys()
+        return self.functions.keys()

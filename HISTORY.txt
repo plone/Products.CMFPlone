@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3091 - new SetupWidgets can now
+      work without cut/pasting the existing code, and use inheritance 
+      instead. Thanks to jccooper for the fix!
+      [limi]
+
     - Implemented AM/PM support for the datetime-picker widget. Now, if
       your site_properties/localLongTimeFormat property contains the '%p'
       format specifier, the widget will display 12 hours and an additional
