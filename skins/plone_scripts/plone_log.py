@@ -1,4 +1,4 @@
-## Script (Python) "plone_debug"
+## Script (Python) "plone_log"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
