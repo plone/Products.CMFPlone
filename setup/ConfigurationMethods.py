@@ -310,7 +310,7 @@ def addNewActions(self, portal):
     at.addAction('change_state',
                  name='Change State',
                  action='string:content_status_history:method',
-                 condition='python:portal.portal_workflow.getTransitionsFor(object)',
+                 condition='',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
     at.addAction('local_roles',
