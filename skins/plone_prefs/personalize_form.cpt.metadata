@@ -1,5 +1,8 @@
 [default]
-title=Preference settings
+title=Personal Preferences
+
+[security]
+View=0:Authenticated
 
 [validators]
 validators..Save=validate_emailaddr,validate_personalize
