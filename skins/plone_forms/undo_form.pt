@@ -32,7 +32,7 @@
         </p>
 
 
-        <div class="listingBar">
+        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
             <span class="previous"
                   tal:define="p batch/previous | nothing"
                   tal:condition="p"> 
@@ -101,7 +101,7 @@
 
         <input class="context" type="submit" name="undo:method" value="Undo" />
 
-        <div class="listingBar">
+        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
             <span class="previous"
                   tal:define="p batch/previous | nothing"
                   tal:condition="p"> 
