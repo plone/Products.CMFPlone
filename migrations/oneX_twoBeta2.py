@@ -10,8 +10,9 @@ from Products.CMFCore.TypesTool import FactoryTypeInformation
 from Products.CMFCore import CachingPolicyManager
 from Products.CMFCore.DirectoryView import createDirectoryView, manage_listAvailableDirectories
 
-from Products.CMFPlone.migrations.plone2_base import setupExtEditor
+from Products.CMFPlone.migrations.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
+from Products.CMFPlone.setup.ConfigurationMethods import addSiteActions
 from Products.CMFPlone import ToolNames
 
 from Acquisition import aq_base
@@ -68,6 +69,10 @@ def doit(self):
     portal=swapPortalRoot(self)
     moveOldTemplates(portal)
     migrateNavTree(portal)
+    addDocumentActions(portal)
+    addActionIcons(portal)
+    addSiteActions(portal, portal)
+
     return "some templates in portal_skins/custom may have been renamed"
 
 def swap(self):
