@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.4 2003/10/05 18:38:01 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.9.2.5 2003/10/25 19:58:10 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -68,8 +68,8 @@ def setupPloneSite(app, id='portal', quiet=0):
         if not quiet: ZopeTestCase._print('Adding Plone Site ... ')
         # Add user and log in
         uf = app.acl_users
-        uf._doAddUser('PloneTestCase', '', ['Manager'], [])
-        user = uf.getUserById('PloneTestCase').__of__(uf)
+        uf._doAddUser('portal_owner', '', ['Manager'], [])
+        user = uf.getUserById('portal_owner').__of__(uf)
         newSecurityManager(None, user)
         # Add Plone Site
         factory = app.manage_addProduct['CMFPlone']

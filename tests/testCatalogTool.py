@@ -25,7 +25,7 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
     def loginAsPortalOwner(self):
         from AccessControl.SecurityManagement import newSecurityManager
         uf = self.app.acl_users
-        user = uf.getUserById('PloneTestCase').__of__(uf)
+        user = uf.getUserById('portal_owner').__of__(uf)
         newSecurityManager(None, user)
 
     def testPloneLexiconIsZCTextLexicon(self):
