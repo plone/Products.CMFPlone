@@ -1,5 +1,5 @@
 [security]
-View:0:Authenticated
+View=0:Authenticated
 
 [default]
 title=Edit Topic
