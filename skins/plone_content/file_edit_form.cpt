@@ -31,6 +31,17 @@
 
           <legend i18n:translate="legend_file_details">File Details</legend>
 
+          <tal:optional condition="nothing"> 
+          NOTE: We removed the ability to edit short names while adding a file,
+          since users have problems remembering that the extension has to be
+          included. And they are very surprised when the file they uploaded
+          has a different file name. Removing this will give them a sensible
+          default.
+          
+          You can still rename the Short name from the Folder Contents.
+          If you want to re-enable short names for files for your site, 
+          remove the tal:optional start/end tags and this text. 
+          
           <div class="field"
                tal:condition="python:member.getProperty('visible_ids', None)"
                tal:define="error errors/id | nothing;
@@ -58,6 +69,8 @@
 
           </div>
 
+          </tal:optional>
+          
           <input type="hidden"
                  name="id"
                  tal:condition="python:not member.getProperty('visible_ids', '')"
@@ -189,6 +202,10 @@
         </fieldset>
 
       </form>
+
+      <div metal:use-macro="here/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+      </div>
 
     </div>
 

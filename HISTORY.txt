@@ -8,11 +8,24 @@ Plone 2.0 - Fyuti
  
     - Fix bug 2373 so folder_contents items goto
       getTypeInfo.getActionById('view')
+	[runyaga]
 
-   RC5/Final?   
+    - Removed the ability to edit short names while adding a file,
+      since users have problems remembering that the extension has to be
+      included. They are also very surprised when the file they uploaded
+      has a different file name. Removing this will give them a sensible
+      default. If you want to re-enable short names for files for your 
+      site, remove the comments around the code. 
+      [limi]
+
+    - Added the Creator/Modified indicator to the edit forms too.
+      [limi]
+
+   RC5
 
     - Removed false 'required' indicators for Title attribute on file/image
       edit forms.  You simply need to upload a file.  Thats it.
+      [runyaga]
 
     - Added extra check for dictionary-based actions. Will work better 
       with old sites being migrated.
