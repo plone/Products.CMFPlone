@@ -703,7 +703,7 @@ div.box h6 {
     text-transform: &dtml-textTransform;;
     display: block;
     font-size: 1em;
-    height: 1em;
+    height: 1.2em;
 }
 
 
