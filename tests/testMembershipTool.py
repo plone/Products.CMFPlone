@@ -126,35 +126,6 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.membership.setPassword('geheim')
         self.failUnless(self.portal.acl_users.getUserById(default_user).getGroups() == ugroups)
 
-    def testCreateMembersFolder(self):
-        # Should create the Members folder 
-        self.membership.addMember('user2', 'secret', ['Member'], [])
-        self.portal._delObject('Members')
-        self.membership.memberareaCreationFlag = 1
-        self.membership.createMemberarea('user2')
-        members = self.membership.getMembersFolder()
-        self.failUnless(members, 'createMemberarea failed to create Members folder')
-
-    def testCreateMemberarea(self):
-        # Should create a memberarea for user2
-        self.membership.addMember('user2', 'secret', ['Member'], [])
-        members = self.membership.getMembersFolder()
-        self.membership.memberareaCreationFlag = 1
-        self.membership.createMemberarea('user2')
-        memberfolder = self.membership.getHomeFolder('user2')
-        self.failUnless(memberfolder, 'createMemberarea failed to create memberarea')
-
-    def testWrapUserCreatesMemberarea(self):
-        # This test serves to trip us up should this ever change
-        # Also see http://plone.org/collector/1697
-        self.membership.addMember('user2', 'secret', ['Member'], [])
-        members = self.membership.getMembersFolder()
-        user = self.portal.acl_users.getUserById('user2')
-        self.membership.memberareaCreationFlag = 1
-        self.membership.wrapUser(user)
-        memberfolder = self.membership.getHomeFolder('user2')
-        self.failUnless(memberfolder, 'wrapUser failed to create memberarea')
-
     def testGetMemberById(self):
         # This should work for portal users,
         self.failIfEqual(self.membership.getMemberById(default_user), None)
@@ -188,16 +159,6 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.failIf(self.membership.isAnonymousUser())
         self.logout()
         self.failUnless(self.membership.isAnonymousUser())
-
-    def testWrapUserWrapsBareUser(self):
-        user = self.portal.acl_users.getUserById(default_user)
-        # XXX: GRUF users are wrapped
-        self.failUnless(hasattr(user, 'aq_base'))
-        user = aq_base(user)
-        user = self.membership.wrapUser(user)
-        self.assertEqual(user.__class__.__name__, 'MemberData')
-        self.assertEqual(user.aq_parent.__class__.__name__, 'GRUFUser')
-        self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
     def testWrapUserWrapsBareUser(self):
         user = self.portal.acl_users.getUserById(default_user)
@@ -263,6 +224,155 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.membership.getHomeUrl('user2'), None)
 
 
+class TestCreateMemberarea(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.membership = self.portal.portal_membership
+        self.membership.memberareaCreationFlag = 0
+        self.membership.addMember('user2', 'secret', ['Member'], [])
+
+    def testCreateMemberarea(self):
+        # Should create a memberarea for user2
+        members = self.membership.getMembersFolder()
+        self.membership.createMemberarea('user2')
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.failUnless(memberfolder, 'createMemberarea failed to create memberarea')
+
+    def testWrapUserCreatesMemberarea(self):
+        # This test serves to trip us up should this ever change
+        # Also see http://plone.org/collector/1697
+        members = self.membership.getMembersFolder()
+        user = self.portal.acl_users.getUserById('user2')
+        self.membership.memberareaCreationFlag = 1
+        self.membership.wrapUser(user)
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.failUnless(memberfolder, 'wrapUser failed to create memberarea')
+
+    def testCreatMemberareaUsesCurrentUser(self):
+        # Should create a memberarea for user2
+        self.login('user2')
+        self.membership.createMemberarea()
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.failUnless(memberfolder, 'createMemberarea failed to create memberarea for current user')
+
+    def testNoMemberareaIfNoMembersFolder(self):
+        # Should not create a memberarea if the Members folder is missing
+        self.portal._delObject('Members')
+        self.membership.createMemberarea('user2')
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.failIf(memberfolder, 'createMemberarea unexpectedly created a memberarea')
+
+    def testNoMemberareaIfMemberareaExists(self):
+        # Should not attempt to create a memberarea if a memberarea already exists
+        self.membership.createMemberarea('user2')
+        # The second call should do nothing (not cause an error)
+        self.membership.createMemberarea('user2')
+
+    def testNotifyScriptIsCalled(self):
+        # The notify script should be called
+        class FooException: pass
+        def notify_script(): raise FooException
+        self.portal.notifyMemberAreaCreated = notify_script
+        self.assertRaises(FooException, self.membership.createMemberarea, 'user2') 
+
+    def testCreateMemberareaAlternateName(self):
+        # Alternate method name 'createMemberaArea' should work 
+        members = self.membership.getMembersFolder()
+        self.membership.createMemberArea('user2')
+        memberfolder = self.membership.getHomeFolder('user2')
+        self.failUnless(memberfolder, 'createMemberArea failed to create memberarea')
+
+
+class TestMemberareaSetup(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.membership = self.portal.portal_membership
+        self.membership.memberareaCreationFlag = 0
+        self.membership.addMember('user2', 'secret', ['Member'], [])
+        self.membership.createMemberarea('user2')
+        self.home = self.membership.getHomeFolder('user2')
+
+    def testMemberareaIsPloneFolder(self):
+        # Memberarea should be a Plone folder
+        self.assertEqual(self.home.meta_type, 'Plone Folder')
+        self.assertEqual(self.home.portal_type, 'Folder')
+
+    def testMemberareaIsOwnedByMember(self):
+        # Memberarea should be owned by member
+        owner_info = self.home.getOwner(info=1)
+        self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
+        self.assertEqual(owner_info[1], 'user2')
+        self.assertEqual(len(self.home.get_local_roles()), 1)
+        self.assertEqual(self.home.get_local_roles_for_userid('user2'), ('Owner',))
+
+    def testMemberareaHasDescription(self):
+        # Memberarea should have a description
+        self.failUnless(self.home.Description())
+
+    def testMemberareaIsCataloged(self):
+        # Memberarea should be cataloged
+        catalog = self.portal.portal_catalog
+        self.failUnless(catalog(id='user2', Type='Folder', Title="user2's Home"))
+
+    def testHomePageExists(self):
+        # Should have an index_html document
+        self.failUnless(hasattr(aq_base(self.home), 'index_html'))
+
+    def testHomePageIsDocument(self):
+        # Home page should be a Document
+        page = self.home.index_html
+        self.assertEqual(page.meta_type, 'Document')
+        self.assertEqual(page.portal_type, 'Document')
+
+    def testHomePageIsOwnedByMember(self):
+        # Home page should be owned by member
+        page = self.home.index_html
+        owner_info = page.getOwner(info=1)
+        self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
+        self.assertEqual(owner_info[1], 'user2')
+        self.assertEqual(len(page.get_local_roles()), 1)
+        self.assertEqual(page.get_local_roles_for_userid('user2'), ('Owner',))
+
+    def testHomePageHasDescription(self):
+        # Home page should have a description
+        page = self.home.index_html
+        self.failUnless(page.Description())
+
+    def testHomePageIsCataloged(self):
+        # Home page should be cataloged
+        catalog = self.portal.portal_catalog
+        self.failUnless(catalog(id='index_html', Title="user2's Home Page"))
+
+    def testPersonalFolderExists(self):
+        # Should have a .personal folder
+        self.failUnless(hasattr(aq_base(self.home), self.membership.personal_id))
+
+    def testPersonalFolderIsPloneFolder(self):
+        # .personal should be a Plone folder
+        personal = self.home[self.membership.personal_id]
+        self.assertEqual(personal.meta_type, 'Plone Folder')
+        self.assertEqual(personal.portal_type, 'Folder')
+
+    def testPersonalFolderIsOwnedByMember(self):
+        # .personal should be owned by member
+        personal = self.home[self.membership.personal_id]
+        owner_info = personal.getOwner(info=1)
+        self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
+        self.assertEqual(owner_info[1], 'user2')
+        self.assertEqual(len(personal.get_local_roles()), 1)
+        self.assertEqual(personal.get_local_roles_for_userid('user2'), ('Owner',))
+
+    def testPersonalFolderHasDescription(self):
+        # .personal should have a description
+        personal = self.home[self.membership.personal_id]
+        self.failUnless(personal.Description())
+
+    def testPersonalFolderIsNotCataloged(self):
+        # .personal should not be cataloged
+        catalog = self.portal.portal_catalog
+        self.failIf(catalog(Title='Personal Items'))
+
+
 # Fake upload object
 
 class Portrait:
@@ -279,4 +389,6 @@ else:
     def test_suite():
         suite = TestSuite()
         suite.addTest(makeSuite(TestMembershipTool))
+        suite.addTest(makeSuite(TestCreateMemberarea))
+        suite.addTest(makeSuite(TestMemberareaSetup))
         return suite
