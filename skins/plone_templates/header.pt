@@ -30,10 +30,6 @@
            @import url(${here/portal_url}/ploneStructure.css);
            @import url(${here/portal_url}/ploneWidgets.css);
            @import url(${here/portal_url}/ploneCalendar.css);">
-      This block will be dynamically replaced withe the @import statements for use in IE4.0 and higher.
-      If you put the @imports in here (which you should do, CSSImports is a just a out-of-the-box
-      usability artifact)then your designers (with Macro expansion turned on) will be able to see
-      styled content.
     </style>
     
     <!-- Style sheet used for printing -->
