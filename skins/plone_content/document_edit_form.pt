@@ -4,15 +4,6 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-<metal:block metal:fill-slot="javascript_head_slot"
-             tal:define="editor python:here.portal_membership.getAuthenticatedMember().wysiwyg_editor;"
-             tal:condition="python:test(editor and (editor == 'Xopus'), 1, 0)">
-    <script language="javascript" 
-            src="" 
-            tal:attributes="src string: ${here/portal_url}/xopus/xopus/xopus.js" ></script>    
-</metal:block>
-
-      
 <body>
 
    <div metal:fill-slot="main" 
@@ -22,51 +13,6 @@
                     tabindex python:Iterator();
                     editor python:here.portal_membership.getAuthenticatedMember().wysiwyg_editor;
                     wysiwyg python:test(editor and (editor!='None'), editor, 'None');">
-
-    <tal:block tal:condition="python:test(wysiwyg=='Xopus', 1, 0)">       
-
-        <form name="edit_form"
-              action="save_xml" 
-              method="post" 
-              enctype="multipart/form-data" >
-            <input type="hidden" 
-                   name="id" 
-                   value="" 
-                   tal:attributes="value here/getId" />
-            <input type="hidden"
-                   name="title"
-                   value="" />
-            <input type="hidden"
-                   name="description"
-                   value="" />    
-            <input type="hidden"
-                   name="text"
-                   value="" />
-            <input type="hidden"
-                   name="text_format"
-                   value="html" />            
-            <input type="hidden" 
-                   name="form_submitted" 
-                   value="1" 
-                   tal:attributes="value template/id" />
-        </form>
-        <div xopus="true" autostart="true">
-        <h1>Starting editor...</h1>
-            <xml>
-                <pipeline xml="data.xml" xsd="" tal:attributes="xsd string: ${here/portal_url}/xopus/document_edit.xsd">
-                    <view id="defaultView" default="true">
-                        <transform xsl="" tal:attributes="xsl string: ${here/portal_url}/xopus/document_edit.xsl"></transform>
-                    </view>
-                    <view id="treeView">
-                        <transform xsl="" tal:attributes="xsl string: ${here/portal_url}/xopus/xopus/treeview/tree.xsl"></transform>
-                    </view>
-                </pipeline>
-            </xml>
-        </div>
-    
-    </tal:block>
-
-    <tal:block tal:condition="python:test(wysiwyg!='Xopus', 1, 0)">       
 
         <h1 i18n:translate="heading_edit_item">
         Edit
@@ -328,7 +274,6 @@
             <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
         </form>
 
-    </tal:block>
     </div>
 
 </body>
