@@ -48,7 +48,9 @@ class TranslatorTool (UniqueObject, SimpleItem):
 	# add the phrase to the tower
 	# this is a bit kludgish, because we want to add just the label
 	# (adding all languages would miss the point of trying the list)
-	tower.addPhrase(tower._makeDigest(label), 'label', label)
-	return label
+        digest = tower._makeDigest(label)
+        if not tower.getLabelPhrase(digest):
+            tower.addPhrase(digest, 'label', label)
+        return label
 
 InitializeClass(TranslatorTool)
