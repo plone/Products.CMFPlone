@@ -63,9 +63,9 @@
                                 url string:$result_url/view;" 
 		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
                     <td>
-		                <img src="#" tal:attributes="src result/getIcon; alt result/Type;" />
-			            <a href="#" tal:attributes="href url"
-                                    tal:content="result/title_or_id" />
+		                <img src="#" tal:attributes="src result/getIcon; alt result/Type;" />&nbsp;<a 
+                         href="#" tal:attributes="href url"
+                                  tal:content="result/title_or_id" />
                     </td>
                     <td tal:content="result/Creator">Author </td>
                     <td tal:content="result/ModificationDate">Modification Date</td>
