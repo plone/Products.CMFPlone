@@ -37,7 +37,8 @@
                  metal:define-macro="listitem"
                  tal:define="resultObject result/getObject;
                              creator result/Creator;
-                             resulturl resultObject/absolute_url;">
+                             resulturl resultObject/absolute_url;
+                             has_body resultObject/EditableBody">
 
                 <h2>
                     <a href="/view" 
@@ -74,8 +75,9 @@
 
                     <ul class="newsFooter" tal:define="is_discussable python: isDiscussionAllowedFor(resultObject);">
                         <li>
-                            <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
+                            <a href="/view" tal:condition="has_body" tal:attributes="href resulturl" i18n:translate="read_more">
                                 Read More</a>
+                            <tal:tag condition="not:has_body" replace="structure string:&nbsp;" />
                         </li>
 
                         <tal:discussable condition="is_discussable">
