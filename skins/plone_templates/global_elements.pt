@@ -12,7 +12,8 @@
                type="text"
                size="20"
                value=""
-               tal:attributes="value request/SearchableText|nothing;
+               alt="search"
+	       tal:attributes="value request/SearchableText|nothing;
                                tabindex tabindex/next" />
 
         <input class="context searchButton"
@@ -33,7 +34,7 @@
     <img src="logo.jpg"
          class="logo"
          border="0"
-         alt=""
+         alt="logo"
          tal:attributes="width logo/width;
                          height logo/height;
                          src uri" />
