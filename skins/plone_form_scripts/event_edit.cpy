@@ -25,12 +25,12 @@ try:
     new_context.edit( title=title
                     , description=description
                     , eventType=event_type
-                    , effectiveDay=dt_start.year()
+                    , effectiveYear=dt_start.year()
                     , effectiveMo=dt_start.month()
-                    , effectiveYear=dt_start.day()
-                    , expirationDay=dt_end.year()
+                    , effectiveDay=dt_start.day()
+                    , expirationYear=dt_end.year()
                     , expirationMo=dt_end.month()
-                    , expirationYear=dt_end.day()
+                    , expirationDay=dt_end.day()
                     , start_time='%2.2d:%2.2d'%(dt_start.h_24(), dt_start.minute())
                     , startAMPM=dt_start.ampm()
                     , stopAMPM=dt_end.ampm()
