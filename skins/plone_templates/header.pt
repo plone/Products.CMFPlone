@@ -3,7 +3,7 @@
 
 <head metal:define-macro="html_header"
       tal:define="global portal_url here/portal_url;
-                  ztu modules/ZTUtils;
+                  ztu ztu|modules/ZTUtils;
                   current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
           tal:define="charset site_properties/default_charset|string:utf-8"
