@@ -104,7 +104,7 @@
                 <thead> 
                     <tr>
                         <th>&nbsp;</th>
-                        <th>Title <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                        <th>Title&nbsp;<img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
                         <th>Type</th>
                         <th>Size</th>
                         <th>Modified</th>
