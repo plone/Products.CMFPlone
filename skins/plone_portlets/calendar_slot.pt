@@ -120,8 +120,41 @@
                          tabindex tabindex;
 			 alt string:$inputname;
 			 title string:$inputname;"/>
-  <span i18n:translate="date_separator">/</span>
-  <input type="text" 
+       <span i18n:translate="date_separator">/</span>
+            <span>
+                <select name="ic_month" 
+                        id="ic_month"
+                        size="1"
+                        tal:attributes="tabindex tabindex;
+                                        name string:${inputname}_month;
+                                        id string:${input_id}_month;
+                                        onfocus onfocus|nothing;
+                                        onblur onblur|nothing;
+                                        onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');">
+                   <option value="subj"
+                           tal:repeat="subj python:range(1, 13, 1)"
+                           tal:attributes="value python:'%02d'%subj; selected python:'%02d'%subj == month"
+                           i18n:translate="" tal:content="python: DateTime('1997/' + str('%02d'%subj) + '/09 1:45pm').Month()">month name</option>
+               </select>
+            </span>
+
+            <span>
+                <select name="ic_day" 
+                        id="ic_day"
+                        size="1"
+                        tal:attributes="tabindex tabindex;
+                                        name string:${inputname}_day;
+                                        id string:${input_id}_day;
+                                        onfocus onfocus|nothing;
+                                        onblur onblur|nothing;
+                                        onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');">
+                   <option value="subj"
+                           tal:repeat="subj python:range(1, 32, 1)"
+                           tal:attributes="value python:'%02d'%subj; selected python:'%02d'%subj == day"
+                           tal:content="python:'%02d'%subj">day</option>
+               </select>
+            </span>
+         <!--<input type="text" 
          size="2" 
          name="ic_month" 
          id="ic_month" 
@@ -133,9 +166,9 @@
                          onblur onblur|nothing;
                          tabindex tabindex;
 			 alt string:$inputname;
-			 title string:$inputname;"/>
+			 title string:$inputname;"/>-->
   <span i18n:translate="date_separator">/</span>
-  <input type="text" 
+  <!--<input type="text" 
          size="2" 
          name="ic_day" 
          id="ic_day" 
@@ -147,7 +180,7 @@
                          onchange string:update_date_field('${input_id}','${input_id}_year','${input_id}_month','${input_id}_day','${input_id}_hour','${input_id}_minute');
                          tabindex tabindex;
 			 alt string:$inputname;
-			 title string:$inputname;"/>
+			 title string:$inputname;"/>-->
 
   <a href="" onclick="" tal:attributes="onclick string:return showCalendar('${input_id}_year', '${input_id}', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', 'y/mm/dd');">
     <img tal:replace="structure here/popup_calendar.gif" />
@@ -254,4 +287,3 @@
 </body>
 
 </html>
-
