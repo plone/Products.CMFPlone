@@ -6,14 +6,14 @@
 ##bind subpath=traverse_subpath
 ##title=Update Content Metadata
 ##parameters=allowDiscussion=None,title=None,subject=None,description=None,contributors=None,effective_date=None,expiration_date=None,format=None,language=None,rights=None,predefined_subjects=None
-subject=[s for s in subject if s]
-if predefined_subjects:
-    subject=context.unique(list(subject)+predefined_subjects)
+subjects=context.unique([ps for ps in predefined_subjects if ps]+[s for s in subject if s])
 
 if not effective_date:
    effective_date='None'
 if not expiration_date:
    expiration_date='None'
+
+context.plone_debug(str(subject))
 
 context.plone_utils.editMetadata(context,
                                  allowDiscussion=allowDiscussion,
