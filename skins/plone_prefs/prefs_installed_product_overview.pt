@@ -1,10 +1,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/prefs_main_template/macros/master">
 
 <body>
 
-<div metal:fill-slot="main" i18n:domain="plone">
+<div metal:fill-slot="prefs_configlet_main" i18n:domain="plone">
 
 <h1 tal:content="string:Status of Product ${here/id}"> Installed Product </h1>
 

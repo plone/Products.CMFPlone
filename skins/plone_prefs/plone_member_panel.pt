@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master"
+      metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
 
 <tal:block metal:fill-slot="head_slot">
@@ -9,7 +9,7 @@
 
 <body>
 
-   <div metal:fill-slot="main"
+   <div metal:fill-slot="prefs_configlet_main"
       tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_configuration');
                   groups python:controlPanel.getGroups('member');
                   getIconFor nocall:putils/getIconFor">

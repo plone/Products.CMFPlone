@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/prefs_main_template/macros/master">
 
 <tal:block metal:fill-slot="head_slot">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -9,7 +9,7 @@
 <body>
 
 
-<div metal:fill-slot="main" i18n:domain="plone" tal:define="QI python:here.portal_url.getPortalObject().portal_quickinstaller">
+<div metal:fill-slot="prefs_configlet_main" i18n:domain="plone" tal:define="QI python:here.portal_url.getPortalObject().portal_quickinstaller">
     <h2 i18n:translate="heading_install_products_available"> Products available for install </h2>
     <form action="installProducts" tal:attributes="action python:QI.absolute_url()+'/installProducts'" method="POST">
 
