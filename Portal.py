@@ -108,8 +108,10 @@ class PloneGenerator(Portal.PortalGenerator):
         p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
                                                                 , 'Member list'
                                                                 , '<dtml-return roster>')
+        p.Members._setPortalTypeName( 'Folder' )                                                                
         Document.addDocument(p, 'index_html')
         o = p.index_html
+        o._setPortalTypeName( 'Document' )
         o.setTitle('Welcome to Plone')
         o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
         o.edit('structured-text', default_frontpage)
