@@ -44,13 +44,15 @@ def rc3_rc4(portal):
            action.condition = Expression(_condMap[action.id])
     at._actions=_actions    
 
-    out.append('Adding local_roles action to portal_actions')
-    at.addAction('local_roles',
-                 name='Sharing',
-                 action="string:${object_url}/folder_localrole_form",
-                 condition='',
-                 permission='Manage properties',
-                 category='object')
+    ptypes=getToolByName(portal, 'portal_types')
+    out.append('Adding local_roles action to each portal_type')
+    for pt in ptypes.objectValues():
+        pt.addAction('local_roles',
+                     name='Sharing',
+                     action="string:${object_url}/folder_localrole_form",
+                     condition='',
+                     permission='Manage properties',
+                     category='object')
 
     out.append('Adding AddToFavorites to portal_actions and portal_actionicons')
     ai=getToolByName(portal, 'portal_actionicons')
