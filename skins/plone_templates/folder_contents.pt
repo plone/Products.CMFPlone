@@ -16,6 +16,7 @@
          tal:define="standalone python:1;
                      myfolder python: here_url==mtool.getHomeUrl();
                      contentTypes python: here.getAllowedTypes();
+                     contentTypeIds python:[t.getId() for t in contentTypes];
                      num_types python: len(contentTypes)">
 
       <form name="folderContentsForm"
@@ -271,7 +272,7 @@
 
       <tal:defaultview condition="python: not 'index_html' in here.contentIds() and
                                   checkPermission('Add portal content', here) and
-                                  'Document' in contentTypes and
+                                  'Document' in contentTypeIds and
                                   here.getTypeInfo().allowType('Document')">
 
         <p i18n:translate="description_no_default_folder_create_new">
