@@ -61,6 +61,10 @@ def upg_1_0_1_to_1_1(portal):
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
     # migrate to GRUF here
+    portal.portal_quickinstaller.installProduct('GroupUserFolder')
+    addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool
+    addGRUFTool('CMF Groups Tool')
+    addGRUFTool('CMF Group Data Tool')
 
     # migrate to add simple workflow
 
@@ -106,11 +110,8 @@ def upg_1_0_1_to_1_1(portal):
     portal.portal_configuration.registerDefaultConfiglets()
     
 def registerMigrations():
-    MigrationTool.registerUpgradePath(
-            '1.0.1',
-            '1.1',
-            upg_1_0_1_to_1_1
-            )
-
+    MigrationTool.registerUpgradePath('1.0.1','1.1',upg_1_0_1_to_1_1)
+    MigrationTool.registerUpgradePath('1.0.2','1.1',upg_1_0_1_to_1_1)
+    MigrationTool.registerUpgradePath('1.0.3','1.1',upg_1_0_1_to_1_1)
 if __name__=='__main__':
     registerMigrations()
