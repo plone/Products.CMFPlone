@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="userid python:request.get('userid', member.getId());
+                user python:mtool.getMemberById(userid);
+                mdata here/portal_memberdata;
+                errors python:request.get('errors', {});
+                Batch python:modules['ZTUtils'].Batch;
+                b_start python:request.get('b_start',0);"
+     tal:condition="here/rejectAnonymous" >
+	
+    <h1 i18n:translate="">User Properties</h1>
+
+    <p i18n:translate="">
+    Change member properties.
+    </p>
+
+    <h2>Username: <span tal:replace="user/getId"/> </h2>
+    <br />
+
+    <form action=""
+          name="users"
+          method="post"
+          tal:condition="user"
+          tal:attributes="action string:${here/portal_memberdata/absolute_url}"
+          tal:define="portal_users python: here.portal_membership.listMembers();
+                      batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
+
+        <input type="hidden" name="id" value="username" 
+                tal:attributes="name user/getId" />
+
+        <tal:properties repeat="property mdata/propertyMap">
+          <label for="value" 
+                 tal:define="global id property/id;
+                             global type property/type;
+                             global propertyvalue python:user.getProperty(id, None);"
+                 tal:attributes="for id"
+                 tal:content="python:mdata.propertyLabel(id)">Property Value</label>
+          <div tal:define="propertyitem python:mdata.getProperty(id)"
+               tal:condition="python:'w' in property.get('mode', 'awd')">
+               
+               <input type="text" name="id" size="35"
+                      tal:condition="python:type in ('int', 'long', 'string', 'date', 'float', 'tokens', 'utokens')"
+                      tal:attributes="name string:$id:$type;
+                                      value python:test(propertyvalue, propertyvalue, '')" />
+
+               <input type="checkbox" name="id"
+                      tal:condition="python: type in ('boolean',)"
+                      tal:attributes="name string:$id:$type;
+                                      checked python:test(propertyvalue, 'checked', '')" />
+
+               <textarea name="id" rows="6" cols="35"
+                      tal:condition="python: type in ('text', 'utext')"
+                      tal:attributes="name string:$id:$type;"
+                      tal:content="propertyvalue">some data</textarea>
+
+               <textarea name="id" rows="6" cols="35"
+                      tal:condition="python: type in ('lines', 'ulines')"
+                      tal:attributes="name string:$id:$type;"
+                      tal:content="propertyvalue"><tal:content 
+                tal:repeat="line propertyvalue"><span tal:replace="string:line\n"/></tal:content>
+                </textarea>   
+
+
+                <tal:selections tal:condition="python:type in ('selection', 'multiple selection')"
+                                tal:define="select_variable python:property.get('select_variable','')">
+
+                <tal:define condition="select_variable"
+                            define="global select_value python:path('here/%s' %select_variable);" />
+
+                <select name="id" tal:condition="python:type in ('selection',)">
+                    tal:attributes="name string:$id:$type;">
+                    <tal:values repeat="option select_value">
+                        <option tal:attributes="SELECTED python:test(propertyvalue==option,'SELECTED','')"
+                            tal:content="option">value</option>
+                    </tal:values>
+                </select>
+
+                <select name="id" multiple tal:condition="python:type in ('multiple selection',)"
+                        tal:attributes="name string:$id:$type:list:string;
+                                        size python:min(7, len(select_value));">
+                    <tal:values repeat="option select_value">
+                        <option tal:attributes="SELECTED python:test(propertyvalue and select_value in propertyvalue,
+                                                                            'selected', '')"
+                                tal:content="option">value</option>
+                    </tal:values>
+                </select>
+
+                </tal:selections>
+
+          </div>
+        </tal:properties>
+
+        <input type="submit" name="prefs_user_edit:method" value="change" />
+    </form>
+
+</div>
+
+</body>
+</html>
+
