@@ -7,7 +7,7 @@
 ##parameters=REQUEST, RESPONSE, field_title=None, field_description=None, event_type=None, effectiveDay=None, effectiveMo=None, effectiveYear=None, expirationDay=None, expirationMo=None, expirationYear=None, start_time=None, startAMPM=None, stop_time=None, stopAMPM=None, location=None, contact_name=None, contact_email=None, contact_phone=None, event_url=None, field_id='' 
 ##title=
 ##
-
+from Products.CMFPlone import transaction_note
 if not field_id:
     field_id=context.getId()
     REQUEST.set('field_id', field_id)
@@ -42,6 +42,6 @@ else:
     view='event_view'
 
 context.rename_object(redirect=0, id=id)
-
+transaction_note(context.title_or_id()+' has been modified.')
 return RESPONSE.redirect('%s/%s?%s' % (context.absolute_url(), view, msg) )
 
