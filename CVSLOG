@@ -1,3 +1,279 @@
+2004-03-03 02:38  limi
+
+	* skins/plone_styles/ploneTextSmall.css (Plone-2_0-branch): Made
+	  Small Text use the smalles size that is still usable and
+	  readable. (9-10px)
+
+2004-03-02 22:52  dtremea
+
+	* skins/: plone_forms/talkback_tree.pt,
+	  plone_scripts/setup_talkback_tree.py (Plone-2_0-branch): Removed
+	  currently unused files:
+
+	    - plone_forms/talkback_tree.pt
+	    - plone_scripts/setup_talkback_tree.py
+
+	  It was used only on CMFDefault by 'viewThreadsAtBottom.pt' but
+	  Plone has its own modificated version, who doesn't needs those
+	  'arc-mesozoic' files... :-)
+
+2004-03-02 22:36  tesdal
+
+	* PloneTool.py (Plone-2_0-branch): On request you can now use path
+	  when defining default_page on objects. Note that path is not used
+	  for the default_page in site_properties.
+
+2004-03-02 22:33  shh42
+
+	* ActionIconsTool.py, ActionsTool.py, FactoryTool.py,
+	  MembershipTool.py, MigrationTool.py, PloneFolder.py,
+	  PloneTool.py, SkinsTool.py, SyndicationTool.py,
+	  Extensions/setupSite.py, migrations/v2/oneX_twoBeta2.py,
+	  migrations/v2/plone2_base.py,
+	  migrations/v2/release_candidates.py,
+	  migrations/v2/twoBeta2_twoBeta3.py,
+	  setup/ConfigurationMethods.py, setup/dependencies.py,
+	  skins/plone_prefs/prefs_portalskin_set.py,
+	  skins/plone_scripts/batchedFolderContents.py,
+	  skins/plone_scripts/breadcrumbs.py,
+	  skins/plone_scripts/browserDefault.py,
+	  skins/plone_scripts/check_id.py,
+	  skins/plone_scripts/displayContentsTab.py,
+	  skins/plone_scripts/getAllowedTypes.py,
+	  skins/plone_scripts/logged_in.py,
+	  skins/plone_scripts/navigationLocalRelated.py,
+	  skins/plone_scripts/showEditableBorder.py, tests/framework.py,
+	  tests/testCatalogTool.py, tests/testInterfaces.py,
+	  tests/testMembershipTool.py, tests/testMisc.py,
+	  tests/testPloneTool.py, tests/testPortalFactory.py,
+	  tests/testQueryCatalog.py, tests/testUserFolderBasics.py,
+	  tests/zcheck.py: Merge Plone-2_0-branch to HEAD again
+
+2004-03-02 20:47  dreamcatcher
+
+	* ActionIconsTool.py, ActionsTool.py, FactoryTool.py,
+	  MembershipTool.py, MigrationTool.py, PloneFolder.py,
+	  PloneTool.py, SkinsTool.py, SyndicationTool.py,
+	  setFormatPatch.py, Extensions/setupSite.py,
+	  migrations/v2/oneX_twoBeta2.py, migrations/v2/plone2_base.py,
+	  migrations/v2/release_candidates.py,
+	  migrations/v2/twoBeta2_twoBeta3.py,
+	  setup/ConfigurationMethods.py, setup/dependencies.py,
+	  skins/plone_prefs/prefs_portalskin_set.py,
+	  skins/plone_scripts/batchedFolderContents.py,
+	  skins/plone_scripts/breadcrumbs.py,
+	  skins/plone_scripts/browserDefault.py,
+	  skins/plone_scripts/check_id.py,
+	  skins/plone_scripts/displayContentsTab.py,
+	  skins/plone_scripts/getAllowedTypes.py,
+	  skins/plone_scripts/logged_in.py,
+	  skins/plone_scripts/navigationLocalRelated.py,
+	  skins/plone_scripts/showEditableBorder.py, tests/framework.py,
+	  tests/testInterfaces.py, tests/testMembershipTool.py,
+	  tests/testPloneTool.py, tests/testPortalFactory.py,
+	  tests/testQueryCatalog.py, tests/testSecurityDeclarations.py,
+	  tests/testUserFolderBasics.py, tests/zcheck.py
+	  (Plone-2_0-branch): Reindent.
+
+2004-03-02 20:46  shh42
+
+	* FactoryTool.py, HISTORY.txt, MembershipTool.py, MigrationTool.py,
+	  PloneFolder.py, PloneTool.py, Portal.py, __init__.py,
+	  setFormatPatch.py, migrations/__init__.py,
+	  migrations/v2/plone2_base.py,
+	  migrations/v2/release_candidates.py,
+	  skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  skins/plone_3rdParty/CMFTopic/topic_subtopics_form.pt,
+	  skins/plone_content/discussionitem_view.pt,
+	  skins/plone_content/document_actions.pt,
+	  skins/plone_content/document_byline.pt,
+	  skins/plone_content/document_edit_form.cpt,
+	  skins/plone_content/document_view.pt,
+	  skins/plone_content/event_edit_form.cpt,
+	  skins/plone_content/event_view.pt,
+	  skins/plone_content/favorite_view.pt,
+	  skins/plone_content/file_edit_form.cpt,
+	  skins/plone_content/file_view.pt,
+	  skins/plone_content/folder_edit_form.cpt,
+	  skins/plone_content/image_edit_form.cpt,
+	  skins/plone_content/image_view.pt,
+	  skins/plone_content/link_edit_form.cpt,
+	  skins/plone_content/metadata_edit_form.cpt,
+	  skins/plone_content/newsitem_edit_form.cpt,
+	  skins/plone_content/newsitem_view.pt,
+	  skins/plone_ecmascript/plone_javascripts.js,
+	  skins/plone_ecmascript/plone_menu.js.dtml,
+	  skins/plone_ecmascript/vcXMLRPC.js,
+	  skins/plone_form_scripts/image_edit.cpy,
+	  skins/plone_form_scripts/validate_image_edit.vpy,
+	  skins/plone_forms/content_status_history.cpt,
+	  skins/plone_forms/discussion_reply_form.pt,
+	  skins/plone_forms/discussion_reply_preview.pt,
+	  skins/plone_forms/enabling_cookies.pt,
+	  skins/plone_forms/failsafe_login.pt,
+	  skins/plone_forms/folder_factories.pt,
+	  skins/plone_forms/folder_localrole_form.pt,
+	  skins/plone_forms/folder_rename_form.cpt,
+	  skins/plone_forms/help.pt,
+	  skins/plone_forms/insufficient_privileges.pt,
+	  skins/plone_forms/join_form.cpt, skins/plone_forms/logged_out.pt,
+	  skins/plone_forms/login_failed.pt,
+	  skins/plone_forms/login_form.pt,
+	  skins/plone_forms/login_form.pt.metadata,
+	  skins/plone_forms/login_password.pt,
+	  skins/plone_forms/login_success.pt,
+	  skins/plone_forms/mail_password_form.pt,
+	  skins/plone_forms/mail_password_response.pt,
+	  skins/plone_forms/member_search_form.pt,
+	  skins/plone_forms/member_search_results.pt,
+	  skins/plone_forms/ownership_form.pt,
+	  skins/plone_forms/registered.pt, skins/plone_forms/roster.pt,
+	  skins/plone_forms/search.pt, skins/plone_forms/search_form.pt,
+	  skins/plone_forms/sendto_form.cpt,
+	  skins/plone_forms/synPropertiesForm.cpt,
+	  skins/plone_forms/talkback_tree.pt,
+	  skins/plone_forms/undo_form.pt,
+	  skins/plone_portlets/portlet_login.pt,
+	  skins/plone_prefs/password_form.pt,
+	  skins/plone_prefs/personalize_form.cpt,
+	  skins/plone_prefs/plone_control_panel.pt,
+	  skins/plone_prefs/plone_memberprefs_panel.pt,
+	  skins/plone_prefs/prefs_error_log_form.pt,
+	  skins/plone_prefs/prefs_error_log_showEntry.pt,
+	  skins/plone_prefs/prefs_group_details.pt,
+	  skins/plone_prefs/prefs_group_members.pt,
+	  skins/plone_prefs/prefs_groups_overview.pt,
+	  skins/plone_prefs/prefs_install_product_readme.pt,
+	  skins/plone_prefs/prefs_install_products_form.pt,
+	  skins/plone_prefs/prefs_installed_product_overview.pt,
+	  skins/plone_prefs/prefs_mailhost_form.pt,
+	  skins/plone_prefs/prefs_main_template.pt,
+	  skins/plone_prefs/prefs_portal_properties.pt,
+	  skins/plone_prefs/prefs_portal_properties_list.pt,
+	  skins/plone_prefs/prefs_portalskin_form.pt,
+	  skins/plone_prefs/prefs_search_macros.pt,
+	  skins/plone_prefs/prefs_syndication_form.pt,
+	  skins/plone_prefs/prefs_user_details.pt,
+	  skins/plone_prefs/prefs_user_edit.py,
+	  skins/plone_prefs/prefs_user_group_search_form.pt,
+	  skins/plone_prefs/prefs_user_memberships.pt,
+	  skins/plone_prefs/prefs_users_overview.pt,
+	  skins/plone_prefs/prefs_workflow_advanced.pt,
+	  skins/plone_prefs/prefs_workflow_basic.pt,
+	  skins/plone_prefs/reconfig_form.cpt,
+	  skins/plone_scripts/breadcrumbs.py,
+	  skins/plone_scripts/browserDefault.py,
+	  skins/plone_scripts/logout.cpy,
+	  skins/plone_scripts/navigationLocalRelated.py,
+	  skins/plone_scripts/showEditableBorder.py,
+	  skins/plone_styles/plone.css.dtml,
+	  skins/plone_styles/ploneIEFixes.css.dtml,
+	  skins/plone_tableless/colophon.pt,
+	  skins/plone_templates/colophon.pt,
+	  skins/plone_templates/default_error_message.pt,
+	  skins/plone_templates/document_actions.pt,
+	  skins/plone_templates/document_byline.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/folder_listing.pt,
+	  skins/plone_templates/footer.pt,
+	  skins/plone_templates/global_contentmenu.pt,
+	  skins/plone_templates/global_contentviews.pt,
+	  skins/plone_templates/global_logo.pt,
+	  skins/plone_templates/global_pathbar.pt,
+	  skins/plone_templates/global_personalbar.pt,
+	  skins/plone_templates/global_searchbox.pt,
+	  skins/plone_templates/global_sections.pt,
+	  skins/plone_templates/global_siteactions.pt,
+	  skins/plone_templates/global_skinswitcher.pt,
+	  skins/plone_templates/global_statusmessage.pt,
+	  skins/plone_templates/header.pt,
+	  skins/plone_templates/index_html.pt,
+	  skins/plone_templates/main_template.pt,
+	  skins/plone_templates/news.pt,
+	  skins/plone_templates/portlets_fetcher.pt,
+	  skins/plone_templates/recently_published.pt,
+	  skins/plone_templates/viewThreadsAtBottom.pt,
+	  tests/testActionIconsTool.py, tests/testActionsTool.py,
+	  tests/testCatalogTool.py, tests/testContentSecurity.py,
+	  tests/testContentTypeScripts.py, tests/testCutPasteSecurity.py,
+	  tests/testDefaultWorkflow.py, tests/testFolderLocalRoleForm.py,
+	  tests/testFolderWorkflow.py, tests/testGroupDataTool.py,
+	  tests/testGroupsTool.py, tests/testInterfaceTool.py,
+	  tests/testMemberDataTool.py, tests/testMembershipTool.py,
+	  tests/testPloneFolder.py, tests/testPloneTestCase.py,
+	  tests/testPloneTool.py, tests/testPortalCreation.py,
+	  tests/testPortalFactory.py, tests/testQuickInstallerTool.py,
+	  tests/testRegistrationTool.py, tests/testSecurityDeclarations.py,
+	  tests/testSkeletonPloneTest.py, tests/testSkeletonZopeTest.py,
+	  tests/testUserFolderBasics.py: Merge Plone-2_0-branch to HEAD
+
+2004-03-02 20:08  shh42
+
+	* tests/: testActionIconsTool.py, testActionsTool.py,
+	  testCatalogTool.py, testContentSecurity.py,
+	  testCutPasteSecurity.py, testDefaultWorkflow.py,
+	  testFolderLocalRoleForm.py, testFolderWorkflow.py,
+	  testGroupDataTool.py, testGroupsTool.py, testInterfaceTool.py,
+	  testMemberDataTool.py, testPloneFolder.py, testPloneTestCase.py,
+	  testPortalCreation.py, testPortalFactory.py,
+	  testQuickInstallerTool.py, testRegistrationTool.py,
+	  testSkeletonPloneTest.py, testSkeletonZopeTest.py,
+	  testUserFolderBasics.py (Plone-2_0-branch): Reformat test_suite()
+	  methods so they follow a common style.
+
+2004-03-02 19:51  whit537
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Minor
+	  tweaks for action menus
+
+2004-03-02 17:28  plonista
+
+	* FactoryTool.py (Plone-2_0-branch): Fix for acquisition problem
+	  with temporary objects.  This fix will probably let us get rid of
+	  a bunch of code, but I'll leave that for 2.0.1.
+
+2004-03-02 17:11  interra
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch):
+	  eliminating 1px spacer in IE for each .hiddenStructure
+
+2004-03-02 14:24  runyaga
+
+	* skins/: plone_forms/failsafe_login.pt, plone_forms/login_form.pt,
+	  plone_forms/registered.pt, plone_portlets/portlet_login.pt
+	  (Plone-2_0-branch): fixed my fixes checked in last night.  now
+	  the cahnges work on 2.6.x branch as well.
+
+2004-03-02 13:45  plonista
+
+	* skins/: plone_scripts/breadcrumbs.py,
+	  plone_templates/global_pathbar.pt (Plone-2_0-branch): * Updating
+	  breadcrumbs to work with tesdal's new browserDefault function.  *
+	  Fixing breadcrumb breakage on portal home page.
+
+2004-03-02 13:23  shh42
+
+	* tests/zcheck.py: "Merge" enhanced zcheck.py to HEAD. Thanks Andy.
+
+2004-03-02 13:15  shh42
+
+	* skins/plone_forms/failsafe_login.pt (Plone-2_0-branch): Cleaning
+	  up after Alan, again ;-)
+
+2004-03-02 12:56  shh42
+
+	* tests/testSecurityDeclarations.py (Plone-2_0-branch): Added
+	  warning that the tests are not truly independent.
+
+2004-03-02 12:49  shh42
+
+	* tests/zcheck.py (Plone-2_0-branch): Fix guard to check for the
+	  correct attribute.
+
+2004-03-02 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-02 03:05  runyaga
 
 	* HISTORY.txt, skins/plone_forms/failsafe_login.pt,
