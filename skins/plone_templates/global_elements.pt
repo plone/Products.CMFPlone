@@ -4,7 +4,7 @@
 
 
 <!-- THE SKIN SWITCHER TABS DEFINITION -->
-<div class="switchbar" id="switchbar" metal:define-macro="skin_tabs">   
+<div id="switchbar" metal:define-macro="skin_tabs">   
   <tal:comment replace="nothing">
   <a href="/">Public View</a>
   <a href="./manage_main" class="selected">Admin View</a>
@@ -15,7 +15,7 @@
 
 
 <!-- THE SEARCHBOX DEFINITION -->
-<div class="searchBox" id="searchBox" metal:define-macro="quick_search">
+<div id="searchBox" metal:define-macro="quick_search">
     <form name="searchform"
           action="search"
           tal:attributes="action string:${portal_url}/search" >
@@ -42,7 +42,6 @@
 <!-- THE PORTAL LOGO DEFINITION -->
 <a metal:define-macro="portal_logo"
    href="/"
-   class="logo"
    id="logo"
    tal:attributes="href portal_url"
    tal:define="logo portal/logo.jpg;
@@ -60,7 +59,7 @@
      tal:define="portal_tabs actions/portal_tabs|nothing;
                  selected_tabs python:here.selectedTabs(template.getId(), here);
                  selected_portal_tab selected_tabs/portal;" >
-    <ul id="portalTabs" class="portaltabs">
+    <ul id="portalTabs">
        <h5 class="hiddenstructure" i18n:translate="">Navigation</h5>
        <tal:tabs tal:repeat="tab portal_tabs">
        <li tal:define="firstitem repeat/tab/first;
@@ -80,8 +79,7 @@
 </div>
 
 <!-- THE PERSONAL BAR DEFINITION -->
-<ul class="personalBar"
-     id="personalBar"
+<ul id="personalBar"
      metal:define-macro="personal_bar"
      tal:define="portal_url portal_url|here/portal_url;
                  user_actions user_actions|actions/user;
@@ -118,7 +116,6 @@
 
 <!-- THE PATHBAR (breadcrumbs) DEFINITION -->
 <div metal:define-macro="path_bar"
-     class="pathBar"
      id="pathBar"
      tal:define="breadcrumbs python:here.breadcrumbs(here);
                      portal_url portal_url|here/portal_url">

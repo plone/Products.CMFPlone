@@ -16,6 +16,7 @@
             </span>
         </a>
     </tal:actions>
+    <div class="clear"></div>
 </ul>
 
 <div metal:define-macro="content_bar"
