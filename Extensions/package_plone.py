@@ -9,9 +9,6 @@ sh_cleanpyc = """find . | grep 'pyc' | xargs rm -rf"""
 sh_cleancvs = """ find . | grep 'CVS' | xargs rm -rf"""
 
 os.system("cd ..; rm -rf " + releasetar)
-#os.system(sh_cleanmisc)
-#os.system(sh_cleanpyc)
-#os.system(sh_cleancvs)
 
 os.system("cd .. ; mkdir " + releasename)
 os.system("cd .. ; cp -rf CMFPlone " + releasename)
