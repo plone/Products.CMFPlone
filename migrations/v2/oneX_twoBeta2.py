@@ -487,7 +487,7 @@ def fixUndoActions(portal):
     st = getToolByName(portal, 'portal_undo')
     # remove old actions
     for action in st._actions:
-        if action.id in ('undo'):
+        if action.id in ('undo',):
             del action
     st.addAction('undo',
                  'Undo',
