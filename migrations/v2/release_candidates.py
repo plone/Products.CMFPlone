@@ -130,7 +130,7 @@ def rc5_final(portal):
                 hasFavorites=1
     at._actions=_actions
 
-    out.append('Added Plone Tabless skin')
+    out.append('Added Plone Tableless skin')
     addTablelessSkin(portal)
 
     out.append('Adding in catalog indexes')
