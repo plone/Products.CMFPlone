@@ -27,14 +27,14 @@
         <li class="">
             <a href=""
                tal:attributes="href string: prefs_user_details?userid=${userid}"
-               i18n:translate=""
+               i18n:translate="label_user_properties"
             >User Properties</a>
         </li>
             
         <li class="selected">
             <a href=""
                tal:attributes="href string:${template/id}?userid=${userid}"
-               i18n:translate=""
+               i18n:translate="label_group_memberships"
             >Group Memberships</a>
         </li>
     </ul>
@@ -46,10 +46,10 @@
 
     <div class="documentContent">
 
-        <h1 i18n:translate="">Group Memberships for <span tal:replace="string:${member/getUserName}"/></h1>
+        <h1 i18n:translate="heading_group_memberships_for">Group Memberships for <span tal:replace="string:${member/getUserName}" i18n:name="username"/></h1>
     
     	
-    	<h2>Search for new groups</h2>
+    	<h2 i18n:translate="heading_search_newgroups">Search for new groups</h2>
     	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
     	  <metal:block metal:fill-slot="hiddens">
     	    <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />

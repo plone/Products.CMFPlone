@@ -28,7 +28,7 @@ we eventually might want to merge this form with personalize_form
         <li class="selected">
             <a href=""
                tal:attributes="href string:${template/id}?userid=${userid}"
-               i18n:translate="">
+               i18n:translate="label_user_properties">
               User Properties
             </a>
         </li>
@@ -36,7 +36,7 @@ we eventually might want to merge this form with personalize_form
         <li class="">
             <a href=""
                tal:attributes="href string: prefs_user_memberships?userid=${userid}"
-               i18n:translate="">
+               i18n:translate="label_group_memberships">
               Group Memberships
             </a>
         </li>

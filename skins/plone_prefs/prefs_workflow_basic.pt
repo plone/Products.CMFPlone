@@ -21,7 +21,7 @@
   </li>
   <li class="">
     <a href="prefs_workflow_advanced"
-       i18n:translate="link_workflow_advanced">Advanced</a>
+       i18n:translate="label_advanced">Advanced</a>
   </li>
 </ul>
 <div id="contentBar">&nbsp;</div>
@@ -35,7 +35,7 @@
                             " />
     </metal:block>
 
-    <h1 i18n:translate="">Select workflow</h1>
+    <h1 i18n:translate="heading_select_workflow">Select workflow</h1>
 
     <form name="change_default_workflow" action="prefs_workflow_basic_edit" method="post">
 
@@ -62,12 +62,12 @@
                 tabindex=""
                 alt="">
 
-            <option value="current" i18n:translate="">Select</option>
+            <option value="current" i18n:translate="label_select">Select</option>
             <metal:block tal:repeat="wf workflow_list">
                 <option value="wf"
                             tal:attributes="value wf"
                             tal:content="wf"
-                            i18n:translate="">public draft</option>
+                            i18n:translate="label_pubdraft">public draft</option>
                 </metal:block>
         </select>
 

@@ -10,7 +10,7 @@
         <a href="#"
            onclick="return buttonClick(event, 'objectMenu');"
            onmouseover="buttonMouseover(event, 'objectMenu');"
-           i18n:translate="">Add New Item</a>
+           i18n:translate="label_add_new_item">Add New Item</a>
 
         <ul class="actionMenu" id="objectMenu"
             onmouseover="menuMouseover(event)"
@@ -38,7 +38,7 @@
     <li tal:define="review_state wf_state"
         tal:condition="review_state">
 
-        <span i18n:translate="">State:</span>
+        <span i18n:translate="label_state">State</span>:
         
         <a href="#"
            onclick="return buttonClick(event, 'statusMenu');"
@@ -69,7 +69,7 @@
             <li class="actionSeperator">
                 <a href="#" 
                    tal:attributes="href string:${here/absolute_url}/content_status_history"
-                   i18n:translate="">Advanced</a>
+                   i18n:translate="label_advanced">Advanced</a>
             </li>
         </ul>
     </li>
