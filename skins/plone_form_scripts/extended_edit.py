@@ -7,6 +7,7 @@
 ##parameters=redirect=1
 ##title=after xxx_edit hook
 ##
+
 #ideally we will always be in the same context when we use this.  
 #this will go after any edit action, i.e. document_edit
 #change metadata if its changed
@@ -28,11 +29,11 @@ if title or description or subject:
                           redirect=0)
 
 id = REQUEST.get('field_id', REQUEST.get('id',''))
+
 if id!=context.getId():
     context.manage_renameObjects( (context.getId(), ), (id, ), REQUEST)
     if redirect:
-        status_msg=REQUEST.get( 'portal_status_message', 
-                                'Changes+have+been+Saved.')
+        status_msg=REQUEST.get( 'portal_status_message', 'Changes+have+been+Saved.')
         return REQUEST.RESPONSE.redirect('%s/%s/%s' % ( REQUEST['URL2']
                                                       , id
                                                       , 'portal_status_message=' + status_msg ) )

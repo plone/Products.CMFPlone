@@ -32,7 +32,7 @@ qst='portal_status_message=Document+changed.'
 REQUEST.set('portal_status_message', 'Document+changed.')
 if hasattr(context, 'extended_edit'):
     edit_hook=getattr(context,'extended_edit')
-    response=edit_hook()
+    response=edit_hook(redirect=0)
     if response:
         return response
 
