@@ -16,7 +16,7 @@
 
         <ul class="menu" id="itemMenu"
             onmouseover="menuMouseover(event)"
-            tal:define="filterOut python:['Favorite'];">
+            tal:define="filterOut here/getNotAddableTypes;">
             <metal:block tal:repeat="ctype contentTypes"> 
             <li class="menuItem"
                 tal:define="Title ctype/Title;Id ctype/getId"
