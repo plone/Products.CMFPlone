@@ -30,7 +30,7 @@ for id in relative_ids:
     # if the user can't access the contents information, getattr() will fail
     # and hiding the breadcrumb because they dont have access? urk
     # o = getattr(o, id)
-    o = context.restrictedTraverse(id)
+    o = o.restrictedTraverse(id)
     if id in dont_show: # I'm sorry ;(
         # talkbacks would clutter our precious breadcrumbs
         continue
