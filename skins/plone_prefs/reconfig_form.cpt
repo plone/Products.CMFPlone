@@ -15,7 +15,7 @@
     <h1 i18n:translate="heading_plone_setup">Plone Setup</h1>
 
     <p i18n:translate="description_plone_setup">
-    Portal-wide settings.
+        Portal-wide settings.
     </p>
 
     <form action=""

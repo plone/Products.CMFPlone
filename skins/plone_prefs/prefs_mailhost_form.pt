@@ -15,7 +15,7 @@
     <h1 i18n:translate="heading_mail_setup">Mail Setup</h1>
 
     <p i18n:translate="description_mail_setup">
-    Mail setup for this portal.
+        Mail setup for this portal.
     </p>
 
     <form action=""

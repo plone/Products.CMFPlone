@@ -21,10 +21,11 @@
     </div>
 
     <tal:block tal:repeat="group groups">
+
         <h2 tal:content="group/title"
             i18n:translate="">Plone Configlet Group Title</h2>
-        <ul class="configlets"
-		      tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
+
+        <ul class="configlets" tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
 
             <li tal:repeat="configlet configlets">
                 <a href=""
@@ -38,12 +39,12 @@
                 </a>
             </li>
 
-            <p tal:condition="not:configlets"
-               i18n:translate="label_no_panels_available">
-              No Preference Panels available.
-            </p>
+            <li tal:condition="not:configlets" i18n:translate="label_no_panels_available">
+                No Preference Panels available.
+            </li>
 
         </ul>
+
     </tal:block>
     </div>
 

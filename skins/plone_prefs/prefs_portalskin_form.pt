@@ -15,7 +15,7 @@
     <h1 i18n:translate="heading_skin_setup">Skin Setup</h1>
 
     <p i18n:translate="description_skin_setup">
-    Settings that affect the portal's look and template usage.
+        Settings that affect the portal's look and template usage.
     </p>
 
     <form action=""
@@ -32,7 +32,7 @@
                 <label i18n:translate="label_default_skin">Default skin</label>
     
                 <div class="formHelp" i18n:translate="help_default_skin">
-                Select the default skin for the Plone portal.
+                    Select the default skin for the Plone portal.
                 </div>
     
                 <select name="default_skin" 
@@ -49,22 +49,22 @@
 
             <div class="field">
 
-                <label i18n:translate="label_skin_flexibility">Skin flexibility</label>
-    
     	        <input type="checkbox" 
                        class="noborder"
                        id="cb_allow_any"
                        name="allow_any"
-    		     tal:define="allowany here/portal_skins/getAllowAny"
-    		     tal:attributes="checked python:test(allowany, 'checked', '')" />
+                       tal:define="allowany here/portal_skins/getAllowAny"
+                       tal:attributes="checked python:test(allowany, 'checked', '')" />
+
+                <label i18n:translate="label_skin_flexibility" for="cb_allow_any">Skin flexibility</label>
                 
-                <label for="cb_allow_any" i18n:translate="help_skin_flexibility">
+                <div class="formHelp" i18n:translate="help_skin_flexibility">
                     Allow users to select skins.
-                </label>
+                </div>
+
             </div>
 
             <div class="field">
-                <label i18n:translate="label_cookie_persistence">Skin Cookie persistence</label>
     
                 <input type="checkbox"
                      class="noborder" 
@@ -72,11 +72,13 @@
                      name="cookie_persistence"
                      tal:define="cookiepers here/portal_skins/getCookiePersistence"
                      tal:attributes="checked python:test(cookiepers, 'checked', '')" />
+
+                <label i18n:translate="label_cookie_persistence" for="cb_cookie">Skin Cookie persistence</label>
                 
-                <label for="cb_cookie" id="cookie_persistence_help"
-                   i18n:translate="help_cookie_persistence">
-                Make skin cookie persist indefinitely.
-                </label>
+                <div class="formHelp" i18n:translate="help_cookie_persistence">
+                    Make skin cookie persist indefinitely.
+                </div>
+
             </div>
     
     

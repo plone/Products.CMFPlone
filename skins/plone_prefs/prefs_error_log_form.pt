@@ -14,11 +14,11 @@
 
     <h1 i18n:translate="heading_error_log">Error log</h1>
          
-    <p i18n:translate="description_error_log_setup" class="form-help">
-    This page lists the exceptions that have occurred in this site
-    recently.  You can configure how many exceptions should be kept
-    and whether the exceptions should be copied to Zope's event log
-    file(s).
+    <p i18n:translate="description_error_log_setup">
+        This page lists the exceptions that have occurred in this site
+        recently.  You can configure how many exceptions should be kept
+        and whether the exceptions should be copied to Zope's event log
+        file(s).
     </p>
 
     <form action="prefs_error_log_setProperties" method="post">
@@ -29,6 +29,8 @@
 
             <div class="field">
                 <label i18n:translate="label_number_exceptions">Number of exceptions to keep</label>
+
+                <div></div>
                 
                 <input type="text" 
                        name="keep_entries" 
