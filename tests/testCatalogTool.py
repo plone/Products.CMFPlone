@@ -10,7 +10,6 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
 from Acquisition import aq_base
-from Products.CMFPlone import ToolNames
 
 
 class TestCatalogTool(PloneTestCase.PloneTestCase):
