@@ -1,4 +1,4 @@
-from Products.CMFCore.utils import UniqueObject
+from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.utils import _checkPermission, _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
 from OFS.SimpleItem import SimpleItem
@@ -122,6 +122,14 @@ class PloneTool (UniqueObject, SimpleItem):
 
         result.sort()
         return result
-        
+
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'getWorkflowChainFor')
+    def getWorkflowChainFor(self, object):
+        """ Proxy the request for the chain to the workflow
+            tool, as this method is private there.
+        """
+        wftool = getToolByName(self, 'portal_workflow')
+        return wftool.getChainFor(object)
+
 InitializeClass(PloneTool)
 
