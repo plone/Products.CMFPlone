@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
+from Products.CMFPlone.PloneFolder import addPloneFolder
 from Acquisition import aq_base
 
 default_portrait = 'defaultUser.gif'
@@ -85,9 +86,17 @@ class MembershipTool( BaseTool ):
         """
         parent = self.aq_inner.aq_parent
         members =  getattr(parent, 'Members', None)
+
+        if members is None:
+            parent.manage_addPloneFolder(id='Members', title='Members')
+            members = getattr(parent, 'Members', None)
+            
         if members is not None and not hasattr(members, member_id):
             f_title = "%s's Home" % member_id
-            members.manage_addPloneFolder( id=member_id, title=f_title )
+            try:
+                addPloneFolder(members, id=member_id, title=f_title)
+            except:
+                members.manage_addPloneFolder(id=member_id, title=f_title)
             f=getattr(members, member_id)
             # Grant ownership to Member
             acl_users = self.__getPUS()
