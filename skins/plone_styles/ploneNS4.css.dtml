@@ -47,7 +47,7 @@ div.personalBar a{ font-weight: &dtml-mainTabFontWeight;; }
 div.pathBar { padding: 0 0 0 1em; margin: 0;}
 table.columns { width: 100%; }
 table.columns td.left { vertical-align: top; padding-top: 2em; width: 15%; }
-table.columns td.main { vertical-align: top; padding-top: 2em; width: 70%; }
+#main { vertical-align: top; padding-top: 2em; width: 70%; }
 table.columns td.right { vertical-align: top; padding-top: 2em; width: 15%; }
 div.contentTabs { padding: 0;}
 div.contentTabs a { background: &dtml-contentTabBackgroundNotSelected;; color: &dtml-contentTabFontColor;; font-weight: &dtml-contentTabFontWeight;; }

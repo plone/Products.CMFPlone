@@ -364,7 +364,7 @@ table.columns td.left {
     padding: 2em 0em 1em 2em;
 }
 
-table.columns td.main {
+#main {
     vertical-align: top;
     padding: 0em 2em 1em 2em;
     margin: 0;

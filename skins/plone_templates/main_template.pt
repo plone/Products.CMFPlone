@@ -64,7 +64,7 @@ Header stuff
                       tal:replace="structure python:path(pathexpr)" />
                 </metal:block>
             </td>
-            <td class="main" 
+            <td id="main" 
                 tal:define="global show_border python:here.showEditableBorder( template_id=template.getId()
                                                                              , actions=actions )">
 
