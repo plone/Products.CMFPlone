@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=id=None,type_name=None
+##parameters=id=None,type_name=None,script_id=None
 ##title=
 ##
 from DateTime import DateTime
@@ -31,5 +31,6 @@ try:
 except TypeError:
     status = 'success_no_edit'
 
-return context.portal_navigation.getNext(o, script.getId(), status,
+script_id = script_id or script.getId()
+return context.portal_navigation.getNext(o, script_id, status,
                                          portal_status_message = type_name + ' has been created.')
