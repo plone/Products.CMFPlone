@@ -14,3 +14,5 @@ import release_candidates
 
 # Plone2 Final to 2.0.1
 import final_two01
+
+import two03_two04
