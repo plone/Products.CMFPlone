@@ -53,10 +53,11 @@ for id in relative_ids:
     if not iface_tool.objectImplements(obj, dynamic_type):
         continue
 
-    if o.isPrincipiaFolderish and \
-      currentlyViewingFolderContents and \
-      checkPermission('List folder contents', o):
-        path_seq.append( ( o.title_or_id(), o.absolute_url()+'/folder_contents') )
+    if o.isPrincipiaFolderish:
+        if currentlyViewingFolderContents and checkPermission('List folder contents', o):
+            path_seq.append( ( o.title_or_id(), o.absolute_url()+'/folder_contents') )
+        else:
+            path_seq.append( ( o.title_or_id(), o.absolute_url()+'/') )
     else:
         # we assume in search results everything has a view
         # and if every object is derived from PortalObject, it
