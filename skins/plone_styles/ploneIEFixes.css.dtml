@@ -11,6 +11,14 @@
     width: auto;
 }
 
+/* Fix for IE float bug */
+* html .visualIEFloatFix {
+    float: left;
+    clear: both;
+    width: 99%;
+}
+
+
 input {
     margin-bottom: 1px; /* bug fix */
 }
