@@ -18,12 +18,22 @@
 <p tal:condition="python:not(ve)"> 
     <span i18n:translate="">You can log on immediately by clicking</span>
     <a href=""
-	   tal:define="pss modules/Products.PythonScripts.standard; uname request/username; username python:pss.url_quote(uname); pword request/password; password python:pss.url_quote(pword)"
-	   tal:attributes="href python: here.portal_url() + '/logged_in?__ac_name=' + username + '&__ac_password=' + password" i18n:translate="">here</a>.  
+	   tal:define="pss modules/Products.PythonScripts.standard; 
+	               uname request/username; 
+		       username python:pss.url_quote(uname);
+		       pword request/password; 
+		       password python:pss.url_quote(pword);
+		       cfrom request/came_from;
+		       came_from python:pss.url_quote(cfrom);"
+	   tal:attributes="href python: here.portal_url() + '/logged_in?__ac_name=' + username + '&__ac_password=' + password"  i18n:translate="">here</a>.  
 </p>
 
 <p> 
     <a href="" tal:attributes="href python:here.portal_url() + '/index_html'" i18n:translate="">Return to homepage</a> 
+</p>
+
+<p tal:condition="request/came_from|nothing">
+    <a href="" tal:attributes="href request/came_from">Return to where you came from</a>
 </p>
 
 </div>

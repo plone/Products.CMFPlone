@@ -28,9 +28,8 @@ If you do not have an account here, head over to the <a href="join_form">registr
       action="logged_in" 
       method="post">
 
-		<input type="hidden" name="came_from" value=""
-	       tal:condition="python:request.get('came_from', '')"
-	       tal:attributes="value request/came_from" />
+	<input type="hidden" name="came_from" value=""
+	       tal:attributes="value request/came_from|request/HTTP_REFERER" />
 
 <span class="legend" i18n:translate="">Account details</span>
 	

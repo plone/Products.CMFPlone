@@ -23,7 +23,9 @@
           tal:define="allowEnterPassword here/portal_properties/validate_email|nothing;">
 
         <span class="legend" i18n:translate="">Personal Details</span>
-	
+
+        <input type="hidden" name="came_from" value=""
+               tal:attributes="value request/came_from|request/HTTP_REFERER" />
         <input type="hidden" name="last_visit:date" value="ZopeTime"
                tal:attributes="value here/ZopeTime">
         <input type="hidden" name="prev_visit:date" value="ZopeTime"
@@ -47,7 +49,8 @@
             
             <div class="field"
                   tal:attributes="class python:test(error_username, 'field error', 'field')" >
-                <div tal:condition="error_username"
+
+                <div  tal:condition="error_username"
                       tal:replace="structure string:$error_username<br />" />
 
                 <input type="text" 
@@ -81,7 +84,8 @@
             <div class="field"
                   tal:attributes="class python:test(error_email, 'field error', 'field')" >
 		  
-                <div tal:replace="structure string:$error_email <br /> " />
+                <div tal:condition="error_email"
+		     tal:replace="structure string:$error_email <br /> " />
 
                 <input type="text" 
                        name="field_email" 
@@ -112,7 +116,8 @@
             <div class="field"
                   tal:attributes="class python:test(error_password, 'field error', 'field')" >
 		  
-               <div tal:replace="structure string:$error_password <br />" />
+               <div tal:condition="error_password"
+	            tal:replace="structure string:$error_password <br />" />
 	       
                 <input type="password" 
                        name="field_password" 
@@ -142,7 +147,8 @@
             
             <div class="field"
                  tal:attributes="class python:test(error_confirm, 'field error', 'field')" >
-                <span tal:replace="structure string:$error_confirm<br/>" />
+                <span tal:condition="error_confirm"
+		      tal:replace="structure string:$error_confirm<br/>" />
                 <input type="password" 
                        name="field_confirm" 
                        size="10" 
