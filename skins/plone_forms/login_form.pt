@@ -35,12 +35,9 @@ to become a member.
       method="post">
 
 	<input type="hidden" 
-           name="came_from" 
-           value=""
-           tal:define="global came_from request/came_from|request/HTTP_REFERER;
-                       not_allowed python:('login_form','logged_out','registered', 'join_form');
-                       corrected_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);"
-	       tal:attributes="value corrected_from" />
+         name="came_from" 
+         value=""
+	       tal:attributes="value request/came_from|request/HTTP_REFERER" />
 
 <span class="legend" i18n:translate="legend_account_details">Account details</span>
 	

@@ -39,8 +39,11 @@
                                          global actions python: here.portal_actions.listFilteredActionsFor(here);">
                 </metal:block>
 				
-                <div tal:condition="request/came_from | nothing ">
-                    <div tal:define="dummy python: request.RESPONSE.redirect(request.get('came_from'))">
+                <div tal:condition="request/came_from | nothing">
+                    <div tal:define="came_from request/came_from;
+                                     not_allowed python:('login_form','logged_out','registered', 'join_form');
+                                     came_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);">
+                        <div tal:define="dummy python: request.RESPONSE.redirect(came_from)" />
                     </div>
                 </div>
 
