@@ -45,10 +45,13 @@
         <div class="row">
             <div class="label">&nbsp;</div>
             <div class="field">
+              <p>
                 <a href=""
+                   i18n:translate="label_click_to_get_file"
                    tal:attributes="href here/absolute_url">
-                   Click here for file
+                   Click here to get the file
                 </a>
+              </p>
             </div>
         </div>
     </div>
