@@ -22,23 +22,21 @@ from DateTime import DateTime
 dt_start = DateTime(start_date)
 dt_end = DateTime(end_date)
 
-# Note: year/day and day/year hack copying below, due to bug in CMFCalendar
-# Further details in http://plone.org/collector/1950
 try:
     new_context = context.portal_factory.doCreate(context, id)
     new_context.edit( title=title
                     , description=description
                     , eventType=event_type
-                    , effectiveDay=dt_start.year()
+                    , effectiveYear=dt_start.year()
                     , effectiveMo=dt_start.month()
-                    , effectiveYear=dt_start.day()
-                    , expirationDay=dt_end.year()
+                    , effectiveDay=dt_start.day()
+                    , expirationYear=dt_end.year()
                     , expirationMo=dt_end.month()
-                    , expirationYear=dt_end.day()
-                    , start_time='%2.2d:%2.2d'%(dt_start.h_24(), dt_start.minute())
+                    , expirationDay=dt_end.day()
+                    , start_time='%0.2d:%0.2d'%(dt_start.h_24(), dt_start.minute())
                     , startAMPM=dt_start.ampm()
                     , stopAMPM=dt_end.ampm()
-                    , stop_time='%2.2d:%2.2d'%(dt_end.h_24(), dt_end.minute())
+                    , stop_time='%0.2d:%0.2d'%(dt_end.h_24(), dt_end.minute())
                     , location=location
                     , contact_name=contact_name
                     , contact_email=contact_email

@@ -13,7 +13,7 @@ Plone 2.1-beta1 - Warp - Released (no date yet)
       higher up) (fix for http://plone.org/collector/3148).  
       [geoffd]
 
-    - Added enableHTTPCompression script and enabled http compression for
+    - Added enableHTTPCompression script and enabled HTTP compression for
       HTML, CSS, and JavaScript.
       [tiran]
 
