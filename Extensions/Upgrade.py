@@ -71,17 +71,17 @@ def normalize_tabs(self):
 	welcome=ActionInformation( 'index_html'
 	                         , title='Welcome'
 				 , category='global_tabs'
-				 , permissions='View'
+				 , permissions=('View',)
 				 , action=Expression('portal_url'))
 	members=ActionInformation( 'Members'
 	                         , title='Members'
 				 , category='global_tabs'
-				 , permissions='List portal members'
+				 , permissions=('List portal members',)
 				 , action=Expression('string: $portal_url/Members/roster'))
 	news=ActionInformation( 'recent_news'
 	                      , title='News'
 			      , category='global_tabs'
-			      , permissions='View'
+			      , permissions=('View',)
 			      , action=Expression('string: $portal_url/recent_news'))
 	search=ActionInformation( 'search_form'
 	                        , title='Search'
@@ -91,7 +91,7 @@ def normalize_tabs(self):
 	publishing=ActionInformation( 'content_status_history'
                                     , title='Publishing'
                                     , category='local_tabs'
-                                    , permissions='View'
+                                    , permissions=('View',)
                                     , condition=Expression("member")
 	                           , action=Expression("string: ${object_url}/content_status_history"))
 	return (welcome, members, news, search, publishing)
