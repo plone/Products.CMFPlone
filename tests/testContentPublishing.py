@@ -46,7 +46,15 @@ props={'description':'song by ween',
        'title':'mutalitated lips',
        'subject':['psychedelic', 'pop', '13th floor elevators']}
 
+
 class TestContentPublishing(PloneTestCase.PloneTestCase):
+    """ The instant publishing drop down UI.
+        !NOTE! CMFDefault.Document overrides setFormat and Format
+        so it acts strangely.  This is also hardcoded to work with
+        CMFDefault.Document.
+
+        This testcase was written to prevent collector/2914 regressions
+    """
 
     def afterSetUp(self):
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
@@ -73,16 +81,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         if changes:
             props.update(_orig_props)
 
-    def testInstaPublishing(self):
-        """ The instant publishing drop down UI.
-            !NOTE! CMFDefault.Document overrides setFormat and Format
-            so it acts strangely.  This is also hardcoded to work with
-            CMFDefault.Document.
-
-            This test was written to prevent collector/2914 regressions
-            XXX This test should be fixed for 2.1
-            
-        """
+    def testInstaPublishingDocument(self):
         self.folder.invokeFactory('Document', id='mollusk')
         get_transaction().commit(1)
         mollusk=self.folder.mollusk
@@ -95,6 +94,7 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         mollusk.content_status_modify(workflow_action='retract')
         self._checkMD(mollusk)
 
+    def testInstaPublishingTextFile(self):
         self.folder.invokeFactory('File', id='lyrics.txt')
         _file = StringIO(text)
         _file.filename='lyrics.txt'
@@ -104,7 +104,10 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self._checkMD(lyrics)
         lyrics.content_status_modify(workflow_action='submit')
         self._checkMD(lyrics)
+        lyrics.content_status_modify(workflow_action='retract')
+        self._checkMD(lyrics)
         
+    def testInstaPublishingWordFile(self):
         _file = StringIO(text)
         _file.filename='lyrics.doc'
         self.folder.invokeFactory('File', id='lyrics.doc')
@@ -115,9 +118,10 @@ class TestContentPublishing(PloneTestCase.PloneTestCase):
         self.failUnless(lyrics.Format()=='application/msword')
         lyrics.content_status_modify(workflow_action='submit')
         self.failUnless(lyrics.Format()=='application/msword')
+        lyrics.content_status_modify(workflow_action='retract')
+        self.failUnless(lyrics.Format()=='application/msword')
 
 
-        
 if __name__ == '__main__':
     framework()
 else:
