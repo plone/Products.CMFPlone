@@ -5,6 +5,7 @@ from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo, allow_module, allow_class, allow_type
 import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
 import NavigationTool, FactoryTool, FormTool, PropertiesTool
+import InterfaceTool
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
 
 try:
@@ -70,7 +71,7 @@ def transaction_note(note):
 ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
 
 tools = ( MembershipTool.MembershipTool
-        , FormulatorTool.FormulatorTool 
+        , FormulatorTool.FormulatorTool
         , PloneTool.PloneTool
         , WorkflowTool.WorkflowTool
         , CachingPolicyManager.CachingPolicyManager
@@ -78,7 +79,8 @@ tools = ( MembershipTool.MembershipTool
         , FactoryTool.FactoryTool
         , FormTool.FormTool
         , PropertiesTool.PropertiesTool
-        , MigrationTool.MigrationTool )
+        , MigrationTool.MigrationTool
+        , InterfaceTool.InterfaceTool)
 
 contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )
@@ -96,7 +98,7 @@ z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
 misc_ = {'plone_icon': Globals.ImageFile(path.join('skins','plone_images','logoIcon.gif'), cmfplone_globals)}
 
 def initialize(context):
-    utils.initializeBasesPhase2( z_bases, context )    
+    utils.initializeBasesPhase2( z_bases, context )
     utils.ToolInit('Plone Tool', tools=tools,
                    product_name='CMFPlone', icon='tool.gif',
                    ).initialize( context )

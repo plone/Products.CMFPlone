@@ -3,7 +3,7 @@
 # To overcome this will require us being very careful about
 # releasing stuff to public and promoting 'the one way' of doing things
 
-from Products.CMFCore.DirectoryView import createDirectoryView 
+from Products.CMFCore.DirectoryView import createDirectoryView
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone.Portal import PloneGenerator
 from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
@@ -50,7 +50,7 @@ def kidgloves(skintool):
         for id in add_ids:
             paths.insert(paths.index('custom'), id)
         skins[skinname]=','.join(paths)
-    
+
 def migrate(portal):
     addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
     addCoreTool=portal.manage_addProduct['CMFCore'].manage_addTool
@@ -64,7 +64,7 @@ def migrate(portal):
 
     if 'portal_registration' not in portal.objectIds():
         addDefaultTool('Default Registration Tool')
-    
+
     base_config=PloneGenerator()
     base_config.customizePortalOptions(portal)
     base_config.setupPloneWorkflow(portal)

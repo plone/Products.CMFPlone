@@ -7,16 +7,21 @@
 ##parameters=obj=None
 ##title=used to make the breadcrumbs in the pathbar
 ##
+from Products.CMFCore.utils import getToolByName
+contentish = "Products.CMFCore.interfaces.Contentish.Contentish"
+
 if obj is None:
     obj=context
 
 # some variables
-relative_ids = context.portal_url.getRelativeContentPath(obj)
+url_tool = getToolByName(context, 'portal_url')
+iface_tool = getToolByName(context, 'portal_interface')
+relative_ids = url_tool.getRelativeContentPath(obj)
 published = context.REQUEST.get('PUBLISHED', None)
 published_id = None
 checkPermission=context.portal_membership.checkPermission
 dont_show = ['talkback',] # objects we wont show
-o=context.portal_url.getPortalObject()
+o = url_tool.getPortalObject()
 
 if published is not None and hasattr(published, 'getId'):
     published_id = published.getId()
@@ -33,6 +38,9 @@ for id in relative_ids:
     o = o.restrictedTraverse(id)
     if id in dont_show: # I'm sorry ;(
         # talkbacks would clutter our precious breadcrumbs
+        continue
+
+    if not iface_tool.objectImplements(obj, contentish):
         continue
 
     if o.isPrincipiaFolderish and \
@@ -54,7 +62,8 @@ for id in relative_ids:
 # be a method. A method doesnt have title_or_id, and even if it had
 # it would not be accessible from here.
 
-if published != o and not \
+if published != o and  \
+   iface_tool.objectImplements(published, contentish) and not \
     currentlyViewingFolderContents and \
     published_id not in  ('view', 'index_html') and \
     hasattr(published, 'title_or_id'):

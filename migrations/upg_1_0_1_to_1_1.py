@@ -54,7 +54,7 @@ def upg_1_0_1_to_1_1(portal):
         portal.invokeFactory(type_name='Folder', id='plone_help')
         plone_help=portal.plone_help
         docs_path=os.path.join(package_home(cmfplone_globals), 'docs')
-        #import pdb; pdb.set_trace()
+
         for filename in os.listdir(docs_path):
             _path=os.path.join(docs_path, filename)
             if not os.path.isdir(_path):
@@ -74,6 +74,11 @@ def upg_1_0_1_to_1_1(portal):
     meta_type = RAMCacheManager.RAMCacheManager.meta_type
     if 'RAMCache' not in portal.objectIds(meta_type):
         RAMCacheManager.manage_addRAMCacheManager(portal, 'RAMCache')
+
+    # create portal_interface tool.
+    if 'portal_interface' not in portal.objectIds():
+        addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
+        addPloneTool('Portal Interface Tool')
 
 def registerMigrations():
     MigrationTool.registerUpgradePath(

@@ -76,22 +76,21 @@ class InterfaceFinder:
             import Products
             module = Products
         self._visited[module] = None
-        if 1:
-            for sym in dir(module):
-                ob=getattr(module, sym)
-                if type(ob) is type(Interface) and \
-                   issubclass(ob, Interface) and \
-                   ob is not Interface:
-                    self.found(ob)
-                elif type(ob) is ModuleType and ob not in self._visited.keys():
-                    self.findInterfaces(module=ob)
+        for sym in dir(module):
+            ob=getattr(module, sym)
+            if type(ob) is type(Interface) and \
+               issubclass(ob, Interface) and \
+               ob is not Interface:
+                self.found(ob)
+            elif type(ob) is ModuleType and ob not in self._visited.keys():
+                self.findInterfaces(module=ob)
 
-            ifaces = self._found.keys()
-            ifaces.sort()
-            ifaces.reverse()
-            if n is not None:
-                ifaces = ifaces[:n]
-            return ifaces
+        ifaces = self._found.keys()
+        ifaces.sort()
+        ifaces.reverse()
+        if n is not None:
+            ifaces = ifaces[:n]
+        return ifaces
 
     def found(self, iface):
         self._found[getDottedName(iface)] = iface
