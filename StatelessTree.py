@@ -67,8 +67,9 @@ class NavigationTreeViewBuilder(SimpleItem):
     # should be something like this....   
     def checkPublished(self, o):
         try:
+	    workflow_tool = getToolByName(self, 'portal_workflow')
             if workflow_tool.getInfoFor(o,'review_state','') != 'published':
-                return 0        
+                return 0
             now     = DateTime()
             start_pub = getattr(o,'effective_date',None)
             end_pub   = getattr(o,'expiration_date',None)            
@@ -146,7 +147,7 @@ class NavigationTreeViewBuilder(SimpleItem):
                 res = [o for o in objs if perm_check(perm, o)] 
                     
             if not showUnpublishedContent:  # the 'important' users may see unpublished content
-                res = [o for o in res if checkPublished(o) ]
+                res = [o for o in res if self.checkPublished(o) ]
                     
             try:
                 res.sort(self._navtree_cmp) #if sorting fails - never mind, it shall not break nav
