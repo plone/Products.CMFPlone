@@ -125,6 +125,7 @@ class TempFolder(TempFolderBase):
         portal_factory = aq_base(portal_factory).__of__(intended_parent)
         # rewrap self
         temp_folder = aq_base(self).__of__(portal_factory)
+
         if id in self.objectIds():
             return (aq_base(self._getOb(id)).__of__(temp_folder)).__of__(intended_parent)
         else:
@@ -301,6 +302,16 @@ class FactoryTool(UniqueObject, SimpleItem):
                                call_object, 1, missing_name, dont_publish_class,
                                self.REQUEST, bind=1)
         id = stack[1]
+
+        # gets SESSION data saved by archetype add_reference
+        # you can use this to load "default" values for instances
+        # just put values on SESSION where key is the instance id
+        # and value is a dictionary with field values
+        if self.REQUEST.SESSION.has_key(id):
+            for (key, value) in self.REQUEST.SESSION.get(id).items():
+                # REQUEST.form data has precedence over SESSION data
+                self.REQUEST.form.setdefault(key, value)
+
         if id in aq_parent(self).objectIds():
             return aq_parent(self).restrictedTraverse('/'.join(stack[1:]))(*args, **kwargs)
 
@@ -319,7 +330,7 @@ class FactoryTool(UniqueObject, SimpleItem):
 
     def getTempFolder(self, type_name):
         factory_info = self.REQUEST.get('__factory_info__', {})
-        tempFolder = factory_info.get('tempFolder', None)
+        tempFolder = factory_info.get(type_name, None)
         if not tempFolder:
             type_name = urllib.unquote(type_name)
             # make sure we can add an object of this type to the temp folder
@@ -338,10 +349,10 @@ class FactoryTool(UniqueObject, SimpleItem):
             tempFolder.manage_permission('Copy or Move', ('Anonymous','Authenticated',), acquire=0 )
         else:
             tempFolder = aq_inner(tempFolder).__of__(self)
-        factory_info['tempFolder'] = tempFolder
+        factory_info[type_name] = tempFolder
         self.REQUEST.set('__factory_info__', factory_info)
-        return tempFolder
 
+        return tempFolder
 
 
     def __bobo_traverse__(self, REQUEST, name):
