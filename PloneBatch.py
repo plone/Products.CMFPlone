@@ -36,7 +36,7 @@ class Batch(ZTUBatch):
     size = first= start = end = orphan = overlap = navlist = None 
     numpages = pagenumber = pagerange = pagerangeend = pagerangestart = pagenumber = quantumleap = None
     
-    def __init__( self, sequence, size, start=0, end=0, orphan=0, overlap=0, pagerange=7, quantumleap=0):
+    def __init__( self, sequence, size, start=0, end=0, orphan=0, overlap=0, pagerange=7, quantumleap=0, b_start_str='b_start'):
         """ Encapsulate sequence in batches of size
         sequence    - the data to batch. 
         size        - the number of items in each batch. This will be computed if left out.
@@ -46,6 +46,7 @@ class Batch(ZTUBatch):
         overlap     - the number of overlapping elements in each batch
         pagerange   - the number of pages to display in the navigation
         quantumleap - 0 or 1 to indicate if bigger increments should be used in the navigation list for big results.
+        b_start_str - the request variable used for start, default 'b_start'
         """
         start = start + 1
 
@@ -60,6 +61,8 @@ class Batch(ZTUBatch):
         self.overlap = overlap
         self.first = max(start - 1, 0)
         self.length = self.end - self.first
+        
+        self.b_start_str = b_start_str
         
         self.last = self.sequence_length - size
 
@@ -98,7 +101,7 @@ class Batch(ZTUBatch):
         if pagenumber == -1: 
             pagenumber = self.pagenumber
         b_start = pagenumber * (self.size - self.overlap) - self.size
-        return make_query(formvariables, b_start=b_start)
+        return make_query(formvariables, {self.b_start_str:b_start})
 
     def navurls(self, formvariables, navlist=[]):
         """ Returns the page number and url for the navigation quick links """
