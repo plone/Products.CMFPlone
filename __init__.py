@@ -102,6 +102,9 @@ def initialize(context):
     allow_class(EmailField)
     allow_class(FormValidationError)
     allow_class(BasicForm)
+    
+    # for queryCatalog
+    ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
 
     # Setup migrations
     import migrations

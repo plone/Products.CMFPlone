@@ -8,6 +8,7 @@
 ##title=wraps the portal_catalog with a rules qualified query
 ##
 from ZODB.POSException import ConflictError
+from Products.ZCTextIndex.ParseTree import ParseError
 
 results=[]
 catalog=context.portal_catalog
@@ -29,7 +30,7 @@ def quotequery(s):
         terms = s.split()
     except ConflictError:
         raise
-    except:
+    except: # XXX bare exception
         return s
     tokens = ('OR', 'AND', 'NOT')
     s_tokens = ('OR', 'AND')
@@ -68,6 +69,9 @@ for k, v in second_pass.items():
 # any items were found, then you can pass show_all=1.
 
 if show_query:
-    results=catalog(query)
+    try:
+        results=catalog(query)
+    except ParseError:
+        result=None
 
 return results
