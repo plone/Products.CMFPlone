@@ -62,10 +62,8 @@ def get_parent(obj, portal):
                 subpath.pop()
             else:
                 break
-        if parent == obj:
-            # Uhm. We are still at the same object,
-            # so trying to get a parent failed. 
-            return None
+        # couldn't get parent
+        return None
 
 
 published = context.REQUEST.get('PUBLISHED', None)
