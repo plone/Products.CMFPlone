@@ -6,6 +6,9 @@ Plone 2.0 - Fyuti
 
    Final
 
+    - Added fix for breadcrumbs so that the parent folder is shown when
+      you are looking at folder_contents.  [pupq]
+
     - Fix bug 2373 so folder_contents items goto
       getTypeInfo.getActionById('view')
 	[runyaga]
@@ -33,7 +36,7 @@ Plone 2.0 - Fyuti
     - If a content type is listed in 
       portal_properties/site_properties/use_folder_contents then use
       'folder_contents' to display it, not ''. Removed the migration
-      that initialized this value to ['Folder']
+      that initialized this value to ['Folder'] [?, pupq]
 
    RC5
 
