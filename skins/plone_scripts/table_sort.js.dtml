@@ -1,14 +1,19 @@
 // Table sorter script, thanks to Geir Bækholt for this.
+// DOM table sorter originally made by Paul Sowden 
+
 
 var tablename = 'sortable'
         
 function compare(a,b)
 {
-    au = new String(a)
-    bu = new String(b)
+    au = new String(a);
+    bu = new String(b);
 
-    var an = parseInt(au)
-    var bn = parseInt(bu)
+    if (au.charAt(4) != '-' && au.charAt(7) != '-')
+    {
+    var an = parseFloat(au)
+    var bn = parseFloat(bu)
+    }
     if (isNaN(an) || isNaN(bn))
         {as = au.toLowerCase()
          bs = bu.toLowerCase()
@@ -23,9 +28,6 @@ function compare(a,b)
 }
 
 
-// DOM table sorter borrowed (but modified) from Paul Sowden 
-// Finally somone that does it the right way
-// function borrowed from those lovely people at the w3c
 
 function getConcatenedTextContent(node) {
 	var _result = "";
@@ -68,11 +70,28 @@ function sort(e) {
 
 	// a pretty ugly sort function, but it works nonetheless
 	var a = new Array();
-	var name = el.firstChild.nodeValue;
+	//var name = el.firstChild.nodeValue || el.parentNode.firstChild.nodeValue;
+    // check if the image or the th is clicked. Proceed to parent id it is the image
+    if (el.nodeName == 'IMG') el = el.parentNode;
+    var name = el.firstChild.nodeValue;
 	var dad = el.parentNode;
 	var node;
+    
+    // kill all arrows
+    for (var im = 0; (node = dad.getElementsByTagName("th").item(im)); im++) {
+		if (node.lastChild.nodeName == 'IMG')
+        {
+        var arrow = node.lastChild
+        node.removeChild(arrow)
+        }
+	}
+    
 	for (var i = 0; (node = dad.getElementsByTagName("th").item(i)); i++) {
-		if (node.firstChild.nodeValue == name) break;
+		if (node.firstChild.nodeValue == name){
+        newarrow = document.createElement('IMG');
+        newarrow.setAttribute('src','arrowUp.gif');
+        node.appendChild(newarrow);
+        break}
 	}
 
 	var tbody = dad.parentNode.parentNode.getElementsByTagName("tbody").item(0);
@@ -86,33 +105,47 @@ function sort(e) {
 		a[j][3] = node;
 	}
 
-	a.sort(compare);
+	if (a.length > 1) {
+	
+    	a.sort(compare);
 
-	// not a perfect way to check, but hell, it suits me fine
-	if (a[0][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(0).getElementsByTagName("td").item(i))
-		&& a[1][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(i))) a.reverse();
+    	// not a perfect way to check, but hell, it suits me fine
+    	if (a[0][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(0).getElementsByTagName("td").item(i))
+	    	&& a[1][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(i))) 
+                {a.reverse();
+                el.getElementsByTagName('img').item(0).setAttribute('src','arrowDown.gif');
+                }
 
+    }
+	
 	for (var j = 0; j < a.length; j++) {
 		tbody.appendChild(a[j][3]);
 	}
 }
 
 function init(e) {
-	var thead = document.getElementById(tablename).getElementsByTagName("thead").item(0);
-	var node;
-	for (var i = 0; (node = thead.getElementsByTagName("th").item(i)); i++) {
-		if (node.addEventListener) node.addEventListener("click",sort,false);
-		else if (node.attachEvent) node.attachEvent("onclick",sort);
-	}
+    if (document.getElementById(tablename))
+        {
+	    var thead = document.getElementById(tablename).getElementsByTagName("thead").item(0);
+	    var node;
+	    for (var i = 0; (node = thead.getElementsByTagName("th").item(i)); i++) {
+		    if (node.addEventListener) node.addEventListener("click",sort,false);
+		    else if (node.attachEvent) node.attachEvent("onclick",sort);
+	    }
+    }
     
-          
-    // go on with the stuff
+ }
+
+// initialize the sorter functions 
+// add stuff to secure it from broken DOM-implanetations or missing objects.
+   
     
+    	
+        //	p.appendChild(document.createTextNode("Change sorting by clicking on each individual heading."));
+	    // document.getElementById(tablename).parentNode.insertBefore(p,document.getElementById(tablename));
+        
 
-	var p = document.createElement("p");
-//	p.appendChild(document.createTextNode("Change sorting by clicking on each individual heading."));
-	document.getElementById(tablename).parentNode.insertBefore(p,document.getElementById(tablename));
-}
+        if (window.addEventListener) window.addEventListener("load",init,false);
+        else if (window.attachEvent) window.attachEvent("onload",init);
 
-if (window.addEventListener) window.addEventListener("load",init,false);
-else if (window.attachEvent) window.attachEvent("onload",init);
+       

@@ -92,11 +92,11 @@
                 <thead> 
                     <tr>
                         <th>&nbsp;</th>
-                        <th>Title    <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
-                        <th>Type     <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
-                        <th>Size     <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
-                        <th>Modified <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
-                        <th>Status   <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                        <th>Title <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Modified</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
     
