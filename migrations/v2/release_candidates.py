@@ -75,9 +75,6 @@ def rc3_rc4(portal):
             action.action=Expression('string:${portal_url}/plone_memberprefs_panel')
     mt._actions=_actions
 
-    tt=getToolByName(portal, 'portal_types')
-    out.append('Removing local_roles from portal_types')
-    tt._actions=[a for a in tt._cloneActions() if a.id!='local_roles']
     return out
     
 def rc4_final(portal):
