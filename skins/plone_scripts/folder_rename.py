@@ -27,5 +27,5 @@ transaction_note( str(old_ids) + 'have been renamed' )
 
 return ( 'success', 
          context, 
-         {'portal_status_message':'Item(s) renamed'} )
+         {'portal_status_message':'Item(s) renamed.'} )
 

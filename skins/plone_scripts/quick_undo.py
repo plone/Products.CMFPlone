@@ -13,7 +13,7 @@ if trxs:
     tran_id = trxs[0]['id']
     context.portal_undo.undo(context, (tran_id,) )
     
-msg='portal_status_message=Transaction+undone'
+msg='portal_status_message=Transaction+undone.'
 came_from = request.get('came_from', request['HTTP_REFERER'])
 
 pieces = context.plone_utils.urlparse(came_from)
