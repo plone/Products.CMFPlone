@@ -1,3 +1,47 @@
+2003-12-13 01:11  dpunktnpunkt
+
+	* skins/: plone_forms/content_status_history.cpt,
+	  plone_forms/folder_localrole_form.pt,
+	  plone_portlets/navigation_tree_slot.pt,
+	  plone_portlets/portlet_navigation.pt,
+	  plone_prefs/prefs_error_log_showEntry.pt,
+	  plone_prefs/prefs_group_details.pt,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_install_products_form.pt,
+	  plone_prefs/prefs_installed_product_overview.pt,
+	  plone_prefs/prefs_user_details.pt,
+	  plone_prefs/prefs_user_group_search_form.pt,
+	  plone_prefs/prefs_user_memberships.pt,
+	  plone_prefs/prefs_users_overview.pt,
+	  plone_prefs/prefs_workflow_advanced.pt,
+	  plone_prefs/prefs_workflow_basic.pt,
+	  plone_templates/global_contentmenu.pt,
+	  plone_templates/global_searchbox.pt (Plone-2_0-branch): Several
+	  i18n fixes in page templates. I accidently put these on HEAD
+	  before.
+
+2003-12-12 18:32  zopezen
+
+	* RegistrationTool.py (andym_misc): Wrap the registration tool's
+	  isMemeberIdAllowed can be overridden by the site developer, this
+	  should probably go into CMF actually. The default regex now
+	  allows -, . and @ in names so people can use most email address
+	  as their login name if they wish.
+
+2003-12-12 11:45  shh42
+
+	* migrations/twoBeta2_twoBeta3.py (Plone-2_0-branch): Fixed a typo
+	  to make the tests pass again
+
+2003-12-12 10:42  dpunktnpunkt
+
+	* skins/plone_prefs/prefs_user_details.pt: Added 'text_error' msgid
+
+2003-12-12 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-11 17:54  dpunktnpunkt
 
 	* skins/: plone_forms/content_status_history.cpt,
