@@ -1071,7 +1071,7 @@ ul.configlets li a {
     border-color: &dtml-notifyBorderColor;; 
     border-width: &dtml-borderWidth;;
 }
-.visualOverflowpre {
+.visualOverflow {
     overflow: auto;
 }
 
