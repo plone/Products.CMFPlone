@@ -1,1 +1,220 @@
-/* later :) */
+<dtml-let last_modified="_.DateTime()-14"
+          expires="_.DateTime()+7" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime('%a, %d %b %Y %H:%M:%S') )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime('%a, %d %b %Y %H:%M:%S') )" >
+</dtml-let>
+
+<dtml-with stylesheet_properties>
+
+div.row {
+    clear: both;
+}
+
+div.rowEven {
+    clear: both;
+}
+
+div.rowOdd {
+    clear: both;
+}
+
+.group {
+    border: &dtml-groupBorder;;
+    padding: 0;
+    margin: 0;
+}
+
+.legend {
+    padding: 0.5em;
+}
+
+
+input.standalone {
+    cursor: pointer;
+    font-weight: &dtml-buttonWeight;;
+}
+
+input.context {
+    cursor: pointer;
+    font-weight: &dtml-buttonWeight;;
+}
+
+input.noborder {
+}
+
+.error {
+    /* Class for error indication in forms */
+    background: &dtml-messageBackground;;
+    border: &dtml-messageBorder;;
+    margin: 1em;
+}
+
+.required {
+    /* Used in addition to class "label" on required elements */
+    background: &dtml-requiredField;;
+}
+
+.label {
+    float: left;
+    font-weight: bold;
+    padding: 0em 0em;
+    text-align: right;
+    width: 15%;
+}
+
+.field {
+    float: left;
+    padding: 0em 0em 0em 0em;
+    text-align: left;
+    width: 45%;
+}
+
+.info {
+    float: right;
+    padding: 0em 0em 0.2em 0em;
+    text-align: left;
+    width: 30%;
+}
+
+span.card {
+    background: &dtml-mainTabBackground;;
+    border-color: &dtml-mainTabBorderColor;;
+    border-width: 1px;
+    border-style: solid;
+    float: left;
+    margin: 1em;
+    padding: 1em;
+    text-align: center;
+    width: 15%;
+}
+
+span.left {
+    float: left;
+    text-align: left;
+    width: 40%;
+}
+
+span.right {
+    float: right;
+    text-align: right;
+    width: 40%;
+}
+
+table.listing {
+    /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
+    margin: 1em 0em 1em 0em;
+}
+
+table.listing th {
+    background: &dtml-listingHeaderBackground;;
+    color: &dtml-listingHeaderTextColor;;
+    font-weight: normal;
+    padding: 0em 1em 0em 1em;
+}
+
+table.listing tr.odd {
+    /*every second line should be shaded */
+    background: &dtml-listingOddBackground;;
+}
+
+table.listing tr.even {
+    background: &dtml-listingEvenBackground;;
+}
+
+table.listing td {
+    padding: 0em 1em;
+}
+
+table.listing a:hover {
+    text-decoration: &dtml-listingLinkHover;;
+}
+
+table.box {
+    /* The Plone Box(tm) (Navigation, Related etc) */
+    background: transparent;
+    margin: 0em 0em 2em 0em;
+}
+
+table.box th {
+    background: &dtml-boxHeaderBackground;;
+    color: &dtml-boxHeaderTextColor;;
+    font-weight: normal;
+    padding: 0em 1em;
+    text-align: left;
+}
+
+table.box th.empty {
+    background: &dtml-mainBackground;;
+}
+
+table.box tr.odd {
+    /*every second line should be shaded */
+    background: &dtml-boxOddBackground;;
+}
+
+table.box tr.even {
+    background-color: &dtml-boxEvenBackground;;
+}
+
+table.box td {
+}
+
+div.boxDetails {
+    /*the line that contains the date for news and other info */
+    text-align: right;
+}
+
+table.box a {
+    /* special format for links inside boxes - adds link image and displays the link as a block (which in this case means the text will not float under the link image, plus the whole thing is clickable) */
+}
+
+table.box a.comment {
+    /* special link for comments - default behavior is to display the discussion icon next to the link */
+    background-image: url(&dtml-portal_url;/plone_images/discussion_icon.gif);
+    background-position: 0px 0px;
+    padding: 0em 0em 0.5em 2em;
+}
+
+table.box a.plain {
+    /* use this if you need plain links without images */
+    padding: 0;
+}
+
+span.folderName {
+    /* The folder name in folder_contents */
+    font-size: 150%;
+    font-weight: bold;
+}
+
+div.spacer {
+	margin: 3em;
+}
+
+.private {
+    color: Black;
+}
+
+.published {
+    color: #74AE0B;
+}
+
+.pending {
+    color: #FFA500;
+}
+
+.syndicated {
+    color: #008000;
+}
+
+.expired {
+    color: Red;
+}
+
+</dtml-with>
+
+
+
+
+

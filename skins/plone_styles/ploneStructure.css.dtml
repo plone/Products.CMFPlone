@@ -1,6 +1,12 @@
-<dtml-call "REQUEST.set('content/type', 'text/css')">
+<dtml-let last_modified="_.DateTime()-14"
+          expires="_.DateTime()+7" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime('%a, %d %b %Y %H:%M:%S') )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime('%a, %d %b %Y %H:%M:%S') )" >
+</dtml-let>
 
-<dtml-call CSSValues>
+<dtml-with stylesheet_properties>
 
 /*
  * Plone Structure CSS v1
@@ -53,15 +59,20 @@ div.tabs {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
     background: &dtml-mainTabBackdrop;;
     border-collapse: collapse;
-    border-bottom: &dtml-mainTabBorder;;
+    border-bottom-color: &dtml-mainTabBorderColorSelected;;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
     padding: 0.5em 0em 0em 2em;
 }
 
 div.tabs a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-mainTabBackgroundNotSelected;;
-    border: 1px solid #8CACBB;
-    color: &dtml-mainTabLinkColor;;
+    border-color: &dtml-mainTabBorderColor;;
+    border-width: 1px; 
+    border-style: solid solid none solid;
+    color: &dtml-mainTabFontColor;;
+    font-weight: &dtml-mainTabFontWeight;;
     margin-right: 0.5em;
     padding: 0em 2em;
     text-transform: &dtml-textTransform;;
@@ -70,25 +81,39 @@ div.tabs a {
 div.tabs a.selected {
     /* The selected tab. There's only one of this */
     background: &dtml-mainTabBackground;;
+    border: 1px solid &dtml-mainTabBorderColorSelected;;
     border-bottom: &dtml-mainTabBackground; 1px solid;
+    color: &dtml-mainTabFontColorSelected;;
+    font-weight: &dtml-mainTabFontWeight;;
 }
 
 div.tabs a:hover {
     background: &dtml-mainTabBackground;;
+    border-color: &dtml-mainTabBorderColorSelected;;
+    border-bottom-color: &dtml-mainTabBackground;;
 }
 
 div.personalBar {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background: &dtml-mainTabBackground;;
-    border-bottom: &dtml-mainTabBorder;;
+    border-bottom-color: &dtml-mainTabBorderColorSelected;;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
     padding-right: 2em;
     text-align: right;
     text-transform: &dtml-textTransform;;
 }
 
+div.personalBar a{
+	color: &dtml-mainTabFontColorSelected;;
+    font-weight: &dtml-mainTabFontWeight;;
+}
+
 div.pathBar {
     /* The path bar, including breadcrumbs and add to favorites */
-    border-bottom: &dtml-mainTabBorder;;
+    border-bottom-color: &dtml-mainTabBorderColorSelected;;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
     padding-left: 2em;
     padding-right: 2em;
     text-transform: &dtml-textTransform;;
@@ -150,7 +175,8 @@ div.contentTabs a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-contentTabBackgroundNotSelected;;
     border: &dtml-contentTabBorder;;
-    color: &dtml-contentTabLinkColor;;
+    color: &dtml-contentTabTextColor;;
+    font-weight: &dtml-contentTabFontWeight;;
     margin-right: 0.5em;
     padding: 0em 2em;
     text-transform: &dtml-textTransform;;
@@ -160,6 +186,8 @@ div.contentTabs a.selected {
     /* The selected tab. There's only one of this */
     background: &dtml-contentTabBackground;;
     border-bottom: &dtml-contentTabBackground; 1px solid;
+    color: &dtml-contentTabTextColorSelected;;
+    font-weight: &dtml-contentTabFontWeight;;
 }
 
 div.contentTabs a:hover {
@@ -220,9 +248,5 @@ div.message {
 }
 
 
-
-
-
-
-
+</dtml-with>
 

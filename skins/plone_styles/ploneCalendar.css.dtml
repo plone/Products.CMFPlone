@@ -1,4 +1,14 @@
-<dtml-call "REQUEST.set('content/type', 'text/css')">
+<dtml-let last_modified="_.DateTime()-14"
+          expires="_.DateTime()+7" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime('%a, %d %b %Y %H:%M:%S') )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime('%a, %d %b %Y %H:%M:%S') )" >
+</dtml-let>
+
+<dtml-with stylesheet_properties>
+
+
 /*
  * Plone Calendar CSS v1
  *
@@ -18,13 +28,12 @@
  /* Calendar elements - used in the calendar rendering */
 
 div.container {
-    font-family: Verdana, Helvetica, Arial, Sans-Serif;
-    font-size: 9px;
+/* deprecate? */
 }
 
 div.day {
     background-color: #FFFFBB;
-    border: 1px solid #8CACBB;
+    border: 1px solid Black;
     padding: 0.2em;
     visibility: hidden;
     width: 12em;
@@ -32,19 +41,18 @@ div.day {
 }
 
 div.date {
+/* deprecate? */
 }
 
   
 table.calendar {
-    border-collapse: collapse;
-    border: 1px solid #8CACBB;
-    font-family: Verdana, Helvetica, Arial, Sans-Serif;
-    font-size: 10px;
+    border: &dtml-boxBorder;;
     text-align: right;
 }
 
 table.calendar a {
     text-decoration: none;
+    color: &dtml-boxLinkColor;;
 }
 
 table.calendar a:hover {
@@ -52,48 +60,49 @@ table.calendar a:hover {
 }
 
 table.calendar th {
-    background-color: #DEE7EC;
+    background-color: &dtml-boxHeaderBackground;;
     font-weight: bold;
     text-align: center;
 }
 
 table.calendar td {
-    background-color: white;
+    background-color: transparent;
     width: 1.5em;
     padding: 2px;
 }
 
 table.calendar td.weekdays {
-    background-color: #DEE7EC;
-    border-width: 1px;
+    background-color: &dtml-boxHeaderBackground;;
+    border: &dtml-boxBorder;;
     border-style: solid none;
-    border-color: #8CACBB;
     text-align: center;
 }
 
 table.calendar td.event {
-    background-color: #DEE7EC;
+    background-color: &dtml-boxHeaderBackground;;
     font-weight: bold;
 }
 
 table.calendar td.noevent {
-    background-color: #FFFFFF;
+    background-color: transparent;
 }
 
 table.calendar td.othermonth {
+/* deprecate? */
     background-color: #FFFFFF;
     border: 1px solid #8CACBB;
     vertical-align: bottom;
 }
 
 table.calendar td.holiday {
+/* deprecate? */
     background-color: #CF6060;
     border: 1px solid #8CACBB;
 }
 
 table.calendar td.todayevent {
-    background-color: #DEE7EC;
-    border: 2px solid #FFA500;
+    background-color: &dtml-boxHeaderBackground;;
+    border: &dtml-boxHighlight;;
     font-weight: bold;
 }
 
@@ -102,3 +111,5 @@ table.calendar td.todaynoevent {
     border: 2px solid #FFA500;
 }
 
+
+</dtml-with>

@@ -1,6 +1,12 @@
-<dtml-call "REQUEST.set('content/type', 'text/css')">
+<dtml-let last_modified="_.DateTime()-14"
+          expires="_.DateTime()+7" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime('%a, %d %b %Y %H:%M:%S') )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime('%a, %d %b %Y %H:%M:%S') )" >
+</dtml-let>
 
-<dtml-call CSSValues>
+<dtml-with stylesheet_properties>
 
 /*
  * Plone Widgets CSS v1
@@ -38,9 +44,10 @@ div.rowOdd {
 .group {
     border: &dtml-groupBorder;;
     padding: 1em;
+    padding-bottom: 4em;
     margin-bottom: 1em;
     margin-top: 2em;
-    width: 95%;
+    width: 89%;
 }
 
 .legend {
@@ -54,16 +61,18 @@ div.rowOdd {
 
 input.standalone {
     background: &dtml-standaloneButtonBackground;;
+    color: &dtml-standaloneButtonTextColor;;
     cursor: pointer;
-    font-weight: normal;
+    font-weight: &dtml-buttonWeight;;
     padding: &dtml-standaloneButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
 
 input.context {
     background: &dtml-contextButtonBackground;;
+    color: &dtml-contextButtonTextColor;;
     cursor: pointer;
-    font-weight: normal;
+    font-weight: &dtml-buttonWeight;;
     padding: &dtml-contextButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
@@ -109,8 +118,10 @@ input.noborder {
 }
 
 span.card {
-    background: mainTabBackground;
-    border: &dtml-mainTabBorder;;
+    background: &dtml-mainTabBackground;;
+    border-color: &dtml-mainTabBorderColor;;
+    border-width: 1px;
+    border-style: solid;
     float: left;
     margin: 1em;
     padding: 1em;
@@ -143,6 +154,7 @@ table.listing th {
     border-top: &dtml-listingBorder;;
     border-bottom: &dtml-listingBorder;;
     border-right: &dtml-listingBorder;;
+    color: &dtml-listingHeaderTextColor;;
     font-weight: normal;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
@@ -180,6 +192,7 @@ table.box th {
     border-top: &dtml-boxBorder;;
     border-bottom: &dtml-boxBorder;;
     border-right: &dtml-boxBorder;;
+    color: &dtml-boxHeaderTextColor;;
     font-weight: normal;
     padding: 0em 1em;
     text-align: left;
@@ -221,9 +234,9 @@ table.box a {
 
 table.box a.comment {
     /* special link for comments - default behavior is to display the discussion icon next to the link */
-    background-image: url(&dtml-portal_url;/plone_images/discussion.gif);
+    background-image: url(<dtml-var "portal_url() + '/'+ portal_types.getTypeInfo('Discussion Item').getIcon()">);
     background-position: 0px 0px;
-    padding-bottom: 0em 0em 0.5em 2em;
+    padding: 0em 0em 0.5em 2em;
 }
 
 table.box a.plain {
@@ -236,6 +249,10 @@ span.folderName {
     /* The folder name in folder_contents */
     font-size: 150%;
     font-weight: bold;
+}
+
+div.spacer {
+	margin: 3em;
 }
 
 .private {
@@ -258,11 +275,4 @@ span.folderName {
     color: Red;
 }
 
-
-
-
-
-
-
-
-
+</dtml-with>

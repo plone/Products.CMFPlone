@@ -1,3 +1,174 @@
-<dtml-call "REQUEST.set('content/type', 'text/css')">
+<dtml-let last_modified="_.DateTime()-14"
+          expires="_.DateTime()+7" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime('%a, %d %b %Y %H:%M:%S') )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime('%a, %d %b %Y %H:%M:%S') )" >
+</dtml-let>
 
-/* later :) */
+<dtml-with stylesheet_properties>
+
+ 
+div.top {
+    /* Top section */
+    background: &dtml-topBackground;;
+    width: 100%;
+}
+
+.logo {
+    /* Logo properties */
+}
+
+div.searchBox {
+    /*searchbox style and positioning */
+    float: right;
+    margin: 0 0 0 0;
+    text-align: right;
+}
+
+input.searchGadget {
+}
+
+div.tabs {
+    /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
+    padding: 0em 0em 0em 2em;
+}
+
+div.tabs a {
+    /* The normal, unselected tabs. They are all links */
+    background: &dtml-mainTabBackgroundNotSelected;;
+    color: &dtml-mainTabFontColor;;
+    font-weight: &dtml-mainTabFontWeight;;
+}
+
+div.tabs a.selected {
+    /* The selected tab. There's only one of this */
+    background: &dtml-mainTabBackground;;
+    color: &dtml-mainTabFontColorSelected;;
+    font-weight: &dtml-mainTabFontWeight;;
+}
+
+div.tabs a:hover {
+    background: &dtml-mainTabBackground;;
+}
+
+div.personalBar {
+    /* Bar with personalized menu (user preferences, favorites etc) */
+    text-align: right;
+}
+
+div.personalBar a{
+    font-weight: &dtml-mainTabFontWeight;;
+}
+
+div.pathBar {
+    /* The path bar, including breadcrumbs and add to favorites */
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+.breadcrumbs {
+}
+
+.addFavorite {
+}
+
+.clock {
+    /* The portal time indicator */
+    float: right;
+    white-space: nowrap;
+}
+
+table.columns {
+	width: 100%;
+}
+
+table.columns td.left {
+    vertical-align: top;
+    padding-top: 2em;
+    width: &dtml-leftColumnWidth;;
+}
+
+table.columns td.main {
+    vertical-align: top;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 2em;
+    width: &dtml-mainColumnWidth;;
+}
+
+table.columns td.right {
+    vertical-align: top;
+    padding-top: 2em;
+    width: &dtml-rightColumnWidth;;
+}
+
+div.contentTabs {
+    /* Local Plone Tabs(tm), used in the content display */
+}
+
+div.contentTabs a {
+    /* The normal, unselected tabs. They are all links */
+    background: &dtml-contentTabBackgroundNotSelected;;
+    color: &dtml-contentTabTextColor;;
+    font-weight: &dtml-contentTabFontWeight;;
+}
+
+div.contentTabs a.selected {
+    /* The selected tab. There's only one of this */
+    background: &dtml-contentTabBackground;;
+    color: &dtml-contentTabTextColorSelected;;
+    font-weight: &dtml-contentTabFontWeight;;
+}
+
+div.contentTabs a:hover {
+    background-color: &dtml-contentTabBackground;;
+}
+
+div.contentBar {
+    text-align: right;
+}
+
+div.document {
+    /* The document class encloses the object content when editing is not permitted */
+    background: &dtml-contentBackground;;
+    margin: 0;
+    margin-bottom: 2em;
+    padding: 2em;
+    padding-top: 0;
+}
+
+div.editableDocument {
+    /* The class surrounding content when editing is permitted */
+    border: &dtml-contentTabBorder;;
+    margin: 0em 0em 0em 0em;
+    padding: 0em 1em 0em 1em;
+}
+
+div.message {
+    /* The portal messages for cut/paste operations etc */
+    background: &dtml-messageBackground;;
+    font: &dtml-messageFont;;
+    margin: 1em 0em;
+    padding: 0.5em 1em;
+    vertical-align: middle;
+    
+}
+
+
+.description {
+    /* The summary text describing the document */
+    font: &dtml-descriptionFont;;
+}
+
+.footer {
+    clear: both;
+    float: none;
+    margin: 0em 0em;
+    padding: 0em 0em 0em 0em;
+    text-align: center;
+}
+
+
+</dtml-with>
+

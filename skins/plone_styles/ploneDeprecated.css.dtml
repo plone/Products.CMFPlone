@@ -1,4 +1,12 @@
-<dtml-call "REQUEST.set('content/type', 'text/css')">
+<dtml-let last_modified="_.DateTime()-14"
+          expires="_.DateTime()+7" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'content/type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.strftime('%a, %d %b %Y %H:%M:%S') )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime('%a, %d %b %Y %H:%M:%S') )" >
+</dtml-let>
+
+<dtml-with stylesheet_properties>
 
 /*  A table to do positioning. Necessary to make Netscape 4.x look acceptable.
  *  Used above and below the content-listings.
@@ -68,7 +76,7 @@ legend {
     color: red;    
 }
 
-
+</dtml-with>
 
 
 
