@@ -1,0 +1,7 @@
+Template: zope-cmfplone/postinst
+Type: boolean
+Default: true
+Description: Do you want me to restart Zope?
+ To let this product/feature work properly, you need to restart Zope. If
+ you want, I may restart Zope automatically, else you should do it your
+ self.

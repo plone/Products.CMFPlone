@@ -1,0 +1,51 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This is the debhelper compatability version to use.
+export DH_COMPAT=4
+PKG=debian/zope-cmfplone/usr/lib/zope/lib/python/Products/CMFPlone
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	rm -f build-stamp configure-stamp
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_clean -k
+	dh_installdirs
+
+	find . -type f -not \( \
+			-path '*/debian/*' -or \
+			-path '*/docs/*' -or \
+			-regex "./[A-Z0-9_]*\.txt$"" -or \
+                        -name LICENSE.GPL -or \
+			-name 'build-stamp' \
+		\) -exec install -D --mode=644 {} $(PKG)/{} \;
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdebconf	
+	dh_installdocs -n
+	dh_installexamples
+	dh_installchangelogs
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep
+.PHONY: build clean binary-indep binary install
