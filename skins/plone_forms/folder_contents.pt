@@ -17,7 +17,7 @@
     Content tabs
     </div>
 
-    <div class="contentBar">        
+    <div class="contentBar" tal:condition="show_border">        
     &nbsp;
     </div>	
 

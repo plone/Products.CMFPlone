@@ -45,9 +45,10 @@ Header stuff
             </td>
             
             <td class="main" 
-                tal:define="show_border python:here.showEditableBorder(template_id=template.getId(), actions=actions);">
+                tal:define="global show_border python:here.showEditableBorder(template_id=template.getId(), actions=actions);">
 
-                <metal:block metal:define-slot="super" tal:condition="show_border">
+                <metal:block metal:define-slot="super"
+		             tal:condition="show_border" >
                     
                 <div class="contentTabs" metal:define-macro="contentTabs"
                      tal:define="obj_type python:here.getTypeInfo().id;">
@@ -78,21 +79,21 @@ Header stuff
                 <div class="document"
                      tal:attributes="class python:test(show_border, 'editableDocument', 'document')">
 
-                    <div metal:use-macro="here/header/macros/portal_message">
+                    <metal:block metal:use-macro="here/header/macros/portal_message">
                     Message box
-                    </div>
+                    </metal:block>
         
-                    <div metal:define-slot="header" tal:content="nothing">
+                    <metal:block metal:define-slot="header" tal:content="nothing">
                     Header slot 
-                    </div>
+                    </metal:block>
 
-                    <div metal:define-slot="main" tal:content="nothing">
+                    <metal:block metal:define-slot="main" tal:content="nothing">
                     Page body text 
-                    </div>
+                    </metal:block>
         
-                    <div metal:define-slot="sub">
+                    <metal:block metal:define-slot="sub">
                     <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
-                    </div> 
+                    </metal:block> 
                 </div>
             </td>
         </tr>

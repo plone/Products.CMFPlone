@@ -9,7 +9,7 @@
           
 <!-- The tabs displayed on editable content -->
 
-<div class="contentTabs" metal:define-macro="contentTabs">
+<div class="contentTabs" metal:define-macro="contentTabs" tal:condition="show_border">
     
     <span tal:define="global obj_actions actions/object; 
                       global wf_actions actions/workflow;
@@ -34,10 +34,12 @@
 
 <div class="contentTabs" 
      metal:define-macro="folderTabs"
-     tal:define="folderActions actions/folder" >
+     tal:define="folderActions actions/folder" 
+     tal:condition="show_border" >
 
      <span tal:repeat="action folderActions">
-         <a tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');href action/url;"
+         <a tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');
+	                    href action/url;"
             class="" href="" > <span tal:replace="action/name" /> </a> <span class="netscape4">&middot;</span> 
      </span>
 
