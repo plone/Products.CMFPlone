@@ -4,7 +4,7 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
-   RC6/Final?
+   Final
 
     - Fix bug 2373 so folder_contents items goto
       getTypeInfo.getActionById('view')
