@@ -18,22 +18,32 @@ user1  = PloneTestCase.default_user
 user2  = 'u2'
 group2 = 'g2'
 
+try:
+    import Products.TextIndexNG2
+    have_txng = 1
+except:
+    have_txng = 0
+
 
 class TestCatalogTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
 
-    def testPloneLexiconIsZCTextLexicon(self):
-        # Lexicon should be a ZCTextIndex lexicon
-        self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
-        self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
-
     def testSearchableTextIsZCTextIndex(self):
         # SearchableText index should be a ZCTextIndex
-        self.assertEqual(self.catalog.Indexes['SearchableText'].__class__.__name__,
-                         'ZCTextIndex')
+        itype = self.catalog.Indexes['SearchableText'].__class__.__name__
+        if have_txng:
+            self.assertEqual(itype, 'TextIndexNG')
+        else:
+            self.assertEqual(itype, 'ZCTextIndex')
 
+    if not have_txng:
+
+        def testPloneLexiconIsZCTextLexicon(self):
+            # Lexicon should be a ZCTextIndex lexicon
+            self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
+            self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
 
 class TestCatalogSearch(PloneTestCase.PloneTestCase):
 
