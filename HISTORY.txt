@@ -6,6 +6,7 @@
       object_actions in main_template.
     - fixed edit_topicCriteria (has debug code in it) added navprops entry and modified script to use getNextRequestFor
     - Members now have default Title/Description Issue 206
+    - if Casey's incredible ExternalEditor application is installed in ZOPE the CustomizationPolicy will integrate it into Plone
 
 1.0alpha2
 
