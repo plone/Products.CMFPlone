@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
+    - Merged uiteam-plip73-sanitize-short-names r6113:HEAD into 2.1 branch. This
+      removes "Allow editing of Short Names" from personal prefs and makes it a
+      site-wide property.
+      [stefan] [alecm]
+
     - Merged plip72-LiveSearch r6110:HEAD into 2.1 branch. Adds LiveSearch by
       ObjectRealms to the search box.
       [stefan] [_ender_] [MrTopf]

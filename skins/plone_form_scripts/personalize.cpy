@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=portrait=None, visible_ids=None, listed=None, REQUEST=None
+##parameters=portrait=None, listed=None, REQUEST=None
 ##title=Personalization Handler.
 
 from Products.CMFPlone import transaction_note
@@ -18,12 +18,6 @@ context.portal_skins.updateSkinCookie()
 
 if member_context is None:
     member_context=context.portal_url.getPortalObject()
-
-if visible_ids is None and REQUEST is not None:    
-    visible_ids=0
-else:
-    visible_ids=1
-REQUEST.set('visible_ids', visible_ids)
     
 if listed is None and REQUEST is not None:    
     listed=0
@@ -38,7 +32,7 @@ delete_portrait = context.REQUEST.get('delete_portrait', None)
 if delete_portrait:
     context.portal_membership.deletePersonalPortrait(member.getId())
 
-member.setProperties(visible_ids=visible_ids, listed=listed)
+member.setProperties(listed=listed)
 
 tmsg='Edited personal settings for %s' % member.getUserName()
 transaction_note(tmsg)

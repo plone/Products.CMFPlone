@@ -137,8 +137,6 @@ def addMemberdata(self, portal):
     md=getToolByName(portal, 'portal_memberdata')
     if not hasattr(md,'formtooltips'):
         safeEditProperty(md, 'formtooltips', '1', 'boolean')
-    if not hasattr(md,'visible_ids'):
-        safeEditProperty(md, 'visible_ids', '1', 'boolean')
     if not hasattr(md,'wysiwyg_editor'):
         safeEditProperty(md, 'wysiwyg_editor', '', 'string')
     if not hasattr(md,'listed'):

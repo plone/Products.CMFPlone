@@ -33,7 +33,7 @@
             <legend i18n:translate="legend_document_details">Document Details</legend>
           
             <div class="field" 
-                 tal:condition="python:member.getProperty('visible_ids', None)"
+                 tal:condition="python:site_properties.getProperty('visible_ids', None)"
                  tal:define="error errors/id | nothing;
                              id python:request.get('id', test(here.show_id(),here.getId(),''));"
                  tal:attributes="class python:test(error, 'field error', 'field')">
@@ -60,7 +60,7 @@
 
             <input type="hidden" 
                    name="id" 
-                   tal:condition="python:not member.getProperty('visible_ids', '')"
+                   tal:condition="python:not site_properties.getProperty('visible_ids', '')"
                    tal:attributes="value python:request.get('id', here.getId())" 
                    />
           

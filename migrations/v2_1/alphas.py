@@ -50,6 +50,10 @@ def alpha1_alpha2(portal):
     addFullScreenAction(portal, out)
     addFullScreenActionIcon(portal, out)
 
+    # Make visible_ids a site-wide property
+    addVisibleIdsSiteProperty(portal, out)
+    deleteVisibleIdsMemberProperty(portal, out)
+
     return out
 
 
@@ -148,4 +152,24 @@ def addFullScreenActionIcon(portal, out):
                 title='Full Screen',
                 )
         out.append("Added 'full_screen' icon to actionicons tool.")
+
+
+def addVisibleIdsSiteProperty(portal, out):
+    """Adds sitewide config for editable short names."""
+    propTool = getToolByName(portal, 'portal_properties', None)
+    if propTool is not None:
+        propSheet = getattr(aq_base(propTool), 'site_properties', None)
+        if propSheet is not None:
+            if not propSheet.hasProperty('visible_ids'):
+                propSheet.manage_addProperty('visible_ids', 0, 'boolean')
+            out.append("Added 'visible_ids' property to site_properties.")
+
+
+def deleteVisibleIdsMemberProperty(portal, out):
+    """Deletes visible_ids memberdata property."""
+    memberdata = getToolByName(portal, 'portal_memberdata', None)
+    if memberdata is not None:
+        if memberdata.hasProperty('visible_ids'):
+            memberdata.manage_delProperties(['visible_ids'])
+        out.append("Deleted 'visible_ids' property from portal_memberdata.")
 

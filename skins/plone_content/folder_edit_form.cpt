@@ -27,7 +27,7 @@
           <legend i18n:translate="legend_folder_details">Folder Details</legend>
 
           <div class="field"
-               tal:condition="python:member.getProperty('visible_ids', None) and
+               tal:condition="python:site_properties.getProperty('visible_ids', None) and
                               len(utool.getRelativeContentPath(here))"
                tal:define="error errors/id | nothing;
                            id python:request.get('id', test(here.show_id(),here.getId(),''));"
@@ -57,7 +57,7 @@
 
           <input type="hidden"
                  name="id"
-                 tal:condition="python:not member.getProperty('visible_ids', '') or
+                 tal:condition="python:not site_properties.getProperty('visible_ids', '') or
                                 not len(utool.getRelativeContentPath(here))"
                  tal:define="id python:request.get('id', here.getId())"
                  tal:attributes="value id"

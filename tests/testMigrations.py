@@ -15,14 +15,17 @@ from Products.CMFPlone.migrations.v2.two04_two05 import addFolderListingActionTo
 
 from Products.CMFPlone.migrations.v2_1.alphas import addFullScreenAction
 from Products.CMFPlone.migrations.v2_1.alphas import addFullScreenActionIcon
+from Products.CMFPlone.migrations.v2_1.alphas import addVisibleIdsSiteProperty
+from Products.CMFPlone.migrations.v2_1.alphas import deleteVisibleIdsMemberProperty
 
 
 class MigrationTest(PloneTestCase.PloneTestCase):
 
     def removeActionFromType(self, type_name, action_id):
         # Removes an action from a portal type
-        info = self.types.getTypeInfo(type_name)
-        typeob = getattr(self.types, info.getId())
+        tool = getattr(self.portal, 'portal_types')
+        info = tool.getTypeInfo(type_name)
+        typeob = getattr(tool, info.getId())
         actions = info.listActions()
         actions = [x for x in actions if x.id != action_id]
         typeob._actions = tuple(actions)
@@ -41,6 +44,13 @@ class MigrationTest(PloneTestCase.PloneTestCase):
             tool.removeActionIcon('plone', action_id)
         except KeyError:
             pass # No icon associated
+
+    def removeSiteProperty(self, property_id):
+        # Removes a site property from portal_properties
+        tool = getattr(self.portal, 'portal_properties')
+        sheet = getattr(tool, 'site_properties')
+        if sheet.hasProperty(property_id):
+            sheet.manage_delProperties([property_id])
 
 
 class TestMigrations_v2(MigrationTest):
@@ -84,6 +94,8 @@ class TestMigrations_v2_1(MigrationTest):
     def afterSetUp(self):
         self.actions = self.portal.portal_actions
         self.icons = self.portal.portal_actionicons
+        self.properties = self.portal.portal_properties
+        self.memberdata = self.portal.portal_memberdata
 
     def testAddFullScreenAction(self):
         # Should add the full_screen action
@@ -116,10 +128,57 @@ class TestMigrations_v2_1(MigrationTest):
         addFullScreenActionIcon(self.portal, [])
         self.failUnless('full_screen' in [x.getActionId() for x in self.icons.listActionIcons()])
 
-    def testAddFullScreenActionIcon(self):
+    def testAddFullScreenActionIconNoTool(self):
         # Should not fail if portal_actionicons is missing
         self.portal._delObject('portal_actionicons')
         addFullScreenActionIcon(self.portal, [])
+
+    def testAddVisibleIdsSiteProperty(self):
+        # Should add the visible_ids property
+        self.removeSiteProperty('visible_ids')
+        self.failIf(self.properties.site_properties.hasProperty('visible_ids'))
+        addVisibleIdsSiteProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('visible_ids'))
+
+    def testAddVisibleIdsSitePropertyTwice(self):
+        # Should not fail if migrated again
+        self.removeSiteProperty('visible_ids')
+        self.failIf(self.properties.site_properties.hasProperty('visible_ids'))
+        addVisibleIdsSiteProperty(self.portal, [])
+        addVisibleIdsSiteProperty(self.portal, [])
+        self.failUnless(self.properties.site_properties.hasProperty('visible_ids'))
+
+    def testAddVisibleIdsSitePropertyNoTool(self):
+        # Should not fail if portal_properties is missing
+        self.portal._delObject('portal_properties')
+        addVisibleIdsSiteProperty(self.portal, [])
+
+    def testAddVisibleIdsSitePropertyNoSheet(self):
+        # Should not fail if site_properties is missing
+        self.properties._delObject('site_properties')
+        addVisibleIdsSiteProperty(self.portal, [])
+
+    def testDeleteVisibleIdsMemberProperty(self):
+        # Should delete the memberdata property
+        if not self.memberdata.hasProperty('visible_ids'):
+            self.memberdata.manage_addProperty('visible_ids', 0, 'boolean')
+        self.failUnless(self.memberdata.hasProperty('visible_ids'))
+        deleteVisibleIdsMemberProperty(self.portal, [])
+        self.failIf(self.memberdata.hasProperty('visible_ids'))
+
+    def testDeleteVisibleIdsMemberPropertyTwice(self):
+        # Should not fail if migrated again
+        if not self.memberdata.hasProperty('visible_ids'):
+            self.memberdata.manage_addProperty('visible_ids', 0, 'boolean')
+        self.failUnless(self.memberdata.hasProperty('visible_ids'))
+        deleteVisibleIdsMemberProperty(self.portal, [])
+        deleteVisibleIdsMemberProperty(self.portal, [])
+        self.failIf(self.memberdata.hasProperty('visible_ids'))
+
+    def testDeleteVisibleIdsMemberPropertyNoTool(self):
+        # Should not fail if portal_memberdata is missing
+        self.portal._delObject('portal_memberdata')
+        deleteVisibleIdsMemberProperty(self.portal, [])
 
 
 def test_suite():
