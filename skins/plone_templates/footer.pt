@@ -13,6 +13,13 @@
      i18n:attributes="alt title" />
 </a>
 
+<br />
+
+Plone is Copyright &copy; 2000-<span tal:define="now modules/DateTime/DateTime" tal:replace="now/year" />
+by
+<a href="http://limi.net">Alexander Limi</a>,
+<a href="http://www.runyaga.com">Alan Runyan</a>,
+<a href="http://blacktar.com">Vidar Andersen</a>.
 
 <hr size="" class="netscape4" />
 
