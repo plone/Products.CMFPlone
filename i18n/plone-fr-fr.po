@@ -1,0 +1,3571 @@
+# Gettext Message File for Plone.
+# Your Name <your@email>, Year
+EDIT the lines below correctly (and DELETE this one) or your translation WILL NOT WORK
+msgid ""
+msgstr ""
+"Project-Id-Version: Plone 1.0\n"
+"POT-Creation-Date: 2002-09-13 06:11+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Your Name <your@email>\n"
+"Language-Team: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language-code: LL\n"
+"Language-name: Language\n"
+"Preferred-encodings: utf-8 latin1\n"
+"Domain: plone\n"
+-------------- Delete this line too just to prove you paid attention --------------
+
+
+#: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Add" class="context" type="submit" />
+#.   
+#: from plone_forms/folder_factories.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Add" class="standalone" type="submit" />
+#.   
+msgid "Add"
+msgstr "Ajouter"
+
+#: from plone_forms/discussion_reply_form.pt
+#.   <input tal:attributes="name string:discussion_reply:method;
+#.   											                 tabindex tabindex/next;" tabindex="" value="Add Comment" class="context" type="submit" name="" />
+#.   
+#: from plone_forms/viewThreadsAtBottom.pt
+#.   <input value="Add Comment" class="standalone" type="submit" />
+#.   
+msgid "Add Comment"
+msgstr "Ajouter Commentaire"
+
+#: from plone_templates/folder_contents.pt
+#.   <input attributes="tabindex tabindex/next|nothing;" tabindex="" value="Add New Item" class="standalone" name="folder_factories:method" type="submit" />
+#.   
+msgid "Add New Item"
+msgstr "Ajouter Nouvel Objet"
+
+#: from plone_forms/content_status_history.pt
+#.   <input attributes="tabindex tabindex/next;" value="Apply" class="context" name="workflow_action_submit" type="submit" />
+#.   
+#: from plone_forms/personalize_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Apply" class="context" type="submit" />
+#.   
+msgid "Apply"
+msgstr "Appliquer"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Assign Local Role to Selected User(s)" class="context" type="submit" />
+#.   
+msgid "Assign Local Role to Selected User(s)"
+msgstr "Assigner Role Precis a utilisateur(s) choisi(s)"
+
+#: from plone_forms/folder_rename_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" onclick="javascript:document.folder_rename.action=document.folder_rename.here.value+'/folder_contents';document.folder_rename.submit();" class="context" type="submit" value="Cancel" />
+#.   
+#: from plone_forms/password_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Cancel" class="context" type="submit" name="cancel" />
+#.   
+msgid "Cancel"
+msgstr "Annuler"
+
+#: from plone_forms/logged_in.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Change Password" name="submit" type="submit">
+#.                           </input>
+#: from plone_forms/password_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Change Password" class="context" type="submit" />
+#.   
+msgid "Change Password"
+msgstr "Changer Mot de passe"
+
+#: from plone_forms/history_form.pt
+#.   <input value="Compare" class="context" name="manage_historicalComparison:method" type="submit" />
+#.   
+msgid "Compare"
+msgstr "Comparer"
+
+#: from plone_forms/history_form.pt
+#.   <input value="Copy to present" class="context" name="manage_customHistoryCopy:method" type="submit" />
+#.   
+msgid "Copy to present"
+msgstr "Copier au present"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Delete Selected Role(s)" class="context" type="submit" />
+#.   
+msgid "Delete Selected Role(s)"
+msgstr "Enlever Role(s) choisi(s)"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Disable Syndication" class="standalone" type="submit" />
+#.   
+msgid "Disable Syndication"
+msgstr "Rendre Syndication inhabile"
+
+#: from plone_content/file_view.pt
+#.   <input value="Download file" class="standalone" type="submit" />
+#.   
+msgid "Download file"
+msgstr "Download fichier"
+
+#: from plone_templates/standard_error_message.pt
+#.   <a attributes="href string:mailto:${here/portal_properties/email_from_address}" content="string:${here/portal_properties/email_from_address}" href="mailto:admin@here.com" title="Email Administrator">
+#.               Email Admin
+#.               </a>
+msgid "Email Administrator"
+msgstr "Administrateur de courrier electronique"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Enable syndication" class="standalone" type="submit" />
+#.   
+msgid "Enable syndication"
+msgstr "Rendre syndication habile"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Perform Search" class="context" type="submit" />
+#.   
+msgid "Perform Search"
+msgstr "Faire une recherche"
+
+#: from plone_templates/footer.pt
+#.   <img attributes="src string:$portal_url/plone_powered.gif" height="30" width="96" alt="Powered by Plone" src="" title="This site was built using the Plone Content Management System. Click for more information." />
+#.   
+msgid "Powered by Plone"
+msgstr "Propulse par Plone"
+
+#: from plone_forms/discussion_reply_form.pt
+#.   <input tal:define="hId here/getId" tal:attributes="name string:$hId/discussion_reply_preview:method;
+#.   											                 tabindex tabindex/next;" tabindex="" value="Preview Comment" class="context" type="submit" name="" />
+#.   
+msgid "Preview Comment"
+msgstr "Examiner Commentaire"
+
+#: from plone_forms/join_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Register" class="context" type="submit" name="submit">
+#.               </input>
+msgid "Register"
+msgstr "Inscrire"
+
+#: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Remove" class="context" name="topic_deleteCriteria:action" type="submit" />
+#.   
+msgid "Remove"
+msgstr "Enlever"
+
+#: from plone_forms/folder_rename_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Rename" class="context" type="submit" />
+#.   
+msgid "Rename"
+msgstr "Renommer"
+
+#: from plone_forms/viewThreadsAtBottom.pt
+#.   <input value="Reply to this" class="standalone" type="submit" />
+#.   
+msgid "Reply to this"
+msgstr "Repondre a ceci"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <input value="Reset" class="standalone" type="reset" />
+#.   
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <input value="Reset" class="standalone" name="reset" type="reset">
+#.           </input>
+msgid "Reset"
+msgstr "Remettre"
+
+#: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" name="topic_editCriteria:action" type="submit" />
+#.   
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <input tabindex="5" value="Save" class="context" type="submit" name="Change Topic" />
+#.   
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <input attributes="tabindex tabindex/next" tabindex="" value="Save" class="context" type="submit" name="Change" />
+#.   
+#: from plone_content/document_edit_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" type="submit" name="Change" />
+#.   
+#: from plone_content/file_edit_form.pt
+#: from plone_content/image_edit_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" name="change" type="submit" />
+#.   
+#: from plone_content/link_edit_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" type="submit" name="save" />
+#.   
+#: from plone_content/metadata_edit_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" type="submit" name="change_and_view" />
+#.   
+#: 4 more references
+msgid "Save"
+msgstr "Sauver"
+
+#: from plone_forms/reconfig_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save Settings" class="context" type="submit" name="submit" />
+#.   
+msgid "Save Settings"
+msgstr "Sauver le cadre"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <input value="Search" class="context" type="Submit" />
+#.   
+#: from plone_templates/header.pt
+#.   <input value="Search" class="context" type="submit" />
+#.   
+msgid "Search"
+msgstr "Rechercer"
+
+#: from plone_forms/mail_password_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Send me my password" class="context" type="submit" />
+#.   
+msgid "Send me my password"
+msgstr "Envoyez-moi mon mot de passe"
+
+#: from plone_forms/registered.pt
+#.   <input value="Sign in" class="standalone" type="submit" />
+#.   
+#: from plone_templates/ui_slots/login_slot.pt
+#.   <input value="Sign in" class="context" name="submit" type="submit" />
+#.   
+msgid "Sign in"
+msgstr "ouvrir session"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <input value="Submit" class="context" type="submit" />
+#.   
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <input value="Submit" class="context" name="submit" type="submit">
+#.               <input value="Reset" class="standalone" name="reset" type="reset">
+#.           </input></input>
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "Submit"
+msgstr "Soumettre"
+
+#: from plone_templates/footer.pt
+#.   <img attributes="src string:$portal_url/plone_powered.gif" height="30" width="96" alt="Powered by Plone" src="" title="This site was built using the Plone Content Management System. Click for more information." />
+#.   
+msgid "This site was built using the Plone Content Management System. Click for more information."
+msgstr "Ce site etait construit avec le Systeme de gestion de contenu de Plone . Appuyer ici pour plus d'informations."
+
+#: from plone_forms/undo_form.pt
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Undo" class="context" name="undo:method" type="submit" />
+#.   
+msgid "Undo"
+msgstr "Defaire"
+
+#: from plone_forms/logged_in.pt
+#.   <a attributes="href request/HTTP_REFERER" href="">back to where you came from</a>
+msgid "back_to_where_you_came_from"
+msgstr "retourner a la page precedente"
+
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <span omit-tag="">
+#.                 Displaying
+#.                 </span>
+msgid "batch_displaying"
+msgstr "Displaying"
+
+#: from plone_forms/search.pt
+#.   <span omit-tag="">items</span>
+#: from plone_forms/search.pt
+#: from plone_forms/search.pt
+#: from plone_forms/search.pt
+msgid "batch_items"
+msgstr "articles"
+
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <a tal:attributes="href python:
+#.                                        base+'&'+make_query(b_start=next.first)" href="NEXT BATCH">
+#.                 Next</a>
+#: from plone_forms/search.pt
+#.   <span omit-tag="">Next</span>
+#: from plone_forms/search.pt
+msgid "batch_next"
+msgstr "Prochain"
+
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <a tal:attributes="href python:
+#.                                        base+'&'+make_query(b_start=prev.first)" href="PREVIOUS BATCH">
+#.                  Previous</a>
+#: from plone_forms/search.pt
+#.   <span omit-tag="">Previous</span>
+#: from plone_forms/search.pt
+msgid "batch_previous"
+msgstr "Precedent"
+
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <span omit-tag="">to</span>
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <span omit-tag="">
+#.                 of
+#.                 </span>
+msgid "batch_to"
+msgstr "of"
+
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <span omit-tag="">total</span>
+msgid "batch_total"
+msgstr "total"
+
+#: from plone_forms/search.pt
+#.   <span>items matching your criteria</span>
+msgid "batch_x_items_matching_your_criteria"
+msgstr "articles equivalents a vos criteres"
+
+#: from plone_templates/ui_slots/about_slot.pt
+#.   <th>About</th>
+msgid "box_about"
+msgstr "au sujet de"
+
+#: from plone_templates/ui_slots/about_slot.pt
+#.   <strong>Created&nbsp;by:</strong>
+msgid "box_created_by"
+msgstr "Cree&nbsp;pat:"
+
+#: from plone_templates/ui_slots/navigation_slot.pt
+#.   <span>Editor view</span>
+#: from plone_templates/ui_slots/navigation_slot.pt
+msgid "box_editor_view"
+msgstr "Editor view"
+
+#: from plone_templates/ui_slots/related_slot.pt
+#.   <strong>External links</strong>
+msgid "box_external_links"
+msgstr "External links"
+
+#: from plone_templates/ui_slots/favorites_slot.pt
+#.   <strong>Favorites</strong>
+msgid "box_favorites"
+msgstr "Favorites"
+
+#: from plone_templates/ui_slots/login_slot.pt
+#.   <span omit-tag="">Forgot your password?</span>
+msgid "box_forgot_password_option"
+msgstr "Forgot your password?"
+
+#: from plone_templates/ui_slots/about_slot.pt
+#.   <strong>Last&nbsp;modified:</strong>
+msgid "box_last_modified"
+msgstr "Last&nbsp;modified:"
+
+#: from plone_templates/ui_slots/related_slot.pt
+#.   <strong condition="localContent">Local resources</strong>
+msgid "box_local_resources"
+msgstr "Local resources"
+
+#: from plone_templates/ui_slots/favorites_slot.pt
+#.   <th>My&nbsp;Favorites</th>
+msgid "box_my_favorites"
+msgstr "My&nbsp;Favorites"
+
+#: from plone_templates/ui_slots/navigation_slot.pt
+#.   <th>Navigation</th>
+#: from plone_templates/ui_slots/topic_navigator_slot.pt
+#.   <th>navigation</th>
+msgid "box_navigation"
+msgstr "navigation"
+
+#: from plone_templates/ui_slots/login_slot.pt
+#.   <span omit-tag="">New user?</span>
+msgid "box_new_user_option"
+msgstr "New user?"
+
+#: from plone_templates/ui_slots/news_slot.pt
+#.   <th>News</th>
+msgid "box_news"
+msgstr "News"
+
+#: from plone_templates/ui_slots/navigation_slot.pt
+#.   <span>Ordinary view</span>
+msgid "box_ordinary_view"
+msgstr "Ordinary view"
+
+#: from plone_templates/ui_slots/favorites_slot.pt
+#.   <a attributes="href string:${folder/absolute_url}/folder_contents" href="" class="marker">Organize Favorites</a>
+msgid "box_organize_favorites"
+msgstr "Organize Favorites"
+
+#: from plone_templates/ui_slots/navigation_slot.pt
+#.   <strong>Other items</strong>
+msgid "box_other_items"
+msgstr "Other items"
+
+#: from plone_templates/ui_slots/related_slot.pt
+#.   <th>Related</th>
+msgid "box_related"
+msgstr "Related"
+
+#: from plone_templates/ui_slots/workflow_review_slot.pt
+#.   <th>Review List</th>
+msgid "box_review_list"
+msgstr "Review List"
+
+#: from plone_templates/ui_slots/login_slot.pt
+#.   <th>Sign in</th>
+msgid "box_sign_in"
+msgstr "Sign in"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_contents.pt
+#.   <div class="heading"> 
+#.                   Transcript for Issue
+#.                   ${id (tal replace="here/id")}
+#.                   (${num (tal replace="entries")}
+#.   		 ${listing_entry (tal condition="python:entries == 1")}${listing_entries (tal condition="python:entries != 1")})
+#.               </div>
+msgid "box_transcript_for_issue"
+msgstr "Transcript for Issue ${id} (${num} ${listing_entry}${listing_entries})"
+
+#: from plone_templates/ui_slots/navigation_slot.pt
+#.   <span>Up one level</span>
+msgid "box_up_one_level"
+msgstr "Up one level"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <option value="">Choose Language</option>
+msgid "choose_language"
+msgstr "Choose Language"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <span>
+#.             Click ${here (tal attributes="href python: request.URL + '?do_cite=1'")} to cite the existing transcript.
+#.             </span>
+msgid "click_to_cite"
+msgstr "Click ${here} to cite the existing transcript."
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <span tal:condition="item/assigned_to|nothing">,
+#.                 Assigned to
+#.                  
+#.                 ${names (tal content="python: ', '.join(item.assigned_to)")}
+#.               </span>
+msgid "collector_issue_assigned_to"
+msgstr ", Assigned to ${names}"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <tal:block condition="python:numcmts>1">
+#.                 (${num (tal replace="numcmts")}
+#.                 comments)
+#.             </tal:block>
+msgid "collector_issue_num_comments"
+msgstr "(${num} comments)"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <tal:block condition="python:numcmts==1">
+#.                 (1 comment)
+#.             </tal:block>
+msgid "collector_issue_one_comment"
+msgstr "(1 comment)"
+
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <a tal:attributes="href python:here.aq_parent.absolute_url()" href="">
+#.               ${collector_title (tal replace="here/aq_parent/Title")}
+#.               [${collector_abbrev (tal replace="here/abbrev|nothing")}]
+#.               </a>
+msgid "collector_link"
+msgstr "${collector_title} [${collector_abbrev}]"
+
+#: from plone_content/event_view.pt
+#.   <div class="label">Contact Email</div>
+msgid "contact_email"
+msgstr "Contact Email"
+
+#: from plone_content/event_view.pt
+#.   <div class="label">Name</div>
+msgid "contact_name"
+msgstr "Name"
+
+#: from plone_content/event_view.pt
+#.   <div class="label">Contact Phone</div>
+msgid "contact_phone"
+msgstr "Contact Phone"
+
+#: from plone_forms/discussion_reply_form.pt
+#.   <p>
+#.       You can add a comment by filling out the form below. To see how the posting 
+#.       will look before submitting it, click 'Preview Comment'.   
+#.       </p>
+msgid "description_add_comment"
+msgstr "You can add a comment by filling out the form below. To see how the posting will look before submitting it, click 'Preview Comment'."
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="description">
+#.   Use this form to add your issue to the Collector. Please provide as many details
+#.   as possible.
+#.   </div>
+msgid "description_add_new_issue"
+msgstr "Use this form to add your issue to the Collector. Please provide as many details as possible."
+
+#: from plone_forms/folder_factories.pt
+#.   <p>
+#.   	Select the type of item you want to add to your folder.
+#.   	</p>
+msgid "description_add_new_item"
+msgstr "Select the type of item you want to add to your folder."
+
+#: from plone_forms/search_form.pt
+#.   <p>
+#.       This search form enables you to find content on the site by
+#.       specifying one or more search terms. 
+#.       <br />
+#.   
+#.       Remember that you can use the quick search anytime, it's normally
+#.       good enough, this search form is just if you want to be more specific.
+#.       </p>
+msgid "description_advanced_search"
+msgstr "This search form enables you to find content on the site by specifying one or more search terms. <br /> Remember that you can use the quick search anytime, it's normally good enough, this search form is just if you want to be more specific."
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <p>
+#.         			A local role is a way of allowing other users into some or all of your
+#.         			folders. These users can edit items, publish them - et cetera, depending
+#.         			on what permissions you give them.
+#.         			
+#.                   <br />
+#.   
+#.                   
+#.                   Local roles are ideal in cooperation projects, and as every item has a
+#.         			history and an undo option, it's easy to keep track of the changes.
+#.         			
+#.                   <br />
+#.   
+#.                   
+#.                   To give a person a local role in this folder, just search for the person's
+#.         			name or email address in the form below, and you will be presented with a
+#.         			page that will show you the options available.
+#.         			</p>
+msgid "description_assign_localrole"
+msgstr "A local role is a way of allowing other users into some or all of your folders. These users can edit items, publish them - et cetera, depending on what permissions you give them. <br /> Local roles are ideal in cooperation projects, and as every item has a history and an undo option, it's easy to keep track of the changes. <br /> To give a person a local role in this folder, just search for the person's name or email address in the form below, and you will be presented with a page that will show you the options available."
+
+#: from plone_forms/logged_in.pt
+#.   <span>
+#.                   Before you start exploring you need to change your original password. 
+#.                   This will ensure that the password we sent you via email cannot be used in a malicious manner.
+#.                   </span>
+msgid "description_change_initial_password"
+msgstr "Before you start exploring you need to change your original password. This will ensure that the password we sent you via email cannot be used in a malicious manner."
+
+#: from plone_forms/ownership_form.pt
+#.   <p>
+#.       You can change the current objects ownership to
+#.       another member easily from this form.  
+#.       </p>
+msgid "description_change_ownership"
+msgstr "You can change the current objects ownership to another member easily from this form."
+
+#: from plone_forms/personalize_form.pt
+#.   <a href="password_form">Click here to change your password</a>
+msgid "description_click_to_change_password"
+msgstr "Click here to change your password"
+
+#: from plone_forms/discussion_reply_preview.pt
+#.   <p>
+#.       This is how your comment will look when posted.
+#.       </p>
+msgid "description_comment_preview"
+msgstr "This is how your comment will look when posted."
+
+#: from plone_forms/folder_listing.pt
+#.   <a attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document" href="#">click here.</a>
+msgid "description_create_folder_click_here"
+msgstr "click here."
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <p>
+#.               These users currently have local roles assigned in this folder:
+#.           </p>
+msgid "description_current_localroles"
+msgstr "These users currently have local roles assigned in this folder:"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="description">
+#.       Use this form to edit the data of an existing issue. Do not use this form
+#.       to follow up or change the workflow status of an issue - use the issue follow
+#.       up form for that.
+#.       </div>
+msgid "description_edit_collector_issue"
+msgstr "Use this form to edit the data of an existing issue. Do not use this form to follow up or change the workflow status of an issue - use the issue follow up form for that."
+
+#: from plone_content/document_edit_form.pt
+#.   <p>
+#.       Fill in the details of this document.
+#.       </p>
+msgid "description_edit_document"
+msgstr "Fill in the details of this document."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <p>
+#.       Fill in the details of the event you want to add.
+#.       </p>
+msgid "description_edit_event"
+msgstr "Fill in the details of the event you want to add."
+
+#: from plone_content/file_edit_form.pt
+#.   <p>
+#.       Add the relevant details of the file to be added in the form below,
+#.       select the file with the 'Browse' button, and press 'Save'.
+#.       </p>
+msgid "description_edit_file"
+msgstr "Add the relevant details of the file to be added in the form below, select the file with the 'Browse' button, and press 'Save'."
+
+#: from plone_content/image_edit_form.pt
+#.   <p>
+#.       Using this form, you can enter details about the image, and upload 
+#.       an image if required.
+#.       </p>
+msgid "description_edit_image"
+msgstr "Using this form, you can enter details about the image, and upload an image if required."
+
+#: from plone_content/link_edit_form.pt
+#.   <p>
+#.       A link is a pointer to a location on the internet or intranet.
+#.       Enter the relevant details below, and press 'Save'.
+#.       </p>
+msgid "description_edit_link_item"
+msgstr "A link is a pointer to a location on the internet or intranet. Enter the relevant details below, and press 'Save'."
+
+#: from plone_content/newsitem_edit_form.pt
+#.   <p>
+#.       A news item is a small piece of news that is published on the front
+#.       page. Add the relevant details below, and press 'Save'.
+#.       </p>
+msgid "description_edit_news_item"
+msgstr "A news item is a small piece of news that is published on the front page. Add the relevant details below, and press 'Save'."
+
+#: from plone_content/metadata_edit_form.pt
+#.   <p>
+#.       This information, also referred to as <em>metadata</em> is the collection of information that is used to 
+#.       categorize an object, assign effectuation dates and expiration dates, 
+#.       language, and keywords.
+#.       <br />
+#.   
+#.       Change this item's metadata using the form below. Remember, metadata is
+#.       powerful - it enables us to do lots of useful categorization. So fill in the fields
+#.       as concisely as possible, and leave the ones you don't know blank.
+#.       </p>
+msgid "description_edit_properties"
+msgstr "This information, also referred to as <em>metadata</em> is the collection of information that is used to categorize an object, assign effectuation dates and expiration dates, language, and keywords. <br /> Change this item's metadata using the form below. Remember, metadata is powerful - it enables us to do lots of useful categorization. So fill in the fields as concisely as possible, and leave the ones you don't know blank."
+
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <p> 
+#.       A topic is a pre-defined search, showing all items matching
+#.       criteria you specify. Topics may also contain sub-topics.
+#.       </p>
+msgid "description_edit_topic"
+msgstr "A topic is a pre-defined search, showing all items matching criteria you specify. Topics may also contain sub-topics."
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <p>Select one or more Members, and a role to assign.</p>
+msgid "description_localrole_select_member"
+msgstr "Select one or more Members, and a role to assign."
+
+#: from plone_forms/logged_in.pt
+#.   <p>
+#.                   You will notice that the top right bar has changed, it now
+#.                   contains several personalized items. These will stay there
+#.                   as long as you are logged in, and allow you to control your
+#.                   settings and your personal area.
+#.                   </p>
+msgid "description_logged_in_explain"
+msgstr "You will notice that the top right bar has changed, it now contains several personalized items. These will stay there as long as you are logged in, and allow you to control your settings and your personal area."
+
+#: from plone_forms/mail_password_form.pt
+#.   <p> 
+#.       Enter your username below, click <strong>Mail me my password</strong>, and your password
+#.       will be mailed to you if you gave a valid email address when you registered.
+#.       If this will not work for you (for example, if you forgot your member
+#.       name or didn't enter your email address) send an email to
+#.       </p>
+msgid "description_lost_password"
+msgstr "Enter your username below, click <strong>Mail me my password</strong>, and your password will be mailed to you if you gave a valid email address when you registered. If this will not work for you (for example, if you forgot your member name or didn't enter your email address) send an email to"
+
+#: from plone_forms/roster.pt
+#.   <p>
+#.           A list of the visible members. 
+#.           </p>
+msgid "description_member_listing"
+msgstr "A list of the visible members."
+
+#: from plone_forms/logged_in.pt
+#.   <span>
+#.                   You might want to head over to
+#.                   </span>
+msgid "description_newbie_pointers_1"
+msgstr "You might want to head over to"
+
+#: from plone_forms/logged_in.pt
+#.   <span>
+#.                   and add some content, or
+#.                   </span>
+msgid "description_newbie_pointers_2"
+msgstr "and add some content, or"
+
+#: from plone_forms/logged_in.pt
+#.   <a define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']" condition="prefs" attributes="href python:prefs.pop()" href="metadata_form">set up your Preferences</a>
+msgid "description_newbie_pointers_3"
+msgstr "set up your Preferences"
+
+#: from plone_forms/login_form.pt
+#.   <span omit-tag="">
+#.   If you do not have an account here, head over to the
+#.   </span>
+msgid "description_no_account_1"
+msgstr "If you do not have an account here, head over to the"
+
+#: from plone_forms/login_form.pt
+#.   <a href="portal_form/join_form" omit-tag="">
+#.   registration form
+#.   </a>
+msgid "description_no_account_2"
+msgstr "registration form"
+
+#: from plone_forms/login_form.pt
+#.   <span omit-tag="">
+#.   to become a member.
+#.   </span>
+msgid "description_no_account_3"
+msgstr "to become a member."
+
+#: from plone_forms/history_comparison.pt
+#.   <p>
+#.         This object does not provide comparison support.
+#.         </p>
+msgid "description_no_comparison_support"
+msgstr "This object does not provide comparison support."
+
+#: from plone_forms/folder_listing.pt
+#.   <span>
+#.               This folder does not have a default page, therefore a list of items
+#.               is shown instead.
+#.               If you want to create a default page in this folder that will
+#.               replace the item listing,
+#.               </span>
+msgid "description_no_default_folder"
+msgstr "This folder does not have a default page, therefore a list of items is shown instead. If you want to create a default page in this folder that will replace the item listing,"
+
+#: from plone_forms/folder_listing.pt
+#.   <p condition="not: here/contentValues">
+#.            There are currently no items in this folder.
+#.           </p>
+msgid "description_no_items_in_folder"
+msgstr "There are currently no items in this folder."
+
+#: from plone_forms/search.pt
+#.   <strong>No results were found.</strong>
+msgid "description_no_results_found"
+msgstr "No results were found."
+
+#: from plone_templates/folder_contents.pt
+#.   <p>
+#.               This folder has no visible items. To add content, press the 'Add New Item' button,
+#.               or paste content from another location.
+#.               </p>
+msgid "description_no_visible_items_press_add"
+msgstr "This folder has no visible items. To add content, press the 'Add New Item' button, or paste content from another location."
+
+#: from plone_forms/reconfig_form.pt
+#.   <p>
+#.       Here you configure some of the settings that affect Plone.
+#.       </p>
+msgid "description_plone_setup"
+msgstr "Here you configure some of the settings that affect Plone."
+
+#: from plone_forms/content_status_history.pt
+#.   <p>
+#.       An item's status (also called its review state) determines who can see it.
+#.       A <strong>private</strong> item can only be viewed by its Owner and by the site
+#.       management. Only <strong>published</strong> items are available to the general
+#.       member base and anonymous visitors. To make an item published, it
+#.       has to be reviewed by one of the site's Reviewers. You can request
+#.       that an item be reviewed by <strong>submitting it for review</strong>. <br />
+#.   
+#.           
+#.       Another way to control the visibility of an item is with its <strong>effective
+#.       date</strong>. An item is not publicly available before its effective date,
+#.       <em>even if its status is <strong>published</strong></em>.
+#.       </p>
+msgid "description_publishing_process"
+msgstr "An item's status (also called its review state) determines who can see it. A <strong>private</strong> item can only be viewed by its Owner and by the site management. Only <strong>published</strong> items are available to the general member base and anonymous visitors. To make an item published, it has to be reviewed by one of the site's Reviewers. You can request that an item be reviewed by <strong>submitting it for review</strong>. <br /> Another way to control the visibility of an item is with its <strong>effective date</strong>. An item is not publicly available before its effective date, <em>even if its status is <strong>published</strong></em>."
+
+#: from plone_forms/join_form.pt
+#.   <p>
+#.       By registering with us, you will have your own account with the
+#.       possibility to have personalized content, and you will be able to add
+#.       your own documents, images and files to the site.
+#.       </p>
+msgid "description_registration_form"
+msgstr "By registering with us, you will have your own account with the possibility to have personalized content, and you will be able to add your own documents, images and files to the site."
+
+#: from plone_forms/folder_rename_form.pt
+#.   <p>To rename an item, enter the new name below.</p>
+msgid "description_rename_item"
+msgstr "To rename an item, enter the new name below."
+
+#: from plone_forms/login_form.pt
+#.   <p>
+#.   To access this part of the site, you need to sign in with your username and password.
+#.   </p>
+msgid "description_sign_in"
+msgstr "To access this part of the site, you need to sign in with your username and password."
+
+#: from plone_forms/logged_in.pt
+#.   <span>
+#.               You are not currently signed in.  Your user name and/or password may be incorrect.
+#.               Your browser may also not be configured to accept HTTP cookies.  
+#.               If you need help please try the 'Forgotten password' link or contact
+#.               </span>
+msgid "description_sign_in_failure"
+msgstr "You are not currently signed in. Your user name and/or password may be incorrect. Your browser may also not be configured to accept HTTP cookies. If you need help please try the 'Forgotten password' link or contact"
+
+#: from plone_forms/logged_in.pt
+#.   <span>
+#.                   This is the first time that you've signed in to 
+#.                   </span>
+msgid "description_signed_in"
+msgstr "This is the first time that you've signed in to"
+
+#: from plone_forms/logged_out.pt
+#.   <p>
+#.   	 We hope you enjoyed using our services. We look forward to seeing you again.
+#.        </p>
+msgid "description_signed_out"
+msgstr "We hope you enjoyed using our services. We look forward to seeing you again."
+
+#: from plone_templates/standard_error_message.pt
+#.   <p>
+#.           This site encountered an error trying to fulfill your request.
+#.           The errors were:
+#.           </p>
+msgid "description_site_error"
+msgstr "This site encountered an error trying to fulfill your request. The errors were:"
+
+#: from plone_templates/standard_error_message.pt
+#.   <p>
+#.               The item you requested does not exist on this server or cannot be served.
+#.               </p>
+msgid "description_site_error_does_not_exist"
+msgstr "The item you requested does not exist on this server or cannot be served."
+
+#: from plone_templates/standard_error_message.pt
+#.   <p>
+#.               Please double check the web address or use the search function on this page to find what you are looking for.
+#.               </p>
+msgid "description_site_error_double_check_or_search"
+msgstr "Please double check the web address or use the search function on this page to find what you are looking for."
+
+#: from plone_templates/standard_error_message.pt
+#.   <p>
+#.               If you know you have the correct web address but are encountering an error, please 
+#.               send a mail to the administrator of this site.
+#.               </p>
+msgid "description_site_error_mail_admin"
+msgstr "If you know you have the correct web address but are encountering an error, please send a mail to the administrator of this site."
+
+#: from plone_templates/standard_error_message.pt
+#.   <p>
+#.               Thank you.
+#.               </p>
+msgid "description_site_error_thank_you"
+msgstr "Thank you."
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <div condition="python:not container.portal_syndication.isSiteSyndicationAllowed()">
+#.     Syndication has been disabled by site administrator.
+#.   </div>
+msgid "description_syndication_disabled"
+msgstr "Syndication has been disabled by site administrator."
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <p>
+#.       Syndication enables you to syndicate this folder so it can
+#.       be synchronized from other web sites.
+#.       </p>
+msgid "description_syndication_properties"
+msgstr "Syndication enables you to syndicate this folder so it can be synchronized from other web sites."
+
+#: from plone_forms/login_form.pt
+#.   <span>
+#.                   Make sure to enable cookies in your web browser. 
+#.                   Don't forget to sign out or exit your browser when you're done.
+#.                   </span>
+msgid "description_trouble_logging_in"
+msgstr "Make sure to enable cookies in your web browser. Don't forget to sign out or exit your browser when you're done."
+
+#: from plone_forms/undo_form.pt
+#.   <p>
+#.           This applications transactional feature allows you to easily undo changes
+#.           made to the applications settings or data. You can revert the application
+#.           to a &quot;snapshot&quot; of its state at a previous point in time. 
+#.           </p>
+msgid "description_undo_action"
+msgstr "This applications transactional feature allows you to easily undo changes made to the applications settings or data. You can revert the application to a &quot;snapshot&quot; of its state at a previous point in time."
+
+#: from plone_forms/undo_form.pt
+#.   <p>
+#.           Select one or more transactions below and then click on the &quot;Undo&quot;
+#.           button to undo the transactions.  Note that even though a transaction
+#.           is shown below, you will not be able to undo it if later transactions
+#.           modified objects that were modified by the transaction. 
+#.           </p>
+msgid "description_undo_action_select"
+msgstr "Select one or more transactions below and then click on the &quot;Undo&quot; button to undo the transactions. Note that even though a transaction is shown below, you will not be able to undo it if later transactions modified objects that were modified by the transaction."
+
+#: from plone_forms/logged_in.pt
+#.   <p>
+#.                   Please use the form below to change your password.
+#.                   </p>
+msgid "description_use_form_to_change_password"
+msgstr "Please use the form below to change your password."
+
+#: from plone_forms/registered.pt
+#.   <p> You have been registered as a member. </p>
+msgid "description_you_are_registered"
+msgstr "You have been registered as a member."
+
+#: from plone_forms/registered.pt
+#.   <span>Click the button to sign in immediately.</span>
+msgid "description_you_can_log_on_now"
+msgstr "Click the button to sign in immediately."
+
+#: from plone_forms/registered.pt
+#.   <p tal:condition="ve"> 
+#.   You will receive an email shortly containing your password 
+#.       and instructions on how to activate your membership. 
+#.   </p>
+msgid "description_you_will_get_password"
+msgstr "You will receive an email shortly containing your password and instructions on how to activate your membership."
+
+#: from plone_content/event_view.pt
+#.   <span>and</span>
+msgid "event_and"
+msgstr "and"
+
+#: from plone_content/event_view.pt
+#.   <span>Between</span>
+msgid "event_between"
+msgstr "Between"
+
+#: from plone_content/event_view.pt
+#.   <span>For more information, visit</span>
+msgid "event_for_more_info_go_to"
+msgstr "For more information, visit"
+
+#: from plone_content/event_view.pt
+#.   <div class="label">What</div>
+msgid "event_what"
+msgstr "What"
+
+#: from plone_content/event_view.pt
+#.   <div class="label">When</div>
+msgid "event_when"
+msgstr "When"
+
+#: from plone_content/event_view.pt
+#.   <div class="label">Where</div>
+msgid "event_where"
+msgstr "Where"
+
+#: from plone_forms/login_form.pt
+#.   <a href="mail_password_form">Click here</a>
+msgid "forgotten_password_link_1"
+msgstr "Click here"
+
+#: from plone_forms/login_form.pt
+#.   <span>
+#.                   to have it mailed to you.
+#.                   </span>
+msgid "forgotten_password_link_2"
+msgstr "to have it mailed to you."
+
+#: from plone_forms/folder_listing.pt
+#.   <a define="parent_url python:here.navigationParent(here, template.getId());" attributes="href parent_url" href="">
+#.               Up one level
+#.               </a>
+#: from plone_templates/folder_contents.pt
+#.   <a attributes="href parent_url" href="">Up one level</a>
+msgid "go_to_parent_url"
+msgstr "Up one level"
+
+#: from plone_forms/discussion_reply_form.pt
+#.   <h1>Add Comment</h1>
+msgid "heading_add_comment"
+msgstr "Add Comment"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <h1>
+#.   Add new issue to ${collector_title (tal replace="here/Title" condition="here/Title")}
+#.   </h1>
+msgid "heading_add_new_issue_to"
+msgstr "Add new issue to ${collector_title}"
+
+#: from plone_forms/folder_factories.pt
+#.   <h1>Add new item</h1>
+msgid "heading_add_new_item"
+msgstr "Add new item"
+
+#: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#.   <h2>Add New Topic Criteria</h2>
+msgid "heading_add_new_topic_criteria"
+msgstr "Add New Topic Criteria"
+
+#: from plone_forms/search_form.pt
+#.   <h1>Advanced search for content</h1>
+msgid "heading_advanced_search"
+msgstr "Advanced search for content"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <span>Assign local roles to folder
+#.         			    ${folder (tal replace="here/title_or_id")}
+#.   		</span>
+msgid "heading_assign_localrole"
+msgstr "Assign local roles to folder ${folder}"
+
+#: from plone_forms/ownership_form.pt
+#.   <h1>Change ownership</h1>
+msgid "heading_change_ownership"
+msgstr "Change ownership"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <h1>Collector Configuration</h1>
+msgid "heading_collector_configuration"
+msgstr "Collector Configuration"
+
+#: from plone_forms/discussion_reply_preview.pt
+#.   <h1>Comment Preview</h1>
+msgid "heading_comment_preview"
+msgstr "Comment Preview"
+
+#: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#.   <span>Criteria for</span>
+msgid "heading_criteria_for"
+msgstr "Criteria for"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <span>Currently assigned local roles in folder
+#.           		${folder (tal replace="here/title_or_id")}
+#.   	    </span>
+msgid "heading_currently_assigned_localroles"
+msgstr "Currently assigned local roles in folder ${folder}"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <h1>
+#.       Edit Collector Issue
+#.       </h1>
+msgid "heading_edit_collector_issue"
+msgstr "Edit Collector Issue"
+
+#: from plone_content/document_edit_form.pt
+#.   <h1>Edit Document</h1>
+msgid "heading_edit_document"
+msgstr "Edit Document"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <h1>Edit Event</h1>
+msgid "heading_edit_event"
+msgstr "Edit Event"
+
+#: from plone_content/file_edit_form.pt
+#.   <h1>Edit file</h1>
+msgid "heading_edit_file"
+msgstr "Edit file"
+
+#: from plone_forms/folder_edit_form.pt
+#.   <h1>Edit Folder Properties</h1>
+msgid "heading_edit_folder_properties"
+msgstr "Edit Folder Properties"
+
+#: from plone_content/image_edit_form.pt
+#.   <h1>Edit Image</h1>
+msgid "heading_edit_image"
+msgstr "Edit Image"
+
+#: from plone_content/link_edit_form.pt
+#.   <h1>Edit Link item</h1>
+msgid "heading_edit_link_item"
+msgstr "Edit Link item"
+
+#: from plone_content/newsitem_edit_form.pt
+#.   <h1>Edit News Item</h1>
+msgid "heading_edit_news_item"
+msgstr "Edit News Item"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <h1>Edit Properties</h1>
+msgid "heading_edit_properties"
+msgstr "Edit Properties"
+
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <h1>Edit Topic</h1>
+msgid "heading_edit_topic"
+msgstr "Edit Topic"
+
+#: from plone_content/file_view.pt
+#.   <h2>File contents</h2>
+msgid "heading_file_contents"
+msgstr "File contents"
+
+#: from plone_content/favorite_view.pt
+#.   <span>Link to</span>
+msgid "heading_link_to"
+msgstr "Link to"
+
+#: from plone_forms/mail_password_form.pt
+#.   <h1>Lost Password</h1>
+msgid "heading_lost_password"
+msgstr "Lost Password"
+
+#: from plone_forms/roster.pt
+#.   <h1>Member Listing</h1>
+msgid "heading_member_listing"
+msgstr "Member Listing"
+
+#: from plone_templates/folder_contents.pt
+#.   <span condition="python:
+#.   user.getUserName()==here.getId()" class="folderName">
+#.                   My Folder
+#.                   </span>
+msgid "heading_my_folder"
+msgstr "My Folder"
+
+#: from plone_forms/personalize_form.pt
+#.   <h1>My Preferences</h1>
+msgid "heading_my_preferences"
+msgstr "My Preferences"
+
+#: from plone_forms/reconfig_form.pt
+#.   <h1>Plone Setup</h1>
+msgid "heading_plone_setup"
+msgstr "Plone Setup"
+
+#: from plone_forms/content_status_history.pt
+#.   <h1>Publishing process</h1>
+msgid "heading_publishing_process"
+msgstr "Publishing process"
+
+#: from plone_forms/join_form.pt
+#.   <h1>Please register</h1>
+msgid "heading_registration_form"
+msgstr "Please register"
+
+#: from plone_forms/folder_rename_form.pt
+#.   <h1>Rename item</h1>
+msgid "heading_rename_item"
+msgstr "Rename item"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <h1>Search results</h1>
+#: from plone_forms/folder_localrole_form.pt
+#: from plone_forms/search.pt
+msgid "heading_search_results"
+msgstr "Search results"
+
+#: from plone_forms/login_form.pt
+#.   <h1>Please sign in</h1>
+msgid "heading_sign_in"
+msgstr "Please sign in"
+
+#: from plone_forms/logged_in.pt
+#.   <h1>Sign-in failure</h1>
+msgid "heading_sign_in_failure"
+msgstr "Sign-in failure"
+
+#: from plone_forms/logged_out.pt
+#.   <h1>You are now signed out</h1>
+msgid "heading_signed_out"
+msgstr "You are now signed out"
+
+#: from plone_templates/standard_error_message.pt
+#.   <h1>Site error</h1>
+msgid "heading_site_error"
+msgstr "Site error"
+
+#: from plone_templates/standard_error_message.pt
+#.   <h1>Our apologies...</h1>
+msgid "heading_site_error_apologies"
+msgstr "Our apologies..."
+
+#: from plone_3rdParty/CMFTopic/topic_view.pt
+#.   <h2>Sub-topics</h2>
+msgid "heading_sub_topics"
+msgstr "Sub-topics"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <h1>Syndication Properties</h1>
+msgid "heading_syndication_properties"
+msgstr "Syndication Properties"
+
+#: from plone_forms/undo_form.pt
+#.   <h1>Undo actions</h1>
+msgid "heading_undo_actions"
+msgstr "Undo actions"
+
+#: from plone_forms/logged_in.pt
+#.   <h1>Welcome!</h1>
+#: from plone_forms/registered.pt
+msgid "heading_welcome"
+msgstr "Welcome!"
+
+#: from plone_forms/logged_in.pt
+#.   <h1>You are now logged in</h1>
+msgid "heading_you_are_now_logged_in"
+msgstr "You are now logged in"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.               Abbreviation for the collector, used as the prefix of
+#.               the subject line in mail from the collector.
+#.           </span>
+msgid "help_abbreviation"
+msgstr "Abbreviation for the collector, used as the prefix of the subject line in mail from the collector."
+
+#: from plone_content/metadata_edit_form.pt
+#.   <div class="help" id="allow_discussion_help" style="visibility:hidden">
+#.                   Specifies whether discussion items and comments can be
+#.                   added to this item. 'Default' will use the site-wide
+#.                   setting for Discussion.
+#.                   </div>
+msgid "help_allow_discussion"
+msgstr "Specifies whether discussion items and comments can be added to this item. 'Default' will use the site-wide setting for Discussion."
+
+#: from plone_content/document_edit_form.pt
+#.   <div class="help" id="body_help" style="visibility:hidden">
+#.                   The body text of the document. 
+#.                   </div>
+#: from plone_content/newsitem_edit_form.pt
+#.   <div class="help" id="body_help" style="visibility:hidden">
+#.                   The body text of the news item. 
+#.                   </div>
+msgid "help_body_text"
+msgstr "The body text of the news item."
+
+#: from plone_forms/content_status_history.pt
+#.   <div class="help" id="change_status_help" style="visibility:hidden">
+#.                   Select the new state for the selected documents.
+#.                   </div>
+msgid "help_change_status"
+msgstr "Select the new state for the selected documents."
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.           This is the collector's email 'From' address.
+#.           </span>
+msgid "help_collector_email"
+msgstr "This is the collector's email 'From' address."
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.               Managers configure the collector, and receive request notices.
+#.               Managers can accept issues, but must be on Supporters roster to be
+#.               assigned.  (Managers cannot remove <em>themselves</em> from the
+#.               management roster.)
+#.           </span>
+msgid "help_collector_managers"
+msgstr "Managers configure the collector, and receive request notices. Managers can accept issues, but must be on Supporters roster to be assigned. (Managers cannot remove <em>themselves</em> from the management roster.)"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.               Fill in addresses next to the state names to have notifications for 
+#.               issues in that state sent to those addresses (this is in addition to 
+#.               normal issue-participant notifications)
+#.           </span>
+msgid "help_collector_notifications"
+msgstr "Fill in addresses next to the state names to have notifications for issues in that state sent to those addresses (this is in addition to normal issue-participant notifications)"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.                   Occasionally, product updates require internal catalog reinit and
+#.                   reindex and other existing-issue adjustment.  Collector product
+#.                   RELEASE_NOTES.txt will indicate when necessary.
+#.               </span>
+msgid "help_collector_reinstate"
+msgstr "Occasionally, product updates require internal catalog reinit and reindex and other existing-issue adjustment. Collector product RELEASE_NOTES.txt will indicate when necessary."
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.           Fill in the alternatives for issue categorization.
+#.           </span>
+msgid "help_collector_selections"
+msgstr "Fill in the alternatives for issue categorization."
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.           Supporters can be assigned to requests.  They may or may not
+#.               receive initial request notifications, depending on the
+#.               'dispatching' setting below.
+#.           </span>
+msgid "help_collector_supporters"
+msgstr "Supporters can be assigned to requests. They may or may not receive initial request notifications, depending on the 'dispatching' setting below."
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.       The text shown to users about what kind of version information they should include.
+#.       </span>
+msgid "help_collector_version_boilerplate"
+msgstr "The text shown to users about what kind of version information they should include."
+
+#: from plone_forms/join_form.pt
+#.   <div class="help" id="confirm_password_help" style="visibility:hidden">
+#.                   Re-enter the password. Make sure the passwords are identical.
+#.                   </div>
+#: from plone_forms/logged_in.pt
+#.   <div class="help" id="confirm_password_help" style="visibility:hidden">
+#.                               Re-enter the password. Make sure the passwords are identical.
+#.                               </div>
+#: from plone_forms/password_form.pt
+msgid "help_confirm_password"
+msgstr "Re-enter the password. Make sure the passwords are identical."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="contact_email_help" style="visibility:hidden">
+#.                   Enter an e-mail address to use for information regarding
+#.                   the event.
+#.                   </div>
+msgid "help_contact_email"
+msgstr "Enter an e-mail address to use for information regarding the event."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="contact_name_help" style="visibility:hidden">
+#.                   Enter a contact person or organization for the event.
+#.                   </div>
+msgid "help_contact_name"
+msgstr "Enter a contact person or organization for the event."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="contact_phone_help" style="visibility:hidden">
+#.                   Enter the phone number to call for information and/or
+#.                   booking.
+#.                   </div>
+msgid "help_contact_phone"
+msgstr "Enter the phone number to call for information and/or booking."
+
+#: from plone_forms/personalize_form.pt
+#.   <div class="help" id="wysiwyg_editor_help" style="visibility:hidden">
+#.                       Select the editor that you would like to use for editing
+#.                       content more easily. Content editors
+#.                       often have specific browser requirements.
+#.                       </div>
+msgid "help_content_editor"
+msgstr "Select the editor that you would like to use for editing content more easily. Content editors often have specific browser requirements."
+
+#: from plone_content/metadata_edit_form.pt
+#.   <div class="help" id="contributors_help" style="visibility:hidden">
+#.                   The names of people that have contributed to this item.
+#.                   Each contributor should be on a separate line.
+#.                   </div>
+msgid "help_contributors"
+msgstr "The names of people that have contributed to this item. Each contributor should be on a separate line."
+
+#: from plone_content/metadata_edit_form.pt
+#.   <div class="help" id="rights_help" style="visibility:hidden">
+#.                   Copyright information on the item.
+#.                   </div>
+msgid "help_copyrights"
+msgstr "Copyright information on the item."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="language_help" style="visibility:hidden">
+#.                  Specify the default language setting for newly created items. 
+#.                  </div>
+msgid "help_default_language"
+msgstr "Specify the default language setting for newly created items."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="skin_help" style="visibility:hidden">
+#.                  Specify the default site wide look to be used for users. 
+#.                  </div>
+msgid "help_default_look"
+msgstr "Specify the default site wide look to be used for users."
+
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the topic. 
+#.                   </div>
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="event_description_help" style="visibility:hidden">
+#.                   Enter a brief description of the event. 
+#.                   </div>
+#: from plone_content/document_edit_form.pt
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the document. 
+#.                   </div>
+#: from plone_content/file_edit_form.pt
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the file. 
+#.                   </div>
+#: from plone_content/image_edit_form.pt
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the image. 
+#.                   </div>
+#: from plone_content/link_edit_form.pt
+#: from plone_forms/folder_edit_form.pt
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the folder. 
+#.                   </div>
+msgid "help_description"
+msgstr "Enter a brief description of the folder."
+
+#: from plone_forms/personalize_form.pt
+#.   <div class="help" id="visible_ids_help" style="visibility:hidden">
+#.                       Select whether you want Names (also known as IDs) to be 
+#.                       visible and editable when editing contents. If you choose not
+#.                       to display Names, they will be generated automatically.
+#.                       </div>
+msgid "help_display_names"
+msgstr "Select whether you want Names (also known as IDs) to be visible and editable when editing contents. If you choose not to display Names, they will be generated automatically."
+
+#: from plone_forms/password_form.pt
+#.   <div class="help" id="domains_help" style="visibility:hidden">
+#.                   Here you can enter the domains you want to restrict the user to
+#.                   be able to sign in from. Useful in intranet situations.
+#.                   <strong>If you do not know what this field is for, leave it blank.</strong>
+#.                   </div>
+msgid "help_domains"
+msgstr "Here you can enter the domains you want to restrict the user to be able to sign in from. Useful in intranet situations. <strong>If you do not know what this field is for, leave it blank.</strong>"
+
+#: from plone_content/file_edit_form.pt
+#.   <div class="help" id="edit_contents_help" style="visibility:hidden">
+#.                   This file is a text file, and you can edit its
+#.                   contents directly.
+#.                   </div>
+msgid "help_edit_contents"
+msgstr "This file is a text file, and you can edit its contents directly."
+
+#: from plone_content/metadata_edit_form.pt
+#.   <div class="help" id="effective_date_help" style="visibility:hidden">
+#.                   The date when the document will be visible when it's published. This way, you can 
+#.                   publish a document in advance, but it will not be visible before this date.
+#.                   </div>
+#: from plone_forms/content_status_history.pt
+#.   <div class="help" id="effective_date_help" style="visibility:hidden">
+#.                   The date when the document will be visible when it's published. This way, you can 
+#.                   publish a document in advance, but it will not be visible before this date.  If no date is selected
+#.                   the document will be effective immediately.
+#.                   </div>
+msgid "help_effective_date"
+msgstr "The date when the document will be visible when it's published. This way, you can publish a document in advance, but it will not be visible before this date. If no date is selected the document will be effective immediately."
+
+#: from plone_forms/join_form.pt
+#.   <div class="help" id="email_help" style="visibility:hidden">
+#.                   Enter your email address. This is necessary in case you lose your
+#.                   password. We respect your privacy, and will not give the address
+#.                   away to any third parties.
+#.                   </div>
+msgid "help_email_creation"
+msgstr "Enter your email address. This is necessary in case you lose your password. We respect your privacy, and will not give the address away to any third parties."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="end_date_help" style="visibility:hidden">
+#.                        Enter the ending date and time,
+#.                        or click the calendar icon and select it.
+#.                   </div>
+msgid "help_event_end"
+msgstr "Enter the ending date and time, or click the calendar icon and select it."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="event_location_help" style="visibility:hidden">
+#.                   Enter the location where the event will take place. 
+#.                   </div>
+msgid "help_event_location"
+msgstr "Enter the location where the event will take place."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="start_date_help" style="visibility:hidden">
+#.                        Enter the starting date and time,
+#.                        or click the calendar icon and select it.
+#.                   </div>
+msgid "help_event_start"
+msgstr "Enter the starting date and time, or click the calendar icon and select it."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="event_type_help" style="visibility:hidden">
+#.                   Select the type of event. Multiple event types possible.
+#.                   </div>
+msgid "help_event_type"
+msgstr "Select the type of event. Multiple event types possible."
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="event_url_help" style="visibility:hidden">
+#.                   Enter the optional web address of a page containing more info about
+#.                   the event. 
+#.                   </div>
+msgid "help_event_url"
+msgstr "Enter the optional web address of a page containing more info about the event."
+
+#: from plone_content/metadata_edit_form.pt
+#.   <div class="help" id="expiration_date_help" style="visibility:hidden">
+#.                   The date when the document expires. This will automatically make the document
+#.                   invisible for others at the given date.
+#.                   </div>
+#: from plone_forms/content_status_history.pt
+#.   <div class="help" id="expiration_date_help" style="visibility:hidden">
+#.                   The date when the document expires. This will automatically make the document
+#.                   invisible for others at the given date. If no date is chosen, it will never expire.
+#.                   </div>
+msgid "help_expiration_date"
+msgstr "The date when the document expires. This will automatically make the document invisible for others at the given date. If no date is chosen, it will never expire."
+
+#: from plone_content/file_edit_form.pt
+#.   <div class="help" id="file_help" style="visibility:hidden">
+#.                   Select the file to be added by clicking the 'Browse' button.
+#.                   </div>
+msgid "help_file"
+msgstr "Select the file to be added by clicking the 'Browse' button."
+
+#: from plone_forms/personalize_form.pt
+#.   <div class="help" id="formtooltips_help" style="visibility:hidden">
+#.                       Select whether you want form help pop-ups to be displayed.
+#.                       </div>
+msgid "help_form_help"
+msgstr "Select whether you want form help pop-ups to be displayed."
+
+#: from plone_content/document_edit_form.pt
+#.   <div class="help" id="format_help" style="visibility:hidden">
+#.                   Select which format you want to type the contents of this
+#.                   document in. If you are unsure of which format to use, just
+#.                   select Plain Text and type the document as you usually
+#.                   do.
+#.                   </div>
+#: from plone_content/metadata_edit_form.pt
+#.   <div class="help" id="format_help" style="visibility:hidden">
+#.                   The MIME-type of the document. If you don't know what this does, just leave it. <br />
+#.    Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
+#.                   </div>
+#: from plone_content/newsitem_edit_form.pt
+msgid "help_format"
+msgstr "Select which format you want to type the contents of this document in. If you are unsure of which format to use, just select Plain Text and type the document as you usually do."
+
+#: from plone_content/image_edit_form.pt
+#.   <div class="help" id="image_help" style="visibility:hidden">
+#.                   Select the image to be added by clicking the 'Browse' button.
+#.                   </div>
+msgid "help_image"
+msgstr "Select the image to be added by clicking the 'Browse' button."
+
+#: from plone_forms/content_status_history.pt
+#.   <div class="help" id="include_subfolders_help" style="visibility:hidden">
+#.   	          If checked, Plone will attempt to publish all content in subfolders.
+#.   	     </div>
+msgid "help_include_subfolders"
+msgstr "If checked, Plone will attempt to publish all content in subfolders."
+
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <div class="help" id="acquire_criteria_help" style="visibility:hidden">
+#.                   Toggles inheritance of criteria. For example, if you
+#.                   have specified that only items from the last three days
+#.                   should be shown in a Topic above the current one, this
+#.                   Topic will also have that criterion automatically.
+#.                   </div>
+msgid "help_inherit_criteria"
+msgstr "Toggles inheritance of criteria. For example, if you have specified that only items from the last three days should be shown in a Topic above the current one, this Topic will also have that criterion automatically."
+
+#: from plone_content/metadata_edit_form.pt
+#.   <div class="help" id="keywords_help" style="visibility:hidden">
+#.                   Here you add the relevant keywords that describe this item. You can either 
+#.                   add new ones, or use some of the existing ones. We recommend using the existing
+#.                   keywords if possible, try to avoid adding new keywords that are essentially the 
+#.                   same as the existing ones.
+#.                   <br />
+#.   
+#.                   Each keyword must be on a separate line in the 'selected keywords' textbox.
+#.                   <br />
+#.   
+#.                   Existing Keywords can be easily changed, but currently is all subjects 
+#.                   that have ever been used in the system.
+#.                   </div>
+msgid "help_keywords"
+msgstr "Here you add the relevant keywords that describe this item. You can either add new ones, or use some of the existing ones. We recommend using the existing keywords if possible, try to avoid adding new keywords that are essentially the same as the existing ones. <br /> Each keyword must be on a separate line in the 'selected keywords' textbox. <br /> Existing Keywords can be easily changed, but currently is all subjects that have ever been used in the system."
+
+#: from plone_content/metadata_edit_form.pt
+#.   <div class="help" id="language_help" style="visibility:hidden">
+#.                   The language the document is written in, indicated
+#.                   by the ISO-639-2 code.
+#.                   </div>
+msgid "help_language"
+msgstr "The language the document is written in, indicated by the ISO-639-2 code."
+
+#: from plone_content/newsitem_edit_form.pt
+#.   <div class="help" id="leadin_help" style="visibility:hidden">
+#.                   A short descriptive summary of the news. This will be what shows up on the news
+#.                   page together with the headline and a link to the full news item.
+#.                   </div>
+msgid "help_lead-in"
+msgstr "A short descriptive summary of the news. This will be what shows up on the news page together with the headline and a link to the full news item."
+
+#: from plone_forms/personalize_form.pt
+#.   <div class="help" id="listed_status_help" style="visibility:hidden">
+#.                       Select whether you want to be listed on the public membership listing
+#.                       or not.	Remember that your Member folder will still be publicly accessible unless
+#.                       you change its security settings, even if you select "unlisted" here.
+#.                       </div>
+msgid "help_listed_status"
+msgstr "Select whether you want to be listed on the public membership listing or not. Remember that your Member folder will still be publicly accessible unless you change its security settings, even if you select \"unlisted\" here."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="long_date_format_help" style="visibility:hidden">
+#.                   You can enter the strftime format for how dates in the system will be formatted.
+#.                   Refer to strftime formats in C or Python manuals.
+#.                   </div>
+msgid "help_long_date_format"
+msgstr "You can enter the strftime format for how dates in the system will be formatted. Refer to strftime formats in C or Python manuals."
+
+#: from plone_forms/personalize_form.pt
+#.   <div class="help" id="skin_help" style="visibility:hidden">
+#.                       Here you choose the appearance of the site. Several styles are available.
+#.                       </div>
+msgid "help_look"
+msgstr "Here you choose the appearance of the site. Several styles are available."
+
+#: from plone_forms/join_form.pt
+#.   <div class="help" id="mail_password_help" style="visibility:hidden">
+#.                   Check this box to have your password 
+#.                   delivered to your mailbox, so you won't lose it.
+#.                   </div>
+msgid "help_mail_password"
+msgstr "Check this box to have your password delivered to your mailbox, so you won't lose it."
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.               Enter the ID of the document. This is the part that will show up as part
+#.               of the web address. This should be short, descriptive
+#.               and preferrably not contain spaces, underscores or mixed case. Example:
+#.               "expense-report-2002"
+#.               </div>
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.                   Enter the Name of the event. This is the part that will show up as part
+#.                   of the web address. This should be short, descriptive
+#.                   and preferrably not contain spaces, underscores or mixed case. Example:
+#.                   "expense-report-2002"
+#.                   </div>
+#: from plone_content/document_edit_form.pt
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.                   Enter the Name of the document. This is the part that will show up as part
+#.                   of the web address. This should be short, descriptive
+#.                   and preferrably not contain spaces, underscores or mixed case. Example:
+#.                   "expense-report-2002"
+#.                   </div>
+#: from plone_content/file_edit_form.pt
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.                   Enter the Name of the file. This is the part that will show up as part
+#.                   of the web address. This should be short, descriptive
+#.                   and preferrably not contain spaces, underscores or mixed case. Example:
+#.                   "expense-report-2002"
+#.                   </div>
+#: from plone_content/image_edit_form.pt
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.                   Enter the Short Name of the image. This is the part that will show up as part
+#.                   of the web address. This should be short, descriptive
+#.                   and preferrably not contain spaces, underscores or mixed case. Example:
+#.                   "expense-report-2002"
+#.                   </div>
+msgid "help_name"
+msgstr "Enter the Short Name of the image. This is the part that will show up as part of the web address. This should be short, descriptive and preferrably not contain spaces, underscores or mixed case. Example: \"expense-report-2002\""
+
+#: from plone_forms/personalize_form.pt
+#.   <div class="help" id="new_email_help" style="visibility:hidden">
+#.                       Enter your new e-mail address here, if you want to change it.
+#.                       </div>
+msgid "help_new_email"
+msgstr "Enter your new e-mail address here, if you want to change it."
+
+#: from plone_forms/logged_in.pt
+#.   <div class="help" id="new_password_help" style="visibility:hidden">
+#.                               Enter your new password. Minimum 5 characters.
+#.                               </div>
+#: from plone_forms/password_form.pt
+#.   <div class="help" id="new_password_help" style="visibility:hidden">
+#.                   Enter your new password. Minimum 5 characters.
+#.                   </div>
+msgid "help_new_password"
+msgstr "Enter your new password. Minimum 5 characters."
+
+#: from plone_forms/login_form.pt
+#.   <div class="help" id="password_help" style="visibility:hidden">
+#.               Enter your password. If you have forgotten it, use the
+#.               links at the bottom of this form to request it again.
+#.               </div>
+msgid "help_password"
+msgstr "Enter your password. If you have forgotten it, use the links at the bottom of this form to request it again."
+
+#: from plone_forms/join_form.pt
+#.   <div class="help" id="password_help" style="visibility:hidden">
+#.                   Enter the password you want. Minimum 5 characters.
+#.                   </div>
+msgid "help_password_creation"
+msgstr "Enter the password you want. Minimum 5 characters."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="password_policy_help" style="visibility:hidden">
+#.                   Selects if the users can choose their initial password or not. It's easier
+#.                   to create bogus accounts if the password is not generated, so if this is a concern, 
+#.                   choose "Generate".
+#.                   </div>
+msgid "help_password_policy"
+msgstr "Selects if the users can choose their initial password or not. It's easier to create bogus accounts if the password is not generated, so if this is a concern, choose \"Generate\"."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="portal_description_help" style="visibility:hidden">
+#.                   This description is made available via syndicated
+#.                   content and elsewhere.  It should be fairly brief.
+#.                   </div>
+msgid "help_portal_description"
+msgstr "This description is made available via syndicated content and elsewhere. It should be fairly brief."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="portal_from_address_help" style="visibility:hidden">
+#.                   When Plone generates mail, it uses this address
+#.                   as its (apparent) return address.
+#.                   </div>
+msgid "help_portal_from_address"
+msgstr "When Plone generates mail, it uses this address as its (apparent) return address."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="portal_from_name_help" style="visibility:hidden">
+#.                   When Plone generates mail, it uses this name
+#.                   as its (apparent) sender.
+#.                   </div>
+msgid "help_portal_from_name"
+msgstr "When Plone generates mail, it uses this name as its (apparent) sender."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="portal_title_help" style="visibility:hidden">
+#.                   This is the title of your Plone portal.
+#.                   </div>
+msgid "help_portal_title"
+msgstr "This is the title of your Plone portal."
+
+#: from plone_forms/personalize_form.pt
+#.   <div class="help" id="portrait_help" style="visibility:hidden">
+#.                       To add a new portrait, click the <strong>Browse</strong> button and select
+#.                       a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
+#.   
+#.                       </div>
+msgid "help_portrait"
+msgstr "To add a new portrait, click the <strong>Browse</strong> button and select a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <textarea cols="55" name="description:text" rows="10">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
+msgid "help_prefix_lines_with_whitespace"
+msgstr "Prefix lines with whitespace or '&gt;' to preserve their format."
+
+#: from plone_forms/content_status_history.pt
+#.   <div class="help" id="publishing_comments_help" style="visibility:hidden">
+#.                   Enter a short description or some comments to be added
+#.                   to the comments field in the publishing history. If multiple
+#.                   items are selected, this comment will be attached to all of
+#.                   them.
+#.                   </div>
+msgid "help_publishing_comments"
+msgstr "Enter a short description or some comments to be added to the comments field in the publishing history. If multiple items are selected, this comment will be attached to all of them."
+
+#: from plone_forms/login_form.pt
+#.   <div class="help" id="remember_help" style="visibility:hidden">
+#.               Setting the 'Remember my name' option will create a cookie with your username.
+#.               When you sign in later, your user name will already be filled in for you.
+#.               </div>
+msgid "help_remember_my_name"
+msgstr "Setting the 'Remember my name' option will create a cookie with your username. When you sign in later, your user name will already be filled in for you."
+
+#: from plone_forms/search_form.pt
+#.   <div class="help" id="author_search_help" style="visibility:hidden">
+#.                   Return items created by a particular person.
+#.                   </div>
+msgid "help_search_author"
+msgstr "Return items created by a particular person."
+
+#: from plone_forms/search_form.pt
+#.   <div class="help" id="description_search_help" style="visibility:hidden">
+#.                   Return items matching this description.
+#.                   Multiple words may be found
+#.                   by combining them with <strong>AND</strong> and <strong>OR</strong>.
+#.                   </div>
+msgid "help_search_description"
+msgstr "Return items matching this description. Multiple words may be found by combining them with <strong>AND</strong> and <strong>OR</strong>."
+
+#: from plone_forms/search_form.pt
+#.   <div class="help" id="item_type_search_help" style="visibility:hidden">
+#.                   Return items of a specific type.
+#.                   </div>
+msgid "help_search_item_type"
+msgstr "Return items of a specific type."
+
+#: from plone_forms/search_form.pt
+#.   <div class="help" id="keywords_search_help" style="visibility:hidden">
+#.                   Return items matching one or more of these subjects.
+#.                   Multiple words may be found
+#.                   by combining them with <strong>AND</strong> and <strong>OR</strong>.
+#.                   </div>
+msgid "help_search_keywords"
+msgstr "Return items matching one or more of these subjects. Multiple words may be found by combining them with <strong>AND</strong> and <strong>OR</strong>."
+
+#: from plone_forms/search_form.pt
+#.   <div class="help" id="new_items_since_search_help" style="visibility:hidden">
+#.                   Return items added since you were last logged on, the last week, etc.
+#.                   </div>
+msgid "help_search_new_items_since"
+msgstr "Return items added since you were last logged on, the last week, etc."
+
+#: from plone_forms/search_form.pt
+#.   <div class="help" id="review_status_search_help" style="visibility:hidden">
+#.                   As a reviewer, you may search for items based on their
+#.                   review state. If you wish to constrain results to items
+#.                   in certain states, select them from this list.
+#.                   </div>
+msgid "help_search_review_status"
+msgstr "As a reviewer, you may search for items based on their review state. If you wish to constrain results to items in certain states, select them from this list."
+
+#: from plone_forms/search_form.pt
+#.   <div class="help" id="text_search_help" style="visibility:hidden">
+#.                   For a simple text search, enter your search term
+#.                   here. Multiple words may be found by combining
+#.                   them with <strong>AND</strong> and <strong>OR</strong>. 
+#.                   The text in this field will be matched with
+#.                   items' contents, title and description.
+#.                   </div>
+msgid "help_search_text"
+msgstr "For a simple text search, enter your search term here. Multiple words may be found by combining them with <strong>AND</strong> and <strong>OR</strong>. The text in this field will be matched with items' contents, title and description."
+
+#: from plone_forms/search_form.pt
+#.   <div class="help" id="title_search_help" style="visibility:hidden">
+#.                   Return items matching this title.
+#.                   </div>
+msgid "help_search_title"
+msgstr "Return items matching this title."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="short_date_format_help" style="visibility:hidden">
+#.                   You can enter the strftime format for how dates in the system will be formatted.
+#.                   Refer to strftime formats in C or Python manuals.
+#.                   </div>
+msgid "help_short_date_format"
+msgstr "You can enter the strftime format for how dates in the system will be formatted. Refer to strftime formats in C or Python manuals."
+
+#: from plone_forms/reconfig_form.pt
+#.   <div class="help" id="smtp_server_help" style="visibility:hidden">
+#.                   This is the address of your local SMTP (outgoing
+#.                   mail) server. Usually "localhost", unless you use an
+#.                   external server to send mail.
+#.                   </div>
+msgid "help_smtp_server"
+msgstr "This is the address of your local SMTP (outgoing mail) server. Usually \"localhost\", unless you use an external server to send mail."
+
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the topic.
+#.                   </div>
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of this event. 
+#.                   </div>
+#: from plone_content/document_edit_form.pt
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the document.
+#.                   </div>
+#: from plone_content/file_edit_form.pt
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the file.
+#.                   </div>
+#: from plone_content/image_edit_form.pt
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the image.
+#.                   </div>
+#: from plone_content/link_edit_form.pt
+#: from plone_content/newsitem_edit_form.pt
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the news item.
+#.                   </div>
+#: from plone_forms/folder_edit_form.pt
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the folder.
+#.                   </div>
+msgid "help_title"
+msgstr "Enter the title of the folder."
+
+#: from plone_content/document_edit_form.pt
+#.   <div class="help" id="upload_help" style="visibility:hidden">
+#.                   This feature can be used if you already have the contents 
+#.                   in an existing file on your computer and want to add 
+#.                   it to this item.
+#.                   
+#.                   <br />
+#.   &nbsp;<br />
+#.   
+#.                   
+#.                   <strong>Please note that this takes precedence over the 
+#.                   body text entered above, and all content in the field above
+#.                   will be replaced with the contents of the file supplied here.
+#.                   </strong>
+#.                   </div>
+msgid "help_upload_text"
+msgstr "This feature can be used if you already have the contents in an existing file on your computer and want to add it to this item. <br /> &nbsp;<br /> <strong>Please note that this takes precedence over the body text entered above, and all content in the field above will be replaced with the contents of the file supplied here. </strong>"
+
+#: from plone_content/link_edit_form.pt
+#.   <div class="help" id="url_help" style="visibility:hidden">
+#.                   The address of the location. Prefix is optional; if not
+#.                   provided, the link will be relative.
+#.                   </div>
+msgid "help_url"
+msgstr "The address of the location. Prefix is optional; if not provided, the link will be relative."
+
+#: from plone_forms/login_form.pt
+#.   <div class="help" id="user_name_help" style="visibility:hidden">
+#.                   Enter the user name you use on this site. If you haven't
+#.                   got a user name yet, or have forgotten it, use the links at the
+#.                   bottom of this form.
+#.                   </div>
+msgid "help_user_name"
+msgstr "Enter the user name you use on this site. If you haven't got a user name yet, or have forgotten it, use the links at the bottom of this form."
+
+#: from plone_forms/join_form.pt
+#.   <div class="help" id="user_name_help" style="visibility:hidden">
+#.                   Enter the user name you want, usually something like
+#.                   "jsmith". No spaces or special characters. 
+#.                   This is the name you use to sign in.
+#.                   </div>
+msgid "help_user_name_creation"
+msgstr "Enter the user name you want, usually something like \"jsmith\". No spaces or special characters. This is the name you use to sign in."
+
+#: from plone_content/document_edit_form.pt
+#.   <label for="cb_html">HTML</label>
+#: from plone_content/newsitem_edit_form.pt
+msgid "html"
+msgstr "HTML"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label"> 
+#.           Abbreviation 
+#.           
+#.           </div>
+msgid "label_abbreviation"
+msgstr "Abbreviation"
+
+#: from plone_forms/content_status_history.pt
+#.   <div class="label">Affected content</div>
+msgid "label_affected_content"
+msgstr "Affected content"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span>Allow Discussion</span>
+msgid "label_allow_discussion"
+msgstr "Allow Discussion"
+
+#: from plone_forms/reconfig_form.pt
+#.   <label for="validate_email_off">Allow members to select their initial password</label>
+msgid "label_allow_members_to_create_password"
+msgstr "Allow members to select their initial password"
+
+#: from plone_forms/search_form.pt
+#.   <option value="">Any Author</option>
+msgid "label_any_author"
+msgstr "Any Author"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Assign to</div>
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <label for="radio_action_Assign">Assign to:</label>
+msgid "label_assign_to"
+msgstr "Assign to:"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Attachment (optional)</div>
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_attachment_optional"
+msgstr "Attachment (optional)"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label"> Attachment type (optional)</div>
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <div class="label">Attachment type (optional)</div>
+msgid "label_attachment_type_optional"
+msgstr "Attachment type (optional)"
+
+#: from plone_forms/search_form.pt
+#.   <span>Author</span>
+msgid "label_author"
+msgstr "Author"
+
+#: from plone_content/document_edit_form.pt
+#.   <span>Body text</span>
+#: from plone_content/newsitem_edit_form.pt
+#: from plone_forms/discussion_reply_form.pt
+#.   <div class="label">
+#.               Body text
+#.               </div>
+msgid "label_body_text"
+msgstr "Body text"
+
+#: from plone_forms/content_status_history.pt
+#.   <span>Change State</span>
+msgid "label_change_status"
+msgstr "Change State"
+
+#: from plone_forms/reconfig_form.pt
+#.   <option value="">Choose Language</option>
+msgid "label_choose_language"
+msgstr "Choose Language"
+
+#: from plone_forms/reconfig_form.pt
+#.   <option value="">Choose Look</option>
+msgid "label_choose_look"
+msgstr "Choose Look"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Classification</div>
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_classification"
+msgstr "Classification"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <div class="label">Action</div>
+msgid "label_collector_action"
+msgstr "Action"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.             Anyone
+#.   
+#.                     (Anyone, including anonymous visitors, can chime in)
+#.             </span>
+msgid "label_collector_anyone"
+msgstr "Anyone (Anyone, including anonymous visitors, can chime in)"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.             Authenticated
+#.   
+#.                     (Any non-anonymous visitors can participate)
+#.             </span>
+msgid "label_collector_authenticated"
+msgstr "Authenticated (Any non-anonymous visitors can participate)"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>Classifications</span>
+msgid "label_collector_classifications"
+msgstr "Classifications"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Dispatcher Mode</div>
+msgid "label_collector_dispatcher_mode"
+msgstr "Dispatcher Mode"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.           Off (Managers and supporters receive pending-issue notices)
+#.           </span>
+msgid "label_collector_dispatcher_off"
+msgstr "Off (Managers and supporters receive pending-issue notices)"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.               On (Only managers receive pending-issue notices)
+#.           </span>
+msgid "label_collector_dispatcher_on"
+msgstr "On (Only managers receive pending-issue notices)"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Collector email</div>
+msgid "label_collector_email"
+msgstr "Collector email"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>Importance</span>
+msgid "label_collector_importance"
+msgstr "Importance"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Managers</div>
+msgid "label_collector_managers"
+msgstr "Managers"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Participation Mode</div>
+msgid "label_collector_participation_mode"
+msgstr "Participation Mode"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>Internal only</span>
+msgid "label_collector_reinstate_internal_only"
+msgstr "Internal only"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>No</span>
+msgid "label_collector_reinstate_no"
+msgstr "No"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>Internal &amp; Site-wide (slow)</span>
+msgid "label_collector_reinstate_sitewide"
+msgstr "Internal &amp; Site-wide (slow)"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>
+#.             Staff
+#.   
+#.                     (Only collector staff and issue requester participate in an
+#.                     issue)
+#.             </span>
+msgid "label_collector_staff"
+msgstr "Staff (Only collector staff and issue requester participate in an issue)"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Supporters</div>
+msgid "label_collector_supporters"
+msgstr "Supporters"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>Topics</span>
+msgid "label_collector_topics"
+msgstr "Topics"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="label">Transcript</div>
+msgid "label_collector_transcript"
+msgstr "Transcript"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="label">Comment</div>
+msgid "label_comment"
+msgstr "Comment"
+
+#: from plone_forms/talkback_tree.pt
+#.   <span>by</span>
+#: from plone_forms/viewThreadsAtBottom.pt
+#.   <span>Posted by</span>
+#: from plone_forms/viewThreadsAtBottom.pt
+msgid "label_comment_by"
+msgstr "Posted by"
+
+#: from plone_forms/talkback_tree.pt
+#.   <span>at</span>
+#: from plone_forms/viewThreadsAtBottom.pt
+#: from plone_forms/viewThreadsAtBottom.pt
+msgid "label_commented_at"
+msgstr "at"
+
+#: from plone_forms/content_status_history.pt
+#.   <span>Comments</span>
+msgid "label_comments"
+msgstr "Comments"
+
+#: from plone_forms/join_form.pt
+#.   <span>Confirm <br />
+#.   Password</span>
+#: from plone_forms/logged_in.pt
+#.   <span>Confirm password</span>
+#: from plone_forms/password_form.pt
+msgid "label_confirm_password"
+msgstr "Confirm password"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Contact E-mail</span>
+msgid "label_contact_email"
+msgstr "Contact E-mail"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Contact Name</span>
+msgid "label_contact_name"
+msgstr "Contact Name"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Contact Phone</span>
+msgid "label_contact_phone"
+msgstr "Contact Phone"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <div class="label">Contains</div>
+msgid "label_contains"
+msgstr "Contains"
+
+#: from plone_forms/personalize_form.pt
+#.   <span>Content editor</span>
+msgid "label_content_editor"
+msgstr "Content editor"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span>Contributors</span>
+msgid "label_contributors"
+msgstr "Contributors"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span>Copyrights</span>
+msgid "label_copyrights"
+msgstr "Copyrights"
+
+#: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#.   <span>
+#.   Field name
+#.   </span>
+msgid "label_criteria_field_name"
+msgstr "Field name"
+
+#: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#.   <span>
+#.   Criteria type
+#.   </span>
+msgid "label_criteria_type"
+msgstr "Criteria type"
+
+#: from plone_3rdParty/CMFTopic/friendlydatec_editform.pt
+#.   <div attributes="id string:${criterionid}_help;" content="criterion/Description | here/Description" class="help" id="" style="visibility:hidden">
+#.           Date
+#.           </div>
+msgid "label_date"
+msgstr "Date"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Default Language</span>
+msgid "label_default_language"
+msgstr "Default Language"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Default Look</span>
+msgid "label_default_look"
+msgstr "Default Look"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Description</div>
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <span>Description</span>
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Event Description</span>
+#: from plone_content/document_edit_form.pt
+#: from plone_content/file_edit_form.pt
+#: from plone_content/image_edit_form.pt
+#: 3 more references
+msgid "label_description"
+msgstr "Description"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <label for="discussion_default">Default</label>
+msgid "label_discussion_default"
+msgstr "Default"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <label for="discussion_off">Disabled</label>
+msgid "label_discussion_disabled"
+msgstr "Disabled"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <label for="discussion_on">Enabled</label>
+msgid "label_discussion_enabled"
+msgstr "Enabled"
+
+#: from plone_forms/personalize_form.pt
+#.   <span>Display Names</span>
+msgid "label_display_names"
+msgstr "Display Names"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <label for="radio_action_comment">Comment</label>
+msgid "label_do_comment"
+msgstr "Comment"
+
+#: from plone_forms/password_form.pt
+#.   <span>Domains</span>
+msgid "label_domains"
+msgstr "Domains"
+
+#: from plone_content/file_edit_form.pt
+#.   <span>Edit Contents</span>
+msgid "label_edit_contents"
+msgstr "Edit Contents"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span>Effective Date</span>
+#: from plone_forms/content_status_history.pt
+msgid "label_effective_date"
+msgstr "Effective Date"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Email</div>
+#: from plone_forms/join_form.pt
+#.   <span>E-mail</span>
+#: from plone_forms/personalize_form.pt
+msgid "label_email"
+msgstr "E-mail"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <option value="email">Email Address</option>
+msgid "label_email_address"
+msgstr "Email Address"
+
+#: from plone_templates/standard_error_message.pt
+#.   <div class="label">
+#.                       Error Message
+#.                       </div>
+msgid "label_error_message"
+msgstr "Error Message"
+
+#: from plone_templates/standard_error_message.pt
+#.   <div class="label">
+#.                       Error Type
+#.                       </div>
+msgid "label_error_type"
+msgstr "Error Type"
+
+#: from plone_templates/standard_error_message.pt
+#.   <div class="label">
+#.                       Error Value
+#.                       </div>
+msgid "label_error_value"
+msgstr "Error Value"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Event Ends</span>
+msgid "label_event_end"
+msgstr "Event Ends"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Event Location</span>
+msgid "label_event_location"
+msgstr "Event Location"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Event Starts</span>
+msgid "label_event_start"
+msgstr "Event Starts"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Event Type</span>
+msgid "label_event_type"
+msgstr "Event Type"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Event URL</span>
+msgid "label_event_url"
+msgstr "Event URL"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span>Expiration Date</span>
+#: from plone_forms/content_status_history.pt
+msgid "label_expiration_date"
+msgstr "Expiration Date"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <label for="radio_attachment_type_file">File</label>
+#: from plone_content/file_edit_form.pt
+#.   <span>File</span>
+msgid "label_file"
+msgstr "File"
+
+#: from plone_content/file_view.pt
+#.   <div class="label">File type</div>
+msgid "label_file_type"
+msgstr "File type"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <div class="label">Follow-up</div>
+msgid "label_follow_up"
+msgstr "Follow-up"
+
+#: from plone_forms/login_form.pt
+#.   <strong>
+#.                   Forgotten your password?
+#.                   </strong>
+msgid "label_forgotten_your_password"
+msgstr "Forgotten your password?"
+
+#: from plone_forms/personalize_form.pt
+#.   <span>Form Help</span>
+msgid "label_form_help"
+msgstr "Form Help"
+
+#: from plone_content/document_edit_form.pt
+#.   <span>Format</span>
+#: from plone_content/metadata_edit_form.pt
+#: from plone_content/newsitem_edit_form.pt
+msgid "label_format"
+msgstr "Format"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="label">From (alt. email)</div>
+msgid "label_from_alt_email"
+msgstr "From (alt. email)"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="label">From (login name)</div>
+msgid "label_from_login_name"
+msgstr "From (login name)"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="label">From (name)</div>
+msgid "label_from_name"
+msgstr "From (name)"
+
+#: from plone_forms/reconfig_form.pt
+#.   <label for="validate_email_on">Generate and e-mail members' initial password</label>
+msgid "label_generate_and_email_passwords"
+msgstr "Generate and e-mail members' initial password"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <label for="radio_attachment_type_image">Image</label>
+#: from plone_content/image_edit_form.pt
+#.   <span>Image</span>
+msgid "label_image"
+msgstr "Image"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Importance</div>
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_importance"
+msgstr "Importance"
+
+#: from plone_forms/content_status_history.pt
+#.   <label for="include_subfolders">Include subfolders</label>
+msgid "label_include_subfolders"
+msgstr "Include subfolders"
+
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <span>Inherit Criteria</span>
+msgid "label_inherit_criteria"
+msgstr "Inherit Criteria"
+
+#: from plone_forms/search_form.pt
+#.   <span>Item type</span>
+msgid "label_item_type"
+msgstr "Item type"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span>Keywords</span>
+#: from plone_forms/search_form.pt
+msgid "label_keywords"
+msgstr "Keywords"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span>Language</span>
+msgid "label_language"
+msgstr "Language"
+
+#: from plone_content/newsitem_edit_form.pt
+#.   <span>Lead-in</span>
+msgid "label_lead-in"
+msgstr "Lead-in"
+
+#: from plone_forms/personalize_form.pt
+#.   <span>Listed status</span>
+msgid "label_listed_status"
+msgstr "Listed status"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <div class="label">
+#.             			Role to assign
+#.             			</div>
+msgid "label_localrole_to_assign"
+msgstr "Role to assign"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Long Date</span>
+msgid "label_long_date_format"
+msgstr "Long Date"
+
+#: from plone_forms/personalize_form.pt
+#.   <span>Look</span>
+msgid "label_look"
+msgstr "Look"
+
+#: from plone_forms/join_form.pt
+#.   <span>Mail Password?</span>
+msgid "label_mail_password"
+msgstr "Mail Password?"
+
+#: from plone_forms/personalize_form.pt
+#.   <label for="cb_listed">Listed</label>
+msgid "label_member_listed"
+msgstr "Listed"
+
+#: from plone_forms/personalize_form.pt
+#.   <label for="cb_unlisted">Unlisted</label>
+msgid "label_member_unlisted"
+msgstr "Unlisted"
+
+#: from plone_forms/mail_password_form.pt
+#.   <div class="label">
+#.               My user name is
+#.               </div>
+msgid "label_my_user_name_is"
+msgstr "My user name is"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span>Name</span>
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: from plone_content/document_edit_form.pt
+#: from plone_content/file_edit_form.pt
+#: from plone_content/image_edit_form.pt
+#: from plone_content/link_edit_form.pt
+#.   <span>Short Name</span>
+#: from plone_content/newsitem_edit_form.pt
+#: 2 more references
+msgid "label_name"
+msgstr "Name"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Name of upload (optional)</div>
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_name_of_upload_optional"
+msgstr "Name of upload (optional)"
+
+#: from plone_forms/search_form.pt
+#.   <span>New items since</span>
+msgid "label_new_items_since"
+msgstr "New items since"
+
+#: from plone_forms/ownership_form.pt
+#.   <span>New owner</span>
+msgid "label_new_owner"
+msgstr "New owner"
+
+#: from plone_forms/logged_in.pt
+#.   <span>New password</span>
+#: from plone_forms/password_form.pt
+msgid "label_new_password"
+msgstr "New password"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Notifications</div>
+msgid "label_notifications"
+msgstr "Notifications"
+
+#: from plone_forms/personalize_form.pt
+#.   <option attributes="value editor;
+#.                                                    selected python:test(editor==wysiwyg_editor, 'selected', '');" content="editor" value="None">
+#.                            Ordinary Form-based Editor (works in all browsers)
+#.                            </option>
+msgid "label_ordinary_content_editor"
+msgstr "Ordinary Form-based Editor (works in all browsers)"
+
+#: from plone_forms/join_form.pt
+#.   <span>Password</span>
+#: from plone_forms/login_form.pt
+#: from plone_templates/ui_slots/login_slot.pt
+#.   <strong>Password</strong>
+msgid "label_password"
+msgstr "Password"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Password policy</span>
+msgid "label_password_policy"
+msgstr "Password policy"
+
+#: from plone_forms/join_form.pt
+#.   <div class="field">
+#.               A password will be generated and 
+#.               e-mailed to you to complete the registration process.
+#.               </div>
+msgid "label_password_will_be_mailed"
+msgstr "A password will be generated and e-mailed to you to complete the registration process."
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Portal description</span>
+msgid "label_portal_description"
+msgstr "Portal description"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Portal 'From' address</span>
+msgid "label_portal_from_address"
+msgstr "Portal 'From' address"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Portal 'From' name</span>
+msgid "label_portal_from_name"
+msgstr "Portal 'From' name"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Portal title</span>
+msgid "label_portal_title"
+msgstr "Portal title"
+
+#: from plone_forms/personalize_form.pt
+#.   <span>Portrait</span>
+msgid "label_portrait"
+msgstr "Portrait"
+
+#: from plone_forms/content_status_history.pt
+#.   <span omit-tag="">effective</span>
+msgid "label_publishing_effective"
+msgstr "effective"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Reinstate catalog</div>
+msgid "label_reinstate_catalog"
+msgstr "Reinstate catalog"
+
+#: from plone_forms/login_form.pt
+#.   <label for="cb_remember">Remember my name.</label>
+msgid "label_remember_my_name"
+msgstr "Remember my name."
+
+#: from plone_forms/search_form.pt
+#.   <span>Review status</span>
+msgid "label_review_status"
+msgstr "Review status"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <span>
+#.                           Role(s): 
+#.                           </span>
+msgid "label_roles"
+msgstr "Role(s):"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <div class="label">
+#.             				Search by
+#.             			</div>
+msgid "label_search_by"
+msgstr "Search by"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <div class="label">
+#.                           Search Term
+#.                       </div>
+msgid "label_search_term"
+msgstr "Search Term"
+
+#: from plone_forms/search_form.pt
+#.   <span>Search Text</span>
+msgid "label_search_text"
+msgstr "Search Text"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Security</div>
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_security"
+msgstr "Security"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <label for="security_related_checkbox">Security related</label>
+msgid "label_security_related"
+msgstr "Security related"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <span>
+#.               Yes, this issue is security related, and
+#.               should <strong>not</strong> be publicly visible until
+#.               completed.
+#.               </span>
+msgid "label_security_related_desc"
+msgstr "Yes, this issue is security related, and should <strong>not</strong> be publicly visible until completed."
+
+#: from plone_templates/folder_contents.pt
+#.   <option value="Select">Select</option>
+msgid "label_select"
+msgstr "Select"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span>
+#.                       Selected keywords
+#.                       </span>
+msgid "label_selected_keywords"
+msgstr "Selected keywords"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Selections</div>
+msgid "label_selections"
+msgstr "Selections"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>Short Date</span>
+msgid "label_short_date_format"
+msgstr "Short Date"
+
+#: from plone_templates/folder_contents.pt
+#.   <option attributes="selected
+#.   					    python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');" value="#">
+#.                                       Show All Items
+#.                                       </option>
+msgid "label_show_all_items"
+msgstr "Show All Items"
+
+#: from plone_content/file_view.pt
+#.   <div class="label">Size</div>
+#: from plone_content/image_view.pt
+#.   <span>Size:</span>
+msgid "label_size"
+msgstr "Size:"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span>SMTP server</span>
+msgid "label_smtp_server"
+msgstr "SMTP server"
+
+#: from plone_forms/content_status_history.pt
+#.   <div class="label">Status</div>
+msgid "label_status"
+msgstr "Status"
+
+#: from plone_forms/content_status_history.pt
+#.   <span>Subfolders</span>
+msgid "label_subfolders"
+msgstr "Subfolders"
+
+#: from plone_forms/discussion_reply_form.pt
+#.   <div class="label">
+#.               Subject
+#.               </div>
+msgid "label_subject"
+msgstr "Subject"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Submitter</div>
+msgid "label_submitter"
+msgstr "Submitter"
+
+#: from plone_forms/ownership_form.pt
+#.   <span>Subobjects</span>
+msgid "label_subobjects"
+msgstr "Subobjects"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <div class="label">Channel Description</div>
+msgid "label_syndication_channel_description"
+msgstr "Channel Description"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <div class="label">Channel Title</div>
+msgid "label_syndication_channel_title"
+msgstr "Channel Title"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <span>Maximum Items</span>
+msgid "label_syndication_max_items"
+msgstr "Maximum Items"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <span>Update Base</span>
+msgid "label_syndication_update_base"
+msgstr "Update Base"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <span>Update Frequency</span>
+msgid "label_syndication_update_frequency"
+msgstr "Update Frequency"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <span>Update Period</span>
+msgid "label_syndication_update_period"
+msgstr "Update Period"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Title</div>
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span>Title</span>
+#: from plone_content/document_edit_form.pt
+#: from plone_content/file_edit_form.pt
+#: from plone_content/image_edit_form.pt
+#: from plone_content/link_edit_form.pt
+#: 2 more references
+msgid "label_title"
+msgstr "Title"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label"> Topic </div>
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="label">Topic</div>
+msgid "label_topic"
+msgstr "Topic"
+
+#: from plone_forms/login_form.pt
+#.   <strong>
+#.                   Having trouble logging in?
+#.                   </strong>
+msgid "label_trouble_logging_in"
+msgstr "Having trouble logging in?"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="label">Upload</div>
+msgid "label_upload"
+msgstr "Upload"
+
+#: from plone_content/document_edit_form.pt
+#.   <span>Upload contents (optional)</span>
+msgid "label_upload_contents_optional"
+msgstr "Upload contents (optional)"
+
+#: from plone_content/link_edit_form.pt
+#.   <span>URL</span>
+msgid "label_url"
+msgstr "URL"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <option value="username">User Name</option>
+#: from plone_forms/join_form.pt
+#.   <span>User Name</span>
+#: from plone_forms/login_form.pt
+msgid "label_user_name"
+msgstr "User Name"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <div class="label">Version boilerplate</div>
+msgid "label_version_boilerplate"
+msgstr "Version boilerplate"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <div class="label">Version Info</div>
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <div class="label">Version info</div>
+msgid "label_version_info"
+msgstr "Version info"
+
+#: from plone_forms/roster.pt
+#.   <span>Visible Members</span>
+msgid "label_visible_members"
+msgstr "Visible Members"
+
+#: from plone_forms/join_form.pt
+#.   <label for="cb_mailme">Yes, mail me my password</label>
+msgid "label_yes_mail_me_password"
+msgstr "Yes, mail me my password"
+
+#: from plone_forms/search_form.pt
+#.   <option condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1);" attributes="value python:container.portal_membership.getAuthenticatedMember().last_login_time" value="#">Last sign-in</option>
+msgid "last_login"
+msgstr "Last sign-in"
+
+#: from plone_templates/news.pt
+#.   <span omit-tag="">Last Updated</span>
+msgid "last_updated"
+msgstr "Last Updated"
+
+#: from plone_forms/login_form.pt
+#.   <span class="legend">Account details</span>
+msgid "legend_account_details"
+msgstr "Account details"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <span class="legend">Assigned Roles</span>
+msgid "legend_assigned_roles"
+msgstr "Assigned Roles"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <span class="legend">Available Members</span>
+msgid "legend_available_members"
+msgstr "Available Members"
+
+#: from plone_forms/ownership_form.pt
+#.   <span class="legend">Change Ownership</span>
+msgid "legend_change_ownership"
+msgstr "Change Ownership"
+
+#: from plone_3rdParty/CMFCollector/collector_edit_form.pt
+#.   <span class="legend">Collector Details</span>
+msgid "legend_collector_details"
+msgstr "Collector Details"
+
+#: from plone_forms/discussion_reply_form.pt
+#.   <span class="legend">Comment Details</span>
+msgid "legend_comment_details"
+msgstr "Comment Details"
+
+#: from plone_content/event_view.pt
+#.   <span class="legend">Contact details</span>
+msgid "legend_contact_details"
+msgstr "Contact details"
+
+#: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#.   <span class="legend">Criteria Details</span>
+msgid "legend_criteria_details"
+msgstr "Criteria Details"
+
+#: from plone_content/document_edit_form.pt
+#.   <span class="legend">Document Details</span>
+msgid "legend_document_details"
+msgstr "Document Details"
+
+#: from plone_templates/standard_error_message.pt
+#.   <span class="legend">Error Details</span>
+msgid "legend_error_details"
+msgstr "Error Details"
+
+#: from plone_3rdParty/CMFCalendar/event_edit_form.pt
+#.   <span class="legend">Event Details</span>
+#: from plone_content/event_view.pt
+msgid "legend_event_details"
+msgstr "Event Details"
+
+#: from plone_content/file_view.pt
+#.   <span class="legend">File details</span>
+#: from plone_content/file_edit_form.pt
+msgid "legend_file_details"
+msgstr "File details"
+
+#: from plone_forms/folder_edit_form.pt
+#.   <span class="legend">Folder Details</span>
+msgid "legend_folder_details"
+msgstr "Folder Details"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <span class="legend">Follow-up details</span>
+msgid "legend_follow_up_details"
+msgstr "Follow-up details"
+
+#: from plone_content/image_edit_form.pt
+#.   <span class="legend">Image Details</span>
+msgid "legend_image_details"
+msgstr "Image Details"
+
+#: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#.   <span class="legend">Issue Details</span>
+#: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#.   <span class="legend">Issue details</span>
+msgid "legend_issue_details"
+msgstr "Issue details"
+
+#: from plone_content/metadata_edit_form.pt
+#.   <span class="legend">Item Properties</span>
+msgid "legend_item_properties"
+msgstr "Item Properties"
+
+#: from plone_forms/folder_factories.pt
+#.   <span class="legend">Items Available</span>
+msgid "legend_items_available"
+msgstr "Items Available"
+
+#: from plone_content/link_edit_form.pt
+#.   <span class="legend">Link Details</span>
+msgid "legend_link_details"
+msgstr "Link Details"
+
+#: from plone_forms/personalize_form.pt
+#.   <span class="legend">Member Details</span>
+msgid "legend_member_details"
+msgstr "Member Details"
+
+#: from plone_content/newsitem_edit_form.pt
+#.   <span class="legend">News Item Details</span>
+msgid "legend_news_item_details"
+msgstr "News Item Details"
+
+#: from plone_forms/logged_in.pt
+#.   <span class="legend">Password Details</span>
+msgid "legend_password_details"
+msgstr "Password Details"
+
+#: from plone_forms/join_form.pt
+#.   <span class="legend">Personal Details</span>
+msgid "legend_personal_details"
+msgstr "Personal Details"
+
+#: from plone_forms/reconfig_form.pt
+#.   <span class="legend">Plone Details</span>
+msgid "legend_plone_details"
+msgstr "Plone Details"
+
+#: from plone_forms/content_status_history.pt
+#.   <span class="legend">Publishing Details</span>
+msgid "legend_publishing_details"
+msgstr "Publishing Details"
+
+#: from plone_forms/folder_rename_form.pt
+#.   <span class="legend">Rename Details</span>
+msgid "legend_rename_details"
+msgstr "Rename Details"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <span class="legend">Search for issues</span>
+msgid "legend_search_for_issues"
+msgstr "Search for issues"
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <span class="legend">Search Terms</span>
+#: from plone_forms/search_form.pt
+msgid "legend_search_terms"
+msgstr "Search Terms"
+
+#: from plone_forms/content_status_history.pt
+#.   <span class="legend">Status</span>
+msgid "legend_status"
+msgstr "Status"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <span class="legend">Channel Details</span>
+msgid "legend_syndication_channel_details"
+msgstr "Channel Details"
+
+#: from plone_forms/synPropertiesForm.pt
+#.   <span class="legend">Syndication Details</span>
+msgid "legend_syndication_details"
+msgstr "Syndication Details"
+
+#: from plone_3rdParty/CMFTopic/topic_edit_form.pt
+#.   <span class="legend">Topic Details</span>
+msgid "legend_topic_details"
+msgstr "Topic Details"
+
+#: from plone_forms/mail_password_form.pt
+#.   <span class="legend">Member Details</span>
+msgid "legend_user_details"
+msgstr "Member Details"
+
+#: from plone_content/link_view.pt
+#.   <span>The link address is:</span>
+msgid "link_address"
+msgstr "The link address is:"
+
+#: from plone_content/favorite_view.pt
+#.   <span>Created by</span>
+msgid "link_created_by"
+msgstr "Created by"
+
+#: from plone_content/favorite_view.pt
+#.   <span>Last modified:</span>
+msgid "link_last_modified"
+msgstr "Last modified:"
+
+#: from plone_forms/content_status_history.pt
+#.   <th>Action</th>
+msgid "listingheader_action"
+msgstr "Action"
+
+#: from plone_forms/undo_form.pt
+#.   <th>Action performed</th>
+msgid "listingheader_action_performed"
+msgstr "Action performed"
+
+#: from plone_forms/undo_form.pt
+#.   <th>Affected Item</th>
+msgid "listingheader_affected_item"
+msgstr "Affected Item"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Assigned</th>
+msgid "listingheader_assigned"
+msgstr "Assigned"
+
+#: from plone_forms/search.pt
+#.   <span omit-tag="">Author</span>
+msgid "listingheader_author"
+msgstr "Author"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Classification</th>
+msgid "listingheader_classification"
+msgstr "Classification"
+
+#: from plone_content/discussionitem_view.pt
+#.   <th>comment</th>
+#: from plone_forms/content_status_history.pt
+#.   <th>Comment</th>
+#: from plone_forms/viewThreadsAtBottom.pt
+msgid "listingheader_comment"
+msgstr "Comment"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Date</th>
+msgid "listingheader_date"
+msgstr "Date"
+
+#: from plone_forms/content_status_history.pt
+#.   <th>Date&nbsp;and&nbsp;Time</th>
+#: from plone_forms/undo_form.pt
+#.   <th>Date and time</th>
+msgid "listingheader_date_and_time"
+msgstr "Date and time"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Description</th>
+#: from plone_forms/search.pt
+#.   <span omit-tag="">Description</span>
+msgid "listingheader_description"
+msgstr "Description"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Importance</th>
+msgid "listingheader_importance"
+msgstr "Importance"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Issue</th>
+msgid "listingheader_issue"
+msgstr "Issue"
+
+#: from plone_forms/search.pt
+#.   <span omit-tag="">Last Modified</span>
+msgid "listingheader_last_modified"
+msgstr "Last Modified"
+
+#: from plone_templates/folder_contents.pt
+#.   <span omit-tag="">Modified</span>
+msgid "listingheader_modified"
+msgstr "Modified"
+
+#: from plone_forms/content_status_history.pt
+#.   <th>Performed&nbsp;by</th>
+#: from plone_forms/undo_form.pt
+#.   <th>Performed by</th>
+msgid "listingheader_performed_by"
+msgstr "Performed by"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Requester</th>
+msgid "listingheader_requester"
+msgstr "Requester"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Security Related</th>
+msgid "listingheader_security_related"
+msgstr "Security Related"
+
+#: from plone_templates/folder_contents.pt
+#.   <span omit-tag="">Size</span>
+msgid "listingheader_size"
+msgstr "Size"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Status</th>
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#: from plone_templates/folder_contents.pt
+#.   <span omit-tag="">Status</span>
+msgid "listingheader_status"
+msgstr "Status"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Submitter</th>
+msgid "listingheader_submitter"
+msgstr "Submitter"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Title</th>
+#: from plone_forms/search.pt
+#.   <span omit-tag="">Title</span>
+#: from plone_templates/folder_contents.pt
+msgid "listingheader_title"
+msgstr "Title"
+
+#: from plone_3rdParty/CMFCollector/collector_contents.pt
+#.   <th>Topic</th>
+msgid "listingheader_topic"
+msgstr "Topic"
+
+#: from plone_templates/folder_contents.pt
+#.   <span omit-tag="">Type</span>
+msgid "listingheader_type"
+msgstr "Type"
+
+#: from plone_forms/undo_form.pt
+#.   <th>Undo</th>
+msgid "listingheader_undo"
+msgstr "Undo"
+
+#: from plone_forms/folder_listing.pt
+#.   <span omit-tag="">Description</span>
+msgid "listingheaders_description"
+msgstr "Description"
+
+#: from plone_forms/folder_listing.pt
+#.   <span omit-tag="">Last Modified</span>
+msgid "listingheaders_last_modified"
+msgstr "Last Modified"
+
+#: from plone_forms/folder_listing.pt
+#.   <span omit-tag="">Size</span>
+msgid "listingheaders_size"
+msgstr "Size"
+
+#: from plone_forms/folder_listing.pt
+#.   <span omit-tag="">Title</span>
+msgid "listingheaders_title"
+msgstr "Title"
+
+#: from plone_forms/folder_listing.pt
+#.   <span omit-tag="">Type</span>
+msgid "listingheaders_type"
+msgstr "Type"
+
+#: from plone_templates/news.pt
+#.   <span omit-tag="">More Recent News</span>
+#: from plone_templates/news.pt
+msgid "more_recent_news"
+msgstr "More Recent News"
+
+#: from plone_forms/logged_in.pt
+#.   <a define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']" condition="mystuff" attributes="href python:mystuff.pop()" href="metadata_form">My Folder</a>
+msgid "my_folder"
+msgstr "My Folder"
+
+#: from plone_forms/personalize_form.pt
+#.   <label for="cb_noformtooltips">No</label>
+#: from plone_forms/personalize_form.pt
+#.   <label for="cb_invisible_ids">No</label>
+msgid "no"
+msgstr "No"
+
+#: from plone_content/document_view.pt
+#.   <p condition="not: len_text">
+#.       This document has yet to be written, click the edit tab to change the document.
+#.       </p>
+#: from plone_content/frontpage_view.pt
+#.   <p condition="not: len_text">
+#.         This document has yet to be written, click the edit tab to change the document.
+#.         </p>
+#: from plone_content/newsitem_view.pt
+#.   <p condition="not: len_text">
+#.             This document has yet to be written, click the edit button to write on document.
+#.           </p>
+msgid "no_body_text"
+msgstr "This document has yet to be written, click the edit button to write on document."
+
+#: from plone_forms/content_status_history.pt
+#.   <span condition="not: rhComments">
+#.                       No comments.
+#.                       </span>
+msgid "no_comments"
+msgstr "No comments."
+
+#: from plone_content/file_view.pt
+#.   <span condition="python:test(here.size, 0, 1)">
+#.                 (No file has been uploaded)
+#.               </span>
+#: from plone_content/image_view.pt
+#.   <span condition="python:test(here.size, 0, 1)">
+#.             (No file has been uploaded)
+#.           </span>
+#: from plone_content/file_edit_form.pt
+#.   <span condition="python:test(here.size, 0, 1)">
+#.                     (No file has been uploaded yet)
+#.                   </span>
+#: from plone_content/image_edit_form.pt
+#.   <span condition="python:test(here.size, 0, 1)">
+#.                      (No image has been uploaded yet)
+#.                   </span>
+msgid "no_file_uploaded"
+msgstr "(No image has been uploaded yet)"
+
+#: from plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#.   <span>
+#.       Note: We have no mail address for the submitters, so they won't
+#.       get followups.
+#.       </span>
+msgid "no_mail_address"
+msgstr "Note: We have no mail address for the submitters, so they won't get followups."
+
+#: from plone_forms/folder_localrole_form.pt
+#.   <p>No members were found using your <strong>Search Criteria</strong></p>
+msgid "no_members_found"
+msgstr "No members were found using your <strong>Search Criteria</strong>"
+
+#: from plone_templates/news.pt
+#.   <p condition="not: results">
+#.               No news has been posted.
+#.             </p>
+msgid "no_new_news"
+msgstr "No news has been posted."
+
+#: from plone_3rdParty/CMFTopic/topic_view.pt
+#.   <strong> No results match your criteria. </strong>
+msgid "no_results_found"
+msgstr "No results match your criteria."
+
+#: from plone_templates/news.pt
+#.   <span omit-tag="">Older News</span>
+#: from plone_templates/news.pt
+msgid "older_news"
+msgstr "Older News"
+
+#: from plone_content/document_edit_form.pt
+#.   <label for="cb_plain">Plain Text</label>
+#: from plone_content/newsitem_edit_form.pt
+msgid "plain_text"
+msgstr "Plain Text"
+
+#: from plone_content/discussionitem_view.pt
+#.   <span>Posted by:</span>
+#: from plone_templates/news.pt
+#.   <span omit-tag="">Posted by</span>
+msgid "posted_by"
+msgstr "Posted by"
+
+#: from plone_3rdParty/CMFCollector/collector_macros.pt
+#.   <td align="right">on</td>
+#: from plone_content/discussionitem_view.pt
+#.   <span>at</span>
+msgid "posted_on"
+msgstr "at"
+
+#: from plone_templates/news.pt
+#.   <a attributes="href resultObject/absolute_url" href="/view">
+#.                           Read More
+#.                           </a>
+msgid "read_more"
+msgstr "Read More"
+
+#: from plone_forms/content_status_history.pt
+#.   <span condition="effective">and <strong>is effective</strong>.</span>
+msgid "status_is_effective"
+msgstr "and <strong>is effective</strong>."
+
+#: from plone_forms/content_status_history.pt
+#.   <span condition="after">but is <strong>no longer</strong> effective.</span>
+msgid "status_no_longer_effective"
+msgstr "but is <strong>no longer</strong> effective."
+
+#: from plone_forms/content_status_history.pt
+#.   <span condition="before">but is <strong>not yet</strong> effective.</span>
+msgid "status_not_yet_effective"
+msgstr "but is <strong>not yet</strong> effective."
+
+#: from plone_content/document_edit_form.pt
+#.   <label for="cb_structuredtext">Structured Text</label>
+#: from plone_content/newsitem_edit_form.pt
+msgid "structured_text"
+msgstr "Structured Text"
+
+#: from plone_forms/search_form.pt
+#.   <option attributes="value ever" selected="selected" value="#"> Ever </option>
+msgid "time_ever"
+msgstr "Ever"
+
+#: from plone_forms/search_form.pt
+#.   <option attributes="value lastmonth" value="#"> Last month </option>
+msgid "time_last_month"
+msgstr "Last month"
+
+#: from plone_forms/search_form.pt
+#.   <option attributes="value lastweek" value="#"> Last week </option>
+msgid "time_last_week"
+msgstr "Last week"
+
+#: from plone_forms/search_form.pt
+#.   <option attributes="value yesterday" value="#"> Yesterday </option>
+msgid "time_yesterday"
+msgstr "Yesterday"
+
+#: from plone_forms/personalize_form.pt
+#.   <label for="cb_formtooltips">Yes</label>
+#: from plone_forms/personalize_form.pt
+#.   <label for="cb_visible_ids">Yes</label>
+msgid "yes"
+msgstr "Yes"
+
+#: from plone_templates/header.pt
+#.   <span omit-tag="">You are here:</span>
+msgid "you_are_here"
+msgstr "You are here:"
+
+#: from plone_templates/header.pt
+#.   <span condition="here/portal_membership/isAnonymousUser">You are not logged in</span>
+msgid "you_are_not_logged_in"
+msgstr "You are not logged in"
+
+
+#: .missing file
+#. The below is collected by inserting a plone-my-lang.missing file in the i18n
+#. directory. Thus we can translate tabs, pushishing states, item type names
+#. and type descriptions.
+#. _____________________________________________________________________________
+
+msgid "Welcome"
+msgstr ""
+
+msgid "Members"
+msgstr ""
+
+msgid "News"
+msgstr ""
+
+msgid "My Folder"
+msgstr ""
+
+msgid "My Preferences"
+msgstr ""
+
+msgid "Plone Setup"
+msgstr ""
+
+msgid "Sign out"
+msgstr ""
+
+msgid "Navigation"
+msgstr ""
+
+msgid "Editor view"
+msgstr ""
+
+msgid "visible"
+msgstr ""
+
+msgid "Folder contents"
+msgstr ""
+
+msgid "Contents"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Publishing"
+msgstr ""
+
+msgid "Ordinary view"
+msgstr ""
+
+msgid "Local Roles"
+msgstr ""
+
+msgid "Ownership"
+msgstr ""
+
+msgid "${type}s only"
+msgstr ""
+
+msgid "Document"
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Link"
+msgstr ""
+
+msgid "News Item"
+msgstr ""
+
+msgid "Topic"
+msgstr ""
+
+msgid "Folder"
+msgstr ""
+
+msgid "Event"
+msgstr ""
+
+msgid "Collector"
+msgstr ""
+
+msgid "Collector Subset"
+msgstr ""
+
+msgid "CMF Wiki Page"
+msgstr ""
+
+msgid "CMF Wiki"
+msgstr ""
+
+msgid "Cut"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Change Status"
+msgstr ""
+
+msgid "This item is currently in the ${review_state} state"
+msgstr ""
+
+msgid "Make private"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "Collector Catalog"
+msgstr ""
+
+msgid "Collector Issue"
+msgstr ""
+
+msgid "Collector Issue Transcript"
+msgstr ""
+
+msgid "Discussion Item"
+msgstr ""
+
+msgid "Favorite"
+msgstr ""
+
+msgid "Documents can contain text that can be formatted using 'Structured Text.'"
+msgstr ""
+
+msgid "Image objects can be embedded in Portal documents."
+msgstr ""
+
+msgid "File objects can contain arbitrary downloadable files."
+msgstr ""
+
+msgid "Link items are URLs that come with additional information."
+msgstr ""
+
+msgid "News Items contain short text articles and carry a title as well as an optional description."
+msgstr ""
+
+msgid "Topics are canned queries for organizing content with up to date queries into the catalog."
+msgstr ""
+
+msgid "Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."
+msgstr ""
+
+msgid "Events are objects for use in Calendar topical queries on the catalog."
+msgstr ""
+
+msgid "A Collector is a facility for tracking bug reports and other issues."
+msgstr ""
+
+msgid "A Collector Subset represents a view on a subset of the issues in a collector."
+msgstr ""
+
+msgid "Loosely organized (yet structured) content can be added to Wikis."
+msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "New Issue"
+msgstr ""
+
+msgid "Configure"
+msgstr ""
+
+msgid "pending"
+msgstr ""
+
+msgid "private"
+msgstr ""
+
+msgid "published"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "History"
+msgstr ""
+
+msgid "Backlinks"
+msgstr ""
+
+msgid "Advanced"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Criteria"
+msgstr ""
+
+msgid "Subtopics"
+msgstr ""
+
+msgid "Metadata"
+msgstr ""
+
