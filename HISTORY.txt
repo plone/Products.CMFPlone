@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Fixes for http://plone.org/collector/2914.  Although I could
+      not reproduce.  We now have a unit test showing that this
+      behavior should not regress. Some logic in PloneTool was changed.
+      [runyaga]
+
     - Fixed http://plone.org/collector/2814. 'Document' was being
       checked against a list of FactoryTypeInformation, which would
       never work. Changed to check against the list of portal_types
