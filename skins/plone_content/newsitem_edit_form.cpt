@@ -42,7 +42,7 @@
 
                 <div class="formHelp" i18n:translate="help_shortname">
                 Should not contain spaces, underscores or mixed case. 
-                This will be part of the web address to this item.
+                Short Name is part of the news item's web address.
                 </div>
     
                 <div tal:content="error">Validation error output</div>
@@ -96,7 +96,7 @@
                 <label for="description" i18n:translate="label_lead-in">Lead-in</label>
                     
                 <div class="formHelp" i18n:translate="help_description">
-                Shows up on the news page along with the headline.
+                Displayed on the news page along with the headline.
                 </div>
 
                 <textarea cols="80" 
