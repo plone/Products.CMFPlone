@@ -28,9 +28,9 @@ ZopeTestCase.installProduct('PythonScripts', quiet=1)
 ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 
 # Archetypes/ATContentTypes dependencies
+ZopeTestCase.installProduct('Archetypes')
 ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
-ZopeTestCase.installProduct('Archetypes')
 
 # Unit tests are FU if LinguaPlone is available but not installed
 if ZopeTestCase.hasProduct('LinguaPlone'):
