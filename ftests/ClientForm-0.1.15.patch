@@ -1,0 +1,11 @@
+--- ClientForm.py	Thu Feb 12 01:09:43 2004
++++ ClientForm.py	Thu Feb 12 01:10:00 2004
+@@ -573,7 +573,7 @@
+ 
+     def do_base(self, attrs):
+         for key, value in attrs:
+-            if key == "uri":
++            if key == "href":
+                 self.base = value
+ 
+     def start_form(self, attrs):
