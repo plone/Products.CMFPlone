@@ -56,7 +56,9 @@ def setupDefaultSlots(self, portal):
                , 'here/login_slot/macros/loginBox'
                , 'here/related_slot/macros/relatedBox' )
     right_slots=( 'here/workflow_review_slot/macros/review_box'
-                , 'here/calendar_slot/macros/calendarBox' )
+                , 'here/news_slot/macros/newsBox' 
+                , 'here/calendar_slot/macros/calendarBox' 
+                , 'here/events_slot/macros/eventsBox' )
     item_action_slots=( 'here/actions_slot/macros/print'
                       , 'here/actions_slot/macros/sendto'
           , 'here/actions_slot/macros/syndication' )
@@ -185,7 +187,7 @@ def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')
 
     at.addAction('index_html',
-                 name='Welcome',
+                 name='Home',
                  action='portal_url',
                  condition='',
                  permission='View',
