@@ -1,4 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
@@ -7,18 +8,13 @@
 
 <body>
 
-<div metal:fill-slot="main" 
-     tal:define="rejection here/rejectAnonymous">
+<div metal:fill-slot="main">
 
-    
+    <script language="JavaScript" src="cmf_skin_tools/calendar.js"></script>
+
     <script language="JavaScript"> 
-    function submitFormAction(folderAction) {
-        document.edit_form.action = document.edit_form.action+'/'+folderAction;
-        document.edit_form.submit();
-    }
-
     function addSelectedKeywords() {
-        predefSubjects=document.getElementById('predefined_keywords');
+        predefSubjects=document.getElementById('predefined_subjects');
         for (var x=0; x<predefSubjects.length; x++) {
             if (predefSubjects[x].selected) {
                  addNewKeyword(predefSubjects[x].value);
@@ -27,7 +23,7 @@
     }
 
     function addNewKeyword(newWord) {
-        selSubjects=document.getElementById('selected_keywords');
+        selSubjects=document.getElementById('entered_subjects');
         selSubjects.value+=newWord+'\n'
     }
     </script>
@@ -46,53 +42,30 @@
     as concisely as possible, and leave the ones you don't know blank.
     </p>
 
-    <p>
-    More metadata are available, but these are the most commonly used. To edit
-    all of them, use the <a href="full_metadata_edit_form">full metadata form</a>.
-    </p>
 
     <form class="group"
           name="edit_form" 
           action="metadata_edit" 
-          method="post" >
+          method="post">
 
-        <span class="legend">Item Information</span>
+        <span class="legend">Item Properties</span>
 
-        <div class="row">
-            <span class="label">Title</span>
-            <span class="field"> 
-                  <input type="text" name="title"
-                     value="My Page" size="25"
-                     tal:attributes="value here/Title"> 
-            </span>
-            <span class="info">The title of the item.</span>
-        </div>
+    <div class="row">
+        <span class="label">Allow Discussion</span>
+        <span class="field">
+            <select name="allowDiscussion"
+                    tal:define="val here/isDiscussable">
+                <option value="None"
+                        tal:attributes="selected python: val == None"> Default </option>
+                <option value="0"
+                        tal:attributes="selected python: val == 0"> Off </option>
+                <option value="1"
+                        tal:attributes="selected python: val == 1"> On </option>
+            </select>
+        </span>
+        <span class="info"></span>
+    </div>
 
-        <div class="row">
-            <span class="label">Description</span>
-            <span class="field">
-                <textarea name="description:text" rows="10" cols="25"
-                          tal:content="here/Description">Some descriptive text</textarea>
-            </span>
-            <span class="info">A short description of the item.</span>
-        </div>
-
-        <div class="row">
-            <span class="label">Allow Discussion</span>
-            <span class="field">
-             <select name="allowDiscussion"
-                     tal:define="val here/isDiscussable">
-               <option value="None"
-                       tal:attributes="selected python: val == None"> Default </option>
-               <option value="0"
-                       tal:attributes="selected python: val == 0"> Off </option>
-               <option value="1"
-                       tal:attributes="selected python: val == 1"> On </option>
-             </select>
-            </span>
-            <span class="info"></span>
-        </div>
-        
         <div class="row">
             <span class="label">Keywords</span>
             <span class="field" 
@@ -103,23 +76,31 @@
                 <table>
                     <tr><td>
                     New keyword <br />
-                    <input type="text" name="entered_keyword" value="" size="15"> 
+                    <input type="text" name="entered_keyword" value="" size="20"> 
                     <input class="context" type="submit" name="add" value="Add &gt;"
                            onclick="javascript:addNewKeyword(document.edit_form.entered_keyword.value);return false;">
                     <br />            
                     Existing keywords
                     <br />
-                        <select id="predefined_keywords" name="predefined_subjects" size="7" multiple="multiple" >
+                        <select id="predefined_subjects"
+                    name="predefined_subjects" 
+                    size="7" 
+                    multiple="multiple" >
                         <option value="#" tal:repeat="subject python:here.unique(allowedSubjects+previousSubjects)"
                                 tal:content="subject" tal:attributes="value subject"> # </option>                                
                         </select>
+
                         <input class="context" type="submit" name="add" value="Add &gt;"
                                onclick="javascript:addSelectedKeywords();return false;">
                     </td>
-    
+
                     <td>
                     Selected keywords<br />
-                    <textarea id="selected_keywords" name="subject:lines" rows="10" cols="10" wrap="OFF"><span tal:repeat="subject here/Subject" tal:replace="python:str(subject)+'\n'"/></textarea>&nbsp;
+                    <textarea id="entered_subjects"
+                      name="subject:lines" 
+                      rows="10" 
+                      cols="10" 
+                      wrap="off"><span tal:repeat="subject here/Subject" tal:replace="python:str(subject)+'\n'"/></textarea>&nbsp;
                     </td></tr>
                 </table>
 
@@ -139,19 +120,69 @@
 
         </div>         
 
-        <input type="hidden" name="format" value="#" tal:attributes="value here/Format" />
+        <div class="row">
+            <span class="label">Effective Date</span>
+            <span class="field">
+                <input type="text" name="effective_date" size="25" value="None" tal:attributes="value here/EffectiveDate"> 
 
-        <br /> 
+                <a href="javascript:doNothing()" onclick="setDateField(document.edit_form.effective_date);top.newWin = window.open('cmf_skin_tools/calendar.html','cal','dependent=yes,width=310,height=230,screenX=200,screenY=300,titlebar=yes')">
+                <img src="popup_calendar.gif">
+                </a>
+            </span>
+            <span class="info">
+            The date when the document will be visible when it's published. This way, you can 
+            publish a document in advance, but it will not be visible before this date.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Expiration Date</span>
+            <span class="field"><input type="text" name="expiration_date" size="25" value="2000-12-31 00:00:00" tal:attributes="value here/ExpirationDate">
+                <a href="javascript:doNothing()" onclick="setDateField(document.edit_form.expiration_date);top.newWin = window.open('cmf_skin_tools/calendar.html','cal','dependent=yes,width=310,height=230,screenX=200,screenY=300,titlebar=yes')">
+                <img src="popup_calendar.gif">
+                </a>
+            </span>
+            <span class="info">
+            The date when the document expires. This will automatically make the document
+            invisible for others at the given date.
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Format</span>
+            <span class="field"><input type="text" name="format" size="25" value="text/html" tal:attributes="value here/Format"> [pop-up?]</span>
+            <span class="info">
+            The MIME-type of the document. If you don't know what this does, just leave it :)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Language</span>
+            <span class="field"><input type="text" name="language" size="25" value="" tal:attributes="value here/Language"> [pop-up?]</span>
+            <span class="info">
+            This is the language the document is written in.
+            </span>
+        </div> 	
+
+        <div class="row">
+            <span class="label">Rights</span>
+            <span class="field"><input type="text" name="rights" size="25" value="" tal:attributes="value here/Rights"></span>
+            <span class="info">Copyright information on the item.</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Contributors</span>
+            <span class="field">
+                <textarea name="contributors:lines" rows="5" cols="25" ><p tal:repeat="contributor here/Contributors" tal:replace="python:contributor+'\n'">contributor</p></textarea>
+            </span>
+            <span class="info">The names of people that have contributed to this item.</span>
+        </div>
 
         <div class="row">
             <span class="label">&nbsp;</span>
-            <span class="field" tal:define="process_creation python:test(request['HTTP_REFERER'].find('folder_factories'), 1, 0);">
-                <input type="hidden" name="process_creation" value="1" tal:condition="process_creation" />
-                <input class="context" type="submit" name="change_and_view" value="Save" />
-                <input class="context" type="submit" name="cancel_edit:method" value="Cancel Creation" tal:condition="process_creation" />
+            <span class="field">
+               <input class="context" type="submit" name="change_and_view" value="Save">
             </span>
-
-            <span class="info"></span>
         </div>	
 
     </form>
