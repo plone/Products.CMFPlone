@@ -6,7 +6,9 @@
 <body>
 
 <div metal:fill-slot="main">
-    <tal:main-macro metal:define-macro="main">
+    <tal:main-macro metal:define-macro="main"
+                    tal:define="size here/size">
+
         <h1 tal:content="here/title_or_id" class="documentFirstHeading">
             Title or id
         </h1>
@@ -20,7 +22,7 @@
         description
         </div>
     
-        <tal:block condition="here/size" replace="here/absolute_url" />
+        <tal:block condition="size" replace="structure here/tag" />
 
         <div>    
             <small>
@@ -32,7 +34,7 @@
                     File size
                 </span>
         
-                <span tal:condition="python:test(here.size, 0, 1)"
+                <span tal:condition="python:test(size, 0, 1)"
                       i18n:translate="no_image_uploaded">
                     (No image has been uploaded yet)
                 </span>
