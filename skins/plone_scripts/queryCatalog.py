@@ -41,7 +41,7 @@ def quotequery(s):
     return ' '.join(terms)
 
 for k, v in REQUEST.items():
-    if k in indexes:
+    if v and k in indexes:
         if quote_logic and k in quote_logic_indexes:
             v = quotequery(v)
         query.update({k:v})
