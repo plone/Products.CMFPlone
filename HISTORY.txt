@@ -1,3 +1,6 @@
+    - subjects(keywords) in metadata tool were being saved with null property.. automatically relating items
+    - changed folder_contents had filter_by_Type where CMF1.3 now uses filter_by_portal_type - thanks Florrent!
+    
 1.0 alpha4
     - publishing now works without javascript. #202
     - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will need updating if migrate)
