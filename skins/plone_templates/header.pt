@@ -26,10 +26,10 @@
     <!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
     <style type="text/css" media="all"
            tal:content="string:
-           @import ${here/portal_url}/ploneBasic.css;
-           @import ${here/portal_url}/ploneStructure.css;
-           @import ${here/portal_url}/ploneWidgets.css;
-           @import ${here/portal_url}/ploneCalendar.css;">
+           @import url(${here/portal_url}/ploneBasic.css);
+           @import url(${here/portal_url}/ploneStructure.css);
+           @import url(${here/portal_url}/ploneWidgets.css);
+           @import url(${here/portal_url}/ploneCalendar.css);">
       This block will be dynamically replaced withe the @import statements for use in IE4.0 and higher.
       If you put the @imports in here (which you should do, CSSImports is a just a out-of-the-box
       usability artifact)then your designers (with Macro expansion turned on) will be able to see
