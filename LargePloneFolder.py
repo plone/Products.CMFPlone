@@ -64,4 +64,4 @@ def addLargePloneFolder(self, id, title='', description='', REQUEST=None):
     obj.setDescription(description)
     self._setObject(id, obj)
     if REQUEST is not None:
-        REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
+        REQUEST['RESPONSE'].redirect( self.absolute_url() + '/manage_main' )

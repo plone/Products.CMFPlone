@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.14 2004/01/06 22:15:59 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.9.2.15 2004/01/07 01:10:26 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -129,7 +129,7 @@ def optimize():
         from Products.CMFPlone.LargePloneFolder import addLargePloneFolder
         addLargePloneFolder(p, 'Members')
         p.portal_catalog.unindexObject(p.Members)
-        p.Members._setPortalType = 'Folder'
+        p.Members._setPortalTypeName('Folder')
     PloneGenerator.setupPortalContent = setupPortalContent
 
 
