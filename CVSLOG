@@ -1,3 +1,73 @@
+2003-12-05 04:02  limi
+
+	* skins/plone_forms/: enabling_cookies.pt, login_form.pt
+	  (Plone-2_0-branch): Happytalk Must Die Harder®
+
+2003-12-05 03:52  limi
+
+	* skins/plone_forms/login_form.pt (Plone-2_0-branch): Fixing
+	  conflict.
+
+2003-12-05 03:49  limi
+
+	* skins/: plone_forms/login_form.pt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): Happytalk Must Die®
+
+2003-12-05 02:56  limi
+
+	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch): Fixed
+	  the double globe icons in folder_listing.
+
+2003-12-05 02:45  zopezen
+
+	* Portal.py, migrations/__init__.py, migrations/oneX_twoBeta2.py,
+	  skins/plone_forms/login_form.pt,
+	  skins/plone_prefs/prefs_install_products.pt.metadata
+	  (Plone-2_0-branch): This is an experimental migration branch. By
+	  setting portal_type on Portal we can ensure that all we need to
+	  do now is make sure it has no workflow which I think is set up
+	  elsewhere. This really simplfies migrations and means we dont
+	  have to worry about ownership. This needs full testing and
+	  runyaga and i have to spare time. But would love anyone else to
+	  try it. -- Migration tool works like normal again.
+
+2003-12-05 01:58  limi
+
+	* skins/: plone_ecmascript/plone_javascripts.js,
+	  plone_prefs/prefs_group_members.pt,
+	  plone_prefs/prefs_groups_overview.pt,
+	  plone_prefs/prefs_search_macros.pt,
+	  plone_prefs/prefs_users_overview.pt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): Visual tweaks and layout improvements to the
+	  users/groups panels.
+
+2003-12-04 22:44  limi
+
+	* skins/plone_forms/: content_status_history.cpt,
+	  folder_rename_form.cpt (Plone-2_0-branch): Fixed the remaining
+	  cancel buttons.
+
+2003-12-04 22:40  limi
+
+	* INSTALL.txt (Plone-2_0-branch): Clarified the install docs a bit.
+
+2003-12-04 22:21  limi
+
+	* skins/plone_content/: document_edit_form.cpt,
+	  folder_edit_form.cpt, image_edit_form.cpt, link_edit_form.cpt,
+	  metadata_edit_form.cpt, newsitem_edit_form.cpt
+	  (Plone-2_0-branch): Cancel buttons should be class="standalone",
+	  not "context".
+
+2003-12-04 21:55  limi
+
+	* INSTALL.txt, setup/dependencies.py (Plone-2_0-branch): Added note
+	  about Placeless Translation Service to the dependencies.
+
+2003-12-04 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-04 03:02  limi
 
 	* skins/: plone_styles/plone.css.dtml,
