@@ -268,92 +268,39 @@ class MembershipTool(PloneBaseTool, BaseTool):
     # this should probably be in MemberDataTool.py
     #security.declarePublic( 'searchForMembers' )
     def searchForMembers( self, REQUEST=None, **kw ):
-        """
-        searchForMembers(self, REQUEST=None, **kw) => normal or fast search method.
-
-        The following properties can be provided:
-        - name
-        - email
-        - last_login_time
-        - roles
-
-        This is an 'AND' request.
-
-        If name is provided, then a _fast_ search is performed with GRUF's
-        searchUsersByName() method. This will improve performance.
-
-        In any other case, a regular (possibly _slow_) search is performed.
-        As it uses the listMembers() method, which is itself based on gruf.getUsers(),
-        this can return partial results. This may change in the future.
-        """
-        md = self.portal_memberdata
+        """ """
         if REQUEST:
             dict = REQUEST
         else:
             dict = kw
 
-        # Attributes retreiving & mangling
         name = dict.get('name', None)
         email = dict.get('email', None)
         roles = dict.get('roles', None)
         last_login_time = dict.get('last_login_time', None)
         is_manager = self.checkPermission('Manage portal', self)
+
         if name:
             name = name.strip().lower()
+        if not name:
+            name = None
         if email:
             email = email.strip().lower()
+        if not email:
+            email = None
 
-        # We want 'name' request to be handled properly with large user folders.
-        # So we have to check both the fullname and loginname, without scanning all
-        # possible users.
-        md_users = None
-        uf_users = None
-        if name:
-            # We first find in MemberDataTool users whose _full_ name match what we want.
-            lst = md.searchMemberDataContents('fullname', name)
-            md_users = [ x['username'] for x in lst ]
 
-            # Fast search management if the underlying acl_users support it.
-            # This will allow us to retreive users by their _id_ (not name).
-            acl_users = self.acl_users
-            meth = getattr(acl_users, "searchUsersByName", None)
-            if meth:
-                uf_users = meth(name)           # gruf search
+        md = self.portal_memberdata
 
-        # Now we have to merge both lists to get a nice users set.
-        # This is possible only if both lists are filled (or we may miss users else).
-        members = []
-        if md_users is not None and uf_users is not None:
-            names_checked = 1
-            wrap = self.wrapUser
-            getUser = acl_users.getUser
-            for userid in md_users:
-                members.append(wrap(getUser(userid)))
-            for userid in uf_users:
-                if userid in md_users:
-                    continue             # Kill dupes
-                members.append(wrap(getUser(userid)))
-
-            # Optimization trick
-            if not email and \
-                   not roles and \
-                   not last_login_time:
-                return members
-        else:
-            # If the lists are not available, we just stupidly get the members list
-            members = self.listMembers()
-            names_checked = 0
-
-        # Now perform individual checks on each user
         res = []
         portal = self.portal_url.getPortalObject()
 
-        for member in members:
+        for member in self.listMembers():
             #user = md.wrapUser(u)
             u = member.getUser()
             if not (member.listed or is_manager):
                 continue
-            if name and not names_checked:
+            if name:
                 if (u.getUserName().lower().find(name) == -1 and
                     member.getProperty('fullname').lower().find(name) == -1):
                     continue
