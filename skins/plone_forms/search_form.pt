@@ -173,6 +173,7 @@
                                         lastmonth python:(today-31).Date();
                                         ever string:1970/02/01 00:00:00 GMT;">
                         <option value="#"
+                                tal:condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1)"
                                 tal:attributes="value python:container.portal_membership.getAuthenticatedMember().last_login_time" i18n:translate="last_login">Last sign-in</option>
                         <option value="#" tal:attributes="value yesterday" i18n:translate="time_yesterday"> Yesterday </option>
                         <option value="#" tal:attributes="value lastweek" i18n:translate="time_last_week"> Last week </option>
