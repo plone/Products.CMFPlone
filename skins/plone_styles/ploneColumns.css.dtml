@@ -1,6 +1,5 @@
-/* <dtml-with stylesheet_properties> 
-**
-** Column Layout for CSS2 capable Browsers
+/*
+** Tableless Column Layout for CSS2 capable Browsers
 ** Based on http://www.redmelon.net/tstme/3colpercent/ from Douglas Livingstone.
 **
 */
@@ -30,10 +29,20 @@ div#columns div#main-left div#left {
     padding: 0;
 }
 div#columns div#right {
-    width: 17%;
     float: right;
+    width: 17%;
     clear: none;
     padding: 0;
+}
+
+/* ie fixes */
+
+* html div#columns div.box {
+    text-align: left;
+}
+* html div#columns div#left,
+* html div#columns div#right {
+    overflow: hidden;
 }
 
 /* padding - thanks to the w3c box model :P */
@@ -63,4 +72,5 @@ div.hideright div#fixwrap div#main-left div#left {
 div.hideright div#fixwrap div#main-left div.main {
     width: 80%;
 }
+
 /* </dtml-with> */
