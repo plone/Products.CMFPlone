@@ -8,6 +8,7 @@ from OFS.Image import Image
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Acquisition import aq_base
+from CMFCorePermissions import View
 
 default_portrait = 'defaultUser.gif'
 
@@ -285,6 +286,20 @@ class MembershipTool(BaseTool):
             #member.setSecurityProfile(password=password, domains=domains)
         else:
             raise 'Bad Request', 'Not logged in.'
+
+    security.declareProtected(View, 'getCandidateLocalRoles') 
+    def getCandidateLocalRoles( self, obj ): 
+        """ What local roles can I assign? """ 
+        member = self.getAuthenticatedMember() 
+
+        if 'Manager' in member.getRoles(): 
+            return self.getPortalRoles() 
+        else: 
+            member_roles = list( member.getRolesInContext( obj ) ) 
+            if 'Member' in member_roles: 
+                del member_roles[member_roles.index( 'Member')] 
+
+        return tuple( member_roles ) 
 
 MembershipTool.__doc__ = BaseTool.__doc__
 
