@@ -212,7 +212,7 @@
 
     <div tal:condition="not: request/ids|nothing">
         
-        <table class="listing">
+        <table class="listing" tal:condition="review_history">
             
             <tr>
                 <th>Action</th>
@@ -220,14 +220,11 @@
                 <th>Date&nbsp;and&nbsp;Time</th>
                 <th>Comment</th>
             </tr>
-            
-            <tr
-                tal:define="review_history python: here.reverseList(review_history)"
-                tal:repeat="items review_history">
-    
-            <metal:block tal:define="global odd repeat/items/odd; global rhComments items/comments;"
-                         tal:condition="items/action"> 
-
+            <metal:block tal:repeat="items review_history">
+            <tr tal:define="review_history python: here.reverseList(review_history);
+	                    global odd repeat/items/odd; global rhComments items/comments;"
+		tal:attributes="class python:test(odd, 'even', 'odd')"
+	        tal:condition="items/action">
                 <td> 
                 <span tal:replace="items/action" /> 
                 </td>
@@ -241,10 +238,10 @@
                 </td>
                 
                 <td>
-                  <span tal:replace="python: items['time'].aCommon()" />
+                  <span tal:replace="python: items['time'].strftime(here.localTimeFormat)" />
                   <span tal:condition="items/effective_date|nothing">
                   (effective: 
-                  <span tal:replace="python: items['effective_date'].aCommon()"></span>)
+                  <span tal:replace="python: items['effective_date'].strftime(here.localTimeFormat)"></span>)
                   </span>
                 </td>
               
@@ -257,10 +254,8 @@
                     No comment
                     </span>
                 </td>
-	    </metal:block>
-	   
             </tr>
-
+            </metal:block>
         </table>
 
     </div>
