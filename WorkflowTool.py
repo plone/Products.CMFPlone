@@ -18,7 +18,7 @@ class WorkflowTool( BaseTool ):
     def doActionFor(self, ob, action, wf_id=None, *args, **kw):
         """ it appears that objects are reindexed after they
             are transitioned in DCWorkflow.  """
-        reuslt=BaseTool.doActionFor(self, ob, action, wf_id, *args, **kw)
+        result=BaseTool.doActionFor(self, ob, action, wf_id, *args, **kw)
         if result:
             result.reindexObjectSecurity()
             return result
