@@ -145,7 +145,7 @@ function sort(e) {
         if (node.lastChild.nodeName == 'IMG')
         {
             lastindex = node.getElementsByTagName('img').length - 1;
-            node.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowBlank.gif');
+            node.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowBlank.gif');
         }
     }
     
@@ -156,7 +156,7 @@ function sort(e) {
         {
             //window.alert(node.childNodes.item(1).nodeValue;
             lastindex = node.getElementsByTagName('img').length -1;
-            node.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowUp.gif');
+            node.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowUp.gif');
             break;
         }
     }
@@ -182,7 +182,7 @@ function sort(e) {
         {
             a.reverse();
             lastindex = el.getElementsByTagName('img').length - 1;
-            el.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowDown.gif');
+            el.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowDown.gif');
         }
 
     }
@@ -207,7 +207,7 @@ function init(e) {
             var node;
             // set up blank spaceholder gifs
             blankarrow = document.createElement('img');
-            blankarrow.setAttribute('src','arrowBlank.gif');
+            blankarrow.setAttribute('src','<dtml-var portal_url>/arrowBlank.gif');
             blankarrow.setAttribute('height',6);
             blankarrow.setAttribute('width',9);
             // the first sortable column should get an arrow initially.
@@ -219,11 +219,10 @@ function init(e) {
                     if (!initialsort) {
                         initialsort = true;
                         uparrow = document.createElement('img');
-                        uparrow.setAttribute('src','arrowUp.gif');
+                        uparrow.setAttribute('src','<dtml-var portal_url>/arrowUp.gif');
                         uparrow.setAttribute('height',6);
                         uparrow.setAttribute('width',9);
                         node.appendChild(uparrow);
-                        //node.getElementsByTagName('img').item(0).setAttribute('src','arrowUp.gif')
                     } else {
                         node.appendChild(blankarrow.cloneNode(1));
                     }
