@@ -1,3 +1,7 @@
+# $Id: $
+# $Source: $
+__version__ = "$Revision: $"[11:-2] + " " + "$Name: $"[7:-2]
+
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import UniqueObject
@@ -409,7 +413,10 @@ class NavigationError(Exception):
         self.trace = self.trace.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
     def __str__(self):
-        return '<pre>' + str(self.exception) + '\n\nNavigation trace:\n-----------------' + self.trace + self._helpfulHints() + '</pre>'
+        global __version__
+        return '<pre>' + str(self.exception) \
+                       + '\n\nNavigation trace: (version ' + __version__ + ')\n-----------------' \
+                       + self.trace + self._helpfulHints() + '</pre>'
 
     def _helpfulHints(self):
         st = str(self.exception)

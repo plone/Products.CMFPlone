@@ -1,3 +1,7 @@
+# $Id: $
+# $Source: $
+__version__ = "$Revision: $"[11:-2] + " " + "$Name: $"[7:-2]
+
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
 from Products.CMFCore.utils import UniqueObject
@@ -227,12 +231,14 @@ class FormValidator(SimpleItem):
                                        call_object, 1, missing_name, dont_publish_class,
                                        REQUEST, bind=1)
 
-                # preserve compatibility with 1.0 alpha 4
+                # The preferred return type for scripts will eventually be an object.
+                # Until then, preserve compatibility with 1.0 alpha 4
                 if type(script_status) == type(()):
                     (status, errors, kwargs) = script_status
                     kwargs['errors'] = errors
                     script_status = ScriptStatus(status, kwargs, None)
-                    log_deprecated('Validator \'%s\' uses a return signature that has been marked for deprecation.  Validators should return a ScriptStatus object.' % validator)
+                    # disable deprecation warning for now
+#                    log_deprecated('Validator \'%s\' uses a return signature that has been marked for deprecation.  Validators should return a ScriptStatus object.' % validator)
 
                 status = script_status.status
                 kwargs = script_status.kwargs
