@@ -102,7 +102,9 @@
     
     <form class="group" onsubmit="return false;">
         <span class="legend">Preview</span>
-        <p id="previewComment"></p>
+        <br />
+        <span id="previewComment"></span>
+        <br />
         
         <input class="context"
                        type="submit" 
