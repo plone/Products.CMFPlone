@@ -162,7 +162,6 @@
             </tbody>
         </table>
 
-
         <div class="label" i18n:translate="label_localroles_to_assign_to_selected_users">Roles to assign to selected user(s)/group(s)</div>
 
         <div class="field"
@@ -181,14 +180,14 @@
         </div>
 
         <div class="submit">
-            <input class="context"
-                type="submit"
-                value="Assign selected role(s) to selected user(s)/group(s)"
-                name="folder_localrole_add:method"
-                i18n:attributes="value"
-                tabindex=""
-                tal:attributes="tabindex tabindex/next;"
-                />
+	    <input class="context"
+		type="submit"
+		value="Assign selected role(s) to selected user(s)/group(s)"
+		name="folder_localrole_add:method"
+		i18n:attributes="value"
+		tabindex=""
+		tal:attributes="tabindex tabindex/next;"
+		/>
             <input class="destructive"
                 type="submit"
                 value="Delete Selected Role(s) and User(s)"
@@ -501,14 +500,13 @@
           name="setacquisition"
           action="folder_localrole_set">
 
-      <fieldset>
+      <fieldset tal:condition="exists:here/isLocalRoleAcquired">
 
         <legend i18n:translate="legend_security_settings">
             Advanced Settings
         </legend>
 
-        <div class="field"
-          tal:condition="exists:here/isLocalRoleAcquired">
+        <div class="field">
             <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
                 tal:attributes="checked     python:test(inheritanceActive,1,None)"
                 /> 
