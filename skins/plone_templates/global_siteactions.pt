@@ -3,7 +3,6 @@
 
 <body>
 <div metal:define-macro="site_actions"
-     class="siteActions"
      id="portal-siteactions"
      tal:define="site_actions actions/site_actions|nothing;
                  getIconFor nocall:putils/getIconFor"
@@ -12,17 +11,13 @@
     <tal:actions repeat="saction site_actions">
 
         <a href="" 
-           tal:attributes="href saction/url"
+           i18n:attributes="title"
+           tal:attributes="href saction/url;
+                           style string:background: url($portal_url/$icon);
+                           title title;"
            tal:define="title saction/name;
                        icon python:getIconFor('site_actions', saction['id'], None)"
-           tal:condition="icon">
-            
-            <img i18n:attributes="title" title="#"
-                 tal:condition="icon"
-                 tal:attributes="src string:$portal_url/$icon;
-                                 title title;
-				 alt title" />
-        </a>
+           tal:condition="icon"></a>
             
     </tal:actions>
     
