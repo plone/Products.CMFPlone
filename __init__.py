@@ -1,8 +1,9 @@
+cmfplone_globals=globals()
+
 from Products.CMFCore import DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
 import MembershipTool, FormulatorTool, CalendarTool, TranslatorTool
-import PloneFolder, PortalFactory
-
+import PloneFolder, Portal
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
 #for plone_debug method
@@ -52,7 +53,6 @@ contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )
 
 DirectoryView.registerDirectory('skins', globals())
-cmfplone_globals=globals()
 
 def initialize(context):
     utils.ToolInit('Plone Tool', tools=tools,
@@ -64,5 +64,4 @@ def initialize(context):
                      , extra_constructors=contentConstructors
                      , fti=PloneFolder.factory_type_information
                      ).initialize( context )
-
-    PortalFactory.register(context, cmfplone_globals)
+    Portal.register(context, cmfplone_globals)

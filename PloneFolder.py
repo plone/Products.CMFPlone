@@ -7,7 +7,7 @@ from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base
 from Globals import InitializeClass
 
-factory_type_information = ( { 'id'             : 'Plone Folder'
+factory_type_information = ( { 'id'             : 'Folder'
                              , 'meta_type'      : 'Plone Folder'
                              , 'description'    : """\
 Plone folders can define custom 'view' actions, or will behave like directory listings without one defined.."""
@@ -51,8 +51,8 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                            )
 
 
-DefaultSkinnedFolder = SkinnedFolder
-class PloneFolder ( DefaultSkinnedFolder ):
+#DefaultSkinnedFolder = SkinnedFolder
+class PloneFolder ( SkinnedFolder ):
     meta_type = 'Plone Folder' 
     security=ClassSecurityInfo()
 

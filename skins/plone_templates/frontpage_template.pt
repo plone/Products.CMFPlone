@@ -43,8 +43,7 @@ Header stuff
 
                 <metal:block metal:define-slot="super" tal:condition="show_border">
                     
-                <div class="contentTabs" metal:define-macro="contentTabs"
-                     tal:define="actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here));">
+                <div class="contentTabs" metal:define-macro="contentTabs">
     
                     <span tal:define="global obj_actions actions/object;
                                       global wf_actions actions/workflow;
