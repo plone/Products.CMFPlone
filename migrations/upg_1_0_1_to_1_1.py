@@ -39,7 +39,6 @@ def upg_1_0_1_to_1_1(portal):
     if 'portal_interface' not in portal.objectIds():
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
-    raise ValueError, "bollocks"
     addControlPanel(portal)
     
 def addControlPanel(portal):
