@@ -425,14 +425,13 @@ def addActionsToPortalTypes(portal):
                  condition='python:object and portal.portal_workflow.getTransitionsFor(object, object.getParentNode())',
                  permission='View',
                  category='object_tabs' )
-        #This was moved centrally into portal_actions
-        #if ptype.getId() not in ('Folder', 'Plone Site'):
-        #    ptype.addAction('local_roles',
-        #             name='Sharing',
-        #             action="string:${object_url}/folder_localrole_form",
-        #             condition='',
-        #             permission='Manage properties',
-        #             category='object')
+        if ptype.getId() not in ('Folder', 'Plone Site'):
+            ptype.addAction('local_roles',
+                     name='Sharing',
+                     action="string:${object_url}/folder_localrole_form",
+                     condition='',
+                     permission='Manage properties',
+                     category='object')
 
 def setupExtEditor(portal):
     """ sets the ext_editor property in site properties if the ext editor is available"""
