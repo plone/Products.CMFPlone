@@ -31,8 +31,7 @@ copytext = """\
 #DO NOT TOUCH Controlled/Python Scripts
 def change_py(file):
     res = notPresent(file, copytext)
-    lines = res.split('\n')
-    if lines and lines[0].startswith('## '):
+    if res and res.split('\n')[0].startswith('## '):
         return
     if res is not None:
 	res = copytext + res
@@ -40,6 +39,9 @@ def change_py(file):
         print "Changed", file
 
 def change_pt(file):
+    """ This needs to be aware of <html> tags.  We need to insert the tag after <html>
+        or it could possibly choke up html authoring tools 
+    """
     add = """\n<tal:copyright replace="nothing">\n""" + copytext + """</tal:copyright>\n"""
 
     res = notPresent(file, add)
