@@ -8,6 +8,9 @@
 ##title=
 ##
 
+#If action does not have an ID it will not
+#show up in the keyedActions.
+
 if actions is None:
     actions=context.portal_actions.listFilteredActionsFor()
 
@@ -16,7 +19,9 @@ keyed_actions={}
 for category in actions.keys():
     keyed_actions[category]={}
     for action in actions[category]:
-        keyed_actions[category][action['id']]=action.copy()
+        id=action.get('id',None)
+        if id is not None:
+            keyed_actions[category][id]=action.copy()
 
 return keyed_actions
 
