@@ -30,7 +30,7 @@ def childFinder(obj,folderishOnly=1):
     
 
 tb=StatelessTreeBuilder(context,childFinder=childFinder,includeTop=0,
-showFolderishSiblingsOnly=1,showFolderishChildrenOnly=0)
+showFolderishSiblingsOnly=1,showFolderishChildrenOnly=1)
 
 return tb.buildFlatMenuStructure()
 
