@@ -11,4 +11,4 @@ validators..Cancel=
 [actions]
 action.success..Save=traverse_to:string:topic_editTopic
 action.success..Cancel=redirect_to_action:string:view
-action.failure=redirect_to:string:topic_edit_form
+action.failure=traverse_to:string:topic_edit_form
