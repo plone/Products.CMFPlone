@@ -1,11 +1,10 @@
 from Products.CMFActionIcons.ActionIconsTool import ActionIconsTool as BaseTool
-from Products.CMFActionIcons.permissions import View
+from Products.CMFActionIcons.permissions import View, ManageSite
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
-from permissions import ManageSite
 
 from Products.CMFPlone.PloneTool import _icons as iconcache
 
