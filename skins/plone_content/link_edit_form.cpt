@@ -95,7 +95,7 @@
             <label for="description" i18n:translate="label_description">Description</label>
 
             <div class="formHelp" i18n:translate="help_description_link">
-              A brief description of the link.
+              A brief description of the item.
             </div>
 
             <textarea cols="80"
