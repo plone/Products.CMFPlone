@@ -4,6 +4,7 @@ from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from DateTime import DateTime
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from DateTime import DateTime
@@ -48,6 +49,16 @@ class FactoryTool(UniqueObject, SimpleItem):
     id = 'portal_factory'
     meta_type= 'Plone Factory Tool'
     security = ClassSecurityInfo()
+
+    manage_options = ( ({'label':'Overview', 'action':'manage_overview'},) +
+                       SimpleItem.manage_options)
+
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_overview')
+    manage_overview = PageTemplateFile('www/portal_factory_manage_overview', globals())
+    manage_overview.__name__ = 'manage_overview'
+    manage_overview._need__name__ = 0
+
+    manage_main = manage_overview
 
     def doCreate(self, obj, id=None, **kw):
         """Create a real object from a temporary object."""
@@ -133,6 +144,9 @@ class FactoryTool(UniqueObject, SimpleItem):
         # stack.reverse()
         if len(stack) < 2:
             obj = self.restrictedTraverse('/'.join(stack))
+            if args == ():
+                # XXX hideous hack -- why isn't REQUEST passed in in args??
+                args = (self.REQUEST, )
             return obj(*args, **kwargs)
 
         id = stack[1]
