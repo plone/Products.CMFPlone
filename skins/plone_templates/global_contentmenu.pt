@@ -71,7 +71,8 @@
                      numMenu      python:len(menuTypes);    
                      showAdd      python:numAllowed > 1;
                      showMore     python:numAllowed > numMenu;
-                     showMenu     python:showMore or numMenu > 1;"
+                     showMenu     python:showMore or numMenu > 1;
+                     showSettings here/canConstrainTypes;"
              condition="showAdd">
 
     <tal:dropdown tal:condition="showMenu">
@@ -85,7 +86,7 @@
                <span tal:condition="here/isPrincipiaFolderish" 
                         i18n:translate="label_add_new_item">Add item</span>
                <span tal:condition="not:here/isPrincipiaFolderish" 
-                        i18n:translate="label_add_new_item_in_folder">Add in folder</span>
+                        i18n:translate="label_add_new_item_in_folder">Add to folder</span>
             </a>
     
             <ul class="actionMenu" id="objectMenu"
@@ -108,13 +109,22 @@
                     </li>
                 </tal:types>
                 <li tal:condition="showMore">
-                    <a href="#" class="folderAddMore"
+                    <a href="#" class="folderAddMore" title="Show all available content types"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
                            i18n:attributes="title"
-                           tal:attributes="href string:${folder/absolute_url()}/folder_factories;
-                                           title Title">
+                           tal:attributes="href string:${folder/absolute_url}/folder_factories;">
                           <tal:title i18n:translate="folder_add_more">
                             More...
+                          </tal:title>
+                    </a>
+                </li>
+                <li tal:condition="showSettings">
+                    <a href="#" class="folderAddSettings" title="Configure which content types can be added here"
+                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                           i18n:attributes="title"
+                           tal:attributes="href string:${folder/absolute_url}/folder_constraintypes_form;">
+                          <tal:title i18n:translate="folder_add_settings">
+                            Settings...
                           </tal:title>
                     </a>
                 </li>
@@ -151,9 +161,7 @@
                                parentHasActions             python:parentVocab or canSelectDefaultFolderPage;
                                contextHasActions            python:contextVocab or canSelectDefaultContextPage;
                                dimMenu python:not ((context.isPrincipiaFolderish and not contextHasIndexHtml) or 
-                                                   (isContextDefaultPage and not folderHasIndexHtml));
-
-                               "
+                                                   (isContextDefaultPage and not folderHasIndexHtml));"
                         condition="python:(isContextDefaultPage and parentHasActions) or
                                            contextHasActions">
         <li>
@@ -188,9 +196,9 @@
                     <tal:layouts repeat="layout vocab">
                     <li tal:define="value layout;
                                     display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
-                        <!--XXX style attribute has to be changed to a css class in following tag  -->
                         <span style="white-space:nowrap;"
                               tal:condition="python:value==selectedLayout"
+                              tal:attributes="title display"
                               i18n:translate=""
                               class="selected"
                               tal:content="display">Template id</span>
@@ -206,7 +214,6 @@
                     </li>
                     </tal:layouts>
 
-                    <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
                     <tal:block condition="canSelectDefaultFolderPage">
                         <li tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
@@ -238,9 +245,9 @@
                     
                     <li tal:define="value layout;
                                     display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
-                        <!--XXX style attribute has to be changed to a css class in following tag  -->
                         <span style="white-space:nowrap;"
                               tal:condition="python:value==selectedLayout"
+                              tal:attributes="title display"
                               i18n:translate=""
                               class="selected"
                               tal:content="display">Template id</span>
@@ -256,7 +263,6 @@
                     </li>
                     </tal:layouts>
 
-                    <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
                     <tal:block condition="canSelectDefaultFolderPage">
                         <li tal:condition="python:selectedLayout != ''">
                             <a title="Select default page" href="#" class="selected"
