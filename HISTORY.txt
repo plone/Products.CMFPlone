@@ -8,10 +8,6 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       icons anymore.
       [limi]
 
-    - News portlet now also shows ATNewsItems (like event portlet which
-      also shows ATEvents).
-      [ajung]
-
     - Made the check_id script work in the presence of incomplete 
       Plone sites and missing permissions.
       [stefan]
