@@ -36,13 +36,13 @@
                        tal:condition="not: iscurrent"
                        tal:define="url string:${sibling/absolute_url}/view"
                        tal:attributes="href url">
-                        <img src="" 
-                             height="16" 
-                             width="16" 
-                             alt="dummy"
-                             border="0" 
-                             tal:attributes="src string:$portal_url/${sibling/getIcon};
-                                             alt sibling/Title;" />&nbsp;<tal:block tal:content="structure sibling_title" />
+                      <img src="" 
+                           height="16" 
+                           width="16" 
+                           alt="dummy"
+                           border="0" 
+                           tal:replace="structure python:path('here/%s' % sibling.getIcon(1))" />&nbsp;<tal:block
+                             tal:content="structure sibling_title" />
                     </a>
                     <tal:block tal:condition="iscurrent">
                       <img src=""
