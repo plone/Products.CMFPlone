@@ -225,7 +225,7 @@ class MigrationTool( UniqueObject, SimpleItem):
                     out.append(("Upgrade to: %s, completed" % newv, zLOG.INFO))
                     self.setInstanceVersion(newv)
                 else:
-                    out.append(("No upgrade path found from that version, migration stopping", zLOG.INFO))
+                    out.append(("Your ZODB and Filesystem Plone instances are up-to-date.", zLOG.INFO))
             except:
                 out.append(("Upgrade aborted", zLOG.ERROR))
                 for line in traceback.format_tb(sys.exc_traceback):
