@@ -18,7 +18,7 @@ if not field_id:
 id=field_id
 
 errors=context.validate_folder_edit()
-if errors:
+if REQUEST.has_key('errors'):
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 

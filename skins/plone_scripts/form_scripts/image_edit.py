@@ -22,7 +22,7 @@ context.edit(
      file=file)
 
 errors=context.validate_image_edit()
-if errors:
+if REQUEST.has_key('errors'):
     form=getattr( context, context.getTypeInfo().getActionById( 'edit' ) )
     return form()
 

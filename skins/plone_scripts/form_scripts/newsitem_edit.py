@@ -10,7 +10,7 @@ id,description = field_id, field_description
 
 errors=context.validate_newsitem_edit()
 
-if errors:
+if REQUEST.has_key('errors'):
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 

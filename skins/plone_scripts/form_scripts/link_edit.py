@@ -20,7 +20,7 @@ if context.Type().strip()=='Link' and remote_url.find('://')==-1:
     remote_url='http://'+remote_url
 
 errors=context.validate_link_edit()
-if errors:
+if REQUEST.has_key('errors'):
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 

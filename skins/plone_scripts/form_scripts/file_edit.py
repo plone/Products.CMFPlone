@@ -25,7 +25,7 @@ context.edit( precondition=precondition,
               file=file )
 
 errors=context.validate_file_edit()
-if errors:
+if REQUEST.has_key('errors'):
     form=getattr( context, context.getTypeInfo().getActionById( 'edit' ) )
     return form()
 
