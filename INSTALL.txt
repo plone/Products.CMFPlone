@@ -3,45 +3,36 @@ date, and have nice and funky pictures to go with them ;)
 
 **REQUIREMENTS**
 
-  - CMF1.4 or later, see cmf.zope.org
+  - "Zope 2.6.2 or later":http://see www.zope.org/Products
 
-  - Formulator 1.2.0 or later, see cvs.infrae.org
+  - "CMF 1.4 or later":http://cmf.zope.org
 
-  - ExternalEditor 0.6 or later, see www.zope.org
+  - "Formulator 1.4.0 or later":http://www.zope.org/Members/faassen/Formulator
 
-  - CMFActionsTool, from CVS - cvs.zope.org/CMF
+  - "CMFActionsIcons":http://cvs.zope.org/Products/CMFActionIcons/ (get tarball)
 
-  - CMFQuickInstallerTool, from CVS - sf.net/projects/collective
+  - "CMFQuickInstallerTool":http://sf.net/projects/collective
 
-  - GroupUserFolder, from CVS - sf.net/projecst/collective
+  - "GroupUserFolder":http://sf.net/projecst/collective
  
-  - (optional) BTreeFolder2, from CVS - http://cvs.zope.org/Products
+  - (optional, required for Large Folder Support) 
+    "BTreeFolder2":http://cvs.zope.org/Products/BTreeFolder2/ (get tarball)
 
-**Download the following:**
+  - (optional, but recommended) 
+    "ExternalEditor 0.6 or later":http://www.zope.org/Members/Caseman/ExternalEditor
 
-- "Latest Zope":http://www.zope.org/Products (you need at least version  2.5.1)
-
-- "Latest CMF":http://cmf.zope.org/download (you need at least version 1.3)
-
-- "Latest Plone":http://plone.org/download
-
-  - Plone comes with 3 Products that need to be installed in the Products 
-    directory: CMFPlone, DCWorkflow and Formulator.
-
-  - If you are using Zope 2.5.1, you will also need to download ActivePak from
-       http://plone.org/download and put it in your Products directory.  DO NOT
-       INSTALL ActivePak if you are using Zope 2.6+
 
 **The installation procedure:**
 
-- Install Zope (2.5.1 or later)
+- Install Zope
 
 - Unpack the CMF directories (CMFCore, CMFDefault etc) into your Products 
-  directory (CMF1.3 or later)
+  directory
 
 - Unpack the Plone directory (CMFPlone) into your Products directory 
-  (also include the DCWorkflow and Formulator products as well as ActivePak
-  if you are using Zope 2.5.1 -- DO NOT USE ActivePak with Zope 2.6+)
+  (also include the DCWorkflow and Formulator products as well as ActivePak)
+
+- Unpack all the other Products listed above into your Products dir
 
 - Start Zope
 
@@ -56,6 +47,6 @@ date, and have nice and funky pictures to go with them ;)
   language files, have a look in the i18n directory.
 
 - Have fun, and don't forget to report any bugs or inconsistencies in the 
-  "Plone Collector":http://plone.org 
+  "Plone Collector":http://plone.org/collector
 
 Thank you for helping us improve Plone!
