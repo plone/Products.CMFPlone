@@ -111,7 +111,7 @@
                           tal:content="description"
                           onfocus="formtooltip('description_help',1)" 
                           onblur="formtooltip('description_help',0)"
-                          />
+                          >
                 Description 
                 </textarea>
             </div>
