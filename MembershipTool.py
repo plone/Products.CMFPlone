@@ -121,6 +121,9 @@ class MembershipTool(BaseTool):
                 members.setTitle('Members')
                 members.setDescription("Container for portal members' home directories")
 
+        if hasattr(members, 'aq_explicit'):
+            members=members.aq_explicit
+
         if members is not None and not hasattr(members, member_id):
             f_title = "%s's Home" % member_id
             try:
