@@ -19,7 +19,7 @@
           action="" 
           name="reconfig" 
           method="post" 
-	  tal:attributes="actions here/absolute_url"
+	  tal:attributes="action here/absolute_url"
           tal:define="props python:container.portal_properties">
 
         <span class="legend">CMF Details</span>
