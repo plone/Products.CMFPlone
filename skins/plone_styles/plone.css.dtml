@@ -398,7 +398,7 @@ table.columns td.right {
 }
 
 div.document {
-    background: &dtml-contentBackground;;
+    background: &dtml-mainBackground;;
     font: &dtml-contentFont;;
     padding: 0;
     margin: 0em 0em 2em 0em;
