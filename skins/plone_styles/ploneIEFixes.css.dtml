@@ -47,8 +47,12 @@ body { /* These work in IE only, changes the look of the scrollbar + textareas *
 ** Fix for IE6 diseappearing float bug and
 ** Nonexistant Class for fixing IE5.0
 **  
-** Do not change or move anything here, this
+** Do not change anything here, this
 ** could cause IE 5.0 and/or 6.0 woes.
+**
+** It must be the last defintion, otherwise
+** the rest of the stylesheet will be commented
+** out for IE 5.0.
 */
 
 .fakeclass {content:"\"/*"}
