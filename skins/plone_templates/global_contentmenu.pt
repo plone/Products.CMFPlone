@@ -120,34 +120,60 @@
     </li>
 
     <tal:templateMixin define="iface_tool portal/portal_interface;
-                               isTemplateMixin python:iface_tool.objectImplements(here, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');"
-                               tal:condition="isTemplateMixin">
-    <tal:layout define="field python:here.getField('layout');
-                       vocab python:field.Vocabulary(here);"
-         condition="python:len(vocab) > 1">
-              <li tal:condition="here/isDefaultPageInFolder">
-                  is default page
-              </li>
+                               isParentTemplateMixin python:iface_tool.objectImplements(folder, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');"
+                               tal:condition="isParentTemplateMixin">
+         <!--"-->
+        <li>
+            <div class="menuPosition">
+                <a href="#"
+                       title="Choose default view"
+                       onclick="return buttonClick(event, 'templateMenu');"
+                       onmouseover="buttonMouseover(event, 'templateMenu');"
+                       i18n:attributes="title">
+                    <span i18n:translate="label_choose_template">Display</span></a>
 
-    <li tal:define="fieldvalue here/getLayout">
-        <div class="menuPosition">
-            <a href="#"
-               title="Choose default view"
-               onclick="return buttonClick(event, 'templateMenu');"
-               onmouseover="buttonMouseover(event, 'templateMenu');"
-               i18n:attributes="title">
-               <span i18n:translate="label_choose_template">Display</span></a>
+                <ul class="actionMenu" id="templateMenu"
+                    onmouseover="menuMouseover(event)">
 
-            <ul class="actionMenu" id="templateMenu"
-                onmouseover="menuMouseover(event)"
-                tal:define="check string:&bull;;">
+                    <tal:parentLayout define="field python:folder.getField('layout');
+                                              vocab python:field.Vocabulary(folder);
+                                              parentLayout folder/getLayout;
+                                              isDefaultPage python:here.isDefaultPageInFolder();
+                                              selectableDefaultPage python:iface_tool.objectImplements(here, 'Products.ATContentTypes.interfaces.ISelectableDefaultPage');"
+                                      condition="python:len(vocab) > 1 and isDefaultPage and not selectableDefaultPage">
+                    <tal:item repeat="item vocab">
+                    <li tal:define="value item;
+                                    display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
+                    <!--XXX style attribute has to be changed to a css class in following tag  -->
+                        <span style="white-space:nowrap;"
+                              tal:condition="python:value==parentLayout"
+                              i18n:translate=""
+                              tal:content="display">Template id</span>
+                        <a href="#"
+                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                           tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
+                           i18n:attributes="title"
+                           tal:attributes="href python:here.absolute_url()+'/selectViewTemplate?templateId='+value;
+                                           title display"
+                           tal:condition="python:value!=parentLayout">
+                            <tal:title i18n:translate=""
+                                 tal:content="display">Template id</tal:title>
+                        </a>
+                    </li>
+                    </tal:item>
+                    </tal:parentLayout>
 
-              <tal:block repeat="item vocab">
+            <tal:itemStuff define="isTemplateMixin python:iface_tool.objectImplements(here, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');"
+                            condition="isTemplateMixin">
+             <tal:layouts define="field python:here.getField('layout');
+                                     vocab python:field.Vocabulary(folder);
+                                     itemLayout here/getLayout">
+              <tal:folderoritem repeat="item vocab">
                 <li tal:define="value item;
                                 display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
                     <!--XXX style attribute has to be changed to a css class in following tag  -->
                     <span style="white-space: nowrap;"
-                          tal:condition="python:value==fieldvalue"
+                          tal:condition="python:value==itemLayout"
                           i18n:translate=""
                           tal:content="display">Template id</span>
                     <a href="#" 
@@ -156,12 +182,14 @@
                        i18n:attributes="title"
                        tal:attributes="href python:here.absolute_url()+'/selectViewTemplate?templateId='+value;
                                        title display"
-                       tal:condition="python:value!=fieldvalue">
+                       tal:condition="python:value!=itemLayout">
                         <tal:title i18n:translate=""
                                    tal:content="display">Template id</tal:title>
                     </a>
                 </li>
-              </tal:block>
+              </tal:folderoritem>
+              </tal:layouts>
+              </tal:itemStuff>
               
               <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
               <li tal:condition="python:iface_tool.objectImplements(here, 'Products.ATContentTypes.interfaces.ISelectableDefaultPage')">
@@ -177,7 +205,6 @@
             </ul>
         </div>
     </li>
-    </tal:layout>
     </tal:templateMixin>
 
 </ul>
