@@ -86,7 +86,7 @@ class DefaultCustomizationPolicy:
         titles={'portal_actions':'defines custom tabs and buttons',
          'portal_membership':'encapsulates membership policy',
          'portal_memberdata':'defines available properties on Members',
-         'portal_undo':'defines actions and functionality related to unfo',
+         'portal_undo':'defines actions and functionality related to undo',
          'portal_types':'defines Python Products in the CMF',
          'plone_utils':'utility methods in PloneTool.py',
          'portal_navigation':'coordinating portal_form and nav_props',
