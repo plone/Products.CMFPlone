@@ -1,5 +1,3 @@
-# $Id: $
-
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import UniqueObject
@@ -36,6 +34,8 @@ class NavigationTool(UniqueObject, SimpleItem):
 
     id = 'portal_navigation'
     meta_type = ToolNames.NavigationTool
+    toolicon = 'skins/plone_images/error_icon.gif'
+
     security = ClassSecurityInfo()
     plone_tool = 1
     __implements__ = INavigationController,

@@ -1,5 +1,3 @@
-# $Id: $
-
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
 from Products.CMFCore.utils import UniqueObject
@@ -21,6 +19,7 @@ from interfaces.FormTool import IFormTool, ICMFForm
 from PloneUtilities import log as debug_log
 from NavigationTool import ScriptStatus
 from ZODB.POSException import ConflictError
+from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 validator_cache = {}  # a place to stash cached validators
 
@@ -29,11 +28,14 @@ validator_cache = {}  # a place to stash cached validators
 
 debug = 0  # enable/disable logging
 
-class FormTool(UniqueObject, SimpleItem):
+class FormTool(PloneBaseTool, UniqueObject, SimpleItem):
     id = 'portal_form'
     meta_type= 'Plone Form Tool'
+    toolicon = 'skins/plone_images/error_icon.gif'
     security = ClassSecurityInfo()
-    __implements__ = IFormTool,
+    
+    __implements__ = (PloneBaseTool.__implements__, IFormTool, 
+                      SimpleItem.__implements__, )
 
     # special-purpose items used in the REQUEST
     # a dictionary used for storing form validation errors
