@@ -42,9 +42,8 @@
                 <div tal:condition="request/came_from | nothing">
                     <div tal:define="came_from request/came_from;
                                      not_allowed python:('login_form','logged_out','registered', 'join_form');
-                                     came_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);">
-                        <div tal:define="dummy python: request.RESPONSE.redirect(came_from)" />
-                    </div>
+                                     came_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);
+                                     dummy python: request.RESPONSE.redirect(came_from)" />
                 </div>
 
                 <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
