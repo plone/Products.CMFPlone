@@ -13,7 +13,7 @@
       you are receiving this message in error, please send an e-mail to
       </p>
 
-      <a href="mailto:admin@here.com" title="Administrator Email"
+      <a href="mailto:admin@here.com" title="Email Administrator"
          tal:attributes="href string:mailto:${p_props/email_from_address}"
          tal:content="p_props/email_from_name"
          i18n:attributes="title">Email Admin</a>.
