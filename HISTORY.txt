@@ -24,6 +24,14 @@
       Issue 204 fixed
     - Sigve Tjora fixed the migration machinery - incredible job! CMFPlone/Extensions/migration.py
       Alan fixed it so Ownership is carried over properly
+    - portal_status_message is shown when a object is created, type_name has been created.
+    - added post-creation hook for PloneFolders, doAfterCreation() if this exists on a 
+      object that inherients from PloneFolders it will call it after the object has been created.
+      This works very well for TTW content.  Also made zbases initialize so you can inherient
+      from Plone Folders.  NOTE: you will still need to 'register' this as being a Folderish object
+      in the Portal properties (yuk!)
+
+    
     
 1.0 alpha4
     - publishing now works without javascript. #202
