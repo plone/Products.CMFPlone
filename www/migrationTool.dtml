@@ -8,7 +8,7 @@
 
 <p>
 <dtml-if needUpgrading>
-Your Plone instance is out of date. Click "upgrade" to migrate to the latest version.
+Your Plone instance is out of date. Click "upgrade" to migrate to the latest version. Please note: an upgrade involves recataloging the site, this might take a while for large sites.
 
 <form action="upgrade">
 
