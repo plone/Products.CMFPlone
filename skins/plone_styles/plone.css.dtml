@@ -304,32 +304,44 @@ del {
     margin: 0;
     padding: 0;
 }
-#portal-siteactions {
-    position: absolute;
-    top: 11px;
-    right: 16px;
-    width: 54px;
-    margin: 0;
-    padding: 0;
-    z-index: 2;
-}
 
-#portal-siteactions,
+
+/* Site-wide action menu - font size, contact, index, sitemap etc */
+#portal-siteactions {
+    background-color: transparent;
+    border-collapse: collapse;
+    white-space: nowrap;
+    list-style: none;
+    margin: 4px 1em 0 0;
+    height: auto;
+    line-height: normal;
+    float: right;
+}
 #portal-siteactions li {
     display: inline;
-    list-style: none;
-    list-style-image: none;
+}
+#portal-siteactions li a {
+    background-color: transparent;
+    border: 1px solid White;
+    color: &dtml-discreetColor;;
+    height: auto;
+    padding: 0.2em;
+    margin-right: 0.2em;
+    text-decoration: none;
+    text-transform: &dtml-textTransform;;
+}
+#portal-siteactions li.selected a {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+#portal-siteactions li a:hover {
+    background-color: &dtml-globalBackgroundColor;;
+    color: &dtml-globalFontColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
 }
 
-#portal-siteactions a {
-    display: block;
-    float: left;
-    padding: 18px 0 0 0;
-    width: 18px;
-    height: 0px !important;
-    height /**/: 18px;
-    overflow: hidden;
-}
+
 
 /* searchbox style and positioning */
 #portal-searchbox {

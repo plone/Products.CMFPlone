@@ -4,6 +4,23 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Changed the behaviour of the site-wide actions (currently
+      only used for text size) - so if you use or have a custom
+      variant of this, you will need to re-customize this part.
+      It was just too broken to not require template 
+      modification. It changed position in main_template, and
+      produces more sane HTML now. Site actions have IDs now too.
+      [limi]
+
+    - The body tag now has an HTML 'class' 
+      attribute, so you can skin different sections of the site
+      with different styles. Prefix is "section-" and then the
+      Short Name (partial URL) of the item in the root folder.
+      This can easily be customized if you want this to
+      work on all levels instead of just the root level, or to 
+      return multiple classes.
+      [limi]
+
     - Backported fix for http://plone.org/collector/3098. 
       getObjSize() should handle floats.
       [stefan]
