@@ -38,7 +38,7 @@ class PloneConfiglet(ActionInformation):
 default_configlets = (
     {'id':'QuickInstaller',
      'appId':'QuickInstaller',
-     'name':'Install Products',
+     'name':'Add/Remove Products',
      'action':'string:${portal_url}/prefs_install_products_form',
      'category':'Plone',
      'permission': ManagePortal,
@@ -50,11 +50,11 @@ default_configlets = (
      'action':'string:${portal_url}/reconfig_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+     'imageUrl':'plone_images/logoIcon.gif'},
 
     {'id':'UsersGroups',
      'appId':'UsersGroups',
-     'name':'Users and Groups',
+     'name':'Users and Groups Administration',
      'action':'string:${portal_url}/prefs_users_overview',
      'category':'Plone',
      'permission': ManagePortal,
@@ -74,7 +74,7 @@ default_configlets = (
      'action':'string:${portal_url}/password_form',
      'category':'Member',
      'permission': SetOwnPassword,
-     'imageUrl':'plone_images/user.gif'},
+     'imageUrl':'plone_images/lock_icon.gif'},
 
 #    {'id':'WorkflowPrefs',
 #     'appId':'Plone',
@@ -86,19 +86,19 @@ default_configlets = (
 
     {'id':'MailHost',
      'appId':'MailHost',
-     'name':'Mail Host',
+     'name':'Mail Settings',
      'action':'string:${portal_url}/prefs_mailhost_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+     'imageUrl':'plone_images/mail_icon.gif'},
 
     {'id':'PortalSkin',
      'appId':'PortalSkin',
-     'name':'Portal Skin',
+     'name':'Skins',
      'action':'string:${portal_url}/prefs_portalskin_form',
      'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+     'imageUrl':'plone_images/skins_icon.gif'},
 
 #    {'id':'Syndication',
 #     'appId':'Syndication',
@@ -131,7 +131,7 @@ default_configlets = (
         'action':'string:${portal_url}/manage_main',
         'category':'Plone',
      'permission': ManagePortal,
-     'imageUrl':'plone_images/site_icon.gif'},
+     'imageUrl':'plone_images/zope_icon.gif'},
 
 )
 
@@ -158,7 +158,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     manage_options=ActionProviderBase.manage_options + PropertyManager.manage_options
 
-    groups=['site|Plone|Plone Preferences','site|Products|Add-on Product Preferences','member|Member|Plone Member Preferences']
+    groups=['site|Plone|Plone Configuration','site|Products|Add-on Product Configuration','member|Member|Plone Member Preferences']
 
     def __init__(self,**kw):
         if kw:

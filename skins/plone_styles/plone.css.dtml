@@ -799,8 +799,31 @@ input.searchButton {
     text-decoration: &dtml-listingLinkHover;;
 }
 .listing img {
-	vertical-align: middle;
+    vertical-align: middle;
 }
+
+ul.configlets li {
+    list-style: none;
+    color: &dtml-standaloneButtonFontColor;;
+    cursor: pointer;
+    font-weight: &dtml-buttonWeight;;
+    margin-bottom: 1em;
+    padding: &dtml-standaloneButtonPadding;;
+    text-transform: &dtml-textTransform;;
+    font: <dtml-var inputFont>;
+    border: &dtml-inputBorder;;  
+    color: &dtml-mainFontColor;;
+    vertical-align: middle;
+    padding: 0.1em;
+    text-align: center;
+	
+}
+
+ul.configlets li a {
+	text-decoration: none;
+   color: &dtml-standaloneButtonFontColor;;
+}
+
 /* Additional STX workaround classes */
 .stx table p /* stupid STX table workaround */
 {

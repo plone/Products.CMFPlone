@@ -23,7 +23,8 @@
     <tal:block tal:repeat="group groups">
         <h2 tal:content="group/title"
             i18n:translate="">Plone Configlet Group Title</h2>
-        <ul tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
+        <ul class="configlets"
+		      tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
 
             <li tal:repeat="configlet configlets">
                 <a href=""
