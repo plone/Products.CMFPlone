@@ -101,11 +101,12 @@ class TestChangeState(ZopeTestCase.Functional, PloneTestCase.PloneTestCase):
         #click the change state button
         self.failUnless(self.b.open(self.b.click("form.button.FolderPublish")))
           
+
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestChangeState))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    from unittest import TestSuite, makeSuite
-    def test_suite():
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestChangeState))
-        return suite

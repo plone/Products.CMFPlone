@@ -109,11 +109,11 @@ class TestFunctionalExample(ZopeTestCase.Functional, PloneTestCase.PloneTestCase
         self.failUnless(doc.Title() == 'My test document')
         
 
+def test_suite():
+    from unittest import TestSuite, makeSuite
+    suite = TestSuite()
+    suite.addTest(makeSuite(TestFunctionalExample))
+    return suite
+
 if __name__ == '__main__':
     framework()
-else:
-    from unittest import TestSuite, makeSuite
-    def test_suite():
-        suite = TestSuite()
-        suite.addTest(makeSuite(TestFunctionalExample))
-        return suite
