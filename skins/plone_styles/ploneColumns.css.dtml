@@ -1,4 +1,4 @@
-/*
+/* <dtml-with stylesheet_properties>
 ** Tableless Column Layout for CSS2 capable Browsers
 ** Based on http://www.redmelon.net/tstme/3colpercent/ from Douglas Livingstone.
 **
