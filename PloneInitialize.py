@@ -22,6 +22,7 @@ from ConfigParser import ConfigParser
 
 # grab the old initilalize...
 old_initialize = OFS.Application.initialize
+global out
 
 def go(app):
     """ Initialize the ZODB with Plone """
