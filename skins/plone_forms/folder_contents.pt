@@ -37,37 +37,8 @@
 
         <input type="hidden" name="filter_state" value="set_view_filter" />
         
-        <!-- FIXME: This is a quick hack, as IE doesn't support display: table. -->
-        <table style="width: 94%"><tbody><tr><td>
-        
             <div class="title"> 
     
-                <span style="float: right; vertical-align: top;" 
-                      tal:define="allowedContentTypes here/allowedContentTypes"
-		                  tal:condition="allowedContentTypes">
-                    <!-- Add Item pulldown -->
-                    <select name="type_name" 
-                            tabindex=""
-                            tal:attributes="tabindex tabindex/next;">
-                        <option value="Select">Select</option>
-                        <metal:block tal:repeat="ctype allowedContentTypes"
-                                     tal:define="global filterOut  python:['Favorite']">
-                        <option value="Document"
-                                tal:condition="python: ctype.getId() not in filterOut"
-                                tal:attributes="value ctype/getId"
-                                tal:content="ctype/Title">Document</option>
-                        </metal:block>
-                    </select>
-        
-                    <input class="standalone" 
-                           type="submit" 
-                           name="folder_factories:method" 
-                           value="Add New Item"
-                           tabindex=""
-                           tal:attributes="tabindex tabindex/next;" 
-                           />
-                </span>
-                
                 <img src="folder.gif" alt="Folder" tal:attributes="src string:$portal_url/folder.gif" /> 
     
                 <span class="folderName" tal:condition="python: user.getUserName()==here.getId()">
@@ -95,7 +66,7 @@
      
             <metal:block tal:condition="folder_contents">
      
-            <div tal:content="structure here/Description"> description </div>
+            <p tal:content="structure here/Description"> description </p>
 
             <table id="sortable"
                    class="listing"
@@ -103,7 +74,69 @@
                    cellpadding="0" cellspacing="0"
                    metal:define-macro="folder_listing">
     
-                <thead> 
+                <thead>
+                    <tr>
+                        <td class="top" colspan="6">
+
+                            <!-- Filter pulldown -->
+                            <span style="float: left"
+                                  tal:define="filterValues decodedFilter/keys | nothing;
+                                              types here/allowedContentTypes"
+                                  tal:condition="here/listFolderContents">
+                    
+                                <select id="filter_selection" 
+                                        name="filter_by_Type:list" 
+                                        onChange="submitFilterAction()"
+                                        tabindex=""
+                                        tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" 
+                                        tal:attributes="tabindex tabindex/next;"
+                                        >
+                    
+                                    <option value="#" 
+                                            tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
+                                    Show All Items
+                                    </option>  
+                                    <metal:block tal:repeat="type types">
+                                        <option value="#"
+                                                tal:define="typetitle type/Title"
+                                                tal:content="string:${typetitle}s only"
+                                                tal:attributes="value typetitle;
+                                                                selected python:test( len(filterTypes)==1 and (typetitle in filterTypes), 'selected', '');"
+                                        >Filtered type</option>
+                                    </metal:block>
+                                </select>
+                    
+                                <input type="hidden" name="filter_by_Subject:tokens" value="" />
+                                <!--you can filter by subject keywords by filling in this value-->
+                            </span>
+
+                        <metal:block tal:define="allowedContentTypes here/allowedContentTypes"
+                            tal:condition="allowedContentTypes">
+                            <!-- Add Item pulldown -->
+                            <select name="type_name" 
+                                    tabindex=""
+                                    tal:attributes="tabindex tabindex/next;">
+                                <option value="Select">Select</option>
+                                <metal:block tal:repeat="ctype allowedContentTypes"
+                                             tal:define="global filterOut  python:['Favorite']">
+                                <option value="Document"
+                                        tal:condition="python: ctype.getId() not in filterOut"
+                                        tal:attributes="value ctype/getId"
+                                        tal:content="ctype/Title">Document</option>
+                                </metal:block>
+                            </select>
+                
+                            <input class="standalone" 
+                                   type="submit" 
+                                   name="folder_factories:method" 
+                                   value="Add New Item"
+                                   tabindex=""
+                                   tal:attributes="tabindex tabindex/next;" 
+                                   />
+                        </metal:block>
+                        
+                        </td>
+                    </tr> 
                     <tr>
                         <th name="nosort"><input class="noborder" 
                                                  type="image"
@@ -111,18 +144,19 @@
                                                  name="selectButton" 
                                                  onClick="toggleSelect(this); return false;"
                                                  /></th>
-                        <th>Title&nbsp;<img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
-                        <th>Type</th>
-                        <th>Size</th>
-                        <th>Modified</th>
-                        <th>Status</th>
+                        <th>Title <img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                        <th>Type </th>
+                        <th>Size </th>
+                        <th>Modified </th>
+                        <th>Status </th>
                     </tr>
                 </thead>
     
                 <tbody>
                 <metal:block tal:repeat="item batch"> 
-                    <tr tal:define="oddrow repeat/item/odd"
-                      tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
+                    <tr border="1"
+                        tal:define="oddrow repeat/item/odd"
+                        tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
     
                         <td>
                             <input type="checkbox" class="noborder" name="ids:list" id="#"
@@ -185,39 +219,6 @@
     
             </metal:block>
 
-    
-            <!-- Filter pulldown -->
-            <span style="float: right"
-                  tal:define="filterValues decodedFilter/keys | nothing;
-                              types here/allowedContentTypes"
-                  tal:condition="here/listFolderContents">
-    
-                <select id="filter_selection" 
-                        name="filter_by_Type:list" 
-                        onChange="submitFilterAction()"
-                        tabindex="9999"
-                        tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" 
-                        >
-    
-                    <option value="#" 
-                            tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
-                    Show All Items
-                    </option>  
-                    <metal:block tal:repeat="type types">
-                        <option value="#"
-                                tal:define="typetitle type/Title"
-                                tal:content="string:${typetitle}s only"
-                                tal:attributes="value typetitle;
-                                                selected python:test( len(filterTypes)==1 and (typetitle in filterTypes), 'selected', '');"
-                        >Filtered type</option>
-                    </metal:block>
-                </select>
-    
-                <input type="hidden" name="filter_by_Subject:tokens" value="" />
-                <!--you can filter by subject keywords by filling in this value-->
-            </span>
-
-            
             <tal:block tal:repeat="button actions/folder_buttons|nothing">
             <input class="context" 
 	                 type="submit" 
@@ -230,8 +231,7 @@
                                    tabindex tabindex/next;" />
             </tal:block>   
 
-        </td></tr></tbody></table>
-    
+   
     </form>
 
 </div>

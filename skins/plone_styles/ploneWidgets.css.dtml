@@ -142,6 +142,17 @@ table.listing th {
     font-weight: normal;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
+    white-space: nowrap;
+}
+
+table.listing td.top {
+    border-left: 1px solid &dtml-contentBackground;;
+    border-right: 1px solid &dtml-contentBackground;;
+    text-align: right;
+    padding: 0em 0em 1em 0em;
+    /* insane IE row bug workaround */
+    position: relative;
+    left: -1px;
 }
 
 table.listing tr.odd {
@@ -162,7 +173,7 @@ table.listing a:hover {
     text-decoration: &dtml-listingLinkHover;;
 }
 
-table.listing img{
+table.listing img {
 	vertical-align: middle;
 }
 
