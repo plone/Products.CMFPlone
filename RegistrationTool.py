@@ -9,6 +9,7 @@ from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
+from Products.CMFPlone.PloneTool import EMAIL_RE
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -41,7 +42,6 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
     md5key = None
     _v_md5base = None
-    email_regex="""^([0-9a-z_&.+-]+!)*[0-9a-z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,4}|([0-9]{1,3}\.){3}[0-9]{1,3})$"""
 
     def __init__(self):
         if hasattr(BaseTool, '__init__'):
@@ -86,8 +86,7 @@ class RegistrationTool(PloneBaseTool, BaseTool):
     security.declarePublic('isValidEmail')
     def isValidEmail(self, email):
         """ checks for valid email """
-        pattern = re.compile(self.email_regex)
-        if pattern.search(email.lower()) == None:
+        if EMAIL_RE.search(email) == None:
             return 0
         return 1
 

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Made RegistrationTool reuse the EMAIL_RE regex from PloneTool instead of
+      duplicating it.
+      [stefan]
+
     - Fixed http://plone.org/collector/3447. Email address validation failed
       for upper-case characters.
       [rohrer]
