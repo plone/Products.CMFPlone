@@ -408,8 +408,8 @@
             </div>
 
             <div class="row"
-                 tal:define="portrait python:here.portal_membership.getPersonalPortrait(member.getId());
-                             personal python:here.portal_membership.getPersonalFolder(member.getId());"
+                 tal:define="portrait here/portal_membership/getPersonalPortrait;
+                             personal here/portal_membership/getPersonalPortrait"
                  tal:condition="personal">
                 <div class="label">
                     <span i18n:translate="label_portrait">Portrait</span>
