@@ -30,9 +30,17 @@
             </div>
 
             <div class="field">
-                <input type="hidden" name="ids:list" value="fav_999816073"
-                      tal:attributes="value item">
-                <input type="text" name="new_ids:list" value="" size="25"> <br />
+                <input type="hidden"
+                       name="ids:list"
+                       value="fav_999816073"
+                       tal:attributes="value item">
+                <input type="text"
+                       name="new_ids:list"
+                       value="fav_999816073"
+                       size="30"
+                       tal:attributes="value item"
+                       />
+                <br />
             </div>
 
         </div>
