@@ -37,7 +37,7 @@ if subjects:
         lnk = {'title':title
                ,'url':url
                ,'icon':o.getIcon}
-        if not rurl.startswith(portal_url): #we need UIDs
+        if rurl and not rurl.startswith(portal_url): #we need UIDs
             local.append(lnk)
         else:
             remote.append(lnk)
