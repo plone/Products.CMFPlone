@@ -8,6 +8,14 @@
 ##title=Paste objects into a folder
 ##
 
+#NOTE
+# A enormous problem in Zope is that if you are using
+# string-based exceptions (like CopySupport) you can not
+# catch the exceptions outside of the module they are
+# defined.  You really have to catch the exception and
+# introspect it to find out if its really the one your
+# trying to catch.  Thats why we just try/except.
+
 REQUEST=context.REQUEST
 msg='Copy or cut one or more items to paste.' 
 
