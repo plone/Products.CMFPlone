@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.7 2003/10/28 19:19:01 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.9.2.8 2003/10/28 21:13:30 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -22,7 +22,6 @@ ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('PageTemplates', quiet=1)
 ZopeTestCase.installProduct('PythonScripts', quiet=1)
 ZopeTestCase.installProduct('ExternalMethod', quiet=1)
-
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
@@ -112,7 +111,7 @@ def optimize():
     PortalGenerator.setupDefaultSkins = setupDefaultSkins
     # Don't setup Plone content (besides members folder)
     def setupPortalContent(self, p):
-        from LargePloneFolder import addLargePloneFolder
+        from Products.CMFPlone.LargePloneFolder import addLargePloneFolder
         p.manage_delObjects('Members')
         addLargePloneFolder(p, 'Members')
         p.portal_catalog.unindexObject(p.Members)
