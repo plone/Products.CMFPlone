@@ -6,8 +6,18 @@ Plone 2.0 - Fyuti
 
     RC2 
 
-    - Renamed portal_control_panel_actions to 'portal_controlpanel' (much simpler).
-      Limi has HOWTO fix.
+    - Renamed portal_control_panel_actions to 'portal_controlpanel' and made
+      it use ToolNames instead of hardcoded strings.
+      This will break RC1 sites, so here's how to update your existing site:
+
+      - Delete all ActionIcons with category "controlpanel" 
+
+      - Delete the portal_control_panel_actions tool
+
+      - Add Plone Tool - Plone Control Panel Tool
+
+      - Invoke the following URL:
+        http://mysite/portal_controlpanel/registerDefaultConfiglets
 
     - Now comments in Plone are text/plain.  No longer using structured-text.
       DiscussionTool has grown a method, cookReply.  This is temp fix.
@@ -25,11 +35,12 @@ Plone 2.0 - Fyuti
 
     - Now in setup/ConfigurationMethods.py where the left/right_slots for the 
       portal root are created have been changed.  It is quite sensible.  We
-      are removing the terminology of 'slots'.  We are moving towards the prefered
-      naming, 'portlets'.  Macro paths are sensible: here/portlet_foo/macros/portlet
-      This means that all slots are now renamed portlet_$name and all macro have been
-      renamed to 'portlet'.  The old slot code still exists and has deprecation comments
-      in the PageTemplates.
+      are removing the terminology of 'slots'.  We are moving towards the 
+      prefered naming, 'portlets'.  Macro paths are sensible: 
+      here/portlet_foo/macros/portlet
+      This means that all slots are now renamed portlet_$name and all macro have
+      been renamed to 'portlet'.  The old slot code still exists and has 
+      deprecation comments in the PageTemplates.
 
     RC1
 
