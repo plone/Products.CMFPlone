@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.11 2003/11/10 22:29:51 dreamcatcher Exp $
+# $Id: PloneTestCase.py,v 1.9.2.12 2003/11/14 09:58:38 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -115,16 +115,18 @@ def optimize():
         ps = getToolByName(p, 'portal_skins')
         ps.manage_addFolder(id='custom')
         ps.addSkinSelection('Basic', 'custom')
-    from Products.CMFDefault.Portal import PortalGenerator
-    PortalGenerator.setupDefaultSkins = setupDefaultSkins
-    # Don't setup Plone content (besides members folder)
+    from Products.CMFPlone.Portal import PloneGenerator
+    PloneGenerator.setupDefaultSkins = setupDefaultSkins
+    # Don't setup default Members folder
+    def setupMembersFolder(self, p):
+        pass
+    PloneGenerator.setupMembersFolder = setupMembersFolder
+    # Don't setup Plone content (besides Members folder)
     def setupPortalContent(self, p):
         from Products.CMFPlone.LargePloneFolder import addLargePloneFolder
-        p.manage_delObjects('Members')
         addLargePloneFolder(p, 'Members')
         p.portal_catalog.unindexObject(p.Members)
         p.Members._setPortalType = 'Folder'
-    from Products.CMFPlone.Portal import PloneGenerator
     PloneGenerator.setupPortalContent = setupPortalContent
 
 
