@@ -20,7 +20,7 @@ class PloneTool (UniqueObject, SimpleItem):
     meta_type= 'Plone Utility Tool'
     security = ClassSecurityInfo()
     plone_tool = 1
-    field_prefix = 'field_' #Formulator prefixes for forms
+    field_prefix = 'field_' # Formulator prefixes for forms
 
     security.declarePublic('editMetadata')
     def editMetadata( self
@@ -41,7 +41,7 @@ class PloneTool (UniqueObject, SimpleItem):
         """
         REQUEST=self.REQUEST
         pfx=self.field_prefix
-	def tuplify( value ):
+        def tuplify( value ):
             if not type(value) is TupleType:
                 value = tuple( value )
             temp = filter( None, value )
@@ -56,7 +56,7 @@ class PloneTool (UniqueObject, SimpleItem):
             contributors=tuplify(REQUEST.get(pfx+'contributors', obj.Contributors()))
         else:    
             contributors=tuplify(contributors)
-	if effective_date is None:
+        if effective_date is None:
             effective_date=REQUEST.get(pfx+'effective_date', obj.EffectiveDate())
         if expiration_date is None:
             expiration_date=REQUEST.get(pfx+'expiration_date', obj.ExpirationDate())
@@ -67,11 +67,12 @@ class PloneTool (UniqueObject, SimpleItem):
         if rights is None:
             rights=REQUEST.get(pfx+'rights', obj.Rights())
         if allowDiscussion:
-            if allowDiscussion.lower().strip()=='default': allowDiscussion=None
-            elif allowDiscussion.lower().strip()=='off': allowDiscussion=0
-            elif allowDiscussion.lower().strip()=='on': allowDiscussion=1
+            allowDiscussion=allowDiscussion.lower().strip()
+            if allowDiscussion=='default': allowDiscussion=None
+            elif allowDiscussion=='off': allowDiscussion=0
+            elif allowDiscussion=='on': allowDiscussion=1
             getToolByName(self, 'portal_discussion').overrideDiscussionFor(obj, allowDiscussion)
-	#mutate metadata on the object
+            
         obj.editMetadata( title=title
                         , description=description
                         , subject=subject
@@ -88,7 +89,7 @@ class PloneTool (UniqueObject, SimpleItem):
         if not id:
             id = REQUEST.get('id', '')
             id = REQUEST.get(self.field_prefix+'id', '')
-	if id!=obj.getId():
+        if id!=obj.getId():
             try:
                 context.manage_renameObjects( (obj.getId(),), (id,), REQUEST )
             except: #XXX have to do this for Topics and maybe other folderish objects
@@ -100,17 +101,24 @@ class PloneTool (UniqueObject, SimpleItem):
     def _makeTransactionNote(self, obj, msg=''):
         #XXX why not aq_parent()?
         relative_path='/'.join(getToolByName(self, 'portal_url').getRelativeContentPath(obj)[:-1])
-	if not msg:
+        if not msg:
             msg=relative_path+'/'+obj.title_or_id()+' has been modified.'
-	get_transaction().note(msg)
-	
+        get_transaction().note(msg)
+
     security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):
         """ encapsulates how the editing of content occurs """
 
-        if DublinCore.isImplementedBy(obj):
-            apply(self.editMetadata, (obj,), kwargs)
-
+        #XXX Interface package appears to be broken.  Atleast for Forum objects.
+        #    it may blow up on things that *done* implement the DublinCore interface. 
+        #    Someone please look into this.  We should probably catch the exception (think its Tuple error)
+        #    instead of swallowing all exceptions.
+        try:
+            if DublinCore.isImplementedBy(obj):
+                apply(self.editMetadata, (obj,), kwargs)
+        except: 
+            pass
+        
         if kwargs.get('id', None) is not None: 
             self._renameObject(obj, id=kwargs['id'].strip()) 
 	
@@ -139,7 +147,7 @@ class PloneTool (UniqueObject, SimpleItem):
         wfs=()
         try:
             wfs=wftool.getChainFor(object)
-	except: #XXX ick
+        except: #XXX ick
             pass 
         return wfs
 
@@ -232,8 +240,8 @@ class PloneTool (UniqueObject, SimpleItem):
         except: # XXX because ActionTool doesnt throw ActionNotFound exception ;(
             pass
         return self.REQUEST.RESPONSE.redirect( '%s/%s%s%s' % ( context.absolute_url()
-                                                            , action_id
-                                                            , separator
-                                                            , url_params) )
+                                                             , action_id
+                                                             , separator
+                                                             , url_params) )
 InitializeClass(PloneTool)
 
