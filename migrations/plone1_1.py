@@ -187,10 +187,10 @@ def addDocumentActions(portal):
     at.addAction('sendto',
                  'Send this page to somebody',
                  'string:${object_url}/sendto_form',
-                 "python:hasattr(portal.portal_properties.site_properties, 'allow_sendto')",
+                 "python:test(hasattr(portal.portal_properties.site_properties, 'allow_sendto') and portal.portal_properties.site_properties.allow_sendto, 1, 0)",
                  'View',
                  'document_actions')
-
+                 
     at.addAction('print',
                  'Print this page',
                  'string:javascript:this.print();',
