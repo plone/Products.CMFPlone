@@ -125,60 +125,61 @@ class OrderedContainer(Folder):
     # the 2.7 specific class OSF.OrderedContainer.OrderedContainer
 
     security.declareProtected(ModifyPortalContent, 'moveObjectsByDelta')
-    def moveObjectsByDelta(self, ids, delta):
+    def moveObjectsByDelta(self, ids, delta, subset_ids=None):
         """ Move specified sub-objects by delta.
         """
         if type(ids) is StringType:
             ids = (ids,)
         min_position = 0
-        #objects = list(self._objects)
-        obj_visible = []
-        obj_hidden =[]
-        obj_dict = {}
-
-        types_tool = getToolByName(self, 'portal_types')
-        types=types_tool.listContentTypes(by_metatype=1)
-
-        for obj in self._objects:
-            # sort out in portal visible and invisible objects in 2 lists
-            try:
-                types.index(obj['meta_type'])
-            except ValueError:
-                obj_hidden.append(obj)
-            else:
-                obj_dict[ obj['id'] ] = obj
-                obj_visible.append(obj)
-
-
+        objects = list(self._objects)
+        if subset_ids == None:
+            # OLD: subset_ids = [ obj['id'] for obj in objects ]
+            subset_ids = self.getCMFObjectsSubsetIds(objects)
+        else:
+            subset_ids = list(subset_ids)
         # unify moving direction
         if delta > 0:
             ids = list(ids)
             ids.reverse()
-            obj_visible.reverse()
+            subset_ids.reverse()
         counter = 0
 
         for id in ids:
-            try:
-                object = obj_dict[id]
-            except KeyError:
-                raise ValueError('The object with the id "%s" does not exist.'
-                                 % id)
-            old_position = obj_visible.index(object)
+            old_position = subset_ids.index(id)
             new_position = max( old_position - abs(delta), min_position )
             if new_position == min_position:
                 min_position += 1
             if not old_position == new_position:
-                obj_visible.remove(object)
-                obj_visible.insert(new_position, object)
+                subset_ids.remove(id)
+                subset_ids.insert(new_position, id)
                 counter += 1
 
         if counter > 0:
             if delta > 0:
-                obj_visible.reverse()
-            self._objects = tuple(obj_hidden + obj_visible)
+                subset_ids.reverse()
+            obj_dict = {}
+            for obj in objects:
+                obj_dict[ obj['id'] ] = obj
+            pos = 0
+            for i in range( len(objects) ):
+                if objects[i]['id'] in subset_ids:
+                    try:
+                        objects[i] = obj_dict[ subset_ids[pos] ]
+                        pos += 1
+                    except KeyError:
+                        raise ValueError('The object with the id "%s" does '
+                                         'not exist.' % subset_ids[pos])
+            self._objects = tuple(objects)
 
         return counter
 
+    security.declarePrivate('getCMFObjectsSubset')
+    def getCMFObjectsSubsetIds(self, objs):
+        """Get the ids of only cmf objects (used for moveObjectsByDelta)
+        """
+        ttool = getToolByName(self, 'portal_types')
+        cmf_meta_types = ttool.listContentTypes(by_metatype=1)
+        return [obj.getId() for obj in objs if obj['meta_type'] in cmf_meta_types ]
 
     security.declareProtected(ModifyPortalContent, 'getObjectPosition')
     def getObjectPosition(self, id):
