@@ -1187,6 +1187,7 @@ ol.visualNoMarker {
     vertical-align: top;
     margin: 1em 0em;
     font-size: 94%;
+    clear: both;
 }
 .listingBar span.previous,
 .listingPrevious {
