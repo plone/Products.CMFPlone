@@ -10,7 +10,8 @@ def two03_two04(portal):
     """2.0.3 -> 2.0.4
     """
     out = []
-    out += replaceMailHost(portal, out)
+    # No SMH on 2.0 branch
+    #out += replaceMailHost(portal, out)
     
     return out
 
