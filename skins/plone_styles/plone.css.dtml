@@ -875,11 +875,16 @@ input.searchButton {
     border-color: &dtml-globalBorderColor;;
     border-width: &dtml-borderWidth;;
     border-style: &dtml-borderStyle;;
-    margin: 1em;
-    padding: 1em;
+    margin: 0.5em;
+    padding: 0.5em 0;
     text-align: center;
     width: 100px;
 }
+
+.portraitPhoto {
+    border: 1px solid black;
+}
+
 .listing,
 .stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
