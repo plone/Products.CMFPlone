@@ -3,7 +3,7 @@ custom_policies={} #stores the registered Policies
 import migrations, setup, MigrationTool
 from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo, allow_module, allow_class, allow_type
-import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
+import MembershipTool, FormulatorTool, PloneTool, WorkflowTool, URLTool
 import NavigationTool, FactoryTool, FormTool, PropertiesTool, RegistrationTool
 import InterfaceTool
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
@@ -71,19 +71,20 @@ def transaction_note(note):
 
 ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
 
-tools = ( MembershipTool.MembershipTool
-        , FormulatorTool.FormulatorTool
-        , PloneTool.PloneTool
-        , WorkflowTool.WorkflowTool
-        , CachingPolicyManager.CachingPolicyManager
-        , NavigationTool.NavigationTool
-        , FactoryTool.FactoryTool
-        , FormTool.FormTool
-        , PropertiesTool.PropertiesTool
-        , MigrationTool.MigrationTool
-        , InterfaceTool.InterfaceTool
-        , PloneControlPanel.PloneControlPanel
-        , RegistrationTool.RegistrationTool
+tools = ( MembershipTool.MembershipTool,
+          FormulatorTool.FormulatorTool,
+          PloneTool.PloneTool,
+          WorkflowTool.WorkflowTool,
+          CachingPolicyManager.CachingPolicyManager,
+          NavigationTool.NavigationTool,
+          FactoryTool.FactoryTool,
+          FormTool.FormTool,
+          PropertiesTool.PropertiesTool,
+          MigrationTool.MigrationTool,
+          InterfaceTool.InterfaceTool,
+          PloneControlPanel.PloneControlPanel,
+          RegistrationTool.RegistrationTool,
+          URLTool.URLTool
         )
 
 contentClasses = ( PloneFolder.PloneFolder , )
