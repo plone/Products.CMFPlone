@@ -6,9 +6,10 @@
 
 <!-- This portlet has been deprecated.  All defined macros are now 'portlet'.  The new portlet is now portlet_recent. -->
 
-<div metal:define-macro="recentlyPublishedBox"
-     tal:condition="not: isAnon"
-     tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
+<div metal:define-macro="portlet"
+     tal:condition="not: isAnon">
+     
+    <tal:recentlist tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
                  results python:request.get('items',
                                             here.portal_catalog.searchResults(modified=last_login_time,
                                                                               modified_usage='range:min',
@@ -16,11 +17,9 @@
                                                                               sort_order='reverse',
                                                                               review_state='published')[:5]);">
 
-    <div class="portlet" id="portlet-recently-published">
+    <div class="portlet" id="portlet-recent-items">
 
-    <div class="padding">
-
-        <h5 i18n:translate="box_recentlypublished">Recent Items</h5>
+        <h5 i18n:translate="box_recentitems">Recent Items</h5>
 
         <div class="portletBody">
 
@@ -62,8 +61,8 @@
 
     </div>
 
-</div>
-
+    </tal:recentlist>
+    
 </div>
 
 </body>
