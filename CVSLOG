@@ -1,3 +1,104 @@
+2004-05-17 05:57  zopezen
+
+	* PloneTool.py (Plone-1_0): Back porting of the sendto hardening
+	  from Plone 2.0.2+ into Plone 1
+
+2004-05-17 05:43  zopezen
+
+	* PloneTool.py (Plone-2_0-branch): Tightening up of the sendto
+	  function
+
+2004-05-17 01:55  shh42
+
+	* tests/testWebDAV.py (Plone-2_0-branch): Make test Python 2.1
+	  compatible.
+
+2004-05-16 22:45  dreamcatcher
+
+	* PropertiesTool.py, interfaces/PropertiesTool.py,
+	  tests/testWebDAV.py: Revert part of Tiran's fix to my fix *wink*
+	  and add a test to prevent the broken behavior.
+
+2004-05-16 22:31  dreamcatcher
+
+	* PropertiesTool.py, interfaces/PropertiesTool.py,
+	  tests/testInterfaces.py, tests/testWebDAV.py (Plone-2_0-branch):
+	  Add test to demonstrate the problem with properties tool title.
+	  Comment out 'title' on the interface as verifyClass doesnt handle
+	  computed attributes it seems.
+
+2004-05-16 21:08  tiran
+
+	* PloneTool.py, migrations/__init__.py,
+	  migrations/v2_1/release_candidates.py, setup/dependencies.py,
+	  skins/plone_form_scripts/sendto.cpy,
+	  skins/plone_prefs/prefs_mailhost_form.pt,
+	  skins/plone_prefs/prefs_mailhost_set.py,
+	  skins/plone_templates/sendto_template.pt, tests/PloneTestCase.py
+	  (tiran-securemailhost-branch): New sendto implementation with
+	  SecureMailHost (requires the product from collective)
+
+2004-05-16 20:19  tiran
+
+	* migrations/: __init__.py, v2_1/__init__.py,
+	  v2_1/release_candidates.py: added v2_1 migration package
+
+2004-05-16 19:08  tiran
+
+	* PropertiesTool.py: fixed unit test
+
+2004-05-16 19:03  tiran
+
+	* tests/: PloneTestCase.py, testInterfaces.py: better handling for
+	  attribute errors
+
+2004-05-16 18:27  shh42
+
+	* FactoryTool.py, FormTool.py, HISTORY.txt, InterfaceTool.py,
+	  LargePloneFolder.py, MembershipTool.py, NavigationTool.py,
+	  PloneFolder.py, PloneTool.py, PropertiesTool.py, README.txt,
+	  __init__.py, makefile.in, version.txt,
+	  Extensions/package_plone.py, migrations/__init__.py,
+	  setup/ConfigurationMethods.py,
+	  skins/plone_form_scripts/validate_sendto.vpy,
+	  skins/plone_forms/registered.pt, skins/plone_forms/search.pt,
+	  skins/plone_images/colophon_anybrowser.png,
+	  skins/plone_images/colophon_wai-aa.gif,
+	  skins/plone_portlets/calendar_slot.pt,
+	  skins/plone_portlets/portlet_review.pt,
+	  skins/plone_scripts/date_components_support.py,
+	  skins/plone_scripts/listMetaTags.py,
+	  skins/plone_scripts/my_worklist.py,
+	  skins/plone_styles/plone.css.dtml,
+	  skins/plone_styles/plonePresentation.css.dtml,
+	  skins/plone_templates/colophon.pt,
+	  skins/plone_templates/folder_contents.pt,
+	  skins/plone_templates/folder_listing.pt,
+	  skins/plone_templates/global_defines.pt,
+	  skins/plone_templates/homePageText.pt,
+	  skins/plone_templates/main_template.pt,
+	  skins/plone_templates/news.pt,
+	  skins/plone_templates/viewThreadsAtBottom.pt,
+	  tests/PloneTestCase.py, tests/README.txt,
+	  tests/testActionIconsTool.py, tests/testActionsTool.py,
+	  tests/testCatalogTool.py, tests/testContentPublishing.py,
+	  tests/testContentSecurity.py, tests/testContentTypeScripts.py,
+	  tests/testDefaultWorkflow.py, tests/testFolderLocalRoleForm.py,
+	  tests/testFolderWorkflow.py, tests/testGroupDataTool.py,
+	  tests/testGroupsTool.py, tests/testInterfaceTool.py,
+	  tests/testMemberDataTool.py, tests/testMembershipTool.py,
+	  tests/testPloneFolder.py, tests/testPloneTestCase.py,
+	  tests/testPloneTool.py, tests/testPortalCreation.py,
+	  tests/testPortalFactory.py, tests/testQueryCatalog.py,
+	  tests/testQuickInstallerTool.py, tests/testRegistrationTool.py,
+	  tests/testSecurityDeclarations.py,
+	  tests/testSkeletonPloneTest.py, tests/testSkeletonZopeTest.py,
+	  tests/testUserFolderBasics.py: Merge Plone-2_0-branch to HEAD
+
+2004-05-16 06:16  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-15 06:15  longsleep
 
 	* CVSLOG: auto generated new changelog
