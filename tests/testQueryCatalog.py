@@ -134,30 +134,30 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
 
 
 class TestQueryCatalogParseError(PloneTestCase.PloneTestCase):
-    """Checks that the queryCatalog script returns None in 
-       case of ZCTextIndex ParseErrors.
+    """Checks that the queryCatalog script returns an empty result set
+       in case of ZCTextIndex ParseErrors.
 
        This testcase uses the real catalog, not a stub.
     """
 
     def afterSetUp(self):
-        self.catalog = self.portal.portal_catalog
         self.folder.invokeFactory('Document', id='doc', text='foo bar baz')
 
     def testSearchableText(self):
         request = {'SearchableText':'foo'}
         # We expect a non-empty result set
-        self.failUnless(self.folder.queryCatalog(request))
+        self.failUnless(self.portal.queryCatalog(request))
 
     def testParseError(self):
         # ZCTextIndex raises ParseError
-        self.assertRaises(ParseError, self.catalog, SearchableText='-foo')
+        self.assertRaises(ParseError, self.portal.portal_catalog, 
+                          SearchableText='-foo')
 
     def testQueryCatalogParseError(self):
         request = {'SearchableText':'-foo'}
         # ZCTextIndex raises ParseError which translates to empty result
         expected = []
-        self.assertEqual(self.folder.queryCatalog(request), expected)
+        self.assertEqual(self.portal.queryCatalog(request), expected)
 
 
 AddPortalTopics = 'Add portal topics'
