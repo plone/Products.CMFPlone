@@ -56,14 +56,14 @@ class ITranslatable(Interface):
         Return the original, canonical translation of this content.
         """
 
-    def setTranslationLanguage(language):
+    def setLanguage(language):
         """
-        Sets the language for the current translation
+        Sets the language for the current translation - same as DC
         """
 
-    def getTranslationLanguage():
+    def Language():
         """
-        Returns the language of this translation
+        Returns the language of this translation - same as DC
         """
 
     def initializeTranslation():
