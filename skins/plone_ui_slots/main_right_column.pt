@@ -1,0 +1,19 @@
+<metal:block define-macro="column">
+
+    <div metal:use-macro="here/login_slot/macros/loginBox">
+    Login box
+    </div>
+
+    <div metal:use-macro="here/workflow_review_slot/macros/review_box">
+    Review box
+    </div>
+
+    <div metal:use-macro="here/favorites_slot/macros/favoritesBox">
+    Favorites box
+    </div>
+
+    <div metal:use-macro="here/calendar_slot/macros/calendarBox">
+    Calendar box
+    </div>
+
+</metal:block>

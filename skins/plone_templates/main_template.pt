@@ -20,28 +20,10 @@
             <tr>
     
                 <td class="left">
-
-                    <div metal:use-macro="here/topic_navigator_slot/macros/CMFTopic_navigation_box">
-                    Topic Navigation box - only does 1 level so far
-                    </div>
-
-                    <div metal:use-macro="here/navigation_slot/macros/navigationBox">
-                    Navigation box			
-		    </div>
                 
-                    <div tal:condition="python:test(not here.portal_membership.isAnonymousUser() or here.portal_properties.allowAnonymousViewAbout, 1, 0)">
-                      <span metal:use-macro="here/about_slot/macros/aboutBox">
-                      About box
-                      </span>
-                    </div>
-            
-                    <div metal:use-macro="here/related_slot/macros/relatedBox">
-                    Related box
-                    </div>
-            
-                    <div metal:use-macro="here/news_slot/macros/newsBox">
-                    News box
-                    </div>
+		<metal:block use-macro="here/main_left_column/macros/column">
+		  Left Column of 3 Column Layout
+		</metal:block>
 
                 </td>
                 
@@ -82,23 +64,11 @@
                 </td>
     
                 <td class="right">
-            
-                    <div metal:use-macro="here/login_slot/macros/loginBox">
-                    Login box
-                    </div>
-            
-                    <div metal:use-macro="here/workflow_review_slot/macros/review_box">
-                    Review box
-                    </div>	
-            
-                    <div metal:use-macro="here/favorites_slot/macros/favoritesBox">
-                    Favorites box
-                    </div>
-                
-                    <div metal:use-macro="here/calendar_slot/macros/calendarBox">
-                    Calendar box
-                    </div>
-            
+           
+	            <metal:block use-macro="here/main_right_column/macros/column">
+		    Right column of three column layout
+		    </metal:block>
+
                 </td>
             
             </tr>
