@@ -99,13 +99,12 @@ class PloneFolder ( SkinnedFolder ):
                     raise Unauthorized(id, v)
                 if getSecurityManager().validate(self, self, id, v):
                     l.append(obj)
-            except Unauthorized:
+            except (Unauthorized, 'Unauthorized'):
                 pass
         return l
 
 def _getViewFor(obj, view='view', default=None):
     ti = obj.getTypeInfo()
-    #import pdb; pdb.set_trace()
     if ti is not None:
         actions = ti.getActions()
         for action in actions:
@@ -115,7 +114,6 @@ def _getViewFor(obj, view='view', default=None):
                 if _verifyActionPermissions(obj, action) and action['action']!='':
                     return obj.restrictedTraverse(action['action'])
 
-        # not Best Effort(tm) just yet
         if default is not None:    
             if _verifyActionPermissions(obj, default):
                 return obj.restrictedTraverse(default['action'])

@@ -101,7 +101,7 @@
 -->
         <div class="tabs"
              metal:define-macro="portal_tabs"
-             tal:define="global_tabs actions/global_tabs|nothing;">
+             tal:define="global_tabs actions/portal_tabs|nothing;">
         <metal:block tal:repeat="tab global_tabs"
                      tal:define="contentpath python:here.portal_url.getRelativeContentPath(here);
                                      global compare_id python:template.getId();" >

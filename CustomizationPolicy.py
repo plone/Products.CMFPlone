@@ -37,13 +37,12 @@ class DefaultCustomizationPolicy:
 
 	#add custom Plone actions
         at=getToolByName(portal, 'portal_actions')
-        at.addAction('index_html','Welcome','portal_url','', 'View', 'global_tabs')
-        at.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','global_tabs')
-        at.addAction('news','News','string: $portal_url/news','','View', 'global_tabs')	
-        at.addAction('search_form','Search','string: $portal_url/search_form','','View','global_tabs')
-        at.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','python:portal.plone_utils.getWorkflowChainFor(object)','View','local_tabs')
-	#local_buttons should have permission 'List folder contents'
-	#we are changing it to View for workaround in CMF1.3 ActionsTool
+        at.addAction('index_html','Welcome','portal_url','', 'View', 'portal_tabs')
+        at.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','portal_tabs')
+        at.addAction('news','News','string: $portal_url/news','','View', 'portal_tabs')	
+        at.addAction('search_form','Search','string: $portal_url/search_form','','View','portal_tabs')
+
+        at.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','python:portal.plone_utils.getWorkflowChainFor(object)','View','object_tabs')
         at.addAction('rename','Rename','string:folder_rename_form:method','', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('cut', 'Cut', 'string:folder_cut:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('copy', 'Copy', 'string:folder_copy:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')

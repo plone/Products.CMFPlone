@@ -56,7 +56,7 @@ Header stuff
                     <span tal:define="global obj_actions actions/object;
                                       global wf_actions actions/workflow;
 				      global folder_actions actions/folder;
-				      global local_actions python:actions.get('local_tabs', []);
+				      global local_actions python:actions.get('object_tabs', []);
                                       global historyForm python:here.getActionUrlById('history', actions['object']);" />
 
                     <span tal:repeat="action python:test(obj_type=='Folder', folder_actions+local_actions, obj_actions+local_actions)">

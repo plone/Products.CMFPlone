@@ -123,13 +123,18 @@ class PloneTool (UniqueObject, SimpleItem):
         result.sort()
         return result
 
-    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'getWorkflowChainFor')
+    security.declareProtected(CMFCorePermissions.View, 'getWorkflowChainFor')
     def getWorkflowChainFor(self, object):
         """ Proxy the request for the chain to the workflow
             tool, as this method is private there.
         """
         wftool = getToolByName(self, 'portal_workflow')
-        return wftool.getChainFor(object)
+        wfs=()
+        try:
+            wfs=wftool.getChainFor(object)
+	except: #XXX ick
+            pass 
+        return wfs
 
 InitializeClass(PloneTool)
 
