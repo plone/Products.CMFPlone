@@ -54,9 +54,8 @@
                     <img src="dummy.gif" 
                          alt=">" 
                          border="0" 
-                         tal:attributes="src string:$portal_url/linkTransparent.gif" 
-			 i18n:translate=""/>
-                   Up one level</a>
+                         tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                   <span i18n:translate="">Up one level</span></a>
             </td>
         </tr>
 
@@ -70,9 +69,8 @@
                    <img src="" 
                         alt=">" 
                         border="0"
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
-			i18n:translate=""/>
-                  Editor view
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                  <span i18n:translate="">Editor view</span>
                </a>
                
                <a href="../folder_contents"
@@ -81,9 +79,8 @@
                    <img src="dummy.gif" 
                         alt=">" 
                         border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
-			i18n:translate=""/>
-                  Editor view
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                  <span i18n:translate="">Editor view</span>
                </a>
             </td>
         </tr>
@@ -95,9 +92,8 @@
                    <img src="" 
                         alt=">" 
                         border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
-			i18n:translate=""/>
-                Ordinary view
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                <span i18n:translate="">Ordinary view</span>
                 </a>
             </td>
         </tr>
