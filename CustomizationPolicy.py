@@ -41,12 +41,14 @@ class DefaultCustomizationPolicy:
         at.addAction('news','News','string: $portal_url/news','','View', 'global_tabs')	
         at.addAction('search_form','Search','string: $portal_url/search_form','','View','global_tabs')
         at.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','','View','local_tabs')
-        at.addAction('rename','Rename','string:folder_rename_form:method','','List folder contents', 'local_buttons')
-        at.addAction('cut', 'Cut', 'string:folder_cut:method', '', 'List folder contents', 'local_buttons')
-        at.addAction('copy', 'Copy', 'string:folder_copy:method', '', 'List folder contents', 'local_buttons')
-        at.addAction('paste', 'Paste', 'string:folder_paste:method', 'folder/cb_dataValid', 'List folder contents', 'local_buttons')
-        at.addAction('delete', 'Delete', 'string:folder_delete:method', '', 'List folder contents', 'local_buttons')
-        at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', 'List folder contents', 'local_buttons')
+	#local_buttons should have permission 'List folder contents'
+	#we are changing it to View for workaround in CMF1.3 ActionsTool
+        at.addAction('rename','Rename','string:folder_rename_form:method','','View', 'local_buttons')
+        at.addAction('cut', 'Cut', 'string:folder_cut:method', '', 'View', 'local_buttons')
+        at.addAction('copy', 'Copy', 'string:folder_copy:method', '', 'View', 'local_buttons')
+        at.addAction('paste', 'Paste', 'string:folder_paste:method', 'folder/cb_dataValid', 'View', 'local_buttons')
+        at.addAction('delete', 'Delete', 'string:folder_delete:method', '', 'View', 'local_buttons')
+        at.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', 'View', 'local_buttons')
 
         #customize memberdata tool
         md=getToolByName(portal, 'portal_memberdata')

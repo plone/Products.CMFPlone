@@ -123,7 +123,7 @@
              tal:define="portal_url here/portal_url;
                          user_actions actions/user;
                          global_actions actions/global;
-                         display_actions python:user_actions+global_actions;">&nbsp;
+                         display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">&nbsp;
 
             <a href=""
                tal:condition="not:here/portal_membership/isAnonymousUser"
