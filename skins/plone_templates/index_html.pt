@@ -8,7 +8,7 @@
 <div metal:fill-slot="main">
 
     <h1 i18n:translate="heading_welcome_to">Welcome to
-    <span i18n:name="sitename" tal:replace="here/title">Portal title</span>
+    <span i18n:name="sitename" tal:replace="here/Title">Portal title</span>
     </h1>
 
     <p tal:content="utool/description">
