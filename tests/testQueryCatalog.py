@@ -14,7 +14,7 @@ from Acquisition import aq_base
 
 class TestQueryCatalog(PloneTestCase.PloneTestCase):
     """Test queryCatalog script.
-    
+
     Test function of queryCatalog script, **not** the
     functionality of the catalog itself. Therefore, we'll replace
     the actual call to the catalog to a dummy routine that just
@@ -24,7 +24,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
     def dummyCatalog(self, query_dict):
         return query_dict
-    
+
     def afterSetUp(self):
         self.portal.portal_catalog.__call__ = self.dummyCatalog
 
@@ -75,7 +75,7 @@ class TestQueryCatalog(PloneTestCase.PloneTestCase):
 
 class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
     """Test logic quoting features queryCatalog script.
-    
+
     Test function of queryCatalog script, **not** the
     functionality of the catalog itself. Therefore, we'll replace
     the actual call to the catalog to a dummy routine that just
@@ -85,7 +85,7 @@ class TestQueryCatalogQuoting(PloneTestCase.PloneTestCase):
 
     def dummyCatalog(self, query_dict):
         return query_dict
-    
+
     def afterSetUp(self):
         self.portal.portal_catalog.__call__ = self.dummyCatalog
 

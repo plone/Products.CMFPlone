@@ -123,7 +123,7 @@ if not (i18nPath and os.path.isdir(i18nPath) and \
          "runs without this, but if you want multilingual "
          "interface or access keys, you must download it from "
          "http://www.sourceforge.net/projects/plone-i18n"),
-        severity=zLOG.INFO, optional=1)  
+        severity=zLOG.INFO, optional=1)
 
 try:
     import Products.CMFFormController
@@ -161,5 +161,3 @@ try:
 except ImportError:
     log(("Formulator not found. Please download it "
          "from http://sourceforge.net/projects/formulator"))
-
-  

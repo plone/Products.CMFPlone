@@ -180,7 +180,7 @@ def correctFolderContentsAction(actionTool):
             elif action.condition.text.find('folder is object') != -1:
                 action.condition=Expression('python: folder.displayContentsTab()')
     actionTool._actions=_actions
-    
+
 
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')

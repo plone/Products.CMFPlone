@@ -252,7 +252,7 @@ for testInstance in testInstances:
 
 # XXX: Don't run interface tests in Zope < 2.7 as older
 #      interface packages are borked.
-try: 
+try:
     import App.config
     ok = 1
 except ImportError:

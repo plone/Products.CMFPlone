@@ -6,7 +6,7 @@ from Products.CMFCore import DirectoryView
 
 _skincache = {}
 
-# __getSkinByName can be renamed getSkinByName to 
+# __getSkinByName can be renamed getSkinByName to
 # override SkinsContainer.getSkinByName.  This
 # is about a 10% speed increase.
 
@@ -27,7 +27,7 @@ class SkinsTool(BaseTool):
         skinob=self.getSkinByPath(path)
         _skincache[path]=skinob
         return skinob
- 
+
 SkinsTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(SkinsTool)

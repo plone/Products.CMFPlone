@@ -28,7 +28,7 @@
 #    We should extend FSMetadata.py for a [plone] section that each
 #    template could define explicitly if they want to show their border.
 #    But its too late in the game for such a large change.
-#    border=None or False or border=True, no border attribute should 
+#    border=None or False or border=True, no border attribute should
 #    calculate using the arcane rules below *wink*
 
 REQUEST=context.REQUEST

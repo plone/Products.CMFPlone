@@ -19,7 +19,7 @@ def process(name, swhome, ihome):
 
     # nuke remaining command line arguments
     sys.argv = sys.argv[1:]
-    
+
     # for 2.7 run configure
     Zope.configure(configfile)
     app = Zope.app()

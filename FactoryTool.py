@@ -44,7 +44,7 @@ class TempFolder(TempFolderBase):
 
     # override / delegate local roles methods
     def __ac_local_roles__(self):
-        """__ac_local_roles__ needs to be handled carefully.  
+        """__ac_local_roles__ needs to be handled carefully.
         Zope's and GRUF's User.getRolesInContext both walk up the
         acquisition hierarchy using aq_parent(aq_inner(obj)) when
         they gather local roles, and this process will result in
@@ -67,7 +67,7 @@ class TempFolder(TempFolderBase):
                             local_roles[k].append(role)
 
             # Prepare next iteration
-            inner = getattr(object, 'aq_inner', object) 
+            inner = getattr(object, 'aq_inner', object)
             parent = getattr(inner, 'aq_parent', None)
             if parent is not None:
                 object = parent
@@ -78,7 +78,7 @@ class TempFolder(TempFolderBase):
                 continue
             break
         return local_roles
-    
+
     def has_local_roles(self):
         return len(self.__ac_local_roles__())
 
@@ -110,7 +110,7 @@ class TempFolder(TempFolderBase):
 
     def userCanTakeOwnership(self):
         return aq_parent(aq_parent(self)).userCanTakeOwnership()
-    
+
 
     # override __getitem__
     def __getitem__(self, id):

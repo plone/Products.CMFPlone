@@ -126,7 +126,7 @@ class MembershipTool(BaseTool):
             from Products.CMFPlone.PloneFolder import addPloneFolder
             addPloneFolder(members, id=member_id, title=f_title)
             f=getattr(members, member_id)
-            
+
             acl_users = self.__getPUS()
             user = acl_users.getUser(member_id)
 
@@ -255,7 +255,7 @@ class MembershipTool(BaseTool):
             if not (member.listed or is_manager):
                 continue
             if name:
-                if (u.getUserName().lower().find(name) == -1 and 
+                if (u.getUserName().lower().find(name) == -1 and
                     member.getProperty('fullname').lower().find(name) == -1):
                     continue
             if email:

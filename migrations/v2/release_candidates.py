@@ -39,18 +39,18 @@ def rc3_rc4(portal):
         at.deleteActionProvider('portal_control_panel_actions')
         portal.manage_renameObject('portal_control_panel_actions', 'portal_controlpanel')
         at.addActionProvider('portal_controlpanel')
-    
+
     out.append('Fixing folder contents action')
     correctFolderContentsAction(at)
     _actions=at._cloneActions()
     for action in _actions:
         if action.id in _permMap.keys():
-           out.append('Setting permission of portal_actions %s to %s' % (action.id, _permMap[action.id]))
-           action.permission = _permMap[action.id]
+            out.append('Setting permission of portal_actions %s to %s' % (action.id, _permMap[action.id]))
+            action.permission = _permMap[action.id]
         if action.id in _condMap.keys():
-           out.append('Setting condition of portal_actions %s to %s' % (action.id, _condMap[action.id]))
-           action.condition = Expression(_condMap[action.id])
-    at._actions=_actions    
+            out.append('Setting condition of portal_actions %s to %s' % (action.id, _condMap[action.id]))
+            action.condition = Expression(_condMap[action.id])
+    at._actions=_actions
 
     out.append('Adding AddToFavorites to portal_actions and portal_actionicons')
     ai=getToolByName(portal, 'portal_actionicons')
@@ -79,9 +79,9 @@ def rc3_rc4(portal):
 
         for action in _actions:
             if action.getId()=='metadata':
-                 action.title='Properties'
+                action.title='Properties'
             if action.getId()=='content_status_history':
-                 action.visible=0
+                action.visible=0
         ptype._actions = _actions
 
     if 'addtofavorites' not in [action.getId() for action in at.listActions()]:
@@ -101,7 +101,7 @@ def rc3_rc4(portal):
     mt._actions=_actions
 
     return out
-    
+
 def rc4_rc5(portal):
     #fix 'local_roles' properties
     out=[]
@@ -119,9 +119,9 @@ def rc4_rc5(portal):
                 action.title='Sharing'
         typeobj._actions = _actions
     out.append('Change local_roles label to Sharing')
-    
+
     return out
- 
+
 def rc5_final(portal):
     out = []
 
@@ -142,7 +142,7 @@ def rc5_final(portal):
 
     out.append('Adding in catalog indexes')
     addCatalogIndexes(portal)
-    
+
     out.append('Adding new properties: typesLinkToFolderContents, typesLinkToFolderContentsInFC')
     addFolderContentsProperties(portal)
 
@@ -163,7 +163,7 @@ def final_rc6(portal):
 
 def fixupLargePloneFolderWorkflow(portal):
     # Large Plone Folder should use folder_workflow
-    wf_tool = getToolByName(portal, 'portal_workflow') 
+    wf_tool = getToolByName(portal, 'portal_workflow')
     lpf_chain = list(wf_tool.getChainFor('Large Plone Folder'))
     if 'plone_workflow' in lpf_chain:
         lpf_chain.remove('plone_workflow')
@@ -185,7 +185,7 @@ def removeTypesForcedFolderContents(portal):
     p = getattr(pp , 'navtree_properties', None)
 
     if props.hasProperty('removeTypesForcedFolderContents(portal)'):
-        props._delProperty('removeTypesForcedFolderContents(portal)')    
+        props._delProperty('removeTypesForcedFolderContents(portal)')
 
 def addFolderContentsProperties(portal):
     """Existing use_folder_contents split into two new properties:
@@ -197,7 +197,7 @@ def addFolderContentsProperties(portal):
       for quick navigation in navigation slot, what types should always show as link to /f_c,
       (assuming you have perm, etc.)
     """
- 
+
     props = portal.portal_properties.navtree_properties
     if not hasattr(props, 'typesLinkToFolderContents'):
         props._setProperty('typesLinkToFolderContents', [], 'lines')
@@ -209,7 +209,7 @@ def addFolderContentsProperties(portal):
         ufc = ['Folder','Large Plone Folder']
     if not hasattr(props, 'typesLinkToFolderContentsInFC'):
         props._setProperty('typesLinkToFolderContentsInFC', ufc, 'lines')
-        
+
 def delOldFolderContentsProperty(portal):
     """This was an overly-vague name, which got us into a mess as people overloaded it."""
 
@@ -232,5 +232,5 @@ def addTablelessSkin(portal):
             if p == 'plone_templates':
                 path.append('plone_tableless')
             path.append(p)
-    
+
     st.manage_skinLayers(add_skin=1, skinname=tablelessName, skinpath=path)

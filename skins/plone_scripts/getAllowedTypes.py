@@ -11,4 +11,3 @@ filterOut = context.getNotAddableTypes()
 types = context.sortObjects( context.allowedContentTypes() )
 
 return [ ctype for ctype in types if ctype.getId() not in filterOut ]
-

@@ -78,7 +78,7 @@ class MigrationTool( UniqueObject, SimpleItem):
         """ is this still a plone 1 instance? Needed for require login"""
         ver = self.getInstanceVersion().strip()
         if ver.startswith('1'):
-             return 1
+            return 1
 
     security.declareProtected(ManagePortal, 'setInstanceVersion')
     def setInstanceVersion(self, version):
@@ -148,7 +148,7 @@ class MigrationTool( UniqueObject, SimpleItem):
                     break
             products[p.id] = product_info
         return products
-    
+
     ##############################################################
     # the setup widget registry
     # this is a whole bunch of wrappers

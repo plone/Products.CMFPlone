@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#$Id$
+#$Id: testMisc.py,v 1.1 2004/01/15 20:28:20 zopezen Exp $
 
 # Miscellaneous tests
 
@@ -22,9 +22,8 @@ class TestMisc(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestMisc))
+        from unittest import TestSuite, makeSuite
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestMisc))
         return suite
-

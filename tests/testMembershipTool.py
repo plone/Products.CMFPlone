@@ -189,21 +189,21 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
     def testWrapUserDoesntWrapAnonymous(self):
         user = self.membership.wrapUser(nobody)
         self.assertEqual(user.__class__.__name__, 'SpecialUser')
-        
+
     def testWrapUserWrapsAnonymous(self):
         self.failIf(hasattr(nobody, 'aq_base'))
         user = self.membership.wrapUser(nobody, wrap_anon=1)
         self.assertEqual(user.__class__.__name__, 'MemberData')
         self.assertEqual(user.aq_parent.__class__.__name__, 'SpecialUser')
         self.assertEqual(user.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
-        
-    def testGetCandidateLocalRoles(self):                                                                
-        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner',))                
-        self.setRoles(['Member', 'Reviewer'])                                                            
-        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner', 'Reviewer'))     
+
+    def testGetCandidateLocalRoles(self):
+        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner',))
+        self.setRoles(['Member', 'Reviewer'])
+        self.assertEqual(self.membership.getCandidateLocalRoles(self.folder), ('Owner', 'Reviewer'))
 
     def testSetLocalRoles(self):
-        self.failUnless('Owner' in self.folder.get_local_roles_for_userid(default_user)) 
+        self.failUnless('Owner' in self.folder.get_local_roles_for_userid(default_user))
         self.setRoles(['Member', 'Reviewer'])
         self.membership.setLocalRoles(self.folder, [default_user, 'user2'], 'Reviewer')
         self.assertEqual(self.folder.get_local_roles_for_userid(default_user), ('Owner', 'Reviewer'))
@@ -273,10 +273,10 @@ class TestCreateMemberarea(PloneTestCase.PloneTestCase):
         # The notify script should be called
         def notify_script(): raise FooException
         self.portal.notifyMemberAreaCreated = notify_script
-        self.assertRaises(FooException, self.membership.createMemberarea, 'user2') 
+        self.assertRaises(FooException, self.membership.createMemberarea, 'user2')
 
     def testCreateMemberareaAlternateName(self):
-        # Alternate method name 'createMemberaArea' should work 
+        # Alternate method name 'createMemberaArea' should work
         members = self.membership.getMembersFolder()
         self.membership.createMemberArea('user2')
         memberfolder = self.membership.getHomeFolder('user2')
@@ -398,7 +398,7 @@ class TestSearchForMembers(PloneTestCase.PloneTestCase):
     def addMember(self, username, fullname, email, roles, last_login_time):
         self.membership.addMember(username, 'secret', roles, [])
         member = self.membership.getMemberById(username)
-        member.setMemberProperties({'fullname': fullname, 'email': email, 
+        member.setMemberProperties({'fullname': fullname, 'email': email,
                                     'last_login_time': DateTime(last_login_time),})
 
     def testSearchByName(self):

@@ -22,7 +22,7 @@ class ActionsTool(BaseTool):
     #
     # Overriding listFilteredActionsFor so that it hands the correct 'folder'
     # object to action expressions.
-    # 
+    #
     security.declarePublic('listFilteredActionsFor')
     def listFilteredActionsFor(self, object=None):
         """

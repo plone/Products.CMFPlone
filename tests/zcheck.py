@@ -29,7 +29,7 @@ class TestSkins(PloneTestCase.PloneTestCase):
         # dont break old zchecker instances
         if hasattr(self.portal.zchecker, 'setIgnoreObjectIds'):
             self.portal.zchecker.setIgnoreObjectIds(ignoredObjectIds)
-            
+
         dirs = self.portal.portal_skins.objectValues()
         for dir in dirs:
             results = self.portal.zchecker.checkObjects(dir.objectValues())
