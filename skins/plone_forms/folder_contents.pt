@@ -6,11 +6,6 @@
       i18n:domain="plone"
       metal:use-macro="here/main_template/macros/master">
 
-  <metal:block metal:fill-slot="javascript_head_slot">
-    <script type="text/javascript" tal:attributes="src here/table_sort.js/absolute_url"></script>
-    <script type="text/javascript" tal:attributes="src here/folder_actions.js/absolute_url"></script>
-  </metal:block>
-
 <body>
 
 <div metal:fill-slot="main"

@@ -5,10 +5,6 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-    <metal:block metal:fill-slot="javascript_head_slot">
-      <script type="text/javascript" tal:attributes="src here/calendar.js/absolute_url"></script>
-    </metal:block>
-
 <body>
 
 <div metal:fill-slot="main"

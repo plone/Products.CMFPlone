@@ -13,7 +13,6 @@
 -->
 
   <metal:block metal:fill-slot="javascript_head_slot" tal:condition="request/ids|nothing">
-      <script type="text/javascript" tal:attributes="src here/table_sort.js/absolute_url"></script>
       <script type="text/javascript" tal:attributes="src here/folder_actions.js/absolute_url"></script>
   </metal:block>
 
@@ -22,11 +21,6 @@
       tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                   tabindex python:Iterator();
                   errors request/errors | nothing;">
-    
-    <script language="JavaScript" 
-            src="cmf_skin_tools/calendar.js"
-            tal:attributes="src string:${here/portal_url}/calendar.js">
-    </script>
 
     <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
     
@@ -36,7 +30,7 @@
     management. Only <strong>published</strong> items are available to the general
     member base and anonymous visitors. To make an item published, it
     has to be reviewed by one of the site's Reviewers. You can request
-    that an item be reviewed by <strong>sumbitting it for review</strong>. <br />
+    that an item be reviewed by <strong>submitting it for review</strong>. <br />
         
     Another way to control the visibility of an item is with its <strong>effective
     date</strong>. An item is not publicly available before its effective date,

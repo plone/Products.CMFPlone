@@ -11,26 +11,6 @@
 <div metal:fill-slot="main"
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
-    <script language="JavaScript"
-            src="/calendar.js"
-            tal:attributes="src string:${here/portal_url}/calendar.js">
-    </script>
-
-    <script language="JavaScript"> 
-    function addSelectedKeywords() {
-        predefSubjects=document.getElementById('predefined_subjects');
-        for (var x=0; x<predefSubjects.length; x++) {
-            if (predefSubjects[x].selected) {
-                 addNewKeyword(predefSubjects[x].value);
-            }
-        }
-    }
-
-    function addNewKeyword(newWord) {
-        selSubjects=document.getElementById('entered_subjects');
-        selSubjects.value+=newWord+'\n'
-    }
-    </script>
 
     <h1 i18n:translate="heading_edit_properties">Edit Properties</h1>
 
