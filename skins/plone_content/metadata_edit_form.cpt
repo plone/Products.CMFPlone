@@ -121,6 +121,8 @@
     
                     <div style="width: 45%">
                         <label for="predefined_subjects" i18n:translate="label_existing_keywords">Existing keywords</label>
+
+                        <div></div>
     
                         <select id="predefined_subjects"
                                 name="predefined_subjects:list"
