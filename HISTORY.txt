@@ -66,7 +66,8 @@
       search tab will show
       home >> search form - fixes issue 211 </shiver>
     - content_status_history.pt now uses Effective/Expiration data accessors
-
+    - Andy McKay added nested discussions.  
+    - You can now delete discussions (need to put security check) 
 1.0 alpha4
     - publishing now works without javascript. #202
     - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will 

@@ -11,8 +11,11 @@ if obj is None:
     obj=context
 		
 parent = obj.inReplyTo()
-talkback = context.portal_discussion.getDiscussionFor(parent)
-return str(talkback.getReplies())
+if parent is not None:
+    talkback = context.portal_discussion.getDiscussionFor(parent)
+else:
+    talkback = parent = obj.aq_parent
+
 talkback.deleteReply( obj.getId() )
 
 context.REQUEST['RESPONSE'].redirect( parent.absolute_url()

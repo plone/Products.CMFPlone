@@ -59,7 +59,13 @@
                        />
 			
 			</form>
-		
+		    
+            <a href="" 
+               tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
+               tal:attributes="href string:${reply/absolute_url}/deleteDiscussion">
+            Remove this discussion
+            </a>
+
             <div tal:define="crap python:request.set('searchForRepliesTo', reply)"></div>
             <tal metal:use-macro="here/viewThreadsAtBottom/macros/repliesView" />
 		    </td>
@@ -88,6 +94,14 @@
 				    <span i18n:translate="label_commented_at">at</span> 
                     <span tal:replace="python: here.toPortalTime(child.modified())">8/23/2001 12:49:08 PM</span>)
 				    </a>
+
+                    &nbsp;
+
+                    <a href=""
+                       tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
+                       tal:attributes="href string:${child/absolute_url}/deleteDiscussion" >
+                       Delete this comment
+                    </a>
             
                    
             <div tal:define="crap python:request.set('searchForRepliesTo', child)"></div>

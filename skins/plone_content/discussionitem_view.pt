@@ -34,6 +34,13 @@
                     <p tal:content="structure python:stx(here.text)">
         		    This is the body text of the comment. 
         		    </p>
+
+                    <br />
+                    <a href="" 
+                       tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
+                       tal:attributes="href string:${here/absolute_url}/deleteDiscussion" >
+                    Remove this discussion
+                    </a>
                 </td>
             </tr>
         </table>
