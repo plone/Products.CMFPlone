@@ -43,7 +43,7 @@
         <tr class="even"> 
 	    <td colspan="2">
 
-                <a href="mail_password_form">
+                <a href="mail_password_form" class="marker">
                 Forgot your password?
                 </a>
 
@@ -54,8 +54,9 @@
             tal:condition="python:here.portal_membership.checkPermission('Add portal member', here)" >
             <td colspan="2">
 
-                <a href="join_form" 
-		   tal:attributes="href string:$portal_url/join_form">
+                <a href="join_form"
+                   class="marker" 
+		           tal:attributes="href string:$portal_url/join_form">
                 New user?
                 </a>
 

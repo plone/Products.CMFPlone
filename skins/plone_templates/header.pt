@@ -167,7 +167,7 @@
 	    <a href=""
 	       tal:condition="my_stuff"
 	       tal:attributes="href python:my_stuff[0]['url']">
-		 <img src="img/user.gif" alt="User" 
+		 <img src="dummy.gif" alt="User" 
 		      border="0" 
 		      tal:attributes="src string:$portal_url/user.gif" /> &nbsp;
 		      <span tal:replace="user/getUserName">john</span>
@@ -176,7 +176,7 @@
 	    <a href=""
 	       tal:condition="my_stuff" 
 	       tal:attributes="href python:my_stuff[0]['url']">
-		 <img src="img/linkOpaque.gif" alt="&gt;" 
+		 <img src="dummy.gif" alt="&gt;" 
 		      border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>
 		      My&nbsp;Stuff 
 	    </a>
@@ -184,7 +184,7 @@
 	    <a href="workspace"
 	       tal:condition="my_stuff"
 	       tal:attributes="href string:${here/portal_membership/getHomeUrl}/workspace">
-		 <img src="img/linkOpaque.gif" alt="&gt;" 
+		 <img src="dummy.gif" alt="&gt;" 
 		      border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>
 		      My&nbsp;Workspace 
 	    </a>
@@ -193,28 +193,28 @@
 	    <a href=""
 	       tal:condition="undo" 
 	       tal:attributes="href python:undo[0]['url']">
-		 <img src="img/linkOpaque.gif" alt="&gt;" border="0"  
+		 <img src="dummy.gif" alt="&gt;" border="0"  
 		      tal:attributes="src string:$portal_url/linkOpaque.gif" />Undo&nbsp;History
 	    </a>
 
 	    <a href=""
 	       tal:condition="my_prefs" 
 	       tal:attributes="href python:my_prefs[0]['url']">
-		 <img src="img/linkOpaque.gif" alt="&gt;" border="0"  
+		 <img src="linkOpaque.gif" alt="&gt;" border="0"  
 		      tal:attributes="src string:$portal_url/linkOpaque.gif" />My&nbsp;Preferences
 	    </a>
 
 	    <a href=""
 	       tal:condition="portal_prefs"
 	       tal:attributes="href python:portal_prefs[0]['url']"> 
-		 <img src="img/linkOpaque.gif" alt="&gt;" border="0"  
+		 <img src="dummy.gif" alt="&gt;" border="0"  
 		      tal:attributes="src string:$portal_url/linkOpaque.gif"/>CMF&nbsp;Setup
 	    </a>
 
 	    <a href=""
 	       tal:condition="logout" 
 	       tal:attributes="href logout">
-		 <img src="img/linkOpaque.gif" alt="&gt;" border="0"  
+		 <img src="dummy.gif" alt="&gt;" border="0"  
 		      tal:attributes="src string:$portal_url/linkOpaque.gif"/>Sign Out</a> 
 
 	</div>
@@ -229,7 +229,7 @@
 		   tal:condition="not: here/portal_membership/isAnonymousUser"
 		   tal:attributes="href string:${here/absolute_url}/addtoFavorites">
 		     <img class="addFavorite" 
-              src="/img/linkTransparent.gif" 
+              src="dummy.gif" 
 			  alt="Add this location to My Favorites"
               title="Add this location to My Favorites" 
 			  border="0"

@@ -25,29 +25,29 @@
         <tr class="even" tal:condition="siblings">
             <td colspan="2">
             <div>
-                <strong>Other items</strong>
-                <span tal:repeat="sibling siblings">
+                <strong>Other items</strong> <br />
+                <div tal:repeat="sibling siblings">
                     <a href="#" class="plain"
                      tal:define="actions python:here.portal_actions.listFilteredActionsFor(sibling);
                      action python:here.getActionUrlById('view', actions['object']);
                      url python:test(action, action,sibling.absolute_url()+'/folder_contents');"
                      tal:attributes="href url">
-		         <img src="" 
-			      height="16" 
-			      width="16" 
-			      tal:attributes="src sibling/getIcon" />&nbsp;<span tal:replace="structure python:'&nbsp;'.join(here.truncID(sibling.title_or_id(), 18).split(' '))">
-			 truncated content title whose white spaces are non-breaking
-			 </span>
-			      
-		    </a>
-                </span>
+    		            <img src="" 
+    			             height="16" 
+    			             width="16" 
+    			             tal:attributes="src sibling/getIcon" />&nbsp;<span tal:replace="structure python:'&nbsp;'.join(here.truncID(sibling.title_or_id(), 18).split(' '))">
+    			                                                            truncated content title whose white spaces are non-breaking
+    			                                                          </span>
+		            </a>
+
+                </div>
             </div>
             </td>
         </tr>
 
         <tr class="odd" tal:condition="parent_url">
             <td colspan="2">
-                <a href="" tal:attributes="href parent_url">Up one level</a>
+                <a class="marker" href="" tal:attributes="href parent_url">Up one level</a>
             </td>
         </tr>
 
@@ -55,17 +55,22 @@
             tal:condition="python:test(listContentsPermission and notFolderContents, 1, 0)">
             <td colspan="2"
                 tal:condition="notFolderContents">
-               <a tal:condition="here/isPrincipiaFolderish" href="folder_contents">Editor view</a>
-               <a href="../folder_contents"
+               <a class="marker"
+                  href="folder_contents"
+                  tal:condition="here/isPrincipiaFolderish" 
+                  >Editor view</a>
+               <a class="marker"
+                  href="../folder_contents"
                   tal:condition="not: here/isPrincipiaFolderish" 
-                  tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents">Editor view</a>
+                  tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
+                  >Editor view</a>
             </td>
         </tr>
 
         <tr class="even"
             tal:condition="not: notFolderContents">
             <td colspan="2" >
-                <a href="">Ordinary view</a>
+                <a class="marker" href="">Ordinary view</a>
             </td>
         </tr>
 

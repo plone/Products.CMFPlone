@@ -225,11 +225,6 @@ div.boxDetails {
 }
 
 table.box a {
-    /* special format for links inside boxes - adds link image and displays the link as a block (which in this case means the text will not float under the link image, plus the whole thing is clickable) */
-    background: &dtml-boxLinkBackground;;
-    display: block;
-    padding: 0em 0em 0em 1.5em;
-    vertical-align: top;
 }
 
 table.box a.comment {
@@ -239,10 +234,12 @@ table.box a.comment {
     padding: 0em 0em 0.5em 2em;
 }
 
-table.box a.plain {
-    /* use this if you need plain links without images */
-    background-image: none;
-    padding: 0;
+table.box a.marker {
+    /* special format for links inside boxes - adds link image and displays the link as a block (which in this case means the text will not float under the link image, plus the whole thing is clickable) */
+    background: &dtml-boxLinkBackground;;
+    display: block;
+    padding: 0em 0em 0em 1.5em;
+    vertical-align: top;
 }
 
 span.folderName {

@@ -22,6 +22,9 @@
             <td colspan="2">
 
             <strong>Created&nbsp;by:</strong> <br />
+            <img src="dummy.gif" alt="User" 
+		         border="0" 
+		         tal:attributes="src string:$portal_url/user.gif" />
             <a href="#" tal:content="here/Creator"
                         tal:attributes="href python:here.portal_membership.getHomeUrl(here.Creator())">bob</a>
             </td>
