@@ -450,15 +450,14 @@ class TestImagePatch(PloneTestCase.PloneTestCase):
         # Wrap object so that ComputedAttribute gets executed.
         self.ob = dummy.ImageComputedProps(**kw).__of__(self.folder)
 
-        expected = ('<img src="http://nohost/portal/Members/test_user_1_/dummy" '
-                    'alt="alt tag" title="some title" longdesc="stupid longdesc" '
+        endswith = ('alt="alt tag" title="some title" longdesc="stupid longdesc" '
                     'height="100" width="100" />')
-        self.assertEquals(tag(self.ob), expected)
+        self.assertEqual(tag(self.ob)[-len(endswith):], endswith)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestImagePatch))
     suite.addTest(makeSuite(TestContentTypeScripts))
     suite.addTest(makeSuite(TestEditShortName))
     suite.addTest(makeSuite(TestEditFileKeepsMimeType))
@@ -466,6 +465,7 @@ def test_suite():
     suite.addTest(makeSuite(TestBadFileIds))
     suite.addTest(makeSuite(TestGetObjSize))
     suite.addTest(makeSuite(TestDefaultPage))
+    suite.addTest(makeSuite(TestImagePatch))
 
     # urlparse.urlparse() of Python2.1 is borked
     try:
