@@ -719,11 +719,12 @@ function fullscreenMode() {
     // toggle the display prop of divs none/block    
 	if (document.getElementById('portal-top').style.display == 'none') {        
 	    setDisplayMode('portal-top', 'block');
-        setDisplayMode('portal-column-one', 'block');
-        setDisplayMode('portal-column-two', 'block');
+        setDisplayMode('portal-column-one', 'table-cell');
+        setDisplayMode('portal-column-two', 'table-cell');
         // set cookie        
 	    createCookie('fullscreenMode', '');        
-	}    else {        
+	}    else {   
+	    window.alert(document.getElementById('portal-column-one').style.display)     
 	    setDisplayMode('portal-top', 'none');
         setDisplayMode('portal-column-one', 'none');
         setDisplayMode('portal-column-two', 'none');        
