@@ -33,45 +33,6 @@
     <em>even if its status is <strong>published</strong></em>.
     </p>
 
-
-    <div class="group" tal:condition="not: request/ids|nothing">
-        <span class="legend" i18n:translate="legend_status">Status</span>
-
-        <div class="row">
-            <div class="label" i18n:translate="label_status">Status</div>
-            <div class="field"
-                 tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
-                             expiration_date python:test(here.expiration_date, here.expiration_date, '')">
-        <span i18n:translate="label_current_state">
-            This item is currently in the
-                <strong i18n:name="review_state">
-                    <span i18n:translate="" tal:content="review_state">
-                    review_state
-                    </span>
-                </strong>
-            state
-        </span>
-
-        <tal:block tal:condition="python: review_state == 'published'"
-	               tal:define="eff_date here/effective_date | nothing;
-	                           exp_date here/expiration_date | nothing;
-	                           now here/ZopeTime;
-	                           before python:eff_date and (eff_date > now);
-	                           after python:exp_date and (exp_date < now);
-	                           effective python:not(before or after);">
-	        <span tal:condition="effective"
-                      i18n:translate="status_is_effective">and <strong>is effective</strong>.</span>
-	        <span tal:condition="before"
-                      i18n:translate="status_not_yet_effective">but is <strong>not yet</strong> effective.</span>
-	        <span tal:condition="after"
-                      i18n:translate="status_no_longer_effective">but is <strong>no longer</strong> effective.</span>
-	    </tal:block>
-	        </div>
-        </div>
-
-    </div>
-
-
     <form class="group"
           id="edit_form"
           name="edit_form"
