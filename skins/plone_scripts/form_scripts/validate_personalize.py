@@ -9,4 +9,8 @@
 ##
 validator = context.portal_form_validation.createForm()
 validator.addField('email', 'Email', required=1)
-return validator.validate(context.REQUEST)
+errors=validator.validate(context.REQUEST)
+if errors:
+    return ('failure', errors, {'portal_status_message':'Please correct your errors'})
+return ('success', errors, {'portal_status_message':'Personal settings have been saved'})
+

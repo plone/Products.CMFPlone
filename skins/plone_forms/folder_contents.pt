@@ -13,7 +13,6 @@
 <body>
 
 <div metal:fill-slot="main"
-     i18n:domain="plone"
      tal:define="dummy here/filterCookie;
                  folderfilter python:request.get('folderfilter', '');
                  global decodedFilter python:here.decodeFolderFilter(folderfilter);

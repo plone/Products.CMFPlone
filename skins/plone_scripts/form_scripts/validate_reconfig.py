@@ -21,5 +21,6 @@ validator.addField('smtp_server', 'String', required=0)
 errors = validator.validate(context.REQUEST)
 if errors:
     return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
+context.plone_debug('finishing validate_reconfig')
 return ('success', errors, {})
 

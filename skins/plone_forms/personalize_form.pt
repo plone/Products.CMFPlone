@@ -37,7 +37,8 @@
               action="personalize" 
               method="post"
               enctype="multipart/form-data" 
-              tal:condition="member" >
+              tal:condition="member"
+              tal:attributes="action request/URL">
         
             <span class="legend">Member Details</span>
 		
@@ -406,7 +407,12 @@
                            />
                 </div>
             </div>
-        		
+            
+            <span tal:replace="nothing">
+            ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
+            </span>
+            <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+                        
 		</form>
 
     </metal:block>

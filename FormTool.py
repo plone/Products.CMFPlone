@@ -179,6 +179,10 @@ class FormValidator(SimpleItem):
         self.do_validate = do_validate
 
 
+    def __bobo_traverse__(self, REQUEST, name):
+        """ """
+        self.log('inside __bobo_traverse of FormValidator' )
+
     security.declarePublic('__call__')
     def __call__(self, REQUEST, **kw):
         """ """
