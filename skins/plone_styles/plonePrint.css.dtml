@@ -28,6 +28,7 @@ body {
 
 div.top,
 #portal-logo,
+#portal-siteactions,
 .hiddenStructure,
 #portal-searchbox,
 #portal-globalnav,
