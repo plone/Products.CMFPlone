@@ -3,8 +3,7 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <body>
 
@@ -26,7 +25,7 @@
 
             <tr>
                 <td colspan="2">
-                    <h2><img src="discussionitem_icon.gif" alt="Comment" /> <span tal:replace="here/title_or_id">Comment title</span> </h2>
+                    <h2><img tal:replace="structure here/discussionitem_icon.gif" /> <span tal:replace="here/title_or_id">Comment title</span> </h2>
                     <span i18n:translate="">Posted by:</span>
                     <span tal:content="here/Creator">Poster Name</span>
                     <span i18n:translate="">at</span> 

@@ -46,10 +46,7 @@
 	    <td colspan="2">
 
                 <a href="mail_password_form">
-                   <img src="" 
-                        alt=">" 
-                        border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
+                   <img tal:replace="structure here/linkTransparent.gif" 
 			/>
                 <span tal:omit-tag="" i18n:translate="">Forgot your password?</span>
                 </a>
@@ -63,10 +60,7 @@
 
                 <a href="join_form"
 		           tal:attributes="href string:$portal_url/join_form">
-                   <img src="" 
-                        alt=">" 
-                        border="0" 
-                        tal:attributes="src string:$portal_url/linkTransparent.gif" 
+                   <img tal:replace="structure here/linkTransparent.gif" 
 			/>
                 <span tal:omit-tag="" i18n:translate="">New user?</span>
                 </a>

@@ -1,7 +1,17 @@
-<div tal:define="t python:here.setup_talkback_tree(here); height t/root/height">
-    
-    <div tal:repeat="row t/rows">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>      
       
+<div tal:define="t python:here.setup_talkback_tree(here); height t/root/height">
+
+    <div tal:repeat="row t/rows">
+
         <div tal:define="indent python:(row.depth * 20) - 20"
                      tal:attributes="style string:margin:0px 0px 0px ${indent}px;">
         <span tal:define="rlink row/branch">
@@ -9,22 +19,26 @@
                tal:attributes="name row/id;href rlink/link"
                tal:content="structure rlink/img" href name><img src="/p_/pl" alt="+" /></a>
         </span>
-      
+
         <span tal:attributes="colspan python:height-row.depth"
               tal:define="obj nocall:row/object;url python:obj.absolute_url()">
+
             <a tal:attributes="href url">        
             <img tal:attributes="src python:obj.portal_url() + '/' + obj.getIcon()"
                  border="0" src="" /></a>
+
             <a tal:attributes="href url"
                tal:content="obj/Title" 
                href="">Title</a>, by
-                
+
                <span tal:replace="obj/Creator">Me</span> on 
                <span tal:replace="obj/CreationDate">Today</span>.
         </span>
         </div> 
     </div>
-    
+
 </div>
 
+</body>
 
+</html>

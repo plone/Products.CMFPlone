@@ -33,7 +33,7 @@
   </div>
 
 <div class="message" tal:condition="here/no_submitter_email">
-    <img src="info.gif" alt="Portal information" tal:attributes="src string:$portal_url/info.gif">
+    <img tal:replace="structure here/info.gif" />
     Note: We have no mail address for the submitters, so they won't get followups.
 </div>
 

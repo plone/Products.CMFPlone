@@ -50,10 +50,7 @@
                     <a href=""
                        tal:attributes="href python:here.portal_membership.getHomeUrl(result.Creator)">
 
-                        <img src="dummy.gif" 
-                             alt="User" 
-                             border="0" 
-                             tal:attributes="src string:$portal_url/user.gif" />
+                        <img tal:replace="structure here/user.gif" />
                     
                         <span tal:replace="result/Creator" > 
                         Author
@@ -79,7 +76,7 @@
                     <p>
                         <span style="float: right" 
                               tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).objectIds() ), 1, 0)">
-                            <img style="border: 0" src="discussionitem_icon.gif" alt="Comments" /> 
+                            <img tal:replace="structure here/discussionitem_icon.gif" /> 
                             <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)"> 
                                  <a href="" 
                                     tal:attributes="href string:${resultObject/absolute_url}#comments">

@@ -4,8 +4,7 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
     xmlns:metal="http://xml.zope.org/namespaces/metal"
     metal:use-macro="container/main_template/macros/master"
-    i18n:domain="plone"      i18n:domain="plone"
->
+    i18n:domain="plone">
 
     <metal:block fill-slot="base">
             <base href=""
@@ -43,7 +42,7 @@
 
         <thead>
             <tr>
-                <th>Title&nbsp;<img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                <th>Title&nbsp;<img tal:replace="structure here/arrowUp.gif" /></th>
                 <th>Type</th>
                 <th>Last Modified</th>
                 <th>Description</th>

@@ -43,12 +43,12 @@
         </p>
        
         <table class="listing"
-	       id="sortable"
+               id="sortable"
                tal:condition="here/contentValues">
         
             <thead>
                 <tr>
-                    <th>Title&nbsp;<img src="arrowUp.gif" alt="Sort" height="6" width="9" /></th>
+                    <th>Title&nbsp;<img tal:replace="structure here/arrowUp.gif" /></th>
                     <th>Type</th>
                     <th>Size</th>
                     <th>Last Modified</th>
@@ -59,8 +59,8 @@
             <tbody>
 	        <metal:block tal:repeat="obj python:here.listFolderContents()">
                 <tr class="even" 
-		    tal:define="oddrow repeat/obj/odd" 
-		    tal:attributes="class python:test(oddrow, 'even', 'odd')" >
+                    tal:define="oddrow repeat/obj/odd" 
+                    tal:attributes="class python:test(oddrow, 'even', 'odd')" >
                     <td>
 		        <img src="#" tal:attributes="src string:${here/portal_url}/${obj/getIcon}" />
 			<a href="#" tal:attributes="href string:${obj/absolute_url}/view"

@@ -34,7 +34,7 @@
 		
 		<tr>
 		    <td colspan="2">
-			<h2><img src="discussionitem_icon.gif" alt="Comment" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
+			<h2><img tal:replace="structure here/discussionitem_icon.gif" alt="Comment" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
 			Posted by:
 			<span tal:content="reply/Creator">Poster Name</span>
 			at 

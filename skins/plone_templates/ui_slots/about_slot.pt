@@ -25,9 +25,7 @@ tal:replace="python:here.getTypeInfo().Title()">Object type</span>
             <td colspan="2">
 
             <strong i18n:translate="">Created&nbsp;by:</strong> <br />
-            <img src="dummy.gif" alt="User" 
-		         border="0" 
-		         tal:attributes="src string:$portal_url/user.gif" />
+            <img tal:replace="structure here/user.gif" />
             <a href="#" tal:content="here/Creator"
                         tal:attributes="href python:here.portal_membership.getHomeUrl(here.Creator())">bob</a>
             </td>

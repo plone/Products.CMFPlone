@@ -1,50 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
-	
+      i18n:domain="plone">
+
 <body>
 
 <div metal:fill-slot="main">
 
     <div class="contentHeader">
-    <h1 tal:content="here/title_or_id">Title or id</h1>
+        <h1 tal:content="here/title_or_id">Title or id</h1>
     </div>
-   
+
     <img tal:condition="here/size"
          src="#" 
          tal:attributes="src here/absolute_url" />
 
-        
-    <span class="description" tal:content="structure here/Description">
+    <p style="margin-top: 2em;" tal:content="structure here/Description">
     Description
-    </span>
-
+    </p>
+    
     <small>
+
     <span i18n:translate="">Size:</span>
+
         <span tal:define="size python:here.getObjSize(here)"
               tal:content="size">                        
         File size
         </span>            
-        
+
         <span tal:condition="python:test(here.size, 0, 1)"
               i18n:translate="">
           (No file has been uploaded)
         </span>
-        
-        -
-        
-        <span i18n:translate="">Content type:</span>
-        <span tal:content="here/content_type">
-        Content type
-        </span>
-    
+
     </small>
-    
+
 </div>
 
 </body>
+
 </html>
+

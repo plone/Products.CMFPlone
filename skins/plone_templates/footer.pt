@@ -3,12 +3,9 @@
 
 <div class="footer" metal:define-macro="portal_footer">
 
-<a href="http://plone.org">
-<img src="" 
-     alt="This site was built using the Plone CMS. Click for more information." 
-     title="This site was built using the Plone CMS. Click for more information." 
-     border="0" 
-     tal:attributes="src string:$portal_url/powered.gif" />
+<a href="http://plone.org"
+   tal:define="powered here/powered.gif">
+<img tal:replace="structure python:powered.tag(title='This site was built using the Plone CMS. Click for more information.')" />
 </a>
 
 

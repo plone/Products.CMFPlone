@@ -47,8 +47,7 @@
                       url2editor string:${here/portal_url}/$wysiwyg/wysiwyg_popup?inputname=$inputname&formname=$formname&contentpath=$contentpath&method=CookedBody;"
           tal:condition="python:test(wysiwyg!='None', 1, 0)"
           tal:attributes="onclick string:window.open('$url2editor','editor','dependent=yes,width=520,height=500,screenX=200,screenY=300,titlebar=yes');; return false">
-       <img src="edit.gif" tal:attributes="src string:${here/portal_url}/edit.gif"
-            alt="WYSIWYG Editor" />
+       <img tal:replace="structure here/edit.gif" />
        </a>
 
 </div>

@@ -51,7 +51,7 @@
                                            portrait python: here.getPlonePersonalPortait(result['id']);"> 
                 <a href="#" tal:attributes="href home">                    
                     <img src="defaultUser.gif" 
-                         alt="Blank picture" 
+                         alt="" 
                          border="0" 
                          width="75" 
                          height="100" 
@@ -83,7 +83,7 @@
         </div>		
 
         </form>	    
-	<div class="spacer">&nbsp</div>
+	<div class="spacer">&nbsp;</div>
     </div>
 </body>
 </html>
