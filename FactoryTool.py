@@ -59,7 +59,7 @@ class FactoryTool(UniqueObject, SimpleItem):
 
             # object does not exist in parent context -- return a PendingCreate
             self.log('returning PendingCreate(%s)' % type_name, '__bobo_traverse__')
-            return PendingCreate(type_name).__of__(aq_parent(self))  # wrap in acquisition layer
+            return PendingCreate(name, type_name).__of__(aq_parent(self))  # wrap in acquisition layer
 
         # name is just type with no time-stamp.  Autogenerate an ID and relocate
 
@@ -75,7 +75,7 @@ class FactoryTool(UniqueObject, SimpleItem):
 
     def _generateId(self, type):
         now = DateTime()
-        name = type.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%H%M%S')
+        name = type.replace(' ', '')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%H%M%S')
 
         # Reduce chances of an id collision (there is a very small chance that somebody will
         # create another object during this loop)
@@ -89,6 +89,7 @@ class FactoryTool(UniqueObject, SimpleItem):
 
 
     def _getTypeName(self, name):
+        name = name.lower().replace(' ','')
         global type_map
         type_name = type_map.get(name, None)
         if not type_name:
@@ -105,7 +106,7 @@ class FactoryTool(UniqueObject, SimpleItem):
         global type_map
         type_map = {}
         for t in content_types:
-            type_map[t.replace(' ', '')] = t
+            type_map[t.lower().replace(' ', '')] = t
 
 
     security.declarePublic('log')
@@ -127,9 +128,9 @@ class PendingCreate(SimpleItem):
     meta_type= 'Object With Creation Pending'
     security = ClassSecurityInfo()
 
-    def __init__(self, type):
+    def __init__(self, id, type):
         now = DateTime()
-        self.id = type.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%H%M%S')
+        self.id = id
         self._type = type
         self.Title = ''
 

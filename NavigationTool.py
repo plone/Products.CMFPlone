@@ -119,7 +119,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         if hasattr(content, 'getId'): #XXX use a xface
 #        if hasattr(content, '_isTypeInformation'): #XXX use a xface
             content = content.getId()
-        content = '_'.join(content.split(' ')) #normalize
+        content = ''.join(content.lower().split(' ')) #normalize
         return content
 
 
