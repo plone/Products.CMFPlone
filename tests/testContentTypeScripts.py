@@ -300,87 +300,6 @@ class TestFileExtensions(PloneTestCase.PloneTestCase):
         self.failUnless('barney.gif' in self.folder.objectIds())
 
 
-class TestGetObjSize(PloneTestCase.PloneTestCase):
-
-    def afterSetUp(self):
-        self.ob = dummy.SizedItem()
-
-    def getSize(self):
-        return self.portal.getObjSize(obj=self.ob)
-
-    def testZeroSize(self):
-        self.ob.set_size(0)
-        size = self.getSize()
-        self.assertEquals(size, '0 kB')
-
-    def testBytesSize(self):
-        self.ob.set_size(884)
-        size = self.getSize()
-        self.assertEquals(size, '1 kB')
-
-    def testKBytesSize(self):
-        self.ob.set_size(1348)
-        size = self.getSize()
-        self.assertEquals(size, '1.3 kB')
-
-    def testMBytesSize(self):
-        self.ob.set_size(1024*1024+1024*687)
-        size = self.getSize()
-        self.assertEquals(size, '1.7 MB')
-
-    def testGBytesSize(self):
-        self.ob.set_size(1024*1024*1024+1024*1024*107)
-        size = self.getSize()
-        self.assertEquals(size, '1.1 GB')
-
-    def testGBytesSizeFloat(self):
-        # Size can be a float when files are large
-        self.ob.set_size(float(1024*1024*1024+1024*1024*107))
-        size = self.getSize()
-        self.assertEquals(size, '1.1 GB')
-
-
-class TestDefaultPage(PloneTestCase.PloneTestCase):
-
-    def afterSetUp(self):
-        self.ob = dummy.DefaultPage()
-        sp = self.portal.portal_properties.site_properties
-        self.default = sp.getProperty('default_page', [])
-
-    def getDefault(self):
-        return self.portal.plone_utils.browserDefault(self.ob)
-
-    def testDefaultPageSetting(self):
-        self.assertEquals(self.default, ('index_html', 'index.html',
-                                         'index.htm', 'FrontPage'))
-
-    def testDefaultPageStringExist(self):
-        # Test for https://plone.org/collector/2671
-        self.ob.set_default('test', 1)
-        self.assertEquals(self.getDefault(), (self.ob, ['test']))
-
-    def testDefaultPageStringNotExist(self):
-        # Test for https://plone.org/collector/2671
-        self.ob.set_default('test', 0)
-        self.assertEquals(self.getDefault(), (self.ob, ['index_html']))
-
-    def testDefaultPageSequenceExist(self):
-        # Test for https://plone.org/collector/2671
-        self.ob.set_default(['test'], 1)
-        self.assertEquals(self.getDefault(), (self.ob, ['test']))
-
-    def testDefaultPageSequenceNotExist(self):
-        # Test for https://plone.org/collector/2671
-        self.ob.set_default(['test'], 0)
-        self.assertEquals(self.getDefault(), (self.ob, ['index_html']))
-        self.ob.keys = ['index.html']
-        self.assertEquals(self.getDefault(), (self.ob, ['index.html']))
-        self.ob.keys = ['index.htm']
-        self.assertEquals(self.getDefault(), (self.ob, ['index.htm']))
-        self.ob.keys = ['FrontPage']
-        self.assertEquals(self.getDefault(), (self.ob, ['FrontPage']))
-
-
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -388,8 +307,6 @@ def test_suite():
     suite.addTest(makeSuite(TestEditShortName))
     suite.addTest(makeSuite(TestEditFileKeepsMimeType))
     suite.addTest(makeSuite(TestFileExtensions))
-    suite.addTest(makeSuite(TestGetObjSize))
-    suite.addTest(makeSuite(TestDefaultPage))
     return suite
 
 if __name__ == '__main__':

@@ -17,14 +17,13 @@ ZopeTestCase.installProduct('CMFFormController')
 #ZopeTestCase.installProduct('Formulator')
 ZopeTestCase.installProduct('GroupUserFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
+ZopeTestCase.installProduct('TextIndexNG2')
+ZopeTestCase.installProduct('SecureMailHost')
 ZopeTestCase.installProduct('CMFPlone')
 ZopeTestCase.installProduct('MailHost', quiet=1)
 ZopeTestCase.installProduct('PageTemplates', quiet=1)
 ZopeTestCase.installProduct('PythonScripts', quiet=1)
 ZopeTestCase.installProduct('ExternalMethod', quiet=1)
-# This is safe to fail - TXNG2 is an optional addon
-ZopeTestCase.installProduct('TextIndexNG2')
-ZopeTestCase.installProduct('SecureMailHost')
 
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
