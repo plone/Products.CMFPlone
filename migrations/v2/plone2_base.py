@@ -240,6 +240,14 @@ def addDocumentActions(portal):
                  'View',
                  'document_actions')
 
+    at.addAction('addtofavorites',
+                 'Add to Favorites',
+                 'string:${request/URL0}/addToFavorites',
+                 'member',
+                 'View',
+                 'document_actions')
+
+
 def upgradePortalFactory(portal):
     typesTool = getToolByName(portal, 'portal_types')
     # add temporary folder type for portal_factory
