@@ -11,7 +11,7 @@
 
      <a href="#"
         tal:condition="mtool/getHomeFolder"
-        tal:attributes="href string:${here/absolute_url}/addtoFavorites"
+        tal:attributes="href string:${request/URL1}/addtoFavorites"
         tal:define="addFavorite here/addFavorite.gif">
 
      <img tal:replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')" />
