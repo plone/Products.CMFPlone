@@ -227,12 +227,11 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         if self.isTemporary(obj=obj):
             if id is not None:
                 id = id.strip()
-            if hasattr(obj, 'getId') and callable(getattr(obj, 'getId')):
-                obj_id = obj.getId()
-            else:
-                obj_id = getattr(obj, 'id', None)
             if not id:
-                id = obj_id
+                if hasattr(obj, 'getId') and callable(getattr(obj, 'getId')):
+                    id = obj.getId()
+                else:
+                    id = getattr(obj, 'id', None)
             type_name = aq_parent(aq_inner(obj)).id  # get the ID of the TempFolder
             folder = aq_parent(aq_parent(aq_parent(aq_inner(obj))))
             folder.invokeFactory(id=id, type_name=type_name)
@@ -243,7 +242,6 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             if not membership_tool.isAnonymousUser():
                 member = membership_tool.getAuthenticatedMember()
                 obj.changeOwnership(member.getUser(), 1)
-                obj.manage_setLocalRoles(member.getUserName(), ['Owner'])
         return obj
 
     def _fixRequest(self):
@@ -268,11 +266,11 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         while m < n:
             self.REQUEST.set('BASE%d' % m, '/'.join(url_list[0:len(url_list)-n+1+m]))
             m = m + 1
-        # XXX fix URLPATHn, BASEPATHn here too?
+        # XXX fix URLPATHn, BASEPATHn here too
 
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""
-        ob = aq_parent(aq_inner(obj))
+        ob = aq_base(aq_parent(aq_inner(obj)))
         return hasattr(ob, 'meta_type') and ob.meta_type == TempFolder.meta_type
 
     def __before_publishing_traverse__(self, other, REQUEST):
@@ -314,7 +312,6 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('__call__')
     def __call__(self, *args, **kwargs):
         """call method"""
-        factory_info = self.REQUEST.get(FACTORY_INFO, {})
         self._fixRequest()
         factory_info = self.REQUEST.get(FACTORY_INFO, {})
         stack = factory_info['stack']
@@ -334,7 +331,6 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             obj = temp_obj.restrictedTraverse('/'.join(stack))
         else:
             obj = temp_obj
-
         return mapply(obj, self.REQUEST.args, self.REQUEST,
                                call_object, 1, missing_name, dont_publish_class,
                                self.REQUEST, bind=1)
