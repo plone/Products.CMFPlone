@@ -17,12 +17,12 @@ if not homeFolder:
     return RESPONSE.redirect('%s?%s' % (view_url, msg))
 
 if not hasattr(homeFolder, 'Favorites'):
-    homeFolder.invokeFactory('Folder', id='Favorites')
+    homeFolder.invokeFactory('ATFolder', id='Favorites')
 
 targetFolder = homeFolder.Favorites
 new_id='fav_' + str(int( context.ZopeTime()))
 myPath=context.portal_url.getRelativeUrl(context)
-targetFolder.invokeFactory( 'Favorite', id=new_id, title=context.TitleOrId(), remote_url=myPath)
+targetFolder.invokeFactory( 'ATFavorite', id=new_id, title=context.TitleOrId(), remote_url=myPath)
 
 msg = 'portal_status_message=\'%s\' has been added to your Favorites' % context.title_or_id()
 return RESPONSE.redirect('%s?%s' % (view_url, msg))
