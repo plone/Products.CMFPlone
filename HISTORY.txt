@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1 - Ms. Bumblebee - (Unreleased)
+Plone 2.1 - Ms. Bumblebee - Alpha1 - Released March 12, 2005 
 
     - No longer uncatalog the Members folder on installation so that the new
       NavTreePortlet (not included) works out of the box.
