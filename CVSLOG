@@ -1,3 +1,36 @@
+2003-12-10 02:23  zopezen
+
+	* migrations/twoBeta2_twoBeta3.py (Plone-2_0-branch): Sigh a new
+	  plone site calls it plone site, so we'll ignore fti and hardcode
+	  it plone iste
+
+2003-12-10 02:17  zopezen
+
+	* migrations/twoBeta2_twoBeta3.py (Plone-2_0-branch): Doh Id is
+	  Plone Root for some reason
+
+2003-12-10 01:40  zopezen
+
+	* migrations/twoBeta2_twoBeta3.py (Plone-2_0-branch): This should
+	  now work
+
+2003-12-09 23:15  zopezen
+
+	* migrations/twoBeta2_twoBeta3.py (Plone-2_0-branch): Can anyone
+	  figure out how the commented bit works? I get the error "Error
+	  value: Meta type Plone Site is not a type class". If that works
+	  we can uncomment and migrations are back on track as usual ;)
+
+2003-12-09 22:17  vinsci
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch):
+	  "white-space: no-wrap" changed to "white-space: nowrap".  See
+	  http://www.w3.org/TR/REC-CSS2/text.html#propdef-white-space
+
+2003-12-09 05:09  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-08 22:44  dpunktnpunkt
 
 	* skins/plone_templates/registered_notify_template.pt
