@@ -18,7 +18,7 @@ current_state=portal_workflow.getInfoFor(new_context, 'review_state')
 if workflow_action!=current_state and not effective_date:
     effective_date=DateTime()
 
-plone_log(effective_date)
+plone_log('effective date ' + str(effective_date))
 
 def editContent(obj, effective, expiry):
     new_context.plone_utils.contentEdit( obj,

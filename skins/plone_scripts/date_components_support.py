@@ -54,16 +54,16 @@ elif not same_type(date, now):
 
 year=int(date.strftime('%Y'))
 
-if default:
-    years.append(empty_selected)
-else:
-    years.append(empty)
+#if default:
+#    years.append(empty_selected)
+#else:
+#    years.append(empty)
 
-for x in range(year-5, year+5):
+for x in range(year-5, year+6):
     d={'id':x,
        'value':x,
        'selected':None}
-    if x==year and not default:
+    if x==year:
         d['selected']=1
     years.append(d)
 
@@ -101,11 +101,11 @@ for x in range(1,32):
 minute=int(date.strftime('%M'))
 
 if default:
-    minutes.append({'id':'00','value':00,'selected':1})
+    minutes.append({'id':'----', 'value':00, 'selected':1})
 else:
-    minutes.append({'id':'00','value':00,'selected':None})
+    minutes.append({'id':'----', 'value':00, 'selected':None})
 
-for x in range(5,60,5):
+for x in range(0,60,5):
     d={'id':'%02d'%x,
        'value':x,
        'selected':None}
@@ -116,11 +116,11 @@ for x in range(5,60,5):
 hour=int(date.strftime('%H'))
 
 if default:
-    hours.append({'id':'00','value':00,'selected':1})
+    hours.append({'id':'----', 'value':00, 'selected':1})
 else:
-    hours.append({'id':'00','value':00,'selected':None})
+    hours.append({'id':'----', 'value':00, 'selected':0})
 
-for x in range(1,24):
+for x in range(0,24):
     d={'id':'%02d'%x,
        'value':x,
        'selected':None}
