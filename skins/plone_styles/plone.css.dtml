@@ -716,6 +716,17 @@ div.box h4 {
     padding: 0;
 }
 
+div.box .even {
+    background-color: &dtml-boxEvenBackground;;
+}
+
+div.box .odd {
+    background-color: &dtml-boxOddBackground;;
+}
+
+div.box .highlight {
+    background-color: &dtml-boxHighlight;;
+}
 
 
 div.spacer {
