@@ -25,7 +25,7 @@
                     <span tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">(<a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">README</a>)</span>
                   </td> 
                 <td><a tal:condition="product/hasError" tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">
-                        <img  src="/misc_/PageTemplates/exclamation.gif"></a>
+                        <img  src="/misc_/PageTemplates/exclamation.gif"/></a>
                 </td>
                 <td tal:content="python:QI.getProductVersion(product['id'])"> </td>
             </tr>

@@ -39,7 +39,7 @@
 
 <h2 i18n:translate="heading_installed_transcript">Transcript</h2>
 
-<span tal:content="structure python:here.getTranscriptAsText().replace('\n','<br>')">
+<span tal:content="structure python:here.getTranscriptAsText().replace('\n','&lt;br/&gt;')">
 </span>
 
 </div>

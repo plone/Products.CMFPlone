@@ -52,7 +52,7 @@
                                       command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPerm('List folder contents',sibling) ,'',stdCommand);
                                       title python:te['object'].title_or_id();
                                       sibling_title python:' '.join(title[:croppingLength].split(' '));"
-                                      tal:on-error="structure string:<!--Error in Navigation loop!!-->"
+                                      tal:on-error="structure string:&lt;!--Error in Navigation loop!!--&gt;"
                                            >
 
                         <tal:block tal:condition="iscurrent">

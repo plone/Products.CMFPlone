@@ -92,7 +92,7 @@
                             <a href="showEntry" tal:attributes="href string:prefs_error_log_showEntry?id=${entry/id}">
                                 <span tal:replace="entry/type">AttributeError</span>:
                                 <span tal:define="value entry/value"
-                                      tal:content="python: len(value) < 70 and value or value[:70] + '...'">
+                                      tal:content="python: len(value) &lt; 70 and value or value[:70] + '...'">
                                 Application object has no attribute "gak"
                                 </span>
                             </a>

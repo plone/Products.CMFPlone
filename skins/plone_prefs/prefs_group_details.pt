@@ -190,7 +190,7 @@
                             </tal:values>
                         </select>
     
-                        <select name="multiple selection" multiple tal:condition="python:type in ('multiple selection',)"
+                        <select name="multiple selection" multiple="multiple" tal:condition="python:type in ('multiple selection',)"
                                 tal:attributes="name string:$id:${request/management_page_charset_tag}list:string;
                                                 size python:min(7, len(select_value));">
                             <tal:values repeat="option select_value">
