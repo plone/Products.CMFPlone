@@ -1,5 +1,5 @@
 from Products.CMFPlone import MigrationTool
-import v1, v2
+import v1, v2, v2_1
 
 def null(portal):
     """ This is a null migration, use it when nothing happens """
@@ -74,3 +74,7 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.0.1',
                                       '2.0.2',
                                       null)
+                                      
+    #MigrationTool.registerUpgradePath('2.0.2',
+    #                                  '2.1-rc1',
+    #                                  v2_1.release_candidates.two0x_rc1)                                      
