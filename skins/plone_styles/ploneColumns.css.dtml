@@ -9,7 +9,7 @@
 /* <dtml-with base_properties> */
 
 #portal-columns {
-    width: 100%;
+    width: 100% !important;
 }
 
 #portal-column-one {
