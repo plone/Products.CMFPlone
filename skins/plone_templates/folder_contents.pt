@@ -12,9 +12,6 @@
                  global filterValues decodedFilter;
                  global filter decodedFilter;
                  standalone python:1;
-                 orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
-                 iface_tool here/portal_interface;
-                 isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                  folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);">
 
     <form name="folderContentsForm"
@@ -72,7 +69,10 @@
                                      toPortalTime nocall:here/toPortalTime;
                                      getObjSize nocall:here/getObjSize;
                                      lock_tool here/portal_lock|nothing;
-				     getInfoFor python:wtool.getInfoFor">
+				     getInfoFor python:wtool.getInfoFor;
+                                     iface_tool here/portal_interface;
+                                     orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
+                                     isOrderable python:iface_tool.objectImplements(here, orderable_iface);">
 
             <table id="sortable"
                    class="listing"
