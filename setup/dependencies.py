@@ -32,17 +32,15 @@ if cmfcore:
         filtered = ''
         for v in version:
             if v in ['0','1','2','3','4','5','6','7','8','9','.']:
-                if filtered.find('.')==-1:
-                    filtered += v
+                filtered += v
             else:
                 break
-        print 'filtered:',filtered
-        x = float(filtered)
-            
+        filtered = 
+        filtered = [int(x) for x in filtered.split('.')]
     except IOError, ValueError:
-        x = 0
+        x = []
         CMF_VERSION = 'Unknown'
-    if x < 1.4:
+    if x < [1,4]:
         log("Plone requires CMF 1.4 or later.  Your version: %s" % CMF_VERSION, severity=zLOG.INFO, optional=1)
 
 try:
