@@ -8,7 +8,7 @@
         <tr><th>About</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
-    <tbody>
+    <tbody tal:define="portal_url here/portal_url">
         <tr class="odd">
             <td colspan="2">
 
