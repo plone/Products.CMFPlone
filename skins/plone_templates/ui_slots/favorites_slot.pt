@@ -9,7 +9,7 @@
 <div metal:define-macro="favoritesBox"
      tal:omit-tag=""
      tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
-     tal:condition="folder"
+     tal:condition="nocall: folder"
      >
 
     <div class="box"
