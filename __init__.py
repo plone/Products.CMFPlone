@@ -1,3 +1,5 @@
+import dependencies
+
 cmfplone_globals=globals()
 custom_policies={} #stores the registered Policies
 import migrations, MigrationTool
