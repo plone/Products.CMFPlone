@@ -722,7 +722,18 @@ ul.menu li.menuSep {
     border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-contentViewBorderColor;;
 }
 
-.card,
+.card {
+    background-color: &dtml-globalBackgroundColor;;
+    border-color: &dtml-globalBorderColor;;
+    border-width: &dtml-borderWidth;;
+    border-style: &dtml-borderStyle;;
+    float: left;
+    margin: 1em;
+    text-align: center;
+    width: 110px;
+    padding: 1em 0;
+}
+
 .portrait {
     background-color: &dtml-globalBackgroundColor;;
     border-color: &dtml-globalBorderColor;;

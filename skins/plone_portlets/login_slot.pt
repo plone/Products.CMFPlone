@@ -38,7 +38,7 @@
 
                     <label for="ac_name" tal:attributes="for ac_name"> 
                       <strong i18n:translate="label_user_name">Name</strong> <br />
-                      <input type="text" id="ac_name" name="ac_name" size="10" alt="Username" accesskey="accesskeys-login" 
+                      <input type="text" id="ac_name" name="ac_name" size="12" alt="Username" accesskey="accesskeys-login" 
                              tal:attributes="name ac_name;
                                              value python:request.get(ac_name, ''); 
                                              tabindex tabindex/next"
@@ -49,7 +49,7 @@
 
                     <label for="ac_password" tal:attributes="for ac_password">
                       <strong i18n:translate="label_password">Password</strong>  <br />
-                      <input type="password" id="ac_password" name="ac_password" size="10" alt="Password" accesskey="accesskeys-login" 
+                      <input type="password" id="ac_password" name="ac_password" size="12" alt="Password" accesskey="accesskeys-login" 
                              tal:attributes="name ac_password;
                                              tabindex tabindex/next;" 
                              i18n:attributes="alt accesskey" />
