@@ -38,40 +38,13 @@ def migrate2ColumnLayout(self):
 
 def setupButtonActions(self):
     st=getToolByName(self, 'portal_actions')
-    for button in ( ActionInformation( 'rename'
-                                     , title='Rename'
-				     , category='local_buttons'
-				     , permissions=('List folder contents',)
-				     , action=Expression('string:folder_rename_form:method'))
-	          , ActionInformation( 'cut'
-		                     , title='Cut'
-				     , category='local_buttons'
-				     , permissions=('List folder contents',)
-				     , action=Expression('string:folder_cut:method'))
-                  , ActionInformation( 'copy'
-		                     , title='Copy'
-				     , category='local_buttons'
-				     , permissions=('List folder contents',)
-				     , action=Expression('string:folder_copy:method'))
-	          , ActionInformation( 'paste'
-		                     , title='Paste'
-				     , category='local_buttons'
-				     , permissions=('List folder contents',)
-				     , condition=Expression('folder/cb_dataValid')
-				     , action=Expression('string:folder_paste:method'))
-	          , ActionInformation( 'delete'
-		                     , title='Delete'
-				     , category='local_buttons'
-                                     , permissions=('List folder contents',)
-				     , action=Expression('string:folder_delete:method'))
-	          , ActionInformation( 'change_status'
-		                     , title='Change Status'
-				     , category='local_buttons'
-				     , permissions=('List folder contents',)
-				     , action=Expression('string:content_status_history:method')) ):
-        st._actions.append(button)
-    st._p_changed=1
-    return 'setup complete'
+    st.addAction('rename','Rename','string:folder_rename_form:method','','List folder contents', 'local_buttons')
+    st.addAction('cut', 'Cut', 'string:folder_cut:method', '', 'List folder contents', 'local_buttons')
+    st.addAction('copy', 'Copy', 'string:folder_copy:method', '', 'List folder contents', 'local_buttons')
+    st.addAction('paste', 'Paste', 'string:folder_paste:method', 'folder/cb_dataValid', 'List folder contents', 'local_buttons')
+    st.addAction('delete', 'Delete', 'string:folder_delete:method', '', 'List folder contents', 'local_buttons')
+    st.addAction('change_status', 'Change Status', 'string:content_status_history:method', '', 'List folder contents', 'local_buttons')
+    return 'button setup complete.'
 			    
 def normalize_tabs(self):
     """ attempts to remove tabs that dont add to user experience """
@@ -91,45 +64,18 @@ def normalize_tabs(self):
 
     #now lets get rid of folder_listing/folder_contents tabs for folder objects
     tt=getToolByName(self, 'portal_types')
-    for a in tt['Folder']._actions:
+    folderType=tt['Folder']
+    for a in folderType._actions:
         if a.get('id','') in ('folderlisting', ):
             a['visible']=0
-    tt['Folder']._p_changed=1
-
-    def global_tabs():
-	welcome=ActionInformation( 'index_html'
-	                         , title='Welcome'
-				 , category='global_tabs'
-				 , permissions=('View',)
-				 , action=Expression('portal_url'))
-	members=ActionInformation( 'Members'
-	                         , title='Members'
-				 , category='global_tabs'
-				 , permissions=('List portal members',)
-				 , action=Expression('string: $portal_url/Members/roster'))
-	news=ActionInformation( 'news'
-	                      , title='News'
-			      , category='global_tabs'
-			      , permissions=('View',)
-			      , action=Expression('string: $portal_url/news'))
-	search=ActionInformation( 'search_form'
-	                        , title='Search'
-				, category='global_tabs'
-				, permissions=('View',)
-				, action=Expression('string: $portal_url/search_form'))
-	publishing=ActionInformation( 'content_status_history'
-                                    , title='Publishing'
-                                    , category='local_tabs'
-                                    , permissions=('View',)
-                                    , condition=Expression("member")
-	                           , action=Expression("string: ${object_url}/content_status_history"))
-	return (welcome, members, news, search, publishing)
+    folderType._p_changed=1
 			      
-    #make 'syndication' tab unvisible
     st=getToolByName(self, 'portal_actions')
-    for globaltab in global_tabs():
-        st._actions.append(globaltab)
-    st._p_changed=1
+    st.addAction('index_html','Welcome','portal_url','', 'View', 'global_tabs')
+    st.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','global_tabs')
+    st.addAction('news','News','string: $portal_url/news','','View', 'global_tabs')
+    st.addAction('search_form','Search','string: $portal_url/search_form','','View','global_tabs')
+    st.addAction('content_status_history','Publishing','string:${object_url}/content_status_history','','View','local_tabs')
 
     #move add to favorites 
     mt=getToolByName(self, 'portal_membership')
@@ -138,23 +84,12 @@ def normalize_tabs(self):
         if a.id=='addFavorite' or \
 	   a.id=='favorites':
             a.visible=0
-	if a.id=='mystuff':
-            mt._actions.insert(0, ActionInformation('mystuff'
-	                                          , title='My Stuff'
-						  , category=a.category
-						  , permissions=a.permissions
-						  , condition=Expression(a.condition.text)
-						  , action=Expression(a._action.text)))
-	    del mt._actions[x+1]
-    mt._p_changed=1
-    mt._actions.insert(1, ActionInformation( 'myworkspace'
-                                          , title='My Workspace'
-					  , category='user'
-					  , permissions='View'
-					  , condition=Expression(
-					  'python: member and portal.portal_membership.getHomeFolder()')
-					  , action=Expression(
-					  'python: portal.portal_membership.getHomeUrl()+"/workspace"')))
+    mt.addAction('myworkspace'
+                ,'My Workspace'
+                ,'python: portal.portal_membership.getHomeUrl()+"/workspace"'
+                ,'python: member and portal.portal_membership.getHomeFolder()'
+                ,'View'
+		,'user')
     mt._p_changed=1
     #make 'join' action disappear if anonymous cant add portal member
     #this is aligned with out the 'sign in' box works in ui_slots

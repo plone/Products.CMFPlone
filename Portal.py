@@ -131,7 +131,6 @@ class PloneGenerator(Portal.PortalGenerator):
                                           title='Worflow transitions',
                                           module='CMFPlone.PloneWorklists',
                                           function='getTransitionsFor')
-        
         p._setObject('getWorklists', em)
         p._setObject('getAvailableTransitions', em2)
         
@@ -152,7 +151,7 @@ class PloneGenerator(Portal.PortalGenerator):
         portal = self.klass(id=id)
         parent._setObject(id, portal)
         # Return the fully wrapped object.
-        p = parent.this()._getOb(id)
+        p = parent._getOb(id)
         self.setup(p, create_userfolder)
         self.setupPlone(p)
         return p
