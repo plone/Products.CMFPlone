@@ -6,6 +6,10 @@ Plone 2.0 - Fyuti
 
    RC6
 
+    - Added a monkey-patch workaround for http://plone.org/collector/1323
+      This *may* be considered a CMF bug. See setFormatPatch.py.
+      [stefan]
+
     - Moved 'document_byline' and 'document_actions' to the 
       'plone_content' folder - as they belong to the content templates.
       [limi]

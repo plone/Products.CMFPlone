@@ -32,6 +32,45 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Initial creator no longer has Owner role.
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ())
 
+    def testEditFormatMetadataOfFile(self):
+        # Test workaround for http://plone.org/collector/1323
+        # Also see setFormatPatch.py
+        self.folder.invokeFactory('File', id='file')
+        self.folder.file.edit(file=FakeUpload())
+        self.assertEqual(self.folder.file.Format(), 'application/zip')
+        self.assertEqual(self.folder.file.content_type, 'application/zip')
+        # Changing the format should be reflected in content_type
+        self.utils.editMetadata(self.folder.file, format='image/gif')
+        self.assertEqual(self.folder.file.Format(), 'image/gif')
+        self.assertEqual(self.folder.file.content_type, 'image/gif')
+
+    def testEditFormatMetadataOfImage(self):
+        # Test workaround for http://plone.org/collector/1323
+        # Also see setFormatPatch.py
+        self.folder.invokeFactory('Image', id='image')
+        self.folder.image.edit(file=FakeUpload())
+        self.assertEqual(self.folder.image.Format(), 'application/zip')
+        self.assertEqual(self.folder.image.content_type, 'application/zip')
+        # Changing the format should be reflected in content_type
+        self.utils.editMetadata(self.folder.image, format='image/gif')
+        self.assertEqual(self.folder.image.Format(), 'image/gif')
+        self.assertEqual(self.folder.image.content_type, 'image/gif')
+
+    def testEditFormatMetadataOfDocument(self):
+        # Test workaround for http://plone.org/collector/1323
+        # Also see setFormatPatch.py
+        self.folder.invokeFactory('Document', id='doc', 
+                                  text_format='text/plain', text='foo')
+        # Documents don't have a content_type property!
+        self.failIf(self.folder.doc.hasProperty('content_type'))
+        self.assertEqual(self.folder.doc.Format(), 'text/plain')
+        self.assertEqual(self.folder.doc.content_type(), 'text/plain')
+        # Changing the format should not create the property
+        self.utils.editMetadata(self.folder.doc, format='text/html')
+        self.failIf(self.folder.doc.hasProperty('content_type'))
+        self.assertEqual(self.folder.doc.Format(), 'text/html')
+        self.assertEqual(self.folder.doc.content_type(), 'text/html')
+
 
 class TestExceptionsImport(ZopeTestCase.ZopeTestCase):
     '''We may be able to avoid raising 'Unauthorized' as string exception'''
@@ -52,13 +91,20 @@ class TestExceptionsImport(ZopeTestCase.ZopeTestCase):
         self.assertRaises(ImportError, self.ps)
 
 
+# Fake upload object
+
+class FakeUpload:
+    filename = 'foo.zip'
+    def seek(*args): pass
+    def tell(*args): return 1
+    def read(*args): return 'bar'
+
+
 if __name__ == '__main__':
     framework()
 else:
-    # While framework.py provides its own test_suite()
-    # method the testrunner utility does not.
-    from unittest import TestSuite, makeSuite
     def test_suite():
+        from unittest import TestSuite, makeSuite
         suite = TestSuite()
         suite.addTest(makeSuite(TestPloneTool))
         suite.addTest(makeSuite(TestExceptionsImport))
