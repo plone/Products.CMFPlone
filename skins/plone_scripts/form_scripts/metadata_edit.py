@@ -6,7 +6,7 @@
 ##bind subpath=traverse_subpath
 ##title=Update Content Metadata
 ##parameters=allowDiscussion=None,title=None,subject=None,description=None,contributors=None,effective_date=None,expiration_date=None,format=None,language=None,rights=None,predefined_subjects=None
-subjects=context.unique([ps for ps in predefined_subjects if ps]+[s for s in subject if s])
+subject=context.unique([ps for ps in predefined_subjects if ps]+[s for s in subject if s])
 
 if not effective_date:
    effective_date='None'
