@@ -18,14 +18,16 @@ td.right,
 .contentTabs,
 .contentBar,
 .footer,
-.help
-
+.help,
+.legend
 {
     display: none;
 }
 
-.editableDocument {
-    border-width: 0;
+div.editableDocument,
+.group {
+    background: transparent;
+    border: none;
     padding: 0;
     margin: 0;
 }
@@ -49,14 +51,3 @@ div.document a:visited:after {
    content: " (" attr(href) ") ";
    font-size: 90%;
    }
-
-
-#wrapper, #content {
-    background: transparent;
-    border: 0;
-    color: Black;
-    float: none !important;
-    margin: 0 5%;
-    padding: 0;
-    width: auto;
-}
