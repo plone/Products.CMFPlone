@@ -1,3 +1,106 @@
+2004-02-12 04:26  pupq
+
+	* HISTORY.txt (Plone-2_0-branch): Added note about breadcrumb fix.
+
+2004-02-12 04:24  pupq
+
+	* HISTORY.txt (Plone-2_0-branch): Corrected entry on
+	  use_folder_contents in Plone 2.0 final.
+
+2004-02-12 03:15  shh42
+
+	* MembershipTool.py (Plone-2_0-branch): InvokeFactory does not work
+	  here.
+
+2004-02-12 03:14  dreamcatcher
+
+	* skins/plone_scripts/queryCatalog.py (Plone-2_0-branch): Munge
+	  deprecated _usage parameter into a dict, as recommended. Use some
+	  logic with query string so that it quotes some tokens (not
+	  perfect, but still) when doing text queries.
+
+2004-02-12 03:08  jimroepcke
+
+	* PloneFolder.py,
+	  skins/plone_scripts/getFolderListingFolderContents.py,
+	  skins/plone_templates/folder_listing.pt (Plone-2_0-branch): made
+	  a variant of getFolderContents called
+	  getFolderListingFolderContents that calls
+	  PloneFolder.folderlistingFolderContents which is protected by
+	  Access contents information.	folder_listing uses this instead of
+	  getFolderContents so that Anonymous people can view folders that
+	  don't have index_html in them (and view folder_listing)
+
+2004-02-12 01:45  dreamcatcher
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): Fix
+	  for #2526, which seems to have been closed without someone
+	  checking it in. Bonus: some rewrapping :)
+
+2004-02-12 01:32  shh42
+
+	* ftests/: ClientForm-0.1.15.patch, mechanize-0.0.7a.patch: Add
+	  required patches to CVS for lack of better place.
+
+2004-02-12 00:53  shh42
+
+	* ftests/README.txt: Add README prepared by Geoff Davis.
+
+2004-02-12 00:52  jok2
+
+	* ftests/testChangeState.py: First Functional Test for Plone!
+	  Attention: the second test exposes a bug in mechanize 0.0.7a and
+	  ClientForm 0.1.15: in line 451 of _mechanize.py change "uri" to
+	  "href" and do this also on line 576 of ClientForm.py
+
+2004-02-11 23:50  runyaga
+
+	* MembershipTool.py (Plone-2_0-branch): dont use
+	  manage_addPLoneFolder use invokeFactory (CMF way or the high way)
+
+2004-02-11 23:40  pupq
+
+	* skins/plone_scripts/breadcrumbs.py (Plone-2_0-branch): Fix for
+	  breadcrumbs: when viewing folder_contents, the folder wasn't
+	  being shown. Patch by Edward Muller <edwardam@interlix.com.
+
+2004-02-11 16:39  shh42
+
+	* tests/PloneTestCase.py: Add FunctionalTest convenience class
+
+2004-02-11 16:39  shh42
+
+	* ftests/framework.py, tests/framework.py: Update framework.py
+
+2004-02-11 16:22  shh42
+
+	* ftests/: framework.py, runalltests.py, testExample.py: Initial
+	  import of Plone functional tests package.
+
+2004-02-11 10:00  shh42
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): Small
+	  optimization so it looks like on the HEAD.
+
+2004-02-11 09:59  shh42
+
+	* migrations/v2/release_candidates.py: Don't break if there is no
+	  'Plone Default' skin.
+
+2004-02-11 07:42  tiran
+
+	* debian/changelog (Plone-2_0-branch): updated debian changelog for
+	  v2.0final
+
+2004-02-11 07:30  tiran
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): oh ... I
+	  forgot to apply the patch to the branch, too
+
+2004-02-11 04:54  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-11 00:24  dreamcatcher
 
 	* skins/plone_content/file_edit_form.cpt (Plone-2_0-branch):
