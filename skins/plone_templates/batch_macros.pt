@@ -20,7 +20,7 @@
            &laquo;
            <span i18n:translate="batch_previous_x_items" tal:omit-tag="">
                Previous
-               <span i18n:name="number" tal:replace="p/length">n</span> 
+               <span i18n:name="number" tal:content="p/length">n</span> 
                items
            </span>
         </a>
@@ -33,7 +33,7 @@
            tal:attributes="href python: '%s?%s' % (url , mq( request.form, b_start=n.first ))">
            <span i18n:translate="batch_next_x_items" tal:omit-tag="">
                Next
-               <span i18n:name="number" tal:replace="n/length">n</span> 
+               <span i18n:name="number" tal:content="n/length">n</span> 
                items
            </span>
            &raquo;
