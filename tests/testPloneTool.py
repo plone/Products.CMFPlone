@@ -33,6 +33,25 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ())
 
 
+class TestExceptionsImport(ZopeTestCase.ZopeTestCase):
+    '''We may be able to avoid raising 'Unauthorized' as string exception'''
+
+    def afterSetUp(self):
+        dispatcher = self.folder.manage_addProduct['PythonScripts']
+        dispatcher.manage_addPythonScript('ps')
+        self.ps = self.folder['ps']
+
+    def testImportAccessControlUnauthorizedInPythonScript(self):
+        # PythonScripts can import from AccessControl
+        self.ps.ZPythonScript_edit('', 'from AccessControl import Unauthorized')
+        self.ps()
+        
+    def testImportzExceptionsUnauthorizedInPythonScript(self):
+        # PythonScripts can NOT import from zExceptions
+        self.ps.ZPythonScript_edit('', 'from zExceptions import Unauthorized')
+        self.assertRaises(ImportError, self.ps)
+
+
 if __name__ == '__main__':
     framework()
 else:
@@ -42,4 +61,5 @@ else:
     def test_suite():
         suite = TestSuite()
         suite.addTest(makeSuite(TestPloneTool))
+        suite.addTest(makeSuite(TestExceptionsImport))
         return suite
