@@ -57,12 +57,28 @@ if  ( str(member.getProperty('login_time', None)) == '2000/01/01' and
       context.validate_email ):
     return context.restrictedTraverse(login_changepassword)()
 
-# this will create the memberarea if necessary, but the called code
-# doesn't blow up if the memberarea already exists
-membership_tool.createMemberArea()
 
-qs = context.create_query_string(REQUEST.get('QUERY_STRING', ''),
-                                 portal_status_message="Welcome! You are now logged in.")
+if hasattr(membership_tool, 'createMemberArea'):
+
+    # This is acutally a capablities test.  For non-mgmt users, the
+    # hasattr test above test will fail under CMF 1.4 but will succeed
+    # under CMF HEAD due do security machinery magic.  Hasattr will
+    # return false under CMF 1.4 because the createMemberArea method
+    # is protected by 'Manage portal' permission.  Under CMF HEAD+,
+    # createMemberArea is declared public, so it will succeed.
+
+    # This is necessary because in CMF 1.4, the wrapUser method
+    # creates a member folder automatically.  However under the HEAD,
+    # it is this script's responsibility to do so.  So we only want to
+    # call createMemberArea under CMF HEAD+.
+
+    membership_tool.createMemberArea()
+
+qs = context.create_query_string(
+    REQUEST.get('QUERY_STRING', ''),
+    portal_status_message=("Welcome! You are now logged in.")
+    )
+
 return REQUEST.RESPONSE.redirect('%s?%s' % (login_success, qs))
 
 
