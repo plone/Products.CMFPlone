@@ -5,6 +5,7 @@ from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.CMFCorePermissions import View, ManageProperties, ListFolderContents
 from Products.CMFCore.CMFCorePermissions import AddPortalFolders, AddPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
+from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo, Unauthorized
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base
@@ -102,6 +103,12 @@ class PloneFolder ( SkinnedFolder ):
             except (Unauthorized, 'Unauthorized'):
                 pass
         return l
+
+    ### FIXME! SkinnedFolder Creator method doesnt work when creating
+    ### objects via Python (eg: on a unittest) apparently because of
+    ### a missing context
+
+    Creator = DefaultDublinCoreImpl.Creator
 
 def _getViewFor(obj, view='view', default=None):
     ti = obj.getTypeInfo()

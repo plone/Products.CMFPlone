@@ -1,5 +1,8 @@
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
+from Products.CMFPlone import PloneFolder
+from Products.CMFDefault.Portal import CMFSite
+from Products.CMFDefault import Document
 def listPolicies(): return custom_policies.keys()
 def addPolicy(label, klass): custom_policies[label]=klass
 
@@ -41,8 +44,16 @@ Thanks for using our product.
 
 **The Plone Team**.
 """
+class PloneSite(CMFSite):
+    """
+    Make PloneSite subclass CMFSite and add some methods.
+    This will be useful for adding more things later on.
+    """
+    manage_addPloneFolder = PloneFolder.addPloneFolder
 
 class PloneGenerator(Portal.PortalGenerator):
+
+    klass = PloneSite
 
     def customizePortalTypes(self, p):
         typesTool=getToolByName(p, 'portal_types')
@@ -91,12 +102,13 @@ class PloneGenerator(Portal.PortalGenerator):
         
     def setupPortalContent(self, p):
         p.manage_delObjects('Members')
-        p.invokeFactory('Folder', 'Members')
+        PloneFolder.addPloneFolder(p, 'Members')
+
         p.portal_catalog.unindexObject(p.Members) #unindex Members folder
         p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
                                                                 , 'Member list'
                                                                 , '<dtml-return roster>')
-        p.invokeFactory('Document', 'index_html')
+        Document.addDocument(p, 'index_html')
         o = p.index_html
         o.setTitle('Welcome to Plone')
         o.setDescription('This welcome page is used to introduce you to the Plone Content Management System.')
