@@ -19,7 +19,7 @@ import os
 import sys
 import zLOG
 
-DEBUG = 1
+DEBUG = 0
 
 def log(message, summary='', severity=0):
     zLOG.LOG('Plone Database Init', severity, summary, message)
