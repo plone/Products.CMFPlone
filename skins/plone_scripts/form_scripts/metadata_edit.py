@@ -53,6 +53,9 @@ if rights is None:
     rights = context.Rights()
 
 if allowDiscussion:
+    if allowDiscussion.lower().strip()=='default': allowDiscussion=None
+    elif allowDiscussion.lower().strip()=='off': allowDiscussion=0
+    elif allowDiscussion.lower().strip()=='on': allowDiscussion=1
     context.portal_discussion.overrideDiscussionFor(context, allowDiscussion)
 
 try:  

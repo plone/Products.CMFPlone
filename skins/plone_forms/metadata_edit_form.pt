@@ -63,19 +63,14 @@
             </div>
             
             <div class="field">
-                <select name="allowDiscussion"
-                        tal:define="val here/isDiscussable"
-                        tabindex="1"
-                        onfocus="formtooltip('allow_discussion_help',1)" 
-                        onblur="formtooltip('allow_discussion_help',0)">
-
-                    <option value="None"
-                            tal:attributes="selected python: val == None"> Default </option>
-                    <option value="0"
-                            tal:attributes="selected python: val == 0"> Off </option>
-                    <option value="1"
-                            tal:attributes="selected python: val == 1"> On </option>
-                </select>
+	        <span tal:define="val here/isDiscussable">
+                  <input type="radio" name="allowDiscussion" value="default"
+		         tal:attributes="checked python: val == None"> Default <br />
+		  <input type="radio" name="allowDiscussion" value="off"
+		         tal:attributes="checked python: val == 0"> Off <br />
+		  <input type="radio" name="allowDiscussion" value="on"
+		         tal:attributes="checked python: val == 1"> On <br />
+	        </span>
             </div>
         </div>
 
