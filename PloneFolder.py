@@ -344,7 +344,7 @@ portal_skins tool and set the correct default skin.""" % default
 
         return values
 
-    security.declareProtected( AccessContentsInformation, 'listFolderContents')
+    security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
         Optionally you can suppress "hidden" files, or files that begin with .
