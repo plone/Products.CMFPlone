@@ -1,29 +1,24 @@
-## Script (Python) "validate_metadata_edit"
+## Script (Python) "validate_effective_expiry_date"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
 ##bind script=script
 ##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=
-##title=Validates an event metadata_edit_form contents
+##parameters=effective_date=None,expiration_date=None
+##title=Validates effective,expiration date
 ##
 from DateTime import DateTime
-REQUEST=context.REQUEST
 
-effective_date = None
 try:
-    if REQUEST.effective_date != 'None' and \
-      REQUEST.effective_date != '':
-        effective_date = DateTime(REQUEST.effective_date)
+    if effective_date and effective_date!='None':
+        effective_date = DateTime(effective_date)
 except:
     state.setError('effective_date', 'Please enter a valid date and time.')
     
-expiration_date = None
 try:
-    if REQUEST.expiration_date != 'None' and \
-      REQUEST.expiration_date != '':
-        expiration_date = DateTime(REQUEST.expiration_date)
+    if expiration_date and expiration_date != 'None':
+        expiration_date = DateTime(expiration_date)
 except:
     state.setError('expiration_date', 'Please enter a valid date and time.')
 

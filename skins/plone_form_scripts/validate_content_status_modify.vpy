@@ -1,4 +1,4 @@
-## Script (Python) "validate_reconfig"
+## Script (Python) "validate_content_status_history"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
