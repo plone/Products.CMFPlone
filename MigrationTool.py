@@ -230,6 +230,10 @@ class MigrationTool( UniqueObject, SimpleItem):
                 out.append(("Upgrade aborted", zLOG.ERROR))
                 for line in traceback.format_tb(sys.exc_traceback):
                     out.append((line, zLOG.ERROR))
+                    
+                err_log=self.error_log
+                err_log.raising(sys.exc_info())
+                
                 # set newv to None
                 # to break the loop
                 newv = None
