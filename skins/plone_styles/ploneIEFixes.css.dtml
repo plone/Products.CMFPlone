@@ -12,6 +12,7 @@
 }
 
 #content,
+#content p,
 div.comment,
 h1,
 h2,
