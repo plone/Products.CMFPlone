@@ -1,3 +1,12 @@
+2004-03-07 16:49  limi
+
+	* INSTALL.txt (Plone-2_0-branch): Updated version number for Epoz,
+	  since 0.8.0 contains enhancements for Plone 2.
+
+2004-03-07 05:06  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-06 05:06  longsleep
 
 	* CVSLOG: auto generated new changelog
