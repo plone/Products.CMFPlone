@@ -37,10 +37,12 @@
                        tal:attributes="href resultObject/absolute_url">
                     Title
                     </a>
+                    
                 </dt>
     
                 <div class="byline">
-                    <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="here/modified" /> 
+                    by <span tal:replace="result/Creator"></span>, 
+                    <span tal:omit-tag="" i18n:translate="last_updated">last updated</span>: <span tal:replace="here/modified" /> 
                 </div>
 
                 <dd class="link"> 
