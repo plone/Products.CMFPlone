@@ -1,3 +1,37 @@
+2004-05-07 04:02  limi
+
+	* skins/plone_styles/plonePresentation.css.dtml (Plone-2_0-branch):
+	  Minor CSS tweaks.
+
+2004-05-07 01:52  limi
+
+	* skins/plone_styles/: plone.css.dtml, plonePresentation.css.dtml
+	  (Plone-2_0-branch): Improved CSS display of <code>, and made
+	  better defaults for <dl>, <code> and <pre> in presentation mode.
+	  EuroPython, here we come ;)
+
+2004-05-06 16:47  vinsci
+
+	* PloneTool.py, tests/testPloneTool.py (Plone-2_0-branch): Restore
+	  python2.1 backwards compatibility (no email.Utils in python2.1).
+
+2004-05-06 12:10  vinsci
+
+	* PloneTool.py, skins/plone_form_scripts/validate_sendto.vpy,
+	  tests/testPloneTool.py (Plone-2_0-branch): Restore functionality
+	  to send page to multiple recipients. New utilities in PloneTool
+	  for validating single and multiple addresses.
+
+2004-05-06 07:31  ajung
+
+	* skins/plone_scripts/: listMetaTags.py (Plone-2_0-branch),
+	  listMetaTags.py: catching AttributeErrors raised by some AT
+	  applications
+
+2004-05-06 06:19  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-05 18:18  tiran
 
 	* HISTORY.txt (Plone-2_0-branch): Updated history
