@@ -7,9 +7,8 @@
 
     <div metal:fill-slot="main">
 
-        <div class="contentHeader"
-             metal:use-macro="here/portal_boxes/macros/contentHeader">
-        content header
+        <div class="contentHeader">
+	<h1 tal:content="here/title_or_id">Title or id</h1>
         </div>
         
         <p tal:content="here/Description">

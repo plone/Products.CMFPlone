@@ -13,16 +13,6 @@
 
 </head>
 
-
-<!-- The content header, used on most content -->
-
-<div metal:define-macro="contentHeader">
-
- 	<h1 tal:content="here/title_or_id">Title or id</h1>
-
-</div>
-
-
 <!-- The default navigation box 
      navigationBox macro -->
  
