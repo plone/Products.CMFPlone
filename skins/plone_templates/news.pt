@@ -26,14 +26,18 @@
 
             <div class="newsItem"
                   tal:define="resultObject result/getObject;
-                              creator result/Creator">
+                              creator result/Creator;
+                              resulturl resultObject/absolute_url;">
 
-                <h2 tal:content="result/Title">
-                    Title
+                <h2>
+                    <a href="/view" 
+                       tal:attributes="href resulturl" 
+                       tal:content="result/Title">
+                        News headline
+                    </a>
                 </h2>
 
-                <div class="newsContent"
-                     tal:define="resulturl resultObject/absolute_url">
+                <div class="newsContent">
 
                     <p tal:content="structure result/Description">
                         Description
