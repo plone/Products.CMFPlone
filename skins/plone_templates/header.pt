@@ -120,7 +120,8 @@
 	    tal:content="string:@import url($portal_url/jscalendar/calendar-system.css);"></style>
     <script type="text/javascript"
 	    tal:attributes="src string:$portal_url/jscalendar/calendar_stripped.js"></script>
-    <script type="text/javascript" tal:condition="exists: portal/jscalendar/calendar-en.js"
+    <script type="text/javascript" charset="iso-8859-1"
+	    tal:condition="exists: portal/jscalendar/calendar-en.js"
 	    tal:attributes="src string:$portal_url/jscalendar/calendar-en.js"></script>
 
     <!-- Define dynamic server-side variables for javascripts in this one  -->
