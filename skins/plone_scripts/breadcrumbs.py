@@ -51,7 +51,6 @@ while current and current is not portal:
     # at some level, then it will append '...' to breadcrumbs
     # and not present a link to that item.
     current = o
-    subpath = list(url_tool.getRelativeContentPath(current))[:-1]
     try:
         o = current.getParentNode()
         # Try to access attribute to see if we have enough
@@ -62,6 +61,10 @@ while current and current is not portal:
         # or at it's attributes. We probably dont
         # have the required permissions, so let's
         # try to skip this object on to the next one.
+        try:
+            subpath = list(url_tool.getRelativeContentPath(current))[:-1]
+        except:
+            subpath = list(url_tool.getRelativeContentPath(context))[:-1]
         while subpath:
             try:
                 o = portal.restrictedTraverse(subpath)
