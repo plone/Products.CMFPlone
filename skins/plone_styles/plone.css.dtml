@@ -385,6 +385,7 @@ input.searchButton {
     color: &dtml-fontColor;;
     padding: 0;
     background: transparent;
+    background-image: none;
 } /* Used on all descriptions relevant to those not logged in */
  
 #portal-personaltools li {
