@@ -2,26 +2,51 @@
       lang="en"
       i18n:domain="plone">
 
-<body style="background-color: white; color: white; font-family: 'Lucida Grande', Verdana, Lucida, Helvetica, Arial, sans-serif; font-size: 69%;">
+<head>
 
-<div style="text-align:center;">
+    <style>
+    body {
+        background-color: white; 
+        color: black; 
+        font-family: "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif; 
+        font-size: 69%;
+        style="text-align:center;"
+    }
+    
+    a {
+        display:block; 
+        margin: 0.5em; 
+        color: #436976; 
+        text-decoration: underline; 
+        line-height:1.5em;
+    }
+
+    img {
+        border: 1px solid black;
+    }
+
+    .visualWrapper {
+        text-align: center;
+    }
+
+    </style>
+
+</head>      
+
+<body>
+
+<div class="visualWrapper">
     <a href=""
-       style="display:block; margin: 0.5em; color: #436976; text-decoration: underline;"
        tal:attributes="href request/HTTP_REFERER"
        tal:condition="request/HTTP_REFERER"
-       i18n:translate="">Back to site</a>
+       i18n:translate="">Back to site<br /><tal:block replace="structure here/tag" /></a>
 
     <a href=""
-       style="display:block; margin: 0.5em; color: #436976; text-decoration: underline;"
        tal:attributes="href here/portal_url"
        tal:condition="not: request/HTTP_REFERER"
-       i18n:translate="">Home</a>
+       i18n:translate="">Home<br/><tal:block replace="structure here/tag" /></a>
+</div>    
 
-
-    <tal:block replace="structure here/tag" />
-
-</div>
-    
 </body>
 </html>
 
