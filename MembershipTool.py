@@ -117,15 +117,16 @@ class MembershipTool( BaseTool ):
             try:
                 member_content = self.homePageText()
             except:
-                member_content = DEFAULT_MEMBER_CONTENT
+                member_content = DEFAULT_MEMBER_CONTENT % member_id
 
             addDocument( f
                        , 'index_html'
                        , member_id+"'s Home Page"
                        , member_id+"'s front page"
                        , "structured-text"
-                       , (DEFAULT_MEMBER_CONTENT % member_id)
+                       , member_content
                        )
+
             f.index_html._setPortalTypeName( 'Document' )
             # Overcome an apparent catalog bug.
             f.index_html.reindexObject()
