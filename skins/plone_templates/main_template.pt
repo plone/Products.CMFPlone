@@ -95,7 +95,7 @@
         <div id="documentContent"
              tal:attributes="class python:test(show_border, 'editable document', 'document')">
 
-	    <a name="documentContent" />
+	    <a name="documentContent"></a>
 
             <div metal:use-macro="here/global_elements/macros/portal_message">
                 Portal status message
