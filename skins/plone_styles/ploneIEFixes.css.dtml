@@ -12,7 +12,14 @@
 }
 
 #content,
-div.comment {
+div.comment,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.description {
     /* Fix for IE6 disappearing float bug */
     height: 100%;
 }
