@@ -12,7 +12,7 @@ from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
-from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
+
 from OFS.ObjectManager import REPLACEABLE
 from ComputedAttribute import ComputedAttribute
 
@@ -20,7 +20,6 @@ from PloneUtilities import log
 
 class ReplaceableWrapper:
     """ A wrapper around an object to make it replaceable """
-
     def __init__(self, ob):
         self.__ob = ob
 
@@ -29,7 +28,7 @@ class ReplaceableWrapper:
             return REPLACEABLE
         return getattr(self.__ob, name)
 
-fti= { 'id'             : 'Folder'
+factory_type_information = { 'id'             : 'Folder'
                              , 'meta_type'      : 'Plone Folder'
                              , 'description'    : """\
 Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."""
@@ -62,14 +61,6 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                   }
                                 )
                              }
-
-large_fti={}
-large_fti.update(fti)
-fti2={'id':'Large Plone Folder',
-      'meta_type':'Large Plone Folder',
-      'factory':'addLargePloneFolder'}
-large_fti.update(fti2)
-factory_type_information=(fti, large_fti)
 
 class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     meta_type = 'Plone Folder'
@@ -155,26 +146,6 @@ def addPloneFolder( self, id, title='', description='', REQUEST=None ):
     sf = PloneFolder(id, title=title)
     sf.description=description
     self._setObject(id, sf)
-    if REQUEST is not None:
-        REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
-
-
-class LargePloneFolder(BTreeFolder2Base, PloneFolder):
-    meta_type='Large Plone Folder'
-
-    def __init__(self, id, title=''):
-        BTreeFolder2Base.__init__(self, id)
-        DefaultDublinCoreImpl.__init__(self)
-        self.id=id
-        self.title=title
-
-InitializeClass(LargePloneFolder)
-
-def addLargePloneFolder(self, id, title='', description='', REQUEST=None):
-    """ add a BTree-backed Plone Folder """
-    obj = LargePloneFolder(id, title=title)
-    obj.setDescription(description)
-    self._setObject(id, obj)
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
 

@@ -7,6 +7,11 @@ import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
 import NavigationTool, FactoryTool, FormTool, PropertiesTool
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
 
+try:
+    import LargePloneFolder
+except ImportError:
+    LargePloneFolder=None
+
 import sys
 import StatelessTreeNav
 import Globals
@@ -75,10 +80,14 @@ tools = ( MembershipTool.MembershipTool
         , PropertiesTool.PropertiesTool
         , MigrationTool.MigrationTool )
 
-contentClasses = ( PloneFolder.PloneFolder ,
-                   PloneFolder.LargePloneFolder )
-contentConstructors = ( PloneFolder.addPloneFolder, 
-                        PloneFolder.addLargePloneFolder )
+contentClasses = ( PloneFolder.PloneFolder , )
+contentConstructors = ( PloneFolder.addPloneFolder, )
+ftis = (PloneFolder.factory_type_information, )
+
+if LargePloneFolder is not None:
+    contentClasses += ( LargePloneFolder.LargePloneFolder, )
+    contentConstructors += ( LargePloneFolder.addLargePloneFolder,)
+    ftis += (LargePloneFolder.factory_type_information, )
 
 DirectoryView.registerDirectory('skins', cmfplone_globals)
 this_module = sys.modules[ __name__ ]
@@ -95,8 +104,9 @@ def initialize(context):
                      , content_types=contentClasses
                      , permission=ADD_CONTENT_PERMISSION
                      , extra_constructors=contentConstructors
-                     , fti=PloneFolder.factory_type_information
+                     , fti=ftis
                      ).initialize( context )
+
     Portal.register(context, cmfplone_globals)
 
     import CustomizationPolicy
