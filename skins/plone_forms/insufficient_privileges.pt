@@ -14,10 +14,8 @@
       you are receiving this message in error, please send an e-mail to
       </p>
 
-      <a href="mailto:admin@here.com" title="Email Administrator"
-         tal:attributes="href string:mailto:${p_props/email_from_address}"
-         tal:content="p_props/email_from_name"
-         i18n:attributes="title">Email Admin</a>.
+      <a tal:replace="structure python: here.spamProtect(p_props.email_from_address)" />.
+      
    </div>
 </div>
 

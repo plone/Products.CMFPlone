@@ -16,23 +16,16 @@
         <div tal:condition="not:success">
             <h1 i18n:translate="heading_sign_in_failure_auth">Sign-in failure</h1>
 
-            <p i18n:translate="description_signin_fail_auth">
+            <p i18n:translate="description_not_logged_in_username_incorrect">
             You are not currently logged in.  Your user name and/or password
             may be incorrect.
-            <a href="mail_password_form"
-               i18n:translate="description_signin_fail_auth_link"
-               i18n:name="link">Click here</a> to
-            have your password mailed to you if you have forgotten it or
-            contact
-            <a href="mailto:admin@here.com" title="Email Administrator"
-            tal:attributes="href string:mailto:${p_props/email_from_address}"
-            tal:content="p_props/email_from_name"
-	    i18n:attributes="title"
-            i18n:name="email"
-            i18n:translate="description_signin_fail_auth_email">
-            Email Admin
-            </a>
             </p>
+
+            <a href="mail_password_form"
+               i18n:translate="description_failed_login_link">
+               Click here to have your password mailed to you if you have forgotten it.
+            </a>
+            
         </div>
         <div tal:condition="success">
             <h1 i18n:translate="heading_signin_fail_cookies">Cookies must be
