@@ -18,7 +18,7 @@
         <h2 tal:content="g/title"> Plone Configlets </h2>
         <p tal:define="configlets python:controlPanel.enumConfiglets(group=g['id'])">
             <span />
-            <a href="" tal:repeat = "configl configlets" tal:attributes="href python:configl.getTemplateURL()" tal:content="python:configl.getLabel()">
+            <a href="" tal:repeat = "configl configlets" tal:attributes="href configl/url" tal:content="configl/name">
             </a>
         </p>
     </tal:block>
