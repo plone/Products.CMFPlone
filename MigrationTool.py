@@ -103,7 +103,7 @@ class MigrationTool( UniqueObject, SimpleItem):
         vars['Plone Instance'] = self.getInstanceVersion()
         vars['Plone File System'] = self.getFileSystemVersion()
         vars['CMF'] = cp.Products.CMFCore.version
-        vars['Debug mode'] = ['No', 'Yes'][DevelopmentMode]
+        vars['Debug mode'] = DevelopmentMode and 'Yes' or 'No'
         return vars
 
     security.declareProtected(ManagePortal, 'coreVersionsList')
