@@ -6,7 +6,9 @@ Plone 1.1 - Fyuti
 
     - Changing your password now requires you enter your current password.
       Also changed the 'change_password' script id to 'plone_change_password'
-      to lessen likelihood of clash (we clashed with gruf)
+      to lessen likelihood of clash (we clashed with gruf).  We now override
+      MembershipTool.setPassword to call underlying acl_users._doChangeUser
+      this way we can pass domain information as well from preferences form.
 
     - all the previous migrations have been rolled into 1 migration method
       make_plone and removed ancient cruft (alpha/early betas)

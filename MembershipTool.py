@@ -1,7 +1,9 @@
+from Products.CMFCore.CMFCorePermissions import SetOwnPassword
 from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
 from Products.CMFPlone.PloneFolder import addPloneFolder
+from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Acquisition import aq_base
 
@@ -24,6 +26,7 @@ class MembershipTool( BaseTool ):
     personal_id = '.personal'
     portrait_id = 'MyPortrait'
     default_portrait = 'defaultUser.gif'
+    security = ClassSecurityInfo()
     
     def getPersonalPortrait(self, member_id=None, verifyPermission=0):
         """
@@ -231,5 +234,22 @@ class MembershipTool( BaseTool ):
             username=self.getAuthenticatedMember().getUserName()
         return portal.acl_users.authenticate(username, password, REQUEST)
 
+    security.declareProtected(SetOwnPassword, 'setPassword')
+    def setPassword(self, password, domains=None):
+        '''Allows the authenticated member to set his/her own password.
+        '''
+        registration = getToolByName(self, 'portal_registration', None)
+        acl_users = self.acl_users
+        if not self.isAnonymousUser():
+            member = self.getAuthenticatedMember()
+            if registration:
+                failMessage = registration.testPasswordValidity(password)
+                if failMessage is not None:
+                    raise 'Bad Request', failMessage
+
+            acl_users._doChangeUser(member.getUserName(), password, member.getRoles(), domains)
+            #member.setSecurityProfile(password=password, domains=domains)
+        else:
+            raise 'Bad Request', 'Not logged in.'
 
 InitializeClass(MembershipTool)

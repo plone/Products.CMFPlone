@@ -81,7 +81,6 @@ def normalize_tabs(self):
     #get_transaction().commit(1)
     #move add to favorites 
     mt=getToolByName(self, 'portal_membership')
-    #import pdb; pdb.set_trace()
     #m_actions=mt._actions[:]
     m_actions=mt.listActions()
     for a in m_actions:
