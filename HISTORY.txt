@@ -2,7 +2,13 @@ x.x
 
     - Added localLongTimeFormat, set to '%Y-%m-%d %I:%M %p' by default. Used by Events.
     - Publish tabs now appear on all content types if they have available tranistions
-
+    - conifigurable tabs and buttons have change:
+        - local_buttons (in folder_contents form) is now folder_buttons
+	- local_tabs (on all pages that showborder) are now object_tabs
+	- global_tabs (at the top of the page) are now portal_tabs
+    - change status ('mass publishing') now works as expected
+    - personalize_form was reset values on form validation failure
+    
 1.0a - Boards of Canada Release:
     - refactored how edit scripts work.  lots of heavy lifting is now done in plone_utils.editContent()
     - specialized WorkflowTool and got rid of sloppy External Methods, getWorklists and getAvailableTransitions
