@@ -45,10 +45,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testLargePloneFolderFuckup(self):
         members = self.membership.getMembersFolder()
         self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
-        # XXX: This screws up and acquires the Document from above
-        self.assertEqual(members.index_html.meta_type, 'Document')
-        # Now make the test fail so we don't forget about it.
-        # Must be fixed in BTreeFolder2 I guess...
+        # This works now as hazmat fixed LargePloneFolder, hurray.
         self.assertEqual(members.index_html.meta_type, 'Page Template')
 
             
