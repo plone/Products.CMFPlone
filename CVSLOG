@@ -1,3 +1,23 @@
+2004-04-27 00:02  shh42
+
+	* HISTORY.txt (Plone-2_0-branch): Update Jello's HISTORY.
+
+2004-04-26 23:11  plonista
+
+	* PloneTool.py, skins/plone_templates/default_error_message.pt:
+	  Removed code that was factored out into PloneErrorReporting
+	  product
+
+2004-04-26 18:16  limi
+
+	* skins/plone_templates/: folder_listing.pt, news.pt
+	  (Plone-2_0-branch): Renamed macros to avoid bug in Zope 2.6 - for
+	  more details, see http://plone.org/collector/3054
+
+2004-04-26 06:17  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-25 06:17  longsleep
 
 	* CVSLOG: auto generated new changelog
