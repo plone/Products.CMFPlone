@@ -52,11 +52,6 @@
                      tal:condition="python:lockable and here.wl_isLocked()"
                      tal:replace="structure python:locked.tag(title='Locked')" alt="Object locked" i18n:attributes="alt"/>
 
-    <span class="expired"
-          tal:condition="python:here.isExpired(here)"
-          i18n:translate="time_expired">
-    expired
-    </span>
 </div>
 </body>
 </html>

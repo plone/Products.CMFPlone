@@ -25,4 +25,10 @@
     August 16, 2001 at 23:35:59
     </span>
 
+    <span class="expired"
+          tal:condition="python:here.isExpired(here)"
+          i18n:translate="time_expired">
+    expired
+    </span>    
+    
 </div>
