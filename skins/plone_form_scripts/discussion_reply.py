@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=title,text,username=None,password=None
+##parameters=title,text,text_format='plain',username=None,password=None
 ##title=Reply to content
 
 from Products.PythonScripts.standard import url_quote_plus
@@ -38,7 +38,13 @@ if username or password:
 # the following
 
 creator = context.portal_membership.getAuthenticatedMember().getUserName()
-context.createReply(title=title, text=text, Creator=creator)
+id = context.createReply(title=title, text=text, Creator=creator)
+reply = context.getReply(id)
+
+#XXX THIS NEEDS TO GO AWAY!
+portal_discussion=context.portal_discussion
+if hasattr(portal_discussion.aq_explicit, 'cookReply'):
+    portal_discussion.cookReply(reply, text_format='plain')
 
 p = context.aq_parent
 target = '%s/%s' % (p.absolute_url(),p.getTypeInfo().getActionById('view'))
