@@ -64,6 +64,7 @@ div.tabs {
     border-bottom-style: solid;
     border-bottom-width: 1px;
     padding: 0.5em 0em 0em 2em;
+    white-space: nowrap;
 }
 
 div.tabs a {
@@ -170,6 +171,7 @@ div.contentTabs {
     border-collapse: collapse;
     border-bottom: &dtml-contentTabBorder;;
     padding-left: 1em;
+    white-space: nowrap;
 }
 
 div.contentTabs a {
