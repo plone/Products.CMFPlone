@@ -4,6 +4,10 @@
 
 <body>
 
+<!-- This code is *really* messed up, and will be replaced in the next version of Plone. 
+     Do not try to make sense of this.
+-->
+
 <div metal:define-macro="navigationBox"
        i18n:domain="plone"
        tal:omit-tag=""
@@ -39,8 +43,7 @@
                     </a>
                 </div>
 
-                <div style="white-space: nowrap;"
-                     tal:repeat="te tree/list">
+                <div tal:repeat="te tree/list">
 
                     <span tal:define="iscurrent te/iscurrent | python:0;
                                       sibling python:te['object'];
@@ -52,8 +55,6 @@
                                       tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                            >
 
-                        <tal:block repeat="x python:range( te['indent'])">&nbsp;</tal:block>
-
                         <tal:block tal:condition="iscurrent">
                            <span class="currentNavItem">
                         </tal:block>
@@ -61,9 +62,10 @@
                            tal:condition="python: sibling != portalObject"
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
-                                           title python:test(title != sibling_title, title, '');"
-			   accesskey="accesskeys-navigation"
-			   i18n:attributes="accesskey"
+                                           title python:test(title != sibling_title, title, '');
+                                           style python: 'margin-left: ' + str(te['indent']/2.0) + 'em';"
+                                           accesskey="accesskeys-navigation"
+                                           i18n:attributes="accesskey"
                            class="plain">
 
                             <img tal:replace="structure python:path('here/%s' % sibling.getIcon(1))"
@@ -76,8 +78,8 @@
                            tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');"
-			   accesskey="accesskeys-navigation"
-			   i18n:attributes="accesskey">
+                                           accesskey="accesskeys-navigation"
+                                           i18n:attributes="accesskey">
 
                             <img tal:replace="structure portal/site_icon.gif" />&nbsp;<tal:block tal:condition="not: iscurrent" tal:content="structure sibling_title" /><span class="currentNavItem" tal:condition=" iscurrent" tal:content="structure string:Home" />
                         </a>
