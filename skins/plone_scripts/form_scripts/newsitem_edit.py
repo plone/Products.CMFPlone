@@ -13,13 +13,9 @@ if REQUEST.has_key('errors'):
     return edit_form()
 
 REQUEST.set('title', field_title)
-REQUEST.set('portal_status_message', 'News+Item+changed.')
 qst='portal_status_message=News+Item+changed.'
-if hasattr(context, 'extended_edit'):
-    edit_hook=getattr(context, 'extended_edit')
-    response=edit_hook()
-    if response:
-        return response
+
+context.extended_edit()
 
 #XXX need to call edit after metadata edit or format will be reset to context's text_format
 context.edit( text 

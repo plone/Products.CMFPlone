@@ -21,13 +21,8 @@ if REQUEST.has_key('errors'):
 context.edit(remote_url=remote_url)
 
 qst='?portal_status_message=Link+changed.'
-context.REQUEST.set('portal_status_message', 'Link+changed.')
 
-if hasattr(context, 'extended_edit'):
-    edit_hook=getattr(context,'extended_edit')
-    response=edit_hook(redirect=0)
-    if response:
-        return response
+context.extended_edit()
 		
 context.rename_object(redirect=0, id=id)
 

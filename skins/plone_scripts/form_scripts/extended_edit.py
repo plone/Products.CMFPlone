@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=redirect=1
+##parameters=redirect=0
 ##title=after xxx_edit hook
 ##
 
@@ -15,6 +15,7 @@ REQUEST=context.REQUEST
 title=REQUEST.get('title', REQUEST.get('field_title', context.Title()))
 description=REQUEST.get('description', REQUEST.get('field_description', context.Description()))
 subject=REQUEST.get('subject', REQUEST.get('field_subject', context.Subject()))
+# Events use these fields
 effective_date=REQUEST.get('effective_date', None)
 expiration_date=REQUEST.get('expiration_date', None)
 
@@ -25,5 +26,5 @@ if title or description or subject:
                           description=description, 
                           effective_date=effective_date, 
                           expiration_date=expiration_date, 
-                          redirect=0)
+                          redirect=redirect)
 

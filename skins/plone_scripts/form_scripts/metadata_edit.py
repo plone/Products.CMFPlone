@@ -3,15 +3,6 @@
 ##parameters=allowDiscussion=None,title=None,subject=None,description=None,contributors=None,effective_date=None,expiration_date=None,format=None,language=None,rights=None,redirect=1
 REQUEST=context.REQUEST
 
-if not title: title=REQUEST.get('field_title', None)
-if not subject: subject=REQUEST.get('field_subject', None)
-if not description: description=REQUEST.get('field_description', None)
-if not contributors: contributors=REQUEST.get('field_contributors', None)
-if not effective_date: effective_date=REQUEST.get('field_effective_date', None)
-if not expiration_date: expiration_date=REQUEST.get('field_expiration_date', None)
-if not format: format=REQUEST.get('field_format', None)
-if not language: language=REQUEST.get('field_language', None)
-if not rights: rights=REQUEST.get('field_rights', None)
 
 def tuplify( value ):
 
@@ -21,36 +12,35 @@ def tuplify( value ):
     temp = filter( None, value )
     return tuple( temp )
 
+
 if title is None:
-    title = context.Title()
+    title=REQUEST.get('field_title', context.Title())
 
 if subject is None:
-    subject = context.Subject()
-else:
-    subject = tuplify( subject )
+    subject=REQUEST.get('field_subject', context.Subject())
 
 if description is None:
-    description = context.Description()
+    description=REQUEST.get('field_description', context.Description())
 
 if contributors is None:
-    contributors = context.Contributors()
+    contributors=tuplify(REQUEST.get('field_contributors', context.Contributors()))
 else:
-    contributors = tuplify( contributors )
-
+    contributors=tuplify(contributors)
+    
 if effective_date is None:
-    effective_date = context.EffectiveDate()
+    effective_date=REQUEST.get('field_effective_date', context.EffectiveDate())
 
 if expiration_date is None:
-    expiration_date = context.expires()
+    expiration_date=REQUEST.get('field_expiration_date', context.ExpirationDate())
 
 if format is None:
-    format = context.Format()
+    format=REQUEST.get('field_format', context.Format())
 
 if language is None:
-    language = context.Language()
+    language=REQUEST.get('field_language', context.Language())
 
 if rights is None:
-    rights = context.Rights()
+    rights=REQUEST.get('field_rights', context.Rights())
 
 if allowDiscussion:
     if allowDiscussion.lower().strip()=='default': allowDiscussion=None
