@@ -29,8 +29,10 @@
   <div metal:define-macro="transcript">
 
     <div class="row">
-        <div class="box" tal:define="entries here/action_number;
-                                     ending python: (entries == 1 and 'y') or 'ies'">
+        <div class="box"
+             style="width: 90%; float: none"
+             tal:define="entries here/action_number;
+                         ending python: (entries == 1 and 'y') or 'ies'">
     
             <div class="heading"> 
                 Transcript for Issue

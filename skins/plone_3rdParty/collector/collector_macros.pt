@@ -313,22 +313,16 @@
     </div>
 
     <div metal:define-macro="add_artifacts_table">
-
-      <table>
-
-        <tr>
-          <td align="left" NOWRAP>
-            <input type=radio name="filetype" value="File" checked> File or
-            <br>
-            <input type=radio name="filetype" value="Image"> Image
-          </td>
-          <td> <input type=file name="file" size="20"> </td>
-          <th valign="top"> (Optional) Id: </th>
-          <td> <input type=text name="fileid" size="12"> </td>
-        </tr>
-
-      </table>
-
+    
+        <div class="group">
+            <input class="noborder" type=radio name="filetype" value="File" checked /> File 
+            <input class="noborder" type=radio name="filetype" value="Image" /> Image
+            <br />
+            <input type=file name="file" size="20" />
+            (Optional) Id:
+            <input type=text name="fileid" size="12" />
+        </div>
+        
     </div>  <!-- End macro: add_artifacts_excerpt -->
 
   </body>

@@ -27,140 +27,133 @@
 
 <div metal:fill-slot="main">	  
 
-  <div tal:define="pm python: here.portal_membership;
-                   member python: pm.getAuthenticatedMember();
-                   authenticated python: member.has_role('Authenticated')
+<div tal:define="pm python: here.portal_membership;
+                 member python: pm.getAuthenticatedMember();
+                 authenticated python: member.has_role('Authenticated')
                                          or member.has_role('Member')">
 
-  <form method="POST" enctype="multipart/form-data"
+<form class="group" 
+        method="POST" 
+        enctype="multipart/form-data"
         action="collector_add_issue">
 
-      <table class="FormLayout">
+    <span class="legend">Submit A New Issue</span> 
+    
+    <div class="row">
+        <div class="label"> Issue Title </div>
 
-        <tr bgcolor="#ccffcc">
-          <td colspan="5" align="center">
-            <font size="+1"> <strong> Submit A New Issue </strong> </font>
-          </td>
-        </tr>
-
-        <tr>
-          <td> &nbsp; </td>
-        </tr>
-
-       <tr valign="top">
-        <th align="right"> Issue Title </th>
-        <td>
-         <input type="text" name="title" value="" size="40">
-        </td>
-          <td colspan="3">
+        <div class="field">
+            <input type="text" name="title" value="" size="40" />
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label">Security</div>
+        <div class="field">
             <input type=hidden name="security_related:boolean" value="">
-            <input type=checkbox name="security_related:boolean">
-            Security Related?
-            <br>
-            <font size="-1" color="gray">
-              If checked, issue will <em>not</em> be publicly visible until
-              completed. 
-            </font>
-          </td>
-        </tr>
+            <input class="noborder" type=checkbox name="security_related:boolean">
+            Yes, this issue is security related, and
+            should <strong>not</strong> be publicly visible until
+            completed.
+        </div>
+    </div>
 
-        <tr>
-          <th valign="middle" align="right"> Submitter </th>
-          <td tal:condition="authenticated"
-              tal:content="python: member.getProperty('full_name',
+    <div class="row">    
+        <div class="label"> Submitter </div>
+
+        <div class="field" 
+             tal:condition="authenticated"
+             tal:content="python: member.getProperty('full_name',
                                                       str(member))">
-          </td>
-          <td tal:condition="not: authenticated">
-            <input type="text" name="submitter_name" size="30">
-          </td>
-          <th valign="middle" align="right"> Email </th>
-          <td colspan="2">
+        </div>
+
+        <div class="field" 
+              tal:condition="not: authenticated">
+            <input type="text" name="submitter_name" size="30" />
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label"> Email </div>
+
+        <div class="field">
             <input type="text" name="submitter_email" size="30"
                    tal:attributes="value python: member.getProperty('email',
-                                                                    '')">
-          </td>
-        </tr>
+                                                                    '')" />
+            <span tal:condition="python: not authenticated and
+                                       here.participation != 'anyone'">
+                  NOTE that anonymous-submitted issues do not allow submitter
+                  to followup.
+            </span>
 
-        <tr tal:condition="python: not authenticated and
-                                   here.participation != 'anyone'">
-          <td> &nbsp; </td>
-          <td colspan="3">
-            <font color="brown" size="-1">
-              NOTE that anonymous-submitted issues do not allow submitter
-              to followup.
-            </font>
-          </td>
-        </tr>
+        </div>
+    </div>
+            
+    <div class="row">
+        <div class="label"> Topic </div>
 
-       <tr valign="top">
-        <th align="right"> Topic </th>
-        <td>
+        <div class="field">
             <select name="topic">
               <option value=""
                       tal:repeat="it here/topics"
                 tal:attributes="value it"
                 tal:content="it"></option>
             </select>
-        </td>
-        <th align="right"> Importance </th>
-        <td>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label"> Importance </div>
+        
+        <div class="field">
          <select name="importance">
            <option value=""
                    tal:repeat="it here/importances"
                    tal:attributes="value it"
                    tal:content="it"></option>
          </select>
-        </td>
-       </tr>
+        </div>
 
-       <tr valign="top">
-        <th align="right"> Classification </th>
-        <td>
+    </div>
+
+    <div class="row">    
+        <div class="label"> Classification </div>
+        
+        <div class="field">
          <select name="classification">
            <option value=""
                    tal:repeat="it here/classifications"
                    tal:attributes="value it"
                    tal:content="it"></option>
          </select>
-        </td>
+        </div>
+    
+    </div>
+    
+    <div class="row">
+        <div class="label"> Version Info </div>
+        <div class="field">
+            <textarea name="version_info" rows="3" cols="35"><span tal:replace="here/version_info_spiel"></span></textarea>
+            
+        </div>
+    </div>
+    
 
-       </tr>
+    <metal:block tal:define="assigner python: pm.checkPermission(
+                                              'Support collector issue', here);
+                             supporters here/supporters">
 
-       <tr>
-        <th> Version Info </th>
-        <td colspan="2">
-            <textarea name="version_info" rows="3" cols="35"></textarea>
-        </td>
-        <td colspan="2">
-          <font color="gray" size="-1">
-            <span tal:replace="here/version_info_spiel"></span>
-          </font>
-        </td>
-       </tr>
+    <div class="row">
+         <div class="label"> Description </div>
+         <div class="field">
+           <textarea name="description:text" rows="10" cols="55">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
+         </div>
 
-       <tr valign="top">
-        <th align="right"> </th>
-        <td colspan=3>
-            Provide details that will help supporters understand the problem.
-            <br>
-              <font size="-1">
-                Prefix lines with whitespace or '&gt;' to preserve their
-                format.
-              </font>
-        </td>
-       </tr>
-
-       <tr valign="top"
-           tal:define="assigner python: pm.checkPermission(
-                                        'Support collector issue', here);
-                       supporters here/supporters">
-         <th align="right"> Description </th>
-         <td colspan="3">
-           <textarea name="description:text" rows="10" cols="55"></textarea>
-         </td>
-         <td valign="top"
-             tal:condition="assigner">
-            Assign to: <br>
+    </div>
+     
+    <div class="row" tal:condition="assigner">
+        <div class="label"> Assign to </div> 
+        <div class="field">            
            <select name="assignees:list" MULTIPLE size="5"
                    tal:attributes="size python:
                                         min(max(len(supporters), 3), 8)">
@@ -169,34 +162,45 @@
                SUPPORTER
              </option>
            </select>
-         </td>
-              
-       </tr>
-
-       <tr>
-         <th> Upload </th>
-         <td colspan="3">
-
-    <div metal:use-macro="here/collector_macros/macros/add_artifacts_table">
-       add_artifacts_table_row
+        </div>
     </div>
 
-        </td>
-       </tr>
+    </metal:block>
+    
+    <div class="row">
+        <div class="label"> Attachment (optional)</div> 
+        <div class="field">
+            <input type=file name="file" size="20" />
+        </div>
+    </div>
 
-       <tr valign="top">
-        <td> <br> </td>
-        <td>
-         <input type="submit" value=" Submit ">
-        </td>
-       </tr>
-
-      </table>
-
-    </form>
-
-  </div>
+    <div class="row">
+        <div class="label"> Attachment type (optional)</div>
+        <div class="field">
+            <input class="noborder" type=radio name="filetype" value="File" checked /> File 
+            <input class="noborder" type=radio name="filetype" value="Image" /> Image
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label">Id of upload (optional)</div>
+        <div class="field">
+            <input type=text name="fileid" size="12" />
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="label">&nbsp;</div>
+        <div class="field">
+         <input class="context" type="submit" value="Submit">
+        </div>
+    </div>
+        
+</form>
 
 </div>
+
+</div>
+
 </body>
 </html>
