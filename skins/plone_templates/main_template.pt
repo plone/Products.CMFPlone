@@ -33,7 +33,7 @@
                                 show_border python:here.showEditableBorder();">
 
                     <metal:block metal:define-slot="super1"
-                         tal:condition="show_border">
+                                 tal:condition="show_border">
                 
                         <div metal:use-macro="here/portal_tabs/macros/contentTabs">
                         Content tabs
