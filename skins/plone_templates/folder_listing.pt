@@ -33,10 +33,10 @@
 	        <metal:block tal:repeat="obj folderContents">
 
                 <dt tal:define="url python:obj.absolute_url()+test(obj.isPrincipiaFolderish,'/','')">
-                <a href="#" 
-                   tal:attributes="href url"
-                   tal:condition="python: not obj.portal_type == 'Link'"
-                ><img src="#" tal:attributes="src string:${here/portal_url}/${obj/getIcon};alt here/title" /></a>
+                <a href="#" tal:attributes="href url">
+                        <img src="#" 
+                                        tal:attributes="src string:${here/portal_url}/${obj/getIcon};alt here/title" />
+                </a>
 
                 <a href="#" tal:condition="python: obj.portal_type not in ['Link', 'Image']"
                             tal:attributes="href url"
