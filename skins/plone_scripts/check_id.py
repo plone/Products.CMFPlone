@@ -44,7 +44,7 @@ if not id:
     id = context.getId()
 
 # do basic id validation
-plone_utils = getToolByName(context, 'plone_utils', None)
+plone_utils = getToolByName(container, 'plone_utils', None)
 if plone_utils is not None and not plone_utils.good_id(id):
     # id is bad so lets find the bad chars
     c = context.plone_utils.bad_chars(id)
@@ -53,7 +53,7 @@ if plone_utils is not None and not plone_utils.good_id(id):
      % (id, " ".join(c))
 
 # check for a catalog index
-portal_catalog = getToolByName(context, 'portal_catalog', None)
+portal_catalog = getToolByName(container, 'portal_catalog', None)
 if portal_catalog is not None:
     try:
         if id in portal_catalog.indexes():
@@ -62,7 +62,7 @@ if portal_catalog is not None:
         pass # ignore if we don't have permission
 
 # id is good; make sure we have no id collisions
-portal_factory = getToolByName(context, 'portal_factory', None)
+portal_factory = getToolByName(container, 'portal_factory', None)
 if contained_by is not None:
     # always check for collisions if a container was passed
     checkForCollision = 1
