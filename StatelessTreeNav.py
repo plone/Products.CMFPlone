@@ -51,7 +51,6 @@ class StatelessTreeBuilder:
         self.topMetaType=topMetaType
         self.includeTop=includeTop
         self.maxcount=maxcount
-        self.topLevel=topLevel
         self.listSiblings=listSiblings
         self.childFinder=childFinder
         self.showFolderishSiblingsOnly=showFolderishSiblingsOnly
@@ -59,7 +58,17 @@ class StatelessTreeBuilder:
         self.showNonFolderishObject=showNonFolderishObject
         self.forceParentsInBatch=forceParentsInBatch
         self.skipIndex_html=skipIndex_html
-
+        
+        if topLevel >= 0:
+            self.topLevel=topLevel
+        else:
+            #negative topLevel is calculated relative to the object itself
+            l=self.getLevel(object)
+            if object.isPrincipiaFolderish:
+                self.topLevel=max(0,l+topLevel+1)
+            else:
+                self.topLevel=max(0,l+topLevel+0)
+                
     security.declarePublic('getLevel')
     def getLevel (self,object=None):
         """
