@@ -10,6 +10,11 @@ from Products.CMFPlone.StatelessTreeNav import StatelessTreeBuilder
 from Products.CMFPlone.StatelessTreeNav import wrap_obj
 from Products.CMFCore.utils import getToolByName
 
+# put in here the meta_types not to be listed
+metaTypesNotToList=['CMF Collector','CMF Collector Issue','CMF Collector Catalog']
+# there is some VERY weird error with Collectors,
+# so I have to remove from the list
+
 #default function that finds the children out of a folderish object
 def childFinder(obj,folderishOnly=1):
     if obj.meta_type == 'Portal Topic':
@@ -30,10 +35,11 @@ def childFinder(obj,folderishOnly=1):
         #traversal to all 'CMFish' folders
         if hasattr(obj.aq_explicit,'listFolderContents'):
             res=obj.listFolderContents()
-            #raise 'res:',res
         else:
             #... and all other folders
             res=obj.objectValues()
+
+    res = filter (lambda x:x.meta_type not in metaTypesNotToList,res)
 
     # if wanted just keep folderish objects
     if folderishOnly:
