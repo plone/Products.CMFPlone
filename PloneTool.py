@@ -455,51 +455,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             text='\n'.join(traceback.format_exception(*sys.exc_info())),
             log_level=WARNING)
 
-    #replaces navigation_tree_builder.py
-    def createNavigationTreeBuilder(self, tree_root,
-                                    navBatchStart=None,
-                                    showMyUserFolderOnly=None,
-                                    includeTop=None,
-                                    showFolderishSiblingsOnly=None,
-                                    showFolderishChildrenOnly=None,
-                                    showNonFolderishObject=None,
-                                    topLevel=None,
-                                    batchSize=None,
-                                    showTopicResults=None,
-                                    rolesSeeUnpublishedContent=None,
-                                    sortCriteria=None,
-                                    metaTypesNotToList=None,
-                                    parentMetaTypesNotToQuery=None,
-                                    forceParentsInBatch=None,
-                                    skipIndex_html=None,
-                                    rolesSeeHiddenContent=None,
-                                    bottomLevel=None):
-
-        """ Returns a structure that can be used by
-        navigation_tree_slot.  We are being quite lazy because of
-        massive signature.  """
-
-        t_builder = NTVB(tree_root=tree_root,
-                         navBatchStart=navBatchStart,
-                         showMyUserFolderOnly=showMyUserFolderOnly,
-                         includeTop=includeTop,
-                         showFolderishSiblingsOnly=showFolderishSiblingsOnly,
-                         showFolderishChildrenOnly=showFolderishChildrenOnly,
-                         showNonFolderishObject=showNonFolderishObject,
-                         topLevel=topLevel,
-                         batchSize=batchSize,
-                         showTopicResults=showTopicResults,
-                         rolesSeeUnpublishedContent=rolesSeeUnpublishedContent,
-                         sortCriteria=sortCriteria,
-                         metaTypesNotToList=metaTypesNotToList,
-                         parentMetaTypesNotToQuery=parentMetaTypesNotToQuery,
-                         forceParentsInBatch=forceParentsInBatch,
-                         skipIndex_html=skipIndex_html,
-                         rolesSeeHiddenContent=rolesSeeHiddenContent,
-                         bottomLevel=bottomLevel  )
-        ctx_tree_builder=t_builder.__of__(self)
-        return ctx_tree_builder()
-        
     security.declarePublic('createNavTree')
     def createNavTree(self, context, sitemap=False):
         """Returns a structure that can be used by

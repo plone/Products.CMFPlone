@@ -298,27 +298,30 @@ class PloneGenerator(Portal.PortalGenerator):
         ntp._setProperty('sortAttribute', 'getFolderOrder', 'string')
         ntp._setProperty('sortOrder', 'asc', 'string')
         ntp._setProperty('sitemapDepth', 3, 'int')
-        # old properties
-        ntp._setProperty('showMyUserFolderOnly', 1, 'boolean')
         ntp._setProperty('includeTop', 1, 'boolean')
+
+        # TODO: needs to be supported
+        ntp._setProperty('topLevel', 0, 'int')
+        ntp._setProperty('idsNotToList', [] , 'lines')
+
+        # Canditates to be implemented
+        ntp._setProperty('showMyUserFolderOnly', 1, 'boolean')
         ntp._setProperty('showFolderishSiblingsOnly', 1, 'boolean')
         ntp._setProperty('showFolderishChildrenOnly', 1, 'boolean')
         ntp._setProperty('showNonFolderishObject', 0, 'boolean')
-        ntp._setProperty('topLevel', 0, 'int')
-        ntp._setProperty('batchSize', 30, 'int')
         ntp._setProperty('showTopicResults', 1, 'boolean')
         ntp._setProperty('rolesSeeUnpublishedContent', ['Manager','Reviewer','Owner'] , 'lines')
         ntp._setProperty('sortCriteria', ['isPrincipiaFolderish,desc']  , 'lines')
-        ntp._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')
         ntp._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
+
+        # The following properties will not be supported anymore         
+        ntp._setProperty('batchSize', 30, 'int')
         ntp._setProperty('croppingLength',256,'int')
         ntp._setProperty('forceParentsInBatch',0,'boolean')
-        ntp._setProperty('skipIndex_html',1,'boolean')
         ntp._setProperty('rolesSeeContentsView', ['Manager','Reviewer','Owner'] , 'lines')
         ntp._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
         ntp._setProperty('bottomLevel', 65535 , 'int')
-        ntp._setProperty('idsNotToList', [] , 'lines')
-
+ 
         #replace path index with ExtendedPathIndex
         ct = p.portal_catalog
         ct.delIndex('path')
