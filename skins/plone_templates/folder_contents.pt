@@ -195,7 +195,8 @@
 
                       <a href="#" tal:attributes="href url; title item/Description;">
 
-                        <img tal:attributes="src item/getIcon;
+                        <img tal:attributes="src python:portal_url+'/'+item.getIcon(1);
+
                                              alt item_typeinfo/Title; 
                                              title item_typeinfo/Title;"
                              i18n:attributes="title"

@@ -4,10 +4,23 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed http://plone.org/collector/3458 - Images in folder_contents and 
+      navtree have wrong paths in VirtualHosted sites. It worked anyway
+      because of acquisition, but is correct now. Thanks to mjm for the patch.
+      [limi]
+
+    - Fixed http://plone.org/collector/3472 - you can now declare portlets on a
+      template. Thanks to acamargo for the patch.
+      [limi]
+
     - Fixed http://plone.org/collector/3030 - content_status_modify.py now
       assembles the  transaction note before performing the transaction.
       Thanks to raphael (Ritz?).
       [stefan]
+
+    - Fixed http://plone.org/collector/3457 - review portlet was not showing ID
+      for items without Title. Thanks to Sjors for the patch.
+      [limi]
 
     - Fixed http://plone.org/collector/2857 - changed show_id.py to accomodate 
       postback of a submitted id in the case where validation fails on the first 
