@@ -315,7 +315,7 @@
                 <thead>
                     <tr>
                     <th>&nbsp;</th>
-                    <th i18n:translate="">Name</th>
+                    <th i18n:translate="listingheader_name">Name</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -23,7 +23,8 @@
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
                    rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner'];
-                   useFolderContents here/portal_properties/site_properties/use_folder_contents | python:['Folder']
+                   useFolderContents here/portal_properties/site_properties/use_folder_contents | python:['Folder'];
+                   desc_ellipsis python:here.portal_properties.site_properties.ellipsis
                    "
 
                    >
@@ -39,7 +40,7 @@
 
                 <div tal:condition="tree/prev">
                     <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
-                        <span i18n:translate="">...</span>
+                        <span tal:replace="desc_ellipsis">...</span>
                     </a>
                 </div>
 
@@ -87,7 +88,7 @@
                 </div>
                 <div tal:condition="tree/next">
                     <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/nextBatchStart}">
-                        <span i18n:translate="">...</span>
+                        <span tal:replace="desc_ellipsis">...</span>
                     </a>
                 </div>
 
