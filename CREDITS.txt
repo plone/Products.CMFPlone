@@ -28,6 +28,7 @@ Kevin MCKeown - q/a and testing
 Jonagustine Lim (jlim) - for organized testing
 Philipp Auersperg - kindly contributing the StatelessTreeNavigation http://www.bluedynamics.com/
 Maisa Fonseca (devgirl) - i18n work
+Godefroid Chapelle (__gotcha, BubbleNet - http://bubblenet.be) - tools subclassing 
 
 
 #plone and #zope on irc.openprojects.net for insight and soapbox to preach
