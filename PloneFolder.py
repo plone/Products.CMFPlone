@@ -96,7 +96,7 @@ class PloneFolder ( SkinnedFolder ):
             id = obj.getId()
             v = obj
             try:
-                if id[0]=='.' and suppressHiddenFiles:
+                if len(id) > 0 and id[0]=='.' and suppressHiddenFiles:
                     raise Unauthorized(id, v)
                 if getSecurityManager().validate(self, self, id, v):
                     l.append(obj)
