@@ -535,6 +535,18 @@ input.searchButton {
     margin: 0em 0em 2em 0em;
 }
 
+#content-news h1 {
+    margin-bottom: 1em;
+}
+
+#content-news .portlet {
+    margin-bottom: 1.5em;
+}
+
+#content-news .portletBody {
+    padding: 1em 1em 0.5em 1em;
+}
+
 .documentEditable {
     padding: 1em 2em !important;
 }
@@ -957,6 +969,10 @@ ul.configlets li a {
     color: gray;
 }
 
+.visualCommentAlign {
+    float: right;
+    margin-top: -1.5em;
+}
 
 .spacer {
 	margin: 1em;
@@ -1044,27 +1060,32 @@ ul.configlets li a {
 */
 
 .link-external {
-    background: transparent url(<dtml-var portal_url>/link_icon.gif) 0px 1px no-repeat;
+    background: transparent url("<dtml-var portal_url>/link_icon.gif") 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-mailto {
-    background: transparent url(<dtml-var portal_url>/mail_icon.gif) 0px 1px no-repeat;
+    background: transparent url("<dtml-var portal_url>/mail_icon.gif") 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-ftp {
-    background: transparent url(<dtml-var portal_url>/file_icon.gif) 0px 1px no-repeat;
+    background: transparent url("<dtml-var portal_url>/file_icon.gif") 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-irc {
-    background: transparent url(<dtml-var portal_url>/discussionitem_icon.gif) 0px 1px no-repeat;
+    background: transparent url("<dtml-var portal_url>/discussionitem_icon.gif") 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-callto {
     
+}
+
+.link-comment {
+    background: transparent url("<dtml-var portal_url>/discussionitem_icon.gif") center left no-repeat;
+    padding: 1px 0px 1px 16px;
 }
 
 .hiddenStructure {

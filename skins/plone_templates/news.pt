@@ -7,16 +7,15 @@
                tal:define="dummy python:request.set('disable_border', 1)"
                />
 <body>
-<div metal:fill-slot="main"
+<div metal:fill-slot="main" id="content-news"
      tal:define="results python:container.portal_catalog(portal_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
                  Batch python:modules['Products.CMFPlone'].Batch;
                  b_start python:request.get('b_start',0);
                  usericon_imgtag here/user.gif;
-                 portal_discussion nocall:here/portal_discussion;
-                 discussionitem_imgtag here/discussionitem_icon.gif">
+                 portal_discussion nocall:here/portal_discussion;">
 
 
-    <h1 i18n:translate="heading_news" style="margin-bottom: 10px">News</h1>
+    <h1 i18n:translate="heading_news">News</h1>
 
     <form name="searchresults" action="" method="post" tal:condition="results"
                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
@@ -58,32 +57,34 @@
                          tal:define="resulturl resultObject/absolute_url">
 
                         <h2 tal:content="result/Title">
-                        Title
+                            Title
                         </h2>
 
                         <p tal:content="structure result/Description">
-                        Description
+                            Description
                         </p>
 
 
                         <p>
-                            <span style="float: right"
-                                  tal:define="is_discussable python: portal_discussion.isDiscussionAllowedFor(resultObject)"
-                                  tal:condition="is_discussable">
-                                <img tal:define="talkback python: portal_discussion.getDiscussionFor(resultObject);
-                                                 has_replies python: is_discussable and talkback.hasReplies(resultObject);"
-                                     tal:condition="python: talkback and has_replies"
-                                     tal:replace="structure discussionitem_imgtag" />
-                                     <a href=""
-                                        tal:attributes="href string:${resulturl}#comments">
-                                        <span tal:replace="python: talkback.replyCount(resultObject)" /> <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
-                                     </a>
-                            </span>
-
 
                             <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
-                            Read More
+                                Read More
                             </a>
+
+                            <tal:discuss define="is_discussable python: portal_discussion.isDiscussionAllowedFor(resultObject);"
+                                         condition="is_discussable">
+                            <a href=""
+                               tal:attributes="href string:${resulturl}#comments;
+                                               class python: test(has_replies, 'visualCommentAlign link-comment','visualCommentAlign');"
+                               tal:define="talkback python: portal_discussion.getDiscussionFor(resultObject);
+                                           has_replies python: talkback.hasReplies(resultObject);">
+
+                                <span tal:replace="python: talkback.replyCount(resultObject)" />
+                                <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
+
+                            </a>
+                            </tal:discuss>
+
                         </p>
 
 
@@ -98,7 +99,7 @@
         </metal:block>
 
         <div class="spacer">
-        &nbsp;
+            &nbsp;
         </div>
 
         <!-- Navigation -->
