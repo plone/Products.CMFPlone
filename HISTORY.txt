@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.0.6 - Anti-Pop - (Unreleased)
 
+    - Fixed two potentially unsafe uses of acl_users.getUserById().
+      [stefan]
+
     - Fixed http://plone.org/collector/3641 - validate_start_end_date chopped
       off the AM/PM value when saving Events. :-P
       [stefan]

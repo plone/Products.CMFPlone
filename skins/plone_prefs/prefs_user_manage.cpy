@@ -56,7 +56,7 @@ for userid in resetpw:
     if userid in removed:
         continue
     pw = generatepassword()
-    member = acl_users.getUserById(userid)
+    member = acl_users.getUserById(userid, None)
     acl_users.userFolderEditUser(userid, pw, member.getRoles(), member.getDomains())
     mailPassword(userid, context.REQUEST)
 
