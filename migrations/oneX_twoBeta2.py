@@ -1,5 +1,8 @@
 import os
 import string
+
+import zLOG
+
 from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCacheManager
 from Products.CMFDefault.Document import addDocument
 from Globals import package_home
@@ -21,64 +24,74 @@ from Acquisition import aq_base
 def oneX_twoBeta2(portal):
     """ Migrations from 1.0.x to 2.x """
     #create the QuickInstaller
+    out = []
+    
+    out.append("Creating a quick installer")
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
+    out.append("Adding in a group user folder")        
     addGroupUserFolder(portal)
 
+    out.append("Removing deprecated portal_form_validation tool")            
     if 'portal_form_validation' in portal.objectIds():
         portal.manage_delObjects('portal_form_validation')
 
+    out.append("Setting default page values")                    
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(props, 'default_page', default_values, 'lines')
+    out.append("Turning on syndication")                    
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
+    out.append("Adding document actions")                        
     addDocumentActions(portal)
+    out.append("Adding action icons")                            
     addActionIcons(portal)
+    out.append("Adding cache accelerators")                                
     addCacheAccelerators(portal)
 
-    #XXX TODO:migrate to add simple workflow
-    # change the action in portal_types for viewing a folder
-
+    out.append("Adding cache accelerators")                                
     if 'portal_interface' not in portal.objectIds():
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
+    out.append("Altering skins to reflect plone 2 new skin paths")                                        
     fixupPlone2SkinPaths(portal)
     # add portal_prefs
 
+    out.append("Adding in a control panel")                                    
     addControlPanel(portal)
+    out.append("Upgrading with new portal factory")                                        
     upgradePortalFactory(portal)
     updateNavigationProperties(portal)
 
     #Support for cropping descriptions in search results
     safeEditProperty(props,'search_results_description_length',160,'int')
     safeEditProperty(props,'ellipsis','...','string')
-
-    #Set ext_editor property in site_properties
+    
+    #Set ext_editor property in site_properties   
     setupExtEditor(portal)
 
+    out.append("Adding in new form controller")
     addFormController(portal)
     
-    addDocumentActions(portal)
-    addActionIcons(portal)
+    out.append("Adding in site actions")    
     addSiteActions(portal, portal)
 
+    out.append("Moving portraits into the memberdata tool")
     #migrate Memberdata, Membership and Portraits
-    migrateMemberdataTool(portal)
+    migrateMemberdataTool(portal)    
     migratePortraits(portal)
 
-    # migrateTools(portal)
+    out.append("Moving all tools to the new Plone base classes")
+    migrateTools(portal)
+    out.append(("Moving some old templates out of the way, such as header and footer, since these will cause breakage", zLOG.ERROR))
+    moveOldTemplates(portal)
+    out.append("Updating nav tree")
+    migrateNavTree(portal)
+    return out
 
 def doit(self):
-    oneX_twoBeta2(self)
-    portal=swapPortalRoot(self)
-    moveOldTemplates(portal)
-    migrateNavTree(portal)
-    addDocumentActions(portal)
-    addActionIcons(portal)
-    addSiteActions(portal, portal)
-    #removePortalFormFromActions(portal)
-    return "some templates in portal_skins/custom may have been renamed"
+    raise NotImplementedError, "This should be run from migrations now, we have it fixed"
 
 def fixActionsOn(tool):
     if not hasattr(tool.aq_explicit, '_cloneActions'):
@@ -165,40 +178,16 @@ def migrateTools(portal):
 def migrateNavTree(portal):
     p=getToolByName(portal,'portal_properties').navtree_properties
 
-    if not p.hasProperty('showMyUserFolderOnly'):
-        p._setProperty('showMyUserFolderOnly', 1, 'boolean')
-    if not p.hasProperty('includeTop'):
-        p._setProperty('includeTop', 1, 'boolean')
-    if not p.hasProperty('showFolderishSiblingsOnly'):
-        p._setProperty('showFolderishSiblingsOnly', 1, 'boolean')
-    if not p.hasProperty('showFolderishChildrenOnly'):
-        p._setProperty('showFolderishChildrenOnly', 1, 'boolean')
-    if not p.hasProperty('showNonFolderishObject'):
-        p._setProperty('showNonFolderishObject', 0, 'boolean')
-    if not p.hasProperty('topLevel'):
-        p._setProperty('topLevel', 0, 'int')
-    if not p.hasProperty('batchSize'):
-        p._setProperty('batchSize', 30, 'int')
-    if not p.hasProperty('showTopicResults'):
-        p._setProperty('showTopicResults', 1, 'boolean')
-    if not p.hasProperty('rolesSeeUnpublishedContent'):
-        p._setProperty('rolesSeeUnpublishedContent', ['Manager','Reviewer','Owner'] , 'lines')
-    if not p.hasProperty('sortCriteria'):
-        p._setProperty('sortCriteria', ['isPrincipiaFolderish,desc','title_or_id,asc']  , 'lines')
-    if not p.hasProperty('metaTypesNotToList'):
-        p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')   
-    if not p.hasProperty('parentMetaTypesNotToQuery'):
-        p._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
-    if not p.hasProperty('croppingLength'):
-        p._setProperty('croppingLength',256,'int')
-    if not p.hasProperty('forceParentsInBatch'):
-        p._setProperty('forceParentsInBatch',0,'boolean')
-    if not p.hasProperty('skipIndex_html'):
-        p._setProperty('skipIndex_html',1,'boolean')
-    if not p.hasProperty('rolesSeeContentsView'):
-        p._setProperty('rolesSeeContentsView', ['Manager','Reviewer','Owner'] , 'lines')
-    if not p.hasProperty('rolesSeeHiddenContent'):
-        p._setProperty('rolesSeeHiddenContent', ['Manager',] , 'lines')
+    # these won't set the property... so they won't change a existing navtree
+    # since it has them already, so this is pointless. What I believe we want to do 
+    # here is add TempFolder to the properties...
+    
+#    if not p.hasProperty('metaTypesNotToList'):
+#        p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')   
+#    if not p.hasProperty('parentMetaTypesNotToQuery'):
+#        p._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
+    
+    # these are all new
     if not p.hasProperty('typesForcedFolderContents'):
         p._setProperty('typesForcedFolderContents', [] , 'lines')
     if not p.hasProperty('bottomLevel'):
@@ -284,7 +273,7 @@ def addControlPanel(portal):
         addPloneTool(ControlPanelTool, None)
     # must be done here because controlpanel depends on
     # portal_actionicons concerning icon registration
-    #portal.portal_controlpanel.registerDefaultConfiglets()
+    portal.portal_controlpanel.registerDefaultConfiglets()
 
 
 def addCacheAccelerators(portal):
@@ -350,11 +339,11 @@ def addActionIcons(portal):
         qi.notifyInstalled('CMFActionIcons') #Portal.py got to it first
 
     ai=getToolByName(portal, 'portal_actionicons')
-#    ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
+    ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
 
-#ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
-#    ai.addActionIcon('plone', 'rss', 'rss.gif', 'Syndication')
- #   ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
+    ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
+    ai.addActionIcon('plone', 'rss', 'rss.gif', 'Syndication')
+    ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
 
 def addDocumentActions(portal):
     at = portal.portal_actions
