@@ -16,35 +16,39 @@
     <!-- The calendar, rendered as a table -->
 
     <table cellspacing="0" class="calendar" id="thecalendar">
-        <tr>
-            <th id="calendar-previous">
-                <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
-            </th>
-            <th colspan="5"
-                tal:define="date string:$month/1/$year;">
-                <span i18n:translate="" tal:omit-tag="">
-                    <span i18n:name="monthname">
-                        <span i18n:translate=""
-                              tal:define="monthstring python:DateTime(date).strftime('%B').capitalize();"
-                              tal:attributes="id string:calendar-month-$monthstring"
-                              tal:content="string:$monthstring"
-                              id="calendar-month-month">&nbsp</span>
+        <thead>
+            <tr>
+                <th id="calendar-previous">
+                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
+                </th>
+                <th colspan="5"
+                    tal:define="date string:$month/1/$year;">
+                    <span i18n:translate="" tal:omit-tag="">
+                        <span i18n:name="monthname">
+                            <span i18n:translate=""
+                                  tal:define="monthstring python:DateTime(date).strftime('%B').capitalize();"
+                                  tal:attributes="id string:calendar-month-$monthstring"
+                                  tal:content="string:$monthstring"
+                                  id="calendar-month-month">&nbsp</span>
+                        </span>
+                        <span i18n:name="year"
+                              tal:define="year python:DateTime(date).year()"
+                              tal:content="string:$year"
+                              tal:attributes="id string:calendar-year-$year;"
+                              id="calendar-year">&nbsp;</span>
                     </span>
-                    <span i18n:name="year"
-                          tal:define="year python:DateTime(date).year()"
-                          tal:content="string:$year"
-                          tal:attributes="id string:calendar-year-$year;"
-                          id="calendar-year">&nbsp;</span>
-                </span>
-            </th>
-            <th id="calendar-next">
-                <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
-            </th>
-        <tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
-          <tal:block repeat="weekday weekdays">
-            <td i18n:translate="" tal:content="weekday">Su</td>
-          </tal:block>
-        </tr>
+                 </th>
+                <th id="calendar-next">
+                    <a href="#" tal:attributes="href python:'%s/%s?month:int=%d&amp;year:int=%d' % (here.absolute_url(),template.getId(),nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
+                </th>
+            </tr>
+            <tr tal:define="weekdays here/portal_calendar/getDays" class="weekdays">
+                <tal:block repeat="weekday weekdays">
+                <td i18n:translate="" tal:content="weekday">Su</td>
+               </tal:block>
+            </tr>
+        </thead>
+        <tbody>
             <tr tal:repeat="week weeks">
               <tal:block repeat="day week">
                 <tal:block define="daynumber day/day;
@@ -77,6 +81,7 @@
                 </tal:block>
               </tal:block>
             </tr>
+        </tbody>
     </table>
 
 
