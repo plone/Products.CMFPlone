@@ -9,9 +9,9 @@
 ##
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
-new_ids=REQUEST.get('new_ids',None)
-old_ids=REQUEST.get('ids',None)
-new_titles=REQUEST.get('new_titles',None)
+new_ids=REQUEST['new_ids']
+old_ids=REQUEST['ids']
+new_titles=REQUEST['new_titles']
 
 x=0
 for id in new_ids:
@@ -22,7 +22,10 @@ for id in new_ids:
         o.setTitle(new_title)
     x=x+1
 
-context.manage_renameObjects(REQUEST['ids'], REQUEST['new_ids'], REQUEST)
-transaction_note( str(REQUEST['ids']) + 'have been renamed' )
+context.manage_renameObjects(old_ids, new_ids) #x, REQUEST)
+transaction_note( str(old_ids) + 'have been renamed' )
 
-return ('success', context, {'portal_status_message':'Item(s) renamed'})
+return ( 'success', 
+         context, 
+         {'portal_status_message':'Item(s) renamed'} )
+
