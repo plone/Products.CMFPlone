@@ -1076,7 +1076,12 @@ ul.configlets li a {
     width: 0;
 }
 .visualClear {
+    display: block;
     clear: both;
+    height: 0px !important;
+    height /**/: 1px;
+    margin: 0;
+    margin: -1px 0 0 0;
 }
 .hiddenLabel {
     visibility: hidden;
