@@ -130,24 +130,29 @@
             </div>
             
             <div class="field"
-                  tal:define="memberRoles request/roles|nothing;
-                              portalRoles python:here.portal_membership.getPortalRoles()">
-            
-                <select name="roles:list" 
-                        size="6" 
-                        multiple="multiple"
-                        tabindex=""
-                        onfocus="formtooltip('roles_search_help',1)" 
-                        onblur="formtooltip('roles_search_help',0)"
-                        tal:attributes="tabindex tabindex/next;" 
-                        >
-                    <option value="#"
-                            i18n:translate=""
-                            tal:repeat="role portalRoles"
-                            tal:content="role"
-                  	        tal:attributes="value role">dummy</option>
-                </select>
-                
+                 tal:define="memberRoles request/roles|nothing;
+                             portalRoles python:here.portal_membership.getPortalRoles()">
+
+                <metal:block tal:repeat="role portalRoles">
+                <metal:block tal:define="tabindex tabindex/next">          
+                    <input name="roles:list"
+                           type="checkbox"
+                           class="noborder"
+                           tabindex=""
+                           onfocus="formtooltip('roles_search_help',1)" 
+                           onblur="formtooltip('roles_search_help',0)"
+                           tal:attributes="tabindex tabindex;
+                                           value role;
+                                           id string:roles_${tabindex}" 
+                           >
+                    <label for=""
+                           i18n:translate=""
+                           tal:attributes="for string:roles_${tabindex}"
+                           tal:content="role" 
+                           />
+                    <br />
+                </metal:block>
+                </metal:block>
             </div>
         </div>
 
