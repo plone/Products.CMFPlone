@@ -157,13 +157,13 @@ input {
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
     background-color: white;
-    margin: 0em 0em 0em 0em;
+    margin: 0;
 }
 
 select {
     font: &dtml-inputFont;;
     border: &dtml-inputBorder;;  
-    margin: 0em 0em 1em 0em;
+    margin: 0;
 }
 
 abbr, acronym, .explain {
