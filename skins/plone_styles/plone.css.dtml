@@ -20,7 +20,7 @@
 
 /* The column layout: */
 table#columns {
-	width: 100%;
+    width: 100%;
 }
 table#columns td#left {
     vertical-align: top;
@@ -60,13 +60,13 @@ table {
 
 
 a {
-	text-decoration: none;
+    text-decoration: none;
     color: &dtml-mainLinkColor;;
     background-color: transparent;
 }
 img {
     border: none;
-	vertical-align: middle;
+    vertical-align: middle;
 }
 p {
     margin: 0.5em 0em 1em 0em;
@@ -77,11 +77,11 @@ p a {
     text-decoration: underline;
 }
 p a:visited {
-	color: &dtml-contentLinkVisitedColor;;
+    color: &dtml-contentLinkVisitedColor;;
     background-color: transparent;
 }
 p a:active {
-	color: &dtml-contentLinkActiveColor;;
+    color: &dtml-contentLinkActiveColor;;
     background-color: transparent;
 }
 p img {
@@ -400,6 +400,7 @@ ul#contentTabs li {
     top: 2px; /* Cope with odd rounding bugs */
     text-decoration: none;
     text-transform: &dtml-textTransform;;
+    z-index: 1;
 }
 #contentTabs li.selected a {
     background: &dtml-contentTabBackground;;
@@ -421,6 +422,7 @@ ul#contentTabs li {
     text-align: right;
     text-transform: &dtml-textTransform;;
     padding: 0 1em;
+    z-index: 2;
 }
 div.document, div.editableDocument {
     background: &dtml-mainBackground;;
@@ -793,6 +795,9 @@ div.hiddenlabel {
     height: 0px;
     overflow: hidden;
     padding-top: 0px;
+}
+* html .hiddenstructure {
+    display: none;
 }
 .clear {
     clear: both;
