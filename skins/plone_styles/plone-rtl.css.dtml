@@ -1,0 +1,254 @@
+/*  Style sheet for RTL (right-to-left) languages - hard work done by 
+ *  Mohsen Moeeni <mohsen at schoolnet.ir>, integration work by
+ *  Alexander Limi - http://www.plonesolutions.com
+ */ 
+
+/* <dtml-var "enableHTTPCompression(request=REQUEST, debug=1, css=1)"> (this is for http compression) */
+/* <dtml-with base_properties> (do not remove this :) */
+/* <dtml-call "REQUEST.set('portal_url', portal_url())"> (not this either :) */
+
+ol {
+    margin: 0.5em 1.5em 0 0;
+}
+
+#portal-logo {
+    background: url(&dtml-portal_url;/&dtml-logoName;) no-repeat top right;
+    margin: 0.75em 1.5em 0.75em 0em;
+}
+
+ 
+#portal-skinswitcher a {
+    float: right;
+}
+ 
+#portal-siteactions {
+    float: left;
+}
+
+#portal-searchbox {
+    padding: 0 0 0 2em;
+    float: left;
+}
+
+#portal-globalnav {
+    padding: 0em 2em 0em 0em;
+}
+
+#portal-globalnav li a {
+    margin-left: 0.5em;
+}
+
+#portal-personaltools {
+    text-align: left;
+}
+
+#portal-personaltools .portalUser {
+    background: transparent url(&dtml-portal_url;/user.gif) center right no-repeat;
+    padding-right: 15px;
+}
+ 
+#portal-personaltools li {
+    background: transparent url(&dtml-portal_url;/linkOpaque.gif) center right no-repeat;
+    padding-right: 8px;
+    margin-right: 1em;
+}
+
+.contentViews {
+    padding-right: 1em;
+    margin-right: 0;
+}
+
+.contentViews li a {
+    margin-left: 0.5em;
+}
+
+.contentActions {
+    text-align: left;
+    padding: 0 1em 0 0;
+}
+
+.contentActions ul,
+.contentActions li {
+    text-align: right;
+}
+ 
+.contentActions li {
+    float: left;
+    background-position: center left;
+    padding: 0 1em 0 0;
+    margin: 0 0 0 1em;
+}
+ 
+.contentActions .actionMenu {
+    left: -1px;
+}
+
+.documentActions ul {
+    float: left;
+}
+
+.newsAbout {
+    float: left;
+    text-align: left;
+}
+ 
+.newsFooter li {
+     display: inline;
+    margin: 0 0 0 1em;
+}
+
+.documentActions {
+    float: left;
+}
+ 
+.documentByLine {
+    text-align: left;
+}
+ 
+.productCredits {
+    text-align: left;
+}
+ 
+.standalone,
+.documentEditable * .standalone {
+    padding: 1px 15px 1px 1px;
+}
+
+.context,
+.documentEditable * .context {
+    padding: 1px 15px 1px 1px;
+}
+
+.destructive,
+.documentEditable * .destructive {
+    padding: 1px 15px 1px 1px;
+}
+
+input.searchButton {
+    padding: 1px 15px 1px 1px;
+ }
+ 
+.field {
+    right: 0;
+    margin: 0 0 1em 1em;
+}
+ 
+.fieldRequired {
+    background: url(&dtml-portal_url;/required.gif) center right no-repeat;
+    padding: 0 8px 0 0;
+} 
+ 
+.card {
+    float: right;
+}
+
+.listing th,
+.stx table th {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.listing .top {
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor; ! important;
+    text-align: left ! important;
+}
+
+.listing td,
+.stx table td {
+    border-left: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    text-align: right;
+}
+
+ul.configletDetails {
+    margin: 0em 4em 1em 1em;
+} 
+ 
+.portletDetails {
+    text-align: left;
+}
+ 
+.portletMore {
+    text-align: left;
+}
+ 
+.portletClose {
+    float: left;
+    border-right: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.listingBar span.previous,
+.listingPrevious {
+    text-align: right;
+    float: right;
+    margin-left: 1em;
+}
+
+.listingBar span.next,
+.listingNext {
+    text-align: left;
+    float: left;
+    margin-right: 1em;
+}
+
+.link-parent {
+    padding: 1px 16px 1px 0;
+}
+
+.link-user {
+    padding: 1px 16px 1px 0;
+}
+ 
+.link-external {
+    padding: 1px 16px 1px 0;
+}
+ 
+ .link-https {
+    padding: 1px 16px 1px 0;
+}
+ 
+.link-mailto {
+    padding: 1px 16px 1px 0;
+}
+ 
+.link-news {
+    padding: 1px 16px 1px 0;
+}
+ 
+.link-ftp {
+    padding: 1px 16px 1px 0;
+}
+ 
+.link-irc {
+    padding: 1px 16px 1px 0;
+}
+ 
+.link-callto {
+    padding: 1px 16px 1px 0;
+}
+
+.link-comment {
+    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center right no-repeat;
+    padding: 1px 16px 1px 0 !important;
+}
+ 
+.hiddenStructure {
+    margin: -1px -1px 0 0;
+}
+ 
+.contentActions .hiddenStructure {
+    right: -200px;
+}
+ 
+.visualClear {
+    margin: -1px -1px 0 0;
+}
+
+.label {
+    padding-left: 0.5em;
+}
+
+.ploneCalendar td {
+    text-align: left;
+}
+
+/* </dtml-with> */

@@ -41,7 +41,9 @@
     </metal:javascriptslot>
   </head>
 
-  <body tal:attributes="class here/getSectionFromURL">
+  <!-- XXX RTL todo: this should only use dir="rtl" if 
+                     PlacelessTranslationService reports back an RTL language -->
+  <body dir="rtl" tal:attributes="class here/getSectionFromURL">
 
     <div id="visual-portal-wrapper">
 

@@ -47,6 +47,13 @@
            tal:content="string: @import url($portal_url/plone.css);">
     </style>
 
+    <!-- RTL style sheet for right-to-left languages 
+         XXX: This should only be inserted if PlacelessTranslationService 
+              reports back an RTL language (requires PTS change) -->
+    <style type="text/css" media="screen"
+           tal:content="string: @import url($portal_url/plone.css);">
+    </style>
+
     <!-- Old style sheet from Plone 1.0, remove tal:condition="nothing" if you need to use the old styles.
          Will be removed in Plone 2.1. -->
     <style type="text/css" media="screen"
