@@ -17,7 +17,7 @@ if id:
     else:
         # id is good; make sure we have no id collisions
 
-        if not context.getId() in context.getParentNode().objectIds():
+        if context.portal_factory.isTemporary(context):
             # always check for collisions if we are creating a new object
             checkForCollision = 1
         else:

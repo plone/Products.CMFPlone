@@ -10,7 +10,7 @@
 from DateTime import DateTime
 REQUEST=context.REQUEST
 
-validator = context.portal_form_validation.createForm()
+validator = context.portal_form.createForm()
 validator.addField('id', 'String', required=1)
 validator.addField('title', 'String', required=1)
 validator.addField('start_date', 'String', required=1)

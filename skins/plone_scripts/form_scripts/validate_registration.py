@@ -8,7 +8,7 @@
 ##title=validates teh Registration of a User
 REQUEST=context.REQUEST
 
-validator = context.portal_form_validation.createForm()
+validator = context.portal_form.createForm()
 validator.addField('username', 'String', required=1)
 validator.addField('email', 'Email')
 if not context.portal_properties.validate_email:

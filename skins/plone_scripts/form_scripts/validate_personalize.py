@@ -7,7 +7,7 @@
 ##parameters=
 ##title=Validates the personalization form
 ##
-validator = context.portal_form_validation.createForm()
+validator = context.portal_form.createForm()
 validator.addField('email', 'Email', required=1)
 errors=validator.validate(context.REQUEST)
 if errors:

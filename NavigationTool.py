@@ -10,9 +10,11 @@ from Products.CMFCore import CMFCorePermissions
 from types import TupleType
 from urllib import urlencode
 from cgi import parse_qs
-import re
 from PloneUtilities import log as debug_log
 from PloneUtilities import log_deprecated
+import re
+import traceback
+import sys
 
 debug = 0  # enable/disable logging
 
@@ -37,18 +39,24 @@ class NavigationTool (UniqueObject, SimpleItem):
             kwargs - additional keyword arguments are passed to subsequent pages either in
                 the REQUEST or as GET parameters if a redirection needs to be done
         """
-        trace.append('Looking up transition for %s.%s.%s' % (context, script, status))
-        (transition_type, transition) = self.getNavigationTransistion(context, script, status)
-        trace.append('Found transition: %s, %s' % (transition_type, transition))
-        self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
-        if transition_type == 'action':
-            return self._dispatchAction(context, transition, trace, **kwargs)
-        elif transition_type == 'url':
-            return self._dispatchUrl(context, transition, trace, **kwargs)
-        elif transition_type == 'script':
-            return self._dispatchScript(context, transition, trace, **kwargs)
-        else:
-            return self._dispatchPage(context, transition, trace, **kwargs)
+        try:
+            trace.append('Looking up transition for %s.%s.%s' % (context, script, status))
+            (transition_type, transition) = self.getNavigationTransition(context, script, status)
+            trace.append('Found transition: %s, %s' % (transition_type, transition))
+            self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
+
+            if transition_type == 'action':
+                return self._dispatchAction(context, transition, trace, **kwargs)
+            elif transition_type == 'url':
+                return self._dispatchUrl(context, transition, trace, **kwargs)
+            elif transition_type == 'script':
+                return self._dispatchScript(context, transition, trace, **kwargs)
+            else:
+                return self._dispatchPage(context, transition, trace, **kwargs)
+        except NavigationError:
+            raise
+        except Exception, e:
+             raise NavigationError(e, trace)
 
 
     def addTransitionFor(self, content, script, status, destination):
@@ -174,7 +182,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         return (None, transition.strip())
 
 
-    def getNavigationTransistion(self, context, script, status):
+    def getNavigationTransition(self, context, script, status):
         script = self._normalize(script) # normalize
         status = self._normalize(status) # normalize
         
@@ -193,7 +201,7 @@ class NavigationTool (UniqueObject, SimpleItem):
                 transition = getattr(navprops.aq_explicit, transition_key, None)
 
                 if transition is None:
-                    raise "Unable to find navigation transition for %s.%s.%s" % (self._getContentFrom(context), script, status)
+                    raise KeyError, "Unable to find navigation transition for %s.%s.%s" % (self._getContentFrom(context), script, status)
 
         self.log("getting transition %s.%s.%s, found [%s]\n" % (context, script, status, str(transition)))
         
@@ -204,55 +212,65 @@ class NavigationTool (UniqueObject, SimpleItem):
     def _dispatchPage(self, context, page, trace, **kwargs):
         # If any query parameters have been specified in the transition,
         # stick them into the request before calling getActionById()
-        queryIndex = page.find('?')
-        if queryIndex > -1:
-            query = parse_qs(page[queryIndex+1:])
-            for key in query.keys():
-                if len(query[key]) == 1:
-                    self.REQUEST[key] = query[key][0]
-                else:
-                    self.REQUEST[key] = query[key]
-            page = page[0:queryIndex]
+        try:
+            queryIndex = page.find('?')
+            if queryIndex > -1:
+                query = parse_qs(page[queryIndex+1:])
+                for key in query.keys():
+                    if len(query[key]) == 1:
+                        self.REQUEST[key] = query[key][0]
+                    else:
+                        self.REQUEST[key] = query[key]
+                page = page[0:queryIndex]
 
-        trace.append("dispatchPage: page = " + str(page) + ", context = " + str(context))
-        self.log("page = " + str(page) + ", context = " + str(context), '_dispatchPage')
-        if page is not None:
+            trace.append("dispatchPage: page = " + str(page) + ", context = " + str(context))
+            self.log("page = " + str(page) + ", context = " + str(context), '_dispatchPage')
             return apply(context.restrictedTraverse(page), (context, context.REQUEST), kwargs)
-        raise Exception, 'Argh! could not find the transition, ' + page
+        except Exception, e:
+            raise NavigationError(e, trace)
 
 
     def _dispatchScript(self, context, script, trace, **kwargs):
-        self.log('calling ' + script, '_dispatchScript')
+        try:
+            self.log('calling ' + script, '_dispatchScript')
 
-        request = {}
-        for key in self.REQUEST.keys():
-            request[key] = self.REQUEST[key]
-        request.update(kwargs)
+            request = {}
+            for key in self.REQUEST.keys():
+                request[key] = self.REQUEST[key]
+            request.update(kwargs)
 
-        script_object = getattr(context, script)
+            script_object = getattr(context, script)
 
-        trace.append('dispatchScript: script = %s' % (str(script)))
-        (status, context, kwargs) = \
-            mapply(script_object, self.REQUEST.args, request,
-                        call_object, 1, missing_name, dont_publish_class,
-                        self.REQUEST, bind=1)
-        self.log('status = %s, context = %s, kwargs = %s' % (str(status), str(context), str(kwargs)), '_dispatchScript')
-        return self.getNext(context, script, status, trace, **kwargs)
+            trace.append('dispatchScript: script = %s' % (str(script)))
+            (status, context, kwargs) = \
+                mapply(script_object, self.REQUEST.args, request,
+                            call_object, 1, missing_name, dont_publish_class,
+                            self.REQUEST, bind=1)
+            self.log('status = %s, context = %s, kwargs = %s' % (str(status), str(context), str(kwargs)), '_dispatchScript')
+            return self.getNext(context, script, status, trace, **kwargs)
+        except Exception, e:
+            raise NavigationError(e, trace)
 
 
     def _dispatchRedirect(self, context, url, trace, **kwargs):
-        url = self._addUrlArgs(url, kwargs)
-        self.log('url = ' + str(url), '_dispatchRedirect')
-        trace.append('dispatchRedirect: url = %s' % (str(url)))
-        return self.REQUEST.RESPONSE.redirect(url)
+        try:
+            url = self._addUrlArgs(url, kwargs)
+            self.log('url = ' + str(url), '_dispatchRedirect')
+            trace.append('dispatchRedirect: url = %s' % (str(url)))
+            return self.REQUEST.RESPONSE.redirect(url)
+        except Exception, e:
+            raise NavigationError(e, trace)
 
 
     def _dispatchAction(self, context, action_id, trace, **kwargs):
-        next_action = context.getTypeInfo().getActionById(action_id)
-        url = self._addUrlArgs(next_action, kwargs)
-        self.log('url = ' + str(url), '_dispatchAction')
-        trace.append('dispatchAction: url = %s' % (str(url)))
-        return self.REQUEST.RESPONSE.redirect('%s/%s' % (context.absolute_url(), url))
+        try:
+            next_action = context.getTypeInfo().getActionById(action_id)
+            url = self._addUrlArgs(next_action, kwargs)
+            self.log('url = ' + str(url), '_dispatchAction')
+            trace.append('dispatchAction: url = %s' % (str(url)))
+            return self.REQUEST.RESPONSE.redirect('%s/%s' % (context.absolute_url(), url))
+        except Exception, e:
+            raise NavigationError(e, trace)
 
 
     def _addUrlArgs(self, base, kwargs):
@@ -295,7 +313,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             for this object 
         """
         log_deprecated('NavigationTool.getNextPageFor() has been marked for deprecation')
-        (transition_type, action_id) = self.getNavigationTransistion(context,script,status)
+        (transition_type, action_id) = self.getNavigationTransition(context,script,status)
         
         # If any query parameters have been specified in the transition,
         # stick them into the request before calling getActionById()
@@ -318,7 +336,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             next_action=action_id[1:len(action_id)-1]
         if next_action is not None:
             return context.restrictedTraverse(next_action)
-        raise Exception, 'Argh! could not find the transition, ' + navTransition
+        raise KeyError, 'Could not find the transition, ' + navTransition
 
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
     # USE GETNEXT() INSTEAD AND UPDATE THE NAVIGATION PROPERTIES FILE
@@ -326,7 +344,7 @@ class NavigationTool (UniqueObject, SimpleItem):
     def getNextRequestFor(self, context, script, status, **kwargs):
         """ takes object, script, and status and returns a RESPONSE redirect """
         log_deprecated('NavigationTool.getNextRequestFor() has been marked for deprecation')
-        (transition_type, action_id) = self.getNavigationTransistion(context,script,status) ###
+        (transition_type, action_id) = self.getNavigationTransition(context,script,status) ###
         if action_id.find('?') >= 0:
             separator = '&'
         else:
@@ -347,3 +365,23 @@ class NavigationTool (UniqueObject, SimpleItem):
                                                              , url_params) )
               
 InitializeClass(NavigationTool)
+
+
+class NavigationError(Exception):
+    RE_BAD_VALIDATOR = re.compile("\'None\' object has no attribute \'co_varnames\'")
+
+    def __init__(self, exception, trace):
+        self.exception = exception
+        self.trace = '\n'.join(trace) + '\n\n' + ''.join(traceback.format_exception(*sys.exc_info()))
+
+    def __str__(self):
+        return '<pre>' + str(self.exception) + '\n\nNavigation trace:\n-----------------' + self.trace + self._helpfulHints() + '</pre>'
+
+    def _helpfulHints(self):
+        st = str(self.exception)
+        hint = ''
+        if self.RE_BAD_VALIDATOR.search(st):
+            hint = hint + 'The script or validator on which mapply is operating may not be compiling properly.\n'
+        if hint:
+            hint = '\n\nHelpful Hints:\n--------------\n' + hint
+        return hint

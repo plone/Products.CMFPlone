@@ -8,7 +8,7 @@
 ##title=Validates a document edit_form contents
 ##
 
-validator = context.portal_form_validation.createForm()
+validator = context.portal_form.createForm()
 validator.addField('id', 'String', required=1)
 validator.addField('title', 'String', required=1)
 errors = validator.validate(context.REQUEST)

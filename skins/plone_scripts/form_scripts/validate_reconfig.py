@@ -8,7 +8,7 @@
 ##title=Validates CMF Site reconfig form
 ##
 
-validator = context.portal_form_validation.createForm()
+validator = context.portal_form.createForm()
 
 validator.addField('title', 'String', required=1)
 validator.addField('localTimeFormat', 'String', required=1)

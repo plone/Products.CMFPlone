@@ -12,7 +12,7 @@ from OFS.ObjectManager import bad_id
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import getToolByName
-from string import join
+from NavigationTool import NavigationError
 
 from PloneUtilities import log as debug_log
 
@@ -46,7 +46,7 @@ class FormTool(UniqueObject, SimpleItem):
         property_tool = getattr(self, 'portal_properties')
         formprops = getattr(property_tool, 'form_properties')
 
-        st = join(validators,',')
+        st = ','.join(validators)
         if formprops.hasProperty(form):
             form_props._updateProperty(form, st)
         else:
@@ -189,19 +189,24 @@ class FormValidator(SimpleItem):
         trace = ['\n']
         self.log('validator[%s] = \'%s\'' % (self.form, self.validators), '__call__')
 
-        if self.do_validate:
-            trace.append('Invoking validation')
-            context = self.aq_parent
-            # invoke validation
-            (status, kwargs, trace) = self._validate(context, REQUEST, trace)
-            self.log('invoking validation, status = %s, kwargs = %s' % (status, kwargs))
+        try:
+            if self.do_validate:
+                trace.append('Invoking validation')
+                context = self.aq_parent
+                # invoke validation
+                (status, kwargs, trace) = self._validate(context, REQUEST, trace)
+                self.log('invoking validation, status = %s, kwargs = %s' % (status, kwargs))
 
-            return context.portal_navigation.getNext(context, self.form, status, trace, **kwargs)
-        else:
-            trace.append('No validation needed.  Going to %s.%s' % (str(aq_parent(self)), self.form))
-            self.log('going to %s.%s' % (str(aq_parent(self)), self.form))
-            target = getattr(aq_parent(self), self.form, None)
-            return target(REQUEST, **kw)
+                return context.portal_navigation.getNext(context, self.form, status, trace, **kwargs)
+            else:
+                trace.append('No validation needed.  Going to %s.%s' % (str(aq_parent(self)), self.form))
+                self.log('going to %s.%s' % (str(aq_parent(self)), self.form))
+                target = getattr(aq_parent(self), self.form, None)
+                return target(REQUEST, **kw)
+        except NavigationError:
+            raise
+        except Exception, e:
+            raise NavigationError(e, trace)
 
 
     index_html = None  # call __call__, not index_html
@@ -211,23 +216,26 @@ class FormValidator(SimpleItem):
         """Execute validators on the validation stack then sets up the REQUEST and returns a status.
            Places a dictionary of errors in the REQUEST that is accessed via REQUEST[FormTool.error_key]
         """
-        errors = {}
-        status = 'success'  # default return value if the validator list is empty
-        kwargs = {}
-        for validator in self.validators:
-            trace.append('Invoking %s' % validator)
-            self.log('calling validator [%s]' % (str(validator)))
-            v = getattr(context, validator)
-            (status, errors, kwargs) = mapply(v, REQUEST.args, REQUEST,
-                            call_object, 1, missing_name, dont_publish_class,
-                            REQUEST, bind=1)
-            self.REQUEST.set('validation_status', status)
-            self.REQUEST.set('errors', errors)
-            for key in kwargs.keys():
-                self.REQUEST.set(key, kwargs[key])
-            trace.append('\t -> (%s, %s, %s)' % (status, str(errors), str(kwargs)))
-        trace.append('Validation returned (%s, %s)' % (status, str(kwargs)))
-        return (status, kwargs, trace)
+        try:
+            errors = {}
+            status = 'success'  # default return value if the validator list is empty
+            kwargs = {}
+            for validator in self.validators:
+                trace.append('Invoking %s' % validator)
+                self.log('calling validator [%s]' % (str(validator)))
+                v = getattr(context, validator)
+                (status, errors, kwargs) = mapply(v, REQUEST.args, REQUEST,
+                                call_object, 1, missing_name, dont_publish_class,
+                                REQUEST, bind=1)
+                self.REQUEST.set('validation_status', status)
+                self.REQUEST.set('errors', errors)
+                for key in kwargs.keys():
+                    self.REQUEST.set(key, kwargs[key])
+                trace.append('\t -> (%s, %s, %s)' % (status, str(errors), str(kwargs)))
+            trace.append('Validation returned (%s, %s)' % (status, str(kwargs)))
+            return (status, kwargs, trace)
+        except Exception, e:
+            raise NavigationError(e, trace)
 
 
     security.declarePublic('log')
