@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1-beta1 - (TBA) - Unreleased
+Plone 2.1-beta1 - (TBA) - (Unreleased)
 
     - Removed headingFontBaseSize from base_properties and plone.css.dtml
       because it doesn't actually work and cost/benefit of implementation is too
@@ -53,7 +53,21 @@ Plone 2.1-beta1 - (TBA) - Unreleased
       of arbitrary sizes.
       [andym]
 
-Plone 2.0.5 - Backed Up Willie - RC1 - Released November 22, 2004
+Plone 2.0.5 - Backed Up Willie - (Unreleased)
+
+    - Fixed http://plone.org/collector/3612 - listFilteredActionsFor of
+      ActionsTool now ignores missing or broken action providers.
+      [stefan]
+
+    - Fixed http://plone.org/collector/3611 - Migration failed if the 'Folder'
+      portal type did not have both 'edit' and 'local_roles' actions.
+      [stefan]
+
+    - Restored overridablity of left_slots/right_slots in folders by reverting
+      the patch applied to fix http://plone.org/collector/3472
+      [stefan]
+
+   RC1 - Released November 22, 2004
 
     - Fixed it so the .error class no longer causes compression of items in
       forms.
@@ -281,10 +295,6 @@ Plone 2.0.5 - Backed Up Willie - RC1 - Released November 22, 2004
       postback of a submitted id in the case where validation fails on the first
       edit of a newly created content object. Thanks to zenwryly.
       [stefan]
-
-    - Fixed http://plone.org/collector/3472 - you can now declare portlets on a
-      template. Thanks to acamargo for the patch.
-      [limi]
 
     - Fixed http://plone.org/collector/3457 - review portlet was not showing ID
       for items without Title. Thanks to Sjors for the patch.

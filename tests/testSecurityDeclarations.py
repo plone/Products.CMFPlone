@@ -268,6 +268,30 @@ except DateTimeError: pass
                 self.fail('Failed to catch: %s %s (module %s)' %
                           (e.__class__.__name__, e, e.__module__))
 
+    try:
+        from DateTime.DateTime import SyntaxError
+    except ImportError:
+        pass
+    else:
+        def testImport_SyntaxError(self):
+            self.check('from DateTime.DateTime import SyntaxError')
+
+        def testAccess_SyntaxError(self):
+            self.check('import DateTime.DateTime;'
+                       'print DateTime.DateTime.SyntaxError')
+
+        def testCatch_SyntaxErrorRaisedByPythonModule(self):
+            self.folder._setObject('raiseSyntaxError', dummy.Raiser(self.SyntaxError))
+            try:
+                self.check('''
+from DateTime.DateTime import SyntaxError
+try: context.raiseSyntaxError()
+except SyntaxError: pass
+''')
+            except Exception, e:
+                self.fail('Failed to catch: %s %s (module %s)' %
+                          (e.__class__.__name__, e, e.__module__))
+
 
 class TestAcquisitionMethods(RestrictedPythonTest):
 

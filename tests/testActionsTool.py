@@ -33,6 +33,19 @@ class TestActionsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(action_infos[-1].permissions, ('foo_permission',))
         self.assertEqual(action_infos[-1].category, 'foo_category')
 
+    def testListFilteredActionsFor(self):
+        self.actions.listFilteredActionsFor(self.folder)
+
+    def testMissingActionProvider(self):
+        # Should not bomb out if a provider is missing
+        self.portal._delObject('portal_registration')
+        self.actions.listFilteredActionsFor(self.folder)
+
+    def testBrokenActionProvider(self):
+        # Should not bomb out if a provider is broken
+        self.portal.portal_registration = None
+        self.actions.listFilteredActionsFor(self.folder)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

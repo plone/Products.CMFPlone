@@ -16,9 +16,8 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
         self.migration = self.portal.portal_migration
 
     def testMigrationFinished(self):
-        # If om_icons() returns more than 1 icon 
-        # migration has failed.
-        self.assertEqual(len(self.migration.om_icons()), 1,
+        self.assertEqual(self.migration.getInstanceVersion(),
+                         self.migration.getFileSystemVersion(),
                          'Migration failed')
 
     def testMigrationNeedsUpgrading(self):
