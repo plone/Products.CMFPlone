@@ -812,8 +812,7 @@ div.hiddenlabel {
 label.hiddenlabel {
     visibility: hidden;
 }
-label.label,
-{
+label.label {
     font-weight: bold;
     display: inline;
     padding-right: 0.5em;
