@@ -206,6 +206,8 @@ def migrateMemberdataTool(portal):
     md._actions = aq_base(_actions)
     _members = getattr(orig_md, '_members')
     md._members = aq_base(_members)
+    _properties = getattr(orig_md, '_properties')
+    md._properties = aq_base(_properties)
    
 
 PORTRAIT_ID='MyPortrait'
