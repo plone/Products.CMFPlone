@@ -104,6 +104,7 @@ def initialize(context):
 
     # Make DateTimeError importable TTW
     ModuleSecurityInfo('DateTime.DateTime').declarePublic('DateTimeError')
+    ModuleSecurityInfo('DateTime.DateTime').declarePublic('SyntaxError')
 
     # Make base_hasattr importable TTW
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')

@@ -13,13 +13,10 @@
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title portal_properties/title;
-                       here_title here/title_or_id;
-                       here_id here/getId;
-                       template_title template/title_or_id;
-                       here_title python: portal_title != here_title and here_title or template_title;
-                       here_title python: here_id != here_title and here_title or template_title;"
-           tal:content="string:$portal_title - $here_title">
-      Title of page
+                       page_title python:here.getPageTitle(here, template, portal_title)" >
+        <span tal:replace="page_title" />
+        &mdash;
+        <span tal:replace="portal_title" />
     </title>
 
     <metal:baseslot define-slot="base" />
@@ -38,23 +35,18 @@
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
 
     <!-- Column style sheet. -->
-    <style type="text/css" media="all" tal:condition="exists: portal/ploneColumns.css"
-           tal:content="string:@import url($portal_url/ploneColumns.css);">
+    <style type="text/css" media="screen" tal:condition="exists: portal/ploneColumns.css"
+           tal:content="structure string:<!-- @import url($portal_url/ploneColumns.css); -->">
     </style>
 
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="screen"
-           tal:content="string: @import url($portal_url/plone.css);">
+           tal:content="structure string:<!-- @import url($portal_url/plone.css); -->">
     </style>
 
     <!-- Alternate style sheets for the bigger/smaller text switcher -->
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextSmall.css" title="Small Text" />
     <link rel="alternate stylesheet" type="text/css" media="screen" href="" tal:attributes="href string:$portal_url/ploneTextLarge.css" title="Large Text" />
-
-    <!-- Custom style sheet if available -->
-    <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
-           tal:content="string:@import url($portal_url/ploneCustom.css);">
-    </style>
 
     <!-- Style sheet used for printing -->
     <link rel="stylesheet" type="text/css" media="print" href=""
@@ -71,19 +63,27 @@
     </style>
     <tal:iefixend replace="structure string:&lt;![endif]--&gt;" />
 
+
+    <!-- Custom style sheet if available -->
+    <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
+           tal:content="structure string:<!-- @import url($portal_url/ploneCustom.css); -->">
+    </style>
+
     <link rel="shortcut icon" href="" type="image/x-icon" tal:attributes="href string:$portal_url/favicon.ico" />
 
     <link rel="search" href="" title="Search this site" tal:attributes="href string:$portal_url/search_form" />
 
-    <tal:comment tal:replace="nothing">
+    <tal:fixme tal:replace="nothing">
       <link rel="help" href="" title="Help" tal:attributes="href string:$portal_url/help" />
       <link rel="contents" href="" title="Site Map" tal:attributes="href string:$portal_url/sitemap" />
-    </tal:comment>
-    <link rel="up" href="" title="Up one level"
-          tal:define="parent python:here.navigationParent(here, template_id)"
-          tal:attributes="href python:test(parent, parent, '#')" />
     <link rel="copyright" href="" title="Copyright information" tal:attributes="href string:copyright" />
     <link rel="author" href="" title="Author information" tal:attributes="href string:author" />
+    </tal:fixme>
+
+    <link rel="up" href="" title="Up one level"
+          tal:define="parent python:here.navigationParent(here, template_id)"
+          tal:condition="parent"
+          tal:attributes="href parent" />
 
     <metal:block metal:define-slot="rel_slot" tal:replace="nothing">
       Inserts rel links specified from a page.

@@ -222,6 +222,7 @@ blockquote {
     font-size: 120%;
 }
 code {
+    font-family: "Courier New", Courier, monospace;
     font-size: 120%;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
@@ -229,6 +230,7 @@ code {
     padding: 0 0.1em;
 }
 pre {
+    font-family: "Courier New", Courier, monospace;
     font-size: 120%;
     padding: 1em;
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
@@ -887,7 +889,7 @@ input.searchButton {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1em;
     margin: 0 0 1em 0;
-    width: 68% !important;
+    width: 95% !important;
 }
 
 .error .fieldRequired {
@@ -1244,10 +1246,13 @@ ol.visualNoMarker {
 /* workflow state colors */
 
 .state-private {
-    color: Black;
+    color: Red;
+}
+.state-visible {
+    color: #74AE0B;
 }
 .state-published {
-    color: #74AE0B;
+    color: &dtml-linkColor;;
 }
 .state-pending {
     color: &dtml-notifyBorderColor;;
@@ -1258,6 +1263,28 @@ ol.visualNoMarker {
 .syndicated {
     color: #008000;
 }
+
+/* Sitemap styling */
+
+.portal-sitemap {
+    list-style: none;
+    list-style-image: none;
+    margin: 0;
+    font-size: 90%;
+    border: none;
+}
+
+.portal-sitemap .portletNavigationLevel1 {
+    padding-left: 1em;
+    border-left: 0.5em solid &dtml-globalBorderColor;;
+    margin: 0 0 0 0.7em;
+}
+
+.portal-sitemap .portletNavigationLevel2 {
+    padding-left: 1em;
+    border-left: 0.5em solid &dtml-globalBackgroundColor;;
+}
+
 .role-Member {
 
 }

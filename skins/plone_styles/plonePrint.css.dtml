@@ -18,12 +18,8 @@
 /* Thanks to A List Apart (http://alistapart.com/) for useful extras */
 
 body {
-    background: White;
     font-family: Georgia, Garamond, Times, serif;
     font-size: 11pt !important;
-    color: Black;
-    margin: 1em;
-    padding: 0;
 }
 
 div.top,
@@ -57,36 +53,15 @@ ul {
     list-style-type: square;
 }
 
-#content,
-.documentDescription,
-.group,
-li,
-.stx,
-p {
-    background: transparent;
-    border: none ! important;
-    font-family: Georgia, Garamond, Times, serif;
-    font-size: 11pt;
-    padding: 0 ! important;
-    margin: 0 ! important;
-    text-align: left;
-}
-
-.documentByLine {
-    font-family: Georgia, Garamond, Times, serif;
-}
-
-
 h1, h2, h3, h4, h5, h6
 {
     border: none;
-    font-family: Georgia, Garamond, Times, serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
 }
 
-p, .documentDescription {
-    margin: 1em 0 ! important;
-    line-height: 1.2em;    
+.documentDescription {
+    font-weight: bold;
 }
 
 pre {
@@ -116,35 +91,5 @@ a:link, a:visited {
 
 #content a:link:after, 
 #content a:visited:after {
-   content: " ( " attr(href) " ) ";
-}
-
-/*
-** disable layout
-*/
-
-#visual-portal-wrapper {
-    width: 100% !important;
-    min-width: 0 !important;
-    margin: 0 !important;
-}
-
-#visual-column-wrapper {
-    margin: 0 !important;
-    float: none !important;
-}
- 
-#portal-column-content {
-    float: none !important;
-    margin: 0 !important;
-}
- 
-#portal-column-content #content {
-    float: none !important;
-    padding: 0em !important;
-    margin: 0 !important;
-}
-
-div#portal-columns #portal-column-content #content {
-    margin-right: 8em !important;
+   content: " [" attr(href) "] ";
 }

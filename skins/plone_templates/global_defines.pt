@@ -41,6 +41,7 @@
         global sr slots_mapping/right;
         global hidecolumns python:here.hide_columns(sl,sr);
         global default_language site_properties/default_language|nothing;
+        global language python:here.Language() or default_language;
         global allowed_types here/getAllowedTypes;
         global is_editable python:here.showEditableBorder(template_id=template_id, allowed_types=allowed_types, actions=actions );
         global current_page_url request/VIRTUAL_URL|string:${request/SERVER_URL}${request/PATH_TRANSLATED};

@@ -20,7 +20,7 @@
         </div>
     
         <p tal:condition="here/event_url|nothing">
-        <span i18n:translate="event_for_more_info_go_to">For more information, visit</span>
+        <span i18n:translate="event_for_more_info_go_to">For more information, visit</span><br />
     
         <a href="event_url"
            tal:attributes="href here/event_url"
