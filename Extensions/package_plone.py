@@ -23,8 +23,7 @@ os.system("cd .. ; mkdir %s" % releasename)
 for product in ('CMFPlone', 'Formulator', 'CMFActionIcons', 'CMFQuickInstallerTool',
                 'BTreeFolder2', 'GroupUserFolder', 'CMFFormController',
                 'PlacelessTranslationService', 'Archetypes', 'generator', 'validation',
-                'PortalTransforms', )
-               ):
+                'PortalTransforms', ):
     os.system("cd .. ; cp -rfL %s %s" % (product, releasename))
 
 # clean up
