@@ -19,17 +19,12 @@ class MemberDataTool(BaseTool):
 
     def _getPortrait(self, member_id):
         "return member_id's portrait if you can "
-        try:
-            return self.portraits[member_id]
-        except:
-            pass
+        return self.portraits.get(member_id, None)
 
     def _setPortrait(self, portrait, member_id):
         " store portrait which must be a raw image in _portrais "
-        try:
+        if self.portraits.has_key(member_id):
             self.portraits._delObject(member_id)
-        except:
-            pass
         self.portraits._setObject(id= member_id, object=portrait)
 
     security.declarePrivate('pruneMemberDataContents')
