@@ -160,7 +160,7 @@
                               types python:container.portal_types.listContentTypes();"
                   tal:condition="here/listFolderContents">
     
-                <select name="filter_by_Type:list" onChange="submitFilterAction()"
+                <select id="filter_selection" name="filter_by_Type:list" onChange="submitFilterAction()"
                         tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" >
     
                     <option value="#" 
