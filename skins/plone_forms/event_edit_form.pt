@@ -109,7 +109,7 @@
                        size="25"
                        value="location"
                        tabindex=""
-                       tal:attributes="value here/location;
+                       tal:attributes="value request/location | here/location;
                                        tabindex tabindex/next"
                        onfocus="formtooltip('event_location_help',1)" 
                        onblur="formtooltip('event_location_help',0)" />
@@ -135,7 +135,8 @@
                         onfocus="formtooltip('event_type_help',1)" 
                         onblur="formtooltip('event_type_help',0)"
                         tal:attributes="tabindex tabindex/next;"
-                        tal:define="contentSubject here/Subject; allowedSubjects python:here.portal_metadata.listAllowedSubjects(here)">
+                        tal:define="contentSubject request/event_type | here/Subject; 
+                                    allowedSubjects python:here.portal_metadata.listAllowedSubjects(here)">
                
                    <option tal:replace="nothing">Event Type 1</option>
                    <option tal:replace="nothing">Event Type 2</option>
@@ -194,7 +195,7 @@
                       tabindex=""
                       onfocus="formtooltip('event_url_help',1)" 
                       onblur="formtooltip('event_url_help',0)"
-                      tal:attributes="value here/event_url;
+                      tal:attributes="value request/event_url | here/event_url;
                                       tabindex tabindex/next"
                       >
 
@@ -283,7 +284,7 @@
                       tabindex=""
                       onfocus="formtooltip('contact_name_help',1)" 
                       onblur="formtooltip('contact_name_help',0)"
-                      tal:attributes="value here/contact_name;
+                      tal:attributes="value request/contact_name | here/contact_name;
                                       tabindex tabindex/next"
                       />
             </div>
@@ -310,7 +311,7 @@
                       tabindex=""
                       onfocus="formtooltip('contact_email_help',1)" 
                       onblur="formtooltip('contact_email_help',0)" 
-                      tal:attributes="value here/contact_email;
+                      tal:attributes="value request/contact_email | here/contact_email;
                                       tabindex tabindex/next"
                       />
             </div>
@@ -338,7 +339,7 @@
                       tabindex=""
                       onfocus="formtooltip('contact_phone_help',1)" 
                       onblur="formtooltip('contact_phone_help',0)" 
-                      tal:attributes="value here/contact_phone;
+                      tal:attributes="value request/contact_phone | here/contact_phone;
                                       tabindex tabindex/next"
                       />
 
