@@ -11,7 +11,7 @@
        tal:omit-tag=""
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
                    navBatchStart request/navBatchStart | python:None;
-                   tree python:here.navigation_tree_builder(root,navBatchStart);
+                   tree python:here.plone_utils.createNavigationTreeBuilder(root,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;
                    listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
@@ -20,7 +20,7 @@
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
                    rolesSeeContentsView here/navtree_properties/rolesSeeContentsView | here/portal_properties/navtree_properties/rolesSeeContentsView | python:['Manager','Reviewer','Owner']
                    "
-                   tal:on-error="structure string:<!--Error in Navigation!!-->"
+
                    >
 
     <div class="box">
@@ -44,7 +44,7 @@
                         <a href="../folder_contents"
                            tal:condition="not: here/isPrincipiaFolderish" 
                            tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
-                           tal:on-error="structure string:aq_parent not allowed!"
+
                            >
                 
                             <img tal:replace="structure here/linkTransparent.gif" />&nbsp;<span i18n:translate="box_contents_view">Switch to Contents view</span>
@@ -78,7 +78,7 @@
                                       sibling.isPrincipiaFolderish , 'folder_contents', 
                                       test(sibling.isPrincipiaFolderish,'','view'));
                                       title python:te['object'].title_or_id();
-                                      sibling_title python:'&nbsp;;'.join(title[:croppingLength].split(' '));"
+                                      sibling_title python:' '.join(title[:croppingLength].split(' '));"
                                       tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                            >
                                
