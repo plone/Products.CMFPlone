@@ -32,7 +32,6 @@ as possible.
 <div metal:fill-slot="main">	  
 
 <div tal:define="pm python: here.portal_membership;
-                 member python: pm.getAuthenticatedMember();
                  authenticated python: member.has_role('Authenticated')
                                          or member.has_role('Member')">
 

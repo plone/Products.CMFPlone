@@ -31,7 +31,7 @@
 
         <span class="legend" i18n:translate="legend_image_details">Image Details</span>
         <div class="row" 
-             tal:condition="python: getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', None)"
+             tal:condition="python:member.getProperty('visible_ids', None)"
              tal:define="error_id errors/id | nothing;
                          id python:request.get('id', test(here.show_id(),here.getId(),''));"> 
             <div class="label">
@@ -69,7 +69,7 @@
         </div>
         <input type="hidden" 
                name="id" 
-               tal:condition="python: not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids')"
+               tal:condition="python:not member.getProperty('visible_ids', None)"
                tal:attributes="value python:request.get('id', here.getId())" 
                />
         

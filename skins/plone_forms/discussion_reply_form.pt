@@ -35,7 +35,7 @@
         <span class="legend" i18n:translate="legend_comment_details">Comment Details</span>
 
         <input type="hidden" name="Creator" value=""
-        	   tal:attributes="value here/portal_membership/getAuthenticatedMember" />
+        	   tal:attributes="value member/getUserName" />
     
         <div class="row">
         

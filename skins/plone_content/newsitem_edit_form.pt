@@ -33,7 +33,7 @@
         <div class="row" 
              tal:condition="python: member.getProperty('visible_ids', None)"
              tal:define="error_id errors/id | nothing;
-	                       id python:request.get('id', here.getId());"> 
+                         id python:request.get('id', test(here.show_id(),here.getId(),''));">
             <div class="label">
             
                 <span i18n:translate="label_name">Name</span>

@@ -241,7 +241,7 @@
 
                 <span class="card" 
                       tal:repeat="lrole here/get_local_roles"
-                      tal:define="username python:here.portal_membership.getAuthenticatedMember().getUserName();">
+                      tal:define="username python:member.getUserName();">
             
                     <span>
                         <a href="" 

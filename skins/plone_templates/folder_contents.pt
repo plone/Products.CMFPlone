@@ -11,8 +11,6 @@
                  global decodedFilter python:here.decodeFolderFilter(folderfilter);
                  global filterValues decodedFilter;
                  global filter decodedFilter;
-                 global portal_url here/portal_url;
-                 global member here/portal_membership/getAuthenticatedMember;
                  standalone python:1;
                  folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);">
 

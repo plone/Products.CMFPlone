@@ -24,6 +24,7 @@ if not id:
     id = context.getId()
     
 new_context = context.portal_factory.doCreate(context, id)
+
 new_context.edit( text_format
                 , text
                 , file
