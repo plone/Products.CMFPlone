@@ -7,21 +7,15 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 
-ISELECTABLEDEFAULTPAGE = 'Products.ATContentTypes.interfaces.ISelectableDefaultPage'
-MODIFY = "Modify portal content"
+IBROWSERDEFAULT = 'Products.CMFPlone.interfaces.BrowserDefault.IBrowserDefault'
 
 if not context.isPrincipiaFolderish:
     return False
 
 from Products.CMFCore.utils import getToolByName
 itool = getToolByName(context, 'portal_interface')
-mtool = getToolByName(context, 'portal_membership')
 
-if not itool.objectImplements(context, ISELECTABLEDEFAULTPAGE):
-    return False
-
-user = mtool.getAuthenticatedMember()
-if not user.has_permission(MODIFY, context):
+if not itool.objectImplements(context, IBROWSERDEFAULT):
     return False
     
-return True
+return context.canSetDefaultPage()

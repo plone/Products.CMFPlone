@@ -7,22 +7,15 @@
 ##bind subpath=traverse_subpath
 ##parameters=
 
-ITEMPLATEMIXIN = 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin'
-MODIFY_VIEW_TEMPLATE = "ATContentTypes: Modify view template"
+IBROWSERDEFAULT = 'Products.CMFPlone.interfaces.BrowserDefault.IBrowserDefault'
 
 from Products.CMFCore.utils import getToolByName
 itool = getToolByName(context, 'portal_interface')
-mtool = getToolByName(context, 'portal_membership')
 
-if not itool.objectImplements(context, ITEMPLATEMIXIN):
+if not itool.objectImplements(context, IBROWSERDEFAULT):
     return None
 
-user = mtool.getAuthenticatedMember()
-if not user.has_permission(MODIFY_VIEW_TEMPLATE, context):
-    return None
-    
-availableTemplates = context.getField('layout').Vocabulary(context)
-if len(availableTemplates) <= 1:
+if not context.canSetLayout():
     return None
 
-return availableTemplates
+return context.getAvailableLayouts()

@@ -10,8 +10,4 @@
 from Products.CMFCore.utils import getToolByName
 ptool = getToolByName(context, 'plone_utils')
 
-defaultPageId = ptool.getDefaultPage(context.aq_inner.aq_parent)
-if defaultPageId == context.getId():
-    return True
-else:
-    return False
+return ptool.isDefaultPage(context)

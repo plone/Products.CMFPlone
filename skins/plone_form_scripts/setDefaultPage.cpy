@@ -8,8 +8,7 @@
 ##bind subpath=traverse_subpath
 ##parameters=objectId=None
 
-ISELECTABLEDEFAULTPAGE = 'Products.ATContentTypes.interfaces.ISelectableDefaultPage'
-DEFAULT_PAGE = 'default_page'
+IBROWSERDEFAULT = 'Products.CMFPlone.interfaces.BrowserDefault.IBrowserDefault'
 
 if not objectId:
     return state.set(status = 'missing',
@@ -17,19 +16,18 @@ if not objectId:
 
 from Products.CMFCore.utils import getToolByName
 itool = getToolByName(context, 'portal_interface')
-mtool = getToolByName(context, 'portal_membership')
 
-if not itool.objectImplements(context, ISELECTABLEDEFAULTPAGE):
+# Should never happen, but let's be sure
+if not itool.objectImplements(context, IBROWSERDEFAULT):
     raise NotImplementedError, "Object does not support setting default page"
 
+# Also should never happen
 if not objectId in context.objectIds():
     return state.set(status = 'failure',
                      portal_status_message = \
-                        'There is no object with short name %s in this folder' % objectId)
+                        'There is no object with short name %s in this folder' \
+                            % objectId)
 
-if context.hasProperty(DEFAULT_PAGE):
-    context.manage_changeProperties(default_page = objectId)
-else:
-    context.manage_addProperty(DEFAULT_PAGE, objectId, 'string')
+context.setDefaultPage(objectId)
 
 return state.set(portal_status_message = 'View changed')

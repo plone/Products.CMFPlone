@@ -25,11 +25,8 @@
         <input type="hidden" name="form.submitted" value="1"/>
     
         <tal:items define="blacklistedTypes     here/portal_properties/site_properties/non_default_page_types;
-                           itool                portal/portal_interface;
-                           defaultPageInterface string:Products.ATContentTypes.interfaces.ISelectableDefaultPage;
                            items python:[item for item in here.folderlistingFolderContents() if
-                                            item.portal_type not in blacklistedTypes and not
-                                            itool.objectImplements(item, defaultPageInterface)];">
+                                            item.portal_type not in blacklistedTypes];">
         <tal:hasItems condition="items">
             <dl>
                 <tal:item repeat="item items">
