@@ -2,6 +2,7 @@ from cgi import escape
 
 # patch Image.py
 from OFS.Image import Image
+from Acquisition import aq_base
 from Products.CMFCore.FSImage import FSImage
 
 def tag(self, height=None, width=None, alt=None,
@@ -29,15 +30,15 @@ def tag(self, height=None, width=None, alt=None,
     result='<img src="%s"' % (self.absolute_url())
 
     if alt is None:
-        alt=getattr(self, 'alt', '')
+        alt=getattr(aq_base(self), 'alt', '')
     result = '%s alt="%s"' % (result, escape(alt, 1))
 
     if title is None:
-        title=getattr(self, 'title', '')
+        title=getattr(aq_base(self), 'title', '')
     result = '%s title="%s"' % (result, escape(title, 1))
 
     if longdesc is None:
-        title=getattr(self, 'longdesc', '')
+        title=getattr(aq_base(self), 'longdesc', '')
     result = '%s longdesc="%s"' % (result, escape(title, 1))
 
     if height:
