@@ -300,7 +300,7 @@ def fixupPlone2SkinPaths(portal, out):
                 try:
                     path.insert(path.index('plone_forms'), new)
                 except ValueError:
-                    out.append(("No path plone_forms was found, so couldn't add %s into skin %" % (new, skin), zLOG.ERROR))
+                    out.append(("No path plone_forms was found, so couldn't add %s into skin %s" % (new, skin), zLOG.ERROR))
         st.addSkinSelection(skin, ','.join(path))
     return out
 
