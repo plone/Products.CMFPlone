@@ -1,9 +1,16 @@
+from migration_util import safeEditProperty
+
 from Products.CMFPlone import MigrationTool
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 
 def onezeroone(portal):
     """ Upgrade from Plone 1.0 to Plone 1.0.1"""
+    # Setup utf-8 encoding
+    sp = portal.portal_properties.site_properties
+    k = 'default_charset'
+    v = 'utf-8'
+    safeEditProperty(sp, k, v)
 
     # Setup navigation for syndication
     nav_props = portal.portal_properties.navigation_properties
@@ -14,10 +21,7 @@ def onezeroone(portal):
            )
     
     for id, action in nav:
-        if nav_props.hasProperty(id):
-            nav_props._updateProperty(id, action)
-        else:
-            nav_props._setProperty(id, action)
+        safeEditProperty(nav_props, id, action)
 
     # Add validation of syndication form
     form_tool = portal.portal_form
