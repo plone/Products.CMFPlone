@@ -42,7 +42,7 @@ def make_plone(portal):
     addNavigationProperties(portal)
     extendSiteProperties(portal)
     extendMemberdata(portal)
-    addDefaultPloneSkins(portal)
+#    addDefaultPloneSkins(portal)
     setupDefaultEditor(portal)
     setupCalendar(portal)
 
