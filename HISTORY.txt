@@ -10,6 +10,9 @@ Plone 1.1
     - moved the navigation_tree_builder.py into StatelessTree.py; not sure
       if profiling is correct (or I am reading it) but it said its faster.
       the navigation_tree_slot now uses plone_utils.createNavigationTreeBuilder
+    - moved documentActions ('print this page', 'send to friend') into a slot
+      called item_action_slots which is a proper slot.  Also added a syndication
+      widget and all of these are held in plone_templates/ui_slots/actions_slot.pt
 
 Plone 1.0
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)

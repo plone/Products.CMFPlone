@@ -47,8 +47,12 @@ class DefaultCustomizationPolicy:
                    , 'here/related_slot/macros/relatedBox' )
         right_slots=( 'here/workflow_review_slot/macros/review_box'
                     , 'here/calendar_slot/macros/calendarBox' )
+        item_action_slots=( 'here/actions_slot/macros/print'
+                          , 'here/actions_slot/macros/sendto'
+			  , 'here/actions_slot/macros/syndication' )
         portal._setProperty('left_slots', left_slots, 'lines')
         portal._setProperty('right_slots', right_slots, 'lines')
+	portal._setProperty('item_action_slots', item_action_slots, 'lines')
         portal.Members._setProperty('right_slots', (), 'lines')
 
     def installExternalEditor(self, portal):

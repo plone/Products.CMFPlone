@@ -14,8 +14,9 @@
 #1 for use-macro
 #0 for render path expression
 
-slots={'left':[]
-      ,'right':[]}
+slots={ 'left':[],
+        'right':[],
+        'item_actions':[] }
 
 for slot in [lslot for lslot in context.left_slots if lslot]:
     if slot.find('/macros/')!=-1:
@@ -28,6 +29,12 @@ for slot in [rslot for rslot in context.right_slots if rslot]:
         slots['right'].append( (slot, 1) )
     else:
         slots['right'].append( (slot, 0) )
+
+for slot in [iaction for iaction in context.item_action_slots if iaction]:
+    if slot.find('/macros/')!=-1:
+        slots['item_actions'].append( (slot, 1) )
+    else:
+        slots['item_actions'].append( (slot, 0) )
 
 return slots
 
