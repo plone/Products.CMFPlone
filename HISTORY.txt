@@ -6,6 +6,10 @@ Plone 2.0 - Fyuti
 
     RC3
 
+    - checkPermission is exposed in global_defines.  We check to see if you
+      can Modify portal content in folder_contents to determine whether or not
+      to show the external editor icon
+
     - Do not show order column if you can not Modify portal content for
       folder.  
 

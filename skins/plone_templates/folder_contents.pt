@@ -65,7 +65,7 @@
                                  getInfoFor python:wtool.getInfoFor;
                                  iface_tool here/portal_interface;
                                  orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
-                                 hasModifyPortalContentPermission python:mtool.checkPermission('Modify portal content', here);
+                                 canModifyFolderContent python:checkPermission('Modify portal content', here);
                                  isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                                  nosortclass python:test(isOrderable, 'nosort', '')">
         
@@ -156,7 +156,7 @@
                         >State</tal:state>&nbsp;</th>
                         
                         <th class="nosort" 
-                            tal:condition="python:isOrderable and hasModifyPortalContentPermission"
+                            tal:condition="python:isOrderable and canModifyFolderContent"
                         >&nbsp;<tal:order i18n:translate="listingheader_order"
                         >Order</tal:order>&nbsp;</th>
                     </tr>
@@ -197,7 +197,7 @@
                             </a>
 
                             <a href="absolute_url/external_edit"
-                               tal:condition="python:site_properties.ext_editor and item_typeinfo.getActionById('external_edit',None)"
+                               tal:condition="python:site_properties.ext_editor and item_typeinfo.getActionById('external_edit',None) and checkPermission('Modify Portal Content', item)"
                                tal:attributes="href string:${item/absolute_url}/external_edit">
                                 <img tal:replace="structure python:pencil_icon.tag(title='Edit with External Editor')" />
                             </a>
@@ -226,7 +226,7 @@
                             tal:attributes="class python:test(review_state, 'state-'+review_state, 'state-private')"
                             i18n:translate="">&nbsp;
                         </td>
-                        <td tal:condition="python:isOrderable and hasModifyPortalContentPermission">
+                        <td tal:condition="python:isOrderable and canModifyFolderContent">
                             <a href=""
                                title="Move item up"
                                i18n:attributes="title"
