@@ -21,6 +21,7 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
 
     - Added some discreet markers at the top level nav items to 
       easier identify the main sections.
+      [limi]
 
     - Added 'navtreeItem' and 'navLevelX' classes to the navigation
       tree, so it's possible to do funky stuff using only CSS to
