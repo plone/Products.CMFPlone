@@ -202,12 +202,6 @@ def addNewActions(self, portal):
                  condition='',
                  permission='View',
                  category='portal_tabs')
-    at.addAction('search_form',
-                 name='Search',
-                 action='string:$portal_url/search_form',
-                 condition='',
-                 permission='View',
-                 category='portal_tabs')
     at.addAction('content_status_history',
                  name='State',
                  action='string:${object_url}/content_status_history',
