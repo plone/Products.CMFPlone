@@ -1,3 +1,87 @@
+2003-11-06 01:26  limi
+
+	* skins/: plone_ecmascript/plone_javascripts.js,
+	  plone_images/textsize_huge.gif, plone_images/textsize_large.gif,
+	  plone_images/textsize_normal.gif,
+	  plone_images/textsize_small.gif, plone_styles/plone.css.dtml,
+	  plone_styles/ploneTextHuge.css, plone_styles/ploneTextLarge.css,
+	  plone_styles/ploneTextSmall.css,
+	  plone_templates/global_siteactions.pt, plone_templates/header.pt,
+	  plone_templates/main_template.pt (Plone-2_0-branch): Added the
+	  files for the style selector.
+
+2003-11-06 01:03  vinsci
+
+	* INSTALL.txt (Plone-2_0-branch): Typo fix, upgrade CMF requirement
+	  to 1.4.2 (security fix).
+
+2003-11-06 00:36  vinsci
+
+	* INSTALL.txt: Typo fix, upgrade CMF requirement to 1.4.2 (security
+	  fix).
+
+2003-11-05 22:59  shh42
+
+	* tests/: testMemberDataTool.py, testMembershipTool.py
+	  (Plone-2_0-branch): Move dummy objects out of the way to the end
+	  of the respective source files.
+
+2003-11-05 22:57  shh42
+
+	* tests/: testPloneTestCase.py, testSkeletonPloneTest.py,
+	  testSkeletonZopeTest.py (Plone-2_0-branch): Improve readability
+	  of the test_suite stanza (in the examples at least ;-)
+
+2003-11-05 22:51  shh42
+
+	* tests/: testCatalogTool.py, testPortalCreation.py
+	  (Plone-2_0-branch): Separate integration tests from tests written
+	  to expose bugs (bug tests).
+
+2003-11-05 22:46  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): fix error in
+	  diff
+
+2003-11-05 19:47  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): portal_workflow
+	  is no longer removed from ActionProvider
+
+2003-11-05 18:58  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): fixing
+	  scrollbar issues with the action menu - but it is still not
+	  clickable - somebody please have a look on the menu js
+
+2003-11-05 18:13  shh42
+
+	* tests/testPortalCreation.py (Plone-2_0-branch): Add a test for
+	  manage_beforeDelete being called recursively, when a portal is
+	  deleted.
+
+2003-11-05 18:11  plonista
+
+	* Portal.py (Plone-2_0-branch): Portal object's manage_beforeDelete
+	  should call the inherited manage_beforeDelete
+
+2003-11-05 13:09  shh42
+
+	* tests/: testCatalogTool.py, testContentSecurity.py,
+	  testCutPasteSecurity.py, testDefaultWorkflow.py,
+	  testMemberDataTool.py, testMembershipTool.py,
+	  testUserFolderBasics.py (Plone-2_0-branch): Make the tests
+	  actually use the new 'default_user' constant.
+
+2003-11-05 10:56  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): Introduce a
+	  'default_user' alias for its self-documenting qualities.
+
+2003-11-05 05:10  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-05 04:43  eaon
 
 	* skins/: plone_styles/plone.css.dtml,
