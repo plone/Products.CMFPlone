@@ -1,5 +1,5 @@
 ## Script (Python) "newsitem_edit"
-##parameters=text, field_title='', description='', choice=' Change ', subject=None
+##parameters=text, text_format, field_title='', description='', choice=' Change ', subject=None
 ##title=Edit a news item
 REQUEST=context.REQUEST
 
@@ -8,7 +8,9 @@ if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 
-context.edit(text, description)
+context.edit( text 
+            , description
+	    , text_format )
 
 REQUEST.set('title', field_title)
 

@@ -6,7 +6,7 @@
 <body>
 
   <div metal:fill-slot="main"
-       tal:define="global body here/CookedBody">
+       tal:define="len_text python:len(here.text);">
 
       <div class="contentHeader"
            metal:use-macro="here/portal_boxes/macros/contentHeader">
@@ -20,12 +20,12 @@
       </div>
         
         
-      <div tal:condition="python:len(here.text)==0">
+      <div tal:condition="not: len_text">
       This document has yet to be written, click the edit tab to change the document.
       </div>
         
-      <div tal:condition="python:len(here.text)!=0"
-           tal:content="structure body">
+      <div tal:condition="len_text"
+           tal:content="structure here/CookedBody">
       </div>
     
   </div>

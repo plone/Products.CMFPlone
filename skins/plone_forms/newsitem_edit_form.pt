@@ -94,6 +94,26 @@
         </div>
 
         <div class="row">
+            <span class="label">Format</span>
+	    <span class="field">
+	         <input class="noborder" type="radio" name="text_format"
+	                value="structured-text" id="cb_structuredtext"
+	                tal:attributes="checked python:test(here.text_format=='structured-text', 1, 0)" />
+	            <label for="cb_structuredtext">Structured Text</label> <br />
+	            <input class="noborder" type="radio" name="text_format" value="html" id="cb_html"
+	                   tal:attributes="checked python:test(here.text_format=='html', 1, 0)" />
+
+                    <label for="cb_html">HTML</label>
+            </span>
+            <span class="info">
+            Select which format you want to type the contents of this
+            document in. If you are unsure of which format to use, just
+            select Structured Text and type the document as you usually do.
+            </span>
+        </div>
+
+
+        <div class="row">
             <span class="label"></span>
             <span class="field">
                 <input class="context" type="submit" name="submit" value="Save" /> 
