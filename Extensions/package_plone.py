@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 
 def get_version():
@@ -7,33 +8,26 @@ def get_version():
 
 release=get_version()
 releasename='CMFPlone-%s' % release
-releasetar='CMFPlone%s.tar' % release
+releasetar='CMFPlone%s.tar.gz' % release
 releasezip='CMFPlone%s.zip' % release
 
-sh_cleanmisc = """find . | grep '~' | xargs rm -rf"""
-sh_cleanpyc = """find . | grep 'pyc' | xargs rm -rf"""
-sh_cleancvs = """ find . | grep 'CVS' | xargs rm -rf"""
-sh_cleanpyo = """find . | grep 'pyo' | xargs rm -rf"""
+# cleans pyc, pyo, temp files, CVS files and compiled po files
+sh_clean = """find . -name *.py[co] -or -name *~ -or -name ~* -or -name CVS -or \
+                     -name .#* -or -name .cvsignore -or -name *.mo| xargs rm -rf"""
 
-os.system("cd ..; rm -rf " + releasetar)
+# remove old stuff, create new directory
+os.system("cd ..; rm -rf %s %s %s" % (releasetar, releasezip, releasename))
+os.system("cd .. ; mkdir %s" % releasename)
 
-os.system("cd .. ; mkdir " + releasename)
-os.system("cd .. ; cp -rfL CMFPlone " + releasename)
-os.system("cd .. ; cp -rfL Formulator " + releasename)
-os.system("cd .. ; cp -rfL CMFActionIcons " + releasename)
-os.system("cd .. ; cp -rfL CMFQuickInstallerTool " + releasename)
-os.system("cd .. ; cp -rfL BTreeFolder2 " + releasename)
-os.system("cd .. ; cp -rfL GroupUserFolder " + releasename)
-os.system("cd .. ; cp -rfL CMFFormController " + releasename)
-os.system("cd .. ; cp -rfL PlacelessTranslationService " + releasename)
-os.system("cd .. ; cp -rfL i18n " + releasename + '/CMFPlone')
-
-os.system("cd ../" + releasename+";" + sh_cleanmisc)
-os.system("cd ../" + releasename+";" + sh_cleanpyc)
-os.system("cd ../" + releasename+";" + sh_cleancvs)
+# copy products
+for product in ('CMFPlone', 'Formulator', 'CMFActionIcons', 'CMFQuickInstallerTool',
+                'BTreeFolder2', 'GroupUserFolder', 'CMFFormController',
+                ' PlacelessTranslationService',
+               ):
+    os.system("cd .. ; cp -rfL %s %s" % (product, releasename))
 
 os.system("cd .. ; tar -cvf %s %s" % ( releasetar
                                      , releasename ) )
-os.system("cd .. ; gzip %s " % releasetar )
+# make zip
 os.system("cd .. ; zip -r %s %s" % (releasezip
                                     , releasename ))
