@@ -57,6 +57,8 @@
     <br />
   </tal:rights>
 
+  **temporarily placed here**
+  <span metal:use-macro="here/review_history/macros/review_history"/>
 
 
 </div>
