@@ -88,12 +88,12 @@ class TestChangeState(ZopeTestCase.Functional, PloneTestCase.PloneTestCase):
         self.b["effective_date_month"]=["02"]
         self.b["effective_date_day"]=["10"]
         self.b["effective_date_hour"]=["12"]
-        self.b["effective_date_minute"]=["0"]
+        self.b["effective_date_minute"]=["00"]
         self.b["expiration_date_year"]=["2004"]
         self.b["expiration_date_month"]=["04"]
         self.b["expiration_date_day"]=["20"]
         self.b["expiration_date_hour"]=["20"]
-        self.b["expiration_date_minute"]=["0"]
+        self.b["expiration_date_minute"]=["00"]
         self.b["comment"]="TEST"
         #print out the form controls
         #for control in self.b.controls:
