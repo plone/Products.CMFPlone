@@ -120,6 +120,8 @@ def initialize(context):
                            # pipeline registry
     import setFormatPatch  # patch DefaultDublinCoreImpl.setFormat to work
                            # around http://plone.org/collector/1323
+    import verifyObjectPastePatch   # patch PortalFolder to work around
+                                    # http://plone.org/collector/2183
 
     from Products.CMFCore import DirectoryView
     DirectoryView.registerDirectory('skins', cmfplone_globals)
