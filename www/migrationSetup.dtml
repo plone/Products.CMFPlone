@@ -40,7 +40,7 @@
             
             <form action="setupWidget" method="post">
                 <input type="hidden" name="widget" value="&dtml-widget_item;">
-                <input type="submit" value="Update" />
+                <input type="submit" value="Setup" />
             </form>
             
         </dtml-if>
