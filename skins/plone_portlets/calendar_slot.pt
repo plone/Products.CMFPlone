@@ -23,7 +23,7 @@
 	 anchor_method request/anchor_method|template/getId;">
       <!-- The calendar, rendered as a table -->
 
-      <table cellspacing="0" class="calendar" id="thecalendar">
+      <table cellspacing="0" class="calendar" id="thecalendar" summary="Calendar" i18n:attributes="summary">
 	<thead>
 	  <tr>
 	    <th id="calendar-previous">
