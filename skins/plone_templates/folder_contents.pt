@@ -189,7 +189,7 @@
                                    tal:attributes="value python:getRelativeContentURL(item)" />
                         </td>
 
-                        <td tal:define="action python:item_typeinfo.immediate_view;
+                        <td tal:define="action python:item_typeinfo.getActionById('view');
                                         url python:test(item_typeinfo.getId() in use_folder_contents,
                                                         item_url+'/folder_contents',
                                                         item_url+'/'+action);">
