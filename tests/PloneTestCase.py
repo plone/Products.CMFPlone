@@ -35,10 +35,15 @@ def setupPloneSite(app, id='portal', quiet=0):
     if not hasattr(aq_base(app), id):
         _start = time.time()
         if not quiet: ZopeTestCase._print('Adding Plone Site ... ')
-        user = User('PloneTestCase', '', ['Manager'], []).__of__(app.acl_users)
+        # Add user and log in
+        uf = app.acl_users
+        uf._doAddUser('PloneTestCase', '', ['Manager'], [])
+        user = uf.getUserById('PloneTestCase').__of__(uf)
         newSecurityManager(None, user)
+        # Add Plone Site
         factory = app.manage_addProduct['CMFPlone']
         factory.manage_addSite(id, '', create_userfolder=1)
+        # Log out
         noSecurityManager()
         get_transaction().commit()
         if not quiet: ZopeTestCase._print('done (%.3fs)\n' % (time.time()-_start,))
