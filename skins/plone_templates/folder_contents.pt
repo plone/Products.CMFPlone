@@ -218,7 +218,7 @@
                              
                             <img tal:define="lockable python:hasattr(item, 'wl_isLocked')"
                                  tal:condition="python:lockable and item.wl_isLocked()"
-                                 tal:replace="structure python:locked.tag(title='Locked by External Editor')" />
+                                 tal:replace="structure python:locked.tag(title='Locked')" />
 
                             </tal:block>
     
