@@ -3,8 +3,16 @@ Changelog for Plone
    (name of developer listed in brackets)
 
 Plone 2.0.1 - Jello
+      Fixed http://plone.org/collector/2948. Auto generated ids are now lower
+      case and the number is more random.
+      [tiran]
+
+    - Fixed http://plone.org/collector/2990. Nested groups don't break the 
+      prefs_group_members template any more.
+      [tiran]
 
     - Fixed http://plone.org/collector/3005 by catching non existing home folder.
+      [tiran]
 
     - Fixed http://plone.org/collector/2963. Allow access to
       Products.ZCTextIndex.ParseTree.ParseError and catch it
