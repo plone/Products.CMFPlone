@@ -7,8 +7,12 @@
 <metal:main fill-slot="main"
    tal:define="len_text python:len(here.text);">
 
+    <div metal:use-macro="here/document_actions/macros/document_actions">
+        Document actions (print, sendto etc)
+    </div>
+
     <h1 tal:content="here/title_or_id">
-    Title or id
+      Title or id
     </h1>
 
     <div id="description"
