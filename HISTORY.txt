@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
+Plone 2.0.5 - Backed Up Willie - Unreleased
 
     - Fixed http://plone.org/collector/3601 - Cancel in password_form redirected
       to the wrong page. Thanks to Varun for the patch.
@@ -13,7 +13,7 @@ Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
       [stefan]
 
     - Fixed http://plone.org/collector/3577 - Interchanged 'Edit' and 'Sharing'
-      tab on folder. Thanks to Vamsik for the patch.
+      tab on folder. Thanks to Vamsi for the patch.
       [jladage]
 
     - Made prefs_error_log_form a tad safer in the face of weird upgrade issues.
@@ -37,21 +37,21 @@ Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
     - Made the column style sheet only apply to Screen, not Print/Presentation/
       Handheld.
       [limi]
-    
+
     - Massively simplified the print style sheet, should work much better in all
       browsers now.
       [limi]
-          
+
     - Moved ploneCustom to be the last of the CSS declarations, so you can easily
       do Print/Presentation/Handheld customizations in the ploneCustom.css now.
       [limi]
-                
+
     - Fixed Presentation stryle sheet to not show the site actions.
       [limi]
-                      
+
     - More Google tweaking. Factored out the page title to a separate
       script and switched the order of the elements.
-      [limi][tesdal]
+      [limi] [tesdal]
 
     - Did a few things to improve the Google ranking of all Plone sites:
       Put all the style sheet declarations inside HTML comments, so Google
@@ -103,7 +103,7 @@ Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
       [rohrer]
 
     - Fixed http://plone.org/collector/3091 - new SetupWidgets can now
-      work without cut/pasting the existing code, and use inheritance 
+      work without cut/pasting the existing code, and use inheritance
       instead. Thanks to jccooper for the fix!
       [limi]
 
