@@ -14,13 +14,13 @@
     
     <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support  
          it. Site will still be viewable, but look a bit stripped :) --> 
-    <link rel="Stylesheet" type="text/css" href="dummy" 
+    <link rel="Stylesheet" type="text/css" href="" 
           tal:attributes="href string:$portal_url/ploneBasicNS.css" />
-    <link rel="Stylesheet" type="text/css" href="dummy" 
+    <link rel="Stylesheet" type="text/css" href="" 
           tal:attributes="href string:$portal_url/ploneStructureNS.css" />
-    <link rel="Stylesheet" type="text/css" href="dummy"
+    <link rel="Stylesheet" type="text/css" href=""
           tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
-    <link rel="Stylesheet" type="text/css" href="dummy"
+    <link rel="Stylesheet" type="text/css" href=""
           tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
 
     <!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
@@ -32,11 +32,11 @@
     </style>
 
     <!-- Style sheet used for printing -->
-    <link rel="stylesheet" type="text/css" media="print" href="dummy" 
+    <link rel="stylesheet" type="text/css" media="print" href="" 
           tal:attributes="href string:$portal_url/plonePrint.css"/>
 
     <!-- Style sheet used for presentations (Opera is the only browser supporting this at the moment) -->
-    <link rel="stylesheet" type="text/css" media="projection" href="dummy" tal:attributes="href string:$portal_url/plonePresentation.css"/>
+    <link rel="stylesheet" type="text/css" media="projection" href="" tal:attributes="href string:$portal_url/plonePresentation.css"/>
 
     <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
 
@@ -90,7 +90,7 @@
             </div>
 
             <a href="#" tal:attributes="href portal_url" >
-                <img src="img/logo.png" class="logo" alt="Plone" border="0" tal:attributes="src string:$portal_url/logo.png" />
+                <img src="" class="logo" alt="Plone" border="0" tal:attributes="src string:$portal_url/logo.png" />
             </a>
 
 
@@ -142,7 +142,7 @@
             <metal:block tal:repeat="action python:display_actions">
             <a href=""
                tal:attributes="href action/url">
-                <img src="dummy.gif" 
+                <img src="" 
                      alt="&gt;"
                      border="0"
                      tal:attributes="src string:$portal_url/linkOpaque.gif" />
@@ -151,6 +151,8 @@
             </a>
             </metal:block>
         </div>
+
+        <hr size="" class="netscape4" />
 
         <div class="pathBar"
              metal:define-macro="pathBar"
@@ -200,7 +202,7 @@
          tal:define="portal_message request/portal_status_message | nothing"
          tal:condition="portal_message"> 
 
-        <img src="info.gif" alt="Portal information" tal:attributes="src string:$portal_url/info.gif" />
+        <img src="" alt="Portal information" tal:attributes="src string:$portal_url/info.gif" />
 
         <strong tal:content="portal_message">Object changed.</strong> 
     </div>
