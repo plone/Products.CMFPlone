@@ -27,18 +27,18 @@ class DefaultCustomizationPolicy:
         
         #First we will deal with the CMF defaults.  This is ugly!
         pid='email_from_address'
-        if not hasattr(p,pid):  
-            p._setProperty(pid, getattr(portal,pid,''), 'string')
+        if not p.hasProperty(pid):  
+            p._setProperty(pid, portal[pid], 'string')
             if hasattr(portal, pid):
                 portal._delProperty(pid)    
         pid='email_from_name'
-        if not hasattr(p,pid): 
-            p._setProperty(pid, getattr(portal,pid,''), 'string')
+        if not p.hasProperty(pid): 
+            p._setProperty(pid, portal[pid], 'string')
             if hasattr(portal, pid):
                 portal._delProperty(pid)
         pid='validate_email'
-        if not hasattr(p,pid): 
-            p._setProperty(pid, getattr(portal,pid,''), 'boolean')
+        if not p.hasProperty(pid): 
+            p._setProperty(pid, portal[pid], 'boolean')
             if hasattr(portal, pid):
                 portal._delProperty(pid)
         #Now we add the lagniappe
