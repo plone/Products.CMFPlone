@@ -1,10 +1,7 @@
-from __future__ import nested_scopes
-import new
-
 import os
-import urllib
 import Globals
 from AccessControl import Owned, ClassSecurityInfo, getSecurityManager
+from AccessControl.Permission import Permission
 from Acquisition import aq_parent, aq_base, aq_inner, aq_get
 from OFS.SimpleItem import SimpleItem
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -16,36 +13,9 @@ from Products.CMFCore.utils import UniqueObject, getToolByName, format_stx
 from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
+ListType=type([])
 
-
-# Use the following to patch a single class instance (courtesy of 
-# http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66543)
-# Do not try this at home.  I mean it.
-def patch_instance_method(klass, method_name, new_method):
-    old_method = getattr(klass, method_name)
-    # bind the old method to the new
-    bound_new_method = lambda *args, **kwds: new_method(old_method, *args, **kwds)
-    # now patch the instance
-    setattr(klass, method_name, new.instancemethod(bound_new_method, klass, klass.__class__))
-
-# patched version of __ac_local_roles__ used for portal_factory created objects
-# We need the patch because the object is created during traversal, when the
-# currently authenticated user is unknown, so the owner is not set correctly.
-def patched__ac_local_roles__(__ac_local_roles__, self):
-    member = getToolByName(self, 'portal_membership').getAuthenticatedMember()
-    username = member.getUserName()
-    # try to get original __ac_local_roles__
-    local_roles = __ac_local_roles__
-    if callable(local_roles):
-        local_roles = local_roles(self)
-    local_roles = local_roles or {}
-    # amend original local roles (if any)
-    if not local_roles.has_key(username):
-        local_roles[username] = []
-    if not 'Owner' in local_roles[username]:
-        local_roles[username].append('Owner')
-    return local_roles
-
+FACTORY_INFO = '__factory__info__'
 
 # ##############################################################################
 # A class used for generating the temporary folder that will
@@ -67,8 +37,8 @@ class TempFolder(TempFolderBase):
         and getPhysicalPath() are designed to operate together.
         '''
         portal_factory = aq_parent(aq_inner(self))
-        path = aq_parent(portal_factory).getPhysicalPath() + (portal_factory.getId(), self.getId(),)
-
+        path = aq_parent(portal_factory).getPhysicalPath() + \
+            (portal_factory.getId(), self.getId(),)
         return path
 
     # override / delegate local roles methods
@@ -144,7 +114,6 @@ class TempFolder(TempFolderBase):
     def allowedContentTypes(self):
         return aq_parent(aq_parent(self)).allowedContentTypes()
 
-    # override __getitem__
     def __getitem__(self, id):
         # Zope's inner acquisition chain for objects returned by __getitem__ will be
         # portal -> portal_factory -> temporary_folder -> object
@@ -178,14 +147,11 @@ class TempFolder(TempFolderBase):
             obj = self._getOb(id)
             obj.unindexObject()  # keep obj out of the catalog
 
-            # patch object's __ac_local_roles__ method (see above)
-            patch_instance_method(obj, '__ac_local_roles__', patched__ac_local_roles__)
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
     # ignore rename requests since they don't do anything
     def manage_renameObject(self, id1, id2):
         pass
-
 
 
 # ##############################################################################
@@ -231,12 +197,10 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         """Returns FactoryTool docs formatted as HTML"""
         return self._docs
 
-
     def getFactoryTypes(self):
         if not hasattr(self, '_factory_types'):
             self._factory_types = {}
         return self._factory_types
-
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_setPortalFactoryTypes')
     def manage_setPortalFactoryTypes(self, REQUEST=None, listOfTypeIds=None):
@@ -258,98 +222,146 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
         if REQUEST:
             REQUEST.RESPONSE.redirect('manage_main')
 
-
     def doCreate(self, obj, id=None, **kw):
         """Create a real object from a temporary object."""
-        if not self.isTemporary(obj=obj):
-            return obj
-        else:
+        if self.isTemporary(obj=obj):
             if id is not None:
                 id = id.strip()
             if hasattr(obj, 'getId') and callable(getattr(obj, 'getId')):
                 obj_id = obj.getId()
             else:
                 obj_id = getattr(obj, 'id', None)
-            if obj_id is None:
-                raise Exception  # XXX - FIXME
             if not id:
                 id = obj_id
-            type_name = aq_parent(aq_inner(obj)).id
+            type_name = aq_parent(aq_inner(obj)).id  # get the ID of the TempFolder
             folder = aq_parent(aq_parent(aq_parent(aq_inner(obj))))
             folder.invokeFactory(id=id, type_name=type_name)
             obj = getattr(folder, id)
 
-            # give ownership to currently authenticated member if not anonymous
+            # give ownership to currently authenticated member if not anonymous  XXX is this necessary?
             membership_tool = getToolByName(self, 'portal_membership')
             if not membership_tool.isAnonymousUser():
                 member = membership_tool.getAuthenticatedMember()
                 obj.changeOwnership(member.getUser(), 1)
                 obj.manage_setLocalRoles(member.getUserName(), ['Owner'])
+        return obj
 
-            return obj
+    def _fixRequest(self):
+        """Our before_publishing_traverse call mangles URL0.  This fixes up
+        the REQUEST."""
+        factory_info = self.REQUEST.get(FACTORY_INFO, None)
+        if not factory_info:
+            return
+        stack = factory_info['stack']
+        URL = self.REQUEST.URL0 + '/' + '/'.join(stack)
+        self.REQUEST.set('URL', URL)
 
+        url_list = URL.split('/')
+        n = 0
+        while len(url_list) > 0 and url_list[-1] != '':
+            self.REQUEST.set('URL%d' % n, '/'.join(url_list))
+            url_list = url_list[:-1]
+            n = n + 1
+
+        url_list = URL.split('/')
+        m = 0
+        while m < n:
+            self.REQUEST.set('BASE%d' % m, '/'.join(url_list[0:len(url_list)-n+1+m]))
+            m = m + 1
+        # XXX fix URLPATHn, BASEPATHn here too?
 
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""
         ob = aq_parent(aq_inner(obj))
         return hasattr(ob, 'meta_type') and ob.meta_type == TempFolder.meta_type
 
+    def __before_publishing_traverse__(self, other, REQUEST):
+        if REQUEST.get(FACTORY_INFO, None):
+            del REQUEST[FACTORY_INFO]
 
-#    index_html = None  # call __call__, not index_html
+        stack = REQUEST.get('TraversalRequestNameStack')
+        stack = [str(s) for s in stack]  # convert from unicode if necessary (happens in Epoz for some weird reason)
+        # need 2 more things on the stack at least for portal_factory to kick in:
+        #    (1) a type, and (2) an id
+        if len(stack) < 2: # ignore
+            return
+        type_name = stack[-1]
+        types_tool = getToolByName(self, 'portal_types')
+        # make sure this is really a type name
+        if not type_name in types_tool.listContentTypes():
+            return # nope -- do nothing
 
+        id = stack[-2]
+        intended_parent = aq_parent(self)
+        if hasattr(intended_parent, id):
+            return # do normal traversal via __bobo_traverse__
+        
+        # about to create an object - prevent further traversal
+        stack.reverse()
+        factory_info = {'stack':stack}
+        REQUEST.set(FACTORY_INFO, factory_info)
+        REQUEST.set('TraversalRequestNameStack', [])
 
-    def getTempFolder(self, type_name):
-        factory_info = self.REQUEST.get('__factory_info__', {})
+    def __bobo_traverse__(self, REQUEST, name):
+        # __bobo_traverse__ can be invoked directly by a restricted_traverse method call
+        # in which case the traversal stack will not have been cleared by __before_publishing_traverse__
+        name = str(name) # fix unicode weirdness
+        types_tool = getToolByName(self, 'portal_types')
+        if not name in types_tool.listContentTypes():
+            return getattr(self, name) # not a type name -- do the standard thing
+        return self._getTempFolder(str(name)) # a type name -- return a temp folder
+
+    security.declarePublic('__call__')
+    def __call__(self, *args, **kwargs):
+        """call method"""
+        factory_info = self.REQUEST.get(FACTORY_INFO, {})
+        self._fixRequest()
+        factory_info = self.REQUEST.get(FACTORY_INFO, {})
+        stack = factory_info['stack']
+        type_name = stack[0]
+        id = stack[1]
+
+        # do a passthrough if parent contains the id
+        if id in aq_parent(self).objectIds():
+            return aq_parent(self).restrictedTraverse('/'.join(stack[1:]))(*args, **kwargs)
+
+        tempFolder = self._getTempFolder(type_name)
+        # Mysterious hack that fixes some problematic interactions with SpeedPack:
+        #   Get the first item in the stack by explicitly calling __getitem__ 
+        temp_obj = tempFolder.__getitem__(id)
+        stack = stack[2:]
+        if stack:
+            obj = temp_obj.restrictedTraverse('/'.join(stack))
+        else:
+            obj = temp_obj
+
+        return mapply(obj, self.REQUEST.args, self.REQUEST,
+                               call_object, 1, missing_name, dont_publish_class,
+                               self.REQUEST, bind=1)
+
+    index_html = None  # call __call__, not index_html
+
+    def _getTempFolder(self, type_name):
+        factory_info = self.REQUEST.get(FACTORY_INFO, {})
         tempFolder = factory_info.get(type_name, None)
         if not tempFolder:
-            type_name = urllib.unquote(type_name)
             # make sure we can add an object of this type to the temp folder
             types_tool = getToolByName(self, 'portal_types')
-            if not type_name in types_tool.listContentTypes():
-                raise ValueError, 'Unrecognized type %s\n' % type_name
             if not type_name in types_tool.TempFolder.allowed_content_types:
                 # update allowed types for tempfolder
                 types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
 
-            tempFolder = TempFolder(type_name)
-            tempFolder.parent = aq_parent(self)
-            tempFolder = aq_inner(tempFolder).__of__(self)
-            tempFolder.manage_permission(CMFCorePermissions.AddPortalContent, ('Anonymous','Authenticated',), acquire=0 )
-            tempFolder.manage_permission(CMFCorePermissions.ModifyPortalContent, ('Anonymous','Authenticated',), acquire=0 )
-            tempFolder.manage_permission('Copy or Move', ('Anonymous','Authenticated',), acquire=0 )
+            tempFolder = TempFolder(type_name).__of__(self)
+            intended_parent = aq_parent(self)
+            for p in intended_parent.ac_inherited_permissions(1):
+                name, value = p[:2]
+                p=Permission(name,value,self)
+                roles=p.getRoles(default=[])
+                tempFolder.manage_permission(name, tuple(roles), acquire=type(roles) is ListType)
+            factory_info[type_name] = tempFolder
+            self.REQUEST.set(FACTORY_INFO, factory_info)
         else:
             tempFolder = aq_inner(tempFolder).__of__(self)
-        factory_info[type_name] = tempFolder
-        self.REQUEST.set('__factory_info__', factory_info)
-
         return tempFolder
-
-
-    def __bobo_traverse__(self, REQUEST, name):
-        """ """
-        # The portal factory intercepts URLs of the form
-        #   .../portal_factory/TYPE_NAME/ID/...
-        # where TYPE_NAME is a type from portal_types.listContentTypes() and
-        # ID is the desired ID for the object.  For intercepted URLs,
-        # portal_factory creates a temporary object of type TYPE_NAME with
-        # id ID and puts it on the traversal stack.  The context for the
-        # temporary object is set to portal_factory's context.
-        #
-        # If the object with id ID already exists in portal_factory's context,
-        # portal_factory returns the existing object.
-        #
-        # All other requests are passed through unchanged.
-        #
-
-        # try to extract a type string from next piece of the URL
-
-        # unmangle type name
-        type_name = urllib.unquote(name)
-        types_tool = getToolByName(self, 'portal_types')
-        # make sure this is really a type name
-        if not type_name in types_tool.listContentTypes():
-            # nope -- do nothing
-            return getattr(self, name)
-        return self.getTempFolder(name)
 
 Globals.InitializeClass(FactoryTool)
