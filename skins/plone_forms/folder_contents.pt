@@ -20,6 +20,7 @@
                  global filter decodedFilter;
                  global portal_url here/portal_url;
                  global member here/portal_membership/getAuthenticatedMember;
+                 standalone python:1;
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
@@ -71,12 +72,10 @@
                    class="listing"
                    summary="Content listing"
                    cellpadding="0" cellspacing="0"
-                   tal:define="folder_contents folder_contents|nothing;
-                               folderfilter folderfilter|nothing"
                    metal:define-macro="folder_listing">
                    
                 <thead >
-                    <tr tal:condition="folderfilter">
+                    <tr tal:condition="standalone|nothing">
                         <td class="top" colspan="6">
 
                             <!-- Filter pulldown -->
@@ -139,7 +138,7 @@
                         </td>
                     </tr> 
 
-                    <metal:block tal:condition="folder_contents">
+                    <metal:block tal:condition="folder_contents|not:standalone|nothing">
                     <tr>
                         <th name="nosort"><input class="noborder" 
                                                  type="image"
@@ -156,7 +155,7 @@
                     </metal:block>
                 </thead>
 
-                <metal:block tal:condition="folder_contents">
+                <metal:block tal:condition="folder_contents|not:standalone|nothing">
                 <tbody>
                 <metal:block tal:repeat="item batch"> 
                     <tr border="1"
