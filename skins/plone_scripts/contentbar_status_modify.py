@@ -7,20 +7,8 @@
 ##parameters=workflow_action, comment='', effective_date=None, expiration_date=None
 ##title=Copy object from a folder to the clipboard
 ##
-portal_workflow=context.portal_workflow
-current_state=portal_workflow.getInfoFor(context, 'review_state')
+context.content_status_modify(workflow_action, comment, effective_date, expiration_date)
 
-if workflow_action!=current_state and not effective_date:
-    effective_date=DateTime()
-
-context.plone_utils.contentEdit( context
-                               , effective_date=effective_date
-                               , expiration_date=expiration_date )
-
-if workflow_action!=current_state:
-    context.portal_workflow.doActionFor( context
-                                       , workflow_action
-                                       , comment=comment )
 msg='portal_status_message=Your+contents+status+has+been+modified.'
 
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()

@@ -76,7 +76,7 @@ class PloneTool(UniqueObject, SimpleItem):
         """
         mt = getToolByName(self, 'portal_membership')
         if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
-            raise Unauthorized
+            raise 'Unauthorized' #Hooray!  You can not import Unauthorized in TTW Scripts
 
         REQUEST=self.REQUEST
         pfx=self.field_prefix
