@@ -38,6 +38,9 @@ def two05_alpha1(portal):
         # Switch over to ATCT
         migrateToATCT(portal, out)
 
+    # Add non_default_page_types property, needed by the 'display' drop-down
+    addNonDefaultPageTypesProperty(portal, out)
+
     return out
 
 
@@ -85,6 +88,15 @@ def installATContentTypes(portal, out):
     for product_name in ('ATContentTypes',):
         installOrReinstallProduct(portal, product_name, out)
 
+def addNonDefaultPageTypesProperty(portal, out):
+    """portal_properties/site_properties/non_default_page_types
+    """
+    siteProps = portal.portal_properties.site_properties
+    if not siteProps.hasProperty('non_default_page_types'):
+        siteProps.manage_addProperty('non_default_page_types', 
+                                        ['Folder', 'Large Plone Folder',
+                                         'Image', 'File'], 'lines')
+    out.append("non_default_page_types added to site_properties")
 
 def migrateToATCT(portal, out):
     """Switches portal to ATContentTypes."""

@@ -13,7 +13,6 @@ from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesW
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
 from Products.CMFPlone.migrations.v2.two04_two05 import addFolderListingActionToTopic
 
-
 class TestMigrations(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -56,6 +55,14 @@ class TestMigrations(PloneTestCase.PloneTestCase):
         self.types._delObject('Topic')
         addFolderListingActionToTopic(self.portal, [])
 
+    # 2.1 alpha 1 tests
+    
+    def testAddNonDefaultPageTypesProperty(self):
+        # Ensure we now have the non_default_page_types property
+        siteprops = self.portal.portal_properties.site_properties
+        self.failUnlessEqual(siteprops.getProperty('non_default_page_types', ()),
+                             ('Folder', 'Large Plone Folder', 'Image', 'File'))
+                                
 
 def test_suite():
     from unittest import TestSuite, makeSuite
