@@ -108,6 +108,7 @@ def initialize(context):
 
     # Setup migrations
     import migrations
+    migrations.executeMigrations()
     migrations.registerMigrations()
 
     import setup           # Configuration Machinery - Andy we need to fix
