@@ -37,6 +37,7 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
                                     ' (Private Folder Workflow [Plone])')
 
         wf_tool.doActionFor(portal,'publicize', comment='The portal object itself must be visible')
+        wf_tool.doActionFor(portal.Members, 'publish', comment='Publish Members folder so navigation slot works')
         wf_tool.doActionFor(portal.index_html, 'show', comment='The frontpage should be public also.')
 
         portal.manage_permission(AddPortalMember,('Manager',))
