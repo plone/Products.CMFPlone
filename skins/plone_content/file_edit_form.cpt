@@ -40,7 +40,7 @@
 
                 <div class="formHelp" i18n:translate="help_shortname">
                 Should not contain spaces, underscores or mixed case. 
-                Short Name is part of the web address for the file.
+                Short Name is part of the file's web address.
                 </div>
     
                 <div tal:content="error">Validation error output</div>
