@@ -28,14 +28,14 @@
         </span>
 
         <span class="small">
-            <div metal:use-macro="here/workflow_review_slot/macros/review_box">
-            Review box
+            <div metal:use-macro="here/favorites_slot/macros/favoritesBox">
+            Favorites box
             </div>
         </span>
     
         <span class="small">
-            <div metal:use-macro="here/favorites_slot/macros/favoritesBox">
-            Favorites box
+            <div metal:use-macro="here/workflow_review_slot/macros/review_box">
+            Review box
             </div>
         </span>
     
