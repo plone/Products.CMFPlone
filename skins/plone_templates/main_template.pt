@@ -11,7 +11,6 @@
   </metal:block>
   
   <metal:block metal:fill-slot="head_slot">
-    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0')" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Pragma', 'no-cache')" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Last-Modified', DateTime().toZone('GMT').rfc822())" />
