@@ -11,7 +11,8 @@
        tal:omit-tag=""
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
                    navBatchStart request/navBatchStart | python:None;
-                   tree python:here.plone_utils.createNavigationTreeBuilder(root,navBatchStart);
+                   portalObject here/portal_url/getPortalObject;
+                   tree python:here.plone_utils.createNavigationTreeBuilder(portalObject,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;
                    listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
@@ -88,7 +89,7 @@
                            <span class="currentNavItem">
                         </tal:block>
                         <a href="" 
-                           tal:condition="python: sibling.meta_type != 'CMF Site'"
+                           tal:condition="python: sibling != portalObject"
                            tal:define="url string:${sibling/absolute_url}/${stdCommand}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');"
@@ -100,7 +101,7 @@
                         </a>
                         
                         <a href="" 
-                           tal:condition="python: sibling.meta_type == 'CMF Site'"
+                           tal:condition="python: sibling == portalObject"
                            tal:define="url string:${sibling/absolute_url}/${stdCommand}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');">
