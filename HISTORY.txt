@@ -4,6 +4,24 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Removed Domains from the user preferences - this field makes it very easy to 
+      lock yourself out of your account, and should therefore only be available to
+      administrators.
+      [limi]
+    
+    - Bug fix for http://plone.org/collector/1154 (SearchableText should be ZCTextIndex)
+      [kapil]
+     
+    - Added unicode splitter for zctextindex element pipeline from silva (w/ license).
+      [kapil]
+     
+    - Added lexicon addition to migration.
+      [kapil]
+     
+    - Added lexicon addition and recreation of searchabletext index as zctext to catalog
+      tool's manage_afterAdd.
+      [kapil]
+
     - Added new directories: 'plone_portlets' (formerly 'plone_templates/ui_slots'),
       'plone_form_scripts' (formerly 'plone_scripts/form_scripts') - these two to 
       avoid having skin paths two levels deep - 'cmf_legacy' 
