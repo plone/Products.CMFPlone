@@ -5,10 +5,13 @@
 if request['REQUEST_METHOD'] != 'GET':
     return context, [request['REQUEST_METHOD']]
 
+default_pages = ['index_html', ]
+pages = getattr(context, 'default_page', [])
 props = context.portal_properties.site_properties
-pages = ['index_html', ]
-if props.hasProperty('default_page'):
-    pages = props.getProperty('default_page')
+
+# Yeeha. Must be good at logic.
+pages = not pages and props.hasProperty('default_page') \
+        and props.getProperty('default_page') or pages or default_pages
 
 if pages:
     # loop through each page given and 

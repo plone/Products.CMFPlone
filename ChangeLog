@@ -1,3 +1,10 @@
+2003-07-29  Sidnei da Silva  <sidnei@redesul.com.br>
+
+	* skins/plone_scripts/browserDefault.py (pages): Make limi
+	happy. Lookup default_page as a property of the folder. *Needs* to
+	be a lines property (each name will be looked up on folder
+	contents, and the first found will be returned).
+
 2003-06-20 Philipp Auersperg < phil at bluedynamics.com>
     * PloneControlPanel.py:
 
