@@ -26,8 +26,7 @@
             This item does not have any body text, click the edit tab to change it.
         </p>
     
-        <div id="bodyContent"
-             class="stx"
+        <div class="stx"
              tal:condition="len_text"
              tal:attributes="class python:test(here.text_format=='structured-text', 'stx', 'plain')">
             <div tal:replace="structure python:here.CookedBody(stx_level=2)" />
