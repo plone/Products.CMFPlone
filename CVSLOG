@@ -1,3 +1,70 @@
+2004-01-06 03:35  runyaga
+
+	* FolderWorkflow.py, PloneFolder.py, Portal.py (Plone-2_0-branch):
+	  attempt to reconcile the chacnges I made for limi.  unit test is
+	  still failing.  and now FolderWorkflow's allow Members tosee
+	  'visible' contents - but teh tests will not produce the correct
+	  results
+
+2004-01-06 00:40  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Added an explanation of the
+	  folder_listing/folder_contents changes.
+
+2004-01-06 00:00  runyaga
+
+	* migrations/v2/plone2_base.py, setup/ConfigurationMethods.py
+	  (Plone-2_0-branch): move 'sharing' tab to portal_actions for all
+	  objects
+
+2004-01-05 23:22  runyaga
+
+	* PloneFolder.py, Portal.py, migrations/v2/plone2_base.py
+	  (Plone-2_0-branch): by default folder.listFolderContents only
+	  requires 'View' permission.  'List folder contents' is no longer
+	  used.  Atleast for Plone Folders.  PloneSite was not being
+	  Inititalized - fixed.
+
+2004-01-05 19:06  runyaga
+
+	* ActionIconsTool.py (Plone-2_0-branch): wrong import - fixed
+
+2004-01-05 18:49  runyaga
+
+	* ActionIconsTool.py (Plone-2_0-branch): invalidate iconcache when
+	  Actionicons change.. we have to do this or we will get TONS of
+	  newbies asking questions
+
+2004-01-05 17:26  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): fix issue 2217
+
+2004-01-05 17:20  runyaga
+
+	* skins/plone_form_scripts/register.cpy (Plone-2_0-branch): bowery
+	  marc's fix for issue 2232
+
+2004-01-05 17:06  runyaga
+
+	* migrations/v2/plone2_base.py (Plone-2_0-branch): use te correct
+	  method
+
+2004-01-05 17:03  runyaga
+
+	* migrations/v2/plone2_base.py (Plone-2_0-branch): add action icon
+
+2004-01-05 16:59  runyaga
+
+	* migrations/v2/plone2_base.py (Plone-2_0-branch): fix for 2255
+
+2004-01-05 16:39  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): fix issue 2217
+
+2004-01-05 05:04  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-04 05:05  longsleep
 
 	* CVSLOG: auto generated new changelog
