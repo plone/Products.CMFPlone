@@ -1,3 +1,106 @@
+2004-02-20 04:36  limi
+
+	* version.txt (Plone-2_0-branch): Changing version number to
+	  2.0-rc6, as it's obvious there will be one.
+
+2004-02-20 04:21  bitranch
+
+	* skins/plone_portlets/portlet_login.pt (Plone-2_0-branch): don't
+	  show login portlet when login_form is current page (so page
+	  validates)
+
+2004-02-20 02:44  limi
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): You can now
+	  click the headlines as well as the Read More link on news items.
+
+2004-02-20 02:25  limi
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  Added cookies to fix the "can't log in after switching font" bug.
+	  Thanks to Seb Potter :)
+
+2004-02-19 22:52  shh42
+
+	* tests/testQueryCatalog.py (Plone-2_0-branch): Make it so that all
+	  of Joel's valuable tests are actually run. Feeling even warmer
+	  and fuzzier now.
+
+2004-02-19 22:12  pupq
+
+	* skins/plone_scripts/queryCatalog.py, tests/testQueryCatalog.py
+	  (Plone-2_0-branch): Fixes #2684, #2670 in Collector. Only quote
+	  logic if flag is passed (off for default, so we're not changing
+	  any behavior in RCs!). Only quote fields that are requested, so
+	  we never try to quote keyword fields, etc. Handle empty strings
+	  and lists better. Created unit tests for queryCatalog.
+
+2004-02-19 17:31  pupq
+
+	* HISTORY.txt (Plone-2_0-branch): Added note on use_folder_contents
+	  cleanup.
+
+2004-02-19 17:08  limi
+
+	* skins/plone_content/event_view.pt (Plone-2_0-branch): Beautified
+	  output a bit.
+
+2004-02-19 16:57  limi
+
+	* skins/plone_content/event_view.pt (Plone-2_0-branch): Removed
+	  excess whitespace.
+
+2004-02-19 16:55  limi
+
+	* skins/plone_content/event_view.pt (Plone-2_0-branch): Fixed it so
+	  events on the same day aren't showing the date twice.
+
+2004-02-19 15:32  eaon
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_templates/global_sections.pt (Plone-2_0-branch): fix for
+	  #2716
+
+2004-02-19 10:02  panjunyong
+
+	* skins/plone_prefs/personalize_form.cpt (Plone-2_0-branch):
+	  'value' property is not needed by check input element.  structure
+	  of 'listed' field should the same as 'visible_ids' field's.
+
+2004-02-19 09:59  panjunyong
+
+	* skins/plone_prefs/prefs_user_details.pt (Plone-2_0-branch): use
+	  the plone 2 standard structure. much of the code is copy from
+	  personalize_form I have tested it.
+
+2004-02-19 08:30  panjunyong
+
+	* skins/plone_prefs/prefs_group_details.pt (Plone-2_0-branch): add
+	  i18n for group property names
+
+2004-02-19 07:51  panjunyong
+
+	* skins/plone_prefs/prefs_install_products_form.pt
+	  (Plone-2_0-branch): add missing i18n: "text_product_description /
+	  Product Description"
+
+2004-02-19 07:39  pupq
+
+	* migrations/v2/release_candidates.py,
+	  skins/plone_portlets/portlet_navigation.pt,
+	  skins/plone_templates/folder_contents.pt (Plone-2_0-branch): See
+	  collector #2712.  Split the existing property use_folder_contents
+	  into two new properties,
+	  navtree_properties/typesLinkToFolderContents and
+	  site_properties/typesLinkToFolderContentsInFC.  Added migration
+	  to add these new properties and remove existing
+	  use_folder_contents.	Per conversation w/limi, see plone-cabal
+	  message of 18 Feb 2004.
+
+2004-02-19 04:50  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-18 04:51  longsleep
 
 	* CVSLOG: auto generated new changelog
