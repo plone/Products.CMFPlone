@@ -24,6 +24,8 @@
 
 /* <dtml-with base_properties> (do not remove this :) */
 
+<dtml-call "REQUEST.set('portal_url', portal_url())">
+
 /* The basic elements: */
 body {
     font: &dtml-fontBaseSize; <dtml-var fontFamily>;
@@ -132,7 +134,7 @@ ul {
     list-style-type: square;
     margin: 0.5em 0 0 1.5em;
     padding:0;
-    list-style-image: url("bullet.gif");
+    list-style-image: url(&dtml-portal_url;/bullet.gif);
 }
 
 ol {
@@ -257,7 +259,7 @@ pre {
 /* Logo properties */
  
 #portal-logo {
-    background: url(<dtml-var portal_url>/<dtml-var logoName>) no-repeat;
+    background: url(&dtml-portal_url;/&dtml-logoName) no-repeat;
     border: 0;
     margin: 0.75em 0em 0.75em 1.5em;
     padding: 0;
@@ -383,7 +385,7 @@ pre {
     list-style: none;
 }
 #portal-personaltools .portalUser {
-    background: transparent url(<dtml-var portal_url>/user.gif) center left no-repeat;
+    background: transparent url(&dtml-portal_url;/user.gif) center left no-repeat;
     padding-left: 15px;
 }
 
@@ -395,7 +397,7 @@ pre {
 } /* Used on all descriptions relevant to those not logged in */
  
 #portal-personaltools li {
-    background: transparent url(<dtml-var portal_url>/linkOpaque.gif) center left no-repeat;
+    background: transparent url(&dtml-portal_url;/linkOpaque.gif) center left no-repeat;
     padding-left: 8px;
     color: &dtml-globalFontColor;;
     margin-left: 1em;
@@ -494,7 +496,7 @@ pre {
     margin: 0;
 }
 .contentActions li {
-    background-image: url(<dtml-var portal_url>/arrowDownAlternative.gif);
+    background-image: url(&dtml-portal_urli;/arrowDownAlternative.gif);
     background-repeat: no-repeat;
     background-position: center right;
     z-index: 4;
@@ -709,7 +711,7 @@ pre {
 
 .standalone,
 .documentEditable * .standalone {
-    background: &dtml-globalBackgroundColor; url(linkOpaque.gif) 9px 1px no-repeat;
+    background: &dtml-globalBackgroundColor; url(&dtml-portal_url;/linkOpaque.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
     margin-bottom: 1em;
@@ -718,7 +720,7 @@ pre {
 }
 .context,
 .documentEditable * .context {
-    background: transparent url(linkTransparent.gif) 9px 1px no-repeat;
+    background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
     margin-bottom: 1em;
@@ -727,7 +729,7 @@ pre {
 }
 .destructive,
 .documentEditable * .destructive {
-    background: &dtml-notifyBackgroundColor; url(linkTransparent.gif) 9px 1px no-repeat;
+    background: &dtml-notifyBackgroundColor; url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;  
     cursor: pointer;
     font-size: &dtml-fontSmallSize;;
@@ -738,7 +740,7 @@ pre {
 input.searchButton {
     font-size: 100%;
     margin-bottom: &dtml-borderWidth; ! important;
-    background: &dtml-backgroundColor; url(search_icon.gif) 2px 1px no-repeat;
+    background: &dtml-backgroundColor; url(&dtml-portal_url;/search_icon.gif) 2px 1px no-repeat;
     cursor: pointer;
     padding: 1px 1px 1px 15px;
     text-transform: &dtml-textTransform;;
@@ -778,7 +780,7 @@ input.searchButton {
 }
 
 .fieldRequired {
-    background: url("<dtml-var portal_url>/required.gif") center left no-repeat;
+    background: url(&dtml-portal_url;/required.gif) center left no-repeat;
     padding: 0 0 0 8px;
     color: &dtml-backgroundColor;;
 } 
@@ -1142,48 +1144,48 @@ ul.configletDetails li label {
 
 .link-parent {
     display: block;
-    background: transparent url("<dtml-var portal_url>/arrowUp.gif") 4px 5px no-repeat;
+    background: transparent url(&dtml-portal_url;/arrowUp.gif) 4px 5px no-repeat;
     padding: 1px 0px 1px 16px;
     font-size: &dtml-fontSmallSize;;
 }
 
 .link-user {
-    background: transparent url("<dtml-var portal_url>/user.gif") 0 1px no-repeat;
+    background: transparent url(&dtml-portal_url;/user.gif) 0 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-external {
-    background: transparent url("<dtml-var portal_url>/link_icon.gif") 0px 1px no-repeat;
+    background: transparent url(&dtml-portal_url;/link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-https {
-    background: transparent url("<dtml-var portal_url>/lock_icon.gif") 0px 1px no-repeat;
+    background: transparent url(&dtml-portal_url;/lock_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-mailto {
-    background: transparent url("<dtml-var portal_url>/mail_icon.gif") 0px 1px no-repeat;
+    background: transparent url(&dtml-portal_url;/mail_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-ftp {
-    background: transparent url("<dtml-var portal_url>/file_icon.gif") 0px 1px no-repeat;
+    background: transparent url(&dtml-portal_url;/file_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-irc {
-    background: transparent url("<dtml-var portal_url>/discussionitem_icon.gif") 0px 1px no-repeat;
+    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-callto {
-    background: transparent url("<dtml-var portal_url>/phone_icon.gif") 0px 1px no-repeat;
+    background: transparent url(&dtml-portal_url;/phone_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
 
 .link-comment {
-    background: transparent url("<dtml-var portal_url>/discussionitem_icon.gif") center left no-repeat;
+    background: transparent url(&dtml-portal_url;/discussionitem_icon.gif) center left no-repeat;
     padding: 1px 0px 1px 16px !important;
 }
 

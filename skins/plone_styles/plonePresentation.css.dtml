@@ -16,8 +16,9 @@
 
 /* <dtml-with base_properties> (do not remove this :) */
 
+<dtml-call "REQUEST.set('portal_url', portal_url())" >
 body {
-    background: White url(<dtml-var portal_url>/logo.jpg) no-repeat fixed 95% 95%;
+    background: White url(&dtml-portal_url;/logo.jpg) no-repeat fixed 95% 95%;
     font-family: <dtml-var fontFamily>;
     font-size: 50px !important;
     color: Black;
@@ -84,7 +85,7 @@ p {
 }
 
 ul { 
-    list-style-image: url("bulletBig.gif"); 
+    list-style-image: url(&dtml-portal_url;/bulletBig.gif); 
 }
 
 pre { 
