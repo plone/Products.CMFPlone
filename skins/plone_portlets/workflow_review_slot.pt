@@ -25,7 +25,7 @@
                     <a href="#"
                        class="marker"
                        tal:attributes="href string:${o/absolute_url}/view;
-                                       title obj/Description">
+                                       title o/Description">
                         <span tal:replace="o/title_or_id">
                         Extended Calendar Product
                         </span>
