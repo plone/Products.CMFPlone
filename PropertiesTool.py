@@ -1,3 +1,4 @@
+from ComputedAttribute import ComputedAttribute
 from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.Expression import Expression
@@ -9,7 +10,6 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 from Globals import InitializeClass
 
-#from Products.CMFCore.utils SimpleItemWithProperties
 from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -21,27 +21,35 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
     toolicon = 'skins/plone_images/topic_icon.gif'
 
     meta_type = ToolNames.PropertiesTool
-    meta_types = all_meta_types =  ( ( { 'name' : 'Plone Property Sheet'
-                                       , 'action' : 'manage_addPropertySheetForm' }, ) )
+    meta_types = all_meta_types =  ((
+        {'name' : 'Plone Property Sheet',
+         'action' : 'manage_addPropertySheetForm'
+         },
+        ))
 
-    __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, 
+    __implements__ = (PloneBaseTool.__implements__,
+                      BaseTool.__implements__,
                       Folder.__implements__, )
 
-    manage_options = ( (Folder.manage_options[0], ) +
-                        BaseTool.manage_options  )
+    manage_options = ((Folder.manage_options[0],) +
+                        BaseTool.manage_options)
 
-    manage_addPropertySheetForm = PageTemplateFile( 'www/addPropertySheet'
-                                                  , globals() )
+    manage_addPropertySheetForm = PageTemplateFile('www/addPropertySheet',
+                                                   globals())
 
     security = ClassSecurityInfo()
 
     def title(self):
-        """ return BaseTool title """
+        """ Return BaseTool title
+        """
         return BaseTool.title(self)
 
+    title = ComputedAttribute(title, 1)
+
     def addPropertySheet(self, id, title='', propertysheet=None):
-        """ add a new PropertySheet """
-        o=SimpleItemWithProperties(id, title)
+        """ Add a new PropertySheet
+        """
+        o = SimpleItemWithProperties(id, title)
 
         # copy the propertysheet values onto the new instance
         if propertysheet is not None:
@@ -58,10 +66,10 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
         self._setObject(id, o)
 
 
-    def manage_addPropertySheet(self, id, title='', propertysheet=None, REQUEST=None):
-        """ adds a instance of a Property Sheet
-            if handed a propertysheet put the
-            properties into new propertysheet.
+    def manage_addPropertySheet(self, id, title='',
+                                propertysheet=None, REQUEST=None):
+        """ Add a instance of a Property Sheet if handed a
+        propertysheet put the properties into new propertysheet.
         """
         self.addPropertySheet(id, title, propertysheet)
 
@@ -73,7 +81,8 @@ class PropertiesTool(PloneBaseTool, Folder, BaseTool):
     #
     security.declareProtected(ManagePortal, 'editProperties')
     def editProperties(self, props):
-        '''Change portal settings'''
+        """Change portal settings
+        """
         aq_parent(aq_inner(self)).manage_changeProperties(props)
         # keep this bit of hackery for backwards compatibility
         if props.has_key('smtp_server'):
@@ -104,4 +113,4 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
     manage_options = ( PropertyManager.manage_options
                      + SimpleItem.manage_options)
 
-InitializeClass( SimpleItemWithProperties )
+InitializeClass(SimpleItemWithProperties)
