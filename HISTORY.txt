@@ -4,9 +4,13 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Added Full Screen view for images.
+      [limi]
+
     - Implemented 'management_page_charset' as ComputedAttribute returning
       the value of portal_properties/site_properties/default_charset.
       Also see http://plone.org/collector/2778.
+      This means Unicode characters are show correctly in the ZMI too.
       [stefan]
 
     - Added years range properties in site_properties:
