@@ -19,6 +19,10 @@
             <tr>
     
                 <td class="left">
+
+                    <div metal:use-macro="here/portal_boxes/macros/CMFTopic_navigation_box">
+                    CMFTopic Based Navigation
+                    </div>
                 
                     <div metal:use-macro="here/portal_boxes/macros/navigationBox">
                     Navigation box			
