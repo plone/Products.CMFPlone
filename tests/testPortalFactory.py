@@ -211,17 +211,9 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    
-    # Python2.1 does not love the ASPN code-fu
-    try:
-        True
-    except NameError:
-        pass
-    else:
-        suite.addTest(makeSuite(TestPortalFactory))
-        suite.addTest(makeSuite(TestCreateObject))
-        suite.addTest(makeSuite(TestCreateObjectByURL))
-
+    suite.addTest(makeSuite(TestPortalFactory))
+    suite.addTest(makeSuite(TestCreateObject))
+    suite.addTest(makeSuite(TestCreateObjectByURL))
     return suite
 
 if __name__ == '__main__':
