@@ -112,7 +112,7 @@ class PloneTool (UniqueObject, SimpleItem):
             apply(self.editMetadata, (obj,), kwargs)
 
         if kwargs.get('id', None) is not None: 
-            self._renameObject(obj, id=kwargs['id']) 
+            self._renameObject(obj, id=kwargs['id'].strip()) 
 	
         self._makeTransactionNote(obj) #automated the manual transaction noting in xxxx_edit.py
 
