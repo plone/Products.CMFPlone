@@ -21,7 +21,7 @@ if position.lower()=='bottom':
     context.moveObjectsToBottom(id)
 
 # order folder by field
-# id in this case is the field    
+# id in this case is the field
 if position.lower()=='ordered':
     context.orderObjects(id)
 
@@ -31,4 +31,3 @@ response=context.REQUEST.RESPONSE
 return response.redirect('%s/%s?portal_status_message=%s' % (context.absolute_url(),
                                                              'folder_contents',
                                                              "Item's position has changed.") )
-

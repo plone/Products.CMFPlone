@@ -16,6 +16,6 @@ suffix=''
 
 if type_name is not None:
     prefix = type_name.replace(' ', '_')+'.'
-    
+
 id=now.strftime('%Y-%m-%d')+'.'+str(now.millis())[5:]+str(random())[2:4]
 return prefix+id+suffix

@@ -13,7 +13,7 @@ trxs=context.portal_undo.listUndoableTransactionsFor(context)
 if trxs:
     tran_id = trxs[0]['id']
     context.portal_undo.undo(context, (tran_id,) )
-    
+
 msg='portal_status_message=Transaction+undone.'
 came_from = request.get('came_from', request['HTTP_REFERER'])
 
@@ -30,4 +30,3 @@ except (Unauthorized,KeyError):
 
 return request.RESPONSE.redirect( '%s?%s' % ( came_from
                                              , msg ) )
-

@@ -15,8 +15,8 @@ if ordering is None:
     preordering=['mystuff', 'preferences', 'undo']
     postordering=['configPortal', 'logout']
 else:
-   preordering=ordering['pre']
-   postordering=ordering['post']
+    preordering=ordering['pre']
+    postordering=ordering['post']
 
 totalordering=preordering+postordering
 
@@ -27,7 +27,7 @@ for id in preordering:
     if user_actions.get(id, None) is not None:
         ordered_actions.append( user_actions[id].copy() )
 
-ordered_actions+=[ action.copy() for action in user_actions.values() 
+ordered_actions+=[ action.copy() for action in user_actions.values()
                    if action['id'] not in totalordering ]
 
 for id in postordering:
@@ -35,4 +35,3 @@ for id in postordering:
         ordered_actions.append( user_actions[id].copy() )
 
 return ordered_actions
-

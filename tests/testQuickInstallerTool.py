@@ -24,7 +24,7 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         return [p['id'] for p in self.qi.listInstallableProducts()]
 
     def testInstallUninstallProduct(self):
-        # CMFFormController should be uninstalled, we install it and 
+        # CMFFormController should be uninstalled, we install it and
         # it should not show up as installable
         self.qi.CMFFormController.locked = 0
         self.qi.uninstallProducts(['CMFFormController',])
@@ -33,8 +33,8 @@ class TestQuickInstallerTool(PloneTestCase.PloneTestCase):
         self.qi.installProduct('CMFFormController')
         self.failIf('CMFFormController' in self._available())
         self.failUnless('CMFFormController' in self._installed())
-        
-    
+
+
 if __name__ == '__main__':
     framework()
 else:
@@ -43,4 +43,3 @@ else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(TestQuickInstallerTool))
         return suite
-

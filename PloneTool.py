@@ -167,7 +167,7 @@ class PloneTool(UniqueObject, SimpleItem):
     security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):
         """ encapsulates how the editing of content occurs """
-        
+
         try:
             self.editMetadata(obj, **kwargs)
         except AttributeError, msg:
@@ -390,4 +390,3 @@ class PloneTool(UniqueObject, SimpleItem):
         return ctx_tree_builder()
 
 InitializeClass(PloneTool)
-

@@ -2,7 +2,7 @@ from DateTime import DateTime
 from types import StringType, UnicodeType
 
 class IndexIterator:
-    __allow_access_to_unprotected_subobjects__ = 1 
+    __allow_access_to_unprotected_subobjects__ = 1
 
     def __init__(self, upper=100000, pos=0):
         self.upper=upper
@@ -93,7 +93,7 @@ def localized_time(time = None, long_format = None, context = None):
     service"""
 
     if not time:
-       return None # why?
+        return None # why?
 
     msgid = long_format and 'date_format_long' or 'date_format_short'
 
@@ -101,8 +101,8 @@ def localized_time(time = None, long_format = None, context = None):
     dateFormat = translate_wrapper('plone', msgid, context = context)
 
     if not dateFormat and context:
-       # fallback to portal_properties if no msgstr received from
-       # translation service
+        # fallback to portal_properties if no msgstr received from
+        # translation service
         properties=context.portal_properties.site_properties
         if long_format:
             format=properties.localLongTimeFormat
@@ -128,12 +128,11 @@ def localized_time(time = None, long_format = None, context = None):
     hour = '%02d' % dateParts[3]
     minute = '%02d' % dateParts[4]
 
-    # substitute variables with actual values 
-    localized_time = dateFormat.replace('${DAY}', str(day)) 
-    localized_time = localized_time.replace('${MONTH}', str(month)) 
-    localized_time = localized_time.replace('${YEAR}', str(year)) 
-    localized_time = localized_time.replace('${HOUR}', str(hour)) 
+    # substitute variables with actual values
+    localized_time = dateFormat.replace('${DAY}', str(day))
+    localized_time = localized_time.replace('${MONTH}', str(month))
+    localized_time = localized_time.replace('${YEAR}', str(year))
+    localized_time = localized_time.replace('${HOUR}', str(hour))
     localized_time = localized_time.replace('${MINUTE}', str(minute))
 
     return localized_time
-

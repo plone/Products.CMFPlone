@@ -10,12 +10,11 @@
 RESPONSE=context.REQUEST.RESPONSE
 msg='portal_status_message=Your+contents+status+has+been+modified.'
 
-context.content_status_modify(workflow_action, 
-                              comment, 
-                              effective_date, 
+context.content_status_modify(workflow_action,
+                              comment,
+                              effective_date,
                               expiration_date)
 
 RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url(),
                                   context.getTypeInfo().getActionById( 'view' ),
                                   msg ) )
-

@@ -104,4 +104,3 @@ class RegistrationTool(BaseTool):
 RegistrationTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(RegistrationTool)
-

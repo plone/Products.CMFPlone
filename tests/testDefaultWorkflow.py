@@ -87,7 +87,7 @@ class TestDefaultWorkflow(PloneTestCase.PloneTestCase):
         self.workflow.doActionFor(self.doc, 'publish')
         self.assertEqual(self.workflow.getInfoFor(self.doc, 'review_state'), 'published')
         self.failUnless(self.catalog(id='doc', review_state='published'))
-        
+
     def testReviewerRejectsPendingDocument(self):
         self.workflow.doActionFor(self.doc, 'submit')
         self.assertEqual(self.workflow.getInfoFor(self.doc, 'review_state'), 'pending')
@@ -498,4 +498,3 @@ else:
         suite = TestSuite()
         suite.addTest(makeSuite(TestDefaultWorkflow))
         return suite
-

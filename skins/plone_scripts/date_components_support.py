@@ -132,4 +132,3 @@ for x in range(0,24):
 
 return {'years':years, 'months':months, 'days':days,
         'hours':hours, 'minutes':minutes}
-

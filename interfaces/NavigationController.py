@@ -2,11 +2,11 @@ from interface import Interface
 
 class INavigationController(Interface):
     """ The NavigationController acts as a controller that controls complex states of the system.
-    
+
         The interface provides ways for getNext() transition (where to go next) as well as how
         to add/remove transitions (complex states) from the object.
     """
-    
+
     def getNext(context, script, status, trace, **kwargs):
         """ Perform the next action specified by in portal_properties.navigation_properties.
 
@@ -48,7 +48,6 @@ class INavigationController(Interface):
                           URL.  URL may be absolute or relative PAGE
                           invokes the page PAGE on the current context
                           """
-    
+
     def removeTransitionFrom(content, script=None, status=None):
-       """ Removes all participating transitions involvd with a content/script interaction """
-    
+        """ Removes all participating transitions involvd with a content/script interaction """

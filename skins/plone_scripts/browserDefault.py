@@ -34,7 +34,7 @@ pages = not pages and props.hasProperty('default_page') \
 pages = list(pages) + default_pages
 
 if pages:
-    # loop through each page given and 
+    # loop through each page given and
     # return it as the default, if it is found
     try:
         # _robert_ I do not know why

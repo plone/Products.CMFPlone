@@ -12,10 +12,10 @@ from Products.PythonScripts.standard import url_quote
 REQUEST=context.REQUEST
 
 if addname:
-  context.portal_groups.addGroup(addname,"",(),())
-  group=context.portal_groups.getGroupById(addname)
+    context.portal_groups.addGroup(addname,"",(),())
+    group=context.portal_groups.getGroupById(addname)
 else:
-  group=context.portal_groups.getGroupById(groupname)
+    group=context.portal_groups.getGroupById(groupname)
 
 processed={}
 for id, property in context.portal_groupdata.propertyItems():

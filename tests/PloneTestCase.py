@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.9 2003/11/03 21:31:56 dreamcatcher Exp $
+# $Id: PloneTestCase.py,v 1.9.2.10 2003/11/05 09:56:42 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -127,4 +127,3 @@ optimize()
 app = ZopeTestCase.app()
 setupPloneSite(app)
 ZopeTestCase.close(app)
-

@@ -1,5 +1,5 @@
 #
-# Generic User Folder tests. Every User Folder implementation 
+# Generic User Folder tests. Every User Folder implementation
 # must pass these.
 #
 
@@ -24,7 +24,7 @@ class TestBase(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.logout()
         self.uf = self.portal.acl_users
-    
+
     def _setupPublishedMethod(self):
         self.folder.addDTMLMethod(_pm, file='some content')
         pm = self.folder[_pm]
@@ -73,60 +73,60 @@ class TestUserFolderSecurity(TestBase):
         self.failIf(name is None)
         self.assertEqual(name, default_user)
         self.failIf(password is None)
-    
+
     def testGetRoles(self):
         user = self.uf.getUser(default_user)
         self.failUnless(user_role in user.getRoles())
-    
+
     def testGetRolesInContext(self):
         user = self.uf.getUser(default_user)
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
         roles = user.getRolesInContext(self.folder)
         self.failUnless(user_role in roles)
         self.failUnless('Owner' in roles)
-    
+
     def testHasRole(self):
         user = self.uf.getUser(default_user)
         self.failUnless(user.has_role(user_role, self.folder))
-    
+
     def testHasLocalRole(self):
         user = self.uf.getUser(default_user)
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
         self.failUnless(user.has_role('Owner', self.folder))
-    
+
     def testHasPermission(self):
         user = self.uf.getUser(default_user)
         self.folder.manage_role(user_role, user_perms+['Add Folders'])
         self.login()   # !!! Fixed in Zope 2.6.2
         self.failUnless(user.has_permission('Add Folders', self.folder))
-    
+
     def testHasLocalPermission(self):
         user = self.uf.getUser(default_user)
         self.folder.manage_role('Owner', ['Add Folders'])
         self.folder.manage_addLocalRoles(default_user, ['Owner'])
         self.login()   # !!! Fixed in Zope 2.6.2
         self.failUnless(user.has_permission('Add Folders', self.folder))
-    
+
     def testAuthenticate(self):
-        user = self.uf.getUser(default_user) 
+        user = self.uf.getUser(default_user)
         self.failUnless(user.authenticate('secret', self.app.REQUEST))
 
-    
+
 class TestUserFolderAccess(TestBase):
     '''Test UF is protecting access'''
 
     def afterSetUp(self):
         TestBase.afterSetUp(self)
         self._setupPublishedMethod()
-            
+
     def testAllowAccess(self):
         self.login()
         try:
             self.folder.restrictedTraverse(_pm)
         except Unauthorized:
             self.fail('Unauthorized')
-    
-    def testDenyAccess(self):                                                                                       
+
+    def testDenyAccess(self):
         self.assertRaises(Unauthorized, self.folder.restrictedTraverse, _pm)
 
 
@@ -166,7 +166,7 @@ class TestUserFolderValidate(TestBase):
 
     def testAuthorize2(self):
         # Validate should allow us to call dm
-        request = self.app.REQUEST                                                                                  
+        request = self.app.REQUEST
         auth = self._basicAuth(default_user)
         roles = self._call__roles__(self.folder[_pm])
         user = self.uf.validate(request, auth, roles)
@@ -194,4 +194,3 @@ else:
         suite.addTest(unittest.makeSuite(TestUserFolderAccess))
         suite.addTest(unittest.makeSuite(TestUserFolderValidate))
         return suite
-

@@ -6,7 +6,7 @@ import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
 
-from Testing import ZopeTestCase 
+from Testing import ZopeTestCase
 
 # import Interface for interface testing
 try:
@@ -30,7 +30,7 @@ else:
     from Interface.Implements import getImplementsOfInstances, getImplements, flattenInterfaces
     from Interface.Verify import verifyClass, verifyObject
     from Interface.Exceptions import BrokenImplementation, DoesNotImplement
-    from Interface.Exceptions import BrokenMethodImplementation   
+    from Interface.Exceptions import BrokenMethodImplementation
 
 from types import TupleType
 
@@ -82,17 +82,17 @@ tests = []
 
 class InterfaceTest(ZopeTestCase.ZopeTestCase):
     """general interface testing class
-    
+
     klass - the class object to test
-    forcedImpl - a list of interface class objects that the class klass 
+    forcedImpl - a list of interface class objects that the class klass
         *must* implement to fullfil this test
-    
+
     This test class doesn't implement a test* method so you have to provide
     a test method in your implementation. See above for two examples. One
     example uses the special magic of setattr::
-    
+
         setattr(MyClass, MyMethodName, lambda self: self._testStuff())
-        
+
     """
 
     klass = None    # test this class
@@ -107,10 +107,10 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
         # verify if the implementation is correct
         try:
             verifyClass(interface, klass)
-        except (BrokenImplementation, DoesNotImplement, 
+        except (BrokenImplementation, DoesNotImplement,
           BrokenMethodImplementation), errmsg:
             self.fail('The class %s does not implement %s correctly: \n%s'
-                % (className(klass), className(interface), errmsg)) 
+                % (className(klass), className(interface), errmsg))
 
     def interfaceImplementedBy(self, instance, interface):
         """ tests if the instance implements the interface in the right way """
@@ -120,16 +120,16 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
         # verify if the implementation is correct
         try:
             verifyObject(interface, instance)
-        except (BrokenImplementation, DoesNotImplement, 
+        except (BrokenImplementation, DoesNotImplement,
           BrokenMethodImplementation), errmsg:
             self.fail('The instance of %s does not implement %s correctly: \n%s'
-                % (className(instance), className(interface), errmsg)) 
+                % (className(instance), className(interface), errmsg))
 
     def getImplementsOfInstanceOf(self, klass):
         """ returns the interfaces implemented by the klass (flat)"""
         impl = getImplementsOfInstances(klass)
         if type(impl) is not TupleType:
-             impl = (impl,)
+            impl = (impl,)
         if impl:
             return flattenInterfaces(impl)
 
@@ -137,10 +137,10 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
         """ returns the interfaces implemented by the instance (flat)"""
         impl = getImplements(instance)
         if type(impl) is not TupleType:
-             impl = (impl,)
+            impl = (impl,)
         if impl:
             return flattenInterfaces(impl)
-        
+
     def doesImplementByInstanceOf(self, klass, interfaces):
         """ make shure that the klass implements at least these interfaces"""
         if type(interfaces) is not TupleType:
@@ -189,7 +189,7 @@ testClasses = [
     (InterfaceTool, ()),
     (LargePloneFolder, ()),
     (MemberDataTool, ()), (MemberData, ()),
-    (MembershipTool, ()), 
+    (MembershipTool, ()),
     (MetadataTool, ()),
     (MigrationTool, ()),
     (NavigationTool, ()), (Redirector, ()),
@@ -212,7 +212,7 @@ testClasses = [
     (WorkflowTool, ()),
 ]
 
-# format: (instance object, (list interface objects)) 
+# format: (instance object, (list interface objects))
 # take care: you must provide an instance, not a class!
 testInstances = [
     # (, ()),
@@ -222,29 +222,29 @@ for testClass in testClasses:
     klass, forcedImpl = testClass
     name = className(klass)
     funcName = 'test%sInterface' % name
-    
+
     class KlassInterfaceTest(InterfaceTest):
         """ implementation for %s """ % name
         klass      = klass
         forcedImpl = forcedImpl
-    
+
     # add the testing method to the class to get a nice name
-    setattr(KlassInterfaceTest, funcName, lambda self: self._testStuff())  
-    tests.append(KlassInterfaceTest) 
+    setattr(KlassInterfaceTest, funcName, lambda self: self._testStuff())
+    tests.append(KlassInterfaceTest)
 
 for testInstance in testInstances:
     instance, forcedImpl = testInstance
     name = className(instance)
     funcName = 'test%sInterface' % name
-    
+
     class InstanceInterfaceTest(InterfaceTest):
         """ implementation for %s """ % name
         instance   = instance
         forcedImpl = forcedImpl
-    
+
     # add the testing method to the class to get a nice name
-    setattr(InstanceInterfaceTest, funcName, lambda self: self._testStuff())  
-    tests.append(InstanceInterfaceTest)  
+    setattr(InstanceInterfaceTest, funcName, lambda self: self._testStuff())
+    tests.append(InstanceInterfaceTest)
 
 if __name__ == '__main__':
     framework()

@@ -8,6 +8,6 @@ else:
     title = context.Title()
     id = context.getId()
 if title:
-    return title 
+    return title
 else:
-    return id 
+    return id

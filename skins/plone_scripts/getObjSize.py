@@ -8,7 +8,7 @@
 ##title=
 ##
 size=''
-if hasattr(obj, 'get_size'): 
+if hasattr(obj, 'get_size'):
     size=obj.get_size()
 
     if same_type(size, 0):

@@ -45,5 +45,3 @@ class IFormTool(Interface):
 
     def getValidator(form):
         """ returns the first validator for the form id """
-
-

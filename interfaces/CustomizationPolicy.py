@@ -7,7 +7,7 @@ class ICustomizationPolicy(Interface):
     Policy.  The Policy must register via
     Products.CMFPlone.Portal.addPolicy
     """
-    
+
     def customize(portal):
         """
         the customize method takes the portal object and massages

@@ -24,5 +24,3 @@ for category in actions.keys():
             keyed_actions[category][id]=action.copy()
 
 return keyed_actions
-
-

@@ -71,7 +71,7 @@ class TestInterfaceTool(PloneTestCase.PloneTestCase):
         document = Document(id='foo')
         self.failUnless(self.interface.objectImplements(document, getDottedName(Contentish)))
         self.failUnless(self.interface.objectImplements(document, getDottedName(DublinCore)))
-                       
+
     def testDCImplements(self):
         dc = DefaultDublinCoreImpl()
         self.failUnless(self.interface.objectImplements(dc, getDottedName(DublinCore)))
@@ -95,7 +95,7 @@ class TestInterfaceTool(PloneTestCase.PloneTestCase):
         nd2 = [(n, d.getDoc()) for n, d in nd2]
         self.assertEquals(nd, nd2)
 
-    
+
 if __name__ == '__main__':
     framework()
 else:
@@ -106,4 +106,3 @@ else:
         suite.addTest(unittest.makeSuite(TestInterfaceFinder))
         suite.addTest(unittest.makeSuite(TestInterfaceTool))
         return suite
-

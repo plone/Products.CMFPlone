@@ -61,7 +61,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
 
     def testEventEdit(self):
         self.folder.invokeFactory('Event', id='event')
-        self.folder.event.event_edit(title='Foo', 
+        self.folder.event.event_edit(title='Foo',
                                      start_date='2003-09-18',
                                      end_date='2003-09-19')
         self.assertEqual(self.folder.event.Title(), 'Foo')
@@ -124,4 +124,3 @@ else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(TestContentTypeScripts))
         return suite
-

@@ -9,7 +9,7 @@
 ##
 if obj is None:
     obj=context
-		
+
 parent = obj.inReplyTo()
 if parent is not None:
     talkback = context.portal_discussion.getDiscussionFor(parent)

@@ -53,7 +53,7 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         salt = 'foo'
         pw = self.registration.getPassword(6, salt)
         self.assertEqual(len(pw), 6)
-        # Passing in the same length and salt should give the same 
+        # Passing in the same length and salt should give the same
         # result, every time.
         self.assertEqual(pw, self.registration.getPassword(6, salt))
         self.assertEqual(pw, self.registration.getPassword(6, salt))
@@ -70,7 +70,7 @@ class TestPasswordGeneration(PloneTestCase.PloneTestCase):
         rc = self.registration.generateResetCode(salt)
         self.assertEqual(rc, self.registration.generateResetCode(salt))
 
- 
+
 if __name__ == '__main__':
     framework()
 else:
@@ -80,4 +80,3 @@ else:
         suite.addTest(unittest.makeSuite(TestRegistrationTool))
         suite.addTest(unittest.makeSuite(TestPasswordGeneration))
         return suite
-

@@ -12,39 +12,39 @@
 from DateTime import DateTime
 
 try:
-  date = DateTime(date)
+    date = DateTime(date)
 except: #Combination of string/instances can be raised. catach all.
-  pass
+    pass
 
 try:
-  day = date.strftime('%d');
+    day = date.strftime('%d');
 except AttributeError:
-  day = '00'
+    day = '00'
 
 try:
-  month = date.strftime('%m');
+    month = date.strftime('%m');
 except AttributeError:
-  month = '00'
+    month = '00'
 
 try:
-  year = date.strftime('%Y');
+    year = date.strftime('%Y');
 except AttributeError:
-  year = '00'
+    year = '00'
 
 try:
-  hour = date.strftime('%H');
+    hour = date.strftime('%H');
 except AttributeError:
-  hour = '00'
-  
-try:
-  minute = date.strftime('%M');
-except AttributeError:
-  minute = '00'
+    hour = '00'
 
 try:
-  ampm = date.strftime('%p');
+    minute = date.strftime('%M');
 except AttributeError:
-  ampm = '00'
+    minute = '00'
+
+try:
+    ampm = date.strftime('%p');
+except AttributeError:
+    ampm = '00'
 
 return {'year':year, 'month':month,
         'day':day, 'hour':hour,

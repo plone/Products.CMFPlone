@@ -13,11 +13,11 @@ subjects=None
 
 if obj is None:
     obj=context
-    
+
 if hasattr(obj.aq_explicit, 'Subject'):
     subjects=obj.Subject()
-    
-if subjects:  
+
+if subjects:
     for o in context.portal_catalog( Subject = subjects
                                    , review_state = 'published'
                                    , sort_on = 'portal_type'
@@ -32,6 +32,5 @@ if subjects:
             related.append( {'title':title
                             ,'url':url
                             ,'icon':o.getIcon} )
-                            
-return related
 
+return related

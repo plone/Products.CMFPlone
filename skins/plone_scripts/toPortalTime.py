@@ -12,4 +12,3 @@
 # deprecated, use toLocalizedTime instead
 #
 return context.toLocalizedTime(time=time, long_format=long_format)
-

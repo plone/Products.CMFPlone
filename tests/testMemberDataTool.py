@@ -53,4 +53,3 @@ else:
         suite = TestSuite()
         suite.addTest(makeSuite(TestMemberDataTool))
         return suite
-

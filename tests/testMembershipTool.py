@@ -22,7 +22,7 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         personal = getattr(self.folder, self.membership.personal_id, None)
         self.failIfEqual(personal, None)
         self.assertEqual(self.membership.getPersonalFolder(default_user), personal)
-         
+
     def testGetPersonalFolderIfMissing(self):
         # Should return None as the .personal folder is missing
         self.folder._delObject(self.membership.personal_id)
@@ -150,4 +150,3 @@ else:
         suite = TestSuite()
         suite.addTest(makeSuite(TestMembershipTool))
         return suite
-

@@ -11,9 +11,9 @@ def setupDefaultPloneWorkflow(wf):
     setupDefaultWorkflowRev2(wf)
 
 def configureEventPermissions(wf):
-    """ Since events use a unique set of Permissions we 
+    """ Since events use a unique set of Permissions we
         need to add it to the workflow definition and make
-        it conform to other transitions/states 
+        it conform to other transitions/states
     """
     wf.permissions+=(ChangeEvents, )
     wf.states.published.permission_roles[ChangeEvents]=('Manager',)
@@ -29,7 +29,7 @@ def createDefaultPloneWorkflow(id):
     return ob
 
 addWorkflowFactory( createDefaultPloneWorkflow, id='plone_workflow'
-                  , title='Default Workflow [Plone]')	   
+                  , title='Default Workflow [Plone]')
 
 def setupPrivatePloneWorkflow(wf):
     # default plone workflow plus some modifications
@@ -55,10 +55,10 @@ def setupPrivatePloneWorkflow(wf):
                         , actbox_name='Publicize'
                         , actbox_url='%(content_url)s/content_history_form'
                         , props={'guard_permissions':ModifyPortalContent
-                                 ,'guard_roles':'Owner;Manager'} )        
+                                 ,'guard_roles':'Owner;Manager'} )
     for sdef in wf.states.objectValues():
         sdef.setProperties( transitions=tuple(sdef.transitions)+('publicize',) )
-    
+
     sdef=wf.states.private
     sdef.setProperties( transitions=tuple(sdef.transitions)+('publish',) )
 
@@ -70,8 +70,6 @@ def createPrivatePloneWorkflow(id):
     return ob
 
 # Will go into PloneWorkflows product
-#addWorkflowFactory( createPrivatePloneWorkflow, 
+#addWorkflowFactory( createPrivatePloneWorkflow,
 #                    id='private_plone_workflow',
-#                    title='Private Workflow [Plone]' )	   
-
-
+#                    title='Private Workflow [Plone]' )

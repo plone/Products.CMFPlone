@@ -16,6 +16,6 @@ for u in delete:
 
 add = REQUEST.get('add',[])
 for u in add:
-   group.addMember(u)
+    group.addMember(u)
 
 return container.prefs_group_members()

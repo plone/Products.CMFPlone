@@ -7,12 +7,12 @@ class SetupWidget(Implicit):
     # if single is set to one, then we will
     # show radio buttons rather than check boxes
     single = 0
-    
+
     #####################################################
     # To be overridden
 
     def addItems(self, items):
-        """ Adds the items into our Plone database 
+        """ Adds the items into our Plone database
         Items - a list of things that means something
         to this widget, for example the languages widget
         takes the abbreviations of the pot files
@@ -20,7 +20,7 @@ class SetupWidget(Implicit):
         raise NotImplementedError
 
     def delItems(self, items):
-        """ Dels the items out of our Plone database 
+        """ Dels the items out of our Plone database
         Items - a list of things that means something
         to this widget, for example the languages widget
         takes the abbreviations of the pot files
@@ -29,8 +29,8 @@ class SetupWidget(Implicit):
 
     def active(self):
         """ Returns 1 if this setup widget can be run,
-        if the user doesn't have the correct products, for 
-        example, then a string of the reason why is returned 
+        if the user doesn't have the correct products, for
+        example, then a string of the reason why is returned
         """
 
         # by default this is 1

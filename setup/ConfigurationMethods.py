@@ -57,7 +57,7 @@ def addSiteProperties(self, portal):
     if not hasattr(p, 'auth_cookie_length'):
         safeEditProperty(p, 'auth_cookie_length', 0, 'int')
     if not hasattr(p,'allow_sendto'):
-        safeEditProperty(p, 'allow_sendto', 1, 'boolean')        
+        safeEditProperty(p, 'allow_sendto', 1, 'boolean')
 
 
 def setupDefaultLeftRightSlots(self, portal):
@@ -67,14 +67,14 @@ def setupDefaultLeftRightSlots(self, portal):
                , 'here/related_slot/macros/relatedBox' )
     right_slots=( 'here/workflow_review_slot/macros/review_box'
                 , 'here/news_slot/macros/newsBox'
-                , 'here/events_slot/macros/eventsBox' 
-                , 'here/recently_published_slot/macros/recentlyPublishedBox' 
+                , 'here/events_slot/macros/eventsBox'
+                , 'here/recently_published_slot/macros/recentlyPublishedBox'
                 , 'here/calendar_slot/macros/calendarBox' )
     safeEditProperty(portal, 'left_slots', left_slots, 'lines')
     safeEditProperty(portal, 'right_slots', right_slots, 'lines')
     safeEditProperty(portal.Members, 'right_slots', (), 'lines')
 
-def setupDefaultItemActionSlots(self, portal):                
+def setupDefaultItemActionSlots(self, portal):
     """ Sets up the default action item slots """
     'These are now document_actions ActionInformation object in portal_actiosn'
     pass
@@ -98,7 +98,7 @@ def installExternalEditor(self, portal):
                                 permission=CMFCorePermissions.ModifyPortalContent,
                                 category='object',
                                 visible=0 )
-        portal.manage_permission(ExternalEditorPermission, 
+        portal.manage_permission(ExternalEditorPermission,
                                  ('Manager', 'Authenticated'), acquire=0)
 
 def assignTitles(self, portal):
@@ -174,14 +174,14 @@ def modifyActionProviders(self, portal):
     # Remove the portal_workflow from the actionproviders
     # Since we have the 'review_slot'
     #at.deleteActionProvider('portal_workflow')
-   
+
     dt=getToolByName(portal, 'portal_discussion')
     _actions=dt._cloneActions()
     for action in _actions:
         if action.id=='reply':
             action.visible=0
     dt._actions=_actions
- 
+
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
     mt.addAction('myworkspace'
@@ -218,7 +218,7 @@ def modifyMembershipTool(self, portal):
 def modifySkins(self, portal):
     #remove non Plone skins from skins tool
     #since we implemented the portal_form proxy these skins will no longer work
-    
+
     # this should be run through the skins setup widget :)
     st=getToolByName(portal, 'portal_skins')
     skins_map=st._getSelections()
@@ -226,12 +226,12 @@ def modifySkins(self, portal):
 
     if skins_map.has_key('No CSS'):
         del skins_map['No CSS']
-    if skins_map.has_key('Nouvelle'):        
+    if skins_map.has_key('Nouvelle'):
         del skins_map['Nouvelle']
-    if skins_map.has_key('Basic'):        
+    if skins_map.has_key('Basic'):
         del skins_map['Basic']
     st.selections=skins_map
-    
+
     types=getToolByName(portal, 'portal_types')
     for t in types.objectValues():
         _actions=t._cloneActions()
@@ -245,7 +245,7 @@ def modifySkins(self, portal):
             if a.id == 'content_status_history':
                 a.visible = 0
         t._actions=_actions
-            
+
 def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')
 
@@ -329,21 +329,21 @@ functions = {
 
 class GeneralSetup(SetupWidget):
     type = 'General Setup'
-   
-    description = """This applies a function to the site. These functions are some of the basic 
+
+    description = """This applies a function to the site. These functions are some of the basic
 set up features of a site. The chances are you will not want to apply these again. <b>Please note</b>
 these functions do not have a uninstall function."""
-    
+
     def setup(self):
         pass
-    
+
     def delItems(self, fns):
-        out = []          
+        out = []
         out.append(('Currently there is no way to remove a function', INFO))
         return out
 
-    def addItems(self, fns):   
-        out = []         
+    def addItems(self, fns):
+        out = []
         for fn in fns:
             portal=getToolByName(self, 'portal_url').getPortalObject()
             functions[fn](self, portal)
@@ -352,8 +352,7 @@ these functions do not have a uninstall function."""
 
     def installed(self):
         return []
-        
+
     def available(self):
         """ Go get the functions """
         return functions.keys()
-    

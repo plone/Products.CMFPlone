@@ -53,7 +53,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
 
         # After a copy/paste, they should *both* have a copy
         self.failUnless(hasattr(aq_base(src), 'testcopy'))
-        self.failUnless(hasattr(aq_base(dest), 'testcopy'))        
+        self.failUnless(hasattr(aq_base(dest), 'testcopy'))
 
     def testCopyOtherMemberContent(self):
         self.login('user1')
@@ -65,7 +65,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         dest.manage_pasteObjects(src.manage_copyObjects('testcopy'))
         # After a copy/paste, they should *both* have a copy
         self.failUnless(hasattr(aq_base(src), 'testcopy'))
-        self.failUnless(hasattr(aq_base(dest), 'testcopy'))        
+        self.failUnless(hasattr(aq_base(dest), 'testcopy'))
 
     def testCutMemberContent(self):
         self.login('user1')
@@ -75,14 +75,14 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         # We need to commit here so that _p_jar isn't None and move
         # will work
         get_transaction().commit(1)
-        
+
         dest = self.membership.getPersonalFolder('user1')
         dest.manage_pasteObjects(src.manage_cutObjects('testcut'))
 
         # After a cut/paste, only destination has a copy
         self.failIf(hasattr(aq_base(src), 'testcut'))
-        self.failUnless(hasattr(aq_base(dest), 'testcut'))        
-        
+        self.failUnless(hasattr(aq_base(dest), 'testcut'))
+
     def testCutOtherMemberContent(self):
         self.login('user1')
         src = self.membership.getHomeFolder('user1')
@@ -91,7 +91,7 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         # We need to commit here so that _p_jar isn't None and move
         # will work
         get_transaction().commit(1)
-        
+
         self.login('user2')
         # FIXME: This doesn't work.  I don't know why CopyError isn't
         # being raised.  Unauthorized isn't raised either.  In fact, the paste succeeds :(
@@ -108,4 +108,3 @@ else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(TestContentSecurity))
         return suite
-

@@ -16,8 +16,8 @@
 #    since 'view' is a action by default anonymous can see we need
 #    to make sure 'view' isnt the only action they can do on the object
 #    Also we check to see if PUBLISHED method (we have access to because
-#    it did publish) is in the actions somewhere.  
-#    
+#    it did publish) is in the actions somewhere.
+#
 #    Alot of this could be refactored if Actions could do filter for you
 #    but I cant suggest right now.  Something like 'I want to query'
 #    only actions that are declared for a type in the types tool. It would
@@ -29,30 +29,29 @@ REQUEST=context.REQUEST
 
 if actions is None:
     raise 'You must pass in the filtered actions'
-    
+
 if REQUEST.has_key('disable_border'): #short circuit
-    return 0 
+    return 0
 if REQUEST.has_key('enable_border'): #short circuit
     return 1
-    
+
 for action in actions.get('object', []):
-    if action.get('id', '')!='view' and action.get('id', '')!='folderContents': 
+    if action.get('id', '')!='view' and action.get('id', '')!='folderContents':
         return 1
 
 if template_id is None and hasattr(REQUEST['PUBLISHED'], 'getId'):
     template_id=REQUEST['PUBLISHED'].getId()
 
-if actions.get('workflow', ()): 
+if actions.get('workflow', ()):
     return 1
 
 idActions = {}
 for obj in actions.get('object', ()) + actions.get('folder', ()):
     idActions[obj.get('id', '')] = 1
-           
-if idActions.has_key('edit') :  
+
+if idActions.has_key('edit') :
     if (idActions.has_key(template_id) or \
         template_id in ['synPropertiesForm', 'folder_contents', 'folder_listing']) :
         return 1
 
 return 0
-

@@ -19,7 +19,7 @@ from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
 from types import StringType
 
-# this import can change with Zope 2.7 to 
+# this import can change with Zope 2.7 to
 try:
     from OFS.IOrderSupport import IOrderedContainer as IZopeOrderedContainer
     hasZopeOrderedSupport=1
@@ -131,8 +131,8 @@ class OrderedContainer(Folder):
 
         types_tool = getToolByName(self, 'portal_types')
         types=types_tool.listContentTypes(by_metatype=1)
-        
-        for obj in self._objects:            
+
+        for obj in self._objects:
             # sort out in portal visible and invisible objects in 2 lists
             try:
                 types.index(obj['meta_type'])
@@ -142,7 +142,7 @@ class OrderedContainer(Folder):
                 obj_dict[ obj['id'] ] = obj
                 obj_visible.append(obj)
 
-                                
+
         # unify moving direction
         if delta > 0:
             ids = list(ids)
@@ -187,21 +187,21 @@ class OrderedContainer(Folder):
     security.declareProtected(ModifyPortalContent, 'moveObjectsUp')
     def moveObjectsUp(self, ids, delta=1, RESPONSE=None):
         """ Move an object up """
-        self.moveObjectsByDelta(ids, -delta) 
+        self.moveObjectsByDelta(ids, -delta)
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
     security.declareProtected(ModifyPortalContent, 'moveObjectsDown')
     def moveObjectsDown(self, ids, delta=1, RESPONSE=None):
         """ move an object down """
-        self.moveObjectsByDelta(ids, delta) 
+        self.moveObjectsByDelta(ids, delta)
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
     security.declareProtected(ModifyPortalContent, 'moveObjectsToTop')
     def moveObjectsToTop(self, ids, RESPONSE=None):
         """ move an object to the top """
-        self.moveObjectsByDelta( ids, -len(self._objects) ) 
+        self.moveObjectsByDelta( ids, -len(self._objects) )
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
@@ -215,7 +215,7 @@ class OrderedContainer(Folder):
     security.declareProtected(ModifyPortalContent, 'moveObjectToPosition')
     def moveObjectToPosition(self, id, position):
         """ Move specified object to absolute position.
-        """        
+        """
         delta = position - self.getObjectPosition(id)
         return self.moveObjectsByDelta(id, delta)
 
@@ -270,7 +270,7 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         if getattr(aq_base(view), 'isDocTemp', 0):
             return apply(view, (self, self.REQUEST))
         else:
-             return view()
+            return view()
 
     def index_html(self):
         """ Acquire if not present. """
@@ -283,8 +283,8 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """ adds a new PloneFolder """
         ob=PloneFolder(id, title)
-    	self._setObject(id, ob)
-    	if REQUEST is not None:
+        self._setObject(id, ob)
+        if REQUEST is not None:
             #XXX HARDCODED FIXME!
             return self.folder_contents(self, REQUEST,
                                         portal_status_message='Folder added')
@@ -322,7 +322,7 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             values.sort(lambda x, y, sort_on=sort_on: safe_cmp(getattr(x,sort_on),
                                                                getattr(y,sort_on)))
         if reverse:
-           values.reverse()
+            values.reverse()
 
         return values
 
@@ -356,7 +356,7 @@ InitializeClass(BasePloneFolder)
 
 class PloneFolder( BasePloneFolder, OrderedContainer ):
     meta_type = 'Plone Folder'
-    
+
     __implements__ = BasePloneFolder.__implements__ + \
                      OrderedContainer.__implements__
 
@@ -418,4 +418,3 @@ def _getViewFor(obj, view='view', default=None):
     else:
         raise 'Not Found', ('Cannot find default view for "%s"' %
                             '/'.join(obj.getPhysicalPath()))
-

@@ -21,7 +21,7 @@ isAnonymous = membership_tool.isAnonymousUser()
 #
 # Look for the REQUEST variable 'success' -- if it's not present,
 # redirect to the current page.
-# 
+#
 # Commented out the code below because it broke older IE's and
 # most importantly Safari
 """
@@ -80,5 +80,3 @@ qs = context.create_query_string(
     )
 
 return REQUEST.RESPONSE.redirect('%s?%s' % (login_success, qs))
-
-

@@ -24,9 +24,9 @@ def oneX_twoBeta2(portal):
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
     addDocumentActions(portal)
-    addActionIcons(portal)    
+    addActionIcons(portal)
     addCacheAccelerators(portal)
-   
+
     #XXX TODO:migrate to add simple workflow
     # change the action in portal_types for viewing a folder
 
@@ -51,20 +51,20 @@ def oneX_twoBeta2(portal):
     #Support for cropping descriptions in search results
     safeEditProperty(props,'search_results_description_length',160,'int')
     safeEditProperty(props,'ellipsis','...','string')
-    
+
     #Set ext_editor property in site_properties
-    setupExtEditor(portal) 
+    setupExtEditor(portal)
 
 def upgradePortalFactory(portal):
     site_props = portal.portal_properties.site_properties
     if not hasattr(site_props,'portal_factory_types'):
         site_props._setProperty('portal_factory_types',('',), 'lines')
-    
+
     typesTool = getToolByName(portal, 'portal_types')
     # add temporary folder type for portal_factory
     if not hasattr(typesTool, 'TempFolder'):
         typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type,
-                                             id='TempFolder', 
+                                             id='TempFolder',
                                              typeinfo_name='CMFCore: Portal Folder')
         folder = typesTool.Folder
         tempfolder = typesTool.TempFolder
@@ -72,8 +72,8 @@ def upgradePortalFactory(portal):
         tempfolder.icon = folder.icon
         tempfolder.global_allow = 0  # make TempFolder not implicitly addable
         tempfolder.allowed_content_types=(typesTool.listContentTypes())
-    
-    
+
+
 def addControlPanel(portal):
     addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
     if not hasattr(portal.aq_explicit,'portal_control_panel_actions'):
@@ -93,7 +93,7 @@ def addCacheAccelerators(portal):
         RAMCacheManager.manage_addRAMCacheManager(portal, 'RAMCache')
     if 'caching_policy_manager' not in portal.objectIds():
         CachingPolicyManager.manage_addCachingPolicyManager(portal)
-        
+
 
 def addGroupUserFolder(portal):
     """ We _must_ commit() here.  Because the Portal does not really exist in
@@ -148,7 +148,7 @@ def addDocumentActions(portal):
     at.addAction('extedit',
                  'Edit this file in an external application (Requires Zope ExternalEditor installed)',
                  'string:${object_url}/external_edit',
-                 "python: hasattr(portal.portal_properties.site_properties, 'ext_editor') and portal.portal_properties.site_properties.ext_editor and object.absolute_url() != portal_url", 
+                 "python: hasattr(portal.portal_properties.site_properties, 'ext_editor') and portal.portal_properties.site_properties.ext_editor and object.absolute_url() != portal_url",
                  'Modify portal content',
                  'document_actions')
 
@@ -187,6 +187,6 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
     MigrationTool.registerUpgradePath('1.0.2','1.1alpha2',upg_1_0_1_to_1_1)
     MigrationTool.registerUpgradePath('1.0.3','1.1alpha2',upg_1_0_1_to_1_1)
-    
+
 if __name__=='__main__':
     registerMigrations()

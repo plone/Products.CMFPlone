@@ -20,21 +20,21 @@ class PloneConfiglet(ActionInformation):
     def __init__(self,appId,**kwargs):
         self.appId=appId
         ActionInformation.__init__(self,**kwargs)
-        
+
     def getAppId(self):
         return self.appId
-    
+
     def getDescription(self):
         return self.description
-    
+
     def clone(self):
         return self.__class__(**self.__dict__)
-    
+
     def getAction(self,ec):
         res=ActionInformation.getAction(self,ec)
         res['description']=self.getDescription()
         return res
-    
+
 default_configlets = (
     {'id':'QuickInstaller',
      'appId':'QuickInstaller',
@@ -136,7 +136,7 @@ default_configlets = (
 )
 
 
-        
+
 class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManager):
     """
         Weave together the various sources of "actions" which are apropos
@@ -163,13 +163,13 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
     def __init__(self,**kw):
         if kw:
             self.__dict__.update(**kw)
-            
+
     security.declareProtected( ManagePortal, 'registerConfiglets' )
     def registerConfiglets(self,configlets):
         ''' attention: must be called AFTER portal_actionicons is installed '''
         for conf in configlets:
             self.registerConfiglet(**conf)
-            
+
     security.declareProtected( ManagePortal, 'registerDefaultConfiglets' )
     def registerDefaultConfiglets(self):
         self.registerConfiglets(default_configlets)
@@ -211,9 +211,9 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
         for a in acts:
             if a.appId == appId and actionicons.queryActionInfo('controlpanel', a.id, None):
                 actionicons.removeActionIcon('controlpanel', a.id)
-        
-        
-        
+
+
+
     def _extractAction( self, properties, index ):
 
         """ Extract an ActionInformation from the funky form properties.
@@ -274,8 +274,8 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
                  , REQUEST=None
                  ):
         """ Add an action to our list.
-            attention: must be called AFTER portal_actionicons is installed 
-        
+            attention: must be called AFTER portal_actionicons is installed
+
         """
         if not name:
             raise ValueError('A name is required.')
@@ -301,18 +301,18 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
         new_actions.append( new_action )
         self._actions = tuple( new_actions )
-        
+
         if imageUrl:
             actionicons=getToolByName(self,'portal_actionicons')
             actionicons.addActionIcon('controlpanel',new_action.id,imageUrl,new_action.title)
-        
+
 
         if REQUEST is not None:
             return self.manage_editActionsForm(
                 REQUEST, manage_tabs_message='Added.')
 
     registerConfiglet=addAction
-    
+
     security.declareProtected( ManagePortal, 'manage_editActionsForm' )
     def manage_editActionsForm( self, REQUEST, manage_tabs_message=None ):
 

@@ -251,7 +251,7 @@ class TestFolderWorkflow(PloneTestCase.PloneTestCase):
         # Anonymous is allowed
         self.logout()
         self.failUnless(checkPerm(AccessContentsInformation, self.dir))
-        
+
     def testAccessContentsInformationIsAcquiredInVisibleState(self):
         self.assertEqual(self.dir.acquiredRolesAreUsedBy(AccessContentsInformation), 'CHECKED')
 
@@ -305,7 +305,7 @@ class TestFolderWorkflow(PloneTestCase.PloneTestCase):
         # Anonymous is denied
         self.logout()
         self.failIf(checkPerm(ModifyPortalContent, self.dir))
-        
+
     def testModifyPortalContentIsNotAcquiredInVisibleState(self):
         self.assertEqual(self.dir.acquiredRolesAreUsedBy(ModifyPortalContent), '')
 
@@ -359,7 +359,7 @@ class TestFolderWorkflow(PloneTestCase.PloneTestCase):
         # Anonymous is denied
         self.logout()
         self.failIf(checkPerm(ListFolderContents, self.dir))
-        
+
     def testListFolderContentsIsAcquiredVisibleState(self):
         self.assertEqual(self.dir.acquiredRolesAreUsedBy(ListFolderContents), 'CHECKED')
 
@@ -451,4 +451,3 @@ else:
         suite = TestSuite()
         suite.addTest(makeSuite(TestFolderWorkflow))
         return suite
-

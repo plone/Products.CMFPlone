@@ -99,7 +99,7 @@ class PloneSite(CMFSite, OrderedContainer):
     meta_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
-                     OrderedContainer.__implements__ 
+                     OrderedContainer.__implements__
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
@@ -185,7 +185,7 @@ class PloneGenerator(Portal.PortalGenerator):
                                   '(Folder Workflow [Plone])')
         wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
 
-        #if the CMF has put the ancient 'default_workflow' workflow in 
+        #if the CMF has put the ancient 'default_workflow' workflow in
         #portal_workflow we want to remove it.  It adds no value.
         if 'default_workflow' in wf_tool.objectIds():
             wf_tool.manage_delObjects('default_workflow')

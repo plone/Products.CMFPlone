@@ -30,14 +30,14 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testWorkflowIsActionProvider(self):
         # XXX: This change has been backed out and the test inverted!
         # Remove portal_workflow by default.  We are falling back to
-        # our use of the 'review_slot'.  There are no places using 
+        # our use of the 'review_slot'.  There are no places using
         # the worklist ui anymore directly from the listFilteredActionsFor
         at = self.portal.portal_actions
         self.failUnless('portal_workflow' in at.listActionProviders())
 
     def testReplyTabIsOff(self):
         # Ensure 'reply' tab is turned off
-        # XXX NOTE: ActionProviderBAse should have a 'getActionById' 
+        # XXX NOTE: ActionProviderBAse should have a 'getActionById'
         # that does this for x in: if x == id
         dt_actions = self.portal.portal_discussion.listActions()
         reply_visible=1
@@ -48,7 +48,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
-    
+
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.members = self.membership.getMembersFolder()
@@ -81,7 +81,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         self.assertEqual(members.index_html.meta_type, 'Page Template')
 
     def testManageBeforeDeleteIsCalledRecursively(self):
-        # When the portal is deleted, all subobject should have 
+        # When the portal is deleted, all subobject should have
         # their manage_beforeDelete hook called. Fixed by geoffd.
         self.folder._setObject('dummy', DummyObject())
         self.dummy = self.folder.dummy
@@ -93,9 +93,9 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
 
 class DummyObject(SimpleItem):
     mbd_called = 0
-    def __init__(self, id='dummy'): 
+    def __init__(self, id='dummy'):
         self.id = id
-    def manage_beforeDelete(self, item, container): 
+    def manage_beforeDelete(self, item, container):
         self.mbd_called = 1
 
 
@@ -108,4 +108,3 @@ else:
         suite.addTest(makeSuite(TestPortalCreation))
         suite.addTest(makeSuite(TestPortalBugs))
         return suite
-

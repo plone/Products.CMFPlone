@@ -30,4 +30,3 @@ class IFactoryTool(Interface):
         """ """
     def __bobo_traverse__(REQUEST, name):
         """ """
-

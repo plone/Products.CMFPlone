@@ -22,7 +22,7 @@ if username or password:
     came_from = '%s?title=%s&amp;text=%s' % (req['URL'], title, text)
     came_from = url_quote_plus(came_from)
     portal_url = context.portal_url()
-        
+
     return req.RESPONSE.redirect(
         '%s/logged_in?__ac_name=%s'
         '&amp;__ac_password=%s'
@@ -43,5 +43,3 @@ context.createReply(title=title, text=text, Creator=creator)
 p = context.aq_parent
 target = '%s/%s' % (p.absolute_url(),p.getTypeInfo().getActionById('view'))
 return req.RESPONSE.redirect(target)
-
-

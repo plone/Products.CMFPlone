@@ -20,4 +20,3 @@ if base_hasattr(content, 'expires'):
         return 1
 
 return 0
-

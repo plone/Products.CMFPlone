@@ -38,7 +38,7 @@ def setupNavTreePropertySheet(prop_tool):
     p._setProperty('typesForcedFolderContents', [] , 'lines')
     p._setProperty('bottomLevel', 65535 , 'int')
     p._setProperty('idsNotToList', [] , 'lines')
-    
+
 class StatelessTreeBuilder:
     """ builds a stateless tree structure for objects """
 
@@ -63,10 +63,10 @@ class StatelessTreeBuilder:
         self.skipIndex_html=skipIndex_html
         if bottomLevel is None:
             bottomLevel=65535
-            
+
         self.bottomLevel=bottomLevel
         self.idsNotToList=idsNotToList
-        
+
         if topLevel >= 0:
             self.topLevel=topLevel
         else:
@@ -76,7 +76,7 @@ class StatelessTreeBuilder:
                 self.topLevel=max(0,l+topLevel+1)
             else:
                 self.topLevel=max(0,l+topLevel+0)
-                
+
     security.declarePublic('getLevel')
     def getLevel (self,object=None):
         """
@@ -219,7 +219,7 @@ class StatelessTreeBuilder:
         itemcounter=0
         menucounter=0
         curpos=0
-        
+
         skipself = self.skipIndex_html and self.object.getId()=='index_html'
 
         # Opening
@@ -250,7 +250,7 @@ class StatelessTreeBuilder:
 
                 if skipself and self.object == sibling:
                     continue
-                
+
                 lv = self.getLevel(sibling)
                 r={'level':lv,'indent':lv - self.topLevel,'open':act,
                         'object':sibling,'title':sibling.title_or_id(),'iscurrent':current}
@@ -259,7 +259,7 @@ class StatelessTreeBuilder:
                     r['indentdiff'] = r['indent'] - l[-1]['indent']
                 else:
                     r['indentdiff'] = 0
-                    
+
                 itemcounter = itemcounter + 1
 
                 if r['level'] >= self.topLevel and r['level'] <= self.bottomLevel:
@@ -275,7 +275,7 @@ class StatelessTreeBuilder:
         for item in list :
             act = 0
             if ready: break
-            
+
             for sibling in item['siblings'] :
 
                 if (sibling == item['object']) :
@@ -304,9 +304,9 @@ class StatelessTreeBuilder:
             start=0
         else:
             start=batchStart
-            
+
         end=start+batchSize
-        
+
         if batchStart is None and not start <= curpos < end:
             res['prevBatchStart'] = max(start - batchSize, 0)
             res['prev']=1
@@ -315,26 +315,26 @@ class StatelessTreeBuilder:
         elif batchStart > 0:
             res['prev']=1
             res['prevBatchStart']=max(0,batchStart-batchSize)
-        
+
         if end < len(l):
             res['nextBatchStart'] = end
             res['next']=1
-            
+
         l = l[start:end]
-        
-        #force the parents to be in the list 
+
+        #force the parents to be in the list
         if self.forceParentsInBatch and start and l[0]['indent']:
             for p in list[1:]:
                 sibling=p['object']
                 lv = self.getLevel(sibling)
                 if lv < self.topLevel:
                     break
-                
+
                 if p != list[-1]:
                     indentdiff=1
                 else:
                     indentdiff=0
-                    
+
                 r={'level':lv,'indent':lv - self.topLevel,'open':0,'object':sibling,'indentdiff':indentdiff}
                 if not sibling in [o['object'] for o in l]:
                     l.insert(0,r)
@@ -342,7 +342,7 @@ class StatelessTreeBuilder:
         #set indentdiff for the first element
         if len(l):
             l[0]['indentdiff']=l[0]['indent']
-            
+
         res['list']=l
         return res
 

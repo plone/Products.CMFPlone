@@ -17,7 +17,7 @@ for ctype in [ctype for ctype in types.objectValues() if ctype.Title() not in om
                          'External Editor',
                          'external_edit',
                          'Modify portal content',
-                         'object', 
+                         'object',
                          visible=0 )
 context.portal_properties.site_properties.manage_changeProperties( {'ext_editor':1} )
 return 'Successfully configured system to use External Editor.'

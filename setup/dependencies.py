@@ -40,7 +40,7 @@ if cmfcore:
         x = [int(x) for x in filtered.split('.')]
     except IOError:
         # couldnt find file, oh well
-        pass    
+        pass
     except ValueError:
         # couldnt make sense of the version number
         pass
@@ -81,7 +81,7 @@ try:
         log("CMFFormControllerPatch not found. This is only required for using Call Profiler with Plone, you can download it from http://sf.net/projects/collective", severity=zLOG.INFO, optional=1)
 except ImportError:
     pass
-    
+
 try:
     import Products.BTreeFolder2
 except ImportError:

@@ -32,7 +32,7 @@ def base_hasattr(ob, name):
     ob = aq_base(ob)
     if hasattr(ob, name):
         return 1
-        
+
 def initialize(context):
 
     # Stuff has been moved from module level to this method for a
@@ -49,7 +49,7 @@ def initialize(context):
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('translate_wrapper')
     ModuleSecurityInfo('Products.CMFPlone.PloneUtilities').declarePublic('localized_time')
     allow_module('Products.CMFPlone.PloneUtilites')
-    
+
     import StatelessTreeNav
     from StatelessTree import NavigationTreeViewBuilder
     allow_class(NavigationTreeViewBuilder)
@@ -104,7 +104,7 @@ def initialize(context):
     migrations.registerMigrations()
 
     import setup           # Configuration Machinery - Andy we need to fix this at some point
-    import imagePatch      # WAII and 508 we need more properties on image objects 
+    import imagePatch      # WAII and 508 we need more properties on image objects
     import zserverPatch    # identify Plone in HTTP Headers - netcraft here we come!
     import UnicodeSplitter # registers unicode splitter w/ zctextindex pipeline registry
 
@@ -115,7 +115,7 @@ def initialize(context):
 
     contentClasses = ( PloneFolder.PloneFolder , )
     contentConstructors = ( PloneFolder.addPloneFolder, )
-    ftis = ( PloneFolder.factory_type_information, 
+    ftis = ( PloneFolder.factory_type_information,
              Portal.factory_type_information, )
 
     try:
@@ -193,4 +193,3 @@ def initialize(context):
 
     CustomizationPolicy.register(context, cmfplone_globals)
     PrivateSitePolicy.register(context, cmfplone_globals)
-

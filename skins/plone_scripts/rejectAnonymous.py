@@ -17,4 +17,3 @@ if context.portal_membership.isAnonymousUser():
                                     , 'login_form'
                                     , msg ) )
 return 1
-

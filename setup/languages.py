@@ -20,23 +20,23 @@ class LocalizerLanguageSetup(SetupWidget):
     mName = 'Plone'
     tName = 'translation_service'
     type = 'Localizer Language Setup'
-   
+
     description = """Sets up languages from the plone i18n project
 using  Localizer and Translation Service"""
-    
-    def active(self):      
+
+    def active(self):
         reason = []
         if not hasLocalizer:
             reason.append("""Localizer and TranslationService are not installed, these products
-must be installed for this to work. Localizer can be found at 
+must be installed for this to work. Localizer can be found at
 "http://www.zope.org/Members/jdavid/Localizer":http://www.zope.org/Members/jdavid/Localizer
-and TranslationService can be found at 
+and TranslationService can be found at
 "http://www.zope.org/Members/efge/TranslationService":http://www.zope.org/Members/efge/TranslationService.""")
         if not hasi18n:
-            reason.append("""The plone i18n language pack is not installed, 
-this can be found at 
+            reason.append("""The plone i18n language pack is not installed,
+this can be found at
 "http://sourceforge.net/projects/plone-i18n":http://sourceforge.net/projects/plone-i18n.""")
-        
+
         if self.lName not in self.portal.objectIds('Localizer') or \
             self.tName not in self.portal.objectIds('Translation Service'):
             reason.append("""The Localizer and TranslationService objects have not been installed
@@ -47,7 +47,7 @@ if you have these products installed into you must run the setup method to have 
 
     def setup(self):
         portal = self.portal
-    
+
         out = []
         out.append(('Installing Localizer', INFO))
 
@@ -66,10 +66,10 @@ if you have these products installed into you must run the setup method to have 
         manage_addMessageCatalog(lObj, 'Plone', 'Plone Message Catalog', 'en')
         mObj = lObj.Plone
 
-        tObj.manage_setDomainInfo(None, path_0='%s/Plone' % self.lName) 
+        tObj.manage_setDomainInfo(None, path_0='%s/Plone' % self.lName)
 
         # delete all languages, just in case
-        # set the default language to english       
+        # set the default language to english
         mObj.manage_delLanguages(languages=mObj._languages)
         mObj.manage_changeDefaultLang(language='en')
         return out
@@ -81,7 +81,7 @@ if you have these products installed into you must run the setup method to have 
         out.append(('Deleted languages', ERROR))
         return out
 
-    def addItems(self, languages):    
+    def addItems(self, languages):
         out = []
         mObj = self.portal._getOb('Localizer').Plone
         for language in languages:

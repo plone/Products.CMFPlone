@@ -54,7 +54,7 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', id='new')
         self.assertEqual(self.folder.new.EditableBody(), '')
         self.folder.new.document_edit('plain', 'data', title='Foo')
-        self.assertEqual(self.folder.new.EditableBody(), 'data')                                                     
+        self.assertEqual(self.folder.new.EditableBody(), 'data')
 
 
 if __name__ == '__main__':
@@ -65,4 +65,3 @@ else:
         suite = TestSuite()
         suite.addTest(makeSuite(TestPloneTestCase))
         return suite
-

@@ -47,7 +47,7 @@ class InterfaceTool(UniqueObject, SimpleItem):
         """ Returns a list of pairs (name, description) for a given
         interface"""
         iface = resolveInterface(dotted_name)
-        nd = iface.namesAndDescriptions(all=all) 
+        nd = iface.namesAndDescriptions(all=all)
         return [(n, d.getDoc()) for n, d in nd]
 
 def resolveInterface(dotted_name):
@@ -96,4 +96,3 @@ class InterfaceFinder:
         self._found[getDottedName(iface)] = iface
 
 InitializeClass(InterfaceTool)
-

@@ -20,7 +20,7 @@ class TestSomeProduct(ZopeTestCase.ZopeTestCase):
         # Test something
         self.failUnless(1==1)
 
-            
+
 if __name__ == '__main__':
     framework()
 else:
@@ -31,4 +31,3 @@ else:
         suite = TestSuite()
         suite.addTest(makeSuite(TestSomeProduct))
         return suite
-

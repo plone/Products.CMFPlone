@@ -48,9 +48,9 @@ class WorkflowTool(BaseTool):
                 pass
             if trans:
                 for t in trans:
-                   if t['name'] not in t_names:
-                      transitions.append(t)
-                      t_names.append(t['name'])
+                    if t['name'] not in t_names:
+                        transitions.append(t)
+                        t_names.append(t['name'])
 
         return tuple(transitions[:])
 
@@ -101,7 +101,7 @@ class WorkflowTool(BaseTool):
             i.e. map[workflow_id]=(workflow definition map, )
             each workflow defintion map contains the following:
             (worklist)id, guard (Guard instance), guard_permissions (permission of Guard instance),
-            guard_roles (roles of Guard instance), catalog_vars (mapping), actbox_name (actions box label), 
+            guard_roles (roles of Guard instance), catalog_vars (mapping), actbox_name (actions box label),
             actbox_url (actions box url) and types (list of portal types)
         """
         # We want to know which types use the workflows with worklists
@@ -164,4 +164,3 @@ class WorkflowTool(BaseTool):
 WorkflowTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(WorkflowTool)
-

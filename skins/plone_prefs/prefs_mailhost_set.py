@@ -18,4 +18,3 @@ msg = 'Mail Host Updated'
 RESPONSE.redirect('prefs_mailhost_form?portal_status_message=' + msg)
 
 return
-

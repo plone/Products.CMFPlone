@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# ZopeTestCase 
+# ZopeTestCase
 #
 # COPY THIS FILE TO YOUR 'tests' DIRECTORY.
 #
@@ -12,14 +12,14 @@
 # instance's Products and lib/python directories respectively.
 #
 # If you explicitly set INSTANCE_HOME prior to running the tests,
-# auto-detection is disabled and the specified path will be used 
+# auto-detection is disabled and the specified path will be used
 # instead.
 #
 # If the 'tests' directory contains a custom_zodb.py file, INSTANCE_HOME
 # will be adjusted to use it.
 #
-# If you set the ZEO_INSTANCE_HOME environment variable a ZEO setup 
-# is assumed, and you can attach to a running ZEO server (via the 
+# If you set the ZEO_INSTANCE_HOME environment variable a ZEO setup
+# is assumed, and you can attach to a running ZEO server (via the
 # instance's custom_zodb.py).
 #
 ##############################################################################
@@ -85,7 +85,7 @@ if 1:   # Create a new scope
         sys.exit(1)
 
     ztc_common = 'ztc_common.py'
-    ztc_common_global = os.path.join(p, ztc_common) 
+    ztc_common_global = os.path.join(p, ztc_common)
 
     f = 0
     if os.path.exists(ztc_common_global):
@@ -104,4 +104,3 @@ if 1:   # Create a new scope
 print 'SOFTWARE_HOME: %s' % os.environ.get('SOFTWARE_HOME', 'Not set')
 print 'INSTANCE_HOME: %s' % os.environ.get('INSTANCE_HOME', 'Not set')
 sys.stdout.flush()
-

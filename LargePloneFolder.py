@@ -18,7 +18,7 @@ class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
 
     # BTreeFolder2Base has no __implements__
     __implements__ = BasePloneFolder.__implements__
-    
+
 
     def __init__(self, id, title=''):
         BTreeFolder2Base.__init__(self, id)
@@ -41,11 +41,11 @@ class LargePloneFolder(BTreeFolder2Base, BasePloneFolder):
 
 
     def index_html(self):
-        """ 
+        """
         btree folders don't store objects as attributes, the implementation of index_html
         method in plone folder assumes this and by virtue of its being invoked looked in
         the parent container. we override here to check the btree data structs, and then
-        perform the same lookup as BasePloneFolder if we don't find it.       
+        perform the same lookup as BasePloneFolder if we don't find it.
         """
         _target = self.get('index_html')
         if _target is not None:
@@ -64,4 +64,3 @@ def addLargePloneFolder(self, id, title='', description='', REQUEST=None):
     self._setObject(id, obj)
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect( sf.absolute_url() + '/manage_main' )
-

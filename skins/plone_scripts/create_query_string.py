@@ -12,7 +12,7 @@ L = []
 
 if qs:
     # break an existing query string into key value pairs
-    entityparts = qs.split('&amp;') 
+    entityparts = qs.split('&amp;')
     for entitypart in entityparts:
         ampparts = entitypart.split('&')
         for amppart in ampparts:
@@ -29,5 +29,3 @@ for k,v in kw.items():
 # separate k/v pairs with &amp; (dont blame me, see the RFC)
 new = '&amp;'.join([ '%s=%s' % (k, v) for k, v in L ])
 return new
-
-

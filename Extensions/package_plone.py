@@ -31,10 +31,8 @@ os.system("cd ../" + releasename+";" + sh_cleanmisc)
 os.system("cd ../" + releasename+";" + sh_cleanpyc)
 os.system("cd ../" + releasename+";" + sh_cleancvs)
 
-os.system("cd .. ; tar -cvf %s %s" % ( releasetar 
+os.system("cd .. ; tar -cvf %s %s" % ( releasetar
                                      , releasename ) )
 os.system("cd .. ; gzip %s " % releasetar )
 os.system("cd .. ; zip -r %s %s" % (releasezip
                                     , releasename ))
-
-

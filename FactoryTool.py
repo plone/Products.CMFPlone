@@ -95,7 +95,7 @@ class FactoryTool(UniqueObject, SimpleItem):
         """Returns FactoryTool docs formatted as HTML"""
         return self._docs
 
-    
+
     def getFactoryTypes(self):
         if not hasattr(self, '_factory_types'):
             self._factory_types = {}
@@ -221,7 +221,7 @@ class FactoryTool(UniqueObject, SimpleItem):
 
         path = '/'.join(stack[1:])
         obj = tempFolder.restrictedTraverse(path)
-        
+
         return mapply(obj, self.REQUEST.args, self.REQUEST,
                                call_object, 1, missing_name, dont_publish_class,
                                self.REQUEST, bind=1)

@@ -1,6 +1,6 @@
 ##parameters=templateId
 #!/usr/bin/python
-#$Id$
+#$Id: controlPanelParentUrl.py,v 1.1.2.1 2003/10/24 23:08:10 zopezen Exp $
 #Copyright: ClearWind Consulting Ltd
 
 # please someone fix this!
@@ -18,10 +18,10 @@ tool = context.portal_control_panel_actions
 parent = None
 
 for group in tool.getGroups():
-  item = tool.enumConfiglets(group['id'])
-  for thing in item:
-    if thing['url'].endswith(templateId):
-      parent = group['id']
-      break
+    item = tool.enumConfiglets(group['id'])
+    for thing in item:
+        if thing['url'].endswith(templateId):
+            parent = group['id']
+            break
 
 return parentPages.get(parent, None)

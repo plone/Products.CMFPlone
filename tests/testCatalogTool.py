@@ -57,7 +57,7 @@ class TestCatalogSearch(PloneTestCase.PloneTestCase):
         # Should include the group in list of allowed users
         groupname = self.addUser2ToGroup()
         uf = self.portal.acl_users
-        self.failUnless(('user:%s' % groupname) in 
+        self.failUnless(('user:%s' % groupname) in
                 self.catalog._listAllowedRolesAndUsers(uf.getUser(user2)))
 
     def testSearchReturnsDocument(self):
@@ -70,7 +70,7 @@ class TestCatalogSearch(PloneTestCase.PloneTestCase):
         self.assertEqual(len(self.catalog(SearchableText='foo')), 0)
 
     def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
-        # After adding a group with access rights and containing user2, 
+        # After adding a group with access rights and containing user2,
         # a search must find the document.
         groupname = self.addUser2ToGroup()
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
@@ -82,7 +82,7 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
-    
+
     def testCanPastePortalIfLexiconExists(self):
         # Should be able to copy/paste a portal containing
         # a catalog tool. Triggers manage_afterAdd of portal_catalog
@@ -103,7 +103,7 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
 
     def testCanRenamePortalIfLexiconExists(self):
         # Should be able to rename a Plone portal
-        # This test is to demonstrate that http://plone.org/collector/1745 
+        # This test is to demonstrate that http://plone.org/collector/1745
         # is fixed and can be closed.
         self.loginPortalOwner()
         self.app.manage_renameObjects(['portal'], ['foo'])
@@ -120,4 +120,3 @@ else:
         suite.addTest(makeSuite(TestCatalogSearch))
         suite.addTest(makeSuite(TestCatalogBugs))
         return suite
-

@@ -11,7 +11,7 @@ class ActionIconsTool(BaseTool):
     security = ClassSecurityInfo()
 
     security.declareProtected(View, 'renderActionIcon')
-    def renderActionIcon( self, 
+    def renderActionIcon( self,
                           category,
                           action_id,
                           default=None,
@@ -20,7 +20,7 @@ class ActionIconsTool(BaseTool):
             pass in a path elements in default it will attempt
             to traverse to that path.  Otherwise it will return
             None
-        """ 
+        """
         icon = self.queryActionIcon( category,
                                      action_id,
                                      default=default,
@@ -29,8 +29,8 @@ class ActionIconsTool(BaseTool):
             portal=getToolByName(self, 'portal_url').getPortalObject()
             return portal.restrictedTraverse(icon)
 
-        return default     
-               
+        return default
+
 ActionIconsTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(ActionIconsTool)

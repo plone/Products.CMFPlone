@@ -73,7 +73,7 @@ class NavigationTreeViewBuilder(SimpleItem):
         try:
             if showUnpublishedContent:
                 return showUnpublishedContent
-            
+
             workflow_tool = getToolByName(self, 'portal_workflow')
             if workflow_tool.getInfoFor(o,'review_state','') != 'published':
                 return 0

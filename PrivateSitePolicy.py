@@ -52,6 +52,5 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
         #remove the loginBox in left_slots
         filtered_slots=[slot for slot in portal.left_slots if not slot.endswith('loginBox')]
         portal.manage_changeProperties(left_slots=tuple(filtered_slots))
-        
-        portal.portal_properties.site_properties.manage_changeProperties(allowAnonymousViewAbout=0)
 
+        portal.portal_properties.site_properties.manage_changeProperties(allowAnonymousViewAbout=0)

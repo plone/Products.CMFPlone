@@ -89,7 +89,7 @@ def make_plone(portal):
 
     #Set a portal_type on the root Plone Site
     makePortalRootPortalType(portal)
-    
+
     #Set ext_editor property in site_properties
     setupExtEditor(portal)
 
@@ -118,14 +118,14 @@ def addCatalogIndexes(portal):
 def addCatalogLexicon(portal):
     from OFS.ObjectManager import BadRequestException
     catalog = portal.portal_catalog
-    
+
     class largs:
         def __init__(self, **kw):
             self.__dict__.update(kw)
-            
+
     try:
         catalog.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
-            'plone_lexicon', 
+            'plone_lexicon',
             elements=[
             largs(group= 'Case Normalizer' , name= 'Case Normalizer' ),
             largs(group= 'Stop Words', name= " Don't remove stop words" ),
@@ -135,7 +135,7 @@ def addCatalogLexicon(portal):
     except BadRequestException:
         # lexicon id already in use
         pass
-    
+
 def addNavigationProperties(portal):
     nav_tool=portal.portal_navigation
     nav_tool.addTransitionFor('default','createObject','success','action:edit')
@@ -296,7 +296,7 @@ def setupCalendar(portal):
     from Acquisition import aq_base
     from Products.CMFCalendar import Event
     from Products.CMFCore.TypesTool import ContentFactoryMetadata
-    
+
     out = StringIO()
     typestool = getToolByName(self, 'portal_types')
     skinstool = getToolByName(self, 'portal_skins')
@@ -360,18 +360,18 @@ def setupCalendar(portal):
                                 'Social Event', 'Work'),
             REQUEST=None,
             )
-    except: 
+    except:
         pass
     qi = getToolByName(portal, 'portal_quickinstaller')
     qi.notifyInstalled('CMFCalendar')
     out.write('Event added to Metadata element Policies\n')
-    
-    
+
+
 def addActionIcons(portal):
     """ After installing QuickInstaller.  We must commit(1) a subtrnx
         so that we will be able to addActionIcons() to the tool
     """
-    
+
     ai=getToolByName(portal, 'portal_actionicons')
     ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
     ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
@@ -384,8 +384,8 @@ def makePortalRootPortalType(portal):
     """ The root portal object needs to have its own portal_type.
         By default in CMF the root is of 'Folder' type which can
         cause problems when you need finer grain workflow settings
-        and update your workflow settings it will change the 
-        portal root (since its a folder).  
+        and update your workflow settings it will change the
+        portal root (since its a folder).
     """
     #make Portal portal_type
     #import pdb; pdb.set_trace()
@@ -413,7 +413,7 @@ def addStateActionToTypes(portal):
 
 def setupExtEditor(portal):
     """ sets the ext_editor property in site properties if the ext editor is available"""
-    site_props = portal.portal_properties.site_properties 
+    site_props = portal.portal_properties.site_properties
     # try to import the external editor class
     try:
         from Products.ExternalEditor.ExternalEditor import ExternalEditor

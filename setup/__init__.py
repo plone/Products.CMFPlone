@@ -8,4 +8,3 @@ from ConfigurationMethods import GeneralSetup
 MigrationTool.registerSetupWidget(LocalizerLanguageSetup)
 MigrationTool.registerSetupWidget(CustomizationPolicySetup)
 MigrationTool.registerSetupWidget(GeneralSetup)
-

@@ -106,11 +106,11 @@ class MembershipTool(BaseTool):
         members =  self.getMembersFolder()
 
         if not member_id:
-             # member_id is optional (see CMFCore.interfaces.portal_membership:
-             #     Create a member area for 'member_id' or authenticated user.
-             portal_membership = getToolByName(self, 'portal_membership')
-             member = portal_membership.getAuthenticatedMember()
-             member_id = member.id
+            # member_id is optional (see CMFCore.interfaces.portal_membership:
+            #     Create a member area for 'member_id' or authenticated user.
+            portal_membership = getToolByName(self, 'portal_membership')
+            member = portal_membership.getAuthenticatedMember()
+            member_id = member.id
 
         if members is None:
             parent.manage_addPloneFolder(id=self.membersfolder_id, title='Members')
@@ -161,7 +161,7 @@ class MembershipTool(BaseTool):
                        , member_id+"'s Home Page"
                        , member_id+"'s front page"
                        , "structured-text"
-                       , DEFAULT_MEMBER_CONTENT 
+                       , DEFAULT_MEMBER_CONTENT
                        )
 
             f.index_html._setPortalTypeName( 'Document' )
@@ -171,7 +171,7 @@ class MembershipTool(BaseTool):
             wftool.notifyCreated( f.index_html )
             #XXX the above is copy/pasted from CMFDefault.MembershipTool only because
             #its not using invokeFactory('Folder') -- FIX IT!
-            
+
             #XXX Below is what really is Plone customizations
             member_folder=self.getHomeFolder(member_id)
             member_folder.description = 'Home page area that contains the items created and ' \
@@ -192,7 +192,7 @@ class MembershipTool(BaseTool):
             if notify_script is not None:
                 notify_script()
 
-    # deal with ridiculous API change in CMF 
+    # deal with ridiculous API change in CMF
     security.declarePublic('createMemberArea')
     createMemberArea = createMemberarea
 
@@ -204,7 +204,7 @@ class MembershipTool(BaseTool):
             return [BaseTool.wrapUser(self, x) for x in uf.getPureUsers()]
         else:
             return BaseTool.listMembers(self)
-            
+
     def listMemberIds(self):
         '''Lists the ids of all members.  This may eventually be
         replaced with a set of methods for querying pieces of the
@@ -307,19 +307,19 @@ class MembershipTool(BaseTool):
         else:
             raise 'Bad Request', 'Not logged in.'
 
-    security.declareProtected(View, 'getCandidateLocalRoles') 
-    def getCandidateLocalRoles( self, obj ): 
-        """ What local roles can I assign? """ 
-        member = self.getAuthenticatedMember() 
+    security.declareProtected(View, 'getCandidateLocalRoles')
+    def getCandidateLocalRoles( self, obj ):
+        """ What local roles can I assign? """
+        member = self.getAuthenticatedMember()
 
-        if 'Manager' in member.getRoles(): 
-            return self.getPortalRoles() 
-        else: 
-            member_roles = list( member.getRolesInContext( obj ) ) 
-            if 'Member' in member_roles: 
-                del member_roles[member_roles.index( 'Member')] 
+        if 'Manager' in member.getRoles():
+            return self.getPortalRoles()
+        else:
+            member_roles = list( member.getRolesInContext( obj ) )
+            if 'Member' in member_roles:
+                del member_roles[member_roles.index( 'Member')]
 
-        return tuple( member_roles ) 
+        return tuple( member_roles )
 
 MembershipTool.__doc__ = BaseTool.__doc__
 

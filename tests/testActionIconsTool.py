@@ -55,4 +55,3 @@ else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(TestActionIconsTool))
         return suite
-

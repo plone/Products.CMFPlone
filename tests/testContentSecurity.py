@@ -62,4 +62,3 @@ else:
         suite = unittest.TestSuite()
         suite.addTest(unittest.makeSuite(TestContentSecurity))
         return suite
-

@@ -10,7 +10,7 @@ from App.Extensions import getObject
 from App.Common import package_home
 
 import string
-import glob 
+import glob
 import OFS.Application
 import os
 import sys
@@ -51,10 +51,10 @@ def create(app, admin_username='admin'):
     # 2. create the access rule external method
     if eid not in oids:
         # this is the actual access rule
-        manage_addExternalMethod(app, 
-                                 eid, 
-                                 'Plone Access Rule', 
-                                 emod, 
+        manage_addExternalMethod(app,
+                                 eid,
+                                 'Plone Access Rule',
+                                 emod,
                                  efn)
         out.append("Added external method")
         # this sets the access rule
@@ -65,9 +65,9 @@ def create(app, admin_username='admin'):
 
     # 3. actually add in Plone
     if pid not in oids:
-        manage_addSite(app, 
-                   pid, 
-                   title='Portal', 
+        manage_addSite(app,
+                   pid,
+                   title='Portal',
                    description='',
                    create_userfolder=1,
                    email_from_address='postmaster@localhost',
@@ -86,13 +86,13 @@ def create(app, admin_username='admin'):
         out.append("Added Site Root")
 ##         if user:
 ##             getattr(plone, sid).changeOwnership(user)
-  
+
     # 5. add in products
     qit = plone.portal_quickinstaller
-    
+
     ids = [ x['id'] for x in qit.listInstallableProducts(skipInstalled=1) ]
     qit.installProducts(ids)
-    
+
     # 6. commit
     get_transaction().commit()
 

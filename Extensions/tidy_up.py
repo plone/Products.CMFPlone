@@ -10,12 +10,12 @@ ignored_errors = [
     'unknown attribute "tal:',
     'unknown attribute "i18n:',
     'unknown attribute "metal:',
-    
+
     '<tal:block> is not recognized',
     '<metal:block> is not recognized',
     'tal:block is not recognized',
     'metal:block is not recognized',
-    
+
     '<html> has XML attribute "xml:lang"',
     'inserting missing \'title\' element',
     'unknown attribute "onfocus"',  # why does Tidy not like this?
@@ -24,7 +24,7 @@ ignored_errors = [
     '<table> lacks "summary" attribute',
     'img lacks "src" attribute',
     'img lacks "alt" attribute',
-    
+
     'This document has errors that must be fixed before',
     'using HTML Tidy to generate a tidied up version.',
     ]
