@@ -175,7 +175,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         if action is not None:
             transition += '.'+action
         if status is not None:
-            tranistion += '.'+status
+            transition += '.'+status
         for prop in navprops.propertyIds():
             if prop.startswith(transition):
                 navprops._delProperty(prop)
