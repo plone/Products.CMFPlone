@@ -114,6 +114,10 @@ def oneX_twoBeta2(portal):
     upgradeSlots2Portlets(portal)
     out.append("Setting up calendar tool")
     plone2_base.setupCalendar(portal)
+    out.append("Fixing portal_undo actions")
+    fixUndoActions(portal)
+    out.append("Fixing folder contents action")
+    fixFolderActions(portal)
     return out
 
 def doit(self):
@@ -475,6 +479,26 @@ def removeOldSkins(portal):
             del skinList[skin]
             removed.append(skin)
     return removed
+
+def fixUndoActions(portal):
+    st = getToolByName(portal, 'portal_undo')
+    # remove old actions
+    for action in st._actions:
+        if action.id in ('undo'):
+            del action
+    st.addAction('undo',
+                 'Undo',
+                 'string: ${portal_url}/undo_form',
+                 'member',
+                 'List undoable changes',
+                 'user')
+
+def fixFolderActions(portal):
+    st = getToolByName(portal, 'portal_actions')
+    for action in st._actions:
+        if action.id == 'folderContents':
+            action.visible = 1
+
             
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
