@@ -8,7 +8,7 @@ from Globals import InitializeClass
 factory_type_information = ( { 'id'             : 'Plone Folder'
                              , 'meta_type'      : 'Plone Folder'
                              , 'description'    : """\
-Skinned folders can define custom 'view' actions."""
+Plone folders can define custom 'view' actions, without a view action it will present a directory listing."""
                              , 'icon'           : 'folder_icon.gif'
                              , 'product'        : 'CMFPlone'
                              , 'factory'        : 'addPloneFolder'
