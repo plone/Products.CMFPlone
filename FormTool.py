@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.28.4.5 2003/12/24 00:17:18 pupq Exp $
+# $Id: FormTool.py,v 1.28.4.6 2004/01/20 15:44:08 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.28.4.5 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.28.4.6 $"[11:-2] + " " + "$Name: Plone-2_0-branch $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -412,7 +412,7 @@ class CMFForm(BasicForm):
     __implements__ = ICMFForm,
 
     security.declareProtected('View', 'get_field')
-    def get_field(self, id):
+    def get_field(self, id, include_disabled=0):
         """Get a field of a certain id, wrapping in context of self
         """
         return self.fields[id].__of__(self)

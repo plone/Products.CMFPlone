@@ -53,7 +53,7 @@ def rc3_rc4(portal):
 
     tt=getToolByName(portal, 'portal_types')
     for ptype in tt.objectValues():
-        if ptype.getId() not in ('Folder', 'Plone Site', 'Large Plone Folder') and \
+        if ptype.getId() not in ('Folder', 'Large Plone Folder') and \
           'local_roles' not in [ai.getId() for ai in ptype.listActions()]:
             ptype.addAction('local_roles',
                      name='Sharing',
@@ -61,7 +61,12 @@ def rc3_rc4(portal):
                      condition='',
                      permission='Manage properties',
                      category='object')
-         
+        _actions = ptype._cloneActions()
+        for action in _actions:
+            if action.getId()=='metadata':
+                 action.title='properties'
+        ptype._actions = _actions
+ 
     at.addAction('addtofavorites',
                  'Add to Favorites',
                  'string:${request/URL1}/addtoFavorites',

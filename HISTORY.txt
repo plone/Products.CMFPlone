@@ -6,6 +6,13 @@ Plone 2.0 - Fyuti
 
    RC4
 
+    - CMFPlone.FormTool.BasicForm.get_field signature has changed.
+      def get_field(self, id):
+      to 
+      def get_field(self, id, include_disabled=0):
+      Issue 2498
+      FormTool is deprecated or will be deprecated in 2.0. Bug #2498
+ 
     - For those of you who were running tableless designs in the RC3 
       and earlier releases and want to keep it that way - simply add
       a DirectoryView for 'plone_tableless' in 'portal_skins', and 
