@@ -1,3 +1,124 @@
+2004-03-01 01:33  bitranch
+
+	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
+	  fix related slot picking up the context object -- fixes 2760
+	  (*ahem*)
+
+2004-03-01 01:24  bitranch
+
+	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
+	  fix related slot picking up the context object -- fixes 2760
+
+2004-03-01 00:26  shh42
+
+	* HISTORY.txt, Portal.py, migrations/__init__.py,
+	  migrations/v2/release_candidates.py, tests/testPortalCreation.py
+	  (Plone-2_0-branch): Fixed http://plone.org/collector/2744 Large
+	  Plone Folders should use folder_workflow. Fixed the
+	  PortalGenerator and added migration and a test.
+
+2004-03-01 00:03  achilles_
+
+	* skins/plone_scripts/navigationLocalRelated.py (Plone-2_0-branch):
+
+	  Fix for local and remote resources being the wrong war around.
+	  Fixes half of #2760. Still needs to remove context from returned
+	  results.
+
+2004-02-29 23:25  elvix
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  added unescape for query-term, fix for bug 2497
+
+2004-02-29 23:07  elvix
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  broken node-references caused serachtermhighlighter to fail on
+	  other content-types than documents. fix for bugs : 2371 , 2497 ,
+	  2748 , 2750
+
+2004-02-29 22:47  limi
+
+	* skins/plone_content/document_view.pt (Plone-2_0-branch): Removing
+	  bodyContent, deprecated. Geir will update the search highlight
+	  script to use #content shortly.
+
+2004-02-29 21:58  kayeva
+
+	* skins/plone_prefs/prefs_user_edit.py (Plone-2_0-branch): Simple
+	  fix for http://plone.org/collector/2361. This may need more
+	  testing or improvement, but for me it works.
+
+2004-02-29 21:56  shh42
+
+	* HISTORY.txt, skins/plone_form_scripts/image_edit.cpy,
+	  skins/plone_form_scripts/validate_image_edit.vpy,
+	  tests/testContentTypeScripts.py (Plone-2_0-branch): Fixed over
+	  Seb's earlier fix for http://plone.org/collector/2246 (Sorry, Seb
+	  ;-) Added unit tests for image_edit and file_edit
+
+2004-02-29 21:31  whit537
+
+	* skins/: plone_ecmascript/plone_menu.js.dtml,
+	  plone_styles/plone.css.dtml,
+	  plone_templates/global_contentmenu.pt (Plone-2_0-branch): Removed
+	  action menu positioning from ECMAScript to CSS.
+
+2004-02-29 21:04  achilles_
+
+	* skins/plone_scripts/browserDefault.py (Plone-2_0-branch):
+	  Changed fall-back skin search path to context.portal_skins,
+	  rather than context. This is going to be a bit quicker.
+
+2004-02-29 20:57  achilles_
+
+	* skins/plone_scripts/browserDefault.py (Plone-2_0-branch):
+	  Added check for pages defined in browser defaults to see if they
+	  exist in the current skin.  This is the last fall-back before
+	  giving up and returning folderListing, which is as it should be.
+
+	  This fixes #2290
+
+2004-02-29 19:57  achilles_
+
+	* skins/plone_form_scripts/validate_image_edit.vpy
+	  (Plone-2_0-branch):
+	  Changed file is not None to if not file to ensure that form
+	  submissions where file is present but is empty validate, as it is
+	  possible to edit an image without uploading a new file.
+
+	  Fixes #2246
+
+2004-02-29 19:55  achilles_
+
+	* skins/plone_form_scripts/image_edit.cpy (Plone-2_0-branch):
+	  Changed file.seek(0) to check to ensure that we actually have a
+	  file object, as it is possible to edit an image without uploading
+	  a new file, in which case the old file should be kept.
+
+	  Fixes #2246
+
+2004-02-29 16:55  shh42
+
+	* HISTORY.txt, __init__.py, setFormatPatch.py,
+	  tests/testPloneTool.py (Plone-2_0-branch): Added a monkey-patch
+	  workaround for http://plone.org/collector/1323
+
+2004-02-29 12:30  shh42
+
+	* tests/testCatalogTool.py (Plone-2_0-branch): Add two more tests
+	  for catalog setup.
+
+2004-02-29 12:28  shh42
+
+	* CatalogTool.py, tests/testCatalogTool.py,
+	  tests/testMembershipTool.py: Fixed catalog setup. Description and
+	  Title indexes where created with wrong indexed attribute.
+
+2004-02-29 05:09  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-29 01:35  shh42
 
 	* tests/testMembershipTool.py (Plone-2_0-branch): Add tests for
