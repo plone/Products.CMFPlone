@@ -12,12 +12,15 @@ from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 
 if type_name is None:
-    raise Exception
+    raise Exception, 'Type name not specified'
 
 id=context.generateUniqueId(type_name)
 
-context.invokeFactory(id=id, type_name=type_name)
-o=getattr(context, id, None)
+if type_name in context.portal_properties.site_properties.portal_factory_types:
+    o = context.restrictedTraverse('portal_factory/' + type_name + '/' + id)
+else:
+    context.invokeFactory(id=id, type_name=type_name)
+    o=getattr(context, id, None)
 
 if o is None:
     raise Exception

@@ -4,7 +4,7 @@ import migrations, setup, MigrationTool
 from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo, allow_module, allow_class, allow_type
 import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
-import NavigationTool, FactoryTool, FormTool, PropertiesTool
+import NavigationTool, FactoryTool, FormTool, PropertiesTool, RegistrationTool
 import InterfaceTool
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
 import PloneControlPanel
@@ -83,6 +83,7 @@ tools = ( MembershipTool.MembershipTool
         , MigrationTool.MigrationTool
         , InterfaceTool.InterfaceTool
         , PloneControlPanel.PloneControlPanel
+        , RegistrationTool.RegistrationTool
         )
 
 contentClasses = ( PloneFolder.PloneFolder , )

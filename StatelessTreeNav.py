@@ -28,8 +28,8 @@ def setupNavTreePropertySheet(prop_tool):
     p._setProperty('showTopicResults', 1, 'boolean')
     p._setProperty('rolesSeeUnpublishedContent', ['Manager','Reviewer','Owner'] , 'lines')
     p._setProperty('sortCriteria', ['isPrincipiaFolderish,desc','title_or_id,asc']  , 'lines')
-    p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog'],'lines')
-    p._setProperty('parentMetaTypesNotToQuery',[],'lines')
+    p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')
+    p._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
     p._setProperty('croppingLength',18,'int')
     p._setProperty('forceParentsInBatch',0,'boolean')
     p._setProperty('skipIndex_html',1,'boolean')
@@ -112,7 +112,11 @@ class StatelessTreeBuilder:
             count=count+1
             level=level-1
 
-        if self.includeTop :
+        # XXX - the test of par.meta_type is a kludge to fix a problem with
+        # this method with portal_factory.  For some reason, we get
+        # self.topMetaType = 'CMF Site', but par.meta_type = 'Plone Site',
+        # so the above while loop gets messed up.
+        if self.includeTop and getattr(par, 'meta_type', None):
             res.append(par)
 
         if reversed:
@@ -145,7 +149,6 @@ class StatelessTreeBuilder:
         p=None
 
         for p in path:
-
             r={'object':p,'level':None,'siblings':[],'title':p.title_or_id(),'url':p.absolute_url()}
 
             try:

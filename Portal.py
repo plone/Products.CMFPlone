@@ -98,6 +98,8 @@ class PloneGenerator(Portal.PortalGenerator):
             p.manage_delObjects( 'portal_workflow' )
         if exists('portal_properties'):
             p.manage_delObjects( 'portal_properties' )
+        if exists('portal_registration'):
+            p.manage_delObjects( 'portal_registration' )
 
         addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
 
@@ -111,6 +113,8 @@ class PloneGenerator(Portal.PortalGenerator):
             addPloneTool('CMF Navigation Tool', None)
         if not exists('portal_factory'):
             addPloneTool('Plone Factory Tool', None)
+        if not exists('portal_registration'):
+            addPloneTool('Plone Registration Tool', None)
         if not exists('portal_form'):
             addPloneTool('Plone Form Tool', None)
         if not exists('portal_properties'):

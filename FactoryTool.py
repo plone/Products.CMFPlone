@@ -1,181 +1,120 @@
-from Products.CMFCore.utils import UniqueObject
+from Products.CMFCore.utils import UniqueObject, getToolByName                        
 from Globals import InitializeClass
-from Acquisition import aq_parent
+from Acquisition import aq_parent, aq_base, aq_inner, aq_chain 
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from DateTime import DateTime
-from NavigationTool import Redirector
-import cgi
-import urlparse
+from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore.PortalFolder import PortalFolder
+from DateTime import DateTime
+import urllib
 import sys
 
+# ##############################################################################
+# A class used for generating the temporary folder that will
+# hold temporary objects.  We need a separate class so that
+# we can add all types to types_tool's allowed_content_types
+# for the class without having side effects in the rest of
+# the portal.
+class TempFolder(PortalFolder):
+    portal_type = meta_type = 'TempFolder'
 
-debug = 1  # enable/disable logging
-type_map = {}
+    def __getitem__(self, id):
+        # see if the object exists in the parent context
+        if hasattr(aq_parent(self), id):
+            # if so, just do a pass-through
+            return getattr(self.getParentNode(), id)
+#        elif hasattr(self, id):
+#            return self._getOb(id)
+        else:
+            type_name = self.getId()
+            type_name = urllib.unquote(type_name)
+            # make sure we can add an object of this type to the temp folder
+            types_tool = getToolByName(self, 'portal_types')
+            if not type_name in types_tool.TempFolder.allowed_content_types:
+                # update allowed types for tempfolder
+                types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
+            self.invokeFactory(id=id, type_name=type_name)
+            obj = self._getOb(id).__of__(aq_parent(aq_parent(self)))
+            obj.unindexObject()
+            return obj
 
+# ##############################################################################
 class FactoryTool(UniqueObject, SimpleItem):
     """ """
     id = 'portal_factory'
     meta_type= 'Plone Factory Tool'
     security = ClassSecurityInfo()
 
-
-    def doCreate(self, obj, id = None, *args, **kw):
+    def doCreate(self, obj, id=None, **kw):
+        """Create a real object from a temporary object."""
         if not self.isTemporary(obj=obj):
             return obj
         else:
-            return obj.invokeFactory(id, *args, **kw)
+            if id is not None:
+                id = id.strip()
+            if hasattr(obj, 'getId') and callable(getattr(obj, 'getId')):
+                obj_id = obj.getId()
+            else:
+                obj_id = getattr(id, 'id', None)
+            if obj_id is None:
+                raise Exception  # XXX - FIXME
+            if not id:
+                id = obj_id
+            type_name = aq_parent(aq_inner(obj)).id
+            folder = aq_parent(aq_parent(aq_inner(obj)))
+            folder.invokeFactory(id=id, type_name=type_name)
+            obj = getattr(folder, id)
+
+            # give ownership to currently authenticated member if not anonymous
+            membership_tool = getToolByName(self, 'portal_membership')
+            if not membership_tool.isAnonymousUser():
+                member = membership_tool.getAuthenticatedMember()
+                obj.changeOwnership(member.getUser(), 1)
+                obj.manage_setLocalRoles(member.getUserName(), ['Owner'])
+
+            return obj
 
 
-    def isTemporary(self, obj=None, container=None, id=None):
-        """ Test an object to see if it is a real object or a temporary object awaiting creation.
-            Requires an object with a getId() method, an object and an id, or a container and an id.
-        """
-        if container is None:
-            container = obj.getParentNode()
-        if id is None:
-            id = obj.getId()
-        return not (id in container.objectIds())
+    def isTemporary(self, obj):
+        """Check to see if an object is temporary"""
+        return aq_parent(aq_inner(obj)).meta_type == TempFolder.meta_type
 
 
     def __bobo_traverse__(self, REQUEST, name):
         """ """
-        # The portal factory intercepts things of the following form:
-        # (1) The name of a portal type (with spaces replaced by '_'), e.g. .../portal_factor/News_Item/...
-        #     In this case, we auto-generate an ID and relocate to a URL of the form .../portal_factory/News_Item.AUTO_GENERATED_ID/...
-        # (2) An auto-generated ID, which is the name of a portal type (with no spaces) followed by a time stamp,
-        #       e.g., .../portal_factory/News_Item.2002-08-18.154411/...
-        #     For this case, we check to see if News_Item.2002-08-18.154411 exists in the portal_factory's context.
-        #     - If it does not exist, we pass along a placeholder object (a PendingCreate) which will result in the
-        #          creation of a real object in the ZODB later on when a form has been filled out and validated.
-        #     - If it _does_ exist, the portal factory just passes along the existing object.  This is to handle the
-        #          case of a user who creates an object, then navigates back to edit the object using the browser's
-        #          back button.
+        # The portal factory intercepts URLs of the form
+        #   .../portal_factory/TYPE_NAME/ID/...
+        # where TYPE_NAME is a type from portal_types.listContentTypes() and
+        # ID is the desired ID for the object.  For intercepted URLs, 
+        # portal_factory creates a temporary object of type TYPE_NAME with
+        # id ID and puts it on the traversal stack.  The context for the
+        # temporary object is set to portal_factory's context.
+        #
+        # If the object with id ID already exists in portal_factory's context,
+        # portal_factory returns the existing object.
+        #
+        # All other requests are passed through unchanged.
+        # 
 
         # try to extract a type string from next piece of the URL
-        type_string = name
-        dot_index = name.find('.')
-        if dot_index != -1:
-            type_string = name[:dot_index]
-
-        # see if the type string corresponds to a known portal type
-        type_name = self._getTypeName(type_string)
-
-        if not type_name:
-            # unknown type -- ignore and do normal traversal
-            return getattr(aq_parent(self), name)
-
-        # type_string is known type
-
-        # name is a valid type plus a time stamp
-        if dot_index != -1:
-
-            # see if the object exists in the parent context
-            if not self.isTemporary(id=name, container=self.getParentNode()):
-                # if so, just do a pass-through
-                return getattr(self.getParentNode(), name)
-
-            # object does not exist in parent context -- return a PendingCreate
-#            self.log('returning PendingCreate(%s, %s)' % (name, type_name), '__bobo_traverse__')
-
-            type_info = self.portal_types.getTypeInfo(type_name)
-            return PendingCreate(name, type_info).__of__(aq_parent(self))  # wrap in acquisition layer
-
-        # name is just type with no time-stamp.  Autogenerate an ID and relocate
-
-        # grab the rest of the URL
-        path = REQUEST['TraversalRequestNameStack']
-        path = path[:]
-        path.reverse()
-        # lop off the final type_name string and replace with an automatically generated ID
-        url = REQUEST.URL[:REQUEST.URL.rfind('/')] + '/' + self._generateId(type_name) + '/' + '/'.join(path)
-#        self.log("url = " + url)
-        return Redirector(url).__of__(aq_parent(self))  # wrap in acquisition layer so that Redirector has access to REQUEST
-
-
-    def _generateId(self, type):
-        now = DateTime()
-        name = type.replace(' ', '')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%H%M%S')
-
-        # Reduce chances of an id collision (there is a very small chance that somebody will
-        # create another object during this loop)
-        base_name = name
-        objectIds = self.getParentNode().objectIds()
-        i = 1
-        while name in objectIds:
-            name = base_name + "-" + str(i)
-            i = i + 1
-        return name
-
-
-    def _getTypeName(self, name):
-        name = name.lower().replace(' ','')
-        global type_map
-        type_name = type_map.get(name, None)
-        if not type_name:
-            # refresh type map
-            self._generateTypeMap()
-            type_name = type_map.get(name, None)
-        return type_name
-
-
-    def _generateTypeMap(self):
-        types_tool = getattr(self.getParentNode(), 'portal_types')
-        content_types = types_tool.listContentTypes()
+        encoded_type_name = name
+        # unmangle type name
+        type_name = urllib.unquote(encoded_type_name)
+        types_tool = getToolByName(self, 'portal_types')
+        # make sure this is really a type name
+        if not type_name in types_tool.listContentTypes():
+            # nope -- do nothing
+            return getattr(self, name)
+        # create a temporary object
+#        tempFolder = TempFolder(encoded_type_name).__of__(aq_parent(self))
+        tempFolder = TempFolder(encoded_type_name).__of__(self)
+        # modify permissions to allow people to add, modify, and copy/move/rename temporary objects
+        tempFolder.manage_permission(CMFCorePermissions.AddPortalContent, ('Anonymous','Authenticated',), acquire=1 )
+        tempFolder.manage_permission(CMFCorePermissions.ModifyPortalContent, ('Anonymous','Authenticated',), acquire=1 )
+        tempFolder.manage_permission('Copy or Move', ('Anonymous','Authenticated',), acquire=1 )
+        tempFolder.unindexObject()
         
-        global type_map
-        type_map = {}
-        for t in content_types:
-            type_map[t.lower().replace(' ', '')] = t
+        return tempFolder.__of__(aq_parent(self))
 
-
-    security.declarePublic('log')
-    def log(self, msg, loc=None):
-        """ """
-        if not debug:
-            return
-        import sys
-        prefix = 'FactoryTool'
-        if loc:
-            prefix = prefix + '. ' + str(loc)
-        sys.stdout.write(prefix+': '+str(msg)+'\n')
 InitializeClass(FactoryTool)
-
-
-class PendingCreate(SimpleItem):
-    """ """
-    meta_type= 'Object With Creation Pending'
-    security = ClassSecurityInfo()
-
-
-    def __init__(self, id, type_info):
-        now = DateTime()
-        self.id = id
-        self._type_info = type_info
-        self.Title = ''
-
-
-    def getTypeInfo(self):
-        """ """
-        return self._type_info
-
-
-    def invokeFactory(self, id, *args, **kw):
-        if id == None:
-            id = self.id
-        container = self.getParentNode()
-        container.invokeFactory(self._type_info.getId(), id, *args, **kw)
-        return getattr(container, id)
-
-
-    security.declarePublic('log')
-    def log(self, msg, loc=None):
-        """ """
-        if not debug:
-            return
-        import sys
-        prefix = 'PendingCreate'
-        if loc:
-            prefix = prefix + '. ' + str(loc)
-        sys.stdout.write(prefix+': '+str(msg)+'\n')
-InitializeClass(PendingCreate)

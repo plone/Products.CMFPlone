@@ -1,3 +1,4 @@
+import os
 from migration_util import safeEditProperty
 from Products.StandardCacheManagers import AcceleratedHTTPCacheManager, RAMCacheManager
 from Products.CMFDefault.Document import addDocument
@@ -5,7 +6,7 @@ from Globals import package_home
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFCore.utils import getToolByName
 from Products.CMFQuickInstallerTool import QuickInstallerTool, AlreadyInstalled
-import os
+from Products.CMFCore.TypesTool import FactoryTypeInformation
 
 def upg_1_0_1_to_1_1(portal):
     """ Migrations from 1.0.1 to 1.1 """
@@ -40,6 +41,27 @@ def upg_1_0_1_to_1_1(portal):
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
     addControlPanel(portal)
+    upgradePortalFactory(portal)
+    
+
+def upgradePortalFactory(portal):
+    site_props = portal.portal_properties.site_properties
+    if not hasattr(site_props,'portal_factory_types'):
+        site_props._setProperty('portal_factory_types',('',), 'lines')
+    
+    typesTool = getToolByName(portal, 'portal_types')
+    # add temporary folder type for portal_factory
+    if not hasattr(typesTool, 'TempFolder'):
+        typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type,
+                                             id='TempFolder', 
+                                             typeinfo_name='CMFCore: Portal Folder')
+        folder = typesTool.Folder
+        tempfolder = typesTool.TempFolder
+        tempfolder.content_meta_type='TempFolder'
+        tempfolder.icon = folder.icon
+        tempfolder.global_allow = 0  # make TempFolder not implicitly addable
+        tempfolder.allowed_content_types=(typesTool.listContentTypes())
+    
     
 def addControlPanel(portal):
     addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
