@@ -29,37 +29,6 @@
         <input type="hidden" name="prev_visit:date" value="ZopeTime"
                tal:attributes="value here/ZopeTime">
 
-    	<div class="row"
-             tal:define="error_fullname errors/fullname | nothing;
-                         fullname request/fullname | nothing;" >
-
-            <div class="label required">
-                <span i18:id="full_name">Full name</span>
-                <div id="full_name_help" 
-                     i18n:id="full_name_help"
-                     class="help" 
-                     style="visibility:hidden">
-                Enter your full name.
-                </div>
-            </div>
-            
-            <div class="field" 
-                  tal:attributes="class python:test(error_fullname, 'field error', 'field')" >
-
-                <div tal:condition="error_fullname"
-                      tal:replace="error_fullname" />
-
-                <input type="text" 
-                       name="field_fullname" 
-                       size="30"
-                       value="fullname"
-                       tal:attributes="value fullname"
-                       tabindex="1"
-                       onfocus="formtooltip('full_name_help',1)" 
-                       onblur="formtooltip('full_name_help',0)" />
-            </div>
-        </div>
-	
         <div class="row"
              tal:define="error_username errors/username| nothing;
                          username request/username | nothing;" >

@@ -14,8 +14,6 @@ vf=context.portal_form_validation
 password, confirm = REQUEST.get('field_password', ''), REQUEST.get('field_confirm', '')
 
 form=vf.createForm()
-fullnameField=vf.createField('String', 'fullname', title='fullname', required=1)
-form.add_field(fullnameField)
 
 usernameField=vf.createField('String', 'username', title='username', required=1)
 form.add_field(usernameField)
