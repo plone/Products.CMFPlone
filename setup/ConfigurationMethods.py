@@ -163,9 +163,6 @@ def modifyActionProviders(self, portal):
 
     at=getToolByName(portal, 'portal_actions')
     correctFolderContentsAction(at)
-    # Remove the portal_workflow from the actionproviders
-    # Since we have the 'review_slot'
-#    at.deleteActionProvider('portal_workflow')
 
     dt=getToolByName(portal, 'portal_discussion')
     _actions=dt._cloneActions()
@@ -181,6 +178,8 @@ def correctFolderContentsAction(actionTool):
             action.name=action.title='Contents'
             if action.condition.text.find('folder is not object') != -1:
                 action.condition=Expression('python:member and folder is not object')
+                action.permissions=(CMFCorePermissions.ModifyPortalContent,
+                                    Permissions.copy_or_move)
     actionTool._actions=_actions
     
 
