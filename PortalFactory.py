@@ -82,8 +82,9 @@ def loadEmergingExample(self, outStream):
     
     filename='emerging.zexp'
     src_file =  open(os.path.join(package_home(globals()), 'www', 'examples', filename), 'rb')   
-    dest_file = open(os.path.join(INSTANCE_HOME, 'Extensions', filename), 'wb')
+    dest_file = open(os.path.join(INSTANCE_HOME, 'import', filename), 'wb')
     dest_file.write(src_file.read())
+    src_file.close(); dest_file.close()
 
     root.manage_importObject(filename)
 
