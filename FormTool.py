@@ -1,3 +1,5 @@
+from Products.Formulator.Form import FormValidationError, BasicForm
+from Products.Formulator import StandardFields
 from Products.CMFCore.utils import UniqueObject
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
@@ -5,16 +7,18 @@ from OFS.SimpleItem import SimpleItem
 from OFS.Folder import Folder
 from OFS.Traversable import Traversable
 from Acquisition import aq_parent, aq_base
-from FormulatorTool import CMFForm
 from FactoryTool import PendingCreate
 from OFS.SimpleItem import Item
 from OFS.ObjectManager import bad_id
-
+from ZPublisher.mapply import mapply
+from ZPublisher.Publish import call_object, missing_name, dont_publish_class
+from Products.CMFCore.utils import getToolByName
+from string import join
 
 validator_cache = {}  # a place to stash cached validators
 # (we don't want to persist them in the ZODB since that would make debugging a big pain)
 
-debug = 0  # enable/disable logging
+debug = 1  # enable/disable logging
 
 class FormTool(UniqueObject, SimpleItem):
     id = 'portal_form'
@@ -25,106 +29,56 @@ class FormTool(UniqueObject, SimpleItem):
     error_key = 'errors'                    # a dictionary used for storing form validation errors
     form_submitted_key = 'form_submitted'   # supplies the name of the form submitted
     id_key = 'id'                           # the id for the object being operated on (can be None)
-    id_error_key = 'id_error'
+    validation_status_key = 'validation_status'
 
 
-    def setValidator(self, form, validator):
-        """Register a form validator"""
+    def setValidators(self, form, validators = ['validate_id']):
+        """Register a chain of validators for a form"""
+        if type(validators) != type([]):
+            validators = [validators]
         property_tool = getattr(self, 'portal_properties')
         formprops = getattr(property_tool, 'form_properties')
+
+        st = join(validators,',')
         if formprops.hasProperty(form):
-            form_props._updateProperty(form, validator)
+            form_props._updateProperty(form, st)
         else:
-            formprops._setProperty(form, validator)
+            formprops._setProperty(form, st)
 
 
-    security.declarePublic('getValidator')
-    def getValidator(self, form):
-        """Get the validator registered for a given form"""
+    def getValidators(self, form):
+        """Get the chain of validators registered for a given form"""
         property_tool = getattr(self, 'portal_properties')
         form_props = getattr(property_tool, 'form_properties')
-        validator = form_props.getProperty(form, None)
-        if validator:
-            validator = validator.strip()
-        return validator
-
-
-    security.declarePublic('validate')
-    def validate(self, context, REQUEST, validator=None):
-        """Convenience method for form handlers.  Calls an optional external validator,
-           checks for ID collisions when objects are renamed, then sets up the REQUEST.
-           Places a dictionary of errors in the REQUEST that is accessed via REQUEST[FormTool.error_key]
-           Returns a status of 'success' or 'failure'.
-        """
-        # validate is a convenience method that is typically called by a form handling
-        # script, e.g. a myobject_edit.py external method in skins/plone_scripts/form_scripts.
-        #
-        # validate first calls the validation script specified by validator.  Next, it
-        # does a basic check on the id parameter: if the id has changed, it makes sure there
-        # isn't aready an object with the new id in the current object's container.  Finally,
-        # it sets up the REQUEST by calling validate_setupRequest.
-        #
-        # *** Form handlers should always call validate even if they require no additional
-        # validation to check for id collisions and to set up the REQUEST ***
-        errors = {}
-        if validator and validator.strip() != '':
-            errors = apply(getattr(context, validator), ())
-            # make sure errors is a dictionary
-            if not type(errors) == type({}):
-                errors = {}
-
-        messages = context.errorMessages()
-        # do some basic id validation
-        id = REQUEST.get(self.id_key, None)
-        if id:
-            if bad_id(id):
-                # id is bad
-                errors[self.id_key] = messages['illegal_id']
-            else:
-                # id is good; make sure we have no id collisions
-
-                if self._isPendingCreate(context):
-                    # always check for collisions if we are creating a new object
-                    checkForCollision = 1
-                else:
-                    # if we have an existing object, only check for collisions if we are changing the id
-                    checkForCollision = (context.getId() != id)
-
-                # perform the actual check
-                if checkForCollision:
-                    container = context.getParentNode()
-                    if id in container.objectIds():
-                        errors[self.id_key] = messages['id_exists']
-
-        # set a status message indicating errors
-        if errors:
-            self.REQUEST.set('portal_status_message', messages['error_exists'])
-
-        self.REQUEST.set(self.error_key, errors)
-        if errors:
-            return 'failure'
+        validators = form_props.getProperty(form, None)
+        if validators:
+            return validators.strip().split(',')
         else:
-            return 'success'
+            return []
 
 
-    security.declarePublic('createForm')
+    # expose ObjectManager's bad_id test to skin scripts
+    def good_id(self, id):
+        m = bad_id(id)
+        if m is not None and m.find(' ') != -1: # XXX do we want to disallow spaces in IDs?
+            return 0
+        return 1
+
+
     def createForm(self):
         """Returns a CMFForm object"""
         # CMFForm wraps Formulator.BasicForm and provides some convenience methods that
         # make BasicForms easier to work with from external methods.
-        portalRootObject=getToolByName(self, 'portal_url').getPortalObject()
         form = CMFForm()
-        return form.__of__(portalRootObject)
+        return form.__of__(self)
 
 
-    security.declarePublic('cacheValidator')
     def cacheValidator(self, key, validator):
         """Cache a validator for later use"""
         global validator_cache
         validator_cache[key] = validator
 
 
-    security.declarePublic('getValidator')
     def getCachedValidator(self, key):
         """Get a validator from the cache"""
         global validator_cache
@@ -137,8 +91,8 @@ class FormTool(UniqueObject, SimpleItem):
         # hands off to the navigation tool to determine the correct object to publish.
 
         # see if we are handling validation for this form
-        validator = self.getValidator(name)
-        if not validator:
+        validators = self.getValidators(name)
+        if validators == []:
             # no -- do normal traversal
             target = getattr(aq_parent(self), name, None)
             if name.endswith('.js'):
@@ -158,7 +112,7 @@ class FormTool(UniqueObject, SimpleItem):
         # 3) A form validation error occurs, and the form is invoked by the navigation tool
         #       In this case we have REQUEST.errors != None, REQUEST.form_submitted = 1
         #
-        # We only need to invoke the validator for case (2)
+        # We only need to invoke the validators for case (2)
 
         # see if we need to invoke validation
         errors = REQUEST.get(self.error_key, None)
@@ -172,16 +126,26 @@ class FormTool(UniqueObject, SimpleItem):
         # so that subsequent forms will operate on the FormTool's context and not
         # on the FormTool.
         do_validate = form_submitted and not errors
-        self.log('returning FormValidator(%s,%s,%s)' % (name, validator, do_validate), '__bobo_traverse__')
+        self.log('returning FormValidators(%s,%s,%s)' % (name, validators, do_validate), '__bobo_traverse__')
         self.log(REQUEST.URL)
-        return FormValidator(name, validator, do_validate).__of__(aq_parent(self)) # wrap in acquisition layer
+        return FormValidator(name, validators, do_validate).__of__(aq_parent(self)) # wrap in acquisition layer
 
 
     def _isPendingCreate(self, obj):
         return obj.__class__ == PendingCreate
 
+    # DEPRECATED
+    def setValidator(self, form, validator):
+        """Register a form validator"""
+        return self.setValidators(form, [validator, 'validate_id'])
+
+    # DEPRECATED
+    security.declarePublic('getValidator')
+    def getValidator(self, form):
+        """Get the validator registered for a given form"""
+        return self.getValidators(form)[0]
+
   
-    security.declarePublic('log')
     def log(self, msg, loc=None):
         """ """
         if not debug:
@@ -202,23 +166,22 @@ class FormValidator(SimpleItem):
     # hands off to a page determined by the NavigationTool
     security = ClassSecurityInfo()
 
-    def __init__(self, form, validator, do_validate):
+    def __init__(self, form, validators, do_validate):
         self.form = form
-        self.validator = validator
+        self.validators = validators
         self.do_validate = do_validate
 
 
     security.declarePublic('__call__')
     def __call__(self, REQUEST, **kw):
         """ """
-        self.log('validator[%s] = \'%s\'' % (self.form, self.validator), '__call__')
+        self.log('validator[%s] = \'%s\'' % (self.form, self.validators), '__call__')
 
         if self.do_validate:
             context = self.aq_parent
-            form_tool = context.portal_form
-            self.log('invoking validation, status = '+str(form_tool.validate(context, REQUEST, self.validator)))
             # invoke validation
-            status = form_tool.validate(context, REQUEST, self.validator)
+            status = self._validate(context, REQUEST)
+            self.log('invoking validation, status = '+status)
 
             # check for validation errors
             if status == 'success':
@@ -237,6 +200,24 @@ class FormValidator(SimpleItem):
     index_html = None  # call __call__, not index_html
 
 
+    def _validate(self, context, REQUEST):
+        """Execute validators on the validation stack then sets up the REQUEST and returns a status.
+           Places a dictionary of errors in the REQUEST that is accessed via REQUEST[FormTool.error_key]
+        """
+        errors = {}
+        for validator in self.validators:
+            
+            self.log('calling validator [%s]' % (str(validator)))
+            v = getattr(context, validator)
+            (status, errors, message) = mapply(v, REQUEST.args, REQUEST,
+                            call_object, 1, missing_name, dont_publish_class,
+                            REQUEST, bind=1)
+            self.REQUEST.set('validation_status', status)
+            self.REQUEST.set('errors', errors)
+            self.REQUEST.set('portal_status_message', message)
+        return status
+
+
     security.declarePublic('log')
     def log(self, msg, loc=None):
         """ """
@@ -249,3 +230,121 @@ class FormValidator(SimpleItem):
         sys.stdout.write(prefix+': '+str(msg)+'\n')
 
 InitializeClass(FormValidator)
+
+
+class CMFForm(BasicForm):
+    """Wraps Formulator.BasicForm and provides some convenience methods that
+       make BasicForms easier to work with from external methods."""
+    security = ClassSecurityInfo()
+    security.declareObjectPublic()
+    
+    security.declarePublic('addField')
+    def addField(self, field_id, fieldType, group=None, **kwargs):
+        """
+        Adds a Formulator Field to the wrapped BasicForm.
+
+        fieldType: An abbreviation for the Field type.
+            'String' generates a StringField, 'Int' generates an IntField, etc.
+            Uses a StringField if no suitable Field type is found.
+        field_id: Name of the variable in question.  Note that Formulator adds
+            'field_' to variable names, so you will need to refer to the variable
+            foo as field_foo in form page templates.
+        group: Formulator group for the field.
+        
+        Additional arguments: addField passes all other arguments on to the
+            new Field object.  In addition, it allows you to modify the
+            Field's error messages by passing in arguments of the form
+            name_of_message = 'New error message'
+                
+        See Formulator.StandardFields for details.
+        """
+
+        if fieldType[-5:]!='Field':
+            fieldType = fieldType+'Field'      
+
+        formulatorFieldClass = None
+
+        if hasattr(StandardFields, fieldType):
+            formulatorFieldClass = getattr(StandardFields, fieldType)
+        else:
+            formulatorFieldClass = getattr(StandardFields, 'StringField')
+
+        # pass a title parameter to the Field
+        kwargs['title'] = field_id
+
+        fieldObject = apply(formulatorFieldClass, (field_id, ), kwargs)
+        fieldObject = fieldObject.__of__(self)
+
+        # alter Field error messages
+        # Note: This messes with Formulator innards and may break in the future.
+        # Unfortunately, Formulator doesn't do this already in Field.__init__
+        # and there isn't a Python-oriented method for altering message values
+        # so at present it's the only option.
+        for arg in kwargs.keys():
+            if fieldObject.message_values.has_key(arg):
+                fieldObject.message_values[arg] = kwargs[arg]
+
+        # Add the new Field to the wrapped BasicForm object
+        BasicForm.add_field(self, fieldObject, group)
+
+
+    security.declarePublic('validate')
+    def validate(self, REQUEST):
+        """
+        Executes the validator for each field in the wrapped BasicForm.add_field
+        Returns the results in a dictionary.
+        """
+
+        errors = REQUEST.get('errors', {})
+        
+        # This is a bit of a hack to make some of Formulator's quirks
+        # transparent to developers.  Formulator expects form fields to be
+        # prefixed by 'field_' in the request.  To remove this restriction,
+        # we mangle the REQUEST, renaming keys from key to 'field_' + key
+        # before handing off to Formulator's validators.  We will undo the
+        # mangling afterwards.
+        for field in self.get_fields():
+            key = field.id
+            value = REQUEST.get(key)
+            if value:
+                # get rid of the old key
+                try:
+                    del REQUEST[key]
+                except:
+                    pass
+                # move the old value to 'field_' + key
+                # if there is already a value at 'field_' + key,
+                #    move it to 'field_field_' + key, and repeat
+                #    to prevent key collisions
+                newKey = 'field_' + key
+                newValue = REQUEST.get(newKey)
+                while newValue:
+                    REQUEST[newKey] = value
+                    newKey = 'field_' + newKey
+                    value = newValue
+                    newValue = REQUEST.get(newKey)
+                REQUEST[newKey] = value
+
+        try:
+            result=self.validate_all(REQUEST)
+        except FormValidationError, e:
+            for error in e.errors:
+                errors[error.field.get_value('title')]=error.error_text
+
+        # unmangle the REQUEST
+        for field in self.get_fields():
+            key = field.id
+            value = 1
+            while value:
+                key = 'field_' + key
+                value = REQUEST.get(key)
+                if value:
+                    REQUEST[key[6:]] = value
+                    try:
+                        del REQUEST[key]
+                    except:
+                        pass
+
+        return errors
+
+InitializeClass(CMFForm)

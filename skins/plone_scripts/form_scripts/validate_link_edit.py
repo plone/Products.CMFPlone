@@ -11,4 +11,8 @@ validator = context.portal_form_validation.createForm()
 validator.addField('id', 'String', required=1)
 validator.addField('title', 'String', required=1)
 validator.addField('remote_url', 'String', required=1)
-return validator.validate(context.REQUEST)
+errors = validator.validate(context.REQUEST)
+if errors:
+    return ('failure', errors, 'Please correct the indicated errors.')
+else:
+    return ('success', errors, None)

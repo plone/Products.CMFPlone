@@ -186,7 +186,7 @@ class PloneGenerator(Portal.PortalGenerator):
         prop_tool.manage_addPropertySheet('form_properties', 'Form Properties')
         
         form_tool = p.portal_form
-        form_tool.setValidator('link_edit_form', 'validate_link_edit')
+        form_tool.setValidators('link_edit_form', ['validate_id', 'validate_link_edit'])
 
 
         # grab the initial portal navigation properties from data/navigation_properties
