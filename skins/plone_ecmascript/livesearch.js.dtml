@@ -52,19 +52,19 @@ function getElementDimensions(elemID) {
         offsetLeft += document.body.leftMargin;
         offsetTop += document.body.topMargin;
     }
-    
+
     if(!isIE){
 	width =  searchInput.offsetWidth-widthOffset*2;
     }
     else {
 	width = searchInput.offsetWidth;
     }
-    
+
     return { left:offsetLeft, 
 	     top:offsetTop, 
 	     width: width, 
              height: base.offsetHeight,
-	bottom: offsetTop + base.offsetHeight, 
+	    bottom: offsetTop + base.offsetHeight, 
 	     right : offsetLeft + width};
 }
 
@@ -94,9 +94,10 @@ function liveSearchInit() {
 	var pos = getElementDimensions('searchGadget');	
 	result = document.getElementById('LSResult');
 	pos.left = pos.left - result.offsetParent.offsetLeft + pos.width;
-	result.style.top = pos.top + "px";
+	/*result.style.top = pos.top + "px";
 	result.style.left = pos.left  + "px";	
-	result.style.display='none';
+        */
+	//result.style.display='none';
 }
 
 

@@ -52,7 +52,7 @@ else:
         print '<td class="LSRow">'
 
         #print '''<img src="/%s"/>''' % result.getIcon,
-        print '''<a href="%s"><img src="/%s"/>&nbsp;%s&nbsp;<span style="font-weight:normal">[%s%%]</span></a>''' % (result.getURL()+'/view?searchterm=' + searchterms, result.getIcon, result.title_or_id, result.data_record_normalized_score_)
+        print '''<a href="%s"><img src="/%s"/>&nbsp;%s&nbsp;<span style="font-weight:normal">[%s%%]</span></a>''' % (result.getURL()+'/view?searchterm=' + searchterms, result.getIcon, result.Title or result.id, result.data_record_normalized_score_)
 
             
         if len(result.Description)>MAX_DESC:

@@ -11,8 +11,9 @@
           tal:attributes="action string:${portal_url}/search"
 style="white-space:nowrap">
         <label for="searchGadget" class="hiddenStructure"
-i18n:translate="text_search">Search Site</label>
+                    i18n:translate="text_search">Search Site</label>
 
+        <div class="LSBox">
         <input id="searchGadget"
                tabindex=""
                name="SearchableText"
@@ -30,7 +31,7 @@ i18n:translate="text_search">Search Site</label>
 class="visibility:visible" />
 
         <div class="LSResult" id="LSResult" style=""><div class="LSShadow" id="LSShadow"></div></div>
-
+        </div>
         
         <input class="searchButton"
                type="submit"
@@ -40,6 +41,7 @@ class="visibility:visible" />
            tal:attributes="tabindex tabindex/next"
                i18n:attributes="value accesskey" />
        </form>
+
 
 
 </div>

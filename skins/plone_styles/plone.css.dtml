@@ -365,6 +365,7 @@ del {
     white-space: nowrap;
     z-index: 2;
 }
+
 #portal-globalnav {
     /* Navigational Plone Tabs(tm). The power of CSS runs strong in these :) */
     background-color: transparent;
@@ -1644,9 +1645,13 @@ ol.visualNoMarker {
 }
 
 .LSResult {
-    position:absolute;
+    position:relative;
     display: block;
     text-align:right;
+    padding-top: 5px;
+    margin: 0;
+    left: 3px;
+    z-index: 3;
 }
 
 .LSShadow {
@@ -1668,6 +1673,14 @@ ol.visualNoMarker {
     color: &dtml-globalFontColor;;
     background-color: &dtml-backgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+.LSBox {
+    clear: left;
+    float: left;
+    text-align: right;
+    padding-right: 1px;
+    display:block;
 }
 
 
