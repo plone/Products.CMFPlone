@@ -96,9 +96,16 @@ class CatalogTool(BaseTool):
                 extra = args( doc_attr = 'SearchableText',
                               lexicon_id = 'plone_lexicon',
                               index_type  = 'Okapi BM25 Rank' )
-
                 self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
+
+                extra = args( doc_attr = 'Description',
+                              lexicon_id = 'plone_lexicon',
+                              index_type  = 'Okapi BM25 Rank' )
                 self.manage_addIndex('Description', 'ZCTextIndex', extra=extra)
+
+                extra = args( doc_attr = 'Title',
+                              lexicon_id = 'plone_lexicon',
+                              index_type  = 'Okapi BM25 Rank' )
                 self.manage_addIndex('Title', 'ZCTextIndex', extra=extra)
 
 

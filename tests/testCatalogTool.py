@@ -38,12 +38,29 @@ class TestCatalogTool(PloneTestCase.PloneTestCase):
         else:
             self.assertEqual(itype, 'ZCTextIndex')
 
+    def testDescriptionIsZCTextIndex(self):
+        # Description index should be a ZCTextIndex
+        itype = self.catalog.Indexes['Description'].__class__.__name__
+        if have_txng:
+            self.assertEqual(itype, 'TextIndexNG')
+        else:
+            self.assertEqual(itype, 'ZCTextIndex')
+
+    def testTitleIsZCTextIndex(self):
+        # Title index should be a ZCTextIndex
+        itype = self.catalog.Indexes['Title'].__class__.__name__
+        if have_txng:
+            self.assertEqual(itype, 'TextIndexNG')
+        else:
+            self.assertEqual(itype, 'ZCTextIndex')
+
     if not have_txng:
 
         def testPloneLexiconIsZCTextLexicon(self):
             # Lexicon should be a ZCTextIndex lexicon
             self.failUnless(hasattr(aq_base(self.catalog), 'plone_lexicon'))
             self.assertEqual(self.catalog.plone_lexicon.meta_type, 'ZCTextIndex Lexicon')
+
 
 class TestCatalogSearch(PloneTestCase.PloneTestCase):
 
