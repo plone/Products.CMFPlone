@@ -65,7 +65,7 @@ def normalize_tabs(self):
             a['visible']=0
 	if a.get('id','') != 'syndication': #syndication tab belongs on syndication tool
             actions.append(a)
-    tt['Folder']._actions=actions
+    tt['Folder']._actions=tuple(actions)
 
     def global_tabs():
 	welcome=ActionInformation( 'index_html'

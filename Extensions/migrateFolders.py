@@ -35,13 +35,13 @@ def migrateFolders(self):
             migrate(f)
 
     #take off syndication tab if its on Folder Type
-    folder_type = getToolByName(self, 'portal_types').getTypeInfo('Folder')
-    types_tool = getToolByName(self, 'portal_types')
-    actions = []
-    for idx in range( len(folder_type._actions)):
-	action=folder_type._actions[idx]
-        if action['id']!='syndication':
-            actions.append(action)
-    setattr( getattr(types_tool, 'Folder'), '_actions', actions)
+    #folder_type = getToolByName(self, 'portal_types').getTypeInfo('Folder')
+    #types_tool = getToolByName(self, 'portal_types')
+    #actions = []
+    #for idx in range( len(folder_type._actions)):
+#	action=folder_type._actions[idx]
+#        if action['id']!='syndication':
+#            actions.append(action)
+#    setattr( getattr(types_tool, 'Folder'), '_actions', actions)
     return 'finished migration'
 
