@@ -51,7 +51,7 @@
         </tr>
 
         <tr class="odd"
-            tal:condition="python:here.portal_membership.checkPermission('Add portal member', here)" >
+            tal:condition="python:test(hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
             <td colspan="2">
 
                 <a href="join_form"
