@@ -17,90 +17,98 @@
 		takeaction string:prefs_user_membership_edit;"
      tal:condition="here/rejectAnonymous" >
 
-<!-- ugly way of simulating real actions on the groups/user pages until we have
-     real objects. -->
-<ul id="contentTabs" style="font-size: 96%">
-  <li class="">
-    <a href=""
-       tal:attributes="href string: prefs_user_details?userid=${userid}"
-       i18n:translate=""
-    >User Properties</a>
-  </li>
-  <li class="selected">
-    <a href=""
-       tal:attributes="href string:${template/id}?userid=${userid}"
-       i18n:translate=""
-    >Group Memberships</a>
-  </li>
-</ul>
-<div id="contentBar">&nbsp;</div>
-<!-- End of tabs -->
+<div class="editable pageContent">
 
-<div id="documentContent"
-     class="editableDocument">
+    <!-- simulating views on the groups/user pages until we have real objects. -->
+    <ul class="contentViews">
+        <li class="">
+            <a href=""
+               tal:attributes="href string: prefs_user_details?userid=${userid}"
+               i18n:translate=""
+            >User Properties</a>
+        </li>
+            
+        <li class="selected">
+            <a href=""
+               tal:attributes="href string:${template/id}?userid=${userid}"
+               i18n:translate=""
+            >Group Memberships</a>
+        </li>
+    </ul>
+    
+    <div class="contentActions">
+    &nbsp;
+    </div>        
+    <!-- End of tabs -->
 
-    <h1 i18n:translate="">Group Memberships for <span tal:replace="string:${member/getUserName}"/></h1>
+    <div class="contentContent">
 
-	
-	<h2>Search for new groups</h2>
-	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
-	  <metal:block metal:fill-slot="hiddens">
-	    <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />
-	  </metal:block>
-
-	  <metal:block metal:fill-slot="actions" >
-	    <input class="context"
-                   tabindex=""                                 
-               	   type="submit"                               
-               	   name="prefs_user_membership_edit:method"
-               	   value="Add user to selected groups"                     
-	       	   tal:condition="batch" 
-               	   tal:attributes="tabindex tabindex/next;"    
-               	   i18n:attributes="value" />
-	  </metal:block>
-
-	  <metal:block metal:fill-slot="removables">
-
-	<h2>Current Group Memberships</h2>
-	<table class="listing">
-
-            <tr>
-	      <th i18n:translate="listingheader_group_name">Group name</th>
-	      <th i18n:translate="listingheader_group_remove">Remove Group</th>
+        <h1 i18n:translate="">Group Memberships for <span tal:replace="string:${member/getUserName}"/></h1>
+    
+    	
+    	<h2>Search for new groups</h2>
+    	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
+    	  <metal:block metal:fill-slot="hiddens">
+    	    <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />
+    	  </metal:block>
+    
+    	  <metal:block metal:fill-slot="actions" >
+    	    <input class="context"
+                       tabindex=""                                 
+                   	   type="submit"                               
+                   	   name="prefs_user_membership_edit:method"
+                   	   value="Add user to selected groups"                     
+    	       	   tal:condition="batch" 
+                   	   tal:attributes="tabindex tabindex/next;"    
+                   	   i18n:attributes="value" />
+    	  </metal:block>
+    
+    	  <metal:block metal:fill-slot="removables">
+    
+    	<h2>Current Group Memberships</h2>
+    	<table class="listing">
+    
+                <tr>
+    	      <th i18n:translate="listingheader_group_name">Group name</th>
+    	      <th i18n:translate="listingheader_group_remove">Remove Group</th>
+                </tr>
+    
+    	  <tr tal:repeat="groupid member/getGroups" class="odd">
+    	      <tal:block tal:define="group python:here.portal_groups.getGroupById(groupid);
+    		                     groupname group/getGroupName">
+                <td>
+                    <a href="prefs_group_details"
+                       tal:attributes="href string:prefs_group_details?groupname=$groupname">
+    		    <img src=""
+                             tal:replace="structure portal/group.gif" />&nbsp;<span
+                             tal:replace="groupname">group name</span>
+                    </a>
+                </td>
+    
+    
+                <td class="checkbox">
+                    <input type="checkbox"
+                           class="noborder notify"
+                           name="delete:list"
+                           tal:attributes="value groupname" />
+                </td>
+                </tal:block>
             </tr>
-
-	  <tr tal:repeat="groupid member/getGroups" class="odd">
-	      <tal:block tal:define="group python:here.portal_groups.getGroupById(groupid);
-		                     groupname group/getGroupName">
-            <td>
-                <a href="prefs_group_details"
-                   tal:attributes="href string:prefs_group_details?groupname=$groupname">
-		    <img src=""
-                         tal:replace="structure portal/group.gif" />&nbsp;<span
-                         tal:replace="groupname">group name</span>
-                </a>
-            </td>
-
-
-            <td class="checkbox">
-                <input type="checkbox"
-                       class="noborder notify"
-                       name="delete:list"
-                       tal:attributes="value groupname" />
-            </td>
-            </tal:block>
-        </tr>
-
-        </table>
-
-	    <input class="destructive"
-	           type="submit"
-	           name="prefs_user_membership_edit:method"
-                   value="Remove selected groups"
-                   i18n:attributes="value" />
-	  </metal:block>
-	</div>
-      </div>
+    
+            </table>
+    
+    	    <input class="destructive"
+    	           type="submit"
+    	           name="prefs_user_membership_edit:method"
+                       value="Remove selected groups"
+                       i18n:attributes="value" />
+    	  </metal:block>
+    	</div>
     </div>
-  </body>
+
+</div>
+
+</div>
+
+</body>
 </html>
