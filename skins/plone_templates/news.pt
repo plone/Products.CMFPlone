@@ -47,7 +47,8 @@
                          tal:attributes="src result/getIcon; alt result/Type;" />
                 Posted by 
                 
-                    <a href="">
+                    <a href=""
+                       tal:attributes="href python:here.portal_membership.getHomeUrl(result.Creator)">
 
                         <img src="dummy.gif" 
                              alt="User" 
