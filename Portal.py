@@ -134,6 +134,7 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_styles'
                     , 'plone_templates'
                     , 'plone_3rdParty'
+                    , 'plone_3rdParty/CMFTopic'
                     , 'plone_calendar'
                     , 'plone_templates/ui_slots'
                     ):
