@@ -1600,4 +1600,75 @@ ol.visualNoMarker {
     padding: 1px;
 }
 
+/* live search styles */
+.LSRes {
+    font-family:  <dtml-var fontFamily>;
+    visibility: visible;
+    color: &dtml-globalFontColor;;
+    background-color: &dtml-backgroundColor;;
+    vertical-align: middle;
+    display:block;
+    list-style:none;
+    text-align: left;
+    min-width: 16.5em;
+    text-transform: none;
+    margin-left: 0;
+    line-height: 1.1em;
+  }
+
+#LSHighlight {
+    background-color: &dtml-globalBackgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    color: &dtml-globalFontColor;;
+}
+
+
+.LSRow {
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-backgroundColor;;
+    white-space: normal;
+    padding:0; 
+    margin: 0;
+}
+
+.LSRow a {
+    text-decoration: none;
+    font-weight:bold;
+    white-space:nowrap
+}
+
+.LSDescr {
+    color: &dtml-discreetColor;;
+    text-transform: &dtml-textTransform;;
+    padding-left:2.1em;
+    margin-top:-0.1em;
+}
+
+.LSResult {
+    position:absolute;
+    display: block;
+    text-align:right;
+}
+
+.LSShadow {
+    position:relative;
+    text-align:right;
+}
+.livesearchContainer {
+    background-color: &dtml-backgroundColor;;
+    margin-top: 0;
+    padding: 0.5em !important;
+    position: absolute;
+    right:0px;
+    /* Currently exposes a rendering bug in Mozilla */
+    top: -3px;
+    white-space: normal;
+    font-family:  <dtml-var fontFamily>;
+    visibility: visible;
+    text-align:left;
+    color: &dtml-globalFontColor;;
+    background-color: &dtml-backgroundColor;;
+    border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+}
+
+
 /* </dtml-with> */
