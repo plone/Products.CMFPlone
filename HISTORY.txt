@@ -4,14 +4,19 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Added isRightToLeft utility Python Script which provides a fallback value if
+      PTS is not installed or of the wrong version.
+      [stefan]
+
     - Merged in RTL support - Plone now correctly flips all the graphic
       elements and CSS declarations when using a right-to-left language like
       Arabic or Hebrew.
       [limi]
-      
+
     - Undid Jim's earlier change to the way the body tag is computed. It's
       now back to the original behaviour, with section-<section> class on
       the body tag.
+      [limi]
 
     - Fixed several potentially unsafe uses of acl_users.getUserById().
       [stefan]
