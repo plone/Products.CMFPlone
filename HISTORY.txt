@@ -61,6 +61,7 @@
     - Lucas Marshall pointed out a javascript error in the calendar slot on MacOS and a fix 8)
     - News items can now use structured-text in the edit_form
     - my_worklist works correctly and sorts in ascending order for modified
+    - you can now edit text content_type File objects and view them
     - many more changes and cleanups
 
 0.9.8 - Ulrich Schnauss Release:

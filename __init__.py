@@ -3,6 +3,8 @@ from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
 import MembershipTool, FormulatorTool, CalendarTool
 import PloneFolder, PortalFactory
 
+from StringIO import StringIO
+
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
 #for plone_debug method
@@ -22,7 +24,7 @@ def allow_class(Class):
     from Globals import InitializeClass 
     InitializeClass(Class)
 
-#allow_class(ColorPreset)
+allow_class(StringIO)
 
 ModuleSecurityInfo('Products.Formulator').declarePublic('StringField','EmailField')
 ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
