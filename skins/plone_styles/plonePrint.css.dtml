@@ -1,0 +1,54 @@
+/* Thanks to alistapart.com for useful extras */
+
+body {
+    background: White;
+    font-family: Georgia, Garamond, Times, serif;
+    font-size: 12pt;
+    color: Black;
+    margin: 5%;
+}
+
+div.top,
+.netscape4,
+.tabs,
+.personalBar,
+.pathBar,
+td.left,
+td.right,
+.contentTabs,
+.footer,
+.help
+{
+    display: none;
+}
+
+table.listing,
+table.listing td
+ {
+	border: 1pt solid black;
+    border-collapse: collapse;
+}
+
+a:link, a:visited {
+	color: #520;
+	background: transparent;
+	font-weight: bold;
+	text-decoration: underline;
+	}
+
+div.document a:link:after, 
+div.document a:visited:after {
+   content: " (" attr(href) ") ";
+   font-size: 90%;
+   }
+
+
+#wrapper, #content {
+    background: transparent;
+    border: 0;
+    color: Black;
+    float: none !important;
+    margin: 0 5%;
+    padding: 0;
+    width: auto;
+}

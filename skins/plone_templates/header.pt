@@ -15,10 +15,10 @@
 
     <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support  
          it. Site will still be viewable, but look a bit stripped :) --> 
-    <link rel="Stylesheet" type="text/css" href="ploneBasicNS.css"     tal:attributes="href string:$portal_url/ploneBasicNS.css" />
-    <link rel="Stylesheet" type="text/css" href="ploneStructureNS.css" tal:attributes="href string:$portal_url/ploneStructureNS.css" />
-    <link rel="Stylesheet" type="text/css" href="ploneWidgetsNS.css"   tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
-    <link rel="Stylesheet" type="text/css" href="ploneCalendarNS.css"  tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
+    <link rel="Stylesheet" type="text/css" href="dummy"     tal:attributes="href string:$portal_url/ploneBasicNS.css" />
+    <link rel="Stylesheet" type="text/css" href="dummy" tal:attributes="href string:$portal_url/ploneStructureNS.css" />
+    <link rel="Stylesheet" type="text/css" href="dummy"   tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
+    <link rel="Stylesheet" type="text/css" href="dummy"  tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
 
     <!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
     <style tal:replace="structure here/CSSImports">
@@ -29,7 +29,7 @@
     </style>
 
     <!-- Style sheet used for printing -->
-    <link rel="stylesheet" type="text/css" media="print" href="plonePrint.css" tal:attributes="href string:$portal_url/ploneCalendarNS.css"/>
+    <link rel="stylesheet" type="text/css" media="print" href="dummy" tal:attributes="href string:$portal_url/plonePrint.css"/>
 
 
     <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
