@@ -8,11 +8,12 @@
      tal:omit-tag=""
      tal:define="DateTime python:modules['DateTime'].DateTime;
                  current python:DateTime();
-                 month python:request.get('month', DateTime().month());
-                 year python:request.get('year', DateTime().year());
+                 yearmonth here/getYearAndMonthToDisplay;
+                 year python:yearmonth[0];
+                 month python:yearmonth[1];
                  prevMonthTime python:here.getPreviousMonth(month, year);
                  nextMonthTime python:here.getNextMonth(month, year);
-                 weeks python:here.portal_calendar.getEventsForCalendar(month=month, year=year);
+                 weeks python:here.portal_calendar.getEventsForCalendar(month, year);
                  anchor_url request/anchor_url | here_url;
                  anchor_method request/anchor_method | template/getId;">
     <!-- The calendar, rendered as a table -->
