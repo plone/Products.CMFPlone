@@ -9,6 +9,9 @@ Plone 1.0
     - Added more flexibility for add-on editors by moving format selector into
       wysiwyg_support.pt
     - Netscape 4 support is back.
+    - Fixed IE6's bad handling of floating elements - no more invisible text
+      on the pages that triggered this bug. This is done with a couple of lines
+      in Javascript - no HTML changes.
 
 Plone 1.0 rc2
     - removed the properties in site_properties that belong in the root
