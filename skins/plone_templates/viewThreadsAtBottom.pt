@@ -20,7 +20,7 @@
     <form name="reply" 
           action="" 
           method="post"
-          tal:condition="isDiscussionAllowed" 
+          tal:condition="python:isDiscussionAllowed and here.portal_membership.checkPermission('Reply to item', here)" 
           tal:attributes="action string:${here/absolute_url}/discussion_reply_form">       	
 
         <input class="standalone" 
