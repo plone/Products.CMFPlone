@@ -13,12 +13,6 @@ REQUEST=context.REQUEST
 ps = context.portal_skins
 
 ps.manage_properties(default_skin=default_skin,
-                     request_varname='',
-                     chosen=(),
-                     add_skin=0,
-                     del_skin=0,
-                     skinname='',
-                     skinpath='',
                      allow_any=allow_any,
                      cookie_persistence=cookie_persistence)
 

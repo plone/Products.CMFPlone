@@ -5,7 +5,11 @@ Changelog for Plone
 Plone 2.0 - Fyuti
 
    Final
-
+    
+    - Added fix for the bug reported by Edward Muller (skin setting 
+      and login problems). Don't clear the name of the skin cookie
+      in the prefs_portal_skiset.py. [jok2] 
+   
     - Added fix for breadcrumbs so that the parent folder is shown when
       you are looking at folder_contents.  [pupq]
 
