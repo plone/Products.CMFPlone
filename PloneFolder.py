@@ -76,7 +76,82 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                                 )
                              }
 
-class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
+
+
+class OrderedContainer(Folder):
+
+    security = ClassSecurityInfo()
+
+    security.declareProtected(Permissions.copy_or_move, 'moveObject')
+    def moveObject(self, id, position):
+        obj_idx  = self.getObjectPosition(id)
+        if obj_idx == position:
+            return None
+        elif position < 0:
+            position = 0
+
+        metadata = list(self._objects)
+        obj_meta = metadata.pop(obj_idx)
+        metadata.insert(position, obj_meta)
+        self._objects = tuple(metadata)
+
+    security.declareProtected(Permissions.copy_or_move, 'getObjectPosition')
+    def getObjectPosition(self, id):
+
+        objs = list(self._objects)
+        om = [objs.index(om) for om in objs if om['id']==id ]
+
+        if om: # only 1 in list if any
+            return om[0]
+
+        raise NotFound('Object %s was not found'%str(id))
+
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectUp')
+    def moveObjectUp(self, id, steps=1, RESPONSE=None):
+        """ Move an object up """
+        self.moveObject(
+            id,
+            self.getObjectPosition(id) - int(steps)
+            )
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_workspace')
+
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectDown')
+    def moveObjectDown(self, id, steps=1, RESPONSE=None):
+        """ move an object down """
+        self.moveObject(
+            id,
+            self.getObjectPosition(id) + int(steps)
+            )
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_workspace')        
+            
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectTop')
+    def moveObjectTop(self, id, RESPONSE=None):
+        """ move an object to the top """
+        self.moveObject(id, 0)
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_workspace')        
+
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectBottom')
+    def moveObjectBottom(self, id, RESPONSE=None):
+        """ move an object to the bottom """
+        self.moveObject(id, sys.maxint)
+        if RESPONSE is not None:
+            RESPONSE.redirect('manage_workspace')        
+
+    def manage_renameObject(self, id, new_id, REQUEST=None):
+        " "
+        objidx = self.getObjectPosition(id)
+        method = OrderedContainer.inheritedAttribute('manage_renameObject')
+        result = method(self, id, new_id, REQUEST)
+        self.moveObject(new_id, objidx)
+
+        return result
+        
+InitializeClass(OrderedContainer)  
+
+class PloneFolder ( SkinnedFolder, OrderedContainer, DefaultDublinCoreImpl ):
     meta_type = 'Plone Folder'
 
     security=ClassSecurityInfo()
@@ -123,6 +198,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             return self.folder_contents(self, REQUEST, portal_status_message='Folder added') #XXX HARDCODED FIXME!
 
     manage_addFolder = manage_addPloneFolder
+    manage_renameObject = OrderedContainer.manage_renameObject
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead of index_html """
@@ -137,8 +213,8 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         """ Able to sort on field """
         values=SkinnedFolder.contentValues(self, spec=spec, filter=filter)
         if sort_on is not None:
-            values.sort(lambda x, y: safe_cmp(getattr(x,sort_on),
-                                              getattr(y,sort_on)))
+            values.sort(lambda x, y, sort_on=sort_on: safe_cmp(getattr(x,sort_on),
+                                                               getattr(y,sort_on)))
         if reverse:
            values.reverse()
 
