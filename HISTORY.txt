@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Fixed http://plone.org/collector/3557 - Lines properties may still be lists
+      if an old ZODB is upraded to newer Zopes. Catching such a case in migrations.
+      Thanks to Xenru for the patch.
+      [stefan]
+
     - Fixed http://plone.org/collector/2960 - The "Send this page to somebody"
       feature now uses the URL of the object including the view template. This
       avoids nasty login interactions when sending links to protected content.

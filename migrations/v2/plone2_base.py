@@ -422,7 +422,7 @@ def makePortalRootPortalType(portal):
     portal.portal_workflow._chains_by_type['Plone Site']=()
     sprops=portal.portal_properties.site_properties
     use_folder_tabs=sprops.getProperty('use_folder_tabs')
-    sprops._updateProperty('use_folder_tabs', use_folder_tabs+('Plone Site',))
+    sprops._updateProperty('use_folder_tabs', tuple(use_folder_tabs)+('Plone Site',))
 
     #By default Members do not have List folder contents to the root.  I believe this
     # happenes because it starts out with a Folder's workflow.  We could fix this.
