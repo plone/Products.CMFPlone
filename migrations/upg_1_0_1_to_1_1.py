@@ -33,8 +33,6 @@ def upg_1_0_1_to_1_1(portal):
                  'View',
                  'document_actions')
 
-    #Need to add quickinstaller
-    portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
     #XXX FIX THIS
     #Install CMFActionIcons and Plone action icons
     #portal.portal_quickinstaller.installProduct('CMFActionIcons')
@@ -42,7 +40,7 @@ def upg_1_0_1_to_1_1(portal):
     from Products.ExternalMethod.ExternalMethod import ExternalMethod
     installmethod=ExternalMethod('tmp', 'tmp', 'CMFActionIcons.Install', 'install').__of__(portal)
     installmethod()
-    get_transaction().commit()
+    get_transaction().commit(1)
 
     actionicons=portal.portal_actionicons
     actionicons.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
