@@ -109,7 +109,7 @@ select {
     font: &dtml-inputFont;;
 }
 
-abbr, acronym, .help {
+abbr, acronym, .explain {
 /* Help classes */
     border-bottom: 1px dotted &dtml-mainLinkColor;;
     cursor: help;
