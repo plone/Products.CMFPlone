@@ -1,3 +1,17 @@
+2004-03-16 18:24  tiran
+
+	* skins/plone_content/event_view.pt (Plone-2_0-branch): Small
+	  chances for ATContentTypes
+
+2004-03-16 18:20  plonista
+
+	* skins/plone_scripts/breadcrumbs.py (Plone-2_0-branch): Breadcrumb
+	  fix for when parents are inaccessible
+
+2004-03-16 05:02  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-16 03:46  limi
 
 	* skins/plone_images/user.gif (Plone-2_0-branch): Removing more
