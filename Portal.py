@@ -31,7 +31,7 @@ from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName, registerIcon
 from Products.CMFDefault import Portal, DublinCore
 from Products.ExternalMethod import ExternalMethod
-from PloneFolder import OrderedContainer
+from Products.CMFPlone.PloneFolder import OrderedContainer
 import Globals
 import string
 import os, sys, re
