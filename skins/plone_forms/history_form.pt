@@ -2,13 +2,15 @@
    <div metal:fill-slot="main"
         tal:define="HistoryBatchSize python:request.get('HistoryBatchSize',20);
                     first_trx python:request.get('first_transaction',0); 
-                    last_trx python:20;history here/manage_change_history|nothing;">
+                    last_trx python:20;
+                    history here/manage_change_history|nothing;">
+
   <form action="#" 
         method="post"
         tal:attributes="action here/absolute_url"
-        tal:condition="history" tal:define="history_length python:len(history)" >
-
-  <table>
+        tal:condition="history" >
+        
+  <table tal:define="history_length python:len(history)">
      <tr>
        <td>
          <div class="list-nav" tal:condition="first_trx" tal:define="next python:(first_trx*2-last_trx)">
