@@ -58,6 +58,9 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.membership = self.portal.portal_membership
         self.membership.addMember('user2', 'secret', ['Member'], [])
         member = self.membership.getMemberById('user2')
+
+        self.folder.invokeFactory(id='nontmp_id', type_name='Document')
+        nontemp_object = getattr(self.folder, 'nontmp_id')
         
         # assume identify of new user
         self.login('user2')
@@ -66,6 +69,11 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         # make sure user is owner of temporary object
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object)),
                          ('Authenticated', 'Member', 'Owner'))
+        # make sure user is not owner of non-temporary object 
+        # (i.e. make sure our evil monkey patch of the temporary instance has 
+        # not resulted in our patching all instances of the class)
+        self.assertEqual(sortTuple(member.getRolesInContext(nontemp_object)),
+                         ('Authenticated', 'Member'))
 
 
 def test_suite():

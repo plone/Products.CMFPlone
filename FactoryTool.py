@@ -18,12 +18,15 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 
 
-# Use the following to patch single class instances (courtesy of 
+# Use the following to patch a single class instance (courtesy of 
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66543)
+# Do not try this at home.  I mean it.
 def patch_instance_method(klass, method_name, new_method):
     old_method = getattr(klass, method_name)
-    setattr(klass, method_name, new.instancemethod(
-        lambda *args, **kwds: new_method(old_method, *args, **kwds),None,klass))
+    # bind the old method to the new
+    bound_new_method = lambda *args, **kwds: new_method(old_method, *args, **kwds)
+    # now patch the instance
+    setattr(klass, method_name, new.instancemethod(bound_new_method, klass, klass.__class__))
 
 # patched version of __ac_local_roles__ used for portal_factory created objects
 # We need the patch because the object is created during traversal, when the
@@ -176,7 +179,7 @@ class TempFolder(TempFolderBase):
             obj.unindexObject()  # keep obj out of the catalog
 
             # patch object's __ac_local_roles__ method (see above)
-            patch_instance_method(obj.__class__, '__ac_local_roles__', patched__ac_local_roles__)
+            patch_instance_method(obj, '__ac_local_roles__', patched__ac_local_roles__)
             return (aq_base(obj).__of__(temp_folder)).__of__(intended_parent)
 
     # ignore rename requests since they don't do anything
