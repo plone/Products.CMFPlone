@@ -10,7 +10,6 @@
 validator = context.portal_form.createForm()
 validator.addField('email', 'Email', required=1)
 errors=validator.validate(context.REQUEST)
-context.plone_debug('inside validate_personalize')
 if errors:
     return ('failure', errors, {'portal_status_message':'Please correct your errors'})
 return ('success', errors, {'portal_status_message':'Personal settings have been saved'})
