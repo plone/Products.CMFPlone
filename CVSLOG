@@ -1,3 +1,110 @@
+2004-03-20 20:28  limi
+
+	* skins/plone_prefs/personalize_form.cpt (Plone-2_0-branch): Made
+	  portrait use the proper class.
+
+2004-03-20 09:33  limi
+
+	* skins/plone_images/book_icon.gif.metadata (Plone-2_0-branch):
+	  Adding missing metadata file.
+
+2004-03-20 08:18  limi
+
+	* HISTORY.txt, skins/plone_images/arrowBlank.gif.metadata,
+	  skins/plone_images/arrowBottom.gif.metadata,
+	  skins/plone_images/arrowDown.gif.metadata,
+	  skins/plone_images/arrowDownAlternative.gif.metadata,
+	  skins/plone_images/arrowLeft.gif,
+	  skins/plone_images/arrowLeft.gif.metadata,
+	  skins/plone_images/arrowLeftmost.gif,
+	  skins/plone_images/arrowLeftmost.gif.metadata,
+	  skins/plone_images/arrowRight.gif,
+	  skins/plone_images/arrowRight.gif.metadata,
+	  skins/plone_images/arrowRightmost.gif,
+	  skins/plone_images/arrowRightmost.gif.metadata,
+	  skins/plone_images/arrowTop.gif.metadata,
+	  skins/plone_images/arrowUp.gif.metadata,
+	  skins/plone_images/arrowUpAlternative.gif.metadata,
+	  skins/plone_images/backtalk.gif,
+	  skins/plone_images/backtalk.gif.metadata,
+	  skins/plone_images/bullet.gif.metadata,
+	  skins/plone_images/bulletBig.gif.metadata,
+	  skins/plone_images/colophon_anybrowser.png,
+	  skins/plone_images/colophon_anybrowser.png.metadata,
+	  skins/plone_images/discussionitem_icon.gif.metadata,
+	  skins/plone_images/document_icon.gif.metadata,
+	  skins/plone_images/edit.gif.metadata,
+	  skins/plone_images/error_log_icon.gif.metadata,
+	  skins/plone_images/event_icon.gif.metadata,
+	  skins/plone_images/extedit_icon.gif.metadata,
+	  skins/plone_images/favorite_icon.gif.metadata,
+	  skins/plone_images/file_icon.gif.metadata,
+	  skins/plone_images/flag_dk.png,
+	  skins/plone_images/flag_dk.png.metadata,
+	  skins/plone_images/flag_no.png,
+	  skins/plone_images/flag_no.png.metadata,
+	  skins/plone_images/flag_uk.png,
+	  skins/plone_images/flag_uk.png.metadata,
+	  skins/plone_images/folder.gif.metadata,
+	  skins/plone_images/folder_icon.gif.metadata,
+	  skins/plone_images/image_icon.gif.metadata,
+	  skins/plone_images/info.gif.metadata,
+	  skins/plone_images/linkOpaque.gif.metadata,
+	  skins/plone_images/linkTransparent.gif.metadata,
+	  skins/plone_images/link_icon.gif.metadata,
+	  skins/plone_images/lock_icon.gif.metadata,
+	  skins/plone_images/logo.jpg.metadata,
+	  skins/plone_images/logoIcon.gif.metadata,
+	  skins/plone_images/mail_icon.gif.metadata,
+	  skins/plone_images/newsitem_icon.gif.metadata,
+	  skins/plone_images/pdf_icon.gif.metadata,
+	  skins/plone_images/pencil_icon.gif.metadata,
+	  skins/plone_images/phone_icon.gif.metadata,
+	  skins/plone_images/plone_powered.gif.metadata,
+	  skins/plone_images/popup_calendar.gif.metadata,
+	  skins/plone_images/print_icon.gif.metadata,
+	  skins/plone_images/product_icon.gif.metadata,
+	  skins/plone_images/required.gif.metadata,
+	  skins/plone_images/rss.gif.metadata,
+	  skins/plone_images/search_icon.gif.metadata,
+	  skins/plone_images/shopping_cart.gif.metadata,
+	  skins/plone_images/site_icon.gif.metadata,
+	  skins/plone_images/sitemap_icon.gif.metadata,
+	  skins/plone_images/skins_icon.gif.metadata,
+	  skins/plone_images/textsize_huge.gif.metadata,
+	  skins/plone_images/textsize_large.gif.metadata,
+	  skins/plone_images/textsize_normal.gif.metadata,
+	  skins/plone_images/textsize_small.gif.metadata,
+	  skins/plone_images/topic_icon.gif.metadata,
+	  skins/plone_images/treeCollapsed.gif.metadata,
+	  skins/plone_images/treeExpanded.gif.metadata,
+	  skins/plone_images/user.gif.metadata,
+	  skins/plone_images/workflow_icon.gif.metadata,
+	  skins/plone_images/xml.gif.metadata (Plone-2_0-branch): Added
+	  icons for left/leftmost/right/rightmost. Removed unused icons.
+	  Fixed up the ALT representations of icons.
+
+2004-03-20 06:17  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): More
+	  portrait tweaking :)
+
+2004-03-20 06:15  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Adjusted
+	  font size for portrait details.
+
+2004-03-20 06:13  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Fixed up
+	  the .portrait class (it had excessive margins), and added a
+	  .portraitPhoto class so the image can have a globally defined
+	  border.
+
+2004-03-20 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-20 01:09  dpunktnpunkt
 
 	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
