@@ -5,8 +5,10 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul class="menuBar">
-    <li class="menuButton">
+<ul class="menuBar"
+    tal:define="contentTypes here/allowedContentTypes;">
+    <li class="menuButton"
+        tal:condition="contentTypes">
         <a href="#"
            onclick="return buttonClick(event, 'itemMenu');"
            onmouseover="buttonMouseover(event, 'itemMenu');"
@@ -15,7 +17,7 @@
         <ul class="menu" id="itemMenu"
             onmouseover="menuMouseover(event)"
             tal:define="filterOut python:['Favorite'];">
-            <metal:block tal:repeat="ctype here/allowedContentTypes"> 
+            <metal:block tal:repeat="ctype contentTypes"> 
             <li class="menuItem"
                 tal:define="Title ctype/Title;Id ctype/getId"
                 tal:condition="python:test(Id not in filterOut, 1, 0)">
