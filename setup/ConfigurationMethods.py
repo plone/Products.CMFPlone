@@ -283,19 +283,19 @@ def addNewActions(self, portal):
                  name='Cut',
                  action='string:folder_cut:method',
                  condition='',
-                 permission=Permissions.copy_or_move,
+                 permission=Permissions.ModifyPortalContent,
                  category='folder_buttons')
     at.addAction('copy',
                  name='Copy',
                  action='string:folder_copy:method',
                  condition='',
-                 permission=Permissions.copy_or_move,
+                 permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
     at.addAction('paste',
                  name='Paste',
                  action='string:folder_paste:method',
                  condition='folder/cb_dataValid',
-                 permission=Permissions.copy_or_move,
+                 permission=CMFCorePermissions.AddPortalContent,
                  category='folder_buttons')
     at.addAction('delete',
                  name='Delete',
@@ -306,7 +306,7 @@ def addNewActions(self, portal):
     at.addAction('change_state',
                  name='Change State',
                  action='string:content_status_history:method',
-                 condition='',
+                 condition='python:portal.portal_workflow.getTransitionsFor(object)',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
 
