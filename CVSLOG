@@ -1,3 +1,83 @@
+2004-01-14 01:43  dpunktnpunkt
+
+	* skins/plone_prefs/prefs_user_details.pt (Plone-2_0-branch):
+	  Closes #2358
+
+2004-01-13 23:54  dpunktnpunkt
+
+	* skins/: plone_3rdParty/CMFTopic/topic_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/folder_edit_form.cpt,
+	  plone_content/image_edit_form.cpt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_content/newsitem_edit_form.cpt (Plone-2_0-branch): Massive
+	  abuse of "help_description" i18n-msgid uncovered ;-) Thanks to
+	  jmce.
+
+2004-01-13 23:40  dpunktnpunkt
+
+	* skins/plone_forms/login_failed.pt (Plone-2_0-branch): Fixed
+	  conflicting msgids, #2351.
+
+2004-01-13 20:05  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Added the
+	  link-news class.
+
+2004-01-13 20:00  limi
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  Added news:// to supported protocols, cleaned up some formatting.
+
+2004-01-13 19:45  limi
+
+	* skins/plone_styles/: plone.css.dtml, ploneCustom.css.dtml,
+	  plonePresentation.css.dtml (Plone-2_0-branch): Making sure the
+	  CSS files are valid - commenting out the DTML stuff to hide it
+	  from editors, it still works.
+
+2004-01-13 16:48  dreamcatcher
+
+	* skins/: plone_content/document_edit_form.cpt,
+	  plone_content/event_edit_form.cpt,
+	  plone_content/file_edit_form.cpt,
+	  plone_content/folder_edit_form.cpt,
+	  plone_content/image_edit_form.cpt,
+	  plone_content/link_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_content/newsitem_edit_form.cpt,
+	  plone_forms/content_status_history.cpt,
+	  plone_forms/folder_rename_form.cpt, plone_forms/join_form.cpt,
+	  plone_forms/sendto_form.cpt, plone_forms/synPropertiesForm.cpt
+	  (Plone-2_0-branch): Isn't emacs lovely? I asked on the nxml-mode
+	  list and now we get 'Plone Style' indentation!
+
+2004-01-13 15:16  plonista
+
+	* __init__.py (speedup-branch): Make psyco bindings fail gracefully
+	  on 2.7
+
+2004-01-13 14:24  plonista
+
+	* SkinsTool.py (speedup-branch): Fixed a typo
+
+2004-01-13 09:36  tiran
+
+	* SkinsTool.py (speedup-branch): NOW it works - hooray!
+
+2004-01-13 06:17  vinsci
+
+	* skins/plone_3rdParty/jscalendar/: calendar-hy.js,
+	  calendar-hy.js.metadata (Plone-2_0-branch): Add Armenian
+	  translation by Anoush Najarian <a.najarian@worldnet.att.net> for
+	  the jscalendar. Many thanks for this! (I'll also forward the
+	  translation to the upstream author).
+
+2004-01-13 05:02  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-13 03:21  tiran
 
 	* SkinsTool.py (speedup-branch): *hum* refreshing wasn't as easy as
