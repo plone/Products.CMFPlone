@@ -1,6 +1,12 @@
 ## Script (Python) "change_password"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##title=Action to change password
 ##parameters=password, confirm, domains=None
+
 if context.REQUEST.form.has_key('cancel'):
     context.REQUEST.set('portal_status_message', 'Password change was canceled.')
     return context.personalize_form()

@@ -1,4 +1,10 @@
 ## Script (Python) "availableLanguages"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
 ##title=Return a dict with all names
 
 return (

@@ -1,4 +1,9 @@
 ## Script (Python) "discussion_reply"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##parameters=title,text,Creator
 ##title=Reply to content
 

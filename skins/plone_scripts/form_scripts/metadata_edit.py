@@ -1,4 +1,9 @@
 ## Script (Python) "metadata_edit"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##title=Update Content Metadata
 ##parameters=allowDiscussion=None,title=None,subject=None,description=None,contributors=None,effective_date=None,expiration_date=None,format=None,language=None,rights=None,redirect=1
 REQUEST=context.REQUEST

@@ -1,6 +1,10 @@
 ## Script (Python) "personalize"
 ##title=Personalization Handler.
-##bind namespace=_
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##parameters=portrait=None
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST

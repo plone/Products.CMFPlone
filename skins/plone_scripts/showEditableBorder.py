@@ -1,8 +1,4 @@
-##bind container=container
-##bind context=context
-##bind namespace=_
-##bind script=script
-##bind subpath=traverse_subpath
+## Script (Python) "showEditableBorder"
 ##bind container=container
 ##bind context=context
 ##bind namespace=

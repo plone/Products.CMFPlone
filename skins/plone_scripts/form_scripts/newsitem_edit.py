@@ -1,4 +1,9 @@
 ## Script (Python) "newsitem_edit"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##parameters=text, text_format, field_title='', field_description='', choice=' Change ', subject=None, field_id=''
 ##title=Edit a news item
 

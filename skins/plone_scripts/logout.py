@@ -1,4 +1,9 @@
 ## Script (Python) "logout"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##title=Logout handler
 ##parameters=
 REQUEST = context.REQUEST
