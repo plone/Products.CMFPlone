@@ -2,6 +2,7 @@ CHANGES
 
 Plone xxx
     - calendarDatePickerBox used tabindex instead of tabindex/next
+    - validation of expiration_date and effective_date in content_status_history was broken
 
 Plone 1.0
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)

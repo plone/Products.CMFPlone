@@ -126,7 +126,7 @@
            </div>
    	</div>
 
-        <div class="row">
+        <div class="row" tal:define="error errors/effective_date | nothing;">
             <div class="label">
               <span i18n:translate="label_effective_date">Effective Date</span>
                 <div id="effective_date_help"
@@ -144,7 +144,9 @@
                                  inputvalue python:test(here.EffectiveDate() and here.EffectiveDate()!='None', here.EffectiveDate(), request.get('effective_date', ''));
                                  onfocus string:formtooltip('effective_date_help',1);
                                  onblur string:formtooltip('effective_date_help',0);
-                                 tabindex tabindex/next;">
+                                 tabindex tabindex/next;"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+                  <div tal:replace="error" />
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     calendar pop-up
                   </div>
@@ -152,7 +154,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" tal:define="error errors/expiration_date | nothing;">
             <div class="label">
               <span i18n:translate="label_expiration_date">Expiration Date</span>
                 <div id="expiration_date_help"
@@ -169,7 +171,9 @@
                                  inputvalue python:test(here.ExpirationDate() and here.ExpirationDate()!='None', here.ExpirationDate(), request.get('expiration_date', ''));
                                  onfocus string:formtooltip('expiration_date_help',1);
                                  onblur string:formtooltip('expiration_date_help',0);
-                                 tabindex tabindex/next;">
+                                 tabindex tabindex/next;"
+                     tal:attributes="class python:test(error, 'field error', 'field')">
+                  <div tal:replace="error" />
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     calendar pop-up
                   </div>
@@ -237,7 +241,8 @@
                            onblur="formtooltip('change_status_help',0)" 
                            tal:attributes="value transition/id;
                                            id    transition/id;
-                                           title transition/name;" />
+                                           title transition/name;
+                                           checked python:test(transition.get('id') == request.get('workflow_action', ''), 'checked', '')" />
                     <label for=""
                            i18n:translate=""
                            tal:attributes="for transition/id;"
