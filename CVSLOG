@@ -1,3 +1,25 @@
+2003-12-29 02:15  limi
+
+	* skins/plone_styles/plonePresentation.css.dtml (Plone-2_0-branch):
+	  Fixed bug in Presentation CSS; since we have adjusted the default
+	  STX level to h2, the presentation CSS needs to reflect this.
+
+2003-12-28 16:56  shh42
+
+	* tests/testPloneTool.py (Plone-2_0-branch): We may be able to not
+	  raise 'Unauthorized' as string exception (if desired).
+
+2003-12-28 16:56  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): - Don't create CMF's
+	  Members folder first, only create the Plone one.  - Allow to
+	  coexist with other (non-Plone) test cases by only "optimizing"
+	  PloneGenerator.
+
+2003-12-28 05:05  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-27 05:06  longsleep
 
 	* CVSLOG: auto generated new changelog
