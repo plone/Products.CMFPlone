@@ -125,7 +125,7 @@ function getLastHighlight() {
 
 function getHits() {
     var res = document.getElementById("LSShadow");
-    var set = res.getElementsByTagName('td');
+    var set = res.getElementsByTagName('li');
     return set
 }
 
@@ -143,17 +143,13 @@ function findChild(object, specifier) {
 
 function findNext(object, specifier) {
  var cur = object;
- var nextRow;
  try {
  while (cur != undefined) {
-	//cur = cur.nextSibling;
-	row = cur.parentNode;
 
-	nextRow = row.nextSibling
-	if (nextRow.nodeType==3) nextRow=nextRow.nextSibling;
+	cur = cur.nextSibling;
+	if (cur.nodeType==3) cur=cur.nextSibling;
 	
-	if (nextRow != undefined) {
-	    cur=nextRow.getElementsByTagName('td')[0];
+	if (cur != undefined) {
 	    if (specifier(cur) == true) return cur;
     } else { break }
  }
@@ -163,18 +159,13 @@ function findNext(object, specifier) {
 
 function findPrev(object, specifier) {
  var cur = object;
- var prevRow;
- var cur = object;
  try {
-	 while (cur != undefined) {
-		row = cur.parentNode;
-     	prevRow = row.previousSibling;
-		if (prevRow.nodeType==3) prevRow=prevRow.previousSibling;
-        if (prevRow != undefined) {	 
-		    cur=prevRow.getElementsByTagName('td')[0];
-	        if (specifier(cur) == true) return cur;
-		} else {break}
- 	}
+        cur = cur.previousSibling;
+        if (cur.nodeType==3) cur=cur.previousSibling;
+        if (cur!=undefined) {
+            if (specifier(cur) == true) 
+                return cur;
+        } 
  } catch(e) {};
  return null;
 }

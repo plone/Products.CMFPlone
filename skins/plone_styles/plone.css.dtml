@@ -1665,7 +1665,7 @@ ol.visualNoMarker {
     position: absolute;
     right:0px;
     /* Currently exposes a rendering bug in Mozilla */
-    top: -3px;
+    top: -17px;
     white-space: normal;
     font-family:  <dtml-var fontFamily>;
     visibility: visible;
@@ -1673,6 +1673,7 @@ ol.visualNoMarker {
     color: &dtml-globalFontColor;;
     background-color: &dtml-backgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    width:300px;
 }
 
 .LSBox {
