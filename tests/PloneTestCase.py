@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.5 2003/10/25 19:58:10 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.9.2.6 2003/10/26 08:53:05 shh42 Exp $
 
 from Testing import ZopeTestCase
 
@@ -29,11 +29,15 @@ from AccessControl.SecurityManagement import noSecurityManager
 from Acquisition import aq_base
 import time
 
+portal_name  = 'portal'
+portal_owner = 'portal_owner'
+
 
 class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def getPortal(self):
-        return self.app['portal']
+        '''Returns the portal object.'''
+        return self.app[portal_name]
 
     def createMemberarea(self, member_id):
         '''Creates a minimal, no-nonsense memberarea.'''
@@ -60,16 +64,22 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         personal.manage_setLocalRoles(member_id, ['Owner'])
         catalog.unindexObject(personal)
 
+    def loginPortalOwner(self):
+        '''Use if you need to manipulate the portal itself.'''
+        uf = self.app.acl_users
+        user = uf.getUserById(portal_owner).__of__(uf)
+        newSecurityManager(None, user)
 
-def setupPloneSite(app, id='portal', quiet=0):
+
+def setupPloneSite(app=None, id=portal_name, quiet=0):
     '''Creates a Plone site.'''
     if not hasattr(aq_base(app), id):
         _start = time.time()
         if not quiet: ZopeTestCase._print('Adding Plone Site ... ')
         # Add user and log in
         uf = app.acl_users
-        uf._doAddUser('portal_owner', '', ['Manager'], [])
-        user = uf.getUserById('portal_owner').__of__(uf)
+        uf._doAddUser(portal_owner, '', ['Manager'], [])
+        user = uf.getUserById(portal_owner).__of__(uf)
         newSecurityManager(None, user)
         # Add Plone Site
         factory = app.manage_addProduct['CMFPlone']
