@@ -36,11 +36,12 @@
             </td>
         </tr>
 
-        <tr class="even">
+        <tr class="even"
+	    tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state', '')"
+	    tal:condition="review_state">
             <td colspan="2">
                 <strong>Status:</strong> <br />
                 <span class="private"
-                      tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state', '')"
                       tal:content="review_state"
                       tal:attributes="class review_state">
                 </span>
