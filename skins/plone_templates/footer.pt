@@ -13,11 +13,11 @@ Plone is powered by <a href="http://www.zope.org">Zope</a> and the <a href="http
 <hr class="netscape4" />
 
 <strong class="netscape4">
-If you can read this text, it means you are not experiencing the Plone design like it should look.
-It will work perfectly, and is accessible to any internet device, but the design needs a 
-<a href="http://www.webstandards.org/upgrade/">standards-compliant browser to look correct</a>. 
-Please <a href="http://www.webstandards.org/upgrade/">update your browser</a> to enjoy this
-website the way it was intended to look and behave.
+If you can read this text, it means you are not experiencing the Plone design at its best.
+Plone makes heavy use of CSS, which means it is accessible to any internet browser, 
+but the design needs a 
+<a href="http://www.webstandards.org/upgrade/">standards-compliant browser to look like we intended it</a>. 
+Just so you know ;)
 </strong>
 
 
