@@ -71,7 +71,7 @@ def make_plone(portal):
         manage_addTool('CMF QuickInstaller Tool')
 
     addGroupUserFolder(portal)
-    portal.portal_syndication.isAllowed=1
+    portal.portal_syndication.isAllowed = 0
     addDocumentActions(portal)
     addActionIcons(portal)
     addCacheAccelerators(portal)
@@ -192,7 +192,7 @@ def addDocumentActions(portal):
                  "python:test(hasattr(portal.portal_properties.site_properties, 'allow_sendto') and portal.portal_properties.site_properties.allow_sendto, 1, 0)",
                  'View',
                  'document_actions')
-                 
+
     at.addAction('print',
                  'Print this page',
                  'string:javascript:this.print();',

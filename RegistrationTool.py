@@ -1,11 +1,13 @@
 import random
 import md5
+
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore import CMFCorePermissions
 from Products.CMFDefault.RegistrationTool import RegistrationTool as BaseTool
+from Products.CMFPlone import ToolNames
 
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
-from Products.CMFCore import CMFCorePermissions
 
 # - remove '1', 'l', and 'I' to avoid confusion
 # - remove '0', 'O', and 'Q' to avoid confusion
@@ -29,8 +31,9 @@ password_chars = getValidPasswordChars()
 random.seed()
 
 
-class RegistrationTool( BaseTool ):
-    meta_type='Plone Registration Tool'
+class RegistrationTool(BaseTool):
+
+    meta_type = ToolNames.RegistrationTool
     security = ClassSecurityInfo()
     plone_tool = 1
     md5key = None
@@ -58,7 +61,7 @@ class RegistrationTool( BaseTool ):
     #
     def getPassword(self, length=5, s=None):
         global password_chars, md5base
-        
+
         if s is None:
             password = ''
             n = len(password_chars)
@@ -83,6 +86,8 @@ class RegistrationTool( BaseTool ):
         with the password policy."""
         # provide public access to the getPassword methog
         return self.getPassword(6)
+
+RegistrationTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(RegistrationTool)
 

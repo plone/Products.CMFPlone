@@ -17,4 +17,5 @@ NavigationTool = 'Plone Navigation Tool'
 FactoryTool = 'Plone Factory Tool'
 FormTool = 'Plone Form Tool'
 MigrationTool = 'Plone Migration Tool'
-
+CalendarTool = 'Plone Calendar Tool'
+ActionIconsTool = 'Plone Action Icons Tool'

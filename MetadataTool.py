@@ -1,9 +1,13 @@
 from Products.CMFDefault.MetadataTool import MetadataTool as BaseTool
-from Globals import InitializeClass, DTMLFile
+from Products.CMFPlone import ToolNames
+from Globals import InitializeClass
+from AccessControl import ClassSecurityInfo
 
-class MetadataTool( BaseTool ):
+class MetadataTool(BaseTool):
 
-    id = 'portal_metadata'
-    meta_type = 'Plone Metadata Tool'
+    meta_type = ToolNames.MetadataTool
+    security = ClassSecurityInfo()
 
-InitializeClass( MetadataTool )
+MetadataTool.__doc__ = BaseTool.__doc__
+
+InitializeClass(MetadataTool)

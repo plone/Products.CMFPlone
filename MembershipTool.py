@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName, _checkPermission
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
 from Products.CMFPlone.PloneFolder import addPloneFolder
+from Products.CMFPlone import ToolNames
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -20,9 +21,9 @@ Default page for %s
   tab above.
 """
 
-class MembershipTool( BaseTool ):
-    """ Plone customized Membership Tool """
-    meta_type='Plone Membership Tool'
+class MembershipTool(BaseTool):
+
+    meta_type = ToolNames.MembershipTool
     plone_tool = 1
     personal_id = '.personal'
     portrait_id = 'MyPortrait'
@@ -261,5 +262,7 @@ class MembershipTool( BaseTool ):
             #member.setSecurityProfile(password=password, domains=domains)
         else:
             raise 'Bad Request', 'Not logged in.'
+
+MembershipTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MembershipTool)

@@ -13,13 +13,15 @@ from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
-from OFS.SimpleItem import SimpleItem
-from Globals import InitializeClass, DTMLFile
-from AccessControl import ClassSecurityInfo
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
+from Products.CMFPlone import ToolNames
+
+from OFS.SimpleItem import SimpleItem
+from Globals import InitializeClass, DTMLFile
+from AccessControl import ClassSecurityInfo
 from StatelessTree import constructNavigationTreeViewBuilder, \
      NavigationTreeViewBuilder as NTVB
 
@@ -29,14 +31,16 @@ _icons = {}
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
 
-class PloneTool (UniqueObject, SimpleItem):
+class PloneTool(UniqueObject, SimpleItem):
+
     id = 'plone_utils'
-    meta_type= 'Plone Utility Tool'
+    meta_type= ToolNames.UtilsTool
     security = ClassSecurityInfo()
     plone_tool = 1
     field_prefix = 'field_' # Formulator prefixes for forms
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'setMemberProperties')
+    security.declareProtected(CMFCorePermissions.ManagePortal,
+                              'setMemberProperties')
     def setMemberProperties(self, member, **properties):
         membership=getToolByName(self, 'portal_membership')
         if hasattr(member, 'getId'):
@@ -91,7 +95,7 @@ class PloneTool (UniqueObject, SimpleItem):
                                                  obj.Contributors()))
             else:
                 contributors=tuplify(contributors)
-                
+
             if effective_date is None:
                 effective_date=REQUEST.get(pfx+'effective_date',
                                            obj.EffectiveDate())
@@ -110,14 +114,14 @@ class PloneTool (UniqueObject, SimpleItem):
                 rights=REQUEST.get(pfx+'rights', obj.Rights())
 
         if Discussable.isImplementedBy(obj) or \
-            getattr(obj, '_isDiscussable', None): 
+            getattr(obj, '_isDiscussable', None):
             if allowDiscussion and type(allowDiscussion)==StringType:
                 allowDiscussion=allowDiscussion.lower().strip()
-            if allowDiscussion=='default': 
+            if allowDiscussion=='default':
                 allowDiscussion=None
-            elif allowDiscussion=='off': 
+            elif allowDiscussion=='off':
                 allowDiscussion=0
-            elif allowDiscussion=='on': 
+            elif allowDiscussion=='on':
                 allowDiscussion=1
             disc_tool = getToolByName(self, 'portal_discussion')
             disc_tool.overrideDiscussionFor(obj, allowDiscussion)
@@ -201,11 +205,11 @@ class PloneTool (UniqueObject, SimpleItem):
     security.declareProtected(CMFCorePermissions.View, 'getIconFor')
     def getIconFor(self, category, id, default=_marker):
         """ Cache point for actionicons.getActionIcon call
-            also we want to allow for a default icon id to be 
+            also we want to allow for a default icon id to be
             passed in.
         """
         #short circuit the lookup
-        if (category, id) in _icons.keys(): 
+        if (category, id) in _icons.keys():
             return _icons[ (category, id) ]
 
         try:
@@ -317,7 +321,7 @@ class PloneTool (UniqueObject, SimpleItem):
     # even if the thrown exception is a string and not a
     # subclass of Exception.
     def exceptionString(self):
-        s = sys.exc_info()[:2]  # don't assign the traceback to s 
+        s = sys.exc_info()[:2]  # don't assign the traceback to s
                                 # (otherwise will generate a circular reference)
         if s[0] == None:
             return None

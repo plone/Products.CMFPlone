@@ -1,4 +1,9 @@
+from Products.CMFCore.ActionInformation import ActionInformation
+from Products.CMFCore.Expression import Expression
+from Products.CMFCore.CMFCorePermissions import ManagePortal
 from Products.CMFDefault.PropertiesTool import PropertiesTool as BaseTool
+from Products.CMFPlone import ToolNames
+
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 from Globals import InitializeClass
@@ -8,15 +13,11 @@ from OFS.PropertyManager import PropertyManager
 from OFS.SimpleItem import SimpleItem
 from AccessControl import ClassSecurityInfo
 
-from Products.CMFCore.ActionInformation import ActionInformation
-from Products.CMFCore.Expression import Expression
-from Products.CMFCore.CMFCorePermissions import ManagePortal
 
 class PropertiesTool(Folder, BaseTool):
-    """ Specialized PropertiesTool that contains PropertySheets """
-    id = 'portal_properties'
 
-    meta_type = 'Plone Properties Tool'
+    id = BaseTool.id
+    meta_type = ToolNames.PropertiesTool
     meta_types = all_meta_types =  ( ( { 'name' : 'Plone Property Sheet'
                                        , 'action' : 'manage_addPropertySheetForm' }, ) )
 
@@ -57,19 +58,21 @@ class PropertiesTool(Folder, BaseTool):
                 pvalue=propertysheet.getProperty(pid)
                 if not hasattr(o, pid):
                     o._setProperty(pid, pvalue, ptype)
-                
+
         self._setObject(id, o)
 
-            
+
     def manage_addPropertySheet(self, id, title='', propertysheet=None, REQUEST=None):
-        """ adds a instance of a Property Sheet 
+        """ adds a instance of a Property Sheet
             if handed a propertysheet put the
             properties into new propertysheet.
         """
         self.addPropertySheet(id, title, propertysheet)
-        
+
         if REQUEST is not None:
             return self.manage_main()
+
+PropertiesTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(PropertiesTool)
 
@@ -79,7 +82,7 @@ class SimpleItemWithProperties (PropertyManager, SimpleItem):
     A common base class for objects with configurable
     properties in a fixed schema.
     """
-    
+
     def __init__(self, id, title=''):
         self.id = id
         self.title = title

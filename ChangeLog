@@ -1,7 +1,10 @@
 2003-09-14    <sidnei@plone.org>
 
+	* Portal.py (manage_addSite): Cleaning up some too long lines.
+
 	* migrations/plone1_1.py (addCatalogIndexes): Added 'locations' as
 	catalog metadata.
+	(make_plone): Turn syndication off by default
 
 2003-07-30  Geoff Davis <geoff@geoffdavis.net>
 

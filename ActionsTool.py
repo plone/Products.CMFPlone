@@ -1,13 +1,13 @@
-from Globals import InitializeClass, DTMLFile, package_home
 from Products.CMFCore.ActionsTool import ActionsTool as BaseTool
+from Products.CMFPlone import ToolNames
+from AccessControl import ClassSecurityInfo
+from Globals import InitializeClass
 
-class ActionsTool( BaseTool ):
-    """
-        Weave together the various sources of "actions" which are apropos
-        to the current user and context.
-    """
+class ActionsTool(BaseTool):
 
-    id = 'portal_actions'
-    meta_type = 'Plone Actions Tool'
+    meta_type = ToolNames.ActionsTool
+    security = ClassSecurityInfo()
+
+ActionsTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(ActionsTool)

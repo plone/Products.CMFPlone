@@ -2,15 +2,18 @@ import sys
 import Globals
 from os import path
 
-cmfplone_globals=globals()
+cmfplone_globals = globals()
 this_module = sys.modules[ __name__ ]
 
 # Stores the available 'Customization Policies'
-custom_policies={} 
+custom_policies = {}
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
-misc_ = {'plone_icon': Globals.ImageFile(path.join('skins','plone_images','logoIcon.gif'), cmfplone_globals)}
+misc_ = {'plone_icon': Globals.ImageFile(path.join('skins',
+                                                   'plone_images',
+                                                   'logoIcon.gif'),
+                                         cmfplone_globals)}
 
 # For plone_debug method
 import zLOG
@@ -53,7 +56,8 @@ def initialize(context):
     this_module.IndexIterator = IndexIterator
 
     # For content_status_modify
-    from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted, WorkflowException
+    from Products.CMFCore.WorkflowCore import ObjectMoved, ObjectDeleted, \
+         WorkflowException
     ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectMoved')
     ModuleSecurityInfo('WorkflowCore').declarePublic('ObjectDeleted')
     ModuleSecurityInfo('WorkflowCore').declarePublic('WorkflowException')
@@ -73,7 +77,7 @@ def initialize(context):
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
     ModuleSecurityInfo('Products.CMFPlone.Portal').declarePublic('listPolicies')
 
-    ModuleSecurityInfo('Products.Formulator').declarePublic('StringField','EmailField')
+    ModuleSecurityInfo('Products.Formulator').declarePublic('StringField', 'EmailField')
     ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
 
     from Products.Formulator.StandardFields import StringField, EmailField
@@ -113,12 +117,15 @@ def initialize(context):
 
     # CMFCore and CMFDefault Tools
     from Products.CMFCore import CachingPolicyManager
-    import MembershipTool, WorkflowTool, URLTool, MetadataTool, RegistrationTool, MemberDataTool
-    import PropertiesTool, ActionsTool, TypesTool, UndoTool
 
     # Plone Tools
-    import FormulatorTool, PloneTool, NavigationTool, FactoryTool, FormTool, \
-           InterfaceTool, MigrationTool, PloneControlPanel
+    import FormulatorTool, PloneTool, NavigationTool, FactoryTool
+    import FormTool, InterfaceTool, MigrationTool, PloneControlPanel
+    import MembershipTool, WorkflowTool, URLTool, MetadataTool
+    import RegistrationTool, MemberDataTool, SyndicationTool
+    import PropertiesTool, ActionsTool, TypesTool, UndoTool
+    import CatalogTool, SkinsTool, DiscussionTool
+    # import CalendarTool, ActionIconsTool
 
     tools = ( MembershipTool.MembershipTool,
               MemberDataTool.MemberDataTool,
@@ -139,6 +146,12 @@ def initialize(context):
               ActionsTool.ActionsTool,
               TypesTool.TypesTool,
               UndoTool.UndoTool,
+              SyndicationTool.SyndicationTool,
+              CatalogTool.CatalogTool,
+              SkinsTool.SkinsTool,
+              DiscussionTool.DiscussionTool,
+              #ActionsTool.ActionsTool,
+              #CalendarTool.CalendarTool,
             )
 
     from Products.CMFCore import utils

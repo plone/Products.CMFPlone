@@ -3,6 +3,7 @@ from __future__ import nested_scopes
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
 from Products.CMFPlone import PloneFolder
+from Products.CMFPlone import ToolNames
 from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDefault import Document
 
@@ -64,7 +65,8 @@ class PloneSite(CMFSite):
     manage_addPloneFolder = PloneFolder.addPloneFolder
 
     def __browser_default__(self, request):
-        """ Set default so we can return whatever we want instead of index_html """
+        """ Set default so we can return whatever we want instead
+        of index_html """
         return self.browserDefault(request)
 
 class PloneGenerator(Portal.PortalGenerator):
@@ -76,9 +78,10 @@ class PloneGenerator(Portal.PortalGenerator):
 
         typesToSkip=['Folder', 'Discussion Item', 'Topic']
         typesTool._delObject('Folder')
-        typesTool.manage_addTypeInformation(FactoryTypeInformation.meta_type
-                                           , id='Folder'
-                                           , typeinfo_name='CMFPlone: Plone Folder')
+        typesTool.manage_addTypeInformation(
+            FactoryTypeInformation.meta_type
+            , id='Folder'
+            , typeinfo_name='CMFPlone: Plone Folder')
         for contentType in typesTool.listContentTypes():
             typeInfo=typesTool.getTypeInfo(contentType)
             if typeInfo.getId() not in typesToSkip:
@@ -91,39 +94,6 @@ class PloneGenerator(Portal.PortalGenerator):
                 typeObj._setPropValue('immediate_view', view)
 
     def customizePortalOptions(self, p):
-        def exists(id):
-            return id in p.objectIds()
-        if exists('portal_membership'):
-            p.manage_delObjects( 'portal_membership' )
-        if exists('portal_memberdata'):
-            p.manage_delObjects( 'portal_memberdata' )
-        if exists('portal_workflow'):
-            p.manage_delObjects( 'portal_workflow' )
-        if exists('portal_properties'):
-            p.manage_delObjects( 'portal_properties' )
-        if exists('portal_registration'):
-            p.manage_delObjects( 'portal_registration' )
-
-        addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
-
-        addPloneTool('Plone Membership Tool', None)
-        addPloneTool('Plone MemberData Tool', None)
-        addPloneTool('CMF Workflow Tool', None)
-        if not exists('plone_utils'):
-            addPloneTool('Plone Utility Tool', None)
-        if not exists('portal_navigation'):
-            addPloneTool('CMF Navigation Tool', None)
-        if not exists('portal_factory'):
-            addPloneTool('Plone Factory Tool', None)
-        if not exists('portal_registration'):
-            addPloneTool('Plone Registration Tool', None)
-        if not exists('portal_form'):
-            addPloneTool('Plone Form Tool', None)
-        if not exists('portal_properties'):
-            addPloneTool('Plone Properties Tool', None)
-        if not exists('portal_migration'):
-            addPloneTool('Plone Migration Tool', None)
-
         p.manage_permission( CMFCorePermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
@@ -137,10 +107,6 @@ class PloneGenerator(Portal.PortalGenerator):
         PloneFolder.addPloneFolder(p, 'Members')
 
         p.portal_catalog.unindexObject(p.Members) #unindex Members folder
-        #if 'index_html' not in p.Members.objectIds():
-        #p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
-        #                                                         , 'Member list'
-        #                                                         , '<dtml-return member_search_form>')
         p.Members._setPortalTypeName( 'Folder' )
         Document.addDocument(p, 'index_html')
         o = p.index_html
@@ -168,7 +134,8 @@ class PloneGenerator(Portal.PortalGenerator):
         wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
 
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):
-        path=[elem.strip() for elem in skin_tool.getSkinPath('Plone Default').split(',')]
+        path=[elem.strip() for elem in \
+              skin_tool.getSkinPath('Plone Default').split(',')]
         path.insert(path.index('custom')+1, directory_id)
         skin_tool.addSkinSelection(skin_title, ','.join(path))
 
@@ -180,19 +147,23 @@ class PloneGenerator(Portal.PortalGenerator):
 
         # filter out cmfdefault_layers
         existing_layers=sk_tool.objectIds()
-        cmfdefault_layers=('zpt_topic', 'zpt_content', 'zpt_generic', 'zpt_control',
-                           'topic', 'content', 'generic', 'control', 'Images', 'no_css', 'nouvelle')
+        cmfdefault_layers=('zpt_topic', 'zpt_content', 'zpt_generic',
+                           'zpt_control', 'topic', 'content', 'generic',
+                           'control', 'Images', 'no_css', 'nouvelle')
         for layer in cmfdefault_layers:
-            # make sure that the only remove the layer if it not exists or its a Filesystem Directory View
+            # make sure that the only remove the layer if it not
+            # exists or its a Filesystem Directory View
             # to avoid deleting of custom layers
             remove = 0
             l_ob = getattr(sk_tool, layer, None)
-            if not l_ob or getattr(l_ob, 'meta_type', None) == 'Filesystem Directory View':
+            if not l_ob or getattr(l_ob, 'meta_type', None) == \
+                   'Filesystem Directory View':
                 remove = 1
             # remove from layer definition
             if layer in path and remove: path.remove(layer)
             # remove from skin tool
-            if layer in existing_layers and remove: sk_tool.manage_delObjects(ids=[layer])
+            if layer in existing_layers and remove:
+                sk_tool.manage_delObjects(ids=[layer])
 
         # add plone layers
         for plonedir in ( 'cmf_legacy'
@@ -215,19 +186,30 @@ class PloneGenerator(Portal.PortalGenerator):
                 path.insert( path.index( 'custom')+1, plonedir )
             except ValueError:
                 path.append( plonedir )
+
         path=','.join(path)
         sk_tool.addSkinSelection('Plone Default', path)
 
-        self.setupSecondarySkin(sk_tool, 'Plone Autumn',        'plone_styles/autumn')
-        self.setupSecondarySkin(sk_tool, 'Plone Core',          'plone_styles/core')
-        self.setupSecondarySkin(sk_tool, 'Plone Core Inverted', 'plone_styles/core_inverted')
-        self.setupSecondarySkin(sk_tool, 'Plone Corporate',     'plone_styles/corporate')
-        self.setupSecondarySkin(sk_tool, 'Plone Greensleeves',  'plone_styles/greensleeves')
-        self.setupSecondarySkin(sk_tool, 'Plone Kitty',         'plone_styles/kitty')
-        self.setupSecondarySkin(sk_tool, 'Plone Mozilla',       'plone_styles/mozilla')
-        self.setupSecondarySkin(sk_tool, 'Plone Mozilla New',   'plone_styles/mozilla_new')
-        self.setupSecondarySkin(sk_tool, 'Plone Prime',         'plone_styles/prime')
-        self.setupSecondarySkin(sk_tool, 'Plone Zed',           'plone_styles/zed')
+        self.setupSecondarySkin(sk_tool, 'Plone Autumn',
+                                'plone_styles/autumn')
+        self.setupSecondarySkin(sk_tool, 'Plone Core',
+                                'plone_styles/core')
+        self.setupSecondarySkin(sk_tool, 'Plone Core Inverted',
+                                'plone_styles/core_inverted')
+        self.setupSecondarySkin(sk_tool, 'Plone Corporate',
+                                'plone_styles/corporate')
+        self.setupSecondarySkin(sk_tool, 'Plone Greensleeves',
+                                'plone_styles/greensleeves')
+        self.setupSecondarySkin(sk_tool, 'Plone Kitty',
+                                'plone_styles/kitty')
+        self.setupSecondarySkin(sk_tool, 'Plone Mozilla',
+                                'plone_styles/mozilla')
+        self.setupSecondarySkin(sk_tool, 'Plone Mozilla New',
+                                'plone_styles/mozilla_new')
+        self.setupSecondarySkin(sk_tool, 'Plone Prime',
+                                'plone_styles/prime')
+        self.setupSecondarySkin(sk_tool, 'Plone Zed',
+                                'plone_styles/zed')
 
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
 
@@ -282,9 +264,10 @@ class PloneGenerator(Portal.PortalGenerator):
 
         # open and parse the file
         filename='navigation_properties'
-        src_file = open(os.path.join(Globals.package_home(globals()), 'data', filename), 'r')
+        src_file = open(os.path.join(Globals.package_home(globals()),
+                                     'data', filename), 'r')
         src_lines = src_file.readlines()
-        src_file.close();
+        src_file.close()
 
         re_comment = re.compile(r"\s*#")
         re_blank = re.compile(r"\s*\n")
@@ -318,6 +301,34 @@ class PloneGenerator(Portal.PortalGenerator):
         make_plone(p)
         #we no longer use migrations to setupPlone in the generator
         #m.upgrade(swallow_errors=0)
+
+    def setupTools(self, p):
+        """Set up initial tools"""
+
+        addCMFPloneTool = p.manage_addProduct['CMFPlone'].manage_addTool
+        addCMFPloneTool(ToolNames.ActionsTool, None)
+        addCMFPloneTool(ToolNames.CatalogTool, None)
+        addCMFPloneTool(ToolNames.MemberDataTool, None)
+        addCMFPloneTool(ToolNames.SkinsTool, None)
+        addCMFPloneTool(ToolNames.TypesTool, None)
+        addCMFPloneTool(ToolNames.UndoTool, None)
+        addCMFPloneTool(ToolNames.URLTool, None)
+        addCMFPloneTool(ToolNames.WorkflowTool, None)
+
+        addCMFPloneTool(ToolNames.DiscussionTool, None)
+        addCMFPloneTool(ToolNames.MembershipTool, None)
+        addCMFPloneTool(ToolNames.RegistrationTool, None)
+        addCMFPloneTool(ToolNames.PropertiesTool, None)
+        addCMFPloneTool(ToolNames.MetadataTool, None)
+        addCMFPloneTool(ToolNames.SyndicationTool, None)
+
+        addCMFPloneTool(ToolNames.UtilsTool, None)
+        addCMFPloneTool(ToolNames.NavigationTool, None)
+        addCMFPloneTool(ToolNames.FactoryTool, None)
+        addCMFPloneTool(ToolNames.FormTool, None)
+        addCMFPloneTool(ToolNames.MigrationTool, None)
+        #addCMFPloneTool(ToolNames.ActionIconsTool, None)
+        #addCMFPloneTool(ToolNames.CalendarTool, None)
 
     def create(self, parent, id, create_userfolder):
         id = str(id)

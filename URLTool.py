@@ -1,11 +1,13 @@
 from Products.CMFCore.URLTool import URLTool as BaseTool
-
+from Products.CMFPlone import ToolNames
+from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
 class URLTool(BaseTool):
-    """ Plone URL Tool.
-    """
-    id = 'portal_url'
-    meta_type = 'Plone URL Tool'
+
+    meta_type = ToolNames.URLTool
+    security = ClassSecurityInfo()
+
+URLTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(URLTool)

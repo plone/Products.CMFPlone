@@ -1,14 +1,16 @@
 from Products.CMFCore import MemberDataTool
 from Products.CMFCore.MemberDataTool import MemberDataTool as BaseTool
 from Products.CMFCore.MemberDataTool import MemberData as BaseData
+from Products.CMFPlone import ToolNames
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from BTrees.OOBTree import OOBTree
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
 
 class MemberDataTool(BaseTool):
-    meta_type='Plone MemberData Tool'
-    security=ClassSecurityInfo()
+
+    meta_type = ToolNames.MemberDataTool
+    security = ClassSecurityInfo()
 
     def __init__(self):
         BaseTool.__init__(self)
@@ -47,11 +49,17 @@ class MemberDataTool(BaseTool):
             if member_name not in user_list:
                 del _portraits[member_id]
 
+MemberDataTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(MemberDataTool)
 
-class MemberData (BaseData):
+class MemberData(BaseData):
+
     meta_type='Plone MemberData'
+
     def __init__(self):
         BaseData.__init__(self)
+
+MemberData.__doc__ = BaseData.__doc__
+
 InitializeClass(MemberData)
