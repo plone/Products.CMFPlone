@@ -39,6 +39,7 @@ def upg_1_0_1_to_1_1(portal):
     if 'portal_interface' not in portal.objectIds():
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
+    raise ValueError, "bollocks"
     addControlPanel(portal)
     
 def addControlPanel(portal):
@@ -81,7 +82,7 @@ def setupHelpSection(portal):
     if 'plone_help' not in portal.objectIds():
         portal.invokeFactory(type_name='Folder', id='plone_help')
         plone_help=portal.plone_help
-        docs_path=os.path.join(package_home(cmfplone_globals), 'docs')
+        docs_path=os.path.join(package_home(cmfplone_globals), 'help')
         for filename in os.listdir(docs_path):
             _path=os.path.join(docs_path, filename)
             if not os.path.isdir(_path):
