@@ -409,7 +409,7 @@
 
             <div class="row"
                  tal:define="portrait here/portal_membership/getPersonalPortrait;
-                             personal here/portal_membership/getPersonalPortrait"
+                             personal here/portal_membership/getPersonalFolder"
                  tal:condition="personal">
                 <div class="label">
                     <span i18n:translate="label_portrait">Portrait</span>
