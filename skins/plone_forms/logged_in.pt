@@ -156,7 +156,9 @@
 
                 <h1 i18n:translate="">You are now logged in</h1>
                 
-                <p i18n:translate="">Welcome!</p>
+                <p>
+                [<a href="" tal:attributes="href request/HTTP_REFERER">back to where you came from</a>]
+                </p>
                 
                 <p i18n:translate="">
                 You will notice that the top right bar has changed, it now
@@ -185,13 +187,6 @@
                    tal:attributes="href prefs"
                    >set up your Preferences</a>.
 		        
-                <span i18n:translate="">
-                If you were in the process of working and needed to be logged in before continuing, 
-		        you can go 
-                </span>
-                <a href="" tal:attributes="href request/HTTP_REFERRER">back to where you came from</a>.
-                </p>
-		
                 
                 <p>
                 We wish you a pleasant stay here.
@@ -200,7 +195,7 @@
                 <a href="mailto:admin@here.com" title="Email Admin"
                 tal:attributes="href string:mailto:${p_props/email_from_address}">
                 send us a mail</a>.
-	 
+                </p>	 
 			</div>
 
 		</div>
