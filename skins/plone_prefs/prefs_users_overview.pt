@@ -90,7 +90,7 @@
             <table class="listing">
                 <tr>
                     <th colspan="4">
-                        <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
+                        <span tal:omit-tag="" i18n:translate="label_quick_search">User Search</span>:
                         <input tabindex=""
                                type="text"
                                name="searchstring"
@@ -128,10 +128,6 @@
                                     fullname python: this_user.getProperty('fullname')">
 
                     <td>
-                        <!--input type="hidden"
-                            name="name"
-                            value=""
-                            tal:attributes="name string:roles-${username}:list; value roles" / -->
 
                         <a href="XXX_prefs_user_details"
                             tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$username">
@@ -148,11 +144,11 @@
 
                     <td tal:define="email python: this_user.getProperty('email')">
                         <a href="#"
+                           class="link-plain"
                            tal:attributes="href string:mailto:${email}"
                            title="Send a mail to this user"
-                           i18n:attributes="title">
-                        &nbsp;
-                        </a>
+                           i18n:attributes="title"
+                           ><img tal:replace="structure here/mail_icon.gif" /></a>
                         <input type="text"
                             size="15"
                             name=""

@@ -79,7 +79,7 @@
                    
                 <tr>
                     <th colspan="6">
-                        <span tal:omit-tag="" i18n:translate="label_quick_search">Quick search</span>:
+                        <span tal:omit-tag="" i18n:translate="label_quick_search">Group Search</span>:
                         <input class="quickSearch"
                                tabindex=""
                                type="text"

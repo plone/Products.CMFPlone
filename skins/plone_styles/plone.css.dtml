@@ -1137,6 +1137,11 @@ ul.configletDetails li label {
 ** Accessibility and visual enhancement elements 
 */
 
+.link-plain {
+    background-image: none;
+    padding: 0;
+}
+
 .link-parent {
     display: block;
     background: transparent url("<dtml-var portal_url>/arrowUp.gif") 4px 5px no-repeat;

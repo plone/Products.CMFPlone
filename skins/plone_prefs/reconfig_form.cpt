@@ -14,6 +14,13 @@
 
     <h1 i18n:translate="heading_portal_setup">Portal Setup</h1>
 
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="">
+    Up to Plone Setup
+    </a>
+
     <p i18n:translate="description_plone_setup">
         Portal-wide settings.
     </p>
@@ -80,7 +87,7 @@
     
                 <div class="formHelp" i18n:translate="help_portal_from_name">
                 Plone generates e-mail using this name
-                as the (apparent) e-mail sender.
+                as the e-mail sender.
                 </div>
     
                 <div tal:content="error">Validation error output</div>
@@ -106,7 +113,7 @@
     
                 <div class="formHelp" i18n:translate="help_portal_from_address">
                 Plone generates e-mail using this address
-                as the (apparent) e-mail return address.
+                as the e-mail return address.
                 </div>
     
                 <div tal:content="error">Validation error output</div>

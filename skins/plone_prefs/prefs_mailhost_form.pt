@@ -14,8 +14,15 @@
 
     <h1 i18n:translate="heading_mail_setup">Mail Setup</h1>
 
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="">
+    Up to Plone Setup
+    </a>
+
     <p i18n:translate="description_mail_setup">
-        Mail setup for this portal.
+        Mail setup for Plone.
     </p>
 
     <form action=""
