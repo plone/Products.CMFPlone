@@ -74,10 +74,12 @@
                       i18n:attributes="title"
                       i18n:translate="label_required">(Required)</span>
     
-                <div i18n:translate="help_user_name_creation"
+                <div i18n:translate="help_user_name_creation_casesensitive"
                      class="formHelp">
                 Enter the user name you want, usually something like
                 'jsmith'. No spaces or special characters. 
+                Usernames and passwords are case sensitive, 
+                make sure the caps lock key is not enabled.
                 This is the name you use to log in.
                 </div>
                 
