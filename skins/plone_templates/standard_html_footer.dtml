@@ -8,9 +8,7 @@
 
                 </td>
     
-                <td class="right">
-            
-                </td>
+                <dtml-var "macro_renderer(template='here/main_template', macro='right_column', slots_mapping=slots_mapping, site_properties=site_properties, portal_url=portal_url)" >
             
             </tr>
         

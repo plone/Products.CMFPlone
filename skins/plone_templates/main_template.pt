@@ -65,6 +65,9 @@ Header stuff
     <tbody>
         <tr>
             <td class="left" metal:define-macro="left_column"
+	                     tal:define="slots_mapping options/slots_mapping|slots_mapping|nothing;
+	                                 site_properties options/site_properties|site_properties|nothing;
+	                                 portal_url options/portal_url|portal_url|nothing;"
 	                     tal:condition="slots_mapping/left|nothing">
                 <metal:block tal:repeat="slot slots_mapping/left|slots_mapping/left">
                 <tal:block tal:define="global pathexpr python:slot[0];
@@ -84,7 +87,12 @@ Header stuff
 		             tal:condition="show_border" >
                 
                 <div id="contentTabs" metal:define-macro="contentTabs"
-                     i18n:domain="plone">
+	                  tal:define="isFolder options/isFolder|isFolder|nothing;
+	                              folder_actions options/folder_actions|folder_actions|nothing;
+	                              local_actions options/local_actions|local_actions|nothing;
+	                              obj_actions options/obj_actions|obj_actions|nothing;
+	                              template_id options/template_id|template_id|nothing"
+	                  i18n:domain="plone">
    
                     <tal:block tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
@@ -150,7 +158,10 @@ Header stuff
                 </div>
             </td>
 
-            <td class="right" tal:condition="slots_mapping/right">
+            <td class="right" metal:define-macro="right_column"
+	                      tal:define="slots_mapping options/slots_mapping|slots_mapping|nothing;
+	                                  portal_url options/portal_url|portal_url|nothing;"
+	                      tal:condition="slots_mapping/right">
                 <metal:block tal:repeat="slot slots_mapping/right">
                     <tal:block tal:define="global pathexpr python:slot[0];
                                            global usemacro python:slot[1];"

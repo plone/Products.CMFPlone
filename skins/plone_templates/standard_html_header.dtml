@@ -5,7 +5,20 @@
       lang="en-US">
 
 <dtml-call "REQUEST.set('portal_url', portal_url())">
-
+<dtml-call "REQUEST.set('member', portal_membership.getAuthenticatedMember())">
+<dtml-call "REQUEST.set('portal', portal_url.getPortalObject)">
+<dtml-call "REQUEST.set('actions', portal_actions.listFilteredActionsFor(REQUEST.PARENTS[0]))">
+<dtml-call "REQUEST.set('site_properties', portal_properties.site_properties)">
+<dtml-call "REQUEST.set('ztu', 'modules/ZTUtils')">
+<dtml-call "REQUEST.set('obj_actions', actions.get('object', []))">
+<dtml-call "REQUEST.set('folder_actions', actions.get('folder', []))">
+<dtml-call "REQUEST.set('wf_actions', actions.get('workflow', []))">
+<dtml-call "REQUEST.set('local_actions', actions.get('object_tabs', []))">
+<dtml-call "REQUEST.set('isFolder', getTypeInfo().getId() in site_properties.use_folder_tabs)">
+<dtml-call "REQUEST.set('template_id', URL0.split('/')[-1])">
+<dtml-call "REQUEST.set('slots_mapping', prepare_slots())"> 
+<dtml-call "REQUEST.set('show_border', showEditableBorder( template_id=template_id, actions=actions ))">
+  
 <dtml-var "macro_renderer(template='here/header', macro='html_header')" >
   
 <body>
@@ -18,15 +31,12 @@
             
             <tr>
 
-                <dtml-var "macro_renderer(template='here/main_template', macro='left_column', slots_mapping=prepare_slots())" >
+                <dtml-var "macro_renderer(template='here/main_template', macro='left_column', slots_mapping=slots_mapping, site_properties=site_properties, portal_url=portal_url)" >
 
                 <td class="main" >
 
-                    <dtml-let actions="portal_actions.listFilteredActionsFor(this())"
-                              show_border="showEditableBorder(this().getId(), actions=actions)">
-
                     <dtml-if show_border>
-                      <dtml-var "macro_renderer(template='here/main_template', macro='contentTabs', actions=actions, show_border=show_border, template_id=URL0.split('/')[-1])" >
+                      <dtml-var "macro_renderer(template='here/main_template', macro='contentTabs', actions=actions, show_border=show_border, template_id=template_id, isFolder=isFolder, folder_actions=folder_actions, obj_actions=obj_actions, local_actions=local_actions)" >
                         
                       <div id="contentBar">
 			&nbsp;
@@ -41,8 +51,6 @@
 			  
                     <dtml-var "macro_renderer(template='here/main_template', macro='documentActions')" >
 
-	       </dtml-let>
-                        
                         <dtml-comment>
                         
                         this is where your content will start.  so you must remember to close:
