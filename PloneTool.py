@@ -7,7 +7,7 @@ import urlparse
 from zLOG import LOG, INFO, WARNING
 
 from Acquisition import aq_base, aq_inner, aq_parent
-from Products.CMFCore.utils import UniqueObject, getToolByName
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
@@ -15,6 +15,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone import ToolNames, transaction_note
 
 from OFS.SimpleItem import SimpleItem
@@ -553,6 +554,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # now back to normal
 
         portal = getToolByName(self, 'portal_url').getPortalObject()
+        wftool = getToolByName(self, 'portal_workflow')
 
         # The list of ids where we look for default
         ids = {}
@@ -562,6 +564,25 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             for id in obj.objectIds():
                 ids[id] = 1
+
+        # Looking up translatable is done several places so we make a
+        # method for it.
+        def returnPage(obj, page):
+            # Only look up for untranslated folderish content,
+            # in translated containers we assume the container has default page
+            # in the correct language.
+            implemented = ITranslatable.isImplementedBy(obj)
+            if not implemented or implemented and not obj.isTranslation():
+                pageobj = getattr(obj,page,None)
+                if pageobj is not None and ITranslatable.isImplementedBy(pageobj):
+                    translation = pageobj.getTranslation()
+                    if translation is not None and \
+                       wftool.getInfoFor(obj, 'review_state') == wftool.getInfoFor(translation, 'review_state'):
+                        if ids.has_key(translation.getId()):
+                            return obj, [translation.getId()]
+                        else:
+                            return translation, ['view']
+            return obj, [page]
 
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])
@@ -573,7 +594,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         pages = filter(None, pages)
         for page in pages:
             if ids.has_key(page):
-                return obj, [page]
+                return returnPage(obj, page)
         # we look for the default_page in the portal and/or skins aswell.
         # Use path/to/template to reference an object or a skin.
         for page in pages:
@@ -583,13 +604,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Try the default sitewide default_page setting
         for page in portal.portal_properties.site_properties.getProperty('default_page', []):
             if ids.has_key(page):
-                return obj, [page]
+                return returnPage(obj, page)
 
         # No luck, let's look for hardcoded defaults
         default_pages = ['index_html', ]
         for page in default_pages:
             if ids.has_key(page):
-                return obj, [page]
+                return returnPage(obj, page)
 
         # what if the page isnt found?
         try:
@@ -605,5 +626,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             'Total failure getting the folderlisting action for the folder, "%s"' \
             % obj.absolute_url())
             return obj, ['folder_listing']
+
+    security.declarePublic('isTranslatable')
+    def isTranslatable(self, obj):
+        return ITranslatable.isImplementedBy(obj)
 
 InitializeClass(PloneTool)
