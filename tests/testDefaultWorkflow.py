@@ -490,18 +490,18 @@ class TestDefaultWorkflow(PloneTestCase.PloneTestCase):
         self.failUnless(self.catalog(id='doc'))
 
     def testMyWorklist(self):
+        # When a member has the local Reviewer role, pending
+        # docs should show up in his worklist.
         self.workflow.doActionFor(self.doc, 'submit')
         self.doc.manage_addLocalRoles('member', ['Reviewer'])
         self.login('reviewer')
         worklist = self.portal.my_worklist()
         self.failUnless(len(worklist) == 1)
         self.failUnless(worklist[0] == self.doc)
-        self.logout()
         self.login('member')
         worklist = self.portal.my_worklist()
         self.failUnless(len(worklist) == 1)
         self.failUnless(worklist[0] == self.doc)
-        self.logout()
 
 
 def test_suite():
