@@ -12,6 +12,5 @@ validator.addField('id', 'String', required=1)
 validator.addField('title', 'String', required=1)
 errors=validator.validate(context.REQUEST)
 if errors:
-    return ('failure', errors, {'portal_status_message' : 'Please correct the indicated errors.'})
-return ('success', errors, {'portal_status_message' : context.REQUEST.get( 'portal_status_message'
-                                                                         , 'Your changes to Topic have been saved.')} )
+    return state.set(status='failure', errors=errors, portal_status_message='Please correct the indicated errors.')
+return state.set(portal_status_message=context.REQUEST.get('portal_status_message', 'Your changes to Topic have been saved.') )
