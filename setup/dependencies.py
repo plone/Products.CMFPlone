@@ -95,8 +95,8 @@ try:
 except ImportError:
     pass
 else:
-    log(("Localizer found. Plone 2 is using the PlacelessTranslationService"
-         "for translation. Please deinstall the Localizer after you have saved"
+    log(("Localizer found. Plone 2 is using the PlacelessTranslationService "
+         "for translation. Please deinstall the Localizer after you have saved "
          "your po catalogs."),
         severity=zLOG.WARNING, optional=1)
 
@@ -105,7 +105,7 @@ try:
 except ImportError:
     pass
 else:
-    log(("TranslationService found. Plone 2 is using the PlacelessTranslationService"
+    log(("TranslationService found. Plone 2 is using the PlacelessTranslationService "
          "for translation. Please deinstall the TranslationService."),
         severity=zLOG.WARNING, optional=1)
 
