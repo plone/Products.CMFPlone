@@ -75,7 +75,7 @@
                
                <a href="../folder_contents"
                   tal:condition="not: here/isPrincipiaFolderish" 
-                  tal:attributes="href string:${here/absolute_url}/folder_contents">
+                  tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents">
                    <img src="dummy.gif" 
                         alt=">" 
                         border="0" 
