@@ -4,8 +4,12 @@
 ##parameters=portrait=None
 REQUEST=context.REQUEST
 portrait_id='MyPortrait'
-context.portal_registration.setProperties(REQUEST)
 
+try:
+    context.portal_registration.setProperties(REQUEST)
+except: #CMF1.3 below
+    context.portal_membership.setProperties(REQUEST)
+    
 if REQUEST.has_key('portal_skin'):
     context.portal_skins.updateSkinCookie()
     
