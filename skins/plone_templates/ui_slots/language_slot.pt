@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
+<!-- The languages box -->
+
+<div metal:define-macro="languageBox"
+     tal:define="PTS modules/Products/PlacelessTranslationService | nothing;
+                 portal here/portal_url/getPortalObject"
+     tal:condition="PTS">
+
+    <div class="box" tal:define="plone_langs python:PTS.getLanguages('plone');
+                                 current_lang python:PTS.negotiate(plone_langs, request)">
+    
+        <h5 i18n:translate="label_language">Language</h5>
+
+        <div class="body">
+
+            <select name="language" onChange="document.cookie='user_language=' + this.options[this.selectedIndex].value + ';path=/'; window.location.reload()"
+                    style="width: 175px">
+
+                <tal:block tal:repeat="lang plone_langs">
+                    <option value=""
+                       tal:attributes="value lang;
+                                       selected python:test(lang==current_lang, 'selected','')"
+                       tal:content="python:PTS.getLanguageName(lang) or lang">Engrish</option>
+                </tal:block>
+
+            </select>
+    
+        </div>
+
+    </div>
+        
+</div>
+
+</body>
+
+</html>
