@@ -16,7 +16,7 @@
     possibility to have personalized content, and you will be able to add
     your own documents, images and files to the site.
     </p> 
-
+<span tal:replace="errors" />
     <form class="group"
           action="register" 
           method="post"
@@ -55,7 +55,7 @@
             <span class="field"
                   tal:attributes="class python:test(error_username, 'field error', 'field')" >
                 <div tal:condition="error_username"
-                      tal:replace="error_username" />
+                      tal:replace="structure string:$error_username<br />" />
 
                 <input type="text" name="field_username" size="25"
                        value="username"

@@ -46,11 +46,14 @@ if not portal_properties.validate_email:
 #this is a bad sign ;(
 #for all methods that accept REQUEST we will always have to have some middle man that
 #maps from field_xxxx to xxxx... Waaaa!
-context.validate_setupRequest(errors)
 
 failMessage=portal_registration.testPropertiesValidity(REQUEST)
 if failMessage:
     errors['username']=failMessage
 
+if not portal_registration.isMemberIdAllowed(REQUEST.get('field_username')):
+    errors['username']='This member id is invalid or already in use.'
+
+context.validate_setupRequest(errors)
 return errors
 
