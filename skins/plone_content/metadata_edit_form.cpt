@@ -28,7 +28,7 @@
       <p i18n:translate="description_edit_properties">
         This information, also referred to as <em>metadata</em> is the
         collection of information that is used to categorize an
-        object, assign effectuation dates and expiration dates,
+        object, assign effective dates and expiration dates,
         language, and keywords.
       </p>
 

@@ -10,15 +10,12 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+from OFS.SimpleItem import SimpleItem
 from AccessControl import Unauthorized
+from ZODB.POSException import ConflictError
 
 
-class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
-
-    # NOTE: This testcase is a bit hairy. Security declarations
-    # "stick" once a module has been imported into the restricted
-    # environment. Therefore the tests are not truly independent.
-    # Be careful when adding new tests to this class.
+class RestrictedPythonTest(ZopeTestCase.ZopeTestCase):
 
     def addPS(self, id, params='', body=''):
         factory = self.folder.manage_addProduct['PythonScripts']
@@ -31,6 +28,21 @@ class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
             self.folder.ps()
         except (ImportError, Unauthorized), e:
             self.fail(e)
+
+    def checkUnauthorized(self, psbody):
+        self.addPS('ps', body=psbody)
+        try:
+            self.folder.ps()
+        except (AttributeError, Unauthorized):
+            pass
+
+
+class TestSecurityDeclarations(RestrictedPythonTest):
+
+    # NOTE: This testcase is a bit hairy. Security declarations
+    # "stick" once a module has been imported into the restricted
+    # environment. Therefore the tests are not truly independent.
+    # Be careful when adding new tests to this class.
 
     def testImport_LOG(self):
         self.check('from zLOG import LOG')
@@ -67,7 +79,7 @@ class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
         self.check('from Products import CMFPlone;'
                    'print CMFPlone.IndexIterator')
 
-    def testUseClass_IndexIterator(self):
+    def testUse_IndexIterator(self):
         self.check('from Products.CMFPlone import IndexIterator;'
                    'print IndexIterator().next')
 
@@ -129,6 +141,13 @@ class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
         self.check('import Products.CMFPlone.Portal;'
                    'print Products.CMFPlone.Portal.listPolicies')
 
+    def testImport_base_hasattr(self):
+        self.check('from Products.CMFPlone import base_hasattr')
+
+    def testAccess_base_hasattr(self):
+        self.check('import Products.CMFPlone;'
+                   'print Products.CMFPlone.base_hasattr')
+
     def testImport_Unauthorized(self):
         self.check('from AccessControl import Unauthorized')
 
@@ -143,12 +162,66 @@ class TestSecurityDeclarations(PloneTestCase.PloneTestCase):
         self.check('import ZODB.POSException;'
                    'print ZODB.POSException.ConflictError')
 
-    def testImport_base_hasattr(self):
-        self.check('from Products.CMFPlone import base_hasattr')
+    def testRaise_ConflictError(self):
+        self.assertRaises(ConflictError, 
+            self.check, 'from ZODB.POSException import ConflictError;'
+                        'raise ConflictError')
 
-    def testAccess_base_hasattr(self):
-        self.check('import Products.CMFPlone;'
-                   'print Products.CMFPlone.base_hasattr')
+    def testCatch_ConflictErrorRaisedByRestrictedCode(self):
+        try:
+            self.check('''
+from ZODB.POSException import ConflictError
+try: raise ConflictError
+except ConflictError: pass
+''')
+        except Exception, e:
+            self.fail('Failed to catch: %s %s (module %s)' %
+                      (e.__class__.__name__, e, e.__module__))
+
+    def testCatch_ConflictErrorRaisedByPythonModule(self):
+        self.folder._setObject('er', ExceptionRaiser(ConflictError))
+        try:
+            self.check('''
+from ZODB.POSException import ConflictError
+try: context.er()
+except ConflictError: pass
+''')
+        except Exception, e:
+            self.fail('Failed to catch: %s %s (module %s)' %
+                      (e.__class__.__name__, e, e.__module__))
+
+
+class TestAcquisitionMethods(RestrictedPythonTest):
+
+    def test_aq_explicit(self):
+        self.check('print context.aq_explicit')
+
+    def test_aq_parent(self):
+        self.check('print context.aq_parent')
+
+    def test_aq_inner(self):
+        self.check('print context.aq_inner')
+
+    def test_aq_inner_aq_parent(self):
+        self.check('print context.aq_inner.aq_parent')
+
+    def test_aq_self(self):
+        self.checkUnauthorized('print context.aq_self')
+
+    def test_aq_base(self):
+        self.checkUnauthorized('print context.aq_base')
+
+    def test_aq_acquire(self):
+        self.checkUnauthorized('print context.aq_acquire')
+
+
+# Test helpers
+
+class ExceptionRaiser(SimpleItem):
+    def __init__(self, e): 
+        self.e = e
+    def __call__(self): 
+        raise self.e
 
 
 if __name__ == '__main__':
@@ -158,4 +231,5 @@ else:
         from unittest import TestSuite, makeSuite
         suite = TestSuite()
         suite.addTest(makeSuite(TestSecurityDeclarations))
+        suite.addTest(makeSuite(TestAcquisitionMethods))
         return suite
