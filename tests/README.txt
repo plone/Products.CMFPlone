@@ -3,14 +3,13 @@ CMFPlone tests depend on the ZopeTestCase package.
 As of this writing ZopeTestCase is hosted in the Collective CVS. It comes
 with useful documentation worth reading. <wink>
 
-The required version of ZopeTestCase is 0.8.0a1 or better which is un-
-released and only available from the Collective CVS.
+The required version of ZopeTestCase is 0.9.0 or better.
 
 Note that ZopeTestCase must be installed into lib/python/Testing and *not*
 lib/python/Products!
 
 The ZopeTestCase homepage is here:
-http://www.zope.org/Members/shh/ZopeTestCase
+http://zope.org/Members/shh/ZopeTestCase
 
 
 How to run the tests:
