@@ -166,7 +166,7 @@ mproved docs:
    http://yourhost:8080/Control_Panel/manage_main 
    http://yourhost:9673/Control_Panel/manage_main (if you're using Debian) 
    http://yourhost/Control_Panel/manage_main (if you're proxying through a front 
-  end webserver) 
+   end webserver) 
    
    This page will tell you your INSTANCE_HOME. There is a Products folder in each  
    site's INSTANCE_HOME folder. This is the best place to install add-on Products  
@@ -249,7 +249,7 @@ mproved docs:
   Products, then test that they have installed correctly. You can do this by 
   logging into the ZMI - you should have  
    
-    1) The Plone Products (BTreeFolder2 etc) listed in the Products section of  
+    1) The Plone Products (BTreeFolder2 etc.) listed in the Products section of  
        the Control_Panel 
     2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI Root 
        Folder 
@@ -262,7 +262,8 @@ mproved docs:
 
 ------------------------------------------------------------------------------- 
 
-5. Unpack any the other Productsinto your Products dir, restart Zope and test. 
+5. Unpack any the other products into your Products directory, restart Zope and
+   test them.
 
 =============================================================================== 
 Have fun, and don't forget to report any bugs or inconsistencies in the 
