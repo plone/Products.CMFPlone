@@ -120,14 +120,7 @@ to become a member.
                    />
 	</div>
 
-        <div class="field formSingleCheckbox">
-
-            <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
-
-            <div i18n:translate="help_remember_my_name"
-                 class="formHelp">
-                When you check this, your user name will be filled in for you when you log in later.
-            </div>
+        <div class="field">
 
             <input type="checkbox"
                    class="noborder formRememberName"
@@ -138,6 +131,13 @@ to become a member.
                    tal:attributes="name ac_persist;
                                    tabindex tabindex/next;"
                    />
+
+            <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
+
+            <div i18n:translate="help_remember_my_name"
+                 class="formHelp">
+                When you check this, your user name will be filled in for you when you log in later.
+            </div>
 
         </div>
 

@@ -476,6 +476,10 @@ input.searchButton {
     padding: 0 0 0 1em;
 }
 
+.actionItems li {
+    background-image: none;
+}
+
 .contentActions a {
     text-decoration: none;
     color: &dtml-contentViewFontColor;;
@@ -704,7 +708,7 @@ input.searchButton {
     position: relative;
     top: 0;
     left: 0;
-    margin: 1em 1em 0 0;    
+    margin: 0 1em 1em 0;    
 }
 
 .field label {
@@ -712,23 +716,14 @@ input.searchButton {
     font-weight: bold;
 }
 
-.formSingleCheckbox label {
-    padding-left: 1.5em;
-}
-
-.formSingleCheckbox input {
-    position: absolute;
-    top: 0.2em;
-    left: 0;
-}
-
 .formHelp {
     font-size: 90%;
     color: &dtml-discreetColor;;
+    margin: 0 0 0.2em 0;
 }
 
 .formControls {
-    
+   margin: 1em 0 0 0; 
 }
 
 .error {

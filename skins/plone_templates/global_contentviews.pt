@@ -28,7 +28,7 @@
      class="contentActions"
      tal:define="content_actions actions/object_actions|nothing;">
 
-    <ul tal:condition="content_actions">
+    <ul tal:condition="content_actions" class="actionItems">
     <tal:contentactions repeat="action content_actions">
         <li tal:attributes="id string:contentaction-${action/id};">
             <a class="" href=""
