@@ -502,6 +502,14 @@ div.title {
 }
 
 
+/* Accessibility and visual enhancement elements */
+
+a.skipnav {
+    visibility: hidden;
+    position: absolute;
+} 
+
+
 /*
 ** Widgets
 */
