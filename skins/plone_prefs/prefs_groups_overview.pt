@@ -85,7 +85,7 @@
 
           <input type="hidden" value="b_start" name="b_start" 
 	             tal:attributes="value b_start"/>
-           <table class="listing">
+            <table class="listing" summary="Select roles for each group" i18n:attributes="summary">
                    
                 <tr>
                     <th colspan="6">
