@@ -25,8 +25,8 @@ target_action = context.getTypeInfo().getActionById( 'view' )
 if id!=context.getId():
     container.manage_renameObjects( (context.getId(), ), (id, ))
     url='%s/%s?%s' % ( REQUEST['URL2']
-                     , id +'/'+target_action
-                     , 'portal_status_message='+qst )
+                     , id+'/'+target_action
+                     , '/'+qst )
     return REQUEST.RESPONSE.redirect(url)
 
 context.REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
