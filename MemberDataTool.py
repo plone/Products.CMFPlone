@@ -32,6 +32,14 @@ class MemberDataTool(BaseTool):
         if self.portraits.has_key(member_id):
             self.portraits._delObject(member_id)
 
+    security.declarePublic("isGroup")
+    def isGroup(self,):
+        """
+        isGroup(self,) => Return true if this is a group.
+        Will always return false for members
+        """
+        return 0
+
     security.declarePrivate('pruneMemberDataContents')
     def pruneMemberDataContents(self):
         '''
