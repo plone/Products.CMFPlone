@@ -17,14 +17,7 @@ from webdav.NullResource import NullResource
 from types import StringType
 from DocumentTemplate.sequence import sort
 
-# this import can change with Zope 2.7 to
-try:
-    from OFS.IOrderSupport import IOrderedContainer as IZopeOrderedContainer
-    hasZopeOrderedSupport=1
-except ImportError:
-    hasZopeOrderedSupport=0
-# atm its safer defining an own
-from interfaces.OrderedContainer import IOrderedContainer
+from OFS.IOrderSupport import IOrderedContainer
 
 from OFS.ObjectManager import REPLACEABLE
 from ComputedAttribute import ComputedAttribute
@@ -90,12 +83,7 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 class OrderedContainer(Folder):
     """Folder with subobject ordering support"""
   
-    if hasZopeOrderedSupport:
-        # got the IOrderedContainer interface from zope 2.7, too
-        # make shure this implementation fullfilles both interfaces
-        __implements__  = (IOrderedContainer, IZopeOrderedContainer)
-    else:
-        __implements__  = (IOrderedContainer,)
+    __implements__  = (IOrderedContainer,)
 
     security = ClassSecurityInfo()
 
@@ -112,9 +100,7 @@ class OrderedContainer(Folder):
         metadata.insert(position, obj_meta)
         self._objects = tuple(metadata)
 
-    # here the implementing of IOrderedContainer starts
-    # if plone sometime depends on zope 2.7 it should be replaced by mixing in
-    # the 2.7 specific class OSF.OrderedContainer.OrderedContainer
+    # Here the implementation of IOrderedContainer starts
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsByDelta')
     def moveObjectsByDelta(self, ids, delta, subset_ids=None):
@@ -229,10 +215,10 @@ class OrderedContainer(Folder):
             ids.reverse()
         return self.moveObjectsByDelta( ids, -len(self._objects) )
 
-    # here the implementing of IOrderedContainer ends
+    # Here the implementation of IOrderedContainer ends
 
     def manage_renameObject(self, id, new_id, REQUEST=None):
-        " "
+        """Rename a particular sub-object"""
         objidx = self.getObjectPosition(id)
         method = OrderedContainer.inheritedAttribute('manage_renameObject')
         result = method(self, id, new_id, REQUEST)
