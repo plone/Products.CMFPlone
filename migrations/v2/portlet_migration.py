@@ -11,7 +11,7 @@ conversions={'here/about_slot/macros/aboutBox':'',
       'here/language_slot/macros/languageBox':'here/portlet_language/macros/portlet',
       'here/login_slot/macros/loginBox':'here/portlet_login/macros/portlet',
       'here/navigation_tree_slot/macros/navigationBox':'here/portlet_navigation/macros/portlet',
-      'here/news_slot/macros/newsBox':'here/portlet_news_/macros/portlet',
+      'here/news_slot/macros/newsBox':'here/portlet_news/macros/portlet',
       'here/recently_published_slot/macros/recentlyPublishedBox':'here/recently_published_slot/macros/portlet',
       'here/related_slot/macros/relatedBox':'here/portlet_related/macros/portlet',
       'here/workflow_review_slot/macros/review_box':'here/portlet_review/macros/portlet'}
