@@ -14,13 +14,15 @@ failed = {}
 success = {}
 
 if workflow_action is None:
-    return REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                    , 'folder_contents'
-                                    , 'portal_status_message=You+must+select+a+publishing+action.') )
+    return context.portal_navigation.getNext( context
+                , script.getId()
+                , 'failure'
+                , portal_status_message='You must select a publishing action.')
 if not ids:
-    return REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                    , 'folder_contents'
-                                    , 'portal_status_message=You+must+select+content+to+change.') )
+    return context.portal_navigation.getNext( context
+                , script.getId()
+                , 'failure'
+                , portal_status_message='You must select content to change.')
 
 for id in ids:
     o = getattr(context, id)
@@ -36,7 +38,7 @@ for id in ids:
 
 transaction_note( str(ids) + ' transitioned ' + workflow_action )
 
-REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
-                                        , 'folder_contents'
-					, 'portal_status_message=Content(s)+have+been+changed.') )
-				
+return context.portal_navigation.getNext( context
+            , script.getId()
+            , 'success'
+            , portal_status_message='Content has been changed.')

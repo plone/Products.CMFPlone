@@ -2,7 +2,6 @@
 #
 # Format is TYPE.PAGE.OUTCOME = NEXT PAGE / ACTION / SCRIPT / URL
 #
-# New style actions
 default.link_edit_form.failure = link_edit_form
 default.link_edit_form.success = script:link_edit
 default.link_edit.failure = link_edit_form
@@ -29,8 +28,8 @@ default.event_edit_form.success = script:event_edit
 default.event_edit_form.failure = event_edit_form
 default.folder_edit.success = url:folder_contents
 default.folder_edit.failure = action:edit
-folder.folder_edit_form.success = script:folder_edit
-folder.folder_edit_form.failure = folder_edit_form
+default.folder_edit_form.success = script:folder_edit
+default.folder_edit_form.failure = folder_edit_form
 default.reconfig.success = url:folder_contents
 default.reconfig.failure = reconfig_form
 default.reconfig_form.success = script:reconfig
@@ -62,14 +61,15 @@ default.content_status_modify.success = action:view
 default.content_status_modify.failure = action:publishing
 default.content_status_history.success = script:content_status_modify
 default.content_status_history.failure = content_status_history
-# Old style actions (will be changed soon)
-default.folder_copy.success = "folder_contents"
-default.folder_copy.failure = "folder_contents"
-default.folder_paste.success = "folder_contents"
-default.folder_paste.failure = "folder_contents"
-default.folder_cut.success = "folder_contents"
-default.folder_cut.failure = "folder_contents"
-default.folder_delete.success = "folder_contents"
-default.folder_delete.failure = "folder_contents"
-default.folder_rename.success = "folder_contents"
-default.folder_rename.failure = "folder_contents"
+default.folder_copy.success = url:folder_contents
+default.folder_copy.failure = url:folder_contents
+default.folder_cut.success = url:folder_contents
+default.folder_cut.failure = url:folder_contents
+default.folder_paste.success = url:folder_contents
+default.folder_paste.failure = url:folder_contents
+default.folder_delete.success = url:folder_contents
+default.folder_delete.failure = url:folder_contents
+default.folder_rename.success = url:folder_contents
+default.folder_rename.failure = url:folder_contents
+default.folder_publish.success = url:folder_contents
+default.folder_publish.failure = url:folder_contents

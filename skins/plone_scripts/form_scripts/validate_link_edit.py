@@ -5,7 +5,7 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=Validates a link edit_form contents
+##title=Validate link_edit_form contents
 ##
 validator = context.portal_form.createForm()
 validator.addField('id', 'String', required=1)

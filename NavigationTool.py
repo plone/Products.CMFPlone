@@ -48,7 +48,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             trace.append('Looking up transition for %s.%s.%s' % (context, script, status))
             (transition_type, transition) = self.getNavigationTransition(context, script, status)
             trace.append('Found transition: %s, %s' % (transition_type, transition))
-#            self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
+            self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
 
             if transition_type == 'action':
                 return self._dispatchAction(context, transition, trace, **kwargs)
@@ -95,9 +95,6 @@ class NavigationTool (UniqueObject, SimpleItem):
         status = self._normalize(status, lower=1)
         script = self._normalize(script)
 
-        if status not in self._availableStatus():
-            raise KeyError, '%s status is not supported' % status
-
         transition = '%s.%s.%s'%( content
                                 , script
                                 , status )
@@ -135,6 +132,9 @@ class NavigationTool (UniqueObject, SimpleItem):
         if hasattr(content, 'getId'): #XXX use a xface
 #        if hasattr(content, '_isTypeInformation'): #XXX use a xface
             content = content.getId()
+        # handle types without getTypeInfo (e.g. CMFSite)
+        if type(content) != type(''):
+            content = 'Default'
         content = self._normalize(content, lower=1) #normalize
         return content
 
@@ -208,7 +208,7 @@ class NavigationTool (UniqueObject, SimpleItem):
                 if transition is None:
                     raise KeyError, "Unable to find navigation transition for %s.%s.%s" % (self._getContentFrom(context), script, status)
 
-#        self.log("getting transition %s.%s.%s, found [%s]\n" % (context, script, status, str(transition)))
+        self.log("getting transition %s.%s.%s, found [%s]\n" % (context, script, status, str(transition)))
         
         transition = self._transitionSubstitute(transition, self.REQUEST)
         return self._parseTransition(transition)
@@ -229,30 +229,50 @@ class NavigationTool (UniqueObject, SimpleItem):
                 page = page[0:queryIndex]
 
             trace.append("dispatchPage: page = " + str(page) + ", context = " + str(context))
-#            self.log("page = " + str(page) + ", context = " + str(context), '_dispatchPage')
+            self.log("page = " + str(page) + ", context = " + str(context), '_dispatchPage')
             return apply(context.restrictedTraverse(page), (context, context.REQUEST), kwargs)
+        except NavigationError:
+            raise
         except Exception, e:
             raise NavigationError(e, trace)
 
 
     def _dispatchScript(self, context, script, trace, **kwargs):
         try:
-#            self.log('calling ' + script, '_dispatchScript')
+            self.log('calling ' + script, '_dispatchScript')
+            trace.append('dispatchScript: script = %s' % (str(script)))
 
             request = {}
             for key in self.REQUEST.keys():
                 request[key] = self.REQUEST[key]
             request.update(kwargs)
 
-            script_object = getattr(context, script)
+            script_object = getattr(context, script, None)
+            if script_object is None:
+                raise KeyError("Unable to find script '%s' in context '%s'.  Check your skins path." % (script, str(context)))
 
-            trace.append('dispatchScript: script = %s' % (str(script)))
-            (status, context, kwargs) = \
-                mapply(script_object, self.REQUEST.args, request,
-                            call_object, 1, missing_name, dont_publish_class,
-                            self.REQUEST, bind=1)
-#            self.log('status = %s, context = %s, kwargs = %s' % (str(status), str(context), str(kwargs)), '_dispatchScript')
-            return self.getNext(context, script, status, trace, **kwargs)
+            script_status = mapply(script_object, self.REQUEST.args, request,
+                                   call_object, 1, missing_name, dont_publish_class,
+                                   self.REQUEST, bind=1)
+
+            # The preferred return type for scripts will eventually be an object.
+            # Until then, preserve compatibility with 1.0 alpha 4
+            if type(script_status) == type(()):
+                (status, new_context, kwargs) = script_status
+                script_status = ScriptStatus(status, kwargs, new_context)
+                # disable deprecation warning for now
+#                log_deprecated('Script \'%s\' uses a return signature that has been marked for deprecation.  Scripts should return a ScriptStatus object.' % script)
+
+            status = script_status.status
+            kwargs = script_status.kwargs
+            new_context = script_status.new_context
+            if new_context is None:
+                new_context = context
+            self.log('status = %s, new_context = %s, kwargs = %s' % (str(status), str(new_context), str(kwargs)), '_dispatchScript')
+
+            return self.getNext(new_context, script, status, trace, **kwargs)
+        except NavigationError:
+            raise
         except Exception, e:
             raise NavigationError(e, trace)
 
@@ -264,9 +284,11 @@ class NavigationTool (UniqueObject, SimpleItem):
                 # no host specified -- url is relative
                 # get an absolute url
                 url = urljoin(context.absolute_url()+'/', url)
-#            self.log('url = ' + str(url), '_dispatchUrl')
+            self.log('url = ' + str(url), '_dispatchUrl')
             trace.append('dispatchUrl: url = %s' % (str(url)))
             return self.REQUEST.RESPONSE.redirect(url)
+        except NavigationError:
+            raise
         except Exception, e:
             raise NavigationError(e, trace)
 
@@ -274,10 +296,14 @@ class NavigationTool (UniqueObject, SimpleItem):
     def _dispatchAction(self, context, action_id, trace, **kwargs):
         try:
             next_action = context.getTypeInfo().getActionById(action_id)
+            if next_action is None:
+                raise KeyError("Unknown action '%s' for type %s." % (action_id, context.getTypeInfo().getId()))
             url = self._addUrlArgs(next_action, kwargs)
-#            self.log('url = ' + str(url), '_dispatchAction')
+            self.log('url = ' + str(url), '_dispatchAction')
             trace.append('dispatchAction: url = %s' % (str(url)))
             return self.REQUEST.RESPONSE.redirect('%s/%s' % (context.absolute_url(), url))
+        except NavigationError:
+            raise
         except Exception, e:
             raise NavigationError(e, trace)
 
@@ -301,17 +327,15 @@ class NavigationTool (UniqueObject, SimpleItem):
             return st.lower()
         return st
 
-    def _availableStatus(self):
-        return ('success', 'failure')
-
 
     security.declarePublic('log')
     def log(self, msg, loc=None):
         """ """
-        if loc is None:              
-            debug_log(msg + ' - NavigationTool')
-        else:
-            debug_log(msg + ' - NavigationTool.'+loc)
+        if debug:
+            if loc is None:              
+                debug_log(msg + ' - NavigationTool')
+            else:
+                debug_log(msg + ' - NavigationTool.'+loc)
 
 
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
@@ -382,6 +406,7 @@ class NavigationError(Exception):
     def __init__(self, exception, trace):
         self.exception = exception
         self.trace = '\n'.join(trace) + '\n\n' + ''.join(traceback.format_exception(*sys.exc_info()))
+        self.trace = self.trace.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
     def __str__(self):
         return '<pre>' + str(self.exception) + '\n\nNavigation trace:\n-----------------' + self.trace + self._helpfulHints() + '</pre>'
@@ -394,3 +419,11 @@ class NavigationError(Exception):
         if hint:
             hint = '\n\nHelpful Hints:\n--------------\n' + hint
         return hint
+
+# Eventually this object will be the preferred return type for scripts that are handled
+# by the navigation machinery.
+class ScriptStatus:
+    def __init__(self, status, kwargs = {}, new_context = None):
+        self.status = status
+        self.kwargs = kwargs
+        self.new_context = new_context

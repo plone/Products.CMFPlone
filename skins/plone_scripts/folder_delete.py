@@ -12,12 +12,12 @@ REQUEST=context.REQUEST
 if REQUEST.has_key('ids'):
     transaction_note( str(REQUEST['ids'])+' has been deleted' )
     context.manage_delObjects(REQUEST['ids'], REQUEST)
-    return context.portal_navigation.getNextRequestFor( context
-                                                , script.getId()
-                                                , 'success'
-                                                , portal_status_message='Deleted.' )
+    return context.portal_navigation.getNext( context
+                , script.getId()
+                , 'success'
+                , portal_status_message='Deleted.')
 
-return context.portal_navigation.getNextRequestFor( context
-                                            , script.getId()
-                                            , 'failure'
-                                            , portal_status_message='Please select one or more items to delete.' )
+return context.portal_navigation.getNext( context
+            , script.getId()
+            , 'failure'
+            , portal_status_message='Please select one or more items to delete.' )

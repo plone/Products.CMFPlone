@@ -23,15 +23,15 @@ for id in new_ids:
     x=x+1
     
 if not new_ids:
-    return context.portal_navigation.getNextRequestFor( context
-                                                , script.getId()
-                                                , 'failure'
-                                                , portal_status_message='No Item(s) Marked For Renaming' )
+    return context.portal_navigation.getNext( context
+                , script.getId()
+                , 'failure'
+                , portal_status_message='Please check an item or items to rename' )
                                                 
 context.manage_renameObjects(REQUEST['ids'], REQUEST['new_ids'], REQUEST)
 transaction_note( str(REQUEST['ids']) + 'have been renamed' )
 
-return context.portal_navigation.getNextRequestFor( context
-                                            , script.getId()
-                                            , 'success'
-                                            , portal_status_message='Item(s) Renamed' )
+return context.portal_navigation.getNext( context
+            , script.getId()
+            , 'success'
+            , portal_status_message='Item(s) renamed' )

@@ -19,5 +19,5 @@ if not filename and not size:
 
 if errors:
     return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
-return ('success', errors, {'portal_status_message':'Your image have been saved.'})
+return ('success', errors, {'portal_status_message':'Your image has been saved.'})
 

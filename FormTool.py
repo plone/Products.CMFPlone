@@ -13,9 +13,10 @@ from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import getToolByName
 from NavigationTool import NavigationError
-
+from PloneUtilities import log_deprecated
 from interfaces.FormTool import IFormTool, ICMFForm
 from PloneUtilities import log as debug_log
+from NavigationTool import ScriptStatus
 
 validator_cache = {}  # a place to stash cached validators
 # (we don't want to persist them in the ZODB since that would make debugging a big pain)
@@ -140,12 +141,14 @@ class FormTool(UniqueObject, SimpleItem):
     # DEPRECATED
     def setValidator(self, form, validator):
         """Register a form validator"""
+        log_deprecated('setValidator has been marked for deprecation.  Please use setValidators instead.')
         return self.setValidators(form, [validator, 'validate_id'])
 
     # DEPRECATED
     security.declarePublic('getValidator')
     def getValidator(self, form):
         """Get the validator registered for a given form"""
+        log_deprecated('getValidator has been marked for deprecation.  Please use getValidators instead.')
         return self.getValidators(form)[0]
 
   
@@ -174,6 +177,11 @@ class FormValidator(SimpleItem):
         self.do_validate = do_validate
 
 
+    def __str__(self):
+        return 'FormValidator, form=%s, validators=%s, do_validate=%s' % \
+               (self.form, str(self.validators), str(self.do_validate))
+
+
     security.declarePublic('__call__')
     def __call__(self, REQUEST, **kw):
         """ """
@@ -182,7 +190,7 @@ class FormValidator(SimpleItem):
         try:
             if self.do_validate:
                 trace.append('Invoking validation')
-                context = self.aq_parent
+                context = aq_parent(self)
                 # invoke validation
                 (status, kwargs, trace) = self._validate(context, REQUEST, trace)
 
@@ -190,8 +198,8 @@ class FormValidator(SimpleItem):
             else:
                 trace.append('No validation needed.  Going to %s.%s' % (str(aq_parent(self)), self.form))
                 target = getattr(aq_parent(self), self.form, None)
-                if not target:
-                    raise KeyError("Unable to find form '%s'.  Check your skins path." % (self.form))
+                if target is None:
+                    raise KeyError("Unable to find form '%s' in context '%s'.  Check your skins path." % (self.form, str(aq_parent(self))))
                 return target(REQUEST, **kw)
         except NavigationError:
             raise
@@ -212,17 +220,31 @@ class FormValidator(SimpleItem):
             kwargs = {}
             for validator in self.validators:
                 trace.append('Invoking %s' % validator)
-                v = getattr(context, validator)
-                if not v:
-                    raise KeyError("Unable to find validator '%s'.  Check your skins path." % (validator))
-                (status, errors, kwargs) = mapply(v, REQUEST.args, REQUEST,
-                                call_object, 1, missing_name, dont_publish_class,
-                                REQUEST, bind=1)
+                v = getattr(context, validator, None)
+                if v is None:
+                    raise KeyError("Unable to find validator '%s' in context '%s'.  Check your skins path." % (validator, str(context)))
+                script_status = mapply(v, REQUEST.args, REQUEST,
+                                       call_object, 1, missing_name, dont_publish_class,
+                                       REQUEST, bind=1)
+
+                # preserve compatibility with 1.0 alpha 4
+                if type(script_status) == type(()):
+                    (status, errors, kwargs) = script_status
+                    kwargs['errors'] = errors
+                    script_status = ScriptStatus(status, kwargs, None)
+                    log_deprecated('Validator \'%s\' uses a return signature that has been marked for deprecation.  Validators should return a ScriptStatus object.' % validator)
+
+                status = script_status.status
+                kwargs = script_status.kwargs
+                new_context = script_status.new_context
+
                 self.REQUEST.set('validation_status', status)
-                self.REQUEST.set('errors', errors)
                 for key in kwargs.keys():
                     self.REQUEST.set(key, kwargs[key])
-                trace.append('\t -> (%s, %s, %s)' % (status, str(errors), str(kwargs)))
+                trace.append('\t -> (%s, %s)' % (status, str(kwargs)))
+                if new_context is not None:
+                    context = new_context
+                    trace.append("\t context changed to '%s'" % str(context))
             trace.append('Validation returned (%s, %s)' % (status, str(kwargs)))
             return (status, kwargs, trace)
         except Exception, e:

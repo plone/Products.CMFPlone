@@ -29,7 +29,7 @@ for rec in criteria:
         command[attr] = tmp
     crit.apply(command)
 
-return context.portal_navigation.getNextRequestFor( context
-                                                  , script.getId()
-                                                  , 'success'
-                                                  , portal_status_message='Critera changes saved.' )
+return context.portal_navigation.getNext( context
+                                          , script.getId()
+                                          , 'success'
+                                          , portal_status_message='Changes to criteria saved.' )

@@ -10,7 +10,7 @@
 new_context = context.portal_factory.doCreate(context, id)
 new_context.edit( title=title
                 , description=description)
-new_context.plone_utils.contentEdit( context
+new_context.plone_utils.contentEdit( new_context
                                    , id=id
                                    , description=description)
 return ('success', new_context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Folder changes saved.')})
