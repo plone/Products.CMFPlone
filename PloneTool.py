@@ -132,6 +132,8 @@ class PloneTool (UniqueObject, SimpleItem):
             obj.setFormat(format)
             obj.setLanguage(language)
             obj.setRights(rights)
+            # make the catalog aware of changes.
+            obj.reindexObject()
 
     def _renameObject(self, obj, id):
         if not id:
