@@ -1,3 +1,4 @@
+from Acquisition import aq_parent, aq_inner
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.CMFCorePermissions import ManagePortal
@@ -39,6 +40,8 @@ class PropertiesTool(Folder, BaseTool):
     manage_addPropertySheetForm = PageTemplateFile( 'www/addPropertySheet'
                                                   , globals() )
 
+    security = ClassSecurityInfo()
+
     def title(self):
         """ return BaseTool title """
         return BaseTool.title(self)
@@ -71,6 +74,22 @@ class PropertiesTool(Folder, BaseTool):
 
         if REQUEST is not None:
             return self.manage_main()
+
+    #
+    #   'portal_properties' interface methods
+    #
+    security.declareProtected(ManagePortal, 'editProperties')
+    def editProperties(self, props):
+        '''Change portal settings'''
+        aq_parent(aq_inner(self)).manage_changeProperties(props)
+        # keep this bit of hackery for backwards compatibility 
+        if props.has_key('smtp_server'):
+            self.MailHost.smtp_host = props['smtp_server']
+        if hasattr(self, 'propertysheets'):
+            ps = self.propertysheets
+            if hasattr(ps, 'props'):
+                ps.props.manage_changeProperties(props)
+
 
 PropertiesTool.__doc__ = BaseTool.__doc__
 
