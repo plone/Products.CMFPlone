@@ -110,7 +110,7 @@
     </div>
       
     <div class="row">
-        <div class="label" i18n:translate="label_collector_email">Collector email</div> 
+        <div class="label required" i18n:translate="label_collector_email">Collector email</div> 
         <div class="field"
              tal:define="member python: here.portal_membership.getAuthenticatedMember();
                          getpropemail python: hasattr(member, 'getProperty')
@@ -135,7 +135,7 @@
         <div class="label" i18n:translate="label_collector_managers">Managers</div> 
         <div class="field">
             <textarea name="managers:lines" rows="5" cols="15"
-                      tal:define="mgrs python:'\n'.join([m for m in here.managers()])"
+                      tal:define="mgrs python:'\n'.join([m for m in here.managers])"
                       tal:content="mgrs"></textarea>
             <span i18n:translate="help_collector_managers">
             Managers configure the collector, and receive request notices.
@@ -150,7 +150,7 @@
         <div class="label" i18n:translate="label_collector_supporters">Supporters</div> 
         <div class="field">
             <textarea name="supporters:lines" rows="5" cols="15"
-                      tal:define="supporters python:'\n'.join([s for s in here.supporters()])"></textarea>
+                      tal:define="supporters python:'\n'.join([s for s in here.supporters])"></textarea>
         <span i18n:translate="help_collector_supporters">
         Supporters can be assigned to requests.  They may or may not
             receive initial request notifications, depending on the
@@ -272,17 +272,17 @@
 
             <span i18n:translate="label_collector_topics">Topics</span>
             <textarea name="topics:lines" rows="5" cols="15"
-                      tal:define="topics python:'\n'.join([t for t in here.topics()])"
+                      tal:define="topics python:'\n'.join([t for t in here.topics])"
                       tal:content="topics"></textarea>
             
             <span i18n:translate="label_collector_classifications">Classifications</span>
             <textarea name="classifications:lines" rows="5" cols="15"
-                      tal:define="classi python:'\n'.join([c for c in here.classifications()])"
+                      tal:define="classi python:'\n'.join([c for c in here.classifications])"
                       tal:content="classi"></textarea>
             
             <span i18n:translate="label_collector_importance">Importance</span>
             <textarea name="importances:lines" rows="5" cols="15"
-                      tal:define="imp python:'\n'.join([i for i in here.importances()])"
+                      tal:define="imp python:'\n'.join([i for i in here.importances])"
                       tal:content="imp"></textarea>
             </div>
             <span i18n:translate="help_collector_selections">
