@@ -40,6 +40,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text"
+                       id="fullname"
                        name="fullname"
                        size="25"
                        tabindex=""
@@ -64,6 +65,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text"
+                       id="email"
                        name="email"
                        size="25"
                        tabindex=""
@@ -86,6 +88,7 @@
                 </div>
     
                 <select name="wysiwyg_editor"
+                        id="wysiwyg_editor"
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;">
                     <tal:block tal:repeat="editor site_properties/available_editors">
@@ -113,7 +116,7 @@
                  tal:define="listed python:request.get('listed', member.getProperty('listed',''));
                              tabindex tabindex/next;">
                 
-                <label for="listed" i18n:translate="label_listed_status">Listed status</label>
+                <label i18n:translate="label_listed_status">Listed status</label>
     
                 <div class="formHelp" i18n:translate="help_listed_search">
                 Select whether you want to show up in member searches done on this site.
@@ -171,7 +174,7 @@
             <div class="field"
            	     tal:define="visible_ids python:request.get('visible_ids', member.getProperty('visible_ids',''));
                      tabindex tabindex/next;">
-                <label for="visible_ids" i18n:translate="label_edit_short_names">Editing of Short Names</label>
+                <label i18n:translate="label_edit_short_names">Editing of Short Names</label>
     
                 <div class="formHelp" i18n:translate="help_display_names">
                 Select whether you want Short Names (also known as IDs) to be
@@ -208,7 +211,7 @@
                        class="noborder"
                        name="visible_ids"
                        value=""
-                       id="cb_invisibleids"
+                       id="cb_invisible_ids"
                        tabindex=""
                        tal:attributes="tabindex tabindex;"
                        tal:condition="visible_ids"
@@ -242,6 +245,7 @@
                 </div>
     
                 <select name="portal_skin"
+                        id="portal_skin"
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;"
                         >
@@ -275,6 +279,7 @@
     
                 <input type="file"
                        name="portrait"
+                       id="portrait"
                        size="20"
                        tabindex=""
                        tal:attributes="tabindex tabindex/next;"

@@ -31,7 +31,7 @@
             <legend i18n:translate="legend_item_properties">Item Properties</legend>
     
             <div class="field">
-                <label for="allowDiscussion" i18n:translate="label_allow_discussion">Allow Discussion on this item</label>
+                 <label i18n:translate="label_allow_discussion">Allow Discussion on this item</label> 
                 
                 <div class="formHelp" i18n:translate="help_allow_discussion">
                 'Default' will use the site-wide setting for discussions.
@@ -80,7 +80,7 @@
             </div>
     
             <div class="field">
-                <label for="" i18n:translate="label_keywords">Keywords</label>
+                <label i18n:translate="label_keywords">Keywords</label>
     
                 <div class="formHelp" i18n:translate="help_keyword">
                 Keywords relate different types of content to each other.
@@ -202,6 +202,7 @@
                 </div>
     
                 <select name="format"
+                        id="format"
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;"
                         tal:define="format request/format | here/Format;">
@@ -228,6 +229,7 @@
                                  sorted python:available_languages.sort( lambda x, y: cmp(x[1],y[1]) )">
                     <!-- ISO-639-2 language selector for Plone -->
                     <select name="language"
+                            id="language"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;"
                             >
@@ -248,6 +250,7 @@
                 </div>
     
                 <input type="text"
+                       id="rights"
                        name="rights"
                        size="25"
                        value=""
@@ -266,6 +269,7 @@
                 </div>
     
                 <textarea name="contributors:lines"
+                          id="contributors"
                           rows="5"
                           cols="25"
                           tabindex=""

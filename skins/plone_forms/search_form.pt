@@ -39,6 +39,7 @@
                 </div>
 
                 <input type="text"
+                       id="SearchableText"
                        name="SearchableText"
                        size="25"
                        tabindex=""
@@ -54,6 +55,7 @@
                 </div>
 
                 <input type="text"
+                       id="Title"
                        name="Title"
                        size="25"
                        tabindex=""
@@ -72,6 +74,7 @@
                 </div>
 
                 <select name="Subject:list"
+                        id="Subject"
                         size="7"
                         multiple="multiple"
                         tabindex=""
@@ -96,6 +99,7 @@
                 </div>
     
                 <input type="text"
+                       id="Description"
                        name="Description"
                        size="25"
                        tabindex=""
@@ -112,6 +116,7 @@
     
                 <tal:datetime define="today python:DateTime().earliestTime()">
                 <select name="created:date"
+                        id="created"
                         tabindex=""
                         tal:attributes="tabindex tabindex/next;"
                         tal:define="yesterday python:(today-1).Date();
@@ -133,7 +138,7 @@
             </div>
     
             <div class="field">
-                <label for="portal_type" i18n:translate="label_item_type">Item type</label>
+                <label i18n:translate="label_item_type">Item type</label>
 
                 <div class="formHelp" i18n:translate="help_search_item_type">
                 Return items of a specific type.
@@ -169,6 +174,7 @@
     
                 <tal:creators tal:define="creators python:here.portal_catalog.uniqueValuesFor('Creator')">
                     <select name="Creator"
+                            id="Creator"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;"
                             tal:condition="python: len(creators) &lt;= 30">

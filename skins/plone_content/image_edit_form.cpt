@@ -48,6 +48,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text" 
+                       id="id"
                        name="id" 
                        value=""
                        size="40"
@@ -78,6 +79,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text" 
+                       id="title"
                        name="title" 
                        value="" 
                        size="40" 
@@ -100,6 +102,7 @@
                 <textarea cols="80" 
                           rows="5" 
                           tabindex=""
+                          id="description"
                           name="description"
                           tal:content="description"
                           tal:attributes="tabindex tabindex/next;"
@@ -113,7 +116,7 @@
                              file request/file | here/file | nothing;"
                  tal:attributes="class python:test(error, 'field error', 'field')">
                 
-                <label i18n:translate="label_image">Image</label>
+                <label for="file" i18n:translate="label_image">Image</label>
 
                 <span class="fieldRequired" title="Required"
                       i18n:attributes="title"
@@ -127,6 +130,7 @@
                   
                     
                 <input type="file" 
+                       id="file" 
                        name="file" 
                        size="30" 
                        tabindex="" 

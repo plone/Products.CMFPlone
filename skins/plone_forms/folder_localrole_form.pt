@@ -182,11 +182,12 @@
 
                 <div class="field">
 
-                    <label for="member_role" i18n:translate="label_localrole_to_assign">
+                    <label for="user_member_role" i18n:translate="label_localrole_to_assign">
                         Role to assign
                     </label>
 
                     <select name="member_role"
+                            id="user_member_role"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
                         <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"
@@ -253,6 +254,7 @@
                     </label>
 
                     <select name="search_param"
+                            id="search_param"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
                         <option value="username" i18n:translate="label_user_name">
@@ -271,6 +273,7 @@
                     </label>
 
                     <input type="text"
+                            id="search_term"
                             name="search_term"
                             size="30"
                             tabindex=""
@@ -345,11 +348,12 @@
 
                 <div class="field">
 
-                    <label for="member_role" i18n:translate="label_localrole_to_assign">
+                    <label for="group_member_role" i18n:translate="label_localrole_to_assign">
                         Role to assign
                     </label>
 
                     <select name="member_role"
+                            id="group_member_role"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
                         <option tal:repeat="lroles python:container.portal_membership.getCandidateLocalRoles(here)"

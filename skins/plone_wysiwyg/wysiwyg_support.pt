@@ -32,6 +32,7 @@
 
     <input class="noborder"
            type="radio"
+           id="text_format"
            name="text_format"
            value="structured-text"
            tabindex=""

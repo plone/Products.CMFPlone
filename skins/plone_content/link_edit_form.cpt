@@ -47,6 +47,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text" 
+                       id="id" 
                        name="id" 
                        value=""
                        size="40"
@@ -77,6 +78,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text" 
+                       id="title" 
                        name="title" 
                        value="" 
                        size="40" 
@@ -99,6 +101,7 @@
                 <textarea cols="80" 
                           rows="5" 
                           tabindex=""
+                          id="description" 
                           name="description"
                           tal:content="description"
                           tal:attributes="tabindex tabindex/next;"

@@ -44,6 +44,7 @@
                 <div tal:content="error">Validation error output</div>
         
                 <input type="text"
+                       id="send_to_address"
                        name="send_to_address"
                        size="25"
                        tabindex=""
@@ -69,6 +70,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text"
+                       id="send_from_address"
                        name="send_from_address"
                        size="25"
                        tabindex=""

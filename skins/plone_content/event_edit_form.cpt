@@ -48,6 +48,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text" 
+                       id="id"
                        name="id" 
                        value=""
                        size="40"
@@ -78,6 +79,7 @@
                 <div tal:content="error">Validation error output</div>
     
                 <input type="text" 
+                       id="title"
                        name="title" 
                        value="" 
                        size="40" 
@@ -97,6 +99,7 @@
                 </div>
                 
                 <input type="text"
+                       id="location"
                        name="location"
                        size="25"
                        value="location"
@@ -114,6 +117,7 @@
                 </div>
     
                 <select name="event_type:list" 
+                        id="event_type"
                         multiple="multiple"
                         tabindex=""
                         size="6"
@@ -143,6 +147,7 @@
                 <textarea cols="80" 
                           rows="5" 
                           tabindex=""
+                          id="description"
                           name="description"
                           tal:content="description"
                           tal:attributes="tabindex tabindex/next;"
@@ -160,6 +165,7 @@
             </div>
 
             <input type="text" 
+                  id="event_url"
                   name="event_url"
                   size="25" 
                   value="event_url"
@@ -231,6 +237,7 @@
             </div>
             
             <input type="text"
+                  id="contact_name"
                   name="contact_name" 
                   size="25"
                   value=""
@@ -249,6 +256,7 @@
             </div>
             
             <input type="text"
+                  id="contact_email" 
                   name="contact_email" 
                   size="25"
                   value="contact_email"
@@ -266,6 +274,7 @@
             </div>
             
             <input type="text"
+                  id="contact_phone"
                   name="contact_phone"
                   size="25"
                   value="contact_phone"

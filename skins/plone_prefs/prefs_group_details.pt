@@ -60,6 +60,7 @@
                <label for="addname" i18n:translate="label_name">Name</label>
                <div class="field">
                    <input type="text" name="addname" value="groupname"
+                          id="addname"
                                  tal:attributes="value group/getGroupName | string:"/>
                </div>
             </div>
@@ -103,7 +104,7 @@
                <div class="field">
                   <strong><span tal:content="group/getGroupName | string:" /></strong>
                </div>
-               <input type="hidden" name="groupname" value="groupname"
+               <input type="hidden" name="groupname" value="groupname" id="groupname"
                              tal:attributes="value group/getGroupName | string: "/>
             </div>
     

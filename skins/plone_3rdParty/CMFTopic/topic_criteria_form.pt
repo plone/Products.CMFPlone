@@ -74,7 +74,8 @@
 		List Available Fields
                 </div>		
         
-		<select name="field"
+        <select name="field"
+                    id="field"
                     tabindex=""
                     tal:define="fields here/listAvailableFields;"
                     tal:attributes="tabindex tabindex/next;">
@@ -94,6 +95,7 @@
                 </div>		
         
                 <select name="criterion_type"
+                    id="criterion_type"
                     tabindex=""
                     tal:define="types here/listCriteriaTypes;"
                     tal:attributes="tabindex tabindex/next;">
