@@ -92,7 +92,7 @@
                 </dd>
             </dl>
 
-          <div tal:condition="python:checkPermission('Manage portal', here) or request.get('HTTP_HOST','').split(':')[0].lower() in ['127.0.0.1', 'localhost']">
+          <div tal:condition="python:checkPermission('Manage portal', here)">
             <ul>
               <tal:entries tal:define="entries portal/error_log/getLogEntries|nothing" tal:condition="entries">
                 <li><a tal:define="entry_id python:entries[0]['id'];"
