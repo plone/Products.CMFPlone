@@ -7,7 +7,9 @@
 
    <div metal:fill-slot="main" 
         tal:define="rejection here/rejectAnonymous;
-	            errors python:request.get('errors', {});">
+                    errors python:request.get('errors', {});
+                    Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                    tabindex python:Iterator();">
 
     <h1 i18n:translate="">Edit Document</h1>
     
@@ -52,10 +54,11 @@
                        name="id" 
                        value="#"
                        size="30" 
-                       tabindex="1"
+                       tabindex=""
                        onfocus="formtooltip('id_help',1)" 
                        onblur="formtooltip('id_help',0)"
-                       tal:attributes="value id;"
+                       tal:attributes="value id;
+                                       tabindex tabindex/next;"
                        />
             </div>
 
@@ -84,8 +87,9 @@
                        name="title" 
                        value="#" 
                        size="30" 
-                       tabindex="2"
-                       tal:attributes="value Title" 
+                       tabindex=""
+                       tal:attributes="value Title;
+                                       tabindex tabindex/next;" 
                        onfocus="formtooltip('title_help',1)" 
                        onblur="formtooltip('title_help',0)" 
                        />
@@ -107,9 +111,10 @@
             <div class="field" tal:define="description request/description | here/Description "> 
                 <textarea cols="40" 
                           rows="5" 
-                          tabindex="3"
+                          tabindex=""
                           name="description"
                           tal:content="description"
+                          tal:attributes="tabindex tabindex/next;"
                           onfocus="formtooltip('description_help',1)" 
                           onblur="formtooltip('description_help',0)"
                           >
@@ -135,7 +140,7 @@
                                  inputvalue text;
                                  onfocus string:formtooltip('body_help',1);
                                  onblur string:formtooltip('body_help',0);
-                                 tabindex string:4;">
+                                 tabindex tabindex/next;">
                    <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBox">
                    The WYSIWYG code
                    </div>
@@ -156,16 +161,18 @@
                 do.
                 </div>
             </div>
-  	        <div class="field">	
+  	        <div class="field"
+                 tal:define="tabindex tabindex/next;">	
                 <input class="noborder" 
                        type="radio" 
                        name="text_format"
                        value="structured-text" 
-                       tabindex="5"
+                       tabindex=""
                        id="cb_structuredtext"
                        onfocus="formtooltip('format_help',1)" 
                        onblur="formtooltip('format_help',0)" 
-                       tal:attributes="checked python:test(here.text_format=='structured-text', 1, 0)" 
+                       tal:attributes="checked python:test(here.text_format=='structured-text', 1, 0);
+                                       tabindex tabindex;" 
                        />
                 <label for="cb_structuredtext" i18n:id="structured_text">Structured Text</label> <br />
 		
@@ -173,9 +180,10 @@
                        type="radio" 
                        name="text_format" 
                        value="html" 
-                       tabindex="5"
+                       tabindex=""
                        id="cb_html"
-                       tal:attributes="checked python:test(here.text_format=='html', 1, 0)" 
+                       tal:attributes="checked python:test(here.text_format=='html', 1, 0);
+                                       tabindex tabindex;" 
                        onfocus="formtooltip('format_help',1)" 
                        onblur="formtooltip('format_help',0)" 
                        />	
@@ -185,9 +193,10 @@
                        type="radio" 
                        name="text_format"
                        value="plain" 
-                       tabindex="5"
+                       tabindex=""
                        id="cb_plain"
-                       tal:attributes="checked python:test(here.text_format=='plain', 1, 0)" 
+                       tal:attributes="checked python:test(here.text_format=='plain', 1, 0);
+                                       tabindex tabindex;" 
                        onfocus="formtooltip('format_help',1)" 
                        onblur="formtooltip('format_help',0)" 
                        />
@@ -223,9 +232,10 @@
                   <input type="file" 
                          name="file" 
                          size="30" 
-                         tabindex="6" 
+                         tabindex="" 
                          onfocus="formtooltip('upload_help',1)" 
-                         onblur="formtooltip('upload_help',0)" 
+                         onblur="formtooltip('upload_help',0)"
+                         tal:attributes="tabindex tabindex/next;" 
                          />
             </div>
         </div>
@@ -235,10 +245,11 @@
             <div class="label">&nbsp;</div>
             <div class="field" tal:define="process_creation request/process_creation|nothing;"> 
                 <input class="context" 
-                       tabindex="7"
+                       tabindex=""
                        type="submit" 
                        name="Change" 
-                       value="Save" /> 
+                       value="Save" 
+                       tal:attributes="tabindex tabindex/next;" /> 
             </div>
 	    </div>
 

@@ -5,7 +5,9 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-<div metal:fill-slot="main">	
+<div metal:fill-slot="main" 
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">	
 
     <h1 i18n:translate="">Add Comment</h1>
     
@@ -34,8 +36,9 @@
                 <input name="title" 
                        value="" 
                        size="40"
-                       tabindex="1"
-                       tal:attributes="value request/title_override|nothing" />
+                       tabindex=""
+                       tal:attributes="value request/title_override|nothing;
+											                 tabindex tabindex/next;" />
             </div>
             
         </div>
@@ -50,7 +53,8 @@
                 <textarea name="text"
                           cols="40"
                           rows="8"
-                          tabindex="2"
+                          tabindex=""
+													tal:attributes="tabindex tabindex/next;"
 			              tal:content="request/text_override | nothing"></textarea>
             </div>
             
@@ -68,16 +72,18 @@
                        type="submit" 
                        value="Preview Comment" 
                        name=""
-                       tabindex="3"
+                       tabindex=""
                        tal:define="hId here/getId"
-                       tal:attributes="name string:$hId/discussion_reply_preview:method" />
+                       tal:attributes="name string:$hId/discussion_reply_preview:method;
+											                 tabindex tabindex/next;" />
                       
                 <input class="context" 
                        type="submit" 
                        value="Add Comment" 
                        name=""
-                       tabindex="4"
-                       tal:attributes="name string:discussion_reply:method" />
+                       tabindex=""
+                       tal:attributes="name string:discussion_reply:method;
+											                 tabindex tabindex/next;" />
             </div>
             
         </div>

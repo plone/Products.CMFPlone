@@ -15,7 +15,9 @@
      tal:define="transactions python:container.portal_undo.listUndoableTransactionsFor(here);
                  Batch python:modules['ZTUtils'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
-                 b_start python:request.get('b_start',0);">
+                 b_start python:request.get('b_start',0);
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
     <form name="undo_form" 
           action="undo" 
@@ -65,11 +67,11 @@
         
             <thead>
                 <tr>
-                    <th i18n:id="undo">Undo</th>
-                    <th i18n:id="affected_item">Affected Item</th>
-                    <th i18n:id="action_performed">Action performed</th>
-                    <th i18n:id="performed_by">Performed by</th>
-                    <th i18n:id="date_and_time">Date and time</th>
+                    <th i18n:translate="">Undo</th>
+                    <th i18n:translate="">Affected Item</th>
+                    <th i18n:translate="">Action performed</th>
+                    <th i18n:translate="">Performed by</th>
+                    <th i18n:translate="">Date and time</th>
                 </tr>
             </thead>
         
@@ -82,9 +84,11 @@
                         
                         <td>
                             <input type="checkbox"
-                                    class="noborder"
-                                    name="transaction_info:list" value=""
-                                    tal:attributes="value python:trx['id']">
+                                   class="noborder"
+                                   name="transaction_info:list" value=""
+                                   tabindex=""
+                                   tal:attributes="value python:trx['id'];
+                                                   tabindex tabindex/next;">
                         </td>
             
                         <td>
@@ -111,7 +115,9 @@
         <input class="context" 
                type="submit" 
                name="undo:method" 
-               value="Undo" 
+               value="Undo"
+               tabindex=""
+               tal:attributes="tabindex tabindex/next;" 
                />
 
         <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">

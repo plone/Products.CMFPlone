@@ -5,7 +5,9 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();" >
 
 <h1 i18n:translate="">Please sign in</h1>
 
@@ -50,10 +52,11 @@ If you do not have an account here, head over to the <a href="join_form">registr
 				<input type="text" 
                        name="__ac_name" 
                        size="20"
-                       tabindex="1"
+                       tabindex=""
                        onfocus="formtooltip('user_name_help',1)" 
                        onblur="formtooltip('user_name_help',0)" 
-                       tal:attributes="value python:request.get('__ac_name', '')" 
+                       tal:attributes="value python:request.get('__ac_name', '');
+                                       tabindex tabindex/next;" 
                        />
 			</div>
 
@@ -75,9 +78,10 @@ If you do not have an account here, head over to the <a href="join_form">registr
             <input type="password" 
                    name="__ac_password" 
                    size="10" 
-                   tabindex="2"
+                   tabindex=""
                    onfocus="formtooltip('password_help',1)" 
-                   onblur="formtooltip('password_help',0)" 
+                   onblur="formtooltip('password_help',0)"
+                   tal:attributes="tabindex tabindex/next;" 
                    />
         </div>
 	</div>
@@ -101,9 +105,11 @@ If you do not have an account here, head over to the <a href="join_form">registr
                    value="1" 
                    checked="checked" 
                    id="cb_remember"
-                   tabindex="3" 
+                   tabindex="" 
                    onfocus="formtooltip('remember_help',1)" 
-                   onblur="formtooltip('remember_help',0)" />
+                   onblur="formtooltip('remember_help',0)" 
+                   tal:attributes="tabindex tabindex/next;" 
+                   />
 
             <label for="cb_remember" i18n:id="remember">Remember my name.</label>
         </div>
@@ -113,10 +119,12 @@ If you do not have an account here, head over to the <a href="join_form">registr
     	<div class="label">&nbsp;</div>
     	<div class="field">
             <input class="context"
-                   tabindex="4" 
+                   tabindex="" 
                    type="submit" 
                    name="submit" 
-                   value="Sign in" />
+                   value="Sign in" 
+                   tal:attributes="tabindex tabindex/next;" 
+                   />
 
             <p>
                 <strong i18n:translate="">

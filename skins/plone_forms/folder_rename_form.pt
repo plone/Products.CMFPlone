@@ -6,7 +6,9 @@
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
     <h1 i18n:translate="">Rename item</h1>
 
@@ -38,13 +40,17 @@
                        name="new_ids:list"
                        value="fav_999816073"
                        size="30"
-                       tal:attributes="value item"
+                       tabindex=""
+                       tal:attributes="value item;
+                                       tabindex tabindex/next;"
                        /> <br />
                 Title <input type="text"
                        name="new_titles:list"
                        value="title"
-		       size="30"
-		       tal:attributes="value obj/Title" />
+                       size="30"
+                       tabindex=""
+                       tal:attributes="value obj/Title;
+                                       tabindex tabindex/next;" />
                 <br />
             </div>
 	    
@@ -58,9 +64,19 @@
             <div class="field">
                 <input type="hidden" name="here" value=""
                        tal:attributes="value here/absolute_url">
-                <input class="context" type="submit" value="Rename" />
-                <input class="context" type="submit" value="Cancel"
-                       onClick="javascript:document.folder_rename.action=document.folder_rename.here.value+'/folder_contents';document.folder_rename.submit();" />
+                <input class="context" 
+                       type="submit" 
+                       value="Rename"
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;" 
+                       />
+                <input class="context" 
+                       type="submit" 
+                       value="Cancel"
+                       onClick="javascript:document.folder_rename.action=document.folder_rename.here.value+'/folder_contents';document.folder_rename.submit();" 
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"                       
+                       />
             </div>
 
         </div>

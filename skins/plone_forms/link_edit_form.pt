@@ -10,7 +10,7 @@
 <div metal:fill-slot="main" 
      tal:define="errors python:request.get('errors', {});
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
-		 tabindex python:Iterator();">
+		             tabindex python:Iterator();">
         
     <h1 i18n:translate="">Edit Link item</h1>
     
@@ -56,10 +56,12 @@
                        name="id" 
                        value="#"
                        size="30" 
-                       tal:attributes="value id;tabindex tabindex/next" 
-                       tabindex="1"
+                       tabindex=""
                        onfocus="formtooltip('id_help',1)" 
-                       onblur="formtooltip('id_help',0)" />
+                       onblur="formtooltip('id_help',0)" 
+                       tal:attributes="value id;
+                                       tabindex tabindex/next;" 
+                       />
             </div>
 
         </div>
@@ -88,10 +90,12 @@
                        name="title" 
                        value="#" 
                        size="30" 
-                       tabindex="2"
-                       tal:attributes="value Title;tabindex tabindex/next" 
+                       tabindex=""
                        onfocus="formtooltip('title_help',1)" 
-                       onblur="formtooltip('title_help',0)" />
+                       onblur="formtooltip('title_help',0)" 
+                       tal:attributes="value Title;
+                                       tabindex tabindex/next;" 
+                       />
 
             </div>
         </div>
@@ -110,12 +114,12 @@
             <div class="field" tal:define="description request/description | here/Description "> 
                 <textarea cols="40" 
                           rows="5" 
-                          tabindex="3"
+                          tabindex=""
                           name="description"
                           tal:content="description"
-			  tal:attributes="tabindex tabindex/next"
                           onfocus="formtooltip('description_help',1)" 
-                          onblur="formtooltip('description_help',0)">
+                          onblur="formtooltip('description_help',0)"
+                          tal:attributes="tabindex tabindex/next;">
                 Description 
                 </textarea>
             </div>
@@ -145,10 +149,11 @@
                        name="remote_url"
                        size="30"
                        value="#"
-                       tabindex="4"
-                       tal:attributes="value remote_url;tabindex tabindex/next" 
+                       tabindex=""
                        onfocus="formtooltip('url_help',1)" 
                        onblur="formtooltip('url_help',0)" 
+                       tal:attributes="value remote_url;
+                                       tabindex tabindex/next;" 
                        />
             </div>
         </div>
@@ -157,10 +162,12 @@
             <div class="label">&nbsp;</div>
             <div class="field">
                 <input class="context"
-                       tabindex="5" 
+                       tabindex="" 
                        type="submit" 
                        name="save" 
-                       value="save" />
+                       value="save"
+                       tal:attributes="tabindex tabindex/next;"
+                       />
             </div>
         </div>
         

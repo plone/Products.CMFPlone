@@ -4,7 +4,10 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-<div metal:fill-slot="main" tal:define="errors python:request.get('errors', {})">
+<div metal:fill-slot="main" 
+     tal:define="errors python:request.get('errors', {});
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();" >
 
     <h1 i18n:translate="">Edit file</h1>
     
@@ -50,10 +53,12 @@
                        name="id" 
                        value="#"
                        size="30" 
-                       tal:attributes="value id" 
-                       tabindex="1"
+                       tabindex=""
                        onfocus="formtooltip('id_help',1)" 
-                       onblur="formtooltip('id_help',0)" />
+                       onblur="formtooltip('id_help',0)" 
+                       tal:attributes="value id;
+                                       tabindex tabindex/next" 
+                       />
             </div>
 
         </div>
@@ -81,10 +86,12 @@
                        name="title" 
                        value="#" 
                        size="30" 
-                       tabindex="2"
-                       tal:attributes="value Title" 
+                       tabindex=""
                        onfocus="formtooltip('title_help',1)" 
-                       onblur="formtooltip('title_help',0)" />
+                       onblur="formtooltip('title_help',0)" 
+                       tal:attributes="value Title;
+                                       tabindex tabindex/next" 
+                       />
 
             </div>
         </div>
@@ -103,11 +110,13 @@
             <div class="field" tal:define="description request/description | here/Description "> 
                 <textarea cols="40" 
                           rows="5" 
-                          tabindex="3"
+                          tabindex=""
                           name="description"
-                          tal:content="description"
                           onfocus="formtooltip('description_help',1)" 
-                          onblur="formtooltip('description_help',0)">
+                          onblur="formtooltip('description_help',0)"
+                          tal:content="description"
+                          tal:attributes="tabindex tabindex/next"
+                          >
                 Description 
                 </textarea>
             </div>
@@ -135,9 +144,10 @@
                 <input type="file" 
                        name="file" 
                        size="30" 
-                       tabindex="4" 
+                       tabindex="" 
                        onfocus="formtooltip('file_help',1)" 
                        onblur="formtooltip('file_help',0)" 
+                       tal:attributes="tabindex tabindex/next"
                        />
                 <span tal:condition="python:test(here.size, 0, 1)">
                   <br /> (No file has been uploaded yet)
@@ -166,10 +176,11 @@
                           id="body"
                           cols="80"
                           rows="20"
-                          tabindex="5" 
+                          tabindex="" 
                           onfocus="formtooltip('edit_contents_help',1)" 
                           onblur="formtooltip('edit_contents_help',0)" 
-                          tal:content="here/data"></textarea>
+                          tal:content="here/data"
+                          tal:attributes="tabindex tabindex/next"></textarea>
             </div>
         </div>
 
@@ -180,9 +191,11 @@
             <div class="field" tal:define="process_creation request/process_creation|nothing;"> 
                 <input class="context" 
                        type="submit"
-                       tabindex="6" 
+                       tabindex="" 
                        name="Change" 
-                       value="Save" /> 
+                       value="Save" 
+                       tal:attributes="tabindex tabindex/next"
+                       /> 
             </div>
     
         </div>

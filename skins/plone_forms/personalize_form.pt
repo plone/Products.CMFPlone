@@ -12,7 +12,9 @@
 <body>
 			
 <div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {})"
+     tal:define="errors python:request.get('errors', {});
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();"
      tal:condition="here/rejectAnonymous" >
 
     
@@ -60,11 +62,12 @@
                     <input type="text" 
                            name="email" 
                            size="25"
-                           tabindex="1"
+                           tabindex=""
                            value="member.email html_quote"
                            onfocus="formtooltip('new_email_help',1)" 
                            onblur="formtooltip('new_email_help',0)" 
-                           tal:attributes="value email" 
+                           tal:attributes="value email;
+                                           tabindex tabindex/next;" 
                            />
                 </div>
 
@@ -87,7 +90,9 @@
                      tal:define="wysiwyg_editor python:request.get('wysiwyg_editor', member.wysiwyg_editor)">
                      <select name="wysiwyg_editor"
                              onfocus="formtooltip('wysiwyg_editor_help',1)"
-                             onblur="formtooltip('wysiwyg_editor_help',0)">
+                             onblur="formtooltip('wysiwyg_editor_help',0)"
+                             tabindex=""
+                             tal:attributes="tabindex tabindex/next;">
                          <tal:block tal:repeat="editor here/portal_properties/available_editors">
                          <option value="None"
                                  tal:attributes="value editor;
@@ -114,27 +119,32 @@
                     </div>                
                 </div>
                 <div class="field"
-		     tal:define="listed python:request.get('listed', member.listed);">
+		                 tal:define="listed python:request.get('listed', member.listed);
+                                 tabindex tabindex/next;">
                     <input type="radio" 
                            class="noborder" 
                            name="listed" 
                            value="on"
                            id="cb_listed" 
                            checked="checked"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('listed_status_help',1)" 
-                           onblur="formtooltip('listed_status_help',0)" 
-                           tal:condition="listed" />
+                           onblur="formtooltip('listed_status_help',0)"
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="listed" 
+                           />
                            
                     <input type="radio" 
                            class="noborder" 
                            name="listed" 
                            value="on"
                            id="cb_listed"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('listed_status_help',1)" 
-                           onblur="formtooltip('listed_status_help',0)" 
-                           tal:condition="not: listed" />
+                           onblur="formtooltip('listed_status_help',0)"
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="not: listed" 
+                           />
                     
                     <label for="cb_listed">Listed</label>
                     
@@ -145,10 +155,12 @@
                            name="listed" 
                            value=""
                            id="cb_unlisted"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('listed_status_help',1)" 
-                           onblur="formtooltip('listed_status_help',0)" 
-                           tal:condition="listed" />
+                           onblur="formtooltip('listed_status_help',0)"
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="listed" 
+                           />
                     
                     <input type="radio" 
                            class="noborder" 
@@ -156,17 +168,18 @@
                            value=""
                            id="cb_unlisted" 
                            checked="checked"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('listed_status_help',1)" 
-                           onblur="formtooltip('listed_status_help',0)" 
-                           tal:condition="not: listed " />		   
+                           onblur="formtooltip('listed_status_help',0)"
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="not: listed " 
+                           />		   
                     
                     <label for="cb_unlisted">Unlisted</label>
                 </div>
             </div>
 
-            <div class="row"
-	         tal:define="formtooltips python:request.get('formtooltips', member.formtooltips);">
+            <div class="row">
                 <div class="label">
                     <span i18n:id="formtooltips_status">Display form tooltips</span>
 
@@ -177,27 +190,33 @@
                     Select whether you want form tooltips to be displayed.
                     </div>                
                 </div>
-                <div class="field"> 
+                <div class="field"
+                     tal:define="formtooltips python:request.get('formtooltips', member.formtooltips);
+                     tabindex tabindex/next;"> 
                     <input type="radio" 
                            class="noborder" 
                            name="formtooltips" 
                            value="on"
                            id="cb_formtooltips" 
                            checked="checked"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('formtooltips_help',1)" 
-                           onblur="formtooltip('formtooltips_help',0)" 
-                           tal:condition="formtooltips" />
+                           onblur="formtooltip('formtooltips_help',0)"
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="formtooltips" 
+                           />
                            
                     <input type="radio" 
                            class="noborder" 
                            name="formtooltips" 
                            value="on"
                            id="cb_formtooltips"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('formtooltips_help',1)" 
-                           onblur="formtooltip('formtooltips_help',0)" 
-                           tal:condition="not: formtooltips" />
+                           onblur="formtooltip('formtooltips_help',0)"
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="not: formtooltips" 
+                           />
                     
                     <label for="cb_formtooltips">Yes</label>
                     
@@ -208,10 +227,12 @@
                            name="formtooltips" 
                            value=""
                            id="cb_noformtooltips"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('formtooltips_help',1)" 
-                           onblur="formtooltip('formtooltips_help',0)" 
-                           tal:condition="formtooltips" />
+                           onblur="formtooltip('formtooltips_help',0)"
+                           tal:attributes="tabindex tabindex;"
+                           tal:condition="formtooltips" 
+                           />
                     
                     <input type="radio" 
                            class="noborder" 
@@ -219,18 +240,19 @@
                            value=""
                            id="cb_noformtooltips" 
                            checked="checked"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('formtooltips_help',1)" 
-                           onblur="formtooltip('formtooltips_help',0)" 
-                           tal:condition="not: formtooltips" />		   
+                           onblur="formtooltip('formtooltips_help',0)"
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="not: formtooltips" 
+                           />		   
                     
                     <label for="cb_noformtooltips">No</label>
                 </div>
             </div>
 
 
-            <div class="row"
-	         tal:define="visible_ids python:request.get('visible_ids', member.visible_ids)">
+            <div class="row">
                 <div class="label">
                     <span i18n:id="visible_ids_status">Display content ids</span>
 
@@ -241,27 +263,33 @@
                     Select whether you want ids to be visible when editing contents.
                     </div>                
                 </div>
-                <div class="field"> 
+                <div class="field"
+           	         tal:define="visible_ids python:request.get('visible_ids', member.visible_ids);
+                                 tabindex tabindex/next;"> 
                     <input type="radio" 
                            class="noborder" 
                            name="visible_ids" 
                            value="on"
                            id="cb_visible_ids" 
                            checked="checked"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('visible_ids_help',1)" 
-                           onblur="formtooltip('visible_ids_help',0)" 
-                           tal:condition="visible_ids" />
+                           onblur="formtooltip('visible_ids_help',0)"
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="visible_ids" 
+                           />
                            
                     <input type="radio" 
                            class="noborder" 
                            name="visible_ids" 
                            value="on"
                            id="cb_visible_ids"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('visible_ids_help',1)" 
                            onblur="formtooltip('visible_ids_help',0)" 
-                           tal:condition="not: visible_ids" />
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="not: visible_ids" 
+                           />
                     
                     <label for="cb_visible_ids">Yes</label>
                     
@@ -272,10 +300,12 @@
                            name="visible_ids" 
                            value=""
                            id="cb_invisibleids"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('visible_ids_help',1)" 
                            onblur="formtooltip('visible_ids_help',0)" 
-                           tal:condition="visible_ids" />
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="visible_ids" 
+                           />
                     
                     <input type="radio" 
                            class="noborder" 
@@ -283,10 +313,12 @@
                            value=""
                            id="cb_invisible_ids" 
                            checked="checked"
-                           tabindex="2"
+                           tabindex=""
                            onfocus="formtooltip('visible_ids_help',1)" 
                            onblur="formtooltip('visible_ids_help',0)" 
-                           tal:condition="not: visible_ids" />		   
+                           tal:attributes="tabindex tabindex;" 
+                           tal:condition="not: visible_ids" 
+                           />		   
                     
                     <label for="cb_invisible_ids">No</label>
                 </div>
@@ -312,9 +344,11 @@
                          skindefault here/portal_skins/getDefaultSkin;
                          skincurrent python:test(skinvar, skinvar, skindefault);"> 
                     <select name="portal_skin"
-                            tabindex="3"
+                            tabindex=""
                             onfocus="formtooltip('skin_help',1)" 
-                            onblur="formtooltip('skin_help',0)">
+                            onblur="formtooltip('skin_help',0)"
+                            tal:attributes="tabindex tabindex/next;" 
+                            >
                     <option value="#"
                             tal:repeat="skin container/portal_skins/getSkinSelections"
                             tal:attributes="value skin;
@@ -344,9 +378,10 @@
                     <input type="file" 
                            name="portrait" 
                            size="20" 
-                           tabindex="4"
+                           tabindex=""
                            onfocus="formtooltip('portrait_help',1)" 
                            onblur="formtooltip('portrait_help',0)"
+                           tal:attributes="tabindex tabindex/next;" 
                            />
                     <br />
                     
@@ -362,9 +397,10 @@
                 <div class="label">&nbsp;</div>
                 <div class="field">
                     <input class="context"
-                           tabindex="5" 
+                           tabindex="" 
                            type="submit" 
                            value="Apply" 
+                           tal:attributes="tabindex tabindex/next;" 
                            />
                 </div>
             </div>

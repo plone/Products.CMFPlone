@@ -7,7 +7,9 @@
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
 <h1> 
     <span i18n:translate="">Criteria for</span>
@@ -22,9 +24,9 @@
 
     <span class="legend" i18n:translate="">Criteria Details</span>
 
-    <span tal:define="criteria here/listCriteria">
+    <span tal:define="criteria here/listCriteria;">
         <span tal:repeat="criterion criteria">
-            <span tal:define="editform string:criterion/${criterion/getEditForm}"
+            <span tal:define="editform string:criterion/${criterion/getEditForm};"
                 tal:replace="structure python:path(editform)" />
         </span>
     </span>
@@ -39,12 +41,16 @@
                    type="submit" 
                    name="topic_editCriteria:action"
                    value="Save changes"
+                   tabindex=""
+                   tal:attributes="tabindex tabindex/next;"
                    />
             
             <input class="context"
                    type="submit" 
                    name="topic_deleteCriteria:action"
                    value="Delete selected criteria"
+                   tabindex=""
+                   tal:attributes="tabindex tabindex/next;"
                    />
 
             <input type="hidden" name=":default_action" value="editCriteria">
@@ -63,17 +69,28 @@
 
 Field id
 
-<select name="field" tal:define="fields here/listAvailableFields">
+<select name="field"
+        tabindex="" 
+        tal:define="fields here/listAvailableFields;
+                    tabindex tabindex/next;">
             <option value="" tal:repeat="field fields" tal:attributes="value field" tal:content="field">Field</option>
         </select>
 
 Criteria type
 
-<select name="criterion_type" tal:define="types here/listCriteriaTypes">
+<select name="criterion_type" 
+        tabindex=""
+        tal:define="types here/listCriteriaTypes;
+                    tabindex tabindex/next;">
     <option value="" tal:repeat="type types" tal:attributes="value type/name" tal:content="type/name">Type</option>
 </select>
 
-<input class="context" type="submit" value="Add" />
+<input class="context" 
+       type="submit" 
+       value="Add"
+       tabindex=""
+       tal:attributes="tabindex tabindex/next;" 
+       />
 
 </form>
 

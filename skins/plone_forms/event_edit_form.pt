@@ -7,7 +7,9 @@
 
     <div metal:fill-slot="main"
          tal:define="rejection here/rejectAnonymous;
-                     errors python:request.get('errors', {});" >
+                     errors python:request.get('errors', {});
+                     Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                     tabindex python:Iterator();" >
 
     <h1 i18n:translate="">Edit Event</h1>
     
@@ -48,8 +50,9 @@
                        name="id" 
                        value="#"
                        size="25" 
-                       tal:attributes="value id" 
-                       tabindex="1"
+                       tabindex=""
+                       tal:attributes="value id;
+                                       tabindex tabindex/next;" 
                        onfocus="formtooltip('id_help',1)" 
                        onblur="formtooltip('id_help',0)" />
             </div>
@@ -80,8 +83,9 @@
                        name="title" 
                        value="#" 
                        size="30" 
-                       tabindex="2"
-                       tal:attributes="value Title" 
+                       tabindex=""
+                       tal:attributes="value Title;
+                                       tabindex tabindex/next;" 
                        onfocus="formtooltip('title_help',1)" 
                        onblur="formtooltip('title_help',0)" />
 
@@ -104,8 +108,9 @@
                        name="location"
                        size="25"
                        value="location"
-                       tabindex="3"
-                       tal:attributes="value here/location"
+                       tabindex=""
+                       tal:attributes="value here/location;
+                                       tabindex tabindex/next"
                        onfocus="formtooltip('event_location_help',1)" 
                        onblur="formtooltip('event_location_help',0)" />
             </div>
@@ -125,10 +130,11 @@
             <div class="field">
                 <select name="event_type:list" 
                         multiple="multiple"
-                        tabindex="4"
+                        tabindex=""
                         size="6"
                         onfocus="formtooltip('event_type_help',1)" 
-                        onblur="formtooltip('event_type_help',0)" 
+                        onblur="formtooltip('event_type_help',0)"
+                        tal:attributes="tabindex tabindex/next;"
                         tal:define="contentSubject here/Subject; allowedSubjects python:here.portal_metadata.listAllowedSubjects(here)">
                
                    <option tal:replace="nothing">Event Type 1</option>
@@ -156,11 +162,13 @@
             <div class="field" tal:define="description request/description | here/Description "> 
                 <textarea cols="40" 
                           rows="5" 
-                          tabindex="5"
+                          tabindex=""
                           name="description"
-                          tal:content="description"
                           onfocus="formtooltip('event_description_help',1)" 
-                          onblur="formtooltip('event_description_help',0)">
+                          onblur="formtooltip('event_description_help',0)"
+                          tal:attributes="tabindex tabindex/next;"
+                          tal:content="description"
+                          >
                 Description 
                 </textarea>
             </div>
@@ -183,10 +191,12 @@
                       name="event_url"
                       size="25" 
                       value="event_url"
-                      tal:attributes="value here/event_url" 
-                      tabindex="6"
+                      tabindex=""
                       onfocus="formtooltip('event_url_help',1)" 
-                      onblur="formtooltip('event_url_help',0)">
+                      onblur="formtooltip('event_url_help',0)"
+                      tal:attributes="value here/event_url;
+                                      tabindex tabindex/next"
+                      >
 
             </div>
         </div>
@@ -214,7 +224,7 @@
                                  inputvalue start_date;
                                  onfocus string:formtooltip('start_date_help',1);
                                  onblur string:formtooltip('start_date_help',0);
-                                 tabindex string:7;">
+                                 tabindex tabindex/next;">
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
@@ -243,7 +253,7 @@
                                  inputvalue end_date;
                                  onfocus string:formtooltip('end_date_help',1);
                                  onblur string:formtooltip('end_date_help',0);
-                                 tabindex string:8;">
+                                 tabindex tabindex/next;">
 
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
@@ -270,10 +280,12 @@
                       name="contact_name" 
                       size="25"
                       value="contact_name"
-                      tal:attributes="value here/contact_name"
-                      tabindex="9"
+                      tabindex=""
                       onfocus="formtooltip('contact_name_help',1)" 
-                      onblur="formtooltip('contact_name_help',0)" />
+                      onblur="formtooltip('contact_name_help',0)"
+                      tal:attributes="value here/contact_name;
+                                      tabindex tabindex/next"
+                      />
             </div>
         </div>
 
@@ -295,10 +307,12 @@
                       name="contact_email" 
                       size="25"
                       value="contact_email"
-                      tal:attributes="value here/contact_email"
-                      tabindex="10"
+                      tabindex=""
                       onfocus="formtooltip('contact_email_help',1)" 
-                      onblur="formtooltip('contact_email_help',0)" />
+                      onblur="formtooltip('contact_email_help',0)" 
+                      tal:attributes="value here/contact_email;
+                                      tabindex tabindex/next"
+                      />
             </div>
         </div>
 
@@ -321,10 +335,12 @@
                       name="contact_phone"
                       size="25"
                       value="contact_phone"
-                      tal:attributes="value here/contact_phone"
-                      tabindex="11"
+                      tabindex=""
                       onfocus="formtooltip('contact_phone_help',1)" 
-                      onblur="formtooltip('contact_phone_help',0)" />
+                      onblur="formtooltip('contact_phone_help',0)" 
+                      tal:attributes="value here/contact_phone;
+                                      tabindex tabindex/next"
+                      />
 
             </div>
         </div>
@@ -334,10 +350,12 @@
             <div class="field" 
             tal:define="process_creation request/process_creation|nothing;"> 
                 <input class="context" 
-                       tabindex="12"
+                       tabindex=""
                        type="submit" 
                        name="Change" 
-                       value="Save" />
+                       value="Save" 
+                       tal:attributes="tabindex tabindex/next"
+                       />
             </div>
         </div>
         

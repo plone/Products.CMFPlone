@@ -7,7 +7,9 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {})" > 
+     tal:define="errors python:request.get('errors', {});
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();" > 
  
     <h1 i18n:translate="">Please register</h1>
 
@@ -57,10 +59,12 @@
                        name="username" 
                        size="30"
                        value="username"
-                       tal:attributes="value username"
-                       tabindex="2"
+                       tabindex=""
                        onfocus="formtooltip('user_name_help',1)" 
-                       onblur="formtooltip('user_name_help',0)" />
+                       onblur="formtooltip('user_name_help',0)" 
+                       tal:attributes="value username;
+                                       tabindex tabindex/next;"
+                       />
             </div>
 
         </div>
@@ -90,10 +94,12 @@
                 <input type="text" 
                        name="email" 
                        size="30"
-                       tal:attributes="value email"
-                       tabindex="3"
+                       tabindex=""
                        onfocus="formtooltip('email_help',1)" 
-                       onblur="formtooltip('email_help',0)" />
+                       onblur="formtooltip('email_help',0)" 
+                       tal:attributes="value email;
+                                       tabindex tabindex/next;"
+                       />
             </div>
         </div>
 
@@ -123,10 +129,12 @@
                        name="password" 
                        size="10"
                        value="" 
-                       tal:attributes="value password" 
-                       tabindex="4"
+                       tabindex=""
                        onfocus="formtooltip('password_help',1)" 
-                       onblur="formtooltip('password_help',0)" />
+                       onblur="formtooltip('password_help',0)" 
+                       tal:attributes="value password;
+                                       tabindex tabindex/next;" 
+                       />
             </div>
         </div>
 
@@ -153,10 +161,12 @@
                        name="confirm" 
                        size="10" 
                        value="" 
-                       tal:attributes="value confirm"
-                       tabindex="5"
+                       tabindex=""
                        onfocus="formtooltip('confirm_password_help',1)" 
-                       onblur="formtooltip('confirm_password_help',0)" />
+                       onblur="formtooltip('confirm_password_help',0)" 
+                       tal:attributes="value confirm;
+                                       tabindex tabindex/next;"
+                       />
             </div>
         </div>
 
@@ -179,10 +189,12 @@
                        name="mail_me" 
                        size="30" 
                        id="cb_mailme" 
-                       tabindex="6"
+                       tabindex=""
                        onfocus="formtooltip('mail_password_help',1)" 
                        onblur="formtooltip('mail_password_help',0)" 
-		       tal:attributes="checked python:test(mail_me, 'checked', '')" />
+                       tal:attributes="checked python:test(mail_me, 'checked', '');
+                                       tabindex tabindex/next;" 
+                       />
                 <label for="cb_mailme">Yes, mail me my password</label>
             </div>
         </div>
@@ -200,9 +212,10 @@
             <div class="field">
                 <input class="context" 
                 type="submit"
-                tabindex="7" 
+                tabindex="" 
                 name="submit" 
-                value="Register">
+                value="Register"
+                tal:attributes="tabindex tabindex/next;">
             </div>
         </div>
 

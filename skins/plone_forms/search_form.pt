@@ -14,7 +14,9 @@
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
     <h1 i18n:translate="">Advanced search for content</h1>
     
@@ -55,9 +57,10 @@
                 <input type="text" 
                        name="SearchableText" 
                        size="25"
-                       tabindex="1" 
+                       tabindex="" 
                        onfocus="formtooltip('text_search_help',1)" 
-                       onblur="formtooltip('text_search_help',0)" 
+                       onblur="formtooltip('text_search_help',0)"
+                       tal:attributes="tabindex tabindex/next;" 
                        />
             </div>
         </div>
@@ -77,9 +80,10 @@
                 <input type="text" 
                        name="Title" 
                        size="25" 
-                       tabindex="2"
+                       tabindex=""
                        onfocus="formtooltip('title_search_help',1)" 
-                       onblur="formtooltip('title_search_help',0)" 
+                       onblur="formtooltip('title_search_help',0)"
+                       tal:attributes="tabindex tabindex/next;" 
                        />
             </div>
         </div>
@@ -104,9 +108,10 @@
                 <select name="Subject:list" 
                         size="7" 
                         multiple="multiple"
-                        tabindex="3"
+                        tabindex=""
                         onfocus="formtooltip('keywords_search_help',1)" 
-                        onblur="formtooltip('keywords_search_help',0)" 
+                        onblur="formtooltip('keywords_search_help',0)"
+                        tal:attributes="tabindex tabindex/next;" 
                         >
                     <option value="#"
                             tal:repeat="subject usedSubjects"
@@ -135,9 +140,10 @@
                 <input type="text" 
                        name="Description" 
                        size="25" 
-                       tabindex="4"
+                       tabindex=""
                        onfocus="formtooltip('description_search_help',1)" 
-                       onblur="formtooltip('description_search_help',0)" 
+                       onblur="formtooltip('description_search_help',0)"
+                       tal:attributes="tabindex tabindex/next;" 
                        />
             </div>
         </div>
@@ -158,9 +164,10 @@
                 <span tal:define="today python:DateTime().earliestTime()">
                 
                     <select name="created:date"
-                            tabindex="5"
+                            tabindex=""
                             onfocus="formtooltip('new_items_since_search_help',1)" 
-                            onblur="formtooltip('new_items_since_search_help',0)" 
+                            onblur="formtooltip('new_items_since_search_help',0)"
+                            tal:attributes="tabindex tabindex/next;" 
                             tal:define="yesterday python:(today-1).Date();
                                         lastweek python:(today-7).Date();
                                         lastmonth python:(today-31).Date();
@@ -197,10 +204,11 @@
                            value="#"
                            class="noborder"
                            checked="checked"
-                           tabindex="6"
+                           tabindex=""
                            onfocus="formtooltip('item_type_search_help',1)" 
                            onblur="formtooltip('item_type_search_help',0)" 
-                           tal:attributes="value type"/> 
+                           tal:attributes="value type;
+                                           tabindex tabindex/next;"/> 
                     <span tal:replace="type" /> <br />
                 </span>       
             </div>
@@ -219,9 +227,10 @@
             
             <div class="field" tal:define="creators python:here.portal_catalog.uniqueValuesFor('Creator')"> 
                 <select name="Creator"
-                        tabindex="7"
+                        tabindex=""
                         onfocus="formtooltip('author_search_help',1)" 
-                        onblur="formtooltip('author_search_help',0)"> 
+                        onblur="formtooltip('author_search_help',0)"
+                        tal:attributes="tabindex tabindex/next;"> 
                     <option value="">Any Author</option> 
                     <metal:block tal:repeat="creator creators"> 
                         <option value="" tal:attributes="value creator" tal:content="creator"> username </option> 
@@ -252,10 +261,11 @@
                            value="#" 
                            checked="checked"
                            class="noborder"
-                           tabindex="8"
+                           tabindex=""
                            onfocus="formtooltip('review_status_search_help',1)" 
                            onblur="formtooltip('review_status_search_help',0)" 
-                           tal:attributes="value state"/> 
+                           tal:attributes="value state;
+                                           tabindex tabindex/next;"/> 
                     <span tal:replace="state" /> <br />
                 </span> 
             </div>
@@ -265,10 +275,12 @@
             <div class="label">&nbsp;</div>
             <div class="field">
                 <input class="context" 
-                       tabindex="9"
+                       tabindex=""
                        type="submit" 
                        name="submit" 
-                       value=" Search " />
+                       value=" Search " 
+                       tal:attributes="tabindex tabindex/next;"
+                       />
             </div>
         </div>
 

@@ -7,7 +7,9 @@
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
     <script language="JavaScript"
             src="/calendar.js"
             tal:attributes="src string:${here/portal_url}/calendar.js">
@@ -65,16 +67,18 @@
             </div>
             
             <div class="field">
-	        <metal:block tal:define="val here/isDiscussable">
+	        <metal:block tal:define="val here/isDiscussable;
+                                   tabindex tabindex/next;">
                 <input class="noborder" 
                        type="radio" 
                        name="allowDiscussion"
                        value="default" 
-                       tabindex="1"
+                       tabindex=""
                        id="discussion_default"
                        onfocus="formtooltip('allow_discussion_help',1)" 
                        onblur="formtooltip('allow_discussion_help',0)" 
-		               tal:attributes="checked python: val == None"
+		                   tal:attributes="checked python: val == None;
+                                       tabindex tabindex;"
                        />
                 <label for="discussion_default" i18n:id="discussion_default">Default</label> <br />
 
@@ -82,11 +86,12 @@
                        type="radio" 
                        name="allowDiscussion"
                        value="on" 
-                       tabindex="1"
+                       tabindex=""
                        id="discussion_on"
                        onfocus="formtooltip('allow_discussion_help',1)" 
                        onblur="formtooltip('allow_discussion_help',0)" 
-                       tal:attributes="checked python: val == 1"
+                       tal:attributes="checked python: val == 1;
+                                       tabindex tabindex;"
                        />
                 <label for="discussion_on" i18n:id="discussion_on">On</label> <br />
 
@@ -94,11 +99,12 @@
                        type="radio" 
                        name="allowDiscussion"
                        value="off" 
-                       tabindex="1"
+                       tabindex=""
                        id="discussion_off"
                        onfocus="formtooltip('allow_discussion_help',1)" 
                        onblur="formtooltip('allow_discussion_help',0)" 
-                       tal:attributes="checked python: val == 0"
+                       tal:attributes="checked python: val == 0;
+                                       tabindex tabindex;"
                        />
                 <label for="discussion_off" i18n:id="discussion_off">Off</label>
                        
@@ -139,9 +145,10 @@
                                 name="predefined_subjects" 
                                 size="7" 
                                 multiple="multiple"
-                                tabindex="2"
+                                tabindex=""
                                 onfocus="formtooltip('keywords_help',1)" 
-                                onblur="formtooltip('keywords_help',0)">
+                                onblur="formtooltip('keywords_help',0)"
+                                tal:attributes="tabindex tabindex/next;">
                         <option value="#" tal:repeat="subject python:here.unique(allowedSubjects+previousSubjects)"
                                 tal:content="subject" tal:attributes="value subject"> # </option>                                
                         </select>
@@ -151,9 +158,10 @@
                         <input class="context" 
                                type="submit" 
                                name="add"
-                               tabindex="3" 
+                               tabindex="" 
                                value="Add Selected &gt;"
-                               onclick="javascript:addSelectedKeywords();return false;">
+                               onclick="javascript:addSelectedKeywords();return false;"
+                               tal:attributes="tabindex tabindex/next;">
 
                     <br />
                     New keyword <br />
@@ -161,17 +169,19 @@
                            name="entered_keyword" 
                            value="" 
                            size="20"
-                           tabindex="4"
+                           tabindex=""
                            onfocus="formtooltip('keywords_help',1)" 
                            onblur="formtooltip('keywords_help',0)"
+                           tal:attributes="tabindex tabindex/next;"
                            /> 
                     <br />
                     <input class="context" 
                            type="submit" 
                            name="add" 
-                           tabindex="5"
+                           tabindex=""
                            value="Add New &gt;"
                            onclick="javascript:addNewKeyword(document.edit_form.entered_keyword.value);return false;"
+                           tal:attributes="tabindex tabindex/next;"
                            />
                     </td>
 
@@ -182,9 +192,10 @@
                       rows="15" 
                       cols="15" 
                       wrap="off"
-                      tabindex="6"
+                      tabindex=""
                       onfocus="formtooltip('keywords_help',1)" 
                       onblur="formtooltip('keywords_help',0)"
+                      tal:attributes="tabindex tabindex/next;"
                       ><span tal:repeat="subject here/Subject" tal:replace="python:str(subject)+'\n'"/></textarea>&nbsp;
                     </td></tr>
                 </table>
@@ -207,12 +218,12 @@
             </div>
             
             <div class="field"
-	         tal:define="inputname  string:effective_date;
+	               tal:define="inputname  string:effective_date;
                              formname   string:edit_form;
                              inputvalue python:test(here.effective_date, here.effective_date, 'None');
                              onfocus string:formtooltip('effective_date_help',1);
                              onblur string:formtooltip('effective_date_help',0);
-                             tabindex string:7;" >
+                             tabindex tabindex/next;" >
                 <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                 </div>
@@ -237,7 +248,7 @@
                              inputvalue python:test(here.expiration_date, here.expiration_date, 'None');
                              onfocus string:formtooltip('expiration_date_help',1);
                              onblur string:formtooltip('expiration_date_help',0);
-                             tabindex string:8;" >
+                             tabindex tabindex/next;" >
                 <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                 </div>
@@ -258,11 +269,12 @@
             
             <div class="field">
                 <select name="format" 
-			value=""
-			tabindex="11" 
-			onfocus="formtooltip('format_help',1)" 
-			onblur="formtooltip('format_help',0)"
-			tal:attributes="value here/Format">
+			                  value=""
+			                  tabindex="" 
+			                  onfocus="formtooltip('format_help',1)" 
+			                  onblur="formtooltip('format_help',0)"
+			                  tal:attributes="value here/Format;
+                                        tabindex tabindex/next;">
 	            <option value="">Choose MIME-type</option> 
                     <option tal:repeat="mimetype here/plone_utils/availableMIMETypes"
                             tal:attributes="value python:mimetype;
@@ -288,11 +300,12 @@
             <div class="field">
                 <!-- ISO-639-2 language selector for Plone -->
                 <select name="language" 
-                        tabindex="12"
+                        tabindex=""
                         value=""
                         onfocus="formtooltip('language_help',1)" 
                         onblur="formtooltip('language_help',0)"
-                        tal:attributes="value here/Language"
+                        tal:attributes="value here/Language;
+                                        tabindex tabindex/next;"
                         >
                     <option value="">Choose Language</option> 
 	            <option tal:repeat="language here/availableLanguages" 
@@ -319,10 +332,11 @@
                        name="rights" 
                        size="25" 
                        value="" 
-                       tabindex="13"
+                       tabindex=""
                        onfocus="formtooltip('rights_help',1)" 
                        onblur="formtooltip('rights_help',0)"
-                       tal:attributes="value here/Rights"
+                       tal:attributes="value here/Rights;
+                                       tabindex tabindex/next;"
                        />
             </div>
         </div>
@@ -343,9 +357,10 @@
                 <textarea name="contributors:lines" 
                           rows="5" 
                           cols="25"
-                          tabindex="14" 
+                          tabindex="" 
                           onfocus="formtooltip('contributors_help',1)" 
                           onblur="formtooltip('contributors_help',0)"
+                          tal:attributes="tabindex tabindex/next;"
                           ><span tal:repeat="contributor here/Contributors" tal:replace="python:contributor+'\n'">contributor</span></textarea>
             </div>
         </div>
@@ -355,9 +370,10 @@
             <div class="field">
                 <input class="context" 
                        type="submit" 
-                       tabindex="15"
+                       tabindex=""
                        name="change_and_view" 
                        value="Save"
+                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
         </div>	

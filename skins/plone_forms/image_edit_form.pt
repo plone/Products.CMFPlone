@@ -7,7 +7,9 @@
 <body>
 
 <div metal:fill-slot="main" 
-     tal:define="errors python:request.get('errors', {})">
+     tal:define="errors python:request.get('errors', {});
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
     <h1 i18n:translate="">Edit Image</h1>
     
@@ -53,10 +55,12 @@
                        name="id" 
                        value="#"
                        size="30" 
-                       tal:attributes="value id" 
-                       tabindex="1"
+                       tabindex=""
                        onfocus="formtooltip('id_help',1)" 
-                       onblur="formtooltip('id_help',0)" />
+                       onblur="formtooltip('id_help',0)"
+                       tal:attributes="value id;
+                                       tabindex tabindex/next;" 
+                       />
             </div>
 
         </div>
@@ -84,10 +88,12 @@
                        name="title" 
                        value="#" 
                        size="30" 
-                       tabindex="2"
-                       tal:attributes="value Title" 
+                       tabindex=""
                        onfocus="formtooltip('title_help',1)" 
-                       onblur="formtooltip('title_help',0)" />
+                       onblur="formtooltip('title_help',0)" 
+                       tal:attributes="value Title;
+                                       tabindex tabindex/next;" 
+                       />
 
             </div>
         </div>
@@ -106,11 +112,12 @@
             <div class="field" tal:define="description request/description | here/Description "> 
                 <textarea cols="40" 
                           rows="5" 
-                          tabindex="3"
+                          tabindex=""
                           name="description"
-                          tal:content="description"
                           onfocus="formtooltip('description_help',1)" 
-                          onblur="formtooltip('description_help',0)">
+                          onblur="formtooltip('description_help',0)"
+                          tal:content="description"
+                          tal:attributes="tabindex tabindex/next;">
                 Description 
                 </textarea>
             </div>
@@ -139,9 +146,10 @@
                 <input type="file" 
                        name="file" 
                        size="30" 
-                       tabindex="4" 
+                       tabindex="" 
                        onfocus="formtooltip('image_help',1)" 
                        onblur="formtooltip('image_help',0)" 
+                       tal:attributes="tabindex tabindex/next;"
                        />
                 <span tal:condition="python:test(here.size, 0, 1)">
                   <br /> (No image has been uploaded yet)
@@ -151,7 +159,15 @@
 
         <div class="row">
             <div class="label"> &nbsp; </div>
-            <div class="field"> <input class="context" type="submit" name="change" value="save" /> </div>       
+            <div class="field"> 
+                <input class="context" 
+                       type="submit" 
+                       name="change" 
+                       value="save" 
+                       tabindex=""
+                       tal:attributes="tabindex tabindex/next;"
+                       /> 
+            </div>       
         </div>
    
     </form>

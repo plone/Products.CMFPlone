@@ -55,7 +55,7 @@
                 <input name="email_from_name"
                        size="30"
                        value=""
-                       tabindex="1"
+                       tabindex=""
                        onfocus="formtooltip('portal_from_name_help',1)" 
                        onblur="formtooltip('portal_from_name_help',0)" 
                        tal:attributes="value email_from_name;
@@ -86,7 +86,7 @@
                 <input name="email_from_address"
                        size="30"
                        value=""
-                       tabindex="2"
+                       tabindex=""
                        onfocus="formtooltip('portal_from_address_help',1)" 
                        onblur="formtooltip('portal_from_address_help',0)" 
                        tal:attributes="value email_from_address;
@@ -118,7 +118,7 @@
                 <input name="smtp_server" 
                        value=""
                        size="30"
-                       tabindex="3"
+                       tabindex=""
                        onfocus="formtooltip('smtp_server_help',1)" 
                        onblur="formtooltip('smtp_server_help',0)" 
                        tal:attributes="value smtp_server; 
@@ -150,7 +150,7 @@
                 <input name="title" 
                        size="30"
                        value=""
-                       tabindex="4"
+                       tabindex=""
                        onfocus="formtooltip('portal_title_help',1)" 
                        onblur="formtooltip('portal_title_help',0)" 
                        tal:attributes="value title;
@@ -177,7 +177,7 @@
                 <textarea cols="30" 
                           rows="6" 
                           name="description"
-                          tabindex="5"
+                          tabindex=""
                           onfocus="formtooltip('portal_description_help',1)" 
                           onblur="formtooltip('portal_description_help',0)" 
                           tal:attributes="tabindex tabindex/next"
@@ -196,20 +196,21 @@
                </div>
             </div>
             <div class="field">
-            <!-- ISO-639-2 language selector for Plone -->
-            <select name="default_language"
-                    tabindex="6"
-                    value=""
-                    onfocus="formtooltip('language_help',1)"
-                    onblur="formtooltip('language_help',0)"
-                    tal:attributes="value here/portal_properties/default_language;
-                                    tabindex tabindex/next;">
-               <option value="">Choose Language</option>
-               <option tal:repeat="language here/availableLanguages"
-                       tal:attributes="value python:language[0];
-                                       selected python:test(here.portal_properties.default_language == language[0], 'selected', '')"
-                       tal:content="structure python:language[1]" />
-            </select>
+                <!-- ISO-639-2 language selector for Plone -->
+                <select name="default_language"
+                        tabindex=""
+                        value=""
+                        onfocus="formtooltip('language_help',1)"
+                        onblur="formtooltip('language_help',0)"
+                        tal:attributes="value here/portal_properties/default_language;
+                                        tabindex tabindex/next;">
+                   <option value="">Choose Language</option>
+                   <option tal:repeat="language here/availableLanguages"
+                           tal:attributes="value python:language[0];
+                                           selected python:test(here.portal_properties.default_language == language[0], 'selected', '')"
+                           tal:content="structure python:language[1]" />
+                </select>
+            </div>
         </div> 
 
         <div class="row"
@@ -290,7 +291,7 @@
             </div>
             <div class="field">
 		<select name="default_skin"
-			tabindex="6"
+			tabindex=""
 			value=""
 			onfocus="formtooltip('skin_help',1)"
 			onblur="formtooltip('skin_help',0)"
@@ -321,18 +322,18 @@
             
             <div class="field">
                 <span tal:define="validateChecked python:props.validate_email;
-                                  allowEnterChecked python:not props.validate_email;">
-                
+                                  allowEnterChecked python:not props.validate_email;
+                                  tabindex tabindex/next;">
                     <input class="noborder" 
                            type="radio" 
                            name="validate_email:int"
                            id="validate_email_on" 
                            value="1"
-                           tabindex="6"
+                           tabindex=""
                            onfocus="formtooltip('password_policy_help',1)" 
                            onblur="formtooltip('password_policy_help',0)" 
                            tal:attributes="checked validateChecked;
-                                           tabindex tabindex/next;" />
+                                           tabindex tabindex;" />
                     
                     <label for="validate_email_on" i18n:translate="">Generate and email members' initial password</label> 
                 
@@ -343,14 +344,13 @@
                            name="validate_email:int"
                            id="validate_email_off"
                            value="0"
-                           tabindex="6"
+                           tabindex=""
                            onfocus="formtooltip('password_policy_help',1)" 
                            onblur="formtooltip('password_policy_help',0)" 
                            tal:attributes="checked allowEnterChecked;
-                                           tabindex tabindex/next;" />
+                                           tabindex tabindex;" />
                 
                     <label for="validate_email_off">Allow members to select their initial password</label>
-                
                 </span>
             </div>
         </div>
@@ -359,10 +359,11 @@
             <div class="label">&nbsp;</div>
             <div class="field">
                 <input class="context"
-                       tabindex="7" 
+                       tabindex="" 
                        type="submit" 
                        name="reconfig:method" 
                        value="Save settings" 
+											 tal:attributes="tabindex tabindex/next;"
                        />
             </div>
         </div>

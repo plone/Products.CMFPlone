@@ -6,7 +6,10 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-    <div metal:fill-slot="main" tal:define="errors python:request.get('errors', {})">	  
+    <div metal:fill-slot="main" 
+         tal:define="errors python:request.get('errors', {});
+                     Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                     tabindex python:Iterator();">	  
     
     <h1 i18n:translate="">Edit Folder Properties</h1>
 
@@ -48,10 +51,12 @@
                        name="id" 
                        value="#"
                        size="30" 
-                       tal:attributes="value id" 
-                       tabindex="1"
+                       tabindex=""
                        onfocus="formtooltip('id_help',1)" 
-                       onblur="formtooltip('id_help',0)" />
+                       onblur="formtooltip('id_help',0)" 
+                       tal:attributes="value id;
+                                       tabindex tabindex/next" 
+                       />
             </div>
         </div>
         
@@ -78,10 +83,12 @@
                        name="title" 
                        value="#" 
                        size="30" 
-                       tabindex="2"
-                       tal:attributes="value Title" 
+                       tabindex=""
                        onfocus="formtooltip('title_help',1)" 
-                       onblur="formtooltip('title_help',0)" />
+                       onblur="formtooltip('title_help',0)" 
+                       tal:attributes="value Title;
+                                       tabindex tabindex/next" 
+                       />
 
             </div>
         </div>
@@ -100,11 +107,13 @@
             <div class="field" tal:define="description request/description | here/Description "> 
                 <textarea cols="40" 
                           rows="5" 
-                          tabindex="3"
+                          tabindex=""
                           name="description"
-                          tal:content="description"
                           onfocus="formtooltip('description_help',1)" 
-                          onblur="formtooltip('description_help',0)">
+                          onblur="formtooltip('description_help',0)"
+                          tal:content="description"
+                          tal:attributes="tabindex tabindex/next"
+                          >
                 Description 
                 </textarea>
             </div>
@@ -115,8 +124,10 @@
             <div class="field">
                 <input class="context" 
                        type="submit" 
-                       tabindex="4"
-                       value="Save" />
+                       tabindex=""
+                       value="Save"
+                       tal:attributes="tabindex tabindex/next" 
+                       />
             </div>
         </div>
 
