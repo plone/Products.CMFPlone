@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<body>
+
+<tal:block tal:condition="exists: here/portal_skins | nothing"
+     tal:replace="nothing">
+
+    <tal:block tal:condition="here/portal_skins/updateSkinCookie | nothing"
+               tal:define="dummy here/setupCurrentSkin" />
+    
+
+</tal:block>
+
+  <metal:block fill-slot="base">
+      <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+                 tal:replace="nothing">
+      Disable the tabs
+      </tal:block>
+  </metal:block>
+
+
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
+
+    <div tal:define="p_props here/portal_properties/site_propeties;
+                     member here/portal_membership/getAuthenticatedMember;">
+		
+            <div tal:condition="python: not(member.login_time == here.ZopeTime('2000/01/01') and here.validate_email)">
+                <metal:block tal:on-error="nothing"
+		                     tal:define="d_reg python: member.setProperties(last_login_time=member.login_time); 
+                                         ereg python: member.setProperties(login_time=here.ZopeTime());
+                                         global actions python: here.portal_actions.listFilteredActionsFor(here);">
+                </metal:block>
+				
+                <div tal:condition="request/came_from | nothing ">
+                    <div tal:define="dummy python: request.RESPONSE.redirect(request.get('came_from'))">
+                    </div>
+                </div>
+
+                <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
+                
+                <p>
+                [<a i18n:translate="back_to_where_you_came_from" 
+                    href="" 
+                    tal:attributes="href request/HTTP_REFERER">back to where you came from</a>]
+                </p>
+                
+                <p i18n:translate="description_logged_in_explain">
+                You will notice that the top right bar has changed, it now
+                contains several personalized items. These will stay there
+                as long as you are logged in, and allow you to control your
+                settings and your personal area.
+                </p>
+                
+                <p>
+                <span i18n:translate="description_newbie_pointers_1" tal:omit-tag="">
+                You might want to head over to
+                </span>
+
+                <a href="metadata_form" 
+                   i18n:translate="my_folder"
+                   tal:define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']"
+                   tal:condition="mystuff" tal:attributes="href python:mystuff.pop()"
+                   >My Folder</a>
+                
+                <span i18n:translate="description_newbie_pointers_2" tal:omit-tag="">
+                and add some content, or
+                </span>
+                 
+                <a href="metadata_form" 
+                   i18n:translate="description_newbie_pointers_3"
+                   tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
+                   tal:condition="prefs" tal:attributes="href python:prefs.pop()"
+                   >set up your Preferences</a>.
+                </p>
+		        
+                <tal:block
+                 tal:define="results python:container.portal_catalog(modified=member.last_login_time, modified_usage='range:min', sort_on='modified',sort_order='reverse',review_state='published');
+                             Batch python:modules['Products.CMFPlone'].Batch;
+                             DateTime python:modules['DateTime'].DateTime;
+                             b_start python:request.get('b_start',0);">
+                    
+                    <form name="searchresults" action="" method="post" tal:condition="results"
+                                      tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
+
+                        <h1>Items published since your last login</h1>
+                        
+                        <table class="listing" id="sortable">
+                        
+                            <thead>
+                                <tr><th>Title</th><th>Type</th><th>Modified</th><th>Author</th><th>Description</th></tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tal:block tal:repeat="result batch">
+                                <tr tal:define="oddrow repeat/result/odd;
+                                                result_url result/getURL;
+                                                url string:$result_url/view;" 
+		                                        tal:attributes="class python:test(oddrow, 'even', 'odd')">
+                                    <td>
+                    		         <a href="#" 
+                                        tal:attributes="href url">
+                                        <img src="#" 
+                                             height="16"
+                                             width="16"
+                                             alt="dummy"
+                                             tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a 
+                                        href="#" tal:attributes="href url"
+                                        tal:content="result/Title|result/id" />
+                                    </td>      
+                                    <td tal:content="result/Type">Type</td>      
+                                    <td tal:content="result/ModificationDate">Modified</td>      
+                                    <td tal:content="result/Creator">Author</td>      
+                                    <td tal:content="result/Description">Description</td>      
+                                </tr>
+                                </tal:block>
+                            </tbody>
+                        
+                        </table>
+
+                
+                    </form>
+                
+                </tal:block>
+
+		</div>
+
+	</div>
+
+</div>
+
+</body>
+</html>
+

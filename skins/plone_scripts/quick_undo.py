@@ -19,6 +19,9 @@ came_from = request.get('came_from', request['HTTP_REFERER'])
 pieces = context.plone_utils.urlparse(came_from)
 path = pieces[2].split('/')[1:]
 
+if '?' in came_from:
+    came_from=came_from[:came_from.index('?')]
+
 try:
     o = context.portal_url.getPortalObject().restrictedTraverse(path)
 except:

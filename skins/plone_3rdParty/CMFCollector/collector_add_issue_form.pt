@@ -43,7 +43,9 @@ as possible.
 <form class="group" 
         method="post" 
         enctype="multipart/form-data"
-        action="collector_add_issue">
+        action=""
+        tal:attributes="action string:${here/absolute_url}/collector_add_issue"
+        >
 
     <span class="legend" i18n:translate="legend_issue_details">Issue Details</span> 
     

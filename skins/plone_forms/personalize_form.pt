@@ -36,13 +36,13 @@
               method="post"
               enctype="multipart/form-data" 
               tal:condition="member"
-              tal:attributes="action request/URL">
+              tal:attributes="action python:here.portal_form_url(template.id)">
         
             <span class="legend" i18n:translate="legend_member_details">Member Details</span>
 		
             <div class="row"
 	         tal:define="error_email errors/email | nothing;
-                             email request/email|member/email;">
+                             email python:request.get('email', member.getProperty('email'));">
                 
                 <div class="label required">
                     <span i18n:translate="label_email">E-mail</span>
@@ -94,7 +94,7 @@
                              onblur="formtooltip('wysiwyg_editor_help',0)"
                              tabindex=""
                              tal:attributes="tabindex tabindex/next;">
-                         <tal:block tal:repeat="editor here/portal_properties/available_editors">
+                         <tal:block tal:repeat="editor site_properties/available_editors">
                          <option tal:condition="python:editor != 'None'"
                                  value="None"
                                  tal:attributes="value editor;
@@ -422,10 +422,7 @@
                 </div>
             </div>
             
-            <span tal:replace="nothing">
-            ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
-            </span>
-            <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+            <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
                         
 		</form>
     </metal:block>

@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {});
+                 member python:here.portal_membership.getAuthenticatedMember();
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();" >
+
+<h1>Email page to friend</h1>
+
+<div class="spacer" />
+
+<div class="boxTitle">Page summary</div>
+
+<div class="box">
+
+    <div class="content">
+        <h2 tal:content="here/Title">Heading</h2>
+        <p tal:content="here/description">
+        Description
+        </p>
+    </div>
+    
+</div>
+
+    
+<p>
+Fill in the email address of your friend to send an email with the address.
+</p>
+
+<form class="group"
+      name="sendto_form"
+      action="sendto_form" 
+      method="post"
+      enctype="multipart/form-data"
+      tal:attributes="action python:here.portal_form_url(template.id)">
+
+    <span class="legend" i18n:translate="">Address info</span>
+	
+    <div class="row"
+         tal:define="error_send_to_address errors/send_to_address|nothing;">
+		    <div class="label required">
+            <span i18n:translate="">Send to email</span>
+            <div id="send_to_address_help" 
+                 i18n:translate=""
+                 class="help" 
+                 style="visibility:hidden">
+            The email address to send this link to.
+            </div>
+        </div>
+
+        <div class="field"
+             tal:attributes="class python:test(error_send_to_address, 'field error', 'field')">
+           
+            <div tal:condition="error_send_to_address"
+                 tal:replace="structure string:$error_send_to_address <br />" />
+           
+            <input type="text" 
+                   name="send_to_address" 
+                   size="25"
+                   tabindex=""
+                   onfocus="formtooltip('send_to_address_help',1)"
+                   onblur="formtooltip('send_to_address_help',0)"
+                   tal:attributes="value request/send_to_address | nothing;
+                                   tabindex tabindex/next;" 
+                   />
+        </div>
+
+    </div>
+
+    <div class="row"
+         tal:define="error_send_from_address errors/send_from_address|nothing;">
+        <div class="label required">
+            <span i18n:translate="">Email from</span> 
+            <div id="send_from_address_help" 
+                 i18n:translate=""
+                 class="help" 
+                 style="visibility:hidden">
+            Your email address.
+            </div>
+        </div>
+        
+        <div class="field"
+             tal:attributes="class python:test(error_send_from_address, 'field error', 'field')">
+        
+            <div tal:condition="error_send_from_address"
+                 tal:replace="structure string:$error_send_from_address <br />" />
+            
+            <input type="text" 
+                   name="send_from_address" 
+                   size="25" 
+                   tabindex=""
+                   onfocus="formtooltip('send_from_address_help',1)" 
+                   onblur="formtooltip('send_from_address_help',0)"
+                   tal:attributes="value python: request.get('send_from_address', member.getProperty('email',''));
+                                   tabindex tabindex/next;" 
+                   />
+        </div>
+	  </div>
+
+        <div class="row">
+            <div class="label">
+                <span i18n:translate="">Your comment</span>
+                
+                <div id="comment_help" 
+                     i18n:translate="help_comment"
+                     class="help" 
+                     style="visibility:hidden">
+                A comment to this link. 
+                </div>
+            </div>
+            <div class="field"> 
+                <textarea cols="80" 
+                          rows="5" 
+                          tabindex=""
+                          name="comment"
+                          tal:content="request/comment | nothing"
+                          tal:attributes="tabindex tabindex/next;"
+                          onfocus="formtooltip('comment_help',1)" 
+                          onblur="formtooltip('comment_help',0)"
+                          >
+                Comment 
+                </textarea>
+            </div>
+        </div>
+    
+  
+	<div class="row">
+    	<div class="label">&nbsp;</div>
+    	<div class="field">
+            <input class="context"
+                   tabindex="" 
+                   type="submit" 
+                   name="submit" 
+                   value="Send" 
+                   i18n:translate=""
+                   tal:attributes="tabindex tabindex/next;" 
+                   />   
+        </div>
+    </div>	
+    <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
+</form>
+
+</div>
+		
+</body>
+</html>

@@ -9,11 +9,11 @@
 ##
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
-x=0
-new_ids=REQUEST['new_ids']
-old_ids=REQUEST['ids']
-new_titles=REQUEST['new_titles']
+new_ids=REQUEST.get('new_ids',None)
+old_ids=REQUEST.get('ids',None)
+new_titles=REQUEST.get('new_titles',None)
 
+x=0
 for id in new_ids:
     old_id=old_ids[x]
     new_title=new_titles[x]
@@ -21,17 +21,8 @@ for id in new_ids:
     if o.Title()!=new_title:
         o.setTitle(new_title)
     x=x+1
-    
-if not new_ids:
-    return context.portal_navigation.getNext( context
-                , script.getId()
-                , 'failure'
-                , portal_status_message='Please check an item or items to rename' )
-                                                
+
 context.manage_renameObjects(REQUEST['ids'], REQUEST['new_ids'], REQUEST)
 transaction_note( str(REQUEST['ids']) + 'have been renamed' )
 
-return context.portal_navigation.getNext( context
-            , script.getId()
-            , 'success'
-            , portal_status_message='Item(s) renamed' )
+return ('success', context, {'portal_status_message':'Item(s) renamed'})

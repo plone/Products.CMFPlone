@@ -1,5 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
 <div metal:define-macro="calendarBox"
-     class="container"
+     tal:omit-tag=""
      tal:define="DateTime python:modules['DateTime'].DateTime;
                  current python:DateTime();
                  month python:request.get('month', DateTime().month());
@@ -13,7 +21,7 @@
 
         <tr>
             <th>
-                <a href="#" tal:attributes="href python:'%s?month:int=%d&year:int=%d' % (here.absolute_url()+'/'+template.getId(),prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
+                <a href="#" tal:attributes="href python:'%s/?month:int=%d&year:int=%d' % (here.absolute_url(),prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
             </th>
 
             <th colspan="5" tal:define="date string:$month/1/$year">
@@ -21,7 +29,7 @@
             </th>
 
             <th>
-                <a href="#" tal:attributes="href python:'%s?month:int=%d&year:int=%d' % (here.absolute_url()+'/'+template.getId(),nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
+                <a href="#" tal:attributes="href python:'%s/?month:int=%d&year:int=%d' % (here.absolute_url(),nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
             </th>
 
         <tr tal:define="weekdays here/portal_calendar/getDays">
@@ -51,7 +59,7 @@
                   </td>
                   <td tal:condition="not: day/event"
                                       tal:content="python: daynumber or default"
-                                      tal:attributes="class python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todaynoevent', '')">
+                                      tal:attributes="class python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todaynoevent', 'noevent')">
                     &nbsp;
                   </td>
                 </tal:block>
@@ -79,3 +87,8 @@
     </tal:block>
 
 </div>
+
+</body>
+
+</html>
+

@@ -96,7 +96,8 @@
                      style="visibility:hidden">
                 Return items matching one or more of these subjects.
                 Multiple words may be found
-                by combining them with <strong>AND</strong> and <strong>OR</strong>.
+                by pressing <strong>Ctrl</strong> while 
+                <strong>left clicking</strong> the keywords.
                 </div>
             </div>
             
@@ -170,7 +171,7 @@
                             tal:define="yesterday python:(today-1).Date();
                                         lastweek python:(today-7).Date();
                                         lastmonth python:(today-31).Date();
-                                        ever string:1970/01/01 00:00:00 GMT;">
+                                        ever string:1970/02/01 00:00:00 GMT;">
                         <option value="#"
                                 tal:condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1);"
                                 tal:attributes="value python:container.portal_membership.getAuthenticatedMember().last_login_time" i18n:translate="last_login">Last sign-in</option>

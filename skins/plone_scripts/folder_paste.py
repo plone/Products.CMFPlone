@@ -5,18 +5,23 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=Paste objects to a folder from the clipboard
+##title=Paste objects into a folder
 ##
+
 REQUEST=context.REQUEST
+msg='Copy or cut one or more items to paste.' 
 
 if context.cb_dataValid:
-    context.manage_pasteObjects(REQUEST['__cp'])
-    return context.portal_navigation.getNext( context
-                , script.getId()
-                , 'success'
-                , portal_status_message='Item(s) pasted.' ) 
+    try:
+        context.manage_pasteObjects(REQUEST['__cp'])
+        return context.portal_navigation.getNext( context
+                    , script.getId()
+                    , 'success'
+                    , portal_status_message='Item(s) pasted.' ) 
+    except:
+        msg='Paste could not find clipboard content'
 
 return context.portal_navigation.getNext( context
             , script.getId()
             , 'failure'
-            , portal_status_message='Copy or cut one or more items to paste.' )
+            , portal_status_message=msg )

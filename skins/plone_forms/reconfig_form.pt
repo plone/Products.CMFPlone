@@ -28,13 +28,13 @@
           action="" 
           name="reconfig" 
           method="post" 
-          tal:attributes="action request/URL"
-          tal:define="props python:container.portal_properties">
+          tal:attributes="action python:here.portal_form_url(template.id)"
+          tal:define="props python:here.portal_properties;">
 
         <span class="legend" i18n:translate="legend_plone_details">Plone Details</span>
 		
         <div class="row"
-             tal:define="email_from_name request/email_from_name|props/email_from_name;
+             tal:define="email_from_name request/email_from_name|site_properties/email_from_name;
                          error_email_from_name errors/email_from_name | nothing;">
             <div class="label">
                 <span i18n:translate="label_portal_from_name">Portal 'From' name</span>
@@ -65,7 +65,7 @@
         </div>
 		
         <div class="row"
-             tal:define="email_from_address request/email_from_address|props/email_from_address;
+             tal:define="email_from_address request/email_from_address|site_properties/email_from_address;
                          error_email_from_address errors/email_from_address | nothing;">
             <div class="label required">
                 <span i18n:translate="label_portal_from_address">Portal 'From' address</span>
@@ -97,7 +97,7 @@
         </div>
 		
         <div class="row"
-             tal:define="smtp_server request/smtp_server | props/smtp_server;
+             tal:define="smtp_server request/smtp_server | site_properties/smtp_server;
                          error_smtp_server errors/smtp_servers | nothing;">
             <div class="label">
                 <span i18n:translate="label_smtp_server">SMTP server</span>
@@ -162,7 +162,7 @@
         </div>
 
         <div class="row"
-             tal:define="description request/description | props/description;
+             tal:define="description request/description | site_properties/description;
                          error_description errors/description | nothing;">
             <div class="label">
                 <span i18n:translate="label_portal_description">Portal description</span>
@@ -205,19 +205,20 @@
                         value=""
                         onfocus="formtooltip('language_help',1)"
                         onblur="formtooltip('language_help',0)"
-                        tal:attributes="value here/portal_properties/default_language;
-                                        tabindex tabindex/next;">
+                        tal:attributes="value site_properties/default_language;
+                                        tabindex tabindex/next;"
+                        tal:define="default_language request/default_language | site_properties/default_language;">
                    <option value="" i18n:translate="label_choose_language">Choose Language</option>
                    <option tal:repeat="language here/availableLanguages"
                            tal:attributes="value python:language[0];
-                                           selected python:test(here.portal_properties.default_language == language[0], 'selected', '')"
+                                           selected python:test(default_language == language[0], 'selected', '')"
                            tal:content="structure python:language[1]" />
                 </select>
             </div>
         </div> 
 
         <div class="row"
-             tal:define="localTimeFormat request/localTimeFormat | props/localTimeFormat;
+             tal:define="localTimeFormat request/localTimeFormat | site_properties/localTimeFormat;
                          error_localTimeFormat errors/localTimeFormat | nothing;">
             <div class="label required">
                 <span i18n:translate="label_short_date_format">Short Date</span>
@@ -247,7 +248,7 @@
         </div>
         
         <div class="row"
-            tal:define="localLongTimeFormat request/localLongTimeFormat | props/localLongTimeFormat;
+            tal:define="localLongTimeFormat request/localLongTimeFormat | site_properties/localLongTimeFormat;
                         error_localLongTimeFormat errors/localLongTimeFormat | nothing;">
             <div class="label required">
                 <span i18n:translate="label_long_date_format">Long Date</span>
@@ -300,10 +301,9 @@
 			onblur="formtooltip('skin_help',0)"
 			tal:attributes="value here/portal_skins/getDefaultSkin;
 					tabindex tabindex/next;">
-		   <option value="" i18n:translate="label_choose_look">Choose Look</option>
 		   <option tal:repeat="skin here/portal_skins/getSkinSelections"
 			   tal:attributes="value skin;
-					   selected python:test(default_skin == skin, 'selected', '')"
+                               selected python:test(default_skin == skin, 'selected', '')"
 			   tal:content="structure skin" />
 		</select>
             </div>
@@ -324,8 +324,8 @@
             </div>
             
             <div class="field">
-                <span tal:define="validateChecked python:props.validate_email;
-                                  allowEnterChecked python:not props.validate_email;
+                <span tal:define="validateChecked python:site_properties.validate_email;
+                                  allowEnterChecked python:not site_properties.validate_email;
                                   tabindex tabindex/next;">
                     <input class="noborder" 
                            type="radio" 
@@ -358,6 +358,53 @@
             </div>
         </div>
 
+        <div class="row"
+             tal:condition="exists:site_properties/allow_sendto">
+            <div class="label">
+                <span i18n:translate="label_form_help">Send URL to friends</span>
+
+                <div id="allow_sendto_help"
+                     i18n:translate="help_allow_sendto" 
+                     class="help" 
+                     style="visibility:hidden">
+                Select whether you want to enable the "Send URL to friends" feature.
+                </div>                
+            </div>
+            <div class="field"
+                 tal:define="allow_sendto request/allow_sendto | site_properties/allow_sendto;
+                 tabindex tabindex/next;"> 
+                <input type="radio" 
+                       class="noborder" 
+                       name="allow_sendto" 
+                       value="on"
+                       id="cb_allow_sendto" 
+                       tabindex=""
+                       onfocus="formtooltip('allow_sendto_help',1)" 
+                       onblur="formtooltip('allow_sendto_help',0)"
+                       tal:attributes="tabindex tabindex;
+                                       checked allow_sendto" 
+                       />
+                
+                <label for="cb_allow_sendto" i18n:translate="yes">Yes</label>
+                
+                <br />
+                
+                <input type="radio" 
+                       class="noborder" 
+                       name="allow_sendto" 
+                       value=""
+                       id="cb_noallow_sendto"
+                       tabindex=""
+                       onfocus="formtooltip('allow_sendto_help',1)" 
+                       onblur="formtooltip('allow_sendto_help',0)"
+                       tal:attributes="tabindex tabindex;
+                                       checked not:allow_sendto;"
+                       />
+                
+                <label for="cb_noallow_sendto" i18n:translate="no">No</label>
+            </div>
+        </div>
+                
         <div class="row">
             <div class="label">&nbsp;</div>
             <div class="field">
@@ -371,11 +418,7 @@
                        />
             </div>
         </div>
-        
-        <span tal:replace="nothing">
-        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
-        </span>
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>
 

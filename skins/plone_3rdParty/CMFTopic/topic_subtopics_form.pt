@@ -4,8 +4,7 @@
 
 <body>
 <div metal:fill-slot="main"
-     tal:define="Batch python:modules['ZTUtils'].Batch;
-                 b_start python:request.get('b_start', 0);
+     tal:define="b_start python:request.get('b_start', 0);
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
@@ -13,7 +12,7 @@
 
 <form action="" method="post" 
       tal:attributes="action here/absolute_url"
-      tal:define="batch python:Batch(here.listSubtopics(), 5000, int(b_start), orphan=0)">
+      tal:define="batch here/listSubtopics;">
 
   <metal:block tal:condition="batch">
     <table metal:use-macro="here/folder_contents/macros/folder_listing">

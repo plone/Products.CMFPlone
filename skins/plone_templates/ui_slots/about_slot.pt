@@ -1,62 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
 <!-- The About box -->
 
-<table metal:define-macro="aboutBox"
-       class="box"
-       summary="About" cellpadding="0" cellspacing="0"
-       i18n:domain="plone">
+<div metal:define-macro="aboutBox" tal:condition="python:test(not site_properties.allowAnonymousViewAbout and site_properties.portal_membership.isAnonymousUser(), 0, 1)" tal:omit-tag="">
 
-    <thead>
-        <tr><th i18n:translate="box_about">About</th><th class="empty">&nbsp;</th></tr>
-    </thead>
+    <span class="boxTitle" i18n:translate="box_about">About</span>
 
-    <tbody>
-        <tr class="odd">
-            <td colspan="2">
-
+    <div class="box">
+        <div class="content odd">
             <img src="img/icons/folder.gif" alt=""
-                 tal:attributes="src python:portal_url + '/' + here.getIcon(relative_to_portal=1);
-                 alt here/meta_type;" 
-		 />&nbsp;<span tal:omit-tag="" i18n:translate=""><span tal:replace="python:here.getTypeInfo().Title()">Object type</span></span>
-            </td>
-        </tr>
-
-        <tr class="even">
-            <td colspan="2">
-
+                      tal:attributes="src python:portal_url + '/' + here.getIcon(relative_to_portal=1);
+                      alt here/meta_type;" 
+             />&nbsp;<span tal:omit-tag="" tal:content="python:here.getTypeInfo().Title()" i18n:translate="">Object type</span>
+        </div>
+        
+        <div class="content even"
+             tal:define="creator here/Creator;
+                         creator_home python:container.portal_membership.getHomeUrl(creator);">
+                         
             <strong i18n:translate="box_created_by">Created&nbsp;by:</strong> <br />
-            <img tal:replace="structure here/user.gif" />
-            <a href="#" tal:content="here/Creator"
-                        tal:attributes="href python:here.portal_membership.getHomeUrl(here.Creator())">bob</a>
-            </td>
-        </tr>
+            <img tal:replace="structure here/user.gif" />            
+            
+            <a href="#" tal:condition="creator_home"
+                        tal:attributes="href creator_home"
+                        tal:content="creator">bob</a>
 
-        <tr class="odd">
-            <td colspan="2">
-                <strong i18n:translate="box_last_modified">Last&nbsp;modified:</strong> <br />
-                <span tal:replace="python:here.toPortalTime(here.ModificationDate())">
-                August 16, 2001 at 23:35:59
-                </span>
-            </td>
-        </tr>
+            <span tal:condition="not: creator_home"
+                  tal:content="creator">bob</span>
 
-        <tr class="even"
-	    tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state', '')"
-	    tal:condition="review_state">
-            <td colspan="2">
-                <strong>Status:</strong> <br />
-                <span class="private"
-                      tal:content="review_state"
-                      tal:attributes="class review_state"
-		                  i18n:translate="">
-                </span>
+        </div>
+    
+        <div class="content odd">
+            <strong i18n:translate="box_last_modified">Last&nbsp;modified:</strong> <br />
+            <span tal:replace="python:here.toPortalTime(here.ModificationDate())">
+            August 16, 2001 at 23:35:59
+            </span>
+        </div>
+    
+        <div class="content even"
+    	     tal:define="review_state python:container.portal_workflow.getInfoFor(here, 'review_state', '')"
+    	     tal:condition="review_state">
+        
+            <strong>Status:</strong> <br />
+        
+            <span class="private"
+                  tal:content="review_state"
+                  tal:attributes="class review_state"
+                  i18n:translate="">
+            private
+            </span>
+    
+            <span class="expired"
+    		      tal:condition="python:here.isExpired(here)">
+            (expired)
+            </span>
+    
+        </div>
 
-                <span class="expired"
-		tal:condition="python:container.isExpired(here)">
-                (expired)
-                </span>
+    </div>
 
-            </td>
-        </tr>
-    </tbody>
+</div>
+    
+</body>
 
-</table>
+</html>
+

@@ -16,7 +16,7 @@
 <div metal:fill-slot="main">
 
 
-    <h1 tal:content="here/title_or_id">
+    <h1 tal:content="structure here/title_or_id">
     Title or id
     </h1>
     
@@ -28,10 +28,13 @@
     <metal:block tal:define="
                  b_start string:0;b_start request/b_start | b_start;
                  results here/queryCatalog;
-                 Batch python:modules['ZTUtils'].Batch;
+                 Batch python:modules['Products.CMFPlone'].Batch;
                  global batch python:Batch(results, 20, int(b_start), orphan=1)">
 
 
+    <!-- Navigation -->
+    <div metal:use-macro="here/batch_macros/macros/navigation" />
+                 
     <table class="listing"
            id="sortable"
            tal:condition="batch">
@@ -65,19 +68,8 @@
         </tbody>
     </table>
 
-
-
-    <span tal:define="p batch/previous" tal:condition="p">
-    <a href=""
-        tal:attributes="href string:?b_start=${p/first}">Previous <span
-        tal:replace="p/length">n</span> items</a>
-    </span>&nbsp;&nbsp;
-
-    <span tal:define="n batch/next" tal:condition="n">
-    <a href=""
-        tal:attributes="href string:?b_start=${batch/end}">Next <span
-        tal:replace="n/length">n</span> items</a>
-    </span>
+    <!-- Navigation -->
+    <div metal:use-macro="here/batch_macros/macros/navigation" />
 
     <metal:block tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
 

@@ -3,12 +3,14 @@ custom_policies={} #stores the registered Policies
 
 from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
-import MembershipTool, FormulatorTool, PloneTool, WorkflowTool, NavigationTool, FactoryTool, FormTool, PropertiesTool
+import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
+import NavigationTool, FactoryTool, FormTool, PropertiesTool, MigrationTool
 import PloneFolder, Portal
 import CustomizationPolicy,PrivateSitePolicy
 import sys
 import StatelessTreeNav
 import Globals
+from os import path
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
@@ -58,7 +60,6 @@ def transaction_note(note):
 
 ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
 
-
 tools = ( MembershipTool.MembershipTool
         , FormulatorTool.FormulatorTool 
         , PloneTool.PloneTool
@@ -67,7 +68,8 @@ tools = ( MembershipTool.MembershipTool
         , NavigationTool.NavigationTool
         , FactoryTool.FactoryTool
         , FormTool.FormTool
-        , PropertiesTool.PropertiesTool )
+        , PropertiesTool.PropertiesTool
+        , MigrationTool.MigrationTool )
 
 contentClasses = ( PloneFolder.PloneFolder , )
 contentConstructors = ( PloneFolder.addPloneFolder, )
@@ -76,7 +78,7 @@ DirectoryView.registerDirectory('skins', cmfplone_globals)
 this_module = sys.modules[ __name__ ]
 z_bases = utils.initializeBasesPhase1(contentClasses, this_module)
 
-misc_ = {'plone_icon': Globals.ImageFile('skins/plone_images/site_icon.gif', cmfplone_globals)}
+misc_ = {'plone_icon': Globals.ImageFile(path.join('skins','plone_images','site_icon.gif'), cmfplone_globals)}
 
 def initialize(context):
     utils.initializeBasesPhase2( z_bases, context )    
@@ -93,5 +95,9 @@ def initialize(context):
     CustomizationPolicy.register(context, cmfplone_globals)
     PrivateSitePolicy.register(context, cmfplone_globals)
 
-# setup default Plone
+# setup ZODB if needed
 import PloneInitialize
+
+# setup migrations
+import Migrations
+Migrations.registerMigrations()

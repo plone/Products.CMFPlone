@@ -1,0 +1,138 @@
+/* 
+** Plone style sheet for Netscape 4 and other non-CSS2-compatible browsers.
+** Alexander Limi, 2002 - http://limi.net
+**
+** Tip: don't use margins or floats
+*/
+
+/* DTML instructions to set caching headers.
+<dtml-let last_modified="_.DateTime()-14" expires="_.DateTime()+1" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
+</dtml-let>
+*/
+
+/*
+<dtml-with stylesheet_properties>
+*/
+
+/* Basic Elements */
+body, td, th, div, span { font: &dtml-mainFont;; }
+body { background: &dtml-mainBackground;; color: &dtml-mainFontColor;; padding: 0; }
+a { text-decoration: none; color: &dtml-mainLinkColor;; }
+table { font: &dtml-mainFont;; }
+p { font: &dtml-contentFont;; }
+p a { text-decoration: underline; }
+p img { border: &dtml-contentImageBorder;; }
+hr { margin:0; padding: 0; }
+h1, h2, h3, h4, h5, h6 { color: &dtml-headingFontColor;; font: &dtml-headingFont;; }
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }
+h3 { font-size: 16px; }
+h4 { font-size: 14px; }
+h5 { font-size: 13px; }
+h6 { font-size: 12px; }
+ul { list-style-image: url("bullet.gif"); }
+form { border: none; }
+textarea { font: &dtml-inputFont;; width: 100%; }
+input { font: &dtml-inputFont;; }
+select { font: &dtml-inputFont;; }
+abbr, acronym, .explain { border-bottom: 1px dotted &dtml-mainLinkColor;; cursor: help; }
+code { font-size: 12px; }
+pre { font-size: 12px; padding: 1em; border: &dtml-preBorder;; background-color: &dtml-preBackground;; }
+
+/* Structural elements */
+div.top { background: &dtml-topBackground;; width: 100%; }
+div.searchBox { float: right; text-align: right; }
+div.tabs { padding: 0 0 0 1em; margin: 0; }
+div.tabs a { background: &dtml-mainTabBackgroundNotSelected;; color: &dtml-mainTabFontColor;; font-weight: &dtml-mainTabFontWeight;; }
+div.tabs a.selected { background: &dtml-mainTabBackground;; color: &dtml-mainTabFontColorSelected;; font-weight: &dtml-mainTabFontWeight;; }
+div.personalBar { text-align: right; margin: 0; }
+div.personalBar a{ font-weight: &dtml-mainTabFontWeight;; }
+div.pathBar { padding: 0 0 0 1em; margin: 0;}
+table.columns { width: 100%; }
+table.columns td.left { vertical-align: top; padding-top: 2em; width: 15%; }
+table.columns td.main { vertical-align: top; padding-top: 2em; width: 70%; }
+table.columns td.right { vertical-align: top; padding-top: 2em; width: 15%; }
+div.contentTabs { padding: 0;}
+div.contentTabs a { background: &dtml-contentTabBackgroundNotSelected;; color: &dtml-contentTabFontColor;; font-weight: &dtml-contentTabFontWeight;; }
+div.contentTabs a.selected { background: &dtml-contentTabBackground;; color: &dtml-contentTabFontColorSelected;; font-weight: &dtml-contentTabFontWeight;; }
+div.contentTabs a:hover { background-color: &dtml-contentTabBackground;; }
+div.contentBar {  }
+div.document { background: &dtml-contentBackground;; }
+div.editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
+div.message { background: &dtml-messageBackground;; font: &dtml-messageFont;; padding: 0.5em 1em; vertical-align: middle; }
+.description { font: bold 12px Verdana, Helvetica, Arial, sans-serif; display: block; }
+.footer { clear: both; float: none; padding: 0em 0em 0em 0em; text-align: center; }
+
+/* Widgets */
+div.row { clear: both; }
+div.rowEven { clear: both; }
+div.rowOdd { clear: both; }
+.group { border: &dtml-groupBorder;; padding: 1em; }
+.legend { font-weight: bold; }
+input.standalone { cursor: pointer; font-weight: &dtml-buttonWeight;; }
+input.context { cursor: pointer; font-weight: &dtml-buttonWeight;; }
+.error { background: &dtml-messageBackground;; border: &dtml-messageBorder;; }
+.required { background: &dtml-requiredField;; }
+.label { font-weight: bold; padding: 0em 0em; }
+.field { padding: 0em 0em 0em 0em; text-align: left; }
+.info { padding: 0em 0em 0.2em 0em; text-align: left; }
+div.help { font-weight: normal; }
+span.card { background: &dtml-mainTabBackground;; border-color: &dtml-mainTabBorderColor;; border-width: 1px; border-style: solid; text-align: center;}
+span.left { float: left; text-align: left; width: 40%; }
+span.right { float: right; text-align: right; width: 40%; }
+table.listing { }
+table.listing th { background: &dtml-listingHeaderBackground;; color: &dtml-listingHeaderFontColor;; font-weight: normal; padding: 0em 1em 0em 1em; }
+table.listing tr.odd { background: &dtml-listingOddBackground;; }
+table.listing tr.even { background: &dtml-listingEvenBackground;; }
+table.listing td { padding: 0em 1em;}
+table.listing a:hover { text-decoration: &dtml-listingLinkHover;; }
+table.box { }
+table.box th { background: &dtml-boxHeaderBackground;; color: &dtml-boxHeaderFontColor;; font-weight: normal; padding: 0em 1em; text-align: left;}
+table.box th.empty { background: &dtml-mainBackground;; }
+table.box tr.odd { background: &dtml-boxOddBackground;; }
+table.box tr.even { background-color: &dtml-boxEvenBackground;; }
+div.boxDetails { text-align: right; }
+
+div.box {
+    border: &dtml-boxBorder;;
+    margin-bottom: 1em;
+}
+
+.boxTitle {
+    background: &dtml-boxHeaderBackground;;
+}
+
+
+table.box a.comment { background-image: url(&dtml-portal_url;/discussion_icon.gif); background-position: 0px 0px; padding: 0em 0em 0.5em 2em; }
+table.box a.plain { padding: 0; }
+span.folderName { font-size: 150%; font-weight: bold; }
+div.spacer { }
+.private { color: Black; }
+.published { color: #74AE0B; }
+.pending { color: #FFA500; }
+.syndicated { color: #008000; }
+.expired { color: Red; }
+
+/* Calendar elements */
+div.day { background-color: #FFFFBB; }
+div.date { font-weight: bold; }
+table.calendar { border: &dtml-boxBorder;; text-align: right; }
+table.calendar a { text-decoration: none; color: &dtml-boxLinkColor;; }
+table.calendar a:hover { text-decoration: none; }
+table.calendar th { background-color: &dtml-boxHeaderBackground;; color: &dtml-boxHeaderFontColor;; font-weight: bold; text-align: center; }
+table.calendar td { width: 1.5em; padding: 2px; }
+table.calendar td.weekdays { background-color: &dtml-boxHeaderBackground;; border: &dtml-boxBorder;; border-style: solid none; text-align: center; }
+table.calendar td.event { background-color: &dtml-boxHeaderBackground;; font-weight: bold; }
+table.calendar td.noevent { }
+table.calendar td.othermonth { background-color: #FFFFFF; border: 1px solid #8CACBB; vertical-align: bottom; }
+table.calendar td.holiday { background-color: #CF6060; border: 1px solid #8CACBB; }
+table.calendar td.todayevent { background-color: &dtml-boxHeaderBackground;; border: &dtml-boxHighlight;; font-weight: bold; }
+table.calendar td.todaynoevent { border-collapse: collapse; border: 2px solid #FFA500; }
+
+/*
+</dtml-with>
+*/

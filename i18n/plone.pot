@@ -226,8 +226,8 @@ msgstr "Send me my password"
 #: from plone_templates/ui_slots/login_slot.pt
 #.   <input value="Sign in" class="context" name="submit" type="submit" />
 #.   
-msgid "Sign in"
-msgstr "Sign in"
+msgid "Log in"
+msgstr "Log in"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <input value="Submit" class="context" type="submit" />
@@ -403,7 +403,7 @@ msgstr "Review List"
 #: from plone_templates/ui_slots/login_slot.pt
 #.   <th>Sign in</th>
 msgid "box_sign_in"
-msgstr "Sign in"
+msgstr "Log in"
 
 #: from plone_3rdParty/CMFCollector/collector_issue_contents.pt
 #.   <div class="heading"> 
@@ -805,23 +805,23 @@ msgstr "To rename an item, enter the new name below."
 #.   To access this part of the site, you need to sign in with your username and password.
 #.   </p>
 msgid "description_sign_in"
-msgstr "To access this part of the site, you need to sign in with your username and password."
+msgstr "To access this part of the site, you need to log in with your username and password."
 
 #: from plone_forms/logged_in.pt
 #.   <span>
-#.               You are not currently signed in.  Your user name and/or password may be incorrect.
+#.               You are not currently logged in.  Your user name and/or password may be incorrect.
 #.               Your browser may also not be configured to accept HTTP cookies.  
 #.               If you need help please try the 'Forgotten password' link or contact
 #.               </span>
 msgid "description_sign_in_failure"
-msgstr "You are not currently signed in. Your user name and/or password may be incorrect. Your browser may also not be configured to accept HTTP cookies. If you need help please try the 'Forgotten password' link or contact"
+msgstr "You are not currently logged in. Your user name and/or password may be incorrect. Your browser may also not be configured to accept HTTP cookies. If you need help please try the 'Forgotten password' link or contact"
 
 #: from plone_forms/logged_in.pt
 #.   <span>
 #.                   This is the first time that you've signed in to 
 #.                   </span>
 msgid "description_signed_in"
-msgstr "This is the first time that you've signed in to"
+msgstr "This is the first time that you've logged in to"
 
 #: from plone_forms/logged_out.pt
 #.   <p>
@@ -888,7 +888,7 @@ msgstr "Syndication enables you to syndicate this folder so it can be synchroniz
 #.                   Don't forget to sign out or exit your browser when you're done.
 #.                   </span>
 msgid "description_trouble_logging_in"
-msgstr "Make sure to enable cookies in your web browser. Don't forget to sign out or exit your browser when you're done."
+msgstr "Make sure to enable cookies in your web browser. Don't forget to log out or exit your browser when you're done."
 
 #: from plone_forms/undo_form.pt
 #.   <p>
@@ -922,9 +922,9 @@ msgid "description_you_are_registered"
 msgstr "You have been registered as a member."
 
 #: from plone_forms/registered.pt
-#.   <span>Click the button to sign in immediately.</span>
+#.   <span>Click the button to log in immediately.</span>
 msgid "description_you_can_log_on_now"
-msgstr "Click the button to sign in immediately."
+msgstr "Click the button to log in immediately."
 
 #: from plone_forms/registered.pt
 #.   <p tal:condition="ve"> 
@@ -1159,19 +1159,19 @@ msgid "heading_search_results"
 msgstr "Search results"
 
 #: from plone_forms/login_form.pt
-#.   <h1>Please sign in</h1>
+#.   <h1>Please log in</h1>
 msgid "heading_sign_in"
-msgstr "Please sign in"
+msgstr "Please log in"
 
 #: from plone_forms/logged_in.pt
-#.   <h1>Sign-in failure</h1>
+#.   <h1>Log-in failure</h1>
 msgid "heading_sign_in_failure"
-msgstr "Sign-in failure"
+msgstr "Log-in failure"
 
 #: from plone_forms/logged_out.pt
-#.   <h1>You are now signed out</h1>
+#.   <h1>You are now logged out</h1>
 msgid "heading_signed_out"
-msgstr "You are now signed out"
+msgstr "You are now logged out"
 
 #: from plone_templates/standard_error_message.pt
 #.   <h1>Site error</h1>
@@ -1415,11 +1415,11 @@ msgstr "Select whether you want Names (also known as IDs) to be visible and edit
 #: from plone_forms/password_form.pt
 #.   <div class="help" id="domains_help" style="visibility:hidden">
 #.                   Here you can enter the domains you want to restrict the user to
-#.                   be able to sign in from. Useful in intranet situations.
+#.                   be able to log in from. Useful in intranet situations.
 #.                   <strong>If you do not know what this field is for, leave it blank.</strong>
 #.                   </div>
 msgid "help_domains"
-msgstr "Here you can enter the domains you want to restrict the user to be able to sign in from. Useful in intranet situations. <strong>If you do not know what this field is for, leave it blank.</strong>"
+msgstr "Here you can enter the domains you want to restrict the user to be able to log in from. Useful in intranet situations. <strong>If you do not know what this field is for, leave it blank.</strong>"
 
 #: from plone_content/file_edit_form.pt
 #.   <div class="help" id="edit_contents_help" style="visibility:hidden">
@@ -1760,10 +1760,10 @@ msgstr "Enter a short description or some comments to be added to the comments f
 #: from plone_forms/login_form.pt
 #.   <div class="help" id="remember_help" style="visibility:hidden">
 #.               Setting the 'Remember my name' option will create a cookie with your username.
-#.               When you sign in later, your user name will already be filled in for you.
+#.               When you log in later, your user name will already be filled in for you.
 #.               </div>
 msgid "help_remember_my_name"
-msgstr "Setting the 'Remember my name' option will create a cookie with your username. When you sign in later, your user name will already be filled in for you."
+msgstr "Setting the 'Remember my name' option will create a cookie with your username. When you log in later, your user name will already be filled in for you."
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="author_search_help" style="visibility:hidden">
@@ -1792,10 +1792,11 @@ msgstr "Return items of a specific type."
 #.   <div class="help" id="keywords_search_help" style="visibility:hidden">
 #.                   Return items matching one or more of these subjects.
 #.                   Multiple words may be found
-#.                   by combining them with <strong>AND</strong> and <strong>OR</strong>.
+#.                   by pressing <strong>Ctrl</strong> while 
+#.                   <strong>left clicking</strong> the keywords.
 #.                   </div>
 msgid "help_search_keywords"
-msgstr "Return items matching one or more of these subjects. Multiple words may be found by combining them with <strong>AND</strong> and <strong>OR</strong>."
+msgstr "Return items matching one or more of these subjects. Multiple words may be found by by pressing <strong>Ctrl</strong> while <strong>left clicking</strong> the keywords."
 
 #: from plone_forms/search_form.pt
 #.   <div class="help" id="new_items_since_search_help" style="visibility:hidden">
@@ -1919,10 +1920,10 @@ msgstr "Enter the user name you use on this site. If you haven't got a user name
 #.   <div class="help" id="user_name_help" style="visibility:hidden">
 #.                   Enter the user name you want, usually something like
 #.                   "jsmith". No spaces or special characters. 
-#.                   This is the name you use to sign in.
+#.                   This is the name you use to log in.
 #.                   </div>
 msgid "help_user_name_creation"
-msgstr "Enter the user name you want, usually something like \"jsmith\". No spaces or special characters. This is the name you use to sign in."
+msgstr "Enter the user name you want, usually something like \"jsmith\". No spaces or special characters. This is the name you use to log in."
 
 #: from plone_content/document_edit_form.pt
 #.   <label for="cb_html">HTML</label>
@@ -2820,9 +2821,9 @@ msgid "label_yes_mail_me_password"
 msgstr "Yes, mail me my password"
 
 #: from plone_forms/search_form.pt
-#.   <option condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1);" attributes="value python:container.portal_membership.getAuthenticatedMember().last_login_time" value="#">Last sign-in</option>
+#.   <option condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1);" attributes="value python:container.portal_membership.getAuthenticatedMember().last_login_time" value="#">Last log-in</option>
 msgid "last_login"
-msgstr "Last sign-in"
+msgstr "Last log-in"
 
 #: from plone_templates/news.pt
 #.   <span omit-tag="">Last Updated</span>
@@ -3202,7 +3203,9 @@ msgstr "No"
 #.         </p>
 #: from plone_content/newsitem_view.pt
 #.   <p condition="not: len_text">
+
 #.             This document has yet to be written, click the edit button to write on document.
+
 #.           </p>
 msgid "no_body_text"
 msgstr "This document has yet to be written, click the edit button to write on document."
@@ -3374,7 +3377,7 @@ msgstr ""
 msgid "Plone Setup"
 msgstr ""
 
-msgid "Sign out"
+msgid "Log out"
 msgstr ""
 
 msgid "Navigation"

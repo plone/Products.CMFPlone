@@ -1,5 +1,5 @@
-#Stateless Tree Navigation
-#(c) Philipp Auersperg phil@bluedynamics.com 10.09.2002
+# Stateless Tree Navigation for Plone
+# (c) Philipp Auersperg phil@bluedynamics.com 10.09.2002
 
 import string
 from Globals import HTML
@@ -13,6 +13,24 @@ allow_module('Products.CMFPlone.StatelessTreeNav')
 def wrap_obj(o,parent):
     return o.__of__(parent)
 
+def setupNavTreePropertySheet(prop_tool):
+    ''' sets up the default propertysheet for the navtree '''
+    
+    prop_tool.manage_addPropertySheet('navtree_properties', 'NavigationTree properties')
+    p=prop_tool.navtree_properties
+    p._setProperty('showMyUserFolderOnly', 1, 'boolean')
+    p._setProperty('includeTop', 1, 'boolean')
+    p._setProperty('showFolderishSiblingsOnly', 1, 'boolean')
+    p._setProperty('showFolderishChildrenOnly', 1, 'boolean')
+    p._setProperty('showNonFolderishObject', 0, 'boolean')
+    p._setProperty('topLevel', 0, 'int')
+    p._setProperty('batchSize', 30, 'int')
+    p._setProperty('showTopicResults', 1, 'boolean')
+    p._setProperty('rolesSeeUnpublishedContent', ['Manager','Reviewer','Owner'] , 'lines')
+    p._setProperty('sortCriteria', ['isPrincipiaFolderish,desc','title_or_id,asc']  , 'lines')
+    p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog'],'lines')
+    p._setProperty('parentMetaTypesNotToQuery',[],'lines')
+        
 class StatelessTreeBuilder:
     """ builds a stateless tree structure for objects """
     
@@ -22,6 +40,7 @@ class StatelessTreeBuilder:
             maxcount=65535,includeTop=0,topLevel=0,listSiblings=1,
             childFinder=None,showFolderishSiblingsOnly=0,showFolderishChildrenOnly=0,
             showNonFolderishObject=0):
+
         self.object=object
         self.topObject=topObject
         self.topMetaType=topMetaType
@@ -49,10 +68,7 @@ class StatelessTreeBuilder:
           par=par.aq_parent
           count=count+1
         
-        if int(self.includeTop):
-          count=count+1
-        
-        return count
+        return count 
         
     security.declarePublic('getParentObjects')
     def getParentObjects (self,reversed=1):
@@ -66,23 +82,21 @@ class StatelessTreeBuilder:
         res=[]
         count=0
         level=self.getLevel()
-
         par = self.object
 
         if not par.isPrincipiaFolderish:
             par=par.aq_parent
             
         while (hasattr(par,'meta_type') and str(par.meta_type) != str(self.topMetaType) 
-            and self.topObject != par and count < int(self.maxcount) and level > self.topLevel) :
+            and self.topObject != par ): #and count < int(self.maxcount) and level > self.topLevel) :
             res.append(par)
             par=par.aq_parent
             count=count+1
             level=level-1
 
-        if int(self.includeTop):
+        if self.includeTop :
             res.append(par)
 
-        #pp.pprint(map(lambda x:x.title_or_id(),res))
         if reversed:
             res.reverse()
 
@@ -92,6 +106,7 @@ class StatelessTreeBuilder:
         ''' called by buildMenuStructure
             is overridable if self.childFinder is set -> array of objects
         '''
+
         if hasattr(object,'isPrincipiaFolderish') and object.isPrincipiaFolderish:
             if self.childFinder:
                 return self.childFinder(object,folderishOnly)
@@ -131,8 +146,10 @@ class StatelessTreeBuilder:
         
            res.append(r)
            itemcount=itemcount+1
+
            if len(r['siblings']):
                itemcount=itemcount+len(r['siblings'])-1
+
            count=count+1
         
         if p:
@@ -143,12 +160,13 @@ class StatelessTreeBuilder:
             level=self.getLevel(self.object)+1
 
         addItself=None
+        
         if not o.isPrincipiaFolderish:
             if self.showFolderishChildrenOnly and self.showNonFolderishObject:
                 addItself=o
 
             o=o.aq_parent
-            
+
         siblings=self.getChildObjects(o,folderishOnly=self.showFolderishChildrenOnly)
         if addItself:
             siblings.append(addItself)
@@ -179,13 +197,13 @@ class StatelessTreeBuilder:
         
         itemcounter=0
         menucounter=0
+
         # Opening
         for item in list :
           act = 0
           current=0
         
           for sibling in item['siblings'] :
-
             current = 0
 
             if (sibling == item['object']) :
@@ -201,13 +219,14 @@ class StatelessTreeBuilder:
 
             if sibling == self.object and (self.showNonFolderishObject or not self.showFolderishChildrenOnly):
                 current=1
-            #print item['object'],map(lambda x:x['object'],list)
-              
-            r={'level':self.getLevel(sibling),'open':act,'object':sibling,'title':sibling.title_or_id(),'iscurrent':current}  
+
+            lv = self.getLevel(sibling)  
+            r={'level':lv,'indent':lv - self.topLevel,'open':act,'object':sibling,'title':sibling.title_or_id(),'iscurrent':current}  
             itemcounter = itemcounter + 1
 
             if itemcounter > batchStart:
-                l.append(r)
+                if r['level'] >= self.topLevel:
+                    l.append(r)
                 
             if 0 and itemcounter >= batchStart+batchSize :
                 res['nextBatchStart']=itemcounter
@@ -231,23 +250,22 @@ class StatelessTreeBuilder:
           
             if (act == 1) :
               itemcounter = itemcounter + 1
+              lv = self.getLevel(sibling)
         
-              r={'level':self.getLevel(sibling),'open':0,'object':sibling}
+              r={'level':lv,'indent':lv - self.topLevel,'open':0,'object':sibling}
 
               if sibling:
                   r.update({'title':sibling.title_or_id()})
                   
               if itemcounter > batchStart:
-                  l.append(r)
+                  if r['level'] >= self.topLevel:
+                      l.append(r)
 
               if itemcounter >= batchStart+batchSize :
                   res['nextBatchStart']=itemcounter
                   res['next']=1
-                  #print 'ready:',time.time()-t   
                   return res
                   
-        #pp.pprint(res) 
-        #print 'ready:',time.time()-t   
         return res
 
 allow_class(StatelessTreeBuilder)

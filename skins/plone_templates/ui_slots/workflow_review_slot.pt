@@ -1,24 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+      
 <!-- The review box -->
 
-<table metal:define-macro="review_box"
-       class="box"
-       summary="Review listing"
-       i18n:domain="plone"
-       cellpadding="0" cellspacing="0"
-       tal:define="DateTime python:modules['DateTime'].DateTime;
-                   results here/my_worklist;"
-       tal:condition="results" >
+<div metal:define-macro="review_box"
+     tal:define="DateTime python:modules['DateTime'].DateTime;
+                 results here/my_worklist;"
+     tal:condition="results">
 
-    <thead>
-        <tr><th i18n:translate="box_review_list">Review List</th><th class="empty">&nbsp;</th></tr>
-    </thead>
+    <span class="boxTitle" i18n:translate="box_review_list">Review List</span>
 
-    <tbody tal:repeat="o results">
+    <div class="box" tal:repeat="o results">
 
-        <tr tal:define="oddrow repeat/o/odd"
-            tal:attributes="class python:test(oddrow, 'odd','even')" class="#">
-
-            <td colspan="2">
+        <div tal:define="oddrow repeat/o/odd"
+             tal:attributes="class python:test(oddrow, 'content odd','content even')">
 
                 <a href="#"
                    class="marker"
@@ -30,10 +30,12 @@
 
                 <div class="boxDetails"
                      tal:content="python:DateTime(o.ModificationDate()).strftime('%B %d, %H:%M')">July 7, 08:11</div>
-            </td>
+        </div>
 
-        </tr>
+    </div>
 
-    </tbody>
+</div>
 
-</table>
+</body>
+
+</html>

@@ -94,6 +94,3 @@ searchFontColor:string=White
 
 footerBackground:string=#F7C768
 footerBorder:string=1px solid #F7C768
-
-leftColumnWidth:string=15%
-rightColumnWidth:string=15%

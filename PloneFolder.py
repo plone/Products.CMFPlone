@@ -1,4 +1,4 @@
-from Products.CMFCore.utils import _verifyActionPermissions
+from Products.CMFCore.utils import _verifyActionPermissions, getToolByName
 from Products.CMFCore.Skinnable import SkinnableObjectManager
 from OFS.Folder import Folder
 from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
@@ -10,6 +10,8 @@ from AccessControl import Permissions, getSecurityManager, ClassSecurityInfo, Un
 from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base
 from Globals import InitializeClass
+
+from PloneUtilities import log
 
 factory_type_information = ( { 'id'             : 'Folder'
                              , 'meta_type'      : 'Plone Folder'
@@ -54,12 +56,20 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                            ,
                            )
 
-class PloneFolder ( SkinnedFolder ):
+class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
     meta_type = 'Plone Folder' 
     security=ClassSecurityInfo()
+    
+    __implements__ = DefaultDublinCoreImpl.__implements__ , 
 
     manage_options = Folder.manage_options + \
                      CMFCatalogAware.manage_options
+    
+    def __init__(self, id, title=''):
+        DefaultDublinCoreImpl.__init__(self)
+        self.id=id
+        self.title=title
+
     def __call__(self):
         '''
         Invokes the default view.
@@ -69,7 +79,20 @@ class PloneFolder ( SkinnedFolder ):
             return apply(view, (self, self.REQUEST))
         else:
              return view()
-
+    ### DefaultDublinCoreImpl.editMetadata() has a very bad assumption
+    ### which it does not declare in its interface which is 
+    ### failIflocked
+    def failIfLocked(self):
+        """ failIfLocked is used for WEBDAV locking """
+        plone=getToolByName(self, 'plone_utils')
+        log(self.absolute_url() + " failIfLocked called on Plone Folder" )
+        return 0
+    
+    ### FIXME! SkinnedFolder Creator method doesnt work when creating
+    ### objects via Python (eg: on a unittest) apparently because of
+    ### a missing context
+    Creator = DefaultDublinCoreImpl.Creator
+            
     security.declareProtected( CMFCorePermissions.View, 'view' )    
     view = __call__
     index_html = None
@@ -78,25 +101,27 @@ class PloneFolder ( SkinnedFolder ):
     def manage_addPloneFolder(self, id, title='', REQUEST=None):
         """ adds a new PloneFolder """
         ob=PloneFolder(id, title)
-	self._setObject(id, ob)
-	if REQUEST is not None:
+    	self._setObject(id, ob)
+    	if REQUEST is not None:
             return self.folder_contents(self, REQUEST, portal_status_message='Folder added')
-    
+
+    manage_addFolder = manage_addPloneFolder
+
     security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): # XXX
         """
         Hook around 'contentValues' to let 'folder_contents'
         be protected.  Duplicating skip_unauthorized behavior of dtml-in.
-
-	we also do not wanat to show objects that begin with a .
+        we also do not wanat to show objects that begin with a .
         """
+
         items = self.contentValues(spec=spec, filter=contentFilter)
         l = []
         for obj in items:
             id = obj.getId()
             v = obj
             try:
-                if len(id) > 0 and id[0]=='.' and suppressHiddenFiles:
+                if len(id) and id[:1]=='.' and suppressHiddenFiles:
                     raise Unauthorized(id, v)
                 if getSecurityManager().validate(self, self, id, v):
                     l.append(obj)
@@ -131,10 +156,10 @@ def _getViewFor(obj, view='view', default=None):
         #    if _verifyActionPermissions(obj, action)  and action.get('action','')!='':
         #        return obj.restrictedTraverse(action['action'])
         raise 'Unauthorized', ('No accessible views available for %s' %
-                               string.join(obj.getPhysicalPath(), '/'))
+                               '/'.join(obj.getPhysicalPath()))
     else:
         raise 'Not Found', ('Cannot find default view for "%s"' %
-                            string.join(obj.getPhysicalPath(), '/'))
+                            '/'.join(obj.getPhysicalPath()))
 
 manage_addPloneFolder=PloneFolder.manage_addPloneFolder
 

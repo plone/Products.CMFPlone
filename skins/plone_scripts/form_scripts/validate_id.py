@@ -27,6 +27,8 @@ if id:
         # perform the actual check
         if checkForCollision:
             container = context.getParentNode()
+            if getattr(container, id, None):
+                errors['id'] = 'This id is reserved.'
             if id in container.objectIds():
                 errors['id'] = 'This id already exists.'
 

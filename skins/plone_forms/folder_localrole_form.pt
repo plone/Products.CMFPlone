@@ -32,7 +32,8 @@
 	      <form class="group"
               method="post" 
               name="change_type" 
-              action="folder_localrole_edit">
+              action="folder_localrole_edit"
+              tal:attributes="action string:${here/absolute_url}/folder_localrole_edit" >
  		
             <span class="legend" i18n:translate="legend_available_members">Available Members</span>
                 
@@ -40,7 +41,10 @@
     		
     		    <span class="card" tal:repeat="member search_results">
     				
-        				<img src="defaultUser.gif" alt="Blank Picture" /> <br />
+                        <img src="defaultUser.gif" alt="Blank picture" border="0" width="75" height="100"
+                             tal:attributes="src python:here.portal_membership.getPersonalPortrait(member['username']).absolute_url()" />
+                                                     
+                        <br />
         				
         				<input class="noborder" 
                                type="checkbox"
@@ -138,7 +142,8 @@
       			<form class="group"
                   method="post" 
                   name="localrole" 
-                  action="folder_localrole_form">
+                  action="folder_localrole_form" 
+                  tal:attributes="action string:${here/absolute_url}/${template/getId}" >
       			
                 <span class="legend" i18n:translate="legend_search_terms">Search Terms</span>
       			    
@@ -214,7 +219,8 @@
         <form class="group"
               method="post" 
               name="deleterole" 
-              action="folder_localrole_edit">
+              action="folder_localrole_edit"
+              tal:attributes="action string:${here/absolute_url}/folder_localrole_edit" >
     
             <span class="legend" i18n:translate="legend_assigned_roles">Assigned Roles
                 <span tal:content="here/title_or_id" i18n:name="folder">title</span>
@@ -229,11 +235,17 @@
 
                 <span class="card" 
                       tal:repeat="lrole here/get_local_roles"
-                      tal:define="username python:container.portal_membership.getAuthenticatedMember().getUserName();">
+                      tal:define="username python:here.portal_membership.getAuthenticatedMember().getUserName();">
             
                     <span>
-                        <img src="defaultUser.gif" alt="Blank picture" />
-                			  <br />
+                        <a href="" 
+                           tal:define="member_url python:here.portal_membership.getHomeUrl(lrole[0])"
+                           tal:omit-tag="not: member_url"
+                           tal:attributes="href member_url">
+                        <img src="defaultUser.gif" alt="Blank picture" border="0" width="75" height="100" 
+                             tal:attributes="src python:here.portal_membership.getPersonalPortrait(lrole[0]).absolute_url()" />
+                        </a>
+             			<br />
                 
                         <input class="noborder" 
                                type="checkbox"

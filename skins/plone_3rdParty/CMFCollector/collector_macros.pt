@@ -28,7 +28,6 @@
             <span tal:condition="here/abbrev" i18n:name="abbrev">
                 [<span tal:replace="here/abbrev|nothing"></span>]
             </span>
-            - Issue Collector
         </h1>
 
         <div class="description"
@@ -126,7 +125,7 @@
               <span metal:define-slot="issue_from_slot"
                     tal:content="here/submitter_name">NAME</span>
            </td>
-           <td align="right" i18n:translate="posted_on">on</td>:
+           <td align="right" i18n:translate="posted_on">on</td>
            <td NOWRAP>
              <code>
                <span tal:replace="python: here.aCompact(here.creation_date)">
@@ -229,91 +228,6 @@
        </table>
 
     </div>  <!-- End macro: collector_issue_header -->
-
-    <div metal:define-macro="issue_batch_nav">
-
-      <span tal:condition="nothing">
-        This macros depends on a number of batch parameters being defined in
-        the invoking template:
-          - BATCHSIZE
-          - batch
-          - prev (may be undefined)
-          - next (may be undefined)
-          - last_batch
-      </span>
-
-      <table
-             tal:define="url_query nocall: modules/ZTUtils/url_query;
-                         make_query nocall: modules/ZTUtils/make_query;
-                         base python: url_query(request, omit='b_start')">
-
-        <tr>
-
-          <td align="left" width="30%">
-            <span tal:condition="prev">
-             <strong>
-              <a href="PREVIOUS BATCH" i18n:translate="batch_previous"
-                tal:attributes="href python:
-                                     base+'&'+make_query(b_start=prev.first)">
-               Previous</a>
-              </strong>
-             </span>
-          </td>
-
-          <td align="center" NOWRAP
-              tal:define="total here/length;
-                          found python: len(items)">
-            <strong>
-
-              <span i18n:translate="batch_displaying" omit-tag="">
-              Displaying
-              </span>
-              
-    	      <tal:var replace="batch/start">0</tal:var>
-    
-    	      <tal:if condition="python: batch.start != batch.end">
-    	        <span i18n:translate="batch_to" omit-tag="">to</span> 
-                <tal:var replace="batch/end">10</tal:var>
-    	      </tal:if>
-    
-              <span i18n:translate="batch_to" omit-tag="">
-              of
-              </span>
-    
-              <tal:var replace="found" i18n:name="num_found">100</tal:var>
-    
-    	      <tal:block condition="python: total != found">
-    	        (<tal:var replace="total">1000</tal:var> 
-                 <span i18n:translate="batch_total" omit-tag="">total</span>)
-    	      </tal:block>
-
-            </strong>
-          </td>
-
-          <td align="right" width="30%">
-            <span tal:condition="next">
-             <strong>
-              <a href="NEXT BATCH" i18n:translate="batch_next"
-                tal:attributes="href python:
-                                     base+'&'+make_query(b_start=next.first)">
-              Next</a>
-             </strong>
-            </span>
-          </td>
-
-          <td align="right" width="10%">
-            <strong>
-              <span tal:condition="next">
-                <a href="LAST BATCH"
-                 tal:attributes="href python:
-                                      base+'&'+make_query(b_start=last_batch)">
-                &gt;&gt; </a>
-              </span>
-            </strong>
-          </td>
-        </tr>
-      </table>
-    </div>
 
     <div metal:define-macro="add_artifacts_table">
         

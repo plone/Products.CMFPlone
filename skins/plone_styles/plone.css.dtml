@@ -1,0 +1,881 @@
+/* 
+** Plone style sheet for CSS2-capable browsers.
+** Alexander Limi, 2002 - http://limi.net
+**
+** Thanks to Geir Bækholt, Stian Søiland for input and guidance.
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+*/
+
+
+/*
+**  Instructions to set caching headers. Inside comments area to play nicer with CSS editors.
+**
+** <dtml-let last_modified="_.DateTime()-14" expires="_.DateTime()+1" >
+**   <dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
+**   <dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
+**   <dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+**   <dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
+** </dtml-let>
+*/
+/* <dtml-with stylesheet_properties> */
+
+
+ 
+body {
+    font: &dtml-mainFont;;
+    background: &dtml-mainBackground;;
+    color: &dtml-mainFontColor;;
+    margin: 0;
+    padding: 0;
+/* These work in IE only, changes the look of the scrollbar + textareas */
+    scrollbar-base-color: &dtml-mainTabBackground;;
+    scrollbar-highlight-color: &dtml-mainTabBackground;;
+    scrollbar-track-color: &dtml-evenRowBackground;;
+    scrollbar-darkshadow-color: &dtml-evenRowBackground;;
+    scrollbar-3dlight-color: &dtml-mainTabBorderColorSelected;;
+    scrollbar-shadow-color: &dtml-mainTabBorderColorSelected;;
+    scrollbar-arrow-color: &dtml-mainTabFontColorSelected;;
+}
+
+table {
+    font-size: 100%;
+}
+
+a {
+	text-decoration: none;
+    color: &dtml-mainLinkColor;;
+    background-color: transparent;
+}
+
+table {
+
+}
+
+
+img {
+    border: none;
+	vertical-align: middle;
+}
+
+p {
+    margin: 0.5em 0em 1em 0em;
+    text-align: justify;
+    line-height: 1.5em;
+}
+
+p a {
+    text-decoration: underline;
+}
+
+p a:visited {
+	color: &dtml-contentLinkVisitedColor;;
+    background-color: transparent;
+}
+
+p a:active {
+	color: &dtml-contentLinkActiveColor;;
+    background-color: transparent;
+}
+
+p img {
+    border: &dtml-contentImageBorder;;
+    margin: 0;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: &dtml-mainTabBorderColorSelected;;
+    background-color: transparent;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: &dtml-headingFontColor;;
+    font: &dtml-headingFont;;
+    margin: 1em 0em 0em 0em;
+    border-bottom: 1px solid &dtml-mainTabBorderColor;;
+}
+
+h1 {
+    font-size: &dtml-headingSize1;;
+}
+
+h2 {
+    font-size: &dtml-headingSize2;;
+}
+
+h3 {
+    font-size: &dtml-headingSize3;;
+}
+
+h4 {
+    font-size: &dtml-headingSize4;;
+}
+
+h5 {
+    font-size: &dtml-headingSize5;;
+}
+
+h6 {
+    font-size: &dtml-headingSize6;;
+}
+
+ul { 
+    line-height: 1.5em;
+    list-style-image: url("bullet.gif"); 
+    margin-left: 2em;
+    padding:0;
+}
+
+ol {
+    line-height: 1.5em;
+    margin-left: 2em;
+    padding:0;
+}
+
+dl {
+}
+
+dt {
+    font-weight: bold;    
+}
+
+dd {
+    line-height: 1.5em;
+    margin-bottom: 1em;
+}
+
+
+fieldset {
+    border: &dtml-groupBorder;;
+    margin: 2em 0em 1em 0em;
+    padding: 1em 0em;
+}
+
+legend {
+    background: &dtml-mainBackground;;
+    padding: 0.5em;
+}
+
+
+form {
+    border: none;
+    margin: 0;
+}
+
+textarea {
+    border: &dtml-inputBorder;;  
+    color: &dtml-mainFontColor;;
+    background-color: white;
+    width: 93%;
+    padding: 0.1em;
+}
+
+input {
+    font: &dtml-inputFont;;
+    border: &dtml-inputBorder;;  
+    color: &dtml-mainFontColor;;
+    background-color: white;
+    vertical-align: middle;
+    margin-bottom: 1px; /* IE bug fix */
+    padding: 0.1em;
+}
+
+select {
+    font: &dtml-inputFont;;
+    border: &dtml-inputBorder;;  
+    vertical-align: top;
+}
+
+abbr, acronym, .explain {
+    border-bottom: 1px dotted &dtml-mainFontColor;;
+    color: &dtml-mainFontColor;;
+    background-color: transparent;
+    cursor: help;
+}
+
+
+
+code {
+    font-size: 120%;
+    color: &dtml-mainFontColor;;
+    background-color: &dtml-preBackground;;
+}
+
+pre {
+    font-size: 120%;
+    padding: 1em;
+    border: &dtml-preBorder;;
+    color: &dtml-mainFontColor;;
+    background-color: &dtml-preBackground;;
+}
+
+.netscape4 {
+    display: none;
+}
+
+/*
+** Structural Elements
+*/
+
+div.top {
+    /* Top section */
+    background: &dtml-topBackground;;
+    margin: &dtml-topMargin;;
+    padding: &dtml-topPadding;;
+}
+
+.logo {
+    /* Logo properties */
+    margin: &dtml-logoMargin;;
+    padding: &dtml-logoPadding;;
+}
+
+div.searchBox {
+    /*searchbox style and positioning */
+    background-color: transparent;
+    color: &dtml-searchFontColor;;
+    float: right;
+    margin: &dtml-searchMargin;;
+    padding: &dtml-searchPadding;;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+    width: 30%;
+}
+
+input.searchButton {
+    font-size: 100% ! important;
+    margin-bottom: 1px ! important;
+}
+
+div.tabs {
+    /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
+    background: &dtml-mainTabBackdrop;;
+    border-collapse: collapse;
+    border-bottom-color: &dtml-mainTabBorderColorSelected;;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding: 0.5em 0em 0em 2em;
+    white-space: nowrap;
+}
+
+div.tabs a {
+    /* The normal, unselected tabs. They are all links */
+    background: &dtml-mainTabBackgroundNotSelected;;
+    border-color: &dtml-mainTabBorderColor;;
+    border-width: 1px; 
+    border-style: solid solid none solid;
+    color: &dtml-mainTabFontColor;;
+    font-weight: &dtml-mainTabFontWeight;;
+    margin-right: 0.5em;
+    padding: 0em 2em;
+    text-transform: &dtml-textTransform;;
+}
+
+div.tabs a.selected {
+    /* The selected tab. There's only one of this */
+    background: &dtml-mainTabBackground;;
+    border: 1px solid &dtml-mainTabBorderColorSelected;;
+    border-bottom: &dtml-mainTabBackground; 1px solid;
+    color: &dtml-mainTabFontColorSelected;;
+    font-weight: &dtml-mainTabFontWeight;;
+}
+
+div.tabs a:hover {
+    background: &dtml-mainTabBackground;;
+    border-color: &dtml-mainTabBorderColorSelected;;
+    border-bottom-color: &dtml-mainTabBackground;;
+    color: &dtml-mainTabFontColorSelected;;
+}
+
+div.personalBar {
+    /* Bar with personalized menu (user preferences, favorites etc) */
+    background: &dtml-mainTabBackground;;
+    border-bottom-color: &dtml-mainTabBorderColorSelected;;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    color: &dtml-mainFontColor;;
+    padding-right: 3em;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+}
+
+div.personalBar a {
+    background-color: transparent;
+	color: &dtml-mainTabFontColorSelected;;
+    font-weight: &dtml-mainTabFontWeight;;
+    margin-left: 1em;
+}
+
+div.personalBar img {
+    vertical-align: top;
+}
+
+div.pathBar {
+    /* The path bar, including breadcrumbs and add to favorites */
+    border-bottom-color: &dtml-mainTabBorderColorSelected;;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding-left: 2em;
+    padding-right: 2em;
+    text-transform: &dtml-textTransform;;
+}
+
+.breadcrumbs {
+    float: left;
+    text-transform: &dtml-textTransform;;
+}
+
+.addFavorite {
+    vertical-align: bottom;
+}
+
+table.columns {
+	width: 100%;
+}
+
+table.columns td.left {
+    vertical-align: top;
+    width: 15%;
+    padding: 2em 1em 1em 2em;
+}
+
+table.columns td.main {
+    vertical-align: top;
+    padding: 0em 1em 1em 1em;
+    margin: 0;
+    width: 70%;
+}
+
+table.columns td.right {
+    vertical-align: top;
+    width: 15%;
+    padding: 2em 2em 1em 1em;
+}
+
+#contentTabs {
+    background: &dtml-contentTabBackdrop;;
+    border-collapse: collapse;
+    border-bottom: &dtml-contentTabBorder;;
+    padding-left: 1em;
+    margin-top: 2em;
+    white-space: nowrap;
+}
+
+#contentTabs a {
+    background: &dtml-contentTabBackgroundNotSelected;;
+    border: &dtml-contentTabBorder;;
+    color: &dtml-contentTabFontColor;;
+    font-weight: &dtml-contentTabFontWeight;;
+    margin-right: 0.5em;
+    padding: 0em 2em;
+    text-transform: &dtml-textTransform;;
+}
+
+#contentTabs a.selected {
+    background: &dtml-contentTabBackground;;
+    border-bottom: &dtml-contentTabBackground; 1px solid;
+    color: &dtml-contentTabFontColorSelected;;
+    font-weight: &dtml-contentTabFontWeight;;
+}
+
+#contentTabs a:hover {
+    background-color: &dtml-contentTabBackground;;
+    color: &dtml-contentTabFontColor;;
+}
+
+#contentBar {
+    background: &dtml-contentTabBackground;;
+    border-left: &dtml-contentTabBorder;;
+    border-right: &dtml-contentTabBorder;;
+    color: &dtml-contentTabFontColor;;
+    text-align: right;
+    text-transform: &dtml-textTransform;;
+}
+
+div.document {
+    background: &dtml-contentBackground;;
+    font: &dtml-contentFont;;
+    padding: 0;
+    margin: 0em 0em 2em 0em;
+}
+
+div.editableDocument {
+    background: &dtml-contentBackground;;
+    border: &dtml-contentTabBorder;;
+    font: &dtml-contentFont;;
+    margin: 0em 0em 2em 0em;
+    padding: 0em 2em 2em 2em;
+}
+
+div.documentActions {
+    float: right; 
+    margin-top: 2em;
+}
+
+div.message {
+    background: &dtml-messageBackground;;
+    border: &dtml-messageBorder;;
+    color: &dtml-mainFontColor;;
+    font: &dtml-messageFont;;
+    margin: 2em 0em 1em 0em;
+    padding: 0.5em 1em;
+    vertical-align: middle;
+}
+
+div.message a {
+	color: &dtml-mainFontColor;;
+    text-decoration: underline;
+}
+
+
+
+div.title {
+    margin-top: 1em;
+}
+
+.description {
+    /* The summary text describing the document */
+    font: &dtml-descriptionFont;;
+    display: block;
+    margin: 1em 0em;
+    line-height: 1.5em;
+}
+
+.footer {
+    background: &dtml-footerBackground;;
+    border-top: &dtml-footerBorder;;
+    border-bottom: &dtml-footerBorder;;
+    color: &dtml-mainFontColor;;
+    clear: both;
+    float: none;
+    margin: 2em 0em;
+    padding: 0.5em 0em 1em 0em;
+    text-align: center;
+}
+
+
+/*
+** Widgets
+*/
+
+input.standalone {
+    background: &dtml-standaloneButtonBackground;;
+    color: &dtml-standaloneButtonFontColor;;
+    cursor: pointer;
+    font-size: 80%;
+    font-weight: &dtml-buttonWeight;;
+    margin-bottom: 1em;
+    padding: &dtml-standaloneButtonPadding;;
+    text-transform: &dtml-textTransform;;
+}
+
+input.context {
+    background: &dtml-contextButtonBackground;;
+    color: &dtml-contextButtonFontColor;;
+    cursor: pointer;
+    font-size: 80%;
+    font-weight: &dtml-buttonWeight;;
+    margin-bottom: 1em;
+    padding: &dtml-contextButtonPadding;;
+    text-transform: &dtml-textTransform;;
+}
+
+input.destructive {
+    background: &dtml-destructiveButtonBackground;;
+    border: &dtml-destructiveButtonBorder;;  
+    color: &dtml-destructiveButtonFontColor;;
+    cursor: pointer;
+    font-size: 80%;
+    font-weight: &dtml-buttonWeight;;
+    margin-bottom: 1em;
+    padding: &dtml-destructiveButtonPadding;;
+    text-transform: &dtml-textTransform;;
+}
+
+input.noborder {
+    border: &dtml-noBorder;;
+    margin: 0;
+    background-color: transparent;
+}
+
+div.row {
+    clear: both;
+    min-height: 4em;
+    margin-top: 1em;
+    position: relative;
+}
+
+.group {
+    border: &dtml-groupBorder;;
+    margin: 2em 0em 1em 0em;
+    padding: 0em 1em;
+}
+span.legend {
+    background: &dtml-contentBackground;;
+    padding: 0.5em;
+    position : relative;
+    top: -0.8em;
+    left: 0em;
+}
+
+div.label {
+    font-weight: bold;
+    display: inline;
+    padding-right: 0.5em;
+}
+
+div.field {
+    margin-top: 0.2em;
+}
+
+div.help {
+    background-color: #FFFFE1; 
+    border: 1px solid black; 
+    font-size: 80%;
+    font-weight: normal;
+    line-height: normal;
+    text-align: left;
+    position: absolute;
+    left: -18em;
+    width: 16em;
+    padding: 0.5em;
+}
+
+.error {
+    /* Class for error indication in forms */
+    background: &dtml-messageBackground;;
+    border: &dtml-messageBorder;;
+    padding: 1em;
+    margin: 0;
+    width: 68% !important;
+}
+
+.required {
+    /* Used in addition to class "label" on required elements */
+    background: &dtml-requiredField;;
+}
+
+span.card {
+    background: &dtml-mainTabBackground;;
+    border-color: &dtml-mainTabBorderColor;;
+    border-width: 1px;
+    border-style: solid;
+    float: left;
+    margin: 1em;
+    padding: 1em;
+    text-align: center;
+    width: 15%;
+}
+
+table.listing,
+table.columns td.main table  /* stupid STX table workaround */
+{
+    /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
+    border-collapse: collapse;
+    border-left: &dtml-listingBorder;;
+    border-bottom: &dtml-listingBorder;;
+    font-size: 80%;
+    margin: 1em 0em 1em 0em;
+    clear: both;
+}
+
+table.listing th,
+table.columns td.main table th  /* stupid STX table workaround */
+{
+    background: &dtml-listingHeaderBackground;;
+    border-top: &dtml-listingBorder;;
+    border-bottom: &dtml-listingBorder;;
+    border-right: &dtml-listingBorder;;
+    color: &dtml-listingHeaderFontColor;;
+    font-weight: normal;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+    white-space: nowrap;
+}
+
+table.listing td.top {
+    border-left: 1px solid &dtml-contentBackground;;
+    border-top: 1px solid &dtml-contentBackground; ! important;
+    border-right: 1px solid &dtml-contentBackground; ! important;
+    text-align: right ! important;
+    padding: 0em 0em 1em 0em;
+    /* insane IE row bug workaround */
+    position: relative;
+    left: -1px;
+    top: -1px;
+}
+
+table.listing tr.odd {
+    /*every second line should be shaded */
+    background: &dtml-listingOddBackground;;
+}
+
+table.listing tr.even {
+    background: &dtml-listingEvenBackground;;
+}
+
+table.listing td,
+table.columns td.main table td /* stupid STX table workaround */
+{
+    border-right: &dtml-listingBorder;;
+    padding: 0em 1em;
+    text-align: left;
+}
+
+table.listing a:hover {
+    text-decoration: &dtml-listingLinkHover;;
+}
+
+table.listing img {
+	vertical-align: middle;
+}
+
+table.columns td.main table p /* stupid STX table workaround */
+{
+    margin: 0;
+    padding: 0;
+}
+
+table.columns td.main table  /* stupid STX table workaround */
+{
+    border-top: &dtml-listingBorder;;
+}
+
+table.box {
+    background: transparent;
+    border-collapse: collapse;
+    border-bottom: &dtml-boxBorder;;
+    border-left: &dtml-boxBorder;;
+    margin: 0;
+    margin-bottom: 2em;
+}
+
+table.box th {
+    background: &dtml-boxHeaderBackground;;
+    border-top: &dtml-boxBorder;;
+    border-bottom: &dtml-boxBorder;;
+    border-right: &dtml-boxBorder;;
+    color: &dtml-boxHeaderFontColor;;
+    font-weight: normal;
+    padding: 0em 1em;
+    text-align: left;
+    text-transform: &dtml-textTransform;;
+}
+
+table.box th.empty {
+    background-color: transparent;
+    border: none;
+    border-bottom: &dtml-boxBorder;;
+}
+
+table.box tr.odd {
+    background: &dtml-boxOddBackground;;
+}
+
+table.box tr.even {
+    background-color: &dtml-boxEvenBackground;;
+}
+
+table.box td {
+    border-right: &dtml-boxBorder;;
+    padding: 1em;
+}
+
+table.box img{
+	vertical-align: middle;
+}
+
+div.box {
+    background: transparent;
+    border-collapse: collapse;
+    border: &dtml-boxBorder;;
+    margin: 0em 0em 2em 0em;
+    padding: 0;
+}
+
+.boxTitle {
+    background: &dtml-boxHeaderBackground;;
+    border: &dtml-boxBorder;;
+    border-style: solid solid none solid;
+    color: &dtml-boxHeaderFontColor;;
+    padding: 0em 1em 0em 1em;
+    text-transform: &dtml-textTransform;;
+}
+
+.boxDetails {
+    text-align: right;
+}
+
+
+div.box .content {
+    padding: 1em;
+}
+
+div.box a.close {
+    float: right;
+    text-transform: none;
+    border-left: &dtml-boxBorder;;
+    padding: 0em 0.2em;
+}
+
+div.box h1, 
+div.box h2, 
+div.box h3, 
+div.box h4, 
+div.box h5, 
+div.box h6 {
+    margin: 0;
+}
+
+
+
+div.spacer {
+	margin: 1em;
+}
+
+.private {
+    color: Black;
+}
+
+.published {
+    color: #74AE0B;
+}
+
+.pending {
+    color: #FFA500;
+}
+
+.syndicated {
+    color: #008000;
+}
+
+.expired {
+    color: Red;
+}
+
+.even {
+    background-color: &dtml-evenRowBackground;;
+}
+
+.odd {
+    background-color: &dtml-oddRowBackground;;
+}
+
+.highlight {
+    background-color: &dtml-evenRowBackground;;
+}
+
+div.listingBar {
+    background: &dtml-mainTabBackground;;
+    border-color: &dtml-mainTabBorderColorSelected;;
+    border-style: solid;
+    border-width: 1px;
+    padding: 0em 1em;
+    text-align: center;
+    text-transform: &dtml-textTransform;;
+    clear: both;
+    vertical-align: top;
+    margin: 1em 0em;
+}
+
+div.listingBar span.previous {
+    text-align: left;
+    float: left;
+}
+
+div.listingBar span.next {
+    text-align: right;
+    float: right;
+}
+
+div listingBar img {
+	vertical-align: middle;
+}
+
+
+/*
+** Calendar elements - used in the calendar rendering 
+*/
+
+div.day {
+    background-color: #FFFFBB;
+    border: 1px solid Black;
+    padding: 0.2em;
+    position: absolute;
+    visibility: hidden;
+    width: 12em;
+    z-index: 2;
+}
+
+div.date {
+    font-weight: bold;
+}
+
+  
+table.calendar {
+    border: &dtml-boxBorder;;
+    margin: 0em 1em 1em 0em;
+    text-align: right;
+}
+
+table.calendar a {
+    text-decoration: none;
+    color: &dtml-boxLinkColor;;
+}
+
+table.calendar a:hover {
+    text-decoration: none;
+}
+
+table.calendar th {
+    background-color: &dtml-boxHeaderBackground;;
+    color: &dtml-boxHeaderFontColor;;
+    font-weight: bold;
+    text-align: center;
+}
+
+table.calendar td {
+    background-color: transparent;
+    width: 1.5em;
+    padding: 2px;
+}
+
+table.calendar td.weekdays {
+    background-color: &dtml-boxHeaderBackground;;
+    border: &dtml-boxBorder;;
+    border-style: solid none;
+    text-align: center;
+}
+
+table.calendar td.event {
+    background-color: &dtml-boxHeaderBackground;;
+    font-weight: bold;
+}
+
+table.calendar td.noevent {
+    background-color: transparent;
+}
+
+table.calendar td.todayevent {
+    background-color: &dtml-boxHeaderBackground;;
+    border: &dtml-boxHighlight;;
+    font-weight: bold;
+}
+
+table.calendar td.todaynoevent {
+    border-collapse: collapse;
+    border: &dtml-boxHighlight;;
+}
+
+
+
+
+
+
+/* </dtml-with> */
+

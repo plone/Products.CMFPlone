@@ -1,40 +1,50 @@
-<!-- The default Related Items box -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<table metal:define-macro="relatedBox"
-       i18n:domain="plone"
-       tal:define="localContent here/navigationLocalRelated;
-                       remoteContent here/navigationRemoteResources;"
-       tal:condition="python:test(localContent or remoteContent, 1, 0)"
-       class="box" summary="Related Items" cellpadding="0" cellspacing="0">
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
 
-    <thead>
-        <tr><th i18n:translate="box_related">Related</th><th class="empty">&nbsp;</th></tr>
-    </thead>
-    <!-- runyaga: need code that shows related items by keyword in top row, links in same folder in bottom row -->
-    <tbody >
-        <tr class="odd">
-            <td colspan="2">
-                <strong tal:condition="localContent" i18n:translate="box_local_resources">Local resources</strong> <br />
-                 
-                <span tal:repeat="related localContent">
-                        <a href="" 
-                           tal:attributes="href string:${related/url}/view"
-                           class="marker"><img src="" 
-                                               border="0" 
-                                               tal:attributes="src string:$portal_url/${related/icon}" />&nbsp;<span tal:replace="related/title">Object related by keyword</span></a><br />
-                </span> 
-            </td>
-        </tr>
-        <tr class="even" tal:condition="remoteContent">
-            <td colspan="2">
+<body>
+
+<!-- The Related Items box -->
+
+<div metal:define-macro="relatedBox"
+     tal:define="localContent here/navigationLocalRelated;
+                 remoteContent here/navigationRemoteResources;"
+     tal:condition="python:test(localContent or remoteContent, 1, 0)" >
+
+    <span class="boxTitle" i18n:translate="box_related">Related</span>
+    
+    <div class="box">
+        <div class="content odd" tal:condition="localContent" >        
+            <strong i18n:translate="box_local_resources">Local resources</strong> 
+            <br />
+            
+            <div tal:repeat="related localContent">
+                    <a href="" 
+                       tal:attributes="href string:${related/url}/view">
+                       <img src="" 
+                            border="0" 
+                            tal:attributes="src string:$portal_url/${related/icon}" />
+                            &nbsp;<span tal:replace="related/title">Object related by keyword</span>
+                    </a>
+            </div> 
+        </div>
+      
+        <div class="content even" tal:condition="remoteContent">
             <strong i18n:translate="box_external_links">External links</strong>
-            <span tal:repeat="o remoteContent">
+            <div tal:repeat="o remoteContent">
                     <a href=""
-                       class="marker" 
                        tal:attributes="href python:o[1]" 
                        tal:content="python:o[0]">Link object in same folder</a>
-            </span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
+

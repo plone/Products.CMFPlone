@@ -4,6 +4,11 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
        xmlns:metal="http://xml.zope.org/namespaces/metal"
        metal:use-macro="here/main_template/macros/master">
+
+<metal:block metal:fill-slot="base">
+  <base href="" tal:attributes="href string:${here/absolute_url}/" />
+</metal:block>
+  
 <body>
 
 <div metal:fill-slot="header"

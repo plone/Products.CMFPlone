@@ -1,12 +1,13 @@
-# $Id: NavigationTool.py,v 1.30 2002/10/17 00:48:12 zopezen Exp $
+# $Id: NavigationTool.py,v 1.28.2.11 2002/10/27 20:57:12 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
-__version__ = "$Revision: 1.30 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.31 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
 from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
+from Acquisition import Implicit
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
@@ -36,6 +37,37 @@ class NavigationTool (UniqueObject, SimpleItem):
     security.declarePublic('getNext')
     def getNext(self, context, script, status, trace=['\n'], **kwargs):
         """ Perform the next action specified by in portal_properties.navigation_properties.
+            Get the object that will perform the next action, then call the object
+            to perform the next action.
+
+            context - the current context
+
+            script - the script/template currently being called
+
+            status - 'success' or 'failure' strings used in calculating destination
+
+            kwargs - additional keyword arguments are passed to subsequent pages either in
+                the REQUEST or as GET parameters if a redirection needs to be done
+
+            trace - navigation trace for internal use
+        """
+        try:
+            trace.append('Getting next object for %s.%s.%s' % (context, script, status))
+            (obj, kwargs) = self.getNextObject(context, script, status, trace, **kwargs)
+            return apply(obj, (), {'REQUEST':context.REQUEST})
+
+        except NavigationError:
+            raise
+        except Exception, e:
+             raise NavigationError(e, trace)
+
+
+    security.declarePublic('getNextObject')
+    def getNextObject(self, context, script, status, trace=['\n'], **kwargs):
+        """ Get the object that will perform the next action specified by
+            portal_properties.navigation_properties.  Returns an object that
+            can be placed on the traversal stack so that it will get called
+            during publishing.
 
             context - the current context
 
@@ -50,24 +82,25 @@ class NavigationTool (UniqueObject, SimpleItem):
         """
         try:
             trace.append('Looking up transition for %s.%s.%s' % (context, script, status))
-            (transition_type, transition) = self.getNavigationTransition(context, script, status)
+            (transition_type, redirect, transition) = self.getNavigationTransition(context, script, status)
             trace.append('Found transition: %s, %s' % (transition_type, transition))
             self.log("%s.%s.%s(%s) -> %s:%s" % (context, script, status, str(kwargs), transition_type, transition), 'getNext')
 
             if transition_type == 'action':
-                return self._dispatchAction(context, transition, trace, **kwargs)
+                return self._getAction(context, transition, redirect, trace, **kwargs)
             elif transition_type == 'url':
-                return self._dispatchUrl(context, transition, trace, **kwargs)
+                return self._getUrl(context, transition, redirect, trace, **kwargs)
             elif transition_type == 'script':
-                return self._dispatchScript(context, transition, trace, **kwargs)
+                return self._getScript(context, transition, redirect, trace, **kwargs)
             else:
-                return self._dispatchPage(context, transition, trace, **kwargs)
+                raise KeyError('Unknown transition type %s' % transition_type)
         except NavigationError:
             raise
         except Exception, e:
              raise NavigationError(e, trace)
 
 
+    
     def addTransitionFor(self, content, script, status, destination):
         """ Adds a transition.  When SCRIPT with context CONTENT returns STATUS, go to DESTINATION
 
@@ -131,10 +164,8 @@ class NavigationTool (UniqueObject, SimpleItem):
         if content is None:
             content = 'Default'
         if hasattr(content, 'getTypeInfo'):
-#        if hasattr(content, '_isPortalContent'): #XXX Contentish xface
             content = content.getTypeInfo()
         if hasattr(content, 'getId'): #XXX use a xface
-#        if hasattr(content, '_isTypeInformation'): #XXX use a xface
             content = content.getId()
         # handle types without getTypeInfo (e.g. CMFSite)
         if type(content) != type(''):
@@ -182,13 +213,29 @@ class NavigationTool (UniqueObject, SimpleItem):
         return action2
 
 
+    # parse a transition into a transition type, a redirect flag, and an argument
     def _parseTransition(self, transition):
-        type_list = ['action', 'url', 'script']
+        transition_types = [  {'id':'action', 'default_redirect':1}
+                            , {'id':'url', 'default_redirect':1}
+                            , {'id':'script', 'default_redirect':0}
+                           ]
 
-        for t in type_list:
-            if transition.startswith(t+':'):
-                return (t, transition[len(t)+1:].strip())
-        return (None, transition.strip())
+        redirect = None
+        if transition.startswith('redirect:'):
+            redirect = 1
+            transition = transition[len('redirect:'):]
+        elif transition.startswith('noredirect:'):
+            redirect = 0
+            transition = transition[len('noredirect:'):]
+
+        for t in transition_types:
+            if transition.startswith(t['id']+':'):
+                if redirect == None:
+                    redirect = t['default_redirect']
+                return (t['id'], redirect, transition[len(t['id'])+1:].strip())
+        if redirect == None:
+            redirect = 0
+        return ('url', redirect, transition.strip())
 
 
     def getNavigationTransition(self, context, script, status):
@@ -218,33 +265,12 @@ class NavigationTool (UniqueObject, SimpleItem):
         return self._parseTransition(transition)
 
 
-    def _dispatchPage(self, context, page, trace, **kwargs):
-        # If any query parameters have been specified in the transition,
-        # stick them into the request before calling getActionById()
+    def _getScript(self, context, script, redirect, trace, **kwargs):
+        if redirect:
+            return self._getUrl(context, script, redirect, trace, **kwargs)
         try:
-            queryIndex = page.find('?')
-            if queryIndex > -1:
-                query = parse_qs(page[queryIndex+1:])
-                for key in query.keys():
-                    if len(query[key]) == 1:
-                        self.REQUEST[key] = query[key][0]
-                    else:
-                        self.REQUEST[key] = query[key]
-                page = page[0:queryIndex]
-
-            trace.append("dispatchPage: page = " + str(page) + ", context = " + str(context))
-            self.log("page = " + str(page) + ", context = " + str(context), '_dispatchPage')
-            return apply(context.restrictedTraverse(page), (context, context.REQUEST), kwargs)
-        except NavigationError:
-            raise
-        except Exception, e:
-            raise NavigationError(e, trace)
-
-
-    def _dispatchScript(self, context, script, trace, **kwargs):
-        try:
-            self.log('calling ' + script, '_dispatchScript')
-            trace.append('dispatchScript: script = %s' % (str(script)))
+            self.log('calling ' + script, '_getScript')
+            trace.append('_getScript: script = %s' % (str(script)))
 
             request = {}
             for key in self.REQUEST.keys():
@@ -272,40 +298,62 @@ class NavigationTool (UniqueObject, SimpleItem):
             new_context = script_status.new_context
             if new_context is None:
                 new_context = context
-            self.log('status = %s, new_context = %s, kwargs = %s' % (str(status), str(new_context), str(kwargs)), '_dispatchScript')
+            self.log('status = %s, new_context = %s, kwargs = %s' % (str(status), str(new_context), str(kwargs)), '_getScript')
 
-            return self.getNext(new_context, script, status, trace, **kwargs)
+            return self.getNextObject(new_context, script, status, trace, **kwargs)
         except NavigationError:
             raise
         except Exception, e:
             raise NavigationError(e, trace)
 
 
-    def _dispatchUrl(self, context, url, trace, **kwargs):
+    def _getUrl(self, context, url, redirect, trace, **kwargs):
         try:
-            url = self._addUrlArgs(url, kwargs)
-            if len(urlparse(url)[1]) == 0:
-                # no host specified -- url is relative
-                # get an absolute url
-                url = urljoin(context.absolute_url()+'/', url)
-            self.log('url = ' + str(url), '_dispatchUrl')
-            trace.append('dispatchUrl: url = %s' % (str(url)))
-            return self.REQUEST.RESPONSE.redirect(url)
+            if redirect:
+                url = self._addUrlArgs(url, kwargs)
+                if len(urlparse(url)[1]) == 0:
+                    # no host specified -- url is relative
+                    # get an absolute url
+                    url = urljoin(context.absolute_url()+'/', url)
+                self.log("url = %s, redirect = %s, context = %s" % (str(url), str(redirect), str(context)), '_getUrl')
+                trace.append("_getUrl: url = %s, redirect = %s, context = %s" % (str(url), str(redirect), str(context)))
+                return (Redirector(url), kwargs)
+            else:
+                # If any query parameters have been specified in the transition,
+                # stick them into the request before calling getActionById()
+                queryIndex = url.find('?')
+                if queryIndex > -1:
+                    query = parse_qs(url[queryIndex+1:])
+                    for key in query.keys():
+                        if len(query[key]) == 1:
+                            self.REQUEST[key] = query[key][0]
+                        else:
+                            self.REQUEST[key] = query[key]
+                    url = url[0:queryIndex]
+                # put kwargs into REQUEST -- kwargs override args in url
+                if kwargs:
+                    for key in kwargs.keys():
+                        self.REQUEST[key] = kwargs[key]
+
+                self.log("url = %s, redirect = %s, context = %s" % (str(url), str(redirect), str(context)), '_getUrl')
+                trace.append("_getUrl: url = %s, redirect = %s, context = %s" % (str(url), str(redirect), str(context)))
+                return (context.restrictedTraverse(url), kwargs)
         except NavigationError:
             raise
         except Exception, e:
             raise NavigationError(e, trace)
 
 
-    def _dispatchAction(self, context, action_id, trace, **kwargs):
+    def _getAction(self, context, action_id, redirect, trace, **kwargs):
         try:
             next_action = context.getTypeInfo().getActionById(action_id)
+            trace.append('_getAction: next_action = %s' % (str(next_action)))
             if next_action is None:
                 raise KeyError("Unknown action '%s' for type %s." % (action_id, context.getTypeInfo().getId()))
-            url = self._addUrlArgs(next_action, kwargs)
-            self.log('url = ' + str(url), '_dispatchAction')
-            trace.append('dispatchAction: url = %s' % (str(url)))
-            return self.REQUEST.RESPONSE.redirect('%s/%s' % (context.absolute_url(), url))
+            # make sure we don't end up with nested portal_form calls
+            if next_action.startswith('portal_form/') and context.REQUEST.URL.find('portal_form') != -1:
+                next_action = next_action[len('portal_form/'):]
+            return self._getUrl(context, next_action, redirect, trace, **kwargs)
         except NavigationError:
             raise
         except Exception, e:
@@ -335,11 +383,16 @@ class NavigationTool (UniqueObject, SimpleItem):
     security.declarePublic('log')
     def log(self, msg, loc=None):
         """ """
-        if debug:
-            if loc is None:              
-                debug_log(msg + ' - NavigationTool')
-            else:
-                debug_log(msg + ' - NavigationTool.'+loc)
+        props = getToolByName(self, 'portal_properties')
+        site_props = props.site_properties
+        debug = getattr(site_props, 'enable_navigation_logging', 0)
+
+        if not debug:
+            return
+        prefix = 'NavigationTool'
+        if loc:
+            prefix = prefix + '. ' + str(loc)
+        debug_log(prefix+': '+str(msg))
 
 
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
@@ -350,7 +403,7 @@ class NavigationTool (UniqueObject, SimpleItem):
             for this object 
         """
         log_deprecated('NavigationTool.getNextPageFor() has been marked for deprecation')
-        (transition_type, action_id) = self.getNavigationTransition(context,script,status)
+        (transition_type, redirect, action_id) = self.getNavigationTransition(context,script,status)
         
         # If any query parameters have been specified in the transition,
         # stick them into the request before calling getActionById()
@@ -408,15 +461,20 @@ class NavigationError(Exception):
     RE_BAD_VALIDATOR = re.compile("\'None\' object has no attribute \'co_varnames\'")
 
     def __init__(self, exception, trace):
+        global __version__
         self.exception = exception
         self.trace = '\n'.join(trace) + '\n\n' + ''.join(traceback.format_exception(*sys.exc_info()))
-        self.trace = self.trace.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        import zLOG
+        zLOG.LOG('Plone: ', 0, str(self.exception) \
+                + '\n\nNavigation trace: (version ' + __version__.strip() + ')\n-----------------' \
+                + self.trace + self._helpfulHints())
+#        self.trace = self.trace.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+#        return '<pre>' + str(self.exception) \
+#                       + '\n\nNavigation trace: (version ' + __version__.strip() + ')\n-----------------' \
+#                       + self.trace + self._helpfulHints() + '</pre>'
 
     def __str__(self):
-        global __version__
-        return '<pre>' + str(self.exception) \
-                       + '\n\nNavigation trace: (version ' + __version__.strip() + ')\n-----------------' \
-                       + self.trace + self._helpfulHints() + '</pre>'
+        return str(self.exception)
 
     def _helpfulHints(self):
         st = str(self.exception)
@@ -427,6 +485,7 @@ class NavigationError(Exception):
             hint = '\n\nHelpful Hints:\n--------------\n' + hint
         return hint
 
+
 # Eventually this object will be the preferred return type for scripts that are handled
 # by the navigation machinery.
 class ScriptStatus:
@@ -434,3 +493,46 @@ class ScriptStatus:
         self.status = status
         self.kwargs = kwargs
         self.new_context = new_context
+
+class Redirector(SimpleItem):
+    """
+    Placeholder object for a redirect.  When a Redirector is placed in the
+    traversal stack, it will result in a redirect.  Note that the Redirector
+    does not need to be at the end of the stack -- if it is not, it will cut
+    traversal short so that it ends up at the end of the stack.  Redirector
+    objects are used by NavigationTool and FactoryTool.
+    """
+    security = ClassSecurityInfo()
+
+    def __init__(self, url):
+        self.url = url
+
+
+    def __before_publishing_traverse__(self, other, REQUEST):
+        # prevent further traversal
+        REQUEST.set('TraversalRequestNameStack', [])
+
+
+    security.declarePublic('__call__')
+    def __call__(self, client=None, REQUEST={}, RESPONSE=None, **kw):
+        """ """
+        if RESPONSE:
+            response = RESPONSE
+        else:
+            response = REQUEST.RESPONSE
+        return response.redirect(self.url)
+
+
+    index_html = None  # call __call__, not index_html
+
+
+    security.declarePublic('log')
+    def log(self, msg, loc=None):
+        """ """
+        if not debug:
+            return
+        prefix = 'Redirector'
+        if loc:
+            prefix = prefix + '. ' + str(loc)
+        debug_log(prefix+': '+str(msg))
+InitializeClass(Redirector)

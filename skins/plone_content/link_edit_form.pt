@@ -19,22 +19,18 @@
     Enter the relevant details below, and press 'Save'.
     </p>
 
-        <span tal:replace="nothing">
-        ##### SET THE FORM ACTION TO request/url FOR THE FORM_TOOL -- CUT AND PASTE INTO YOUR FORM ####
-        </span>
         <form class="group"
               action=""
               name="edit_form" 
               method="post"
-              tal:attributes="action request/URL" >
+              tal:attributes="action python:here.portal_form_url(template.id)" >
         
         <span class="legend" i18n:translate="legend_link_details">Link Details</span>
 
         <div class="row" 
+             tal:condition="python: getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', None)"
              tal:define="error_id errors/id | nothing;
-                         id python:request.get('id', here.getId());"
-             tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
-                                          'visibility:hidden;;position:absolute;;left:0;;top:0', '')" >
+                         id python:request.get('id', here.getId());">
             <div class="label required">
             
                 <span i18n:translate="label_name">Short Name</span>
@@ -69,6 +65,11 @@
             </div>
 
         </div>
+        <input type="hidden" 
+               name="id" 
+               tal:condition="python: not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids')"
+               tal:attributes="value python:request.get('id', here.getId())" 
+               />
       
         <div class="row"
              tal:define="error_title errors/title|nothing;
@@ -175,10 +176,6 @@
                        />
             </div>
         </div>
-
-        <span tal:replace="nothing">
-        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
-        </span>
         <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
     </form>   
 </div>

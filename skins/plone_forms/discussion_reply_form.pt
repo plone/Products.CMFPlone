@@ -20,7 +20,8 @@
     <form class="group"
           name="edit_form"
           method="post"
-          action="talkback">
+          action="talkback"
+          >
 
         <span class="legend" i18n:translate="legend_comment_details">Comment Details</span>
 

@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.22 2002/09/12 15:18:16 plonista Exp $
+# $Id: FormTool.py,v 1.23.2.3 2002/10/24 10:21:20 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.22 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.23.2.3 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -104,6 +104,7 @@ class FormTool(UniqueObject, SimpleItem):
 
 
     def __bobo_traverse__(self, REQUEST, name):
+        self.log('in bobo_traverse (%s)' % name)
         # We intercept traversal when a form needs validation.  We insert a FormValidator object
         # into the traversal stack which, when published, does the proper validation and then
         # hands off to the navigation tool to determine the correct object to publish.
@@ -111,12 +112,31 @@ class FormTool(UniqueObject, SimpleItem):
         # see if we are handling validation for this form
         validators = self.getValidators(name)
         if validators is None:
-            # no -- do normal traversal
-            target = getattr(aq_parent(self), name, None)
-            if target:
-                return target
+
+            # make sure this is a normal REQUEST
+            if hasattr(REQUEST, 'RESPONSE'):
+                parent = aq_parent(self)
+                # no -- do normal traversal
+                parent = aq_parent(self)
+                if hasattr(parent, '__bobo_traverse__'):
+                    return parent.__bobo_traverse__(REQUEST, name)
+                if hasattr(parent, name):
+                    return getattr(parent, name)
+                try:
+                    return parent[name]
+                except:
+                    pass
+                return REQUEST.RESPONSE.notFoundError(name)
+            # no, this is a fake request issued by unrestrictedTraverse
             else:
-                return REQUEST.RESPONSE.notFoundError("%s\n" % (name))
+                if hasattr(self, name):
+                    return getattr(self, name)
+                try:
+                    return self[name]
+                except:
+                    pass
+                raise KeyError, name
+
 
         # There are three potential points of entry to a form:
         # 1) The form is accessed directly from a URL, e.g. http://plone/portal_form/link_edit:
@@ -148,7 +168,8 @@ class FormTool(UniqueObject, SimpleItem):
             else:
                 return REQUEST.RESPONSE.notFoundError("%s\n" % (name))
 
-        return FormValidator(name, validators).__of__(aq_parent(self)) # wrap in acquisition layer
+        self.log('returning validator')
+        return FormValidator(name, validators, aq_parent(self)).__of__(aq_parent(self)) # wrap in acquisition layer
 
 
     # DEPRECATED
@@ -184,10 +205,12 @@ class FormValidator(SimpleItem):
     # hands off to a page determined by the NavigationTool
     security = ClassSecurityInfo()
 
-    def __init__(self, form, validators):
+    def __init__(self, form, validators, context):
         self.form = form
         self.validators = validators
-
+        self.id = "temp"
+        self.title = None
+        self.log("created validator")
 
     def __str__(self):
         return 'FormValidator, form=%s, validators=%s' % \
@@ -195,8 +218,9 @@ class FormValidator(SimpleItem):
 
 
     security.declarePublic('__call__')
-    def __call__(self, REQUEST, **kw):
+    def __call__(self, client=None, REQUEST={}, RESPONSE=None, **kw):
         """ """
+        self.log("__call__")
         trace = ['\n']
 
         try:
@@ -205,7 +229,15 @@ class FormValidator(SimpleItem):
             # invoke validation
             (status, kwargs, trace) = self._validate(context, REQUEST, trace)
 
-            return context.portal_navigation.getNext(context, self.form, status, trace, **kwargs)
+            (obj, kwargs) = context.portal_navigation.getNextObject(context, self.form, status, trace, **kwargs)
+            kwargs['REQUEST'] = self.REQUEST
+            # Set the FormValidator's id and title to those of the published object
+            # so that breadcrumbs can extract an id and title from the traversal stack.
+            if obj:
+                self.id = getattr(obj, 'id', None)
+                self.title = getattr(obj, 'title', None)
+            return apply(obj, (), kwargs)
+
         except NavigationError:
             raise
         except Exception, e:

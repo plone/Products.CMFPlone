@@ -24,15 +24,6 @@ o=getattr(context, id, None)
 if o is None:
     raise Exception
 
-view=''
-try:
-    view=o.getTypeInfo().getActionById('edit')
-except (TypeError, ValueError, KeyError): #edit action doesnt exist try view action
-    view=o.getTypeInfo().getActionById('view')
-
 transaction_note(o.getTypeInfo().getId() + ' was created.')
-return REQUEST.RESPONSE.redirect('%s/%s?portal_status_message=%s' % ( o.absolute_url()
-                                                                     , view
-                                                                     , type_name + ' has been created.') )
-
-
+return context.portal_navigation.getNext(o, script.getId(), 'success',
+                                         portal_status_message = type_name + ' has been created.')

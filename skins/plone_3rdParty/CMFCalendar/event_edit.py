@@ -12,8 +12,10 @@
 # it expects bite sized chunks....
 from DateTime import DateTime
 
-dt_start = DateTime( start_date )
-dt_end = DateTime( end_date )
+#dt_start = context.fromPortalTime( start_date )
+#dt_end = context.fromPortalTime( end_date )
+dt_start = DateTime(start_date)
+dt_end = DateTime(end_date)
 
 try:
     new_context = context.portal_factory.doCreate(context, id)

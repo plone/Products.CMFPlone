@@ -25,13 +25,12 @@
           action="event_edit" 
           method="post" 
           enctype="multipart/form-data"
-          tal:attributes="action request/URL" >
+          tal:attributes="action python:here.portal_form_url(template.id)" >
 
     <span class="legend" i18n:translate="legend_event_details">Event Details</span>    
       
         <div class="row" 
-             tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
-                                          'visibility:hidden;;position:absolute;;left:0;;top:0', '')"
+             tal:condition="python: getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', None)"
              tal:define="error_id errors/id | nothing;
 	                 id python:request.get('id', here.getId());">
 			 
@@ -62,6 +61,12 @@
             </div>
 	    
         </div>
+        <input type="hidden" 
+               name="id" 
+               tal:condition="python: not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids')"
+               tal:attributes="value python:request.get('id', here.getId())" 
+               />
+        
 
         <div class="row"
              tal:define="error_title errors/title|nothing;

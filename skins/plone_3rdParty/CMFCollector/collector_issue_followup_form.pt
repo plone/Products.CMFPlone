@@ -12,6 +12,11 @@
       xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
+
+<metal:block metal:fill-slot="base">
+  <tal:block tal:define="dummy python:request.set('enable_border',1)" />
+</metal:block>
+
 <body>
 
 <span tal:condition="nothing">
@@ -46,7 +51,8 @@
 <form class="group"
       method="post" 
       enctype="multipart/form-data"
-      action="collector_issue_followup"
+      action=""
+      tal:attributes="action string:${here/absolute_url}/collector_issue_followup"
       tal:define="actions_pairs here/valid_actions_pairs">
 
     <span class="legend" i18n:translate="legend_follow_up_details">Follow-up details</span>    

@@ -1,0 +1,25 @@
+To: <span tal:omit-tag="" tal:content="request/send_to_address | options/send_to_address" />
+From: <span tal:omit-tag="" tal:content="request/send_from_address | options/send_from_address" />
+Subject: <span tal:omit-tag="" tal:content="here/Title | options/title" />
+Content-Type: text/plain; charset=<span tal:omit-tag="" tal:content="here/portal_properties/site_properties/default_charset" />
+
+This link is sent to you from <span tal:omit-tag="" tal:content="here/portal_url" />
+
+You are receiving this mail because someone read a page at 
+<span tal:omit-tag="" tal:content="here/portal_url/Title" /> 
+and thought it might interest you.
+
+It is sent by <span tal:omit-tag="" tal:content="request/send_from_address | options/send_from_address" 
+/><metal:block tal:condition="request/comment | options/comment | nothing"
+>with the following comment: 
+"<span tal:omit-tag="" tal:content="request/comment | options/comment | nothing" />"
+</metal:block>
+
+<span tal:omit-tag="" tal:content="here/Title | options/title" />
+
+<span tal:omit-tag="" tal:content="here/description | options/description" />
+
+<span tal:omit-tag="" tal:content="here/absolute_url | options/url" />
+
+--
+<span tal:omit-tag="" tal:content="here/email_from_name" />

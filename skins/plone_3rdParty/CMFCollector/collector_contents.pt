@@ -13,6 +13,8 @@
 
 <body>
 
+<metal:block fill-slot="base"> <tal:block tal:define="dummy python:request.set('enable_border',1)" /> </metal:block>
+
 <div metal:fill-slot="header"
      tal:define="global collector_header_present python: 1">
 
@@ -31,7 +33,7 @@
     </div>
 </div>
 
-<div tal:define="Batch python:modules['ZTUtils'].Batch;
+<div tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                  pysutil modules/Products.PythonScripts.standard;
                  strmod modules/string;
                  cap nocall: strmod/capitalize;
@@ -46,29 +48,34 @@
                              and (request.set('status',
                                               ['Pending', 'Accepted'])));
                  items here/collector_search;
-                 batch python: Batch(items, BATCHSIZE, int(b_start), orphan=0);
-                 prev batch/previous;
-                 next batch/next|nothing;
-                 last_batch python: max(int(here.length()) - BATCHSIZE, 1)">
+                 batch python: Batch(items, BATCHSIZE, int(b_start), orphan=0);">
 
-    <div metal:use-macro="here/collector_macros/macros/issue_batch_nav">
-    ISSUE-BATCH NAVIGATION
+    <div tal:define="total here/length;
+                     found python:len(items);">
+        Found 
+        <span tal:replace="found">found</span> 
+        issues. In total there are 
+        <span tal:replace="total">total</span>
+        issues in this collector.
     </div>
+    
+    <!-- Navigation -->
+    <div metal:use-macro="here/batch_macros/macros/navigation" />
 
 
     <table id="sortable" class="listing">
       <thead>
       <tr>
-        <th i18n:translate="listingheader_issue">Issue</th>
-        <th i18n:translate="listingheader_title">Title</th>
-        <th i18n:translate="listingheader_submitter">Submitter</th>
-        <th i18n:translate="listingheader_date">Date</th>
-        <th i18n:translate="listingheader_status">Status</th>
-        <th i18n:translate="listingheader_description">Description</th>
+        <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_issue">Issue</span>&nbsp;</th>
+        <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_title">Title</span>&nbsp;</th>
+        <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_submitter">Submitter</span>&nbsp;</th>
+        <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_date">Date</span>&nbsp;</th>
+        <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_status">Status</span>&nbsp;</th>
       </tr>
       </thead>
       
-      <tbody tal:repeat="itemnum python: range(len(batch))">
+      <tbody>
+        <metal:block tal:repeat="itemnum python: range(len(batch))">
         <tr tal:define="oddrow repeat/itemnum/odd"
                       tal:attributes="class python:test(oddrow, 'even', 'odd')">
         <metal:block tal:define="global item python:batch[itemnum];
@@ -168,34 +175,15 @@
             </span>
           </td>
 
-
-          <td>
-          <metal:block tal:content="python: item.Description[:DESCRLEN]
-                               + (item.Description[DESCRLEN:] and '...')">
-              DESCRIPTION
-          </metal:block>
-      
-          <tal:block condition="python:numcmts==1"
-	      i18n:translate="collector_issue_one_comment">
-              (1 comment)
-          </tal:block>
-          <tal:block condition="python:numcmts>1"
-	      i18n:translate="collector_issue_num_comments">
-              (<span tal:replace="numcmts" i18n:name="num">NUM COMMENTS</span>
-              comments)
-          </tal:block>
-
-          </td>
-
         </metal:block>
         </tr>
+      </metal:block>
       </tbody>
 
     </table>
 
-    <div metal:use-macro="here/collector_macros/macros/issue_batch_nav">
-    ISSUE-BATCH NAVIGATION
-    </div>
+    <!-- Navigation -->
+    <div metal:use-macro="here/batch_macros/macros/navigation" />
 
 
     <form class="group" 

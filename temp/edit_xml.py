@@ -1,4 +1,4 @@
-## Script (Python) "edit_xml"
+## Script (Python) "edit_xml" 
 ##bind container=container
 ##bind context=context
 ##bind namespace=

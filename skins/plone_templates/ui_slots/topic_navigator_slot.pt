@@ -1,34 +1,54 @@
-<!-- CMFTopic based navigation box -->
-<table class="box" summary="Navigation listing" cellpadding="0" cellspacing="0"
-       metal:define-macro="CMFTopic_navigation_box"
-       i18n:domain="plone"
-       tal:define="results python:here.portal_catalog(meta_type='Portal Topic',sort_on='id');
-                   pss modules/Products/PythonScripts/standard;
-                   showNav python:0;
-                   showNav here/portal_url/CMFTopic_navigator | showNav"
-       tal:condition="python:0 and results and here.meta_type!='Portal Topic' and showNav">
-       <!-- We don't show this box when we are editing a Portal Topic
-            This is because it would lead to infinate recursion -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-  <span tal:define="navExpand python:request.SESSION.get('navExpand', results[0].Title)">
-   <tr><th i18n:translate="box_navigation">navigation</th><th class="empty">&nbsp;</th></tr>
-   <span tal:repeat="topic results">
-    <tr>
-      <td nowrap colspan="2">
-        <a href="#" class="plain" tal:attributes="href python:here.navigatorExpand.absolute_url()+'?topic='+pss.url_quote(topic.Title)"
-                                  tal:content="topic/Title">I am a navigation box</a>
-        <span tal:define="obj python:topic.getObject()">
-        <span tal:omit-tag="" tal:repeat="item python:obj.queryCatalog()"
-                              tal:condition="obj">
-          <span tal:omit-tag="" tal:condition="python:item.Title and navExpand==topic.Title">
-            <br>
-            <a href="#" tal:attributes="href python:item.getObject().absolute_url()"
-                        tal:content="item/Title">&nbsp;</a>
-          </span>
-        </span>
-        </span>
-      </td>
-    </tr>
-   </span>
-  </span>
-</table>
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
+<!-- CMFTopic based navigation box -->
+<div metal:define-macro="CMFTopic_navigation_box"
+     tal:define="results python:here.portal_catalog(meta_type='Portal Topic',sort_on='id');
+                 pss modules/Products/PythonScripts/standard;
+                 showNav python:0;
+                 showNav here/portal_url/CMFTopic_navigator | showNav"
+     tal:condition="python:0 and results and here.meta_type!='Portal Topic' and showNav">
+       <!-- We don't show this box when we are editing a Topic
+            This is because it would lead to infinite recursion -->
+
+    <span class="boxTitle" i18n:translate="box_navigation">Navigation</span>
+
+    <div class="box" tal:define="navExpand python:request.SESSION.get('navExpand', results[0].Title)">
+
+
+        <div class="content">
+            <div tal:repeat="topic results">
+                <a href=""
+                   tal:attributes="href python:here.navigatorExpand.absolute_url()+'?topic='+pss.url_quote(topic.Title)"
+                   tal:content="topic/Title">I am a navigation box</a>
+                   
+                <div tal:define="obj python:topic.getObject()">
+                
+                    <div tal:omit-tag="" tal:repeat="item python:obj.queryCatalog()"
+                                          tal:condition="obj">
+                        <div tal:omit-tag="" tal:condition="python:item.Title and navExpand==topic.Title">
+                            <a href="#" tal:attributes="href python:item.getObject().absolute_url()"
+                                tal:content="item/Title"> </a>
+                        </div>
+                    
+                    </div>
+    
+                </div>
+    
+            </div>
+    
+        </div>
+
+    </div>
+            
+</div>
+
+</body>
+
+</html>
+

@@ -15,54 +15,48 @@
 
 <body>
 
-    <div metal:fill-slot="main"
-          tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='modified',sort_order='reverse',review_state='published');
-              Batch python:modules['ZTUtils'].Batch;
-              DateTime python:modules['DateTime'].DateTime;
-              b_start python:request.get('b_start',0);">
+<div metal:fill-slot="main"
+     tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='created',sort_order='reverse',review_state='published');
+                 Batch python:modules['Products.CMFPlone'].Batch;
+                 DateTime python:modules['DateTime'].DateTime;
+                 b_start python:request.get('b_start',0);">
 
 
-        <form name="searchresults" action="" method="post" tal:condition="results"
+    <h1 i18n:translate="heading_news">News</h1>
+    
+    <div i18n:translate="description_news" class="description">The latest news, sorted in reverse chronological order.</div>
+
+    <form name="searchresults" action="" method="post" tal:condition="results"
                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 
-            <!-- Navigation -->
-            <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
-                <span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
-                    <a href="#" tal:attributes="href string:?b_start=${p/first}">
-                    &laquo; <span tal:omit-tag="" i18n:translate="more_recent_news">More Recent News</span>
-                    </a> 
-                </span>
+        <metal:block tal:repeat="result batch">
 
-                <span class="next" tal:define="n batch/next | nothing" tal:condition="n">
-                    <a href="#" tal:attributes="href string:?b_start=${batch/end}">
-                    <span tal:omit-tag="" i18n:translate="older_news">Older News</span> &raquo;
-                    </a>
-                </span> 
+            <tal:block  
+             tal:define="resultObject result/getObject">
+         
+            <div class="boxTitle">
+                <img src="" alt="Folder" style="border: 0" 
+                     tal:attributes="src result/getIcon; alt result/Type;" />
+            
+                <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span> 
+            
+                <a href=""
+                   tal:attributes="href python:here.portal_membership.getHomeUrl(result.Creator)">
+
+                    <img tal:replace="structure here/user.gif" />
+                
+                    <span tal:replace="result/Creator" > 
+                    Author
+                    </span>
+
+                </a>                                 
+
+              - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python:container.toPortalTime(result.Date)" /> 
+            
             </div>
 
-            <metal:block tal:repeat="result batch" >
-            <div class="box" tal:define="resultObject result/getObject">
+            <div class="box">
 
-                <div class="heading">
-                    <img src="" alt="Folder" style="border: 0" 
-                         tal:attributes="src result/getIcon; alt result/Type;" />
-                <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span> 
-                
-                    <a href=""
-                       tal:attributes="href python:here.portal_membership.getHomeUrl(result.Creator)">
-
-                        <img tal:replace="structure here/user.gif" />
-                    
-                        <span tal:replace="result/Creator" > 
-                        Author
-                        </span>
-
-                    </a>                                 
-
-                - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python:container.toPortalTime(result.Date)" /> 
-                
-                </div>
-                
                 <div class="content">
 
                     <h2 tal:content="result/Title">
@@ -94,35 +88,25 @@
                 
                     
                 </div>
-                    
-            </div>
-            </metal:block>
                 
+            </div>
+            
+            </tal:block>
+
+        </metal:block>
+        
         <div class="spacer">
         &nbsp;
         </div>
             
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
 
-            <!-- Navigation -->
-            <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
-                <span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
-                    <a href="#" tal:attributes="href string:?b_start=${p/first}">
-                    &laquo; <span tal:omit-tag="" i18n:translate="more_recent_news">More Recent News</span>
-                    </a> 
-                </span>
-
-                <span class="next" tal:define="n batch/next | nothing" tal:condition="n">
-                    <a href="#" tal:attributes="href string:?b_start=${batch/end}">
-                    <span tal:omit-tag="" i18n:translate="older_news">Older News</span> &raquo;
-                    </a>
-                </span> 
-            </div>
-
- 	  </form>
+        </form>
           
-          <p tal:condition="not: results" i18n:translate="no_new_news">
-            No news has been posted.
-          </p>		
+    <p tal:condition="not: results" i18n:translate="no_new_news">
+        No news has been posted.
+    </p>		
  
   </div>
 

@@ -3,12 +3,25 @@ from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFDefault.Document import addDocument
 from Acquisition import aq_base
 
+default_portrait = 'defaultUser.gif'
+
+DEFAULT_MEMBER_CONTENT = """\
+Default page for %s
+
+  This is the default document created for you when
+  you joined this community.
+
+  To change the content just click the 'edit'
+  tab above.
+"""
+        
 class MembershipTool( BaseTool ):
     """ Plone customized Membership Tool """
     meta_type='Plone Membership Tool'
     plone_tool = 1
     personal_id = '.personal'
     portrait_id = 'MyPortrait'
+    default_portrait = 'defaultUser.gif'
     
     def getPersonalPortrait(self, member_id=None):
         """
@@ -16,10 +29,16 @@ class MembershipTool( BaseTool ):
         """
         portrait=None
         personal=self.getPersonalFolder(member_id)
+
         if personal:
             portrait=getattr( personal
                             , self.portrait_id
                             , None )
+
+        if portrait is None:
+            portal = getToolByName(self, 'portal_url').getPortalObject()
+            portrait = getattr(portal, default_portrait)
+
         return portrait
 
     def getPersonalFolder(self, member_id=None):

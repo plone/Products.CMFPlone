@@ -42,8 +42,9 @@ Please contribute your experiences at the "Plone website":http://www.plone.org
 
 Thanks for using our product.
 
-**The Plone Team**.
+"Plone":img:logoIcon.gif  "**The Plone Team**":http://plone.org/about/team
 """
+
 class PloneSite(CMFSite):
     """
     Make PloneSite subclass CMFSite and add some methods.
@@ -74,7 +75,6 @@ class PloneGenerator(Portal.PortalGenerator):
                 view='folder_contents'
                 typeObj._setPropValue('immediate_view', view)
 
-        
     def customizePortalOptions(self, p):
         p.manage_delObjects( 'portal_membership' )
         p.manage_delObjects( 'portal_workflow' )
@@ -88,16 +88,12 @@ class PloneGenerator(Portal.PortalGenerator):
         addPloneTool('Plone Factory Tool', None)
         addPloneTool('Plone Form Tool', None)
         addPloneTool('Plone Properties Tool', None)
+        addPloneTool('Plone Migration Tool', None)
 
         p.manage_permission( CMFCorePermissions.ListFolderContents, ('Manager', 'Member', 'Owner',), acquire=1 )
         p.portal_skins.default_skin='Plone Default'
         p.portal_skins.allow_any=1
-        p._setProperty('allowAnonymousViewAbout', 0, 'boolean')
-        p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
-        p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
-        p._setProperty('default_language', 'en', 'string')
-        p._setProperty('default_charset', 'iso-8859-1', 'string')
-        p._setProperty('use_folder_tabs',('Folder',), 'lines')
+
         p.icon = 'misc_/CMFPlone/plone_icon'
         
         
@@ -109,7 +105,7 @@ class PloneGenerator(Portal.PortalGenerator):
         p.Members.manage_addProduct['OFSP'].manage_addDTMLMethod('index_html'
                                                                 , 'Member list'
                                                                 , '<dtml-return roster>')
-        p.Members._setPortalTypeName( 'Folder' )                                                                
+        p.Members._setPortalTypeName( 'Folder' )                                                               
         Document.addDocument(p, 'index_html')
         o = p.index_html
         o._setPortalTypeName( 'Document' )
@@ -134,6 +130,7 @@ class PloneGenerator(Portal.PortalGenerator):
         #Published folders means that anonymous should be able to 'list the folder contents'
         folder_wf.permissions+=(CMFCorePermissions.ListFolderContents, )
         folder_wf.states.published.permission_roles[CMFCorePermissions.ListFolderContents]=['Anonymous',]
+        folder_wf.states.published.permission_roles[CMFCorePermissions.ModifyPortalContent]=('Manager', )
         folder_wf.states.deleteStates( ('pending', ) )
         state_priv=folder_wf.states['private']
         state_priv.transitions = ('publish', 'show') 
@@ -144,9 +141,7 @@ class PloneGenerator(Portal.PortalGenerator):
         trans_publish_guard=trans_publish.getGuard()
         trans_publish_guard.permissions=(CMFCorePermissions.ModifyPortalContent, )
         trans_publish_guard.roles=('Owner', 'Manager')
-        wf_tool.setChainForPortalTypes( ('Folder',), 'folder_workflow')
-
-        wf_tool.updateRoleMappings()
+        wf_tool.setChainForPortalTypes( ('Folder','Topic'), 'folder_workflow')
 
     def setupSecondarySkin(self, skin_tool, skin_title, directory_id):        
         path=[elem.strip() for elem in skin_tool.getSkinPath('Plone Default').split(',')]
@@ -179,13 +174,14 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupSecondarySkin(sk_tool, 'Plone Mozilla', 'plone_styles/mozilla')
         self.setupSecondarySkin(sk_tool, 'Plone XP', 'plone_styles/winxp')
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
+        
         sk_tool.request_varname='plone_skin'
 
     def setupForms(self, p):
         prop_tool = p.portal_properties
         prop_tool.manage_addPropertySheet('navigation_properties', 'Navigation Properties')
         prop_tool.manage_addPropertySheet('form_properties', 'Form Properties')
-        
+
         form_tool = p.portal_form
         form_tool.setValidators('link_edit_form', ['validate_id', 'validate_link_edit'])
         form_tool.setValidators('newsitem_edit_form', ['validate_id', 'validate_newsitem_edit'])
@@ -201,6 +197,10 @@ class PloneGenerator(Portal.PortalGenerator):
         form_tool.setValidators('personalize_form', ['validate_personalize'])
         form_tool.setValidators('join_form', ['validate_registration'])
         form_tool.setValidators('metadata_edit_form', ['validate_metadata_edit'])
+        
+        #set up properties for StatelessTreeNav
+        from Products.CMFPlone.StatelessTreeNav import setupNavTreePropertySheet
+        setupNavTreePropertySheet(prop_tool)
 
         # grab the initial portal navigation properties from data/navigation_properties
         nav_tool = p.portal_navigation
@@ -231,6 +231,10 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupPortalContent(p)
         self.setupForms(p)
         CalendarInstall.install(p)
+
+        m = p.portal_migration
+        m.setInstanceVersion('1.0beta2')
+        m.upgrade()
         
     def create(self, parent, id, create_userfolder):
         id = str(id)
@@ -261,8 +265,10 @@ def manage_addSite(self, id, title='Portal', description='',
     if listPolicies() and custom_policy:
         o=custom_policies[custom_policy]
         o.customize(p)
-
-    p.portal_catalog.refreshCatalog() #after customizations refresh the catalog
+    
+    # reindex catalog and workflow settings
+    p.portal_catalog.refreshCatalog()     
+    p.portal_workflow.updateRoleMappings() 
 
     if RESPONSE is not None:
         RESPONSE.redirect(p.absolute_url())

@@ -7,16 +7,18 @@
 ##parameters=obj=None
 ##title=encapsulates the related box
 ##
-listing=()
+listing=[]
 
-if obj is None: obj=context
+if obj is None:    
+    obj=context
+    if not obj.isPrincipiaFolderish:
+        obj=obj.aq_parent
+
 try:
-    if hasattr(obj, 'listFolderContents'):
-        for o in obj.listFolderContents():
-            if o.getId() == 'Link' and obj.getId()!=o.getId():
-                listing+=( (o.title_or_id(), o.getRemoteUrl()), )
+    for o in obj.contentValues('Link'):
+        listing.append( (o.title_or_id(),
+                         o.getRemoteUrl()) )
 except: 
     pass
     
 return listing
-  

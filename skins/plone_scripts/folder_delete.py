@@ -9,15 +9,19 @@
 ##
 from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
-if REQUEST.has_key('ids'):
-    transaction_note( str(REQUEST['ids'])+' has been deleted' )
-    context.manage_delObjects(REQUEST['ids'], REQUEST)
-    return context.portal_navigation.getNext( context
-                , script.getId()
-                , 'success'
-                , portal_status_message='Deleted.')
+portal_navigation=context.portal_navigation
 
-return context.portal_navigation.getNext( context
-            , script.getId()
-            , 'failure'
-            , portal_status_message='Please select one or more items to delete.' )
+ids=REQUEST.get('ids', None)
+status='failure'
+status_msg='Please select one or more items to delete.'
+
+if ids:
+    transaction_note( str(ids)+' has been deleted' )
+    context.manage_delObjects(ids, REQUEST)
+    status='success'
+    status_msg='Deleted.'
+
+return portal_navigation.getNext( context
+                                , script.getId()
+                                , status
+                                , portal_status_message=status_msg )

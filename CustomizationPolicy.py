@@ -1,10 +1,12 @@
 #These CustomizationPolicies *are not* persisted!!
-
+from OFS.PropertyManager import PropertyManager
 from Products.CMFPlone.Portal import addPolicy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
 from interfaces.CustomizationPolicy import ICustomizationPolicy
+
+ExtInstalled=0
 
 def register(context, app_state):
     addPolicy('Default Plone', DefaultCustomizationPolicy())
@@ -12,6 +14,57 @@ def register(context, app_state):
 class DefaultCustomizationPolicy:
     """ Customizes various actions on CMF tools """
     __implements__ = ICustomizationPolicy
+
+    def addSiteProperties(self, portal):
+        """ adds site_properties in portal_properties """
+        id='site_properties'
+        title='Site wide properties'
+        p=PropertyManager('id')
+        if id not in portal.portal_properties.objectIds():
+            portal.portal_properties.addPropertySheet(id, title, p)
+            
+        p=getattr(portal.portal_properties, id)
+        
+        #First we will deal with the CMF defaults.  This is ugly!
+        pid='email_from_address'
+        if not hasattr(p,pid):  
+            p._setProperty(pid, getattr(portal,pid,''), 'string')
+            if hasattr(portal, pid):
+                portal._delProperty(pid)    
+        pid='email_from_name'
+        if not hasattr(p,pid): 
+            p._setProperty(pid, getattr(portal,pid,''), 'string')
+            if hasattr(portal, pid):
+                portal._delProperty(pid)
+        pid='validate_email'
+        if not hasattr(p,pid): 
+            p._setProperty(pid, getattr(portal,pid,''), 'boolean')
+            if hasattr(portal, pid):
+                portal._delProperty(pid)
+        #Now we add the lagniappe
+        if not hasattr(p,'allowAnonymousViewAbout'): p._setProperty('allowAnonymousViewAbout', 1, 'boolean')
+        if not hasattr(p,'localTimeFormat'): p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
+        if not hasattr(p,'localLongTimeFormat'): p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
+        if not hasattr(p,'default_language'): p._setProperty('default_language', 'en', 'string')
+        if not hasattr(p,'default_charset'): p._setProperty('default_charset', 'iso-8859-1', 'string')
+        if not hasattr(p,'use_folder_tabs'): p._setProperty('use_folder_tabs',('Folder',), 'lines')
+        if not hasattr(p,'use_folder_contents'): p._setProperty('use_folder_contents',('Folder',), 'lines')
+        if not hasattr(p,'ext_editor'): p._setProperty('ext_editor', ExtInstalled, 'boolean')
+        if not hasattr(p, 'available_editors'): 
+            p._setProperty('available_editors', ('None', 'XSDHTMLEditor'), 'lines')
+    
+    def setupDefaultSlots(self, portal):
+        """ sets up the slots on objectmanagers """
+        #add the slots to the portal folder
+        left_slots=( 'here/navigation_tree_slot/macros/navigationBox'
+                   , 'here/login_slot/macros/loginBox'
+                   , 'here/about_slot/macros/aboutBox'
+                   , 'here/related_slot/macros/relatedBox' )
+        right_slots=( 'here/workflow_review_slot/macros/review_box'
+                    , 'here/calendar_slot/macros/calendarBox' )
+        portal._setProperty('left_slots', left_slots, 'lines')
+        portal._setProperty('right_slots', right_slots, 'lines')
+        portal.Members._setProperty('right_slots', (), 'lines')
 
     def installExternalEditor(self, portal):
         ''' responsible for doing whats necessary if 
@@ -28,7 +81,35 @@ class DefaultCustomizationPolicy:
                                , CMFCorePermissions.ModifyPortalContent
                                , 'object'
                                , 0 )
-            
+     
+    def assignTitles(self, portal):
+        titles={'portal_actions':'defines custom tabs and buttons',
+         'portal_membership':'encapsulates membership policy',
+         'portal_memberdata':'defines available properties on Members',
+         'portal_undo':'defines actions and functionality related to unfo',
+         'portal_types':'defines wired Python objects to CMF.',
+         'plone_utils':'utility methods in PloneTool.py',
+         'portal_navigation':'coordinating portal_form and nav_props',
+         'portal_metadata':'assign metadata, like keywords i.e. Subject',
+         'portal_migration':'handles migrations of Plone versions',
+         'portal_registration':'encapsulated registration policy',
+         'portal_skins':'controls the behavior of skins i.e. search order',
+         'portal_syndication':'enable RSS for folders',
+         'portal_workflow':'contains workflow definitions for system',
+         'portal_url':'methods to anchor you to root of CMF Site',
+         'portal_form':'used with templates to do validation and navigation',
+         'portal_discussion':'how discussions are stored by default on conent',
+         'portal_catalog':'indexes all content in the site',
+         'portal_form_validation':'*deprecated*',
+         'portal_factory':'ensures a content object is created',
+         'portal_calendar':'controls how events are shown'
+         }
+
+        for o in portal.objectValues():
+            title=titles.get(o.getId(), None)
+            if title:
+                o.title=title
+
     def plonify_typeActions(self, portal):
         #Plone1.0alpha4 we are moving people to use portal_form nav/validation proxy
         types_tool=getToolByName(portal, 'portal_types')
@@ -95,18 +176,25 @@ class DefaultCustomizationPolicy:
                 if a.get('id','')=='metadata':
                     a['name']='Properties'
             t._actions=_actions
-        
-        #add custom Plone actionsa
+        #add custom Plone actions
         at=getToolByName(portal, 'portal_actions')
+        at_actions=at._cloneActions()
+        for a in at_actions:
+            if a.id=='folderContents' and a.category=='object':
+                a.visible=0
+            if a.id=='folderContents' and a.category=='folder':
+                a.title='Contents'
+        at._actions=at_actions
+
         at.addAction('index_html','Welcome','portal_url','', 'View', 'portal_tabs')
         at.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','portal_tabs')
         at.addAction('news','News','string: $portal_url/news','','View', 'portal_tabs')	
         at.addAction('search_form','Search','string: $portal_url/search_form','','View','portal_tabs')
 
         at.addAction( 'content_status_history'
-                    , 'Publishing'
+                    , 'Workflow'
                     , 'string:${object_url}/content_status_history'
-                    , 'python:test(member and portal.plone_utils.getWorkflowChainFor(object), 1, 0)'
+                    , 'python:portal.portal_workflow.getTransitionsFor(object, object.getParentNode())'
                     , 'View'
                     , 'object_tabs' )
         at.addAction( 'change_ownership', 'Ownership', 'string:${object_url}/ownership_form', '', CMFCorePermissions.ManagePortal, 'object_tabs', 0)
@@ -125,14 +213,11 @@ class DefaultCustomizationPolicy:
             ExtInstalled=1
             self.installExternalEditor(portal)
 
-        portal._setProperty('ext_editor', ExtInstalled, 'boolean')
-        portal._setProperty('available_editors', ('None', 'XSDHTMLEditor'), 'lines')
-
         #customize memberdata tool
         md=getToolByName(portal, 'portal_memberdata')
         md._setProperty('formtooltips', '1', 'boolean')
-        md._setProperty('visible_ids', '', 'boolean')
-        md._setProperty('wysiwyg_editor', 'available_editors', 'selection')
+        md._setProperty('visible_ids', '1', 'boolean')
+        md._setProperty('wysiwyg_editor', '', 'string')
 
         #customize membership tool
         mt=getToolByName(portal, 'portal_membership')
@@ -146,9 +231,9 @@ class DefaultCustomizationPolicy:
         new_actions=[]
         for a in mt._cloneActions():
             if a.id=='login':
-                a.title='Sign in'
+                a.title='Log in'
             if a.id=='logout':
-                a.title='Sign out'
+                a.title='Log out'
             if a.id=='preferences':
                 a.title='My Preferences'
                 a.action=Expression('string:${portal_url}/portal_form/personalize_form')
@@ -207,16 +292,6 @@ class DefaultCustomizationPolicy:
         del skins_map['Basic']
         st.selections=skins_map
 
-        #add the slots to the portal folder
-        left_slots=( 'here/login_slot/macros/loginBox'
-                   , 'here/navigation_tree_slot/macros/navigationBox' 
-                   , 'here/about_slot/macros/aboutBox'
-                   , 'here/related_slot/macros/relatedBox' )
-        right_slots=( 'here/calendar_slot/macros/calendarBox' , )
-
-        portal._setProperty('left_slots', left_slots, 'lines')
-        portal._setProperty('right_slots', right_slots, 'lines')
-        
-        #be default have nothing on right hand column for members
-        portal.Members._setProperty('right_slots', (), 'lines')
-
+        self.setupDefaultSlots(portal)
+        self.addSiteProperties(portal)
+        self.assignTitles(portal)

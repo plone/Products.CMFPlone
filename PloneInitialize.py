@@ -4,13 +4,22 @@ from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
 from AccessControl import User
 
+from App.Extensions import getObject
+
 import OFS
 import os
+import sys
+import zLOG
+
+def log(message,summary='',severity=0):
+    zLOG.LOG('Plone Database Init',severity,summary,message)
 
 from ConfigParser import ConfigParser
 
 # grab the old initilalize...
 old_initialize = OFS.Application.initialize
+
+out = []
 
 def go(app):
     """ Initialize the ZODB with Plone """
@@ -19,8 +28,17 @@ def go(app):
     # nothing no error at all should
     # stop the creation of the db
     # that would truly suck
-    try: _go(app)
-    except: pass
+    try: 
+        _go(app)
+    except: 
+        # oh dear
+        out.append('Database init failed miserably [%s, %s]' % _get_error())
+
+    log('\n'.join(out))
+
+def _get_error():
+    type, value = sys.exc_info()[:2]
+    return str(type), str(value)
 
 def _go(app):
     filename = 'plone.ini'
@@ -32,28 +50,30 @@ def _go(app):
         cfg = ConfigParser()
         cfg.readfp(fh)
         fh.close()
-    except NameError: 
+    except: 
         # no file found
-        print "No file found"
+        out.append("No config file found, this is probably fine [%s, %s]" % _get_error())
         return
 
-    
+    # read the config file and find a million excuses
+    # why we shouldnt do this...
     try:
         pid = cfg.get('databaseSetup', 'name')
         usernm  = cfg.get('databaseSetup', 'user')
+        productList = cfg.get('databaseSetup', 'products').split(',')
         create = cfg.getint('databaseSetup', 'create')
     except ConfigParser.NoSectionError:
         # no section name databaseSetup
-        print "NoSectionError"
+        out.append("NoSectionError when parsing config file")
         return
     except AttributeError:
         # no attribute named 
-        print "Attribute Error"
+        out.append("AttributeError when parsing config file")
         return
 
     # ok if create in that file is set to 0, then we dont continue
     if not create:
-        print "Not create"
+        out.append("Config file found, but create set to 0")
         return
 
     oids = app.objectIds()
@@ -66,28 +86,48 @@ def _go(app):
     acl_users = getattr(app, "acl_users")
 
     # ugh oh well...
-    if usernm not in acl_users.getUserNames():
-        # read the file and add in
-        info = User.readUserAccessFile('access')
-        acl_users._doAddUser(info[0], info[1], ('manage',), [])
+    try:
+        if usernm not in acl_users.getUserNames():
+            # read the file and add in
+            # inituser is created by the installer
+            info = User.readUserAccessFile('inituser')
+            if info:
+                out.append(str(info))
+                acl_users._doAddUser(info[0], info[1], ('manage',), [])
+                out.append("Added admin user")
+                # important, get that user in there!
+                get_transaction().commit()
+            else:
+                out.append("No inituser file found")
+    except:
+        out.append("Adding admin user failed [%s, %s]" %  _get_error())
 
-    # 2 .now get that user
+    # 2 .now get that user, it could be that one already exists
     user = acl_users.getUser('admin').__of__(acl_users)
+    if not user:
+        out.append("Getting user failed [%s, %s]" %  _get_error())
+    else:
+        out.append("Gotten the admin user")
+
 
     # 3. now create the access rule
     if eid not in oids:
         # this is the actual access rule
+        out.append("Added external method")
         manage_addExternalMethod(app, 
                                                   eid, 
                                                   'Plone Access Rule', 
                                                   'accessRule', 
                                                   'accessRule')
         # this sets the access rule
+        out.append("Set as access rule")
         manage_addAccessRule(app, eid)
-        getattr(app, eid).changeOwnership(user)
+        if user:
+            getattr(app, eid).changeOwnership(user)
 
     # 4. actually add in Plone
     if pid not in oids:
+        out.append("Added Plone")
         manage_addSite(app, 
                    pid, 
                    title='Portal', 
@@ -96,21 +136,43 @@ def _go(app):
                    email_from_address='postmaster@localhost',
                    email_from_name='Portal Administrator',
                    validate_email=0,
-                   custom_policy='',
+                   custom_policy='Default Plone',
                    RESPONSE=None)
-        getattr(app, pid).changeOwnership(user, recursive=1)
+        if user:
+            getattr(app, pid).changeOwnership(user, recursive=1)
 
     # 5. adding the site root in
     plone = getattr(app, pid)
     if sid not in plone.objectIds():
+        out.append("Added Site Root")
         manage_addSiteRoot(plone)
-        getattr(plone, sid).changeOwnership(user)
+        if user:
+            getattr(plone, sid).changeOwnership(user)
+
+    # 6. Install std products
+    # this is every product :)
+    # productList = app.Control_Panel.Products.objectIds()
+    # productList = ['CMFCollector', 'CMFForum']
+    for productId in productList:
+        try:
+            productId = productId.strip()
+            res = getObject('%s.Install' % productId, 'install')(plone)
+            out.append("Installed %s" % productId)
+            out.append("%s: %s" % (productId, res))
+
+        except:
+            value, type = _get_error()
+            out.append("Failed to install %s, reason:" % (productId, value, type))
+
+    get_transaction().commit()
 
     # and stop this happening again
     cfg.set('databaseSetup', 'create', 0)
     fh = open(filename, 'w')
     cfg.write(fh)
+    out.append("Changed config file, set create = 0")
     fh.close()
+    out.append("Finished")
 
 # patch away!
 OFS.Application.initialize = go

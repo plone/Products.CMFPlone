@@ -16,42 +16,53 @@
             <span tal:replace="structure here/aboveInThread"></span>
         </div>
 
-        <table class="box"
-               cellpadding="0"
-               cellspacing="0">
-            <tr>
-                <th i18n:translate="listingheader_comment">comment</th><th class="empty">&nbsp;</th>	
-            </tr>
 
-            <tr>
-                <td colspan="2">
-                    <h2><img tal:replace="structure here/discussionitem_icon.gif" /> <span tal:replace="here/title_or_id">Comment title</span> </h2>
-                    <span i18n:translate="posted_by">Posted by:</span>
-                    <span tal:content="here/Creator">Poster Name</span>
-                    <span i18n:translate="posted_on">at</span> 
-                    <span tal:replace="python: here.toPortalTime(here.modified())">8/23/2001 12:40:44 PM</span>
+        <div class="boxTitle" i18n:translate="listingheader_comment">Comment</div>	
 
-                    <p tal:content="structure python:stx(here.text)">
-        		    This is the body text of the comment. 
-        		    </p>
 
-                    <br />
-                    <a href="" 
-                       tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
-                       tal:attributes="href string:${here/absolute_url}/deleteDiscussion" >
-                    Remove this discussion
-                    </a>
-                </td>
-            </tr>
-        </table>
+        <div class="box">
+
+            <div class="content">
+            
+                <h2>
+                    <img tal:replace="structure here/discussionitem_icon.gif" /> 
+                    <span tal:replace="here/title_or_id">Comment title</span> 
+                </h2>
+                
+                <span i18n:translate="posted_by">Posted by:</span>
+                <span tal:content="here/Creator">Poster Name</span>
+                <span i18n:translate="posted_on">at</span> 
+                <span tal:replace="python: here.toPortalTime(here.modified())">8/23/2001 12:40:44 PM</span>
+    
+                <p tal:content="structure python:stx(here.text)">
+    		    This is the body text of the comment. 
+    		    </p>
+    
+                <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+                
+                <form name="delete" 
+                      action="" 
+                      method="post"
+                      style="display: inline;"
+                      tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
+                      tal:attributes="action string:${here/absolute_url}/deleteDiscussion">       	
+            
+                    <input class="destructive" 
+            	       type="submit" 
+            	       value="Remove This Reply"
+                       i18n:attributes="value"
+                       />
+                </form>
+
+            </div>
+
+        </div>
 
     </div>          
 </metal:block>
 
-
-
 <metal:block metal:fill-slot="sub">
-        <tal metal:use-macro="here/viewThreadsAtBottom/macros/discussionView" />
+&nbsp;
 </metal:block>
 
 

@@ -50,6 +50,11 @@
       </td> </tr>
   </table>
   </form>
+  <metal:block tal:condition="not: history">
+  <h2>Historical not available</h2>
+  This class does not support the historical interface.  The content must
+  mix-in OFS.History.Historical
+  </metal:block>
  </div>
 
 </body>

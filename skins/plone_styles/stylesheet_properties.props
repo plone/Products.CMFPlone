@@ -1,6 +1,6 @@
 plone_skin:string=Plone Default
 
-mainFont:string=10px Verdana, Helvetica, Arial, sans-serif
+mainFont:string=65% Verdana, Helvetica, Arial, sans-serif
 mainBackground:string=White
 mainFontColor:string=Black
 mainLinkColor:string=#436976
@@ -13,18 +13,18 @@ mainTabFontWeight:string=normal
 mainTabFontColor:string=#436976
 mainTabFontColorSelected:string=#436976
 
-headingFont:string=10px Verdana, Helvetica, Arial, sans-serif
+headingFont:string=100% Verdana, Helvetica, Arial, sans-serif
 headingFontColor:string=Black
-headingSize1:string=200%
-headingSize2:string=180%
-headingSize3:string=160%
-headingSize4:string=140%
-headingSize5:string=120%
-headingSize6:string=110%
+headingSize1:string=160%
+headingSize2:string=150%
+headingSize3:string=140%
+headingSize4:string=120%
+headingSize5:string=100%
+headingSize6:string=80%
 
-descriptionFont:string=bold 120% Verdana, Helvetica, Arial, sans-serif
+descriptionFont:string=bold 100% Verdana, Helvetica, Arial, sans-serif
 
-contentFont:string=12px Verdana, Helvetica, Arial, sans-serif
+contentFont:string=120% Verdana, Helvetica, Arial, sans-serif
 contentBackground:string=White
 contentImageBorder:string=0
 contentLinkActiveColor:string=Red
@@ -40,7 +40,7 @@ contentTabFontColorSelected:string=#578308
 preBorder:string=1px solid #8cacbb
 preBackground:string=#dee7ec
 
-messageFont:string=bold 100% Verdana, Helvetica, Arial, sans-serif
+messageFont:string=bold 80% Verdana, Helvetica, Arial, sans-serif
 messageBackground:string=#FFCE7B
 messageBorder:string=1px solid #FFA500
 
@@ -49,9 +49,9 @@ noBorder:string=none
 evenRowBackground:string=#F7F9FA
 oddRowBackground:string=transparent
 groupBorder:string=1px solid #8cacbb
-requiredField:string=url(required.gif) 2em no-repeat
+requiredField:string=url(required.gif) right no-repeat
 
-inputFont:string=bold 10px Verdana, Helvetica, Arial, sans-serif
+inputFont:string=100% Verdana, Helvetica, Arial, sans-serif
 inputBorder:string=1px solid #8cacbb
 
 contextButtonBackground:string=White url(linkTransparent.gif) 9px 1px no-repeat
@@ -61,6 +61,11 @@ contextButtonFontColor:string=Black
 standaloneButtonBackground:string=#DEE7EC url(linkOpaque.gif) 9px 1px no-repeat
 standaloneButtonPadding:string=1px 1px 1px 15px
 standaloneButtonFontColor:string=Black
+
+destructiveButtonBackground:string=#FFCE7B url(linkTransparent.gif) 9px 1px no-repeat
+destructiveButtonPadding:string=1px 1px 1px 15px
+destructiveButtonBorder:string=1px solid #FFA500
+destructiveButtonFontColor:string=Black
 
 buttonWeight:string=normal
 
@@ -93,6 +98,3 @@ searchFontColor:string=Black
 
 footerBackground:string=#DEE7EC
 footerBorder:string=1px solid #8CACBB
-
-leftColumnWidth:string=15%
-rightColumnWidth:string=15%

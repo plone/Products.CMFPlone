@@ -7,7 +7,7 @@
 <body>
 <div metal:fill-slot="main">
 
-<div tal:define="pprops here/portal_properties; ve pprops/validate_email">
+<div tal:define="pprops here/portal_properties/site_properties; ve pprops/validate_email">
 
 <h1 i18n:translate="heading_welcome">Welcome!</h1>
 

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      i18n:domain="plone">
+
+<body>
+
+<div metal:define-macro="discussionView"
+    tal:define="isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
+                hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
+                view_action python:hereTypeInfo.getActionById('view');
+                isViewTemplate python:test(template.getId()==view_action, 1, 0);
+     ">
+    <div tal:condition="python:test( isDiscussionAllowed and isViewTemplate , 1, 0)">
+    <metal:block tal:condition="isDiscussionAllowed"> 
+      <tal:block tal:define="global discussion python:here.portal_discussion.getDiscussionFor(here)" />
+    </metal:block>
+
+    <form name="reply" 
+          action="" 
+          method="post"
+          tal:condition="isDiscussionAllowed" 
+          tal:attributes="action string:${here/absolute_url}/discussion_reply_form">       	
+
+        <input class="standalone" 
+	       type="submit" 
+	       value="Add Comment"
+           i18n:attributes="value"
+           />
+    </form>
+    
+    <div tal:condition="python:here.portal_discussion.isDiscussionAllowedFor(here)"
+	 tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
+	<a name="comments"> </a>
+	<div tal:repeat="reply python:container.sort_modified_ascending(here.talkback.getReplies())">
+
+
+        <div class="boxTitle" i18n:translate="listingheader_comment">Comment</div>
+
+        <div class="box">
+        
+            <div class="content">
+        
+                <h2><img tal:replace="structure here/discussionitem_icon.gif" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
+                <span i18n:translate="label_comment_by">Posted by</span>:
+                <span tal:content="reply/Creator">Poster Name</span>
+                <span i18n:translate="label_commented_at">at</span> 
+                <span tal:replace="python: here.toPortalTime(reply.modified())">8/23/2001 12:40:44 PM</span>
+    
+                <div tal:content="structure python:stx(reply.text)">
+                    This is the body text of the comment. 
+                </div>
+    			
+    			<form name="reply"
+    			      action="discussion_reply_form"
+    			      method="post"
+                      style="display: inline;"
+    			      tal:condition="python:test( getattr(here, 'isPortalContent', ''), here.isPortalContent, 0)" 
+    			      tal:attributes="action string:${reply/absolute_url}/discussion_reply_form" >
+    			      
+    			    <input class="standalone" 
+                           type="submit" 
+                           value="Reply to this" 
+                           i18n:attributes="value"
+                           />
+    			
+    			</form>
+    
+                <form name="delete" 
+                      action="" 
+                      method="post"
+                      style="display: inline;"
+                      tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
+                      tal:attributes="action string:${reply/absolute_url}/deleteDiscussion">       	
+            
+                    <input class="destructive" 
+            	       type="submit" 
+            	       value="Remove This Discussion"
+                       i18n:attributes="value"
+                       />
+                </form>
+
+                <div 
+                    tal:define="replies python: here.getReplyReplies(reply)"
+                    tal:condition="replies">
+                    
+                    <h6 i18n:translate="legend_replies_to_this_comment">Replies to this comment</h6>
+
+                    <div tal:repeat="lst replies">
+                        <span tal:omit-tag=""
+                              tal:content="structure python: '&nbsp;' * lst['depth']" />                                
+                        <a href="" 
+                               class="comment" 
+                               tal:attributes="href string:${lst/object/absolute_url}/discussionitem_view">
+                        <img tal:replace="structure here/discussionitem_icon.gif" />
+                        <span tal:replace="lst/object/Title">Comment title</span>   
+                        (<span i18n:translate="label_comment_by">Posted by</span> 
+                        <span tal:replace="lst/object/Creator">username</span>
+                        <span i18n:translate="label_commented_at">at</span> 
+                        <span tal:replace="python: here.toPortalTime(lst['object'].modified())">8/23/2001 12:49:08 PM</span>)
+                        </a>
+                    </div>
+ 
+                </div>
+            </div>
+                    
+        </div>    
+	
+    </div>
+    </div>
+    
+</div>
+</div>
+
+</body>
+
+</html>
+

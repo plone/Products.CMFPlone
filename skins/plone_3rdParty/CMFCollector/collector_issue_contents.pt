@@ -6,6 +6,11 @@
       xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
+
+<metal:block metal:fill-slot="base">
+  <tal:block tal:define="dummy python:request.set('enable_border',1)" />
+</metal:block>
+
 <body>
 
 <span tal:condition="nothing">
@@ -30,21 +35,31 @@
 
   <div metal:define-macro="transcript">
 
-    <div class="row">
-        <div class="box"
-             style="width: 90%; float: none"
-             tal:define="entries here/action_number">
+    <div class="row" tal:define="entries here/action_number">
+
+        <div class="boxTitle" i18n:translate="box_transcript_for_issue"> 
+            Transcript for Issue
+            <span tal:replace="here/id" i18n:name="id">ID</span>
+            (<span tal:replace="entries" i18n:name="num">7</span>
+
+             <tal:block condition="python:entries == 1">
+             <span i18n:name="listing_entry">
+             entry
+             </span>
+             </tal:block>
+             
+             <tal:block condition="python:entries != 1">
+             <span i18n:name="listing_entries">
+             entries
+             </span>
+             </tal:block>)
+        </div>
+
+        <div class="box">
     
-            <div class="heading" i18n:translate="box_transcript_for_issue"> 
-                Transcript for Issue
-                <span tal:replace="here/id" i18n:name="id">ID</span>
-                (<span tal:replace="entries" i18n:name="num">7</span>
-		 <tal:block condition="python:entries == 1" i18n:name="listing_entry">entry</tal:block><tal:block condition="python:entries != 1" i18n:name="listing_entries">entries</tal:block>)
-            </div>
-    
-            <span tal:replace="structure here/CookedBody">
+            <div class="content" tal:content="structure here/CookedBody">
                       TRANSCRIPT
-            </span>
+            </div>
     
         </div>
     </div>

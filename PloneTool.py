@@ -26,6 +26,21 @@ class PloneTool (UniqueObject, SimpleItem):
     plone_tool = 1
     field_prefix = 'field_' # Formulator prefixes for forms
 
+    security.declarePublic('sendto')
+    def sendto( self, variables ):
+        """Sends a link of a page to someone
+        """
+        mail_text = self.sendto_template( self
+                                        , variables['send_from_address']
+                                        , variables['send_to_address']
+                                        , variables['url']
+                                        , variables['title']
+                                        , variables['description']
+                                        , variables['comment']
+                                        )
+        host = self.MailHost
+        host.send( mail_text )
+        
     security.declarePublic('editMetadata')
     def editMetadata( self
                      , obj
@@ -70,7 +85,7 @@ class PloneTool (UniqueObject, SimpleItem):
             language=REQUEST.get(pfx+'language', obj.Language())
         if rights is None:
             rights=REQUEST.get(pfx+'rights', obj.Rights())
-        if allowDiscussion:
+        if allowDiscussion and hasattr(allowDiscussion, 'lower'):
             allowDiscussion=allowDiscussion.lower().strip()
             if allowDiscussion=='default': allowDiscussion=None
             elif allowDiscussion=='off': allowDiscussion=0
@@ -160,13 +175,44 @@ class PloneTool (UniqueObject, SimpleItem):
             pass 
         return wfs
 
-    #convienance method since skinstool requires loads of acrobats.
-    #we use this for the reconfig form
+    security.declareProtected(CMFCorePermissions.View, 'getReviewStateTitleFor')
+    def getReviewStateTitleFor(self, obj):
+        """Utility method that gets the workflow state title for the object's review_state.
+           Returns None if no review_state found.
+           """
+        wf_tool=getToolByName(self, 'portal_workflow')
+        wfs=()
+        review_states=()
+        objstate=None
+        try:
+            objstate=wf_tool.getInfoFor(obj, 'review_state')
+            wfs=wf_tool.getWorkflowsFor(obj)
+        except WorkflowException, e:
+            pass
+        if wfs:
+            for w in wfs:
+                if w.states.has_key(objstate):
+                    return w.states[objstate].title
+        return None
+
+    # Convenience method since skinstool requires loads of acrobatics.
+    # We use this for the reconfig form
     security.declareProtected(CMFCorePermissions.ManagePortal, 'setDefaultSkin')
     def setDefaultSkin(self, default_skin):
         """ sets the default skin """
         st=getToolByName(self, 'portal_skins')
         st.default_skin=default_skin        
+
+    # Set the skin on the page to the specified value
+    # Can be called from a page template, but it must be called before
+    # anything anything on the skin path is resolved (e.g. main_template).
+    # XXX Note: This method will eventually be replaced by the setCurrentSkin
+    # method that is slated for CMF 1.4
+    security.declarePublic('setCurrentSkin')
+    def setCurrentSkin(self, skin_name):
+        """ sets the current skin """
+        portal = getToolByName(self, 'portal_url').getPortalObject()
+        portal._v_skindata=(self.REQUEST, self.getSkinByName(skin_name), {} )
      
     #XXX deprecated methods
     security.declarePublic('getNextPageFor')
@@ -208,11 +254,17 @@ class PloneTool (UniqueObject, SimpleItem):
         return urlparse.urlparse(url)
 
 
-    # expose sys.exc_info() to scripts to allow extraction of
-    # information from untyped exceptions
-    def exc_info(self):
+    # Enable scripts to get the string value of an exception
+    # even if the thrown exception is a string and not a
+    # subclass of Exception.
+    def exceptionString(self):
+        s = sys.exc_info()
+        if s[0] == None:
+            return None
+        if type(s[0]) == type(''):
+            return s[0]
+        return str(s[1])
         return sys.exc_info()[0]
-
 
 InitializeClass(PloneTool)
 

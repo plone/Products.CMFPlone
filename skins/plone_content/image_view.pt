@@ -18,7 +18,7 @@
          src="#" 
          tal:attributes="src here/absolute_url" />
 
-    <p style="margin-top: 2em;" tal:content="structure here/Description">
+    <p style="margin-top: 2em;" tal:content="here/Description">
     Description
     </p>
     

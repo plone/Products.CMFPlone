@@ -9,10 +9,11 @@
 ##
 #given a time string convert it into a DateTime and then format it appropariately
 from DateTime import DateTime
+properties=context.portal_properties.site_properties
 if not long_format:
-    format=context.portal_properties.localTimeFormat
+    format=properties.localTimeFormat
 else:
-    format=context.portal_properties.localLongTimeFormat
+    format=properties.localLongTimeFormat
 portal_time=None
 if time is None: 
     time=DateTime()

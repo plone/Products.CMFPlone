@@ -8,13 +8,25 @@
 ##title=Register a User
 ##
 REQUEST=context.REQUEST
+errors = {}
 
 portal_registration=context.portal_registration
-portal_properties=context.portal_properties
+site_properties=context.portal_properties.site_properties
+
+username = REQUEST['username']
 
 password=REQUEST.get('password') or portal_registration.generatePassword()
-portal_registration.addMember(REQUEST['username'], password, properties=REQUEST)
-if portal_properties.validate_email or REQUEST.get('mail_me', 0):
-    portal_registration.registeredNotify(REQUEST['username'])
+portal_registration.addMember(username, password, properties=REQUEST)
 
-return ('success', context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Registered.')})
+if site_properties.validate_email or REQUEST.get('mail_me', 0):
+    try:
+        portal_registration.registeredNotify(username)
+    except:
+        exception = context.plone_utils.exceptionString()
+        errors['email'] = 'We were unable to send your password to this address.'
+        return ('failure', context, {'portal_status_message':exception,
+                                     'errors':errors,
+                                     'came_from':context.REQUEST.get('came_from','logged_in')})
+
+return ('success', context, {'portal_status_message':context.REQUEST.get('portal_status_message', 'Registered.'),\
+                             'came_from':context.REQUEST.get('came_from','logged_in')})

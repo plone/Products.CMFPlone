@@ -24,14 +24,15 @@
 <div metal:fill-slot="main">      
 
 <form class="group"
-      action="collector_edit" 
-      method="post">
+      action="" 
+      method="post"
+      tal:attributes="action string:${here/absolute_url}/collector_edit"
+      >
 
     <span class="legend" i18n:translate="legend_collector_details">Collector Details</span>
     
     <div class="row" 
-         tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
-                                      'visibility:hidden;;position:absolute;;left:0;;top:0', '')"
+         tal:condition="python: getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', None)"
          tal:define="error_id errors/id | nothing;
                      id python:request.get('id', here.getId());"> 
         <div class="label required">
@@ -66,6 +67,11 @@
         </div>
 
     </div>
+    <input type="hidden" 
+           name="id" 
+           tal:condition="python: not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids')"
+           tal:attributes="value python:request.get('id', here.getId())" 
+           />
 
     <div class="row">
         <div class="label" i18n:translate="label_title">Title</div> 

@@ -11,6 +11,21 @@
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
+    <metal:block tal:condition="not: request/ids | nothing">
+    <tal:block tal:replace="nothing"
+               tal:condition="not: request/ids | nothing"
+               tal:define="referer request/HTTP_REFERER;
+                           existing_message python:referer.find('portal_status_message');
+                           target_url python:test(existing_message!=-1, referer[:referer.find('?')], referer);
+                           dummy python:request.RESPONSE.redirect('%s?%s' % ( target_url
+                                                                            , 'portal_status_message=Please+select+one+or+more+items+to+rename.'))">
+        If someone goes to this form with selecting a object to rename
+        We wil redirect them back from where the came from saying they
+        need to select an item to rename.  This is very messy and should
+        be a PythonScript.
+    </tal:block>
+    </metal:block>
+
     <h1 i18n:translate="heading_rename_item">Rename item</h1>
 
     <p i18n:translate="description_rename_item">To rename an item, enter the new name below.</p>
@@ -19,44 +34,55 @@
           name="folder_rename" 
           action="folder_rename" 
           method="post"
-          tal:define="items request/ids|nothing"
+          tal:define="items request/ids|nothing; errors request/errors|nothing"
+          tal:attributes="action python:here.portal_form_url(template.id);"
           tal:condition="items">
 
+        <input type="hidden" name="form_submitted" tal:attributes="value template/id">
         <span class="legend" i18n:translate="legend_rename_details">Rename Details</span>
 
-        <div class="row" tal:repeat="item items">
-          <metal:block tal:define="obj python:getattr(here, item)">
-            
-            <div class="label">
-                <span tal:replace="string:${obj/Title} (${obj/getId})" >fav_999816073</span>
-                to
-            </div>
+        <tal:block tal:repeat="item items">
+        <tal:block tal:define="obj python:getattr(here, item)">
 
-            <div class="field">
+        <div class="row"
+             tal:define="error python:errors and errors.get(item, None)">
+
+            <div class="label">
+            Name <br />
+            Title
+            </div>            
+            
+            <div class="field" tal:attributes="class python:test(error, 'field error', 'field')">
+                <div tal:condition="error"
+                     tal:replace="structure string:$error <br />" />
                 <input type="hidden"
                        name="ids:list"
                        value="fav_999816073"
-                       tal:attributes="value item">
-                Short Name <input type="text"
+                       tal:attributes="value item" />
+                <input type="text"
                        name="new_ids:list"
                        value="fav_999816073"
                        size="30"
                        tabindex=""
                        tal:attributes="value item;
                                        tabindex tabindex/next;"
-                       /> <br />
-                Title <input type="text"
+                       />
+                
+                <br />
+                            
+                <input type="text"
                        name="new_titles:list"
                        value="title"
                        size="30"
                        tabindex=""
                        tal:attributes="value obj/Title;
                                        tabindex tabindex/next;" />
-                <br />
             </div>
 	    
-          </metal:block>
         </div>
+        
+        </tal:block>
+        </tal:block>
 
         <div class="row">
 

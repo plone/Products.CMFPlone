@@ -13,10 +13,12 @@ portrait_id='MyPortrait'
 member=context.portal_membership.getAuthenticatedMember()
 member.setProperties(context.REQUEST)
 member_context=context.portal_membership.getHomeFolder(member.getId())
-
 context.portal_skins.updateSkinCookie()
 
-if portrait and portrait.filename:
+if member_context is None:
+    member_context=context.portal_url.getPortalObject()
+
+if (member_context is not None and portrait and portrait.filename):
     context.portal_membership.changeMemberPortrait(portrait)
 
 tmsg=member.getUserName()+' personalized their settings.'

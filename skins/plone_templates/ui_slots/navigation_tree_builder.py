@@ -1,15 +1,32 @@
 ## Script (Python) "navigation_tree_builder"
-##parameters=tree_root,navBatchStart=0,showMyUserFolderOnly=1
+##parameters=tree_root,navBatchStart=0
 ##title=Standard Tree
 ##
 #Stateless Tree Navigation
 #(c) Philipp Auersperg phil@bluedynamics.com 10.09.2002
 
-
 from Products.CMFPlone.StatelessTreeNav import StatelessTreeBuilder
 from Products.CMFPlone.StatelessTreeNav import wrap_obj
 from Products.CMFCore.utils import getToolByName
 
+
+#here come the options
+showMyUserFolderOnly=1              # show only the userFolder I am browsing and my own one
+includeTop=1                        #if set, the top object itself is included in the tree
+showFolderishSiblingsOnly=1         #in the hierarchy above the leaf object
+                                    #just folders should be displayed
+showFolderishChildrenOnly=0         #list only folders below the leaf object
+showNonFolderishObject=0            #if the leaf object is not a folder 
+                                    #and showFolderishChildrenOnly the leaf is
+                                    # displayed in any case, but not its siblings
+topLevel=0
+batchSize=30                        # how long should one batch be
+                                    # per definition it stops not before the leaf object is reached
+showTopicResults=1                  # show results of topics in the tree
+rolesSeeUnpublishedContent=['Manager','Reviewer','Owner'] 
+                                    # these (local) roles can see unpublished 
+                                    
+sortCriteria=[('isPrincipiaFolderish','desc'),('Title','asc')]                                
 # put in here the meta_types not to be listed
 metaTypesNotToList=['CMF Collector','CMF Collector Issue','CMF Collector Catalog']
 # there is some VERY weird error with Collectors,
@@ -18,16 +35,105 @@ metaTypesNotToList=['CMF Collector','CMF Collector Issue','CMF Collector Catalog
 # these types should not be queried for children
 parentMetaTypesNotToQuery=[]
 
+# if possible get the options from the portal_properties
+pprops=getToolByName(context,'portal_properties')
+if hasattr(pprops,'navtree_properties'):
+    props=pprops.navtree_properties
+    showMyUserFolderOnly=getattr        (props,'showMyUserFolderOnly',  showMyUserFolderOnly)  
+    includeTop=getattr                  (props,'includeTop',  includeTop)  
+    showFolderishSiblingsOnly=getattr   (props,'showFolderishSiblingsOnly',  showFolderishSiblingsOnly)  
+    showFolderishChildrenOnly=getattr   (props,'showFolderishChildrenOnly',  showFolderishChildrenOnly)  
+    showNonFolderishObject=getattr      (props,'showNonFolderishObject',  showNonFolderishObject)  
+    topLevel=getattr                    (props,'topLevel',  topLevel)  
+    batchSize=getattr                   (props,'batchSize',  batchSize)  
+    showTopicResults=getattr            (props,'showTopicResults',  showTopicResults)  
+    rolesSeeUnpublishedContent=getattr  (props,'rolesSeeUnpublishedContent',  rolesSeeUnpublishedContent)  
+    metaTypesNotToList=getattr          (props,'metaTypesNotToList',  metaTypesNotToList)  
+    parentMetaTypesNotToQuery=getattr   (props,'parentMetaTypesNotToQuery',  parentMetaTypesNotToQuery)  
+    
+    if hasattr(props,'sortCriteria'):
+        sortCriteria=[]
+        for c in props.sortCriteria:
+            if not c.strip(): continue #skip empty lines
+            c=c.split(',')
+            if len(c)==1: c[1]='asc'
+            
+            sortCriteria.append(c)
+
+
+workflow_tool=context.portal_workflow
+
+def cmp(a,b):
+    for field,order in sortCriteria:
+        if hasattr(a,field) and hasattr(b,field):
+            aval=getattr(a,field)
+            if callable(aval): aval = aval()
+            bval=getattr(b,field)
+            if callable(bval): bval = bval()
+            
+            if order == 'desc':
+                aval,bval = bval,aval
+                
+            try:    #if they are strings, lower them
+                aval=aval.lower()
+                bval=bval.lower()
+            except:
+                pass
+    
+            if aval < bval:
+                return -1
+            elif bval < aval:
+                return 1
+    return 0
+        
+    if a.isPrincipiaFolderish and not b.isPrincipiaFolderish:
+        return -1
+    elif b.isPrincipiaFolderish and not a.isPrincipiaFolderish:
+        return 1
+    
+    if a.Title < b.Title:
+        return -1
+    elif b.Title < a.Title:
+        return 1
+    
+    return 0
+
+def checkPublished(o):
+    # checks if an object is published respecting its 
+    # publishing dates
+    # XXX I did not find this in the API but there 
+    # should be something like this....
+    
+    try:
+        if workflow_tool.getInfoFor(o,'review_state','') != 'published':
+            return 0
+    
+        now = context.ZopeTime()
+        start_pub = getattr(o,'effective_date',None)
+        end_pub   = getattr(o,'expiration_date',None)
+        
+        if start_pub and start_pub > now:
+            return 0
+        if end_pub and now > end_pub:
+            return 0
+    except:
+        #if anything crashes dont publish it
+        return 0
+    
+    return 1
+    
 #default function that finds the children out of a folderish object
 def childFinder(obj,folderishOnly=1):
+    user=obj.REQUEST['AUTHENTICATED_USER']
     try:
+
         if obj.meta_type in parentMetaTypesNotToQuery:
             return []
         
         # shall all Members be listed or just myself!
         if showMyUserFolderOnly and obj.id=='Members':
             try:
-                return [getattr(obj,obj.REQUEST['AUTHENTICATED_USER'].getId())]
+                return [getattr(obj,user.getId())]
             except:
                 return []
         
@@ -35,7 +141,7 @@ def childFinder(obj,folderishOnly=1):
             # to traverse through Portal Topics
             cat = getToolByName( obj, 'portal_catalog' )
             
-            #folderishOnly=0 #in order to view all topic results in the tree 
+            folderishOnly= not showTopicResults #in order to view all topic results in the tree 
     
             res=obj.listFolderContents()
             subs=obj.queryCatalog()
@@ -56,32 +162,48 @@ def childFinder(obj,folderishOnly=1):
                 #and all other *CMF* folders
                 res=obj.contentValues()
         
-        res = filter (lambda x:x.meta_type not in metaTypesNotToList,res)
-    
+        rs=[]
+        for r in res: #filter out metatypes and by except:pass 
+                      #all objs producing an error
+            try:
+                if r.meta_type not in metaTypesNotToList:
+                    rs.append(r)
+            except :
+                pass
+
+        res=rs
+
         # if wanted just keep folderish objects
         if folderishOnly:
             objs=filter(lambda x: hasattr(x.aq_explicit,'isPrincipiaFolderish') and x.aq_explicit.isPrincipiaFolderish,res)
             perm = 'List folder contents' #XXX should be imported
             permChk = context.portal_membership.checkPermission
-            return [o for o in objs if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
-        else:
-            return res
+            res = [o for o in objs if permChk(perm, o)] #XXX holy jeebus! this is expensive need to cache!
+
+        if not user.has_role(rolesSeeUnpublishedContent,obj):  # the 'important' users may see unpublished content
+            res = [o for o in res if checkPublished(o)]
+        
     
-    except:
+        try:res.sort(cmp) #if sorting fails - never mind, it shall not break nav
+        except:pass
+        return res
+    except :
         return []
 
 tb=StatelessTreeBuilder(context,childFinder=childFinder,
-        includeTop=1, #if set, the top object itself is included in the tree
-        showFolderishSiblingsOnly=1, #in the hierarchy above the leaf object
-                                     #just folders should be displayed
-        showFolderishChildrenOnly=0, #list only folders below the leaf object
-        showNonFolderishObject=0)    #if the leaf object is not a folder 
-                                     #and showFolderishChildrenOnly the leaf is
-                                     # displayed in any case, but not its siblings
+        includeTop=includeTop, 
+        showFolderishSiblingsOnly=showFolderishSiblingsOnly, 
+        showFolderishChildrenOnly=showFolderishChildrenOnly, 
+        showNonFolderishObject=showNonFolderishObject,    
+        topLevel=topLevel,
+        )
 
-return tb.buildFlatMenuStructure(
-    batchSize=30, # how long should one batch be
-                  # per definition it stops not before the leaf object is reached
+res=tb.buildFlatMenuStructure(
+    batchSize=batchSize, 
     batchStart=int(navBatchStart) #from where to start? is called automatically by the .pt
     )
 
+for r in res['list']:
+    r['published'] = checkPublished(r['object'])
+    
+return res

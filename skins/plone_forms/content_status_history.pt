@@ -44,8 +44,7 @@
             <div class="field"
                  i18n:translate=""
                  tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
-                             expiration_date python:test(here.expiration_date, here.expiration_date, '');
-                             effective python:">
+                             expiration_date python:test(here.expiration_date, here.expiration_date, '')">
         This item is currently in the <strong i18n:name="review_state" i18n:translate="" tal:content="review_state">review_state;</strong> state
         <tal:block tal:condition="python: review_state == 'published'"
 	               tal:define="eff_date here/effective_date | nothing;
@@ -79,11 +78,10 @@
         <div class="row" tal:condition="request/ids|nothing">
             <div class="label" i18n:translate="label_affected_content">Affected content</div>
             <div class="field"
-                 tal:define="Batch python:modules['ZTUtils'].Batch;
-		             physical_path python:'/'.join(here.getPhysicalPath());
+                 tal:define="physical_path python:'/'.join(here.getPhysicalPath());
                              dummy python:request.set('ids_checked', 1);
                              containedobjects python:[getattr(here, id) for id in request.get('ids', []) if id in here.objectIds()];
-                             global batch python:Batch(containedobjects, 500000, int(0), orphan=0);
+                             batch containedobjects;
                              global folders_in_publishing python:[o.getId() for o in batch if o.isPrincipiaFolderish];"
                  tal:condition="batch">
                 <table metal:use-macro="here/folder_contents/macros/folder_listing">
@@ -132,7 +130,7 @@
             <div class="field">
                 <div tal:define="inputname  string:effective_date; 
                                  formname   string:edit_form;
-                                 inputvalue here/EffectiveDate | nothing;
+                                 inputvalue python:test(here.EffectiveDate() and here.EffectiveDate()!='None', here.EffectiveDate(), '');
                                  onfocus string:formtooltip('effective_date_help',1);
                                  onblur string:formtooltip('effective_date_help',0);
                                  tabindex tabindex/next;">
@@ -157,7 +155,7 @@
             <div class="field">
                 <div tal:define="inputname  string:expiration_date; 
                                  formname   string:edit_form;
-                                 inputvalue here/ExpirationDate | nothing;
+                                 inputvalue python:test(here.ExpirationDate() and here.ExpirationDate()!='None', here.ExpirationDate(), '');
                                  onfocus string:formtooltip('expiration_date_help',1);
                                  onblur string:formtooltip('expiration_date_help',0);
                                  tabindex tabindex/next;">
@@ -258,7 +256,7 @@
         <span tal:replace="nothing">
         ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
         </span>
-        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
 
     </form>
 

@@ -4,7 +4,7 @@
 <head metal:define-macro="html_header" 
       tal:define="global portal_url here/portal_url">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
-          tal:define="charset here/portal_properties/default_charset|string:iso-8859-1"
+          tal:define="charset here/portal_properties/site_properties/default_charset|string:iso-8859-1"
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title here/portal_properties/title;
@@ -13,39 +13,31 @@
                                              , template.title_or_id());"
            tal:content="string:$portal_title - $here_title">Title of page</title>
 
-    <base href="http://yoursite/folder/content/template_id" 
-          tal:attributes="href string:${here/absolute_url}/${template/getId}" />
+    <metal:block metal:define-slot="base" />
 
-    <metal:block define-slot="base" />
-    
-    <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support  
-         it. Site will still be viewable, but look a bit stripped. --> 
-    <link rel="Stylesheet" type="text/css" href="" 
-          tal:attributes="href string:$portal_url/ploneBasicNS.css" />
-    <link rel="Stylesheet" type="text/css" href="" 
-          tal:attributes="href string:$portal_url/ploneStructureNS.css" />
-    <link rel="Stylesheet" type="text/css" href=""
-          tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
-    <link rel="Stylesheet" type="text/css" href=""
-          tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
+    <meta tal:condition="here/listMetaTags|nothing"
+          tal:repeat="keyval here/listMetaTags" 
+          tal:attributes="name python:keyval[0];
+                           content python:keyval[1];" />
 
-    <!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
-    <style type="text/css" media="all"
-           tal:content="string:
-           @import url(${here/portal_url}/ploneBasic.css);
-           @import url(${here/portal_url}/ploneStructure.css);
-           @import url(${here/portal_url}/ploneWidgets.css);
-           @import url(${here/portal_url}/ploneCalendar.css);">
-    </style>
+    <!-- Basic crude style for Netscape4.x - can be removed if you don't want to support it. Site will still be viewable, but look a bit stripped. --> 
+<!--
+    <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
+-->
+    <!-- Main style sheets for CSS2 capable browsers -->
+    <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css);"></style>
+
+    <!-- Custom style sheet if available -->
+    <style type="text/css" media="all" tal:condition="here/ploneCustom.css | nothing" tal:content="string:@import url(${here/portal_url}/ploneCustom.css);"></style>
     
     <!-- Style sheet used for printing -->
-    <link rel="stylesheet" type="text/css" media="print" href="" 
-          tal:attributes="href string:$portal_url/plonePrint.css"/>
+    <link rel="stylesheet" type="text/css" media="print" href="" tal:attributes="href string:$portal_url/plonePrint.css" />
 
     <!-- Style sheet used for presentations (Opera is the only browser supporting this at the moment) -->
-    <link rel="stylesheet" type="text/css" media="projection" href="" tal:attributes="href string:$portal_url/plonePresentation.css"/>
+    <link rel="stylesheet" type="text/css" media="projection" href="" tal:attributes="href string:$portal_url/plonePresentation.css" />
 
-    <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
+    <!-- Disable IE6 image toolbar -->
+    <meta http-equiv="imagetoolbar" content="no" />
 
     <metal:block metal:define-slot="head_slot" tal:replace="nothing">
     Flexibility for published templates to inject stuff into HEADER
@@ -100,7 +92,7 @@
                            value=""
                            tal:attributes="value request/SearchableText|nothing;" />
     
-                    <input class="context" 
+                    <input class="context searchButton" 
                            type="submit" 
                            value="Search"
                            i18n:attributes="value" />
@@ -118,24 +110,18 @@
      
         <div class="tabs"
              metal:define-macro="portal_tabs"
-             tal:define="global_tabs actions/portal_tabs|nothing;">
+             tal:define="portal_tabs actions/portal_tabs|nothing;
+                         global selected_tabs python:here.selectedTabs(template.getId(), here);
+                         selected_portal_tab selected_tabs/portal;" >
 
-        <metal:block tal:repeat="tab global_tabs"
-                     tal:define="contentpath python:here.portal_url.getRelativeContentPath(here);
-                                 global compare_id python:template.getId();" >
-
-            <metal:block tal:condition="contentpath">
-                 <metal:block tal:define="global compare_id python:contentpath[-1]" />
-            </metal:block>
-
+        <metal:block tal:repeat="tab portal_tabs">
             <a href="" class=""
                tal:attributes="href tab/url;
-                               class python:test(compare_id==tab['id'], 'selected', 'plain')">
+                               class python:test(selected_portal_tab==tab['id'], 'selected', 'plain')">
                 <span tal:omit-tag="" i18n:translate=""><span tal:replace="tab/name">dummy</span></span>
             </a>
-            
-            <span class="netscape4">&middot;</span>
         </metal:block>
+
         </div>
 
         <div class="personalBar"
@@ -146,8 +132,9 @@
                          display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">&nbsp;
 
             <a href=""
+               tal:omit-tag="not: here/portal_membership/getHomeFolder"
                tal:condition="not:here/portal_membership/isAnonymousUser"
-               tal:attributes="href string:${here/portal_membership/getHomeUrl}/folder_contents">
+               tal:attributes="href string:${here/portal_membership/getHomeUrl}">
                 <img tal:replace="structure here/user.gif" />
             
                 <span tal:replace="user/getUserName">john</span>
@@ -165,8 +152,6 @@
             </metal:block>
         </div>
 
-        <hr size="" class="netscape4" />
-
         <div class="pathBar"
              metal:define-macro="pathBar"
              tal:define="breadcrumbs python:here.breadcrumbs(here);
@@ -174,7 +159,7 @@
              tal:condition="breadcrumbs">
 
             <a href="#"
-               tal:condition="not: here/portal_membership/isAnonymousUser"
+               tal:condition="here/portal_membership/getHomeFolder"
                tal:attributes="href string:${here/absolute_url}/addtoFavorites"
                tal:define="addFavorite here/addFavorite.gif">
 
@@ -187,14 +172,12 @@
                 <metal:block tal:define="global is_last repeat/crumb/end" />
 
                 <a href="#" 
+                   tal:condition="python:not is_last" 
                    tal:attributes="href python:crumb[1]"
-                   tal:content="structure python:crumb[0]" 
-                   tal:condition="not: is_last">crumb</a>
-
+                   tal:content="structure python:crumb[0]">crumb</a>
                 <strong tal:condition="python:not is_last"> &raquo; </strong>
-
-                <strong tal:condition="python:is_last"
-                        tal:content="structure python:crumb[0]" > crumb </strong>
+                <span tal:condition="python: is_last" 
+                      tal:content="structure python:crumb[0]">crumb</span>
 
             </span>
 
@@ -211,6 +194,6 @@
 
         <img tal:replace="structure here/info.gif" />
 
-        <strong tal:content="portal_message">dummy</strong> 
+        <strong tal:content="portal_message" i18n:translate=""></strong> 
     </div>
 

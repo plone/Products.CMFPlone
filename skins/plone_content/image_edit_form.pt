@@ -19,22 +19,17 @@
     an image if required.
     </p> 
     
-    <span tal:replace="nothing">
-    ##### SET THE FORM ACTION TO request/URL FOR PORTAL_FORM -- CUT AND PASTE INTO YOUR FORM ####
-    </span>
-    
     <form class="group"
           action="image_edit" 
           name="edit_form" 
           method="post" 
           enctype="multipart/form-data"
-          tal:attributes="action request/URL" >
+          tal:attributes="action python:here.portal_form_url(template.id)" >
 
         <span class="legend" i18n:translate="legend_image_details">Image Details</span>
         
         <div class="row" 
-             tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
-                                          'visibility:hidden;;position:absolute;;left:0;;top:0', '')"
+             tal:condition="python: getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', None)"
              tal:define="error_id errors/id | nothing;
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
@@ -70,6 +65,11 @@
             </div>
 
         </div>
+        <input type="hidden" 
+               name="id" 
+               tal:condition="python: not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids')"
+               tal:attributes="value python:request.get('id', here.getId())" 
+               />
         
         <div class="row"
              tal:define="error_title errors/title|nothing;
@@ -179,9 +179,6 @@
                        /> 
             </div>       
         </div>
-        <span tal:replace="nothing">
-        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
-        </span>
         <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
        
     </form>

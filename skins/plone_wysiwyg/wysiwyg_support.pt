@@ -28,7 +28,7 @@
 
   </comment>
 
-  <textarea cols="40"
+  <textarea cols="80"
             rows="15"
             tabindex="3"
             name="description"
@@ -39,6 +39,7 @@
                             onblur onblur|nothing;
                             tabindex tabindex|nothing;"></textarea>
 
+       <br />
        <a href="" 
           tal:define="pps python:modules['Products.PythonScripts.standard'];
                       editor python:here.portal_membership.getAuthenticatedMember().wysiwyg_editor;

@@ -14,7 +14,11 @@ if obj is None:
 if obj.getId()=='index_html': #XXX hardcoded method name
     obj=obj.aq_parent         # we really want to know if this is a view or not.
 
-parent=obj.aq_parent
+try: # nail in the fuze:if I dont get aq_parent (Unauth), lets take the portal 
+    parent=obj.aq_parent
+except :
+    parent=context.portal_url
+
 relative_ids = context.portal_url.getRelativeContentPath(obj)
 
 if not relative_ids:

@@ -1,0 +1,81 @@
+<html metal:use-macro="here/main_template/macros/master">
+  <span metal:fill-slot="base" tal:omit-tag="">
+    <base tal:attributes="href string:${here/absolute_url}/weblog/" />
+  </span>
+<body>
+
+<div metal:fill-slot="header" tal:define="t_s options/t_s | traverse_subpath;global blogdata python:here.portal_weblog.getMonthData(here,t_s)">
+    <div id="archives" tal:define="archives python:here.portal_weblog.getArchiveInfo(here)" tal:condition="blogdata/archiveinfo">
+         <ul>
+            <li tal:repeat="month archives/keys">
+            <a tal:attributes="href python:archives[month]; title string:archive for $month"
+               tal:content="month">June, 2002</a>
+            </li>
+         </ul>
+    </div>
+   
+</div>
+
+<div metal:fill-slot="main" tal:define="global postdate string:0">
+
+<div id="blogs" tal:condition="blogdata">
+    
+    <div style="float: right;"
+         tal:content="structure python: blogdata['calendar']" tal:condition="blogdata">
+    Calendar
+    </div>
+    
+    <div tal:repeat="blog python: blogdata['posts']" 
+         tal:omit-tag="">
+        
+        <h1 tal:condition="python:blog.created.day()!=postdate"
+            tal:content="string:${blog/created/Day}, ${blog/created/Month} ${blog/created/day}, ${blog/created/year}">
+            Tuesday, March 11
+        </h1>
+        
+        <div tal:define="post_url python:here.portal_weblog.getObjectURL(blog)">
+    
+            <a tal:attributes="id blog/id" id="postId">
+            <h2 class="postTitle" tal:condition="exists:blog/Title" tal:content="blog/Title"
+                tal:define="global postdate blog/created/day">Weblog Entry Title</h2>
+            </a>
+        
+                   <p tal:define="postBody python:test(blog.Type=='Weblog Entry',blog.Description,None)"
+                        tal:content="structure python:postBody or blog.getObject().CookedBody()">
+                        Post from catalog or database goes here
+                   </p>
+        
+                <a tal:define="permaLink python:here.portal_weblog.makePermaLink(blog)"
+                   tal:condition="permaLink" 
+                   tal:attributes="href permaLink;
+                                   title string:Permanent Link;">#</a>
+
+                <strong tal:content="python:here.created().aCommon()">July 11th 2002 11:54 PM</strong>
+        
+                <a class="comments" 
+                   tal:define="comments python:here.portal_catalog(path={'query':blog.getPath(),'level':-1,},Type='Discussion Item');
+                               numComments python:len(comments)"
+                               tal:attributes="href string:$post_url"
+                              tal:condition="python:getattr(here.portal_types,blog.Type).getProperty('allow_discussion',None)"
+                   tal:content="string:Comments: (${numComments})">
+                   Comments (0)
+                </a>
+    
+        </div>
+    
+    </div>
+
+</div>
+
+
+    <div id="blogroll" tal:replace="structure here/blogroll">
+       <h2>Link Subject</h2>
+       <a href="link">link</a>
+    </div>
+     
+                                             
+   
+</div>
+
+</body>
+</html>

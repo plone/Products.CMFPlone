@@ -14,7 +14,7 @@
 
 <div metal:fill-slot="main"
      tal:define="transactions python:container.portal_undo.listUndoableTransactionsFor(here);
-                 Batch python:modules['ZTUtils'].Batch;
+                 Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_start python:request.get('b_start',0);
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
@@ -43,28 +43,8 @@
         modified objects that were modified by the transaction. 
         </p>
 
-
-        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
-            <span class="previous"
-                  tal:define="p batch/previous | nothing"
-                  tal:condition="p"> 
-    
-                <a i18n:translate="" href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
-                &laquo;&nbsp;Newer&nbsp;transactions
-                </a>
-    
-            </span>
-    
-            <span class="next"
-                  tal:define="n batch/next | nothing"
-                  tal:condition="n">
-    
-                <a i18n:translate="" href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
-                Older&nbsp;transactions&nbsp;&raquo;
-                </a>
-            </span>
-        </div>
- 
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
 
         <table class="listing" 
                summary="Undo history" 
@@ -130,26 +110,8 @@
                tal:attributes="tabindex tabindex/next;" 
                />
 
-        <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
-            <span class="previous"
-                  tal:define="p batch/previous | nothing"
-                  tal:condition="p"> 
-    
-                <a i18n:translate="" href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
-                &laquo;&nbsp;Newer&nbsp;transactions
-                </a>
-    
-            </span>
-    
-            <span class="next"
-                  tal:define="n batch/next | nothing"
-                  tal:condition="n">
-    
-                <a i18n:translate="" href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
-                Older&nbsp;transactions&nbsp;&raquo;
-                </a>
-            </span>
-        </div>
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
 
 </form>
 

@@ -1,0 +1,66 @@
+<html metal:use-macro="here/main_template/macros/master">
+
+  <div metal:fill-slot="header" tal:define="global weblogContainerObjects here/getWeblogContainers">
+      <form method="POST" action="portal_weblog/makePost">
+
+          <textarea name="content" style="width: 40em; height: 20em;">Post Content</textarea><br>
+          Weblog: 
+          <select name="blogid">
+          <option tal:repeat="weblog weblogContainerObjects" tal:content="string:${weblog/getId}: ${weblog/Title}"
+              tal:attributes="value python:here.portal_url.getRelativeContentURL(weblog)">
+              weblog id and title
+          </option>
+          </select>
+    
+          Post Format: 
+          
+          <select name="post_format">
+              <option>HTML</option>
+              <option>structured-text</option>
+          </select>
+    
+          Publish: 
+          <input type="checkbox" name="publish">
+          <input type="submit" value="Post">
+
+      </form>
+
+  </div>
+
+  <div metal:fill-slot="main">
+
+      <h1>My Weblogs</h1>
+
+      <div tal:repeat="weblog weblogContainerObjects">
+
+          <a tal:attributes="href string:${weblog/absolute_url}/weblog" 
+             tal:content="string:${weblog/getId}: ${weblog/Title}">
+              Weblog
+          </a>
+
+          <form action="portal_weblog/manage_edit_weblog" method="post">
+              <input type="hidden" tal:attributes="value python:here.portal_url.getRelativeContentURL(weblog)" name="blogid" />
+              Restrict blogs to parent folder: 
+              <select name="restricted_search:int">
+                  <option value="0">Off</option>
+                  <option value="1" tal:attributes="selected weblog/restricted_search | nothing">On</option>
+              </select>
+    
+              <br />
+    
+              <select name="weblog_content_type" tal:define="default_type weblog/weblog_content_type | string:Weblog Entry">
+                      <option tal:repeat="type python:here.portal_types.listContentTypes()" 
+                          tal:content="type" tal:attributes="selected python:test(default_type==type,'1',nothing)">
+                          content type
+                      </option>
+    
+              </select>
+    
+              <input type="submit" value="edit">
+          </form>
+
+      </div>
+
+  </div>
+
+</html>

@@ -5,16 +5,19 @@
       lang="en-US" 
       metal:define-macro="master">
 
-<tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here)" />
+<tal:block tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
+                       global site_properties here/portal_properties/site_properties;" />
 
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="base">
-    <metal:block metal:define-slot="base" />
+    <metal:block metal:define-slot="base">
+        <base href="" tal:attributes="href string:${here/absolute_url}/" />
+    </metal:block>
   </metal:block>
   
   <metal:block metal:fill-slot="head_slot"
-               tal:define="lang python:test(here.Language(), here.Language(), here.portal_properties.default_language);
-                           charset here/portal_properties/default_charset|string:iso-8859-1">
+               tal:define="lang python:test(here.Language(), here.Language(), site_properties.default_language);
+                           charset site_properties/default_charset|string:iso-8859-1">
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Language', lang)" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')" />
@@ -35,22 +38,22 @@ Header stuff
 </div>
 
 
-<table class="columns">
+<table class="columns"
+       tal:define="slots_mapping here/prepare_slots;">
 
     <tbody>
         <tr>
-            <td class="left"
-                tal:define="valid_slots python:[slot for slot in here.left_slots if slot];"
-                tal:condition="valid_slots">
-                <metal:block define-slot="left_column">
-                  <tal:block tal:repeat="lslot valid_slots">
-                    <metal:block use-macro="python:path(lslot)">
-                    Left Column boxes
-                    </metal:block>
-                  </tal:block>
+            <td class="left">
+                <metal:block tal:repeat="slot slots_mapping/left">
+                <tal:block tal:define="global pathexpr python:slot[0];
+                                       global usemacro python:slot[1];"
+                           tal:condition="usemacro">
+                    <metal:block metal:use-macro="python:path(pathexpr)" />
+                </tal:block>
+                <span tal:condition="not: usemacro"
+                      tal:replace="structure python:path(pathexpr)" />
                 </metal:block>
             </td>
-            
             <td class="main" 
                 tal:define="global show_border python:here.showEditableBorder( template_id=template.getId()
                                                                              , actions=actions )">
@@ -58,7 +61,7 @@ Header stuff
                 <metal:block metal:define-slot="super"
 		             tal:condition="show_border" >
                 
-                <div class="contentTabs" metal:define-macro="contentTabs"
+                <div id="contentTabs" metal:define-macro="contentTabs"
                      i18n:domain="plone">
    
                     <tal:block tal:condition="not:actions|nothing">
@@ -72,7 +75,7 @@ Header stuff
                                       global wf_actions actions/workflow;
                                       global folder_actions actions/folder;
                                       global local_actions python:actions.get('object_tabs', []);
-                                      global isFolder python:test(here.getTypeInfo().getId() in here.portal_properties.use_folder_tabs,1,0);" />
+                                      global isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);" />
 				      
                     <span tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
@@ -80,12 +83,11 @@ Header stuff
 			                   href action/url;"> 
                             <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
                         </a> 
-                        <span class="netscape4">&middot;</span>
                     </span>
     
                 </div>
 
-                <div class="contentBar">        
+                <div id="contentBar">        
                 &nbsp;
                 </div>    
             
@@ -98,6 +100,19 @@ Header stuff
                     Message box
                     </metal:block>
         
+                    <div class="documentActions">
+                     
+                        <a href=""
+                           tal:condition="site_properties/allow_sendto | nothing"
+                           tal:attributes="href python:'%s/portal_form/sendto_form' % here.absolute_url()">
+                            <img src="mail_icon.gif" alt="Send to" title="Send this page to somebody" />
+                        </a>
+
+                        <a href="javascript:this.print();">
+                            <img src="print_icon.gif" alt="Print" title="Print this page" />
+                        </a>
+                    </div>
+
                     <metal:block metal:define-slot="header" tal:content="nothing">
                     Header slot 
                     </metal:block>
@@ -112,15 +127,15 @@ Header stuff
                 </div>
             </td>
 
-            <td class="right" 
-                tal:define="valid_slots python:[slot for slot in here.right_slots if slot];"
-                tal:condition="valid_slots">
-                <metal:block define-slot="right_column">
-                    <tal:block tal:repeat="rslot valid_slots">
-                        <metal:block metal:use-macro="python:path(rslot)">
-                        Right Column boxes
-                        </metal:block>
+            <td class="right">
+                <metal:block tal:repeat="slot slots_mapping/right">
+                    <tal:block tal:define="global pathexpr python:slot[0];
+                                           global usemacro python:slot[1];"
+                               tal:condition="usemacro">
+                        <metal:block metal:use-macro="python:path(pathexpr)" />
                     </tal:block>
+                    <span tal:condition="not: usemacro"
+                          tal:replace="structure python:path(pathexpr)" />
                 </metal:block>
             </td>
         </tr>

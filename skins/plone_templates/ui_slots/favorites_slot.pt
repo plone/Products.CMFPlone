@@ -1,42 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
 <!-- The Favorites Box -->
 
-<table metal:define-macro="favoritesBox"
-       tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
-       tal:condition="folder"
-       class="box" summary="Favorites" cellpadding="0" cellspacing="0"
-       i18n:domain="plone">
+<div metal:define-macro="favoritesBox"
+     tal:omit-tag=""
+     tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
+     tal:condition="folder"
+     >
 
-    <thead>
-        <tr><th i18n:translate="box_my_favorites">My&nbsp;Favorites</th><th class="empty">&nbsp;</th></tr>
-    </thead>
+    <span class="boxTitle" i18n:translate="box_my_favorites">My&nbsp;Favorites</span>
 
+    <div class="box"
+         tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);">
+    
+        <div class="content odd" tal:condition="favorites">
 
-    <tbody tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);">
-        <tr class="odd" 
-	    tal:condition="favorites">
-            <td colspan="2">
+            <span tal:repeat="o favorites">
+                <a class="marker"
+                   href=""
+                   tal:attributes="href o/getRemoteUrl" 
+                   tal:content="o/title_or_id">Favorite title</a>
+                <br />
+            </span>
 
-                <strong  i18n:translate="box_favorites">Favorites</strong>
+        </div>
+        
+        <div class="content even">
+            <a href="" 
+               class="marker" 
+               i18n:translate="box_organize_favorites"
+               tal:attributes="href string:${folder/absolute_url}/folder_contents">Organize Favorites</a>
+        </div>
+    
+    </div>   
 
-                <span tal:repeat="o favorites">
-                    <a class="marker"
-                       href=""
-                       tal:attributes="href o/getRemoteUrl" 
-                       tal:content="o/title_or_id">Favorite title</a>
-                    <br />
-                </span>
+</div>     
 
-            </td>
-        </tr>
+</body>
 
-        <tr class="even">
-            <td colspan="2">
-                <a href="" 
-                   class="marker" 
-                   i18n:translate="box_organize_favorites"
-                   tal:attributes="href string:${folder/absolute_url}/folder_contents">Organize Favorites</a>
-            </td>
-        </tr>
-    </tbody>
+</html>
 
-</table>
