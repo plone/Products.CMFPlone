@@ -10,11 +10,9 @@
 ##
 from DateTime import DateTime
 
-if not start_date:
-    state.setError('start_date', 'Input is required but not given.', 'input_required')
-
-if not end_date:
-    state.setError('end_date', 'Input is required but not given.', 'input_required') 
+REQUEST = context.REQUEST
+start_date='%s-%s-%s %s:%s'%(REQUEST.start_date_year,REQUEST.start_date_month,REQUEST.start_date_day,REQUEST.start_date_hour,REQUEST.start_date_minute)
+end_date='%s-%s-%s %s:%s'%(REQUEST.end_date_year,REQUEST.end_date_month,REQUEST.end_date_day,REQUEST.end_date_hour,REQUEST.end_date_minute)
 
 if not state.getError('start_date') and not state.getError('end_date'):
     try:
