@@ -89,7 +89,8 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
             #'user@example.org\n user2',
             #'user@example.org\r user2',
             'user@example.org,\n user2@example.org',
-            'user@example.org\n user2@example.org' # omitting comma is ok
+            'user@example.org\n user2@example.org', # omitting comma is ok
+            'USER@EXAMPLE.ORG,\n User2@Example.Org',
         )
         invalidInputs = (
             'user@example.org\n\nfoo', # double new lines
