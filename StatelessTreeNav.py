@@ -60,6 +60,10 @@ class StatelessTreeBuilder:
         self.showNonFolderishObject=showNonFolderishObject
         self.forceParentsInBatch=forceParentsInBatch
         self.skipIndex_html=skipIndex_html
+        
+        if bottomLevel is None:
+            bottomLevel=65535
+            
         self.bottomLevel=bottomLevel
         
         if topLevel >= 0:
