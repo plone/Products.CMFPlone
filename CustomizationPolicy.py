@@ -3,16 +3,21 @@
 from Products.CMFPlone.Portal import addPolicy
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
+from interfaces.CustomizationPolicy import ICustomizationPolicy
 
 def register(context, app_state):
     addPolicy('Default Plone', DefaultCustomizationPolicy())
     
 class DefaultCustomizationPolicy:
     """ should implement customization API which really means customize method"""
+    __implements__ = ICustomizationPolicy
+
     def customize(self, portal):
+        return
+
 	#make 'reply' tab unvisible
         dt=getToolByName(portal, 'portal_discussion') 
-	dt_actions=dt._actions[:]        
+	dt_actions=dt.listActions()        
         for a in dt_actions: 
             if a.id=='reply': a.visible=0
         dt._actions=dt_actions
@@ -27,7 +32,7 @@ class DefaultCustomizationPolicy:
         #now lets get rid of folder_listing/folder_contents tabs for folder objects
         tt=getToolByName(portal, 'portal_types')
         folderType=tt['Folder']
-	folder_actions=folderType._actions[:]
+	folder_actions=folderType.listActions()  #_actions[:]
         for a in folder_actions:
             if a.get('id','') in ('folderlisting', ): a['visible']=0
         folderType._actions=folder_actions
@@ -62,7 +67,7 @@ class DefaultCustomizationPolicy:
         
 	#customized the registration tool
         rt=getToolByName(portal, 'portal_registration')
-        rt_actions=rt._actions[:]
+        rt_actions=rt.listActions()
         for a in rt_actions:
             if a.id=='join':
                 a.condition=Expression('python: test(not member and portal.portal_membership.checkPermission("Add portal member", portal), 1, 0)')
