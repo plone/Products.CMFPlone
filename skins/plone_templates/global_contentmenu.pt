@@ -119,93 +119,75 @@
         </a>
     </li>
 
-    <tal:templateMixin define="iface_tool portal/portal_interface;
-                               isParentTemplateMixin python:iface_tool.objectImplements(folder, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');"
-                               tal:condition="isParentTemplateMixin">
-         <!--"-->
+
+
+    <tal:templateMixin define="hasFolderIndexHtml folder/hasIndexHtml;
+                               parentVocab folder/getSelectableViews;
+                               contextVocab here/getSelectableViews;
+                               canSelectDefaultFolderPage folder/canSelectDefaultPage;
+                               canSelectDefaultContextPage here/canSelectDefaultPage;
+                               isContextDefaultPage here/isDefaultPageInFolder;"
+                        condition="python:parentVocab or contextVocab or canSelectDefaultFolderPage or canSelectDefaultContextPage">
+
         <li>
             <div class="menuPosition">
                 <a href="#"
-                       title="Choose default view"
-                       onclick="return buttonClick(event, 'templateMenu');"
-                       onmouseover="buttonMouseover(event, 'templateMenu');"
-                       i18n:attributes="title">
-                    <span i18n:translate="label_choose_template">Display</span></a>
+                   title="Choose default view"
+                   onclick="return buttonClick(event, 'templateMenu');"
+                   onmouseover="buttonMouseover(event, 'templateMenu');"
+                   i18n:attributes="title">
+                    <span i18n:translate="label_choose_template">Display</span>
+                </a>
 
                 <ul class="actionMenu" id="templateMenu"
                     onmouseover="menuMouseover(event)">
 
-                    <tal:parentLayout define="field python:folder.getField('layout');
-                                              vocab python:field.Vocabulary(folder);
-                                              parentLayout folder/getLayout;
-                                              isDefaultPage python:here.isDefaultPageInFolder();
-                                              selectableDefaultPage python:iface_tool.objectImplements(here, 'Products.ATContentTypes.interfaces.ISelectableDefaultPage');"
-                                      condition="python:len(vocab) > 1 and isDefaultPage and not selectableDefaultPage">
-                    <tal:item repeat="item vocab">
-                    <li tal:define="value item;
+                    <!-- Parent Views menu -->
+                    <tal:parentViews define="object folder;
+                                             vocab parentVocab;
+                                             actualLayout object/getLayout|nothing;
+                                             selectCondition canSelectDefaultFolderPage;"
+                                     condition="vocab">
+                    <tal:layouts repeat="layout vocab">
+                    <li tal:define="value layout;
                                     display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
-                    <!--XXX style attribute has to be changed to a css class in following tag  -->
+                        <!--XXX style attribute has to be changed to a css class in following tag  -->
                         <span style="white-space:nowrap;"
-                              tal:condition="python:value==parentLayout"
+                              tal:condition="python:value==actualLayout"
                               i18n:translate=""
                               tal:content="display">Template id</span>
                         <a href="#"
                            onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                           tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
-                           i18n:attributes="title"
-                           tal:attributes="href python:here.absolute_url()+'/selectViewTemplate?templateId='+value;
+                           tal:condition="python:value!=actualLayout"
+                           tal:attributes="href string:${object.absolute_url}/selectViewTemplate?templateId=$value;
                                            title display"
-                           tal:condition="python:value!=parentLayout">
+                           i18n:attributes="title">
                             <tal:title i18n:translate=""
                                  tal:content="display">Template id</tal:title>
                         </a>
                     </li>
-                    </tal:item>
-                    </tal:parentLayout>
+                    </tal:layouts>
 
-            <tal:itemStuff define="isTemplateMixin python:iface_tool.objectImplements(here, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');"
-                            condition="isTemplateMixin">
-             <tal:layouts define="field python:here.getField('layout');
-                                     vocab python:field.Vocabulary(folder);
-                                     itemLayout here/getLayout">
-              <tal:folderoritem repeat="item vocab">
-                <li tal:define="value item;
-                                display python:here.translate(vocab.getMsgId(value), default=vocab.getValue(value));">
-                    <!--XXX style attribute has to be changed to a css class in following tag  -->
-                    <span style="white-space: nowrap;"
-                          tal:condition="python:value==itemLayout"
-                          i18n:translate=""
-                          tal:content="display">Template id</span>
-                    <a href="#" 
-                       onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                       tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
-                       i18n:attributes="title"
-                       tal:attributes="href python:here.absolute_url()+'/selectViewTemplate?templateId='+value;
-                                       title display"
-                       tal:condition="python:value!=itemLayout">
-                        <tal:title i18n:translate=""
-                                   tal:content="display">Template id</tal:title>
-                    </a>
-                </li>
-              </tal:folderoritem>
-              </tal:layouts>
-              </tal:itemStuff>
-              
-              <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
-              <li tal:condition="python:iface_tool.objectImplements(here, 'Products.ATContentTypes.interfaces.ISelectableDefaultPage')">
-                    <a href="#" 
-                       onMouseUp="if (activeButton != null) resetButton(activeButton);"
-                       tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
-                       title="Select Default Page"
-                       i18n:attributes="title"
-                       tal:attributes="href string:${here/absolute_url}/select_default_page;">
-                         Select
-                    </a>
-              </li>
+                    <!-- XXX ISelectableDefaultPage will probably be moved to Archetpes -->
+                    <li tal:condition="selectCondition">
+                        <a title="Select Default Page" href="#"
+                           onMouseUp="if (activeButton != null) resetButton(activeButton);"
+                           tal:attributes="href string:${object/absolute_url}/select_default_page;"
+                           i18n:attributes="title">
+                             Select...
+                        </a>
+                    </li>
+                    </tal:parentViews>
+
+
+
             </ul>
         </div>
     </li>
     </tal:templateMixin>
+
+
+
 
 </ul>
 
