@@ -340,13 +340,14 @@ ul#personalBar {
     color: &dtml-mainFontColor;;
     padding-right: 3em;
     margin: 0;
+    padding-bottom: 0;
     text-align: right;
     text-transform: &dtml-textTransform;;
     list-style: none;
 }
 ul#personalBar li {
     float: right;
-    background: transparent url("/linkOpaque.gif") center left no-repeat;
+    background: transparent url(linkOpaque.gif) center left no-repeat;
     padding-left: 12px;
     min-height: 16px;
     /* Make the links inline using Fabrice's inversion to fix NS4 */
@@ -356,7 +357,7 @@ ul#personalBar li {
     /* */
 }
 ul#personalBar li#personalBar-user {
-    background: transparent url("/user.gif") center left no-repeat;
+    background: transparent url(user.gif) center left no-repeat;
     padding-left: 19px;
 }
     
@@ -365,6 +366,7 @@ ul#personalBar li a {
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
+    test-decoration: none;
 }
 .caseSensitive {
     text-transform: none;
@@ -410,6 +412,7 @@ ul#contentTabs li {
     height: 1.2em;
     margin-right: 0.5em;
     padding: 0em 2em;
+    text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
 #contentTabs li.selected a {
@@ -476,7 +479,7 @@ div.byline {
     float: right;
     font-size: 80%;
 }
-#footer {
+div#footer {
     background: &dtml-footerBackground;;
     border-top: &dtml-footerBorder;;
     border-bottom: &dtml-footerBorder;;
