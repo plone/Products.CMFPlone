@@ -86,7 +86,7 @@ class MembershipTool( BaseTool ):
         """
         parent = self.aq_inner.aq_parent
         members =  self.getMembersFolder()
-
+       
         if members is None:
             parent.manage_addPloneFolder(id=self.membersfolder_id, title='Members')
             members =  self.getMembersFolder()
@@ -126,15 +126,18 @@ class MembershipTool( BaseTool ):
             f.manage_setLocalRoles(member_id, ['Owner'])
             # Create Member's home page.
             # go get the home page text from the skin
-            DEFAULT_MEMBER_CONTENT = self.homePageText()
 
+            get_transaction().commit(1) #so we can have access to the full member object
+            member_object=self.getMemberById(member_id)
+            DEFAULT_MEMBER_CONTENT = self.homePageText(member=member_object)
             addDocument( f
                        , 'index_html'
                        , member_id+"'s Home Page"
                        , member_id+"'s front page"
                        , "structured-text"
-                       , (DEFAULT_MEMBER_CONTENT % member_id)
+                       , DEFAULT_MEMBER_CONTENT 
                        )
+
             f.index_html._setPortalTypeName( 'Document' )
             # Overcome an apparent catalog bug.
             f.index_html.reindexObject()

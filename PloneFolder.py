@@ -96,7 +96,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         else:
              return view()
 
-    index_html = Acquisition.Acquired
+    index_html = None #Acquisition.Acquired
 
     security.declareProtected(AddPortalFolders, 'manage_addPloneFolder')
     def manage_addPloneFolder(self, id, title='', REQUEST=None):

@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Made the defualt content for a homepage called homePageText (was originally a
+      PythonScript - sidnei) a PageTemplate.  The biggest problem is the first time
+      throw creating an account wrapUser() is called and you get a Memberarea 
+      created (and your member object has not has setMemberProperties called yet)
+      so you dont have access to the member properties ;-( 
+
     - IDs are not generated using a FSPythonScript, generateUniqueId
 
     - We now require BTreeFolder2, created a 'Large Plone Folder'
