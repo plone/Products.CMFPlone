@@ -13,12 +13,12 @@
                  results here/my_worklist;"
      tal:condition="results">
 
-    <div class="box" tal:repeat="o results">
+    <div class="box">
 
         <h5 i18n:translate="box_review_list">Review List</h5>
 
         <div class="body">
-
+            <tal:block repeat="o results">
             <div tal:define="oddrow repeat/o/odd"
                  tal:attributes="class python:test(oddrow, 'content odd','content even')">
     
@@ -33,6 +33,7 @@
                     <div class="boxDetails"
                          tal:content="python:DateTime(o.ModificationDate()).strftime('%B %d, %H:%M')">July 7, 08:11</div>
             </div>
+            </tal:block>
 
         </div>
 
