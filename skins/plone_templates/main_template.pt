@@ -95,9 +95,11 @@
                 metal:define-slot="column_one_slot"
                 tal:condition="slots_mapping/left">
                 <div class="visualPadding">
+                <metal:portlets define-slot="portlets_one_slot">
                     <metal:leftportlets use-macro="here/portlets_fetcher/macros/left_column">
                         This instruction gets the portlets (boxes) for the left column.
                     </metal:leftportlets>
+                </metal:portlets>
                     &nbsp;
                 </div>
             </td>
@@ -153,9 +155,11 @@
                 metal:define-slot="column_two_slot"
                 tal:condition="slots_mapping/right">
                 <div class="visualPadding">
-                <metal:rightportlets metal:use-macro="here/portlets_fetcher/macros/right_column">
-                    This instruction gets the portlets (boxes) for the right column.
-                </metal:rightportlets>
+                <metal:portlets define-slot="portlets_two_slot">
+                    <metal:rightportlets use-macro="here/portlets_fetcher/macros/right_column">
+                        This instruction gets the portlets (boxes) for the right column.
+                    </metal:rightportlets>
+                </metal:portlets>
                 &nbsp;
                 </div>
             </td>

@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello
 
+    - Added a 'portlet_prefs' that displays the different prefs panels
+      available once you're inside the prefs area. This uses the portlet
+      slots introduced below.
+      [limi]
+
+    - Added 'portlets_one_slot' and 'portlets_two_slot' to make it 
+      possible to fill the portlets areas with content. This way, you
+      don't have to know what kind of layout you are in.
+      [limi]
+
     - Plone now supports translation of keywords and other metadata. 
       There is a separate i18n:domain for this - 'plone-metadata'. 
       Anything added into a (for example) 'plone-metadata-fr.po' file 
