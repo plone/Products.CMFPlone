@@ -1,0 +1,2 @@
+
+portal_url = <dtml-var portal_url>;

@@ -1,10 +1,15 @@
+
+
+// Heads up! August 2003  - Geir Bækholt
+// This file now requires the javascript variable portal_url to be set in the plone_javascript_variables.js file.
+
+
 // The calendar popup show/hide:
 
     function showDay(date) {
         document.getElementById('day' + date).style.visibility = 'visible';
         return true;
-    }
-    
+    }    
     function hideDay(date) {
         document.getElementById('day' + date).style.visibility = 'hidden';
         return true;
@@ -121,7 +126,7 @@ function sort(e) {
         if (node.lastChild.nodeName == 'IMG')
         {
             lastindex = node.getElementsByTagName('img').length - 1;
-            node.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowBlank.gif');
+            node.getElementsByTagName('img').item(lastindex).setAttribute('src',portal_url + '/arrowBlank.gif');
         }
     }
     
@@ -132,7 +137,7 @@ function sort(e) {
         {
             //window.alert(node.childNodes.item(1).nodeValue;
             lastindex = node.getElementsByTagName('img').length -1;
-            node.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowUp.gif');
+            node.getElementsByTagName('img').item(lastindex).setAttribute('src',portal_url + '/arrowUp.gif');
             break;
         }
     }
@@ -158,7 +163,7 @@ function sort(e) {
         {
             a.reverse();
             lastindex = el.getElementsByTagName('img').length - 1;
-            el.getElementsByTagName('img').item(lastindex).setAttribute('src','<dtml-var portal_url>/arrowDown.gif');
+            el.getElementsByTagName('img').item(lastindex).setAttribute('src', portal_url + '/arrowDown.gif');
         }
 
     }
@@ -184,7 +189,7 @@ function init(e) {
                 var node;
                 // set up blank spaceholder gifs
                 blankarrow = document.createElement('img');
-                blankarrow.setAttribute('src','<dtml-var portal_url>/arrowBlank.gif');
+                blankarrow.setAttribute('src', portal_url + '/arrowBlank.gif');
                 blankarrow.setAttribute('height',6);
                 blankarrow.setAttribute('width',9);
                 // the first sortable column should get an arrow initially.
@@ -196,7 +201,7 @@ function init(e) {
                         if (!initialsort) {
                             initialsort = true;
                             uparrow = document.createElement('img');
-                            uparrow.setAttribute('src','<dtml-var portal_url>/arrowUp.gif');
+                            uparrow.setAttribute('src', portal_url + '/arrowUp.gif');
                             uparrow.setAttribute('height',6);
                             uparrow.setAttribute('width',9);
                             node.appendChild(uparrow);
@@ -276,11 +281,11 @@ function deselectAll() {
 
 function toggleSelect(selectbutton) {
   if (isSelected == false) {
-    selectbutton.setAttribute('src','<dtml-var portal_url>/select_none_icon.gif');
+    selectbutton.setAttribute('src', portal_url + '/select_none_icon.gif');
     return selectAll();
   }
   else {
-    selectbutton.setAttribute('src','<dtml-var portal_url>/select_all_icon.gif');
+    selectbutton.setAttribute('src',portal_url + '/select_all_icon.gif');
     return deselectAll();
   }
 }
