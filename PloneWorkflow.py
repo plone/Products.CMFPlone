@@ -69,8 +69,9 @@ def createPrivatePloneWorkflow(id):
     ob.setProperties(title='Private Workflow [Plone]')
     return ob
 
-addWorkflowFactory( createPrivatePloneWorkflow, 
-                    id='private_plone_workflow',
-                    title='Private Workflow [Plone]' )	   
+# Will go into PloneWorkflows product
+#addWorkflowFactory( createPrivatePloneWorkflow, 
+#                    id='private_plone_workflow',
+#                    title='Private Workflow [Plone]' )	   
 
 

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0 - Fyuti
 
+    - PrivatePloneWorkflow and PrivateFolderWorkflow no longer register their 
+      workflow factories. They will disappear from Plone core.
+      [stefan]
+
     - Fixed PloneWorkflow's mapping of ChangeEvents permission to follow the
       mappings for ModifyPortalContent.
       [stefan]
