@@ -332,9 +332,6 @@ pre {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
     background-color: transparent;
     border-collapse: collapse;
-    border-bottom-color: &dtml-globalBorderColor;;
-    border-bottom-style: &dtml-borderStyle;;
-    border-bottom-width: &dtml-borderWidth;;
     padding: 0em 0em 0em 2em;
     white-space: nowrap;
     list-style: none;
@@ -374,6 +371,9 @@ pre {
 #portal-personaltools {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background-color: &dtml-globalBackgroundColor;;
+    border-top-color: &dtml-globalBorderColor;;
+    border-top-style: &dtml-borderStyle;;
+    border-top-width: &dtml-borderWidth;;
     border-bottom-color: &dtml-globalBorderColor;;
     border-bottom-style: &dtml-borderStyle;;
     border-bottom-width: &dtml-borderWidth;;
