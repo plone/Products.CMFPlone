@@ -19,10 +19,10 @@ You will receive an email shortly containing your password
     and instructions on how to activate your membership. 
 </p>
 
-<p tal:condition="python:not(ve)"> 
+<p tal:condition="nothing|python:not(ve)"> 
     <span i18n:translate="description_you_can_log_on_now">You can log on immediately by clicking</span>
     <a href=""
-	   tal:define="pss modules/Products.PythonScripts.standard; 
+     tal:define="pss modules/Products.PythonScripts.standard; 
 	               uname request/username; 
 		       username python:pss.url_quote(uname);
 		       pword request/password; 
@@ -30,7 +30,28 @@ You will receive an email shortly containing your password
 		       cfrom request/came_from;
 		       came_from python:pss.url_quote(cfrom);"
 	   tal:attributes="href python: here.portal_url() + '/logged_in?__ac_name=' + username + '&__ac_password=' + password"  
-       i18n:translate="description_you_can_log_on_now_here">here</a>.  
+       i18n:translate="description_you_can_log_on_now_here">here</a>.
+</p>       
+
+<p tal:condition="python:not(ve)"> 
+    <span i18n:translate="description_you_can_log_on_now">You can log on immediately by clicking</span>       
+    <form action=""
+          method="post"
+          tal:define="username request/username; 
+		                  password request/password;"
+          tal:attributes="action python:'%s/logged_in' % here.portal_url()"
+	        >
+        <input type="hidden" 
+               name="__ac_name" 
+               value=""
+               tal:attributes="value username;" />
+        <input type="hidden"
+               name="__ac_password"
+               value=""
+               tal:attributes="value password;" />
+        <input type="submit"
+               value="here" />
+    </form>         
 </p>
 
 </div>
