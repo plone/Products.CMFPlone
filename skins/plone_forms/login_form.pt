@@ -15,7 +15,7 @@ To access this part of the site, you need to sign in with your username and pass
 
 <p>
 
-<metal:block tal:condition="python: here.portal_membership.checkPermission('Add portal members', here)">
+<metal:block tal:condition="python: here.portal_membership.checkPermission('Add portal member', here)">
 
 <span i18n:translate="">
 If you do not have an account here, head over to the <a href="join_form">registration form</a> to become a member.
