@@ -5,7 +5,7 @@ from Globals import InitializeClass
 
 _skincache = {}
 
-# __getSkinByName can be renamed getSKinByName to 
+# __getSkinByName can be renamed getSkinByName to 
 # override SkinsContainer.getSkinByName.  This
 # is about a 10% speed increase.
 
