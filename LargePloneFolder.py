@@ -1,5 +1,7 @@
+from Acquisition import aq_base, aq_inner
+from ComputedAttribute import ComputedAttribute
 from Globals import InitializeClass
-from PloneFolder import PloneFolder
+from PloneFolder import PloneFolder, ReplaceableWrapper
 from PloneFolder import factory_type_information as PloneFolder_fti
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 
@@ -31,6 +33,22 @@ class LargePloneFolder(BTreeFolder2Base, PloneFolder):
     # evaluate to false in boolean tests, like:
     # tal:condition="python: someFolder and someFolder.someMethod(...)"
     __len__ = PloneFolder.__len__
+
+
+    def index_html(self):
+        """ 
+        btree folders don't store objects as attributes, the implementation of index_html
+        method in plone folder assumes this and by virtue of its being invoked looked in
+        the parent container. we override here to check the btree data structs, and then
+        perform the same lookup as PloneFolder if we don't find it.       
+        """
+        _target = self.get('index_html')
+        if _target is not None:
+            return _target
+        _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
+        return ReplaceableWrapper(aq_base(_target).__of__(self))
+
+    index_html = ComputedAttribute(index_html)
 
 InitializeClass(LargePloneFolder)
 
