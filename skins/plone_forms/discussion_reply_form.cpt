@@ -7,7 +7,8 @@
 <metal:block fill-slot="top_slot"
              tal:define="dummy python:request.set('disable_border',1)" />
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="errors options/state/getErrors;">
 
     <h1 i18n:translate="heading_add_comment">Add Comment</h1>
 
@@ -18,7 +19,8 @@
     <form name="edit_form"
           method="post"
           action="talkback"
-          tal:attributes="action string:$here_url/talkback" >
+          notal:attributes="action string:$here_url/talkback" 
+          tal:attributes="action string:${here/getId}/${template/getId}">
 
         <fieldset>
 
@@ -72,30 +74,54 @@
             </div>
 
 
-            <div class="field">
+	    <div class="field"
+		tal:define="error errors/subject|nothing;"
+		tal:attributes="class python:test(error, 'field error', 'field')">
 
                 <label for="title" i18n:translate="label_subject">Subject</label>
 
-                <input name="title"
-                       id="title"
+		<span class="fieldRequired" title="Required"
+		      i18n:attributes="title"
+		      i18n:translate="label_required">(Required)</span>
+
+		    <div class="formHelp" i18n:translate="help_subject">
+			The subject of your posting.
+		    </div>
+
+		    <div tal:content="error">Validation error output</div>
+
+                <input name="subject"
+                       id="subject"
                        value=""
                        size="40"
                        tabindex=""
-                       tal:attributes="value request/title_override|nothing;
+                       tal:attributes="value request/subject|request/title_override|nothing;
                                        tabindex tabindex/next" />
 
             </div>
 
-            <div class="field">
+	    <div class="field"
+		tal:define="error errors/body_text|nothing;"
+		tal:attributes="class python:test(error, 'field error', 'field')">
 
                 <label for="text" i18n:translate="label_body_text">Body text</label>
 
-                <textarea name="text"
-                          id="text"
+		<span class="fieldRequired" title="Required"
+		      i18n:attributes="title"
+		      i18n:translate="label_required">(Required)</span>
+
+		    <div class="formHelp" i18n:translate="help_body_text">
+			The message of your posting.
+		    </div>
+
+		    <div tal:content="error">Validation error output</div>
+
+                <textarea name="body_text"
+                          id="body_text"
                           cols="40"
                           rows="8"
                           tabindex=""
-                          tal:content="request/text_override | nothing"
+                          tal:content="request/body_text|request/text_override | nothing"
                           tal:attributes="tabindex tabindex/next"
                         ></textarea>
 
@@ -113,6 +139,7 @@
                                        name string:discussion_reply:method;" />
 
             </div>
+          <input type="hidden" name="form.submitted" value="1" />
 
         </fieldset>
 

@@ -3,8 +3,9 @@
 ##bind context=context
 ##bind namespace=
 ##bind script=script
+##bind state=state
 ##bind subpath=traverse_subpath
-##parameters=title,text,text_format='plain',username=None,password=None
+##parameters=subject,body_text,text_format='plain',username=None,password=None
 ##title=Reply to content
 
 from Products.PythonScripts.standard import url_quote_plus
@@ -19,7 +20,7 @@ if username or password:
     # and show them the result.  if 'logged_in' fails, the user will be
     # presented with the stock login failure page.  This all depends
     # heavily on cookiecrumbler, but I believe that is a Plone requirement.
-    came_from = '%s?title=%s&amp;text=%s' % (req['URL'], title, text)
+    came_from = '%s?subject=%s&amp;body_text=%s' % (req['URL'], subject, body_text)
     came_from = url_quote_plus(came_from)
     portal_url = context.portal_url()
 
@@ -38,8 +39,9 @@ if username or password:
 # the following
 
 creator = context.portal_membership.getAuthenticatedMember().getUserName()
-id = context.createReply(title=title, text=text, Creator=creator)
-reply = context.getReply(id)
+tb = context.talkback
+id = tb.createReply(title=subject, text=body_text, Creator=creator)
+reply = tb.getReply(id)
 
 #XXX THIS NEEDS TO GO AWAY!
 portal_discussion=context.portal_discussion
@@ -47,8 +49,8 @@ if hasattr(portal_discussion.aq_explicit, 'cookReply'):
     portal_discussion.cookReply(reply, text_format='plain')
 
 from Products.CMFPlone import transaction_note
-transaction_note('Added comment to %s at %s' % (context.title_or_id(), context.absolute_url()))
+transaction_note('Added comment to %s at %s' % (tb.title_or_id(), tb.absolute_url()))
 
-p = context.aq_parent
+p = tb.aq_parent
 target = '%s/%s' % (p.absolute_url(),p.getTypeInfo().getActionById('view'))
 return req.RESPONSE.redirect(target)
