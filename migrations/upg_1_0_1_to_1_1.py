@@ -14,11 +14,6 @@ def upg_1_0_1_to_1_1(portal):
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
 
-    #create the PloneControlPanel if not present
-    addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
-    if not hasattr(portal.aq_explicit,'portal_configuration'):
-        addPloneTool('Plone Control Panel', None)
-    
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm']
     safeEditProperty(props, 'default_page', default_values, 'lines')
@@ -100,6 +95,15 @@ def upg_1_0_1_to_1_1(portal):
     if 'portal_interface' not in portal.objectIds():
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
+    #create the PloneControlPanel if not present
+    addPloneTool=portal.manage_addProduct['CMFPlone'].manage_addTool
+    if not hasattr(portal.aq_explicit,'portal_configuration'):
+        addPloneTool('Plone Control Panel', None)
+
+    # must be done here because controlpanel depends on
+    # portal_actionicons concerning icon registration
+    portal.portal_configuration.registerDefaultConfiglets()
+    
 def registerMigrations():
     MigrationTool.registerUpgradePath(
             '1.0.1',

@@ -29,9 +29,9 @@ class PloneConfiglet(ActionInformation):
     
 default_configlets = (
     {'id':'QuickInstaller','appId':'QuickInstaller','name':'Install Products',
-        'action':'prefs_install_products_form','category':'Plone','permission': ManagePortal},
+        'action':'prefs_install_products_form','category':'Plone','permission': ManagePortal,'imageUrl':'plone_images/site_icon.gif'},
     {'id':'PloneReconfig','appId':'Plone','name':'Reconfigure Portal',
-        'action':'reconfig_form','category':'Plone','permission': ManagePortal},
+        'action':'reconfig_form','category':'Plone','permission': ManagePortal,'imageUrl':'plone_images/site_icon.gif'},
 )
         
 class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManager):
@@ -59,8 +59,16 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
     def __init__(self,**kw):
         if kw:
             self.__dict__.update(**kw)
-        for conf in default_configlets:
+            
+    security.declareProtected( ManagePortal, 'registerConfiglets' )
+    def registerConfiglets(self,configlets):
+        ''' attention: must be called AFTER portal_actionicons is installed '''
+        for conf in configlets:
             self.registerConfiglet(**conf)
+            
+    security.declareProtected( ManagePortal, 'registerDefaultConfiglets' )
+    def registerDefaultConfiglets(self):
+        self.registerConfiglets(default_configlets)
         
     def getGroupIds(self):
         return [g.split('|')[0] for g in self.groups]
@@ -73,10 +81,12 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
         context=createExprContext(self,portal,self)
         return [a.getAction(context) for a in self.listActions() if a.category==group and a.testCondition(context)]
 
+    security.declareProtected( ManagePortal, 'unregisterConfiglet' )
     def unregisterConfiglet(self,id):
         selection=[a for a in self.listActions() if a.id==id]
         self.deleteActions(selection)
-        
+
+    security.declareProtected( ManagePortal, 'unregisterApplication' )
     def unregisterApplication(self,appId):
         selection=[a for a in self.listActions() if a.appId==appId]
         self.deleteActions(selection)
@@ -126,6 +136,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
                                 , visible=visible
                                 , appId = appId
                                 )
+    security.declareProtected( ManagePortal, 'addAction' )
     def addAction( self
                  , id
                  , name
@@ -139,6 +150,8 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
                  , REQUEST=None
                  ):
         """ Add an action to our list.
+            attention: must be called AFTER portal_actionicons is installed 
+        
         """
         if not name:
             raise ValueError('A name is required.')
@@ -163,6 +176,11 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
         new_actions.append( new_action )
         self._actions = tuple( new_actions )
+        
+        if imageUrl:
+            actionicons=getToolByName(self,'portal_actionicons')
+            actionicons.addActionIcon('controlpanel',new_action.id,imageUrl,new_action.title)
+        
 
         if REQUEST is not None:
             return self.manage_editActionsForm(

@@ -1,3 +1,17 @@
+2003-06-20 Philipp Auersperg < phil at bluedynamics.com>
+    * PloneControlPanel.py:
+
+      ActionProviderish tool to register configlets (=configuration applets,
+      term is (c) limi :)
+
+      see interfaces/PloneControlPanel.py for spec.
+    
+      Each application can register actions within that tool that
+      are displayed groupwise in the plone_control_panel.pt
+
+      thanks to Thomas Bechter and Dominik Bartenstein from 
+      solutions2u.net for their preparatory work and initial coding!
+     
 2003-05-24  Sidnei da Silva  <sidnei@x3ng.com>
 
 	* PloneFolder.py: Better fix. Assert that we implement whatever
