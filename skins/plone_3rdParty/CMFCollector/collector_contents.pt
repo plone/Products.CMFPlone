@@ -96,7 +96,7 @@
             <a href="ITEMURL" tal:attributes="href itemurl">
                 <img src="" alt="Issue" border="0"
                      tal:condition="icon"
-                     tal:attributes="src icon">
+                     tal:attributes="src icon" />
                 <span tal:replace="itemtype"
                       tal:condition="not: icon"></span>
 

@@ -208,7 +208,7 @@
                         <img src="" alt="" border="0"
                              tal:attributes="src python: here.portal_url()
                                                          + '/' + icon;
-                                             alt item/Title|nothing"></a>
+                                             alt item/Title|nothing" /></a>
                     </span>                
                     <a href="ITEM URL" tal:attributes="href item_url"
                        tal:content="item/id">ITEM ID</a>
