@@ -28,7 +28,7 @@
         name="users"
         method="post">
 
-        <span omit-tag="" i18n:translate="label_show_me">Show me</span>
+        <span tal:omit-tag="" i18n:translate="label_show_me">Show me</span>
 
         <select name="searching"
                 tabindex=""
@@ -67,13 +67,15 @@
 
 
         <h2 i18n:translate="heading_returned_results">Returned results</h2>
-        <span omit-tag="" i18n:translate="description_search_string"
+        <span tal:omit-tag="" i18n:translate="description_search_string"
              >Search string:</span>
         <span tal:content="request/searchstring | default" i18n:translate="">none specified</span>
         <!--restricted by <span tal:replace="searchfor"/>-->
         <table class="listing"
             id="sortable"
-            tal:define="searchresults python:Batch(here.prefs_user_group_search(searchstring, searchfor), 25, int(b_start), orphan=1)">
+            tal:define="searchresults python:Batch(here.prefs_user_group_search(searchstring, searchfor), 25, int(b_start), orphan=1)"
+            summary="Returned results"
+            i18n:attributes="summary">
 
             <tr>
                 <th tal:condition="request/takeaction | nothing">&nbsp;</th>
