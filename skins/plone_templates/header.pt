@@ -28,9 +28,9 @@
 
     <!-- Basic crude style for Netscape4.x - This can be removed
          if you don't want the special NS4 look - it will still work,
-         just be plain text instead.  
+         just be plain text instead.  -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
-    -->
+    
 
     <!-- Column layout stylesheet. Even kinda works with Netscape4 -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneColumns.css" />
