@@ -39,7 +39,7 @@ class RegistrationTool(BaseTool):
     plone_tool = 1
     md5key = None
     _v_md5base = None
-    email_regex="""^([0-9a-z_&.+-]+!)*[0-9a-z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,3}|([0-9]{1,3}\.){3}[0-9]{1,3})$"""
+    email_regex="""^([0-9a-z_&.+-]+!)*[0-9a-z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,4}|([0-9]{1,3}\.){3}[0-9]{1,3})$"""
 
     def __init__(self):
         if hasattr(BaseTool, '__init__'):
