@@ -384,7 +384,7 @@
                 </div>
 
                 <div class="field"
-		     tal:define="skinvar python:request.get(here.portal_skins.getRequestVarname(), '');
+                        tal:define="skinvar python:request.get(here.portal_skins.getRequestVarname(), '');
                          skindefault here/portal_skins/getDefaultSkin;
                          skincurrent python:test(skinvar, skinvar, skindefault);">
                     <select name="portal_skin"
@@ -417,6 +417,7 @@
                     </div>
 
                 </div>
+
                 <div class="field">
 
                     <input type="file"
@@ -428,26 +429,6 @@
                            tal:attributes="tabindex tabindex/next;"
                            />
                     <br />
-
-                    <div class="label">
-                        <span i18n:translate="delete_portrait">delete Portrait</span>
-                        <div id="portrait_delete_help"
-                            i18n:translate="help_portrait_delete"
-                            class="help"
-                            style="visibility:hidden">
-                        To delete a portrait, check that box before saving <br />
-                        </div>
-
-                    </div>
-                    <input type="checkbox"
-                        class="noborder"
-                        name="delete_portrait"
-                        id="delete_portrait"
-                        tabindex=""
-                        onfocus="formtooltip('portrait_delete_help',1)"
-                        onblur="formtooltip('portrait_delete_help',0)"
-                        tal:attributes="tabindex tabindex;"
-                        />
                     <br />
 
                     <img src=""
@@ -457,6 +438,19 @@
                          tal:condition="portrait"
                          tal:attributes="src portrait/absolute_url"
                          />
+                </div>
+                <div class="row">
+                    <div class="label">&nbsp;</div>
+                    <div class="field">
+                        <input class="context"
+                            tabindex=""
+                            type="submit"
+                            value="Delete Portrait"
+                            name="form.button.PortraitDelete"
+                            i18n:attributes="value"
+                            tal:attributes="tabindex tabindex/next;"
+                            />
+                    </div>
                 </div>
             </div>
 
@@ -484,7 +478,7 @@
 
             <input type="hidden" name="form.submitted" value="1" />
 
-		</form>
+        </form>
 
 </div>
 

@@ -7,5 +7,6 @@ validators..Cancel=
 
 [actions]
 action.success..Save=traverse_to:string:personalize
+action.success..PortraitDelete=traverse_to:string:portrait_delete
 action.success..Cancel=redirect_to:string:personalize_form
 action.failure=traverse_to:string:personalize_form
