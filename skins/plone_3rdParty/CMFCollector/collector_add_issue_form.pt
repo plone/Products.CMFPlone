@@ -89,7 +89,7 @@ as possible.
     </div>
     
     <div class="row">
-        <div class="label"i18n:translate="label_email">Email</div>
+        <div class="label" i18n:translate="label_email">Email</div>
 
         <div class="field">
             <input type="text" name="submitter_email" size="30"
