@@ -9,7 +9,9 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+from Products.CMFPlone.migrations.v2.two04_two05 import replaceFolderPropertiesWithEdit
 from Products.CMFPlone.migrations.v2.two04_two05 import interchangeEditAndSharing
+from Products.CMFPlone.migrations.v2.two04_two05 import addFolderListingActionToTopic
 
 
 class TestMigrations(PloneTestCase.PloneTestCase):
@@ -24,15 +26,35 @@ class TestMigrations(PloneTestCase.PloneTestCase):
         actions = [x for x in actions if x.id != action_id]
         typeob._actions = tuple(actions)
 
-    def testInterchangeEditAndSharing_1(self):
-        # Should not bomb out if action is missing
+    def testReplaceFolderPropertiesWithEditNoFolder(self):
+        # Should not fail if Folder type is missing
+        self.types._delObject('Folder')
+        replaceFolderPropertiesWithEdit(self.portal, [])
+
+    def testReplaceFolderPropertiesWithEditNoEdit(self):
+        # Should not fail if action is missing
+        self.removeAction('Folder', 'edit')
+        replaceFolderPropertiesWithEdit(self.portal, [])
+
+    def testInterchangeEditAndSharingNoFolder(self):
+        # Should not fail if Folder type is missing
+        self.types._delObject('Folder')
+        interchangeEditAndSharing(self.portal, [])
+
+    def testInterchangeEditAndSharingNoSharing(self):
+        # Should not fail if action is missing
         self.removeAction('Folder', 'local_roles')
         interchangeEditAndSharing(self.portal, [])
 
-    def testInterchangeEditAndSharing_2(self):
-        # Should not bomb out if action is missing
+    def testInterchangeEditAndSharingNoEdit(self):
+        # Should not fail if action is missing
         self.removeAction('Folder', 'edit')
         interchangeEditAndSharing(self.portal, [])
+
+    def testAddFolderListingToTopicNoTopic(self):
+        # Should not fail if Topic type is missing
+        self.types._delObject('Topic')
+        addFolderListingActionToTopic(self.portal, [])
 
 
 def test_suite():
