@@ -11,9 +11,9 @@ def two04_two05(portal):
     """2.0.4 -> 2.0.5
     """
     out = []
-    out += replaceFolderPropertiesWithEdit(portal, out)
-    out += addFolderListingActionToTopic(portal, out)
-    out += interchangeEditAndSharing(portal, out)
+    replaceFolderPropertiesWithEdit(portal, out)
+    addFolderListingActionToTopic(portal, out)
+    interchangeEditAndSharing(portal, out)
     return out
 
 
