@@ -36,6 +36,20 @@
                name="criteria.reversed::int:default:records" 
                value="0"
                />
+
+        <!-- XXX when someone has time to make it a drop down
+        <select name="checkbox"
+                name="criteria.reversed:records"
+                onfocus="formtooltip('sort_criterion_help',1)"
+                onblur="formtooltip('sort_criterion_help',0)" >
+           
+            <option value="0">in ascending order</option>
+
+            <option value="yes" 
+                    tal:attributes="selected python:test(here.reversed, 'selected', '')">
+                     in reverse order </option>
+                    
+        </select> -->
         
         <input class="noborder"
                type="checkbox" 
@@ -45,8 +59,8 @@
                onfocus="formtooltip('sort_criterion_help',1)" 
                onblur="formtooltip('sort_criterion_help',0)"
                />
-
         Sort in reverse order
+
     </div>
 
 </div>

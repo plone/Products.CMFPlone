@@ -74,7 +74,7 @@
           name="edit_form" 
           method="post" 
           action="content_status_modify"
-	  tal:attributes="action python:test(request.get('ids', None), 'folder_publish', 'content_status_modify')" >
+          tal:attributes="action python:test(request.get('ids', None), 'folder_publish', 'content_status_modify')" >
         
         <span class="legend" i18n:translate="">Publishing Details</span>
 
@@ -84,7 +84,8 @@
                  tal:define="Batch python:modules['ZTUtils'].Batch;
 		             physical_path python:'/'.join(here.getPhysicalPath());
                              dummy python:request.set('ids_checked', 1);
-                             global batch python:Batch([b.getObject() for b in here.portal_catalog(path={'query':physical_path, 'level':0}, id=request.get('ids', ' ', path))], 500000, int(0), orphan=0);
+                             containedobjects python:[getattr(here, id) for id in request.get('ids', []) if id in here.objectIds()];
+                             global batch python:Batch(containedobjects, 500000, int(0), orphan=0);
                              global folders_in_publishing python:[o.getId() for o in batch if o.isPrincipiaFolderish];"
                  tal:condition="batch">
                 <table metal:use-macro="here/folder_contents/macros/folder_listing">
