@@ -225,7 +225,7 @@
                             tal:content="structure python:test(size, size, '&nbsp;')"> size </span>
                         </td>
 
-                        <td tal:content="item/ModificationDate">
+                        <td tal:content="python:here.toLocalizedTime(here.ModificationDate(),long_format=1)">
                         08/19/2001 03:01 AM
                         </td>
 
