@@ -9,6 +9,10 @@
 <div metal:fill-slot="main"
      tal:condition="here/rejectAnonymous" >
 
+     <metal:block tal:condition="python:test(request.get('type_name', 'Select')!='Select', 1, 0)">
+        <tal tal:define="dummy python:request.response.redirect(here.absolute_url()+'/createObject?type_name='+request.get('type_name'))" />
+     </metal:block>
+     
 	<h1>Add new item</h1>
 	
 	<p>

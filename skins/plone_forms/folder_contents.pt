@@ -199,6 +199,16 @@
     
     <br />&nbsp;<br />
     
+    <select name="type_name" >
+      <option name="Select">Select</option>
+      <metal:block tal:repeat="ctype here/allowedContentTypes"
+                   tal:define="global filterOut  python:['Favorite']">
+      <option name="Document"
+              tal:condition="python: ctype.getId() not in filterOut"
+              tal:attributes="name ctype/getId"
+	      tal:content="ctype/getId">Document</option>
+      </metal:block>       
+    </select>
     <input class="standalone" type="submit" name="folder_factories:method" value="Add New Item" />
 
 
@@ -270,6 +280,17 @@
                              ">
         
         <form class="inline" name="create" action="folder_factories" method="post">
+        <select name="type_name" >
+          <option name="Select">Select</option>
+          <metal:block tal:repeat="ctype here/allowedContentTypes"
+                       tal:define="global filterOut  python:['Favorite']">
+            <option name="Document"
+                    tal:condition="python: ctype.getId() not in filterOut"
+                    tal:attributes="name ctype/getId"
+                    tal:content="ctype/getId">Document</option>
+          </metal:block>
+        </select>
+
         <input class="standalone" type="submit" value="Add New Item" />
         </form>
        
