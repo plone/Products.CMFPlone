@@ -35,6 +35,18 @@
                 </div>
         
             </tal:block>
+
+            <div class="content odd">
+            
+                <a href=""
+                   class="more"
+                   tal:attributes="href string:${portal_url}/news"
+                   i18n:translate="box_morelink"
+                   >
+                    More...
+                </a>
+
+            </div>            
     
         </div>
 
