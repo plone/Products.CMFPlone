@@ -135,7 +135,44 @@ def rc5_final(portal):
 
     out.append('Adding in catalog indexes')
     addCatalogIndexes(portal)
+    
+    out.append('Adding new properties: typesLinkToFolderContents, typesLinkToFolderContentsInFC')
+    addFolderContentsProperties(portal)
+
+    out.append('Removing deprecated property: use_folder_contents')
+    delOldFolderContentsProperty(portal)
+
     return out
+
+def addFolderContentsProperties(portal):
+    """Existing use_folder_contents split into two new properties:
+
+    site_properties/typesLinkToFolderContentsInFC:
+      when looking at folder_contents, what content types should be linked to /folder_contents,
+      as opposed to their 'view' link?
+    navtree_properties/typesLinkToFolderContents:
+      for quick navigation in navigation slot, what types should always show as link to /f_c,
+      (assuming you have perm, etc.)
+    """
+ 
+    props = portal.portal_properties.navtree_properties
+    if not hasattr(props, 'typesLinkToFolderContents'):
+        props._setProperty('typesLinkToFolderContents', [], 'lines')
+    props = portal.portal_properties.site_properties
+    ufc = []
+    if hasattr(props, 'use_folder_contents'):
+        ufc = props.use_folder_contents
+    if not ufc:
+        ufc = ['Folder','Large Plone Folder']
+    if not hasattr(props, 'typesLinkToFolderContentsInFC'):
+        props._setProperty('typesLinkToFolderContentsInFC', ufc, 'lines')
+        
+def delOldFolderContentsProperty(portal):
+    """This was an overly-vague name, which got us into a mess as people overloaded it."""
+
+    props = portal.portal_properties.site_properties
+    if hasattr(props, 'use_folder_contents'):
+        props._delProperty('use_folder_contents')
 
 def addTablelessSkin(portal):
     # to be shure that we have a plone_tableless directory view
