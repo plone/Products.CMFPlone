@@ -32,9 +32,11 @@ if cmfcore:
         filtered = ''
         for v in version:
             if v in ['0','1','2','3','4','5','6','7','8','9','.']:
-                filtered += v
+                if filtered.find('.')==-1:
+                    filtered += v
             else:
                 break
+        print 'filtered:',filtered
         x = float(filtered)
     except IOError:
         x = 0
