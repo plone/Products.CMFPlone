@@ -2,24 +2,65 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/content_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 <body>
 
-<div metal:fill-slot="main">	  
+<metal:block metal:fill-slot="main">	  
 
-    <div>
-        <span tal:replace="structure here/aboveInThread"></span>
-    </div>
+    <div tal:condition="here/talkback|nothing"
+         tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
     
-    <h1> <img src="discussion.gif" alt="Comment" /> <span tal:replace="here/Title">My Title</span> </h1>
-    
-    <div class="group">
-        <span class="legend">Comment</span>
-        <div tal:replace="structure here/CookedBody">Body</div>
-    </div>
-      
-      
-</div>
+        <div>
+            <span tal:replace="structure here/aboveInThread"></span>
+        </div>
+
+        <table class="box"
+               cellpadding="0"
+               cellspacing="0">
+            <tr>
+                <th>Discussion</th><th class="empty">&nbsp;</th>	
+            </tr>
+            
+            <tr>
+                <td colspan="2">
+                    
+                    This is the current discussion being viewed.  
+                    it should somehow be offset from its comments. 
+
+
+                    <h2><img src="discussionitem_icon.gif" alt="Comment" /> <span tal:replace="here/title_or_id">Comment title</span> </h2>
+                    Posted by:
+                    <span tal:content="here/Creator">Poster Name</span>
+                    at 
+                    <span tal:replace="python: here.toPortalTime(here.modified())">8/23/2001 12:40:44 PM</span>
+                    
+                    <p tal:content="structure python:stx(here.text)">
+        		    This is the body text of the comment. 
+        		    </p>
+                    
+                    <form name="reply"
+                          action=""
+                          method="post"
+                          tal:attributes="action string:${here/absolute_url}/discussion_reply_form">
+                          
+                        <input class="standalone" type="submit" value="Reply to this" />
+                    
+                    </form>                                
+                </td>
+            </tr>
+        </table>
+
+    </div>          
+
+</metal:block>
+
+<metal:block metal:fill-slot="sub">
+    <metal:block tal:condition="python:here.talkback.hasReplies(here)">
+        <metal:block tal:replace="structure here/viewThreadsAtBottom">
+            override discussionitem_view viewThreadsAtBottom
+        </metal:block>
+    </metal:block>
+</metal:block>
 
 </body>
 </html>

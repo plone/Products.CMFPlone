@@ -1,0 +1,345 @@
+<h3>TextFormattingRules</h3>
+<p>  (See "HowDoIEdit":HowDoIEdit for general information ZWiki editing
+info.)</p>
+
+<p>  ZWiki formatting conventions make it easy for everyone to create
+  nice web pages <em>without</em> making it hard for anyone to read and edit
+  other people's page source.  <em>This</em> page is for helping both novice
+  and experienced users understand the rules, where intuition doesn't
+  suffice:</p>
+<ul><li><p><a href="#quickreference">A quick reference</a> for those already familiar
+      with (or intuiting) the format.  It has links into...</p>
+
+</li>
+<li><p><a href="#moredetails">A more thorough reference</a> with details and
+      orientation for those first being exposed to the format.</p>
+
+</li></ul>
+
+
+<p><a name=quickreference></a></p>
+
+<h3>Quick Reference</h3>
+<h4>Style Formatting</h4>
+<ul><li><p>Emphasis: <code>*italic*</code> => <em>italic</em></p>
+
+</li>
+<li><p>Bold: <code>**bold**</code> => <strong>bold</strong></p>
+
+</li>
+<li><p>Code: &#39;code&#39; => <code>code</code></p>
+
+</li></ul>
+
+<h4>Making and Preventing Links</h4>
+<h5>Expressing Links</h5>
+<ul><li><p><a href="#wikirefs">Wiki refs</a> : Squashed-together capitalized words,
+        e.g. StructuredText, WikiWikiWeb, TextFormattingRules (numbers
+        and the "~" tilde are also allowed).</p>
+
+</li>
+<li><p><a href="#squarebrackets">![Square brackets]</a> : (Discouraged!) Usually
+        turn anything into a wiki ref.</p>
+
+</li>
+<li><p>Spelled-out !URLs : Any text recognizable as a URL: http://www.zope.org</p>
+
+</li>
+<li><p>RemoteWikiURL : A way to refer to pages in remote wikis, eg:
+        ZWikiWeb:RemoteWikiURL</p>
+
+</li>
+<li><p>Linked text : <code>&quot;Zope central&quot;:http://www.zope.org</code> => <a href="http://www.zope.org">Zope central</a></p>
+
+</li></ul>
+
+<h5>Preventing Links (and Other Processing)</h5>
+<ul><li><p><a href="#exclamationpoint">Bang</a> : Prefix the wiki word or <code>[]</code> square
+        brackets with an exclamation point: <code>!!StructuredText</code>,
+        <code>!![meta comment]</code></p>
+
+</li>
+<li><p><a href="#singlequote">Tick</a> : Put the expression in &#39; single-quote code-fragment form: <code>ZWiki</code></p>
+
+</li>
+<li><p><a href="#exampleblock">Example block</a> : Put the expression in an "::"
+        example block::</p>
+<PRE>
+          StructuredText, http://www.zope.org, &lt;strong&gt;nope!&lt;/strong&gt;
+          &lt;dtml-var &quot;1 + 1&quot;&gt;, etc.
+
+</PRE>
+
+</li></ul>
+
+
+<h4>Sectional Structure</h4>
+<ul><li><p>Paragraphs : adjacent sequences of non-blank text lines.
+      Indentation of the first line determines the level of the
+      paragraph.</p>
+
+</li>
+<li><p><a href="#sections">Sections</a> : Adjacent sequences of paragraphs with the same
+      indentation level.</p>
+
+</li>
+<li><p><a href="#sections">Subsections</a> : Sections having greater indentation
+      level than their immediately preceding section.</p>
+
+</li>
+<li><p><a href="#headers">Headers</a>: Single-line paragraphs that do not end in
+      punctuation, and that contain a new subsection.</p>
+
+</li></ul>
+
+<h4>Lists</h4>
+<ul><li><p><a href="#unordered">Unordered Bulleted Lists</a>: Paragraphs beginning with
+      a <code>-</code>, <code>*</code>, or <code>o</code></p>
+
+</li>
+<li><p><a href="#ordered">Ordered Bulleted Lists</a> : Paragraphs beginning with a
+      sequence of digits followed by a white-space character are
+      treated as ordered list elements.</p>
+
+</li>
+<li><p><a href="#definition">Definition lists</a> : Paragraphs with first line
+      containing text followed by some white-space and <code>--</code></p>
+
+</li></ul>
+
+
+<p><a name=moredetails></a></p>
+
+<h3>Background and Elaboration</h3>
+<p>  ZWiki's "structuredtext" format text is based on Zope's
+  StructuredText, plus some WikiWikiWeb conventions.  Both are
+  concerned with the readability and intuitive obviousness of the raw
+  text - to prevent formatting from getting in the way of editing.
+  The ultimate aim is to support crafting of text that is readable and
+  attractive in both the formatted <em>and</em> the raw form.</p>
+
+<p>  With ZWiki pages, you indicate everything, including the structure of
+  a document - its sections and the nesting of subsections, its
+  formatting, links, and stuff like that - using plain-text formatting
+  conventions.  (ZWiki text can include raw HTML, in case there's some
+  elaborate HTML formatting you must do beyond what StructuredText
+  text offers.  The less HTML you use, the easier the job will be for
+  editors - yourself included!)</p>
+
+<p>  The source of existing pages can provide good examples of the
+  conventions - the text of this page, in particular, presents many
+  central examples.  Click the "Edit" or "View" in the page footer to
+  see.</p>
+
+<p>  <a name=levels></a></p>
+
+<p>  One formatting feature worth immediate attention is the way
+  indentation level is used to distinguish sections and subsections:</p>
+<ul><li><p>It starts with paragraphs: adjacent, non-blank text lines in
+      groups that are bounded above and below by blank lines.</p>
+
+</li>
+<li><p>Sections are sequences of these paragraphs with their first
+      lines having the same indentation, ...</p>
+
+</li>
+<li><p>and the subsections are paragraphs whose first lines
+      have greater indentation than their immediately preceding,
+      containing sections.</p>
+
+</li></ul>
+
+<p>  This use of whitespace makes the sectional structure as obvious in
+  the raw text as it is in the formatted result, without cluttering
+  the raw text with peculiar, distracting marks.  See <a href="#sections">Sectional
+  Structure</a> for more details.</p>
+
+<h4>Style Formatting</h4>
+<ul><li><p>Emphasis: <code>*italic*</code> => <em>italic</em></p>
+
+</li>
+<li><p>Bold: <code>**bold**</code> => <strong>bold</strong></p>
+
+</li>
+<li><p>Code: &#39;code&#39; => <code>code</code></p>
+
+</li></ul>
+
+<h4>Making and Preventing Links</h4>
+<h5>Expressing Links</h5>
+<p>      <a name=wikirefs></a></p>
+
+<ul><li><p>Wiki refs : the main way to link to pages in the same wiki,
+        they're made of two or more run-together capitalized words
+        naming the target pages.  (In ZWiki, numbers can be use where
+        capital letters would be, except at the beginning of the word,
+        and <code>~</code> tildes can be used as lowercase letters.)  When the
+        target page is there, the wiki ref is rendered as a link to
+        it.  Easy!</p>
+<p>        Wiki refs also serve to create new pages - when the target page
+        is absent, then the ref itself is not a link, but it has an
+        appended question mark, which <em>is</em> a link to a page for creating
+        authoring and creating the target.</p>
+
+<p>        Some examples: StructuredText, WikiWikiWeb, TextFormattingRules</p>
+
+<p>        See "RemoteWikiLinks":RemoteWikiLinks for a way to link to wiki
+pages in other Wikis.</p>
+
+
+</li></ul>
+<p>      <a name=squarebrackets></a></p>
+
+<ul><li><p>![Square brackets] : turn anything into a wiki ref - but beware,
+        spaces and other forced characters make for unobvious links, to be
+        avoided!  (I'm not offering an example, they're so yucky.-)</p>
+
+</li></ul>
+<p>      <a name=spelledout></a></p>
+
+<ul><li><p>Spelled-out !URLs : Any text recognizable as a URL: http://www.zope.org</p>
+
+</li>
+<li><p>RemoteWikiURL : A way to refer to pages in remote wikis, eg:
+        ZWikiWeb:RemoteWikiURL</p>
+
+</li>
+<li><p>Linked text :</p>
+<p>        <code>&quot;Zwiki central&quot;:http://joyful.com/zwiki</code>
+        => <a href="http://joyful.com/zwiki">Zwiki central</a></p>
+
+
+</li></ul>
+
+<h5>Preventing Links (and Other Processing)</h5>
+<p>      <a name=exclamationpoint></a></p>
+
+<ul><li><p>Bang : Prefix the wiki word or <code>[]</code> square brackets with an
+        exclamation point: <code>!!StructuredText</code>, <code>!![meta comment]</code></p>
+
+</li></ul>
+<p>      <a name=singlequote></a></p>
+
+<ul><li><p>Tick : Put the expression in &#39; single-quote code-fragment form.</p>
+<p>        This is a good way to escape small portions of text from wiki
+        processing:</p>
+
+<p>        <code>For instance, stuff like WikiNames, bare URLs -
+        http://www.zope.org - etc., are not processed.</code></p>
+
+<p>        It all needs to be within a single paragraph, and you can't
+        include contractions because of the single quote.</p>
+
+
+</li></ul>
+<p>      <a name=exampleblock></a></p>
+
+<ul><li><p>Example block : Put the expression in an "::" example block.</p>
+<p>        This is the prime way to escape blocks of text from formatting 
+        - no html flow or other processing is done, and dtml and other
+        server-side includes are prevented:</p>
+<PRE>
+          Escaping *all* web and wiki formatting::
+
+            StructuredText isn't recognized (nor is http://www.zope.org,
+            &lt;strong&gt;rendered literally, ay?&lt;/strong&gt;, &lt;dtml-var &quot;1 + 1&quot;&gt;,
+            etc!)
+
+</PRE>
+
+<p>        (What happens?  The section is bracketed by
+        '&lt;pre>&lt;/pre>" preformatting directives, and any "&lt;"
+        less-than symbols in the section are turned into <code>&amp;lt;</code>
+        before the web server sees them.  Thus the server doesn't
+        specially process anything within the section.  <em>This</em>
+        paragraph is outside the example section, because it's at a
+        lesser indentation - and so is once again <em>subject to
+        processing</em>.)</p>
+
+
+</li></ul>
+
+
+<h4>Sectional Structure</h4>
+<p>    See this page's source for examples, and see the bit about
+    indentation levels, <a href="#levels">above</a> for more details.</p>
+
+<ul><li><p>Paragraphs</p>
+<p>      Paragraphs are adjacent sequences of non-blank text lines.</p>
+
+
+</li></ul>
+<p>    <a name=sections></a></p>
+
+<ul><li><p>Sections</p>
+<p>      Paragraphs have section levels relative to each other, according
+      to the indentation of their first line.  Adjacent sequences of
+      paragraphs with the same indentation level (the indentation of
+      the first line is what's significant) make up a single section.
+      Sections at a deeper level - i.e., having greater indentation -
+      than their preceding section are subsections of the preceding
+      section.</p>
+
+
+</li></ul>
+<p>    <a name=headers></a></p>
+
+<ul><li><p>Headers</p>
+<p>      Single-line paragraphs that do <em>not</em> end in punctuation, and
+      that contain a new subsection - i.e., are immediately followed
+      by paragraphs with greater indentation - take on the role of
+      header lines for the subsection.  The section header <code>&lt;h#&gt;
+      ... &lt;/h#&gt;</code> header level is determined by how deeply nested
+      the subsection is within the top level section.</p>
+
+
+</li></ul>
+
+<h4>Lists</h4>
+<p>    <a name=unordered></a></p>
+
+<ul><li><p>Unordered Bulleted Lists</p>
+<p>      Paragraphs beginning with a <code>-</code>, <code>*</code>, or <code>o</code> are treated as
+      unordered list elements:</p>
+<PRE>
+       - And example unordered list element (unrendered, so you can
+         see the formatting)
+
+</PRE>
+
+
+</li></ul>
+<p>    <a name=ordered></a></p>
+
+<ul><li><p>Ordered Bulleted Lists</p>
+<p>      Paragraphs beginning with a sequence of digits followed by a
+      white-space character are treated as ordered list elements.
+      (The sequence of digits could be a digits or letters with <code>.</code>
+      periods interspersed - e.g., <code>A.B.C.</code> or <code>1.1.3</code>.):</p>
+<PRE>
+       1.1. First ordered list element (unrendered)
+
+       1.2. Second...
+
+</PRE>
+
+
+</li></ul>
+<p>    <a name=definition></a></p>
+
+<ul><li><p>Definition lists</p>
+<p>      Paragraphs whose first line contains text followed by some
+      white-space and <code>--</code> is treated as a descriptive list
+      element.  The leading text is treated as the element title:</p>
+<PRE>
+        Example definition list element -- unrendered for your
+        viewing pleasure
+
+</PRE>
+
+
+</li></ul>
+
+<p>  See Also "StructuredText":StructuredText.</p>
+
+

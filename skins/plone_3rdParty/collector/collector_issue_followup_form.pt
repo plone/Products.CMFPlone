@@ -1,0 +1,142 @@
+<span tal:condition="nothing"
+      tal:define="has_followup_priv nocall: here/do_action">
+  This span ensures that the visitor has edit privilege, by fetching - but
+  not displaying - the protected collector.do_action method.
+</span>
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master">
+<body>
+
+<span tal:condition="nothing">
+  Template description: Form for entering new issue actions.
+</span>
+
+<div metal:fill-slot="header"
+     tal:define="global collector_issue_header_present python: 1">
+  <div metal:use-macro="here/collector_macros/macros/issue_header">
+    ISSUE HEADER
+  </div>
+</div>
+
+<div metal:fill-slot="main">
+
+  <div tal:condition="not: collector_issue_header_present|nothing">
+    <!-- Master template has no "header" macro... -->
+    <div metal:use-macro="here/collector_macros/macros/issue_header">
+      ISSUE HEADER
+    </div>
+  </div>
+
+  <form method="POST" enctype="multipart/form-data"
+        action="collector_issue_followup">
+
+    <table tal:define="actions_pairs here/valid_actions_pairs"
+      border="0" cellspacing="0">
+
+      <tr bgcolor="#ccffcc">
+        <td NOWRAP colspan="DEPENDS"
+            tal:attributes="colspan python: (here.no_submitter_email() and 1)
+                                            or 3">
+          <font size="+1">
+            <strong>
+              Issue <span tal:replace="here/id">ID</span>
+            </strong>
+          </font>
+        </td>
+        <td tal:condition="here/no_submitter_email" align="right">
+          <em>
+            Note: We have no submitter address, so they won't get followups.
+          </em>
+        </td>
+      </tr>
+
+      <tr>
+        <th align="left" NOWRAP>
+          Entry <span tal:replace="python: here.action_number + 1"></span>
+        </th>
+        <td align="center">
+          Click <a href="QUALIFIED" 
+                   tal:attributes="href python: request.URL + '?do_cite=1'">
+                here</a> to cite the existing transcript.
+        </td>
+      </tr>
+
+      <tr tal:condition="not: actions_pairs">
+        <td colspan="2">
+          Enter your followup.
+        </td>
+      </tr>
+      <tr tal:condition="actions_pairs">
+        <th align="right"> Action: </th>
+        <td>
+          <input type="radio"
+                 name="action" value="comment" CHECKED>Comment&nbsp;
+          <span tal:repeat="pair actions_pairs">
+            <span tal:condition="python: pair[1] != 'Assign'">
+                <input type="radio" name="action" value="VALUE"
+                       tal:attributes="value python: pair[0]"
+                  ><span tal:replace="python: pair[1]">ACTION</span>&nbsp;
+            </span>
+          </span>
+        </td>
+
+        <td tal:define="assigning python: [i[0] for i in actions_pairs
+                                             if i[1] == 'Assign']"
+            tal:condition="assigning">
+          <input type="radio" name="action" value="Assign"
+                 tal:attributes="value python: assigning[0]">Assign:
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2">
+          <textarea name="comment" rows="10" cols="65" wrap="soft"
+                    tal:content="python: (request.get('do_cite')
+                                          and here.cited_text()) or ''">
+</textarea>
+          <font size="-1">
+            <br>
+            Prefix lines with whitespace or '&gt;' to preserve their format.
+          </font>
+        </td>
+
+
+        <td valign="top"
+            tal:define="assigning python: [1 for i in actions_pairs
+                                             if i[1] == 'Assign'];
+                        supporters here/aq_parent/supporters"
+            tal:condition="assigning">
+          <select name="assignees:list" MULTIPLE size="5"
+                  tal:attributes="size python:
+                                       min(max(len(supporters), 3), 8)">
+            <option tal:content="supporter"
+                    tal:repeat="supporter supporters"
+                    tal:attributes="selected python:
+                    supporter in here.assigned_to()">
+              SUPPORTER
+            </option>
+          </select>
+        </td>
+
+      </tr>
+
+    </table>
+
+    <div metal:use-macro="here/collector_macros/macros/add_artifacts_table">
+       add_artifacts_excerpt
+    </div>
+
+      <tr>
+        <td colspan="5">
+            <input type="submit" name="submit" value="Submit">
+        </td>
+      </tr>
+
+  </form>
+
+</div>
+
+</body>
+</html>

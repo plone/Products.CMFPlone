@@ -1,0 +1,103 @@
+<h3>Specifying Who Can Do What in Your Wiki Pages and Folders</h3>
+<p>  Wiki page and folder owners can specify which visitors to their
+  pages can do what wiki operations with them.  The regulations are
+  expressed according to operation versus role categories, or versus
+  specific user ids.</p>
+
+<p>  Every page has a regulations form with controls for the page - only
+  the page or folder owners, or Managers, can change the settings, but
+  anyone can view them.  See these settings by following the "Advanced
+  Actions" link in the page footer.</p>
+
+<p>  The following table describes the terms used in the controls.  It's
+  followed by descriptions of some ways the controls are used for
+  common community scenarios.</p>
+
+<p>  <table cellspacing=20>
+    <tr valign="top">
+      <td>
+        <table border=1>
+          <tr>
+            <th colspan=2 bgcolor="eeeeee"> Operations </th>
+          </tr>
+          <tr>
+            <th align="left" valign="top"> Create </th>
+            <td>
+              Enable people to create pages for new wiki names.  They
+              will be presented with a <font color="green"> <strong>?</strong> </font> 
+              question mark to create a new page with the current page
+              as its parent.  Those not allowed to create new pages
+              from the current page will see an
+              <font color="green"> <strong><sup>x</sup></strong> </font>
+              instead.
+            </td>
+          </tr> <tr>
+            <th align="left" valign="top"> Edit </th> <td>
+              Change the text of the current page.
+            </td>
+          </tr> <tr>
+            <th align="left" valign="top"> Comment </th> <td>
+              Append comments to the bottom of the page.  This is a
+              more controlled way to get feedback than the more
+              free-wheeling full-edit ability.
+            </td>
+          </tr> <tr>
+            <th align="left" valign="top"> Move </th> <td>
+              Rename or delete the page, or change its designated
+              parent(s).  When renaming, links to the old name will
+              <em> not </em> be automatically adjusted to track
+              change.
+            </td>
+          </tr>
+        </table></p>
+<p>      </td>
+      <td valign="top"></p>
+
+
+<p>        <table border=1>
+          <tr>
+            <th colspan=2 bgcolor="eeeeee"> Role Categories </th>
+          </tr>
+          <tr>
+            <th align="left" valign="top" NOWRAP> Nobody </th>
+            <td> Not even managers or page owners - but they can
+                 reset the policy.
+            </td>
+          </tr>
+          <tr>
+            <th align="left" valign="top"> Owners </th>
+            <td>
+              The fundamental category, users with the <code>Owner</code> role
+              for the page.  Those owners and a few other people -
+              those with Manager role and owners of the folder - can
+              also set page regulations, establishing which page
+              visitors can do what on the pages.
+            </td>
+          </tr>
+          <tr>
+            <th align="left" valign="top" NOWRAP> Non-Anon </th>
+            <td> "Non-Anonymous" -
+              This category further extends to include <em>any</em> logged-in visitor.
+            </td>
+          </tr>
+          <tr>
+            <th align="left" valign="top"> Everyone </th>
+            <td>
+              This category further includes anonymous visitors.
+              Indistinguishable from one another, there's no way to
+              assign responsibility for their actions - which may
+              sometimes be your aim.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table></p>
+
+<p>  <ul>
+    <li> Page owners can use the <strong> Additional Allowed Users
+         </strong> boxes to enable an operation for specific users,
+         regardless of the Role Category settings </li>
+    <li> Finally, if you select the <strong> Propagate to Offspring
+         </strong> checkbox at the bottom of the column for an
+         operation, then this setting will

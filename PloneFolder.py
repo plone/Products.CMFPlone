@@ -8,7 +8,7 @@ from Globals import InitializeClass
 factory_type_information = ( { 'id'             : 'Plone Folder'
                              , 'meta_type'      : 'Plone Folder'
                              , 'description'    : """\
-Plone folders can define custom 'view' actions, without a view action it will present a directory listing."""
+Plone folders can define custom 'view' actions, or will behave like directory listings without one defined.."""
                              , 'icon'           : 'folder_icon.gif'
                              , 'product'        : 'CMFPlone'
                              , 'factory'        : 'addPloneFolder'
@@ -29,13 +29,13 @@ Plone folders can define custom 'view' actions, without a view action it will pr
                                      (Permissions.access_contents_information,)
                                   , 'category'      : 'folder'
                                   }
-                                , { 'id'            : 'foldercontents'
-                                  , 'name'          : 'Folder Contents'
-                                  , 'action'        : 'folder_contents'
-                                  , 'permissions'   :
-                                     (CMFCorePermissions.ListFolderContents,)
-                                  , 'category'      : 'folder'
-                                  }
+                                #, { 'id'            : 'foldercontents'
+                                #  , 'name'          : 'Folder Contents'
+                                #  , 'action'        : 'folder_contents'
+                                #  , 'permissions'   :
+                                #     (CMFCorePermissions.ListFolderContents,)
+                                #  , 'category'      : 'folder'
+                                #  }
                                 , { 'id'            : 'edit'
                                   , 'name'          : 'Edit'
                                   , 'action'        : 'folder_edit_form'

@@ -1,0 +1,7 @@
+<dtml-call expr="create_page( page=REQUEST['page']
+                            , text=REQUEST['text']
+                            , log=REQUEST['log']
+                            )">
+<dtml-call expr="REQUEST['RESPONSE'].redirect(
+                           this().aq_parent[page].wiki_page_url()
+                           + '?portal_status_message=Page+added.' )">

@@ -45,6 +45,7 @@ div.top {
 
 div.searchBox {
     /*searchbox style and positioning */
+    color: &dtml-searchTextColor;;
     float: right;
     margin: &dtml-searchMargin;;
     padding: &dtml-searchPadding;;
@@ -249,4 +250,10 @@ div.message {
 
 
 </dtml-with>
+
+
+
+
+
+
 

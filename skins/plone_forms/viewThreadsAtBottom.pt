@@ -1,5 +1,6 @@
-<div tal:condition="python:here.portal_discussion.getDiscussionFor(here) or None">
-    
+<div tal:condition="here/talkback|nothing"
+     tal:define="stx python:modules['Products.PythonScripts.standard'].structured_text">
+    <a name="comments"> </a>
     <div tal:repeat="reply here/talkback/getReplies">
 
         <table class="box"
@@ -11,14 +12,13 @@
             
             <tr>
                 <td colspan="2">
-                    <h2><img src="discussion.gif" alt="Comment" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
+                    <h2><img src="discussionitem_icon.gif" alt="Comment" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
                     Posted by:
                     <span tal:content="reply/Creator">Poster Name</span>
                     at 
                     <span tal:replace="python: here.toPortalTime(reply.modified())">8/23/2001 12:40:44 PM</span>
                     
-                    <p tal:define="pss modules/Products.PythonScripts.standard"
-                       tal:content="structure python:pss.structured_text(reply.text)">
+                    <p tal:content="structure python:stx(reply.text)">
         		    This is the body text of the comment. 
         		    </p>
                     
@@ -31,10 +31,6 @@
                     
                     </form>
                     
-                    <div class="spacer">
-                    &nbsp;
-                    </div>
-
                     <div class="group" tal:condition="python: here.talkback.hasReplies(reply)">
                         <span class="legend">Replies</span>
 
@@ -42,7 +38,7 @@
                              <span tal:repeat="child python:reply.talkback.getReplies()">
                                 <a href="" 
                                    class="comment" 
-                                   tal:attributes="href string:${reply/absolute_url}/discussionitem_view">
+                                   tal:attributes="href string:${child/absolute_url}/discussionitem_view">
                                 <span tal:replace="child/Title">Comment title</span>   
                                 (by <span tal:replace="child/Creator">username</span>
                                 at <span tal:replace="python: here.toPortalTime(child.modified())">8/23/2001 12:49:08 PM</span>)
@@ -56,6 +52,4 @@
         </table>
         
     </div>
-
 </div>
-

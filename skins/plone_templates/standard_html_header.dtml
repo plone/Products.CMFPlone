@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US">
+
+<dtml-var "macro_renderer(template='here/header', macro='html_header')" >
+
+<body>
+
+  <dtml-var "macro_renderer(template='here/header', macro='portal_header')" >
+
+  <table class="columns">
+  
+        <tbody>
+            
+            <tr>
+    
+                <td class="left">
+                   
+                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='navigationBox')" >
+
+                    <dtml-if "not portal_membership.isAnonymousUser() or portal_properties.allowAnonymousViewAbout">
+                      <dtml-var "macro_renderer(template='here/portal_boxes', macro='aboutBox')" >
+                    </dtml-if>
+                     
+                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='relatedBox')" >
+                     
+                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='newsBox')">
+            
+                </td>
+                
+                
+                <td class="main" >
+
+                    <dtml-let actions="portal_actions.listFilteredActionsFor(this())"
+                              show_border="(not portal_membership.isAnonymousUser() and ( actions.get('workflow', None) or portal_membership.checkPermission('Modify portal content', this()) ) )">
+
+                    <dtml-if show_border>
+                        <dtml-var "macro_renderer(template='here/portal_tabs', macro='contentTabs')" >
+                        
+                        <dtml-var "macro_renderer(template='here/portal_bars', macro='contentBar')" >
+
+                    </dtml-if>
+ 
+                    </dtml-let>
+
+                    <dtml-if show_border> <dtml-call "REQUEST.set('class', 'editableDocument')">
+                    <dtml-else> <dtml-call "REQUEST.set('class', 'document')">
+                    </dtml-if>
+
+                    <div class="&dtml-class;" >
+            
+                        <dtml-var "macro_renderer(template='here/header', macro='portal_message')" >
+                        
+                        <dtml-comment>
+                        
+                        this is where your content will start.  so you must remember to close:
+                           * this div
+                           * this td
+                           * this tr, and table
+                        </dtml-comment>

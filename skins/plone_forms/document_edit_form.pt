@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/content_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 <body>
 
    <div metal:fill-slot="main" tal:define="errors python:request.get('errors', {})">
@@ -57,6 +57,7 @@
                 <input type="text" 
                        name="field_title" 
                        value="#" 
+                       size="25" 
                        tal:attributes="value Title" />
 
             </span>
@@ -68,11 +69,11 @@
         <div class="row">
             <span class="label">Summary</span>
             <span class="field" tal:define="description request/description | here/Description "> 
-                <textarea cols="50" 
+                <textarea cols="25" 
                           rows="5" 
                           name="field_description"
-                          tal:content="description"> 
-                  Description 
+                          tal:content="description">
+                Description 
                 </textarea>
             </span>
             <span class="info">Enter a brief summary of the document.</span>
@@ -83,8 +84,9 @@
             <span class="field" tal:define="text python:request.get('text', here.text)">
                 <textarea name="field_text:text" 
                           rows="20" 
-                          cols="80" 
-                          tal:content="text">Document text</textarea></span>
+                          cols="25" 
+                          tal:content="text">Document text</textarea>
+            </span>
             <span class="info">The body text of the document.</span>
         </div>
 
@@ -111,7 +113,7 @@
             
             <span class="label">Upload contents (optional)</span>
             
-            <span class="field"><input type="file" name="file" size="15" /></span>
+            <span class="field"><input type="file" name="file" size="10" /></span>
             
             <span class="info">
             This feature can be used if you already have the document 

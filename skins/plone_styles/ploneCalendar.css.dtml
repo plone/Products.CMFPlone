@@ -108,7 +108,7 @@ table.calendar td.todayevent {
 
 table.calendar td.todaynoevent {
     border-collapse: collapse;
-    border: 2px solid #FFA500;
+    border: 2px solid &dtml-boxHighlight;;
 }
 
 

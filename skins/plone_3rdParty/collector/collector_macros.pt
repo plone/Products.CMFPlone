@@ -1,0 +1,347 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal">
+  <body>
+
+    <span tal:replace="nothing">
+      Collector issue macros:
+
+        - collector_header
+
+        - issue_header
+
+        - issue_batch_nav
+
+        - add_artifacts_table
+    </span>
+
+    <div metal:define-macro="collector_header">
+
+      <table>
+        <tr>
+          <th align="left">
+            <div class="DesktopTitle">
+              <font size="+1">
+                <em tal:condition="here/Title"
+                    tal:content="here/Title">TITLE</em>
+                <span tal:condition="here/abbrev">
+                    [<em tal:replace="here/abbrev|nothing"></em>]
+                </span>
+                Issue Collector
+              </font>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <td valign="top">
+            <div id="DesktopDescription"
+                 tal:define="stx nocall:
+                       modules/Products/PythonScripts/standard/structured_text"
+                 tal:content="structure here/description">
+              DESCRIPTION
+            </div>
+          </td>
+        </tr>
+      </table>
+
+    </div>  <!-- End macro: collector_header -->
+
+    <div metal:define-macro="issue_header"
+         tal:define="TITLELEN python: 150;
+                     split nocall: modules/string/split;
+                     TRUNCDESCR python: 150;
+                     global artifacts
+                            python: [i for i in here.objectValues()
+                                       if i.Type()
+                                         != 'Collector Issue Transcript']">
+
+       <table summary="Issue Characteristics" cellspacing="4">
+
+         <tr>
+           <td colspan="4">
+             <font size="+1">
+               Issue <span tal:replace="here/id">ID</span> of
+               <a href=""
+                 tal:attributes="href python:here.aq_parent.absolute_url()">
+                <span tal:replace="here/aq_parent/Title">COLLECTOR TITLE</span>
+                [<em><span tal:replace="here/abbrev|nothing"/></em>]
+               </a>
+             </font>
+           </td>
+         </tr>
+
+         <tr>
+           <td align="right"> Title: </td>
+           <td colspan="3" metal:define-slot="issue_title_slot">
+             <strong>
+               <span tal:replace="python: here.title[:TITLELEN]
+                                          + (here.title[TITLELEN+1:]
+                                             and '...')">
+                 TITLE
+               </span>
+             </strong>
+           </td>
+         </tr>
+
+         <tr>
+           <td align="right">Status:</td>
+           <td tal:define="statpair python: split(here.status(), '_');
+                           base python: statpair[0];
+                           paren python: len(statpair) > 1">
+                <span tal:replace="python: '%s%s%s'
+                                           % ((paren and '(') or '',
+                                              base,
+                                              (paren and ')') or '')">
+                  STATUS
+                </span>
+           </td>
+
+           <td align="right"> Security </td> 
+           <td metal:define-slot="issue_security_slot">
+             related:
+             <span tal:condition="not: here/security_related">
+               No
+             </span>
+             <span tal:condition="here/security_related">
+               Yes 
+               <font color="BROWN or BLACK"
+                     tal:attributes="color python:
+                                          (here.confidential() and 'brown')
+                                          or 'black'"
+                     tal:content="python: (here.confidential()
+                                           and '(confidential)'
+                                           or '(public)')">CONFIDENTIALITY
+               </font>
+             </span>
+           </td>
+         </tr>
+
+         <tr>
+           <td align="right" valign="top"> Description: </td>
+           <td colspan="3" metal:define-slot="issue_description_slot">
+             <font color="gray">
+               <span tal:replace="python: here.description[:TRUNCDESCR]
+                                          + (here.description[TRUNCDESCR+1:]
+                                             and '...')">
+                 DESCRIPTION
+               </span>
+             </font>
+           </td>
+         </tr>
+
+         <tr>
+           <td align="right">From:</td>
+           <td NOWRAP>
+              <span metal:define-slot="issue_from_slot"
+                    tal:content="here/submitter_name">NAME</span>
+           </td>
+           <td align="right"> on: </td>
+           <td NOWRAP>
+             <code>
+               <span tal:replace="python: here.aCompact(here.creation_date)">
+                 CREATIONDATE
+               </span>
+             </code>
+           </td>
+         </tr>
+
+         <tr>
+           <td> </td>
+           <td>
+             <em><span metal:define-slot="issue_submitter_id_slot"
+                        tal:content="here/submitter_id">ID</span></em>
+           </td>
+           <td tal:define="actions here/action_number" align="right">
+             Last update:
+           </td>
+           <td>
+             <code>
+               <span tal:condition="python: actions <= 1">~</span>
+               <span tal:condition="python: actions > 1"
+                     tal:replace="python:
+                                  here.aCompact(here.modified())">
+                 MODDATE
+               </span>
+             </code>
+           </td>
+         </tr>
+
+         <tr>
+           <td align="right">Topic/class:</td>
+           <td> <strong>
+           <span metal:define-slot="issue_topic_slot"
+                 tal:replace="here/topic">
+            TOPIC</span>/<span metal:define-slot="issue_classification_slot"
+                               tal:replace="here/classification"
+            >CLASSIFICATION</span>
+             </strong>
+           </td>
+           <td align="right"> Importance:
+           </td>
+           <td metal:define-slot="issue_importance_slot">
+             <span tal:replace="here/importance">
+               IMPORTANCE
+             </span>
+           </td>
+         </tr>
+
+         <tr>
+           <td align="right" valign="top"> Version info: </td>
+           <td valign="top"
+	       metal:define-slot="issue_version_info_slot"
+               colspan="3"
+               tal:content="python: here.version_info[:120]
+                              + ((here.version_info[121:] and '...') or '')">
+             VERSION_INFO
+           </td>
+         </tr>
+
+         <tr tal:condition="here/assigned_to">
+           <td align="right">Assigned:</td>
+           <td colspan="3">
+             <span tal:content="python: ', '.join(here.assigned_to())">
+               SUPPORTERS</span>
+           </td>
+         </tr>
+
+        <tr tal:condition="artifacts">
+          <td align="right" valign="top"> Uploads: </td>
+          <td metal:define-slot="issue_uploads_slot"
+              colspan="3">
+            <table>
+              <div tal:repeat="item artifacts">
+                <tr>
+                  <td tal:define="icon item/getIcon|item/icon|nothing;
+                                  item_url python: item.absolute_url()
+                                                   + '/view'">
+                    <span tal:condition="icon">
+                      <a href=""
+		         tal:attributes="href item_url">
+                        <img src="" alt="" border="0"
+                             tal:attributes="src python: here.portal_url()
+                                                         + '/' + icon;
+                                             alt item/Type|nothing"></a>
+                    </span>                
+                    <a href="ITEM URL" tal:attributes="href item_url"
+                       tal:content="item/id">ITEM ID</a>
+                  <font color="gray">
+                    <span tal:replace="python: item.description[:45]
+                                               + (item.description[46:]
+                                                  and '...')">
+                    DESCRIPTION</span>
+                  </font>
+                </td> </tr>
+              </div>
+            </table>
+          </td>
+        </tr>
+
+         <tr valign="middle">
+         </tr>
+
+       </table>
+
+    </div>  <!-- End macro: collector_issue_header -->
+
+    <div metal:define-macro="issue_batch_nav">
+
+      <span tal:condition="nothing">
+        This macros depends on a number of batch parameters being defined in
+        the invoking template:
+          - BATCHSIZE
+          - batch
+          - prev (may be undefined)
+          - next (may be undefined)
+          - last_batch
+      </span>
+
+      <table width="100%"
+             tal:define="url_query nocall: modules/ZTUtils/url_query;
+                         make_query nocall: modules/ZTUtils/make_query;
+                         base python: url_query(request, omit='b_start')">
+
+        <tr>
+          <td align="left" width="10%">
+           <strong>
+            <span tal:condition="prev">
+               <a href="FIRST BATCH"
+                  tal:attributes="href here/absolute_url">
+               &lt;&lt; </a>
+            </span>
+           </strong>
+          </td>
+
+          <td align="left" width="30%">
+            <span tal:condition="prev">
+             <strong>
+              <a href="PREVIOUS BATCH"
+                tal:attributes="href python:
+                                     base+'&'+make_query(b_start=prev.first)">
+               Previous</a>
+              </strong>
+             </span>
+          </td>
+
+          <td align="center" NOWRAP
+              tal:define="total here/length;
+                          found python: len(items)">
+            <b>
+              <span tal:condition="python: batch.start != batch.end"
+                    tal:replace="python: '%s to %s of'
+                                   % (batch.start, batch.end)">X to X of</span>
+              <span tal:condition="python: batch.start == batch.end"
+                    tal:replace="python: '%s of'
+                                   % (batch.start)">X of</span>
+              <span tal:condition="python: total != found"
+                    tal:replace="python: '%s found (%s total)'
+                                         % (found, total)">FOUND/TOTAL</span>
+              <span tal:condition="python: total == found"
+                    tal:replace="python: '%s total' % total">TOTAL</span>
+            </b>
+          </td>
+
+          <td align="right" width="30%">
+            <span tal:condition="next">
+             <strong>
+              <a href="NEXT BATCH"
+                tal:attributes="href python:
+                                     base+'&'+make_query(b_start=next.first)">
+              Next</a>
+             </strong>
+            </span>
+          </td>
+
+          <td align="right" width="10%">
+            <strong>
+              <span tal:condition="next">
+                <a href="LAST BATCH"
+                 tal:attributes="href python:
+                                      base+'&'+make_query(b_start=last_batch)">
+                &gt;&gt; </a>
+              </span>
+            </strong>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div metal:define-macro="add_artifacts_table">
+
+      <table>
+
+        <tr>
+          <td align="left" NOWRAP>
+            <input type=radio name="filetype" value="File" checked> File or
+            <br>
+            <input type=radio name="filetype" value="Image"> Image
+          </td>
+          <td> <input type=file name="file" size="20"> </td>
+          <th valign="top"> (Optional) Id: </th>
+          <td> <input type=text name="fileid" size="12"> </td>
+        </tr>
+
+      </table>
+
+    </div>  <!-- End macro: add_artifacts_excerpt -->
+
+  </body>
+</html>

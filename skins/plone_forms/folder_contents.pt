@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 
 <body>
 
@@ -22,17 +22,13 @@
 
     </div>
 
-<div class="editableDocument"
-     metal:fill-slot="main"
+<div metal:fill-slot="main"
      tal:define="dummy here/filterCookie;
                  folderfilter python:request.get('folderfilter', '');
                  global decodedFilter python:here.decodeFolderFilter(folderfilter);
                  global filterValues decodedFilter;
                  global filter decodedFilter;
                  global portal_url here/portal_url">
-                                    
-    <div metal:use-macro="here/header/macros/portal_message">  Message box  </div>
-                                    
                                     
   <script language="JavaScript" type="text/javascript">  
     <!--
@@ -136,9 +132,10 @@
 
       </thead>
       
-	  <tbody> 
-	  <span tal:repeat="item batch">
-      <tr tal:define="oddrow repeat/item/odd;
+	  <tbody>
+      <metal:block tal:repeat="item batch"> 
+      <tr 
+          tal:define="oddrow repeat/item/odd;
                       actions python:here.portal_actions.listFilteredActionsFor(item);"
           tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
         <td>
@@ -152,6 +149,8 @@
 			            url python:test(action, action,item.absolute_url()+'/folder_contents');"> 
           <a href="#" tal:attributes="href url">
            <img src="" alt="Folder" border="0"
+                height="16"
+                width="16"
                 tal:attributes="src item/getIcon;
                 alt item/Type;" 
                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
@@ -171,10 +170,11 @@
             tal:content="structure python:test(review_state, review_state, '&nbsp;')"
             tal:attributes="class python:test(review_state, review_state, 'private')">&nbsp;</td>
       </tr>
-      </span>
+      </metal:block>
       </tbody> 
     </table>
 
+    <input class="context" type="submit" name="folder_publish:method" value="Publish" />
     <input class="context" type="submit" name="folder_rename_form:method" value="Rename" />
     <input class="context" type="submit" name="folder_cut:method" value="Cut"  /> 
     <input class="context" type="submit" name="folder_copy:method" value="Copy"  />
@@ -187,6 +187,7 @@
     <br />&nbsp;<br />
     
     <input class="standalone" type="submit" name="folder_factories:method" value="Add New Item" />
+
 
   
   </form>
@@ -208,7 +209,8 @@
        &nbsp;&nbsp;&nbsp;&nbsp;
         <span>
 	 <form name="folderContentsForm" method="GET" action="#"
-           tal:condition="here/listFolderContents">
+           tal:condition="here/listFolderContents"
+           tal:attributes="action here/absolute_url" >
 	   <input type="hidden" name="filter_state" value="set_view_filter"/>
 		    <div class="viewFilter"
 				     tal:define="filterValues decodedFilter/keys | nothing;

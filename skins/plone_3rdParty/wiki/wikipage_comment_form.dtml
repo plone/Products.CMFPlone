@@ -1,0 +1,84 @@
+<dtml-var standard_html_header>
+<dtml-var wikipage_header>
+
+<dtml-let nocomment="not isAllowed('comment', REQUEST=REQUEST)"
+             noedit="not isAllowed('edit', REQUEST=REQUEST)"
+         commentcat="opCategory('comment')">
+
+ <dtml-if nocomment> <font color="gray"> </dtml-if>
+ <h3> Submit a Comment for <em>&dtml-getId;</em> </h3>
+ <dtml-if nocomment> </font> </dtml-if>
+ <dtml-if nocomment>
+   <strong> You are not allowed to comment on &dtml-getId;. </strong>
+   (<dtml-var "whichWho('comment')"> may add a comment to this page.)
+ <dtml-else>
+
+  <p>
+   Submit a comment to be appended to the page.  Your comment 
+   will be automatically prefaced with your username and the current
+   time, and be formatted according to the
+   <a href="TextFormattingRules" target="_blank">TextFormattingRules</a>.
+  </p><p>
+   The current page source is provided for cut-and-paste citing.
+   Groups of '>' prefixed citation lines will be bracketed with
+   &lt;pre&gt; ... &lt;/pre&gt;, to prevent unruly flowing.  Please be
+   sparing with cited text!
+  </p>
+ <dtml-if noedit>
+  <p> <em>Note that you can't change your comments, once submitted.
+   See <a href="wikipage_advanced_form">Advanced Actions</a>
+   for page policy. </p>
+ </dtml-if>
+
+<p>
+
+  <form method="POST"
+        action="wikipage_editcomment_handler"
+        enctype="multipart/form-data">
+  <input type=hidden name=page value="&dtml-getId;">
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="5">
+    <tr bgcolor="eeeeee">
+      <td colspan=2 align="center">
+        <strong> Comment on <dtml-var id size=40>; </strong> <br>
+        <textarea wrap="soft" name="comment"
+                  rows=7
+                  cols=<dtml-var zwiki_width missing=80>
+></textarea>
+      </td>
+    </tr>
+    <tr bgcolor="eeeeee">
+      <td valign="middle" align="left">
+        See <a href="HowDoIEdit" target="_blank">HowDoIEdit</a>
+        for help. <br> <dtml-var page_type>
+      </td>
+      <td valign="middle" align="right">
+        <table> <tr>
+          <td>
+            <input type="checkbox" name="ack_requested" value="ON">
+                   Request Editor Remark? &nbsp;
+          </td>
+          <td>
+            <input type="submit"
+                   name="Comment"
+                   value="Submit Comment">
+          </td> </tr> </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2 align="center">
+        <strong> Citation Source </strong> (For copying - not editable) <br>
+        <!-- Readonly *and* onkeydown for bowser diversity: -->
+        <textarea wrap="soft" name="text"
+                  rows=<dtml-var zwiki_height missing=15>
+                  cols=<dtml-var zwiki_width missing=80>
+                  readonly
+                  onkeydown="this.blur(); return false;"
+><dtml-var "prep_citation()"></textarea>
+      </td>
+    </tr>
+  </table>
+   </form>
+  </dtml-if>
+</dtml-let>
+<dtml-var standard_html_footer>

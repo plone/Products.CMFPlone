@@ -1,0 +1,199 @@
+<span tal:condition="nothing"
+      tal:define="has_add_priv nocall: here/add_issue">
+  This span ensures that the visitor has edit privilege, by fetching - but not
+  displaying - the protected collector.add_issue method.
+</span>
+
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master">
+
+<span tal:condition="nothing">
+  Template description: Form for submitting new collector issues.
+</span>
+
+<body>
+
+<div metal:fill-slot="header">
+
+  <div metal:use-macro="here/collector_macros/macros/collector_header">
+    COLLECTOR HEADER
+  </div>
+
+</div>
+
+<div metal:fill-slot="main">	  
+
+  <div tal:define="pm python: here.portal_membership;
+                   member python: pm.getAuthenticatedMember();
+                   authenticated python: member.has_role('Authenticated')
+                                         or member.has_role('Member')">
+
+  <form method="POST" enctype="multipart/form-data"
+        action="collector_add_issue">
+
+      <table class="FormLayout">
+
+        <tr bgcolor="#ccffcc">
+          <td colspan="5" align="center">
+            <font size="+1"> <strong> Submit A New Issue </strong> </font>
+          </td>
+        </tr>
+
+        <tr>
+          <td> &nbsp; </td>
+        </tr>
+
+       <tr valign="top">
+        <th align="right"> Issue Title </th>
+        <td>
+         <input type="text" name="title" value="" size="40">
+        </td>
+          <td colspan="3">
+            <input type=hidden name="security_related:boolean" value="">
+            <input type=checkbox name="security_related:boolean">
+            Security Related?
+            <br>
+            <font size="-1" color="gray">
+              If checked, issue will <em>not</em> be publicly visible until
+              completed. 
+            </font>
+          </td>
+        </tr>
+
+        <tr>
+          <th valign="middle" align="right"> Submitter </th>
+          <td tal:condition="authenticated"
+              tal:content="python: member.getProperty('full_name',
+                                                      str(member))">
+          </td>
+          <td tal:condition="not: authenticated">
+            <input type="text" name="submitter_name" size="30">
+          </td>
+          <th valign="middle" align="right"> Email </th>
+          <td colspan="2">
+            <input type="text" name="submitter_email" size="30"
+                   tal:attributes="value python: member.getProperty('email',
+                                                                    '')">
+          </td>
+        </tr>
+
+        <tr tal:condition="python: not authenticated and
+                                   here.participation != 'anyone'">
+          <td> &nbsp; </td>
+          <td colspan="3">
+            <font color="brown" size="-1">
+              NOTE that anonymous-submitted issues do not allow submitter
+              to followup.
+            </font>
+          </td>
+        </tr>
+
+       <tr valign="top">
+        <th align="right"> Topic </th>
+        <td>
+            <select name="topic">
+              <option value=""
+                      tal:repeat="it here/topics"
+                tal:attributes="value it"
+                tal:content="it"></option>
+            </select>
+        </td>
+        <th align="right"> Importance </th>
+        <td>
+         <select name="importance">
+           <option value=""
+                   tal:repeat="it here/importances"
+                   tal:attributes="value it"
+                   tal:content="it"></option>
+         </select>
+        </td>
+       </tr>
+
+       <tr valign="top">
+        <th align="right"> Classification </th>
+        <td>
+         <select name="classification">
+           <option value=""
+                   tal:repeat="it here/classifications"
+                   tal:attributes="value it"
+                   tal:content="it"></option>
+         </select>
+        </td>
+
+       </tr>
+
+       <tr>
+        <th> Version Info </th>
+        <td colspan="2">
+            <textarea name="version_info" rows="3" cols="35"></textarea>
+        </td>
+        <td colspan="2">
+          <font color="gray" size="-1">
+            <span tal:replace="here/version_info_spiel"></span>
+          </font>
+        </td>
+       </tr>
+
+       <tr valign="top">
+        <th align="right"> </th>
+        <td colspan=3>
+            Provide details that will help supporters understand the problem.
+            <br>
+              <font size="-1">
+                Prefix lines with whitespace or '&gt;' to preserve their
+                format.
+              </font>
+        </td>
+       </tr>
+
+       <tr valign="top"
+           tal:define="assigner python: pm.checkPermission(
+                                        'Support collector issue', here);
+                       supporters here/supporters">
+         <th align="right"> Description </th>
+         <td colspan="3">
+           <textarea name="description:text" rows="10" cols="55"></textarea>
+         </td>
+         <td valign="top"
+             tal:condition="assigner">
+            Assign to: <br>
+           <select name="assignees:list" MULTIPLE size="5"
+                   tal:attributes="size python:
+                                        min(max(len(supporters), 3), 8)">
+             <option tal:repeat="supporter supporters"
+                      tal:content="supporter">
+               SUPPORTER
+             </option>
+           </select>
+         </td>
+              
+       </tr>
+
+       <tr>
+         <th> Upload </th>
+         <td colspan="3">
+
+    <div metal:use-macro="here/collector_macros/macros/add_artifacts_table">
+       add_artifacts_table_row
+    </div>
+
+        </td>
+       </tr>
+
+       <tr valign="top">
+        <td> <br> </td>
+        <td>
+         <input type="submit" value=" Submit ">
+        </td>
+       </tr>
+
+      </table>
+
+    </form>
+
+  </div>
+
+</div>
+</body>
+</html>

@@ -27,6 +27,12 @@
                    showOtherNav here/portal_url/CMFTopic_navigator | showNav"
        tal:condition="python:parent_url and not(showOtherNav)"
        class="box" summary="Navigation" cellpadding="0" cellspacing="0">
+                   siblings here/navigationCurrent;"
+       class="box" 
+       summary="Navigation" 
+       cellpadding="0" 
+       cellspacing="0"
+       tal:condition="python:test( (parent_url and here.portal_membership.isAnonymousUser()) or (not here.portal_membership.isAnonymousUser()), 1, 0)" >
   
     <thead>
         <tr><th>Navigation</th><th class="empty">&nbsp;</th></tr>
@@ -40,24 +46,22 @@
             </td>
         </tr>
         
-        <tr class="even">
+        <tr class="even" tal:condition="siblings">
             <td colspan="2">
-            <div tal:condition="siblings">
+            <div>
                 <strong>Other items</strong>
                 <span tal:repeat="sibling siblings">
                     <a href="#" class="plain" 
                      tal:define="actions python:here.portal_actions.listFilteredActionsFor(sibling);
                      action python:here.getActionUrlById('view', actions['object']);
                      url python:test(action, action,sibling.absolute_url()+'/folder_contents');"
-                     tal:attributes="href url">
-                       <img src="" tal:attributes="src sibling/getIcon"/> <span tal:replace="sibling/title_or_id"/>
-                    </a>
+                     tal:attributes="href url"><img src="" height="16" width="16" tal:attributes="src sibling/getIcon"/>&nbsp;<span tal:replace="sibling/title_or_id"/></a>
                 </span>
             </div>                                
             </td>
         </tr>
         
-        <tr class="odd">
+        <tr class="odd" tal:condition="parent_url">
             <td colspan="2">
                 <a href="" tal:attributes="href parent_url">Up one level</a>
             </td>
@@ -67,14 +71,14 @@
             tal:condition="python:test(listContentsPermission and notFolderContents, 1, 0)">
             <td colspan="2" 
                 tal:condition="notFolderContents">
-                <a href="folder_contents">Folder view</a>
+                <a href="folder_contents">Editor view</a>
             </td>
         </tr>
         
         <tr class="even"  
             tal:condition="not: notFolderContents">
             <td colspan="2" >
-                <a href="index_html">Ordinary view</a>
+                <a href="">Ordinary view</a>
             </td>
         </tr>
                 
@@ -141,7 +145,7 @@
 <table metal:define-macro="loginBox"
        class="box" cellpadding="0" cellspacing="0"
        summary="Login" 
-       tal:condition="here/portal_membership/isAnonymousUser">
+       tal:condition="here/portal_membership/isAnonymousUser" >
   
     <thead>
         <tr><th>Sign in</th><th class="empty">&nbsp;</th></tr>
@@ -189,7 +193,8 @@
             </td>
         </tr>
 
-        <tr class="odd">
+        <tr class="odd" 
+            tal:condition="python:here.portal_membership.checkPermission('Add portal member', here)" >
             <td colspan="2">
                             
                 <a href="join_form">
@@ -348,27 +353,25 @@
        summary="Review listing" 
        cellpadding="0" cellspacing="0"
        tal:define="DateTime python:modules['DateTime'].DateTime;
-                             results python:here.portal_catalog.searchResults( review_state='pending'
-                                                                               , sort_on='Date'
-                                                                               , sort_order='reverse'
-                                                                               )[:10];"
+                   results here/my_worklist;"
        tal:condition="results" >
         
     <thead>
         <tr><th>Review List</th><th class="empty">&nbsp;</th></tr>
     </thead>
         
-    <tbody tal:repeat="obj results">
+    <tbody tal:repeat="o results">
         
-        <tr tal:define="oddrow repeat/obj/odd;
-                        o obj/getObject;"
+        <tr tal:define="oddrow repeat/o/odd"
             tal:attributes="class python:test(oddrow, 'odd','even')" class="#">
 			
             <td colspan="2"
                 tal:define="actions python:container.portal_actions.listFilteredActionsFor(o);">
                
                 <a href="#" tal:attributes="href python:container.getActionUrlById('view', actions['object'])">
-                    <span tal:replace="obj/Title"> Extended Calendar Product </span>
+                    <span tal:replace="python:test(o.Title(), o.Title(), o.id)">
+                    Extended Calendar Product
+                    </span>
                 </a>
 
                 <div class="boxDetails"
@@ -602,10 +605,10 @@
         </span>
       </span>
     </span>
-    
+<!--    
     <style type="text/css" tal:content="python: here.getPopupPositionStyles(weeks=weeks, year=year, month=month)">
     </style> 
-
+-->
     
 
 </div>

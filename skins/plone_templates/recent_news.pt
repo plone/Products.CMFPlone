@@ -2,11 +2,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 	
 <body>
     <span metal:fill-slot="main"
-          tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='Date',sort_order='reverse',review_state='published');
+          tal:define="results python:container.portal_catalog(meta_type='News Item',sort_on='modified',sort_order='reverse',review_state='published');
 		      Batch python:modules['ZTUtils'].Batch;
 		      DateTime python:modules['DateTime'].DateTime;
 		      b_start python:request.get('b_start',0);">
@@ -56,10 +56,13 @@
 					Read more...
 					</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span tal:condition="python: here.portal_discussion.isDiscussionAllowedFor(resultObject)">
-                        <img style="border: 0" src="discussion.gif" alt="Comments" /> 
+                    <span tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).objectIds() ), 1, 0)">
+                        <img style="border: 0" src="discussionitem_icon.gif" alt="Comments" /> 
                         <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)"> 
-                             <span tal:replace="python:talkback.replyCount(resultObject)" /> comments
+                             <a href="" 
+                                tal:attributes="href string:${resultObject/absolute_url}#comments">
+                                <span tal:replace="python:talkback.replyCount(resultObject)" /> comments
+                             </a>
                         </span>
                     </span>
 				</p>

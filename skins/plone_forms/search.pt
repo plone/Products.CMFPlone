@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 <body>
     <span metal:fill-slot="main"
            tal:define="results python:container.portal_catalog(request);
@@ -40,12 +40,11 @@
 
 		<!-- Search results -->
       <span tal:repeat="result batch">
-          <div
-                 class="rowEven" tal:define="rowodd repeat/result/odd;
-                                             actions python:here.portal_actions.listFilteredActionsFor(result.getObject());
-                                             action python:here.getActionUrlById('view', actions['object']);
-                                             url python:test(action, action,result.getObject().absolute_url()+'/folder_contents');"
-			         tal:attributes="class python:test(rowodd, 'rowOdd', 'rowEven');" >
+          <div class="rowEven"
+               tal:define="rowodd repeat/result/odd;
+                           result_url result/getURL;
+                           url string:$result_url/view;"
+               tal:attributes="class python:test(rowodd, 'rowOdd', 'rowEven');" >
 						 
 				<a href="/view" tal:attributes="href url">
 					<h2 tal:content="result/Title">

@@ -9,47 +9,24 @@
     <a href=""
        tal:define="mystuff python:here.getActionUrlById('my stuff', actions['user']);"
        tal:condition="mystuff" tal:attributes="href mystuff"><img src="img/user.gif" alt="User" border="0" tal:attributes="src string:$portal_url/user.gif" />&nbsp;<div
-    tal:replace="user/getUserName">john</div></a> 
-
-		
-
-<!-- Not needed when we have the login box
-    <a href=""
-       tal:define="join python:here.getActionUrlById('join', actions['user']);"
-       tal:condition="join" tal:attributes="href join"><img src="img/linkOpaque.gif" alt="&gt;" border="0" tal:attributes="src string:$portal_url/linkOpaque.gif"/>Register</a>
-
-
-
-    <a href=""
-       tal:define="login python:here.getActionUrlById('log in', actions['user']);"
-       tal:condition="login" tal:attributes="href login"><img src="img/linkOpaque.gif" alt="&gt;" border="0" tal:attributes="src string:$portal_url/linkOpaque.gif"/>Sign In</a>
-
--->
+       tal:replace="user/getUserName">john</div></a>
 
     <a href=""
        tal:define="mystuff python:here.getActionUrlById('my stuff', actions['user']);"
        tal:condition="mystuff" tal:attributes="href string:$mystuff"><img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>My&nbsp;Stuff</a>
 
-
-
     <a href=""
        tal:define="undo python:here.getActionUrlById('undo', actions['global']);"
        tal:condition="undo" tal:attributes="href undo"><img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif" />Undo&nbsp;History</a>
-
-
 
     <a href=""
        tal:define="prefs python:here.getActionUrlById('preferences', actions['user']);"
        tal:condition="prefs" tal:attributes="href prefs"><img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif" />My&nbsp;Preferences</a>
 
-
-
     <a href=""
        tal:define="reconfig python:here.getActionUrlById('reconfigure portal', actions['global']);"
        tal:condition="reconfig"
        tal:attributes="href reconfig"> <img src="img/linkOpaque.gif" alt="&gt;" border="0"  tal:attributes="src string:$portal_url/linkOpaque.gif"/>CMF&nbsp;Setup</a>
-
-			 			 
 
     <a href=""
        tal:define="logout python:here.getActionUrlById('log out', actions['user']);"
@@ -58,9 +35,7 @@
 </div>
 
 <div class="pathBar" metal:define-macro="pathBar"
-     tal:define="breadcrumbs python:container.breadcrumbs(here);
-                 actions python:here.portal_actions.listFilteredActionsFor(here);
-                 portal_url here/portal_url;"
+     tal:define="breadcrumbs python:container.breadcrumbs(here)"
      tal:condition="breadcrumbs">
 
     <div class="clock" tal:content="python:here.toPortalTime()"></div>
@@ -80,8 +55,7 @@
         </span>   
 
         <a href="#"
-           tal:define="add2favorites python:here.getActionUrlById('add to favorites', actions['user']);"
-           tal:condition="python:add2favorites"
+           tal:condition="python:'Authenticated' in user.getRoles()"
            tal:attributes="href python:here.absolute_url()+'/addtoFavorites'">
         <img src="plone_ico/img/linkTransparent.gif" alt="&gt;" border="0" tal:attributes="src string:$portal_url/linkTransparent.gif" />
                      Add to My Favorites

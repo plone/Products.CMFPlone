@@ -1,16 +1,9 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
     xmlns:metal="http://xml.zope.org/namespaces/metal"
-    metal:use-macro="here/content_template/macros/master">
-    <metal:block fill-slot="base">
-            <base href=""
-                  tal:attributes="href python: here.absolute_url() + '/'">
-    </metal:block>
+    metal:use-macro="here/main_template/macros/master">
+
 <body>
 <div metal:fill-slot="main">
-
-<div class="Desktop">
-
-<div class="Topic">
 
 <h2><span tal:replace="here/title">title</span> </h2>
 
@@ -62,7 +55,5 @@
 
 </div>
 
-</div>
-</div>
 </body>
 </html>

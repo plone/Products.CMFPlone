@@ -30,11 +30,31 @@ from Acquisition import Implicit
 import Persistence
 
 __version__='0.9'
+default_frontpage=r"""
+<p> You can customize the frontpage by editing the index_html Document that is in your root folder.
+In fact this is how you use your new system.  Create folders and put content in those folders. ;)
+Its a very simple and powerful system.  </p>
+<p> For more information: </p>
+<ul> 
+   <li> Plone website - <a href="http://www.plone.org">plone.org</a> </li>
+   <li> ZOPE site - <a href="http://www.zope.org">ZOPE</a> </li>
+   <li> CMF website - <a href="http://cmf.zope.org">CMF</a> </li>
+</ul>
+<p> There is a enormous user community for you to take advantage of. 
+There are <a href="http://www.zope.org/Resources/MailingLists">mailing lists</a>, 
+<a href="http://www.zopelabs.com/">websites</a>, and 
+<a href="http://www.zope.org/Documentation/Chats">online chat</a> mediums available to 
+to provide you assistance to your new found Content Management System.</p>
+<p> Please contribute your experiences at the <a href="http://www.plone.org">Plone website</a>. <br/><br/>
+Thanks,<br/>
+The Plone Team.
+</p>"""
 
 def addSupportOptions(self, outStream):
     """ a little lagniappe """
     skinstool=getToolByName(self, 'portal_skins')
-
+    portal=getToolByName(self, 'portal_url').getPortalObject()
+    
     skinstool.default_skin='Plone Default'
     outStream.write( "The Plone skin has now been set as this portals default skin\n" )
     
@@ -42,8 +62,20 @@ def addSupportOptions(self, outStream):
     if not MembershipTool.getMemberareaCreationFlag():
         MembershipTool.setMemberareaCreationFlag()
         outStream.write( "Memberarea Creation turned on - existing logins will have folders created upon login.\n" )
-
     skinstool.allow_any=1 #allow people to arbitrarily select skins
+    
+    portal._setProperty('allowAnonymousViewAbout', 0, 'boolean')
+    outStream.write( "By default anonymous is not allowed to see the About box \n" )
+
+def populatePortalWithContent(self, outStream):
+    """ eventually this will need to be moved out into a seperate module """
+    id = 'index_html'
+    root = getToolByName(self, 'portal_url').getPortalObject()
+    root.invokeFactory('Document', id)
+    o = getattr(root, 'index_html')
+    o.edit('html', default_frontpage)
+    o.setTitle('Welcome to Plone')
+    outStream.write('new frontpage, index_html was created in root of Portal\n')
 
 def changeImmediateViews(self, outStream):
     """ the editing process of CMF is akward, it expects you to fill in metadata before you fill in
@@ -119,6 +151,14 @@ def checkDependencies(self, outStream):
     except:
         outStream.write('unable to add portal_calendar, the CMF Calendaring Tool\n')
 
+    #try:
+    typesTool = getToolByName(self, 'portal_types')
+    typesTool._delObject( 'Folder' )
+    typesTool.manage_addTypeInformation(id='Folder', typeinfo_name='CMFPlone: Plone Folder') 
+    outStream.write('Plone folder substituted for default Folder\n')
+    #except:
+    #    outStream.write('could not substitute Plone folder for default Folder impl\n')
+    
 def install_SubSkin(self, outStream, skinName, skinFolder):
     """ Installs a subskin, should be just 1 folder that overrides the needed plone /img and stylesheet
         i.e. skinName=Plone IE5.5, skinFolder=plone_ie55
@@ -198,6 +238,11 @@ def install_PloneSkins(self, out):
     except:
         out.write( "\n Extra Configuration unable to Complete\n "  )
 
+    try:
+        populatePortalWithContent(self, out)
+    except:
+        out.write( 'could not populate plone root with default content\n' )
+
 def installExternalMethods(self, outStream):
     """ Installs two external methods so that the plone_calendar will operate correctly.
         I hope to refactor this so that the external methods will disappear.
@@ -211,6 +256,15 @@ def installExternalMethods(self, outStream):
         self._setObject('install_events', em)
 
     outStream.write('Installed calendar external methods.\n')
+
+    if not 'getWorklists' in self.objectIds():
+        em = ExternalMethod.ExternalMethod(id='getWorklists',
+                                           title='Plone worklists',
+                                           module='CMFPlone.PloneWorklists',
+                                           function='getWorklists')
+        self._setObject('getWorklists', em)
+
+    outStream.write('Installed getWorklists external method.\n')
 
 def install(self):
     """ Register the Plone Skins with portal_skins and friends """

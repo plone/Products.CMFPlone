@@ -2,12 +2,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 
 <body>
 
-<div metal:fill-slot="main">
-	
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {})" > 
+ 
     <h1>Please register</h1>
 
     <p>
@@ -28,24 +29,37 @@
         <input type="hidden" name="prev_visit:date" value="ZopeTime"
                tal:attributes="value here/ZopeTime">
 
-    	<div class="row">
-            <span class="label">Full name</span>
-            <span class="field">
-                <input type="text" name="fullname" size="25"
+    	<div class="row"
+             tal:define="error_fullname errors/fullname | nothing;
+                         fullname request/fullname | nothing;" >
+            <span class="label required">Full name</span>
+            <span class="field" 
+                  tal:attributes="class python:test(error_fullname, 'field error', 'field')" >
+
+                <div tal:condition="error_fullname"
+                      tal:replace="error_fullname" />
+
+                <input type="text" name="field_fullname" size="25"
                        value="fullname"
-                       tal:attributes="value python:request.get('fullname','')">
+                       tal:attributes="value fullname">
             </span>
             <span class="info">
             Enter your full name.
             </span>
         </div>
 	
-        <div class="row">
-            <span class="label">User name</span>
-            <span class="field">
-                <input type="text" name="username" size="25"
+        <div class="row"
+             tal:define="error_username errors/username| nothing;
+                         username request/username | nothing;" >
+            <span class="label required">User name</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_username, 'field error', 'field')" >
+                <div tal:condition="error_username"
+                      tal:replace="error_username" />
+
+                <input type="text" name="field_username" size="25"
                        value="username"
-                       tal:attributes="value python:request.get('username','')">
+                       tal:attributes="value username">
             </span>
             <span class="info">
             Enter the user name you wish to have, usually something like
@@ -53,13 +67,19 @@
             </span>
         </div>
 
-        <div class="row">
-            <span class="label">Email address</span>
-            <span class="field">
+        <div class="row"
+             tal:define="error_email errors/email | nothing;
+                         email request/email | nothing;" >
+            <span class="label required">Email address</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_email, 'field error', 'field')" >
+                <div tal:condition="error_email "
+                      tal:replace="error_email " />
+
                 <input type="text" 
-                       name="email" 
+                       name="field_email" 
                        size="25"
-                       tal:attributes="value python:request.get('email','')">
+                       tal:attributes="value email">
             </span>
             <span class="info">
             Enter your email address. This is necessary in case you lose your
@@ -69,20 +89,40 @@
         </div>
 
 
-        <div class="row" tal:condition="not: allowEnterPassword">
-            <span class="label">Password</span>
-            <span class="field">
-                <input type="password" name="password" size="10">
+        <div class="row" 
+             tal:condition="not: allowEnterPassword"
+             tal:define="error_password errors/password | nothing;
+                         password request/password | nothing;" >
+            <span class="label required">Password</span>
+            <span class="field"
+                  tal:attributes="class python:test(error_password, 'field error', 'field')" >
+               <div tal:condition="error_password "
+                      tal:replace="error_password " />
+                <input type="password" 
+                       name="field_password" 
+                       size="10"
+                       value="" 
+                       tal:attributes="value password" />
             </span>
             <span class="info">
             Enter the password you want. Minimum 5 characters.
             </span>
         </div>
 
-        <div class="row" tal:condition="not: allowEnterPassword">
-            <span class="label">Confirm Password</span>
-            <span class="field">
-                <input type="password" name="confirm" size="10">
+        <div class="row" 
+             tal:condition="not: allowEnterPassword"
+             tal:define="error_confirm errors/confirm | nothing;
+                         confirm request/confirm | nothing;" >
+            <span class="label required">Confirm Password</span>
+            <span class="field"
+                 tal:attributes="class python:test(error_confirm, 'field error', 'field')" >
+                <span tal:condition="error_confirm"
+                      tal:replace="error_confirm" />
+                <input type="password" 
+                       name="field_confirm" 
+                       size="10" 
+                       value="" 
+                       tal:attributes="value confirm" />
             </span>
             <span class="info">
             Re-enter the password. Make sure the passwords are identical.
@@ -92,7 +132,7 @@
         <div class="row" tal:condition="not: allowEnterPassword">
             <span class="label">Mail Password?</span>
             <span class="field">
-                <input type="checkbox" class="noborder" name="mail_me" size="30" id="cb_mailme" checked />
+                <input type="checkbox" class="noborder" name="field_mail_me" size="30" id="cb_mailme" checked />
                 <label for="cb_mailme">Yes, mail me my password</label>
             </span>
             <span class="info">
@@ -105,7 +145,7 @@
             <span class="label">NOTE</span>
             <span class="field">
             This portal has been configured to automatically generate and 
-            email you a password to complete the registeration process.
+            email you a password to complete the registration process.
             </span>
             <span class="info">
             </span>
@@ -119,7 +159,6 @@
         </div>
 
     </form>
-
 </div>
 
 </body>

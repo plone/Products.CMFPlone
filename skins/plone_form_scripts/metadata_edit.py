@@ -66,10 +66,7 @@ try:
                         , language=language
                         , rights=rights
                         )
-    try:
-        action_path = context.getTypeInfo().getActionById( 'edit' )
-    except:
-        action_path = context.getTypeInfo().getActionById( 'view' )   
+    action_path = context.getTypeInfo().getActionById( 'view' )   
 
     if redirect:
         context.REQUEST['RESPONSE'].redirect(

@@ -19,7 +19,7 @@
 
     <div>
         <span tal:replace="structure here/viewThreadsAtBottom|nothing"> 
-           tree-view of  threaded discussion is here
+           tree-view of threaded discussion is here
          </span>
     </div>
 

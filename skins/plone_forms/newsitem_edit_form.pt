@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
-      metal:use-macro="here/content_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 <body>
 
 <div metal:fill-slot="main" tal:define="errors python:request.get('errors', {})">
@@ -67,13 +67,14 @@
 
         
         <div class="row">
-            <span class="label">
-            Lead-in
-            </span>
+            <span class="label">Lead-in</span>
             <span class="field" tal:define="description request/description | here/description ">
-                <textarea name="field_description:text" rows="10"
-				          cols="65"
-					      tal:content="description">description</textarea>
+                <textarea name="field_description:text" 
+                          rows="10"
+				          cols="25"
+					      tal:content="description">
+                Description
+                </textarea>
             </span>
             <span class="info">
             A short descriptive summary of the news. This will be what shows up on the news
@@ -82,16 +83,14 @@
         </div>
         
         <div class="row">
-            <span class="label">
-            Body
-            </span>
+            <span class="label">Body text</span>
             <span class="field" tal:define="text python:request.get('text', here.EditableBody)">
-                <textarea name="text:text" rows="20" cols="65"
-		                  tal:content="text">EditableBody</textarea>
+                <textarea name="text:text" 
+                          rows="20" 
+                          cols="25"
+		                  tal:content="text">News text</textarea>
             </span>
-            <span class="info">
-            This is the full body text of the news item.
-            </span>
+            <span class="info">The body text of the news item.</span>
         </div>
 
         <div class="row">
@@ -99,6 +98,7 @@
             <span class="field">
                 <input class="context" type="submit" name="submit" value="Save" /> 
             </span>
+            <span class="info"></span>
         </div>       
          
     </form>

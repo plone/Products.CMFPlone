@@ -1,10 +1,9 @@
-
 <div tal:define="t python:here.setup_talkback_tree(here); height t/root/height">
     
     <div tal:repeat="row t/rows">
       
-	<div tal:define="indent python:(row.depth * 20) - 20"
-	             tal:attributes="style string:margin:0px 0px 0px ${indent}px;">
+        <div tal:define="indent python:(row.depth * 20) - 20"
+                     tal:attributes="style string:margin:0px 0px 0px ${indent}px;">
         <span tal:define="rlink row/branch">
             <a tal:condition="rlink"
                tal:attributes="name row/id;href rlink/link"
@@ -23,7 +22,9 @@
                <span tal:replace="obj/Creator">Me</span> on 
                <span tal:replace="obj/CreationDate">Today</span>.
         </span>
-   	</div> 
+        </div> 
     </div>
     
 </div>
+
+

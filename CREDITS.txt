@@ -1,7 +1,7 @@
 Main Contributors:
- Vidar Andersen (blacktar) for original design and ambiance
+ Vidar Andersen (blacktar) for original design and ambience
 
- Alexander Limi (dracvl) for CSS/HTML wizardry, ZPT, and most importantly Useability guidance
+ Alexander Limi (dracvl) for CSS/HTML wizardry, ZPT, and most importantly Usability guidance
 
  Alan Runyan (runyaga) for Python, ZPT guidance, and insistence
 

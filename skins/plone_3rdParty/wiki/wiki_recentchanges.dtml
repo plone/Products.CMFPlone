@@ -1,0 +1,45 @@
+<dtml-var standard_html_header>
+All pages in this CMFWikiWeb, most recently changed first.  See also
+<a href="wiki_allpages">All Pages</a>.
+<p>
+
+<table border="0">
+<tr>
+  <th align="left" valign="top"> Page </th>
+  <th align="right" valign="top"> Size </th>
+  <td align="center" valign="top"> &nbsp;
+    <strong> Last modified <strong>
+    <br> &nbsp; (<dtml-var "ZopeTime().timezone()">)
+  </t>
+  <th align="left" valign="top"> Who </th>
+</tr>
+<dtml-in "objectValues(spec='CMF Wiki Page')"
+         sort=bobobase_modification_time reverse>
+  <tr>
+   <dtml-let theid="id()">
+    <dtml-if "_.len(theid) > 40">
+      <td colspan=5 valign="top"> [<dtml-var name=theid>]</a> </td>
+      </tr><tr> <td> &nbsp; </td>
+    <dtml-else>
+      <td valign="top"> <a href="&dtml-theid;">&dtml-theid;</a></a> </td>
+    </dtml-if>
+   </dtml-let>
+    <td valign="top" align="right"> <dtml-var getSize> </td>
+    <td valign="top" nowrap>
+      &nbsp; <dtml-var "bobobase_modification_time().aCommon()">
+    </td>
+    <td valign="top">
+      <dtml-if last_editor> <dtml-var last_editor> </dtml-if> </td>
+    <dtml-if last_log>
+      </tr><tr><td colspan=2> &nbsp; </td>
+               <td colspan=2> <font color=gray>
+                              <dtml-var last_log size=70 html_quote> </font>
+               </td></tr>
+    </dtml-if>
+  </tr>
+ <dtml-if sequence-end>
+</table>
+<p>(<dtml-var sequence-number> pages)
+ </dtml-if>
+</dtml-in>
+<dtml-var standard_html_footer>

@@ -1,0 +1,96 @@
+"StructuredText":StructuredText rules, from the Zope source:
+
+"Structured text is text that uses indentation and simple
+symbology to indicate the structure of a document.
+
+A structured string consists of a sequence of paragraphs separated by
+one or more blank lines.  Each paragraph has a level which is defined
+as the minimum indentation of the paragraph.  A paragraph is a
+sub-paragraph of another paragraph if the other paragraph is the last
+preceding paragraph that has a lower level.
+
+Special symbology is used to indicate special constructs:
+
+- A single-line paragraph whose immediately succeeding paragraphs are lower
+  level is treated as a header.
+
+- A paragraph that begins with a '-', '*', or 'o' is treated as an
+  unordered list (bullet) element.
+
+- A paragraph that begins with a sequence of digits followed by a
+  white-space character is treated as an ordered list element.
+
+- A paragraph that begins with a sequence of sequences, where each
+  sequence is a sequence of digits or a sequence of letters followed
+  by a period, is treated as an ordered list element.
+
+- A paragraph with a first line that contains some text, followed by
+  some white-space and '--' is treated as
+  a descriptive list element. The leading text is treated as the
+  element title.
+
+- Sub-paragraphs of a paragraph that ends in the word 'example' or the
+  word 'examples', or '::' is treated as example code and is output as is::
+
+    <table border=0>
+      <tr>
+        <td> Foo 
+    </table>
+
+- Text enclosed single quotes (with white-space to the left of the
+  first quote and whitespace or puctuation to the right of the second quote)
+  is treated as example code.
+
+  For example: '&lt;dtml-var foo>'.
+
+- Text surrounded by '*' characters (with white-space to the left of the
+  first '*' and whitespace or puctuation to the right of the second '*')
+  is *emphasized*.
+
+- Text surrounded by '**' characters (with white-space to the left of the
+  first '**' and whitespace or puctuation to the right of the second '**')
+  is made **strong**.
+
+- Text surrounded by '_' underscore characters (with whitespace to the left 
+  and whitespace or punctuation to the right) is made _underlined_.
+
+- Text encloded by double quotes followed by a colon, a URL, and concluded
+  by punctuation plus white space, *or* just white space, is treated as a
+  hyper link.
+
+  For example, '&quot;Zope&quot;:http://www.zope.org/' is interpreted as 
+  "Zope":http://www.zope.org/ 
+
+  *Note: This works for relative as well as absolute URLs.*
+
+- Text enclosed by double quotes followed by a comma, one or more spaces,
+  an absolute URL and concluded by punctuation plus white space, or just
+  white space, is treated as a hyper link.
+
+  For example: '&quot;mail me&quot;, mailto:amos@digicool.com' is 
+  interpreted as "mail me", mailto:amos@digicool.com 
+
+- Text enclosed in brackets which consists only of letters, digits,
+  underscores and dashes is treated as hyper links within the document.
+
+  For example: '"As demonstrated by Smith &#091;12&#093; this technique ..."' 
+
+  Is interpreted as: "As demonstrated by Smith [12] this technique"
+
+  Together with the next rule this allows easy coding of references or end notes.
+
+- Text enclosed in brackets which is preceded by the start of a line, two
+  periods and a space is treated as a named link. For example:
+
+
+  '.. &#091;12&#093; "Effective Techniques" Smith, Joe ...'
+
+  Is interpreted as 
+
+.. [12] "Effective Techniques" Smith, Joe ...
+
+  *Note:  see the &lt;A NAME="12"&gt; in the HTML source.*
+
+  Together with the previous rule this allows easy coding of references or
+  end notes.
+

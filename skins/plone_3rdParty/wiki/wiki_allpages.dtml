@@ -1,0 +1,20 @@
+<dtml-var standard_html_header>
+All pages in this CMFWikiWeb.  See also 
+<a href="wiki_recentchanges">Recent Changes</a>.
+<p>
+<table border="0">
+<tr><td><b>Page</b></td><td><b>Size</b></td><td><b>Last modified</b></td></tr>
+<dtml-in "objectValues(spec='CMF Wiki Page')" sort=id>
+<tr><td>
+<a href="&dtml-id;">&dtml-id;</a>
+</td><td align="right">
+<dtml-var getSize>
+</td><td>
+<dtml-var bobobase_modification_time>
+</td></tr>
+<dtml-if sequence-end>
+</table>
+<p>(<dtml-var sequence-number> pages)
+</dtml-if>
+</dtml-in>
+<dtml-var standard_html_footer>

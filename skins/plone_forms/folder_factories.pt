@@ -2,11 +2,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:condition="here/rejectAnonymous" >
 
 	<h1>Add new item</h1>
 	
@@ -20,6 +21,7 @@
         <span class="legend">Items Available</span>
         
         <div tal:repeat="ctype here/allowedContentTypes"> 
+
     		<div class="row" tal:define="Type ctype/Type;Id ctype/getId"
                          tal:condition="python:test(Type not in filterOut, 1, 0)">
     	
@@ -28,7 +30,7 @@
                         Type
                     </span>
                     <a href="#" tal:attributes="href string:createObject?type_name=$Id">
-                        <img src="folder.gif" alt="" tal:attributes="src ctype/getIcon" />
+                        <img src="folder.gif" alt="" width="16" height="16" tal:attributes="src ctype/getIcon" />
                     </a>
                 </span>
     	
@@ -49,7 +51,7 @@
         <div class="spacer">
         &nbsp;
         </div>
-    
+
     </div>
 
 </div>

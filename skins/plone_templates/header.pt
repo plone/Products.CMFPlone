@@ -5,42 +5,38 @@
       tal:define="global portal_url here/portal_url;
                   baseHREF python:test(here.isPrincipiaFolderish, here.absolute_url(), here.aq_parent.absolute_url());">
 
-	<title tal:content="here/title_or_id">Title of page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+	<title tal:content="string:${here/portal_properties/title} - ${here/title_or_id}">Title of page</title>
 
     <BASE href="" tal:attributes="href string:$baseHREF/" tal:condition="python:here.portal_url.getRelativeContentPath(here)" />
 
-	<span tal:condition="python:test(request['HTTP_USER_AGENT'].find('MSIE')!=-1, 1, 0)">
-            <?import namespace="xs" implementation="XS/htmlEditor" />
-        </span>
+<!-- Commented out for now - we need a new editor 
+	<metal:block tal:condition="python:test(request['HTTP_USER_AGENT'].find('MSIE')!=-1, 1, 0)">
+          <?import namespace="xs" implementation="XS/htmlEditor" />
+    </metal:block>
+-->
 
 	<!-- Basic crude style for Netscape4.x and other CSS1 browsers - 
          can be removed if you don't want to support those browsers
          specifically. Site will still be viewable, but look a bit 
          stripped :) --> 
-	  <link rel="Stylesheet" type="text/css" href="ploneBasicNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneBasicNS.css" />
-	  <link rel="Stylesheet" type="text/css" href="ploneStructureNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneStructureNS.css" />
-	  <link rel="Stylesheet" type="text/css" href="ploneWidgetsNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneWidgetsNS.css" />
-	  <link rel="Stylesheet" type="text/css" href="ploneDeprecatedNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneDeprecatedNS.css" />
-	  <link rel="Stylesheet" type="text/css" href="ploneCalendarNS.css" tal:attributes="href string:$portal_url/plone_styles/ploneCalendarNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneBasicNS.css" tal:attributes="href string:$portal_url/ploneBasicNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneStructureNS.css" tal:attributes="href string:$portal_url/ploneStructureNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneWidgetsNS.css" tal:attributes="href string:$portal_url/ploneWidgetsNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneDeprecatedNS.css" tal:attributes="href string:$portal_url/ploneDeprecatedNS.css" />
+	  <link rel="Stylesheet" type="text/css" href="ploneCalendarNS.css" tal:attributes="href string:$portal_url/ploneCalendarNS.css" />
 
 	<!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
-	<style type="text/css" media="all"> 
-		@import "ploneBasic.css";
-		@import "ploneStructure.css";
-		@import "ploneWidgets.css";
-		@import "ploneDeprecated.css";
-		@import "ploneCalendar.css";
-    /*
-		@import "ploneForum.css";
-     */
-        </style>
+    <style tal:replace="structure here/CSSImports"> </style>
 	
-    <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
     <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
 
     <!-- Some ECMAScript magic to control the sticky notes :) -->
     
-    <script language="javascript" src="ieemu.js"></script>
+    <script language="javascript" 
+            src="ieemu.js"
+            tal:attributes="src string:$portal_url/ieemu.js" ></script>
     <script language="javascript">
       if (moz) {
       	extendElementModel();
@@ -53,7 +49,8 @@
     (No problem licence-wise, it's free and modifiable) --> 
     
     <script type="text/javascript" 
-      src="http://developer.apple.com/internet/javascript/styley.js"></script>     
+      src="http://developer.apple.com/internet/javascript/styley.js"
+      tal:attributes="src string:$portal_url/styley.js" ></script>     
 
     <script language='JavaScript1.3' type='text/javascript'><!--
 
@@ -76,7 +73,8 @@
     
 </head>
 
-<div metal:define-macro="portal_header">
+<div metal:define-macro="portal_header"
+     tal:define="portal_url here/portal_url" >
 
 		<div class="top">
 			
@@ -108,6 +106,7 @@
           Portal Tabs are here       
         </div>
 
+	<hr size="" class="netscape4" />
 
 	<div class="personalBar"
          metal:use-macro="here/portal_bars/macros/personalBar"
@@ -120,6 +119,8 @@
          metal:use-macro="here/portal_bars/macros/pathBar"
          tal:define="actions python:here.portal_actions.listFilteredActionsFor(here);">
 	</div>
+
+	<hr size="" class="netscape4" />
 
 </div>
 

@@ -1,7 +1,7 @@
 from Products.CMFCore import DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo
 import MembershipTool, FormulatorTool, CalendarTool
-import PloneFolder
+import PloneFolder, PortalFactory
 
 ADD_CONTENT_PERMISSION = 'Add portal content'
 
@@ -51,7 +51,6 @@ def initialize(context):
     utils.ToolInit('Plone Tool', tools=tools,
                    product_name='CMFPlone', icon='tool.gif',
                    ).initialize( context )
-
     utils.ContentInit( 'Plone Content'
                      , content_types=contentClasses
                      , permission=ADD_CONTENT_PERMISSION
@@ -59,3 +58,4 @@ def initialize(context):
                      , fti=PloneFolder.factory_type_information
                      ).initialize( context )
 
+    PortalFactory.register(context, cmfplone_globals)

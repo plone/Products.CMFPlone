@@ -1,0 +1,5 @@
+A notation for linking to pages on other wiki servers. Here's an example:
+
+WikiWikiWeb:WelcomeVisitors
+
+that is, two WikiName(s) separated by : where the first is a local page (WikiWikiWeb in this example) containing a "RemoteWikiURL":RemoteWikiURL. 

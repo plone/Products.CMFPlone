@@ -1,0 +1,23 @@
+<!--antidecapitationkludge-->
+<p>Markup format used in Zope, ZWiki uses it with some wiki-specific
+stuff added, like WikiNames.  It provides for extensive formatting
+using clean, intuitive rules, so that the text content is very easy to
+read, write, and edit in the original form.  See 
+"TextFormattingRules":TextFormattingRules
+for the whole scoop on ZWiki formatting.  The links below include some
+further details on StructuredText, itself.</p>
+
+<p>Here are the "StructuredTextRules":StructuredTextRules, from the
+source.</p>
+
+<p>Here is a 
+<a href="http://www.zope.org/Members/millejoh/structuredText">structured text HowTo</a> 
+on zope.org.</p>
+
+<p>Here is a "StructuredTextExample":StructuredTextExample. </p>
+
+<p>"TextFormattingRules":TextFormattingRules provides more
+and better.</p>
+
+<p>See also "StructuredText on zwiki.org":http://www.zwiki.org/StructuredText</p>
+

@@ -1,0 +1,22 @@
+<dtml-var standard_html_header>
+<dtml-let callresults="FrontPage.wiki_map()"
+          nesting="callresults[0]"
+          singletons="callresults[1]">
+<h3><i>&dtml-getId;</i> Contents</h3>
+<p>
+<!-- this should really not depend on nesting coming back as HTML,
+but I don't have time to fix it right now - chrism -->
+<dtml-var nesting> 
+</p>
+<p>
+<font size="+1"><b><i>&dtml-getId;</i> Singletons</b></font>
+(no parents and no offspring):
+<ul>
+<dtml-in singletons>
+<a href="&dtml-sequence-item;"
+   name="&dtml-sequence-item;">&dtml-sequence-item;</a>
+</dtml-in>
+
+</ul>
+</dtml-let>
+<dtml-var standard_html_footer>

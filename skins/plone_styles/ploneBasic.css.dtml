@@ -31,6 +31,17 @@ body {
     margin: 0;
     padding: 0;
 /* These work in IE only, change the look of the scrollbar + textareas */
+
+    scrollbar-base-color: &dtml-mainTabBackground;;
+    scrollbar-highlight-color: &dtml-mainTabBackground;;
+    scrollbar-track-color: &dtml-evenRowBackground;;
+    scrollbar-darkshadow-color: &dtml-evenRowBackground;;
+    scrollbar-3dlight-color: &dtml-mainTabBorderColorSelected;;
+    scrollbar-shadow-color: &dtml-mainTabBorderColorSelected;;
+    scrollbar-arrow-color: &dtml-mainTabFontColorSelected;;
+
+
+/* Original values
     scrollbar-base-color: #dee7ec;
     scrollbar-highlight-color: #dee7ec;
     scrollbar-track-color: #f7f9fa;
@@ -38,6 +49,7 @@ body {
     scrollbar-3dlight-color: #8cacbb;
     scrollbar-shadow-color: #8cacbb;
     scrollbar-arrow-color: #8cacbb;
+*/
 }
 
 
@@ -75,7 +87,7 @@ p img {
 hr {
     clear: both;
     height: 1px;
-    color: #8cacbb;
+    color: &dtml-mainTabBorderColorSelected;;
 }
 
 

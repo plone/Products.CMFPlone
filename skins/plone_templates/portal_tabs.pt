@@ -3,26 +3,27 @@
 
 <!-- The top tabs of the portal, displayed in the header -->
           
-<div class="tabs" metal:define-macro="portal_tabs"
-     tal:define="p_root here/portal_url">
+<div class="tabs" 
+     metal:define-macro="portal_tabs"
+     tal:define="portal_url here/portal_url">
      
         <a href=""
-           tal:attributes="href p_root;
-           class python:test(request.URL0==p_root+'/index_html', 'selected', 'plain')">
+           tal:attributes="href portal_url;
+           class python:test(request.URL0==portal_url+'/index_html', 'selected', 'plain')">
          Welcome</a> <span class="netscape4">&middot;</span>
            
     	<a href="roster" tal:condition="python:here.portal_membership.checkPermission('List portal members', here)"
-           tal:attributes="href python:p_root+'/Members/roster';
+           tal:attributes="href string:$portal_url/Members/roster;
                            class python:test('Members' in here.getPhysicalPath(), 'selected', 'plain')">
          Members</a> <span class="netscape4">&middot;</span>
     	
         <a href="#"
-           tal:attributes="href python:p_root+'/recent_news';
+           tal:attributes="href string:$portal_url/recent_news;
 		   class python:test(template.getId()=='recent_news', 'selected', 'plain')">
          News</a> <span class="netscape4">&middot;</span>
 						   
 	    <a href="search_form"
-           tal:attributes="href python:p_root+'/search_form';
+           tal:attributes="href string:$portal_url/search_form;
                    class python:test(template.getId()=='search_form', 'selected', 'plain')">
          Search</a> <span class="netscape4">&middot;</span>
 
@@ -44,7 +45,9 @@
     </span>
 
     
-    <a class="" href="content_status_history"  tal:condition="python:test(here.getActionUrlById('status history', wf_actions ) or wf_actions, 1, 0)"
+    <a class="" 
+       href="content_status_history"  
+       tal:condition="python:test( (not here.portal_membership.isAnonymousUser and here.getActionUrlById('status history', wf_actions ) or wf_actions ) , 1, 0)"
        tal:attributes="href string:${here/absolute_url}/content_status_history;
                        class python:test(request.URL0.find('content_status')!=-1, 'selected', 'plain');">
        Publishing</a> <span class="netscape4">&middot;</span>
@@ -53,7 +56,8 @@
 
 <!-- The tabs displayed in folder_contents -->
 
-<div class="contentTabs" metal:define-macro="folderTabs"
+<div class="contentTabs" 
+     metal:define-macro="folderTabs"
      tal:define="actions python:here.portal_actions.listFilteredActionsFor(here);"
      >
 

@@ -1,0 +1,27 @@
+<dtml-let history="getTypeInfo().getActionById( 'history' )">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      <small>
+        <dtml-var id size=30> page of
+        <dtml-with "aq_parent"> <dtml-var id size=25> </dtml-with>
+      </small>
+    </td>
+    <td align="right">
+        <small>
+          Last 
+          <a href="&dtml-wiki_page_url;/&dtml-history;">edited</a>
+            <dtml-if last_editor> by <b><dtml-var last_editor></b> </dtml-if>
+          on <dtml-var bobobase_modification_time fmt=aCommon> </small>
+      </small>
+    </td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+  <tr align="left" bgcolor="#eeeeee">
+    <td>
+      <dtml-var "wiki_context(REQUEST, with_siblings=0)">
+    </td>
+  </tr>
+</table>
+</dtml-let>

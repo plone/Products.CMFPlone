@@ -1,0 +1,6 @@
+<dtml-var standard_html_header>
+<dtml-with FrontPage>
+<dtml-var wikipage_header>
+<dtml-var render>
+</dtml-with>
+<dtml-var standard_html_footer>

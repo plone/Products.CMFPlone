@@ -1,0 +1,34 @@
+<h3>How do I navigate ?</h3>
+<p>  <font size=-1>See HowDoIEdit for editing instructions.</font></p>
+
+<p>  Click the page names in the title bar to visit the containing pages.</p>
+
+<p>  Click the <em>backlinks</em> title-bar link to list all other pages
+  which link to this one.</p>
+
+<p>  Click the <em>Table of Contents</em> link above the title bar to see
+  a table of contents for the whole wiki.</p>
+
+<p>  The footer <code>Advanced Actions</code> link take you to a form that has
+  rename and delete functions for the page, if you're allowed to do
+  them, and the regulations which dictate the policies governing who
+  can do what on the page.  Only page and folder owners can change a
+  page's regulations.</p>
+
+<p>  The footer also has a link to the page version history, by which you
+  can refer back to old versions of the page, see difference
+  computations between version versions, and, if allowed to edit the
+  page, bring a copy of an old version out of the past, to replace the
+  current version.  The <code>edited</code> link at the top of the header also
+  goes to the history page.</p>
+
+<p>  Use the Jump-to field for fast navigation and searching, and the
+  SearchPage for more general searching.  For Jump-To instructions,
+  follow the Jump-To link without entering any search text.</p>
+
+<p>  The RecentChanges page lists all pages by modification date.</p>
+
+<p>  See also HierarchalStructure
+</p>
+
+

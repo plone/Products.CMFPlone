@@ -1,0 +1,48 @@
+<dtml-var standard_html_header>
+<dtml-var wikipage_header>
+
+<dtml-let callresults="history_compare_versions(REQUEST['keys'])"
+          dt1="callresults[0]"
+          dt2="callresults[1]"
+          historyComparisonResults="callresults[2]">
+
+<dtml-if historyComparisonResults>
+<table>
+<tr>
+  <td align="left" valign="top">
+  <div class="form-label">
+Changes to <dtml-var id> as of
+  </div>
+  </td>
+  <td align="left" valign="top">
+  <div class="form-text">
+<dtml-var dt1 fmt="%Y-%m-%d %H:%M">
+  </div>
+  </td>
+</tr>
+<tr>
+  <td align="left" valign="top">
+  <div class="form-label">
+  to get to <dtml-var id> as of
+  </div>
+  </td>
+  <td align="left" valign="top">
+  <div class="form-text">
+<dtml-var dt2 fmt="%Y-%m-%d %H:%M">
+  </div>
+  </td>
+</tr>
+</table>
+
+<br />
+
+<dtml-var historyComparisonResults>
+
+<dtml-else>
+<p class="form-text">
+This object does not provide comparison support.
+</p>
+</dtml-if>
+</dtml-let>
+
+<dtml-var standard_html_footer>

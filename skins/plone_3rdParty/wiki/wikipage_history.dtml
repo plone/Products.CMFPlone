@@ -1,0 +1,110 @@
+<dtml-var standard_html_header>
+<dtml-var wikipage_header>
+
+<dtml-let mode="REQUEST.get('mode', 'condensed')"
+     batchsize="_.int(REQUEST.get('HistoryBatchSize', 30))"
+         first="_.int(REQUEST.get('first_transaction', 0))"
+          last="first + batchsize"
+  transactions="this().get_page_history(mode=mode, batchsize=batchsize,
+                                        first=first, last=last)"
+          more="_.len(transactions) >= batchsize"
+        noedit="not isAllowed('edit')">
+
+<h3> &dtml-id; &dtml.capitalize-mode; Change History </h3>
+
+This is a &dtml-mode; record of &dtml-id;'s historical versions.  You
+can view old versions by clicking on the links<dtml-if noedit> and
+view difference-style comparisons between them.  <dtml-else>, view
+difference-style comparisons between them, and bring copies of old
+versions out of the past to serve as the current one.</dtml-if>
+
+<p>
+<dtml-if "mode == 'condensed'">
+  This condensed listing omits "interim" versions: versions of the
+  page that lack a log message, and that were replaced with a new
+  version by the same editor, within thirty minutes after the edits
+  were committed.
+
+  <p> You can visit
+  <a href="wikipage_history?mode=complete&first_transaction=&dtml-first;">
+  the complete listing</a>, instead of this &dtml-mode; one.
+<dtml-else "mode == 'condensed'">
+  You can also visit <a href="wikipage_history">a
+  condensed listing</a>, which omits intermediate page versions.
+</dtml-if>
+
+<form action="&dtml-absolute_url;" method="POST">
+
+<table>
+
+  <dtml-if first>       
+     <tr>
+      <td colspan=3 align=center>
+        <dtml-let next="_.max(first-batchsize, 0)">
+          <a href="&dtml-URL;?mode=&dtml-mode;&first_transaction:int=&dtml.-next;&HistoryBatchSize:int=&dtml.-batchsize;">
+            (More Recent Revisions -
+             ...<dtml-var "transactions[0]['tacked_on_index']">)
+          </a>
+        </dtml-let>
+     </td></tr>
+  </dtml-if>
+
+  <dtml-in transactions mapping>
+    <tr>
+      <td align="right" valign="top" NOWRAP>
+        <font color="gray">-<dtml-var tacked_on_index></font>
+      </td>
+      <td valign="top">
+        <input type="checkbox" value="&dtml-key;" name="keys:list">
+      </td>
+      <td valign="top">
+          <dtml-if "tacked_on_index == 0">
+            <strong>(Current)</strong> </dtml-if>
+          <a href="&dtml-absolute_url;/HistoricalRevisions/&dtml-key;">
+             <dtml-var time fmt=Mon> 
+             <dtml-var time fmt=day>
+             <dtml-var time fmt=Time>
+             <dtml-if user_name>&dtml-user_name;</dtml-if>
+          </a>
+          <dtml-let descr="_.string.split(description, '\012\012')">
+            <font color="gray"> <dtml-var "descr[0]"> </font>
+            <dtml-in "descr[1:]">
+              <br><dtml-var sequence-item html_quote>
+            </dtml-in>
+          </dtml-let>
+          <dtml-if revision><br>Revision: <em>&dtml-revision;</em></dtml-if>
+      </td>
+    </tr>
+  </dtml-in>
+
+  <dtml-if more>
+     <tr>
+      <td colspan=3 align=center>
+        <dtml-with expr="_(newlast=first+batchsize)">
+            <a href="manage_UndoForm?first_transaction:int=&dtml.-last;&HistoryBatchSize:int=&dtml.-batchsize;">
+            <a href="&dtml-URL;?mode=&dtml-mode;&first_transaction:int=&dtml.-last;&HistoryBatchSize:int=&dtml.-batchsize;">
+               (Less Recent Revisions - 
+                <dtml-var "transactions[-1]['tacked_on_index']">...)
+        </dtml-with>
+     </td></tr>
+  </dtml-if>
+
+    <tr>
+      <td> &nbsp; </td>
+      <td> &nbsp; </td>
+      <td>
+        <input type="submit" name="wikipage_compare_versions:method"
+               value="Compare">
+       <dtml-if "not noedit">
+         &nbsp; &nbsp;
+         <input type="submit" name="wikipage_copyhistory_handler:method"
+                value="Copy to present">
+       </dtml-if>
+      </td>
+    </tr>
+
+  </table>
+  </form>
+</dtml-let>
+
+<dtml-var standard_html_footer>

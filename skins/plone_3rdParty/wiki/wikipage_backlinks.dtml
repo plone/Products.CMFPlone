@@ -1,0 +1,49 @@
+<dtml-var standard_html_header>
+<dtml-var expr="wikipage_header(this(),REQUEST,RESPONSE,title_url='..')">
+
+<h2> Backlinks and Nesting Information </h2>
+
+<form action="wikipage_reparent_handler">
+
+<a href="../<dtml-var id>"><dtml-var id></a> is linked on the following pages:
+<p>
+
+<dtml-if "not isAllowed('move')">
+ <font color="gray"> (You're not allowed to change this page's lineage)</font>
+<br>
+</dtml-if>
+
+<dtml-let thispage="getId()"
+       thisparents="getParents()"
+     maybedisabled="((not isAllowed('move'))
+                     and 'DISABLED') or ''">
+<strong> Parent? &nbsp;&nbsp; Backlink </strong>
+<br>
+<dtml-in backlinks mapping>
+   <input type=checkbox name="parents" value="<dtml-var pageid>"
+          <dtml-if isparent>CHECKED</dtml-if> &dtml-maybedisabled;>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <a href="../&dtml-pageid;">&dtml-pageid;</a>
+   <br>
+</dtml-in>
+</dtml-let>
+
+<p>
+<dtml-if "isAllowed('move')">
+  <input type="submit" value="Reparent">
+  <input type="reset" value="Reset Form">
+</dtml-if>
+</p>
+</form>
+
+<dtml-comment No time for this right now, but this is broken - chrism>
+<p> <a name="nesting"><a href="../<dtml-var id>"><dtml-var id></a></a> nesting
+context in the Wiki folder, including offspring, ancestors, and siblings.
+(Branches are abbreviated with '...' elipses after the first time they're
+spelled out.)
+
+<dtml-var "wiki_context(REQUEST, with_siblings=1)">
+</dtml-comment>
+
+<p>
+<dtml-var standard_html_footer>

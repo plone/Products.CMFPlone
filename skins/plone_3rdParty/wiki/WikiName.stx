@@ -1,0 +1,25 @@
+<p>Wiki page names are usually two or more Capitalized Words - run
+together: WikiName.</p>
+
+<p>The result is distinctive enough to be recognizable by the software,
+yet still readable by people - and much easier to type than an html
+hyperlink.</p>
+
+<p>Smooshing together words makes for more regular choices than
+wide-open, whitespace-containing text phrases.  The idea is that the
+WikiName is easier to remember and more likely to be reinvented the
+same by different people - promoting easier collaboration.</p>
+
+<p>In the abstract, WikiNames are the terms which embody the wiki's
+topic.</p>
+
+<p>The ZWiki version of WikiName can include "~" tildes as if they were
+lowercase letters, and numbers as if they were uppercase letters - but
+neither may occur at the beginning of the name.  So, <code>Zope2</code> and
+<code>AFL~CIO</code> are valid [WikiName]s.</p>
+
+<p>See <a href="TextFormattingRules#wikirefs">Expressing Links / Wiki references</a>
+for more.  See "RemoteWikiLinks":RemoteWikiLinks for a way to link to wiki pages in
+other Wikis.
+</p>
+

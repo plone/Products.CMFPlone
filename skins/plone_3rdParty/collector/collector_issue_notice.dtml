@@ -1,0 +1,18 @@
+<dtml-comment>
+  Form an email message for issue events.
+</dtml-comment>
+From: <dtml-var sender>
+To: <dtml-var recipients>
+Subject: <dtml-var subject>
+X-Recipients-debug: <dtml-var candidates>
+
+Issue #<dtml-var issue_id> Update (<dtml-var action>) "<dtml-var title size=200>"
+<dtml-if security_related> ** Security Related ** (<dtml-if confidential>Confidential<dtml-else>Public</dtml-if>)
+</dtml-if> Status <dtml-var status>, <dtml-var topic>/<dtml-var klass> <dtml-var importance>
+To followup, visit:
+  <dtml-var issue_url>
+
+==============================================================
+<dtml-var body>
+==============================================================
+

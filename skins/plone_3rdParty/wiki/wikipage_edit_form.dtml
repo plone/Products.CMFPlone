@@ -1,0 +1,73 @@
+<dtml-var standard_html_header>
+<dtml-var wikipage_header>
+
+<dtml-let noedit="not isAllowed('edit')">
+    <h3>
+      <dtml-if noedit> View <dtml-else> Edit </dtml-if>
+      <em>&dtml-id;</em> CMFWiki Page
+    </h3>
+    <dtml-if noedit>
+      <strong> You can view the page source, below, but not edit it. </strong>
+      (<dtml-var "whichWho('edit')"> edit this page.)
+    </dtml-if>
+
+  <dtml-if "not noedit">
+
+    <form method="POST"
+          action="wikipage_editcomment_handler"
+          enctype="multipart/form-data">
+    <input type=hidden name=timeStamp value="&dtml-editTimestamp;">
+    <input type=hidden name=page value="&dtml-getId;">
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="5">
+      <tr bgcolor=<dtml-if noedit>"pink"<dtml-else>"eeeeee"</dtml-if> >
+        <td colspan=2 align="center">
+          <textarea wrap="soft" name="text"
+                    rows=<dtml-var zwiki_height missing=18>
+                    cols=<dtml-var zwiki_width missing=80>
+                  <dtml-if noedit>
+                    readonly
+                    onkeydown="this.blur(); return false;"
+                  </dtml-if> ><dtml-var text html_quote></textarea>
+        </td>
+      </tr>
+      <tr bgcolor=<dtml-if noedit>"pink"<dtml-else>"eeeeee"</dtml-if> >
+        <td valign="middle" align="left">
+          <br> Format: <em> <dtml-var page_type> </em>
+        </td>
+       <dtml-if noedit>
+        <th valign="middle" align="center"> Edit Disabled
+       <dtml-else>
+        <td valign="middle" align="right">
+          <input type="submit"
+                 name="edit"
+                 value="Edit <dtml-var id size=20>">
+       </dtml-if>
+        </td>
+      </tr>
+      <dtml-if "not noedit">
+       <tr bgcolor="eeeeee">
+         <th colspan=2 align="center"> Log Message </td>
+       </tr>
+       <tr bgcolor="eeeeee">
+         <td colspan=2 align="center">
+           <textarea wrap="soft" name="log"
+                     rows="3"
+                     cols="80"></textarea>
+         </td>
+       </tr>
+       <tr bgcolor="eeeeee">
+         <td colspan=2>
+           Log for landmark changes - enter a note characterizing your
+           change.  It will be connected with the page version,
+           exposing the version for browsing in the condensed
+           <a href="wikipage_history">page history</a>.
+         </td>
+       </tr>
+      </dtml-if> <dtml-comment> "not noedit" </dtml-comment>
+    </table>
+   </form>
+  </dtml-if>
+</dtml-let>
+<dtml-var standard_html_footer>
+

@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 <body>
     <span metal:fill-slot="main"
           tal:define="transactions python:container.portal_undo.listUndoableTransactionsFor(here);
@@ -48,7 +48,7 @@
                 	<span tal:define="p batch/previous | nothing"
                 	 	   tal:condition="p"> 
                 	
-                		<a href="#" tal:attributes="href string:?b_start=${p/first}">
+                		<a href="#" tal:attributes="href string:undo_form?b_start=${p/first}">
                 		&laquo;&nbsp;Newer&nbsp;transactions
                 		</a>
                 	
@@ -60,7 +60,7 @@
 					<span class="right" tal:define="n batch/next | nothing"
 							tal:condition="n">
 
-        			<a href="#" tal:attributes="href string:?b_start=${batch/end}">
+        			<a href="#" tal:attributes="href string:undo_form?b_start=${batch/end}">
         			Older&nbsp;transactions&nbsp;&raquo;
         			</a>
 	

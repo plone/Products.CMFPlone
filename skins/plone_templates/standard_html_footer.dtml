@@ -1,0 +1,34 @@
+                    <dtml-comment>
+                      Your code will have started above. ;)
+                    </dtml-comment>
+
+                    <dtml-var "macro_renderer(template='here/portal_buttons', macro='discussionView')" >
+                
+                  </div>
+
+                </td>
+    
+                <td class="right">
+            
+                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='loginBox')" >
+
+                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='review_box')" >
+            
+                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='favoritesBox')" >
+            
+                    <dtml-var "macro_renderer(template='here/portal_boxes', macro='calendarBox')" >
+                            
+                </td>
+            
+            </tr>
+        
+        </tbody>
+        
+    </table>
+
+    <hr size="" class="netscape4" />
+   
+    <dtml-var "macro_renderer(template='here/footer', macro='portal_footer')" >
+    
+</body>
+</html>

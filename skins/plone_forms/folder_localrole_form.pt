@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 <body>
 
     <div metal:fill-slot="super1">
@@ -18,8 +18,7 @@
     </div>
 
 
-	<div class="editableDocument" 
-         metal:fill-slot="main"
+	<div metal:fill-slot="main"
          tal:define="join python:modules['string'].join">
 
 	<div tal:condition="exists:request/role_submit">

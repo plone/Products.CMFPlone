@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/content_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 
 <body>
 
@@ -108,7 +108,6 @@
         </div>
         
     </form>   
-    <span tal:replace="structure request" />
  
 </div>
 	   

@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 	
 <body>
     <span metal:fill-slot="main"
@@ -39,8 +39,20 @@
             <span class="card" tal:define="home python:container.portal_membership.getHomeUrl(result['id'], verifyPermission=1);
                                            portrait python: here.getPlonePersonalPortait(result['id']);"> 
                 <a href="#" tal:attributes="href home">                    
-                    <img src="defaultUser.gif" alt="Blank picture" border="0" tal:condition="portrait" tal:attributes="src portrait/absolute_url">
-                    <img src="defaultUser.gif" alt="Blank picture" border="0" tal:condition="not: portrait"> <br />  
+                    <img src="defaultUser.gif" 
+                         alt="Blank picture" 
+                         border="0" 
+                         width="75" 
+                         height="100" 
+                         tal:condition="portrait"
+                         tal:attributes="src portrait/absolute_url" />
+                    <img src="defaultUser.gif" 
+                         alt="Blank picture" 
+                         border="0" 
+                         width="75" 
+                         height="100" 
+                         tal:condition="not: portrait" />       
+                    <br />  
                     <span tal:content="python:result['id']"> member id</span>
                 </a>
                 <br />	

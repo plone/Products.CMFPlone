@@ -1,0 +1,221 @@
+<dtml-var standard_html_header>
+<dtml-var wikipage_header>
+
+    <form method="POST"
+          action="wikipage_deleterename_handler"
+          enctypE="multipart/form-data">
+
+<table border=1>
+  <tr>
+    <th align="left" bgcolor="ffffcc">
+      <em> <dtml-var id size=40> </em> Attributes
+    </th>
+  </tr>
+  <tr>
+    <td colspan=2>
+      <table width="100%">
+        <tr>
+          <th> Name: </th>
+          <td> <dtml-var id size=45> </td>
+         <dtml-let owners="this().page_owners()"
+                   plural="((_.len(owners) > 1) and 's' or '')"
+               niceowners="((owners and _.string.join(owners, ', '))
+                            or 'Anonymous User')">
+           <th> Local Owner&dtml-plural;: </th>
+           <td> &dtml-niceowners; </td>
+         </dtml-let>
+        </tr>
+        <tr>
+          <th> Type: </th>
+          <td> &dtml-page_type; </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <th align="left" bgcolor="ffffcc">
+      <em> <dtml-var id size=40> </em> Rename and Delete
+    </th>
+  </tr>
+  <tr>
+    <td>
+     <dtml-if "(getId() == 'FrontPage')">
+       <font color="gray"> No Delete or Rename forms for FrontPage - it
+                           can not be removed.
+       </font>
+     <dtml-elif "not isAllowed('move')">
+        You can not rename or delete this page.
+        <dtml-var "whichWho('move')"> do so.
+     <dtml-else>
+      <table width="100%" cellspacing=7>
+        <tr>
+          <td width="50%" nowrap bgcolor="eeeeee">
+            Rename <strong><dtml-var id></strong> to:
+            <br>
+              <input type="text" name="new_id" size="25" value="&dtml-id;">
+              &nbsp; <input type="submit" name="Rename" value="Rename">
+          </td>
+          <td align="center" width="50%" nowrap bgcolor="eeeeee">
+            <input type="hidden" name="confirm_delete:int:default" value="0">
+            <input type="checkbox" name="confirm_delete:boolean">
+              Confirm delete &nbsp;
+            <input type="submit" name="Delete" value="Delete">
+          </td>
+        </tr>
+      </table>
+     </dtml-if>
+    </td>
+  </tr>
+    </form>
+  <tr>
+    <th align="left" bgcolor="ffffcc">
+      <em> <dtml-var id size=40> </em> Regulations
+    </th>
+  </tr>
+
+  <tr>
+    <td>
+  This is where wiki page and folder owners choose who can do which of
+  the common wiki operations on the page.  The operations include
+  editing the page, creating new pages from it, commenting on it, and
+  resituating it (renaming it, deleting, or changing its designated
+  parents).   You can <dtml-if isRegSetter> set <dtml-else> see </dtml-if>
+  the page regulations below.
+
+  <p>
+  <strong> See <a href="RegulatingYourPages" target="_blank">
+  RegulatingYourPages</a> for more info.</strong.>
+  </p>
+    <form method="POST"
+          action="wikipage_advanced_handler"
+          enctype="multipart/form-data">
+    <table width="100%" border="0" cellspacing="0" cellpadding="5"
+           bgcolor="eeeeee">
+      <tr>
+        <td> &nbsp; </td>
+       <dtml-in regOps>
+        <th> <dtml-var sequence-item capitalize> </th>
+       </dtml-in>
+      </tr>
+
+      <tr>
+        <th rowspan=2 align="right" valign="bottom">
+            Role categories:
+        </th>
+       <dtml-in regOps>
+        <td align="center" valign="top">
+         <dtml-if "_['sequence-item'] == 'create'">
+           <font size="-1"> ... new pages from this one. </font>
+         <dtml-elif "_['sequence-item'] == 'edit'">
+           <font size="-1"> Change the text. </font>
+         <dtml-elif "_['sequence-item'] == 'comment'">
+           <font size="-1"> Append text to end. </font>
+         <dtml-elif "_['sequence-item'] == 'move'">
+           <font size="-1"> Rename, delete, reparent. </font>
+         </dtml-if>
+        </td>
+       </dtml-in>
+      </tr>
+      <tr>
+       <dtml-in regOps>
+        <dtml-let op="_['sequence-item']"
+               opcat="opCategory(op)">
+        <td align="center" valign="middle">
+          <select name="&dtml-op;-category:string" size="1"
+             <dtml-unless isRegSetter> DISABLED </dtml-unless> >
+          <dtml-in regCategories>
+           <dtml-let cat="_['sequence-item']"
+                     cur="opcat == cat">
+            <option value="&dtml-cat;"
+                    <dtml-if cur>SELECTED</dtml-if>>
+              <dtml-if "cat == 'nonanon'"> Non-Anon
+              <dtml-else>&dtml.capitalize-cat;</dtml-if></option>
+           </dtml-let>
+          </dtml-in>
+          </select>
+        </td>
+        </dtml-let>
+       </dtml-in>
+      </tr>
+
+      <tr>
+        <th align="right" valign="middle">
+          Additional allowed users:
+        </th>
+       <dtml-in regOps>
+        <dtml-let op="_['sequence-item']"
+           usernames="_.string.join(opUsernames(op), '\n')">
+        <td align="center">
+          <textarea rows=2 cols=8
+                    name="&dtml-op;-usernames:lines"
+               <dtml-unless isRegSetter>
+                 readonly
+                 onkeydown="this.blur(); return false;"
+               </dtml-unless>
+            >&dtml-usernames;</textarea>
+        </td>
+        </dtml-let>
+       </dtml-in>
+      </tr>
+      <tr>
+        <th align="right" valign="middle">
+          Propagate to offspring:
+        </th>
+       <dtml-in regOps>
+        <dtml-let propop="'propagate-' + _['sequence-item']">
+        <td align="center">
+            <input type="hidden" name="&dtml-propop;:default" value="off">
+            <input type="checkbox" name="&dtml-propop;" value="ON"
+               <dtml-unless isRegSetter>
+                 readonly
+                 onkeydown="this.blur(); return false;"
+               </dtml-unless> >
+        </td>
+        </dtml-let>
+       </dtml-in>
+      </tr>
+      <tr>
+        <td colspan=5> <hr>
+        </td>
+      </tr>
+      <tr>
+        <th align="right" valign="top">
+          Who owns pages created <br>
+          from this one:
+        </th>
+        <td colspan=4>
+          <input type="radio" name="who_owns_subs" value="creator"
+                 <dtml-unless isRegSetter> DISABLED </dtml-unless>
+                 <dtml-if "subOwner()=='creator'"> CHECKED </dtml-if>>
+              Only creator of new page
+          <br>
+          <input type="radio" name="who_owns_subs" value="original_owner"
+                 <dtml-unless isRegSetter> DISABLED </dtml-unless>
+                 <dtml-if "subOwner()=='original_owner'">CHECKED</dtml-if>>
+              Only original page owner(s)
+          <br>
+          <input type="radio" name="who_owns_subs" value="both"
+                 <dtml-unless isRegSetter> DISABLED </dtml-unless>
+                 <dtml-if "subOwner()=='both'">CHECKED</dtml-if>>
+              Both original page owner(s) and sub-page creators
+        </td>
+      </tr>
+     <dtml-if isRegSetter>
+      <tr>
+        <td colspan=5> <hr>
+        </td>
+      </tr>
+      <tr>
+        <td align="right" colspan=3> 
+          <input type="SUBMIT" name="regulate"
+                 VALUE="Set <dtml-var id size=40> Regulations">
+        </td>
+      </tr>
+     </dtml-if>
+    </table>
+   </form>
+  </td></tr>
+  </table>
+</form>
+
+<dtml-var standard_html_footer>

@@ -2,24 +2,30 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 <body>
 			
 <div class="document">
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:condition="here/rejectAnonymous" >
+
+    
     <span tal:define="dummy python:request.response.setHeader('pragma','no-cache')" />
+
     <h1>Member Preferences</h1>
 
     <p> <a href="password_form">Click here</a> to change your password. </p>
       
   
-    <span tal:define="member python:container.portal_membership.getAuthenticatedMember()">
+    <metal:block tal:condition="not: here/portal_membership/isAnonymousUser"
+                 tal:define="member container/portal_membership/getAuthenticatedMember | nothing">
 
         <form class="group"
               action="personalize" 
               method="POST"
-              enctype="multipart/form-data" >
+              enctype="multipart/form-data" 
+              tal:condition="member" >
         
             <span class="legend">Member Details</span>
 		
@@ -85,12 +91,13 @@
                 </span>
             </div>
 
-            <div class="row" tal:condition="here/portal_skins/allow_any">
+            <div class="row" 
+                 tal:condition="here/portal_skins/allow_any">
                 <span class="label">Skin</span>
                 <span class="field"> 
                     <select name="portal_skin">
                     <option value="#"
-                            tal:repeat="skin python:container.portal_skins.getSkinSelections()"
+                            tal:repeat="skin container/portal_skins/getSkinSelections"
                             tal:attributes="value skin;
                             selected python:test(request.get('portal_skin', here.portal_skins.getDefaultSkin())==skin, 'selected', '');"
                             tal:content="skin">Plone</option>
@@ -102,10 +109,13 @@
                 </span>
             </div>
 
-            <div class="row" tal:define="portrait here/getPlonePersonalPortait">
+            <div class="row" tal:define="portrait here/getPlonePersonalPortait | nothing">
                 <span class="label">Portrait</span>
                 <span class="field"> 
-                    <img src="" tal:condition="portrait" tal:attributes="src portrait/absolute_url" style="border: 1px solid black" />
+                    <img src="" 
+                         style="border: 1px solid black" 
+                         tal:condition="portrait"
+                         tal:attributes="src portrait/absolute_url" />
                     <br />
                     <input type="file" name="portrait" size="15" /> <br />
                 </span>
@@ -124,10 +134,11 @@
         		
 		</form>
     
-    </span>
+    </metal:block>
 	
     
 </div>
 	   
 </body>
 </html>
+.

@@ -1,0 +1,35 @@
+<!--antidecapitationkludge-->
+<h3>What is this?</h3>
+<p>  This is the CMFWiki version of a "WikiWikiWeb":WikiWikiWeb, which is a
+  kind of collaborative website.  Wikis try to put as little as possible in
+  the way of people sharing useful content in a manageable way.</p>
+
+<p>  If you're allowed to edit a page, you can change it on the spot by
+  clicking "Edit this page".  You may be also able to add comments to
+  the bottom of the page.  In either case, intuitive
+  "TextFormattingRules":TextFormattingRules are followed to simplify the
+  process of writing and linking pages.</p>
+
+<p>  The idea is to keep the text that people edit simple, so it's
+  readable as is, and, most importantly, editable by anyone, without
+  sacrificing niceness of the formatted presentation.</p>
+
+<ul><li><p>Try your Wiki's SandBox to play with wiki page editing...</p>
+
+</li>
+<li><p>"HowDoINavigate":HowDoINavigate describes getting around.</p>
+
+</li>
+<li><p>"HowDoIEdit":HowDoIEdit describes creating your own pages and
+    changing existing ones - including this peculiar use of the
+    "WikiName":WikiName.</p>
+
+</li>
+<li><p>See "ZWiki":ZWiki for an explanation of the Zope software upon which CMFWiki is based</p>
+
+</li>
+<li><p>The main "WikiWikiWeb":WikiWikiWeb may help convey the background of
+    wiki usage and etiquette.</p>
+
+</li></ul>
+

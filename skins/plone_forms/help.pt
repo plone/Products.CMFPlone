@@ -5,21 +5,21 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 
 <body>
 	   
-<span metal:fill-slot="main">
+<div metal:fill-slot="main">
 
     <h1>CMF Help</h1>
  
     <p>
-    This help file isn't done yet. (Surprise! :)
+    The help file isn't done yet. (Surprise! :)
     </p>
 		
 	
 
-</span>
+</div>
 	   
 </body>
 </html>

@@ -1,0 +1,70 @@
+<h3>How do I edit ?</h3>
+<p>  <font size=-1>See HowDoINavigate for navigation instructions.</font></p>
+
+<p>  Click "Edit this page" at the bottom of any page where you're
+  allowed.  If you're not allowed to edit, you may be allowed to
+  comment - see <a href="#commenting">below</a> for details.  (See
+  "RegulatingYourPages":RegulatingYourPages for info about who's allowed
+  to do what.)  The SandBox is a good place to practice editing and
+  creating pages.</p>
+
+<p>  ZWiki text is designed to be easy to edit and read in its raw form,
+  while retaining the benefits of fancy formatting, document structure,
+  linking, and all the other great features of web presentation.  
+  "TextFormattingRules":TextFormattingRules goes into the essentials
+  of this formatting.</p>
+
+<p>  The edit form has a slot for a brief log message, to convey the
+  essence of your changes.  The current page log message is shown on
+  the "RecentChanges" page, conveying at a glance what the last change
+  is.  The log message also shows in the page history and manager's
+  undo views - they can help substantially to orient people, and are
+  worth filling in.</p>
+
+<p>  <a name="commenting"></a>
+  Some pages are set by their owners to allow commenting, rather than,
+  or in addition to, editing.  The comments are appended to the ends
+  of the pages, along with the commentor's id and the date.  The
+  comment form includes a copy of the page with every line prefixed by
+  ">", ripe for citing by copying into the comment area.  The ">"
+  prefixed comment lines are automatically treated as preformatted
+  regions, exempt from text flowing and other wiki-page processing.</p>
+
+
+<h3>How do I link and create new pages ?</h3>
+<p>  To create a link to another wiki page, just write a WikiName.
+  (Alternately, you can create wiki links by enclosing arbitrary
+  phrases in <code>[square brackets]</code> - but that can create
+  hard-to-remember names with hard-to-type URLs.  WikiNames (see
+  "WikiName":WikiName) are the vocabulary of the wiki - it's a Good Thing
+  to have them regular and recognizable in-and-of themselves.)</p>
+
+<p>  If the page does not yet exist, and you're allowed to create pages
+  from the current page, a <strong>?</strong> will be displayed - click it to
+  create the new page.  This is how new wiki pages are added.</p>
+
+<p>  To link to a page on another site, just type the url. Or, you can
+  use HTML.  Also, "RemoteWikiLinks":RemoteWikiLinks are a convenient
+  notation for linking to pages on another site.</p>
+
+<p>  When you're <em>not</em> allowed to create new pages from that spot
+  (again, see "RegulatingYourPages":RegulatingYourPages), you will see
+  <strong><sup>x</sup></strong> by the
+  potential wiki link.  Following that link will bring you to the
+  source of the current page - once again, see 
+  "RegulatingYourPages":RegulatingYourPages for info about who's allowed 
+  to do what.</p>
+
+<h3>What if I make a mistake ?</h3>
+<p>  If some good text gets lost by mistake, you might find it by backing
+  up in your browser - copy and paste back it into the page.  If you
+  successfully commit your edits, but <em>they're</em> incorrect, you can use 
+  the history mechanism to refer back to previous versions of the page 
+  to recover old text, and/or bring an entire copy of an old page into 
+  the present.  See the history link in the footer at the bottom of
+  every page, or the <code>edited</code> link at the very top.</p>
+
+<p>  If all that fails, the site admin may be able to help undo the changes.
+</p>
+
+

@@ -1,0 +1,64 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master">
+<body>
+
+<span tal:condition="nothing">
+  Template description: Basic view of issue characteristics and transcript.
+</span>
+
+<div metal:fill-slot="header"
+     tal:define="global collector_issue_header_present python: 1">
+  <div metal:use-macro="here/collector_macros/macros/issue_header">
+    ISSUE HEADER
+  </div>
+</div>
+
+<div metal:fill-slot="main">
+
+  <div tal:condition="not: collector_issue_header_present|nothing">
+    <!-- Master template has no "header" macro... -->
+    <div metal:use-macro="here/collector_macros/macros/issue_header">
+      ISSUE HEADER
+    </div>
+  </div>
+
+  <div metal:define-macro="transcript">
+
+    <table tal:define="entries here/action_number;
+                       ending python: (entries == 1 and 'y') or 'ies'">
+
+      <tr bgcolor="#ccffcc">
+        <td colspan="2" align="center">
+          <font size="+1">
+            <strong>
+              Issue <span tal:replace="here/id">ID</span> Transcript
+            </strong>
+          </font>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2" align="left">
+          <span tal:replace="python: '%d entr%s' % (entries, ending)"></span>
+        </th>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <table border="1">
+            <tr> <td>
+           <span tal:replace="structure here/CookedBody">
+                  TRANSCRIPT
+           </span>
+            </td> </tr>
+          </table>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/portal_template/macros/master">
+      metal:use-macro="here/main_template/macros/master">
 
 <div metal:fill-slot="super1">
 
@@ -19,9 +19,8 @@
 
 <body>
 
-<div class="editableDocument" 
-      metal:fill-slot="main"
-      tal:define="syndicateInfo here/syndication_information | nothing">
+<div metal:fill-slot="main"
+     tal:define="syndicateInfo here/syndication_information | nothing">
 
     <div metal:use-macro="here/header/macros/portal_message">
     Message box
