@@ -24,7 +24,7 @@
           action="#" 
           method="post"
           tal:define="allowEnterPassword here/portal_properties/site_properties/validate_email|nothing;"
-          tal:attributes="action string:${here/getId}/${template/getId}" >
+          tal:attributes="action template/getId" >
 
         <span class="legend" i18n:translate="legend_personal_details">Personal Details</span>
 
