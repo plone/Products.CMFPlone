@@ -4,7 +4,8 @@
     - add ownership_form (so you can change ownership)
     - Private plone sites now keep their portal_registration tool, resolving #243, #250.
     - Anonymous users do not have Add portal member permission in private plone sites anymore.
-    - Members folder is now not cataloged upon reincarnation as a Plone Folder
+    - Members folder is no longer cataloged upon reincarnation as a Plone Folder
+    - formtooltips for anonymous users are defaulted to portal_memberdata setting
     
 1.0 alpha3
     - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
