@@ -6,6 +6,10 @@ Plone 2.0 - Fyuti
 
     RC3
 
+    - moved CMFPlone/migrations files into CMFPlone/migrations/v1 or v2
+    modules.   Although this is not a permenant solution.  It will work
+    well enough.
+
     - allowedContentTypes is a expensive call.  made this global inside of
       plone_templates/global_contentviews.pt and its reused throughout the
       global_contentXXXX and folder_contents.  This should make the experience

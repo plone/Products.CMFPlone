@@ -377,8 +377,8 @@ class PloneGenerator(Portal.PortalGenerator):
         m = p.portal_migration
 
         # XXX we need to make this read version.txt
-        m.setInstanceVersion('2.0-beta2') #.1')
-        from migrations.plone2_base import make_plone
+        m.setInstanceVersion('2.0') #.1')
+        from migrations.v2.plone2_base import make_plone
         make_plone(p)
         # we will be migrating from beta2 base
         m.upgrade(swallow_errors=0)

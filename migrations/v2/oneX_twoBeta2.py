@@ -14,7 +14,7 @@ from Products.CMFCore import CachingPolicyManager
 from Products.CMFCore.DirectoryView import createDirectoryView, manage_listAvailableDirectories
 from Products.CMFCore.Expression import Expression
 
-from Products.CMFPlone.migrations.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
+from Products.CMFPlone.migrations.v2.plone2_base import setupExtEditor, addDocumentActions, addActionIcons
 from Products.CMFPlone.migrations.migration_util import safeEditProperty
 from Products.CMFPlone.setup.ConfigurationMethods import addSiteActions
 from Products.CMFPlone import ToolNames

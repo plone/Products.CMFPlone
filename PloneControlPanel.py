@@ -9,7 +9,7 @@ from Products.CMFCore.Expression import Expression, createExprContext
 from Products.CMFCore.ActionInformation import ActionInformation, oai
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
 from Products.CMFCore.TypesTool import TypeInformation
-from Products.CMFCore.CMFCorePermissions import ManagePortal, SetOwnProperties, SetOwnPassword
+from Products.CMFCore.CMFCorePermissions import ManagePortal, SetOwnProperties, SetOwnPassword, View
 from Products.CMFCore.utils import _checkPermission, _dtmldir, getToolByName, SimpleItemWithProperties, UniqueObject
 
 from Products.CMFCore.interfaces.portal_actions import portal_actions as IActionsTool
@@ -181,7 +181,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
     def getGroupIds(self,category=''):
         return [g.split('|')[1] for g in self.groups if category=='' or g.split('|')[0]==category]
 
-    security.declareProtected( SetOwnProperties, 'getGroups' )
+    security.declareProtected( View, 'getGroups' )
     def getGroups(self,category=''):
         return [{'id':g.split('|')[1],'title':g.split('|')[2]} for g in self.groups if category=='' or g.split('|')[0]==category]
 
