@@ -131,6 +131,7 @@ input {
     font: &dtml-inputFont;;
     border: &dtml-inputBorder;;  
     background-color: white;
+    margin: 0em 0em 1em 0em;
 }
 
 select {
