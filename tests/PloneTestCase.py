@@ -2,7 +2,7 @@
 # PloneTestCase
 #
 
-# $Id: PloneTestCase.py,v 1.9.2.10 2003/11/05 09:56:42 shh42 Exp $
+# $Id: PloneTestCase.py,v 1.9.2.11 2003/11/10 22:29:51 dreamcatcher Exp $
 
 from Testing import ZopeTestCase
 
@@ -63,6 +63,13 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         personal.__ac_local_roles__ = None
         personal.manage_setLocalRoles(member_id, ['Owner'])
         catalog.unindexObject(personal)
+
+    def setGroups(self, groups, name=default_user):
+        '''Changes the specified user's groups. Assumes GRUF.'''
+        uf = self.portal.acl_users
+        uf._updateUser(name, groups=groups, domains=[])
+        if name == getSecurityManager().getUser().getId():
+            self.login(name)
 
     def loginPortalOwner(self):
         '''Use if you need to manipulate the portal itself.'''
