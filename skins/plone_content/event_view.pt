@@ -26,27 +26,27 @@
             <span class="legend" i18n:translate="">Event Details</span>
 
             <div class="row">
-                <span class="label" i18n:translate="">What</span>
-                <span class="field">
+                <div class="label" i18n:translate="">What</div>
+                <div class="field">
                     <span tal:content="python:modules['string'].join(here.Subject(), ' ')"></span>
-                </span>
+                </div>
             </div>
 
             <div class="row">
-                <span class="label" i18n:translate="">When</span>
-                <span class="field">
+                <div class="label" i18n:translate="">When</div>
+                <div class="field">
                     <span i18n:translate="">Between</span>
                     <span tal:replace="python:here.toPortalTime(here.start())">Start Date Time</span>
                     <span i18n:translate="">and</span>
                     <span tal:replace="python:here.toPortalTime(here.end())">End Date Time</span>
-                </span>
+                </div>
             </div>
 
             <div class="row">
-                <span class="label" i18n:translate="">Where</span>
-                <span class="field">
+                <div class="label" i18n:translate="">Where</div>
+                <div class="field">
                     <span tal:replace="here/location">location</span>
-                </span>
+                </div>
             </div>
             
         </div>    
@@ -55,23 +55,23 @@
             <span class="legend" i18n:translate="">Contact details</span>
 
             <div class="row">
-                <span class="label">Name</span>
-                <span class="field" tal:content="here/contact_name">contact_name</span>
+                <div class="label">Name</div>
+                <div class="field" tal:content="here/contact_name">contact_name</div>
             </div>
         
             <div class="row">
-                <span class="label" i18n:translate="">Contact Email</span>
-                <span class="field" tal:condition="here/contact_email">
+                <div class="label" i18n:translate="">Contact Email</div>
+                <div class="field" tal:condition="here/contact_email">
                     <a tal:attributes="href python:'mailto:' + here.contact_email"
                     tal:content="here/contact_email"
                     href="mailto:contact_email">contact_email</a>
-                </span>
+                </div>
             </div>
 
             <div class="row">
-                <span class="label" i18n:translate="">Contact Phone</span>
-                <span class="field" 
-                      tal:content="here/contact_phone">contact_phone</span>
+                <div class="label" i18n:translate="">Contact Phone</div>
+                <div class="field" 
+                      tal:content="here/contact_phone">contact_phone</div>
             </div>
             
         </div>

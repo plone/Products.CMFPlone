@@ -62,7 +62,7 @@ div.message
 }
 
 ul { 
-    list-style-image: none;
+    list-style-image: url("bulletBig.gif"); 
     font-size: 30px;
 }
 
