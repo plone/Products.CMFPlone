@@ -121,7 +121,7 @@
  	  </form>
           
           <p tal:condition="not: results" i18n:translate="no_new_news">
-            No news have been posted.
+            No news has been posted.
           </p>		
  
   </div>
