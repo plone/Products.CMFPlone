@@ -27,7 +27,45 @@
 
     <div class="box">
 
-        <div class="content odd">
+        <tal:block tal:condition="python:request['AUTHENTICATED_USER'].has_role(rolesSeeContentsView, here)">
+            <div class="content odd"
+                 tal:condition="editorView">
+            
+                <div tal:condition="notFolderContents">
+                
+                    <a href="folder_contents"
+                       tal:condition="here/isPrincipiaFolderish">
+                    
+                        <img tal:replace="structure here/linkTransparent.gif" />
+                        
+                        <span i18n:translate="box_contents_view">Switch to Contents view</span>
+                    </a>
+                           
+                    <a href="../folder_contents"
+                       tal:condition="not: here/isPrincipiaFolderish" 
+                       tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
+                       tal:on-error="structure string:aq_parent not allowed!"
+                       >
+            
+                        <img tal:replace="structure here/linkTransparent.gif" />
+                
+                        <span i18n:translate="box_contents_view">Switch to Contents view</span>
+                    </a>
+                </div>
+            </div>
+        </tal:block>
+
+        <div class="content odd"
+             tal:condition="not: notFolderContents">
+            <a href="">
+                
+                <img tal:replace="structure here/linkTransparent.gif" />
+                
+                <span i18n:translate="box_item_view">Switch to Item view</span>
+            </a>
+        </div>
+
+        <div class="content even">
                  
             <div tal:condition="tree/prev">
                 <a tal:attributes="href string:${request/URL}?navBatchStart=${tree/prevBatchStart}">
@@ -88,44 +126,6 @@
                 </a>
             </div>
     
-        </div>
-            
-        <tal:block tal:condition="python:request['AUTHENTICATED_USER'].has_role(rolesSeeContentsView, here)">
-            <div class="content even"
-                 tal:condition="editorView">
-            
-                <div tal:condition="notFolderContents">
-                
-                    <a href="folder_contents"
-                       tal:condition="here/isPrincipiaFolderish">
-                    
-                        <img tal:replace="structure here/linkTransparent.gif" />
-                        
-                        <span i18n:translate="box_contents_view">Switch to Contents view</span>
-                    </a>
-                           
-                    <a href="../folder_contents"
-                       tal:condition="not: here/isPrincipiaFolderish" 
-                       tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents"
-                       tal:on-error="structure string:aq_parent not allowed!"
-                       >
-            
-                        <img tal:replace="structure here/linkTransparent.gif" />
-                
-                        <span i18n:translate="box_contents_view">Switch to Contents view</span>
-                    </a>
-                </div>
-            </div>
-        </tal:block>
-
-        <div class="content even"
-             tal:condition="not: notFolderContents">
-            <a href="">
-                
-                <img tal:replace="structure here/linkTransparent.gif" />
-                
-                <span i18n:translate="box_item_view">Switch to Item view</span>
-            </a>
         </div>
 
     </div>
