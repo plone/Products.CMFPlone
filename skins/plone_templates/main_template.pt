@@ -26,6 +26,10 @@
     <metal:block metal:define-slot="head_slot" />
   </metal:block>
   
+  <metal:block fill-slot="css_slot">
+    <metal:block define-slot="css_slot" />
+  </metal:block>
+
   <metal:block metal:fill-slot="javascript_head_slot">
     <metal:block metal:define-slot="javascript_head_slot" />
   </metal:block>
