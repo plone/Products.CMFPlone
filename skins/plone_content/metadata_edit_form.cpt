@@ -101,7 +101,7 @@
     
                         <label for="entered_subjects" i18n:translate="label_new_keywords">New keywords</label>
     
-                        <div class="formHelp" i18n:translate="help_keyword">
+                        <div class="formHelp" i18n:translate="help_new_keyword">
                         Each new keyword must be on a separate line.
                         </div>
     
