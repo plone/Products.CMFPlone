@@ -41,7 +41,7 @@ if not id:
     id = context.getId()
 
 # do basic id validation
-if not context.portal_form.good_id(id):
+if not context.plone_utils.good_id(id):
     # id is bad
     return '\'%s\' is not a legal name.' % id
 

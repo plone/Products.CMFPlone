@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.28.4.1 2003/09/29 12:21:13 dreamcatcher Exp $
+# $Id: FormTool.py,v 1.28.4.2 2003/12/19 18:10:30 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.28.4.1 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.28.4.2 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -88,14 +88,6 @@ class FormTool(UniqueObject, SimpleItem):
         if validators == '':
             return []
         return validators.split(',')
-
-
-    # expose ObjectManager's bad_id test to skin scripts
-    def good_id(self, id):
-        m = bad_id(id)
-        if m is not None:
-            return 0
-        return 1
 
 
     def createForm(self):
@@ -217,6 +209,14 @@ class FormTool(UniqueObject, SimpleItem):
         """Get the validator registered for a given form"""
         log_deprecated('getValidator has been marked for deprecation.  Please use getValidators instead.')
         return self.getValidators(form)[0]
+
+    # DEPRECATED
+    def good_id(self, id):
+        log_deprecated('good_id has been marked for deprecation.  Please use plone_utils.good_id instead.')
+        m = bad_id(id)
+        if m is not None:
+            return 0
+        return 1
 
 
     def log(self, msg, loc=None):

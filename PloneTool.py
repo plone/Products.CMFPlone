@@ -20,6 +20,7 @@ from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFPlone import ToolNames
 
 from OFS.SimpleItem import SimpleItem
+from OFS.ObjectManager import bad_id
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo, Unauthorized
 from StatelessTree import constructNavigationTreeViewBuilder, \
@@ -402,4 +403,13 @@ class PloneTool(UniqueObject, SimpleItem):
         ctx_tree_builder=t_builder.__of__(self)
         return ctx_tree_builder()
 
+    # expose ObjectManager's bad_id test to skin scripts
+    security.declarePublic('good_id')
+    def good_id(self, id):
+        m = bad_id(id)
+        if m is not None:
+            return 0
+        return 1
+
+    
 InitializeClass(PloneTool)
