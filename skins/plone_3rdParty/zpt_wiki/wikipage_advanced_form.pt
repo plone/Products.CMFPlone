@@ -86,7 +86,7 @@
            <form method="POST"
                  action="wikipage_deleterename_handler"
                  enctype="multipart/form-data"
-		 tal:attributes="action string:${here/getId}/${default}">
+		 tal:attributes="action string:${here/getId}/wikipage_deleterename_handler">
     
            <input type="text" name="new_id" size="25"
                   tal:attributes="value here/getId"> &nbsp;
@@ -103,7 +103,7 @@
            <form method="POST"
                  action="wikipage_deleterename_handler"
                  enctype="multipart/form-data"
-		 tal:attributes="action string:${here/getId}/${default}">
+		 tal:attributes="action string:${here/getId}/wikipage_deleterename_handler">
     
            <input type="hidden" name="confirm_delete:int:default" value="0">
     
@@ -145,7 +145,7 @@
        <form method="POST"
              action="wikipage_advanced_handler"
              enctype="multipart/form-data"
-	     tal:attributes="action string:${here/getId}/${default}">
+	     tal:attributes="action string:${here/getId}/wikipage_advanced_handler">
     
         <table class="group">
          <tr>
