@@ -28,7 +28,7 @@
 
 input.standalone {
     background: &dtml-standaloneButtonBackground;;
-    color: &dtml-standaloneButtonTextColor;;
+    color: &dtml-standaloneButtonFontColor;;
     cursor: pointer;
     font-weight: &dtml-buttonWeight;;
     padding: &dtml-standaloneButtonPadding;;
@@ -37,7 +37,7 @@ input.standalone {
 
 input.context {
     background: &dtml-contextButtonBackground;;
-    color: &dtml-contextButtonTextColor;;
+    color: &dtml-contextButtonFontColor;;
     cursor: pointer;
     font-weight: &dtml-buttonWeight;;
     padding: &dtml-contextButtonPadding;;
@@ -132,7 +132,7 @@ table.listing th {
     border-top: &dtml-listingBorder;;
     border-bottom: &dtml-listingBorder;;
     border-right: &dtml-listingBorder;;
-    color: &dtml-listingHeaderTextColor;;
+    color: &dtml-listingHeaderFontColor;;
     font-weight: normal;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
@@ -171,7 +171,7 @@ table.box th {
     border-top: &dtml-boxBorder;;
     border-bottom: &dtml-boxBorder;;
     border-right: &dtml-boxBorder;;
-    color: &dtml-boxHeaderTextColor;;
+    color: &dtml-boxHeaderFontColor;;
     font-weight: normal;
     padding: 0em 1em;
     text-align: left;

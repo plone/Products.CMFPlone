@@ -12,7 +12,7 @@
 body {
     font: &dtml-mainFont;;
     background: &dtml-mainBackground;;
-    color: &dtml-mainTextColor;;
+    color: &dtml-mainFontColor;;
     margin: 0;
     padding: 0;
 }
@@ -55,6 +55,7 @@ hr {
 
 
 h1, h2, h3, h4, h5, h6 {	/* Style for the headlines */
+    color: &dtml-headingFontColor;;
     font: &dtml-headingFont;;
 }
 

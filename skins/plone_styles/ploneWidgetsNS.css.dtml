@@ -109,7 +109,7 @@ table.listing {
 
 table.listing th {
     background: &dtml-listingHeaderBackground;;
-    color: &dtml-listingHeaderTextColor;;
+    color: &dtml-listingHeaderFontColor;;
     font-weight: normal;
     padding: 0em 1em 0em 1em;
 }
@@ -139,7 +139,7 @@ table.box {
 
 table.box th {
     background: &dtml-boxHeaderBackground;;
-    color: &dtml-boxHeaderTextColor;;
+    color: &dtml-boxHeaderFontColor;;
     font-weight: normal;
     padding: 0em 1em;
     text-align: left;

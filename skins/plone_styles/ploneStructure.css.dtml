@@ -46,7 +46,7 @@ div.top {
 div.searchBox {
     /*searchbox style and positioning */
     background-color: transparent;
-    color: &dtml-searchTextColor;;
+    color: &dtml-searchFontColor;;
     float: right;
     margin: &dtml-searchMargin;;
     padding: &dtml-searchPadding;;
@@ -103,7 +103,7 @@ div.personalBar {
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    color: &dtml-mainTextColor;;
+    color: &dtml-mainFontColor;;
     padding-right: 3em;
     text-align: right;
     text-transform: &dtml-textTransform;;
@@ -176,7 +176,7 @@ div.contentTabs a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-contentTabBackgroundNotSelected;;
     border: &dtml-contentTabBorder;;
-    color: &dtml-contentTabTextColor;;
+    color: &dtml-contentTabFontColor;;
     font-weight: &dtml-contentTabFontWeight;;
     margin-right: 0.5em;
     padding: 0em 2em;
@@ -187,20 +187,20 @@ div.contentTabs a.selected {
     /* The selected tab. There's only one of this */
     background: &dtml-contentTabBackground;;
     border-bottom: &dtml-contentTabBackground; 1px solid;
-    color: &dtml-contentTabTextColorSelected;;
+    color: &dtml-contentTabFontColorSelected;;
     font-weight: &dtml-contentTabFontWeight;;
 }
 
 div.contentTabs a:hover {
     background-color: &dtml-contentTabBackground;;
-    color: &dtml-contentTabTextColor;;
+    color: &dtml-contentTabFontColor;;
 }
 
 div.contentBar {
     background: &dtml-contentTabBackground;;
     border-left: &dtml-contentTabBorder;;
     border-right: &dtml-contentTabBorder;;
-    color: &dtml-contentTabTextColor;;
+    color: &dtml-contentTabFontColor;;
     text-align: right;
     text-transform: &dtml-textTransform;;
 }
@@ -224,7 +224,7 @@ div.message {
     /* The portal messages for cut/paste operations etc */
     background: &dtml-messageBackground;;
     border: &dtml-messageBorder;;
-    color: &dtml-mainTextColor;;
+    color: &dtml-mainFontColor;;
     font: &dtml-messageFont;;
     margin: 0em 0em 1em 0em;
     padding: 0.5em 1em;
@@ -244,7 +244,7 @@ div.message {
     background: &dtml-footerBackground;;
     border-top: &dtml-footerBorder;;
     border-bottom: &dtml-footerBorder;;
-    color: &dtml-mainTextColor;;
+    color: &dtml-mainFontColor;;
     clear: both;
     float: none;
     margin: 2em 0em;

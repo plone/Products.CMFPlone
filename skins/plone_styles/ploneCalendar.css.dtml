@@ -63,7 +63,7 @@ table.calendar a:hover {
 
 table.calendar th {
     background-color: &dtml-boxHeaderBackground;;
-    color: &dtml-boxHeaderTextColor;;
+    color: &dtml-boxHeaderFontColor;;
     font-weight: bold;
     text-align: center;
 }

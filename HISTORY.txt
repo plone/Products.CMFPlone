@@ -1,4 +1,5 @@
 0.9.9 - Bola Release:
+    - Replaced all references to TextColor with FontColor, added headingFontColor property
     - New undo page
     - New search results page   
     - All CSS and most HTML validate according to W3C's validators

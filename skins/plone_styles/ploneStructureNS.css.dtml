@@ -110,14 +110,14 @@ div.contentTabs {
 div.contentTabs a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-contentTabBackgroundNotSelected;;
-    color: &dtml-contentTabTextColor;;
+    color: &dtml-contentTabFontColor;;
     font-weight: &dtml-contentTabFontWeight;;
 }
 
 div.contentTabs a.selected {
     /* The selected tab. There's only one of this */
     background: &dtml-contentTabBackground;;
-    color: &dtml-contentTabTextColorSelected;;
+    color: &dtml-contentTabFontColorSelected;;
     font-weight: &dtml-contentTabFontWeight;;
 }
 

@@ -27,7 +27,7 @@
 body {
     font: &dtml-mainFont;;
     background: &dtml-mainBackground;;
-    color: &dtml-mainTextColor;;
+    color: &dtml-mainFontColor;;
     margin: 0;
     padding: 0;
 /* These work in IE only, change the look of the scrollbar + textareas */
@@ -82,6 +82,7 @@ hr {
 
 
 h1, h2, h3, h4, h5, h6 {	/* Style for the headlines */
+    color: &dtml-headingFontColor;;
     font: &dtml-headingFont;;
     margin-top: 0;
 }
@@ -132,7 +133,7 @@ input {
 /* Small cosmetic fix which makes input gadgets look nicer. */
     font: &dtml-inputFont;;
     border: &dtml-inputBorder;;  
-    color: &dtml-mainTextColor;;
+    color: &dtml-mainFontColor;;
     background-color: white;
     margin: 0em 0em 1em 0em;
 }
@@ -144,8 +145,8 @@ select {
 
 abbr, acronym, .help {
 /* Help classes */
-    border-bottom: 1px dotted &dtml-mainTextColor;;
-    color: &dtml-mainTextColor;;
+    border-bottom: 1px dotted &dtml-mainFontColor;;
+    color: &dtml-mainFontColor;;
     background-color: transparent;
     cursor: help;
 }
@@ -160,7 +161,7 @@ pre {
     font-size: 120%;
     padding: 1em;
     border: &dtml-preBorder;;
-    color: &dtml-mainTextColor;;
+    color: &dtml-mainFontColor;;
     background-color: &dtml-preBackground;;
 }
 
