@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Removed the CMFWeblog templates and put them in the CMFWeblog
+      product instead. Located in the Collective.
+
     - Migration Tool overhaul
 
       - trimmed down plone initialize
