@@ -33,7 +33,13 @@ for accessor, key in metadataList:
     if not callable(method):
         # ups
         continue
-    value = method()
+
+    # Catch AttributeErrors raised by some AT applications
+    try:
+        value = method()
+    except AttributeError:
+        value = None
+
     if not value:
         # no data
         continue
