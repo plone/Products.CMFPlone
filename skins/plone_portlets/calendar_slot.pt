@@ -167,7 +167,7 @@
                    <option tal:replace="nothing">Event Type 2</option>
                    <option tal:replace="nothing">...</option>
                    <option value="subj"
-                           tal:repeat="subj python:range(0,23,1)"
+                           tal:repeat="subj python:range(0, 24, 1)"
                            tal:attributes="value python:'%02d'%subj; selected python:'%02d'%subj == hour"
                            tal:content="python:'%02d'%subj">Event Type N</option>
                </select>
