@@ -20,12 +20,9 @@ context.portal_workflow.doActionFor(
 typeObj=context.portal_types.getTypeInfo(context)
 view=typeObj.getActionById('view')
 
-if workflow_action == 'reject':
-    redirect_url = context.portal_url() + '/search?review_state=pending'
-else:
-    redirect_url = '%s/%s?%s' % ( context.absolute_url()
-                                  , view
-                                  , 'portal_status_message=Status+changed.'
-                                  )
+redirect_url = '%s/%s?%s' % ( context.absolute_url()
+                            , view
+                            , 'portal_status_message=Status+changed.')
+			    
 context.REQUEST[ 'RESPONSE' ].redirect( redirect_url )
 
