@@ -26,8 +26,9 @@
 
     <meta name="generator" content="Plone - http://plone.org" />
 
-    <meta tal:condition="here/listMetaTags|nothing"
-          tal:repeat="keyval here/listMetaTags"
+    <meta tal:define="metatags here/listMetaTags|nothing"
+          tal:condition="metatags"
+          tal:repeat="keyval metatags"
           tal:attributes="name python:keyval[0];
                           content python:keyval[1];" />
 
