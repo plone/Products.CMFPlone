@@ -99,6 +99,8 @@ class DefaultCustomizationPolicy:
                     , 'python:test(member and portal.plone_utils.getWorkflowChainFor(object), 1, 0)'
                     , 'View'
                     , 'object_tabs' )
+        at.addAction( 'change_ownership', 'Ownership', 'string:${object_url}/ownership_form', '', CMFCorePermissions.ManagePortal, 'object_tabs', 0)
+        
         at.addAction('rename','Rename','string:folder_rename_form:method','', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('cut', 'Cut', 'string:folder_cut:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')
         at.addAction('copy', 'Copy', 'string:folder_copy:method', '', CMFCorePermissions.ModifyPortalContent, 'folder_buttons')

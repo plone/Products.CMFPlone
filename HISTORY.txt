@@ -39,7 +39,7 @@
     - Sigve Tjora fixed the migration machinery - incredible job! CMFPlone/Extensions/migration.py
       Alan fixed it so Ownership is carried over properly and reindexes newsite after migration
     - portal_status_message is shown when a object is created, type_name has been created.
-    
+    - Ownership form is wired up but is not visible by default
     
 1.0 alpha4
     - publishing now works without javascript. #202
