@@ -35,7 +35,7 @@
                       batch python:Batch(portal_users, 25, int(b_start), orphan=1)">
 
         <input type="hidden" name="id" value="username" 
-                tal:attributes="name user/getId" />
+                tal:attributes="value user/getId" />
 
         <tal:properties repeat="property mdata/propertyMap">
           <label for="value" 
