@@ -53,7 +53,8 @@
 
     <a href="" class="" tal:repeat="tab portal_tabs"
        tal:attributes="href tab/url;
-                       class python:test(selected_portal_tab==tab['id'], 'selected', 'plain')"
+                       class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');
+		       id string:portal_tabs-${tab/id}"
 		       accesskey="accesskeys-tabs" i18n:attributes="accesskey" >
         <tal:block omit-tag="" i18n:translate="">
             <span tal:replace="tab/name">Tab Name</span>
