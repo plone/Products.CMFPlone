@@ -45,6 +45,13 @@ class CatalogTool(BaseTool):
         result.append( 'user:%s' % user.getId() )
         return result
 
+    security.declarePrivate('indexObject')
+    def indexObject(self, object, idxs=[]):
+        '''Add to catalog.
+        '''
+        url = self.__url(object)
+        self.catalog_object(object, url, idxs)
+
 CatalogTool.__doc__ = BaseTool.__doc__
 
 InitializeClass(CatalogTool)
