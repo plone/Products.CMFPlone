@@ -52,7 +52,8 @@ def setupDefaultLeftRightSlots(self, portal):
                , 'here/login_slot/macros/loginBox'
                , 'here/related_slot/macros/relatedBox' )
     right_slots=( 'here/workflow_review_slot/macros/review_box'
-                , 'here/news_slot/macros/newsBox' 
+                , 'here/news_slot/macros/newsBox'
+                , 'here/recently_published_slot/macros/recentlyPublishedBox' 
                 , 'here/calendar_slot/macros/calendarBox' 
                 , 'here/events_slot/macros/eventsBox' )
     safeEditProperty(portal, 'left_slots', left_slots, 'lines')

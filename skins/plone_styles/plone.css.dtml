@@ -112,15 +112,23 @@ h2 {
 }
 h3 {
     font-size: &dtml-headingSize3;;
+    border-bottom: none;
+    font-weight: bold;
 }
 h4 {
     font-size: &dtml-headingSize4;;
+    border-bottom: none;
+    font-weight: bold;
 }
 h5 {
     font-size: &dtml-headingSize5;;
+    border-bottom: none;
+    font-weight: bold;
 }
 h6 {
     font-size: &dtml-headingSize6;;
+    border-bottom: none;
+    font-weight: bold;
 }
 
 
@@ -174,7 +182,7 @@ textarea {
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
     background-color: white;
-    width: 88%;
+    width: 100%;
     padding: 0.1em;
 }
 input {
@@ -439,6 +447,7 @@ div.title {
     line-height: 1.5em;
 }
 div.byline {
+    float: right;
     font-size: 80%;
 }
 .footer {
@@ -633,6 +642,7 @@ div.box {
 }
 div.box h4 {
     font-size: 1em;
+    font-weight: normal;
 }
 div.box h5 { 
     background: &dtml-boxHeaderBackground;;
@@ -644,6 +654,7 @@ div.box h5 {
     display: inline;
     font-size: 1em;
     height: 1em;
+    font-weight: normal;
 }
 div.box h6 { 
     background: &dtml-boxHeaderBackground;;
@@ -655,6 +666,7 @@ div.box h6 {
     display: block;
     font-size: 1em;
     height: 1.2em;
+    font-weight: normal;
 }
 
 div.box div.body {
@@ -665,6 +677,13 @@ div.box div.body {
 .boxDetails {
     text-align: right;
 }
+
+a.more {
+    display: block;
+    text-align: right;
+}
+
+
 div.box .content {
     padding: 1em;
 }

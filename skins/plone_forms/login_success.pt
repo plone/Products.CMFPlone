@@ -69,62 +69,6 @@
                 
                 </p>
 
-                <tal:block
-                 tal:define="last_login_time python:member.getProperty('last_login_time', DateTime());
-                             results python:here.portal_catalog(modified=last_login_time, 
-                                                                modified_usage='range:min',
-                                                                sort_on='modified',
-                                                                sort_order='reverse',
-                                                                review_state='published');
-                             b_start python:request.get('b_start',0);">
-                    
-                    <form name="searchresults" action="" method="post" tal:condition="results"
-                                      tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
-
-                        <h1 i18n:translate="heading_items_published_since_last_login">Items published since your last login</h1>
-                        
-                        <table class="listing" id="sortable">
-                        
-                            <thead>
-                                <tr>
-                                    <th i18n:translate="listingheader_title">Title</th>
-                                    <th i18n:translate="listingheader_type">Type</th>
-                                    <th i18n:translate="listingheader_modified">Modified</th>
-                                    <th i18n:translate="listingheader_author">Author</th>
-                                    <th i18n:translate="listingheader_description">Description</th>
-                                </tr>
-                            </thead>
-                            
-                            <tbody>
-                                <tal:block tal:repeat="result batch">
-                                <tr tal:define="oddrow repeat/result/odd;
-                                                result_url result/getURL;
-                                                url string:$result_url/view;" 
-		                                        tal:attributes="class python:test(oddrow, 'even', 'odd')">
-                                    <td>
-                    		         <a href="#" 
-                                        tal:attributes="href url">
-                                        <img src="#" 
-                                             height="16"
-                                             width="16"
-                                             alt="dummy"
-                                             tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a 
-                                        href="#" tal:attributes="href url"
-                                        tal:content="result/Title|result/id" />
-                                    </td>      
-                                    <td i18n:translate="" tal:content="result/Type">Type</td>      
-                                    <td tal:content="python:here.toPortalTime(result.ModificationDate, long_format=1)">Modification Date</td>                                    <td tal:content="result/Creator">Author</td>      
-                                    <td tal:content="result/Description">Description</td>      
-                                </tr>
-                                </tal:block>
-                            </tbody>
-                        
-                        </table>
-
-                
-                    </form>
-                
-                </tal:block>
 
 		</div>
         <div tal:condition="python: login_time == begin_time and validate_email">

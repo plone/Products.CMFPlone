@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <metal:block fill-slot="head_slot"
+               tal:define="dummy python:request.set('disable_border', 1)" 
+               />
+    
+<div metal:fill-slot="main"
+     tal:define="results python:container.portal_catalog(sort_on='modified',sort_order='reverse',review_state='published');
+                 Batch python:modules['Products.CMFPlone'].Batch;
+                 DateTime python:modules['DateTime'].DateTime;
+                 b_start python:request.get('b_start',0);">
+
+
+    <h1 i18n:translate="heading_news">Published items</h1>
+    
+    <div i18n:translate="description_news" id="description">All the published items, sorted in a reverse chronological order.</div>
+
+    <form name="searchresults" action="" method="post" tal:condition="results"
+                      tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
+
+        <metal:block tal:repeat="result batch">
+
+            <tal:block  
+             tal:define="resultObject result/getObject">
+         
+            <div class="box">
+
+                <h6>
+                    <img src="" style="border: 0" 
+                         tal:attributes="src result/getIcon; 
+                                         alt result/Type" />
+                
+                    <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span> 
+                
+                    <a href=""
+                       tal:attributes="href python:here.portal_membership.getHomeUrl(result.Creator)">
+    
+                        <img tal:replace="structure here/user.gif" />
+                    
+                        <span tal:replace="result/Creator" > 
+                        Author
+                        </span>
+    
+                    </a>                                 
+    
+                  - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python:container.toPortalTime(result.modified)" /> 
+                
+                </h6>
+
+                <div class="body">
+                    <div class="content">
+    
+                        <h2 tal:content="result/Title">
+                        Title
+                        </h2>
+        
+                        <p tal:content="structure result/Description">
+                        Description
+                        </p>
+    
+                    
+                        <p>
+                            <span style="float: right" 
+                                  tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).objectIds() ), 1, 0)">
+                                <img tal:replace="structure here/discussionitem_icon.gif" /> 
+                                <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)"> 
+                                     <a href="" 
+                                        tal:attributes="href string:${resultObject/absolute_url}#comments">
+                                        <span tal:replace="python:talkback.replyCount(resultObject)" /> comments
+                                     </a>
+                                </span>
+                            </span>
+        
+            
+                            <a href="/view" tal:attributes="href resultObject/absolute_url" i18n:translate="read_more">
+                            Read More
+                            </a>
+                        </p>
+                    
+                        
+                    </div>
+
+                </div>
+                
+            </div>
+            
+            </tal:block>
+
+        </metal:block>
+        
+        <div class="spacer">
+        &nbsp;
+        </div>
+            
+        <!-- Navigation -->
+        <div metal:use-macro="here/batch_macros/macros/navigation" />
+
+        </form>
+          
+    <p tal:condition="not: results" i18n:translate="no_new_news">
+        No items have been published.
+    </p>		
+ 
+  </div>
+
+  
+</html>
