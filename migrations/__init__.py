@@ -1,7 +1,7 @@
 
 from Products.CMFPlone import MigrationTool
 import final_one_zero_one, rc2_final, rc1_rc2, beta3_rc1, beta2_beta3, beta1_beta2, alpha_beta
-import one01_one_02, one02_one03
+import one01_one02, one02_one03
 
 import upg_1_0_1_to_1_1
 
