@@ -449,8 +449,9 @@ def deprFsViews(portal):
         'zpt_control', 'zpt_generic', 'zpt_topic', 
         ]
     for fsViewId in fsViewIds:
-        view = getattr(st, fsViewId)
-        view.title += 'Deprecated, can safely be deleted'
+        view = getattr(st, fsViewId, None)
+        if view:
+            view.title += 'Deprecated, can safely be deleted'
         
     for skin in st.getSkinSelections():
         oldpath = st.getSkinPath(skin)
