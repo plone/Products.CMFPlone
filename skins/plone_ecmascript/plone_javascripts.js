@@ -306,10 +306,10 @@ function scanforlinks(){
     // Quick utility function by Geir Bækholt
     // Scan all links in the document and set classes on them dependant on whether they point to the current site or are external links
     
-    content = document.getElementById('bodyContent')
-    if (! content){return false}
+    contentarea = document.getElementById('content')
+    if (! contentarea){return false}
     
-    links = content.getElementsByTagName('a');
+    links = contentarea.getElementsByTagName('a');
     for (i=0; i < links.length; i++){      
         if (links[i].getAttribute('href')){
             var linkval = links[i].getAttribute('href')
