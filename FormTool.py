@@ -1,6 +1,6 @@
-# $Id$
-# $Source$
-__version__ = "$Revision$"[11:-2] + " " + "$Name$"[7:-2]
+# $Id: FormTool.py,v 1.25 2003/02/10 09:18:48 runyaga Exp $
+# $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
+__version__ = "$Revision: 1.25 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -189,7 +189,7 @@ class FormTool(UniqueObject, SimpleItem):
         log_deprecated('getValidator has been marked for deprecation.  Please use getValidators instead.')
         return self.getValidators(form)[0]
 
-  
+
     def log(self, msg, loc=None):
         """ """
         if not debug:
@@ -313,7 +313,13 @@ class CMFForm(BasicForm):
        make BasicForms easier to work with from external methods."""
     security = ClassSecurityInfo()
     security.declareObjectPublic()
-    __implements__ = ICMFForm, 
+    __implements__ = ICMFForm,
+
+    security.declareProtected('View', 'get_field')
+    def get_field(self, id):
+        """Get a field of a certain id, wrapping in context of self
+        """
+        return self.fields[id].__of__(self)
 
     security.declarePublic('addField')
     def addField(self, field_id, fieldType, group=None, **kwargs):
@@ -327,17 +333,17 @@ class CMFForm(BasicForm):
             'field_' to variable names, so you will need to refer to the variable
             foo as field_foo in form page templates.
         group: Formulator group for the field.
-        
+
         Additional arguments: addField passes all other arguments on to the
             new Field object.  In addition, it allows you to modify the
             Field's error messages by passing in arguments of the form
             name_of_message = 'New error message'
-                
+
         See Formulator.StandardFields for details.
         """
 
         if fieldType[-5:]!='Field':
-            fieldType = fieldType+'Field'      
+            fieldType = fieldType+'Field'
 
         formulatorFieldClass = None
 
@@ -350,7 +356,6 @@ class CMFForm(BasicForm):
         kwargs['title'] = field_id
 
         fieldObject = apply(formulatorFieldClass, (field_id, ), kwargs)
-        fieldObject = fieldObject.__of__(self)
 
         # alter Field error messages
         # Note: This messes with Formulator innards and may break in the future.
@@ -374,7 +379,7 @@ class CMFForm(BasicForm):
 
         if errors is None:
             errors = REQUEST.get('errors', {})
-        
+
         # This is a bit of a hack to make some of Formulator's quirks
         # transparent to developers.  Formulator expects form fields to be
         # prefixed by 'field_' in the request.  To remove this restriction,
