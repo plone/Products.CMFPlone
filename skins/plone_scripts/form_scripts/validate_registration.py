@@ -26,8 +26,6 @@ if not context.portal_properties.validate_email:
     if not errors.get('password', None) and len(password) < 5:
         errors['password'] = errors['confirm'] = 'Passwords must contain at least 5 letters.'
 
-context.validate_stripPrefixes()
-
 failMessage = context.portal_registration.testPropertiesValidity(REQUEST)
 if failMessage:
     errors['username'] = failMessage
