@@ -79,8 +79,12 @@ class PloneTool (UniqueObject, SimpleItem):
             contributors=tuplify(contributors)
         if effective_date is None:
             effective_date=REQUEST.get(pfx+'effective_date', obj.EffectiveDate())
+        if effective_date == '':
+            effective_date = 'None'
         if expiration_date is None:
             expiration_date=REQUEST.get(pfx+'expiration_date', obj.ExpirationDate())
+        if expiration_date == '':
+            expiration_date = 'None'
         if format is None:
             format=REQUEST.get('text_format', obj.Format())
         if language is None:
