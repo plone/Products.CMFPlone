@@ -137,6 +137,7 @@ def migrateToATCT(portal, out):
     get_transaction().commit(1)
     #out.append('Switched portal to ATContentTypes.')
 
+
 def migrateToATCT10(portal, out):
     """Switches portal to ATCT 1.0
     """
@@ -144,6 +145,7 @@ def migrateToATCT10(portal, out):
     tool = portal.portal_atct
     tool.migrateToATCT()
     get_transaction().commit(1)
+
 
 def addFullScreenAction(portal, out):
     """Adds the full screen mode action."""
