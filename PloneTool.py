@@ -73,14 +73,43 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         user=membership.getMemberById(member)
         user.setMemberProperties(properties)
 
+    def _safeSendTo(self, body, mto, mfrom):
+        # this function is private in Plone and should be
+        # the function used for sending
+        # email. It does the following:
+        #    
+        #  - ensures that anything being sent through is only
+        #    sent to the emails specified and not headers in the
+        #    email
+        #
+        #  - ensure that from and to are only one, and only one email
+        if not self.validateSingleEmailAddress(mfrom):
+            raise ValueError, 'The "from" email address did not validate'
+        
+        if not self.validateSingleEmailAddress(mto):
+            raise ValueError, 'The "to" email address did not validate'
+        
+        host = self.MailHost
+        host.send(body, mto, mfrom)
+
     security.declarePublic('sendto')
     def sendto( self, variables = {} ):
         """Sends a link of a page to someone
         """
         if not variables: return
-        mail_text = self.sendto_template( self, **variables)
-        host = self.MailHost
-        host.send( mail_text )
+
+        # the subject is in the header, so must be checked
+        if variables['title'].find('\n') >= 0:
+            raise ValueError, 'That title contains a new line, which is illegal'
+
+        mail_text = self.sendto_template(self, **variables)
+
+        # the template is built with send_to and send_from
+        # but we know _safeSendTo will check them as well
+        # so we should be ok
+        self._safeSendTo(mail_text, 
+            variables['send_to_address'], 
+            variables['send_from_address'])
 
     security.declarePublic('validateSingleNormalizedEmailAddress')
     def validateSingleNormalizedEmailAddress(self, address):
