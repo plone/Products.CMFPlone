@@ -1,3 +1,6 @@
+1.0 beta1
+    - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will need updating if migrate)
+    - add ownership_form (so you can change ownership)
     - Private plone sites now keep their portal_registration tool, resolving #243, #250.
     - Anonymous users do not have Add portal member permission in private plone sites anymore.
 
