@@ -47,7 +47,7 @@ Header stuff
 
     <tbody>
         <tr>
-            <td class="left">
+            <td class="left" tal:condition="slots_mapping/left">
                 <metal:block tal:repeat="slot slots_mapping/left">
                 <tal:block tal:define="global pathexpr python:slot[0];
                                        global usemacro python:slot[1];"
@@ -135,7 +135,7 @@ Header stuff
                 </div>
             </td>
 
-            <td class="right">
+            <td class="right" tal:condition="slots_mapping/right">
                 <metal:block tal:repeat="slot slots_mapping/right">
                     <tal:block tal:define="global pathexpr python:slot[0];
                                            global usemacro python:slot[1];"
