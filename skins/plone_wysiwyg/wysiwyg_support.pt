@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+
+    !! NOTICE !!
+    This PageTemplate is being deprecated.  We have moved all 
+    macros to their own PageTemplates in portal_templates/ui_slots.  
+    Eventually this PageTemplate will be gone.
+
+    the calendar UI widget can be found in plone_templates/ui_slots/calendar_slot
+
+<!-- wysiwyg default widget -->
+<div metal:define-macro="wysiwygEditorBox">
+
+ <comment tal:condition="nothing"
+           tal:replace="nothing" >
+
+            This template relies on the presence of an 'inputname' variable,
+            which contains the name of the element whose value should be
+            altered when the calendar returns a result.
+            Similarly it requires a 'formname' variable - the name
+            of the form in which this input element resides.
+            Also it should be provided with inputvalue which is the
+            current or default value for the field.
+            onfocus and/or onblur are setup as attributes if availabe.
+            tabindex is setup is provided.
+
+  </comment>
+
+  <textarea cols="40"
+            rows="5"
+            tabindex="3"
+            name="description"
+            tal:content="inputvalue"
+            tal:attributes="name inputname;
+                            id inputname;
+                            onfocus onfocus|nothing;
+                            onblur onblur|nothing;
+                            tabindex tabindex|nothing;"></textarea>
+
+       <a href="" tal:attributes="onclick string:window.open('plone_wysiwyg/wysiwyg_popup?inputname=${inputname}&formname=${formname}&method=CookedBody','cal','dependent=yes,width=520,height=500,screenX=200,screenY=300,titlebar=yes');; return false">
+       <img src="popup_calendar.gif">
+       </a>
+
+</div>
+
+
+<div metal:define-macro="wysiwygEditorBoxPopup"
+     class="container"
+     tal:define="DateTime python:modules['DateTime'].DateTime;">     
+
+<script language=javascript>
+function fnInit() {
+    editor=document.getElementById('xsEditor');
+    editor.insertHTML('this is a test');
+}
+</script>
+
+<xs:XsDhtmlEditor 
+id="xsEditor"
+content=""
+fontList="Times New Roman,Arial,Georgia" 
+fontSizeDefault="small" 
+onSave="returndate(xsEditor.content);" 
+emoticonPath="IMAGES/emoticons/"
+emoticonList="emoticon-smile.gif,emoticon-wink.gif,emoticon-laugh.gif,emoticon-sad.gif,emoticon-ambivalent.gif,emoticon-tongue-in-cheek.gif,emoticon-surprised.gif,emoticon-unsure.gif,icon-error.gif,icon-info.gif,icon-warning.gif,emoticon-8.gif,emoticon-b.gif,emoticon-c.gif,emoticon-cat.gif,emoticon-d.gif,emoticon-e.gif,emoticon-f.gif,emoticon-g.gif,emoticon-h.gif,emoticon-i.gif,emoticon-k.gif,emoticon-l.gif,emoticon-u.gif,emoticon-n.gif,emoticon-y.gif,emoticon-s.gif,emoticon-star.gif,emoticon-t.gif,emoticon-m.gif,emoticon-p.gif,wiki-ftp.gif,wiki-mailto.gif,wiki-news.gif,wiki-wiki.gif,asp.gif,avi.gif,bmp.gif,chm.gif,doc.gif,gif.gif,gz.gif,html.gif,jpeg.gif,mov.gif,mp3.gif,mpeg.gif,pdf.gif,png.gif,ppt.gif,txt.gif,xls.gif,xml.gif,xsl.gif" 
+replaceTags="<strong>,<b>"
+
+tal:define="renderMethod string:here/${request/method};
+            renderedContent python:path(renderMethod);
+            pps python:modules['Products.PythonScripts.standard'];"
+tal:attributes="content renderedContent"
+/>
+     
+     <a href="" onclick="alert(docuement.getElementById('wysiwyg_source').value)"
+        tal:attributes="onclick string:returndate(document.getElementById('wysiwyg_source').value);;return false">
+     SAVE
+     </a>
+     
+</div>  <!-- end of the calendar datepicker box -->
+
+<html>
