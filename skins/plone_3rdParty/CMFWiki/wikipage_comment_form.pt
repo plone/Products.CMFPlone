@@ -77,16 +77,17 @@
                 ></textarea>
     
                 <p>
-                    <input type="checkbox"
-                           class="noborder" 
-                           name="ack_requested" 
-                           value="on" />
-                           Request Editor Remark? &nbsp;
-    
+   
                     <input type="submit"
                            class="context"
                            name="Comment"
                            value="Submit Comment" />
+
+                    <input type="checkbox"
+                           class="noborder" 
+                           name="ack_requested" 
+                           value="on" />
+                           Request Editor Remark?
     
                 </p>
                 

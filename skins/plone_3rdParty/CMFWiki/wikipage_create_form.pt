@@ -6,7 +6,7 @@
 <div metal:fill-slot="header"
      tal:define="global noedit python: not here.isAllowed('create');
                  global page request/page|nothing;
-		         global text request/text|nothing;">
+		         global text python:request.get('text', '');">
 
     <div tal:replace="structure here/wikipage_header">
     </div>
@@ -19,7 +19,7 @@
           action="wikipage_create_handler"
     	  enctype="multipart/form-data">
         
-        <input type="hidden" name="page" value="page" tal:attributes="value string: $page"/>
+        <input type="hidden" name="page" value="page" tal:attributes="value page"/>
         
         Format: <span tal:replace="here/page_type">page type</span><br />
 
@@ -41,7 +41,7 @@
         <div tal:condition="not: noedit">
 
             <strong>Log Message</strong> <br />
-	        <textarea name="log"><textarea>
+	        <textarea name="log"></textarea>
             
 	        <p>
             Log for landmark changes - enter a note characterizing your

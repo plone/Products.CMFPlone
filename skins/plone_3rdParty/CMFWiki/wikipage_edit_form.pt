@@ -40,11 +40,15 @@
                    tal:attributes="value here/editTimestamp" />
             <input type="hidden" name="page"
                    tal:attributes="value here/getId" />
-        
-            <input name="title"
-                   width="25"
-                   tal:attributes="value here/title" />
 
+            <p>Format: <strong tal:content="here/page_type"> page_type </strong></p>
+        
+            Title:<br />
+            <input name="title"
+                   tal:attributes="value here/title" />
+                   
+            <br />
+            Body:<br />
             <textarea wrap="soft" name="text"
                       rows="18" cols="80"
                       tal:attributes="rows request/zwiki_height | default;
@@ -52,9 +56,6 @@
                       tal:content="here/text"
                       ></textarea>
 
-              <br /> 
-              
-              Format: <strong tal:content="here/page_type"> page_type </strong>
 
               <input type="submit"
                      class="context"
