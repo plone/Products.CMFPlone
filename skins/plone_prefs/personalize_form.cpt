@@ -277,7 +277,7 @@
                 pixels wide by 100 pixels tall.
                 </div>
     
-                <img src=""
+                <img src="" alt=""
                      height="100"
                      width="75"
                      style="border: 1px solid black"
