@@ -6,14 +6,15 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 
-  <metal:block fill-slot="base">
-    <tal:block tal:define="dummy python:request.set('disable_border', 1)"
-               tal:replace="nothing">
-    Disable the green border
-    </tal:block>    
-  </metal:block>
-
 <body>
+
+    <metal:block fill-slot="base">
+        <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+                   tal:replace="nothing">
+        Disable the tabs
+        </tal:block>    
+    </metal:block>
+
     <div metal:fill-slot="main"
           tal:define="members python:container.portal_membership.getRoster();
                       DateTime python:modules['DateTime'].DateTime;
@@ -21,16 +22,18 @@
                       DateTime python:modules['DateTime'].DateTime;
                       b_start python:request.get('b_start', 0);">
     
-        <h1 i18n:translate="">Member Listing</h1>
+        <h1 i18n:translate="heading_member_listing">Member Listing</h1>
 		
-		<p i18n:translate=""> Here is a list of the members that are visible. </p>
+		<p i18n:translate="description_member_listing">
+        A list of the visible members. 
+        </p>
 
 		<form name="search_results" action="#" method="post"
               tal:condition="members"
               tal:define="batch python:Batch(members, 20, int(b_start), orphan=1)">
 				
 		<p>
-        <span i18n:translate="">Visible Members</span>:
+        <span i18n:translate="label_visible_members">Visible Members</span>:
         <strong tal:content="python:len(members)">number of members</strong> 
         </p>
 		  

@@ -11,9 +11,9 @@
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
-    <h1 i18n:translate="">Comment Preview</h1>
+    <h1 i18n:translate="heading_comment_preview">Comment Preview</h1>
 
-    <p i18n:translate="">
+    <p i18n:translate="description_comment_preview">
     This is how your comment will look when posted.
     </p>
 
@@ -22,7 +22,7 @@
           method="post" 
           action="talkback">
     
-        <span class="legend" i18n:translate="">Comment Preview</span>
+        <span class="legend">Comment Preview</span>
 
         <div class="row">
         
@@ -57,7 +57,8 @@
                        name=""
                        tabindex=""
                        tal:define="hId here/getId"
-        		           tal:attributes="name python: hId + '/discussion_reply_form:method';
+                       tal:attributes="value"
+        	           tal:attributes="name python: hId + '/discussion_reply_form:method';
                                        tabindex tabindex/next;">
                 
                 <input class="standalone"
@@ -65,6 +66,7 @@
                         value="Add Comment" 
                         name="discussion_reply:method"
                         tabindex=""
+                        tal:attributes="value"
                         tal:attributes="tabindex tabindex/next;">
             </div>
         </div>

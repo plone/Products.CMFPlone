@@ -7,7 +7,7 @@
        tal:condition="here/portal_membership/isAnonymousUser" >
 
     <thead>
-        <tr><th i18n:translate="">Sign in</th><th class="empty">&nbsp;</th></tr>
+        <tr><th i18n:translate="box_sign_in">Sign in</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
     <tbody tal:define="portal_url here/portal_url">
@@ -21,13 +21,13 @@
                            tal:condition="python:request.get('came_from', '')"
                            tal:attributes="value request/came_from" />
 
-                    <strong i18n:translate="">Name:</strong> <br />
+                    <strong i18n:translate="label_name">Name</strong> <br />
                     <input type="text" name="__ac_name" size="10"
                            tal:attributes="value python:request.get('__ac_name', '')" />
 
                     <br />
 
-                    <strong i18n:translate="">Password:</strong>  <br />
+                    <strong i18n:translate="label_password">Password</strong>  <br />
                     <input type="password" name="__ac_password" size="10" />
 
                     <br />
@@ -49,7 +49,7 @@
 
                 <a href="mail_password_form">
                    <img tal:replace="structure here/linkTransparent.gif" />
-                   <span tal:omit-tag="" i18n:translate="">Forgot your password?</span>
+                   <span tal:omit-tag="" i18n:translate="box_forgot_password_option">Forgot your password?</span>
                 </a>
         </td>
         </tr>
@@ -62,7 +62,7 @@
 		           tal:attributes="href string:$portal_url/join_form">
                    <img tal:replace="structure here/linkTransparent.gif" 
 			/>
-                <span tal:omit-tag="" i18n:translate="">New user?</span>
+                <span tal:omit-tag="" i18n:translate="box_new_user_option">New user?</span>
                 </a>
 
             </td>

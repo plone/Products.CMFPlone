@@ -1,18 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<span tal:condition="nothing"
-      tal:define="has_edit_priv nocall: here/edit">
-  This span ensures that the visitor has edit privilege, by fetching - but
-  not displaying - the protected issue.edit method.
-</span>
-
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="plone">
 <body>
+
+<span tal:condition="nothing"
+      tal:define="has_edit_priv nocall: here/edit">
+  This span ensures that the visitor has edit privilege, by fetching - but
+  not displaying - the protected issue.edit method.
+</span>
 
 <span tal:condition="nothing">
   Template description: Basic view of issue characteristics and transcript.
@@ -21,11 +21,11 @@
 <div metal:fill-slot="header"
      tal:define="global collector_issue_header_present python: 1">
 
-    <tal:block i18n:translate="">
+    <tal:block i18n:translate="heading_edit_collector_issue">
     <h1>Edit Collector Issue <span
     tal:replace="here/id" i18n:name="id">name</span></h1>
 
-    <div class="description">
+    <div class="description" i18n:translate="description_edit_collector_issue">
     Use this form to edit the data of an existing issue. Do not use this form
     to follow up or change the workflow status of an issue - use the issue follow
     up form for that.
@@ -48,11 +48,11 @@
         enctype="multipart/form-data"
         action="collector_issue_edit">
 
-    <span class="legend" i18n:translate="">Issue details</span>    
+    <span class="legend" i18n:translate="legend_issue_details">Issue details</span>    
 
 
     <div class="row">
-        <div class="label" i18n:translate="">Title</div> 
+        <div class="label" i18n:translate="label_title">Title</div> 
         <div class="field">
             <input name="title" value="TITLE" size="65"
                    tal:attributes="value python: here.Title()" />
@@ -60,19 +60,19 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="">Security</div> 
+        <div class="label" i18n:translate="label_security">Security</div> 
         <div class="field">
             <input class="noborder" id="security_related_checkbox"
                    type="checkbox" 
                    name="security_related:int" 
                    value="1"
                    tal:attributes="checked here/security_related" />
-	    <label for="security_related_checkbox" i18n:translate="">Security related</label>
+	    <label for="security_related_checkbox" i18n:translate="label_security_related">Security related</label>
         </div>
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="">Description</div> 
+        <div class="label" i18n:translate="label_description">Description</div> 
         <div class="field">
             <textarea name="description:text" rows="4" cols="60"
                       tal:content="here/description"></textarea>
@@ -80,7 +80,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="">From (name)</div> 
+        <div class="label" i18n:translate="label_from_name">From (name)</div> 
         <div class="field">
               <input name="submitter_name" value="NAME" size="25"
                      tal:attributes="value python: here.submitter_name" />
@@ -88,7 +88,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="">From (ID)</div> 
+        <div class="label" i18n:translate="label_from_login_name">From (login name)</div> 
         <div class="field">
             <input name="submitter_id" value="ID" size="25"
                    tal:attributes="value python: here.submitter_id" />
@@ -96,7 +96,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="">From (alt. email)</div> 
+        <div class="label" i18n:translate="label_from_alt_email">From (alt. email)</div> 
         <div class="field">
                   <input name="submitter_email" value="EMAIL" size="25"
                          tal:attributes="value here/submitter_email|nothing" />
@@ -104,7 +104,7 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="">Topic</div> 
+        <div class="label" i18n:translate="label_topic">Topic</div> 
         <div class="field">
             <select name="topic">
                 <option value=""
@@ -118,10 +118,10 @@
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="">Classification</div> 
+        <div class="label" i18n:translate="label_classification">Classification</div> 
         <div class="field">
             <select name="classification">
-                <option value="" i18n:translate=""
+                <option value=""
                         tal:repeat="it here/aq_parent/classifications"
                         tal:attributes="value it;
                                         selected python: here.classification
@@ -134,10 +134,10 @@
 
 
     <div class="row">
-        <div class="label" i18n:translate="">Importance</div> 
+        <div class="label" i18n:translate="label_importance">Importance</div> 
         <div class="field">
             <select name="importance">
-                <option value="" i18n:translate=""
+                <option value=""
                         tal:repeat="it here/aq_parent/importances"
                         tal:attributes="value it;
                                         selected python: here.importance == it"
@@ -149,7 +149,7 @@
 
 
     <div class="row">
-        <div class="label" i18n:translate="">Version info</div> 
+        <div class="label" i18n:translate="label_version_info">Version info</div> 
         <div class="field">
             <textarea name="version_info" rows="2" cols="40"
                       tal:content="here/version_info"></textarea>
@@ -158,7 +158,7 @@
 
 
     <div class="row">
-        <div class="label" i18n:translate="">Upload</div> 
+        <div class="label" i18n:translate="label_upload">Upload</div> 
         <div class="field" i18n:translate="">
         Use the issue folder_contents view (if accessible) to change the
         uploads.
@@ -167,14 +167,14 @@
 
 
     <div class="row">
-        <div class="label" i18n:translate="">Comment</div> 
+        <div class="label" i18n:translate="label_comment">Comment</div> 
         <div class="field">
             <textarea name="comment" rows="3" cols="75"></textarea>
         </div>
     </div>
 
     <div class="row">
-        <div class="label" i18n:translate="collector_transcript">Transcript</div> 
+        <div class="label" i18n:translate="label_collector_transcript">Transcript</div> 
         <div class="field" tal:define="transcript here/get_transcript">
           <textarea name="text" rows="10" cols="75" wrap="soft"
                     tal:content="transcript/text"></textarea>

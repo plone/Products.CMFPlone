@@ -1,8 +1,7 @@
 <div class="row"
      metal:define-macro="friendlydatec_editform"
      tal:define="criterionid criterion/getId | here/getId;"
-     i18n:domain="plone"
->
+     i18n:domain="plone">
 
     <div class="label">
         <input class="noborder"
@@ -20,7 +19,7 @@
         </label>
                     
         <div id="" 
-             i18n:translate=""
+             i18n:translate="label_date"
              class="help" 
              style="visibility:hidden"
              tal:content="criterion/Description | here/Description"

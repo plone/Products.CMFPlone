@@ -1,10 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
+      
 <body>
 
    <div metal:fill-slot="main" 
@@ -13,9 +12,9 @@
                     Iterator python:modules['Products.CMFPlone'].IndexIterator;
                     tabindex python:Iterator();">
 
-    <h1 i18n:translate="">Edit Document</h1>
+    <h1 i18n:translate="heading_edit_document">Edit Document</h1>
     
-    <p i18n:translate="">
+    <p i18n:translate="description_edit_document">
     Fill in the details of this document.
     </p>  
 
@@ -30,7 +29,7 @@
           enctype="multipart/form-data"
           tal:attributes="action request/URL" >
 
-        <span class="legend" i18n:translate="">Document Details</span>    
+        <span class="legend" i18n:translate="legend_document_details">Document Details</span>    
       
         <div class="row" 
              tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
@@ -39,13 +38,13 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:translate="">Short Name</span>
+                <span i18n:translate="label_name">Name</span>
             
                 <div id="id_help" 
-                     i18:translate="id_help"
+                     i18n:translate="help_name"
                      class="help" 
                      style="visibility:hidden">
-                Enter the Short Name of the document. This is the part that will show up as part
+                Enter the Name of the document. This is the part that will show up as part
                 of the web address. This should be short, descriptive
                 and preferrably not contain spaces, underscores or mixed case. Example:
                 "expense-report-2002"
@@ -75,10 +74,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label required">
-                <span i18:translate="">Title</span>
+                <span i18n:translate="label_title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:translate="title_help"
+                     i18n:translate="help_title"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the document.
@@ -107,10 +106,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="">Description</span>
+                <span i18n:translate="label_description">Description</span>
                 
                 <div id="description_help" 
-                     i18n:translate="description_help"
+                     i18n:translate="help_description"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the document. 
@@ -133,10 +132,10 @@
       
 	    <div class="row"> 
             <div class="label"> 
-                <span i18n:translate="">Body text</span> 
+                <span i18n:translate="label_body_text">Body text</span> 
 
                 <div id="body_help" 
-                     i18n:translate="body_help"
+                     i18n:translate="help_body_text"
                      class="help" 
                      style="visibility:hidden">
                 The body text of the document. 
@@ -158,9 +157,9 @@
 
 	    <div class="row">
             <div class="label">
-                <span i18n:translate="">Format</span>
+                <span i18n:translate="label_format">Format</span>
                 <div id="format_help"
-                     i18n:translate="format_help" 
+                     i18n:translate="help_format" 
                      class="help" 
                      style="visibility:hidden">
                 Select which format you want to type the contents of this
@@ -216,14 +215,14 @@
 	         tal:define="error_file errors/file|nothing;"> 
             
             <div class="label">
-                <span i18n:translate="upload_contents">Upload contents (optional)
+                <span i18n:translate="label_upload_contents_optional">Upload contents (optional)
                 <div id="upload_help" 
-                     i18n:translate="upload_help"
+                     i18n:translate="help_upload_text"
                      class="help" 
                      style="visibility:hidden">
-                This feature can be used if you already have the document 
-                in an existing file on your computer and want to add the contents
-                of it to this document.
+                This feature can be used if you already have the contents 
+                in an existing file on your computer and want to add 
+                it to this item.
                 
                 <br />&nbsp;<br />
                 
@@ -257,6 +256,7 @@
                        type="submit" 
                        name="Change" 
                        value="Save" 
+                       i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;" /> 
             </div>
 	    </div>

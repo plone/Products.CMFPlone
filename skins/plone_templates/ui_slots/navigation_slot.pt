@@ -15,7 +15,7 @@
        cellspacing="0">
 
     <thead>
-        <tr><th i18n:translate="">Navigation</th><th class="empty">&nbsp;</th></tr>
+        <tr><th i18n:translate="box_navigation">Navigation</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
     <tbody>
@@ -28,7 +28,7 @@
         <tr class="even" tal:condition="siblings">
             <td colspan="2">
             <div>
-                <strong i18n:translate="">Other items</strong> <br />
+                <strong i18n:translate="box_other_items">Other items</strong> <br />
                 <div tal:repeat="sibling siblings">
                     <metal:block tal:define="iscurrent python:test(sibling.getId()==here.getId(), 1, 0);
                                              sibling_title python:'&nbsp;;'.join(sibling.title_or_id()[:18].split(' '));">
@@ -64,7 +64,7 @@
                 <a href="" 
                    tal:attributes="href parent_url">
                     <img tal:replace="structure here/linkTransparent.gif" />
-                   <span i18n:translate="">Up one level</span></a>
+                   <span i18n:translate="box_up_one_level">Up one level</span></a>
             </td>
         </tr>
 
@@ -76,14 +76,14 @@
                <a href="folder_contents"
                   tal:condition="here/isPrincipiaFolderish">
                    <img tal:replace="structure here/linkTransparent.gif" />
-                  <span i18n:translate="">Editor view</span>
+                  <span i18n:translate="box_editor_view">Editor view</span>
                </a>
                
                <a href="../folder_contents"
                   tal:condition="not: here/isPrincipiaFolderish" 
                   tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents">
                    <img tal:replace="structure here/linkTransparent.gif" />
-                  <span i18n:translate="">Editor view</span>
+                  <span i18n:translate="box_editor_view">Editor view</span>
                </a>
             </td>
         </tr>
@@ -93,7 +93,7 @@
             <td colspan="2" >
                 <a href="">
                    <img tal:replace="structure here/linkTransparent.gif" />
-                <span i18n:translate="">Ordinary view</span>
+                <span i18n:translate="box_ordinary_view">Ordinary view</span>
                 </a>
             </td>
         </tr>

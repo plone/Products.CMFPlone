@@ -36,16 +36,16 @@
             <span tal:define="dummy python: request['RESPONSE'].expireCookie('__ac', path='/')">
             </span>
 		
-            <h1 i18n:translate="">Sign-in failure</h1>
+            <h1 i18n:translate="heading_sign_in_failure">Sign-in failure</h1>
             
             <p>
-            <span i18n:translate="">
+            <span i18n:translate="description_sign_in_failure">
             You are not currently signed in.  Your user name and/or password may be incorrect.
             Your browser may also not be configured to accept HTTP cookies.  
-            If you need help please contact
+            If you need help please try the "Forgotten password" link or contact
             </span>
             
-            <a href="mailto:admin@here.com" title="Email Administrator"
+            <a href="mailto:admin@here.com" title="E-mail Administrator"
             tal:attributes="href string:mailto:${p_props/email_from_address}"
             tal:content="p_props/email_from_name">
             Email Admin
@@ -62,22 +62,22 @@
 		<metal:block tal:on-error="nothing"
 		             tal:define="dum_reg python: member.setProperties(last_login_time=here.ZopeTime(),login_time=here.ZopeTime())" />
 
-                <h1 i18n:translate="">Welcome!</h1>
+                <h1 i18n:translate="heading_welcome">Welcome!</h1>
                 
                 <p>
-                <span i18n:translate="">
-                This is the first time that you've logged in to 
+                <span i18n:translate="description_signed_in">
+                This is the first time that you've signed in to 
                 </span>
                 
                 <span replace="p_props/title">Here</span>. 
                 
-                <span i18n:translate="">
+                <span i18n:translate="description_change_initial_password">
                 Before you start exploring you need to change your original password. 
                 This will ensure that the password we sent you via email cannot be used in a malicious manner.
                 </span>
                 </p>
                 
-                <p i18n:translate="">
+                <p i18n:translate="description_use_form_to_change_password">
                 Please use the form below to change your password.
                 </p>
 				
@@ -87,7 +87,7 @@
                       method="post"
                       tal:attributes="action python: container.portal_url()+'/change_password'">
 
-                    <span class="legend" i18n:translate="">Password Details</span>
+                    <span class="legend" i18n:translate="legend_password_details">Password Details</span>
                                     
                     <input type="hidden" 
                            name="came_from" 
@@ -100,9 +100,9 @@
                
                     <div class="row">
                         <div class="label">
-                            <span i18n:translate="new_password">New password</span>
+                            <span i18n:translate="label_new_password">New password</span>
                             <div id="new_password_help"
-                                 i18n:translate="new_password_help" 
+                                 i18n:translate="help_new_password" 
                                  class="help" 
                                  style="visibility:hidden">
                             Enter your new password. Minimum 5 characters.
@@ -123,9 +123,9 @@
             
                     <div class="row">
                         <div class="label">
-                            <span i18n:translate="confirm_password">Confirm password</span>
+                            <span i18n:translate="label_confirm_password">Confirm password</span>
                             <div id="confirm_password_help" 
-                                 i18n:translate="confirm_password_help"
+                                 i18n:translate="help_confirm_password"
                                  class="help" 
                                  style="visibility:hidden">
                             Re-enter the password. Make sure the passwords are identical.
@@ -151,6 +151,7 @@
                                    name="submit" 
                                    value="Change Password"
                                    tabindex=""
+                                   i18n:attributes="value"
                                    tal:attributes="tabindex tabindex/next;">
                         </div>
                     </div>
@@ -172,13 +173,15 @@
                     </div>
                 </div>
 
-                <h1 i18n:translate="">You are now logged in</h1>
+                <h1 i18n:translate="heading_you_are_now_logged_in">You are now logged in</h1>
                 
                 <p>
-                [<a i18n:translate="" href="" tal:attributes="href request/HTTP_REFERER">back to where you came from</a>]
+                [<a i18n:translate="back_to_where_you_came_from" 
+                    href="" 
+                    tal:attributes="href request/HTTP_REFERER">back to where you came from</a>]
                 </p>
                 
-                <p i18n:translate="">
+                <p i18n:translate="description_logged_in_explain">
                 You will notice that the top right bar has changed, it now
                 contains several personalized items. These will stay there
                 as long as you are logged in, and allow you to control your
@@ -186,34 +189,27 @@
                 </p>
                 
                 <p>
-                <span i18n:translate="">
+                <span i18n:translate="description_newbie_pointers_1">
                 You might want to head over to
                 </span>
 
                 <a href="metadata_form" 
+                   i18n:translate="my_folder"
                    tal:define="mystuff python:here.getActionUrlById('my stuff', actions['user']);"
                    tal:condition="mystuff" tal:attributes="href mystuff"
-                   >My Stuff</a>
+                   >My Folder</a>
                 
-                <span i18n:translate="">
+                <span i18n:translate="description_newbie_pointers_2">
                 and add some content, or
                 </span>
                  
                 <a href="metadata_form" 
+                   i18n:translate=description_newbie_pointers_3"
                    tal:define="prefs python:here.getActionUrlById('preferences', actions['user']);"
                    tal:condition="prefs" 
                    tal:attributes="href prefs"
                    >set up your Preferences</a>.
 		        
-                
-                <p i18n:translate="">
-                We wish you a pleasant stay here.
-                If you have any questions or comments, visit the 
-                <a href="help" i18n:translate="">Help section</a> or
-                <a href="mailto:admin@here.com" i18n:translate="" title="Email Admin"
-                tal:attributes="href string:mailto:${p_props/email_from_address}">
-                send us a mail</a>.
-                </p>	 
 			</div>
 
 		</div>

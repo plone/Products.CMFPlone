@@ -29,9 +29,14 @@
 
             <a tal:attributes="href url"
                tal:content="obj/Title" 
-               href="">Title</a>, by
+               href="">Title</a>, 
+               
+               <span i18n:translate="label_comment_by">by</span>
 
-               <span tal:replace="obj/Creator">Me</span> on 
+               <span tal:replace="obj/Creator">Me</span> 
+               
+               <span i18n:translate="label_commented_at">at</span> 
+               
                <span tal:replace="obj/CreationDate">Today</span>.
         </span>
         </div> 

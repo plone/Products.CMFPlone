@@ -3,17 +3,16 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 <body>
 
 <div metal:fill-slot="main"
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();" >
 
-<h1 i18n:translate="">Please sign in</h1>
+<h1 i18n:translate="heading_sign_in">Please sign in</h1>
 
-<p i18n:translate="">
+<p i18n:translate="description_sign_in">
 To access this part of the site, you need to sign in with your username and password.
 </p>
 
@@ -21,7 +20,7 @@ To access this part of the site, you need to sign in with your username and pass
 
 <metal:block tal:condition="python: here.portal_membership.checkPermission('Add portal member', here)">
 
-<span i18n:translate="">
+<span i18n:translate="description_no_account">
 If you do not have an account here, head over to the <a href="join_form">registration form</a> to become a member.
 </span>
 
@@ -40,13 +39,13 @@ If you do not have an account here, head over to the <a href="join_form">registr
                        corrected_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);"
 	       tal:attributes="value corrected_from" />
 
-<span class="legend" i18n:translate="">Account details</span>
+<span class="legend" i18n:translate="legend_account_details">Account details</span>
 	
 	<div class="row">
 			<div class="label">
-                <span i18n:translate="user_name">User Name</span>
+                <span i18n:translate="label_user_name">User Name</span>
                 <div id="user_name_help" 
-                     i18n:translate="user_name_help"
+                     i18n:translate="help_user_name"
                      class="help" 
                      style="visibility:hidden">
                 Enter the user name you use on this site. If you haven't
@@ -71,9 +70,9 @@ If you do not have an account here, head over to the <a href="join_form">registr
 
 	<div class="row">
         <div class="label">
-            <span i18n:translate="password">Password</span> 
+            <span i18n:translate="label_password">Password</span> 
             <div id="password_help" 
-                 i18n:translate="password_help"
+                 i18n:translate="help_password"
                  class="help" 
                  style="visibility:hidden">
             Enter your password. If you have forgotten it, use the
@@ -97,10 +96,10 @@ If you do not have an account here, head over to the <a href="join_form">registr
         <div class="label">
                 &nbsp;
             <div id="remember_help" 
-                 i18n:translate="remember_help"
+                 i18n:translate="help_remember_my_name"
                  class="help" 
                  style="visibility:hidden">
-            Setting the 'Remember my name' option will bake a cookie with your username.
+            Setting the 'Remember my name' option will create a cookie with your username.
             When you sign in later, your user name will already be filled in for you.
             </div>
         </div>
@@ -118,7 +117,7 @@ If you do not have an account here, head over to the <a href="join_form">registr
                    tal:attributes="tabindex tabindex/next;" 
                    />
 
-            <label for="cb_remember" i18n:translate="remember">Remember my name.</label>
+            <label for="cb_remember" i18n:translate="label_remember_my_name">Remember my name.</label>
         </div>
     </div>
 	
@@ -135,23 +134,24 @@ If you do not have an account here, head over to the <a href="join_form">registr
                    />
 
             <p>
-                <strong i18n:translate="">
+                <strong i18n:translate="label_forgotten_your_password">
                 Forgotten your password?
                 </strong> 
                 
-                <span i18n:translate="">
-                No problem, 
-                <a href="mail_password_form">click here</a> to have it mailed to you.
+                
+                <a href="mail_password_form" i18n:translate="forgotten_password_link_1">Click here</a> 
+                <span i18n:translate="forgotten_password_link_2">
+                to have it mailed to you.
                 </span>
                 
             </p>
             
             <p>           
-                <strong i18n:translate="">
+                <strong i18n:translate="label_trouble_logging_in">
                 Having trouble logging in?
                 </strong> 
                 
-                <span i18n:translate="">
+                <span i18n:translate="description_trouble_logging_in">
                 Make sure to enable cookies in your web browser. 
                 Don't forget to logout or exit your browser when you're done.
                 </span>

@@ -1,6 +1,7 @@
 <!-- CMFTopic based navigation box -->
 <table class="box" summary="Navigation listing" cellpadding="0" cellspacing="0"
        metal:define-macro="CMFTopic_navigation_box"
+       i18n:domain="plone"
        tal:define="results python:here.portal_catalog(meta_type='Portal Topic',sort_on='id');
                    pss modules/Products/PythonScripts/standard;
                    showNav python:0;
@@ -10,7 +11,7 @@
             This is because it would lead to infinate recursion -->
 
   <span tal:define="navExpand python:request.SESSION.get('navExpand', results[0].Title)">
-   <tr><th>navigation</th><th class="empty">&nbsp;</th></tr>
+   <tr><th i18n:translate="box_navigation">navigation</th><th class="empty">&nbsp;</th></tr>
    <span tal:repeat="topic results">
     <tr>
       <td nowrap colspan="2">

@@ -3,30 +3,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 <body>
 
- 	 <span metal:fill-slot="main">
+ 	 <div metal:fill-slot="main">
    
-	 <h1 i18n:translate="">You are now signed out</h1>
+	 <h1 i18n:translate="heading_signed_out">You are now signed out</h1>
 	 
-	 <p i18n:translate="">
+	 <p i18n:translate="description_signed_out">
 	 We hope you enjoyed using our services. We look forward to seeing you again.
      </p>
 	 
-	 <p>
      
-	 <span i18n:translate="">
+	 <p i18n:translate="">
      Best Regards from the
-     </span> 
-	 
-     <strong tal:content="python:container.portal_url.getPortalObject().Title()">portal title</strong> 
-     
-     <span i18n:translate="">team</span>.
+     <strong tal:content="python:container.portal_url.getPortalObject().Title()" i18n:name="portal_title">portal title</strong> 
+     team.
 	 </p>
 	 
-	</span>
+	</div>
 	   
 </body>
 </html>

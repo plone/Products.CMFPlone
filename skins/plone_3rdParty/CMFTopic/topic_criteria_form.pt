@@ -4,8 +4,7 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
     xmlns:metal="http://xml.zope.org/namespaces/metal"
     metal:use-macro="container/main_template/macros/master"
-    i18n:domain="plone"      i18n:domain="plone"
->
+    i18n:domain="plone">
 
 <body>
 
@@ -14,7 +13,7 @@
                  tabindex python:Iterator();">
 
 <h1> 
-    <span i18n:translate="">Criteria for</span>
+    <span i18n:translate="heading_criteria_for">Criteria for</span>
     <span tal:replace="here/getId" /> 
 </h1>
 
@@ -24,7 +23,7 @@
       tal:attributes="action here/absolute_url"
       tal:condition="here/listCriteria">
 
-    <span class="legend" i18n:translate="">Criteria Details</span>
+    <span class="legend" i18n:translate="legend_criteria_details">Criteria Details</span>
 
     <metal:block tal:define="criteria here/listCriteria;">
         <metal:block tal:repeat="criterion criteria">
@@ -43,17 +42,19 @@
             <input class="context"
                    type="submit" 
                    name="topic_editCriteria:action"
-                   value="Save changes"
+                   value="Save"
                    tabindex=""
                    tal:attributes="tabindex tabindex/next;"
+                   i18n:attributes="value"
                    />
             
             <input class="context"
                    type="submit" 
                    name="topic_deleteCriteria:action"
-                   value="Delete selected criteria"
+                   value="Remove"
                    tabindex=""
                    tal:attributes="tabindex tabindex/next;"
+                   i18n:attributes="value"
                    />
 
             <input type="hidden" name=":default_action" value="editCriteria">
@@ -68,9 +69,11 @@
 
 <form action="" method="post" tal:attributes="action string:${here/absolute_url}/topic_addCriterion">
 
-<h2 i18n:translate=""> Add New Topic Criteria </h2>
+<h2 i18n:translate="heading_add_new_topic_criteria">Add New Topic Criteria</h2>
 
-Field id
+<span i18n:translate="label_criteria_field_name">
+Field name
+</span>
 
 <select name="field"
         tabindex="" 
@@ -79,7 +82,9 @@ Field id
             <option value="" tal:repeat="field fields" tal:attributes="value field" tal:content="field">Field</option>
         </select>
 
+<span i18n:translate="label_criteria_type">
 Criteria type
+</span>
 
 <select name="criterion_type" 
         tabindex=""
@@ -94,6 +99,7 @@ Criteria type
        value="Add"
        tabindex=""
        tal:attributes="tabindex tabindex/next;" 
+       i18n:attributes="value"
        />
 
 </form>

@@ -18,9 +18,9 @@
                  tabindex python:Iterator();"
      tal:condition="here/rejectAnonymous" >
 	
-    <h1 i18n:translate="">Plone Setup</h1>
+    <h1 i18n:translate="heading_plone_setup">Plone Setup</h1>
     
-    <p i18n:translate="">
+    <p i18n:translate="description_plone_setup">
     Here you configure some of the settings that affect Plone.
     </p>
     
@@ -31,16 +31,16 @@
           tal:attributes="action request/URL"
           tal:define="props python:container.portal_properties">
 
-        <span class="legend" i18n:translate="">Plone Details</span>
+        <span class="legend" i18n:translate="legend_plone_details">Plone Details</span>
 		
         <div class="row"
              tal:define="email_from_name request/email_from_name|props/email_from_name;
                          error_email_from_name errors/email_from_name | nothing;">
             <div class="label">
-                <span i18n:translate="portal_from_name">Portal 'From' name</span>
+                <span i18n:translate="label_portal_from_name">Portal 'From' name</span>
 
                 <div id="portal_from_name_help"
-                     i18n:translate="portal_from_name_help" 
+                     i18n:translate="help_portal_from_name" 
                      class="help" 
                      style="visibility:hidden">
                 When Plone generates mail, it uses this name
@@ -68,10 +68,10 @@
              tal:define="email_from_address request/email_from_address|props/email_from_address;
                          error_email_from_address errors/email_from_address | nothing;">
             <div class="label required">
-                <span i18n:translate="portal_from_address">Portal 'From' address</span>
+                <span i18n:translate="label_portal_from_address">Portal 'From' address</span>
 
                 <div id="portal_from_address_help"
-                     i18n:translate="portal_from_address_help" 
+                     i18n:translate="help_portal_from_address" 
                      class="help" 
                      style="visibility:hidden">
                 When Plone generates mail, it uses this address
@@ -100,13 +100,13 @@
              tal:define="smtp_server request/smtp_server | props/smtp_server;
                          error_smtp_server errors/smtp_servers | nothing;">
             <div class="label">
-                <span i18n:translate="smtp_server">SMTP server</span>
+                <span i18n:translate="label_smtp_server">SMTP server</span>
 
                 <div id="smtp_server_help"
-                     i18n:translate="smtp_server_help" 
+                     i18n:translate="help_smtp_server" 
                      class="help" 
                      style="visibility:hidden">
-                This is the address of your local SMTP (out-going
+                This is the address of your local SMTP (outgoing
                 mail) server. Usually "localhost", unless you use an
                 external server to send mail.
                 </div>
@@ -134,13 +134,13 @@
                          error_title errors/title | nothing;">
                          
             <div class="label required">
-                <span i18n:translate="portal_title">Portal title</span>
+                <span i18n:translate="label_portal_title">Portal title</span>
 
                 <div id="portal_title_help"
-                     i18n:translate="portal_title_help" 
+                     i18n:translate="help_portal_title" 
                      class="help" 
                      style="visibility:hidden">
-                This is the title of your Plone instance.
+                This is the title of your Plone portal.
                 </div>
             </div>
             
@@ -165,10 +165,10 @@
              tal:define="description request/description | props/description;
                          error_description errors/description | nothing;">
             <div class="label">
-                <span i18n:translate="portal_description">Portal description</span>
+                <span i18n:translate="label_portal_description">Portal description</span>
 
                 <div id="portal_description_help"
-                     i18n:translate="portal_description_help" 
+                     i18n:translate="help_portal_description" 
                      class="help" 
                      style="visibility:hidden">
                 This description is made available via syndicated
@@ -190,12 +190,12 @@
 
         <div class="row">
             <div class="label">
-               <span i18n:translate="language_help">Default Language</span>
+               <span i18n:translate="label_default_language">Default Language</span>
                <div id="language_help"
-                    i18n:translate="language_help"
+                    i18n:translate="help_default_language"
                     class="help"
                     style="visibility:hidden">
-               Specify the default language used in properties. 
+               Specify the default language setting for newly created items. 
                </div>
             </div>
             <div class="field">
@@ -207,7 +207,7 @@
                         onblur="formtooltip('language_help',0)"
                         tal:attributes="value here/portal_properties/default_language;
                                         tabindex tabindex/next;">
-                   <option value="">Choose Language</option>
+                   <option value="" i18n:translate="label_choose_language">Choose Language</option>
                    <option tal:repeat="language here/availableLanguages"
                            tal:attributes="value python:language[0];
                                            selected python:test(here.portal_properties.default_language == language[0], 'selected', '')"
@@ -220,9 +220,9 @@
              tal:define="localTimeFormat request/localTimeFormat | props/localTimeFormat;
                          error_localTimeFormat errors/localTimeFormat | nothing;">
             <div class="label required">
-                <span i18n:translate="short_date_format">Short Date</span>
+                <span i18n:translate="label_short_date_format">Short Date</span>
                 <div id="short_date_format_help"
-                     i18n:translate="short_date_format_help"
+                     i18n:translate="help_short_date_format"
                      class="help"
                      style="visibility:hidden">
                 You can enter the strftime format for how dates in the system will be formatted.
@@ -250,9 +250,9 @@
             tal:define="localLongTimeFormat request/localLongTimeFormat | props/localLongTimeFormat;
                         error_localLongTimeFormat errors/localLongTimeFormat | nothing;">
             <div class="label required">
-                <span i18n:translate="long_date_format">Long Date</span>
+                <span i18n:translate="label_long_date_format">Long Date</span>
                 <div id="long_date_format_help"
-                     i18n:translate="long_date_format_help"
+                     i18n:translate="help_long_date_format"
                      class="help"
                      style="visibility:hidden">
                 You can enter the strftime format for how dates in the system will be formatted.
@@ -284,12 +284,12 @@
             tal:define="default_skin request/default_skin | here/portal_skins/getDefaultSkin;
                         error_default_skin errors/default_skin | nothing;">
             <div class="label">
-               <span i18n:translate="language_help">Default Skin</span>
+               <span i18n:translate="label_default_look">Default Look</span>
                <div id="skin_help"
-                    i18n:translate="skin_help"
+                    i18n:translate="help_default_look"
                     class="help"
                     style="visibility:hidden">
-               Specify the default site wide skin to be used for users. 
+               Specify the default site wide look to be used for users. 
                </div>
             </div>
             <div class="field">
@@ -300,7 +300,7 @@
 			onblur="formtooltip('skin_help',0)"
 			tal:attributes="value here/portal_skins/getDefaultSkin;
 					tabindex tabindex/next;">
-		   <option value="">Choose Skin</option>
+		   <option value="" i18n:translate="label_choose_look">Choose Look</option>
 		   <option tal:repeat="skin here/portal_skins/getSkinSelections"
 			   tal:attributes="value skin;
 					   selected python:test(default_skin == skin, 'selected', '')"
@@ -311,10 +311,10 @@
         
         <div class="row">
             <div class="label">
-                <span i18n:translate="password_policy">Password policy</span>
+                <span i18n:translate="label_password_policy">Password policy</span>
 
                 <div id="password_policy_help"
-                     i18n:translate="password_policy_help" 
+                     i18n:translate="help_password_policy" 
                      class="help" 
                      style="visibility:hidden">
                 Selects if the users can choose their initial password or not. It's easier
@@ -338,7 +338,7 @@
                            tal:attributes="checked validateChecked;
                                            tabindex tabindex;" />
                     
-                    <label for="validate_email_on" i18n:translate="">Generate and email members' initial password</label> 
+                    <label for="validate_email_on" i18n:translate="label_generate_and_email_passwords">Generate and e-mail members' initial password</label> 
                 
                     <br />
                 
@@ -353,7 +353,7 @@
                            tal:attributes="checked allowEnterChecked;
                                            tabindex tabindex;" />
                 
-                    <label for="validate_email_off">Allow members to select their initial password</label>
+                    <label for="validate_email_off" i18n:translate="label_allow_members_to_create_password">Allow members to select their initial password</label>
                 </span>
             </div>
         </div>
@@ -365,8 +365,9 @@
                        tabindex="" 
                        type="submit" 
                        name="submit" 
-                       value="Save settings" 
-											 tal:attributes="tabindex tabindex/next;"
+                       value="Save Settings"
+                       i18n:attributes="value" 
+                       tal:attributes="tabindex tabindex/next;"
                        />
             </div>
         </div>

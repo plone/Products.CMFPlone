@@ -59,12 +59,12 @@
     <table id="sortable" class="listing">
       <thead>
       <tr>
-        <th i18n:translate="">ID</th>
-        <th i18n:translate="">Title</th>
-        <th i18n:translate="">Submitter</th>
-        <th i18n:translate="">Date</th>
-        <th i18n:translate="">Status</th>
-        <th i18n:translate="">Description</th>
+        <th i18n:translate="listingheader_issue">Issue</th>
+        <th i18n:translate="listingheader_title">Title</th>
+        <th i18n:translate="listingheader_submitter">Submitter</th>
+        <th i18n:translate="listingheader_date">Date</th>
+        <th i18n:translate="listingheader_status">Status</th>
+        <th i18n:translate="listingheader_description">Description</th>
       </tr>
       </thead>
       
@@ -138,7 +138,7 @@
                   tal:attributes="color python: 
                                         (security and 'brown' or 'black')">
                 <span i18n:translate=""
-		      tal:content="python: (confidential and '(' or '')
+		              tal:content="python: (confidential and '(' or '')
                                            + cap(split(item.status,
                                                        '_')[0])
                                            + (confidential and ')' or '')">
@@ -159,7 +159,7 @@
             </span>
 
             <span tal:condition="item/assigned_to|nothing"
-	      i18n:translated="collector_issue_assigned_to">,
+	              i18n:translate="collector_issue_assigned_to">,
               <br />
               Assigned:
                
@@ -179,13 +179,13 @@
           <tal:block condition="python:numcmts==1"
 	      i18n:translate="collector_issue_one_comment">
               <br />
-              (1 followup)
+              (1 comment)
           </tal:block>
           <tal:block condition="python:numcmts>1"
 	      i18n:translate="collector_issue_num_comments">
               <br />
               (<span tal:replace="numcmts" i18n:name="num">NUM COMMENTS</span>
-              followups)
+              comments)
           </tal:block>
 
           </td>
@@ -210,10 +210,10 @@
                       ordered nocall: here/collector_ordered_traits">
       <input type="hidden" name="searching" value="yep">
 
-      <span class="legend" i18n:translate="">Search for issues</span>
+      <span class="legend" i18n:translate="legend_search_for_issues">Search for issues</span>
 
       <div class="row">
-          <div class="label" i18n:translate="">Contains</div>
+          <div class="label" i18n:translate="label_contains">Contains</div>
     
           <div class="field">
              <input type="text" name="SearchableText" size="40"
@@ -229,10 +229,10 @@
                 <table>
                   
                   <tr>
-                    <th i18n:translate=""> Status </th>
-                    <th i18n:translate=""> Requester</th>
-                    <th i18n:translate=""> Assigned </th>
-                    <th i18n:translate=""> Security Related </th>
+                    <th i18n:translate="listingheader_status">Status</th>
+                    <th i18n:translate="listingheader_requester">Requester</th>
+                    <th i18n:translate="listingheader_assigned">Assigned</th>
+                    <th i18n:translate="listingheader_security_related">Security Related</th>
                   </tr>
                   <tr>
                     <td>
@@ -295,9 +295,9 @@
         
                   </tr>
                   <tr>
-                    <th i18n:translate=""> Topic </th>
-                    <th i18n:translate=""> Classification </th>
-                    <th i18n:translate=""> Importance </th>
+                    <th i18n:translate="listingheader_topic">Topic</th>
+                    <th i18n:translate="listingheader_classification">Classification</th>
+                    <th i18n:translate="listingheader_importance">Importance</th>
                     <th> &nbsp; </th>
                   </tr>
                   <tr>

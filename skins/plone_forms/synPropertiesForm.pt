@@ -3,8 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
+
+    <metal:block metal:fill-slot="javascript_head_slot">
+      <script type="text/javascript" tal:attributes="src here/calendar.js/absolute_url"></script>
+    </metal:block>
 
 <body>
 
@@ -13,19 +16,13 @@
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
      
-    <script language="JavaScript"
-            src="/calendar.js"
-            tal:attributes="src string:${here/portal_url}/calendar.js">
-    </script>
-				
-    <h1 i18n:translate="">Syndication Properties</h1>
+    <h1 i18n:translate="heading_syndication_properties">Syndication Properties</h1>
     
-    <p i18n:translate="">
+    <p i18n:translate="description_syndication_properties">
     Syndication enables you to syndicate this folder so it can
     be synchronized from other web sites.
     </p>
 
-    <script language="JavaScript" src="cmf_skin_tools/calendar.js"></script>
     
     <form action="disableSyndication" 
           name="disable" 
@@ -38,6 +35,7 @@
                type="submit" 
                value="Disable Syndication"
                tabindex=""
+               i18n:attributes="value"
                tal:attributes="tabindex tabindex/next;" 
                />
     </form>
@@ -53,6 +51,7 @@
                type="submit" 
                value="Enable syndication"
                tabindex=""
+               i18n:attributes="value"
                tal:attributes="tabindex tabindex/next;" 
                />
     </form>
@@ -63,15 +62,15 @@
         <span tal:condition="python:container.portal_syndication.isSyndicationAllowed(here)">
 
             <div class="group">
-                <span class="legend" i18n:translate="">Channel Details</span>
+                <span class="legend" i18n:translate="legend_syndication_channel_details">Channel Details</span>
 
                 <div class="row">
-                    <div class="label">Channel Title</div>
+                    <div class="label" i18n:translate="label_syndication_channel_title">Channel Title</div>
                     <div class="info" tal:content="here/Title">title</div>
                 </div>
 
                 <div class="row">
-                    <div class="label">Channel Description</div>
+                    <div class="label" i18n:translate="label_syndication_channel_description">Channel Description</div>
                     <div class="info" tal:content="here/Description">description</div>
                 </div>
             </div>
@@ -82,13 +81,13 @@
                   name="syndication" 
                   method="post">
 
-                <span class="legend" i18n:translate="">Syndication Details</span>
+                <span class="legend" i18n:translate="legend_syndication_details">Syndication Details</span>
 
                 <div class="row">
                     <div class="label">
-                    <span i18n:translate="update_period">Update Period</span>
+                    <span i18n:translate="label_syndication_update_period">Update Period</span>
                     <div id="update_period_help" 
-                         i18:translate="update_period_help"
+                         i18:translate="help_syndication_update_period"
                          class="help" 
                          style="visibility:hidden">
                     Controls how often the channel is updated.
@@ -115,9 +114,9 @@
 
             <div class="row">
                 <div class="label">
-                    <span i18n:translate="">Update Frequency</span>
+                    <span i18n:translate="label_syndication_update_frequency">Update Frequency</span>
                     <div id="update_frequency_help" 
-                         i18:translate="update_frequency_help"
+                         i18:translate="help_syndication_update_frequency"
                          class="help" 
                          style="visibility:hidden">
                     Controls the frequency of the updates. For example, if you want it to update every second week,
@@ -141,10 +140,10 @@
             <div class="row">
 			
                 <div class="label">
-                    <span i18n:translate="">Update Base</span>
+                    <span i18n:translate="label_syndication_update_base">Update Base</span>
 
                     <div id="update_base_help" 
-                         i18:translate="update_base_help"
+                         i18:translate="help_syndication_update_base"
                          class="help" 
                          style="visibility:hidden">
                     This is the date the updater starts counting from. 
@@ -158,16 +157,16 @@
                                  formname   string:edit_form;
                                  inputvalue python:test(container.portal_syndication.getUpdateBase(here), container.portal_syndication.getUpdateBase(here), 'None');">
                     <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
-                        a calendar, hopefully
+                        calendar popup
                     </div>
 		</div>
     
             <div class="row">
                 <div class="label">
-                    <span i18n:translate="">Maximum Items</span>
+                    <span i18n:translate="label_syndication_max_items">Maximum Items</span>
                     
                     <div id="max_items_help" 
-                         i18:translate="max_items_help"
+                         i18:translate="help_syndication_max_items"
                          class="help" 
                          style="visibility:hidden">
                     Maximum number of items that will be syndicated. 
@@ -194,6 +193,7 @@
                            tabindex=""
                            type="submit" 
                            value="Save"
+                           i18n:attributes="value"
                            tal:attributes="tabindex tabindex/next;" 
                            />
                 </div>
@@ -209,8 +209,8 @@
 
 
 <div tal:condition="python:not container.portal_syndication.isSiteSyndicationAllowed()"
-     i18n:translate="">
-  Syndication has not been enabled by site administrator.
+     i18n:translate="description_syndication_disabled">
+  Syndication has been disabled by site administrator.
 </div>
 
 

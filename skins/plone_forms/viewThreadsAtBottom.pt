@@ -17,7 +17,9 @@
 
         <input class="standalone" 
 	       type="submit" 
-	       value="Add Comment" />
+	       value="Add Comment"
+           i18n:attributes="value"
+           />
     </form>
     
     <div tal:condition="python:here.portal_discussion.isDiscussionAllowedFor(here)"
@@ -29,15 +31,15 @@
 		   cellpadding="0"
 		   cellspacing="0">
 		<tr>
-		    <th>Comment</th><th class="empty">&nbsp;</th>	
+		    <th i18n:translate="listingheader_comment">Comment</th><th class="empty">&nbsp;</th>	
 		</tr>
 		
 		<tr>
 		    <td colspan="2">
-			<h2><img tal:replace="structure here/discussionitem_icon.gif" alt="Comment" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
-			Posted by:
+			<h2><img tal:replace="structure here/discussionitem_icon.gif" /> <span tal:replace="reply/title_or_id">Comment title</span> </h2>
+			<span i18n:translate="label_comment_by">Posted by</span>:
 			<span tal:content="reply/Creator">Poster Name</span>
-			at 
+			<span i18n:translate="label_commented_at">at</span> 
 			<span tal:replace="python: here.toPortalTime(reply.modified())">8/23/2001 12:40:44 PM</span>
 			
 			<p tal:content="structure python:stx(reply.text)">
@@ -50,7 +52,11 @@
 			      tal:condition="python:test( getattr(here, 'isPortalContent', ''), here.isPortalContent, 0)" 
 			      tal:attributes="action string:${reply/absolute_url}/discussion_reply_form" >
 			      
-			    <input class="standalone" type="submit" value="Reply to this" />
+			    <input class="standalone" 
+                       type="submit" 
+                       value="Reply to this" 
+                       i18n:attributes="value"
+                       />
 			
 			</form>
 			
@@ -63,8 +69,10 @@
 				       class="comment" 
 				       tal:attributes="href string:${child/absolute_url}/discussionitem_view">
 				    <span tal:replace="child/Title">Comment title</span>   
-				    (by <span tal:replace="child/Creator">username</span>
-				    at <span tal:replace="python: here.toPortalTime(child.modified())">8/23/2001 12:49:08 PM</span>)
+				    (<span i18n:translate="label_comment_by">Posted by</span> 
+                    <span tal:replace="child/Creator">username</span>
+				    <span i18n:translate="label_commented_at">at</span> 
+                    <span tal:replace="python: here.toPortalTime(child.modified())">8/23/2001 12:49:08 PM</span>)
 				    </a>
 				 </span>
 			    </span>

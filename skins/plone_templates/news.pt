@@ -2,7 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
   <metal:block fill-slot="base">
     <tal:block tal:define="dummy python:request.set('disable_border', 1)"
@@ -28,13 +29,13 @@
             <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
                 <span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
                     <a href="#" tal:attributes="href string:?b_start=${p/first}">
-                    &laquo; More Recent News
+                    &laquo; <span tal:omit-tag="" i18n:translate="more_recent_news">More Recent News</span>
                     </a> 
                 </span>
 
                 <span class="next" tal:define="n batch/next | nothing" tal:condition="n">
                     <a href="#" tal:attributes="href string:?b_start=${batch/end}">
-                    Older News &raquo;
+                    <span tal:omit-tag="" i18n:translate="older_news">Older News</span> &raquo;
                     </a>
                 </span> 
             </div>
@@ -45,7 +46,7 @@
                 <div class="heading">
                     <img src="" alt="Folder" style="border: 0" 
                          tal:attributes="src result/getIcon; alt result/Type;" />
-                Posted by 
+                <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span> 
                 
                     <a href=""
                        tal:attributes="href python:here.portal_membership.getHomeUrl(result.Creator)">
@@ -58,7 +59,7 @@
 
                     </a>                                 
 
-                - Last Updated: <span tal:replace="python:container.toPortalTime(result.Date)" /> 
+                - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python:container.toPortalTime(result.Date)" /> 
                 
                 </div>
                 
@@ -86,7 +87,7 @@
                         </span>
     
         
-                        <a href="/view" tal:attributes="href resultObject/absolute_url">
+                        <a href="/view" tal:attributes="href resultObject/absolute_url" i18n:translate="read_more">
                         Read More
                         </a>
                     </p>
@@ -106,20 +107,20 @@
             <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
                 <span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
                     <a href="#" tal:attributes="href string:?b_start=${p/first}">
-                    &laquo; More Recent News
+                    &laquo; <span tal:omit-tag="" i18n:translate="more_recent_news">More Recent News</span>
                     </a> 
                 </span>
 
                 <span class="next" tal:define="n batch/next | nothing" tal:condition="n">
                     <a href="#" tal:attributes="href string:?b_start=${batch/end}">
-                    Older News &raquo;
+                    <span tal:omit-tag="" i18n:translate="older_news">Older News</span> &raquo;
                     </a>
                 </span> 
             </div>
 
  	  </form>
           
-          <p tal:condition="not: results">
+          <p tal:condition="not: results" i18n:translate="no_new_news">
             No news have been posted.
           </p>		
  

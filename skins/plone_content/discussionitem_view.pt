@@ -20,15 +20,15 @@
                cellpadding="0"
                cellspacing="0">
             <tr>
-                <th i18n:translate="">Discussion</th><th class="empty">&nbsp;</th>	
+                <th i18n:translate="comment">comment</th><th class="empty">&nbsp;</th>	
             </tr>
 
             <tr>
                 <td colspan="2">
                     <h2><img tal:replace="structure here/discussionitem_icon.gif" /> <span tal:replace="here/title_or_id">Comment title</span> </h2>
-                    <span i18n:translate="">Posted by:</span>
+                    <span i18n:translate="posted_by">Posted by:</span>
                     <span tal:content="here/Creator">Poster Name</span>
-                    <span i18n:translate="">at</span> 
+                    <span i18n:translate="posted_at">at</span> 
                     <span tal:replace="python: here.toPortalTime(here.modified())">8/23/2001 12:40:44 PM</span>
 
                     <p tal:content="structure python:stx(here.text)">

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
+      i18n:domain="plone"
 >
 
 <body>
@@ -12,7 +12,7 @@
 
     <div tal:define="err_type options/error_type|nothing;">
     
-        <div tal:condition="python:test(err_type=='NotFound', 1, 0)" i18n:translate="">
+        <div tal:condition="python:test(err_type=='NotFound', 1, 0)" i18n:translate="site_error_apology">
          
             <h1>Our apologies...</h1>
 
@@ -46,7 +46,7 @@
 
         </div>
     
-        <div tal:condition="python:test(err_type=='NotFound', 0, 1)" i18n:translate="">
+        <div tal:condition="python:test(err_type=='NotFound', 0, 1)" i18n:translate="site_error_details">
         
         <h1>Site error</h1>
         

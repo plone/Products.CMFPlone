@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <tal:block metal:fill-slot="base">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -23,19 +22,19 @@
 
     <form name="undo_form" 
           action="undo" 
-          method="POST"
+          method="post"
           tal:condition="transactions"
           tal:define="batch python:Batch(transactions, 15, int(b_start), orphan=1)">
         <input type="hidden" name="came_from" value="" tal:attributes="value request/HTTP_REFERER" />
-        <h1 i18n:translate="">Undo actions</h1>
+        <h1 i18n:translate="heading_undo_actions">Undo actions</h1>
 
-        <p i18n:translate="">
+        <p i18n:translate="description_undo_action">
         This applications transactional feature allows you to easily undo changes
         made to the applications settings or data. You can revert the application
         to a &quot;snapshot&quot; of its state at a previous point in time. 
         </p>
 
-        <p i18n:translate="">
+        <p i18n:translate="description_undo_action_select">
         Select one or more transactions below and then click on the &quot;Undo&quot;
         button to undo the transactions.  Note that even though a transaction
         is shown below, you will not be able to undo it if later transactions
@@ -69,16 +68,14 @@
                summary="Undo history" 
                cellpadding="0" 
                cellspacing="0"> 
-               <!-- Sorry about the cellpadding/cellspacing values, 
-                    Netscape 4 and 6 have bugs in the table code    -->
         
             <thead>
                 <tr>
-                    <th i18n:translate="">Undo</th>
-                    <th i18n:translate="">Affected Item</th>
-                    <th i18n:translate="">Action performed</th>
-                    <th i18n:translate="">Performed by</th>
-                    <th i18n:translate="">Date and time</th>
+                    <th i18n:translate="listingheader_undo">Undo</th>
+                    <th i18n:translate="listingheader_affected_item">Affected Item</th>
+                    <th i18n:translate="listingheader_action_performed">Action performed</th>
+                    <th i18n:translate="listingheader_performed_by">Performed by</th>
+                    <th i18n:translate="listingheader_date_and_time">Date and time</th>
                 </tr>
             </thead>
         
@@ -125,6 +122,7 @@
                name="undo:method" 
                value="Undo"
                tabindex=""
+               i18n:attributes="value"
                tal:attributes="tabindex tabindex/next;" 
                />
 

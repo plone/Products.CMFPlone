@@ -21,17 +21,15 @@
 
 <div metal:fill-slot="header">
 
-<tal:block i18n:translate="">
-<h1>
+<h1 i18n:translate="heading_add_new_issue_to">
 Add new issue to <span tal:condition="here/Title"
 tal:replace="here/Title" i18n:name="collector_title">TITLE</span>
 </h1>
 
-<div class="description">
+<div class="description" i18n:translate="description_add_new_issue">
 Use this form to add your issue to the Collector. Please provide as many details
 as possible.
 </div>
-</tal:block>
 
 </div>
 
@@ -43,14 +41,14 @@ as possible.
                                          or member.has_role('Member')">
 
 <form class="group" 
-        method="POST" 
+        method="post" 
         enctype="multipart/form-data"
         action="collector_add_issue">
 
-    <span class="legend">Submit A New Issue</span> 
+    <span class="legend" i18n:translate="legend_issue_details">Issue Details</span> 
     
     <div class="row">
-        <div class="label"> Issue Title </div>
+        <div class="label" i18n:translate="label_title">Title</div>
 
         <div class="field">
             <input type="text" name="title" value="" size="40" />
@@ -58,18 +56,25 @@ as possible.
     </div>
     
     <div class="row">
-        <div class="label">Security</div>
+        <div class="label"i18n:translate="label_security">Security</div>
         <div class="field">
             <input type=hidden name="security_related:boolean" value="">
-            <input class="noborder" type=checkbox name="security_related:boolean">
+            <input class="noborder" 
+                   type=checkbox 
+                   name="security_related:boolean"
+                   />
+
+            <span i18n:translate="label_security_related_desc">
             Yes, this issue is security related, and
             should <strong>not</strong> be publicly visible until
             completed.
+            </span>
+
         </div>
     </div>
 
     <div class="row">    
-        <div class="label"> Submitter </div>
+        <div class="label" i18n:translate="label_submitter">Submitter</div>
 
         <div class="field" 
              tal:condition="authenticated"
@@ -84,7 +89,7 @@ as possible.
     </div>
     
     <div class="row">
-        <div class="label"> Email </div>
+        <div class="label"i18n:translate="label_email">Email</div>
 
         <div class="field">
             <input type="text" name="submitter_email" size="30"
@@ -100,7 +105,7 @@ as possible.
     </div>
             
     <div class="row">
-        <div class="label"> Topic </div>
+        <div class="label" i18n:translate="label_topic"> Topic </div>
 
         <div class="field">
             <select name="topic">
@@ -113,7 +118,7 @@ as possible.
     </div>
     
     <div class="row">
-        <div class="label"> Importance </div>
+        <div class="label" i18n:translate="label_importance">Importance</div>
         
         <div class="field">
          <select name="importance">
@@ -127,7 +132,7 @@ as possible.
     </div>
 
     <div class="row">    
-        <div class="label"> Classification </div>
+        <div class="label" i18n:translate="label_classification">Classification</div>
         
         <div class="field">
          <select name="classification">
@@ -141,10 +146,9 @@ as possible.
     </div>
     
     <div class="row">
-        <div class="label"> Version Info </div>
+        <div class="label" i18n:translate="label_version_info">Version Info</div>
         <div class="field">
             <textarea name="version_info" rows="3" cols="35"><span tal:replace="here/version_info_spiel"></span></textarea>
-            
         </div>
     </div>
     
@@ -154,15 +158,15 @@ as possible.
                              supporters here/supporters">
 
     <div class="row">
-         <div class="label"> Description </div>
+         <div class="label" i18n:translate="label_description">Description</div>
          <div class="field">
-           <textarea name="description:text" rows="10" cols="55">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
+           <textarea name="description:text" rows="10" cols="55" i18n:translate="prefix_lines_with_whitespace">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
          </div>
 
     </div>
      
     <div class="row" tal:condition="assigner">
-        <div class="label"> Assign to </div> 
+        <div class="label" i18n:translate="label_assign_to">Assign to</div> 
         <div class="field">            
            <select name="assignees:list" MULTIPLE size="5"
                    tal:attributes="size python:
@@ -178,14 +182,14 @@ as possible.
     </metal:block>
     
     <div class="row">
-        <div class="label"> Attachment (optional)</div> 
+        <div class="label" i18n:translate="label_attachment_optional">Attachment (optional)</div> 
         <div class="field">
             <input type=file name="file" size="20" />
         </div>
     </div>
 
     <div class="row">
-        <div class="label"> Attachment type (optional)</div>
+        <div class="label" i18n:translate="label_attachment_type_optional"> Attachment type (optional)</div>
         <div class="field">
             <input class="noborder" type=radio name="filetype" value="File" checked /> File 
             <input class="noborder" type=radio name="filetype" value="Image" /> Image
@@ -193,7 +197,7 @@ as possible.
     </div>
     
     <div class="row">
-        <div class="label">Id of upload (optional)</div>
+        <div class="label" i18n:translate="name_of_upload_optional">Name of upload (optional)</div>
         <div class="field">
             <input type=text name="fileid" size="12" />
         </div>
@@ -202,7 +206,7 @@ as possible.
     <div class="row">
         <div class="label">&nbsp;</div>
         <div class="field">
-         <input class="context" type="submit" value="Submit">
+         <input class="context" type="submit" value="Submit" i18n:attributes="value" />
         </div>
     </div>
         

@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html metal:use-macro="here/main_template/macros/master">
+<html metal:use-macro="here/main_template/macros/master" i18n:domain="plone">
   <body>
    <div metal:fill-slot="main"
         tal:define="HistoryBatchSize python:request.get('HistoryBatchSize',20);first_trx python:request.get('first_transaction',0); last_trx python:20;history here/manage_change_history|nothing;">
     <form action="#" 
-          method="POST"
+          method="post"
           tal:attributes="action here/absolute_url"
           tal:condition="history" tal:define="history_length python:len(history)" >
           <table width="100%" cellspacing="0" cellpadding="2" border="0">
@@ -35,8 +35,18 @@
       </td></tr>
       
     <tr> <td>
-      <input class="context" type="submit"  name="manage_customHistoryCopy:method" value="Copy to present">
-      <input class="context" type="submit"  name="manage_historicalComparison:method" value="Compare">
+      <input class="context" 
+             type="submit"  
+             name="manage_customHistoryCopy:method" 
+             value="Copy to present"
+             i18n:attributes="value"
+             />
+      <input class="context" 
+             type="submit"  
+             name="manage_historicalComparison:method" 
+             value="Compare"
+             i18n:attributes="value"
+             />
       </td> </tr>
   </table>
   </form>

@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <head>
   <metal:block metal:fill-slot="javascript_head_slot">
@@ -26,18 +27,22 @@
         <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
                            here.portal_membership.checkPermission('Add portal content', here)">
             <p>
+            <span i18n:translate="description_no_default_folder">
             This folder does not have a default page, therefore a list of items
             is shown instead.
-            <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document">Click here</a>
-            if you want to create a default page in this folder that will
-            replace the item listing.
+            If you want to create a default page in this folder that will
+            replace the item listing,
+            </span>
+            <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document"
+                        i18n:translate="description_create_folder_click_here">click here.</a>
             </p> 
         </div>
 
         <p>
             <a href="" 
                tal:define="parent_url python:here.navigationParent(here, template.getId());"
-               tal:attributes="href parent_url">
+               tal:attributes="href parent_url"
+               i18n:translate="go_to_parent_url">
             Up one level
             </a>
         </p>
@@ -48,11 +53,11 @@
         
             <thead>
                 <tr>
-                    <th>Title&nbsp;<img tal:replace="structure here/arrowUp.gif" /></th>
-                    <th>Type</th>
-                    <th>Size</th>
-                    <th>Last Modified</th>
-                    <th>Description</th>
+                    <th> <metal:block i18n:translate="listingheaders_title">Title</metal:block>&nbsp;<img tal:replace="structure here/arrowUp.gif" /></th>
+                    <th i18n:translate="listingheaders_type">Type</th>
+                    <th i18n:translate="listingheaders_size">Size</th>
+                    <th i18n:translate="listingheaders_last_modified">Last Modified</th>
+                    <th i18n:translate="listingheaders_description">Description</th>
                 </tr>
             </thead>
 
@@ -75,7 +80,7 @@
             </tbody>
         </table>
 
-        <div tal:condition="not: here/contentValues">
+        <div tal:condition="not: here/contentValues" i18n:translate="description_no_items_in_folder">
          <p>There are currently no items in this folder.</p>
         </div>        
 

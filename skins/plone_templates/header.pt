@@ -132,7 +132,7 @@
             <a href="" class=""
                tal:attributes="href tab/url;
                                class python:test(compare_id==tab['id'], 'selected', 'plain')">
-                <span tal:content="tab/name" i18n:translate="">Welcome</span>
+                <span tal:content="tab/name" i18n:translate="">dummy</span>
             </a>
             
             <span class="netscape4">&middot;</span>
@@ -154,14 +154,14 @@
                 <span tal:replace="user/getUserName">john</span>
             </a>
 
-            <span tal:condition="here/portal_membership/isAnonymousUser" i18n:translate="">you are not logged in</span>
+            <span tal:condition="here/portal_membership/isAnonymousUser" i18n:translate="is_anonymous">you are not logged in</span>
 
             <metal:block tal:repeat="action python:display_actions">
             <a href=""
                tal:attributes="href action/url">
                 <img tal:replace="structure here/linkOpaque.gif" />
                 
-                <span tal:replace="action/name" i18n:translate="">My&nbsp;Stuff</span>
+                <span tal:replace="action/name" i18n:translate="">dummy</span>
             </a>
             </metal:block>
         </div>
@@ -181,7 +181,7 @@
 
                 <img tal:replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')" />
             </a>
-	    <span tal:omit-tag="" i18n:translate="">You are here:</span>
+	    <span tal:omit-tag="" i18n:translate="you_are_here">You are here:</span>
 	    
             <span tal:repeat="crumb breadcrumbs">
 
@@ -213,6 +213,6 @@
 
         <img tal:replace="structure here/info.gif" />
 
-        <strong tal:content="portal_message">Object changed.</strong> 
+        <strong tal:content="portal_message">dummy</strong> 
     </div>
 

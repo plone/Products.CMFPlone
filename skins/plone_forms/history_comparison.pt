@@ -1,8 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
   <body>
   <div metal:fill-slot="main" tal:define="results request/historyComparisonResults|nothing;">
 
@@ -11,7 +10,7 @@
     </div>
 
     <div tal:condition="python:test(results, 0, 1)">
-      <p i18n:translate="">
+      <p i18n:translate="description_no_comparison_support">
       This object does not provide comparison support.
       </p>
     </div> 

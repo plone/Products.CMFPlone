@@ -1,8 +1,7 @@
 <div class="row"
      metal:define-macro="listc_edit"
      tal:define="criterionid criterion/getId | here/getId;"
-           i18n:domain="plone"
->
+           i18n:domain="plone">
 
     <div class="label">
         <input class="noborder"

@@ -4,8 +4,8 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"
->
+      i18n:domain="plone">
+      
 <body>
 
     <div metal:fill-slot="main" 
@@ -13,7 +13,7 @@
                      Iterator python:modules['Products.CMFPlone'].IndexIterator;
                      tabindex python:Iterator();">	  
     
-    <h1 i18n:translate="">Edit Folder Properties</h1>
+    <h1 i18n:translate="heading_edit_folder_properties">Edit Folder Properties</h1>
 
     <form class="group"
           name="edit_form" 
@@ -21,7 +21,7 @@
           method="post"
           tal:attributes="action request/URL" >
 
-        <span class="legend" i18n:translate="">Folder Details</span>
+        <span class="legend" i18n:translate="legend_folder_details">Folder Details</span>
 
         <div class="row" 
              tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
@@ -32,10 +32,10 @@
 
             <div class="label required">
             
-                <span i18n:translate="">Short Name</span>
+                <span i18n:translate="label_name">Name</span>
             
                 <div id="id_help" 
-                     i18:id="id_help"
+                     i18:translate="help_name"
                      class="help" 
                      style="visibility:hidden">
                 Enter the Short Name of the folder. This is the part that will show up as part
@@ -67,10 +67,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label required">
-                <span i18:translate="">Title</span>
+                <span i18:translate="label_title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:translate=""
+                     i18n:translate="help_title"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the folder.
@@ -99,10 +99,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="">Description</span>
+                <span i18n:translate="label_description">Description</span>
                 
                 <div id="description_help" 
-                     i18n:translate=""
+                     i18n:translate="help_description"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the folder. 

@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <body>
 
@@ -33,15 +32,13 @@
     }
     </script>
 
-    <h1 i18n:translate="">Edit Properties</h1>
+    <h1 i18n:translate="heading_edit_properties">Edit Properties</h1>
 
-    <p i18n:translate="">
+    <p i18n:translate="description_edit_properties">
     This information, also referred to as <em>metadata</em> is the collection of information that is used to 
     categorize an object, assign effectuation dates and expiration dates, 
     language, and keywords.
-    </p>
-
-    <p i18n:translate="">
+    <br />
     Change this item's metadata using the form below. Remember, metadata is
     powerful - it enables us to do lots of useful categorization. So fill in the fields
     as concisely as possible, and leave the ones you don't know blank.
@@ -54,13 +51,13 @@
           method="post"
           tal:attributes="action request/URL" >
 
-        <span class="legend" i18n:translate="">Item Properties</span>
+        <span class="legend" i18n:translate="legend_item_properties">Item Properties</span>
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="allow_discussion">Allow Discussion</span>
+                <span i18n:translate="label_allow_discussion">Allow Discussion</span>
                 <div id="allow_discussion_help" 
-                     i18n:translate="allow_discussion_help"
+                     i18n:translate="help_allow_discussion"
                      class="help" 
                      style="visibility:hidden">
                 Specifies whether discussion items and comments can be
@@ -83,7 +80,7 @@
 		                   tal:attributes="checked python: val == None;
                                        tabindex tabindex;"
                        />
-                <label for="discussion_default" i18n:translate="discussion_default">Default</label> <br />
+                <label for="discussion_default" i18n:translate="label_discussion_default">Default</label> <br />
 
                 <input class="noborder" 
                        type="radio" 
@@ -96,7 +93,7 @@
                        tal:attributes="checked python: val == 1;
                                        tabindex tabindex;"
                        />
-                <label for="discussion_on" i18n:translate="discussion_on">On</label> <br />
+                <label for="discussion_on" i18n:translate="label_discussion_enabled">Enabled</label> <br />
 
                 <input class="noborder" 
                        type="radio" 
@@ -109,7 +106,7 @@
                        tal:attributes="checked python: val == 0;
                                        tabindex tabindex;"
                        />
-                <label for="discussion_off" i18n:translate="discussion_off">Off</label>
+                <label for="discussion_off" i18n:translate="label_discussion_disabled">Disabled</label>
                        
                        
 	        </metal:block>
@@ -118,10 +115,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="keywords">Keywords</span>
+                <span i18n:translate="label_keywords">Keywords</span>
     
                 <div id="keywords_help" 
-                     i18n:translate="keywords_help"
+                     i18n:translate="help_keywords"
                      class="help" 
                      style="visibility:hidden">
                 Here you add the relevant keywords that describe this item. You can either 
@@ -189,7 +186,10 @@
                     </td>
 
                     <td>
-                    Selected keywords<br />
+                    <span i18n:translate="selected_keywords">
+                    Selected keywords
+                    </span>
+                    <br />
                     <textarea id="entered_subjects"
                       name="subject:lines" 
                       rows="15" 
@@ -209,10 +209,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="effective_date">Effective Date</span>
+                <span i18n:translate="label_effective_date">Effective Date</span>
 
                 <div id="effective_date_help" 
-                     i18n:translate="effective_date_help"
+                     i18n:translate="help_effective_date"
                      class="help" 
                      style="visibility:hidden">
                 The date when the document will be visible when it's published. This way, you can 
@@ -235,9 +235,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="expiration_date">Expiration Date</span>
+                <span i18n:translate="label_expiration_date">Expiration Date</span>
                 <div id="expiration_date_help" 
-                     i18n:translate="expiration_date_help"
+                     i18n:translate="help_expiration_date"
                      class="help" 
                      style="visibility:hidden">
                 The date when the document expires. This will automatically make the document
@@ -260,10 +260,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="format">Format</span>
+                <span i18n:translate="label_format">Format</span>
                 
                 <div id="format_help" 
-                     i18n:translate="format_help"
+                     i18n:translate="help_format"
                      class="help" 
                      style="visibility:hidden">
                 The MIME-type of the document. If you don't know what this does, just leave it :)<br /> Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
@@ -291,9 +291,9 @@
              tal:define="def_language here/portal_properties/default_language;
                          sel_language python:test(here.Language(), here.Language(), def_language);">
             <div class="label">
-                <span i18n:translate="language">Language</span>
+                <span i18n:translate="label_language">Language</span>
                 <div id="language_help" 
-                     i18n:translate="language_help"
+                     i18n:translate="help_language"
                      class="help" 
                      style="visibility:hidden">
                 The language the document is written in, indicated
@@ -310,7 +310,7 @@
                         tal:attributes="value here/Language;
                                         tabindex tabindex/next;"
                         >
-                    <option value="">Choose Language</option> 
+                    <option value="" i18n:translate="choose_language">Choose Language</option> 
 	            <option tal:repeat="language here/availableLanguages" 
 		            tal:attributes="value python:language[0];
                                             selected python:test(sel_language == language[0], 'selected', '')"
@@ -321,9 +321,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="rights">Rights</span>
+                <span i18n:translate="label_copyrights">Copyrights</span>
                 <div id="rights_help" 
-                     i18n:translate="rights_help"
+                     i18n:translate="help_copyrights"
                      class="help" 
                      style="visibility:hidden">
                 Copyright information on the item.
@@ -346,9 +346,9 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="contributors">Contributors</span>
+                <span i18n:translate="label_contributors">Contributors</span>
                 <div id="contributors_help" 
-                     i18n:translate="contributors_help"
+                     i18n:translate="help_contributors"
                      class="help" 
                      style="visibility:hidden">
                 The names of people that have contributed to this item.
@@ -376,6 +376,7 @@
                        tabindex=""
                        name="change_and_view" 
                        value="Save"
+                       i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"
                        />
             </div>

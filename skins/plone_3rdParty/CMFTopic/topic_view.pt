@@ -85,7 +85,7 @@
 
     <metal:block tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
 
-    <h2 i18n:translate="">Sub-topics</h2>
+    <h2 i18n:translate="heading_sub_topics">Sub-topics</h2>
     
     <ul>
         <li tal:repeat="topic topics">
@@ -103,7 +103,7 @@
     </metal:block>
 
     <div tal:condition="not: results">
-        <p><strong i18n:translate=""> No Results were Found </strong></p>
+        <p><strong i18n:translate="no_results_found"> No results match your criteria. </strong></p>
     </div>
 
     </metal:block>

@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <body>
 
@@ -13,9 +12,9 @@
      tal:define="rejection here/rejectAnonymous;
                  errors python:request.get('errors', {});" >
 
-    <h1 i18n:translate="">Edit Topic</h1>
+    <h1 i18n:translate="heading_edit_topic">Edit Topic</h1>
 
-    <p i18n:translate=""> 
+    <p i18n:translate="description_edit_topic"> 
     A topic is a pre-defined search, showing all items matching
     criteria you specify. Topics may also contain sub-topics.
     </p>
@@ -30,7 +29,7 @@
           name="edit_form"
           tal:attributes="action request/URL">
 
-        <span class="legend" i18n:translate="">Topic Details</span>
+        <span class="legend" i18n:translate="legend_topic_details">Topic Details</span>
 
         <div class="row" 
              tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
@@ -39,13 +38,13 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:translate="">Short Name</span>
+                <span i18n:translate="label_name">Name</span>
             
                 <div id="id_help" 
-                     i18:id="id_help"
+                     i18:id="help_name"
                      class="help" 
                      style="visibility:hidden">
-                Enter the Short Name of the topic. This is the part that will show up as part
+                Enter the Name of the topic. This is the part that will show up as part
                 of the web address. This should be short, descriptive
                 and preferrably not contain spaces, underscores or mixed case. Example:
                 "expense-report-2002"
@@ -73,10 +72,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label required">
-                <span i18:id="title">Title</span>
+                <span i18:translate="label_title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:translate="title_help"
+                     i18n:translate="help_title"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the topic.
@@ -102,10 +101,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="">Description</span>
+                <span i18n:translate="label_description">Description</span>
                 
                 <div id="description_help" 
-                     i18n:translate="description_help"
+                     i18n:translate="help_description"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the topic. 
@@ -127,9 +126,9 @@
 
         <div class="row">
 	        <div class="label">
-                <span i18n:translate="">Inherit Criteria</span>
+                <span i18n:translate="label_inherit_criteria">Inherit Criteria</span>
                 <div id="acquire_criteria_help"
-                     i18n:translate="acquire_criteria_help" 
+                     i18n:translate="help_inherit_criteria" 
                      class="help" 
                      style="visibility:hidden">
                 Toggles inheritance of criteria. For example, if you
@@ -163,7 +162,8 @@
                        tabindex="5"
 		               type="submit" 
                        name="Change Topic" 
-                       value="Save" 
+                       value="Save"
+                       i18n:attributes="value"
                        />
             </div>
         </div>

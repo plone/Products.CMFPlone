@@ -6,7 +6,7 @@
        i18n:domain="plone">
 
     <thead>
-        <tr><th i18n:translate="About">About</th><th class="empty">&nbsp;</th></tr>
+        <tr><th i18n:translate="box_about">About</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
     <tbody>
@@ -24,7 +24,7 @@ tal:replace="python:here.getTypeInfo().Title()">Object type</span>
         <tr class="even">
             <td colspan="2">
 
-            <strong i18n:translate="">Created&nbsp;by:</strong> <br />
+            <strong i18n:translate="box_created_by">Created&nbsp;by:</strong> <br />
             <img tal:replace="structure here/user.gif" />
             <a href="#" tal:content="here/Creator"
                         tal:attributes="href python:here.portal_membership.getHomeUrl(here.Creator())">bob</a>
@@ -33,7 +33,7 @@ tal:replace="python:here.getTypeInfo().Title()">Object type</span>
 
         <tr class="odd">
             <td colspan="2">
-                <strong i18n:translate="">Last&nbsp;modified:</strong> <br />
+                <strong i18n:translate="box_last_modified">Last&nbsp;modified:</strong> <br />
                 <span tal:replace="python:here.toPortalTime(here.ModificationDate())">
                 August 16, 2001 at 23:35:59
                 </span>
@@ -48,7 +48,7 @@ tal:replace="python:here.getTypeInfo().Title()">Object type</span>
                 <span class="private"
                       tal:content="review_state"
                       tal:attributes="class review_state"
-		      i18n:translate="">
+		                  i18n:translate="">
                 </span>
 
                 <span class="expired"

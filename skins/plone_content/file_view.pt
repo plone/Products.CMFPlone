@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <body>
 
@@ -20,10 +19,10 @@
     </span>
 
     <div class="group">
-        <span class="legend" i18n:translate="">File details</span>
+        <span class="legend" i18n:translate="legend_file_details">File details</span>
 
         <div class="row">
-            <div class="label" i18n:translate="">Size</div>
+            <div class="label" i18n:translate="label_size">Size</div>
 
             <div class="field" 
                   tal:define="size python:here.getObjSize(here)"
@@ -31,13 +30,13 @@
             File size
             </div>            
 
-            <span tal:condition="python:test(here.size, 0, 1)" i18n:translate="">
+            <span tal:condition="python:test(here.size, 0, 1)" i18n:translate="no_file_uploaded">
               (No file has been uploaded)
             </span>
         </div>
 
         <div class="row">
-            <div class="label" i18n:translate="">File type</div>
+            <div class="label" i18n:translate="label_file_type">File type</div>
             <div class="field" tal:content="here/content_type">
             Content type
             </div>
@@ -64,7 +63,7 @@
     <div class="row"
          tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
             
-            <h2>File contents</h2>
+            <h2 i18n:translate="file_contents">File contents</h2>
             
             <pre tal:content="here/data">
             </pre>

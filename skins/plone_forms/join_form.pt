@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <body>
 
@@ -13,9 +12,9 @@
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();" > 
  
-    <h1 i18n:translate="">Please register</h1>
+    <h1 i18n:translate="heading_registration_form">Please register</h1>
 
-    <p i18n:translate="">
+    <p i18n:translate="description_registration_form">
     By registering with us, you will have your own account with the
     possibility to have personalized content, and you will be able to add
     your own documents, images and files to the site.
@@ -26,7 +25,7 @@
           method="post"
           tal:define="allowEnterPassword here/portal_properties/validate_email|nothing;">
 
-        <span class="legend" i18n:translate="">Personal Details</span>
+        <span class="legend" i18n:translate="legend_personal_details">Personal Details</span>
 
         <input type="hidden" name="came_from" value=""
                tal:attributes="value request/came_from|request/HTTP_REFERER" />
@@ -40,9 +39,9 @@
                          username request/username | nothing;" >
             
             <div class="label required">
-                <span i18n:translate="user_name">User name</span>
+                <span i18n:translate="label_user_name">User Name</span>
                 <div id="user_name_help" 
-                     i18n:translate="user_name_help"
+                     i18n:translate="help_user_name_creation"
                      class="help" 
                      style="visibility:hidden">
                 Enter the user name you want, usually something like
@@ -76,9 +75,9 @@
                          email request/email | nothing;" >
 
             <div class="label required">
-                <span i18n:translate="email">E-mail</span>
+                <span i18n:translate="label_email">E-mail</span>
                 <div id="email_help" 
-                     i18n:translate="email_help"
+                     i18n:translate="help_email_creation"
                      class="help" 
                      style="visibility:hidden">
                 Enter your email address. This is necessary in case you lose your
@@ -112,9 +111,9 @@
                          password request/password | nothing;" >
 
             <div class="label required">
-                <span i18n:translate="password">Password</span>
+                <span i18n:translate="label_password">Password</span>
                 <div id="password_help" 
-                     i18n:translate="password_help"
+                     i18n:translate="help_password_creation"
                      class="help" 
                      style="visibility:hidden">
                 Enter the password you want. Minimum 5 characters.
@@ -146,9 +145,9 @@
                          confirm request/confirm | nothing;" >
                          
             <div class="label required">
-                <span i18n:translate="confirm_password">Confirm <br />Password</span>
+                <span i18n:translate="label_confirm_password">Confirm <br />Password</span>
                 <div id="confirm_password_help" 
-                     i18n:translate="confirm_password_help"
+                     i18n:translate="help_confirm_password"
                      class="help" 
                      style="visibility:hidden">
                 Re-enter the password. Make sure the passwords are identical.
@@ -175,9 +174,9 @@
         <div class="row" tal:condition="not: allowEnterPassword" tal:define="mail_me request/mail_me|nothing">
                         
             <div class="label">
-                <span i18n:translate="mail_password">Mail Password?</span>
+                <span i18n:translate="label_mail_password">Mail Password?</span>
                 <div id="mail_password_help" 
-                     i18n:translate="mail_password_help"
+                     i18n:translate="help_mail_password"
                      class="help" 
                      style="visibility:hidden">
                 Check this box to have your password 
@@ -197,15 +196,15 @@
                        tal:attributes="checked python:test(mail_me, 'checked', '');
                                        tabindex tabindex/next;" 
                        />
-                <label for="cb_mailme" i18n:translate="">Yes, mail me my password</label>
+                <label for="cb_mailme" i18n:translate="label_yes_mail_me_password">Yes, mail me my password</label>
             </div>
         </div>
 
         <div class="row" tal:condition="allowEnterPassword">
-            <div class="label" i18n:translate="">NOTE</div>
-            <div class="field" i18n:translate="">
-            This portal has been configured to automatically generate and 
-            email you a password to complete the registration process.
+            <div class="label"></div>
+            <div class="field" i18n:translate="label_password_will_be_mailed">
+            A password will be generated and 
+            e-mailed to you to complete the registration process.
             </div>
         </div>
 
@@ -215,9 +214,9 @@
                 <input class="context" 
                 type="submit"
                 tabindex="" 
-                i18n:translate=""
                 name="submit" 
                 value="Register"
+                i18n:attributes="value"
                 tal:attributes="tabindex tabindex/next;">
             </div>
         </div>

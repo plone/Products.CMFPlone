@@ -21,11 +21,10 @@
     
     <span tal:define="dummy python:request.response.setHeader('pragma','no-cache')" />
 
-    <h1 i18n:translate="">Member Preferences</h1>
+    <h1 i18n:translate="heading_my_preferences">My Preferences</h1>
 
     <p> 
-        <a href="password_form" i18n:translate="">Click here</a> 
-        <span i18n:translate="">to change your password</span>. 
+        <a href="password_form" i18n:translate="description_click_to_change_password">Click here to change your password</a>. 
     </p>
       
   
@@ -39,17 +38,17 @@
               tal:condition="member"
               tal:attributes="action request/URL">
         
-            <span class="legend" i18n:translate="">Member Details</span>
+            <span class="legend" i18n:translate="legend_member_details">Member Details</span>
 		
             <div class="row"
 	         tal:define="error_email errors/email | nothing;
                              email request/email|member/email;">
                 
                 <div class="label required">
-                    <span i18n:translate="new_email">New e-mail <br /> address</span>
+                    <span i18n:translate="label_email">E-mail</span>
 
                     <div id="new_email_help"
-                         i18n:translate="new_email_help" 
+                         i18n:translate="help_new_email" 
                          class="help" 
                          style="visibility:hidden">
                     Enter your new e-mail address here, if you want to change it.
@@ -77,15 +76,15 @@
 
             <div class="row">
                 <div class="label">
-                    <span i18n:translate="wysiwyg_editor">WYSIWYG editor</span>
+                    <span i18n:translate="label_content_editor">Content editor</span>
                     
                     <div id="wysiwyg_editor_help"
-                         i18n:translate="wysiwyg_editor_help"
+                         i18n:translate="help_content_editor"
                          class="help"
                          style="visibility:hidden">
                     Select the editor that you would like to use for editing
-                    content more easily.  What You See Is What You Get editors
-                    often have browser requirements.
+                    content more easily. Content editors
+                    often have specific browser requirements.
                     </div>
                 </div>
                 <div class="field"
@@ -99,8 +98,9 @@
                          <option value="None"
                                  tal:attributes="value editor;
                                                  selected python:test(editor==wysiwyg_editor, 'selected', '');"
-                                 tal:content="editor">
-                         None
+                                 tal:content="editor"
+                                 i18n:translate="label_ordinary_content_editor">
+                         Ordinary Form-based Editor (works in all browsers)
                          </option>
                          </tal:block>
                      </select>
@@ -109,10 +109,10 @@
              
             <div class="row">
                 <div class="label">
-                    <span i18n:translate="listed_status">Listed status</span>
+                    <span i18n:translate="label_listed_status">Listed status</span>
 
                     <div id="listed_status_help"
-                         i18n:translate="listed_status_help" 
+                         i18n:translate="help_listed_status" 
                          class="help" 
                          style="visibility:hidden">
                     Select whether you want to be listed on the public membership listing
@@ -148,7 +148,7 @@
                            tal:condition="not: listed" 
                            />
                     
-                    <label for="cb_listed" i18n:translate="">Listed</label>
+                    <label for="cb_listed" i18n:translate="label_member_listed">Listed</label>
                     
                     <br />
                     
@@ -177,19 +177,19 @@
                            tal:condition="not: listed " 
                            />		   
                     
-                    <label for="cb_unlisted" i18n:translate="">Unlisted</label>
+                    <label for="cb_unlisted" i18n:translate="label_member_unlisted">Unlisted</label>
                 </div>
             </div>
 
             <div class="row">
                 <div class="label">
-                    <span i18n:translate="formtooltips_status">Display form tooltips</span>
+                    <span i18n:translate="label_form_help">Form Help</span>
 
                     <div id="formtooltips_help"
-                         i18n:translate="formtooltips_help" 
+                         i18n:translate="help_form_help" 
                          class="help" 
                          style="visibility:hidden">
-                    Select whether you want form tooltips to be displayed.
+                    Select whether you want form help pop-ups to be displayed.
                     </div>                
                 </div>
                 <div class="field"
@@ -220,7 +220,7 @@
                            tal:condition="not: formtooltips" 
                            />
                     
-                    <label for="cb_formtooltips" i18n:translate="">Yes</label>
+                    <label for="cb_formtooltips" i18n:translate="yes">Yes</label>
                     
                     <br />
                     
@@ -249,22 +249,22 @@
                            tal:condition="not: formtooltips" 
                            />		   
                     
-                    <label for="cb_noformtooltips" i18n:translate="">No</label>
+                    <label for="cb_noformtooltips" i18n:translate="no">No</label>
                 </div>
             </div>
 
 
             <div class="row">
                 <div class="label">
-                    <span i18n:translate="visible_ids_status">Display short names</span>
+                    <span i18n:translate="label_display_names">Display Names</span>
 
                     <div id="visible_ids_help"
-                         i18n:translate="visible_ids_help" 
+                         i18n:translate="help_display_names" 
                          class="help" 
                          style="visibility:hidden">
-                    Select whether you want Short Names (also known as IDs) to be 
+                    Select whether you want Names (also known as IDs) to be 
                     visible and editable when editing contents. If you choose not
-                    to display Short Names, they will be generated automatically.
+                    to display Names, they will be generated automatically.
                     </div>                
                 </div>
                 <div class="field"
@@ -295,7 +295,7 @@
                            tal:condition="not: visible_ids" 
                            />
                     
-                    <label for="cb_visible_ids" i18n:translate="">Yes</label>
+                    <label for="cb_visible_ids" i18n:translate="yes">Yes</label>
                     
                     <br />
                     
@@ -324,7 +324,7 @@
                            tal:condition="not: visible_ids" 
                            />		   
                     
-                    <label for="cb_invisible_ids" i18n:translate="">No</label>
+                    <label for="cb_invisible_ids" i18n:translate="no">No</label>
                 </div>
             </div>
 
@@ -333,13 +333,12 @@
                  tal:condition="here/portal_skins/allow_any">
                 
                 <div class="label">
-                    <span i18n:translate="skin">Skin</span>
+                    <span i18n:translate="label_look">Look</span>
                     <div id="skin_help"
-                         i18n:translate="skin_help" 
+                         i18n:translate="help_look" 
                          class="help" 
                          style="visibility:hidden">
-                    Here you choose the appearance of the site. Several styles are available,
-                    and you can always change it back to the default if you do not like a skin.
+                    Here you choose the appearance of the site. Several styles are available.
                     </div>
                 </div>
                 
@@ -354,10 +353,12 @@
                             tal:attributes="tabindex tabindex/next;" 
                             >
                     <option value="#"
+                            i18n:translate=""
                             tal:repeat="skin container/portal_skins/getSkinSelections"
                             tal:attributes="value skin;
-                            selected python:test(skincurrent==skin, 'selected', '');"
-                            tal:content="skin">Plone</option>
+                                            selected python:test(skincurrent==skin, 'selected', '');"
+                            tal:content="skin"
+                            >dummy skin</option>
                     </select>
                 </div>
             </div>
@@ -367,9 +368,9 @@
                              home python:container.portal_membership.getHomeUrl(member.getId())"
                  tal:condition="home">
                 <div class="label">
-                    <span i18n:translate="portrait">Portrait</span>
+                    <span i18n:translate="label_portrait">Portrait</span>
                     <div id="portrait_help"
-                         i18n:translate="portrait_help" 
+                         i18n:translate="help_portrait" 
                          class="help" 
                          style="visibility:hidden">
                     To add a new portrait, click the <strong>Browse</strong> button and select
@@ -390,6 +391,8 @@
                     <br />
                     
                     <img src="" 
+                         height="100"
+                         width="75"
                          style="border: 1px solid black" 
                          tal:condition="portrait"
                          tal:attributes="src portrait/absolute_url" 
@@ -403,8 +406,8 @@
                     <input class="context"
                            tabindex="" 
                            type="submit" 
-                           i18n:translate=""
                            value="Apply" 
+                           i18n:attributes="value"
                            tal:attributes="tabindex tabindex/next;" 
                            />
                 </div>

@@ -3,8 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <body>
 
@@ -12,9 +11,9 @@
      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();">
 
-    <h1 i18n:translate="">Rename item</h1>
+    <h1 i18n:translate="heading_rename_item">Rename item</h1>
 
-    <p i18n:translate="">To rename an item, enter the new name below.</p>
+    <p i18n:translate="description_rename_item">To rename an item, enter the new name below.</p>
 
     <form class="group"
           name="folder_rename" 
@@ -23,7 +22,7 @@
           tal:define="items request/ids|nothing"
           tal:condition="items">
 
-        <span class="legend" i18n:translate="">Rename Details</span>
+        <span class="legend" i18n:translate="legend_rename_details">Rename Details</span>
 
         <div class="row" tal:repeat="item items">
           <metal:block tal:define="obj python:getattr(here, item)">
@@ -70,6 +69,7 @@
                        type="submit" 
                        value="Rename"
                        tabindex=""
+                       i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;" 
                        />
                 <input class="context" 
@@ -77,6 +77,7 @@
                        value="Cancel"
                        onClick="javascript:document.folder_rename.action=document.folder_rename.here.value+'/folder_contents';document.folder_rename.submit();" 
                        tabindex=""
+                       i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next;"                       
                        />
             </div>

@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
+      
 <body>
 
     <div metal:fill-slot="main"
@@ -13,9 +13,9 @@
                      Iterator python:modules['Products.CMFPlone'].IndexIterator;
                      tabindex python:Iterator();" >
 
-    <h1 i18n:translate="">Edit Event</h1>
+    <h1 i18n:translate="heading_edit_event">Edit Event</h1>
     
-    <p i18n:translate="">
+    <p i18n:translate="description_edit_event">
     Fill in the details of the event you want to add.
     </p>
 
@@ -27,7 +27,7 @@
           enctype="multipart/form-data"
           tal:attributes="action request/URL" >
 
-    <span class="legend" i18n:translate="">Event Details</span>    
+    <span class="legend" i18n:translate="legend_event_details">Event Details</span>    
       
         <div class="row" 
              tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
@@ -36,13 +36,13 @@
 	                 id python:request.get('id', here.getId());">
 			 
             <div class="label required">
-                <span i18n:translate="">Short Name</span>
+                <span i18n:translate="label_name">Name</span>
             
                 <div id="id_help" 
-                     i18:translate="id_help"
+                     i18n:translate="help_name"
                      class="help" 
                      style="visibility:hidden">
-                Enter the Short Name of the event. This is the part that will show up as part
+                Enter the Name of the event. This is the part that will show up as part
                 of the web address. This should be short, descriptive
                 and preferrably not contain spaces, underscores or mixed case. Example:
                 "expense-report-2002"
@@ -68,9 +68,9 @@
                          Title request/title | here/Title;"> 
 
             <div class="label required">
-            <span i18n:translate="event_title">Event Title</span>
+            <span i18n:translate="label_title">Title</span>
                 <div id="title_help" 
-                     i18n:translate="title_help"
+                     i18n:translate="help_title"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of this event. 
@@ -99,9 +99,9 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:translate="event_location">Event Location</span>
+                <span i18n:translate="label_event_location">Event Location</span>
                 <div id="event_location_help" 
-                     i18n:translate="event_location_help"
+                     i18n:translate="help_event_location"
                      class="help" 
                      style="visibility:hidden">
                 Enter the location where the event will take place. 
@@ -123,9 +123,9 @@
                
         <div class="row"> 
             <div class="label">
-                <span i18n:translate="event_type">Event Type</span>
+                <span i18n:translate="label_event_type">Event Type</span>
                 <div id="event_type_help" 
-                     i18n:translate="event_type_help"
+                     i18n:translate="help_event_type"
                      class="help" 
                      style="visibility:hidden">
                 Select the type of event. Multiple event types possible.
@@ -156,10 +156,10 @@
                
         <div class="row">
             <div class="label">
-                <span i18n:translate="event_description">Event Description</span>
+                <span i18n:translate="label_description">Event Description</span>
                 
                 <div id="event_description_help" 
-                     i18n:translate="event_description_help"
+                     i18n:translate="help_description"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the event. 
@@ -182,10 +182,10 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:translate="event_url">Event URL</span>
+                <span i18n:translate="label_event_url">Event URL</span>
                 
                 <div id="event_url_help" 
-                     i18n:translate="event_url_help"
+                     i18n:translate="help_event_url"
                      class="help" 
                      style="visibility:hidden">
                 Enter the optional web address of a page containing more info about
@@ -211,9 +211,9 @@
              tal:define="start_date python:request.get('start_date', here.toPortalTime(here.start(), long_format=1));
                          error_start_date errors/start_date | nothing;">
             <div class="label">
-              <span i18n:translate="start_date">Event Starts</span>
+              <span i18n:translate="label_event_start">Event Starts</span>
                 <div id="start_date_help"
-                     i18n:translate="start_date_help" 
+                     i18n:translate="help_event_start" 
                      class="help" 
                      style="visibility:hidden">
                      Enter the starting date and time,
@@ -242,9 +242,9 @@
              tal:define="end_date python:request.get('end_date', here.toPortalTime(here.end(), long_format=1));
                          error_end_date errors/end_date | nothing;">
             <div class="label">
-              <span i18n:translate="end_date">Event Ends</span>
+              <span i18n:translate="label_event_end">Event Ends</span>
                 <div id="end_date_help"
-                     i18n:translate="end_date_help" 
+                     i18n:translate="help_event_end" 
                      class="help" 
                      style="visibility:hidden">
                      Enter the ending date and time,
@@ -271,10 +271,10 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:translate="contact_name">Contact Name</span>
+                <span i18n:translate="label_contact_name">Contact Name</span>
                 
                 <div id="contact_name_help" 
-                     i18n:translate="contact_name_help"
+                     i18n:translate="help_contact_name"
                      class="help" 
                      style="visibility:hidden">
                 Enter a contact person or organization for the event.
@@ -297,10 +297,10 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:translate="contact_email">Contact E-mail</span>
+                <span i18n:translate="label_contact_email">Contact E-mail</span>
                 
                 <div id="contact_email_help" 
-                     i18n:translate="contact_email_help"
+                     i18n:translate="help_contact_email"
                      class="help" 
                      style="visibility:hidden">
                 Enter an e-mail address to use for information regarding
@@ -324,10 +324,10 @@
 
         <div class="row"> 
             <div class="label">
-                <span i18n:translate="contact_phone">Contact Phone</span>
+                <span i18n:translate="label_contact_phone">Contact Phone</span>
                 
                 <div id="contact_phone_help" 
-                     i18n:translate="contact_phone_help"
+                     i18n:translate="help_contact_phone"
                      class="help" 
                      style="visibility:hidden">
                 Enter the phone number to call for information and/or
@@ -360,6 +360,7 @@
                        type="submit" 
                        name="Change" 
                        value="Save" 
+                       i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next"
                        />
             </div>

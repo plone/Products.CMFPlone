@@ -2,8 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 <body>
 
 <div metal:fill-slot="main" 
@@ -11,9 +10,9 @@
                  Iterator python:modules['Products.CMFPlone'].IndexIterator;
                  tabindex python:Iterator();" >
 
-    <h1 i18n:translate="">Edit file</h1>
+    <h1 i18n:translate="heading_edit_file">Edit file</h1>
     
-    <p i18n:translate="">
+    <p i18n:translate="description_edit_file">
     Add the relevant details of the file to be added in the form below,
     select the file with the "Browse" button, and press "Save".
     </p>
@@ -29,7 +28,7 @@
           enctype="multipart/form-data"
           tal:attributes="action request/URL" >
             
-        <span class="legend" i18n:translate="">File details</span>
+        <span class="legend" i18n:translate="legend_file_details">File details</span>
         
         <div class="row" 
              tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
@@ -38,13 +37,13 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:translate="">Short Name</span>
+                <span i18n:translate="label_name">Name</span>
             
                 <div id="id_help" 
-                     i18:translate="id_help"
+                     i18n:translate="help_name"
                      class="help" 
                      style="visibility:hidden">
-                Enter the Short Name of the file. This is the part that will show up as part
+                Enter the Name of the file. This is the part that will show up as part
                 of the web address. This should be short, descriptive
                 and preferrably not contain spaces, underscores or mixed case. Example:
                 "expense-report-2002"
@@ -74,10 +73,10 @@
              tal:define="error_title errors/title|nothing;
                          Title request/title | here/Title;"> 
             <div class="label">
-                <span i18:translate="title">Title</span>
+                <span i18n:translate="label_title">Title</span>
                 
                 <div id="title_help" 
-                     i18n:translate="title_help"
+                     i18n:translate="help_title"
                      class="help" 
                      style="visibility:hidden">
                 Enter the title of the file.
@@ -105,10 +104,10 @@
 
         <div class="row">
             <div class="label">
-                <span i18n:translate="description">Description</span>
+                <span i18n:translate="label_description">Description</span>
                 
                 <div id="description_help" 
-                     i18n:translate="description_help"
+                     i18n:translate="help_description"
                      class="help" 
                      style="visibility:hidden">
                 Enter a brief description of the file. 
@@ -134,9 +133,9 @@
                          file request/file | here/file | nothing;">
             
             <div class="label required">
-                <span i18n:translate="file">File</span>
+                <span i18n:translate="label_file">File</span>
                 <div id="file_help" 
-                     i18n:translate="file_help"
+                     i18n:translate="help_file"
                      class="help" 
                      style="visibility:hidden">
                 Select the file to be added by clicking the "Browse" button.
@@ -156,8 +155,10 @@
                        onblur="formtooltip('file_help',0)" 
                        tal:attributes="tabindex tabindex/next"
                        />
-                <span tal:condition="python:test(here.size, 0, 1)">
-                  <br /> (No file has been uploaded yet)
+                <br />
+                <span i18n:translate="no_file_uploaded"
+                      tal:condition="python:test(here.size, 0, 1)">
+                  (No file has been uploaded yet)
                 </span>
             </div>
         </div>
@@ -166,10 +167,10 @@
             tal:condition="python:test(here.content_type.find('text')>-1, 1,0)">
             
             <div class="label">
-                <span i18n:translate="edit_contents">Edit Contents</span>
+                <span i18n:translate="label_edit_contents">Edit Contents</span>
 
                 <div id="edit_contents_help" 
-                     i18n:translate="edit_contents_help"
+                     i18n:translate="help_edit_contents"
                      class="help" 
                      style="visibility:hidden">
                 This file is a text file, and you can edit its
@@ -201,6 +202,7 @@
                        tabindex="" 
                        name="Change" 
                        value="Save" 
+                       i18n:attributes="value"
                        tal:attributes="tabindex tabindex/next"
                        /> 
             </div>

@@ -21,7 +21,7 @@
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;">
     
-    <h1 i18n:translate="">Search results</h1>
+    <h1 i18n:translate="heading_search_results">Search results</h1>
                  
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);
@@ -30,7 +30,7 @@
 
         <strong> 
         <span tal:replace="python:len(results)" /> 
-        <span i18n:translate="">items matching your criteria</span>. 
+        <span i18n:translate="description_x_items_matching_your_criteria">items matching your criteria</span>. 
         </strong> 
         
         <br/>
@@ -64,10 +64,10 @@
         
             <thead>
                 <tr>
-                    <th i18n:translate="title">Title</th>
-                    <th i18n:translate="author">Author</th>
-                    <th i18n:translate="last_modified">Last Modified</th>
-                    <th i18n:translate="description">Description</th>
+                    <th i18n:translate="listingheader_title">Title</th>
+                    <th i18n:translate="listingheader_author">Author</th>
+                    <th i18n:translate="listingheader_last_modified">Last Modified</th>
+                    <th i18n:translate="listingheader_description">Description</th>
                 </tr>
             </thead>
 
@@ -116,7 +116,7 @@
     </div>
     
     <div tal:condition="not: results">
-        <p><strong i18n:translate=""> No Results were Found </strong></p>
+        <p><strong i18n:translate="description_no_results_found">No results were found.</strong></p>
     </div>		 
 
 </div>

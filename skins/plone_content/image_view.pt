@@ -24,7 +24,7 @@
     
     <small>
 
-    <span i18n:translate="">Size:</span>
+    <span i18n:translate="label_size">Size:</span>
 
         <span tal:define="size python:here.getObjSize(here)"
               tal:content="size">                        
@@ -32,7 +32,7 @@
         </span>            
 
         <span tal:condition="python:test(here.size, 0, 1)"
-              i18n:translate="">
+              i18n:translate="no_file_uploaded">
           (No file has been uploaded)
         </span>
 

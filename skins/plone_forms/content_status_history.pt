@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"
->
+      i18n:domain="plone">
 <body>
 
 <!-- 
@@ -29,9 +28,9 @@
             tal:attributes="src string:${here/portal_url}/calendar.js">
     </script>
 
-    <h1 i18n:translate="">Publishing process</h1>
+    <h1 i18n:translate="heading_publishing_process">Publishing process</h1>
     
-    <p i18n:translate="">
+    <p i18n:translate="description_publishing_process">
     An item's status (also called its review state) determines who can see it.
     A <strong>private</strong> item can only be viewed by its Owner and by the site
     management. Only <strong>published</strong> items are available to the general
@@ -48,17 +47,17 @@
     <div class="group" tal:condition="not: request/ids|nothing">
         <metal:block tal:define="global review_state python:here.portal_workflow.getInfoFor(here, 'review_state');
                                  global review_history python:here.portal_workflow.getInfoFor(here, 'review_history');" />
-        <span class="legend">Status</span>
+        <span class="legend" i18n:translate="legend_status">Status</span>
     
         <div class="row">
-            <div class="label" i18n:translate="status">Status</div>
+            <div class="label" i18n:translate="label_status">Status</div>
             <div class="field"
-                  i18n:translate=""
-	          tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
-	                      expiration_date python:test(here.expiration_date, here.expiration_date, '');
-	                      effective python:">
-	     This item is currently in the <strong i18n:name="review_state" tal:content="review_state">review_state;</strong> state
-	    <tal:block tal:condition="python: review_state == 'published'"
+                 i18n:translate=""
+                 tal:define="effective_date python:test(here.effective_date, here.effective_date, '');
+                             expiration_date python:test(here.expiration_date, here.expiration_date, '');
+                             effective python:">
+        This item is currently in the <strong i18n:name="review_state" tal:content="review_state">review_state;</strong> state
+        <tal:block tal:condition="python: review_state == 'published'"
 	               tal:define="eff_date here/effective_date | nothing;
 	                           exp_date here/expiration_date | nothing;
 	                           now here/ZopeTime;
@@ -66,9 +65,9 @@
 	                           after python:exp_date and (exp_date < now);
 	                           effective python:not(before or after);">
 	        <span tal:condition="effective"
-                      i18n:translate="status_effective">and <strong>is effective.</strong></span>
+                      i18n:translate="status_is_effective">and <strong>is effective</strong>.</span>
 	        <span tal:condition="before"
-                      i18n:translate="status_not_effective">but is <strong>not yet</strong> effective.</span>
+                      i18n:translate="status_not_yet_effective">but is <strong>not yet</strong> effective.</span>
 	        <span tal:condition="after"
                       i18n:translate="status_no_longer_effective">but is <strong>no longer</strong> effective.</span>
 	    </tal:block>
@@ -85,10 +84,10 @@
           action="content_status_modify"
           tal:attributes="action python:test(request.get('ids', None), 'folder_publish', request.URL)" >
         
-        <span class="legend" i18n:translate="">Publishing Details</span>
+        <span class="legend" i18n:translate="legend_publishing_details">Publishing Details</span>
 
         <div class="row" tal:condition="request/ids|nothing">
-            <div class="label" i18n:translate="affected_content">Affected content</div>
+            <div class="label" i18n:translate="label_affected_content">Affected content</div>
             <div class="field"
                  tal:define="Batch python:modules['ZTUtils'].Batch;
 		             physical_path python:'/'.join(here.getPhysicalPath());
@@ -105,12 +104,12 @@
         <div class="row"
 	     tal:condition="folders_in_publishing|nothing">
 	   <div class="label">
-	     <span i18n:translate="subfolders">Subfolders</span>
+	     <span i18n:translate="label_subfolders">Subfolders</span>
 	     <div id="include_subfolders_help" 
-	          i18n:translate="include_subfolders_help"
+	          i18n:translate="help_include_subfolders"
 	          class="help" 
 	          style="visibility:hidden">
-	          If checked, will attempt to publish all content in subfolders.
+	          If checked, Plone will attempt to publish all content in subfolders.
 	     </div>	
 	   </div>
 	   <div class="field">
@@ -124,19 +123,19 @@
 	            checked="checked" 
               tal:attributes="tabindex tabindex/next;"
               />
-	     <label for="include_subfolders" i18n:translate="include_subfolders">Include subfolders</label>
+	     <label for="include_subfolders" i18n:translate="label_include_subfolders">Include subfolders</label>
            </div>
    	</div>
 
         <div class="row">
             <div class="label">
-              <span i18n:translate="effective_date">Effective Date</span>
+              <span i18n:translate="label_effective_date">Effective Date</span>
                 <div id="effective_date_help"
-                     i18n:translate="effective_date_help" 
+                     i18n:translate="help_effective_date" 
                      class="help" 
                      style="visibility:hidden">
                 The date when the document will be visible when it's published. This way, you can 
-                publish a document in advance, but it will not be visible before this date.  If no date is select 
+                publish a document in advance, but it will not be visible before this date.  If no date is selected
                 the document will be effective immediately.
                 </div>
             </div>
@@ -148,7 +147,7 @@
                                  onblur string:formtooltip('effective_date_help',0);
                                  tabindex tabindex/next;">
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
-                    a calendar, hopefully
+                    calendar pop-up
                   </div>
                 </div>
             </div>
@@ -156,9 +155,9 @@
 
         <div class="row">
             <div class="label">
-              <span i18n:translate="expiration_date">Expiration Date</span>
+              <span i18n:translate="label_expiration_date">Expiration Date</span>
                 <div id="expiration_date_help"
-                     i18n:translate="expiration_date_help" 
+                     i18n:translate="help_expiration_date" 
                      class="help" 
                      style="visibility:hidden">
                 The date when the document expires. This will automatically make the document
@@ -173,7 +172,7 @@
                                  onblur string:formtooltip('expiration_date_help',0);
                                  tabindex tabindex/next;">
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
-                    a calendar, hopefully
+                    calendar pop-up
                   </div>
                 </div>
             </div>
@@ -181,9 +180,9 @@
     
         <div class="row">
             <div class="label">
-            <span i18n:translate="">Comments</span>
+            <span i18n:translate="label_comments">Comments</span>
                 <div id="publishing_comments_help"
-                     i18n:translate="publishing_comments_help" 
+                     i18n:translate="help_publishing_comments" 
                      class="help" 
                      style="visibility:hidden">
                 Enter a short description or some comments to be added
@@ -207,9 +206,9 @@
 
         <div class="row">
             <div class="label">
-            <span i18n:translate="">Change Status</span>
+            <span i18n:translate="label_change_status">Change State</span>
                 <div id="change_status_help"
-                     i18n:translate="change_status_help"
+                     i18n:translate="help_change_status"
                      class="help"
                      style="visibility:hidden">
                 Select the new state for the selected documents.
@@ -240,8 +239,10 @@
                                            id    transition/id;
                                            title transition/name;" />
                     <label for=""
+                           i18n:translate=""
                            tal:attributes="for transition/id;"
-                           tal:content="transition/name">Name of the transition</label>
+                           tal:content="transition/name"
+                           >Transition Name</label>
                     <br />
                 </metal:block>
 
@@ -256,8 +257,8 @@
                 <input class="context"
                        type="submit"
                        name="workflow_action_submit" 
-                       title="Apply" 
-                       value="Apply" 
+                       value="Apply"
+                       i18n:attributes="value" 
                        tal:attributes="tabindex tabindex/next;" />
             </div>
             
@@ -276,10 +277,10 @@
         <table class="listing" tal:condition="python:[review for review in review_history if review.get('action','')]">
             
             <tr>
-                <th>Action</th>
-                <th>Performed&nbsp;by</th>
-                <th>Date&nbsp;and&nbsp;Time</th>
-                <th>Comment</th>
+                <th i18n:attributes="listingheader_action">Action</th>
+                <th i18n:attributes="listingheader_performed_by">Performed&nbsp;by</th>
+                <th i18n:attributes="listingheader_date_and_time">Date&nbsp;and&nbsp;Time</th>
+                <th i18n:attributes="listingheader_comment">Comment</th>
             </tr>
 
             <metal:block tal:repeat="items review_history">
@@ -302,7 +303,7 @@
                 <td>
                   <span tal:replace="python: items['time'].strftime(here.localTimeFormat)" />
                   <span tal:condition="items/effective_date|nothing">
-                  (effective: 
+                  (<metal:block i18n:translate="label_publishing_effective">effective</metal:block>: 
                   <span tal:replace="python: items['effective_date'].strftime(here.localTimeFormat)"></span>)
                   </span>
                 </td>
@@ -312,8 +313,8 @@
                         <span tal:replace="rhComments"> Please review this ASAP </span>
                     </span>
 
-                    <span tal:condition="not: rhComments">
-                    No comment
+                    <span tal:condition="not: rhComments" i18n:translate="no_comments">
+                    No comments.
                     </span>
                 </td>
             </tr>
