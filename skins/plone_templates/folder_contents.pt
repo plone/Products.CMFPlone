@@ -198,6 +198,7 @@
                         <img tal:attributes="src item/getIcon;
                                              alt item_typeinfo/Title; 
                                              title item_typeinfo/Title;"
+                             i18n:attributes="title"
                              />&nbsp;<strong tal:omit-tag="python:not isBrowserDefault"><span tal:replace="item/title_or_id">Title</span></strong>
                       </a>
 

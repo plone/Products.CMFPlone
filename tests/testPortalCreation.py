@@ -114,10 +114,10 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testManageBeforeDeleteIsCalledRecursively(self):
         # When the portal is deleted, all subobject should have
         # their manage_beforeDelete hook called. Fixed by geoffd.
-        self.folder._setObject('foo', dummy.Item())
+        self.folder._setObject('foo', dummy.DeletedItem())
         self.foo = self.folder.foo
         self.app._delObject(PloneTestCase.portal_name)
-        self.failUnless(self.foo.manage_before_delete_called)
+        self.failUnless(self.foo.before_delete_called())
 
 
 class TestManagementPageCharset(PloneTestCase.PloneTestCase):

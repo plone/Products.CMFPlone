@@ -526,7 +526,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
     security.declarePublic('getInheritedLocalRoles')
     def getInheritedLocalRoles(self, here):
         portal = here.portal_url.getPortalObject()
-        result=()
+        result=[]
         cont=1
         if portal != here:
             parent = here.aq_parent
@@ -545,13 +545,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                             break
                     if found==0:
                         # add it to result
-                        result=result + ((user, roles, type, name),)
+                        result.append((user, roles, type, name))
                 if parent==portal:
                     cont=0
                 else:
                     parent=parent.aq_parent
 
-        return result
+        return tuple(result)
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):

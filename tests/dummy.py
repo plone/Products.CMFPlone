@@ -8,7 +8,10 @@ import os
 
 from OFS.SimpleItem import SimpleItem
 from ZPublisher.HTTPRequest import FileUpload
-from Products.CMFPlone.tests import PACKAGE_HOME
+
+from Globals import package_home
+from Products.CMFPlone.tests import GLOBALS
+PACKAGE_HOME = package_home(GLOBALS)
 
 TEXT = 'file data'
 UTEXT = u'file data'
@@ -37,10 +40,29 @@ class Item(SimpleItem):
         if title is not None:
             self.title = title
 
+
+class DeletedItem(Item):
+    '''Item than can be asked whether it has been deleted'''
+
     manage_before_delete_called = 0
 
     def manage_beforeDelete(self, item, container):
         self.manage_before_delete_called = 1
+
+    def before_delete_called(self):
+        return self.manage_before_delete_called
+
+
+class SizedItem(Item):
+    '''Item maintaining a size'''
+
+    size = 0
+
+    def set_size(self, size):
+        self.size = size
+
+    def get_size(self):
+        return self.size
 
 
 class File(FileUpload):
@@ -90,18 +112,6 @@ class Raiser(SimpleItem):
 
     def __call__(self, *args, **kw):
         raise self.exception 
-
-
-class SizedItem(Item):
-    '''Helper for getObjSize tests'''
-
-    size = 0
-
-    def set_size(self, size):
-        self.size = size
-
-    def get_size(self):
-        return self.size
 
 
 class DefaultPage(Item):

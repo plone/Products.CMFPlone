@@ -99,6 +99,7 @@ h6 a {
 
 h1 {
     font-size: 160%;
+    padding-right: 4em;
 }
 
 h2 {

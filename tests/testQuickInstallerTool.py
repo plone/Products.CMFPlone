@@ -18,9 +18,13 @@ class InstanceHomeFixup:
        valid INSTANCE_HOME so we have to restore it.
     '''
 
-    from Products.CMFPlone.tests import PACKAGE_HOME
+    from Globals import package_home
+    from Products.CMFPlone.tests import GLOBALS
+    PACKAGE_HOME = package_home(GLOBALS)
+
     instance_home = os.path.join(PACKAGE_HOME, os.pardir, os.pardir, os.pardir)
     instance_home = os.path.abspath(instance_home)
+
     if os.path.exists(os.path.join(instance_home, 'Products')):
         # We may be installed below SOFTWARE_HOME
         d, e = os.path.split(instance_home)
