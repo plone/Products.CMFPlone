@@ -574,12 +574,11 @@ pre {
 }
 
 .newsItem {
-    margin-bottom: 2.5em;
+    margin-bottom: 1em;
 }
 
 .newsContent {
-    padding: 0 1em 1em 1em;
-    border: &dtml-borderWidth; &dtml-borderStyleAnnotations;  &dtml-globalBorderColor;;
+    padding: 0 0em 1em 0em;
 }
 
 .newsContent ul,
@@ -594,26 +593,26 @@ pre {
 .newsAbout {
     display: block;
     color: &dtml-discreetColor;;
+    font-size: &dtml-fontSmallSize;;
     padding: 0;
-    margin: 0;
-    float: right;
-    width: auto;
-    margin: 0;
-    padding: 0;
+    margin-top: 0;
     list-style: none;
     list-style-image: none;
+    float: right;
+    text-align: right;
 }
 
 .newsAbout li {
-    font-size: &dtml-fontSmallSize;;
-    text-align: right;
-    float: none;
     display: inline;
-    margin: 0;
 }
 
-.newsAbout li a {
-    text-decoration: none;
+.newsFooter {
+    
+}
+
+.newsFooter li {
+    display: inline;
+    margin: 0 1em 0 0;
 }
 
 #content {
@@ -1061,12 +1060,6 @@ ul.configletDetails li label {
 
 .commentBody {
     margin: 0 1em 1em 1em;
-}
-
-.visualCommentAlign {
-    display: block;
-    float: right;
-    margin-top: -1.5em !important;
 }
 
 .spacer {

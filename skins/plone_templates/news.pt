@@ -20,8 +20,6 @@
                  localized_time python: modules['Products.CMFPlone.PloneUtilities'].localized_time;">
 
 
-    <h1 i18n:translate="heading_news">News</h1>
-
     <form name="searchresults" action="" method="post" tal:condition="results"
                       tal:define="batch python:Batch(results, 15, int(b_start), orphan=1)">
 
@@ -42,11 +40,29 @@
                         Description
                     </p>
 
-                    <ul tal:define="is_discussable python: isDiscussionAllowedFor(resultObject);">
+                    <ul class="newsAbout">
+ 
+                        <li>
+                            <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span>
+    
+                            <span class="link-user">
+                                <a href=""
+                                   tal:attributes="href python: home_url(creator)" 
+                                   tal:content="creator">
+                                    Author
+                                </a>
+                            </span>
+                        </li>
+                        <li>
+                            <span tal:omit-tag="" i18n:translate="label_published">Published</span>:
+                            <span tal:replace="python: localized_time(result.Date, context=here)" />
+                        </li>
+                    </ul>
+
+                    <ul class="newsFooter" tal:define="is_discussable python: isDiscussionAllowedFor(resultObject);">
                         <li>
                             <a href="/view" tal:attributes="href resulturl" i18n:translate="read_more">
-                                Read More
-                            </a>
+                                Read More</a>
                         </li>
 
                         <tal:discussable condition="is_discussable">
@@ -57,33 +73,12 @@
                                tal:define="reply_count python:talkback.replyCount(resultObject)"
                                tal:condition="reply_count"
                                tal:attributes="href string:${resulturl}#comments;">
-                                <span tal:replace="python: reply_count" />
-                                <span tal:omit-tag="" i18n:translate="link_comments">comments</span>
-
-                            </a>
+                               (<span tal:replace="python: reply_count" />)</a>
                         </li>
                         </tal:discussable>
                     </ul>
-
+                    
                 </div>
-
-                <ul class="newsAbout">
-                    <li class="visualIconNewsItem">
-                        <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span>
-
-                        <span class="link-user">
-                            <a href=""
-                               tal:attributes="href python: home_url(creator)" 
-                               tal:content="creator">
-                                Author
-                            </a>
-                        </span>
-                    </li>
-                    <li>
-                        <span tal:omit-tag="" i18n:translate="label_published">Published</span>:
-                        <span tal:replace="python: localized_time(result.Date, context=here)" />
-                    </li>
-                </ul>
 
             </div>
 
