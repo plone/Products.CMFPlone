@@ -4,6 +4,14 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+   - Fixed http://plone.org/collector/3472 - you can now declare portlets on a
+     template. Thanks to acamargo for the patch.
+     [limi]
+
+   - Fixed http://plone.org/collector/3457 - review portlet was not showing ID
+     for items without Title. Thanks to Sjors for the patch.
+     [limi]
+
     - Fixed http://plone.org/collector/3494. Description was used with 'structure'
       in some templates, notably news.pt and folder_listing. Note that Dublin Core 
       defines this element as plain text. If your site relies on the old behavior
