@@ -110,7 +110,7 @@ function init(e) {
     
 
 	var p = document.createElement("p");
-	p.appendChild(document.createTextNode("Change sorting by clicking on each individual heading."));
+//	p.appendChild(document.createTextNode("Change sorting by clicking on each individual heading."));
 	document.getElementById(tablename).parentNode.insertBefore(p,document.getElementById(tablename));
 }
 
