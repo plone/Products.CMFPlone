@@ -12,6 +12,8 @@ def upg_1_0_1_to_1_1(portal):
     #create the QuickInstaller
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
+    addGroupUserFolder(portal)
+
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm']
     safeEditProperty(props, 'default_page', default_values, 'lines')
@@ -29,7 +31,6 @@ def upg_1_0_1_to_1_1(portal):
         'user')
         
     addActionIcons(portal)    
-    addGroupUserFolder(portal)
     addCacheAccelerators(portal)
    
     #XXX TODO:migrate to add simple workflow
