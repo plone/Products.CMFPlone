@@ -217,7 +217,7 @@
                    <option value="" i18n:translate="label_choose_language">Choose Language</option>
                    <option tal:repeat="language here/availableLanguages"
                            tal:attributes="value python:language[0];
-                                           selected python:test(default_language == language[0], 'selected', '')"
+                                           selected python:test(default_language == language[0], 'selected', None)"
                            tal:content="structure python:language[1]" />
                 </select>
             </div>
@@ -315,7 +315,7 @@
                             i18n:translate=""
                             tal:repeat="skin here/portal_skins/getSkinSelections"
                             tal:attributes="value skin;
-                                            selected python:test(default_skin == skin, 'selected', '')"
+                                            selected python:test(default_skin == skin, 'selected', None)"
                             tal:content="structure skin" />
                 </select>
             </div>

@@ -39,7 +39,7 @@
                    <tal:block tal:repeat="uid here/portal_membership/listMemberIds">
                      <option value=""
                              tal:attributes="value uid;
-                                             selected python:test(uid==here.Creator(), 'SELECTED', '');"
+                                             selected python:test(uid==here.Creator(), 'selected', None);"
                              tal:content="uid">username</option>
                    </tal:block>
                 </select>

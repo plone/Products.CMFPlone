@@ -26,7 +26,8 @@
                 <tal:block tal:repeat="lang plone_langs">
                     <option value=""
                        tal:attributes="value lang;
-                                       selected python:test(lang==current_lang, 'selected','')"
+                                       selected
+		      python:test(lang==current_lang, 'selected', None)"
                        tal:content="python:PTS.getLanguageName(lang) or lang">Engrish</option>
                 </tal:block>
 

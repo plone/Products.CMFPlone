@@ -110,7 +110,7 @@
                                         tal:attributes="tabindex tabindex/next|nothing;">
                                     <option value="#" 
                                             tal:attributes="selected
-                                            python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');"
+                                            python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', None);"
                                             i18n:translate="label_show_all_items">
                                     Show All Items
                                     </option>  
@@ -119,7 +119,7 @@
                                                 tal:define="typetitle type/Title; typeid type/getId"
                                                 i18n:translate="label_show_x_only"
                                                 tal:attributes="value typeid;
-                                                                selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', '');"
+                                                                selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', None);"
                                         ><span i18n:name="type"><span i18n:translate="" tal:content="string:${typetitle}" tal:omit-tag="" /></span>s only</option>
                                     </metal:block>
                                 </select>

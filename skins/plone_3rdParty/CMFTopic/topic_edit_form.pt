@@ -153,7 +153,7 @@
                         tabindex="4"
                         onfocus="formtooltip('acquire_criteria_help',1)" 
                         onblur="formtooltip('acquire_criteria_help',0)" 
-                        tal:attributes="checked python:here.acquireCriteria and 'checked' or ''" />
+                        tal:attributes="checked python:here.acquireCriteria and 'checked' or None" />
                  
                  <input type="hidden"
                         name="acquireCriteria:default"
