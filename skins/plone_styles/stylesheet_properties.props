@@ -1,4 +1,4 @@
-title:string=DEPRECATED, DO NOT USE
+title:string=DEPRECATED, USE BASE_PROPERTIES INSTEAD
 plone_skin:string=Plone Default
 
 mainFont:string=11px Verdana, "Lucida Grande", Lucida, Helvetica, Arial, sans-serif
