@@ -109,6 +109,7 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
             return self.folder_contents(self, REQUEST, portal_status_message='Folder added')
 
     manage_addFolder = manage_addPloneFolder
+    manage_addPortalFolder = manage_addPloneFolder
 
     security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ): 
