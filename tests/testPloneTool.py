@@ -128,6 +128,51 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.image.Format(), 'image/gif')
         self.assertEqual(self.folder.image.getImage().content_type, 'image/gif')
 
+    def testNormalizeISO(self):
+        self.assertEqual(self.utils.normalizeISO(u"\xe6"), 'e')
+        self.assertEqual(self.utils.normalizeISO(u"a"), 'a')
+        self.assertEqual(self.utils.normalizeISO(u"\u9ad8"), '9ad8')
+
+    def testTitleToNormalizedIdPunctuation(self):
+        # Punctuation and spacing is removed and replaced by '-'
+        self.assertEqual(self.utils.titleToNormalizedId("a string with spaces"),
+                         'a-string-with-spaces')
+        self.assertEqual(self.utils.titleToNormalizedId("p.u,n;c(t)u!a@t#i$o%n"),
+                         'p-u-n-c-t-u-a-t-i-o-n')
+
+    def testTitleToNormalizedIdLower(self):
+        # Strings are lowercased
+        self.assertEqual(self.utils.titleToNormalizedId("UppERcaSE"), 'uppercase')
+
+    def testTitleToNormalizedIdStrip(self):
+        # Punctuation and spaces are trimmed, multiples reduced to 1
+        self.assertEqual(self.utils.titleToNormalizedId(" a string    "),
+                         'a-string')
+        self.assertEqual(self.utils.titleToNormalizedId(">here's another!"),
+                         'here-s-another')
+        self.assertEqual(self.utils.titleToNormalizedId("one with !@#$!@#$ stuff in the middle"),
+                         'one-with-stuff-in-the-middle')
+
+    def testTitleToNormalizedIdFileExtensions(self):
+        # If there is something that looks like a file extensions
+        # it will be preserved.
+        self.assertEqual(self.utils.titleToNormalizedId("this is a file.gif"),
+                         'this-is-a-file.gif')
+        self.assertEqual(self.utils.titleToNormalizedId("this is. also. a file.html"),
+                         'this-is-also-a-file.html')
+
+    def testTitleToNormalizedIdAccents(self):
+        # European accented chars will be transliterated to rough ASCII equivalents
+        self.assertEqual(self.utils.titleToNormalizedId(u"Eksempel \xe6\xf8\xe5 norsk \xc6\xd8\xc5"),
+                         'eksempel-eoa-norsk-eoa')
+
+    def testTitleToNormalizedIdHex(self):
+        # Everything that can't be transliterated will be hex'd
+        self.assertEqual(self.utils.titleToNormalizedId(u"\u9ad8\u8054\u5408 Chinese"),
+                         '9ad880545408-chinese')
+        self.assertEqual(self.utils.titleToNormalizedId(u"\uc774\ubbf8\uc9f1 Korean"),
+                         'c774bbf8c9f1-korean')
+
 
 class TestEditMetadata(PloneTestCase.PloneTestCase):
 
