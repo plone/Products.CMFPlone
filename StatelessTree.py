@@ -82,7 +82,7 @@ class NavigationTreeViewBuilder(SimpleItem):
         portal=self.aq_parent.aq_inner
         catalog=portal.portal_catalog
         getpath=catalog.getpath
-        perm_check=portal.portal_membership
+        perm_check=portal.portal_membership.checkPermission
         
         # the 'important' users may see unpublished content
         # who can see unpublished content may also see hidden files
