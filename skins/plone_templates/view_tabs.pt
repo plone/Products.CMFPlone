@@ -18,6 +18,8 @@
      i18n:domain="plone"
      id="contentBar">
 
+    &nbsp;
+     
     <img src=""
          tal:define="locked portal_object/lock_icon.gif;
                      lockable python:hasattr(here, 'wl_isLocked');"
