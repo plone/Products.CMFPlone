@@ -15,12 +15,12 @@
     
         
          <div class="list-nav" tal:condition="first_trx" tal:define="next python:(first_trx*2-last_trx)">
-           <a href="" tal:attributes="href string:${request/URL}?first_trx:int=$next&last_trx:int=$first_trx&HistoryBatchSize:int=$HistoryBatchSize"> &lt; Later Revisions</a>
+           <a href="" tal:attributes="href string:${request/URL}?first_trx:int=$next&amp;last_trx:int=$first_trx&amp;HistoryBatchSize:int=$HistoryBatchSize"> &lt; Later Revisions</a>
          </div> 
          
          <div tal:condition="python:test(history_length==HistoryBatchSize, 0, 1)"
               tal:define="last python:last_trx+HistoryBatchSize">
-           <a href="" tal:attributes="href string:${request/URL}?first_trx:int=$last_trx&last_transaction:int=$last&HistoryBatchSize:int=$HistoryBatchSize"> Earlier Revisions &gt; </a>
+           <a href="" tal:attributes="href string:${request/URL}?first_trx:int=$last_trx&amp;last_transaction:int=$last&amp;HistoryBatchSize:int=$HistoryBatchSize"> Earlier Revisions &gt; </a>
          </div>
 
          <div tal:condition="history" tal:repeat="version history">

@@ -40,8 +40,8 @@
                                    tabindex tabindex|nothing" 
                                    />
 
-  <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?inputname=${inputname}&formname=${formname}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
-    <img tal:replace="structure here/popup_calendar.gif">
+  <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?inputname=${inputname}&amp;formname=${formname}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
+    <img tal:replace="structure here/popup_calendar.gif" />
   </a>
 
 
@@ -60,16 +60,16 @@
                  weeks python:here.portal_calendar.getWeeksList(month=month, year=year);">
 
     <table cellpadding="2" cellspacing="0" border="0" class="calendar" id="thecalendar">
-        <tr tal:define="calendarurl python:'%s?inputname=%s&formname=%s' % (path('template/absolute_url'),inputname,formname) ">
+        <tr tal:define="calendarurl python:'%s?inputname=%s&amp;formname=%s' % (path('template/absolute_url'),inputname,formname) ">
             <th>
-                <a href="" tal:attributes="href python:'%s&month:int=%d&year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
+                <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
             </th>
             <th colspan="5" tal:define="date string:$month/1/$year">
               <span tal:replace="python:DateTime(date).Month()"/> <span tal:replace="python:DateTime(date).year()"/>
             </th>
         
             <th>
-                <a href="" tal:attributes="href python:'%s&month:int=%d&year:int=%d' % (calendarurl,nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
+                <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
             </th>
         </tr>
         

@@ -45,7 +45,7 @@
                       editor python:here.portal_membership.getAuthenticatedMember().wysiwyg_editor;
                       wysiwyg python:test(editor and (editor!='None'), editor, 'None');
                       contentpath python:pps.url_quote(here.portal_url.getRelativeUrl(here));
-                      url2editor string:${here/portal_url}/$wysiwyg/wysiwyg_popup?inputname=$inputname&formname=$formname&contentpath=$contentpath&method=CookedBody;"
+                      url2editor string:${here/portal_url}/$wysiwyg/wysiwyg_popup?inputname=$inputname&amp;formname=$formname&amp;contentpath=$contentpath&amp;method=CookedBody;"
           tal:condition="python:test(wysiwyg!='None', 1, 0)"
           tal:attributes="onclick string:window.open('$url2editor','editor','dependent=yes,width=520,height=500,screenX=200,screenY=300,titlebar=yes');; return false">
        <img tal:replace="structure here/edit.gif" />
