@@ -722,6 +722,10 @@ input.searchButton {
     margin: 0 1em 1em 0;    
 }
 
+.field .field {
+    margin: 1em 0 0 0;
+}
+
 .field label {
     font-size: 100%;
     font-weight: bold;
