@@ -6,6 +6,10 @@ Plone 2.0 - Fyuti
 
    RC6, updated to fix non-critical issues
 
+    - Fix WebDAV for the nth time. browserDefault was using the
+      portal_utils tool as the context for all DAV requests, instead
+      of the real object.
+
     - fixed #2808
       metadata_edit form was broken when the date format was set to
       international (zope 2.7). Fixed date_components_support.py [tiran]

@@ -450,8 +450,9 @@ class PloneTool(UniqueObject, SimpleItem):
 
     security.declarePublic('browserDefault')
     def browserDefault(self, obj):
-        """Set default so we can return whatever we want instead of index_html"""
-##        import pdb;pdb.set_trace()
+        """Set default so we can return whatever we want instead of
+        index_html
+        """
         # WebDAV in Zope is odd it takes the incoming verb eg: PROPFIND
         # and then requests that object, for example for: /, with verb PROPFIND
         # means acquire PROPFIND from the folder and call it
@@ -459,7 +460,7 @@ class PloneTool(UniqueObject, SimpleItem):
         request = getattr(self, 'REQUEST', None)
         if request and request.has_key('REQUEST_METHOD'):
             if request['REQUEST_METHOD'] not in  ['GET', 'HEAD', 'POST']:
-                return self, [request['REQUEST_METHOD']]
+                return obj, [request['REQUEST_METHOD']]
         # now back to normal
 
         portal = getToolByName(self, 'portal_url').getPortalObject()
