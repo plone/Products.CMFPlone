@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=msgid, mapping, default=None
+##parameters=msgid, mapping={}, default=None
 
 from Products.CMFPlone.PloneUtilities import translate_wrapper
 
