@@ -120,6 +120,22 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         """ Set default so we can return whatever we want instead of index_html """
         return self.browserDefault(request)
 
+    security.declarePublic('contentValues')
+    def contentValues(self,
+                      spec=None,
+                      filter=None,
+                      sort_on=None,
+                      reverse=0):
+        """ Able to sort on field """
+        values=SkinnedFolder.contentValues(self, spec=spec, filter=filter)
+        if sort_on is not None:
+            values.sort(lambda x, y: safe_cmp(getattr(x,sort_on),
+                                              getattr(y,sort_on)))
+        if reverse:
+           values.reverse()
+
+        return values
+
     security.declareProtected( ListFolderContents, 'listFolderContents')
     def listFolderContents( self, spec=None, contentFilter=None, suppressHiddenFiles=0 ):
         """
@@ -146,6 +162,11 @@ class PloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
                 pass
         return l
 InitializeClass(PloneFolder)
+
+def safe_cmp(x, y):
+    if callable(x): x=x()
+    if callable(y): y=y()
+    return cmp(x,y)
 
 manage_addPloneFolder=PloneFolder.manage_addPloneFolder
 def addPloneFolder( self, id, title='', description='', REQUEST=None ):
