@@ -20,9 +20,10 @@ import os, sys, re
 __version__='1.0'
 
 default_frontpage=r"""
-You can customize this frontpage by clicking the edit tab on this document.
-In fact this is how you use your new system. Create folders and put content in those folders.
-It's a very simple and powerful system.  
+You can customize this frontpage by clicking the edit tab on this document if you
+have the correct permissions. Create folders and put content in those folders.
+Folders will show up in the navigation box if they are published. It's a very 
+simple and powerful system.  
 
 For more information:
 
@@ -32,17 +33,17 @@ For more information:
 
 - "CMF website":http://cmf.zope.org
 
-There are "mailing lists":http://www.zope.org/Resources/MailingLists and 
+There are "mailing lists":http://plone.org/development/lists and 
 "recipe websites":http://www.zopelabs.com  
 available to provide assistance to you and your new-found Content Management System.
-"Online chat":http://www.zope.org/Documentation/Chats is also a nice way
+"Online chat":http://plone.org/development/chat is also a nice way
 of getting advice and help. 
 
 Please contribute your experiences at the "Plone website":http://www.plone.org
 
 Thanks for using our product.
 
-"**The Plone Team**":http://plone.org/about/team
+"Plone":img:logoIcon.gif  "The Plone Team":http://plone.org/about/team
 """
 
 class PloneSite(CMFSite):
@@ -51,6 +52,10 @@ class PloneSite(CMFSite):
     This will be useful for adding more things later on.
     """
     manage_addPloneFolder = PloneFolder.addPloneFolder
+
+    def __browser_default__(self, request):
+        """ Set default so we can return whatever we want instead of index_html """
+        return self.browserDefault(request)
 
 class PloneGenerator(Portal.PortalGenerator):
 
