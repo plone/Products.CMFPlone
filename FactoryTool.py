@@ -204,6 +204,7 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
 
     security.declareProtected(CMFCorePermissions.ManagePortal, 'manage_setPortalFactoryTypes')
     def manage_setPortalFactoryTypes(self, REQUEST=None, listOfTypeIds=None):
+        """Set the portal types that should use the factory."""
         if listOfTypeIds is not None:
             dict = {}
             for l in listOfTypeIds:
