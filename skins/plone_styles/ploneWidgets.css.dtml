@@ -185,7 +185,6 @@ table.box {
     border-bottom: &dtml-boxBorder;;
     border-left: &dtml-boxBorder;;
     margin: 0em 1em 2em 0em;
-    float: left;
 }
 
 table.box th {
