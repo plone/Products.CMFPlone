@@ -1,14 +1,13 @@
-
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <span tal:condition="nothing"
       tal:define="has_edit_priv nocall: here/edit">
   This span ensures that the visitor has edit privilege, by fetching - but not
   displaying - the protected collector.edit method.
-</span><html xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone">
-
+</span>
 <div metal:fill-slot="header">
 
 <h1 i18n:translate="heading_collector_configuration">Collector Configuration</h1>
@@ -122,7 +121,7 @@
 
             <input type="text"
                    name="email"
-                   size=25
+                   size="25"
                    value="EMAIL"
                    onfocus="formtooltip('email_help',1)"
                    onblur="formtooltip('email_help',0)"

@@ -14,4 +14,4 @@
 
 <metal:relic define-macro="calendarDatePickerBoxPopup">
 <metal:real-stuff use-macro="here/calendar_slot/macros/calendarDatePickerBoxPopup" />
-</metal:relic><html>
+</metal:relic></html>

@@ -42,7 +42,7 @@
      </td>
     </tr>
     <tr tal:condition="page/last_log">
-      <td colspan=4>
+      <td colspan="4">
         <font color="gray">
           <span tal:replace="python: page.last_log[:70]"> LAST LOG </span>
         </font>

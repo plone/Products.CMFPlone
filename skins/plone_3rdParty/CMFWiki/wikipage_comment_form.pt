@@ -97,7 +97,7 @@
             <strong> Citation Source </strong> (You can copy from this text field into your comment - it's not editable) <br>
             <!-- Readonly *and* onkeydown for browser diversity: -->
             <textarea wrap="soft" name="text"
-                      rows="15" cols="80" readonly
+                      rows="15" cols="80" readonly="readonly"
                       onkeydown="this.blur(); return false;"
                       tal:attributes="rows request/zwiki_height | default;
                                       cols request/zwiki_width  | default"

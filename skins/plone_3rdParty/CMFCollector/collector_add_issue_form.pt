@@ -1,14 +1,13 @@
-
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <span tal:condition="nothing"
       tal:define="has_add_priv nocall: here/add_issue">
   This span ensures that the visitor has edit privilege, by fetching - but not
   displaying - the protected collector.add_issue method.
-</span><html xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone">
-
+</span>
 <tal:block tal:condition="nothing">
   Template description: Form for submitting new collector issues.
 </tal:block>
@@ -57,7 +56,7 @@ as possible.
         <div class="field">
             <input type="hidden" name="security_related:boolean" value="" />
             <input class="noborder"
-                   type=checkbox
+                   type="checkbox"
                    name="security_related:boolean"
                    />
 
@@ -166,7 +165,7 @@ as possible.
     <div class="row" tal:condition="assigner">
         <div class="label" i18n:translate="label_assign_to">Assign to</div>
         <div class="field">
-           <select name="assignees:list" MULTIPLE size="5"
+           <select name="assignees:list" multiple="multiple" size="5"
                    tal:attributes="size python:
                                         min(max(len(supporters), 3), 8)">
              <option tal:repeat="supporter supporters"
@@ -182,16 +181,16 @@ as possible.
     <div class="row">
         <div class="label" i18n:translate="label_attachment_optional">Attachment (optional)</div>
         <div class="field">
-            <input type=file name="file" size="20" />
+            <input type="file" name="file" size="20" />
         </div>
     </div>
 
     <div class="row">
         <div class="label" i18n:translate="label_attachment_type_optional"> Attachment type (optional)</div>
         <div class="field">
-            <input class="noborder" type=radio name="filetype" id="radio_file" value="File" checked />
+            <input class="noborder" type="radio" name="filetype" id="radio_file" value="File" checked="checked" />
 	    <label for="radio_file" i18n:translate="">File</label>
-            <input class="noborder" type=radio name="filetype" id="radio_image" value="Image" />
+            <input class="noborder" type="radio" name="filetype" id="radio_image" value="Image" />
 	    <label for="radio_image" i18n:translate="">Image</label>
         </div>
     </div>
@@ -199,7 +198,7 @@ as possible.
     <div class="row">
         <div class="label" i18n:translate="label_name_of_upload_optional">Name of upload (optional)</div>
         <div class="field">
-            <input type=text name="fileid" size="12" />
+            <input type="text" name="fileid" size="12" />
         </div>
     </div>
 

@@ -78,7 +78,7 @@
        tal:content="here/getId"></a> nesting
     context in the Wiki folder, including offspring, ancestors, and siblings.
     (Branches are abbreviated with '...' elipses after the first time they're
-    spelled out.)
+    spelled out.)</p>
 
     <span tal:replace="python:here.wiki_context(request, with_siblings=1)" />
 

@@ -57,7 +57,7 @@
    <li>Version 1.x</li>
       <ul>
          <li>Click Edit on the menu at the top of your browser and select Preferences</li>
-         <li>Find "Privacy & Security" in the menu on the left.  If there is a [+] to the left of "Privacy & Security", click it.</li>
+         <li>Find "Privacy &amp; Security" in the menu on the left.  If there is a [+] to the left of "Privacy &amp; Security", click it.</li>
          <li>Select "Cookies" under Advanced.</li>
          <li>Select "Enable cookies for the originating web site only" or "Enable all cookies" and click "OK"</li>
       </ul>

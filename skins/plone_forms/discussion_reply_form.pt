@@ -91,7 +91,7 @@
     </p>
 
     <form class="group" onsubmit="return false;">
-        <span class="legend">Preview</span>
+        <span class="legend" i18n:translate="legend_preview">Preview</span>
         <br />
         <span id="previewComment"></span>
         <br />

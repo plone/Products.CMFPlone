@@ -44,7 +44,7 @@
 
     		    <span class="card" tal:repeat="member batch">
 
-                        <img src="defaultUser.gif" alt="Blank picture" border="0" width="75" height="100"
+                        <img src="defaultUser.gif" alt="" border="0" width="75" height="100"
                              tal:attributes="src python:here.portal_membership.getPersonalPortrait(member['username']).absolute_url()" />
 
                         <br />
@@ -248,7 +248,7 @@
                            tal:define="member_url python:here.portal_membership.getHomeUrl(lrole[0])"
                            tal:omit-tag="not: member_url"
                            tal:attributes="href member_url">
-                        <img src="defaultUser.gif" alt="Blank picture" border="0" width="75" height="100"
+                        <img src="defaultUser.gif" alt="" border="0" width="75" height="100"
                              tal:attributes="src python:here.portal_membership.getPersonalPortrait(lrole[0]).absolute_url()" />
                         </a>
              			<br />

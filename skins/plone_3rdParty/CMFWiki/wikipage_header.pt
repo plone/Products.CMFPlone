@@ -1,4 +1,4 @@
-
+<tal:block omit-tag="">
 <span tal:replace="structure python: here.wiki_context( request, with_siblings=0 )" />
 
 <p>
@@ -27,3 +27,4 @@
         <span tal:replace="python: here.bobobase_modification_time().aCommon()" />
     </small>
 </p>
+</tal:block>

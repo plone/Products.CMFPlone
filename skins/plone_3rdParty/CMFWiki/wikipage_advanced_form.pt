@@ -79,9 +79,9 @@
         <tr>
 
 
-         <td width="50%" nowrap bgcolor="eeeeee">
+         <td width="50%" nowrap="nowrap" bgcolor="eeeeee">
 
-           Rename <strong tal:content="here/getId">PageID</strong> to: <br>
+           Rename <strong tal:content="here/getId">PageID</strong> to: <br/>
 
            <form method="POST"
                  action="wikipage_deleterename_handler"
@@ -98,7 +98,7 @@
          </td>
 
 
-         <td align="center" width="50%" nowrap bgcolor="eeeeee">
+         <td align="center" width="50%" nowrap="nowrap" bgcolor="eeeeee">
 
            <form method="POST"
                  action="wikipage_deleterename_handler"
@@ -136,7 +136,7 @@
            resituating it (renaming it, deleting, or changing its designated
            parents).   You can <span tal:condition="here/isRegSetter"> set </span>
            <span tal:condition="python: not here.isRegSetter()"> see </span>
-           the page regulations below.
+           the page regulations below.</p>
 
        <p> <strong> See <a href="RegulatingYourPages" target="_blank">
            RegulatingYourPages</a> for more info.</strong>
@@ -150,7 +150,7 @@
         <table class="group">
          <tr>
 
-          <td><br></td>
+          <td><br/></td>
 
           <th tal:repeat="op here/regOps"
               tal:content="python: modules['string'].capitalize( op )" >
@@ -161,7 +161,7 @@
 
          <tr>
 
-          <td> <br> </td>
+          <td> <br/> </td>
 
           <td align="center" valign="top"
               tal:repeat="op here/regOps"
@@ -261,7 +261,7 @@
           <tr>
 
            <th align="right" valign="top">
-              Who owns pages created <br>
+              Who owns pages created <br/>
               from this one:
            </th>
 
@@ -278,14 +278,14 @@
                />
                <span tal:replace="python: here.wikipage_owners_description( who )">
                   Owner description.  </span>
-               <br>
+               <br/>
               </span>
            </td>
 
           </tr>
 
           <tr tal:condition="here/isRegSetter">
-           <td colspan="5"> <hr> </td>
+           <td colspan="5"> <hr/> </td>
           </tr>
 
           <tr tal:condition="here/isRegSetter">
@@ -297,7 +297,7 @@
                      tal:attributes="value string:Set ${here/getId} Regulations"
               />
             </td>
-            <td colspan="2"><br></td>
+            <td colspan="2"><br/></td>
           </tr>
 
         </table>
