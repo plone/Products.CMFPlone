@@ -99,6 +99,11 @@ class TestInterfaceTool(PloneTestCase.PloneTestCase):
 
 
 def test_suite():
+    # Normalize dotted names
+    from Products.CMFPlone.tests.testInterfaceTool import TestInterfaceResolution
+    from Products.CMFPlone.tests.testInterfaceTool import TestInterfaceFinder
+    from Products.CMFPlone.tests.testInterfaceTool import TestInterfaceTool
+
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestInterfaceResolution))
