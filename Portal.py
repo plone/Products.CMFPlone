@@ -184,6 +184,7 @@ class PloneGenerator(Portal.PortalGenerator):
         form_tool.setValidators('reconfig_form', ['validate_reconfig'])
         form_tool.setValidators('personalize_form', ['validate_personalize'])
         form_tool.setValidators('join_form', ['validate_registration'])
+        form_tool.setValidators('metadata_edit_form', ['validate_metadata_edit'])
 
         # grab the initial portal navigation properties from data/navigation_properties
         nav_tool = p.portal_navigation
