@@ -117,15 +117,13 @@ def moveOldTemplates(portal):
     st = getToolByName(portal, 'portal_skins')
     custom = st.custom
     for id in custom.objectIds():
-        if id in ('main_template', 'header', 'footer', 'folder_contents'):
-            st.custom.manage_renameObjects([id], ['premigration'+id])
+        if id in ('main_template', 'header', 'footer', 'folder_contents', 'plone.css'):
+            st.custom.manage_renameObjects([id], ['premigration_'+id])
 
 def swapPortalRoot(portal):
     """ We want to swap CMFDefault.PortalObject.Portal with CMFPlone.Portal.Portal """
     from Products.CMFPlone.Portal import PloneSite
     from StringIO import StringIO
-    if portal.meta_type=='Plone Site':
-        return
 
     parent=portal.getParentNode()
     id = portal.getId()
@@ -296,7 +294,8 @@ def fixupPlone2SkinPaths(portal):
     st=getToolByName(portal, 'portal_skins')
     to_add=['cmf_legacy','plone_portlets', 'plone_form_scripts', 'plone_prefs']
     for item in to_add:
-        newDV(st, item)
+        if item not in portal.portal_skins.objectIds():
+            newDV(st, item)
 
     to_remove=['plone_templates/ui_slots', 'plone_scripts/form_scripts', 
                'plone_3rdParty/CMFCollector', 'plone_3rdParty/CMFCalendar']
