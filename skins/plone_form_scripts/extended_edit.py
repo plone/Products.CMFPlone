@@ -14,7 +14,7 @@
 REQUEST=context.REQUEST
 title=REQUEST.get('title', '')
 description=REQUEST.get('description', '')
-subject=REQUEST.get('subject', '')
+subject=REQUEST.get('subject', context.Subject())
 effective_date=REQUEST.get('effective_date', None)
 expiration_date=REQUEST.get('expiration_date', None)
 
