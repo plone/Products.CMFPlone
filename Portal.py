@@ -29,11 +29,11 @@ simple and powerful system.
 
 For more information:
 
-- "Plone website":http://www.plone.org
+"Plone website":http://www.plone.org
 
-- "Zope community":http://www.zope.org
+"Zope community":http://www.zope.org
 
-- "CMF website":http://cmf.zope.org
+"CMF website":http://cmf.zope.org
 
 There are "mailing lists":http://plone.org/development/lists and
 "recipe websites":http://www.zopelabs.com
@@ -45,7 +45,7 @@ Please contribute your experiences at the "Plone website":http://www.plone.org
 
 Thanks for using our product.
 
-"Plone":img:logoIcon.gif  "The Plone Team":http://plone.org/about/team
+"The Plone Team":http://plone.org/about/team
 """
 
 class PloneSite(CMFSite):

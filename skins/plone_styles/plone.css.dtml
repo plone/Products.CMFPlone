@@ -869,12 +869,17 @@ div listingBar img {
 	vertical-align: middle;
 }
 
-/* Accessibility elements */
+/* Accessibility and visual enhancement elements */
 
 a.skipnav {
     visibility: hidden;
     position: absolute;
 } 
+
+a.external {
+    background: White url(link_icon.gif) 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
+}
 
 
 /*
