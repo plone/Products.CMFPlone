@@ -150,11 +150,6 @@ class PloneGenerator(Portal.PortalGenerator):
                 typeObj=getattr(typesTool, typeInfo.getId())
                 view='folder_contents'
                 typeObj._setPropValue('immediate_view', view)
-                _actions=typeInfo._cloneActions()
-                for action in _actions:
-                    if action.id=='edit':
-                        action.title='Properties'
-                typeObj._actions=_actions
 
     def customizePortalOptions(self, p):
         p.manage_permission( CMFCorePermissions.ListFolderContents, \

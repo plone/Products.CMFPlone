@@ -1,13 +1,17 @@
 ## Script (Python) "folder_localrole_edit"
-##parameters=change_type, member_ids=(), member_role=''
+##parameters=change_type, member_ids=(), member_role=[]
 ##title=Set local roles
 ##
 pm = context.portal_membership
 
 if change_type == 'add':
-    pm.setLocalRoles( obj=context,
-                      member_ids=member_ids,
-                      member_role=member_role )
+    # Keep backward-compatibility
+    if same_type(member_role, ''):
+        member_role = [member_role]
+    for role in member_role:
+        pm.setLocalRoles( obj=context,
+                          member_ids=member_ids,
+                          member_role=role )
 else:
     pm.deleteLocalRoles( obj=context,
                          member_ids=member_ids )

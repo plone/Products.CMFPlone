@@ -54,17 +54,11 @@ class TestCheckId(PloneTestCase.PloneTestCase):
         r = self.folder.foo.check_id('bar')
         self.assertEqual(r, "There is already an item named 'bar' in this folder.")
 
-    # Portal factory does not work with Python2.1 at the moment
-    try:
-        foo = True
-    except NameError:
-        pass
-    else:
-        def testTempObjectCollision(self):
-            foo = self.folder.restrictedTraverse('portal_factory/Document/foo')
-            self.folder._setObject('bar', dummy.Item('bar'))
-            r = foo.check_id('bar')
-            self.assertEqual(r, "There is already an item named 'bar' in this folder.")
+    def testTempObjectCollision(self):
+        foo = self.folder.restrictedTraverse('portal_factory/Document/foo')
+        self.folder._setObject('bar', dummy.Item('bar'))
+        r = foo.check_id('bar')
+        self.assertEqual(r, "There is already an item named 'bar' in this folder.")
 
     def testReservedId(self):
         self.folder._setObject('foo', dummy.Item('foo'))

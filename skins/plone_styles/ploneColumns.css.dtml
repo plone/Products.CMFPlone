@@ -11,6 +11,8 @@
 
 #portal-columns {
     width: 100% !important;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 #portal-column-one {

@@ -20,7 +20,7 @@
         Up one level
         </a>
 
-        <div class="documentDescription" tal:content="structure here/Description">
+        <div class="documentDescription" tal:content="here/Description">
             description
         </div>
 
@@ -66,11 +66,15 @@
                 </span>
                 </dt>
 
-                <dd>
-
-                    <span tal:content="structure python:test(obj.Description(), obj.Description(), '&nbsp;')"> description </span>
+                <dd tal:define="description obj/Description">
+                    <span tal:omit-tag="" tal:condition="not:description"> 
+                        &nbsp; 
+                    </span> 
+                    <span tal:omit-tag="" tal:content="description"> 
+                        description 
+                    </span> 
                 </dd>
-		    </tal:entry>
+	        </tal:entry>
             </dl>
 
         </tal:listing>

@@ -12,7 +12,7 @@
     <div metal:fill-slot="main"
          tal:define="errors options/state/getErrors">
 
-      <h1 i18n:translate="heading_edit_folder_properties">Edit Folder Properties</h1>
+      <h1 i18n:translate="heading_edit_folder_properties">Edit Folder</h1>
 
       <form name="edit_form"
             action="."

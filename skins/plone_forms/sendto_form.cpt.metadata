@@ -2,8 +2,8 @@
 title=Send this page to somebody
 
 [validators]
-validators..Send= validate_sendto
+validators=validate_sendto
 
 [actions]
-action.success..Send = traverse_to:string:sendto
-action.failure = traverse_to:string:sendto_form
+action.success=traverse_to:string:sendto
+action.failure=traverse_to:string:sendto_form

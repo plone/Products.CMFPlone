@@ -63,7 +63,7 @@ to become a member.
 // ]]>
 </script>
 
-<div condition="python:not auth" i18n:translate="failsafe_login_disabled">
+<div tal:condition="python:not auth" i18n:translate="failsafe_login_disabled">
       This feature is not available while cookie authentication is disabled.
 </div>
 

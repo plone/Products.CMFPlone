@@ -22,7 +22,10 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
-
+        self.portal.acl_users._doAddUser('member', 'secret', ['Member'], [])
+        self.portal.acl_users._doAddUser('reviewer', 'secret', ['Reviewer'], [])
+        self.portal.acl_users._doAddUser('manager', 'secret', ['Manager'], [])
+        
     def testTraverse(self):
         temp_doc = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         self.assertEqual(temp_doc.meta_type, 'Document')
@@ -59,19 +62,20 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
                          ('Authenticated', 'Foo', 'Member', 'Reviewer'))
 
     def testTempObjectLocalRoles(self):
-        self.membership.addMember('user2', 'secret', ['Member'], [])
-        member = self.membership.getMemberById('user2')
+        member = self.membership.getMemberById('member')
 
-        self.folder.invokeFactory(id='nontmp_id', type_name='Document')
-        nontemp_object = getattr(self.folder, 'nontmp_id')
+        self.login('manager')
+        self.portal.invokeFactory(id='nontmp_id', type_name='Document')
+        nontemp_object = getattr(self.portal, 'nontmp_id')
         
-        # assume identify of new user
-        self.login('user2')
-
-        temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        # assume identify of the ordinary member
+        self.login('member')
+        folder = self.portal.Members.member
+        temp_object = folder.restrictedTraverse('portal_factory/Document/tmp_id')
         # make sure user is owner of temporary object
         self.assertEqual(sortTuple(member.getRolesInContext(temp_object)),
                          ('Authenticated', 'Member', 'Owner'))
+        self.assertEqual(temp_object.Creator(), 'member')
         # make sure user is not owner of non-temporary object 
         # (i.e. make sure our evil monkey patch of the temporary instance has 
         # not resulted in our patching all instances of the class)
@@ -90,10 +94,10 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
 
     def testUnauthorizedToCreateObjectByDoCreate(self):
         # Anonymous should not be able to create the (real) object
-        self.logout()
-        # Note that Anonymous can create the temp object...
+        # Note that Anonymous used to be able to create the temp object...
         temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
         # but not the final one
+        self.logout()
         self.assertRaises(Unauthorized, temp_object.portal_factory.doCreate,
                           temp_object, 'foo')
 
@@ -106,10 +110,10 @@ class TestCreateObject(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.foo.get_local_roles_for_userid(default_user), ('Owner',))
 
     def testUnauthorizedToCreateObjectByDocumentEdit(self):
-        # Anonymous should not be able to create the (real) object
-        self.logout()
-        # Note that Anonymous can create the temp object...
+        # Anonymous should not be edit the (real) object
+        # Note that Anonymous used to be able to create the temp object...
         temp_object = self.folder.restrictedTraverse('portal_factory/Document/tmp_id')
+        self.logout()
         # but not the final one
         self.assertRaises(Unauthorized, temp_object.document_edit,
                           id='foo', title='Foo', text_format='plain', text='')
@@ -171,16 +175,6 @@ class TestCreateObjectByURL(PloneTestCase.FunctionalTestCase):
                                 '/createObject?type_name=Document',
                                 ) # No basic out info
 
-        self.assertEqual(response.getStatus(), 302) # Redirect to document_edit_form
-
-        # The redirect URL should contain the factory parts
-        body = response.getBody()
-        self.failUnless(body.startswith(self.folder_url+'/portal_factory/Document/'))
-        self.failUnless(body.endswith('/document_edit_form'))
-
-        # Perform the redirect
-        edit_form_path = body[len(self.app.REQUEST.SERVER_URL):]
-        response = self.publish(edit_form_path)
         self.assertEqual(response.getStatus(), 401) # Unauthorized
 
     def testUnauthorizedToViewEditFormOfNonFactoryObject(self):

@@ -12,7 +12,6 @@
                                                               sort_on='Date',
                                                               sort_order='reverse',
                                                               review_state='published')[:5]);"
-                 
      tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
 
     <div class="portlet" id="portlet-news">

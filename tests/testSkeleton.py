@@ -10,20 +10,20 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
 
-class TestSomeProduct(PloneTestCase.PloneTestCase):
+class TestSomething(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
         pass
 
     def testSomething(self):
         # Test something
-        self.failUnless(1==1)
+        self.assertEqual(1+1, 2)
 
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestSomeProduct))
+    suite.addTest(makeSuite(TestSomething))
     return suite
 
 if __name__ == '__main__':

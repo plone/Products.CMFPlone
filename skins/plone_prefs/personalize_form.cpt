@@ -149,7 +149,7 @@
                        />
     
                 <label for="cb_invisible_ids" 
-                       i18n:translate="label_edit_short_names">Allow Editing of Short Names</label>
+                       i18n:translate="label_edit_short_names">Allow editing of Short Names</label>
     
                 <div class="formHelp" i18n:translate="help_display_names">
                 Determines if Short Names (also known as IDs) are

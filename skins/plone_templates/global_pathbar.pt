@@ -9,14 +9,6 @@
      tal:define="breadcrumbs python:portal.breadcrumbs(here);
                      portal_url portal_url|utool">
 
-     <a href="#"
-        tal:condition="python: not isAnon and mtool.getHomeFolder()"
-        tal:attributes="href string:$here_url/addtoFavorites"
-        tal:define="addFavorite portal/addFavorite.gif">
-
-     <tal:block replace="structure python:addFavorite.tag(css_class='addFavorite', title='Add this location to My Favorites')"/>
-     </a>
-
     <span tal:omit-tag="" i18n:translate="you_are_here">You are here:</span>
     <span tal:condition="python:len(breadcrumbs)>1" tal:omit-tag="">
             <a i18n:translate="tabs_home" tal:attributes="href python:breadcrumbs[0][1]">Home</a>

@@ -18,13 +18,13 @@ class ActionsTool(PloneBaseTool, BaseTool):
     __implements__ = (PloneBaseTool.__implements__, BaseTool.__implements__, )
 
 
-    # XXX __init__ is derived from the corresponding method in CMFCore.ActionsTool.
+    # The listFilteredActionsFor method below is derived from the corresponding method in
+    # CMFCore/ActionsTool.py from the Zope CMF 1.4.2.  THE METHOD HAS BEEN MODIFIED.
     # This code is licensed under the Zope Public License (see LICENSE.ZPL)
-    # (Hopefully this code will no longer be necessary in Plone 2.0.1)
+    # This software is Copyright (c) Zope Corporation (tm) and Contributors. 
+    # All rights reserved.
     def __init__(self):
         correctFolderContentsAction(self)
-
-
     #
     #   'portal_actions' interface methods
     #

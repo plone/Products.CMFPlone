@@ -19,7 +19,6 @@
     <form name="edit_form"
           method="post"
           action="talkback"
-          notal:attributes="action string:$here_url/talkback" 
           tal:attributes="action string:${here/getId}/${template/getId}">
 
         <fieldset>

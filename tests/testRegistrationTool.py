@@ -27,11 +27,23 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
         user = self.portal.acl_users.getUserById(member_id)
         self.failUnless(user, 'addMember failed to create user')
 
+    def testJoinWithUppercaseEmailCreatesUser(self):
+        self.registration.addMember(member_id, 'secret',
+                          properties={'username': member_id, 'email': 'FOO@BAR.COM'})
+        user = self.portal.acl_users.getUserById(member_id)
+        self.failUnless(user, 'addMember failed to create user')
+
     def testJoinWithoutEmailRaisesValueError(self):
         self.assertRaises(ValueError,
                           self.registration.addMember,
                           member_id, 'secret',
                           properties={'username': member_id, 'email': ''})
+
+    def testJoinWithBadEmailRaisesValueError(self):
+        self.assertRaises(ValueError,
+                          self.registration.addMember,
+                          member_id, 'secret',
+                          properties={'username': member_id, 'email': 'foo@bar.com, fred@bedrock.com'})
 
     def testJoinAsExistingMemberRaisesValueError(self):
         self.assertRaises(ValueError,
@@ -46,7 +58,13 @@ class TestRegistrationTool(PloneTestCase.PloneTestCase):
                           self.registration.addMember,
                           member_id, 'secret',
                           properties={'username': member_id, 'email': 'foo@bar.com'})
-        
+
+    def testJoinWithPortalIdAsUsernameRaisesValueError(self):
+        self.assertRaises(ValueError,
+                          self.registration.addMember,
+                          self.portal.getId(), 'secret',
+                          properties={'username': 'Dr FooBar', 'email': 'foo@bar.com'})
+
     def testJoinWithoutPermissionRaisesUnauthorized(self):
         # http://plone.org/collector/3000
         self.portal.manage_permission(AddPortalMember, ['Manager'], acquire=0)

@@ -11,7 +11,7 @@
             Title or id
         </h1>
     
-        <div class="documentDescription" tal:content="structure here/Description">
+        <div class="documentDescription" tal:content="here/Description">
             description
         </div>
     

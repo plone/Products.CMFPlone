@@ -20,6 +20,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.membership = self.portal.portal_membership
         self.workflow = self.portal.portal_workflow
+        self.types = self.portal.portal_types
         self.cp = self.portal.portal_controlpanel
 
     def testPloneSkins(self):
@@ -76,6 +77,37 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # MailHost should be of the SMH variety
         mailhost = self.portal.plone_utils.getMailHost()
         self.assertEqual(mailhost.meta_type, 'Secure Mail Host')
+
+    def testUseFolderContentsProperty(self):
+        # The use_folder_contents site property should be emtpy
+        props = self.portal.portal_properties.site_properties
+        self.assertEqual(props.getProperty('use_folder_contents'), ())
+
+    def testFolderEditActionHasEditTitle(self):
+        # Edit tab of folders should be named 'edit', not 'properties'
+        topic = self.types.getTypeInfo('Folder')
+        for action in topic._cloneActions():
+            if action.id == 'edit':
+                self.assertEqual(action.title, 'Edit')
+                break
+        else:
+            self.fail("Folder has no 'edit' action")
+
+    def testTopicHasFolderListingAction(self):
+        # Topics should have a 'folderlisting' action
+        topic = self.types.getTypeInfo('Topic')
+        for action in topic._cloneActions():
+            if action.id == 'folderlisting':
+                break
+        else:
+            self.fail("Topic has no 'folderlisting' action")
+
+    def testImagePatch(self):
+        # Is it ok to remove the imagePatch? Probably not as we
+        # don't want the border attribute ...
+        self.folder.invokeFactory('Image', id='foo', file=dummy.Image())
+        endswith = ' alt="" title="" longdesc="" height="16" width="16" />'
+        self.assertEqual(self.folder.foo.tag()[-len(endswith):], endswith)
 
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):

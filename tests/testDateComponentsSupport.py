@@ -20,12 +20,12 @@ def sortTuple(t):
 class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        date = DateTime(2002, 8, 1, 17, 45, 0)
+        date = DateTime(2002, 8, 1, 17, 42, 0)
         self.d = self.portal.date_components_support(date)
 
     def testElements(self):
         self.assertEqual(sortTuple(self.d.keys()), 
-                ('days', 'hours', 'minutes', 'months', 'years'))
+                ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
 
     def testYears(self):
         this_year = DateTime().year()
@@ -162,15 +162,24 @@ class TestDateComponentsSupport(PloneTestCase.PloneTestCase):
         for i in range(13):
             self.assertEqual(minutes[i], data[i])
 
+    def testAM(self):
+        d = DateTime(2002, 8, 1, 3, 0, 0)
+        d = self.portal.date_components_support(d)
+        self.assertEqual(d.get('ampm'), [])
+
+    def testPM(self):
+        ampm = self.d.get('ampm')
+        self.assertEqual(ampm, [])
+
 
 class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
-        self.d = self.portal.date_components_support()
+        self.d = self.portal.date_components_support(None)
 
     def testElements(self):
         self.assertEqual(sortTuple(self.d.keys()), 
-                ('days', 'hours', 'minutes', 'months', 'years'))
+                ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
 
     def testYears(self):
         this_year = DateTime().year()
@@ -307,12 +316,165 @@ class TestDateComponentsSupportDefault(PloneTestCase.PloneTestCase):
         for i in range(13):
             self.assertEqual(minutes[i], data[i])
 
+    def testAMPM(self):
+        ampm = self.d.get('ampm')
+        self.assertEqual(ampm, [])
+
+
+class TestDateComponentsSupportAMPM(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        date = DateTime(2002, 8, 1, 17, 42, 0)
+        self.d = self.portal.date_components_support(date, use_ampm=1)
+
+    def testElements(self):
+        self.assertEqual(sortTuple(self.d.keys()),
+                ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
+
+    def testHours(self):
+        data = [
+            {'selected': None, 'id': '----', 'value': '12'},
+            {'selected': None, 'id': '12',   'value': '12'},
+            {'selected': None, 'id': '01',   'value': '01'},
+            {'selected': None, 'id': '02',   'value': '02'},
+            {'selected': None, 'id': '03',   'value': '03'},
+            {'selected': None, 'id': '04',   'value': '04'},
+            {'selected': 1,    'id': '05',   'value': '05'},
+            {'selected': None, 'id': '06',   'value': '06'},
+            {'selected': None, 'id': '07',   'value': '07'},
+            {'selected': None, 'id': '08',   'value': '08'},
+            {'selected': None, 'id': '09',   'value': '09'},
+            {'selected': None, 'id': '10',   'value': '10'},
+            {'selected': None, 'id': '11',   'value': '11'},
+        ]
+
+        hours = self.d.get('hours')
+        for i in range(13):
+            self.assertEqual(hours[i], data[i])
+
+    def testAM(self):
+        d = DateTime(2002, 8, 1, 3, 0, 0)
+        d = self.portal.date_components_support(d, use_ampm=1)
+
+        data = [
+            {'selected': None, 'id': '----', 'value': 'AM'},
+            {'selected': 1,    'id': 'AM',   'value': 'AM'},
+            {'selected': None, 'id': 'PM',   'value': 'PM'},
+        ]
+
+        ampm = d.get('ampm')
+        for i in range(2):
+            self.assertEqual(ampm[i], data[i])
+
+    def testPM(self):
+        data = [
+            {'selected': None, 'id': '----', 'value': 'AM'},
+            {'selected': None, 'id': 'AM',   'value': 'AM'},
+            {'selected': 1,    'id': 'PM',   'value': 'PM'},
+        ]
+
+        ampm = self.d.get('ampm')
+        for i in range(2):
+            self.assertEqual(ampm[i], data[i])
+
+
+class TestDateComponentsSupportAMPMDefault(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.d = self.portal.date_components_support(None, use_ampm=1)
+
+    def testElements(self):
+        self.assertEqual(sortTuple(self.d.keys()),
+                ('ampm', 'days', 'hours', 'minutes', 'months', 'years'))
+
+    def testHours(self):
+        data = [
+            {'selected': 1,    'id': '----', 'value': '12'},
+            {'selected': None, 'id': '12',   'value': '12'},
+            {'selected': None, 'id': '01',   'value': '01'},
+            {'selected': None, 'id': '02',   'value': '02'},
+            {'selected': None, 'id': '03',   'value': '03'},
+            {'selected': None, 'id': '04',   'value': '04'},
+            {'selected': None, 'id': '05',   'value': '05'},
+            {'selected': None, 'id': '06',   'value': '06'},
+            {'selected': None, 'id': '07',   'value': '07'},
+            {'selected': None, 'id': '08',   'value': '08'},
+            {'selected': None, 'id': '09',   'value': '09'},
+            {'selected': None, 'id': '10',   'value': '10'},
+            {'selected': None, 'id': '11',   'value': '11'},
+        ]
+
+        hours = self.d.get('hours')
+        for i in range(13):
+            self.assertEqual(hours[i], data[i])
+
+    def testAMPM(self):
+        data = [
+            {'selected': 1,    'id': '----', 'value': 'AM'},
+            {'selected': None, 'id': 'AM',   'value': 'AM'},
+            {'selected': None, 'id': 'PM',   'value': 'PM'},
+        ]
+
+        ampm = self.d.get('ampm')
+        for i in range(2):
+            self.assertEqual(ampm[i], data[i])
+
+
+class TestSpecialCases(PloneTestCase.PloneTestCase):
+
+    def testNoneUsesDefault(self):
+        d = self.portal.date_components_support(None)
+        hours = d.get('hours')
+        # default == 1
+        self.failUnless(hours[0]['selected'])
+
+    def testEmptyStringUsesDefault(self):
+        d = self.portal.date_components_support('')
+        hours = d.get('hours')
+        # default == 1
+        self.failUnless(hours[0]['selected'])
+
+    def testDateWithGMT(self):
+        # Any GMT suffix gets truncated
+        d = self.portal.date_components_support('2004/08/31 04:30:00 GMT+2')
+        hours = d.get('hours')
+        # default == 0
+        self.failUnless(hours[5]['selected'])   # 4th hour
+
+    def testDateOnly(self):
+        d = self.portal.date_components_support('2004/08/31')
+        hours = d.get('hours')
+        # default == 0
+        self.failUnless(hours[1]['selected'])   # 0th hour
+
+    # Require Zope 2.7
+    try:
+        from DateTime.DateTime import DateTimeError
+    except ImportError:
+        pass
+    else:
+        def testInvalidDateWithGMT(self):
+            # Any GMT suffix gets truncated
+            d = self.portal.date_components_support('2004/02/31 00:30:00 GMT+2')
+            hours = d.get('hours')
+            # default == 1
+            self.failUnless(hours[0]['selected'])
+
+        def testInvalidDateOnly(self):
+            d = self.portal.date_components_support('2004/02/31')
+            hours = d.get('hours')
+            # default == 1
+            self.failUnless(hours[0]['selected'])
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestDateComponentsSupport))
     suite.addTest(makeSuite(TestDateComponentsSupportDefault))
+    suite.addTest(makeSuite(TestDateComponentsSupportAMPM))
+    suite.addTest(makeSuite(TestDateComponentsSupportAMPMDefault))
+    suite.addTest(makeSuite(TestSpecialCases))
     return suite
 
 if __name__ == '__main__':

@@ -8,6 +8,11 @@
 ##parameters=start_date='',end_date=''
 ##title=Validates an event edit_form contents
 ##
+try:
+    from DateTime.DateTime import DateTimeError
+except ImportError:
+    DateTimeError = 'DateTimeError'
+
 REQUEST=context.REQUEST
 
 start_date_year = REQUEST.get('start_date_year',None)
@@ -30,8 +35,6 @@ if end_date_year:
     if end_date_month and end_date_day and end_date_hour and end_date_minute:
          end_date='%s-%s-%s %s:%s'%(end_date_year,end_date_month,end_date_day,end_date_hour,end_date_minute)
 
-from DateTime import DateTime
-
 if not start_date:
      state.setError('start_date', 'Input is required but not given.', 'input_required')
 
@@ -39,16 +42,21 @@ if not end_date:
      state.setError('end_date', 'Input is required but not given.', 'input_required')
 
 if not state.getError('start_date') and not state.getError('end_date'):
+    tmp_start_date = None
+    tmp_end_date = None
+
     try:
         tmp_start_date = DateTime(start_date)
-    except TypeError:
+    except (TypeError, DateTimeError):
         state.setError('start_date', 'Please enter a valid date and time.')
+        REQUEST.set('start_date', '')   # Remove bad date from request
 
     try:
         tmp_end_date = DateTime(end_date)
-    except TypeError:
+    except (TypeError, DateTimeError):
         state.setError('end_date', 'Please enter a valid date and time.')
-    
+        REQUEST.set('end_date', '')     # Remove bad date from request
+
     if tmp_start_date and tmp_end_date:
         if tmp_start_date.greaterThan(tmp_end_date):
             state.setError('end_date', 'An event must end after it starts.')

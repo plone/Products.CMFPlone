@@ -24,10 +24,10 @@
                        class="marker"
                        tal:attributes="href string:${o/absolute_url}/view;
                                        title o/Description">
-                        <img src="" height="16" width="16"
+                        <img src="" alt="" height="16" width="16"
                              tal:attributes="src string:${here/portal_url}/${o/getIcon};
                                              title o/Type;" />
-                        <span tal:replace="o/Title|o/getId">
+                        <span tal:replace="o/title_or_id">
                         Extended Calendar Product
                         </span>
                     </a>

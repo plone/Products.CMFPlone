@@ -62,7 +62,8 @@
                     <ul class="configletDetails">
                         <li tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">
                             <a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">
-                                <img tal:replace="structure here/book_icon.gif" 
+                                <img src="" alt="" 
+                                     tal:replace="structure here/book_icon.gif" 
                                 />&nbsp;<span i18n:translate="text_product_description">
                                         Product Description
                                         </span>
@@ -71,7 +72,8 @@
                         
                         <li tal:condition="product/hasError">    
                             <a tal:attributes="href string:${QI/absolute_url}/${pid}/prefs_installed_product_overview">
-                                <img tal:replace="structure here/error_icon.gif" 
+                                <img src="" alt="" 
+                                     tal:replace="structure here/error_icon.gif" 
                                 />&nbsp;<tal:producterror i18n:translate="text_broken_product">
                                         This Product is broken
                                         </tal:producterror>

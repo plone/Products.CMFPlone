@@ -16,6 +16,12 @@ function registerPloneFunction(func){
     else if (window.attachEvent) window.attachEvent("onload",func);   
   }
 
+function unRegisterPloneFunction(func){
+    // uregisters a previous function to fire onload. 
+    if (window.removeEventListener) window.removeEventListener("load",func,false);
+    else if (window.detachEvent) window.detachEvent("onload",func);   
+  }
+
 function getContentArea(){
 	// to end all doubt on where the content sits. It also felt a bit silly doing this over and over in every
 	// function, even if it is a tiny operation. Just guarding against someone changing the names again, in the name
@@ -488,7 +494,7 @@ function highlightSearchTerm() {
         query = window.location.search
         // _robert_ ie 5 does not have decodeURI 
         if (typeof decodeURI != 'undefined'){
-            query = decodeURI(unescape(query)) // thanks, Casper 
+            query = unescape(decodeURI(query)) // thanks, Casper 
         }
         else {
             return false
@@ -511,7 +517,12 @@ function highlightSearchTerm() {
                 // make sure we start the right place and not higlight menuitems or breadcrumb
                 contentarea = getContentArea();
 				for (q=0;q<queries.length;q++) {
-                    climb(contentarea,queries[q]);
+                                       // don't highlight reserved catalog search terms
+                                       if (queries[q].toLowerCase() != 'not'
+                                               && queries[q].toLowerCase() != 'and'
+                                               && queries[q].toLowerCase() != 'or') {
+                       climb(contentarea,queries[q]);
+                                       }
                 }
             }
         }
@@ -674,7 +685,7 @@ function showJsCalendar(input_id_anchor, input_id, input_id_year, input_id_month
 
 
 // This function updates a hidden date field with the current values of the widgets
-function update_date_field(field, year, month, day, hour, minute)
+function update_date_field(field, year, month, day, hour, minute, ampm)
 {
     var field  = document.getElementById(field)
     var date   = document.getElementById(date)
@@ -683,22 +694,28 @@ function update_date_field(field, year, month, day, hour, minute)
     var day    = document.getElementById(day)
     var hour   = document.getElementById(hour)
     var minute = document.getElementById(minute)
+    var ampm   = document.getElementById(ampm)
 
-    if (year.value > 0) 
+    if (0 < year.value)
     {
         // Return ISO date string
         // Note: This relies heavily on what date_components_support.py puts into the form.
         field.value = year.value + "-" + month.value + "-" + day.value + " " + hour.value + ":" + minute.value
+        // Handle optional AM/PM
+        if (ampm && ampm.value)
+            field.value = field.value + " " + ampm.value
     } 
     else 
     {
+        // Return empty string
+        field.value = ''
         // Reset widgets
         month.options[0].selected = 1
         day.options[0].selected = 1
         hour.options[0].selected = 1
         minute.options[0].selected = 1
-        // Return empty string
-        field.value = ''
+        if (ampm && ampm.options)
+            ampm.options[0].selected = 1
     }
 }
 

@@ -195,6 +195,7 @@
           <div class="field"
                tal:define="here_start here/start|nothing;
                            start_date python:request.get('start_date', here_start);
+                           start_date python:start_date or here_start;
                            error errors/start_date | nothing;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 
@@ -223,6 +224,7 @@
           <div class="field"
                tal:define="here_end here/end|nothing;
                            end_date python:request.get('end_date', here_end);
+                           end_date python:end_date or here_end;
                            error errors/end_date | nothing;"
                tal:attributes="class python:test(error, 'field error', 'field')">
 

@@ -4,7 +4,7 @@
 
 <head>
 
-    <style>
+    <style type="text/css" media="screen">
     body {
         background-color: white; 
         color: black; 

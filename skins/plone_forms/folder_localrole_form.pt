@@ -250,8 +250,9 @@
                         Role to assign
                     </label>
 
-                    <select name="member_role"
+                    <select name="member_role:list"
                             id="user_member_role"
+                            multiple="multiple"
                             tabindex=""
                             tal:attributes="tabindex tabindex/next;">
                         <option tal:repeat="lroles python:mtool.getCandidateLocalRoles(here)"
@@ -429,8 +430,9 @@
                             Role to assign
                         </label>
 
-                        <select name="member_role"
+                        <select name="member_role:list"
                                 id="group_member_role"
+                                multiple="multiple"
                                 tabindex=""
                                 tal:attributes="tabindex tabindex/next;">
                             <option tal:repeat="lroles python:mtool.getCandidateLocalRoles(here)"

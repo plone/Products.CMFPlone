@@ -70,8 +70,8 @@ we eventually might want to merge this form with personalize_form
               method="post"
               enctype="multipart/form-data"
               tal:condition="user | nothing"
-              tal:attributes="action string:${here/portal_memberdata/absolute_url}">
-    
+              tal:attributes="href python:context.absolute_url()+'/'+template.id">
+          <input type="hidden" name="form.submitted" value="1" />
           <fieldset>
             <legend i18n:translate="legend_member_details">Member Details</legend>
     
@@ -162,7 +162,6 @@ we eventually might want to merge this form with personalize_form
     
             <div class="field"
                  tal:define="listed python:request.get('listed', member.getProperty('listed',''));">
-
                 <input type="checkbox"
                        class="noborder"
                        name="listed"

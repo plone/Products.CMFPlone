@@ -44,7 +44,7 @@
           Up one level
         </a>
 
-        <p tal:content="structure here/Description">
+        <p tal:content="here/Description">
           Description
         </p>
 
@@ -195,7 +195,8 @@
 
                       <a href="#" tal:attributes="href url; title item/Description;">
 
-                        <img tal:attributes="src item/getIcon;
+                        <img tal:attributes="src python:portal_url+'/'+item.getIcon(1);
+
                                              alt item_typeinfo/Title; 
                                              title item_typeinfo/Title;"
                              i18n:attributes="title"
@@ -284,7 +285,7 @@
 
         <form action=""
               method="post"
-              tal:attributes="action string:$here_url/invokeFactory">
+              tal:attributes="action string:$here_url/createObject">
           <input type="hidden"
                  name="id"
                  value="index_html"/>
