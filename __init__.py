@@ -34,8 +34,14 @@ allow_class(EmailField)
 allow_class(FormValidationError)
 allow_class(BasicForm)
 
-try: from Products.CMFDecor import FSPageTemplate
-except: from Products.CMFCore import FSPageTemplate
+
+def transaction_note(note):
+    """ write human legible note """
+    T=get_transaction()
+    T.note(str(note))
+
+ModuleSecurityInfo('Products.CMFPlone').declarePublic('transaction_note')
+
 
 tools = ( MembershipTool.MembershipTool
         , FormulatorTool.FormulatorTool 
