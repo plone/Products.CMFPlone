@@ -75,7 +75,8 @@ class MigrationTool( UniqueObject, SimpleItem):
                 if newv is not None:
                     out.append("Upgrade to: %s, completed" % newv)
                     self.setInstanceVersion(newv)
-                
+                else:
+                    out.append("No upgrade path found from that version, migration stopping")
             except:
                 out.append('ERROR:')
                 out += traceback.format_tb(sys.exc_traceback)
@@ -84,10 +85,10 @@ class MigrationTool( UniqueObject, SimpleItem):
                 # to break the loop
                 newv = None
                 
-        out.append("End of upgrade path")
+        out.append("End of upgrade path, migration has finished")
         
         if self.needUpgrading():
-            out.append("PROBLEM: The uppgrade path did NOT reach current version")
+            out.append("PROBLEM: The upgrade path did NOT reach current version")
             out.append("Migration has failed")
 
         # do this once all the changes have been done
@@ -95,8 +96,8 @@ class MigrationTool( UniqueObject, SimpleItem):
             self.portal_catalog.refreshCatalog()
             self.portal_workflow.updateRoleMappings()
         except:
-            out.append("Exception was thrown while cataloging")
-            pass
+            out.append("Exception was thrown while cataloging and updating role mappings")
+            out += traceback.format_tb(sys.exc_traceback)
 
         if dry_run:
             out.append("Dry run selected, transaction aborted")
