@@ -14,14 +14,14 @@ Plone 2.0.1 - Jello
       from. Currently this does absolutely nothing, just a placeholder.
       [tiran]
 
-    - changed the registration of tools to provide different images in the ZMI 
+    - changed the registration of tools to provide different images in the ZMI
       [helge,limi]
 
     - validate_document_edit assumed the Content-Type header is always
       present. This is not the case.
       [stefan]
 
-    - Added two classes to allow list without markers: 
+    - Added two classes to allow list without markers:
       'ul.visualNoMarker' and 'ol.visualNoMarker'.
       [limi]
 
