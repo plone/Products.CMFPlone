@@ -2,6 +2,7 @@ from cgi import escape
 
 # patch Image.py
 from OFS.Image import Image
+from Products.CMFCore.FSImage import FSImage
 
 def tag(self, height=None, width=None, alt=None,
         scale=0, xscale=0, yscale=0, css_class=None, title=None, **args):
@@ -48,5 +49,10 @@ def tag(self, height=None, width=None, alt=None,
             result = '%s %s="%s"' % (result, key, value)
 
     return '%s />' % result
-    
+  
+def fstag(self, *args, **kwargs):
+    self._updateFromFS()
+    return tag(self, *args, **kwargs)
+      
 Image.tag = tag
+FSImage.tag = fstag
