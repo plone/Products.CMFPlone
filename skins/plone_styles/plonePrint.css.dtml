@@ -1,3 +1,19 @@
+/*
+** Plone Print style sheet for CSS2-capable browsers.
+** Copyright Alexander Limi, 2001-2003 - http://www.plonesolutions.com
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will 
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade. 
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
 /* Thanks to alistapart.com for useful extras */
 
 body {
@@ -9,25 +25,28 @@ body {
     padding: 0;
 }
 
-div#top,
-.netscape4,
-.tabs,
-#portalTabs,
-#personalBar,
+div.top,
+#logo,
 .hiddenstructure,
-#pathBar,
-td#left,
-td#right,
-#contentTabs,
-#contentBar,
-div.documentActions,
-#footer,
+div#searchBox,
+ul#portalTabs,
+ul#personalBar,
+div#pathBar,
+div#columns div#left,
+div#columns div#right,
+.contentViews,
+.contentActions,
 .help,
 .legend,
 div.message,
-input,
-a.skipnav
-{
+div.documentActions,
+.byline,
+.netscape4,
+#footer,
+#colophon,
+input
+.skipnav {
+    /* Hides all the elements irrelevant for presentations */
     display: none;
 }
 
@@ -35,12 +54,10 @@ ul {
     list-style-type: square;
 }
 
-.editableDocument,
-.document,
-#description,
+.pageContent,
+.description,
 .group,
 li,
-#content,
 .stx,
 p {
     background: transparent;
@@ -103,3 +120,16 @@ div.document a:visited:after {
    content: " ( " attr(href) " ) ";
 }
 
+div#columns div#main-left,
+div#columns div#main-left div.main {
+    width: 100%;
+}
+
+div#columns div#main-left div.main {
+    padding: 0;
+    margin: 0;
+}
+
+div#columns div#main-left div.main * {
+    text-align: left;
+}
