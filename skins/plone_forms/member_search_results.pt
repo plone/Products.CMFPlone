@@ -49,6 +49,7 @@
         <!-- Navigation -->
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
+        <div class="visualClear">&nbsp;</div>
     </div>
 
     <div tal:condition="not: results">
