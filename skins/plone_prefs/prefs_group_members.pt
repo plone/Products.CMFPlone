@@ -107,7 +107,7 @@
             <h2 i18n:translate="heading_groupmembers_current">Current Group Members</h2>
     	<table class="listing">
                 <tr>
-                    <th i18n:translate="listingheader_remove_user_from_group">
+                    <th>
                         <input class="noborder"
                                type="checkbox"
                                src="select_all_icon.gif"
