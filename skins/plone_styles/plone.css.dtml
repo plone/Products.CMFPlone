@@ -16,37 +16,28 @@
 **
 */
 
-
 /* <dtml-with stylesheet_properties> (do not remove this :) */
 
-
-
 /* The column layout: */
-
 table.columns {
 	width: 100%;
 }
-
 table.columns td.left {
     vertical-align: top;
     width: 15%;
     padding: 2em 0em 1em 2em;
 }
-
 table.columns td.main {
     vertical-align: top;
     padding: 0.5em 2em 1em 2em;
     margin: 0;
 }
-
 table.columns td.right {
     vertical-align: top;
     width: 15%;
     padding: 2em 2em 1em 0em;
 }
-
 /* The basic elements: */
-
  body {
     font: <dtml-var mainFont>;
     background: &dtml-mainBackground;;
@@ -68,53 +59,41 @@ table {
 }
 
 
-
-
 a {
 	text-decoration: none;
     color: &dtml-mainLinkColor;;
     background-color: transparent;
 }
-
 img {
     border: none;
 	vertical-align: middle;
 }
-
 p {
     margin: 0.5em 0em 1em 0em;
     text-align: left;
     line-height: 1.5em;
 }
-
 p a {
     text-decoration: underline;
 }
-
 p a:visited {
 	color: &dtml-contentLinkVisitedColor;;
     background-color: transparent;
 }
-
 p a:active {
 	color: &dtml-contentLinkActiveColor;;
     background-color: transparent;
 }
-
 p img {
     border: &dtml-contentImageBorder;;
     margin: 0;
 }
-
 
 hr {
     height: 1px;
     color: &dtml-mainTabBorderColorSelected;;
     background-color: transparent;
 }
-
-
-
 
 
 h1, h2, h3, h4, h5, h6 {
@@ -125,33 +104,24 @@ h1, h2, h3, h4, h5, h6 {
     padding-top: 0.5em;
     border-bottom: 1px solid &dtml-mainTabBorderColor;;
 }
-
 h1 {
     font-size: &dtml-headingSize1;;
 }
-
 h2 {
     font-size: &dtml-headingSize2;;
 }
-
 h3 {
     font-size: &dtml-headingSize3;;
 }
-
 h4 {
     font-size: &dtml-headingSize4;;
 }
-
 h5 {
     font-size: &dtml-headingSize5;;
 }
-
 h6 {
     font-size: &dtml-headingSize6;;
 }
-
-
-
 
 
 ul { 
@@ -160,57 +130,46 @@ ul {
     margin: 0.5em 0 0 2em;
     padding:0;
 }
-
 ol {
     line-height: 1.5em;
     margin: 0.5em 0 0 2em;
     padding:0;
 }
-
 ul a, ol a {
     text-decoration: underline;
 }
-
 li {
     margin-bottom: 1em;
 }
-
 dt {
     font-weight: bold;    
 }
-
 dt a {
     text-decoration: underline;
 }
-
 
 dd {
     line-height: 1.5em;
     margin-bottom: 1em;
 }
-
 dd a {
     text-decoration: underline;
 }
-
 
 fieldset {
     border: &dtml-groupBorder;;
     margin: 2em 0em 1em 0em;
     padding: 1em 0em;
 }
-
 legend {
     background: &dtml-mainBackground;;
     padding: 0.5em;
 }
 
-
 form {
     border: none;
     margin: 0;
 }
-
 textarea {
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
@@ -218,7 +177,6 @@ textarea {
     width: 88%;
     padding: 0.1em;
 }
-
 input {
     visibility: visible;
     font: <dtml-var inputFont>;
@@ -229,38 +187,32 @@ input {
     margin-bottom: 1px; /* IE bug fix */
     padding: 0.1em;
 }
-
 select {
     font: <dtml-var inputFont>;
     border: &dtml-inputBorder;;  
     vertical-align: top;
 }
-
 abbr, acronym, .explain {
     border-bottom: 1px dotted &dtml-mainFontColor;;
     color: &dtml-mainFontColor;;
     background-color: transparent;
     cursor: help;
 }
-
 q {
     font-family: Times, "Times New Roman", serif;
     font-style: italic;
     font-size: 120%;
 }
-
 blockquote {
     font-family: Times, "Times New Roman", serif;
     font-style: italic;
     font-size: 120%;
 }
-
 code {
     font-size: 120%;
     color: &dtml-mainFontColor;;
     background-color: &dtml-preBackground;;
 }
-
 pre {
     font-size: 120%;
     padding: 1em;
@@ -268,15 +220,9 @@ pre {
     color: &dtml-mainFontColor;;
     background-color: &dtml-preBackground;;
 }
-
 .netscape4 {
     display: none;
 }
-
-
-
-
-
 
 
 
@@ -302,18 +248,15 @@ div.top {
     margin: &dtml-topMargin;;
     padding: &dtml-topPadding;;
 }
-
 div.siteActions {
     float: right;
     margin: 1em 1em 0.5em 1em;
 }
-
 .logo {
     /* Logo properties */
     margin: &dtml-logoMargin;;
     padding: &dtml-logoPadding;;
 }
-
 div.searchBox {
     /*searchbox style and positioning */
     background-color: transparent;
@@ -326,13 +269,11 @@ div.searchBox {
     text-transform: &dtml-textTransform;;
     width: 30%;
 }
-
 input.searchButton {
     font-size: 100% ! important;
     margin-bottom: 1px ! important;
 }
-
-div.tabs {
+ul.portaltabs {
     /* Navigational Plone Tabs(tm), implemented by customizing the a tag - they are surprisingly elegant. The power of CSS runs strong in these :) */
     background: &dtml-mainTabBackdrop;;
     border-collapse: collapse;
@@ -341,9 +282,17 @@ div.tabs {
     border-bottom-width: 1px;
     padding: 0.5em 0em 0em 2em;
     white-space: nowrap;
+    list-style: none;
+    margin: 0;
 }
-
-div.tabs a {
+ul.portaltabs li {
+    /* Make the links inline using Fabrice's inversion to fix NS4 */
+    display : inline;
+    /*/*//*/
+    display : none;
+    /* */
+}
+li.portaltab a {
     /* The normal, unselected tabs. They are all links */
     background: &dtml-mainTabBackgroundNotSelected;;
     border-color: &dtml-mainTabBorderColor;;
@@ -353,11 +302,13 @@ div.tabs a {
     font-weight: &dtml-mainTabFontWeight;;
     height: 1.2em;
     margin-right: 0.5em;
+    position: relative;
+    top: 2px; /* Cope with odd rounding bugs */
     padding: 0em 2em;
+    text-decoration: none;
     text-transform: &dtml-textTransform;;
 }
-
-div.tabs a.selected {
+li.portaltab a.selected {
     /* The selected tab. There's only one of this */
     background: &dtml-mainTabBackground;;
     border: 1px solid &dtml-mainTabBorderColorSelected;;
@@ -365,14 +316,12 @@ div.tabs a.selected {
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
 }
-
-div.tabs a:hover {
+li.portaltab a:hover {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-color: &dtml-mainTabBackground;;
     color: &dtml-mainTabFontColorSelected;;
 }
-
 div.personalBar {
     /* Bar with personalized menu (user preferences, favorites etc) */
     background: &dtml-mainTabBackground;;
@@ -384,21 +333,18 @@ div.personalBar {
     text-align: right;
     text-transform: &dtml-textTransform;;
 }
-
 div.personalBar a {
     background-color: transparent;
 	color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
     margin-left: 1em;
 }
-
 div.personalBar img {
     vertical-align: top;
 }
 .caseSensitive {
     text-transform: none;
 }
-
 div.pathBar {
     /* The path bar, including breadcrumbs and add to favorites */
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
@@ -408,16 +354,13 @@ div.pathBar {
     padding-right: 2em;
     text-transform: &dtml-textTransform;;
 }
-
 .breadcrumbs {
     float: left;
     text-transform: &dtml-textTransform;;
 }
-
 .addFavorite {
     vertical-align: bottom;
 }
-
 #contentTabs {
     background: &dtml-contentTabBackdrop;;
     border-collapse: collapse;
@@ -426,7 +369,6 @@ div.pathBar {
     margin-top: 1em;
     /* white-space: nowrap; */
 }
-
 #contentTabs a {
     background: &dtml-contentTabBackgroundNotSelected;;
     border: &dtml-contentTabBorder;;
@@ -438,19 +380,16 @@ div.pathBar {
     padding: 0em 2em;
     text-transform: &dtml-textTransform;;
 }
-
 #contentTabs a.selected {
     background: &dtml-contentTabBackground;;
     border-bottom: &dtml-contentTabBackground; 1px solid;
     color: &dtml-contentTabFontColorSelected;;
     font-weight: &dtml-contentTabFontWeight;;
 }
-
 #contentTabs a:hover {
     background-color: &dtml-contentTabBackground;;
     color: &dtml-contentTabFontColorSelected;;
 }
-
 #contentBar {
     background: &dtml-contentTabBackground;;
     border-left: &dtml-contentTabBorder;;
@@ -460,25 +399,21 @@ div.pathBar {
     text-transform: &dtml-textTransform;;
     padding: 0 1em;
 }
-
 div.document {
     background: &dtml-mainBackground;;
     font: <dtml-var contentFont>;
     padding: 0;
     margin: 0em 0em 2em 0em;
 }
-
 div.editable {
     background: &dtml-contentBackground; ! important;
     border: &dtml-contentTabBorder;;
     padding: 0em 1em 2em 1em ! important;
 }
-
 div.documentActions {
     float: right; 
     margin-top: 1.5em;
 }
-
 div.message {
     background: &dtml-messageBackground;;
     border: &dtml-messageBorder;;
@@ -488,18 +423,14 @@ div.message {
     padding: 0.5em 1em;
     vertical-align: middle;
 }
-
 div.message a {
 	color: &dtml-mainFontColor;;
     text-decoration: underline;
 }
 
-
-
 div.title {
     margin-top: 1em;
 }
-
 #description {
     /* The summary text describing the document */
     font: <dtml-var descriptionFont>;
@@ -507,11 +438,9 @@ div.title {
     margin: 1em 0em;
     line-height: 1.5em;
 }
-
 div.byline {
     font-size: 80%;
 }
-
 .footer {
     background: &dtml-footerBackground;;
     border-top: &dtml-footerBorder;;
@@ -523,13 +452,9 @@ div.byline {
     text-align: center;
 }
 
-
 /*
 ** Widgets
 */
-
-
-
 
 
 
@@ -543,7 +468,6 @@ input.standalone {
     padding: &dtml-standaloneButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-
 input.context {
     background: &dtml-contextButtonBackground;;
     color: &dtml-contextButtonFontColor;;
@@ -554,7 +478,6 @@ input.context {
     padding: &dtml-contextButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-
 input.destructive {
     background: &dtml-destructiveButtonBackground;;
     border: &dtml-destructiveButtonBorder;;  
@@ -566,30 +489,23 @@ input.destructive {
     padding: &dtml-destructiveButtonPadding;;
     text-transform: &dtml-textTransform;;
 }
-
 input.noborder {
     border: &dtml-noBorder;;
     margin: 0;
     background-color: transparent;
 }
-
 input.add {
-
 }
-
 input.quickSearch {
 }
-
 input.notify {
     border: &dtml-destructiveButtonBorder;;  
 }
-
 div.row {
     min-height: 4em;
     margin: 0em 0em 1em 0em;
     position: relative;
 }
-
 .group {
     border: &dtml-groupBorder;;
     margin: 1em 0em 1em 0em;
@@ -603,11 +519,9 @@ span.legend {
     top: -0.8em;
     left: 0em;
 }
-
 div.field {
     margin-top: 0.2em;
 }
-
 div.help {
     background-color: #FFFFE1; 
     border: 1px solid black; 
@@ -621,7 +535,6 @@ div.help {
     width: 16em;
     padding: 0.5em;
 }
-
 .error {
     /* Class for error indication in forms */
     background: &dtml-messageBackground;;
@@ -630,12 +543,10 @@ div.help {
     margin: 0;
     width: 68% !important;
 }
-
 .required {
     /* Used in addition to class "label" on required elements */
     background: &dtml-requiredField;;
 }
-
 span.card,
 div.portrait {
     background: &dtml-mainTabBackground;;
@@ -647,7 +558,6 @@ div.portrait {
     text-align: center;
     width: 100px;
 }
-
 table.listing,
 div.stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
@@ -656,9 +566,7 @@ div.stx table {
     border-bottom: &dtml-listingBorder;;
     font-size: 80%;
     margin: 1em 0em 1em 0em;
-
 }
-
 table.listing th,
 div.stx table th {
     background: &dtml-listingHeaderBackground;;
@@ -671,7 +579,6 @@ div.stx table th {
     text-transform: &dtml-textTransform;;
     white-space: nowrap;
 }
-
 table.listing td.top {
     border-left: 1px solid &dtml-contentBackground;;
     border-top: 1px solid &dtml-contentBackground; ! important;
@@ -683,43 +590,34 @@ table.listing td.top {
     left: -1px;
     top: -1px;
 }
-
 table.listing tr.odd {
     /*every second line should be shaded */
     background: &dtml-listingOddBackground;;
 }
-
 table.listing tr.even {
     background: &dtml-listingEvenBackground;;
 }
-
 table.listing td.checkbox {
     text-align: center;
 }
-
 table.listing td,
 div.stx table td {
     border-right: &dtml-listingBorder;;
     padding: 0em 1em;
     text-align: left;
 }
-
 table.listing a:hover {
     text-decoration: &dtml-listingLinkHover;;
 }
-
 table.listing img {
 	vertical-align: middle;
 }
-
 /* Additional STX workaround classes */
-
 div.stx table p /* stupid STX table workaround */
 {
     margin: 0;
     padding: 0;
 }
-
 div.stx table  /* stupid STX table workaround */
 {
     border: &dtml-listingBorder; ! important;
@@ -728,17 +626,14 @@ div.stx table td {
     border-bottom: &dtml-listingBorder;;
 }
 
-
 div.box {
     border: none;
     margin-bottom: 1em;
     padding: 0;
 }
-
 div.box h4 {
     font-size: 1em;
 }
-
 div.box h5 { 
     background: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
@@ -750,7 +645,6 @@ div.box h5 {
     font-size: 1em;
     height: 1em;
 }
-
 div.box h6 { 
     background: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
@@ -763,28 +657,23 @@ div.box h6 {
     height: 1.2em;
 }
 
-
 div.box div.body {
     background: transparent;
     border-collapse: collapse;
     border: &dtml-boxBorder;;
 }
-
 .boxDetails {
     text-align: right;
 }
-
 div.box .content {
     padding: 1em;
 }
-
 div.box a.close {
     float: right;
     text-transform: none;
     border-left: &dtml-boxBorder;;
     padding: 0em 0.2em;
 }
-
 div.box h1, 
 div.box h2, 
 div.box h3, 
@@ -792,60 +681,46 @@ div.box h4 {
     margin: 0;
     padding: 0;
 }
-
 div.box .even {
     background-color: &dtml-boxEvenBackground;;
 }
-
 div.box .odd {
     background-color: &dtml-boxOddBackground;;
 }
-
 div.box input {
     font-size: 100%;
 }
-
 div.spacer {
 	margin: 1em;
 }
-
 .currentNavItem {
     color: &dtml-mainFontColor;;
     font-weight: bold;
 }
-
 .private {
     color: Black;
 }
-
 .published {
     color: #74AE0B;
 }
-
 .pending {
     color: #FFA500;
 }
-
 .syndicated {
     color: #008000;
 }
-
 .expired {
     color: Red;
 }
-
 .even {
     background-color: &dtml-evenRowBackground;;
 }
-
 .odd {
     background-color: &dtml-oddRowBackground;;
 }
-
 .highlight {
     background-color: &dtml-evenRowBackground;;
 }
-
 div.listingBar {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
@@ -857,41 +732,32 @@ div.listingBar {
     vertical-align: top;
     margin: 1em 0em;
 }
-
 div.listingBar span.previous {
     text-align: left;
     float: left;
 }
-
 div.listingBar span.next {
     text-align: right;
     float: right;
 }
-
 div listingBar img {
 	vertical-align: middle;
 }
-
 /* Accessibility and visual enhancement elements */
-
 a.skipnav {
     visibility: hidden;
     position: absolute;
 } 
-
 a.external {
     background: White url(link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
 }
-
 div.hiddenlabel {
     visibility: hidden;
 }
-
 label.hiddenlabel {
     visibility: hidden;
 }
-
 label.label,
 {
     font-weight: bold;
@@ -899,11 +765,9 @@ label.label,
     padding-right: 0.5em;
 }
 
-
 /*
 ** Calendar elements - used in the calendar rendering 
 */
-
 div.day {
     background-color: #FFFFBB;
     border: 1px solid Black;
@@ -913,71 +777,55 @@ div.day {
     width: 12em;
     z-index: 2;
 }
-
 div.date {
     font-weight: bold;
 }
-
   
 table.calendar {
     border: &dtml-boxBorder;;
     margin:  1em ;
     text-align: right;
 }
-
 table.calendar a {
     text-decoration: none;
     color: &dtml-boxLinkColor;;
 }
-
 table.calendar a:hover {
     text-decoration: none;
 }
-
 table.calendar th {
     background-color: &dtml-boxHeaderBackground;;
     color: &dtml-boxHeaderFontColor;;
     font-weight: bold;
     text-align: center;
 }
-
 table.calendar td {
     background-color: transparent;
     width: 1.5em;
     padding: 2px;
 }
-
 table.calendar td.weekdays {
     background-color: &dtml-boxHeaderBackground;;
     border: &dtml-boxBorder;;
     border-style: solid none;
     text-align: center;
 }
-
 table.calendar td.event {
     background-color: &dtml-boxHeaderBackground;;
     font-weight: bold;
 }
-
 table.calendar td.noevent {
     background-color: transparent;
 }
-
 table.calendar td.todayevent {
     background-color: &dtml-boxHeaderBackground;;
     border: &dtml-boxHighlight;;
     font-weight: bold;
 }
-
 table.calendar td.todaynoevent {
     border-collapse: collapse;
     border: &dtml-boxHighlight;;
 }
-
-
-
-
-
 
 
 
