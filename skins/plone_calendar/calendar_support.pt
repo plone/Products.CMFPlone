@@ -22,10 +22,19 @@
  of the form in which this input element resides.
  Also it should be provided with inputvalue which is the
  current or default value for the field.
+
+ onfocus and/or onblur are setup as attributes if availabe. 
  
+ tabindex is setup is provided.
+
  </comment>
  
-  <input type=text tal:attributes="name inputname; id inputname; value inputvalue">
+  <input type=text tal:attributes="name inputname; 
+                                   id inputname; 
+                                   value inputvalue;
+                                   onfocus onfocus|nothing;
+                                   onblur onblur|nothing;
+                                   tabindex tabindex|nothing">
 
   <a href="" tal:attributes="onclick string:window.open('plone_calendar/calendar_popup?inputname=${inputname}&formname=${formname}','cal','dependent=yes,width=180,height=160,screenX=200,screenY=300,titlebar=yes');; return false">
     <img src="plone_images/popup_calendar.gif">

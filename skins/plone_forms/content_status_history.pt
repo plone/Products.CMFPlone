@@ -119,7 +119,7 @@
         <div class="row">
             <div class="label">
               <span i18n:id="effective_date">Effective Date</span>
-                <div id="format_help"
+                <div id="effective_date_help"
                      i18n:id="effective_date_help" 
                      class="help" 
                      style="visibility:hidden">
@@ -131,7 +131,10 @@
             <div class="field">
                 <div tal:define="inputname  string:effective_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:test(here.effective_date, here.effective_date, '')">
+                                 inputvalue python:test(here.effective_date, here.effective_date, '');
+                                 onfocus string:formtooltip('effective_date_help',1);
+                                 onblur string:formtooltip('effective_date_help',0);
+                                 tabindex string:3;">
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
@@ -153,7 +156,10 @@
             <div class="field">
                 <div tal:define="inputname  string:expiration_date; 
                                  formname   string:edit_form;
-                                 inputvalue python:test(here.expiration_date, here.expiration_date, '')">
+                                 inputvalue python:test(here.expiration_date, here.expiration_date, '');
+                                 onfocus string:formtooltip('expiration_date_help',1);
+                                 onblur string:formtooltip('expiration_date_help',0);
+                                 tabindex string:4;">
                   <div metal:use-macro="here/calendar_support/macros/calendarDatePickerBox">
                     a calendar, hopefully
                   </div>
@@ -179,6 +185,7 @@
                           name="comment" 
                           cols="60" 
                           rows="5"
+                          tabindex="5"
                           onfocus="formtooltip('publishing_comments_help',1)" 
                           onblur="formtooltip('publishing_comments_help',0)" 
                           ></textarea>
