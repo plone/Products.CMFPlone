@@ -7,7 +7,9 @@
     - Members folder is no longer cataloged upon reincarnation as a Plone Folder
     - formtooltips for anonymous users are defaulted to portal_memberdata setting
     - fixed FreeBSD segfault problem in forms caused by IndexIterator inheriting from ZTUtils.Iterator
-    
+    - Issue 236 resolves - verified by Michael Dietrich 
+    - search_form changed to use portal_type instead of Type thanks to Buehlmann and JeffK
+
 1.0 alpha3
     - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
     - reconfig_form for site wide configuraiton has form validation, and exposes loads of configuration options
