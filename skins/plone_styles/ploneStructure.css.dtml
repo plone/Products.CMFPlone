@@ -109,7 +109,7 @@ div.personalBar a {
 }
 
 div.personalBar img {
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 div.pathBar {

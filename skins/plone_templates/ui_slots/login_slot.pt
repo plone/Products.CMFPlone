@@ -43,7 +43,11 @@
         <tr class="even"> 
 	    <td colspan="2">
 
-                <a href="mail_password_form" class="marker">
+                <a href="mail_password_form">
+                   <img src="" 
+                        alt=">" 
+                        border="0" 
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
                 Forgot your password?
                 </a>
 
@@ -55,8 +59,11 @@
             <td colspan="2">
 
                 <a href="join_form"
-                   class="marker" 
 		           tal:attributes="href string:$portal_url/join_form">
+                   <img src="" 
+                        alt=">" 
+                        border="0" 
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
                 New user?
                 </a>
 

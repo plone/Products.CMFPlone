@@ -40,76 +40,69 @@
             </div>
 
             <metal:block tal:repeat="result batch" >
-            <div class="row" tal:define="resultObject result/getObject">
+            <div class="box" tal:define="resultObject result/getObject">
 
-                <div class="box">
-
-                    <div class="heading">
-                        <img src="" alt="Folder" style="border: 0" 
-                             tal:attributes="src result/getIcon; alt result/Type;" />
-                    Posted by 
-                    
-                        <a href="">
-    
-                            <img src="dummy.gif" 
-                                 alt="User" 
-                                 border="0" 
-                                 tal:attributes="src string:$portal_url/user.gif" />
-                        
-                            <span tal:replace="result/Creator" > 
-                            Author
-                            </span>
-
-                        </a>                                 
-    
-                    - Last Updated: <span tal:replace="python:container.toPortalTime(result.Date)" /> 
-                    
-                    </div>
-                    
-                    <div class="content">
-
-                        <h2 tal:content="result/Title">
-                        Title
-                        </h2>
-        
-                        <p tal:content="structure python:test(result.Description, result.Description, '(No Description)')">
-                        Description
-                        </p>
-
-                <div class="listingBar">
-                
-                    <span class="next" 
-                          tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).objectIds() ), 1, 0)">
-                        <img style="border: 0" src="discussionitem_icon.gif" alt="Comments" /> 
-                        <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)"> 
-                             <a href="" 
-                                tal:attributes="href string:${resultObject/absolute_url}#comments">
-                                <span tal:replace="python:talkback.replyCount(resultObject)" /> comments
-                             </a>
-                        </span>
-                    </span>
-
+                <div class="heading">
                     <img src="" alt="Folder" style="border: 0" 
                          tal:attributes="src result/getIcon; alt result/Type;" />
-    
-                    <a href="/view" tal:attributes="href resultObject/absolute_url">
-                    Read More
-                    </a>
-    
+                Posted by 
                 
-                </div>                
+                    <a href="">
+
+                        <img src="dummy.gif" 
+                             alt="User" 
+                             border="0" 
+                             tal:attributes="src string:$portal_url/user.gif" />
                     
-                    
-                    </div>
-                    
+                        <span tal:replace="result/Creator" > 
+                        Author
+                        </span>
+
+                    </a>                                 
+
+                - Last Updated: <span tal:replace="python:container.toPortalTime(result.Date)" /> 
+                
                 </div>
                 
-                <div class="spacer">
-                &nbsp;
+                <div class="content">
+
+                    <h2 tal:content="result/Title">
+                    Title
+                    </h2>
+    
+                    <p tal:content="structure python:test(result.Description, result.Description, '(No Description)')">
+                    Description
+                    </p>
+
+                
+                    <p>
+                        <span style="float: right" 
+                              tal:condition="python: test( (here.portal_discussion.isDiscussionAllowedFor(resultObject) and here.portal_discussion.getDiscussionFor(resultObject).objectIds() ), 1, 0)">
+                            <img style="border: 0" src="discussionitem_icon.gif" alt="Comments" /> 
+                            <span tal:define="talkback python: here.portal_discussion.getDiscussionFor(resultObject)"> 
+                                 <a href="" 
+                                    tal:attributes="href string:${resultObject/absolute_url}#comments">
+                                    <span tal:replace="python:talkback.replyCount(resultObject)" /> comments
+                                 </a>
+                            </span>
+                        </span>
+    
+        
+                        <a href="/view" tal:attributes="href resultObject/absolute_url">
+                        Read More
+                        </a>
+                    </p>
+                
+                    
                 </div>
-            
+                    
             </div>
             </metal:block>
+                
+        <div class="spacer">
+        &nbsp;
+        </div>
+            
 
             <!-- Navigation -->
             <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">

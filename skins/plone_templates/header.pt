@@ -129,10 +129,10 @@
             <a href=""
                tal:condition="not:here/portal_membership/isAnonymousUser"
                tal:attributes="href string:${here/portal_membership/getHomeUrl}/folder_contents">
-                <img src="dummy.gif" 
+                <img src="" 
                      alt="User" 
                      border="0" 
-                     tal:attributes="src string:$portal_url/user.gif" /> &nbsp;
+                     tal:attributes="src string:$portal_url/user.gif" />
             
                 <span tal:replace="user/getUserName">john</span>
             </a>

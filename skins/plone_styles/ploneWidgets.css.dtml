@@ -245,8 +245,7 @@ div.category a {
 }
 
 div.box {
-    margin-right: 1em;
-    margin-bottom: 2em;
+    margin: 0em 1em 2em 0em;
     background: transparent;
     border-collapse: collapse;
     border: &dtml-boxBorder;;
@@ -284,6 +283,9 @@ div.box div.even {
     padding: 1em;
 }
 
+div.box img {
+    vertical-align: middle;
+}
 
 
 

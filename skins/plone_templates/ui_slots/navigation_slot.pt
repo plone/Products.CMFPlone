@@ -65,7 +65,7 @@
 
                <a href="folder_contents"
                   tal:condition="here/isPrincipiaFolderish">
-                   <img src="dummy.gif" 
+                   <img src="" 
                         alt=">" 
                         border="0" 
                         tal:attributes="src string:$portal_url/linkTransparent.gif" />
@@ -88,7 +88,7 @@
             tal:condition="not: notFolderContents">
             <td colspan="2" >
                 <a href="">
-                   <img src="dummy.gif" 
+                   <img src="" 
                         alt=">" 
                         border="0" 
                         tal:attributes="src string:$portal_url/linkTransparent.gif" />
