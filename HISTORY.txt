@@ -10,6 +10,8 @@ Plone 2.0 - Fyuti
 
     Beta 2
 
+    - now shipping with Formulator 1.5
+
     - add portal_actionicons.renderActionIcon(category, iconid, default)
       which returns back the actual object instance instead of a path.
       Now you can put icon and action in the bar left of the 'add new item'
