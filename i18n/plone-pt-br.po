@@ -88,7 +88,7 @@ msgstr "Compare"
 #.   <input value="Copy to present" class="context" name="manage_customHistoryCopy:method" type="submit" />
 #.   
 msgid "Copy to present"
-msgstr "Copy to present"
+msgstr "Copiar para o atual"
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Delete Selected Role(s)" class="context" type="submit" />
@@ -100,13 +100,13 @@ msgstr "Deletar Papéis Selecionados"
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Disable Syndication" class="standalone" type="submit" />
 #.   
 msgid "Disable Syndication"
-msgstr "Disable Syndication"
+msgstr ""
 
 #: from plone_content/file_view.pt
 #.   <input value="Download file" class="standalone" type="submit" />
 #.   
 msgid "Download file"
-msgstr "Download file"
+msgstr "Baixar arquivo"
 
 #: from plone_templates/standard_error_message.pt
 #.   <a attributes="href string:mailto:${here/portal_properties/email_from_address}" content="string:${here/portal_properties/email_from_address}" href="mailto:admin@here.com" title="Email Administrator">
@@ -119,7 +119,7 @@ msgstr "Enviar email ao administrador"
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Enable syndication" class="standalone" type="submit" />
 #.   
 msgid "Enable syndication"
-msgstr "Enable syndication"
+msgstr ""
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Perform Search" class="context" type="submit" />
@@ -152,7 +152,7 @@ msgstr "Requisitante"
 #.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Remove" class="context" name="topic_deleteCriteria:action" type="submit" />
 #.   
 msgid "Remove"
-msgstr "Remove"
+msgstr "Remover"
 
 #: from plone_forms/folder_rename_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Rename" class="context" type="submit" />
@@ -164,7 +164,7 @@ msgstr "Renomear"
 #.   <input value="Reply to this" class="standalone" type="submit" />
 #.   
 msgid "Reply to this"
-msgstr "Reply to this"
+msgstr "Responder"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <input value="Reset" class="standalone" type="reset" />
@@ -206,7 +206,7 @@ msgstr "Salvar"
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save Settings" class="context" type="submit" name="submit" />
 #.   
 msgid "Save Settings"
-msgstr "Save Settings"
+msgstr "Salvar configurações"
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <input value="Search" class="context" type="Submit" />
@@ -249,7 +249,7 @@ msgstr "Submeter"
 #.   <img attributes="src string:$portal_url/plone_powered.gif" height="30" width="96" alt="Powered by Plone" src="" title="This site was built using the Plone Content Management System. Click for more information." />
 #.   
 msgid "This site was built using the Plone Content Management System. Click for more information."
-msgstr "This site was built using the Plone Content Management System. Click for more information."
+msgstr "Esse site foi construido usando o Sistema de Gerenciamento de Conteudo Plone. Clique aqui para mais informações."
 
 #: from plone_forms/undo_form.pt
 #.   <input attributes="tabindex tabindex/next;" tabindex="" value="Undo" class="context" name="undo:method" type="submit" />
@@ -260,7 +260,7 @@ msgstr "Desfazer"
 #: from plone_forms/logged_in.pt
 #.   <a attributes="href request/HTTP_REFERER" href="">back to where you came from</a>
 msgid "back_to_where_you_came_from"
-msgstr "back to where you came from"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_macros.pt
 #.   <span omit-tag="">
@@ -486,6 +486,7 @@ msgstr "(1 retorno)"
 #.               [${collector_abbrev (tal replace="here/abbrev|nothing")}]
 #.               </a>
 msgid "collector_link"
+msgstr ""
 
 #: from plone_content/event_view.pt
 #.   <div class="label">Contact Email</div>
@@ -1367,6 +1368,7 @@ msgstr "Occasionally, product updates require internal catalog reinit and reinde
 #.           </span>
 #, fuzzy
 msgid "help_collector_selections"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>
@@ -3584,6 +3586,7 @@ msgid "News"
 msgstr "Notícias"
 
 msgid "My Folder"
+msgstr ""
 
 #, fuzzy
 msgid "My Preferences"
@@ -3631,6 +3634,7 @@ msgid "Local Roles"
 msgstr "Papéis Locais"
 
 msgid "Ownership"
+msgstr ""
 
 msgid "${type}s only"
 msgstr "Apenas ${type}s"
@@ -3646,23 +3650,31 @@ msgid "File"
 msgstr "Arquivo"
 
 msgid "Link"
+msgstr ""
 
 msgid "News Item"
+msgstr ""
 
 msgid "Topic"
 msgstr "Tópico"
 
 msgid "Folder"
+msgstr ""
 
 msgid "Event"
+msgstr ""
 
 msgid "Collector"
+msgstr ""
 
 msgid "Collector Subset"
+msgstr ""
 
 msgid "CMF Wiki Page"
+msgstr ""
 
 msgid "CMF Wiki"
+msgstr ""
 
 msgid "Cut"
 msgstr "Recortar"
@@ -3688,39 +3700,54 @@ msgid "Publish"
 msgstr "Publicação"
 
 msgid "Collector Catalog"
+msgstr ""
 
 #, fuzzy
 msgid "Collector Issue"
+msgstr ""
 
 #, fuzzy
 msgid "Collector Issue Transcript"
 msgstr "Relatório"
 
 msgid "Discussion Item"
+msgstr ""
 
 msgid "Favorite"
+msgstr ""
 
 msgid "Documents can contain text that can be formatted using 'Structured Text.'"
+msgstr ""
 
 msgid "Image objects can be embedded in Portal documents."
+msgstr ""
 
 msgid "File objects can contain arbitrary downloadable files."
+msgstr ""
 
 msgid "Link items are URLs that come with additional information."
+msgstr ""
 
 msgid "News Items contain short text articles and carry a title as well as an optional description."
+msgstr ""
 
 msgid "Topics are canned queries for organizing content with up to date queries into the catalog."
+msgstr ""
 
 msgid "Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."
+msgstr ""
 
 msgid "Events are objects for use in Calendar topical queries on the catalog."
+msgstr ""
 
 msgid "A Collector is a facility for tracking bug reports and other issues."
+msgstr ""
 
 msgid "A Collector Subset represents a view on a subset of the issues in a collector."
+msgstr ""
 
 msgid "Loosely organized (yet structured) content can be added to Wikis."
+msgstr ""
 
 msgid "Browse"
 msgstr "Olhar"
@@ -3762,10 +3789,13 @@ msgid "Help"
 msgstr "Ajuda"
 
 msgid "Criteria"
+msgstr ""
 
 msgid "Subtopics"
+msgstr ""
 
 msgid "Metadata"
+msgstr ""
 
 #~ msgid "${start_index} to ${end_index} of ${num_found}"
 #~ msgstr "${start_index} a ${end_index} de ${num_found}"
@@ -3784,7 +3814,7 @@ msgid "Metadata"
 #~ "form to edit the data of an existing issue. Do not use this form to follow "
 #~ "up or change the workflow status of an issue - use the issue follow up form "
 #~ "for that. </div>"
-#~ msgstr "<h1>Editar Coletor de Tarefas ${id}</h1> <div class=\\"description\\"> Use esse formulário para editar os dados de uma tarefa existente. Não use esse formulário para retorno ou mudar a situação de workflow de uma tarefa - use o formulário de follow up para isso. </div>"
+#~ msgstr "<h1>Editar Coletor de Tarefas ${id}</h1> <div class=\"description\"> Use esse formulário para editar os dados de uma tarefa existente. Não use esse formulário para retorno ou mudar a situação de workflow de uma tarefa - use o formulário de follow up para isso. </div>" 
 
 
 #~ msgid ""
@@ -4219,7 +4249,7 @@ msgid "Metadata"
 #~ msgid "low"
 #~ msgstr "baixa"
 
-
+ 
 #~ msgid "medium"
 #~ msgstr "média"
 

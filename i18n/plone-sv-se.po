@@ -483,7 +483,11 @@ msgstr "Telefon"
 #.       will look before submitting it, click 'Preview Comment'.
 #.       </p>
 msgid "description_add_comment"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Du kan kommentera genom att fylla i formuläret nedan. Klicka på 'Förhandsgranska' för att se hur din kommentar kommer att se ut, innan du postar den."
+>>>>>>> 1.3
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="description">
@@ -491,7 +495,11 @@ msgstr "Du kan kommentera genom att fylla i formuläret nedan. Klicka på 'Förhand
 #.   as possible.
 #.   </div>
 msgid "description_add_new_issue"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Använd detta formulär för att lägga till ditt ärende i Kollektorn. Fyll i så många detaljer som möjligt."
+>>>>>>> 1.3
 
 #: from plone_forms/folder_factories.pt
 #.   <p>
@@ -510,7 +518,11 @@ msgstr "Välj den typ av objekt som du vill lägga till i din mappen."
 #.       good enough, this search form is just if you want to be more specific.
 #.       </p>
 msgid "description_advanced_search"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Det här sökformuläret möjliggör sökning i webbplatsen mot ett flertal söktermer.<br/> Komihåg att snabbsökningen oftast ger tillräckligt bra sökresultat. Använd bara det här formuläret om du kräver en mer exakt sökning."
+>>>>>>> 1.3
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <p>
@@ -532,7 +544,11 @@ msgstr "Det här sökformuläret möjliggör sökning i webbplatsen mot ett flertal sö
 #.         			page that will show you the options available.
 #.         			</p>
 msgid "description_assign_localrole"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "En lokal roll ger andra användare rättigheter i en eller alla av dina mappar. De användare du tilldelar lokala roller kan ändra, publicera objekt m.m., beroende på vilka rättigheter du ger dem.<br/>Lokala roller är bra i projekt där du samarbetar med andra, då varje objekt har en egen historia samt ångrafunktion.<br/>Sök efter personens namn eller e-postadress i formuläret nedan, välj sedan den roll du vill tilldela personen. "
+>>>>>>> 1.3
 
 #: from plone_forms/logged_in.pt
 #.   <span>
@@ -548,7 +564,11 @@ msgstr "Det första du bör göra är att byta ditt lösenord. Detta för att säkerstä
 #.       another member easily from this form.
 #.       </p>
 msgid "description_change_ownership"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Du kan enkelt byta ägarskap på dessa objekt till en annan användare genom att använda detta formulär."
+>>>>>>> 1.3
 
 #: from plone_forms/personalize_form.pt
 #.   <a href="password_form">Click here to change your password</a>
@@ -560,12 +580,20 @@ msgstr "Klicka här för att byta lösenord"
 #.       This is how your comment will look when posted.
 #.       </p>
 msgid "description_comment_preview"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Så här kommer din kommentar att se ut om du postar den. "
+>>>>>>> 1.3
 
 #: from plone_forms/folder_listing.pt
 #.   <a attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document" href="#">click here.</a>
 msgid "description_create_folder_click_here"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "klicka här."
+>>>>>>> 1.3
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <p>
@@ -588,14 +616,22 @@ msgstr "Använd detta formulär för att ändra information om ett existerande ärend
 #.       Fill in the details of this document.
 #.       </p>
 msgid "description_edit_document"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Fyll i detaljer om detta dokument."
+>>>>>>> 1.3
 
 #: from plone_3rdParty/CMFCalendar/event_edit_form.pt
 #.   <p>
 #.       Fill in the details of the event you want to add.
 #.       </p>
 msgid "description_edit_event"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Fyll i detaljer om den händelse som du vill skapa."
+>>>>>>> 1.3
 
 #: from plone_content/file_edit_form.pt
 #.   <p>
@@ -603,7 +639,11 @@ msgstr "Fyll i detaljer om den händelse som du vill skapa."
 #.       select the file with the 'Browse' button, and press 'Save'.
 #.       </p>
 msgid "description_edit_file"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Fyll i detaljer om den filen, välj fil genom att klicka på 'Browse', välj sedan 'Spara'. "
+>>>>>>> 1.3
 
 #: from plone_content/image_edit_form.pt
 #.   <p>
@@ -611,7 +651,11 @@ msgstr "Fyll i detaljer om den filen, välj fil genom att klicka på 'Browse', väl
 #.       an image if required.
 #.       </p>
 msgid "description_edit_image"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Genom detta formulär kan du fylla i detaljer om en bild, eller ladda upp en ny bild."
+>>>>>>> 1.3
 
 #: from plone_content/link_edit_form.pt
 #.   <p>
@@ -649,7 +693,11 @@ msgstr "Denna information, även kallad <em>metadata</em>, används för att katego
 #.       criteria you specify. Topics may also contain sub-topics.
 #.       </p>
 msgid "description_edit_topic"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Ett ämne är en fördefinierad sökning som visar alla objekt som matchar ditt sökkriteria. Ett ämne kan även innehålla underkategorier."
+>>>>>>> 1.3
 
 #: from plone_forms/folder_localrole_form.pt
 #.   <p>Select one or more Members, and a role to assign.</p>
@@ -674,14 +722,22 @@ msgstr "Som du märker har menyn anpassats till att innehålla personifierade val.
 #.       name or didn't enter your email address) send an email to
 #.       </p>
 msgid "description_lost_password"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Fyll i ditt användarnamn nedan, klicka på <strong>Skicka mitt lösenord med e-post</strong> så kommer ditt lösenord att skickas till den e-postadress du angav när du registrerade dig. Om du fortfarande har problem, skicka ett e-postmeddelande till"
+>>>>>>> 1.3
 
 #: from plone_forms/roster.pt
 #.   <p>
 #.           A list of the visible members.
 #.           </p>
 msgid "description_member_listing"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Lista över synliga medlemmar."
+>>>>>>> 1.3
 
 #: from plone_forms/logged_in.pt
 #.   <span>
@@ -700,28 +756,44 @@ msgstr "och skapa egna objekt, eller"
 #: from plone_forms/logged_in.pt
 #.   <a define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']" condition="prefs" attributes="href python:prefs.pop()" href="metadata_form">set up your Preferences</a>
 msgid "description_newbie_pointers_3"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "förändra dina personliga inställningar"
+>>>>>>> 1.3
 
 #: from plone_forms/login_form.pt
 #.   <span omit-tag="">
 #.   If you do not have an account here, head over to the
 #.   </span>
 msgid "description_no_account_1"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Om du inte har ett konto här, gå till"
+>>>>>>> 1.3
 
 #: from plone_forms/login_form.pt
 #.   <a href="portal_form/join_form" omit-tag="">
 #.   registration form
 #.   </a>
 msgid "description_no_account_2"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "registreringsformuläret"
+>>>>>>> 1.3
 
 #: from plone_forms/login_form.pt
 #.   <span omit-tag="">
 #.   to become a member.
 #.   </span>
 msgid "description_no_account_3"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "för att bli medlem."
+>>>>>>> 1.3
 
 #: from plone_forms/history_comparison.pt
 #.   <p>
@@ -738,7 +810,11 @@ msgstr "Detta objekt kan inte jämföras med andra."
 #.               replace the item listing,
 #.               </span>
 msgid "description_no_default_folder"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Den här mappen har ingen standard vy, därför visas en fillista istället. Om du vill skapa en standard vy istället för att se den här fillistan,"
+>>>>>>> 1.3
 
 #: from plone_forms/folder_listing.pt
 #.   <p condition="not: here/contentValues">
@@ -796,7 +872,11 @@ msgstr "Efter att ha registrera en användare här får du ett konto där du kan ska
 #: from plone_forms/folder_rename_form.pt
 #.   <p>To rename an item, enter the new name below.</p>
 msgid "description_rename_item"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Ange objektets nya namn nedan."
+>>>>>>> 1.3
 
 #: from plone_forms/login_form.pt
 #.   <p>
@@ -812,14 +892,22 @@ msgstr "Denna del av webbplatsen kräver ett giltigt användarnamn samt lösenord."
 #.               If you need help please try the 'Forgotten password' link or contact
 #.               </span>
 msgid "description_sign_in_failure"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Du är inte inloggad. Ditt användarnamn eller lösenord var felaktigt. Kontrollera även att din webbläsare kan hantera så kallade 'HTTP cookies'. Om du behöver hjälp, använd 'Jag har glömt mitt lösenord'-knappen eller kontakta"
+>>>>>>> 1.3
 
 #: from plone_forms/logged_in.pt
 #.   <span>
 #.                   This is the first time that you've signed in to
 #.                   </span>
 msgid "description_signed_in"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Det här är din första inloggning till"
+>>>>>>> 1.3
 
 #: from plone_forms/logged_out.pt
 #.   <p>
@@ -834,7 +922,11 @@ msgstr "Vi hoppas att du är nöjd och ser fram emot att se dig igen."
 #.           The errors were:
 #.           </p>
 msgid "description_site_error"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Webbplatsen har genererat ett fel. Felmeddelandet är:"
+>>>>>>> 1.3
 
 #: from plone_templates/standard_error_message.pt
 #.   <p>
@@ -856,14 +948,22 @@ msgstr "Var vänlig kontrollera adressen alternativt använd sökfunktionen för att
 #.               send a mail to the administrator of this site.
 #.               </p>
 msgid "description_site_error_mail_admin"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Om du är säker på att adressen är korrekt och ändå ser detta meddelande, var vänlig skicka ett e-postmeddelande till webbplatsens administratör."
+>>>>>>> 1.3
 
 #: from plone_templates/standard_error_message.pt
 #.   <p>
 #.               Thank you.
 #.               </p>
 msgid "description_site_error_thank_you"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Tack."
+>>>>>>> 1.3
 
 #: from plone_forms/synPropertiesForm.pt
 #.   <div condition="python:not container.portal_syndication.isSiteSyndicationAllowed()">
@@ -895,7 +995,11 @@ msgstr "Säkerställ att din webbläsare kan hantera 'HTTP cookies'. Glöm inte att 
 #.           to a &quot;snapshot&quot; of its state at a previous point in time.
 #.           </p>
 msgid "description_undo_action"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Webbplatsen har en funktion som möjliggör att du kan ångra förändringar i inställningar eller data. Du kan återställa webbplatsen till det läge den hade vid en tidigare tidpunkt."
+>>>>>>> 1.3
 
 #: from plone_forms/undo_form.pt
 #.   <p>
@@ -905,7 +1009,11 @@ msgstr "Webbplatsen har en funktion som möjliggör att du kan ångra förändringar 
 #.           modified objects that were modified by the transaction.
 #.           </p>
 msgid "description_undo_action_select"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Markera en eller flera händelser nedan. Klicka därefter på 'Ångra'. Observera att du inte kan ångra en händelse om en senare händelse har påverkat objekt som var inblandade i den första händelsen."
+>>>>>>> 1.3
 
 #: from plone_forms/logged_in.pt
 #.   <p>
@@ -2482,7 +2590,11 @@ msgstr "Osynlig"
 #.               My user name is
 #.               </div>
 msgid "label_my_user_name_is"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Mitt användarnamn är"
+>>>>>>> 1.3
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>Name</span>
@@ -3362,7 +3474,11 @@ msgid "News"
 msgstr "Nyheter"
 
 msgid "My Folder"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Mina Dokument"
+>>>>>>> 1.3
 
 msgid "My Preferences"
 msgstr "Mina Inställningar"
@@ -3392,7 +3508,11 @@ msgid "View"
 msgstr "Visa"
 
 msgid "Edit"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Ändra"
+>>>>>>> 1.3
 
 msgid "Properties"
 msgstr "Egenskaper"
@@ -3407,46 +3527,98 @@ msgid "Local Roles"
 msgstr "Lokala roller"
 
 msgid "Ownership"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Ägandeskap"
+>>>>>>> 1.3
 
 msgid "${type}s only"
 msgstr "Endast ${type}"
 
 msgid "Document"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Dokument"
+>>>>>>> 1.3
 
 msgid "Image"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Bild"
+>>>>>>> 1.3
 
 msgid "File"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Fil"
+>>>>>>> 1.3
 
 msgid "Link"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Länk"
+>>>>>>> 1.3
 
 msgid "News Item"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Nyhet"
+>>>>>>> 1.3
 
 msgid "Topic"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Ämne"
+>>>>>>> 1.3
 
 msgid "Folder"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Mapp"
+>>>>>>> 1.3
 
 msgid "Event"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Händelse"
+>>>>>>> 1.3
 
 msgid "Collector"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Kollektor"
+>>>>>>> 1.3
 
 msgid "Collector Subset"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Del av Kollektor"
+>>>>>>> 1.3
 
 msgid "CMF Wiki Page"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Wiki-sida"
+>>>>>>> 1.3
 
 msgid "CMF Wiki"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Wiki"
+>>>>>>> 1.3
 
 msgid "Cut"
 msgstr "Klipp ut"
@@ -3470,61 +3642,133 @@ msgid "Publish"
 msgstr "Publicera"
 
 msgid "Collector Catalog"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Kollektorindex"
+>>>>>>> 1.3
 
 msgid "Collector Issue"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Kollektorärende"
+>>>>>>> 1.3
 
 msgid "Collector Issue Transcript"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Kollektorärendelogg"
+>>>>>>> 1.3
 
 msgid "Discussion Item"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Kommentar"
+>>>>>>> 1.3
 
 msgid "Favorite"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Favorit"
+>>>>>>> 1.3
 
 msgid "Documents can contain text that can be formatted using 'Structured Text.'"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Dokument kan innehålla text som är formatterade enligt 'Strukturerad Text'-formatet."
+>>>>>>> 1.3
 
 msgid "Image objects can be embedded in Portal documents."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Bilder kan inkluderas i dokument."
+>>>>>>> 1.3
 
 msgid "File objects can contain arbitrary downloadable files."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Filer kan innehålla information som kan laddas ned."
+>>>>>>> 1.3
 
 msgid "Link items are URLs that come with additional information."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Länkar är URL'er som innehåller ytterligare information."
+>>>>>>> 1.3
 
 msgid "News Items contain short text articles and carry a title as well as an optional description."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Nyheter är små artiklar som har en titel och en valfri beskrivning."
+>>>>>>> 1.3
 
 msgid "Topics are canned queries for organizing content with up to date queries into the catalog."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Ämnen är definierade frågor för få aktuell organisering av information."
+>>>>>>> 1.3
 
 msgid "Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Mappar kan ha en förstasida, annars visas en fillista över innehållet."
+>>>>>>> 1.3
 
 msgid "Events are objects for use in Calendar topical queries on the catalog."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Händelser är objekt som kan användas av kalendern."
+>>>>>>> 1.3
 
 msgid "A Collector is a facility for tracking bug reports and other issues."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "En Kollektor är ett objekt för att samla buggrapporter med mera."
+>>>>>>> 1.3
 
 msgid "A Collector Subset represents a view on a subset of the issues in a collector."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "En del av en Kollektor representerar en vy till en Kollektor."
+>>>>>>> 1.3
 
 msgid "Loosely organized (yet structured) content can be added to Wikis."
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Löst organiserad, men fortfarande strukturerad information, kan samlas i en Wiki."
+>>>>>>> 1.3
 
 msgid "Browse"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Bläddra"
+>>>>>>> 1.3
 
 msgid "New Issue"
 msgstr "Nytt ärende"
 
 msgid "Configure"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Konfigurera"
+>>>>>>> 1.3
 
 msgid "pending"
 msgstr "avvaktande"
@@ -3536,32 +3780,468 @@ msgid "published"
 msgstr "publicerad"
 
 msgid "No"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Nej"
+>>>>>>> 1.3
 
 msgid "Yes"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Ja"
+>>>>>>> 1.3
 
 msgid "Comment"
 msgstr "Kommentar"
 
 msgid "History"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Historia"
+>>>>>>> 1.3
 
 msgid "Backlinks"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Länkar till denna sida"
+>>>>>>> 1.3
 
 msgid "Advanced"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Avancerat"
+>>>>>>> 1.3
 
 msgid "Help"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Hjälp"
+>>>>>>> 1.3
 
 msgid "Criteria"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Kriteria"
+>>>>>>> 1.3
 
 msgid "Subtopics"
+<<<<<<< plone-sv-se.po
+msgstr ""
+=======
 msgstr "Underämnen"
+>>>>>>> 1.3
 
 msgid "Metadata"
+<<<<<<< plone-sv-se.po
+msgstr ""
+
+#~ msgid ""
+#~ "<h1>Our apologies...</h1> <p> ...but the item you requested does not exist "
+#~ "on this server or cannot be served. </p> <p> Please double check the web "
+#~ "address or use the search function on this page to find what you are looking "
+#~ "for. </p> <p> If you know you have the correct web address but are "
+#~ "encountering an error, please send a mail to the administrator of this site. "
+#~ "</p> ${mail_admin}. <p> Thank you. </p> <code> 404 Not Found </code>"
+#~ msgstr "<h1>Ett fel har inträffat...</h1> <p> ...dokumentet som du försökte läsa kan inte visas eller finns inte. </p> <p> Kontrollera att den adress du försöker nå är korrekt. </p> <p> Om du vet att adressen är korrekt, men ändå ser detta meddelande, kontakta webbplatesen administratör. </p> ${mail_admin}. <p> Tack. </p> <code> 404 Not Found </code>"
+
+
+#~ msgid ""
+#~ "<h1>Site error</h1> <p> This site encountered an error trying to fulfill "
+#~ "your request. The errors were: </p> <div class=\"group\"> <span class="
+#~ "\"legend\">Error Details</span> <div class=\"row\"> <div class=\"label\"> "
+#~ "Error Type </div> ${error_type} </div> <div class=\"row\"> <div class=\"label"
+#~ "\"> Error Message </div> ${error_message} </div> <div class=\"row\"> <div "
+#~ "class=\"label\"> Error Value </div> ${error_value} </div> </div>"
+#~ msgstr "<h1>Ooooops.</h1> <p> Webbservern lyckades inte att visa den sida du efterfrågade: </p> <div class=\"group\"> <span class=\"legend\">Felmeddelande</span> <div class=\"row\"> <div class=\"label\"> Felkod </div> ${error_type} </div> <div class=\"row\"> <div class=\"label\"> Detaljer </div> ${error_message} </div> <div class=\"row\"> <div class=\"label\"> Värde</div> ${error_value} </div> </div>"
+
+
+#~ msgid ""
+#~ "A local role is a way of allowing other users into some or all of your "
+#~ "folders. These users can edit items, publish them - et cetera, depending on "
+#~ "what permissions you give them."
+#~ msgstr "En lokal roll är ett sätt att ge andra användare rättigheter i alla eller vissa av dina mappar. Dessa användare kan ändra, publisera etc., beroende på vilken rättighet du tilldelar dem."
+
+
+#~ msgid ""
+#~ "An item's status (also called its review state) determines who can see it. A "
+#~ "<strong>private</strong> item can only be viewed by its Owner and by the "
+#~ "site management. Only <strong>published</strong> items are available to the "
+#~ "general member base and anonymous visitors. To make an item published, it "
+#~ "has to be reviewed by one of the site's Reviewers. You can request that an "
+#~ "item be reviewed by <strong>sumbitting it for review</strong>. <br /> "
+#~ "Another way to control the visibility of an item is with its "
+#~ "<strong>effective date</strong>. An item is not publicly available before "
+#~ "its effective date, <em>even if its status is <strong>published</strong></"
+#~ "em>."
+#~ msgstr "Ett dokuments status avgör vilka som kan läsa det. Ett <strong>privat</strong> objekt kan läsas av dess ägare samt webbplatsens administratör. Endast dokument med status <strong>publiserat</strong> kan läsas av andra medlemmar samt anonyma användare. För att ett dokument ska bli publiserat, måste det först godkännas av en Reviewer. Du kan be om en godkännelse genom att <strong>Skicka dokumentet för godkännande</strong>. <br /> Ett annat sätt att kontrollera tillgängligheten är att ange dokumentets <strong>effektiva datum</strong>. Ett dokument är inte tillgängligt för andra innan dess effektiva datum, <em>även om dess status är <strong>publiserat</strong></em>."
+
+
+#~ msgid "Best Regards from the"
+#~ msgstr "Vänliga hälsningar från"
+
+
+#~ msgid "Currently assigned local roles in folder"
+#~ msgstr "Tilldelade roller i denna mapp"
+
+
+#~ msgid "Don't panic! :)"
+#~ msgstr "Ta det lungt! :-)"
+
+
+#~ msgid "Generate and email members' initial password"
+#~ msgstr "Generera och skicka medlems första lösenord med epost."
+
+
+#~ msgid "Here is a list of the members that are visible."
+#~ msgstr "Här är en lista över de medlemmar som har valt att vara synliga"
+
+
+#~ msgid "Home page area that contains the items created and collected by ${name}"
+#~ msgstr "Medlemsmapp som innehåller dokument skapade av ${name}"
+
+
+#~ msgid ""
+#~ "If this will not work for you (for example, if you forgot your member name "
+#~ "or didn't enter your email address) send an email to"
+#~ msgstr "Om detta inte hjälpte dig (om du tillexempel har glömt ditt användarnamn eller inte angav en giltig epostaddress), skicka epost till"
+
+
+#~ msgid ""
+#~ "If you do not have an account here, head over to the <a href=\"join_form"
+#~ "\">registration form</a> to become a member."
+#~ msgstr "Använd <a href=\"join_form\">registreringsformuläret</a> för att skapa ett konto om du inte redan är medlem."
+
+
+#~ msgid ""
+#~ "If you do not have an account here, head over to the registration form to "
+#~ "become a member."
+#~ msgstr "Registrera ditt medlemskap om du inte redan har ett konto."
+
+
+#~ msgid "Join"
+#~ msgstr "Bli medlem"
+
+
+#~ msgid ""
+#~ "Just enter your username below, click <strong>Mail me my password</strong>, "
+#~ "and your password will be mailed to you if you gave a valid email address "
+#~ "when you registered."
+#~ msgstr "Ange ditt användarnamn, klicka på <strong>Skicka lösenord med epost</strong>, så kommer ditt lösenord att skickas till den address som du angav när du registrerade dig."
+
+
+#~ msgid ""
+#~ "Local roles are ideal in cooperation projects, and as every item has a "
+#~ "history and an undo option, it's easy to keep track of the changes."
+#~ msgstr "Lokala roller är ideala i projekt där du samarbetetar med andra. Du kan följa varje dokuments historia och även ångra tidigare ändrigar."
+
+
+#~ msgid "Log in"
+#~ msgstr "Logga på"
+
+
+#~ msgid "Log out"
+#~ msgstr "Logga av"
+
+
+#~ msgid "Login"
+#~ msgstr "Logga på"
+
+
+#~ msgid ""
+#~ "Make sure to enable cookies in your web browser. Don't forget to logout or "
+#~ "exit your browser when you're done."
+#~ msgstr "Försäkra dig om att din webbläsare kan hantera \"cookies\". Glöm inte bort att logga av eller stänga din webbläsare när du är klar."
+
+
+#~ msgid "Member Preferences"
+#~ msgstr "Medlemsinställningar"
+
+
+#~ msgid "My Stuff"
+#~ msgstr "Mina dokument"
+
+
+#~ msgid "My stuff"
+#~ msgstr "Mina dokument"
+
+
+#~ msgid "No Results were Found"
+#~ msgstr "Inga träffar!"
+
+
+#~ msgid ""
+#~ "No problem, <a href=\"mail_password_form\">click here</a> to have it mailed "
+#~ "to you."
+#~ msgstr "Inga problem, <a href=\"mail_password_form\">klicka här</a> för att få ditt lösenord via epost."
+
+
+#~ msgid "No problem, click here to have it mailed to you."
+#~ msgstr "Inget problem, klicka här så får du ditt lösenord med epost."
+
+
+#~ msgid "Password:"
+#~ msgstr "Lösenord:"
+
+
+#~ msgid "Paste"
+#~ msgstr "Klistra in"
+
+
+#~ msgid "Plone setup"
+#~ msgstr "Konfigurera Plone"
+
+
+#~ msgid ""
+#~ "Remember that you can use the quick search anytime, it's normally good "
+#~ "enough, this search form is just if you want to be more specific."
+#~ msgstr "Glöm inte bort att du kan använda snabbsökningen också. Den ger vanligtvis tillräckligt bra resultat."
+
+
+#~ msgid "Short Name"
+#~ msgstr "Kort namn"
+
+
+#~ msgid ""
+#~ "This folder has no visible items. To add content, press the \"Add New Item\" "
+#~ "button, or paste content from another location."
+#~ msgstr "Den här mappen har inga tillgängliga dokument. Klicka på \"Lägg till\" eller klistra in dokument för att skapa innehåll."
+
+
+#~ msgid ""
+#~ "This search form enables you to find content on the site by specifying one "
+#~ "or more criteria to be met."
+#~ msgstr "Ange ett eller flera sökkriteria för det du vill söka efter."
+
+
+#~ msgid ""
+#~ "To give a person a local role in this folder, just search for the person's "
+#~ "name or email address in the form below, and you will be presented with a "
+#~ "page that will show you the options available."
+#~ msgstr "Sök efter en användare genom att ange användarnamn eller epost-address i formuläret nedan."
+
+
+#~ msgid "User Details"
+#~ msgstr "Detaljer om användare"
+
+
+#~ #. Author
+#~ msgid "author"
+#~ msgstr "Författare"
+
+
+#~ #. Return items created by a particular person.
+#~ msgid "author_search_help"
+#~ msgstr "Returnera dokument skapade av en viss person."
+
+
+#~ msgid "change_status_help"
+#~ msgstr "Selecione o novo status para os documentos selecionados."
+
+
+#~ #. Re-enter the password. Make sure the passwords are identical.
+#~ msgid "confirm_password_help"
+#~ msgstr "Ange lösenordet en gång till som bekräftelse."
+
+
+#~ #. Description
+#~ msgid "description"
+#~ msgstr "Beskrivning"
+
+
+#~ msgid "effective_date_help"
+#~ msgstr "A data em que o documento vai estar visível. Dessa forma, você pode publicar um documento avançadamente, mas ele não estará visivel antes dessa data. Se nenhuma data for selecionada, o documento estará disponível (visível) imediatamente."
+
+
+#~ #. E-mail
+#~ msgid "email"
+#~ msgstr "E-post"
+
+
+#~ #. Enter your email address. This is necessary in case you lose your password. We respect your privacy, and will not give the address away to any third parties.
+#~ msgid "email_help"
+#~ msgstr "Ange din e-postaddress. Den behövs i det fall du glömmer bort ditt lösenord. Du kan känna dig säker över att addressen inte kommer att användas av andra."
+
+
+#~ msgid "expiration_date_help"
+#~ msgstr "A data em que o documento expira. Esta irá tornar o documento invisível para outros na data informada. Se não for informada uma data, o documento nunca irá expirar."
+
+
+#~ #. Select whether you want form tooltips to be displayed.
+#~ msgid "formtooltips_help"
+#~ msgstr "Välj om du vill att att tooltips ska visas."
+
+
+#~ #. Display form tooltips
+#~ msgid "formtooltips_status"
+#~ msgstr "Visa tooltips."
+
+
+#~ #. Return items of a specific type.
+#~ msgid "item_type_search_help"
+#~ msgstr "Filtrera på dokument av en viss typ"
+
+
+#~ #. Return items matching one or more of these subjects. Multiple words may be found by combining them with <strong>AND</strong> and <strong>OR</strong>.
+#~ msgid "keywords_search_help"
+#~ msgstr ""
+
+#~ #. Default Language
+#~ msgid "language_help"
+#~ msgstr "Förvalt språk"
+
+
+#~ #. Select whether you want to be listed on the public membership listing or not. Remember that your Member folder will still be publicly accessible unless you change its security settings, even if you select "unlisted" here.
+#~ msgid "listed_status_help"
+#~ msgstr "Välj om du vill finnas i den publika listan över medlemmar. Komihåg att informationen lagrad i \"Mina dokument\" inte påverkas av detta val."
+
+
+#~ #. You can enter the strftime format for how dates in the system will be formatted. Refer to strftime formats in C or Python manuals.
+#~ msgid "long_date_format_help"
+#~ msgstr "Du kan ange en formatteringssträng för hur du vill att datum skall visas i systemet. Referera till strftime formatet i C eller Pythons manual."
+
+
+#~ #. Enter your new e-mail address here, if you want to change it.
+#~ msgid "new_email_help"
+#~ msgstr "Om du vill byta e-postadress, ange den nya här."
+
+
+#~ #. Return items added since you were last logged on, the last week, etc.
+#~ msgid "new_items_since_search_help"
+#~ msgstr "Filtrera på dokument som har skapats sedan din senaste påloggning, under senaste veckan etc."
+
+
+#~ #. Password
+#~ msgid "password"
+#~ msgstr "Lösenord"
+
+
+#~ #. Selects if the users can choose their initial password or not. It's easier to create bogus accounts if the password is not generated, so if this is a concern, choose "Generate".
+#~ msgid "password_policy_help"
+#~ msgstr "Väl om du vill att användare skall kunna skapa sitt första lösenord själv. Det är lättare att skapa \"oseriösa\" konton om detta alternativ inte är valt, så om du bryr dig som säkerhet, kryssa för detta alternativ."
+
+
+#~ #. This description is made available via syndicated content and elsewhere. It should be fairly brief.
+#~ msgid "portal_description_help"
+#~ msgstr "En kort beskrivning av webbplatsen som används vid extern leverans av typen RSS."
+
+
+#~ #. When Plone generates mail, it uses this address as its (apparent) return address.
+#~ msgid "portal_from_address_help"
+#~ msgstr "När webbplatsen skickar automatgenererad e-post, använd den här adressen som returadress."
+
+
+#~ #. When Plone generates mail, it uses this name as its (apparent) sender.
+#~ msgid "portal_from_name_help"
+#~ msgstr "När webbplatsen skickar automatgenererad e-post, använd det här namnet som avsändare."
+
+
+#~ #. This is the title of your Plone instance.
+#~ msgid "portal_title_help"
+#~ msgstr "Den titel/namn som du vill att webbplatsen ska ha."
+
+
+#~ #. To add a new portrait, click the <strong>Browse</strong> button and select a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
+#~ msgid "portrait_help"
+#~ msgstr "Här kan du ladda upp ett 75x100 pixlar stort porträtt av dig själv."
+
+
+#~ #. Remember my name.
+#~ msgid "remember"
+#~ msgstr "Komihåg mitt namn"
+
+
+#~ #. Setting the 'Remember my name' option will bake a cookie with your username. When you sign in later, your user name will already be filled in for you.
+#~ msgid "remember_help"
+#~ msgstr "Genom att välja 'Komihåg mig' kommer en så kallad cookie att sättas när du loggar på. När du försöker logga på nästkommande gång, kommer ditt användarnamn att vara ifyllt."
+
+
+#~ #. As a reviewer, you may search for items based on their review state. If you wish to constrain results to items in certain states, select them from this list.
+#~ msgid "review_status_search_help"
+#~ msgstr "Som godkännare kan du söka efter dokument baserat på dess status. Genom att välja status här begränsas din sökning."
+
+
+#~ #. You can enter the strftime format for how dates in the system will be formatted. Refer to strftime formats in C or Python manuals.
+#~ msgid "short_date_format_help"
+#~ msgstr "Du kan ange en formatteringssträng för hur du vill att datum skall visas i systemet. Referera till strftime formatet i C eller Pythons manual."
+
+
+#~ #. Skin
+#~ msgid "skin"
+#~ msgstr "Utseende"
+
+
+#~ #. Here you choose the appearance of the site. Several styles are available, and you can always change it back to the default if you do not like a skin.
+#~ msgid "skin_help"
+#~ msgstr "Här kan du välja vilket utseende du vill ha på webbplatsen. Ett flertal olika stilar finns tillgängliga. Du kan alltid byta tillbaka om du väljer något som du inte tycker om."
+
+
+#~ #. This is the address of your local SMTP (out-going mail) server. Usually "localhost", unless you use an external server to send mail.
+#~ msgid "smtp_server_help"
+#~ msgstr "Det här är adressen till din lokala SMTP-server för utgående e-post."
+
+
+#~ msgid "status"
+#~ msgstr "status"
+
+
+#~ msgid "status_effective"
+#~ msgstr "e <strong>foi efetivado</strong>."
+
+
+#~ msgid "team"
+#~ msgstr "team"
+
+
+#~ #. Text
+#~ msgid "text"
+#~ msgstr "Text"
+
+
+#~ #. Title
+#~ msgid "title"
+#~ msgstr "Titel"
+
+
+#~ #. Return items matching this title.
+#~ msgid "title_search_help"
+#~ msgstr "Filtrera på dokument med denna titel."
+
+
+#~ msgid "to change your password"
+#~ msgstr "för att byta ditt lösenord"
+
+
+#~ #. Enter the user name you want, usually something like "jsmith". No spaces or special characters. This is the name you use to sign in.
+#~ msgid "user_name_help"
+#~ msgstr "Ange det användarnamn som du vill använda. Ett användarnamn innehåller inga mellanslag eller specialtecken, exempelvis \"kallepersson\". Detta är det namn du använder för att logga på."
+
+
+#~ #. Select whether you want ids to be visible when editing contents.
+#~ msgid "visible_ids_help"
+#~ msgstr "Välj om du vill att dokumentets id skall vara synligt när du skapar och ändrar dokument."
+
+
+#~ #. Display content ids
+#~ msgid "visible_ids_status"
+#~ msgstr ""
+
+#~ #. WYSIWYG editor
+#~ msgid "wysiwyg_editor"
+#~ msgstr "WYSIWYG-editor"
+
+
+#~ #. Select the editor that you would like to use for editing content more easily. What You See Is What You Get editors often have browser requirements.
+#~ msgid "wysiwyg_editor_help"
+#~ msgstr "Välj den editor som du vill använda för att kunna ändra dokument på ett mer lätthanteringt vis. What You See Is What You Get-editorer har ofta beroenden mot vilken typ av webbläsare du använder."
+
+=======
 msgstr "Egenskaper"
+>>>>>>> 1.3
 

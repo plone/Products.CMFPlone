@@ -3429,6 +3429,7 @@ msgid "News"
 msgstr "Berriak"
 
 msgid "My Folder"
+msgstr ""
 
 #, fuzzy
 msgid "My Preferences"
@@ -3454,11 +3455,13 @@ msgid "Folder contents"
 msgstr "Karpetaren edukia"
 
 msgid "Contents"
+msgstr ""
 
 msgid "View"
 msgstr "Ikusi"
 
 msgid "Edit"
+msgstr ""
 
 msgid "Properties"
 msgstr "Ezaugarriak"
@@ -3473,37 +3476,52 @@ msgid "Local Roles"
 msgstr "Baimenak"
 
 msgid "Ownership"
+msgstr ""
 
 msgid "${type}s only"
+msgstr ""
 
 msgid "Document"
+msgstr ""
 
 msgid "Image"
+msgstr ""
 
 msgid "File"
+msgstr ""
 
 msgid "Link"
+msgstr ""
 
 msgid "News Item"
+msgstr ""
 
 msgid "Topic"
+msgstr ""
 
 msgid "Folder"
+msgstr ""
 
 msgid "Event"
+msgstr ""
 
 msgid "Collector"
+msgstr ""
 
 msgid "Collector Subset"
+msgstr ""
 
 msgid "CMF Wiki Page"
+msgstr ""
 
 msgid "CMF Wiki"
+msgstr ""
 
 msgid "Cut"
 msgstr "Moztu"
 
 msgid "Copy"
+msgstr ""
 
 msgid "Delete"
 msgstr "Ezabatu"
@@ -3513,6 +3531,7 @@ msgid "Change Status"
 msgstr "estatusa aldatu"
 
 msgid "This item is currently in the ${review_state} state"
+msgstr ""
 
 #, fuzzy
 msgid "Make private"
@@ -3523,42 +3542,61 @@ msgid "Publish"
 msgstr "Argitaratuta"
 
 msgid "Collector Catalog"
+msgstr ""
 
 msgid "Collector Issue"
+msgstr ""
 
 msgid "Collector Issue Transcript"
+msgstr ""
 
 msgid "Discussion Item"
+msgstr ""
 
 msgid "Favorite"
+msgstr ""
 
 msgid "Documents can contain text that can be formatted using 'Structured Text.'"
+msgstr ""
 
 msgid "Image objects can be embedded in Portal documents."
+msgstr ""
 
 msgid "File objects can contain arbitrary downloadable files."
+msgstr ""
 
 msgid "Link items are URLs that come with additional information."
+msgstr ""
 
 msgid "News Items contain short text articles and carry a title as well as an optional description."
+msgstr ""
 
 msgid "Topics are canned queries for organizing content with up to date queries into the catalog."
+msgstr ""
 
 msgid "Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."
+msgstr ""
 
 msgid "Events are objects for use in Calendar topical queries on the catalog."
+msgstr ""
 
 msgid "A Collector is a facility for tracking bug reports and other issues."
+msgstr ""
 
 msgid "A Collector Subset represents a view on a subset of the issues in a collector."
+msgstr ""
 
 msgid "Loosely organized (yet structured) content can be added to Wikis."
+msgstr ""
 
 msgid "Browse"
+msgstr ""
 
 msgid "New Issue"
+msgstr ""
 
 msgid "Configure"
+msgstr ""
 
 msgid "pending"
 msgstr "egiteke"
@@ -3570,24 +3608,34 @@ msgid "published"
 msgstr "Argitaratuta"
 
 msgid "No"
+msgstr ""
 
 msgid "Yes"
+msgstr ""
 
 msgid "Comment"
+msgstr ""
 
 msgid "History"
+msgstr ""
 
 msgid "Backlinks"
+msgstr ""
 
 msgid "Advanced"
+msgstr ""
 
 msgid "Help"
+msgstr ""
 
 msgid "Criteria"
+msgstr ""
 
 msgid "Subtopics"
+msgstr ""
 
 msgid "Metadata"
+msgstr ""
 
 #~ msgid  "A local role is a way of allowing other users into some or all of your folders. These users can edit items, publish them - et cetera, depending on what permissions you give them."
 #~ msgstr "Baimenen bidez beste erabiltzaile batzuei zure karpeta jakin bat edota guztiera sartzeko gaitasuna luzatzen zaie. Ematen zaien baimenaren arabera erabiltzaile hauek objektuak editatu, argitaratu edo moldatu ahal izanen dituzte."

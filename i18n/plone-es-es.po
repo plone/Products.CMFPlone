@@ -3543,6 +3543,7 @@ msgid "News"
 msgstr "Noticias"
 
 msgid "My Folder"
+msgstr ""
 
 #, fuzzy
 msgid "My Preferences"
@@ -3590,6 +3591,7 @@ msgid "Local Roles"
 msgstr "Permisos"
 
 msgid "Ownership"
+msgstr ""
 
 msgid "${type}s only"
 msgstr "Solo ${type}s"
@@ -3599,26 +3601,37 @@ msgid "Document"
 msgstr "Comentario"
 
 msgid "Image"
+msgstr ""
 
 msgid "File"
+msgstr ""
 
 msgid "Link"
+msgstr ""
 
 msgid "News Item"
+msgstr ""
 
 msgid "Topic"
+msgstr ""
 
 msgid "Folder"
+msgstr ""
 
 msgid "Event"
+msgstr ""
 
 msgid "Collector"
+msgstr ""
 
 msgid "Collector Subset"
+msgstr ""
 
 msgid "CMF Wiki Page"
+msgstr ""
 
 msgid "CMF Wiki"
+msgstr ""
 
 msgid "Cut"
 msgstr "Cortar"
@@ -3644,44 +3657,62 @@ msgid "Publish"
 msgstr "Publicando"
 
 msgid "Collector Catalog"
+msgstr ""
 
 msgid "Collector Issue"
+msgstr ""
 
 msgid "Collector Issue Transcript"
+msgstr ""
 
 msgid "Discussion Item"
+msgstr ""
 
 msgid "Favorite"
+msgstr ""
 
 msgid "Documents can contain text that can be formatted using 'Structured Text.'"
+msgstr ""
 
 msgid "Image objects can be embedded in Portal documents."
+msgstr ""
 
 msgid "File objects can contain arbitrary downloadable files."
+msgstr ""
 
 msgid "Link items are URLs that come with additional information."
+msgstr ""
 
 msgid "News Items contain short text articles and carry a title as well as an optional description."
+msgstr ""
 
 msgid "Topics are canned queries for organizing content with up to date queries into the catalog."
+msgstr ""
 
 msgid "Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."
+msgstr ""
 
 msgid "Events are objects for use in Calendar topical queries on the catalog."
+msgstr ""
 
 msgid "A Collector is a facility for tracking bug reports and other issues."
+msgstr ""
 
 msgid "A Collector Subset represents a view on a subset of the issues in a collector."
+msgstr ""
 
 msgid "Loosely organized (yet structured) content can be added to Wikis."
+msgstr ""
 
 msgid "Browse"
+msgstr ""
 
 #, fuzzy
 msgid "New Issue"
 msgstr "¿Nuevo Usuario?"
 
 msgid "Configure"
+msgstr ""
 
 msgid "pending"
 msgstr "pendiente"
@@ -3693,8 +3724,10 @@ msgid "published"
 msgstr "publicado"
 
 msgid "No"
+msgstr ""
 
 msgid "Yes"
+msgstr ""
 
 msgid "Comment"
 msgstr "Comentario"
@@ -3712,10 +3745,13 @@ msgid "Help"
 msgstr "Ayuda"
 
 msgid "Criteria"
+msgstr ""
 
 msgid "Subtopics"
+msgstr ""
 
 msgid "Metadata"
+msgstr ""
 
 #~ msgid   "<h1>Our apologies...</h1> <p> ...but the item you requested does not "
 #~         "exist on this server or cannot be served. </p> <p> Please double "

@@ -145,6 +145,7 @@ msgstr "Pøidat poznámku"
 #.               </input>
 #, fuzzy
 msgid "Register"
+msgstr ""
 
 #: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
 #.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Remove" class="context" name="topic_deleteCriteria:action" type="submit" />
@@ -172,6 +173,7 @@ msgstr "Reply to this"
 #.   <input value="Reset" class="standalone" name="reset" type="reset">
 #.           </input>
 msgid "Reset"
+msgstr ""
 
 #: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
 #.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" name="topic_editCriteria:action" type="submit" />
@@ -228,6 +230,7 @@ msgstr "Potvrzení<br /> Hesla"
 #.   <input value="Sign in" class="context" name="submit" type="submit" />
 #.   
 msgid "Sign in"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <input value="Submit" class="context" type="submit" />
@@ -272,6 +275,7 @@ msgstr "Displaying"
 #: from plone_forms/search.pt
 #, fuzzy
 msgid "batch_items"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_macros.pt
 #.   <a tal:attributes="href python:
@@ -301,10 +305,12 @@ msgstr "Previous"
 #.                 </span>
 #, fuzzy
 msgid "batch_to"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_macros.pt
 #.   <span omit-tag="">total</span>
 msgid "batch_total"
+msgstr ""
 
 #: from plone_forms/search.pt
 #.   <span>items matching your criteria</span>
@@ -322,6 +328,7 @@ msgstr "Aktuální objekt"
 #.   <strong>Created&nbsp;by:</strong>
 #, fuzzy
 msgid "box_created_by"
+msgstr ""
 
 #: from plone_templates/ui_slots/navigation_slot.pt
 #.   <span>Editor view</span>
@@ -416,6 +423,7 @@ msgstr "Review List"
 #.   <th>Sign in</th>
 #, fuzzy
 msgid "box_sign_in"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_issue_contents.pt
 #.   <div class="heading"> 
@@ -476,6 +484,7 @@ msgstr "<br /> (1 reakce)"
 #.               [${collector_abbrev (tal replace="here/abbrev|nothing")}]
 #.               </a>
 msgid "collector_link"
+msgstr ""
 
 #: from plone_content/event_view.pt
 #.   <div class="label">Contact Email</div>
@@ -1357,6 +1366,7 @@ msgstr "Occasionally, product updates require internal catalog reinit and reinde
 #.           </span>
 #, fuzzy
 msgid "help_collector_selections"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <span>
@@ -1847,6 +1857,7 @@ msgstr "Prefix lines with whitespace or '&gt;' to preserve their format."
 #.                   </div>
 #, fuzzy
 msgid "help_publishing_comments"
+msgstr ""
 
 #: from plone_forms/login_form.pt
 #.   <div class="help" id="remember_help" style="visibility:hidden">
@@ -2776,11 +2787,13 @@ msgstr "Pro jednoduché textové hledání zadejte hledané termíny. Ve víceslovných 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #, fuzzy
 msgid "label_security"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
 #.   <label for="security_related_checkbox">Security related</label>
 #, fuzzy
 msgid "label_security_related"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <span>
@@ -2790,6 +2803,7 @@ msgid "label_security_related"
 #.               </span>
 #, fuzzy
 msgid "label_security_related_desc"
+msgstr ""
 
 #: from plone_templates/folder_contents.pt
 #.   <option value="Select">Select</option>
@@ -2917,6 +2931,7 @@ msgstr "Nadpis"
 #.   <div class="label">Topic</div>
 #, fuzzy
 msgid "label_topic"
+msgstr ""
 
 #: from plone_forms/login_form.pt
 #.   <strong>
@@ -2930,6 +2945,7 @@ msgstr "Máte problémy s pøihlá¹ením se?"
 #.   <div class="label">Upload</div>
 #, fuzzy
 msgid "label_upload"
+msgstr ""
 
 #: from plone_content/document_edit_form.pt
 #.   <span>Upload contents (optional)</span>
@@ -3070,6 +3086,7 @@ msgstr "Image Details"
 #.   <span class="legend">Issue details</span>
 #, fuzzy
 msgid "legend_issue_details"
+msgstr ""
 
 #: from plone_content/metadata_edit_form.pt
 #.   <span class="legend">Item Properties</span>
@@ -3277,11 +3294,13 @@ msgstr "Performed by"
 #.   <th>Requester</th>
 #, fuzzy
 msgid "listingheader_requester"
+msgstr ""
 
 #: from plone_3rdParty/CMFCollector/collector_contents.pt
 #.   <th>Security Related</th>
 #, fuzzy
 msgid "listingheader_security_related"
+msgstr ""
 
 #: from plone_templates/folder_contents.pt
 #.   <span omit-tag="">Size</span>
@@ -3317,6 +3336,7 @@ msgstr "Nadpis"
 #.   <th>Topic</th>
 #, fuzzy
 msgid "listingheader_topic"
+msgstr ""
 
 #: from plone_templates/folder_contents.pt
 #.   <span omit-tag="">Type</span>
@@ -3483,15 +3503,18 @@ msgstr "Read More"
 #.   <span condition="effective">and <strong>is effective</strong>.</span>
 #, fuzzy
 msgid "status_is_effective"
+msgstr ""
 
 #: from plone_forms/content_status_history.pt
 #.   <span condition="after">but is <strong>no longer</strong> effective.</span>
 msgid "status_no_longer_effective"
+msgstr ""
 
 #: from plone_forms/content_status_history.pt
 #.   <span condition="before">but is <strong>not yet</strong> effective.</span>
 #, fuzzy
 msgid "status_not_yet_effective"
+msgstr ""
 
 #: from plone_content/document_edit_form.pt
 #.   <label for="cb_structuredtext">Structured Text</label>
@@ -3555,6 +3578,7 @@ msgid "News"
 msgstr "Novinky"
 
 msgid "My Folder"
+msgstr ""
 
 #, fuzzy
 msgid "My Preferences"
@@ -3602,6 +3626,7 @@ msgid "Local Roles"
 msgstr "Místní Role"
 
 msgid "Ownership"
+msgstr ""
 
 msgid "${type}s only"
 msgstr "Pouze objekty typu ${type}"
@@ -3611,26 +3636,37 @@ msgid "Document"
 msgstr "Poznámka"
 
 msgid "Image"
+msgstr ""
 
 msgid "File"
+msgstr ""
 
 msgid "Link"
+msgstr ""
 
 msgid "News Item"
+msgstr ""
 
 msgid "Topic"
+msgstr ""
 
 msgid "Folder"
+msgstr ""
 
 msgid "Event"
+msgstr ""
 
 msgid "Collector"
+msgstr ""
 
 msgid "Collector Subset"
+msgstr ""
 
 msgid "CMF Wiki Page"
+msgstr ""
 
 msgid "CMF Wiki"
+msgstr ""
 
 msgid "Cut"
 msgstr "Vyjmout"
@@ -3656,9 +3692,11 @@ msgid "Publish"
 msgstr "Zmìna stavu"
 
 msgid "Collector Catalog"
+msgstr ""
 
 #, fuzzy
 msgid "Collector Issue"
+msgstr ""
 
 #, fuzzy
 msgid "Collector Issue Transcript"
@@ -3666,39 +3704,54 @@ msgstr "  "
 
 msgid "Discussion Item"
 
+msgstr ""
 msgid "Favorite"
+msgstr ""
 
 msgid "Documents can contain text that can be formatted using 'Structured Text.'"
+msgstr ""
 
 msgid "Image objects can be embedded in Portal documents."
+msgstr ""
 
 msgid "File objects can contain arbitrary downloadable files."
+msgstr ""
 
 msgid "Link items are URLs that come with additional information."
+msgstr ""
 
 msgid "News Items contain short text articles and carry a title as well as an optional description."
+msgstr ""
 
 msgid "Topics are canned queries for organizing content with up to date queries into the catalog."
+msgstr ""
 
 msgid "Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."
+msgstr ""
 
 msgid "Events are objects for use in Calendar topical queries on the catalog."
+msgstr ""
 
 msgid "A Collector is a facility for tracking bug reports and other issues."
+msgstr ""
 
 msgid "A Collector Subset represents a view on a subset of the issues in a collector."
+msgstr ""
 
 msgid "Loosely organized (yet structured) content can be added to Wikis."
+msgstr ""
 
 msgid "Browse"
 msgstr "Vybrat"
 
 msgid "New Issue"
+msgstr ""
 
 msgid "Configure"
 msgstr "Nastavení"
 
 msgid "pending"
+msgstr ""
 
 msgid "private"
 msgstr "privátní"
@@ -3728,17 +3781,20 @@ msgid "Help"
 msgstr "Nápovìda"
 
 msgid "Criteria"
+msgstr ""
 
 msgid "Subtopics"
+msgstr ""
 
 msgid "Metadata"
+msgstr ""
 
 #~ msgid "${start_index} to ${end_index} of ${num_found}"
 #~ msgstr "${start_index}. a¾  ${end_index}.  z celkem ${num_found}"
 
 
 #~ msgid "${title} ${abbrev} - Issue Collector"
-
+#~ msgstr ""
 
 #~ msgid "&nbsp;"
 #~ msgstr "&nbsp;"
@@ -3835,7 +3891,7 @@ msgid "Metadata"
 
 
 #~ msgid "Doc"
-
+#~ msgstr ""
 
 #~ msgid "Don't panic! :)"
 #~ msgstr "Nepropadejte panice!  *8-)"
@@ -3878,6 +3934,7 @@ msgid "Metadata"
 
 
 #~ msgid "ID"
+#~ msgstr ""
 
 
 #~ msgid ""
@@ -3903,7 +3960,7 @@ msgid "Metadata"
 
 
 #~ msgid "Issue ${id} of ${collector_link}"
-
+#~ msgstr ""
 
 #~ msgid "Join"
 #~ msgstr "Registrace"
@@ -3991,6 +4048,7 @@ msgid "Metadata"
 
 
 #~ msgid "Pending"
+#~ msgstr ""
 
 
 #~ msgid "Plone setup"
@@ -4004,7 +4062,7 @@ msgid "Metadata"
 
 
 #~ msgid "Security related:"
-
+#~ msgstr ""
 
 #~ msgid "Short Name"
 #~ msgstr "Krátké jméno"
@@ -4049,13 +4107,13 @@ msgid "Metadata"
 
 
 #~ msgid "Topic/class:"
-
+#~ msgstr ""
 
 #~ msgid "Uploads:"
-
+#~ msgstr ""
 
 #~ msgid "Use the issue folder_contents view (if accessible) to change the uploads."
-
+#~ msgstr ""
 
 #~ msgid "User Details"
 #~ msgstr "Zadejte údaje o u¾ivateli"
@@ -4072,7 +4130,7 @@ msgid "Metadata"
 
 #~ #. Return items created by a particular person.
 #~ msgid "author_search_help"
-
+#~ msgstr ""
 
 #~ msgid "bug"
 #~ msgstr "chyba"
@@ -4083,7 +4141,7 @@ msgid "Metadata"
 
 
 #~ msgid "change_status_help"
-
+#~ msgstr ""
 
 #~ #. Re-enter the password. Make sure the passwords are identical.
 #~ msgid "confirm_password_help"
@@ -4106,7 +4164,7 @@ msgid "Metadata"
 
 
 #~ msgid "doc"
-
+#~ msgstr ""
 
 #~ msgid "effective_date_help"
 #~ msgstr "Datum, kdy bude dokument zveøejnìn.Tak mù¾ete pøipravit dokumenty k nìjaké pøíle¾itosti pøedem.Pokud není zadáno, je dokument  pou¾it  ihned."
@@ -4262,13 +4320,14 @@ msgid "Metadata"
 
 
 #~ msgid "status_effective"
+#~ msgstr ""
 
 
 #~ msgid "team"
-
+#~ msgstr ""
 
 #~ msgid "test"
-
+#~ msgstr ""
 
 #~ #. Text
 #~ msgid "text"
