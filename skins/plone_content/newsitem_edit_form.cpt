@@ -96,7 +96,7 @@
 
             <label for="description" i18n:translate="label_lead-in">Lead-in</label>
 
-            <div class="formHelp" i18n:translate="help_description">
+            <div class="formHelp" i18n:translate="help_description_news">
               Displayed on the news page along with the headline.
             </div>
 

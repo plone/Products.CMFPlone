@@ -225,7 +225,7 @@
               Format
             </label>
 
-            <div class="formHelp" i18n:translate="help_format">
+            <div class="formHelp" i18n:translate="help_mimetype">
               The MIME-type of the item. If you don't know what this
               does, just leave it.
             </div>
