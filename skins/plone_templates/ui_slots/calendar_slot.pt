@@ -25,50 +25,45 @@
             </th>
 
         <tr tal:define="weekdays here/portal_calendar/getDays">
-          <metal:block tal:repeat="weekday weekdays">
+          <tal:block repeat="weekday weekdays">
             <td class="weekdays" tal:content="weekday">Su</td>
-          </metal:block>
+          </tal:block>
         </tr>
 
             <tr tal:repeat="week weeks">
-              <metal:block tal:define="days week">
-                <metal:block tal:repeat="day days">
-                  <metal:block tal:condition="day/event">
-                  <metal:block tal:define="daynumber day/day;
-                                           datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
-                                           javascriptstring string:javascript:%sDay('%s');;">
-                  <td class="event"
+              <tal:block repeat="day week">
+                <tal:block define="daynumber day/day;
+                                   datestring python: '%d%0.2d%0.2d' % (year, month, daynumber);
+                                   javascriptstring string:javascript:%sDay('%s');">
+                  <td class="event" tal:condition="day/event"
                       tal:attributes="onMouseOut  python: javascriptstring % ('hide', datestring);
                                       onMouseOver python: javascriptstring % ('show', datestring);
                                       class       python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todayevent', 'event')">
-                    <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=day['day'], month=month, year=year)" tal:omit-tag="">
+                    <span tal:define="begEndTimes python:here.getBeginAndEndTimes(day=daynumber, month=month, year=year)" tal:omit-tag="">
                       <span tal:define="begin python:DateTime(begEndTimes[0].timeTime()+86400).ISO();
                                         end python:DateTime(begEndTimes[1].strftime('%m/%d/%y')).ISO();
                                         pss python:modules['Products'].PythonScripts.standard" tal:omit-tag="">
                       <a href tal:attributes="href python:here.portal_url()+'/search?review_state=published&start:date=%s&start_usage=range:max&end:date=%s&end_usage=range:min'%(pss.url_quote(begin),pss.url_quote(end))">
-                        <span tal:replace="python: day['day'] or default">&nbsp;</span>
+                        <span tal:replace="python: daynumber or default">&nbsp;</span>
                       </a>
                       </span>
                     </span>
                   </td>
-                  </metal:block>
-                  </metal:block>
                   <td tal:condition="not: day/event"
-                                      tal:content="python: day['day'] or default"
-                                      tal:attributes="class python:test(current.year()==year and current.month()==month and current.day()==int(day['day']), 'todaynoevent', '')">
+                                      tal:content="python: daynumber or default"
+                                      tal:attributes="class python:test(current.year()==year and current.month()==month and current.day()==int(daynumber), 'todaynoevent', '')">
                     &nbsp;
                   </td>
-                </metal:block>
-              </metal:block>
+                </tal:block>
+              </tal:block>
             </tr>
 
     </table>
 
 
     <!-- The sticky notes -->
-    <metal:block tal:repeat="week weeks">
-      <metal:block tal:define="days week">
-        <metal:block tal:repeat="day days">
+    <tal:block repeat="week weeks">
+      <tal:block repeat="day week">
         <div class="day" 
              id="dummy"
              tal:attributes="id python:'day%d%0.2d%0.2d' % (year, month, day['day']) "
@@ -76,12 +71,11 @@
             <div class="date" tal:content="python:'%d-%0.2d-%0.2d' % (year, month, day['day'])">
               2001-04-11
             </div>
-            <metal:block tal:repeat="anevent day/eventslist">
+            <tal:block repeat="anevent day/eventslist">
             <div class="appointment" tal:content="python: here.getEventString(event=anevent)">an event</div>
-            </metal:block>
-          </div>
-        </metal:block>
-      </metal:block>
-    </metal:block>
+            </tal:block>
+        </div>
+      </tal:block>
+    </tal:block>
 
 </div>
