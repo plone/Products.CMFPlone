@@ -10,7 +10,7 @@
 #REQUEST.RESPONSE.setHeader( 'Expires', expires.strftime(date_format) )
 
 
-return r"""\
+return r"""
 var ie = document.all != null;
 var moz = !ie && document.getElementById != null && document.layers == null;
 
