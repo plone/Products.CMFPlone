@@ -63,6 +63,8 @@
             method="post"
             tal:attributes="action here/absolute_url">
 
+            <input type="hidden" value="1" name="came_from_prefs" />
+
             <input class="standalone add"
                     tabindex=""
                     type="submit"
@@ -92,7 +94,6 @@
                           portal_users python:here.prefs_user_group_search(searchstring, 'users');
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
 
-        <input type="hidden" value="1" name="came_from_prefs" />
         <input type="hidden" value="b_start" name="b_start" 
                tal:attributes="value b_start"/>
             <table class="listing" summary="User Listing">
