@@ -20,7 +20,6 @@
         <span class="legend">Items Available</span>
         
         <div tal:repeat="ctype here/allowedContentTypes"> 
-
     		<div class="row" tal:define="Type ctype/Type;Id ctype/getId"
                          tal:condition="python:test(Type not in filterOut, 1, 0)">
     	

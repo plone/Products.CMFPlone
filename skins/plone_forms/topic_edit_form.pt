@@ -1,0 +1,53 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:use-macro="here/content_template/macros/master">
+<body>
+<div metal:fill-slot="main">
+
+<div class="Desktop">
+
+<div class="Topic">
+
+<h2> Edit Topic: <span tal:replace="here/id" /> </h2>
+
+<form action="" method="post" tal:attributes="action here/absolute_url">
+<table class="FormLayout">
+
+ <tr valign="top">
+  <th align="right"> Title: </th>
+  <td><input type="text" name="title" value="Title" size="30" tal:attributes="value here/title" /></td>
+ </tr>
+ <tr valign="top">
+  <th align="right"> Description: </th>
+  <td><textarea name="description:test" rows="5" cols="65"
+        tal:content="here/description"
+       >Description</textarea></td>
+ </tr>
+ <tr valign="top">
+  <th align="right"> Acquire Criteria<br>from Parent: </th>
+  <td>
+   <input type="checkbox"
+          name="acquireCriteria"
+          value="1" tal:attributes="checked python:here.acquireCriteria and 'checked' or ''">
+   <input type="hidden"
+          name="acquireCriteria:default"
+          value="">
+  </td>
+ </tr>
+
+ <tr valign="top">
+  <td> <br> </td>
+  <td>
+   <input type="submit" name="topic_editTopic:action" value="Change">
+  </td>
+ </tr>
+
+</table>
+</form>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>

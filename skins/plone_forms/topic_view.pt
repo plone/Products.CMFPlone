@@ -1,0 +1,68 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:use-macro="here/content_template/macros/master">
+    <metal:block fill-slot="base">
+            <base href=""
+                  tal:attributes="href python: here.absolute_url() + '/'">
+    </metal:block>
+<body>
+<div metal:fill-slot="main">
+
+<div class="Desktop">
+
+<div class="Topic">
+
+<h2><span tal:replace="here/title">title</span> </h2>
+
+<span tal:define="topics python:here.objectValues( [ 'Portal Topic' ] )" tal:condition="topics">
+    <h4>Subtopics: </h4>
+    <div tal:repeat="topic topics">
+        <a href=""
+            tal:define="topictitle python:topic.Title() or topic.getId()"
+            tal:attributes="href topic/absolute_url"
+            tal:content="topictitle">
+                Topic Title
+            </a>
+    </div>
+</span>
+
+<span tal:define="
+            b_start string:0;b_start request/b_start | b_start;
+            results here/queryCatalog;
+            Batch python:modules['ZTUtils'].Batch;
+            global batch python:Batch(results, 20, int(b_start), orphan=1)">
+    <h4>Topic Matches: </h4>
+    <div tal:repeat="match batch" tal:condition="batch">
+        <a href=""
+            tal:attributes="href string:${match/getURL}/view"
+            tal:content="match/Title"> Match Title </a>
+    </div>
+
+
+    <span tal:define="p batch/previous" tal:condition="p">
+    <a href=""
+        tal:attributes="href string:?b_start=${p/first}">Previous <span
+        tal:replace="p/length">n</span> items</a>
+    </span>&nbsp;&nbsp;
+    <span tal:define="n batch/next" tal:condition="n">
+    <a href=""
+        tal:attributes="href string:?b_start=${batch/end}">Next <span
+        tal:replace="n/length">n</span> items</a>
+    </span>
+
+    <h3> Query Parameters </h3>
+
+    <ul tal:define="queries here/buildQuery; items python:queries.items()"
+        tal:condition="queries">
+    <span tal:repeat="item items">
+    <li tal:define="key python:item[0]; value python:item[1]" tal:content="string:${key} : ${value}">item</li>
+    </span>
+    </ul>
+</span>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>
