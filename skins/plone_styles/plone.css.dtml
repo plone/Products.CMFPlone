@@ -1260,45 +1260,45 @@ ul.configletDetails li label {
     font-weight: bold;
 }
 
-.calendar {
+.ploneCalendar {
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     margin: 1em 0em;
 }
-.calendar a {
+.ploneCalendar a {
     text-decoration: none;
 }
-.calendar a:hover {
+.ploneCalendar a:hover {
     text-decoration: none;
 }
-.calendar th {
+.ploneCalendar th {
     background-color: &dtml-globalBackgroundColor;;
     font-weight: bold;
     text-align: center;
     padding: 2px;
 }
-.calendar td {
+.ploneCalendar td {
     background-color: transparent;
     width: 1.5em;
     text-align: right;
     padding: 2px;
 }
-.calendar .weekdays td {
+.ploneCalendar .weekdays td {
     background-color: &dtml-globalBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
     border-style: &dtml-borderStyle; none;
     text-align: center;
     padding: 2px;
 }
-.calendar .event {
+.ploneCalendar .event {
     background-color: &dtml-globalBackgroundColor;;
     font-weight: bold;
 }
-.calendar .todayevent {
+.ploneCalendar .todayevent {
     background-color: &dtml-globalBackgroundColor;;
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
     font-weight: bold;
 }
-.calendar .todaynoevent {
+.ploneCalendar .todaynoevent {
     border-collapse: collapse;
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
 }
