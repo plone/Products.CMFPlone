@@ -51,7 +51,7 @@ def alpha1_alpha2(portal):
     # in Portal.py (including the new properties)
     # If typesTolist is not there were dealing with a real migration
     if not ntp.hasProperty('typesToList'):
-        ntp._setProperty('typesToList', ['Folder'], 'lines')
+        ntp._setProperty('typesToList', ['Folder','Large Plone Folder'], 'lines')
         ntp._setProperty('sortAttribute', 'getFolderOrder', 'string')
         ntp._setProperty('sortOrder', 'asc', 'string')
         ntp._setProperty('sitemapDepth', 3, 'int')
