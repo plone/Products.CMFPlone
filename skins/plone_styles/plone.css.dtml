@@ -450,6 +450,11 @@ del {
     padding-right: 2em;
     text-transform: &dtml-textTransform;;
 }
+
+.breadcrumbSeparator {
+    font-size: 120%;
+}
+
 .addFavorite {
     vertical-align: bottom;
 }
