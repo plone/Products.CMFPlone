@@ -1013,6 +1013,12 @@ ol.visualNoMarker {
     margin-bottom: 1em;
     padding: 0;
 }
+
+/* Compensation when rendering portlets in the content area */
+#region-content .portlet {
+    font-size: 94%;
+}
+
 .portlet h4 {
     font-size: 1em;
     font-weight: normal;
