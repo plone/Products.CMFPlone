@@ -1,0 +1,51 @@
+<dtml-comment> 
+  Some ECMAScript magic to control the sticky notes :) 
+  NOTE: iiemu.js is a PythonScript so we must render it 
+</dtml-comment>
+<dtml-var "_.getattr(this(), 'ieemu.js')()" >
+
+  if (moz) {
+    extendElementModel();
+    extendEventObject();
+    emulateEventHandlers(["mouseover", "mouseout"]);
+  }
+
+<dtml-var "_.getattr(this(), 'styley.js')(this(), REQUEST)" >
+
+  function showDay(date) {
+    tempX = document.body.offsetWidth - event.x;
+    tempY = event.clientY + document.body.scrollTop;
+
+    document.getElementById('day' + date).style.pixelTop = tempY - 20;
+    document.getElementById('day' + date).style.pixelRight = tempX + 12;
+    document.getElementById('day' + date).style.visibility = 'visible';
+    return true;
+  }
+
+  function hideDay(date) {
+    document.getElementById('day' + date).style.visibility = 'hidden';
+    return true;
+  }
+
+  function formtooltip(el,flag){
+    elem = document.getElementById(el);
+    if (flag) { 
+      elem.parentNode.parentNode.style.zIndex=1000;
+      elem.parentNode.parentNode.style.borderRight='0px solid #000';
+      // ugly , yes .. but neccesary to avoid a small but very annoying bug in IE6
+      elem.style.visibility='visible';
+    }
+    else {
+      elem.parentNode.parentNode.style.zIndex=1;
+      elem.parentNode.parentNode.style.border='none';
+      elem.style.visibility='hidden' };
+  }
+  
+<dtml-comment> Table sorting script </dtml-comment>			      
+<dtml-if "REQUEST.PUBLISHED.getId() in ('folder_listing', 'folder_contents')">
+  <dtml-var "_.getattr(this(), 'table_sort.js')(this(), REQUEST)" >
+</dtml-if>
+
+<dtml-comment> folder_contents actions </dtml-comment>
+<dtml-var "_.getattr(this(), 'folder_actions.js')(this(), REQUEST)" >
+

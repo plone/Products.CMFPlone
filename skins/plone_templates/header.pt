@@ -31,85 +31,13 @@
     <!-- Style sheet used for printing -->
     <link rel="stylesheet" type="text/css" media="print" href="dummy" tal:attributes="href string:$portal_url/plonePrint.css"/>
 
-
     <meta http-equiv="imagetoolbar" content="no" /> <!-- Disable IE6 image toolbar -->
 
-    <!-- Some ECMAScript magic to control the sticky notes :) -->
-    
+    <!-- Consolidation of all javascript into 1 call -->
     <script language="javascript"
-            type="text/javascript"
-            src="ieemu.js"
-            tal:attributes="src string:$portal_url/ieemu.js" ></script>
-
-    <script language="javascript" type="text/javascript">
-      if (moz) {
-      	extendElementModel();
-        extendEventObject();
-      	emulateEventHandlers(["mouseover", "mouseout"]);
-      }
+            tal:content="structure here/plone_javascripts.js">
     </script>
 
-    <script language="JavaScript"
-            type="text/javascript" 
-            src="http://developer.apple.com/internet/javascript/styley.js"
-            tal:attributes="src string:$portal_url/styley.js" >
-    </script>     
-
-    <script language="JavaScript1.3" type="text/javascript">
-     <!--
-
-      function showDay(date) {
-        tempX = document.body.offsetWidth - event.x;
-        tempY = event.clientY + document.body.scrollTop;
-
-        document.getElementById('day' + date).style.pixelTop = tempY - 20;
-        document.getElementById('day' + date).style.pixelRight = tempX + 12;
-        document.getElementById('day' + date).style.visibility = 'visible';
-        return true;
-      }
-
-      function hideDay(date) {
-        document.getElementById('day' + date).style.visibility = 'hidden';
-        return true;
-      }
-
-      function formtooltip(el,flag){
-       elem = document.getElementById(el)
-     if (flag)
-        { elem.parentNode.parentNode.style.zIndex=1000;
-          elem.parentNode.parentNode.style.borderRight='0px solid #000';
-          // ugly , yes .. but neccesary to avoid a small but very annoying bug in IE6
-          elem.style.visibility='visible';
-          
-          }     
-     else{
-         elem.parentNode.parentNode.style.zIndex=1;
-         elem.parentNode.parentNode.style.border='none';
-         elem.style.visibility='hidden'};
-        
-      
-      }
-
-
-      // -->
-    </script>
-
-    <!-- Table sorting script -->
-    <script language="JavaScript"
-            type="text/javascript" 
-            src="dummy"
-	    tal:condition="python:test(template.getId() in ('folder_listing', 'folder_contents'), 1, 0)"
-            tal:attributes="src string:$portal_url/table_sort.js" >
-    </script>     
-
-    <!-- folder_contents actions -->
-    <script language="JavaScript"
-            type="text/javascript" 
-            src="dummy"
-            tal:attributes="src string:$portal_url/folder_actions.js" >
-    </script>     
-
-    
 </head>
 
 <div metal:define-macro="portal_header"
