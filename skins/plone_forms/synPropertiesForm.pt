@@ -141,11 +141,6 @@
                         <br />
                     </div>
 
-                    <div tal:condition="error_updateFrequency">
-                        <tal:block i18n:translate="" content="error_updateFrequency">Error</tal:block>
-                        <br />
-                    </div>
-
                     <input type="text" 
                            name="updateFrequency" 
                            size="3"
