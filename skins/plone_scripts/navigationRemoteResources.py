@@ -15,11 +15,14 @@ if obj is None:
     if not obj.isPrincipiaFolderish:
         obj=obj.aq_parent
 
-for o in obj.contentValues('Link'):
-    try:
-        listing.append( (o.title_or_id(),
-                         o.getRemoteUrl()) )
-    except (Unauthorized,AttributeError):
-        pass
+try:
+    for o in obj.contentValues('Link'):
+        try:
+            listing.append( (o.title_or_id(),
+                             o.getRemoteUrl()) )
+        except (Unauthorized,AttributeError):
+            pass
+except Unauthorized:
+    pass
 
 return listing
