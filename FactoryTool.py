@@ -242,6 +242,8 @@ class FactoryTool(PloneBaseTool, UniqueObject, SimpleItem):
             if not membership_tool.isAnonymousUser():
                 member = membership_tool.getAuthenticatedMember()
                 obj.changeOwnership(member.getUser(), 1)
+            if hasattr(aq_base(obj), 'manage_afterPortalFactoryCreate'):
+                obj.manage_afterPortalFactoryCreate()
         return obj
 
     def _fixRequest(self):
