@@ -275,7 +275,7 @@
         </div>
 
     </form>
-    <span tal:replace="structure request" />
+
 </div>
 
 </body>
