@@ -31,11 +31,14 @@ if not id:
     id = original_id
 
 new_context = context.portal_factory.doCreate(context, id)
-new_context.edit( precondition=precondition
-                , file=file )
+
 new_context.plone_utils.contentEdit( new_context
                                    , id=id
                                    , description=description )
+
+new_context.edit( precondition=precondition
+                , file=file )
+
 return ('success', new_context, 
         {'portal_status_message' : context.REQUEST.get('portal_status_message',
                                                        'Image changes saved.')})
