@@ -6,7 +6,7 @@ from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
 from Products.CMFCore.CMFCorePermissions import View, ManageProperties, \
      ListFolderContents
 from Products.CMFCore.CMFCorePermissions import AddPortalFolders, \
-     AddPortalContent
+     AddPortalContent, ModifyPortalContent
 from Products.CMFDefault.SkinnedFolder import SkinnedFolder
 from Products.CMFDefault.DublinCore import DefaultDublinCoreImpl
 from Products.CMFCore.interfaces.DublinCore import DublinCore as IDublinCore
@@ -100,7 +100,7 @@ class OrderedContainer(Folder):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObject')
+    security.declareProtected(ModifyPortalContent, 'moveObject')
     def moveObject(self, id, position):
         obj_idx  = self.getObjectPosition(id)
         if obj_idx == position:
@@ -117,7 +117,7 @@ class OrderedContainer(Folder):
     # if plone sometime depends on zope 2.7 it should be replaced by mixing in
     # the 2.7 specific class OSF.OrderedContainer.OrderedContainer
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectsByDelta')
+    security.declareProtected(ModifyPortalContent, 'moveObjectsByDelta')
     def moveObjectsByDelta(self, ids, delta):
         """ Move specified sub-objects by delta.
         """
@@ -134,7 +134,6 @@ class OrderedContainer(Folder):
         
         for obj in self._objects:            
             # sort out in portal visible and invisible objects in 2 lists
-            print obj
             try:
                 types.index(obj['meta_type'])
             except ValueError:
@@ -174,7 +173,7 @@ class OrderedContainer(Folder):
         return counter
 
 
-    security.declareProtected(Permissions.copy_or_move, 'getObjectPosition')
+    security.declareProtected(ModifyPortalContent, 'getObjectPosition')
     def getObjectPosition(self, id):
 
         objs = list(self._objects)
@@ -185,42 +184,42 @@ class OrderedContainer(Folder):
 
         raise NotFound('Object %s was not found'%str(id))
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectsUp')
+    security.declareProtected(ModifyPortalContent, 'moveObjectsUp')
     def moveObjectsUp(self, ids, delta=1, RESPONSE=None):
         """ Move an object up """
         self.moveObjectsByDelta(ids, -delta) 
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectsDown')
+    security.declareProtected(ModifyPortalContent, 'moveObjectsDown')
     def moveObjectsDown(self, ids, delta=1, RESPONSE=None):
         """ move an object down """
         self.moveObjectsByDelta(ids, delta) 
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectsToTop')
+    security.declareProtected(ModifyPortalContent, 'moveObjectsToTop')
     def moveObjectsToTop(self, ids, RESPONSE=None):
         """ move an object to the top """
         self.moveObjectsByDelta( ids, -len(self._objects) ) 
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectsToBottom')
+    security.declareProtected(ModifyPortalContent, 'moveObjectsToBottom')
     def moveObjectsToBottom(self, ids, RESPONSE=None):
         """ move an object to the bottom """
         self.moveObjectsByDelta( ids, len(self._objects) )
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectToPosition')
+    security.declareProtected(ModifyPortalContent, 'moveObjectToPosition')
     def moveObjectToPosition(self, id, position):
         """ Move specified object to absolute position.
         """        
         delta = position - self.getObjectPosition(id)
         return self.moveObjectsByDelta(id, delta)
 
-    security.declareProtected(Permissions.copy_or_move, 'orderObjects')
+    security.declareProtected(ModifyPortalContent, 'orderObjects')
     def orderObjects(self, key, reverse=None):
         """ Order sub-objects by key and direction.
         """
