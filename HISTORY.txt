@@ -4,8 +4,17 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - There is a new version of portal_factory in 1.1.   
+      It lets you create objects which, if you don't save them, 
+      don't get created in the ZODB. If you want a type to be 
+      created with portal_factory, add the object's type
+      to site_properties/portal_factory_types, and then all 
+      calls to createObject will use portal_factory.
+      [geoffd]
+
     - Removed the CMFWeblog templates and put them in the CMFWeblog
       product instead. Located in the Collective.
+      [limi]
 
     - Migration Tool overhaul
 
@@ -21,7 +30,7 @@ Plone 1.1 - Fyuti
       - added improved log results
 
       - other improvements
-      [andym]
+        [andym]
 
     - Added Plone trashcan on behalf of Maik Jablonski
       [andym]
