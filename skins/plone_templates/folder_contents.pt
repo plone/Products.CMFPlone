@@ -199,7 +199,7 @@
                                                         item.absolute_url()+'/'+action);"> 
     
                             <a href="#" tal:attributes="href url">
-                                <img tal:replace="structure python:path('here/%s' % item.getIcon(1))" 
+                                <img tal:attributes="src python:item.getIcon(1)" 
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
                             <tal:block tal:condition="python:test(here.portal_properties.site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
