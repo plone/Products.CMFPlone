@@ -4,15 +4,9 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=request
+##parameters=
 ##title=Set Browser Default
 ##
-if request.has_key('REQUEST_METHOD'):
-    if request['REQUEST_METHOD'] != 'GET':
-        return context, [request['REQUEST_METHOD']]
-else:
-    return context
-
 default_pages = ['index_html', ]
 pages = getattr(context, 'default_page', [])
 props = context.portal_properties.site_properties
