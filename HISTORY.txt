@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Removed deprecated generateId script. We use generateUniqueId.
+      [stefan]
+
     - Added isRightToLeft utility Python Script which provides a fallback value if
       PTS is not installed or of the wrong version.
       [stefan]
