@@ -42,11 +42,11 @@
                 tal:attributes="tabindex tabindex/next|nothing;"
                 >
                 
-            <option value="min"
+            <option value="max"
                     tal:attributes="selected python:coperation=='max'"
             >more than</option>
             
-            <option value="max"
+            <option value="min"
                     tal:attributes="selected python:coperation=='min'"
             >less than</option>
              
