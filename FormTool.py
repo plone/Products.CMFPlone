@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.25 2003/02/10 09:18:48 runyaga Exp $
+# $Id: FormTool.py,v 1.26 2003/05/15 15:36:54 dreamcatcher Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.25 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.26 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -114,6 +114,9 @@ class FormTool(UniqueObject, SimpleItem):
 
         # see if we are handling validation for this form
         validators = self.getValidators(name)
+
+        REQUEST = self.REQUEST
+        
 #        self.log('validators = ' + str(validators))
         if validators is None:
 
@@ -151,6 +154,7 @@ class FormTool(UniqueObject, SimpleItem):
         #       In this case we have REQUEST.errors != None, REQUEST.form_submitted = 1
         #
         # We only need to invoke the validators for case (2)
+
 
         # see if we need to invoke validation
         errors = REQUEST.get(self.error_key, None)
@@ -230,7 +234,8 @@ class FormValidator(SimpleItem):
             trace.append('Invoking validation')
             context = aq_parent(self)
             # invoke validation
-            (status, kwargs, trace) = self._validate(context, REQUEST, trace)
+            
+            (status, kwargs, trace) = self._validate(context, self.REQUEST, trace)
 
             (obj, kwargs) = context.portal_navigation.getNextObject(context, self.form, status, trace, **kwargs)
             kwargs['REQUEST'] = self.REQUEST

@@ -1,14 +1,18 @@
 from Products.CMFCore.utils import UniqueObject, getToolByName                        
 from Globals import InitializeClass
-from Acquisition import aq_parent, aq_base, aq_inner, aq_chain 
+from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from DateTime import DateTime
 from Products.CMFCore import CMFCorePermissions
-from Products.CMFCore.PortalFolder import PortalFolder
+from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 from DateTime import DateTime
 import urllib
 import sys
+
+from Products.CMFCore.Skinnable import SkinnableObjectManager
+from OFS.ObjectManager import ObjectManager
+
 
 # ##############################################################################
 # A class used for generating the temporary folder that will
@@ -16,36 +20,27 @@ import sys
 # we can add all types to types_tool's allowed_content_types
 # for the class without having side effects in the rest of
 # the portal.
-class TempFolder(PortalFolder):
+class TempFolder(TempFolderBase):
     portal_type = meta_type = 'TempFolder'
-
+    
+    parent = None
+    
     def __getitem__(self, id):
-        # see if the object exists in the parent context
-        if hasattr(aq_parent(self), id):
-            # if so, just do a pass-through
-            return getattr(self.getParentNode(), id)
-#        elif hasattr(self, id):
-#            return self._getOb(id)
+        if id in self.objectIds():
+            return self._getOb(id).__of__(aq_parent(aq_parent(self)))
         else:
             type_name = self.getId()
-            type_name = urllib.unquote(type_name)
-            # make sure we can add an object of this type to the temp folder
-            types_tool = getToolByName(self, 'portal_types')
-            if not type_name in types_tool.TempFolder.allowed_content_types:
-                # update allowed types for tempfolder
-                types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
             self.invokeFactory(id=id, type_name=type_name)
             obj = self._getOb(id).__of__(aq_parent(aq_parent(self)))
-
-            # give ownership to currently authenticated member if not anonymous
-            membership_tool = getToolByName(self, 'portal_membership')
-            if not membership_tool.isAnonymousUser():
-                member = membership_tool.getAuthenticatedMember()
-                obj.changeOwnership(member.getUser(), 1)
-                obj.manage_setLocalRoles(member.getUserName(), ['Owner'])
-
             obj.unindexObject()
             return obj
+
+#    def __ac_local_roles__(self):
+#        membership_tool = getToolByName(self, 'portal_membership')
+#        member = membership_tool.getAuthenticatedMember()
+#        return {member.getUserName():['Owner']}
+        
+
 
 # ##############################################################################
 class FactoryTool(UniqueObject, SimpleItem):
@@ -84,10 +79,104 @@ class FactoryTool(UniqueObject, SimpleItem):
             return obj
 
 
+    def fixRequest(self):
+        """Our before_publishing_traverse call mangles URL0.  This fixes up
+        the REQUEST."""
+        factory_info = self.REQUEST.get('__factory_info__', {})
+        stack = factory_info.get('stack',[])
+        if stack:
+            URL = self.REQUEST.URL0 + '/' + '/'.join(stack)
+        else:
+            URL = self.REQUEST.URL0
+
+        self.REQUEST.set('URL', URL)
+
+        url_list = URL.split('/')
+        n = 0
+        while len(url_list) > 0 and url_list[-1] != '':
+            self.REQUEST.set('URL%d' % n, '/'.join(url_list))
+            url_list = url_list[:-1]
+            n = n + 1
+        
+        url_list = URL.split('/')
+        m = 0
+        while m < n:
+            self.REQUEST.set('BASE%d' % m, '/'.join(url_list[0:len(url_list)-n+1+m]))
+            m = m + 1
+        # XXX fix URLPATHn here too
+
+
     def isTemporary(self, obj):
         """Check to see if an object is temporary"""
         return aq_parent(aq_inner(obj)).meta_type == TempFolder.meta_type
 
+
+    def __before_publishing_traverse__(self, other, REQUEST):
+        # prevent further traversal
+        stack = REQUEST.get('TraversalRequestNameStack')
+        stack.reverse()
+        REQUEST.set('TraversalRequestNameStack', [])
+        factory_info = {'stack':stack}
+        REQUEST.set('__factory_info__', factory_info)
+
+
+    security.declarePublic('__call__')
+    def __call__(self, *args, **kwargs):
+        """call method"""
+        factory_info = self.REQUEST.get('__factory_info__', {})
+        if not factory_info.get('fixed_request'):
+            self.fixRequest()
+            factory_info['fixed_request'] = 1
+            self.REQUEST.set('__factory_info__', factory_info)
+
+        stack = factory_info['stack']
+        # stack.reverse()
+        if len(stack) < 2:
+            obj = self.restrictedTraverse('/'.join(stack))
+            return obj(*args, **kwargs)
+
+        id = stack[1]
+        if id in aq_parent(self).objectIds():
+            return aq_parent(self).restrictedTraverse('/'.join(stack[1:]))(*args, **kwargs)
+
+        tempFolder = self.getTempFolder(stack[0])
+
+        path = '/'.join(stack[1:])
+        obj = tempFolder.restrictedTraverse(path)
+        return obj(*args, **kwargs)
+    
+
+    index_html = None  # call __call__, not index_html
+
+
+    def getTempFolder(self, type_name):
+        import sys
+
+        factory_info = self.REQUEST.get('__factory_info__', {})
+        tempFolder = factory_info.get('tempFolder', None)
+        if not tempFolder:
+            type_name = urllib.unquote(type_name)
+            # make sure we can add an object of this type to the temp folder
+            types_tool = getToolByName(self, 'portal_types')
+            if not type_name in types_tool.listContentTypes():
+                raise ValueError, 'Unrecognized type %s\n' % type_name
+            if not type_name in types_tool.TempFolder.allowed_content_types:
+                # update allowed types for tempfolder
+                types_tool.TempFolder.allowed_content_types=(types_tool.listContentTypes())
+    
+            tempFolder = TempFolder(type_name)
+            tempFolder.parent = aq_parent(self)
+            tempFolder = aq_inner(tempFolder).__of__(self)
+            tempFolder.manage_permission(CMFCorePermissions.AddPortalContent, ('Anonymous','Authenticated',), acquire=0 )
+            tempFolder.manage_permission(CMFCorePermissions.ModifyPortalContent, ('Anonymous','Authenticated',), acquire=0 )
+            tempFolder.manage_permission('Copy or Move', ('Anonymous','Authenticated',), acquire=0 )
+        else:
+            tempFolder = aq_inner(tempFolder).__of__(self)
+        factory_info['tempFolder'] = tempFolder
+        self.REQUEST.set('__factory_info__', factory_info)
+        return tempFolder
+
+        
 
     def __bobo_traverse__(self, REQUEST, name):
         """ """
@@ -106,23 +195,15 @@ class FactoryTool(UniqueObject, SimpleItem):
         # 
 
         # try to extract a type string from next piece of the URL
-        encoded_type_name = name
+
         # unmangle type name
-        type_name = urllib.unquote(encoded_type_name)
+        type_name = urllib.unquote(name)
         types_tool = getToolByName(self, 'portal_types')
         # make sure this is really a type name
         if not type_name in types_tool.listContentTypes():
             # nope -- do nothing
             return getattr(self, name)
-        # create a temporary object
-#        tempFolder = TempFolder(encoded_type_name).__of__(aq_parent(self))
-        tempFolder = TempFolder(encoded_type_name).__of__(self)
-        # modify permissions to allow people to add, modify, and copy/move/rename temporary objects
-        tempFolder.manage_permission(CMFCorePermissions.AddPortalContent, ('Anonymous','Authenticated',), acquire=1 )
-        tempFolder.manage_permission(CMFCorePermissions.ModifyPortalContent, ('Anonymous','Authenticated',), acquire=1 )
-        tempFolder.manage_permission('Copy or Move', ('Anonymous','Authenticated',), acquire=1 )
-        tempFolder.unindexObject()
+        return self.getTempFolder(name)
         
-        return tempFolder.__of__(aq_parent(self))
 
 InitializeClass(FactoryTool)
