@@ -1,3 +1,69 @@
+2003-11-24 05:03  eaon
+
+	* skins/plone_styles/plonePresentation.css.dtml (Plone-2_0-branch):
+	  presentation mode works again now
+
+2003-11-24 00:01  tiran
+
+	* skins/plone_forms/login_form.pt (Plone-2_0-branch): fixed bug
+	  #2008, changed language=javascript to type=text/javascript
+
+2003-11-23 23:58  runyaga
+
+	* migrations/oneX_twoBeta2.py (Plone-2_0-branch): remove
+	  portal_form_validation (been deprecated for a year) add
+	  portal_types/properties to action tool's action_providers if they
+	  are not there
+
+2003-11-23 23:29  runyaga
+
+	* migrations/: __init__.py, oneX_twoBeta2.py (Plone-2_0-branch):
+	  migrations for 1.0x to 2.0 some things still dont work need help
+	  from others to make everything smooth:
+
+	  portal_types AND portal_properties are being unregistered from
+	  portal_actions ActionProviders need to remove
+	  header,main_template,folder_contents, and footer
+
+	  portraits are not migrating
+
+	  metadata_edit_form is busted
+
+	  once we get some people testing this then we can release RC2
+
+2003-11-23 14:54  dpunktnpunkt
+
+	* skins/plone_wysiwyg/wysiwyg_support.pt (Plone-2_0-branch):
+	  wysiwyg_support raised KeyError for rows and cols.
+
+2003-11-23 12:55  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): fixed
+	  background image for safari
+
+2003-11-23 09:14  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Comment
+	  style tweak
+
+2003-11-23 08:55  limi
+
+	* skins/: plone_content/discussionitem_view.pt,
+	  plone_content/document_edit_form.cpt,
+	  plone_styles/base_properties.props, plone_styles/plone.css.dtml,
+	  plone_styles/ploneColumns.css.dtml,
+	  plone_templates/viewThreadsAtBottom.pt (Plone-2_0-branch):
+	  Various style tweaks.
+
+2003-11-23 07:17  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): More
+	  IE float bug fixes.
+
+2003-11-23 05:12  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-23 00:03  tiran
 
 	* skins/plone_content/folder_edit_form.cpt (Plone-2_0-branch): use
