@@ -94,7 +94,7 @@ Home page area that contains the items created and collected by <span tal:replac
                                   tal:condition="here/listFolderContents">
                     
                                 <select id="filter_selection" 
-                                        name="filter_by_Type:list" 
+                                        name="filter_by_portal_type:list" 
                                         onChange="submitFilterAction()"
                                         tabindex=""
                                         tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" 
