@@ -1,6 +1,6 @@
 try:
     from Products.CMFPlone import MigrationTool
-    import beta2_beta3, beta1_beta2, alpha_beta
+    import beta3_rc1, beta2_beta3, beta1_beta2, alpha_beta
 except:
     print "Ack.  MigrationTool could not be found"
 
@@ -18,4 +18,8 @@ def registerMigrations():
     MigrationTool.registerUpgradePath( '1.0beta2',
                                        '1.0beta3',
                                        beta2_beta3.twothree )
+
+    MigrationTool.registerUpgradePath( '1.0beta3',
+                                       '1.0rc1',
+                                       beta3_rc1.threerc1 )
 

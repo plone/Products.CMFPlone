@@ -78,6 +78,7 @@ default.join_form.failure = join_form
 default.register.failure = join_form
 default.register.success = registered
 default.createObject.success = action:edit
+default.createObject.success_no_edit = action:view
 default.sendto_form.success = script:sendto
 default.sendto_form.failure = sendto_form
 default.sendto.success = action:view

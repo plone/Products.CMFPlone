@@ -1,4 +1,10 @@
 CHANGES
+Plone 1.0 rc1
+    - Added some navigation properties into the beta2-beta3 migration script that were missing.
+      Also put them into the newly created beta3-rc1 migration script for people who migrated
+      using the existing script.  Fixes Issue 600.
+    - Added a fallback for createObject navigation when the new object has no 'edit' action.
+      Fixes problems with installing CMFWiki and possibly other packages.
 Plone 1.0 beta3
     - Added all missing i18n strings, merged some strings to better facilitate translations to
       Japanese, Chinese and Korean.
