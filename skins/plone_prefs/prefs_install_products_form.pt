@@ -21,6 +21,9 @@
                            tal:attributes="value product/id"
                            /></td>
                 <td tal:content="product/id">product name</td>
+    <td tal:define="pid product/id" tal:condition="python:container.portal_quickinstaller.getProductFile(pid)">  
+                    (<a tal:attributes="href string:${QI/absolute_url}/prefs_install_product_readme?filereadme=${product/id}">README</a>)
+                  </td> 
                 <td><a tal:condition="product/hasError" tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview">
                         <img  src="/misc_/PageTemplates/exclamation.gif"></a>
                 </td>
