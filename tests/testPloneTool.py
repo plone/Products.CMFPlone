@@ -33,6 +33,24 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         # Initial creator no longer has Owner role.
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ())
 
+    def testvalidateEmailAddress(self):
+        val = self.utils.validateEmailAddress
+        validAddresses = (
+             'user@example.org',
+             'm@t.nu',
+        )
+        invalidAddresses = (
+             'user',
+             'user@foo',
+             'user@example.org\nfoo@example.org',
+             'user@example.org,foo@example.org',
+             'user@example.org;foo@example.org',
+        )
+        for address in validAddresses:
+            self.failUnless(val(address), '%s should validate' % address)
+        for address in invalidAddresses:
+            self.failIf(val(address), '%s should fail' % address)
+    
     def testEditFormatMetadataOfFile(self):
         # Test workaround for http://plone.org/collector/1323
         # Also see setFormatPatch.py

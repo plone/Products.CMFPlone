@@ -32,8 +32,16 @@ from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 _marker = ()
 _icons = {}
 
+try:
+    True
+except:
+    True=1
+    False=0
+
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
+
+EMAIL_RE = re.compile(r"^([0-9a-zA-Z_&.+-]+!)*[0-9a-zA-Z_&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$")
 
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
 
@@ -64,6 +72,20 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         mail_text = self.sendto_template( self, **variables)
         host = self.MailHost
         host.send( mail_text )
+
+    security.declarePublic('validateEmail')        
+    def validateEmailAddress(self, address):
+        """
+        """
+        if type(address) is not StringType:
+            return False
+        address = address.strip()
+        
+        # sub is an empty string if the address is valid
+        sub = EMAIL_RE.sub('', address)
+        if sub == '':
+            return True
+        return False
 
     security.declarePublic('editMetadata')
     def editMetadata( self
