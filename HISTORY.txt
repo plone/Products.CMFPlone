@@ -44,7 +44,9 @@
     - removed the download tab on File view since we have a button
     - fixed Issue 242, if portal_title==here/title_or_id 
       (in a pagetemplate) search for template/id in header - 
-      thanks ronnix for point this out
+      thanks ronnix for pointing this out.
+      We do this by adding properties on the filesystem i.e.
+      search.pt.properties to give search the title=Search results
       
 1.0 alpha4
     - publishing now works without javascript. #202
