@@ -4,27 +4,28 @@ Changelog for Plone
 
 Plone 2.1 - Plaid - (unreleased)
 
-    - Because normalizeISO() only deals with Unicode strings titleToNormalizedId()
-      must make sure to pass it only Unicode. Added a check and a conversion from
-      the site's default encoding.
+    - Because normalizeISO() only deals with Unicode strings
+      titleToNormalizedId() must make sure to pass it only Unicode. Added a
+      check and a conversion from the site's default encoding.
       [stefan]
 
-    - fixed uitask bug #21: renamed "Name" to "Login Name" in login form and portlet
+    - Fixed UI task #21: renamed "Name" to "Login Name" in login form and
+      portlet
       [mrtopf]
 
-    - fixed uitask bug #19: default homepage for new members is not created anymore 
-      per default
+    - Fixed UI task #19: default homepage for new members is not created
+      anymore by default
       [mrtopf]
 
-    - fixed uitask bug #5: status message should show the name instead of title of a 
-      portal type on add. now shows the title
+    - Fixed UI task #5: Status message should show the name instead of
+      title of a portal type on add. Now shows the title.
       [mrtopf]
 
-    - fixed uitask bug #79: removed "you are logged in" message
+    - Fixed UI task #79: removed "you are logged in" message
       [mrtopf]
 
-    - fixed uitask bug #73: added display of plone, zope and python version to the
-      ControlPanel
+    - Fixed UI task #73: added display of plone, zope and python version to
+      the ControlPanel
       [mrtopf]
 
     - Merged plip81-BylineHistory r6154:HEAD into 2.1 branch. This adds
@@ -32,8 +33,8 @@ Plone 2.1 - Plaid - (unreleased)
       [stefan] [ender] [limi]
 
     - Manually merged new css files from uiteam-plip85-componentized-css
-      r6361:HEAD into 2.1 branch. These are not hooked up to anything just yet,
-      but will be used by the CSSRegistry.
+      r6361:HEAD into 2.1 branch. These are not hooked up to anything just
+      yet, but will be used by the CSSRegistry.
       [elvix]
 
     - Split plone_javascripts.js into small components in preparation of the
@@ -83,8 +84,9 @@ Plone 2.1 - Plaid - (unreleased)
       [stefan]
 
     - Changed 'context.aq_explicit.getObjectPosition' to
-      'context.aq_inner.aq_explicit.getObjectPosition' in getObjPositionInParent.py
-      to guarantee that we don't acquire getObjectPosition.
+      'context.aq_inner.aq_explicit.getObjectPosition' in
+      getObjPositionInParent.py to guarantee that we don't acquire
+      getObjectPosition.
       [rafrombrc]
 
     - Merged plip-80-navtree r6183:HEAD into 2.1 branch. This adds the new
@@ -96,9 +98,9 @@ Plone 2.1 - Plaid - (unreleased)
       display related items in all content templates.
       [stefan] [_ender_] [mrtopf]
 
-    - Merged uiteam-plip73-sanitize-short-names r6113:HEAD into 2.1 branch. This
-      removes "Allow editing of Short Names" from personal prefs and makes it a
-      site-wide property.
+    - Merged uiteam-plip73-sanitize-short-names r6113:HEAD into 2.1 branch.
+      This removes "Allow editing of Short Names" from personal prefs and 
+      makes it a site-wide property.
       [stefan] [alecm]
 
     - Merged plip72-LiveSearch r6110:HEAD into 2.1 branch. Adds LiveSearch by
@@ -109,19 +111,26 @@ Plone 2.1 - Plaid - (unreleased)
       document_action to enter full screen mode.
       [stefan] [arjen] [elvix]
 
-    - Use 'structure' in sendto_template.pt. Email text doesn't need any transforms.
+    - Use 'structure' in sendto_template.pt. Email text doesn't need any
+      transforms.
       [panjunyong]
 
     - Added some knobs to jscalendar:
+    
       - show_hm: show hour and minute dropbox or not 
+      
       - show_jscalendar: show the jscalendar icon or not. If you hate the fat 
         javascript, you can turn it off.
+        
       - starting_year: starting year
+      
       - ending_year: ending year
+      
       - future_year: future years after this year
-      - show_single_year: when year is fixed (min_year==max_year), sometimes we don't
-        need to show the single year.
-      [panjunyong]
+      
+      - show_single_year: when year is fixed (min_year==max_year), sometimes
+        we don't need to show the single year.
+        [panjunyong]
 
     - Old popup calender (Plone 1.x) works again.
       [panjunyong]
@@ -130,8 +139,9 @@ Plone 2.1 - Plaid - (unreleased)
       [tiran]
 
     - Added 'SUPPRESS_ATCT_INSTALLATION' environment var check before ATCT
-      installation. It can be set to 'YES' in order to suppress the installation
-      of ATContentTypes at portal creation time for e.g. migration tests.
+      installation. It can be set to 'YES' in order to suppress the
+      installation of ATContentTypes at portal creation time for e.g. 
+      migration tests.
       [tiran]
 
     - Use images in plone_tableless/colophon.pt just like the one in
@@ -153,7 +163,8 @@ Plone 2.1 - Plaid - (unreleased)
       return a list of mimetype names.
       [tiran]
 
-    - Fixed discussion_reply.cpy to use portal_discussion.getDiscussionFor(obj)
+    - Fixed discussion_reply.cpy to use
+      portal_discussion.getDiscussionFor(obj)
       instead of accessing the talkback object directly.
       [tiran]
 
