@@ -123,7 +123,7 @@
 				   />
 
   <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?input_id=${input_id}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
-    <img tal:replace="structure here/popup_calendar.gif" alt=calendar" />
+    <img tal:replace="structure here/popup_calendar.gif" alt="calendar" />
   </a>
  
 </div>
