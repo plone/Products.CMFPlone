@@ -1,3 +1,91 @@
+2003-12-16 03:58  vinsci
+
+	* CREDITS.txt (Plone-2_0-branch): Applied random.seed() and
+	  random.randint(1,20) to find out where to claim fame. ;-)
+
+2003-12-16 03:19  eaon
+
+	* skins/plone_templates/header.pt (Plone-2_0-branch):
+	  plone_minmax.js is only loaded by ie now
+
+2003-12-16 02:58  dpunktnpunkt
+
+	* skins/plone_forms/history_form.pt (Plone-2_0-branch): Added two
+	  explicit message ids.
+
+2003-12-16 02:49  dpunktnpunkt
+
+	* skins/plone_wysiwyg/wysiwyg_support.pt (Plone-2_0-branch):
+	  Duplicate id.
+
+2003-12-16 01:38  runyaga
+
+	* skins/plone_form_scripts/validate_folder_rename.vpy
+	  (Plone-2_0-branch): remove check_id usage in folder_rename.
+	  check_id is only usable for xxx_edit_form's not general purpose
+	  usage.  check_id has grown and grown and like navtree needs to be
+	  thrown away and implemented differently.  this is because
+	  check_id existed before the validation framework landed.
+
+2003-12-15 23:51  lalo
+
+	* CREDITS.txt (Plone-2_0-branch): yet another bogus commit to test
+	  CIA
+
+2003-12-15 23:43  lalo
+
+	* CREDITS.txt (Plone-2_0-branch): yet another bogus commit to test
+	  CIA
+
+2003-12-15 23:34  lalo
+
+	* CREDITS.txt (Plone-2_0-branch): another bogus commit to test CIA
+
+2003-12-15 23:10  lalo
+
+	* CREDITS.txt, CREDITS.txt (Plone-2_0-branch): another bogus commit
+	  to test CIA
+
+2003-12-15 22:57  lalo
+
+	* CREDITS.txt (Plone-2_0-branch): bogus commit to test CIA.
+	  (Actually, updated homepage info for me and Sidnei.)
+
+2003-12-15 22:16  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): oh well..
+	  now it's really valid ...
+
+2003-12-15 21:04  eaon
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): welcome
+	  back, valid css
+
+2003-12-15 20:51  eaon
+
+	* skins/plone_styles/plonePrint.css.dtml (Plone-2_0-branch): fixed
+	  print stylesheet
+
+2003-12-15 20:01  limi
+
+	* PloneControlPanel.py (Plone-2_0-branch): Member Portraits were
+	  erroneously added to the 2.0 branch after feature freeze, should
+	  be on HEAD. Removed.
+
+2003-12-15 19:51  limi
+
+	* PloneControlPanel.py (Plone-2_0-branch): The text of the action
+	  should be Personal Preferences, not Plone Preferences.
+
+2003-12-15 08:11  runyaga
+
+	* skins/plone_portlets/portlet_login.pt (Plone-2_0-branch): now
+	  login form is xhtml transitional
+
+2003-12-15 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-15 02:45  chrism
 
 	* LargePloneFolder.py, PloneFolder.py (Plone-2_0-branch): Add
