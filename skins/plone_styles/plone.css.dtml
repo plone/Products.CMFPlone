@@ -231,7 +231,7 @@ code {
     padding: 0 0.1em;
 }
 pre {
-    font-family: "American Typewriter", "Courier New", Courier, monospace;
+    font-family: "Courier New", Courier, monospace;
     font-size: 120%;
     padding: 1em;
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
