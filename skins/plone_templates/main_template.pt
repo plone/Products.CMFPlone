@@ -43,13 +43,13 @@
         Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
     </div>
 
-    <div metal:use-macro="here/global_elements/macros/quick_search">
-        The quicksearch box, normally placed at the top right
-    </div>
-
     <a metal:use-macro="here/global_elements/macros/portal_logo">
         The portal logo, linked to the portal root
     </a>
+
+    <div metal:use-macro="here/global_elements/macros/quick_search">
+        The quicksearch box, normally placed at the top right
+    </div>
 
     <div metal:use-macro="here/global_elements/macros/portal_tabs">
         The global portal tabs. (Welcome, News etc)
@@ -170,4 +170,5 @@
 </body>
 </html>
 </metal:page>
+
 

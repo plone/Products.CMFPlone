@@ -34,11 +34,16 @@
     <!-- Column style sheet. -->
     <style type="text/css" media="all" tal:condition="exists: portal/ploneColumns.css"
            tal:content="string:@import url($portal_url/ploneColumns.css);"></style>
+    
+    <!-- Internet Explorer CSS Fixes -->
+    <tal:comment replace="structure string:<!--[if IE]>" />
+    <style type="text/css" media="all" tal:condition="exists: portal/ploneIEFixes.css"
+           tal:content="string:@import url($portal_url/ploneIEFixes.css);"></style>
+    <tal:comment replace="structure string:<![endif]-->" />
 
     <!-- Main style sheets for CSS2 capable browsers -->
     <style type="text/css" media="screen"
            tal:content="string: @import url($portal_url/plone.css?$current_skin);"></style>
-
 
     <!-- Custom style sheet if available -->
     <style type="text/css" media="all" tal:condition="exists: portal/ploneCustom.css"
@@ -83,8 +88,12 @@
     </metal:block>
 
     <!-- Common Plone ECMAScripts -->
+     
+    <!-- ECMAScript menu -->
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_menu.js"></script>
 
-    <!-- Define dynamig srver-side variables for javascripts in this one  -->
+    <!-- Define dynamig server-side variables for javascripts in this one  -->
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_javascript_variables.js"></script>
 
@@ -107,4 +116,5 @@
 </head>
 
 </html>
+
 

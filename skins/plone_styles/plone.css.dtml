@@ -2,7 +2,7 @@
 ** Plone style sheet for CSS2-capable browsers.
 ** Copyright Alexander Limi, 2001-2003 - http://www.plonesolutions.com
 **
-** Thanks to Geir Bækholt, Stian Søiland for input and guidance.
+** Thanks to Geir Bæolt, Stian Sød for input and guidance.
 **
 ** Style sheet documentation can be found at http://plone.org/documentation
 **
@@ -261,10 +261,26 @@ div#siteActions {
     float: right;
     margin: 1em 1em 0.5em 1em;
 }
-#logo img {
+
+h1#logo {
+    display: inline;
+    border: 0;
+}
+h1#logo a {
     /* Logo properties */
+    display: block;
+    background: url(<dtml-var portal_url>/logo.jpg);
+    background-repeat: no-repeat;
+    text-decoration: none;
+    border: 0px;
     margin: &dtml-logoMargin;;
     padding: &dtml-logoPadding;;
+    padding-top: <dtml-var "_['logo.jpg'].height">px;
+    overflow: hidden;
+    height: 0px !important;
+    height /**/: <dtml-var "_['logo.jpg'].height">px;
+    width: <dtml-var "_['logo.jpg'].width">px;
+    cursor: pointer;
 }
 div#searchBox {
     /*searchbox style and positioning */
@@ -424,12 +440,6 @@ ul#contentTabs li {
     padding: 0 1em;
     z-index: 2;
 }
-
-* html #documentContent {
-    /* Fix for IE6 disappearing float bug */
-    height: 100%;
-}
-
 div.document, div.editableDocument {
     background: &dtml-mainBackground;;
     font: <dtml-var contentFont>;
@@ -458,7 +468,6 @@ div.message a {
     color: &dtml-mainFontColor;;
     text-decoration: underline;
 }
-
 div.title {
     margin-top: 1em;
 }
@@ -469,7 +478,6 @@ div.title {
     margin: 1em 0em;
     line-height: 1.5em;
 }
-
 div.byline {
     text-align: right;
     font-size: 80%;
@@ -477,7 +485,6 @@ div.byline {
     font-weight: normal;
     color: #999999;
 }
-
 div#footer {
     background: &dtml-footerBackground;;
     border-top: &dtml-footerBorder;;
@@ -497,12 +504,17 @@ div#colophon {
     text-align: center;
 }
 
+div#colophon ul,
+div#colophon ul li,
+div#colophon ul li a {
+    list-style: none;
+    display: inline;
+    text-decoration: none;
+}
 
 /*
 ** Widgets
 */
-
-
 
 input.standalone {
     background: &dtml-standaloneButtonBackground;;
@@ -720,7 +732,6 @@ a.more {
     text-align: right;
 }
 
-
 div.box .content {
     padding: 1em;
 }
@@ -821,11 +832,11 @@ div.listingBar span.next {
 div listingBar img {
 	vertical-align: middle;
 }
-/* Accessibility and visual enhancement elements */
-a.skipnav {
-    visibility: hidden;
-    position: absolute;
-}
+
+/*
+** Accessibility and visual enhancement elements 
+*/
+
 a.external {
     background: White url(link_icon.gif) 0px 1px no-repeat;
     padding: 1px 0px 1px 16px;
@@ -838,9 +849,6 @@ div.hiddenlabel {
     height: 0px;
     overflow: hidden;
     padding-top: 0px;
-}
-* html .hiddenstructure {
-    display: none;
 }
 .clear {
     clear: both;
@@ -857,6 +865,7 @@ label.label {
 /*
 ** Calendar elements - used in the calendar rendering 
 */
+
 div.day {
     background-color: #FFFFBB;
     border: 1px solid Black;
@@ -869,7 +878,7 @@ div.day {
 div.date {
     font-weight: bold;
 }
-  
+
 table.calendar {
     border: &dtml-boxBorder;;
     margin:  1em ;
@@ -916,17 +925,75 @@ table.calendar td.todaynoevent {
     border: &dtml-boxHighlight;;
 }
 
-
 /* for highlighting of serchTerms */
+
 span.higligthedSearchTerm{
    background-color: #feff82;
 }
 
+/* javascript menu (contentbar) */
 
-
-
-
+ul.menuBar {
+    margin-bottom: 1px;
+}
+ul.menuBar, ul.menuBar li.menuButton {
+    margin: 0;
+    padding: 0;
+    display: inline;
+    list-style: none;
+}
+ul.menuBar li.menuButton a {
+    background-image: url('arrowDown.gif');
+    background-repeat: no-repeat;
+    background-position: center right;
+    text-transform: &dtml-textTransform;;
+    color: #000000;
+    cursor: pointer;
+    text-decoration: none;
+    z-index: 4;
+    padding-right: 1em;
+    margin: 0;
+}
+ul.menuBar li.menuButton a:hover {
+    background-color: transparent;
+    color: #000000;
+}
+ul.menu {
+    background: &dtml-contentTabBackground;;
+    color: &dtml-contentTabFontColor;;
+    text-transform: &dtml-textTransform;;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    visibility: hidden;
+    text-align: left;
+    z-index: 5;
+    white-space: nowrap;
+    width: auto;
+}
+ul.menu, ul.menu li {
+    background: &dtml-contentTabBackground;;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+}
+ul.menu li {
+    padding: 0.2em;
+}
+ul.menu li.menuItem a {
+    display: block;
+    background: &dtml-contentTabBackground;;
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    text-decoration: none;
+}
+ul.menu li.menuItem a:hover {
+    color: white;
+}
+ul.menu li.menuSep {
+    border-top: 1px solid &dtml-contentTabFontColor;;
+}
 
 /* </dtml-with> */
-
-

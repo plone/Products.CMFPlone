@@ -1,0 +1,54 @@
+<metal:menubarmacro define-macro="contentbarMenu">
+
+<ul class="menuBar">
+    <li class="menuButton">
+        <a href="#"
+           onclick="return buttonClick(event, 'itemMenu');"
+           onmouseover="buttonMouseover(event, 'itemMenu');"
+           i18n:translate="">Add New Item</a>
+
+        <ul class="menu" id="itemMenu"
+            onmouseover="menuMouseover(event)"
+            tal:define="filterOut python:['Favorite'];">
+            <metal:block tal:repeat="ctype here/allowedContentTypes"> 
+            <li class="menuItem"
+                tal:define="Title ctype/Title;Id ctype/getId"
+                tal:condition="python:test(Id not in filterOut, 1, 0)">
+                <a href="#" tal:attributes="href string:createObject?type_name=$Id">
+                    <img src="folder.gif" alt="" width="16" height="16" tal:attributes="src string:$portal_url/${ctype/getIcon}" />
+                    <span tal:replace="ctype/Title">Title</span>
+                </a>
+            </li>
+            </metal:block>
+        </ul>
+    </li>
+    <li class="menuButton">
+        <a href="#"
+           onclick="return buttonClick(event, 'statusMenu');"
+           onmouseover="buttonMouseover(event, 'statusMenu');"
+           tal:define="review_state wf_state"
+           tal:condition="review_state"
+           tal:content="review_state"          
+           i18n:translate="">Workflow state</a>
+
+        <ul class="menu"
+            id="statusMenu"
+            onmouseover="menuMouseover(event)">  
+            <tal:block define="global transitions python:here.portal_workflow.getTransitionsFor(here, here)"
+                       repeat="transition transitions">
+            <li class="menuItem">
+                <a href="#"
+                   tal:content="transition/name"
+                   tal:attributes="href string:${here/absolute_url}/portal_form/contentbar_status_modify?workflow_action=${transition/id}&amp;form_submitted=content_status_modify">File Menu Item 1</a>
+            </li>
+            </tal:block>
+            <li class="menuItem menuSep">
+                <a href="#" 
+                   tal:attributes="href string:${here/absolute_url}/portal_form/content_status_history"
+                   i18n:translate="">Advanced</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+</metal:menubarmacro>

@@ -40,18 +40,14 @@
 </div>
 
 <!-- THE PORTAL LOGO DEFINITION -->
-<a metal:define-macro="portal_logo"
-   href="/"
-   id="logo"
-   tal:attributes="href portal_url"
-   tal:define="logo portal/logo.jpg;
-               uri logo/absolute_url" >
-    <img src="logo.jpg"
-         alt="logo"
-         tal:attributes="width logo/width;
-                         height logo/height;
-                         src uri" />
-</a>
+<h1 id="logo" metal:define-macro="portal_logo">
+    <a href="/"
+       tal:attributes="href portal_url"
+       tal:define="portal_title here/portal_properties/title;"
+       tal:content="string:$portal_title">
+        Plone
+    </a>
+</h1>
 
 <!-- THE PORTAL TABS DEFINITION -->
 <div metal:define-macro="portal_tabs"
@@ -163,4 +159,3 @@
 
 </body>
 </html>
-

@@ -22,25 +22,17 @@
      id="contentBar">
 
     &nbsp;
-     
+
+    <span metal:use-macro="here/contentbar_menu/macros/contentbarMenu" />
+
     <img src=""
          tal:define="locked portal_object/lock_icon.gif;
                      lockable python:hasattr(here, 'wl_isLocked');"
                      tal:condition="python:lockable and here.wl_isLocked()"
                      tal:replace="structure python:locked.tag(title='Locked')" alt="Object locked" />
 
-    <span class="private"
-          tal:define="review_state wf_state"
-          tal:condition="review_state"
-          tal:content="review_state"
-          tal:attributes="class review_state"
-          i18n:translate="">
-    private
-    </span>
-
     <span class="expired"
           tal:condition="python:here.isExpired(here)">
     (expired)
     </span>
 </div>
-
