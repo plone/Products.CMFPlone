@@ -42,11 +42,11 @@ def tag(self, height=None, width=None, alt=None,
             title = self.title
     result = '%s title="%s"' % (result, escape(title, 1))
 
-    if longdesc is None:
-        longdesc = ''
-        if hasattr(aq_base(self), 'longdesc'):
-            longdesc = self.longdesc
-    result = '%s longdesc="%s"' % (result, escape(longdesc, 1))
+    #if longdesc is None:
+    #    longdesc = ''
+    #    if hasattr(aq_base(self), 'longdesc'):
+    #        longdesc = self.longdesc
+    #result = '%s longdesc="%s"' % (result, escape(longdesc, 1))
 
     if height:
         result = '%s height="%s"' % (result, height)

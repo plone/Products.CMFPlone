@@ -622,7 +622,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             raise
         except:
             portal.plone_log("plone_utils.browserDefault",
-            'Total failure getting the folderlisting action for the folder, "%s"' \
+            'Failed to get folderlisting action for folder "%s"' \
             % obj.absolute_url())
             return obj, ['folder_listing']
 

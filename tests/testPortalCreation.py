@@ -113,6 +113,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
             count += 1
         self.failUnless(j < i)
 
+    def testFolderHasFolderListingAction(self):
+        # Folders should have a 'folderlisting' action
+        topic = self.types.getTypeInfo('Folder')
+        for action in topic._cloneActions():
+            if action.id == 'folderlisting':
+                break
+        else:
+            self.fail("Folder has no 'folderlisting' action")
+
     def testTopicHasFolderListingAction(self):
         # Topics should have a 'folderlisting' action
         topic = self.types.getTypeInfo('Topic')
@@ -126,7 +135,7 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # Is it ok to remove the imagePatch? Probably not as we
         # don't want the border attribute ...
         self.folder.invokeFactory('Image', id='foo', file=dummy.Image())
-        endswith = ' alt="" title="" longdesc="" height="16" width="16" />'
+        endswith = ' alt="" title="" height="16" width="16" />'
         self.assertEqual(self.folder.foo.tag()[-len(endswith):], endswith)
 
     def testNoPortalFormTool(self):
