@@ -48,7 +48,7 @@
 
                     </a>
 
-                  - <span tal:omit-tag="" i18n:translate="last_updated">Last Updated</span>: <span tal:replace="python: localized_time(result.modified, context=here)" />
+                  - <span tal:omit-tag="" i18n:translate="label_published">Published</span>: <span tal:replace="python: localized_time(result.modified, context=here)" />
 
                 </h6>
 
