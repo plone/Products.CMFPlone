@@ -112,12 +112,16 @@
 
     </div>
 
+    
+    <!-- The calendar date picker. -->
     <div metal:define-macro="calendarDatePickerBox" tal:define="
 	 tabindex tabindex/next|tabindex|nothing;
 	 input_id string:${formname}_${inputname}_${tabindex};
 	 values   python:here.date_components_support(inputvalue);
-	 days values/days; months values/months; years values/years;
-	 minutes values/minutes; hours values/hours;
+	 days values/days; months values/months; 
+     years values/years;
+	 minutes values/minutes; 
+     hours values/hours;
 	 yearStart python:years[0]['value'];
 	 yearEnd python:years[-1]['value'];">
 
