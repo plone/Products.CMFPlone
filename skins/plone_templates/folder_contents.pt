@@ -219,6 +219,15 @@
                             i18n:translate="">&nbsp;
                         </td>
                         <td tal:condition="isOrderable">
+                            <a href=""
+                               tal:attributes="href string:${here/absolute_url}/folder_position?position=up&id=${item/getId}">
+                            Up
+                            </a>
+                            &nbsp;
+                            <a href=""
+                               tal:attributes="href string:${here/absolute_url}/folder_position?position=down&id=${item/getId}">
+                            Down
+                            </a>
                         </td>
                     </tr>
                 </metal:block>
