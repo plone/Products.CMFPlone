@@ -1,3 +1,25 @@
+2003-12-15 02:45  chrism
+
+	* LargePloneFolder.py, PloneFolder.py (Plone-2_0-branch): Add
+	  docstrings to LargePloneFolder and PloneFolder implementations
+	  for forward-compatibility with Zope 2.8 security machinery
+	  (superclass __doc__ strings no longer signify publishability).
+
+2003-12-15 01:20  limi
+
+	* skins/plone_prefs/prefs_group_members.pt (Plone-2_0-branch):
+	  Added additional text for user removal in groups.
+
+2003-12-15 01:03  limi
+
+	* skins/plone_prefs/prefs_groups_overview.pt (Plone-2_0-branch):
+	  Batch size for the groups prefs screen was 2 entries. Changed it
+	  to a more sane 20.
+
+2003-12-14 05:08  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-12-14 01:05  zopezen
 
 	* skins/plone_templates/header.pt (Plone-2_0-branch): Fix for 1873
