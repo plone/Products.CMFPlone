@@ -1,4 +1,4 @@
-<div tal:condition="here/talkback|nothing">
+<div tal:condition="python:here.portal_discussion.getDiscussionFor(here) or None">
     
     <div tal:repeat="reply here/talkback/getReplies">
 
