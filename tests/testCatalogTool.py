@@ -14,6 +14,7 @@ from Globals import REPLACEABLE
 
 user1 = ZopeTestCase._user_name
 user2 = 'u2'
+group2 = 'g2'
 
 
 class TestCatalogTool(PloneTestCase.PloneTestCase):
@@ -61,60 +62,44 @@ class TestCatalogSearch(PloneTestCase.PloneTestCase):
     def afterSetUp(self):
         self.catalog = self.portal.portal_catalog
         self.workflow = self.portal.portal_workflow
+        self.groups = self.portal.portal_groups
 
-    def addLocalGroupAndUser(self):
-        # utility for
-        uf = self.portal.acl_users
-        prefix = uf.getGroupPrefix()
-        groupname = 'extranet' #% prefix
-        groups = self.portal.portal_groups
-        groups.groupWorkspacesCreationFlag = 0
-        groups.addGroup(groupname, None, [], ())
-        assert len( uf.getGroups()) == 1
-        group=groups.getGroupById(groupname)
+        self.portal.acl_users._doAddUser(user2, 'secret', [], [], [])
+
+        self.folder.invokeFactory('Document', id='doc', text='foo')
+        self.workflow.doActionFor(self.folder.doc, 'hide', comment='')
+
+    def addUser2ToGroup(self):
+        self.groups.groupWorkspacesCreationFlag = 0
+        self.groups.addGroup(group2, None, [], [])
+        group = self.groups.getGroupById(group2)
         group.addMember(user2)
-        assert(group.getGroupMembers()[0].getUserName() == user2)
-        # mind you, do not get the user before she was added to the group, 
-        # or she will not have any groups
-        user = uf.getUser(user2)
-        assert user.getGroups()[0] == '%s%s' % (prefix,groupname)
-        return '%s%s' % (prefix,groupname)
-
-    def addUser2AndDocument(self):
-        uf = self.portal.acl_users
-        uf._doAddUser(user2, 'secret', (), (), (), )
-        self.folder.invokeFactory('Document', id='testdocument', text='nonsense')
-        self.workflow.doActionFor(self.folder.testdocument, 'hide', comment='')
+        prefix = self.portal.acl_users.getGroupPrefix()
+        return '%s%s' % (prefix, group2)
 
     def testListAllowedRolesAndUsers(self):
-        # should add group to list of allowed users
+        # Should include the group in list of allowed users
+        groupname = self.addUser2ToGroup()
         uf = self.portal.acl_users
-        uf._doAddUser(user2, 'secret', (), (), (), )
-        groupname = self.addLocalGroupAndUser()
         self.failUnless(('user:%s' % groupname) in 
                 self.catalog._listAllowedRolesAndUsers(uf.getUser(user2)))
 
     def testSearchReturnsDocument(self):
-        # document should be found when owner does a search
-        self.addUser2AndDocument()
-        self.assertEqual(self.catalog({'SearchableText':'nonsense'})[0].id,
-                         'testdocument')
+        # Document should be found when owner does a search
+        self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
 
     def testSearchDoesNotReturnDocument(self):
-        # document should not be found when user 2 does a search
-        self.addUser2AndDocument()
+        # Document should not be found when user2 does a search
         self.login(user2)
-        self.assertEqual(len(self.catalog({'SearchableText':'nonsense'})), 0)
+        self.assertEqual(len(self.catalog(SearchableText='foo')), 0)
 
-    def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole2(self):
-        # after adding a local group with access rights and adding user2 search must find document
-        self.addUser2AndDocument()
-        groupname = self.addLocalGroupAndUser()
+    def testSearchReturnsDocumentWhenPermissionIsTroughLocalRole(self):
+        # After adding a group with access rights and containing user2, 
+        # a search must find the document.
+        groupname = self.addUser2ToGroup()
         self.folder.folder_localrole_edit('add', [groupname], 'Owner')
-        # login again as user 2. a search now must get the document
         self.login(user2)
-        self.assertEqual(self.catalog({'SearchableText':'nonsense'})[0].id,
-                         'testdocument')
+        self.assertEqual(self.catalog(SearchableText='foo')[0].id, 'doc')
 
 
 if __name__ == '__main__':

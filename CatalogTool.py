@@ -20,7 +20,6 @@ class CatalogTool(BaseTool):
                 def __init__(self, **kw):
                     self.__dict__.update(kw)
 
-            # when a catalog is pasted, there is allredy a ZCTextIndex
             self.manage_addProduct[ 'ZCTextIndex' ].manage_addLexicon(
                 'plone_lexicon',
                 elements=[
@@ -38,38 +37,13 @@ class CatalogTool(BaseTool):
             self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
 
     def _listAllowedRolesAndUsers( self, user ):
+        # Makes sure the list includes the user's groups
         result = list( user.getRoles() )
-        try:
-            result += map(lambda x: "user:%s" % x, user.getGroups())
-        except:
-            pass
+        if hasattr(aq_base(user), 'getGroups'):
+            result = result + ['user:%s' % x for x in user.getGroups()]
         result.append( 'Anonymous' )
         result.append( 'user:%s' % user.getId() )
         return result
-
-    # searchResults has inherited security assertions.
-    def searchResults(self, REQUEST=None, **kw):
-        """
-            Calls ZCatalog.searchResults with extra arguments that
-            limit the results to what the user is allowed to see.
-        """
-        user = _getAuthenticatedUser(self)
-        kw[ 'allowedRolesAndUsers' ] = self._listAllowedRolesAndUsers( user )
-
-        if not _checkPermission( AccessInactivePortalContent, self ):
-            base = aq_base( self )
-            now = DateTime()
-            if hasattr( base, 'addIndex' ):   # Zope 2.4 and above
-                kw[ 'effective' ] = { 'query' : now, 'range' : 'max' }
-                kw[ 'expires'   ] = { 'query' : now, 'range' : 'min' }
-            else:                             # Zope 2.3
-                kw[ 'effective'      ] = kw[ 'expires' ] = now
-                kw[ 'effective_usage'] = 'range:max'
-                kw[ 'expires_usage'  ] = 'range:min'
-
-        return apply(BaseTool.searchResults, (self, REQUEST), kw)
-
-    __call__ = searchResults
 
 CatalogTool.__doc__ = BaseTool.__doc__
 
