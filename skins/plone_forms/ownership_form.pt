@@ -51,6 +51,7 @@
                     <input type="checkbox"
                            name="subobjects"
                            />
+                </div>
             </div>
     
             <div class="formContols">

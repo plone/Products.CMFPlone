@@ -56,7 +56,7 @@
                                            >
 
                         <tal:block tal:condition="iscurrent">
-                           <span class="currentNavItem">
+                           <span class="currentNavItem"/>
                         </tal:block>
                         <a href=""
                            tal:condition="python: sibling != portalObject"
