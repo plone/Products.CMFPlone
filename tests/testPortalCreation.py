@@ -72,6 +72,11 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         members = self.membership.getMembersFolder()
         self.assertEqual(members._getPortalTypeName(), 'Large Plone Folder')
 
+    def testUseFolderContentsProperty(self):
+        # The use_folder_contents site property should be emtpy
+        props = self.portal.portal_properties.site_properties
+        self.assertEqual(props.getProperty('use_folder_contents'), ())
+
 
 class TestPortalBugs(PloneTestCase.PloneTestCase):
 
