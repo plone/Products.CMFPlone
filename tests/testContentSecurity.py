@@ -21,8 +21,8 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
         self.portal.acl_users._doAddUser('user2', 'secret', ['Member'], [])
         self.membership = self.portal.portal_membership
-        self.membership.getMemberById('user1')
-        self.membership.getMemberById('user2')
+        self.createMemberarea('user1')
+        self.createMemberarea('user2')
 
     def testCreateMemberContent(self):
         self.login('user1')

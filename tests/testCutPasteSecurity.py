@@ -22,6 +22,8 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
         self.portal.acl_users._doAddUser('user1', 'secret', ['Member'], [])
         self.portal.acl_users._doAddUser('user2', 'secret', ['Member'], [])
         self.membership = self.portal.portal_membership
+        self.createMemberarea('user1')
+        self.createMemberarea('user2')
 
     def testRenameMemberContent(self):
         self.login('user1')
@@ -38,8 +40,13 @@ class TestContentSecurity(PloneTestCase.PloneTestCase):
 
     def testRenameOtherMemberContentFails(self):
         self.login('user1')
-        folder = self.membership.getHomeFolder('user2')
-        self.assertRaises(CopyError, folder.manage_renameObject, 'index_html', 'new')
+        src = self.membership.getHomeFolder('user1')
+        src.invokeFactory('Document', id='testrename')
+        self.logout()
+
+        self.login('user2')
+        folder = self.membership.getHomeFolder('user1')
+        self.assertRaises(CopyError, folder.manage_renameObject, 'testrename', 'bad')
         self.logout()
 
     def testCopyMemberContent(self):
