@@ -11,7 +11,7 @@
         global aitool nocall:portal/portal_actionicons | nothing;
         global putils nocall:portal/plone_utils;
         global wtool nocall:portal/portal_workflow;
-        global ifacetool nocall:portal/plone_interface | nothing;
+        global ifacetool nocall:portal/portal_interface | nothing;
         global portal_title portal_object/Title;
         global object_title here/Title;
         global member mtool/getAuthenticatedMember;
