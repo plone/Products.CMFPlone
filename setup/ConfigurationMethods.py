@@ -46,6 +46,8 @@ def addSiteProperties(self, portal):
         safeEditProperty(p, 'available_editors', ('None', ), 'lines')
     if not hasattr(p, 'allowRolesToAddKeywords'):
         safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
+    if not hasattr(p, 'auth_cookie_length'):
+        safeEditProperty(p, 'auth_cookie_length', 0, 'int')
     if not hasattr(p,'allow_sendto'):
         safeEditProperty(p, 'allow_sendto', 1, 'boolean')        
 
