@@ -223,6 +223,7 @@ blockquote {
     font-size: 120%;
 }
 code {
+    font-family: "American Typewriter", "Courier New", Courier, monospace;
     font-size: 120%;
     color: &dtml-fontColor;;
     background-color: &dtml-globalBackgroundColor;;
@@ -230,6 +231,7 @@ code {
     padding: 0 0.1em;
 }
 pre {
+    font-family: "American Typewriter", "Courier New", Courier, monospace;
     font-size: 120%;
     padding: 1em;
     border: &dtml-borderWidth; &dtml-borderStyleAnnotations; &dtml-globalBorderColor;;
@@ -1237,10 +1239,13 @@ ol.visualNoMarker {
 /* workflow state colors */
 
 .state-private {
-    color: Black;
+    color: Red;
+}
+.state-visible {
+    color: #74AE0B;
 }
 .state-published {
-    color: #74AE0B;
+    color: &dtml-linkColor;;
 }
 .state-pending {
     color: &dtml-notifyBorderColor;;
