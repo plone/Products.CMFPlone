@@ -50,6 +50,18 @@ def rc3_rc4(portal):
         ai.addActionIcon('plone', 'addtofavorites', 'site_icon.gif', 'AddToFavorites')
     except KeyError:
         pass #Duplicate definition!
+
+    tt=getToolByName(portal, 'portal_types')
+    for ptype in tt.objectValues():
+        if ptype.getId() not in ('Folder', 'Plone Site', 'Large Plone Folder') and \
+          'local_roles' not in [ai.getId() for ai in ptype.listActions()]:
+            ptype.addAction('local_roles',
+                     name='Sharing',
+                     action="string:${object_url}/folder_localrole_form",
+                     condition='',
+                     permission='Manage properties',
+                     category='object')
+         
     at.addAction('addtofavorites',
                  'Add to Favorites',
                  'string:${request/URL1}/addtoFavorites',

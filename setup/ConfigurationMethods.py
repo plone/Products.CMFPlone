@@ -244,7 +244,8 @@ def modifySkins(self, portal):
             if a.id == 'content_status_history':
                 a.visible = 0
         #in 2.0 the Sharing tab is on portal_actions ActionProvider
-        t._actions=[a for a in _actions if a.id!='local_roles']
+        #this was reverted - yay!
+        #t._actions=[a for a in _actions if a.id!='local_roles']
 
 def addNewActions(self, portal):
     at=getToolByName(portal, 'portal_actions')
@@ -310,12 +311,6 @@ def addNewActions(self, portal):
                  condition='',
                  permission=CMFCorePermissions.ModifyPortalContent,
                  category='folder_buttons')
-    at.addAction('local_roles',
-                 name='Sharing',
-                 action="string:${object_url}/folder_localrole_form",
-                 condition='',
-                 permission='Manage properties',
-                 category='object')
 
 def addSiteActions(self, portal):
     # site_actions which have icons associated with them as well
