@@ -5,7 +5,11 @@
       tal:define="global portal_url here/portal_url">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 
-    <title tal:content="string:${here/portal_properties/title} - ${here/title_or_id}">Title of page</title>
+    <title tal:define="portal_title here/portal_properties/title;
+                       here_title python:test( portal_title != here.title_or_id()
+                                             , here.title_or_id()
+                                             , template.title_or_id());"
+           tal:content="string:$portal_title - $here_title">Title of page</title>
 
     <base href="http://yoursite/folder/content/template_id" 
           tal:attributes="href string:${here/absolute_url}/${template/getId}" />
