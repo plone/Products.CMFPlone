@@ -1,3 +1,37 @@
+2004-05-05 03:06  dreamcatcher
+
+	* makefile.in, version.txt (Plone-2_0-branch): Small typo
+
+2004-05-05 02:55  dreamcatcher
+
+	* makefile.in (Plone-2_0-branch): Add my makefile as an example
+
+2004-05-05 02:53  dreamcatcher
+
+	* HISTORY.txt, skins/plone_templates/colophon.pt,
+	  skins/plone_templates/main_template.pt (Plone-2_0-branch): Last
+	  batch of changes before final.
+
+2004-05-05 00:02  zopezen
+
+	* Extensions/package_plone.py (Plone-2_0-branch): package_plone is
+	  dead, use the script in /cvsroot/plone/Installers
+
+2004-05-04 13:36  psol
+
+	* skins/plone_templates/global_defines.pt (Plone-2_0-branch):
+	  moving definitions (webdav-locking) from edit-templates to
+	  global_defines, where they belong.
+
+2004-05-04 09:58  ajung
+
+	* skins/plone_templates/global_contentmenu.pt: filterOut has not
+	  been defined
+
+2004-05-04 06:19  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-05-04 02:37  limi
 
 	* HISTORY.txt (Plone-2_0-branch): Added Dorneles' change to the
