@@ -3,7 +3,9 @@
 # and create a new instance of Plone and then migrate the old data to
 # the new Plone..  this is really required for older Plone sites pre-1.0 
 # coming of age.
-
+#WARNING:
+#back up var/Data.fs before you attempt to run the migration machinery
+#it has not been well tested and could have unexpected consequences
 #Usage:
 #create an external method in the folder where your CMF/Plone sites
 #id: migrate_folders
