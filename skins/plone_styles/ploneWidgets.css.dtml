@@ -282,7 +282,6 @@ div.workspace span.small {
     width: 20em;
     margin-right: 1em;
     margin-bottom: 1em;
-    border: 1px solid red;
 }
 
 div.workspace span.big {
