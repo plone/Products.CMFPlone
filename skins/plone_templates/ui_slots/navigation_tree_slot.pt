@@ -28,37 +28,6 @@
         <h5 i18n:translate="box_navigation">Navigation</h5>
 
         <div class="body">
-            <tal:block tal:condition="python:request['AUTHENTICATED_USER'].has_role(rolesSeeContentsView, here)">
-                <div class="content even"
-                     tal:condition="editorView">
-                
-                    <div tal:condition="notFolderContents">
-                    
-                        <a href="folder_contents"
-                           tal:condition="here/isPrincipiaFolderish">
-                        
-                            <img tal:replace="structure portal/linkTransparent.gif" />&nbsp;<span i18n:translate="box_contents_view">Switch to Contents view</span>
-                        </a>
-                               
-                        <a href="../folder_contents"
-                           tal:condition="not: here/isPrincipiaFolderish" 
-                           tal:attributes="href string:${here/aq_parent/absolute_url}/folder_contents">
-                
-                            <img tal:replace="structure portal/linkTransparent.gif" />&nbsp;<span 
-                                 i18n:translate="box_contents_view">Switch to Contents view</span>
-                        </a>
-                    </div>
-                </div>
-            </tal:block>
-    
-            <div class="content even"
-                 tal:condition="not: notFolderContents">
-                <a href=".">
-                    
-                    <img tal:replace="structure portal/linkTransparent.gif" />&nbsp;<span i18n:translate="box_item_view">Switch to Item view</span>
-                </a>
-            </div>
-    
             <div class="content odd">
                      
                 <div tal:condition="tree/prev">
