@@ -1,7 +1,8 @@
 #
 # PloneTestCase
 #
-# $Id: PloneTestCase.py,v 1.9.2.14 2004/01/06 22:15:59 shh42 Exp $
+
+# $Id: PloneTestCase.py,v 1.14 2004/01/07 00:39:36 runyaga Exp $
 
 from Testing import ZopeTestCase
 
@@ -31,14 +32,14 @@ portal_name = 'portal'
 portal_owner = 'portal_owner'
 default_user = ZopeTestCase.user_name
 
+
 class PloneTestCase(ZopeTestCase.PortalTestCase):
 
     def getPortal(self):
         '''Returns the portal object.'''
-        # XXX: Hack. Need to fake a script so that URL1 is 
-        # available in the REQUEST. This should be handled
-        # by ZTC if possible.
-        self.app.REQUEST._script = [portal_name]
+        # XXX: Hack. Need to fake a published object so
+        # that URL1 is available in the REQUEST.
+        self.app.REQUEST._steps = ['noobject']
         return self.app[portal_name]
 
     def createMemberarea(self, member_id):
@@ -78,6 +79,7 @@ class PloneTestCase(ZopeTestCase.PortalTestCase):
         uf = self.app.acl_users
         user = uf.getUserById(portal_owner).__of__(uf)
         newSecurityManager(None, user)
+
 
 def setupPloneSite(app=None, id=portal_name, quiet=0):
     '''Creates a Plone site.'''
