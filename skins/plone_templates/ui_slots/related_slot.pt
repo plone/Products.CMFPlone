@@ -1,26 +1,18 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
-
 <body>
-
 <!-- The Related Items box -->
-
 <div metal:define-macro="relatedBox"
      tal:define="localContent here/navigationLocalRelated;
                  remoteContent here/navigationRemoteResources;"
      tal:condition="python:test(localContent or remoteContent, 1, 0)" >
-
     <div class="box">
-
         <h5 i18n:translate="box_related">Related</h5>
-
         <div class="body">
-
-            <div class="content odd" tal:condition="localContent" >
+            <div class="content odd" tal:condition="localContent">
                 <strong i18n:translate="box_local_resources">Local resources</strong>
                 <br />
-
                 <div tal:repeat="related localContent">
                     <a href=""
                        tal:attributes="href string:${related/url}/view">
@@ -30,25 +22,19 @@
                     </a>
                 </div>
             </div>
-
-              <div class="content even" tal:condition="remoteContent">
-                  <strong i18n:translate="box_external_links">External links</strong>
-                  <div tal:repeat="o remoteContent">
-                      <a href=""
-                         tal:attributes="href python:o[1]">
-                          <img src="link_icon.gif"
-                               tal:attributes="alt python:o[0]" />
-                          &nbsp;<span tal:replace="python:o[0]">Link object in same folder</span>
-                      </a>
-                  </div>
-              </div>
-
+            <div class="content even" tal:condition="remoteContent">
+                <strong i18n:translate="box_external_links">External links</strong>
+                <div tal:repeat="o remoteContent">
+                    <a href=""
+                       tal:attributes="href python:o[1]">
+                       <img src="link_icon.gif"
+                            tal:attributes="alt python:o[0]" />
+                       &nbsp;<span tal:replace="python:o[0]">Link object in same folder</span>
+                    </a>
+                </div>
+            </div>
         </div>
-
     </div>
-
 </div>
-
 </body>
-
 </html>
