@@ -596,12 +596,8 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                             return translation, ['view']
             return obj, [page]
         
-        # Look Archetypes' template mixin
-        if ITemplateMixin.isImplementedBy(obj):
-            pages = [obj.getLayout(),]
-        else:
-            # Look for default_page on the object
-            pages = getattr(aq_base(obj), 'default_page', [])
+        # Look for default_page on the object
+        pages = getattr(aq_base(obj), 'default_page', [])
         # Make sure we don't break if default_page is a
         # string property instead of a sequence
         if type(pages) in (StringType, UnicodeType):
@@ -627,6 +623,10 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         for page in default_pages:
             if ids.has_key(page):
                 return returnPage(obj, page)
+        
+        # Look Archetypes' template mixin
+        if ITemplateMixin.isImplementedBy(obj):
+            pages = [obj.getLayout(),]
 
         # what if the page isnt found?
         try:
