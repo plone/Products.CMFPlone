@@ -34,15 +34,14 @@ def registerMigrations():
                                        '1.0.5',
                                        null )
 
-    MigrationTool.registerUpgradePath( '1.0.5',
-                                       '2.0-beta2',
-                                       oneX_twoBeta2.oneX_twoBeta2)
+    #Migrations to Plone 2.0 require a External Method.
+    #We will rework the migration tool
 
-    MigrationTool.registerUpgradePath( '2.0-beta2',
-                                      '2.0-beta3',
-                                      twoBeta2_twoBeta3.twoBeta2_twoBeta3)
+    #MigrationTool.registerUpgradePath( '1.0.5',
+    #                                   '2.0-beta2',
+    #                                   oneX_twoBeta2.oneX_twoBeta2)
 
-    MigrationTool.registerUpgradePath( '2.0-beta2',
-                                       '2.0-RC2',
-                                       null)
+    #MigrationTool.registerUpgradePath( '2.0-beta2',
+    #                                  '2.0-beta3',
+    #                                  twoBeta2_twoBeta3.twoBeta2_twoBeta3)
 
