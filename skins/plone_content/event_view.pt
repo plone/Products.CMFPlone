@@ -30,7 +30,6 @@
                             <tal:differentday tal:condition="python:not here.start().Date() == here.end().Date()">
                                 <span tal:replace="python:here.toLocalizedTime(here.start(), long_format=1)">Start Date Time</span>
                                 <span i18n:translate="event_and">to</span> <br />
-                                <img src="" alt="" tal:replace="structure here/event_icon.gif" />
                                 <span tal:replace="python:here.toLocalizedTime(here.end(), long_format=1)">End Date Time</span>
                             </tal:differentday>
 
