@@ -74,7 +74,8 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
     def testMembersFolderMetaType(self):
         # Members folder should have meta_type 'Large Plone Folder'
         members = self.membership.getMembersFolder()
-        self.assertEqual(members.meta_type, 'Large Plone Folder')
+        #self.assertEqual(members.meta_type, 'Large Plone Folder')
+        self.assertEqual(members.meta_type, 'ATBTreeFolder')
 
     def testMembersFolderPortalType(self):
         # Members folder should have portal_type 'Large Plone Folder'
@@ -166,7 +167,8 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
     def testMembersIndexHtml(self):
         # index_html for Members folder should be a Page Template
         members = self.members
-        self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
+        #self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
+        self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         self.failUnless(hasattr(aq_base(members), 'index_html'))
         # getitem works
         self.assertEqual(aq_base(members)['index_html'].meta_type, 'Page Template')
@@ -184,7 +186,7 @@ class TestPortalBugs(PloneTestCase.PloneTestCase):
         # special treatment of 'index_html' in the PloneFolder base class and
         # got fixed by hazmat.
         members = self.members
-        self.assertEqual(aq_base(members).meta_type, 'Large Plone Folder')
+        self.assertEqual(aq_base(members).meta_type, 'ATBTreeFolder')
         #self.assertEqual(members.index_html.meta_type, 'Document')
         self.assertEqual(members.index_html.meta_type, 'Page Template')
 

@@ -200,7 +200,7 @@ class TestTextIndexNGParseError(PloneTestCase.PloneTestCase):
         res = self.portal.portal_catalog(SearchableText='-foo')
         # -foo means NOT foo in TXNG2 which returns one object (the members 
         # folder
-        self.failUnlessEqual(len(res), 1)
+        self.failUnlessEqual(len(res), 1, [b.getPath() for b in res])
 
     def testQueryCatalogParseError(self):
         request = {'SearchableText':'-foo'}
@@ -208,7 +208,7 @@ class TestTextIndexNGParseError(PloneTestCase.PloneTestCase):
         res = self.portal.portal_catalog(SearchableText='-foo')
         # -foo means NOT foo in TXNG2 which returns one object (the members 
         # folder
-        self.failUnlessEqual(len(res), 1)
+        self.failUnlessEqual(len(res), 1, [b.getPath() for b in res])
 
     def testQueryCatalogParseError3050(self):
         # http://plone.org/collector/3050
