@@ -71,9 +71,11 @@ class TestDAVMetadata(PloneTestCase.PloneTestCase):
         self.assertEqual(doc.Language(), '')
         self.assertEqual(doc.Rights(), '')
 
+
 class DavFunctionalTest(ZopeTestCase.Functional,
                         PloneTestCase.PloneTestCase):
     """A funcional test for WebDAV behavior"""
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
@@ -83,6 +85,7 @@ def test_suite():
     suite.addTest(makeSuite(TestDAVMetadata))
     suite.addTest(
         doctest.FunctionalDocFileSuite('dav/index_html_put.txt',
+                                       package='Products.CMFPlone.tests',
                                        test_class=DavFunctionalTest))
     return suite
 
