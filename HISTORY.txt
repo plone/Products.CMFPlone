@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.4 - (no name yet) - Released (no date yet)
 
+    - Applied fix part of patch at http://plone.org/collector/3264.
+      date_components_support.py used integer 00 instead of string '00'.
+      [stefan]
+
     - Fixed http://plone.org/collector/3329. Results of breadcrumbs.py 
       are no longer translated in global_pathbar.pt.
       [stefan]
