@@ -44,13 +44,6 @@
                 <span tal:content="here/title_or_id" omit-tag="">Directory Id</span>
                 </h1> 
    
-<!--
-                <tal:block tal:define="parent_url python:here.navigationParent(here, template.getId());"
-		           tal:condition="parent_url">
-                (<a href="" 
-                   tal:attributes="href parent_url" i18n:translate="go_to_parent_url">Up one level</a>)
-                </tal:block>
--->
             </div>
     
             <metal:block tal:condition="not: folder_contents">
@@ -163,7 +156,7 @@
                     <metal:block tal:condition="folder_contents|not:standalone|nothing">
                     <tr>
                         <th class="nosort"><input class="noborder" 
-                                                 type="image"
+                                                 type="checkbox"
                                                  src="select_all_icon.gif" 
                                                  name="selectButton"
                                                  title="Select all items"
