@@ -223,6 +223,12 @@ def install_PloneSkins(self, out):
         out.write('Mozilla subskin unable to successfully install\n')
 
     try:
+        install_SubSkin(self, out, 'Plone Konqueror', 'plone_konqueror')
+        out.write('Konqueror subskin successfully installed\n')
+    except:
+        out.write('Konqueror subskin unable to successfully install\n')
+
+    try:
         install_SubSkin(self, out, 'Plone XP', 'plone_xp')
         out.write('XP subskin successfully installed\n')
     except:
