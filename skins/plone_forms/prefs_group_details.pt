@@ -23,16 +23,18 @@
 
 <!-- ugly way of simulating real actions on the groups/user pages until we have
      real objects. -->
-<div id="contentTabs"> 
-    <a class="selected" 
-       href=""
+<ul id="contentTabs"> 
+  <li class="selected">
+    <a href=""
        tal:attributes="href string:${template/id}?groupname=${groupname}"
     >Group</a>
-    <a class=""         
-       href=""
+  </li>
+  <li class="">
+    <a href=""
        tal:attributes="href string:prefs_group_members?groupname=${groupname}"
     >Group Members</a>
-</div>
+  </li>
+</ul>
 <div id="contentBar">&nbsp;</div>
 <!-- End of tabs -->
     
