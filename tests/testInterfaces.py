@@ -9,6 +9,8 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 
+import traceback
+
 # import Interface for interface testing
 try:
     import Interface
@@ -114,6 +116,11 @@ class InterfaceTest(ZopeTestCase.ZopeTestCase):
           BrokenMethodImplementation), errmsg:
             self.fail('The class %s does not implement %s correctly: \n%s'
                 % (className(klass), className(interface), errmsg))
+	except AttributeError, errmsg:
+	    self.fail('There was a problem while checking the implementation of '
+	              'class %s and interface %s: \nAttributeError %s\n%s'
+		      % (className(klass), className(interface), errmsg,
+		        ''.join(traceback.format_tb(sys.exc_traceback))))
 
     def interfaceImplementedBy(self, instance, interface):
         """ tests if the instance implements the interface in the right way """
