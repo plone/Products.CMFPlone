@@ -6,7 +6,7 @@ from Products.CMFPlone.PloneFolder import addPloneFolder
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.PloneUtilities import translate
 from OFS.Image import Image
-from AccessControl import ClassSecurityInfo
+from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass
 from Acquisition import aq_base, aq_parent, aq_inner
 from Products.CMFCore.CMFCorePermissions import View
@@ -39,6 +39,10 @@ class MembershipTool(BaseTool):
     def getAuthenticatedMember(self):
         """ """
         _user=self.REQUEST.get('_portaluser', None)
+        if _user: # sanity check the cached user against the current user
+            user_id = getSecurityManager().getUser().getId()
+            if not user_id == _user.getId():
+                _user = None
         if _user is None:
             _user = BaseTool.getAuthenticatedMember(self)
             self.REQUEST.set('_portaluser', _user)
