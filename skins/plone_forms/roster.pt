@@ -59,15 +59,15 @@
             </span>
         </span>
 
-        <div class="row">
-            <span class="left" tal:define="n batch/previous | nothing" tal:condition="python: not n"> &nbsp; </span>
-            <span class="left" tal:define="p batch/previous | nothing" tal:condition="p"> 
+        <div class="listingBar">
+            <span class="previous" tal:define="n batch/previous | nothing" tal:condition="python: not n"> &nbsp; </span>
+            <span class="previous" tal:define="p batch/previous | nothing" tal:condition="p"> 
                 <a href="#" tal:attributes="href string:?b_start=${p/first}"> &laquo; previous 15 members </a>
             </span>
-            <span class="right" tal:define="n batch/next | nothing" tal:condition="n">
+            <span class="next" tal:define="n batch/next | nothing" tal:condition="n">
                 <a href="#" tal:attributes="href string:?b_start=${batch/end}"> &nbsp; next 15 members &raquo; </a>
             </span>
-            <span class="right" tal:define="n batch/next | nothing" tal:condition="python: not n"> &nbsp; </span>
+            <span class="next" tal:define="n batch/next | nothing" tal:condition="python: not n"> &nbsp; </span>
         </div>		
 
         </form>	    
