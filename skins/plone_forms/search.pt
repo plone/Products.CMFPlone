@@ -12,30 +12,30 @@
       Disable the tabs
       </tal:block>
   </metal:block>
-                               
+
 <div metal:fill-slot="main"
        tal:define="results python:here.queryCatalog();
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;">
-    
+
     <h1 i18n:translate="heading_search_results">Search results</h1>
-                 
+
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);">
 
-        <strong> 
+        <strong>
         <span i18n:translate="batch_x_items_matching_your_criteria"><span i18n:name="number" tal:content="python:len(results)">234</span> items matching your criteria.</span>
-        </strong> 
-        
+        </strong>
+
         <br/>
 
         <!-- Search results -->
-        
+
         <table class="listing"
                id="sortable"
                tal:condition="here/contentValues">
-        
+
             <thead>
                 <tr>
                     <th>&nbsp;<span tal:omit-tag="" i18n:translate="listingheader_title">Title</span>&nbsp;</th>
@@ -47,20 +47,20 @@
 
             <tbody>
 	        <metal:block tal:repeat="result batch">
-                <tr class="even" 
+                <tr class="even"
 		            tal:define="oddrow repeat/result/odd;
                                 result_url result/getURL;
-                                url string:$result_url/view;" 
+                                url string:$result_url/view;"
 		            tal:attributes="class python:test(oddrow, 'even', 'odd')" >
                     <td>
-		         <a href="#" 
+		         <a href="#"
                     tal:attributes="href url">
-                    <img src="#" 
+                    <img src="#"
                          height="16"
                          width="16"
                          alt=""
                          tal:on-error="structure python:path('here/linkOpaque.gif')"
-                         tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a 
+                         tal:replace="structure python:path('here/%s' % result.getIcon)" /></a>&nbsp;<a
                     href="#" tal:attributes="href url"
                     tal:content="python:result.Title or result.getId" />
                     </td>
@@ -76,10 +76,10 @@
         <div metal:use-macro="here/batch_macros/macros/navigation" />
 
     </div>
-    
+
     <div tal:condition="not: results">
         <p><strong i18n:translate="description_no_results_found">No results were found.</strong></p>
-    </div>		 
+    </div>
 
 </div>
 
