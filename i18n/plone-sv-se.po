@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plone 1.0\n"
 "POT-Creation-Date: 2002-09-13 06:11+0300\n"
-"PO-Revision-Date: 2002-09-24 10:33+0200\n"
+"PO-Revision-Date: 2002-09-24 10:58+0200\n"
 "Last-Translator: Magnus Heino <magnus.heino@pleon.sigma.se>\n"
 "Language-Team: Svenska <plone-i18n@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2798,7 +2798,7 @@ msgstr "Användarnamn"
 #: from plone_3rdParty/CMFCollector/collector_edit_form.pt
 #.   <div class="label">Version boilerplate</div>
 msgid "label_version_boilerplate"
-msgstr ""
+msgstr "Version"
 
 #: from plone_3rdParty/CMFCollector/collector_add_issue_form.pt
 #.   <div class="label">Version Info</div>
@@ -3458,7 +3458,7 @@ msgid "Delete"
 msgstr "Ta bort"
 
 msgid "Change Status"
-msgstr "Byt status"
+msgstr "Förändra status"
 
 msgid "This item is currently in the ${review_state} state"
 msgstr "Detta objekt har status ${review_state}"
