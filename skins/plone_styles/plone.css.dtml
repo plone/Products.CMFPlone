@@ -85,6 +85,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding-top: 0.5em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
+    text-shadow: #999999 3px 3px 3px;
 }
 
 h1 a,
