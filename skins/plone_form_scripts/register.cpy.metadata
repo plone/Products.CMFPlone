@@ -7,3 +7,4 @@ validators = validate_registration
 [actions]
 action.failure=traverse_to:string:join_form
 action.success=traverse_to:string:registered
+action.prefs=traverse_to:string:prefs_users_overview

@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=password='password', confirm='confirm'
+##parameters=password='password', confirm='confirm', came_from_prefs=None
 ##title=Register a User
 ##
 state = context.portal_form_controller.getState(script, is_validator=0)
@@ -32,5 +32,7 @@ if site_properties.validate_email or REQUEST.get('mail_me', 0):
 
 state.set(portal_status_message=context.REQUEST.get('portal_status_message', 'Registered.'))
 state.set(came_from=context.REQUEST.get('came_from','logged_in'))
+if came_from_prefs:
+    state.set(status='prefs')
 
 return state

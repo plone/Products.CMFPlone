@@ -34,6 +34,8 @@
                tal:attributes="value here/ZopeTime" />
         <input type="hidden" name="prev_visit:date" value="ZopeTime"
                tal:attributes="value here/ZopeTime" />
+        <input type="hidden" name="came_from_prefs" value=""
+               tal:attributes="value request/came_from_prefs|nothing" />
 
         <div class="row"
              tal:define="error_fullname errors/fullname| nothing;

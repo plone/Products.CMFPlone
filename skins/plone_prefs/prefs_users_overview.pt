@@ -58,7 +58,7 @@
           users.
         </p>
     
-        
+           <input type="hidden" value="1" name="came_from_prefs" />
            <input class="standalone add"
                   tabindex=""
                   type="submit"
