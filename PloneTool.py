@@ -286,7 +286,6 @@ class PloneTool (UniqueObject, SimpleItem):
         """ returns a structure that can be used by navigation_tree_slot.
             We are being quite lazy because of massive signature. 
         """        
-             
         tree_builder=NavigationTreeViewBuilder(tree_root=tree_root, 
           navBatchStart=navBatchStart, 
           showMyUserFolderOnly=showMyUserFolderOnly, 

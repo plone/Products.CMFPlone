@@ -21,7 +21,7 @@ class NavigationTreeViewBuilder(SimpleItem):
                     
     def __call__(self):
         """ return the data structure """
-        context=self.REQUEST['PUBLISHED']
+        context=self.REQUEST.PARENTS[0]
         navtree_properties=getToolByName(self, 'portal_properties').navtree_properties
         props=getattr(context,'navtree_properties', navtree_properties)
         #XXX The above is highly inefficient I believe

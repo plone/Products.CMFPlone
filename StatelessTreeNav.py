@@ -101,7 +101,6 @@ class StatelessTreeBuilder:
         count=0
         level=self.getLevel()
         par = self.object
-
         if not par.isPrincipiaFolderish:
             par=par.aq_parent
 
