@@ -32,12 +32,9 @@ if not properties.validate_email:
 #
 #
 try:
-    failMessage = context.portal_registration.testPropertiesValidity(REQUEST)
-    if failMessage:
-        errors['username'] = failMessage
+    if REQUEST.get('username') and not context.portal_registration.isMemberIdAllowed(REQUEST.get('username')):
+        errors['username'] = 'The login name you selected is already in use or is not valid. Please choose another.'
 
-    if not context.portal_registration.isMemberIdAllowed(REQUEST.get('username')):
-        errors['username'] = 'This member id is invalid or already in use.'
 except:
     errors['username'] = context.plone_utils.exceptionString()
 
