@@ -382,7 +382,13 @@ function checkforhighlight(node,word) {
 function highlightSearchTerm() {
         // search-term-highlighter function --  Geir Bækholt
         query = window.location.search
-        query = decodeURI(query)
+        // _robert_ ie 5 does not have decodeURI 
+        if (typeof decodeURI != 'undefined'){
+            query = decodeURI(query)
+        }
+        else {
+            return false
+        }
         if (query){
             var qfinder = new RegExp()
             qfinder.compile("searchterm=(.*)","gi")
