@@ -304,7 +304,7 @@ function scanforlinks(){
     // Quick utility function by Geir Bækholt
     // Scan all links in the document and set classes on them dependant on whether they point to the current site or are external links
     
-    content = document.getElementById('documentContent')
+    content = document.getElementById('bodyContent')
     if (! content){return false}
     
     links = content.getElementsByTagName('a');
