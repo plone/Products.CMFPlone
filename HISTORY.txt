@@ -1,4 +1,12 @@
 CHANGES
+
+Plone 1.0
+    - Removed old Xopus files
+    - Removed XSDHTML editor, all editors should be add-ons and not in core 
+      Plone
+    - Added more flexibility for add-on editors by moving format selector into
+      wysiwyg_support.pt
+
 Plone 1.0 rc2
     - removed the properties in site_properties that belong in the root
       validate_email, email_from_name/addr
