@@ -96,8 +96,6 @@
                    id="include_subfolders"
                    name="include_subfolders"
                    tabindex=""
-                   onfocus="formtooltip('include_subfolders_help',1)"
-                   onblur="formtooltip('include_subfolders_help',0)"
                    tal:attributes="tabindex tabindex/next;"
                    />
           </div>
@@ -144,8 +142,6 @@
                                formname   string:edit_form;
                                expiration here/ExpirationDate;
                                inputvalue python:test(expiration and expiration!='None', expiration, request.get('expiration_date', ''));
-                               onfocus string:formtooltip('expiration_date_help',1);
-                               onblur string:formtooltip('expiration_date_help',0);
                                tabindex tabindex/next;"
                    tal:attributes="class python:test(error, 'field error', 'field')">
 
@@ -170,8 +166,6 @@
                       cols="60"
                       rows="5"
                       tabindex=""
-                      onfocus="formtooltip('publishing_comments_help',1)"
-                      onblur="formtooltip('publishing_comments_help',0)"
                       tal:attributes="tabindex tabindex/next;"
                       tal:content="request/comment|nothing"
                       ></textarea>
@@ -210,8 +204,6 @@
                      name="workflow_action"
                      title=""
                      value=""
-                     onfocus="formtooltip('change_status_help',1)"
-                     onblur="formtooltip('change_status_help',0)"
                      tal:attributes="value review_state;
                                      title review_state;
                                      checked python:test(request.get('workflow_action', review_state)==review_state,1,0);" />
@@ -230,8 +222,6 @@
                               name="workflow_action"
                               title=""
                               value=""
-                              onfocus="formtooltip('change_status_help',1)"
-                              onblur="formtooltip('change_status_help',0)"
                               i18n:attributes="title"
                               tal:attributes="value transition/id;
                                               id    transition/id;
