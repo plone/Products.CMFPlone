@@ -10,7 +10,10 @@
      tal:condition="here/rejectAnonymous" >
 
      <metal:block tal:condition="python:test(request.get('type_name', 'Select')!='Select', 1, 0)">
-        <tal tal:define="dummy python:request.response.redirect(here.absolute_url()+'/createObject?type_name='+request.get('type_name'))" />
+        <tal:block tal:define="pps python:modules['Products.PythonScripts.standard'];
+                               type_name python:pps.url_quote(request.get('type_name'));
+                               creation_url string:${here/absolute_url}/createObject?type_name=$type_name;
+                               dummy python:request.response.redirect(creation_url);" />
      </metal:block>
      
 	<h1 i18n:translate="">Add new item</h1>
