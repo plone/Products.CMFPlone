@@ -122,7 +122,7 @@
     <tal:templateMixin define="iface_tool portal/portal_interface;
                                isTemplateMixin python:iface_tool.objectImplements(here, 'Products.Archetypes.interfaces.ITemplateMixin.ITemplateMixin');"
                                tal:condition="isTemplateMixin">
-    <tal:field define="field python:here.getField('layout');
+    <tal:layout define="field python:here.getField('layout');
                        vocab python:field.Vocabulary(here);"
          condition="python:len(vocab) > 1">
     <li tal:define="fieldvalue here/getLayout">
@@ -166,7 +166,7 @@
                        tal:define="folder python:test(getattr(here.aq_explicit, 'isPrincipiaFolderish', 0), here, here.getParentNode())"
                        title="Select Default Page"
                        i18n:attributes="title"
-                       tal:attributes="href string:${here/absolute_url}/select_default_page';">
+                       tal:attributes="href string:${here/absolute_url}/select_default_page;">
                          Select
                     </a>
               </li>
@@ -177,7 +177,7 @@
             </ul>
         </div>
     </li>
-    </tal:field>
+    </tal:layout>
     </tal:templateMixin>
 
 </ul>
