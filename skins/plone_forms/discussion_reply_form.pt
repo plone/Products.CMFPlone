@@ -21,6 +21,7 @@
           name="edit_form"
           method="post"
           action="talkback"
+          tal:attributes="action string:${here/absolute_url}/talkback"
           >
 
         <span class="legend" i18n:translate="legend_comment_details">Comment Details</span>
