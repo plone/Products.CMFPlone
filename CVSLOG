@@ -1,3 +1,14 @@
+2004-04-04 20:20  k_vertigo
+
+	* MembershipTool.py (Plone-2_0-branch), MembershipTool.py:  -
+	  sanity check the cached user against the current user before
+	  returning
+	     cached user.
+
+2004-04-03 05:00  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-02 05:01  longsleep
 
 	* CVSLOG: auto generated new changelog
