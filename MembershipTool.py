@@ -247,10 +247,11 @@ class MembershipTool(BaseTool):
             if not (member.listed or is_manager):
                 continue
             if name:
-                if (u.getUserName().lower().find(name) == -1) and (member.fullname.lower().find(name) == -1):
+                if (u.getUserName().lower().find(name) == -1 and 
+                    member.getProperty('fullname').lower().find(name) == -1):
                     continue
             if email:
-                if member.email.lower().find(email) == -1:
+                if member.getProperty('email').lower().find(email) == -1:
                     continue
             if roles:
                 user_roles = member.getRoles()
