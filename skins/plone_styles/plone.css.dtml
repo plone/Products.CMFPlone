@@ -808,7 +808,9 @@ input.searchButton {
 }
 
 ul.configlets {
-    margin: 0;
+    margin: 1em;
+    list-style-image: none;
+    list-style: none;
 }
 
 ul.configlets li {
