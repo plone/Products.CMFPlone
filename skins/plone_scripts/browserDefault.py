@@ -22,7 +22,7 @@ if pages:
 # call the method on the folder, if you
 # dont have this you will have problems
 # with blank folders
-act = context.getTypeInfo().getActionById('view')
+act = context.getTypeInfo().getActionById('folderlisting')
 if act.startswith('/'):
     act = act[1:]
 return context, [act]
