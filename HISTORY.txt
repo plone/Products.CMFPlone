@@ -35,7 +35,7 @@
       moved event_xxxx into plone_3rdParty/CMFCalendar for consitency
       Issue 204 fixed
     - Sigve Tjora fixed the migration machinery - incredible job! CMFPlone/Extensions/migration.py
-      Alan fixed it so Ownership is carried over properly
+      Alan fixed it so Ownership is carried over properly and reindexes newsite after migration
     - portal_status_message is shown when a object is created, type_name has been created.
     - added post-creation hook for PloneFolders, doAfterCreation() if this exists on a 
       object that inherients from PloneFolders it will call it after the object has been created.

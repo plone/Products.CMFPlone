@@ -213,7 +213,7 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
     for f in original.objectValues():
         if original.getId() not in ('acl_users', ):
             do_migrate(f)
-        
+    newsite.portal_catalog.refreshCatalog(clear=1)    
     out.write("Finished"+'\n')
     return out.getvalue()
     
