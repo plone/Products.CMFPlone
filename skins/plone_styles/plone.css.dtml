@@ -204,14 +204,12 @@ q {
     font-family: Times, "Times New Roman", serif;
     font-style: italic;
     font-size: 120%;
-	quotes: "«" "»";
 }
 
 blockquote {
     font-family: Times, "Times New Roman", serif;
     font-style: italic;
     font-size: 120%;
-	quotes: "«" "»";
 }
 
 code {
