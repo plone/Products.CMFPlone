@@ -6,7 +6,7 @@
                   ztu modules/ZTUtils;
                   current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
-          tal:define="charset here/portal_properties/site_properties/default_charset|string:utf-8"
+          tal:define="charset site_properties/default_charset|string:utf-8"
           tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title here/portal_properties/title;
@@ -22,7 +22,9 @@
           tal:attributes="name python:keyval[0];
                            content python:keyval[1];" />
 
-    <!-- Basic crude style for Netscape4.x - This can be removed if you don't want the special NS4 look - it will still work, just be plain text instead. -->
+    <!-- Basic crude style for Netscape4.x - This can be removed 
+         if you don't want the special NS4 look - it will still work, 
+	 just be plain text instead. -->
     <link rel="Stylesheet" type="text/css" href="" tal:attributes="href string:$portal_url/ploneNS4.css" />
 
     <!-- Main style sheets for CSS2 capable browsers -->
@@ -60,9 +62,10 @@
     <!-- Common Plone ECMAScripts -->
     <script type="text/javascript" tal:attributes="src here/plone_javascripts.js/absolute_url"></script>
 
-    <tal:block tal:define="defaulttips python:here.portal_memberdata.getProperty('formtooltips');
+    <tal:block tal:define="member member|here/portal_membership/getAuthenticatedMember;
+                           defaulttips python:here.portal_memberdata.getProperty('formtooltips');
                            showdefault python:test(defaulttips, 'true', 0);
-                           formtooltips python:getattr(here.portal_membership.getAuthenticatedMember(), 'formtooltips', showdefault)" 
+                           formtooltips python:member.getProperty('formtooltips', showdefault)" 
                tal:omit-tag="">
       <script type="text/javascript"
               tal:condition="formtooltips"
@@ -78,12 +81,12 @@
 
 <div metal:define-macro="portal_header"
      i18n:domain="plone"
-     tal:define="portal_url here/portal_url;
-                 ztu modules/ZTUtils;
+     tal:define="portal_url portal_url|here/portal_url;
+                 ztu ztu|modules/ZTUtils;
                  current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
 
      <tal:block tal:condition="not: actions|nothing">     
-         <span tal:define="global actions here/portal_actions/listFilteredActionsFor"
+         <span tal:define="global actions actions|here/portal_actions/listFilteredActionsFor"
                   tal:replace="nothing" >
              This is here just in case actions is not defined.  This would happen if you were calling from a DTML Document   
          </span>
@@ -144,7 +147,7 @@
 
         <div class="personalBar"
              metal:define-macro="personalBar"
-             tal:define="portal_url here/portal_url;
+             tal:define="portal_url portal_url|here/portal_url;
                          user_actions actions/user;
                          global_actions actions/global;
                          display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];">&nbsp;
@@ -173,7 +176,7 @@
         <div class="pathBar"
              metal:define-macro="pathBar"
              tal:define="breadcrumbs python:here.breadcrumbs(here);
-                         portal_url here/portal_url;">
+                         portal_url portal_urlhere/portal_url;">
 
             <a href="#"
                tal:condition="here/portal_membership/getHomeFolder"

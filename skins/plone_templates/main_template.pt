@@ -6,6 +6,7 @@
       metal:define-macro="master"
       tal:define="member here/portal_membership/getAuthenticatedMember;
         portal here/portal_url/getPortalObject;
+	global portal_url portal;
         actions python:here.portal_actions.listFilteredActionsFor(here);
         site_properties here/portal_properties/site_properties;
         ztu modules/ZTUtils;
@@ -104,7 +105,8 @@ Header stuff
                         </metal:block>
             
                         <div class="documentActions"
-                             metal:define-macro="documentActions">
+                             metal:define-macro="documentActions"
+			     tal:define="portal_url portal_url|here/portal_url">
     
                             <metal:block define-slot="documentActions" 
 			                 tal:content="nothing">

@@ -7,7 +7,9 @@ Plone 1.0.2
     raises a AttributeError
     - making less assumptions in Portal/Customization Policy for migrations of very old Plones
       and imported nested_scopes in Portal.py
-    - visual tidy up of main_template
+    - visual tidy up of main_template and header and try to see if variables
+      have been declared before blindly re-initing them.
+    - removed the setHeader() in header
 
 Plone 1.0.1 - Mira Calix release
     - Added "Dry run" option to portal_migration
