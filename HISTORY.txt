@@ -13,6 +13,11 @@ Plone 2.1-beta1 - Warp - Released (no date yet)
       TextIndexes.
       [ajung]
 
+    - Plone now uses DateIndexes for created, modified, effective, and Date.
+      Note that we do not yet use DateIndexes for expires (CEILING issues) and
+      start/end dates of Events.
+      [ajung]
+
     - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it 
       should be and will be revised. See http://plone.org/collector/2461.
       [db] [batlogg]
