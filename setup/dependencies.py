@@ -157,12 +157,6 @@ except ImportError:
          "from http://cvs.zope.org/Products"))
 
 try:
-    import Products.Formulator
-except ImportError:
-    log(("Formulator not found. Please download it "
-         "from http://sourceforge.net/projects/formulator"))
-
-try:
     import Products.SecureMailHost
 except ImportError:
     log(("SecureMailHost not found. Please "

@@ -31,23 +31,17 @@ class TestGroupDataTool(PloneTestCase.PloneTestCase):
         self.groupdata = self.portal.portal_groupdata
         self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo')
         # MUST reset _v_ attributes!
         self.groupdata._v_temps = None
 
     def testWrapGroup(self):
         g = self.acl_users.getGroup(self.prefix+'foo')
-        self.assertEqual(g.__class__.__name__, 'GRUFUser')
+        self.assertEqual(g.__class__.__name__, 'GRUFGroup')
         g = self.groupdata.wrapGroup(g)
         self.assertEqual(g.__class__.__name__, 'GroupData')
-        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
-
-    def testRegisterGroupData(self):
-        g = self.groups.getGroupById('foo')
-        self.assertEqual(len(self.groupdata._members), 0)
-        self.groupdata.registerGroupData(aq_base(g), g.getId())
-        self.assertEqual(len(self.groupdata._members), 1)
 
 
 class TestGroupData(PloneTestCase.PloneTestCase):
@@ -60,33 +54,16 @@ class TestGroupData(PloneTestCase.PloneTestCase):
         self.groupdata = self.portal.portal_groupdata
         self.prefix = self.acl_users.getGroupPrefix()
         self.groups.groupWorkspacesCreationFlag = 0
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo')
         # MUST reset _v_ attributes!
         self.memberdata._v_temps = None
         self.groupdata._v_temps = None
-
-    def testGroupNotifyModified(self):
-        g = self.groups.getGroupById('foo')
-        self.assertEqual(len(self.groupdata._members), 0)
-        self.failIfEqual(getattr(g, '_tool', None), None)
-        g.notifyModified()
-        self.assertEqual(len(self.groupdata._members), 1)
-        self.assertEqual(getattr(g, '_tool', None), None)
-
-    def testMemberNotifyModified(self):
-        # For reference
-        m = self.membership.getMemberById(default_user)
-        self.assertEqual(len(self.memberdata._members), 0)
-        self.failIfEqual(getattr(m, '_tool', None), None)
-        m.notifyModified()
-        self.assertEqual(len(self.memberdata._members), 1)
-        self.assertEqual(getattr(m, '_tool', None), None)
 
     def testGetGroup(self):
         g = self.groups.getGroupById('foo')
         self.assertEqual(g.__class__.__name__, 'GroupData')
         g = g.getGroup()
-        self.assertEqual(g.__class__.__name__, 'GRUFUser')
+        self.assertEqual(g.__class__.__name__, 'GRUFGroup')
 
     def testGetTool(self):
         g = self.groups.getGroupById('foo')
@@ -148,7 +125,9 @@ class TestGroupData(PloneTestCase.PloneTestCase):
 
     def testGetGroupId(self):
         g = self.groups.getGroupById('foo')
-        self.assertEqual(g.getGroupId(), self.prefix+'foo')
+        # This changed in GRUF3
+        #self.assertEqual(g.getGroupId(), self.prefix+'foo')
+        self.assertEqual(g.getGroupId(), 'foo')
 
     def testGetRoles(self):
         g = self.groups.getGroupById('foo')

@@ -30,6 +30,10 @@ import Globals
 import os, sys, re
 
 from AccessControl import ClassSecurityInfo
+from Acquisition import aq_inner, aq_parent, aq_base
+from ComputedAttribute import ComputedAttribute
+from webdav.NullResource import NullResource
+from Products.CMFPlone.PloneFolder import ReplaceableWrapper
 
 __version__='1.1'
 
@@ -99,10 +103,26 @@ class PloneSite(CMFSite, OrderedContainer):
     __implements__ = DublinCore.DefaultDublinCoreImpl.__implements__ + \
                      OrderedContainer.__implements__
 
+    manage_renameObject = OrderedContainer.manage_renameObject
+
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
         return getToolByName(self, 'plone_utils').browserDefault(self)
+
+    def index_html(self):
+        """ Acquire if not present. """
+        request = getattr(self, 'REQUEST', None)
+        if request and request.has_key('REQUEST_METHOD'):
+            if (request.maybe_webdav_client and
+                request['REQUEST_METHOD'] in  ['PUT']):
+                # Very likely a WebDAV client trying to create something
+                return ReplaceableWrapper(NullResource(self, 'index_html'))
+        # Acquire from skin.
+        _target = self.__getattr__('index_html')
+        return ReplaceableWrapper(aq_base(_target).__of__(self))
+
+    index_html = ComputedAttribute(index_html, 1)
 
     def manage_beforeDelete(self, container, item):
         """ Should send out an Event before Site is being deleted """
@@ -266,101 +286,17 @@ class PloneGenerator(Portal.PortalGenerator):
         path=','.join(path)
         sk_tool.addSkinSelection('Plone Default', path)
 
-#  XXX removed these, since they are no longer shipping with Plone
-#
-#        self.setupSecondarySkin(sk_tool, 'Plone Autumn',
-#                                'plone_styles/autumn')
-#        self.setupSecondarySkin(sk_tool, 'Plone Core',
-#
-#        self.setupSecondarySkin(sk_tool, 'Plone Core Inverted',
-#                                'plone_styles/core_inverted')
-#        self.setupSecondarySkin(sk_tool, 'Plone Corporate',
-#                                'plone_styles/corporate')
-#        self.setupSecondarySkin(sk_tool, 'Plone Greensleeves',
-#                                'plone_styles/greensleeves')
-#        self.setupSecondarySkin(sk_tool, 'Plone Kitty',
-#                                'plone_styles/kitty')
-#        self.setupSecondarySkin(sk_tool, 'Plone Mozilla',
-#                                'plone_styles/mozilla')
-#        self.setupSecondarySkin(sk_tool, 'Plone Mozilla New',
-#                                'plone_styles/mozilla_new')
-#        self.setupSecondarySkin(sk_tool, 'Plone Prime',
-#                                'plone_styles/prime')
-#        self.setupSecondarySkin(sk_tool, 'Plone Zed',
-#                                'plone_styles/zed')
-
         addDirectoryViews( sk_tool, 'skins', cmfplone_globals )
 
     def setupForms(self, p):
         """ This is being deprecated.  Please see CMFFormController """
 
         prop_tool = p.portal_properties
-        prop_tool.manage_addPropertySheet('navigation_properties', \
-                                          'Navigation Properties')
-        prop_tool.manage_addPropertySheet('form_properties', 'Form Properties')
-
-        form_tool = p.portal_form
-        form_tool.setValidators('link_edit_form', \
-                                ['validate_id', 'validate_link_edit'])
-        form_tool.setValidators('newsitem_edit_form', \
-                                ['validate_id', 'validate_newsitem_edit'])
-        form_tool.setValidators('document_edit_form', \
-                                ['validate_id', 'validate_document_edit'])
-        form_tool.setValidators('image_edit_form', \
-                                ['validate_id', 'validate_image_edit'])
-        form_tool.setValidators('file_edit_form', \
-                                ['validate_id', 'validate_file_edit'])
-        form_tool.setValidators('folder_edit_form', \
-                                ['validate_id', 'validate_folder_edit'])
-        form_tool.setValidators('event_edit_form', \
-                                ['validate_id', 'validate_event_edit'])
-        form_tool.setValidators('topic_edit_form', \
-                                ['validate_id', 'validate_topic_edit'])
-        form_tool.setValidators('content_status_history', \
-                                ['validate_content_status_modify'])
-        form_tool.setValidators('reconfig_form', \
-                                ['validate_reconfig'])
-        form_tool.setValidators('personalize_form', \
-                                ['validate_personalize'])
-        form_tool.setValidators('join_form', \
-                                ['validate_registration'])
-        form_tool.setValidators('metadata_edit_form', \
-                                ['validate_metadata_edit'])
-        form_tool.setValidators('sendto_form', \
-                                ['validate_sendto'])
-        form_tool.setValidators('folder_rename_form', \
-                                ['validate_folder_rename'])
 
         #set up properties for StatelessTreeNav
         from Products.CMFPlone.StatelessTreeNav \
              import setupNavTreePropertySheet
         setupNavTreePropertySheet(prop_tool)
-
-        # grab the initial portal navigation properties
-        # from data/navigation_properties
-        nav_tool = getToolByName(p, 'portal_navigation')
-
-        # open and parse the file
-        filename='navigation_properties'
-        src_file = open(os.path.join(Globals.package_home(globals()),
-                                     'data', filename), 'r')
-        src_lines = src_file.readlines()
-        src_file.close()
-
-        re_comment = re.compile(r"\s*#")
-        re_blank = re.compile(r"\s*\n")
-        re_transition = re.compile(r"\s*(?P<type>[^\.]*)\.(?P<page>[^\.]*)\.(?P<outcome>[^\s]*)\s*=\s*(?P<action>[^$]*)$")
-        for line in src_lines:
-            line = line.strip()
-            if not re_comment.match(line) and not re_blank.match(line):
-                match = re_transition.match(line)
-                if match:
-                    nav_tool.addTransitionFor(match.group('type'),
-                                              match.group('page'),
-                                              match.group('outcome'),
-                                              match.group('action'))
-                else:
-                    sys.stderr.write("Unable to parse '%s' in navigation properties file" % (line))
 
     def setupPlone(self, p):
         self.customizePortalTypes(p)
@@ -404,9 +340,7 @@ class PloneGenerator(Portal.PortalGenerator):
         addCMFPloneTool(ToolNames.SyndicationTool, None)
 
         addCMFPloneTool(ToolNames.UtilsTool, None)
-        addCMFPloneTool(ToolNames.NavigationTool, None)
         addCMFPloneTool(ToolNames.FactoryTool, None)
-        addCMFPloneTool(ToolNames.FormTool, None)
         addCMFPloneTool(ToolNames.MigrationTool, None)
         addCMFPloneTool(ToolNames.ActionIconsTool, None)
         addCMFPloneTool(ToolNames.CalendarTool, None)

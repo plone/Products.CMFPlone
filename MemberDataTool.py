@@ -96,7 +96,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
                     values[pty_name] = user_value
 
             # Wrap a new user object of the RIGHT class
-            u = self.acl_users.getUserById(member_name)
+            u = self.acl_users.getUserById(member_name, None)
             if not u:
                 continue                # User is not in main acl_users anymore
             self.wrapUser(u)
@@ -110,6 +110,62 @@ class MemberDataTool(PloneBaseTool, BaseTool):
 
         return count
                 
+
+    security.declarePrivate( 'searchMemberDataContents' )
+    def searchMemberDataContents( self, search_param, search_term ):
+        """
+        Search members.
+        This is the same as CMFCore except that it doesn't check term case.
+        """
+        res = []
+
+        search_term = search_term.strip().lower()
+        
+        if search_param == 'username':
+            search_param = 'id'
+
+        mtool   = getToolByName(self, 'portal_membership')
+
+        for member_id in self._members.keys():
+
+            user_wrapper = mtool.getMemberById( member_id )
+
+            if user_wrapper is not None:
+                memberProperty = user_wrapper.getProperty
+                searched = memberProperty( search_param, None )
+
+                if searched is not None:
+                    if searched.strip().lower().find(search_term) != -1:
+
+                        res.append( { 'username': memberProperty( 'id' )
+                                      , 'email' : memberProperty( 'email', '' )
+                                      }
+                                    )
+        return res
+
+    security.declarePublic( 'searchFulltextForMembers' )
+    def searchFulltextForMembers(self, s):
+        """search for members which do have string 's' in name, email or full name (if defined) 
+
+        this is mainly used for the localrole form
+        """
+
+        s=s.strip().lower()
+
+        portal = self.portal_url.getPortalObject()
+        mu = self.portal_membership
+        is_manager = mu.checkPermission('Manage portal', self)
+
+        res = []
+        for member in mu.listMembers():
+            u = member.getUser()
+            if not (member.listed or is_manager):
+                continue
+            if u.getUserName().lower().find(s) != -1 \
+                or member.getProperty('fullname').lower().find(s) != -1 \
+                or member.getProperty('email').lower().find(s) != -1:
+                    res.append(member)
+        return res
 
 ##    security.declarePrivate('wrapUser')
 ##    def wrapUser(self, u):

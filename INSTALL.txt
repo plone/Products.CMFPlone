@@ -41,116 +41,41 @@ Installing Plone manually, step by step instructions.
  
   - CMF 1.4.7 (not 1.5)
      Included in the Plone tarball 
-     http://cmf.zope.org/download 
-     http://cmf.zope.org/download/CMF-1.4.7/CMF-1.4.7.tar.gz 
  
   - DCWorkflow
      Included in the Plone tarball 
-     http://cvs.zope.org/Products/DCWorkflow/ 
-     http://cvs.zope.org/Products/DCWorkflow/DCWorkflow.tar.gz?tarball=1 
- 
-  - Formulator 1.4.0 or later
-     Included in the Plone tarball 
-     http://www.zope.org/Members/infrae/Formulator 
-     http://zope.org/Members/infrae/Formulator/Formulator-1.6.2/Formulator-1.6.2.tgz 
  
   - CMFActionsIcons
      Included in the Plone tarball 
-     http://cvs.zope.org/Products/CMFActionIcons/ 
-     http://cvs.zope.org/Products/CMFActionIcons/CMFActionIcons.tar.gz?tarball=1 
  
   - CMFQuickInstallerTool
      Included in the Plone tarball 
-     http://sf.net/projects/collective 
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78893 
-     http://prdownloads.sourceforge.net/collective/CMFQuickInstallerTool-1.5.1.tgz?download 
  
-  - GroupUserFolder 2.0.1 (not 3.0)
+  - GroupUserFolder
      Included in the Plone tarball 
-     http://sf.net/projects/collective 
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=81576 
-     http://prdownloads.sourceforge.net/collective/GroupUserFolder-2.0.1.tgz?download 
  
   - BTreeFolder2
      Included in the Plone tarball 
-     http://cvs.zope.org/Products/BTreeFolder2/ 
-     http://cvs.zope.org/Products/BTreeFolder2/BTreeFolder2.tar.gz?tarball=1 
- 
+
   - SecureMailHost
      Included in the Plone tarball 
-     http://sf.net/projects/collective 
-     http://prdownloads.sourceforge.net/collective/SecureMailHost-0.2rc3.tar.gz?download
 
   - CMFFormController 
      Included in the Plone tarball 
-     http://sf.net/projects/collective 
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=90836 
-     http://prdownloads.sourceforge.net/collective/CMFFormController-1.0.4.tar.gz?download 
  
 ------------------------------------------------------------------------------- 
  
   **OPTIONAL ADD-ONS** 
  
-  - ExternalEditor 0.6 or later
-     The ExternalEditor is a Zope product and configurable helper application that  
-     allows you to drop into your favorite editor(s) directly from the ZMI to modify  
-     Zope objects. 
-     http://www.zope.org/Members/Caseman/ExternalEditor 
- 
   - Placeless Translation Service
      Included in the Plone tarball 
      Required to support multilingual interface and access keys.
-     http://plone.org/development/i18n/existing-translations 
-     http://www.sourceforge.net/projects/collective 
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=91854 
- 
-  - I18NLayer
-     Supports multiple translations of Content 
-     http://www.sourceforge.net/projects/collective 
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=91583    
- 
-  - CMFSin
-     Supports inbound syndication of RSS and RDF 
-     http://sourceforge.net/projects/collective 
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=78774 
- 
-  - PloneCollectorNG
-     Provides issue tracking 
-     http://sourceforge.net/projects/collective 
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=96051 
- 
+     http://plone.org/development/teams/i18n
+     
   - Archetypes
      Included in the Plone tarball 
      Enables the easy creation of new content types. It's a prerequisite for an 
      increasing number of new Plone products 
-     http://sourceforge.net/projects/archetypes/ 
-     http://sourceforge.net/project/showfiles.php?group_id=75272&package_id=75683 
- 
-  - CMFNewsletter
-     Enables you to send out newsletters of site content 
-     http://sourceforge.net/projects/collective 
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=107732 
- 
-  - CMFPhoto + CMFPhotoAlbum
-     A basic photo album and photo product with thumbnails autogeneration / scaling
-     http://sourceforge.net/projects/collective
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=76062
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=76063
- 
-  - TTWType
-     Create new types throught the web without any coding
-     http://sourceforge.net/projects/collective
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=104621
- 
-  - SpeedPack
-     Increase the speed of Plone, CMF and Zope from 20% to 100% plus (depends on
-     your system, setup, processor and wether the debug mode of zope is enabled)
-     http://sourceforge.net/projects/collective
-     http://sourceforge.net/project/showfiles.php?group_id=55262&package_id=107326
- 
-  - Epoz 0.8.x
-     Epoz allows you to edit Zope- or Plone-objects with a wysiwyg-editor.
-     http://mjablonski.zope.de/Epoz
  
 =============================================================================== 
  
@@ -162,7 +87,7 @@ Installing Plone manually, step by step instructions.
  
 1. Download and install Zope 
  
-  Install Zope and start it.  Check it's running.
+  Install Zope and start it. Check that it's running.
  
   ***************************************************************************** 
   * If you want to run Plone on FreeBSD, you'll need to up the thread stack   *
@@ -207,7 +132,7 @@ Installing Plone manually, step by step instructions.
  
    Unpack the Plone tarball 
  
-   Like the CMF tarball, the results will be a directory named CMFPlone-xxxx where 
+   The results will be a directory named CMFPlone-xxxx where 
    xxxx is the version. This should contain the following subdirectories: 
  
    Archetypes
@@ -229,8 +154,9 @@ Installing Plone manually, step by step instructions.
    PortalTransforms
    validation 
 
-   As with the CMF subdirectories, move (or symlink) each of these subdirectories 
-   into your $INSTANCE_HOME/Products directory. 
+   Move (or symlink) each of these subdirectories into your 
+   $INSTANCE_HOME/Products 
+   directory. If it does not exist, create it.
  
   ***************************************************************************** 
   * Note that each of these is a Product in its own right and *must* be       * 
@@ -249,11 +175,18 @@ Installing Plone manually, step by step instructions.
     2) "Plone Site" as one of the options in the "Add" dropdown in the ZMI Root 
        Folder 
  
-  Complete the install test by adding a Plone Site. A correctly installed Plone  
-  should ask you to complete a form, specifying the site's Id, Title, Description  
-  and where your members' user folder should be. Complete these fields and hit 
-  the "Add Plone Site" button. After a short while, you should be looking at a 
-  basic Plone site containing the details you entered. 
+  Complete the install test by adding a Plone Site from the pulldown in the root
+  folder. 
+  
+  *****************************************************************************
+  * Make sure this is not done inside the Control Panel, but in the root of   *
+  * the Zope site.                                                            *
+  *****************************************************************************
+  
+  When you do this, it asks you to complete a form, specifying the site's Id,
+  Title, Description and where your members' user folder should be. Complete 
+  these fields and hit the "Add Plone Site" button. After a short while, you
+  should be looking at a basic Plone site containing the details you entered. 
  
 ------------------------------------------------------------------------------- 
  
@@ -273,3 +206,4 @@ Have fun, and don't forget to report any bugs or inconsistencies in the
 Plone Collector (use the ErrorReporting product!): http://plone.org/collector 
  
 Thank you for using Plone!
+

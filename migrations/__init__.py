@@ -72,19 +72,19 @@ def registerMigrations():
     MigrationTool.registerUpgradePath('2.0-final',
                                       '2.0.1',
                                       v2.final_two01.twozeroone)
-    
+
     MigrationTool.registerUpgradePath('2.0.1',
                                       '2.0.2',
                                       null)
-    
+
     MigrationTool.registerUpgradePath('2.0.2',
                                       '2.0.3',
                                       null)
-                                      
+
     MigrationTool.registerUpgradePath('2.0.3',
                                       '2.0.4',
                                       null)
-                                      
+
     MigrationTool.registerUpgradePath('2.0.4',
                                       '2.0.5-rc1',
                                       null)
@@ -99,4 +99,4 @@ def registerMigrations():
 
     MigrationTool.registerUpgradePath('2.0.5',
                                       'trunk (SVN/UNRELEASED)',
-                                      v2_1.betas.two0x_beta1)
+                                      v2_1.alphas.two05_alpha1)

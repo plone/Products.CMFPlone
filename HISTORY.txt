@@ -2,7 +2,82 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.1-beta1 - (TBA) - (Unreleased)
+Plone 2.1 - (TBA) - (Unreleased)
+
+    - Fixed wrong i18n output encoding when create member area. We must set
+      correct 'content-type' header to make PTS work when call translate.
+      [panjunyong]
+
+    - Fixed PLIP16 integration to make it works with all content types, not
+      limited to Plone Folder.
+      [panjunyong]
+
+    - Added a charset header in sendto_template to make it work with 
+      PlasslessTranslationService. Previous sento_template didn't work with 
+      Chinese at least.
+      [panjunyong]
+
+    - Members can be searched by group in folder_local_role and 
+      member_search_form now.
+      [panjunyong]
+
+    - Moved the setting of login_time and last_login_time out of the
+      (not always reached) login_success.pt and login_password.pt templates
+      and into the (always executed) logged_in.py script. [rafrombrc]
+
+    - Permission settings were not being correctly copied to temp
+      folder because we were using 'self' instead of 'intended_parent'
+      for looking up permission roles, thus looking them in the factory
+      tool instead of the target container.
+      [dreamcatcher]
+
+    - Fixed a long-standing visual styling bug of the 'hr' element, it used
+      to only work properly with regards to colors/size in IE, now it works
+      in standards-compliant browsers too.
+      [limi]
+
+    - Added convenience ID for use in CSS - #portal-header - useful for background
+      images in the portal header, for instance.
+      [limi]
+
+    - Removed deprecated generateId script. We use generateUniqueId.
+      [stefan]
+
+    - Added isRightToLeft utility Python Script which provides a fallback value if
+      PTS is not installed or of the wrong version.
+      [stefan]
+
+    - Merged in RTL support - Plone now correctly flips all the graphic
+      elements and CSS declarations when using a right-to-left language like
+      Arabic or Hebrew.
+      [limi]
+
+    - Undid Jim's earlier change to the way the body tag is computed. It's
+      now back to the original behaviour, with section-<section> class on
+      the body tag.
+      [limi]
+
+    - Fixed several potentially unsafe uses of acl_users.getUserById().
+      [stefan]
+
+    - Intergrated PLIP16. It is now possible to stop acquisition of local roles
+      in a Plone Folder and change the roles of already assigned users/groups.
+      Many thanks to: ender, MrTopf, hazmat and pjgrizel.
+      [jladage]
+
+    - Plone now supports/requires GRUF 3.1.1. Thanks to pjgrizel for the patches.
+      [jladage]
+
+    - Fixed http://plone.org/collector/3641 - validate_start_end_date chopped
+      off the AM/PM value when saving Events.
+      [stefan]
+
+    - Removed the dependency on Formulator as well as FormTool and NavigationTool.
+      [stefan]
+
+    - It was impossible to create an item named 'index_html' in the portal
+      root or inside a folder via WebDAV. Added a functional doctest for it.
+      [dreamcatcher]
 
     - Removed headingFontBaseSize from base_properties and plone.css.dtml
       because it doesn't actually work and cost/benefit of implementation is too
@@ -13,11 +88,11 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
       in another node
       [elvix]
 
-    - Added Collapse/Expand-form-section javascript for future use. Usage described
-      in plone_javascripts.js
+    - Added Collapse/Expand-form-section javascript for future
+      use. Usage described in plone_javascripts.js
       [elvix]
 
-    - check_id now accepts an additional 'contained_by' argument, allowing to 
+    - check_id now accepts an additional 'contained_by' argument, allowing to
       disambiguate the target folder in cases where using the acquisition
       parent would yield the wrong results.
       [gkirk]
@@ -25,7 +100,7 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
     - Consolidated all monkey patches in the 'patches' sub-package.
       [stefan]
 
-    - Changed CatalogTool.catalog_object() and CatalogTool.reindexObject() to 
+    - Changed CatalogTool.catalog_object() and CatalogTool.reindexObject() to
       support the new update_metadata protocol (Zope > 2.6.2). An optional
       'update_metadata' argument controls whether the object's metadata record
       is updated while cataloging. It defaults to yes.
@@ -35,8 +110,8 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
       [tiran]
 
     - SearchableText, Title, and Description now use TextIndexNG2 if installed.
-      All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is 
-      not installed. Note that in Plone 2.0 Title and Description used to be plain 
+      All three indexes fall back to ZCTextIndex if the TextIndexNG2 product is
+      not installed. Note that in Plone 2.0 Title and Description used to be plain
       TextIndexes.
       [ajung]
 
@@ -45,12 +120,12 @@ Plone 2.1-beta1 - (TBA) - (Unreleased)
       start/end dates of Events.
       [ajung]
 
-    - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it 
+    - toLocalizedTime() replaced toPortalTime(). However this is NOT the way it
       should be and will be revised. See http://plone.org/collector/2461.
       [db] [batlogg]
 
-    - getObjSize() now accepts second (optional) size argument to allow formatting
-      of arbitrary sizes.
+    - getObjSize() now accepts second (optional) size argument to
+      allow formatting of arbitrary sizes.
       [andym]
 
 Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
@@ -83,11 +158,11 @@ Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
       forms.
       [limi]
 
-    - Fixed http://plone.org/collector/3601 - Cancel in password_form 
+    - Fixed http://plone.org/collector/3601 - Cancel in password_form
       redirected to the wrong page. Thanks to Varun for the patch.
       [stefan]
 
-    - Fixed http://plone.org/collector/3599 - Cancel in personalize_form 
+    - Fixed http://plone.org/collector/3599 - Cancel in personalize_form
       redirected to the wrong page. Thanks to Varun for the patch.
       [stefan]
 

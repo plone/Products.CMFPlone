@@ -9,15 +9,22 @@
 <body>
 
 <div metal:fill-slot="prefs_configlet_main"
-     tal:define="errors options/state/getErrors;">
+     tal:define="errors python:request.get('errors', {});
+                 obj python:getattr(here.portal_properties, request.get('attr',''))">
 
-    <h1 title="title"
-        i18n:attributes="title"
-        tal:attributes="title string:heading_${request/attr}">title</h1>
+    <h1 tal:define="heading_title string:heading_${request/attr}"
+        i18n:translate=""
+        tal:content="obj/title">title</h1>
 
-    <p title="title"
-       i18n:attributes="title"
-       tal:attributes="title string:description_${request/attr}">description</p>
+    <a href=""
+       class="link-parent"
+       tal:attributes="href string: $portal_url/plone_control_panel"
+       i18n:translate="label_up_to_plone_setup">
+    Up to Plone Setup
+    </a>
+
+    <p tal:define="heading_description string:description_${request/attr}"
+       tal:content="python:here.translate(heading_description)">description</p>
 
     <form action=""
           name="reconfig"
@@ -31,12 +38,10 @@
 
             <legend i18n:translate="legend_plone_details">Plone Details</legend>
 
-            <tal:block define="global obj python:getattr(here.portal_properties, request.get('attr',''))" />
- 
             <div class="field"
                  tal:repeat="id python:obj.propertyIds()">
 
-                <label tal:content="id" />
+                <label i18n:translate="" tal:content="id" />
     
                 <input size="40"
                        tabindex=""
@@ -53,8 +58,15 @@
                        tal:condition="python:obj.getPropertyType(id)=='boolean'" />
     
                 <textarea tal:attributes="name id;"
-                          tal:condition="python:obj.getPropertyType(id) in ('text','utext','lines','ulines')"
+                          tal:condition="python:obj.getPropertyType(id) in ('utext','lines','ulines')"
+                          tal:content="python:'\n'.join(obj.getProperty(id))"
                 ><tal:block repeat="val python:obj.getProperty(id)"><tal:block replace="val" /></tal:block></textarea>
+
+
+                <textarea tal:attributes="name id;"
+                          tal:condition="python:obj.getPropertyType(id) in ('text', )"
+                          tal:content="python:obj.getProperty(id)"></textarea>
+
 
             </div>
 

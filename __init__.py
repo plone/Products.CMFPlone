@@ -109,17 +109,6 @@ def initialize(context):
     # Make base_hasattr importable TTW
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 
-    # Security declarations for Formulator components
-    ModuleSecurityInfo('Products.Formulator').declarePublic('StringField', 'EmailField')
-    ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
-
-    from Products.Formulator.StandardFields import StringField, EmailField
-    from Products.Formulator.Form import FormValidationError, BasicForm
-    allow_class(StringField)
-    allow_class(EmailField)
-    allow_class(FormValidationError)
-    allow_class(BasicForm)
-
     # Setup migrations
     import migrations
     migrations.executeMigrations()
@@ -161,8 +150,8 @@ def initialize(context):
     from Products.CMFCore import CachingPolicyManager
 
     # Plone tools
-    import PloneTool, NavigationTool, FactoryTool
-    import FormTool, InterfaceTool, MigrationTool, PloneControlPanel
+    import PloneTool, FactoryTool
+    import InterfaceTool, MigrationTool, PloneControlPanel
     import MembershipTool, WorkflowTool, URLTool, MetadataTool
     import RegistrationTool, MemberDataTool, SyndicationTool
     import PropertiesTool, ActionsTool, TypesTool, UndoTool
@@ -175,9 +164,7 @@ def initialize(context):
               PloneTool.PloneTool,
               WorkflowTool.WorkflowTool,
               CachingPolicyManager.CachingPolicyManager,
-              NavigationTool.NavigationTool,
               FactoryTool.FactoryTool,
-              FormTool.FormTool,
               PropertiesTool.PropertiesTool,
               MigrationTool.MigrationTool,
               InterfaceTool.InterfaceTool,

@@ -15,26 +15,6 @@ except ImportError:
 
 REQUEST=context.REQUEST
 
-start_date_year = REQUEST.get('start_date_year',None)
-if start_date_year:
-    start_date_month = REQUEST.get('start_date_month',None)
-    start_date_day = REQUEST.get('start_date_day',None)
-    start_date_hour = REQUEST.get('start_date_hour',None)
-    start_date_minute = REQUEST.get('start_date_minute',None)
-
-    if start_date_month and start_date_day and start_date_hour and start_date_minute:
-         start_date='%s-%s-%s %s:%s'%(start_date_year,start_date_month,start_date_day,start_date_hour,start_date_minute)
-
-end_date_year = REQUEST.get('end_date_year', None)
-if end_date_year:
-    end_date_month = REQUEST.get('end_date_month',None)
-    end_date_day = REQUEST.get('end_date_day', None)
-    end_date_hour = REQUEST.get('end_date_hour', None)
-    end_date_minute = REQUEST.get('end_date_minute',None)
-
-    if end_date_month and end_date_day and end_date_hour and end_date_minute:
-         end_date='%s-%s-%s %s:%s'%(end_date_year,end_date_month,end_date_day,end_date_hour,end_date_minute)
-
 if not start_date:
      state.setError('start_date', 'Input is required but not given.', 'input_required')
 

@@ -48,7 +48,6 @@ from Products.CMFPlone.CatalogTool import CatalogTool
 from Products.CMFPlone.CustomizationPolicy import DefaultCustomizationPolicy
 from Products.CMFPlone.DiscussionTool import DiscussionTool
 from Products.CMFPlone.FactoryTool import FactoryTool, TempFolder
-from Products.CMFPlone.FormTool import FormTool, FormValidator, CMFForm
 from Products.CMFPlone.GroupDataTool import GroupDataTool
 from Products.CMFPlone.GroupsTool import GroupsTool
 from Products.CMFPlone.InterfaceTool import InterfaceTool
@@ -57,7 +56,6 @@ from Products.CMFPlone.MemberDataTool import MemberDataTool, MemberData
 from Products.CMFPlone.MembershipTool import MembershipTool
 from Products.CMFPlone.MetadataTool import MetadataTool
 from Products.CMFPlone.MigrationTool import MigrationTool
-from Products.CMFPlone.NavigationTool import NavigationTool, Redirector
 from Products.CMFPlone.PloneBatch import Batch
 from Products.CMFPlone.PloneContent import PloneContent
 from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfiglet
@@ -193,7 +191,6 @@ testClasses = [
     (DefaultCustomizationPolicy, ()),
     (DiscussionTool, ()),
     (FactoryTool, ()), (TempFolder, ()),
-    (FormTool, ()), (FormValidator, ()), (CMFForm, ()),
     (GroupDataTool, ()),
     (GroupsTool, ()),
     (InterfaceTool, ()),
@@ -202,7 +199,6 @@ testClasses = [
     (MembershipTool, ()),
     (MetadataTool, ()),
     (MigrationTool, ()),
-    (NavigationTool, ()), (Redirector, ()),
     # (Batch, ()), # has no __implements__
     (PloneContent, ()),
     (PloneControlPanel, ()), (PloneConfiglet, ()),

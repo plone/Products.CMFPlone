@@ -13,7 +13,7 @@
                 Batch python:modules['Products.CMFPlone'].Batch;
                 b_start request/b_start | python:0;
                 b_size python:20;
-                portal_roles mtool/getPortalRoles;">
+                portal_roles here/getGlobalPortalRoles;">
 
 <div class="configlet">
 
@@ -86,7 +86,8 @@
             <table class="listing" summary="Select roles for each group" i18n:attributes="summary">
                    
                 <tr>
-                    <th colspan="6">
+                    <th colspan="6"
+                        tal:attributes="colspan python:len(portal_roles)+2">
                         <span tal:omit-tag="" i18n:translate="label_group_search">Group Search</span>:
                         <input class="quickSearch"
                                tabindex=""

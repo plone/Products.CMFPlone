@@ -19,7 +19,9 @@ for group in groups:
     roles=REQUEST['group_' + group]
     groupstool.editGroup(group, roles=roles, groups=())
     portal_status_message = 'Changes saved.'
+
 delete=REQUEST.get('delete',[])
+
 if delete:
     groupstool.removeGroups(delete)
 

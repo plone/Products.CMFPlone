@@ -13,8 +13,8 @@
                 member python:mtool.getMemberById(userid);
                 mdata here/portal_memberdata;
                 errors python:request.get('errors', {});
-		        searchonly string:groups;
-		        takeaction string:prefs_user_membership_edit;">
+                searchonly string:groups;
+                takeaction string:prefs_user_membership_edit;">
 
 <div class="configlet">
 
@@ -46,7 +46,6 @@
 
         <h1 i18n:translate="heading_group_memberships_for">Group Memberships for <span tal:replace="string:${member/getUserName}" i18n:name="username"/></h1>
     
-    	
         <a href=""
            class="link-parent"
            tal:attributes="href string: $portal_url/prefs_users_overview"
@@ -62,13 +61,13 @@
     
     	  <metal:block metal:fill-slot="actions" >
     	    <input class="context"
-                       tabindex=""                                 
-                   	   type="submit"                               
-                   	   name="prefs_user_membership_edit:method"
-                   	   value="Add user to selected groups"                     
-    	       	   tal:condition="batch" 
-                   	   tal:attributes="tabindex tabindex/next;"    
-                   	   i18n:attributes="value" />
+                          tabindex=""                                 
+                          type="submit"                               
+                          name="prefs_user_membership_edit:method"
+                          value="Add user to selected groups"                     
+    	       	          tal:condition="batch" 
+                          tal:attributes="tabindex tabindex/next;"    
+                          i18n:attributes="value" />
     	  </metal:block>
     
     	  <metal:block metal:fill-slot="removables">
@@ -76,10 +75,10 @@
     	<h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
     	<table class="listing" summary="Group Memberships Listing">
     
-                <tr>
-    	      <th i18n:translate="listingheader_group_name">Group name</th>
-    	      <th i18n:translate="listingheader_group_remove">Remove Group</th>
-                </tr>
+          <tr>
+              <th i18n:translate="listingheader_group_name">Group name</th>
+              <th i18n:translate="listingheader_group_remove">Remove Group</th>
+          </tr>
     
     	  <tr tal:repeat="groupid member/getGroups" class="odd">
     	      <tal:block tal:define="group python:gtool.getGroupById(groupid);
@@ -87,8 +86,8 @@
                 <td>
                     <a href="prefs_group_details"
                        tal:attributes="href string:prefs_group_details?groupname=$groupname">
-    		    <tal:block replace="structure portal/group.gif"/>&nbsp;<span
-                             tal:replace="groupname">group name</span>
+    	            <tal:block replace="structure portal/group.gif"/>&nbsp;<span
+                                 tal:replace="groupname">group name</span>
                     </a>
                 </td>
     
@@ -103,14 +102,15 @@
             </tr>
     
             </table>
-    
-    	    <input class="destructive"
-    	           type="submit"
-    	           name="prefs_user_membership_edit:method"
-                       value="Remove selected groups"
-                       i18n:attributes="value" />
-    	  </metal:block>
-    	</div>
+            <p tal:condition="not:member/getGroups">This user does not belong to any group.</p>
+            <input class="destructive"
+                   type="submit"
+                   name="prefs_user_membership_edit:method"
+                   value="Remove selected groups"
+                   i18n:attributes="value" 
+                   tal:condition="member/getGroups" />
+          </metal:block>
+        </div>
     </div>
 
 </div>

@@ -38,6 +38,7 @@ if ti is not None:
 
 variables = {'send_from_address' : REQUEST.send_from_address,
              'send_to_address'   : REQUEST.send_to_address,
+             'subject'           : context.Title(),
              'url'               : url,
              'title'             : context.Title(),
              'description'       : context.Description(),

@@ -13,16 +13,17 @@ from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
+from webdav.NullResource import NullResource
 from types import StringType
 from DocumentTemplate.sequence import sort
 
-# this import can change with Zope 2.7 to
+# This import can change in Zope 2.7
 try:
     from OFS.IOrderSupport import IOrderedContainer as IZopeOrderedContainer
     hasZopeOrderedSupport=1
 except ImportError:
     hasZopeOrderedSupport=0
-# atm its safer defining an own
+# ATM it's safer to define our own
 from interfaces.OrderedContainer import IOrderedContainer
 
 from OFS.ObjectManager import REPLACEABLE
@@ -88,10 +89,10 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 
 class OrderedContainer(Folder):
     """Folder with subobject ordering support"""
-  
+
     if hasZopeOrderedSupport:
-        # got the IOrderedContainer interface from zope 2.7, too
-        # make shure this implementation fullfilles both interfaces
+        # Got the IOrderedContainer interface from Zope 2.7 too,
+        # make sure this implementation fullfills both interfaces
         __implements__  = (IOrderedContainer, IZopeOrderedContainer)
     else:
         __implements__  = (IOrderedContainer,)
@@ -111,9 +112,9 @@ class OrderedContainer(Folder):
         metadata.insert(position, obj_meta)
         self._objects = tuple(metadata)
 
-    # here the implementing of IOrderedContainer starts
-    # if plone sometime depends on zope 2.7 it should be replaced by mixing in
-    # the 2.7 specific class OSF.OrderedContainer.OrderedContainer
+    # Here the implementation of IOrderedContainer starts
+    # Once Plone depends on Zope 2.7 this should be replaced by mixing in
+    # the 2.7 specific class OFS.OrderedContainer.OrderedContainer
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsByDelta')
     def moveObjectsByDelta(self, ids, delta, subset_ids=None):
@@ -124,6 +125,7 @@ class OrderedContainer(Folder):
         min_position = 0
         objects = list(self._objects)
         if subset_ids == None:
+            # XXX: Plone
             # OLD: subset_ids = [ obj['id'] for obj in objects ]
             subset_ids = self.getCMFObjectsSubsetIds(objects)
         else:
@@ -228,10 +230,10 @@ class OrderedContainer(Folder):
             ids.reverse()
         return self.moveObjectsByDelta( ids, -len(self._objects) )
 
-    # here the implementing of IOrderedContainer ends
+    # Here the implementation of IOrderedContainer ends
 
     def manage_renameObject(self, id, new_id, REQUEST=None):
-        " "
+        """Rename a particular sub-object"""
         objidx = self.getObjectPosition(id)
         method = OrderedContainer.inheritedAttribute('manage_renameObject')
         result = method(self, id, new_id, REQUEST)
@@ -276,6 +278,13 @@ class BasePloneFolder( SkinnedFolder, DefaultDublinCoreImpl ):
 
     def index_html(self):
         """ Acquire if not present. """
+        request = getattr(self, 'REQUEST', None)
+        if request and request.has_key('REQUEST_METHOD'):
+            if (request.maybe_webdav_client and
+                request['REQUEST_METHOD'] in  ['PUT']):
+                # Very likely a WebDAV client trying to create something
+                return ReplaceableWrapper(NullResource(self, 'index_html'))
+        # Acquire from parent
         _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
         return ReplaceableWrapper(aq_base(_target).__of__(self))
 

@@ -56,7 +56,7 @@ class TestDAVMetadata(PloneTestCase.PloneTestCase):
         # PUT a document
         new = NullResource(self.folder, 'doc', request).__of__(self.folder)
         new.PUT(request, request.RESPONSE)
-        
+
     def testDocumentMetadata(self):
         doc = self.folder.doc
         self.assertEqual(doc.Title(), 'Foo')
@@ -74,9 +74,15 @@ class TestDAVMetadata(PloneTestCase.PloneTestCase):
 
 def test_suite():
     from unittest import TestSuite, makeSuite
+    from Testing.ZopeTestCase.doctest import FunctionalDocFileSuite
+
     suite = TestSuite()
     suite.addTest(makeSuite(TestDAVProperties))
     suite.addTest(makeSuite(TestDAVMetadata))
+
+    suite.addTest(FunctionalDocFileSuite('dav/index_html_put.txt',
+                                package='Products.CMFPlone.tests',
+                                test_class=PloneTestCase.FunctionalTestCase))
     return suite
 
 if __name__ == '__main__':

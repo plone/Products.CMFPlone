@@ -33,13 +33,13 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups.groupWorkspacesCreationFlag = 0
 
     def testAddGroup(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.assertEqual(self.groups.listGroupIds(), ['foo'])
         # No group workspace should have been created
         self.failIf(hasattr(aq_base(self.portal), self.groups.getGroupWorkspacesFolderId()))
 
     def testGetGroupById(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         g = self.groups.getGroupById('foo')
         self.failIfEqual(g, None)
 
@@ -48,96 +48,108 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(g, None)
 
     def testGroupByIdIsWrapped(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         g = self.groups.getGroupById('foo')
         self.assertEqual(g.__class__.__name__, 'GroupData')
-        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
     def testEditGroup(self):
-        self.groups.addGroup('foo', '', [], [])
-        self.groups.editGroup('foo', 'secret', ['Reviewer'], ['foo.com'])
+        self.groups.addGroup('foo', )
+        self.groups.editGroup('foo', roles = ['Reviewer'])  #, ['foo.com']) => no domains on groups
         g = self.groups.getGroupById('foo')
         self.assertEqual(sortTuple(g.getRoles()), ('Authenticated', 'Reviewer'))
-        self.assertEqual(g.getDomains(), ('foo.com',))
-        self.assertEqual(g.getGroup()._getPassword(), 'secret')
+        ##self.assertEqual(g.getDomains(), ('foo.com',))                  # No domains on groups
+        ##self.assertEqual(g.getGroup()._getPassword(), 'secret')         # No password for groups
 
     def testEditBadGroup(self):
         # Error type depends on the user folder...
-        self.assertRaises(KeyError, self.groups.editGroup, 'foo', '', [], [])
+        try:
+            self.groups.editGroup('foo', [], [])
+        except KeyError:
+            pass        # Ok, this is the wanted behaviour
+        except ValueError:
+            pass        # Ok, this is the wanted behaviour
+        else:
+            self.fail("Should have raised KeyError or ValueError")
 
     def testRemoveGroups(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.groups.removeGroups(['foo'])
         self.assertEqual(len(self.groups.listGroupIds()), 0)
 
     def testListGroupIds(self):
-        self.groups.addGroup('foo', '', [], [])
-        self.groups.addGroup('bar', '', [], [])
-        self.assertEqual(self.groups.listGroupIds(), ['bar', 'foo'])
+        self.groups.addGroup('foo', [], [])
+        self.groups.addGroup('bar', [], [])
+        grps = self.groups.listGroupIds()
+        grps.sort()
+        self.assertEqual(grps, ['bar', 'foo'])
 
     def testGetGroupsByUserId(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.acl_users._updateUser(default_user, groups=['foo'])
         gs = self.groups.getGroupsByUserId(default_user)
         self.assertEqual(gs[0].getId(), self.prefix + 'foo')
 
     def testGroupsByUserIdAreWrapped(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.acl_users._updateUser(default_user, groups=['foo'])
         gs = self.groups.getGroupsByUserId(default_user)
         self.assertEqual(gs[0].__class__.__name__, 'GroupData')
-        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
     def testListGroups(self):
-        self.groups.addGroup('foo', '', [], [])
-        self.groups.addGroup('bar', '', [], [])
+        self.groups.addGroup('foo', [], [])
+        self.groups.addGroup('bar', [], [])
         gs = self.groups.listGroups()
         self.assertEqual(gs[0].getId(), self.prefix + 'bar')
         self.assertEqual(gs[1].getId(), self.prefix + 'foo')
 
     def testListedGroupsAreWrapped(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         gs = self.groups.listGroups()
         self.assertEqual(gs[0].__class__.__name__, 'GroupData')
-        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
-    def testGetPureUserNames(self):
-        self.groups.addGroup('foo', '', [], [])
-        self.assertEqual(len(self.acl_users.getUserNames()), 2)
-        self.assertEqual(len(self.groups.getPureUserNames()), 1)
+    # This should not be in a groups tool!
+    ##def testGetPureUserNames(self):
+    ##    self.groups.addGroup('foo', [], [])
+    ##    self.assertEqual(len(self.acl_users.getUserNames()), 2)
+    ##    self.assertEqual(len(self.groups.getPureUserNames()), 1)
 
-    def testGetPureUsers(self):
-        self.groups.addGroup('foo', '', [], [])
-        self.assertEqual(len(self.acl_users.getUsers()), 2)
-        self.assertEqual(len(self.groups.getPureUsers()), 1)
+    # This should not be in a groups tool!
+    ##def testGetPureUsers(self):
+    ##    self.groups.addGroup('foo', [], [])
+    ##    self.assertEqual(len(self.acl_users.getUsers()), 2)
+    ##    self.assertEqual(len(self.groups.getPureUsers()), 1)
 
-    def testPureUsersAreNotWrapped(self):
-        self.groups.addGroup('foo', '', [], [])
-        us = self.groups.getPureUsers()
-        self.assertEqual(us[0].__class__.__name__, 'GRUFUser')
-        self.assertEqual(us[0].aq_parent.__class__.__name__, 'GroupUserFolder')
+    # This should not be in a groups tool!
+    ##def testPureUsersAreNotWrapped(self):
+    ##    self.groups.addGroup('foo', [], [])
+    ##    us = self.groups.getPureUsers()
+    ##    self.assertEqual(us[0].__class__.__name__, 'GRUFGroup')
+    ##    self.assertEqual(us[0].aq_parent.__class__.__name__, 'GroupUserFolder')
 
     def testSetGroupOwnership(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.folder.invokeFactory('Document', 'doc')
         doc = self.folder.doc
         g = self.groups.getGroupById('foo')
         self.groups.setGroupOwnership(g, doc)
-        self.assertEqual(doc.Creator(), self.prefix + 'foo')
+        self.assertEqual(doc.getOwnerTuple()[1], self.prefix + 'foo')
         self.assertEqual(doc.get_local_roles_for_userid(self.prefix + 'foo'), ('Owner',))
         # XXX: Initial creator still has Owner role. Is this a bug?
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
 
     def testWrapGroup(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         g = self.acl_users.getGroup(self.prefix + 'foo')
-        self.assertEqual(g.__class__.__name__, 'GRUFUser')
+        self.assertEqual(g.__class__.__name__, 'GRUFGroup')
         g = self.groups.wrapGroup(g)
         self.assertEqual(g.__class__.__name__, 'GroupData')
-        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFUser')
+        self.assertEqual(g.aq_parent.__class__.__name__, 'GRUFGroup')
         self.assertEqual(g.aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
 
 
@@ -155,20 +167,20 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         self.failIfEqual(self.groups.getGroupWorkspacesFolder(), None)
 
     def testCreateGrouparea(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.groups.toggleGroupWorkspacesCreation()
         # XXX: Requires typestool
         self.groups.createGrouparea('foo')
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
     def testNotCreateGrouparea(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         # Creation flag is False
         self.groups.createGrouparea('foo')
         self.failIf(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
     def testCreateGroupareaCreatesGroupWorkspacesFolder(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.groups.toggleGroupWorkspacesCreation()
         self.portal._delObject(self.groups.getGroupWorkspacesFolderId())
         # XXX: Members cannot create folders in the portal root
@@ -178,22 +190,22 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
 
     def testAddGroupCreatesGrouparea(self):
         self.groups.toggleGroupWorkspacesCreation()
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
     def testGetGroupareaFolder(self):
         self.groups.toggleGroupWorkspacesCreation()
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.failIfEqual(self.groups.getGroupareaFolder('foo'), None)
 
     def testGetGroupareaURL(self):
         self.groups.toggleGroupWorkspacesCreation()
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.failIfEqual(self.groups.getGroupareaURL('foo'), None)
 
     def testGetGroupareaFolderPermission(self):
         self.groups.toggleGroupWorkspacesCreation()
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.acl_users._updateUser(default_user, groups=['foo'])
         user = self.acl_users.getUser(default_user)
         self.login()   # !!! Fixed in Zope 2.6.2
@@ -202,32 +214,32 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
     #def testGetGroupareaFolderForAuthenticated(self):
     #    # XXX: ERROR!
     #    self.groups.toggleGroupWorkspacesCreation()
-    #    self.groups.addGroup('foo', '', [], [])
+    #    self.groups.addGroup('foo', [], [])
     #    self.acl_users._updateUser(default_user, groups=['foo'])
     #    self.login(default_user)
     #    self.failIfEqual(self.groups.getGroupareaFolder(), None)
 
     def testAddGroup(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.assertEqual(self.groups.listGroupIds(), ['foo'])
         # No group workspace should have been created
         self.failIf(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
     def testAddGroupWithWorkspace(self):
         self.groups.toggleGroupWorkspacesCreation()
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.assertEqual(self.groups.listGroupIds(), ['foo'])
         # A group workspace should have been created
         self.failUnless(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
 
     def testRemoveGroups(self):
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.groups.removeGroups(['foo'])
         self.assertEqual(len(self.groups.listGroupIds()), 0)
 
     def testRemoveGroupsWithWorkspace(self):
         self.groups.toggleGroupWorkspacesCreation()
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.groups.removeGroups(['foo'])
         self.assertEqual(len(self.groups.listGroupIds()), 0)
         # Group workspace should have been removed
@@ -235,7 +247,7 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
 
     def testRemoveGroupsKeepingWorkspaces(self):
         self.groups.toggleGroupWorkspacesCreation()
-        self.groups.addGroup('foo', '', [], [])
+        self.groups.addGroup('foo', [], [])
         self.groups.removeGroups(['foo'], keep_workspaces=1)
         self.assertEqual(len(self.groups.listGroupIds()), 0)
         # Group workspace should still be present

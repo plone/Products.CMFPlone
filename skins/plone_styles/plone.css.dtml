@@ -69,9 +69,11 @@ p img {
 }
 
 hr {
+    border: 0;
     height: &dtml-borderWidth;;
     color: &dtml-globalBorderColor;;
-    background-color: transparent;
+    background-color: &dtml-globalBorderColor;;
+    margin: 0.5em 0 1em 0;
 }
 
 
@@ -450,6 +452,11 @@ del {
     padding-right: 2em;
     text-transform: &dtml-textTransform;;
 }
+
+.breadcrumbSeparator {
+    font-size: 120%;
+}
+
 .addFavorite {
     vertical-align: bottom;
 }
@@ -971,6 +978,17 @@ input.searchButton {
 }
 .listing img {
     vertical-align: middle;
+}
+
+/* XXX FIXME: rewrite these tables, need vertical/horizontal mode */
+
+.listing th.vertical {
+    padding: 0.5em;
+}
+
+.listing td.vertical {
+    border-top: 1px solid #8cacbb; 
+    padding: 0.5em;
 }
 
 ul.configlets {
@@ -1555,7 +1573,14 @@ ol.visualNoMarker {
    background-color: #feff82;
 }
 
+/* for greying out inherited roles */
+
+.noInheritedRoles {
+    color: #a0a0a0;
+}
+
 /* for highlighting current items, like the language or today in the calendar */
+
 .currentItem {
     border-collapse: collapse;
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;

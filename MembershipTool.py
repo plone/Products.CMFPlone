@@ -39,17 +39,19 @@ class MembershipTool(PloneBaseTool, BaseTool):
     #    in CMFCore.MembershipTool - but in Plone we are not so anal ;-)
     security.declareProtected(View, 'getPortalRoles')
 
-    def getAuthenticatedMember(self):
-        """ """
-        _user=self.REQUEST.get('_portaluser', None)
-        if _user: # sanity check the cached user against the current user
-            user_id = getSecurityManager().getUser().getId()
-            if not user_id == _user.getId():
-                _user = None
-        if _user is None:
-            _user = BaseTool.getAuthenticatedMember(self)
-            self.REQUEST.set('_portaluser', _user)
-        return _user
+    # XXX: Comment this out to see if we still need it.
+    # We don't want to set wrapped users into the request!
+    #def getAuthenticatedMember(self):
+    #    """ """
+    #    _user=self.REQUEST.get('_portaluser', None)
+    #    if _user: # sanity check the cached user against the current user
+    #        user_id = getSecurityManager().getUser().getId()
+    #        if not user_id == _user.getId():
+    #            _user = None
+    #    if _user is None:
+    #        _user = BaseTool.getAuthenticatedMember(self)
+    #        self.REQUEST.set('_portaluser', _user)
+    #    return _user
 
     def getPersonalPortrait(self, member_id = None, verifyPermission=0):
         """
@@ -154,6 +156,12 @@ class MembershipTool(PloneBaseTool, BaseTool):
                     'cannot get user for member area creation'
 
         ## get some translations
+
+        # before translation we must set right encodings in header to make PTS happy
+        properties = getToolByName(self, 'portal_properties')
+        charset = properties.site_properties.getProperty('default_charset', 'utf-8')
+        self.REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;charset=%s' % charset)
+
         member_folder_title = translate(
             'plone', 'title_member_folder',
             {'member': member_id}, self,
@@ -243,6 +251,10 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
     def listMembers(self):
         '''Gets the list of all members.
+        THIS METHOD MIGHT BE VERY EXPENSIVE ON LARGE USER FOLDERS AND MUST BE USED
+        WITH CARE! We plan to restrict its use in the future (ie. force large requests
+        to use searchForMembers instead of listMembers, so that it will not be
+        possible anymore to have a method returning several hundred of users :)
         '''
         uf = self.acl_users
         if hasattr(aq_base(uf), 'getPureUsers'): # GRUF
@@ -266,12 +278,13 @@ class MembershipTool(PloneBaseTool, BaseTool):
     def searchForMembers( self, REQUEST=None, **kw ):
         """
         searchForMembers(self, REQUEST=None, **kw) => normal or fast search method.
-
+        
         The following properties can be provided:
         - name
         - email
         - last_login_time
         - roles
+        - groupname
 
         This is an 'AND' request.
 
@@ -283,21 +296,27 @@ class MembershipTool(PloneBaseTool, BaseTool):
         this can return partial results. This may change in the future.
         """
         md = self.portal_memberdata
+        groups_tool = self.portal_groups
         if REQUEST:
             dict = REQUEST
         else:
             dict = kw
 
-        # Attributes retreiving & mangling
         name = dict.get('name', None)
         email = dict.get('email', None)
         roles = dict.get('roles', None)
         last_login_time = dict.get('last_login_time', None)
+        groupname = dict.get('groupname', '').strip()
         is_manager = self.checkPermission('Manage portal', self)
+
         if name:
             name = name.strip().lower()
+        if not name:
+            name = None
         if email:
             email = email.strip().lower()
+        if not email:
+            email = None
 
         # We want 'name' request to be handled properly with large user folders.
         # So we have to check both the fullname and loginname, without scanning all
@@ -307,7 +326,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         if name:
             # We first find in MemberDataTool users whose _full_ name match what we want.
             lst = md.searchMemberDataContents('fullname', name)
-            md_users = [ x['username'] for x in lst ]
+            md_users = [ x['username'] for x in lst]
 
             # Fast search management if the underlying acl_users support it.
             # This will allow us to retreive users by their _id_ (not name).
@@ -319,22 +338,41 @@ class MembershipTool(PloneBaseTool, BaseTool):
         # Now we have to merge both lists to get a nice users set.
         # This is possible only if both lists are filled (or we may miss users else).
         members = []
+        g_userids, g_members = [], []
+        
+        if groupname:
+            groups = groups_tool.searchForGroups(title=groupname) + \
+                     groups_tool.searchForGroups(name=groupname)
+
+            for group in groups:
+                for member in group.getGroupMembers():
+                    if member not in g_members:
+                        g_members.append(member)
+            g_userids = map(lambda x: x.getMemberId(), g_members)
+        if groupname and not g_userids:
+            return []
+
         if md_users is not None and uf_users is not None:
             names_checked = 1
             wrap = self.wrapUser
             getUser = acl_users.getUser
             for userid in md_users:
-                members.append(wrap(getUser(userid)))
+                if not g_userids or userid in g_userids:
+                    members.append(wrap(getUser(userid)))
             for userid in uf_users:
                 if userid in md_users:
                     continue             # Kill dupes
-                members.append(wrap(getUser(userid)))
+                if not g_userids or userid in g_userids:
+                    members.append(wrap(getUser(userid)))
 
             # Optimization trick
             if not email and \
                    not roles and \
                    not last_login_time:
                 return members
+        elif groupname:
+            members = g_members
+            names_checked = 0
         else:
             # If the lists are not available, we just stupidly get the members list
             members = self.listMembers()
@@ -414,7 +452,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
             if domains is None:
                 domains = []
-            user = acl_users.getUserById(member.getUserName())
+            user = acl_users.getUserById(member.getUserName(), None)
             # we must change the users password trough grufs changepassword
             # to keep her  group settings
             if hasattr(user, 'changePassword'):

@@ -8,11 +8,12 @@ from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
-from Products.CMFCore.CatalogTool import IndexableObjectWrapper
+from Products.CMFCore.CatalogTool import IndexableObjectWrapper, _mergedLocalRoles
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 from Products.ZCatalog.ZCatalog import ZCatalog
 from AccessControl.Permissions import manage_zcatalog_entries as ManageZCatalogEntries
+from AccessControl.PermissionRole import rolesForPermissionOn
 
 from Acquisition import aq_base
 
@@ -23,6 +24,33 @@ try:
     txng_version = 2
 except ImportError:
     txng_version = 0
+
+
+class IndexableObjectWrapper(IndexableObjectWrapper):
+    """
+    We override CMF's IndexableObjectWrapper class to use GRUF's custom
+    allowedRolesAndUsers method if available.
+    """
+    def allowedRolesAndUsers(self):
+        """
+        Return a list of roles and users with View permission.
+        Used by PortalCatalog to filter out items you're not allowed to see.
+        """
+        ob = self.__ob
+        allowed = {}
+        for r in rolesForPermissionOn('View', ob):
+            allowed[r] = 1
+        try:
+            localroles = self.acl_users._getAllLocalRoles(self)
+        except AttributeError:
+            localroles = _mergedLocalRoles(ob)
+        for user, roles in localroles.items():
+            for role in roles:
+                if allowed.has_key(role):
+                    allowed['user:' + user] = 1
+        if allowed.has_key('Owner'):
+            del allowed['Owner']
+        return list(allowed.keys())
 
 
 class CatalogTool(PloneBaseTool, BaseTool):

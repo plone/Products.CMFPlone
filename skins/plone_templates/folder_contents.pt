@@ -66,7 +66,7 @@
                                  lock_tool portal/portal_lock|nothing;
                                  getInfoFor python:wtool.getInfoFor;
                                  iface_tool portal/portal_interface;
-                                 orderable_iface string:Products.CMFPlone.interfaces.OrderedContainer.IOrderedContainer;
+                                 orderable_iface string:OFS.IOrderSupport.IOrderedContainer;
                                  canModifyFolderContent python:checkPermission('Modify portal content', here);
                                  isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                                  nosortclass python:test(isOrderable, 'nosort', '')">

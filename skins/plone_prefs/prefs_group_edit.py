@@ -19,6 +19,7 @@ if addname:
 else:
     group=context.portal_groups.getGroupById(groupname)
     msg = 'Changes saved.'
+
 processed={}
 for id, property in context.portal_groupdata.propertyItems():
     processed[id]=REQUEST.get(id, None)

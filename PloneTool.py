@@ -7,7 +7,7 @@ import urlparse
 from zLOG import LOG, INFO, WARNING
 
 from Acquisition import aq_base, aq_inner, aq_parent
-from Products.CMFCore.utils import UniqueObject, getToolByName
+from Products.CMFCore.utils import UniqueObject
 from Products.CMFCore.utils import _checkPermission, \
      _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
@@ -15,6 +15,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
+from Products.CMFPlone.interfaces.Translatable import ITranslatable
 from Products.CMFPlone import ToolNames, transaction_note
 
 from OFS.SimpleItem import SimpleItem
@@ -37,9 +38,8 @@ except:
 def log(summary='', text='', log_level=INFO):
     LOG('Plone Debug', log_level, summary, text)
 
-EMAIL_RE = re.compile(r"^(\w&.+-]+!)*[\w&.+-]+@(([0-9a-z]([0-9a-z-]*[0-9a-z])?\.)+[a-z]{2,6}|([0-9]{1,3}\.){3}[0-9]{1,3})$", re.IGNORECASE)
-EMAIL_CUTOFF_RE = re.compile(r".*[\n\r][\n\r]") # used to find double new line (in any variant)
-
+from Products.SecureMailHost.SecureMailHost import EMAIL_RE
+from Products.SecureMailHost.SecureMailHost import EMAIL_CUTOFF_RE
 BAD_CHARS = re.compile(r'[^a-zA-Z0-9-_~,.$\(\)# ]').findall
 
 #XXX Remove this when we don't depend on python2.1 any longer, use email.Utils.getaddresses instead
@@ -51,13 +51,14 @@ def _getaddresses(fieldvalues):
     return a.addresslist
 
 class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
+    """Various utility methods."""
 
     id = 'plone_utils'
     meta_type= ToolNames.UtilsTool
     toolicon = 'skins/plone_images/site_icon.gif'
     security = ClassSecurityInfo()
     plone_tool = 1
-    field_prefix = 'field_' # Formulator prefixes for forms
+    field_prefix = 'field_' # Prefix for forms fields!?
 
     __implements__ = (PloneBaseTool.__implements__,
                       SimpleItem.__implements__, )
@@ -375,26 +376,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         portal = getToolByName(self, 'portal_url').getPortalObject()
         portal._v_skindata=(self.REQUEST, self.getSkinByName(skin_name), {} )
 
-    #XXX deprecated methods
-    security.declarePublic('getNextPageFor')
-    def getNextPageFor(self, context, action, status, **kwargs):
-        log( 'Plone Tool Deprecation', action + \
-             ' has called plone_utils.getNextPageFor()' + \
-             ' which has been deprecated. ' + \
-             'Use portal_navigation.getNextRequestFor() instead.', WARNING)
-
-        nav_tool=getToolByName(self, 'portal_navigation')
-        return nav_tool.getNextPageFor(context, action, status, **kwargs)
-
-    security.declarePublic('getNextRequestFor')
-    def getNextRequestFor(self, context, action, status, **kwargs):
-        log( 'Plone Tool Deprecation', action + \
-             ' has called plone_utils.getNextPageFor()' + \
-             ' which has been deprecated. ' + \
-             'Use portal_navigation.getNextRequestFor() instead.', WARNING)
-        nav_tool=getToolByName(self, 'portal_navigation')
-        return nav_tool.getNextRequestFor(context, action, status, **kwargs)
-
     security.declareProtected(CMFCorePermissions.ManagePortal,
                               'changeOwnershipOf')
     def changeOwnershipOf(self, object, owner, recursive=0):
@@ -548,6 +529,9 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                         result.append((user, roles, type, name))
                 if parent==portal:
                     cont=0
+		elif not self.isLocalRoleAcquired(parent):
+                    # role acq check here
+                    cont=0
                 else:
                     parent=parent.aq_parent
 
@@ -569,6 +553,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # now back to normal
 
         portal = getToolByName(self, 'portal_url').getPortalObject()
+        wftool = getToolByName(self, 'portal_workflow')
 
         # The list of ids where we look for default
         ids = {}
@@ -578,6 +563,25 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             for id in obj.objectIds():
                 ids[id] = 1
+
+        # Looking up translatable is done several places so we make a
+        # method for it.
+        def returnPage(obj, page):
+            # Only look up for untranslated folderish content,
+            # in translated containers we assume the container has default page
+            # in the correct language.
+            implemented = ITranslatable.isImplementedBy(obj)
+            if not implemented or implemented and not obj.isTranslation():
+                pageobj = getattr(obj,page,None)
+                if pageobj is not None and ITranslatable.isImplementedBy(pageobj):
+                    translation = pageobj.getTranslation()
+                    if translation is not None and \
+                       wftool.getInfoFor(pageobj, 'review_state') == wftool.getInfoFor(translation, 'review_state'):
+                        if ids.has_key(translation.getId()):
+                            return obj, [translation.getId()]
+                        else:
+                            return translation, ['view']
+            return obj, [page]
 
         # Look for default_page on the object
         pages = getattr(aq_base(obj), 'default_page', [])
@@ -589,7 +593,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         pages = filter(None, pages)
         for page in pages:
             if ids.has_key(page):
-                return obj, [page]
+                return returnPage(obj, page)
         # we look for the default_page in the portal and/or skins aswell.
         # Use path/to/template to reference an object or a skin.
         for page in pages:
@@ -599,13 +603,13 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         # Try the default sitewide default_page setting
         for page in portal.portal_properties.site_properties.getProperty('default_page', []):
             if ids.has_key(page):
-                return obj, [page]
+                return returnPage(obj, page)
 
         # No luck, let's look for hardcoded defaults
         default_pages = ['index_html', ]
         for page in default_pages:
             if ids.has_key(page):
-                return obj, [page]
+                return returnPage(obj, page)
 
         # what if the page isnt found?
         try:
@@ -622,5 +626,33 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             % obj.absolute_url())
             return obj, ['folder_listing']
 
+    security.declarePublic('isTranslatable')
+    def isTranslatable(self, obj):
+        return ITranslatable.isImplementedBy(obj)
+
+    security.declarePublic("acquireLocalRoles")
+    def acquireLocalRoles(self, obj, status = 1):
+        """If status is 1, allow acquisition of local roles (regular behaviour).
+        If it's 0, prohibit it (it will allow some kind of local role blacklisting).
+        GRUF IS REQUIRED FOR THIS TO WORK.
+        """
+        mt = getToolByName(self, 'portal_membership')
+        if not mt.checkPermission(CMFCorePermissions.ModifyPortalContent, obj):
+            raise 'Unauthorized' 
+
+        # Set local role status
+        gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
+        gruf._acquireLocalRoles(obj, status)   # We perform our own security check
+
+        # Reindex the whole stuff.
+        obj.reindexObjectSecurity()
+
+    security.declarePublic("isLocalRoleAcquired")
+    def isLocalRoleAcquired(self, obj):
+        """GRUF IS REQUIRED FOR THIS TO WORK.
+        Return Local Role acquisition blocking status. True if normal, false if blocked.
+        """
+        gruf = getToolByName( self, 'portal_url' ).getPortalObject().acl_users
+        return gruf.isLocalRoleAcquired(obj, )
 
 InitializeClass(PloneTool)

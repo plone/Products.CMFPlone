@@ -9,6 +9,7 @@ if __name__ == '__main__':
 from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
+from Acquisition import aq_base
 
 try: from zExceptions import NotFound
 except ImportError: NotFound = 'NotFound'
@@ -53,6 +54,10 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         # Order should remain the same
         self.assertEqual(self.folder.objectIds(), 
             ['sub1', 'foo', 'sub3'])
+
+    def testCanViewManagementScreen(self):
+        # Make sure the ZMI management screen works
+        self.folder.manage_main()
 
 
 class TestCheckIdAvailable(PloneTestCase.PloneTestCase):

@@ -46,7 +46,7 @@ test :
 test_all :
 	export INSTANCE_HOME=${INSTANCE_HOME}; \
 	export SOFTWARE_HOME=${SOFTWARE_HOME}; \
-	cd ${INSTANCE_HOME} && ${PYTHON} test.py --all ${TEST_SWITCHES} --libdir=Products 'CMFPlone|GroupUserFolder|CMFFormController|CMFQuickInstallerTool|PlacelessTranslationService|Formulator|CMFActionIcons|ExternalEditor|DCWorkflow'
+	cd ${INSTANCE_HOME} && ${PYTHON} test.py --all ${TEST_SWITCHES} --libdir=Products 'CMFPlone|GroupUserFolder|CMFFormController|CMFQuickInstallerTool|PlacelessTranslationService|CMFActionIcons|ExternalEditor|DCWorkflow'
 
 # sdist:       Create a source distribution file (implies clean).
 #

@@ -88,6 +88,30 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('baz'), 1)
         self.assertEqual(self.folder.getObjectPosition('bar'), 2)
 
+    def testMoveTwoObjectsUp(self):
+        self.folder.moveObjectsUp(['bar', 'baz'])
+        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('foo'), 2)
+
+    def testMoveTwoObjectsDown(self):
+        self.folder.moveObjectsDown(['foo', 'bar'])
+        self.assertEqual(self.folder.getObjectPosition('baz'), 0)
+        self.assertEqual(self.folder.getObjectPosition('foo'), 1)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 2)
+
+    def testMoveTwoObjectsToTop(self):
+        self.folder.moveObjectsToTop(['bar', 'baz'])
+        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('foo'), 2)
+
+    def testMoveTwoObjectsToBottom(self):
+        self.folder.moveObjectsToBottom(['foo', 'bar'])
+        self.assertEqual(self.folder.getObjectPosition('baz'), 0)
+        self.assertEqual(self.folder.getObjectPosition('foo'), 1)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 2)
+
     def testRenameObject(self):
         # Renaming should not change position
         get_transaction().commit(1) # make rename work
@@ -118,11 +142,96 @@ class TestOrderSupport(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.getObjectPosition('baz'), 1)
         self.assertEqual(self.folder.getObjectPosition('foo'), 2)
 
+    def DISABLED_test_manage_move_objects_up(self):
+        # Make sure ZMI method works
+        self.folder.manage_move_objects_up(self.app.REQUEST, ids=['bar'])
+        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
+        self.assertEqual(self.folder.getObjectPosition('foo'), 1)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 2)
+
+    def DISABLED_test_manage_move_objects_down(self):
+        # Make sure ZMI method works
+        self.folder.manage_move_objects_down(self.app.REQUEST, ids=['bar'])
+        self.assertEqual(self.folder.getObjectPosition('foo'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 2)
+
+    def DISABLED_test_manage_move_objects_to_top(self):
+        # Make sure ZMI method works
+        self.folder.manage_move_objects_to_top(self.app.REQUEST, ids=['bar'])
+        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
+        self.assertEqual(self.folder.getObjectPosition('foo'), 1)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 2)
+
+    def DISABLED_test_manage_move_objects_to_bottom(self):
+        # Make sure ZMI method works
+        self.folder.manage_move_objects_to_bottom(self.app.REQUEST, ids=['bar'])
+        self.assertEqual(self.folder.getObjectPosition('foo'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 2)
+
+    def testSubsetIds(self):
+        self.folder.moveObjectsByDelta(['baz'], -1, ['foo', 'bar', 'baz'])
+        self.assertEqual(self.folder.getObjectPosition('foo'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 2)
+
+    def testSkipObjectsNotInSubsetIds(self):
+        self.folder.moveObjectsByDelta(['baz'], -1, ['foo', 'baz'])
+        self.assertEqual(self.folder.getObjectPosition('baz'), 0)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 1) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('foo'), 2)
+
+    def testMoveCMFObjectsOnly(self):
+        # Plone speciality
+        self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')
+        self.folder.moveObject('wilma', 2)
+        # Non-CMF object should keep position
+        self.folder.moveObjectToPosition('foo', 2)
+        self.assertEqual(self.folder.getObjectPosition('bar'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('foo'), 3)
+
+    def testMoveUpCMFObjectsOnly(self):
+        # Plone speciality
+        self.folder.manage_addProduct['OFSP'].manage_addDTMLMethod('wilma', file='')
+        self.folder.moveObject('wilma', 2)
+        # Non-CMF object should keep position
+        self.folder.moveObjectsUp(['baz'])
+        self.assertEqual(self.folder.getObjectPosition('foo'), 0)
+        self.assertEqual(self.folder.getObjectPosition('baz'), 1)
+        self.assertEqual(self.folder.getObjectPosition('wilma'), 2) # Did not move
+        self.assertEqual(self.folder.getObjectPosition('bar'), 3)
+
+
+class TestOrderSupportInPortal(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        self.setRoles(['Manager'])
+        # Add a bunch of subobjects we can order later on
+        self.portal.invokeFactory('Document', id='foo')
+        self.portal.invokeFactory('Document', id='bar')
+        self.portal.invokeFactory('Document', id='baz')
+        # Move them to the top
+        self.portal.moveObjectsByDelta(ids=['foo', 'bar', 'baz'],
+                                       delta=-len(self.portal._objects),
+                                       subset_ids=self.portal.objectIds())
+
+    def testRenameObject(self):
+        # Renaming should not change position
+        get_transaction().commit(1) # make rename work
+        self.portal.manage_renameObjects(['bar'], ['barney'])
+        self.assertEqual(self.portal.getObjectPosition('foo'), 0)
+        self.assertEqual(self.portal.getObjectPosition('barney'), 1)
+        self.assertEqual(self.portal.getObjectPosition('baz'), 2)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
     suite.addTest(makeSuite(TestOrderSupport))
+    suite.addTest(makeSuite(TestOrderSupportInPortal))
     return suite
 
 if __name__ == '__main__':
