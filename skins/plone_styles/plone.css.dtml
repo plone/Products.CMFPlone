@@ -757,7 +757,7 @@ input.searchButton {
     background-color: &dtml-notifyBackgroundColor;;
     border: &dtml-borderWidth; &dtml-borderStyle; &dtml-notifyBorderColor;;
     padding: 1em;
-    margin: 0;
+    margin: 0 0 1em 0;
     width: 68% !important;
 }
 
