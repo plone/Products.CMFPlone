@@ -226,6 +226,12 @@ def install_PloneSkins(self, out):
     except:
         out.write('Mozilla subskin successfully installed\n')
 
+    try:
+        install_SubSkin(self, out, 'Plone XP', 'plone_xp')
+        out.write('XP subskin successfully installed\n')
+    except:
+        out.write('XP subskin successfully installed\n')
+
 
     try:  
         addDirectoryViews( skinstool, 'skins', cmfplone_globals )
