@@ -1,3 +1,18 @@
+2004-04-11 20:14  limi
+
+	* HISTORY.txt, skins/plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): Added two classes to allow list without
+	  markers: ul.visualNoMarker and ol.visualNoMarker.
+
+2004-04-11 06:41  limi
+
+	* skins/plone_content/image_view_fullscreen.pt (Plone-2_0-branch):
+	  Improved fullscreen view.
+
+2004-04-11 04:57  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-11 04:27  limi
 
 	* skins/plone_content/: image_view.pt, image_view_fullscreen.pt
