@@ -1,4 +1,5 @@
 import zLOG
+from Products.CMFCore.CMFCorePermissions import ManagePortal
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.TypesTool import FactoryTypeInformation as fti_klass
@@ -40,6 +41,16 @@ def twoBeta2_twoBeta3(portal):
         out.append("Setting default skin to be Plone Default")
         ps.default_skin = "Plone Default"
 
-
+    # add in plone_setup to portal_membershipr
+    mt=getToolByName(portal, 'portal_membership')
+    mt.addAction('plone_setup',
+                'Plone Setup',
+                'string: ${portal_url}/plone_control_panel',
+                '', # condition
+                ManagePortal,
+                'user',
+                1),
+    out.append("Adding a link for plone setup to the users prefs")
+        
 if __name__=='__main__':
     registerMigrations()
