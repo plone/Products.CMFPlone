@@ -1,5 +1,4 @@
 from Products.ExternalMethod.ExternalMethod import manage_addExternalMethod
-from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
 
@@ -138,6 +137,9 @@ def _go(app):
 
     # 4. actually add in Plone
     if pid not in oids:
+        # this import is potentially time-consuming so it's done 
+        # as late as possible (benefits the way tests are loading).
+        from Products.CMFPlone.Portal import manage_addSite
         out.append("Added Plone")
         manage_addSite(app, 
                    pid, 
