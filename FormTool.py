@@ -19,7 +19,7 @@ from PloneUtilities import log as debug_log
 validator_cache = {}  # a place to stash cached validators
 # (we don't want to persist them in the ZODB since that would make debugging a big pain)
 
-debug = 1  # enable/disable logging
+debug = 0  # enable/disable logging
 
 class FormTool(UniqueObject, SimpleItem):
     id = 'portal_form'
@@ -34,9 +34,8 @@ class FormTool(UniqueObject, SimpleItem):
 
 
     def __before_publishing_traverse__(self, other, REQUEST):
+        # kill off everything in the traversal stack after the item after portal_form
         stack = REQUEST.get('TraversalRequestNameStack', None)
-        import sys
-        sys.stdout.write('==========='+str(stack)+"\n")
         REQUEST.set('TraversalRequestNameStack', [stack[-1]])
 
 
@@ -210,6 +209,7 @@ class FormValidator(SimpleItem):
         """
         errors = {}
         status = 'success'  # default return value if the validator list is empty
+        kwargs = {}
         for validator in self.validators:
             trace.append('Invoking %s' % validator)
             self.log('calling validator [%s]' % (str(validator)))

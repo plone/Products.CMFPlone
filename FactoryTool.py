@@ -9,7 +9,7 @@ import urlparse
 import sys
 
 
-debug = 1  # enable/disable logging
+debug = 0  # enable/disable logging
 type_map = {}
 
 class FactoryTool(UniqueObject, SimpleItem):

@@ -14,7 +14,7 @@ import re
 from PloneUtilities import log as debug_log
 from PloneUtilities import log_deprecated
 
-debug = 1  # enable/disable logging
+debug = 0  # enable/disable logging
 
 class NavigationTool (UniqueObject, SimpleItem):
     """ provides navigation related utilities """
