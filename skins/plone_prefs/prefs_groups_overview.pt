@@ -10,8 +10,9 @@
 
 <div metal:fill-slot="prefs_configlet_main"
      tal:define="errors python:request.get('errors', {});
-                Batch python:modules['ZTUtils'].Batch;
-                b_start python:request.get('b_start',0);
+                Batch python:modules['Products.CMFPlone'].Batch;
+                b_start request/b_start | python:0;
+                b_size python:2;
                 portal_roles mtool/getPortalRoles;"
      tal:condition="here/rejectAnonymous" >
 
@@ -43,7 +44,7 @@
           tal:attributes="action here/absolute_url"
 	  tal:define="searchstring request/searchstring | nothing;
                       groups python:here.prefs_user_group_search(searchstring, 'groups');
-                      batch python:Batch(groups, 25, int(b_start), orphan=1)">
+                      batch python:Batch(groups, b_size, int(b_start), orphan=1)">
 
     <p i18n:translate="description_groups_management">
       Groups are logical collections of users, like departments and
@@ -153,6 +154,8 @@
         </tr>
         </tal:block>
         </table>
+
+	  <div metal:use-macro="here/batch_macros/macros/navigation" />
 
         <input class="context"
                tabindex=""
