@@ -12,7 +12,7 @@
      tal:condition="nocall: folder">
 
     <div class="portlet"
-         tal:define="favorites python:test(folder, folder.contentValues('ATFavorite'), None);" id="portlet-favorites">
+         tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);" id="portlet-favorites">
 
         <h5 i18n:translate="box_my_favorites">My Favorites</h5>
 

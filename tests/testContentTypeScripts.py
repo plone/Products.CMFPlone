@@ -181,6 +181,23 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.folder.image.image_edit(title='')
         self.assertEqual(self.folder.image.Title(), '')
  
+    def testAddToFavorites(self):
+        # Ugh, addFavorite traverses to remote_url, so make sure it can.
+        self.setRoles(['Manager'])
+        self.portal.invokeFactory('Folder', id='bar')
+        self.portal.bar.invokeFactory('Document', id='baz.html')
+        self.setRoles(['Member'])
+        # back to normal
+        self.failIf('Favorites' in self.folder.objectIds())
+        self.portal.bar['baz.html'].addtoFavorites()
+        self.failUnless('Favorites' in self.folder.objectIds())
+        favorite = self.folder.Favorites.objectValues()[0]
+        self.assertEqual(favorite.getRemoteUrl(),
+                         '%s/bar/baz.html' % self.portal.portal_url())
+        # Make sure the script created AT types
+        self.assertEqual(self.folder.Favorites.meta_type, 'ATFolder')
+        self.assertEqual(favorite.meta_type, 'ATFavorite')
+
 
 class TestEditShortName(PloneTestCase.PloneTestCase):
     # Test fix for http://plone.org/collector/2246
