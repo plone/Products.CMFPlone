@@ -19,11 +19,13 @@
           name="edit_form"
           action="document_edit" 
           method="post" 
-          enctype="multipart/form-data" >
+          enctype="multipart/form-data">
 
         <span class="legend" i18n:translate="">Document Details</span>    
       
         <div class="row" 
+             tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
+                                          'visibility:hidden;;position:absolute;;left:0;;top:0', '')"
              tal:define="error_id errors/id | nothing;
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
@@ -50,10 +52,10 @@
                        name="field_id" 
                        value="#"
                        size="30" 
-                       tal:attributes="value id" 
                        tabindex="1"
                        onfocus="formtooltip('id_help',1)" 
-                       onblur="formtooltip('id_help',0)" 
+                       onblur="formtooltip('id_help',0)"
+                       tal:attributes="value id;"
                        />
             </div>
 

@@ -118,5 +118,6 @@ def migrate099to10(self):
     #customize memberdata tool
     md=getToolByName(self, 'portal_memberdata')
     md._setProperty('formtooltips', '1', 'boolean')
+    md._setProperty('visible_ids', '', 'boolean')
 
     return 'finished migraiton'

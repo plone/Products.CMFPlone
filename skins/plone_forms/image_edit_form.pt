@@ -25,6 +25,8 @@
         <span class="legend" i18n:translate="">Image Details</span>
         
         <div class="row" 
+             tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
+                                          'visibility:hidden;;position:absolute;;left:0;;top:0', '')"
              tal:define="error_id errors/id | nothing;
                          id python:request.get('id', here.getId());"> 
             <div class="label required">

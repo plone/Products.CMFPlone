@@ -53,6 +53,7 @@ class DefaultCustomizationPolicy:
         #customize memberdata tool
         md=getToolByName(portal, 'portal_memberdata')
         md._setProperty('formtooltips', '1', 'boolean')
+        md._setProperty('visible_ids', '', 'boolean')
 
 	#customize membership tool
         mt=getToolByName(portal, 'portal_membership')
