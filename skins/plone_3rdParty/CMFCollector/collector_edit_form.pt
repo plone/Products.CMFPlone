@@ -11,10 +11,6 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="here/main_template/macros/master">
 
-<span tal:condition="nothing">
-  Template description: Form for configuring the collector.
-</span>
-
 <body>
 
 <div metal:fill-slot="header">
@@ -31,6 +27,44 @@
 
     <span class="legend">Collector Details</span>
     
+    <div class="row" 
+         tal:attributes="style python:test(not getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', ''),
+                                      'visibility:hidden;;position:absolute;;left:0;;top:0', '')"
+         tal:define="error_id errors/id | nothing;
+                     id python:request.get('id', here.getId());"> 
+        <div class="label required">
+        
+            <span i18n:id="id">ID</span>
+        
+            <div id="id_help" 
+                 i18:id="id_help"
+                 class="help" 
+                 style="visibility:hidden">
+            Enter the ID of the document. This is the part that will show up as part
+            of the web address. This should be short, descriptive
+            and preferrably not contain spaces, underscores or mixed case. Example:
+            "expense-report-2002"
+            </div>
+        </div>
+
+        <div class="field"
+              tal:attributes="class python:test(error_id, 'field error', 'field')" >
+
+            <div tal:replace="error_id" />
+
+            <input type="text" 
+                   name="id" 
+                   value="#"
+                   size="30" 
+                   tabindex="1"
+                   onfocus="formtooltip('id_help',1)" 
+                   onblur="formtooltip('id_help',0)"
+                   tal:attributes="value id;"
+                   />
+        </div>
+
+    </div>
+
     <div class="row">
         <div class="label"> Title </div> 
         <div class="field">
@@ -43,7 +77,10 @@
     </div>
 
     <div class="row">
-        <div class="label"> Abbreviation </div> 
+        <div class="label"> 
+        Abbreviation 
+        
+        </div> 
         <div class="field">
             <input type="text"
                    name="abbrev"

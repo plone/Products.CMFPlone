@@ -1,4 +1,3 @@
-<!-- presents a directory like listing of apache -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -26,11 +25,13 @@
 
         <div tal:condition="python:not getattr(here.aq_explicit, 'index_html', None) and
                            here.portal_membership.checkPermission('Add portal content', here)">
-          This folder does not have a default page, therefore a list of items
-          is shown instead.
-          <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document">Click here</a>
-          if you want to create a default page in this folder that will
-          replace the item listing. 
+            <p>
+            This folder does not have a default page, therefore a list of items
+            is shown instead.
+            <a href="#" tal:attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document">Click here</a>
+            if you want to create a default page in this folder that will
+            replace the item listing.
+            </p> 
         </div>
 
         <p>

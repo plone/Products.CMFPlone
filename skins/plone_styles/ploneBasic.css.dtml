@@ -1,11 +1,3 @@
-<dtml-let last_modified="_.DateTime()-14"
-          expires="_.DateTime()+7" >
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
-</dtml-let>
-
 <dtml-with stylesheet_properties>
 
 
@@ -54,14 +46,14 @@ table {
 
 
 img {
-/* turn off image borders. */
     border: none;
+	vertical-align: middle;
 }
 
 p {
 /* Default paragraph style*/
     font: &dtml-contentFont;;
-    margin: 1em 0em;
+    margin: 0.5em 0em;
     text-align: justify;
 }
 
@@ -81,7 +73,7 @@ p a:active {
 
 p img {
     border: &dtml-contentImageBorder;;
-    margin: 1em;
+    margin: 0;
 }
 
 
@@ -96,7 +88,7 @@ hr {
 h1, h2, h3, h4, h5, h6 {	/* Style for the headlines */
     color: &dtml-headingFontColor;;
     font: &dtml-headingFont;;
-    margin-top: 0;
+    margin: 0em 0em 0.5em 0em;
 }
 
 h1 {
@@ -165,7 +157,7 @@ input {
     border: &dtml-inputBorder;;  
     color: &dtml-mainFontColor;;
     background-color: white;
-    margin: 0em 0em 1em 0em;
+    margin: 0em 0em 0em 0em;
 }
 
 select {

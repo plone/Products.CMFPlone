@@ -30,13 +30,13 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:id="id">ID</span>
+                <span i18n:id="id">Short Name</span>
             
                 <div id="id_help" 
                      i18:id="id_help"
                      class="help" 
                      style="visibility:hidden">
-                Enter the ID of the document. This is the part that will show up as part
+                Enter the Short Name of the document. This is the part that will show up as part
                 of the web address. This should be short, descriptive
                 and preferrably not contain spaces, underscores or mixed case. Example:
                 "expense-report-2002"
@@ -137,7 +137,7 @@
                                  onblur string:formtooltip('body_help',0);
                                  tabindex string:4;">
                    <div metal:use-macro="here/wysiwyg_support/macros/wysiwygEditorBox">
-                   a calendar, hopefully
+                   The WYSIWYG code
                    </div>
                 </div>
             </div>

@@ -30,7 +30,7 @@
     </div>
       <select name="create_userfolder">
         <option value="1">Create a new user folder in the portal</option>
-        <option value="0">I have an existing user folder and want to use it instead</option>
+        <option value="0">I have an existing user folder and want to use that instead</option>
       </select>
 
     <div class="form-label">
@@ -38,10 +38,10 @@
     </div>
     
     <textarea name="description" cols="60" rows="10"
-     style="width: 100%"></textarea>
+     style="width: 95%"></textarea>
 
     <div class="form-label">
-    Customization Policies
+    Site type
     </div>
     <span tal:define="policies python:modules['Products.CMFPlone.Portal'].listPolicies">
       <select name="custom_policy">

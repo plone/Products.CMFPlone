@@ -1,11 +1,3 @@
-<dtml-let last_modified="_.DateTime()-14"
-          expires="_.DateTime()+7" >
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
-<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
-</dtml-let>
-
 <dtml-with stylesheet_properties>
 
 /*
@@ -45,8 +37,6 @@ input.context {
 }
 
 input.noborder {
-    /* radiobuttons and checkmarks, different behaviour in Moz and IE. 
-       Border necessary in Moz, not in IE */
     border: &dtml-noBorder;;
     margin: 0;
     background-color: transparent;
@@ -99,15 +89,6 @@ div.help {
 div.field {
     width: 68%;
     float: left;
-}
-
-span.info {
-/* deprecated */
-    background-color: transparent;
-    float: right;
-    text-align: left;
-    width: 28%;
-    border: 1px solid red;
 }
 
 .error {
@@ -232,7 +213,6 @@ table.box a {
 }
 
 table.box a.comment {
-    /* special link for comments - default behavior is to display the discussion icon next to the link */
     background-image: url(<dtml-var "portal_url() + '/'+ portal_types.getTypeInfo('Discussion Item').getIcon()">); 
     background-repeat: no-repeat;
     background-position: 0px -2px;
@@ -241,18 +221,9 @@ table.box a.comment {
     display: block;
 }
 
-table.box a.marker {
-    /* special format for links inside boxes - adds link image and displays the link as a block (which in this case means the text will not float under the link image, plus the whole thing is clickable) */
-    background: &dtml-boxLinkBackground;;
-    display: block;
-    padding: 0em 0em 0em 1.5em;
-    vertical-align: top;
-}
-
 span.folderName {
     /* The folder name in folder_contents */
-    font-size: 150%;
-    font-weight: bold;
+    font-size: 140%;
 }
 
 div.category {
@@ -274,13 +245,12 @@ div.category a {
 }
 
 div.box {
-	float: left;
     margin-right: 1em;
     margin-bottom: 2em;
-    width: 20em;
     background: transparent;
     border-collapse: collapse;
     border: &dtml-boxBorder;;
+    width: 90%;
 }
 
 div.box div.heading {
@@ -291,6 +261,10 @@ div.box div.heading {
     padding: 0em 0em 0em 1em;
     text-align: left;
     text-transform: &dtml-textTransform;;
+}
+
+div.box div.content {
+    margin: 1em;
 }
 
 div.box a.close {
@@ -314,7 +288,7 @@ div.box div.even {
 
 
 div.spacer {
-	margin: 3em;
+	margin: 1em;
 }
 
 .private {
@@ -344,15 +318,14 @@ div.listingBar {
     border-style: solid;
     border-width: 1px;
     padding: 0em 1em;
-    text-align: right;
     text-transform: &dtml-textTransform;;
-    height: 1em;
     clear: both;
+    vertical-align: top;
+    margin: 1em 0em;
 }
 
 div.listingBar span.previous {
     text-align: left;
-    float: left;
 }
 
 div.listingBar span.next {
@@ -360,24 +333,8 @@ div.listingBar span.next {
     float: right;
 }
 
-div.workspace {
+div listingBar img {
+	vertical-align: middle;
 }
-
-div.workspace span.small {
-    float: left;
-    height: 30em;
-    width: 20em;
-    margin-right: 1em;
-    margin-bottom: 1em;
-}
-
-div.workspace span.big {
-    float: left;
-    height: 40em;
-    width: 40em;	
-    margin-right: 1em;
-    margin-bottom: 1em;
-}
-
 
 </dtml-with>

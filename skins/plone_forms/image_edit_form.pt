@@ -31,13 +31,13 @@
                          id python:request.get('id', here.getId());"> 
             <div class="label required">
             
-                <span i18n:id="id">ID</span>
+                <span i18n:id="id">Short Name</span>
             
                 <div id="id_help" 
                      i18:id="id_help"
                      class="help" 
                      style="visibility:hidden">
-                Enter the ID of the image. This is the part that will show up as part
+                Enter the Short Name of the image. This is the part that will show up as part
                 of the web address. This should be short, descriptive
                 and preferrably not contain spaces, underscores or mixed case. Example:
                 "expense-report-2002"

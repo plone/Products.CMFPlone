@@ -34,7 +34,7 @@
                        name="ids:list"
                        value="fav_999816073"
                        tal:attributes="value item">
-                ID <input type="text"
+                Short Name <input type="text"
                        name="new_ids:list"
                        value="fav_999816073"
                        size="30"

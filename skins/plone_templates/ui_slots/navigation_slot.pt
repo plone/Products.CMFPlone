@@ -31,7 +31,7 @@
                 <div tal:repeat="sibling siblings">
                     <a href="#" class="plain"
                      tal:define="url string:${sibling/absolute_url}/view;
-		                 sibling_title python:'&nbsp;;'.join(sibling.title_or_id()[:18].split(' '));"
+                                 sibling_title python:'&nbsp;;'.join(sibling.title_or_id()[:18].split(' '));"
                      tal:attributes="href url">
                         <img src="" 
                              height="16" 
@@ -39,18 +39,22 @@
                              alt="dummy"
                              border="0" 
                              tal:attributes="src string:$portal_url/${sibling/getIcon};
-		                             alt sibling/Title;" />&nbsp;<tal:block tal:content="structure sibling_title" />
+                                             alt sibling/Title;" />&nbsp;<tal:block tal:content="structure sibling_title" />
                     </a>
                 </div>
             </div>
             </td>
         </tr>
         <tr class="odd" 
-	    tal:condition="parent_url">
+            tal:condition="parent_url">
             <td colspan="2">
-                <a class="marker" 
-		   href="" 
-		   tal:attributes="href parent_url">Up one level</a>
+                <a href="" 
+                   tal:attributes="href parent_url">
+                    <img src="dummy.gif" 
+                         alt=">" 
+                         border="0" 
+                         tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                   Up one level</a>
             </td>
         </tr>
 
@@ -58,22 +62,38 @@
             tal:condition="editorView">
             <td colspan="2"
                 tal:condition="notFolderContents">
-               <a class="marker"
-                  href="folder_contents"
-                  tal:condition="here/isPrincipiaFolderish" 
-                  >Editor view</a>
-               <a class="marker"
-                  href="../folder_contents"
+
+               <a href="folder_contents"
+                  tal:condition="here/isPrincipiaFolderish">
+                   <img src="dummy.gif" 
+                        alt=">" 
+                        border="0" 
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                  Editor view
+               </a>
+               
+               <a href="../folder_contents"
                   tal:condition="not: here/isPrincipiaFolderish" 
-                  tal:attributes="href string:${here/absolute_url}/folder_contents"
-                  >Editor view</a>
+                  tal:attributes="href string:${here/absolute_url}/folder_contents">
+                   <img src="dummy.gif" 
+                        alt=">" 
+                        border="0" 
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                  Editor view
+               </a>
             </td>
         </tr>
 
         <tr class="even"
             tal:condition="not: notFolderContents">
             <td colspan="2" >
-                <a class="marker" href="">Ordinary view</a>
+                <a href="">
+                   <img src="dummy.gif" 
+                        alt=">" 
+                        border="0" 
+                        tal:attributes="src string:$portal_url/linkTransparent.gif" />
+                Ordinary view
+                </a>
             </td>
         </tr>
 

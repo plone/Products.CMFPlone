@@ -40,7 +40,7 @@
                             tabindex tabindex|nothing;"></textarea>
 
        <a href="" tal:attributes="onclick string:window.open('plone_wysiwyg/wysiwyg_popup?inputname=${inputname}&formname=${formname}&method=CookedBody','cal','dependent=yes,width=520,height=500,screenX=200,screenY=300,titlebar=yes');; return false">
-       <img src="popup_calendar.gif">
+       <img src="edit.gif">
        </a>
 
 </div>

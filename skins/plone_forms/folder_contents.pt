@@ -9,6 +9,7 @@
     <script type="text/javascript" tal:attributes="src here/table_sort.js/absolute_url"></script>
     <script type="text/javascript" tal:attributes="src here/folder_actions.js/absolute_url"></script>
   </metal:block>
+
 <body>
 
 <div metal:fill-slot="main"
@@ -34,7 +35,7 @@
         <input type="hidden" name="filter_state" value="set_view_filter" />
         
         <!-- FIXME: This is a quick hack, as IE doesn't support display: table. -->
-        <table><tbody><tr><td>
+        <table style="width: 94%"><tbody><tr><td>
         
             <div class="title"> 
     
