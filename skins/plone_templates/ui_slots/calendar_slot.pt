@@ -25,7 +25,12 @@
             </th>
 
             <th colspan="5" tal:define="date string:$month/1/$year">
-              <span i18n:translate="" tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag="" /> <span tal:replace="python:DateTime(date).year()"/>
+                <span i18n:translate="">
+                    <span i18n:name="monthname">
+                        <span i18n:translate="" tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag="" />
+                    </span>
+                    <span i18n:name="year" tal:content="python:DateTime(date).year()" tal:omit-tag=""/>
+                </span>
             </th>
 
             <th>
