@@ -31,7 +31,13 @@
                      tal:define="actions python:here.portal_actions.listFilteredActionsFor(sibling);
                      action python:here.getActionUrlById('view', actions['object']);
                      url python:test(action, action,sibling.absolute_url()+'/folder_contents');"
-                     tal:attributes="href url"><img src="" height="16" width="16" tal:attributes="src sibling/getIcon"/>&nbsp;<span tal:replace="sibling/title_or_id"/></a>
+                     tal:attributes="href url">
+		         <img src="" 
+			      height="16" 
+			      width="16" 
+			      tal:attributes="src sibling/getIcon" /> &nbsp;
+			          <span tal:replace="python:here.truncID(sibling.title_or_id(), 10)"/>
+		    </a>
                 </span>
             </div>
             </td>

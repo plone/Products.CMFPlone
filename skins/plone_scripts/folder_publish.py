@@ -24,6 +24,10 @@ for id in ids:
     except Exception, e:
         failed[id]=e
 
-view = getattr(context, 'folder_contents')
-return view(REQUEST, failed, success)
+REQUEST.RESPONSE.redirect( '%s/%s?%s' % ( context.absolute_url()
+                                        , 'folder_contents'
+					, 'portal_status_message=Content(s)+have+been+changed.') )
+				
+#view = getattr(context, 'folder_contents')
+#return view(REQUEST, failed, success)
 
