@@ -40,11 +40,12 @@
     <textarea name="description" cols="60" rows="10"
      style="width: 95%"></textarea>
 
-     
+   <!--  
     <input type="hidden" name="custom_policy" value="Default Plone">
-<!-- Currently runs the default policy, feel free to re-enable this pulldown if you are developing 
-     policies and need a good way of testing them. Remember to remove the hidden variable above. :)
-     
+    If you want to have your customization policy to show up.  The class needs
+    an boolean attribute, availableAtConstruction
+   -->
+
     <div class="form-label">
     Customisation policy setup
     </div>
@@ -61,7 +62,6 @@
     like to make, you can run this later and see other configuration options in portal_migration if
     you wish.
     </p>
--->    
     
     <div class="form-element">
     <input class="form-element" type="submit" name="submit" 

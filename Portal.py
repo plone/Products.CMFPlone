@@ -8,14 +8,20 @@ from Products.CMFPlone import LargePloneFolder
 from Products.CMFDefault.Portal import CMFSite
 from Products.CMFDefault import Document
 
-def listPolicies():
+def listPolicies(creation=1):
     """ Float default plone to the top """
-    keys = custom_policies.keys()
-    del keys[keys.index('Default Plone')]
-    keys.insert(0, 'Default Plone')
-    return keys
+    names=[]
+    for name, klass in custom_policies.items():
+        available=getattr(klass, 'availableAtConstruction', None)
+        if creation and available:
+            names.append(name)
+    
+    default=names.pop(names.index('Default Plone'))
+    names.insert(0, default)
+    return names
 
-def addPolicy(label, klass): custom_policies[label]=klass
+def addPolicy(label, klass): 
+    custom_policies[label]=klass
 
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from Products.PythonScripts.PythonScript import PythonScript

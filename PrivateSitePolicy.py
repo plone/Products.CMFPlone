@@ -20,6 +20,8 @@ class PrivateSitePolicy(DefaultCustomizationPolicy):
     """ Customizes the Plone site so that its private """
     __implements__ = ICustomizationPolicy
 
+    availableAtConstruction=0
+
     def customize(self, portal):
         DefaultCustomizationPolicy().customize(portal)
         wf_tool=getToolByName(portal,'portal_workflow')
