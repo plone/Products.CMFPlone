@@ -42,7 +42,7 @@
                   action=""
                   method="post"
                   style="display: inline;"
-                  tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
+                  tal:condition="python: checkPermission('Manage portal', here)"
                   tal:attributes="action string:${here/absolute_url}/deleteDiscussion">
 
                 <input class="destructive"

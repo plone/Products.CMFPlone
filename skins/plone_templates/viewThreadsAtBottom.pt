@@ -5,7 +5,7 @@
 
 <div metal:define-macro="discussionView"
      class="discussion"
-     tal:define="userHasReplyPermission python: here.portal_membership.checkPermission('Reply to item', here);
+     tal:define="userHasReplyPermission python: checkPermission('Reply to item', here);
                  isDiscussionAllowed python:request.get('discussion_allowed', container.portal_discussion.isDiscussionAllowedFor(here));
                  userIsAnonymous python: here.portal_membership.isAnonymousUser();
                  hereTypeInfo python:request.get('this_typeinfo', here.getTypeInfo());
@@ -62,7 +62,7 @@
                          method="post"
                          style="display: inline;"
                          tal:attributes="action string:${reply/absolute_url}/discussion_reply_form"
-                         tal:condition="python: here.portal_membership.checkPermission('Reply to item', reply)">
+                         tal:condition="python: checkPermission('Reply to item', reply)">
                          
                         <input class="standalone" 
                                type="submit" 
@@ -75,7 +75,7 @@
                           action="" 
                           method="post"
                           style="display: inline;"
-                          tal:condition="python:here.portal_membership.checkPermission('Manage portal', here)"
+                          tal:condition="python: checkPermission('Manage portal', here)"
                           tal:attributes="action string:${reply/absolute_url}/deleteDiscussion">       	
                 
                         <input class="destructive" 

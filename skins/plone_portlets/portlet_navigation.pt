@@ -17,8 +17,7 @@
                    tree python:here.plone_utils.createNavigationTreeBuilder(portalObject,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;
-                   checkPerm python:here.portal_membership.checkPermission;
-                   listContentsPermission python:checkPerm('List folder contents', here);
+                   listContentsPermission python:checkPermission('List folder contents', here);
                    notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
                    editorView python:test(listContentsPermission and notFolderContents, 1, 0);
                    croppingLength here/navtree_properties/croppingLength | here/portal_properties/navtree_properties/croppingLength | python:18;
@@ -50,7 +49,7 @@
                                       sibling python:te['object'];
                                       typeInfo sibling/getTypeInfo;
                                       stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'',typeInfo.getActionById('view')));
-                                      command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPerm('List folder contents',sibling) ,'',stdCommand);
+                                      command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPermission('List folder contents',sibling) ,'',stdCommand);
                                       title python:te['object'].title_or_id();
                                       charset here/portal_properties/site_properties/default_charset|string:utf-8;
                                       sibling_title python:' '.join( (unicode(title, charset)[:croppingLength]).encode(charset).split(' '));"

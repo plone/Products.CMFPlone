@@ -265,7 +265,7 @@
     </form>
 
     <tal:defaultview condition="python: not 'index_html' in here.contentIds() and 
-                                here.portal_membership.checkPermission('Add portal content', here) and
+                                checkPermission('Add portal content', here) and
                                 here.getTypeInfo().allowType('Document')">
 
         <p i18n:translate="description_no_default_folder_create_new">

@@ -77,7 +77,7 @@
 
             <div class="portletContent odd"
                 tal:define="join python:[a['url'] for a in actions['user'] if a['id']=='join']"
-                tal:condition="python:test(join and hasattr(here,'portal_registration') and here.portal_membership.checkPermission('Add portal member', here), 1, 0)">
+                tal:condition="python:test(join and hasattr(here,'portal_registration') and checkPermission('Add portal member', here), 1, 0)">
 
                 <a href="" tal:attributes="href python:join.pop()" accesskey="accesskeys-login" i18n:attributes="accesskey" >
                     <img tal:replace="structure portal_object/linkTransparent.gif" />
