@@ -3,6 +3,7 @@ from AccessControl import Permissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.setup.ConfigurationMethods import correctFolderContentsAction
 from Products.CMFCore.Expression import Expression
+from Acquisition import aq_base
 
 _permMap = {
     'rename' : CMFCorePermissions.AddPortalContent,
@@ -127,5 +128,20 @@ def rc5_final(portal):
                 hasFavorites=1
     at._actions=_actions
 
+    out.append('Added Plone Tabless skin')
+    addTablelessSkin(portal)
+
     return out
 
+def addTablelessSkin(portal):
+    st = getToolByName(portal, 'portal_skins')
+    defaultName = 'Plone Default'
+    tablelessName = 'Plone Tableless'
+    path = []
+    
+    for p in st._getSelections()[defaultName].split(','):
+        if p == 'plone_templates':
+            path.append('plone_tableless')
+        path.append(p)
+    
+    st.manage_skinLayers(add_skin=1, skinname=tablelessName, skinpath=path)
