@@ -323,7 +323,9 @@ class StatelessTreeBuilder:
                     l.insert(0,r)
 
         #set indentdiff for the first element
-        l[0]['indentdiff']=l[0]['indent']
+        if len(l):
+            l[0]['indentdiff']=l[0]['indent']
+            
         res['list']=l
         return res
 
