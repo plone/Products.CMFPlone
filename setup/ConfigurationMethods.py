@@ -177,7 +177,8 @@ def modifyActionProviders(self, portal):
 def correctFolderContentsAction(actionTool):
     _actions=actionTool._cloneActions()
     for action in _actions:
-        if action.id=='folderContents':
+        if action.id=='folderContents' and 
+         action.condition.text.find('folder is not object') != -1:
             action.title='Contents'
             action.name='Contents'
             action.condition=Expression(
