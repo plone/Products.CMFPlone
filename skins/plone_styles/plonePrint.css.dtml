@@ -40,8 +40,8 @@ ul {
     list-style-image: none; 
 }
 
-div.editableDocument,
-div.document,
+.editableDocument,
+.document,
 div.description,
 .group {
     background: transparent;
