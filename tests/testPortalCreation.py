@@ -31,6 +31,15 @@ class TestPortalCreation(PloneTestCase.PloneTestCase):
         # index_html should render
         self.portal.index_html()
 
+    def testHasOrderSupport(self):
+        # The portal should show the ordering controls in the ZMI
+        support = getattr(self.portal, 'has_order_support', 0)
+        self.failUnless(support)
+
+    def testCanViewManagementScreen(self):
+        # Make sure the ZMI management screen works
+        self.portal.manage_main()
+
     def testControlPanelGroups(self):
         # Test for https://plone.org/collector/2749
         # Wake up object, in the case it was deactivated.

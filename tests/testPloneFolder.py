@@ -54,6 +54,15 @@ class TestPloneFolder(PloneTestCase.PloneTestCase):
         self.assertEqual(self.folder.objectIds(), 
             ['sub1', 'foo', 'sub3'])
 
+    def testHasOrderSupport(self):
+        # PloneFolders should show the ordering controls in the ZMI
+        support = getattr(self.folder, 'has_order_support', 0)
+        self.failUnless(support)
+
+    def testCanViewManagementScreen(self):
+        # Make sure the ZMI management screen works
+        self.folder.manage_main()
+
 
 class TestCheckIdAvailable(PloneTestCase.PloneTestCase):
     # PortalFolder.checkIdAvailable() did not properly catch

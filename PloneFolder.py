@@ -18,6 +18,7 @@ from types import StringType
 from DocumentTemplate.sequence import sort
 
 from OFS.IOrderSupport import IOrderedContainer
+from OFS.OrderedFolder import OrderedFolder
 
 from OFS.ObjectManager import REPLACEABLE
 from ComputedAttribute import ComputedAttribute
@@ -80,13 +81,11 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 #Zope Public License (ZPL) Version 2.0
 #This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
 
-class OrderedContainer(Folder):
+class OrderedContainer(OrderedFolder):
     """Folder with subobject ordering support"""
 
-    __implements__ = (IOrderedContainer,)
+    __implements__ = (OrderedFolder.__implements__,)
     security = ClassSecurityInfo()
-
-    has_order_support = 1   # Show ordering interface in ZMI
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObject')
     def moveObject(self, id, position):
@@ -112,6 +111,7 @@ class OrderedContainer(Folder):
         min_position = 0
         objects = list(self._objects)
         if subset_ids == None:
+            # XXX: Plone
             # OLD: subset_ids = [ obj['id'] for obj in objects ]
             subset_ids = self.getCMFObjectsSubsetIds(objects)
         else:
@@ -124,7 +124,12 @@ class OrderedContainer(Folder):
         counter = 0
 
         for id in ids:
-            old_position = subset_ids.index(id)
+            # XXX: Plone. Either we misunderstand the subset_ids feature
+            # or this is a bug in OFS.OrderSupport?
+            try:
+                old_position = subset_ids.index(id)
+            except ValueError:
+                continue # id not in subset_ids
             new_position = max( old_position - abs(delta), min_position )
             if new_position == min_position:
                 min_position += 1
@@ -172,57 +177,18 @@ class OrderedContainer(Folder):
         raise NotFound, 'Object %s was not found' % str(id)
 
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsUp')
-    def moveObjectsUp(self, ids, delta=1, RESPONSE=None):
-        """ Move an object up """
-        self.moveObjectsByDelta(ids, -delta)
-        if RESPONSE is not None:
-            RESPONSE.redirect('manage_workspace')
-
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsDown')
-    def moveObjectsDown(self, ids, delta=1, RESPONSE=None):
-        """ move an object down """
-        self.moveObjectsByDelta(ids, delta)
-        if RESPONSE is not None:
-            RESPONSE.redirect('manage_workspace')
-
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsToTop')
-    def moveObjectsToTop(self, ids, RESPONSE=None):
-        """ move an object to the top """
-        self.moveObjectsByDelta( ids, -len(self._objects) )
-        if RESPONSE is not None:
-            RESPONSE.redirect('manage_workspace')
-
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectsToBottom')
-    def moveObjectsToBottom(self, ids, RESPONSE=None):
-        """ move an object to the bottom """
-        self.moveObjectsByDelta( ids, len(self._objects) )
-        if RESPONSE is not None:
-            RESPONSE.redirect('manage_workspace')
-
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'moveObjectToPosition')
-    def moveObjectToPosition(self, id, position):
-        """ Move specified object to absolute position.
-        """
-        delta = position - self.getObjectPosition(id)
-        return self.moveObjectsByDelta(id, delta)
-
     security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'orderObjects')
-    def orderObjects(self, key, reverse=None):
-        """ Order sub-objects by key and direction.
-        """
-        ids = [ id for id, obj in sort( self.objectItems(),
-                                        ( (key, 'cmp', 'asc'), ) ) ]
-        if reverse:
-            ids.reverse()
-        return self.moveObjectsByDelta( ids, -len(self._objects) )
 
     # Here the implementation of IOrderedContainer ends
 
     def manage_renameObject(self, id, new_id, REQUEST=None):
         """Rename a particular sub-object"""
         objidx = self.getObjectPosition(id)
-        method = OrderedContainer.inheritedAttribute('manage_renameObject')
-        result = method(self, id, new_id, REQUEST)
+        result = Folder.manage_renameObject(self, id, new_id, REQUEST)
         self.moveObject(new_id, objidx)
 
         return result
