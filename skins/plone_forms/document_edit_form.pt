@@ -239,11 +239,6 @@
                        type="submit" 
                        name="Change" 
                        value="Save" /> 
-                <input class="context"
-                       tabindex="8" 
-                       type="submit" 
-                       name="cancel" 
-                       value="Cancel" />
             </div>
 	    </div>
 

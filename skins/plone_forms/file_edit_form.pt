@@ -183,11 +183,6 @@
                        tabindex="6" 
                        name="Change" 
                        value="Save" /> 
-                <input class="context" 
-                       type="submit"
-                       tabindex="7" 
-                       name="cancel_edit:method" 
-                       value="Cancel" />
             </div>
     
         </div>
