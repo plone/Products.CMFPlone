@@ -15,4 +15,7 @@ class IndexIterator:
 import zLOG
 def log_deprecated(message,summary='Deprecation Warning',severity=zLOG.WARNING):
     zLOG.LOG('Plone: ',severity,summary,message)
-            
+
+#generic log method
+def log(message,summary='',severity=0):
+    zLOG.LOG('Plone: ',severity,summary,message)

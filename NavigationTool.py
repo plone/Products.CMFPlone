@@ -12,6 +12,7 @@ from urllib import urlencode
 from cgi import parse_qs
 import re
 from FactoryTool import PendingCreate
+from PloneUtilities import log, log_deprecated
 
 debug = 0  # enable/disable logging
 
@@ -271,15 +272,10 @@ class NavigationTool (UniqueObject, SimpleItem):
     security.declarePublic('log')
     def log(self, msg, loc=None):
         """ """
-        if not debug:
-            return
-        import sys
-        if not loc:
-            loc = 'NavigationTool'
+        if loc is None:              
+            log(msg + ' - NavigationTool')
         else:
-            loc = 'NavigationTool.'+loc
-        sys.stdout.write(loc+': '+str(msg)+'\n')
-
+            log(msg + ' - NavigationTool.'+loc)
 
     # DEPRECATED -- FOR BACKWARDS COMPATIBILITY WITH PLONE 1.0 ALPHA 2 ONLY
     # USE GETNEXT() INSTEAD AND UPDATE THE NAVIGATION PROPERTIES FILE
@@ -288,6 +284,7 @@ class NavigationTool (UniqueObject, SimpleItem):
         """ given a object, action_id and status we can fetch the next action
             for this object 
         """
+        log_deprecated('NavigationTool.getNextPageFor() has been marked for deprecation')
         (transition_type, action_id) = self.getNavigationTransistion(context,script,status)
         
         # If any query parameters have been specified in the transition,
@@ -318,6 +315,7 @@ class NavigationTool (UniqueObject, SimpleItem):
     security.declarePublic('getNextRequestFor')
     def getNextRequestFor(self, context, script, status, **kwargs):
         """ takes object, script, and status and returns a RESPONSE redirect """
+        log_deprecated('NavigationTool.getNextRequestFor() has been marked for deprecation')
         (transition_type, action_id) = self.getNavigationTransistion(context,script,status) ###
         if action_id.find('?') >= 0:
             separator = '&'
