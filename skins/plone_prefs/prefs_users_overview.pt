@@ -70,10 +70,9 @@
     <p i18n:translate="description_user_management">
       Click the User Name to see and change the details of a specific
       user, or click the envelope to send a mail. You can edit the
-      roles and e-mail address and remove users directly from this
+      and e-mail address and remove users directly from this
       form. You can also access the user registration form to add new
-      users. To deactivate a user without deleting, just remove all
-      the roles for that particular user.
+      users.
     </p>
 
        <input class="standalone add"
@@ -108,15 +107,14 @@
             <tr tal:define="oddrow repeat/this_user/odd"
                  tal:attributes="class python:test(oddrow,'odd','even')">
 
-            <tal:block define="roles python: this_user.getRoles();
-                                     username python: this_user.getUserName();
-                                     fullname python: this_user.getProperty('fullname')">
+            <tal:block define="username python: this_user.getUserName();
+                               fullname python: this_user.getProperty('fullname')">
 
             <td>
-                <input type="hidden"
+                <!--input type="hidden"
                        name="name"
                        value=""
-                       tal:attributes="name string:roles-${username}:list" />
+                       tal:attributes="name string:roles-${username}:list; value roles" / -->
 
                 <a href="XXX_prefs_user_details"
                     tal:attributes="href string:${here/portal_memberdata/absolute_url}/prefs_user_details?userid=$username">

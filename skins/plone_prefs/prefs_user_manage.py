@@ -1,4 +1,4 @@
-## Script (Python) "prefs_user_manage"
+## Script (Python) ""
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -12,7 +12,7 @@ acl_users=context.acl_users
 getMemberById=context.portal_membership.getMemberById
 mailPassword=context.portal_registration.mailPassword
 setMemberProperties=context.plone_utils.setMemberProperties
-
+generatepassword=context.portal_registration.generatePassword
 removed=REQUEST.get('delete', [])
 resetpw=REQUEST.get('resetpassword', [])
 
@@ -38,9 +38,8 @@ for userid,email in originals.items():
     if email!=entered[userid]:
         setMemberProperties(userid, email=entered[userid])
 
-#reset password has been checked; email password
-for userid in resetpw:
-    mailPassword(userid, context.REQUEST)
+
+#raise(context.REQUEST)
 
 for key in REQUEST.keys():
     if key.startswith('roles-'):
@@ -51,6 +50,15 @@ for key in REQUEST.keys():
         if hasattr(member, 'getDomains'):
             domains=member.getDomains()
         acl_users.userFolderEditUser(userid, None, roles, domains)
+
+#reset password has been checked; email password
+for userid in resetpw:
+    if userid in removed:
+        continue
+    pw = generatepassword()
+    member = acl_users.getUserById(userid)
+    acl_users.userFolderEditUser(userid, pw, member.getRoles(), member.getDomains())
+    mailPassword(userid, context.REQUEST)
 
 #if remove user was checked
 if removed:
