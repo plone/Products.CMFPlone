@@ -20,7 +20,7 @@ form.add_field(titleField)
 errors=fv.validate(form)
 
 file=REQUEST.get('file', '')
-if file and file.read(): 
+if file and hasattr(file,'read'): 
     file.seek(0)
     headers = file.headers
     if headers['Content-Type'].find('text')==-1:

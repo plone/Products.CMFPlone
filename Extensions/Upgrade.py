@@ -102,7 +102,7 @@ def normalize_tabs(self):
         st_actions.append(globaltab)
     st_actions.append( ActionInformation( 'content_status_history'
                                         , title='Publishing'
-                                        , category='object'
+                                        , category='local_tabs'
                                         , permissions=('View',)
                                         , condition=Expression("python: member and hasattr(object, 'workflow_history')")
                                         , action=Expression("string: ${object_url}/content_status_history")))
