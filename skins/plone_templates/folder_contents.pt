@@ -285,7 +285,7 @@
 
         <form action=""
               method="post"
-              tal:attributes="action string:$here_url/invokeFactory">
+              tal:attributes="action string:$here_url/createObject">
           <input type="hidden"
                  name="id"
                  value="index_html"/>

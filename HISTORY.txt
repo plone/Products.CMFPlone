@@ -4,6 +4,11 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Fixed a usability bug where clicking the "Add default document"
+      button would only generate a blank Document with the ID index_html
+      - it now sends you to the edit form of said document instead.
+      [limi]
+
     - Fixed http://plone.org/collector/3500 - Modified .metadata files to
       make FormController do something appropriate when someone submits a
       for using the return key in IE.
