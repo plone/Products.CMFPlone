@@ -185,10 +185,8 @@
                </select>
             </span>
 
-  <a href="" onclick=""
-     tal:attributes="onclick string:return showJsCalendar(${input_id}_day, $input_id, ${input_id}_year, ${input_id}_month, ${input_id}_day, ${input_id}_hour, ${input_id}_minute, 'y/mm/dd');">
-    <img tal:replace="structure here/popup_calendar.gif" />
-  </a>
+	    <a tal:attributes="onclick string:return showJsCalendar(${input_id}_day, $input_id, ${input_id}_year, ${input_id}_month, ${input_id}_day, ${input_id}_hour, ${input_id}_minute, 'y/mm/dd');"><img tal:replace="structure here/popup_calendar.gif" /></a>
+
             <span>
                 <select name="ic_hour"
                         id="ic_hour"
