@@ -90,9 +90,14 @@ Plone folders can define custom 'view' actions, or will behave like directory li
                              }
 
 
+#Portions of this class was copy/pasted from the OFS.Folder.OrderedFolder from
+#Zope2.7.  This class is licensed under the ZPL 2.0 as stated here:
+#http://www.zope.org/Resources/ZPL
+#Zope Public License (ZPL) Version 2.0
+#This software is Copyright (c) Zope Corporation (tm) and Contributors. All rights reserved.
 
 class OrderedContainer(Folder):
-
+  
     if hasZopeOrderedSupport:
         # got the IOrderedContainer interface from zope 2.7, too
         # make shure this implementation fullfilles both interfaces
@@ -118,8 +123,7 @@ class OrderedContainer(Folder):
     # here the implementing of IOrderedContainer starts
     # if plone sometime depends on zope 2.7 it should be replaced by mixing in
     # the 2.7 specific class OSF.OrderedContainer.OrderedContainer
-    # This code was taken from Zope 2.7 and is licensed under the ZPL
-    # The license can be found at: http://www.zope.org/Resources/ZPL
+
     security.declareProtected(ModifyPortalContent, 'moveObjectsByDelta')
     def moveObjectsByDelta(self, ids, delta):
         """ Move specified sub-objects by delta.
