@@ -157,6 +157,8 @@ def extendSiteProperties(portal):
 def extendMemberdata(portal):
     if not portal.portal_memberdata.hasProperty('fullname'):
         portal.portal_memberdata.manage_addProperty('fullname', '', 'string')
+    if not portal.portal_memberdata.hasProperty('error_log_update'):
+        portal.portal_memberdata.manage_addProperty('error_log_update', 0.0, 'float')
 
 def addDefaultPloneSkins(portal):
     from Products.CMFPlone.Portal import PloneGenerator

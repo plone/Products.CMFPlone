@@ -48,6 +48,7 @@ def addSiteProperties(self, portal):
     if not hasattr(p,'allow_sendto'):
         safeEditProperty(p, 'allow_sendto', 0, 'boolean')        
 
+
 def setupDefaultLeftRightSlots(self, portal):
     """ sets up the slots on objectmanagers """
     left_slots=( 'here/navigation_tree_slot/macros/navigationBox'
@@ -132,6 +133,9 @@ def addMemberdata(self, portal):
         safeEditProperty(md, 'listed','1')
     if not hasattr(md, 'fullname'):
         safeEditProperty(md, 'fullname', '', 'string')
+    if not hasattr(md, 'error_log_update'):
+        safeEditProperty(md, 'error_log_update', 0.0, 'float')
+
 
 def modifyActionProviders(self, portal):
     mt=getToolByName(portal, 'portal_properties')
@@ -304,7 +308,7 @@ class GeneralSetup(SetupWidget):
     type = 'General Setup'
    
     description = """This applies a function to the site. These functions are some of the basic 
-set up features of a site. The chances are you will not want to apply these again. <b>Please note</b> 
+set up features of a site. The chances are you will not want to apply these again. <b>Please note</b>
 these functions do not have a uninstall function."""
     
     def setup(self):

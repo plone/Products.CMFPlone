@@ -108,6 +108,14 @@ default_configlets = (
      'permission': ManagePortal,
      'imageUrl':'plone_images/site_icon.gif'},
 
+    {'id':'errorLog',
+     'appId':'ErrorLog',
+     'name':'Error Log',
+     'action':'string:${portal_url}/prefs_error_log_form',
+     'category':'Plone',
+     'permission': ManagePortal,
+     'imageUrl':'plone_images/error_log_icon.gif'},
+
 )
 
 
