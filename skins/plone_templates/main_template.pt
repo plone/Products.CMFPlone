@@ -75,19 +75,19 @@ Header stuff
                         </comment>
                     </tal:block>
                     
-                    <span tal:define="global obj_actions actions/object;
-                                      global wf_actions actions/workflow;
-                                      global folder_actions actions/folder;
-                                      global local_actions python:actions.get('object_tabs', []);
-                                      global isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);" />
-				      
-                    <span tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
+                    <tal:block tal:define="global obj_actions actions/object;
+                                           global wf_actions actions/workflow;
+                                           global folder_actions actions/folder;
+                                           global local_actions python:actions.get('object_tabs', []);
+                                           global isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);" />
+
+                    <tal:block tal:repeat="action python:test(isFolder, folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');
 			                   href action/url;"> 
                             <span tal:omit-tag="" i18n:translate=""><span tal:replace="action/name">dummy</span></span>
                         </a> 
-                    </span>
+                    </tal:block>
     
                 </div>
 
