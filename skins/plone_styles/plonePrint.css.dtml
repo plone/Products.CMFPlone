@@ -20,6 +20,7 @@ td.right,
 .footer,
 .help,
 .legend
+.message
 {
     display: none;
 }
