@@ -14,15 +14,29 @@ def upg_1_0_1_to_1_1(portal):
     #add action->icon mapping propertysheet in portal_properties
     at = portal.portal_actions
 
-    at.addAction('sendto','Send this page to somebody','string:${object_url}/portal_form/sendto_form',
-                 "python:hasattr(portal.portal_properties.site_properties,'allow_sendto')",'View','document_actions')
-    at.addAction('print', 'Print this page', 'string:javascript:this.print();', '', 'View', 'document_actions')
-    at.addAction('rss', 'RSS Feed of this folders contents', 'string:${object_url}/RSS',
-                'python:portal.portal_syndication.isSyndicationAllowed(object)', 'View', 'document_actions')
+    at.addAction('sendto',
+                 'Send this page to somebody',
+                 'string:${object_url}/portal_form/sendto_form',
+                 "python:hasattr(portal.portal_properties.site_properties, 'allow_sendto')",
+                 'View',
+                 'document_actions')
+    at.addAction('print',
+                 'Print this page',
+                 'string:javascript:this.print();',
+                 '',
+                 'View',
+                 'document_actions')
+    at.addAction('rss',
+                 'RSS Feed of this folders contents',
+                 'string:${object_url}/RSS',
+                 'python:portal.portal_syndication.isSyndicationAllowed(object)',
+                 'View',
+                 'document_actions')
 
     props = portal.portal_properties
     if 'action_to_icon_mapping' not in props.objectIds():
-        props.manage_addPropertySheet('action_to_icon_mapping', 'Maps documentActions to Icons')
+        props.manage_addPropertySheet('action_to_icon_mapping',
+                                      'Maps documentActions to Icons')
     p = props.action_to_icon_mapping
     p._setProperty('document_actions.sendto', 'mail_icon.gif', 'string')
     p._setProperty('document_actions.print', 'print_icon.gif', 'string')
@@ -36,7 +50,7 @@ def upg_1_0_1_to_1_1(portal):
 
     # create and populate the 'plone_help' folder in the root of the plone
     # the contents are STX files in CMFPlone/docs
-    if 'help' not in portal.objectIds():
+    if 'plone_help' not in portal.objectIds():
         portal.invokeFactory(type_name='Folder', id='plone_help')
         plone_help=portal.plone_help
         docs_path=os.path.join(package_home(cmfplone_globals), 'docs')
@@ -45,7 +59,8 @@ def upg_1_0_1_to_1_1(portal):
             _path=os.path.join(docs_path, filename)
             if not os.path.isdir(_path):
                 doc=open(_path, 'r')
-                addDocument(plone_help, filename, filename, '', 'structured-text', doc.read())
+                addDocument(plone_help, filename, filename, '',
+                            'structured-text', doc.read())
                 getattr(plone_help,filename)._setPortalTypeName('Document')
 
     # change the action in portal_types for

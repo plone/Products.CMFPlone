@@ -25,7 +25,7 @@ currentlyViewingFolderContents = (published_id in ['folder_contents', 'folderCon
 path_seq = []
 
 # add breadcrumbs for directories between the root and the published object
-for id in relative_ids:    
+for id in relative_ids:
     # this is much faster than restrictedTraverse and makes some sense,
     # if the user can't access the contents information, getattr() will fail
     # and hiding the breadcrumb because they dont have access? urk
