@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello - Released XX. April 2004
 
+    - Removed unnecessary hook in FactoryTool that is handled by Archetypes 
+      itself now.
+      [dtremea]
+
     - Default position of the "Recent" portlet is now on the left.
       [limi]
 
