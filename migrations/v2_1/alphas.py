@@ -1,9 +1,11 @@
 import os
 
+import Globals
 from Acquisition import aq_base
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.migrations.migration_util import installOrReinstallProduct
+from Products.CMFPlone import cmfplone_globals
 
 
 def two05_alpha1(portal):
@@ -70,6 +72,12 @@ def alpha1_alpha2(portal):
 
     # Add sitemap action
     addSitemapAction(portal, out)
+
+    #Remove old portal_tabs actions
+    removePortalTabsActions(portal, out)
+
+    #Add news folder
+    addNewsFolder(portal, out)
 
     # Rebuild catalog
     if reindex:
@@ -318,3 +326,42 @@ def reindexCatalog(portal, out):
         catalog.threshold = old_threshold
         out.append("Reindexed portal_catalog.")
 
+
+def removePortalTabsActions(portal, out):
+    """Remove portal_tabs actions"""
+    actionsTool = getToolByName(portal, 'portal_actions', None)
+    if actionsTool is not None:
+        i = 0
+        to_delete = []
+        for action in actionsTool.listActions():
+            if action.getId() in ['Members','news'] and action.getCategory() == 'portal_tabs':
+                to_delete.append(i)
+            i += 1
+        if to_delete:
+            actionsTool.deleteActions(to_delete)
+        out.append("Deleted old portal_tab actions")
+
+def addNewsFolder(portal, out):
+    """Add news folder to portal root"""
+    if 'news' not in portal.objectIds():
+        addFolder = portal.manage_addProduct['ATContentTypes'].addATBTreeFolder
+        addFolder('news', title='News')
+        out.append("Added news folder")
+    news = getattr(portal.aq_inner, 'news')
+
+    #Enable ConstrainTypes and set to News
+    addable_types = ['News Item']
+    news.setConstrainTypesMode(1)
+    news.setImmediatelyAddableTypes(addable_types)
+    news.setLocallyAllowedTypes(addable_types)
+    out.append("Set constrain types for news folder")
+
+    if 'index_html' not in news.objectIds():
+        #Certainly not the best way to do this, but I'll wait for input before
+        #determining a final implementation.
+        pt_path = os.path.join(Globals.package_home(cmfplone_globals),
+                                            'skins/plone_templates/news.pt')
+        pt_file = open(pt_path, 'r')
+        add_pt = news.manage_addProduct['PageTemplates'].manage_addPageTemplate
+        add_pt('index_html', title='News', text=pt_file.read())
+        out.append("Added default view for news folder")

@@ -552,6 +552,37 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
         else:
             return {}
 
+    security.declarePublic('createTopLevelTabs')
+    def createTopLevelTabs(self):
+        "Returns a structure for the top level tabs"""
+        ct=getToolByName(self, 'portal_catalog')
+        ntp=getToolByName(self, 'portal_properties').navtree_properties
+        query = {}
+
+        portal_path = getToolByName(self, 'portal_url').getPortalPath()
+        query['path'] = {'query':portal_path, 'navtree':1}
+
+        if ntp.sortAttribute:
+            query['sort_on'] = ntp.sortAttribute
+
+        if ntp.typesToList:
+            query['portal_type'] = ntp.typesToList
+
+        rawresult = ct(**query)
+
+        #sort items on path length
+        dec_result = [(len(r.getPath()),r) for r in rawresult]
+        dec_result.sort()
+
+        # Build result dict
+        result = []
+        for r_tuple in dec_result:
+            item = r_tuple[1]
+            data = {'name':item.Title or '\xe2\x80\xa6'.decode('utf-8'),
+                    'id':item.getId,'url': item.getURL()}
+            result.append(data)
+        return result
+
     # expose ObjectManager's bad_id test to skin scripts
     security.declarePublic('good_id')
     def good_id(self, id):

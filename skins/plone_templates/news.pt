@@ -4,8 +4,6 @@
       i18n:domain="plone">
 
 <head>
-    <metal:block fill-slot="top_slot"
-                 tal:define="dummy python:request.set('disable_border', 1)" />
 
     <tal:comment replace="nothing">
     Please note that this template will most likely be renamed to news_listing
@@ -107,6 +105,10 @@
     <p tal:condition="not: results" i18n:translate="no_new_news">
         No news has been posted.
     </p>
+
+    <div tal:define="contentTypes here/getAllowedTypes" tal:omit-tag="python:1">
+        <tal:add_button metal:use-macro="here/folder_contents/macros/add_button"/>
+    </div>
 
   </div>
 
