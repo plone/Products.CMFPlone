@@ -46,7 +46,7 @@
                 <a href="#"
                    i18n:translate=""
                    tal:content="transition/name"
-                   tal:attributes="href string:${here/absolute_url}/portal_form/contentbar_status_modify?workflow_action=${transition/id}&amp;form_submitted=content_status_modify">File Menu Item 1</a>
+                   tal:attributes="href string:${here/absolute_url}/contentbar_status_modify?workflow_action=${transition/id}&amp;form_submitted=content_status_modify">File Menu Item 1</a>
             </li>
             </tal:block>
             <li class="menuItem menuSep">
