@@ -27,7 +27,7 @@ def setupNavTreePropertySheet(prop_tool):
     p._setProperty('batchSize', 30, 'int')
     p._setProperty('showTopicResults', 1, 'boolean')
     p._setProperty('rolesSeeUnpublishedContent', ['Manager','Reviewer','Owner'] , 'lines')
-    p._setProperty('sortCriteria', ['isPrincipiaFolderish,desc','title_or_id,asc']  , 'lines')
+    p._setProperty('sortCriteria', ['isPrincipiaFolderish,desc']  , 'lines')
     p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')
     p._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
     p._setProperty('croppingLength',256,'int')
