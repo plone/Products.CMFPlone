@@ -15,7 +15,7 @@
 
     <p i18n:translate="description_edit_news_item">
     A news item is a small piece of news that is published on the front
-    page. Add the relevant details below, and press "Save".
+    page. Add the relevant details below, and press 'Save'.
     </p>
 
     <span tal:replace="nothing">

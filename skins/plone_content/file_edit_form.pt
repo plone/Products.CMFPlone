@@ -14,7 +14,7 @@
     
     <p i18n:translate="description_edit_file">
     Add the relevant details of the file to be added in the form below,
-    select the file with the "Browse" button, and press "Save".
+    select the file with the 'Browse' button, and press 'Save'.
     </p>
 
     <span tal:replace="nothing">
@@ -138,7 +138,7 @@
                      i18n:translate="help_file"
                      class="help" 
                      style="visibility:hidden">
-                Select the file to be added by clicking the "Browse" button.
+                Select the file to be added by clicking the 'Browse' button.
                 </div>
             </div>
             

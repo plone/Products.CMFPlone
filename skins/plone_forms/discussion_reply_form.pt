@@ -14,7 +14,7 @@
     
     <p i18n:translate="description_add_comment">
     You can add a comment by filling out the form below. To see how the posting 
-    will look before submitting it, click "Preview Comment".   
+    will look before submitting it, click 'Preview Comment'.   
     </p>
 
     <form class="group"

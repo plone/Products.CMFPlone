@@ -41,7 +41,7 @@
                      class="help" 
                      style="visibility:hidden">
                 Specifies whether discussion items and comments can be
-                added to this item. "Default" will use the site-wide
+                added to this item. 'Default' will use the site-wide
                 setting for Discussion.
                 </div>
             </div>
@@ -106,7 +106,7 @@
                 keywords if possible, try to avoid adding new keywords that are essentially the 
                 same as the existing ones.
                 <br />
-                Each keyword must be on a separate line in the "selected keywords" textbox.
+                Each keyword must be on a separate line in the 'selected keywords' textbox.
                 <br />
                 Existing Keywords can be easily changed, but currently is all subjects 
                 that have ever been used in the system.

@@ -42,7 +42,7 @@
             <span i18n:translate="description_sign_in_failure">
             You are not currently signed in.  Your user name and/or password may be incorrect.
             Your browser may also not be configured to accept HTTP cookies.  
-            If you need help please try the "Forgotten password" link or contact
+            If you need help please try the 'Forgotten password' link or contact
             </span>
             
             <a href="mailto:admin@here.com" title="E-mail Administrator"

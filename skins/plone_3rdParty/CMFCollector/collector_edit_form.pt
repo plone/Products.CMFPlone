@@ -122,7 +122,7 @@
                    value="EMAIL"
                    tal:attributes="value email" />
             <span i18n:translate="help_collector_email">
-        This is the collector's email "From" address.
+        This is the collector's email 'From' address.
         </span>
                             
         </div>
@@ -150,7 +150,7 @@
         <span i18n:translate="help_collector_supporters">
         Supporters can be assigned to requests.  They may or may not
             receive initial request notifications, depending on the
-            "dispatching" setting below.
+            'dispatching' setting below.
         </span>
         </div>
     </div>

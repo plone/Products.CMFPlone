@@ -56,7 +56,7 @@ user.getUserName()==here.getId()" i18n:translate="heading_my_folder">
     
             <metal:block tal:condition="not: folder_contents">
             <p i18n:translate="description_no_visible_items_press_add">
-            This folder has no visible items. To add content, press the "Add New Item" button,
+            This folder has no visible items. To add content, press the 'Add New Item' button,
             or paste content from another location.
             </p>						    
             </metal:block>
