@@ -41,7 +41,7 @@
              tal:define="error_id errors/id | nothing;
 	                 id python:request.get('id', here.getId());">
 			 
-            <div class="label required">
+            <div class="label">
                 <span i18n:translate="label_name">Name</span>
             
                 <div id="id_help" 
@@ -126,7 +126,7 @@
                        size="25"
                        value="location"
                        tabindex=""
-                       tal:attributes="value request/location | here/location;
+                       tal:attributes="value python: request.get('location',getattr(here,'location',''));
                                        tabindex tabindex/next"
                        onfocus="formtooltip('event_location_help',1)" 
                        onblur="formtooltip('event_location_help',0)" />
@@ -212,7 +212,7 @@
                       tabindex=""
                       onfocus="formtooltip('event_url_help',1)" 
                       onblur="formtooltip('event_url_help',0)"
-                      tal:attributes="value request/event_url | here/event_url;
+                      tal:attributes="value python:request.get('event_url',getattr(here,'event_url',''));
                                       tabindex tabindex/next"
                       >
 
@@ -220,7 +220,8 @@
         </div>
 
         <div class="row"
-             tal:define="start_date python:request.get('start_date', here.toPortalTime(here.start(), long_format=1));
+             tal:define="here_start here/start|nothing;
+                         start_date python:request.get('start_date', here.toPortalTime(here_start, long_format=1));
                          error_start_date errors/start_date | nothing;">
             <div class="label">
               <span i18n:translate="label_event_start">Event Starts</span>
@@ -251,7 +252,8 @@
         </div>
 
         <div class="row"
-             tal:define="end_date python:request.get('end_date', here.toPortalTime(here.end(), long_format=1));
+             tal:define="here_end here/end|nothing;
+                         end_date python:request.get('end_date', here.toPortalTime(here_end, long_format=1));
                          error_end_date errors/end_date | nothing;">
             <div class="label">
               <span i18n:translate="label_event_end">Event Ends</span>
@@ -301,7 +303,7 @@
                       tabindex=""
                       onfocus="formtooltip('contact_name_help',1)" 
                       onblur="formtooltip('contact_name_help',0)"
-                      tal:attributes="value request/contact_name | here/contact_name;
+                      tal:attributes="value python:request.get('contact_name',getattr(here,'contact_name',''));
                                       tabindex tabindex/next"
                       />
             </div>
@@ -328,7 +330,7 @@
                       tabindex=""
                       onfocus="formtooltip('contact_email_help',1)" 
                       onblur="formtooltip('contact_email_help',0)" 
-                      tal:attributes="value request/contact_email | here/contact_email;
+                      tal:attributes="value python:request.get('contact_email',getattr(here,'contact_email',''));
                                       tabindex tabindex/next"
                       />
             </div>
@@ -356,7 +358,7 @@
                       tabindex=""
                       onfocus="formtooltip('contact_phone_help',1)" 
                       onblur="formtooltip('contact_phone_help',0)" 
-                      tal:attributes="value request/contact_phone | here/contact_phone;
+                      tal:attributes="value python:request.get('contact_phone',getattr(here,'contact_phone',''));
                                       tabindex tabindex/next"
                       />
 
@@ -378,9 +380,6 @@
             </div>
         </div>
         
-        <span tal:replace="nothing">
-        ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
-        </span>
         <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >
 
     </form>

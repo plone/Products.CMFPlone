@@ -8,6 +8,10 @@
 ##title=Edit a link
 ##
 
+# if there is no id specified, keep the current one
+if not id:
+    id = context.getId()
+
 new_context = context.portal_factory.doCreate(context, id)
 new_context.edit(remote_url=remote_url)
 new_context.plone_utils.contentEdit(new_context

@@ -8,6 +8,10 @@
 ##title=Edit an event
 ##
 
+# if there is no id specified, keep the current one
+if not id:
+    id = context.getId()
+    
 # need to parse date string *before* passing to Event.edit since
 # it expects bite sized chunks....
 from DateTime import DateTime
@@ -38,7 +42,7 @@ try:
                     , contact_phone=contact_phone
                     , event_url=event_url )
 
-    new_context.plone_utils.contentEdit( context
+    new_context.plone_utils.contentEdit( new_context
                                        , id=id
                                        , description=description )
 except:

@@ -8,7 +8,6 @@
 ##title=Validate link_edit_form contents
 ##
 validator = context.portal_form.createForm()
-validator.addField('id', 'String', required=1)
 validator.addField('title', 'String', required=1)
 validator.addField('remote_url', 'String', required=1)
 errors = validator.validate(context.REQUEST, context.REQUEST.get('errors', None))

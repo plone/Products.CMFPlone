@@ -29,7 +29,7 @@
                          id python:request.get('id', here.getId());
                          readonly python:test( here.portal_membership.getHomeUrl()==here.absolute_url(), 1, 0);" >
 
-            <div class="label required">
+            <div class="label">
             
                 <span i18n:translate="label_name">Name</span>
             

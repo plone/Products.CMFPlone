@@ -5,34 +5,14 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=id=None
-##title=Validates a link edit_form contents
+##title=Validates an object id
 ##
 
 # do basic id validation
 errors = context.REQUEST.get('errors', {})
-if id:
-    if not context.portal_form.good_id(id):
-        # id is bad
-        errors['id'] = 'This is not a legal id.'
-    else:
-        # id is good; make sure we have no id collisions
-
-        if context.portal_factory.isTemporary(context):
-            # always check for collisions if we are creating a new object
-            checkForCollision = 1
-        else:
-            # if we have an existing object, only check for collisions if we are changing the id
-            checkForCollision = (context.getId() != id)
-
-        # perform the actual check
-        if checkForCollision:
-            container = context.getParentNode()
-#            if getattr(container, id, None):
-#                errors['id'] = 'This id is reserved.'
-            if id in container.objectIds():
-                errors['id'] = 'This id already exists.'
-
-if errors:
+id_error = context.check_id(id, 0, None)
+if id_error:
+    errors['id'] = id_error
     return ('failure', errors, {'portal_status_message':'Please correct the indicated errors.'})
 else:
     return ('success', errors, {})

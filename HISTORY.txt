@@ -1,8 +1,18 @@
 CHANGES
 
 Plone 1.0 rc1
+    - Added protocol parameter to portal_form_url script.  Fixes issue 593
+    - Made sure that the main portal types (file, image, document, event, link, newsitem, folder) all
+      work with portal_factory.  Cleaned up some minor edit form bugs and added some form titles where
+      they were missing.
+    - Fixed a bug in which uploading two files with the same name in the same folder caused an id
+      collision and dumped you into the ZMI.
+    - Made ids optional for the main portal types (file, image, document, event, link, newsitem, folder).
+      If no id is specified, uses the object's current id.  Fixes issue 66.
+    - Per the request of our usability guru, for items that can have their id set from a file name
+      (file, image, document) we show a blank id when the item is first created.
     - add_ext_editor script was added.  If you have ExternalEditor installed and 
-    you run this script; it should configure your system to use it.
+      you run this script; it should configure your system to use it.
     - tiny feature.. the filename will remain if your validation fails (not in IE)
       Issue 597
     - folder_publish now applied effective/expiration dates and will do so recurssively.

@@ -92,8 +92,8 @@
             <div class="row" 
                  tal:condition="python: getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', None)"
                  tal:define="error_id errors/id | nothing;
-                             id python:request.get('id', here.getId());"> 
-                <div class="label required">
+                             id python:request.get('id', test(here.show_id(),here.getId(),''));"> 
+                <div class="label">
                 
                     <span i18n:translate="label_name">Name</span>
                 
@@ -203,7 +203,7 @@
                     The body text of the document. 
                     </div>
                 </div>
-                <div class="field" tal:define="text python:request.get('text', here.text)">
+                <div class="field" tal:define="text python:request.get('text', getattr(here,'text',''))">
                     <div tal:define="inputname  string:text; 
                                      formname   string:edit_form;
                                      inputvalue text;
@@ -231,7 +231,8 @@
                     </div>
                 </div>
                <div class="field"
-                     tal:define="tabindex tabindex/next;">	
+                     tal:define="tabindex tabindex/next;
+                                 text_format python:request.get('text_format', getattr(here,'text_format','structured-text'))">	
                     <input class="noborder" 
                            type="radio" 
                            name="text_format"
@@ -240,7 +241,7 @@
                            id="cb_structuredtext"
                            onfocus="formtooltip('format_help',1)" 
                            onblur="formtooltip('format_help',0)" 
-                           tal:attributes="checked python:test(here.text_format=='structured-text', 1, '');
+                           tal:attributes="checked python:test(text_format=='structured-text', 1, '');
                                            tabindex tabindex;" 
                            />
                     <label for="cb_structuredtext" i18n:translate="structured_text">Structured Text</label> <br />
@@ -251,7 +252,7 @@
                            value="html" 
                            tabindex=""
                            id="cb_html"
-                           tal:attributes="checked python:test(here.text_format=='html', 1, '');
+                           tal:attributes="checked python:test(text_format=='html', 1, '');
                                            tabindex tabindex;" 
                            onfocus="formtooltip('format_help',1)" 
                            onblur="formtooltip('format_help',0)" 
@@ -264,7 +265,7 @@
                            value="plain" 
                            tabindex=""
                            id="cb_plain"
-                           tal:attributes="checked python:test(here.text_format=='plain', 1, '');
+                           tal:attributes="checked python:test(text_format=='plain', 1, '');
                                            tabindex tabindex;" 
                            onfocus="formtooltip('format_help',1)" 
                            onblur="formtooltip('format_help',0)" 

@@ -34,12 +34,11 @@
           tal:attributes="action python:here.portal_form_url(template.id)" >
 
         <span class="legend" i18n:translate="legend_image_details">Image Details</span>
-        
         <div class="row" 
              tal:condition="python: getattr(here.portal_membership.getAuthenticatedMember(), 'visible_ids', None)"
              tal:define="error_id errors/id | nothing;
-                         id python:request.get('id', here.getId());"> 
-            <div class="label required">
+                         id python:request.get('id', test(here.show_id(),here.getId(),''));"> 
+            <div class="label">
             
                 <span i18n:translate="label_name">Name</span>
             
@@ -162,13 +161,13 @@
                        tabindex="" 
                        onfocus="formtooltip('image_help',1)" 
                        onblur="formtooltip('image_help',0)" 
-                       tal:attributes="tabindex tabindex/next;
-                                       value python:here.getFilenameFromRequest('file')"
+                       tal:attributes="tabindex tabindex/next;"
                        />
                 
                 <br />
                 <span i18n:translate="no_file_uploaded"
-                      tal:condition="python:test(here.size, 0, 1)">
+                      tal:define="file_size here/size|nothing"
+                      tal:condition="python:test(file_size, 0, 1)">
                    (No image has been uploaded yet)
                 </span>
             </div>
