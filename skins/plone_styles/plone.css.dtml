@@ -866,7 +866,8 @@ div listingBar img {
 /* Accessibility elements */
 
 a.skipnav {
-visibility: hidden;
+    visibility: hidden;
+    position: absolute;
 } 
 
 
