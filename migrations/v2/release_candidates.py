@@ -148,7 +148,7 @@ def addTablelessSkin(portal):
     selections = st._getSelections()
 
     if selections.has_key(defaultName):
-        for p in st._getSelections()[defaultName].split(','):
+        for p in selections[defaultName].split(','):
             if p == 'plone_templates':
                 path.append('plone_tableless')
             path.append(p)
