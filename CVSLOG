@@ -1,3 +1,12 @@
+2004-03-17 17:35  limi
+
+	* HISTORY.txt (Plone-2_0-branch): We were missing part of our
+	  history! Plone 1.0.4 and 1.0.5 restored to their former glory ;)
+
+2004-03-17 05:02  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-16 18:24  tiran
 
 	* skins/plone_content/event_view.pt (Plone-2_0-branch): Small
