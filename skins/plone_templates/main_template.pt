@@ -4,16 +4,29 @@
       xml:lang="en"
       lang="en" 
       metal:define-macro="master"
-      tal:define="member here/portal_membership/getAuthenticatedMember;
-        global portal here/portal_url/getPortalObject;
-        global portal_url portal/absolute_url;
+      tal:define="utool nocall:here/portal_url;
+        mtool here/portal_membership;
+        atool here/portal_actions;
+        wtool here/portal_workflow;
+        portal_object utool/getPortalObject;
+        portal_title portal_object/Title;
+        object_title here/Title;
+        portal_url utool;
+        member mtool/getAuthenticatedMember;
+        membersfolder mtool/getMembersFolder;
+        isAnon mtool/isAnonymousUser;
         global actions python:here.portal_actions.listFilteredActionsFor(here);
+        user_actions actions/user;
+        object_actions actions/object;
+        workflow_actions actions/workflow;
+        folder_actions actions/folder;
+        global_actions actions/global;
+        wf_state python:wtool.getInfoFor(here,'review_state');
         site_properties here/portal_properties/site_properties;
         ztu modules/ZTUtils;
-        actions options/actions|actions|nothing;
-        obj_actions actions/object;
-        wf_actions actions/workflow;
-        folder_actions actions/folder;
+        actions options/actions|actions;
+        obj_actions object_actions;
+        wf_actions workflow_actions;
         local_actions python:actions.get('object_tabs', []);
         isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);
         template_id options/template_id|template_id|template/getId|nothing;
