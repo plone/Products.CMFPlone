@@ -3,6 +3,7 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFDefault.MembershipTool import MembershipTool as BaseTool
 from Products.CMFPlone import ToolNames
 from Products.CMFPlone.PloneUtilities import translate
+from Products.CMFPlone.PloneUtilities import _createObjectByType
 from OFS.Image import Image
 from AccessControl import ClassSecurityInfo, getSecurityManager
 from Globals import InitializeClass
@@ -110,38 +111,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
 
-
-    def _createObjectByType(self, type, container, id):
-        """Create an object by type id without using security checks
-        
-        invokeFactory or fti.constructInstance are doing some security checks
-        before creating the object. This security checks would fail for the
-        current user because he hasn't enough permissions to create it's own
-        user folder.
-        
-        This method is using some code from
-        CMFCore.TypesTool.FactoryTypeInformation.constructInstance to create
-        the object without security tests.
-        """
-        id = str(id)
-        typesTool = getToolByName(self, 'portal_types')
-        fti = typesTool.getTypeInfo(type)
-        if not fti:
-            raise ValueError, 'Wrong type %s' % type
-
-        # we have to do it all manually :(
-        p = container.manage_addProduct[fti.product]
-        m = getattr(p, fti.factory, None)
-        if m is None:
-            raise ValueError, ('Product factory for %s was invalid' %
-                               fti.getId())
-
-        # construct the object
-        m(id)
-        ob = container._getOb( id )
-        
-        return fti._finishConstruction(ob)
-    
     def createMemberarea(self, member_id=None, minimal=0):
         """
         Create a member area for 'member_id' or the authenticated user.
@@ -169,7 +138,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             # XXX exception
             return
         
-        self._createObjectByType('Folder', members, id=member_id)
+        _createObjectByType('Folder', members, id=member_id)
 
         # get the user object from acl_users
         # XXX what about portal_membership.getAuthenticatedMember()?
@@ -223,7 +192,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
         member_folder.reindexObject()
 
         ## Create personal folder for personal items
-        self._createObjectByType('Folder', member_folder, id=self.personal_id)
+        _createObjectByType('Folder', member_folder, id=self.personal_id)
         personal = getattr(member_folder, self.personal_id)
         personal.edit(title=personal_folder_title,
                       description=personal_folder_description)
@@ -246,7 +215,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             portal = getToolByName(self, 'portal_url')
             # call the page template
             content = homepageText(member=member_object, portal=portal).strip()
-            self._createObjectByType('Document', member_folder, id='index_html')
+            _createObjectByType('Document', member_folder, id='index_html')
             hpt = getattr(member_folder, 'index_html')
             # edit title, text and format
             # XXX
@@ -267,7 +236,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
         notify_script = getattr(member_folder, 'notifyMemberAreaCreated', None)
         if notify_script is not None:
             notify_script()
-
 
     # deal with ridiculous API change in CMF
     security.declarePublic('createMemberArea')
@@ -361,7 +329,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
             return 0
         return acl_users.authenticate(username, password, REQUEST)
 
-
     def _findUsersAclHome(self, userid):
         portal = getToolByName(self, 'portal_url').getPortalObject()
         acl_users=portal.acl_users
@@ -404,21 +371,6 @@ class MembershipTool(PloneBaseTool, BaseTool):
             self.credentialsChanged(password)
         else:
             raise 'Bad Request', 'Not logged in.'
-
-    # XXX: The implementation in CMFCore is superior
-    #security.declareProtected(View, 'getCandidateLocalRoles')
-    #def getCandidateLocalRoles( self, obj ):
-    #    """ What local roles can I assign? """
-    #    member = self.getAuthenticatedMember()
-    #
-    #    if 'Manager' in member.getRoles():
-    #        return self.getPortalRoles()
-    #    else:
-    #        member_roles = list( member.getRolesInContext( obj ) )
-    #        if 'Member' in member_roles:
-    #            del member_roles[member_roles.index( 'Member')]
-    #
-    #    return tuple( member_roles )
 
 MembershipTool.__doc__ = BaseTool.__doc__
 
