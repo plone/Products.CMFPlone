@@ -8,20 +8,15 @@ no index_html Document on the portal root.
 However, this ComputedAttribute didn't handle WebDAV 'PUT' request
 correctly. This test ensures that the fix doesn't regress.
 
-Give the Manager role to the current user:
+  >>> from Testing.ZopeTestCase import user_name, user_password
 
-  >>> from Testing.ZopeTestCase import user_name, user_password, folder_name
-  >>> self.setRoles(['Manager'])
+Get path of our home folder:
 
-Create a Folder for testing:
-
-  >>> self.portal.invokeFactory('Folder', 'test_folder_')
-  >>> folder = self.portal._getOb('test_folder_')
-  >>> folder_path = '/'.join(folder.getPhysicalPath())
+  >>> folder_path = '/'.join(self.folder.getPhysicalPath())
 
 Make sure index_html doesn't exist yet:
 
-  >>> 'index_html' in folder.objectIds()
+  >>> 'index_html' in self.folder.objectIds()
   False
 
 PUT index_html into a Plone Folder. Should work just fine.
@@ -39,25 +34,29 @@ PUT index_html into a Plone Folder. Should work just fine.
   ...        handle_errors=False)
   HTTP/1.1 201 Created...
 
-  >>> 'index_html' in folder.objectIds()
+  >>> 'index_html' in self.folder.objectIds()
   True
 
-  >>> print folder._getOb('index_html').meta_type
+  >>> print self.folder._getOb('index_html').meta_type
   Document
 
-Now, let's try the same at the Portal level.
+Now, let's try the same at the Portal level:
 
-  >>> folder_path = '/'.join(self.portal.getPhysicalPath())
+  >>> portal_path = '/'.join(self.portal.getPhysicalPath())
 
 Make sure index_html doesn't exist yet:
 
   >>> 'index_html' in self.portal.objectIds()
   False
 
-But if you access it directly you should get a FSPageTemplate:
+But when we access it directly we should get a FSPageTemplate:
 
   >>> print self.portal.index_html.meta_type
   Filesystem Page Template
+
+Give Manager role to the test user:
+
+  >>> self.setRoles(['Manager'])
 
 PUT index_html into Plone root. Should work just fine.
 
@@ -69,10 +68,13 @@ PUT index_html into Plone root. Should work just fine.
   ... Authorization: Basic %s:%s
   ... <BLANKLINE>
   ... %s
-  ... """ % (folder_path, length,
+  ... """ % (portal_path, length,
   ...        user_name, user_password, body),
   ...        handle_errors=False)
   HTTP/1.1 201 Created...
+
+  >>> 'index_html' in self.portal.objectIds()
+  True
 
   >>> print self.portal._getOb('index_html').meta_type
   Document
