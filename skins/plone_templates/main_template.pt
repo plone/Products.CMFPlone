@@ -17,7 +17,7 @@
         local_actions python:actions.get('object_tabs', []);
         isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);
         template_id options/template_id|template_id|template/getId|nothing;
-        slots_mapping options/slots_mapping|template/prepare_slots|here/prepare_slots|nothing;
+        slots_mapping options/slots_mapping|here/prepare_slots|nothing;
         Iterator python:modules['Products.CMFPlone'].IndexIterator;
         tabindex python:Iterator(pos=30000);"
       tal:attributes="lang site_properties/default_language|default;
