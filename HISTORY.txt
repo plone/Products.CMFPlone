@@ -4,7 +4,13 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
-    - Members can be searched by group name in folder_local_role now.
+    - Added a charset header in sendto_template to make it work with 
+      PlasslessTranslationService. Previous sento_template didn't work with Chinese
+      at least.
+      [panjunyong]
+
+    - Members can be searched by group in folder_local_role and 
+      member_search_form now.
       [panjunyong]
 
     - Moved the setting of login_time and last_login_time out of the
