@@ -115,9 +115,9 @@ for x in range(1,32):
 minute=int(date.strftime('%M'))
 
 if default:
-    minutes.append({'id':'----', 'value':'00', 'selected':1})
+    minutes.append({'id':'----', 'value':0, 'selected':1})
 else:
-    minutes.append({'id':'----', 'value':'00', 'selected':None})
+    minutes.append({'id':'----', 'value':0, 'selected':None})
 
 for x in range(0,60,5):
     d={'id':'%02d'%x,
@@ -130,9 +130,9 @@ for x in range(0,60,5):
 hour=int(date.strftime('%H'))
 
 if default:
-    hours.append({'id':'----', 'value':'00', 'selected':1})
+    hours.append({'id':'----', 'value':0, 'selected':1})
 else:
-    hours.append({'id':'----', 'value':'00', 'selected':0})
+    hours.append({'id':'----', 'value':0, 'selected':0})
 
 for x in range(0,24):
     d={'id':'%02d'%x,
