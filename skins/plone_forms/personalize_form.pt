@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master"
-      i18n:domain="plone"      i18n:domain="plone"
->
+      i18n:domain="plone">
 
 <tal:block metal:fill-slot="base">
    <tal:block tal:define="dummy python:request.set('disable_border',1)" />
@@ -257,13 +256,15 @@
 
             <div class="row">
                 <div class="label">
-                    <span i18n:translate="visible_ids_status">Display content ids</span>
+                    <span i18n:translate="visible_ids_status">Display short names</span>
 
                     <div id="visible_ids_help"
                          i18n:translate="visible_ids_help" 
                          class="help" 
                          style="visibility:hidden">
-                    Select whether you want ids to be visible when editing contents.
+                    Select whether you want Short Names (also known as IDs) to be 
+                    visible and editable when editing contents. If you choose not
+                    to display Short Names, they will be generated automatically.
                     </div>                
                 </div>
                 <div class="field"
