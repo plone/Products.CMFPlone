@@ -332,6 +332,7 @@ ul#personalBar {
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    line-height: 1em;
     color: &dtml-mainFontColor;;
     padding: 0em 3em 0em 3em;
     margin: 0;
@@ -341,17 +342,14 @@ ul#personalBar {
 }
 ul#personalBar li {
     display: inline;
-    padding-bottom: 0;
-    padding-top: 0;
-    margin-bottom: 0;
 }
 ul#personalBar li#personalBar-user a {
-    background: transparent url(user.gif) center left no-repeat;
+    background: transparent url(user.gif) top left no-repeat;
     padding-left: 15px;
 }
     
 ul#personalBar li a {
-    background: transparent url(linkOpaque.gif) center left no-repeat;
+    background: transparent url(linkOpaque.gif) top left no-repeat;
     padding-left: 8px;
     color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
