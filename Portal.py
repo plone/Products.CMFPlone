@@ -327,8 +327,8 @@ class PloneGenerator(Portal.PortalGenerator):
         addCMFPloneTool(ToolNames.FactoryTool, None)
         addCMFPloneTool(ToolNames.FormTool, None)
         addCMFPloneTool(ToolNames.MigrationTool, None)
-        #addCMFPloneTool(ToolNames.ActionIconsTool, None)
-        #addCMFPloneTool(ToolNames.CalendarTool, None)
+        addCMFPloneTool(ToolNames.ActionIconsTool, None)
+        addCMFPloneTool(ToolNames.CalendarTool, None)
 
     def create(self, parent, id, create_userfolder):
         id = str(id)

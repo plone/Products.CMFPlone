@@ -46,6 +46,7 @@ def make_plone(portal):
     extendMemberdata(portal)
     addDefaultPloneSkins(portal)
     setupDefaultEditor(portal)
+    setupCalendar(portal)
 
     #1.0.1->1.0.3
     cookie_authentication = getToolByName(portal, 'cookie_authentication')
@@ -82,7 +83,6 @@ def make_plone(portal):
         manage_addTool('Portal Interface Tool')
     addControlPanel(portal)
     upgradePortalFactory(portal)
-    portal.portal_quickinstaller.installProduct('CMFCalendar')
 
     #Add State tabs to portal_types individually instead of globally
     addStateActionToTypes(portal)
@@ -253,16 +253,86 @@ def setupHelpSection(portal):
                             'structured-text', doc.read())
                 getattr(plone_help,filename)._setPortalTypeName('Document')
 
+def setupCalendar(portal):
+    """ Copied directly from CMFCalendar/Extensions/Install.py """
+    self=portal
+    from StringIO import StringIO
+    from Acquisition import aq_base
+    from Products.CMFCalendar import Event
+    from Products.CMFCore.TypesTool import ContentFactoryMetadata
+    
+    out = StringIO()
+    typestool = getToolByName(self, 'portal_types')
+    skinstool = getToolByName(self, 'portal_skins')
+    metadatatool = getToolByName(self, 'portal_metadata')
+    catalog = getToolByName(self, 'portal_catalog')
+    portal_url = getToolByName(self, 'portal_url')
+
+    # Due to differences in the API's for adding indexes between
+    # Zope 2.3 and 2.4, we have to catch them here before we can add
+    # our new ones.
+    base = aq_base(catalog)
+    if hasattr(base, 'addIndex'):
+        # Zope 2.4
+        addIndex = catalog.addIndex
+    else:
+        # Zope 2.3 and below
+        addIndex = catalog._catalog.addIndex
+    if hasattr(base, 'addColumn'):
+        # Zope 2.4
+        addColumn = catalog.addColumn
+    else:
+        # Zope 2.3 and below
+        addColumn = catalog._catalog.addColumn
+    try:
+        addIndex('start', 'FieldIndex')
+    except: pass
+    try:
+        addIndex('end', 'FieldIndex')
+    except: pass
+    try:
+        addColumn('start')
+    except: pass
+    try:
+        addColumn('end')
+    except: pass
+    out.write('Added "start" and "end" field indexes and columns to '\
+              'the portal_catalog\n')
+
+    # Borrowed from CMFDefault.Portal.PortalGenerator.setupTypes()
+    # We loop through anything defined in the factory type information
+    # and configure it in the types tool if it doesn't already exist
+    for t in Event.factory_type_information:
+        if t['id'] not in typestool.objectIds():
+            cfm = apply(ContentFactoryMetadata, (), t)
+            typestool._setObject(t['id'], cfm)
+            out.write('Registered with the types tool\n')
+        else:
+            out.write('Object "%s" already existed in the types tool\n' % (
+                t['id']))
+
+    # Setup a MetadataTool Element Policy for Events
+    try:
+        metadatatool.addElementPolicy(
+            element='Subject',
+            content_type='Event',
+            is_required=0,
+            supply_default=0,
+            default_value='',
+            enforce_vocabulary=0,
+            allowed_vocabulary=('Appointment', 'Convention', 'Meeting',
+                                'Social Event', 'Work'),
+            REQUEST=None,
+            )
+    except: pass
+    out.write('Event added to Metadata element Policies\n')
+    
+    
 def addActionIcons(portal):
     """ After installing QuickInstaller.  We must commit(1) a subtrnx
         so that we will be able to addActionIcons() to the tool
     """
-    try:
-        qi=getToolByName(portal, 'portal_quickinstaller')
-        qi.installProduct('CMFActionIcons')
-    except AlreadyInstalled:
-        qi.notifyInstalled('CMFActionIcons') #Portal.py got to it first
-
+    
     ai=getToolByName(portal, 'portal_actionicons')
     ai.addActionIcon('plone', 'sendto', 'mail_icon.gif', 'Send-to')
     ai.addActionIcon('plone', 'print', 'print_icon.gif', 'Print')
@@ -270,6 +340,7 @@ def addActionIcons(portal):
     ai.addActionIcon('plone', 'extedit', 'extedit_icon.gif', 'ExternalEdit')
 
 def addStateActionToTypes(portal):
+    """ Deprecated.  We are now using a drop-down box on the contentBar """
     typesTool=portal.portal_types
     for ptype in typesTool.objectValues():
         ptype.addAction('content_status_history',

@@ -125,7 +125,7 @@ def initialize(context):
     import RegistrationTool, MemberDataTool, SyndicationTool
     import PropertiesTool, ActionsTool, TypesTool, UndoTool
     import CatalogTool, SkinsTool, DiscussionTool
-    # import CalendarTool, ActionIconsTool
+    import CalendarTool, ActionIconsTool
 
     tools = ( MembershipTool.MembershipTool,
               MemberDataTool.MemberDataTool,
@@ -150,8 +150,8 @@ def initialize(context):
               CatalogTool.CatalogTool,
               SkinsTool.SkinsTool,
               DiscussionTool.DiscussionTool,
-              #ActionsTool.ActionsTool,
-              #CalendarTool.CalendarTool,
+              ActionIconsTool.ActionIconsTool,
+              CalendarTool.CalendarTool,
             )
 
     from Products.CMFCore import utils
