@@ -162,7 +162,27 @@ class PloneGenerator(Portal.PortalGenerator):
 
     def setupPloneSkins(self, p):
         sk_tool=p.portal_skins
+
+        # get cmf Basic skin layer definition
         path=[elem.strip() for elem in sk_tool.getSkinPath('Basic').split(',')]
+
+        # filter out cmfdefault_layers
+        existing_layers=sk_tool.objectIds()
+        cmfdefault_layers=('zpt_topic', 'zpt_content', 'zpt_generic', 'zpt_control',
+                           'topic', 'content', 'generic', 'control', 'Images', 'no_css', 'nouvelle')
+        for layer in cmfdefault_layers:
+            # make sure that the only remove the layer if it not exists or its a Filesystem Directory View
+            # to avoid deleting of custom layers
+            remove = 0
+            l_ob = getattr(sk_tool, layer, None)
+            if not l_ob or getattr(l_ob, 'meta_type', None) == 'Filesystem Directory View':
+                remove = 1
+            # remove from layer definition
+            if layer in path and remove: path.remove(layer)
+            # remove from skin tool
+            if layer in existing_layers and remove: sk_tool.manage_delObjects(ids=[layer])
+
+        # add plone layers
         for plonedir in ( 'plone_content'
                     , 'plone_images'
                     , 'plone_forms'
