@@ -4,6 +4,12 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Fixed Plone Print style sheet - finally prints well in all browsers
+      that know how to do printing. Which unfortunately excludes Mozilla 
+      in its current state. IE and Opera print perfectly, Mozilla prints 
+      *way* too big.
+      [limi]
+
     - Added current time to the standard error message. Useful when your
       users report errors and you want to locate the incident in the
       error logs.
