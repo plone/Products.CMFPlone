@@ -75,7 +75,7 @@ def loadEmergingExample(self, outStream):
     """ 
     installs a sample Website Content and supporting skin 
     """
-#    return
+    return
 
     import os
     root=getToolByName(self, 'portal_url').getPortalObject()
