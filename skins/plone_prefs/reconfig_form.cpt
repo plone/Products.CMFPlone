@@ -137,9 +137,11 @@
                         value=""
                         tal:attributes="value site_properties/default_language;
                                         tabindex tabindex/next;"
-                        tal:define="default_language request/default_language | site_properties/default_language;">
+                        tal:define="default_language request/default_language | site_properties/default_language;
+                                    available_languages python: list(here.availableLanguages());
+                                    dosort python:available_languages.sort(lambda x,y: cmp(x[1], y[1]))">
                    <option value="" i18n:translate="label_choose_language">Choose Language</option>
-                   <option tal:repeat="language here/availableLanguages"
+                   <option tal:repeat="language available_languages"
                            tal:attributes="value python:language[0];
                                            selected python:test(default_language == language[0], 'selected', None)"
                            tal:content="structure python:language[1]" />
