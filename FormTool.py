@@ -1,6 +1,6 @@
-# $Id: $
-# $Source: $
-__version__ = "$Revision: $"[11:-2] + " " + "$Name: $"[7:-2]
+# $Id: FormTool.py,v 1.21 2002/09/11 04:13:01 plonista Exp $
+# $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
+__version__ = "$Revision: 1.21 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -139,7 +139,16 @@ class FormTool(UniqueObject, SimpleItem):
         # so that subsequent forms will operate on the FormTool's context and not
         # on the FormTool.
         do_validate = form_submitted and not errors
-        return FormValidator(name, validators, do_validate).__of__(aq_parent(self)) # wrap in acquisition layer
+
+        if not do_validate:
+            # no need for validation -- do normal traversal
+            target = getattr(aq_parent(self), name, None)
+            if target:
+                return target
+            else:
+                return REQUEST.RESPONSE.notFoundError("%s\n" % (name))
+
+        return FormValidator(name, validators).__of__(aq_parent(self)) # wrap in acquisition layer
 
 
     # DEPRECATED
@@ -175,10 +184,9 @@ class FormValidator(SimpleItem):
     # hands off to a page determined by the NavigationTool
     security = ClassSecurityInfo()
 
-    def __init__(self, form, validators, do_validate):
+    def __init__(self, form, validators):
         self.form = form
         self.validators = validators
-        self.do_validate = do_validate
 
 
     def __str__(self):
@@ -192,19 +200,12 @@ class FormValidator(SimpleItem):
         trace = ['\n']
 
         try:
-            if self.do_validate:
-                trace.append('Invoking validation')
-                context = aq_parent(self)
-                # invoke validation
-                (status, kwargs, trace) = self._validate(context, REQUEST, trace)
+            trace.append('Invoking validation')
+            context = aq_parent(self)
+            # invoke validation
+            (status, kwargs, trace) = self._validate(context, REQUEST, trace)
 
-                return context.portal_navigation.getNext(context, self.form, status, trace, **kwargs)
-            else:
-                trace.append('No validation needed.  Going to %s.%s' % (str(aq_parent(self)), self.form))
-                target = getattr(aq_parent(self), self.form, None)
-                if target is None:
-                    raise KeyError("Unable to find form '%s' in context '%s'.  Check your skins path." % (self.form, str(aq_parent(self))))
-                return target(REQUEST, **kw)
+            return context.portal_navigation.getNext(context, self.form, status, trace, **kwargs)
         except NavigationError:
             raise
         except Exception, e:
