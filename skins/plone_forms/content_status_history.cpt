@@ -38,10 +38,7 @@
           name="edit_form"
           method="post"
           action="content_status_modify"
-          tal:define="self_publish not:request/ids|nothing;
-                      folder_action string:${here/getId}/${template/getId};
-                      content_action string:${template/getId};"
-          tal:attributes="action python:test(not self_publish, content_action, folder_action)">
+          tal:attributes="action python:test(isFolder,template.getId(),'%s/%s' % (here.getId(),template.getId()))">
 
         <span class="legend" i18n:translate="legend_publishing_details">Publishing Details</span>
 
@@ -284,7 +281,7 @@
     <div tal:condition="not: request/ids|nothing">
 
         <table class="listing nosort" 
-               tal:define="review_history python:wtool.getInfoFor(here, 'review_history', [])">
+               tal:define="review_history python:wtool.getInfoFor(here, 'review_history', [])"
                tal:condition="python:[review for review in review_history if review.get('action','')]">
 
             <tr>

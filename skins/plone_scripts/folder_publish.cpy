@@ -44,4 +44,5 @@ for id in ids:
 
 transaction_note( str(ids) + ' transitioned ' + workflow_action )
 
-return state.set(portal_status_message='Content has been changed.')
+# It is necessary to set the context to override context from content_status_modify
+return state.set(context=context, portal_status_message='Content has been changed.')
