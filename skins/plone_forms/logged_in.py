@@ -9,7 +9,7 @@
 ##
 from DateTime import DateTime
 REQUEST=context.REQUEST
-properties_tool=context.portal_properties
+properties_tool=context.portal_properties.site_properties
 membership_tool=context.portal_membership
 
 isAnonymous = membership_tool.isAnonymousUser()
