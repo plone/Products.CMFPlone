@@ -173,17 +173,29 @@ class MembershipTool(BaseTool):
     def listMembers(self):
         '''Gets the list of all members.
         '''
+        members = BaseTool.listMembers(self)
         groups = []
         # can we allways asume that there is a groups_tool ??
-        groups = self.portal_groups.listGroupIds()
-        members = BaseTool.listMembers(self)
-        result = []
-        for member in members:
-            if member.getUser().getUserName() in groups:
-                continue
-            result.append(member)
+        try:
+            groups = self.portal_groups.listGroupIds()
+            result = []
+            for member in members:
+                if member.getUser().getUserName() in groups:
+                    continue
+                result.append(member)
+        except:
+            result = members
         return result
 
+    def listMemberIds(self):
+        '''Lists the ids of all members.  This may eventually be
+        replaced with a set of methods for querying pieces of the
+        list rather than the entire list at once.
+        '''
+        try:
+            return self.acl_users.getPureUserNames()
+        except:
+            return self.__getPUS().getUserNames()
 
     # this should probably be in MemberDataTool.py
     #security.declarePublic( 'searchForMembers' )
