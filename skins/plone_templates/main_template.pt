@@ -79,7 +79,8 @@
         <!-- start of main content block -->
         <div class="main"
             id="contentWrapper"
-            tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions )">
+            tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions );
+            tabindex python:Iterator(pos=0)">
 
             <div class="padding">
 
