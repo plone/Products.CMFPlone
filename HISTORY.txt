@@ -1,5 +1,6 @@
 CHANGES
 Plone 1.0 rc2
+    - migration machinery to add skins, change personalize_form to go back to personalize_form
     - typo in portal_navigation default.folder_rename_form.success should be script:folder_rename
       this typo was propagated throughout previous migration scripts and was also fixed.
       thanks to flacoste for pointing this out.
