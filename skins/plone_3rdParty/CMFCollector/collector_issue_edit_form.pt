@@ -98,14 +98,6 @@
     </div>
 
     <div class="row">
-        <div class="label"> From (email) </div> 
-        <div class="field">
-              <input name="submitter_email" value="EMAIL" size="25"
-                     tal:attributes="value python: here.submitter_email or ''">
-        </div>
-    </div>
-
-    <div class="row">
         <div class="label"> Topic </div> 
         <div class="field">
             <select name="topic">
