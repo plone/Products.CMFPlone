@@ -34,14 +34,12 @@ function setFocus() {
             }
         }
         // If no error, focus on input element with tabindex 1
-        // Commented out for accessibility reasons, if you want the autofocus
-        // back, uncomment the following lines:
-        // for (var i = 0; (node = formnode.getElementsByTagName('input').item(i)); i++) {
-        //     if (node.getAttribute('tabindex') == 1) {
-        //          node.focus();
-        //          return;   
-        //     }
-        // }
+        for (var i = 0; (node = formnode.getElementsByTagName('input').item(i)); i++) {
+            if (node.getAttribute('tabindex') == 1) {
+                 node.focus();
+                 return;   
+            }
+        }
     }
 }
 
