@@ -15,6 +15,23 @@
                 acl_users here/acl_users;"
      tal:condition="here/rejectAnonymous" >
 	
+<!-- ugly way of simulating real actions on the groups/user pages until we have
+     real objects. -->
+<div id="contentTabs"> 
+    <a class="selected" 
+       href=""
+       tal:attributes="href here/absolute_url"
+    >Users</a>
+    <a class=""         
+       href=""
+       tal:attributes="href string: prefs_group_management_form"
+    >Groups</a>
+</div>
+<div id="contentBar">&nbsp;</div>
+<!-- End of tabs -->
+    
+<div class="document editable">    
+
     <h1 i18n:translate="">User Management</h1>
 
     <p i18n:translate="">
@@ -144,6 +161,8 @@
 
     </form>
 
+</div>
+    
 </div>
 
 </body>

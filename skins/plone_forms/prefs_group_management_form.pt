@@ -16,6 +16,23 @@
                 portal_roles mtool/getPortalRoles;"
      tal:condition="here/rejectAnonymous" >
 	
+<!-- ugly way of simulating real actions on the groups/user pages until we have
+     real objects. -->
+<div id="contentTabs"> 
+    <a class="" 
+       href=""
+       tal:attributes="href string: prefs_user_management_form"
+    >Users</a>
+    <a class="selected"         
+       href=""
+       tal:attributes="href here/absolute_url"
+    >Groups</a>
+</div>
+<div id="contentBar">&nbsp;</div>
+<!-- End of tabs -->
+    
+<div class="document editable">    
+
     <h1 i18n:translate="">Groups Management</h1>
 
     <p i18n:translate="">
@@ -134,6 +151,7 @@
     of permissions that you can combine to make up a Group.
     </p>
     
+</div>
     
 </div>
 
