@@ -29,6 +29,6 @@ try:
     view=o.getTypeInfo().getActionById('edit')
 except:
     view=o.getTypeInfo().getActionById('view')
-transaction_note('new ' + o.getTypeInfo().getId() + ' was created.')
+transaction_note(o.getTypeInfo().getId() + ' was created.')
 return REQUEST.RESPONSE.redirect(o.absolute_url()+'/'+view)
 
