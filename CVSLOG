@@ -1,3 +1,75 @@
+2004-01-19 19:40  tiran
+
+	* Portal.py (Plone-2_0-branch): nicer import
+
+2004-01-19 19:39  tiran
+
+	* setup/: __init__.py, config_files.py, dependencies.py,
+	  languages.py, standard.ini (Plone-2_0-branch): removed old
+	  Localizer code put a warning into the log when CMFPlone/i18n
+	  can't be found
+
+2004-01-18 21:53  tiran
+
+	* Portal.py, version.txt, migrations/__init__.py,
+	  migrations/v2/release_candidates.py (Plone-2_0-branch): added
+	  migration path rc3_rc4 and changed the version to 2.0-rc4
+
+2004-01-18 21:48  ajung
+
+	* skins/plone_portlets/portlet_related.pt: fixed tal:condition that
+	  caused the portlet to avoid disappearing if localContent
+	  evaluated to false although remoteContent evaluated to True
+
+2004-01-18 21:43  ajung
+
+	* skins/plone_portlets/portlet_related.pt (Plone-2_0-branch):
+	  tal:condition clause was never fulfilled if localContent
+	  evaluated to false
+
+2004-01-18 12:11  limi
+
+	* HISTORY.txt, skins/plone_styles/plone.css.dtml,
+	  skins/plone_styles/ploneColumns.css.dtml,
+	  skins/plone_tableless/ReadMe-Tableless.txt,
+	  skins/plone_tableless/main_template.pt,
+	  skins/plone_tableless/ploneColumns.css.dtml,
+	  skins/plone_templates/header.pt,
+	  skins/plone_templates/main_template.pt (Plone-2_0-branch): Making
+	  table-based columns the default again - and adding a
+	  plone_tableless for whose who want to do tableless designs.
+
+	  For those of you who were running tableless designs in the RC3
+	  and earlier releases and want to keep it that way - simply add a
+	  DirectoryView for 'plone_tableless' in 'portal_skins', and add it
+	  to the skinpath. This will activate the tableless versions of:
+
+	  - main_template
+
+	  - ploneColumns.css
+
+	  Apart from adding these two templates, no other changes are
+	  needed.
+
+2004-01-18 09:21  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Updated history.
+
+2004-01-18 08:45  limi
+
+	* skins/: plone_content/event_view.pt,
+	  plone_forms/insufficient_privileges.pt,
+	  plone_forms/login_failed.pt, plone_forms/mail_password_form.pt,
+	  plone_scripts/spamProtect.py,
+	  plone_templates/default_error_message.pt (Plone-2_0-branch):
+	  Changing all references to e-mail addresses to be protected
+	  against spambots. We should only have forms for 2.1, but this
+	  will do for now.
+
+2004-01-18 05:01  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-18 00:44  limi
 
 	* skins/plone_styles/plonePrint.css.dtml (Plone-2_0-branch): Added
