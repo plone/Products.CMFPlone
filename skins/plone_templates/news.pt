@@ -32,8 +32,8 @@
             <div class="box">
 
                 <h6>
-                    <img src="" alt="Folder" style="border: 0" 
-                         tal:attributes="src result/getIcon; alt result/Type;" />
+                    <img src="" style="border: 0" 
+                         tal:attributes="src result/getIcon; alt result/Type; alt result/title" />
                 
                     <span tal:omit-tag="" i18n:translate="posted_by">Posted by</span> 
                 
