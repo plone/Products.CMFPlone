@@ -7,9 +7,11 @@
 ##parameters=workflow_action, comment='', effective_date=None, expiration_date=None
 ##title=handles the workflow transitions of objects
 ##
-state = context.portal_form_controller.getState(script, is_validator=0)
+newcontext=context
+contentEditSuccess=0
 portal_workflow=context.portal_workflow
 current_state=portal_workflow.getInfoFor(context, 'review_state')
+state = context.portal_form_controller.getState(script, is_validator=0)
 
 if workflow_action!=current_state and not effective_date:
     effective_date=DateTime()
@@ -19,7 +21,6 @@ def editContent(obj, effective, expiry):
                                      effective_date=effective,
                                      expiration_date=expiry)
 
-contentEditSuccess=0
 try:
     editContent(context,effective_date,expiration_date)
     contentEditSuccess=1
@@ -28,14 +29,14 @@ except 'Unauthorized':
     pass
 
 if workflow_action!=current_state:
-    newobject=context.portal_workflow.doActionFor( context
-                                                 , workflow_action
-                                                 , comment=comment )
+    newcontext=context.portal_workflow.doActionFor( context,
+                                                    workflow_action,
+                                                    comment=comment )
 
 if not contentEditSuccess:
     #The object post-transition could now have ModifyPortalContent permission.
     try:
-        editContent(newobject, effective_date, expiration_date)
+        editContent(context, effective_date, expiration_date)
     except 'Unauthorized':
         pass
 
