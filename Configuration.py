@@ -18,7 +18,8 @@ _methods=('addSiteProperties',
           'modifyMembershipTool',
           'addNewActions',
           'modifySkins',
-          'installPortalTools')
+          'installPortalTools',
+          'modifyAuthentication')
 
 def getCMFVersion():
     from os.path import join

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<tal:block metal:fill-slot="base">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();" >
+
+<h1 i18n:translate="heading_enable_cookies">How to Enable Cookies</h1>
+
+<h3>Internet Explorer</h3>
+<ul>
+   <li>Version 6.x</li>
+   <ul>
+      <li>Click Tools on the menu at the top of your browser and select Internet Options</li>
+      <li>Click the Privacy tab at the top of the screen</li>
+      <li>Move the slider to Medium and click OK</li>
+   </ul>
+   <li>Version 5.x</li>
+   <ul>
+      <li>Click Tools on the menu at the top of your browser and select Internet Options</li>
+      <li>Click the Security tab at the top of the screen</li>
+      <li>Click Custom Level and scroll down to the Cookies section</li>
+      <li>Set "Allow per-session cookies" to Enable and click OK</li>
+   </ul>
+   <li>Version 4.x</li>
+   <ul>
+      <li>Click View on the menu at the top of your browser and select Internet Options</li>
+      <li>Click the Security tab at the top of the screen</li>
+      <li>Click Custom Level and scroll down to the Cookies section</li>
+      <li>Select "Always accept cookies" or "Prompt before accepting cookies" and click OK</li>
+   </ul>
+</ul>
+<h3>Netscape Navigator</h3>
+<ul>
+   <li>Version 6.x</li>
+   <ul>
+      <li>Click Edit on the menu at the top of your browser and select Preferences</li> 
+      <li>Find "Privacy &amp; Security" in the menu on the left.  If there is a triangle pointing to the right
+          next to Privacy &amp; Security, click it.</li>
+      <li>Select "Cookies" under "Privacy &amp; Security"</li>
+      <li>Select "Enable cookies for the originating web site only" or "Enable all cookies" and click "OK"</li>
+   </ul>
+   <li>Version 4.x</li>
+   <ul>
+      <li>Click Edit on the menu at the top of your browser and select Preferences</li>
+      <li>Select "Advanced"</li>
+      <li>Select "Accept all cookies" or "Accept only cookies that get sent back to the originating server" and click OK</li>  
+   </ul>
+</ul>
+<h3>Mozilla</h3>
+<ul>
+   <li>Version 1.x</li>
+      <ul>
+         <li>Click Edit on the menu at the top of your browser and select Preferences</li>
+         <li>Find "Privacy & Security" in the menu on the left.  If there is a [+] to the left of "Privacy & Security", click it.</li>
+         <li>Select "Cookies" under Advanced.</li>
+         <li>Select "Enable cookies for the originating web site only" or "Enable all cookies" and click "OK"</li>
+      </ul>
+</ul>
+</div>
+		
+</body>
+</html>

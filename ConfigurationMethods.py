@@ -10,6 +10,11 @@ except:
     #Plone should not (yet) be dependent on it
     QuickInstallerTool = None
 
+def modifyAuthentication(self, portal):
+    #set up cookie crumbler
+    cookie_authentication = getToolByName(portal, 'cookie_authentication')
+    cookie_authentication._updateProperty('auto_login_page', 'require_login')
+
 def installPortalTools(self,portal):
     ''' thats the place to install custom tools '''
     if QuickInstallerTool and not 'portal_quickinstaller' in portal.objectIds():
