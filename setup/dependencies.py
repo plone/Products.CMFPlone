@@ -9,7 +9,7 @@ def log(message,summary='',severity=zLOG.ERROR, optional=None):
         msg = 'Plone Option'
     else:
         msg = 'Plone Dependency'
-    zLOG.LOG(msg,severity,summary,message)
+    zLOG.LOG(msg,severity,summary,message + "\n")
 
 # make sure CMF is installed
 cmfcore = 0
@@ -44,8 +44,8 @@ if cmfcore:
     except ValueError:
         # couldnt make sense of the version number
         pass
-    if x < [1,4]:
-        log("Plone requires CMF 1.4 or later.  Your version: %s" % CMF_VERSION)
+    if x < [1,4,2]:
+        log("Plone requires CMF 1.4.2 or later.  Your version: %s" % CMF_VERSION)
 
 try:
     import Products.CMFQuickInstallerTool
