@@ -1,3 +1,5 @@
+    - Fixed #245, there can now be more than one sortable table on a page.
+      Use class listing to make it sortable, class nosort to avoid sorting.
     - CustomizationPolicy was not saving changes to personal_form/addtofavorites in new_actions now things work as Expected
     - moved getPersonalFolder/getPersonalPortrait to portal_membership tool instead of FSPythonScripts
     - Cleaned out all old javascript, consolidated everything into one file,

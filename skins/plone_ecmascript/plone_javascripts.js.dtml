@@ -35,12 +35,10 @@
     }
 
 
+/********* Table sorter script *************/
 // Table sorter script, thanks to Geir Bækholt for this.
 // DOM table sorter originally made by Paul Sowden 
 
-
-var tablename = 'sortable'
-        
 function compare(a,b)
 {
     au = new String(a);
@@ -107,29 +105,34 @@ function sort(e) {
 
     // a pretty ugly sort function, but it works nonetheless
     var a = new Array();
-    //var name = el.firstChild.nodeValue || el.parentNode.firstChild.nodeValue;
     // check if the image or the th is clicked. Proceed to parent id it is the image
+    // NOTE THAT nodeName IS UPPERCASE
     if (el.nodeName == 'IMG') el = el.parentNode;
-    var name = el.firstChild.nodeValue;
+    //var name = el.firstChild.nodeValue;
+    // This is not very robust, it assumes there is an image as first node then text
+    var name = el.childNodes.item(1).nodeValue;
     var dad = el.parentNode;
     var node;
     
     // kill all arrows
     for (var im = 0; (node = dad.getElementsByTagName("th").item(im)); im++) {
+        // NOTE THAT nodeName IS IN UPPERCASE
         if (node.lastChild.nodeName == 'IMG')
         {
-            var arrow = node.lastChild
-            node.removeChild(arrow)
+            lastindex = node.getElementsByTagName('img').length - 1;
+            node.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowBlank.gif');
         }
     }
     
     for (var i = 0; (node = dad.getElementsByTagName("th").item(i)); i++) {
-        if (node.firstChild.nodeValue == name) 
+        var xre = new RegExp(/\bnosort\b/);
+        // Make sure we are not messing with nosortable columns, then check second node.
+        if (!xre.exec(node.className) && node.childNodes.item(1).nodeValue == name) 
         {
-            newarrow = document.createElement('IMG');
-            newarrow.setAttribute('src','arrowUp.gif');
-            node.appendChild(newarrow);
-            break
+            //window.alert(node.childNodes.item(1).nodeValue;
+            lastindex = node.getElementsByTagName('img').length -1;
+            node.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowUp.gif');
+            break;
         }
     }
 
@@ -153,7 +156,8 @@ function sort(e) {
 	       && a[1][0] == getConcatenedTextContent(tbody.getElementsByTagName("tr").item(1).getElementsByTagName("td").item(i))) 
         {
             a.reverse();
-            el.getElementsByTagName('img').item(0).setAttribute('src','arrowDown.gif');
+            lastindex = el.getElementsByTagName('img').length - 1;
+            el.getElementsByTagName('img').item(lastindex).setAttribute('src','arrowDown.gif');
         }
 
     }
@@ -164,14 +168,44 @@ function sort(e) {
 }
     
 function init(e) {
-    if (document.getElementById(tablename))
+    var tbls = document.getElementsByTagName('table');
+    for (var t = 0; t < tbls.length; t++)
         {
-        var thead = document.getElementById(tablename).getElementsByTagName("thead").item(0);
-        var node;
-        for (var i = 0; (node = thead.getElementsByTagName("th").item(i)); i++) {
-            if (node.getAttribute('name') != 'nosort') {
-                if (node.addEventListener) node.addEventListener("click",sort,false);
-                else if (node.attachEvent) node.attachEvent("onclick",sort);
+        // elements of class="listing" can be sorted
+        var re = new RegExp(/\blisting\b/)
+        // elements of class="nosort" should not be sorted
+        var xre = new RegExp(/\bnosort\b/)
+        if (re.exec(tbls[t].className) && !xre.exec(tbls[t].className))
+            {
+            var tablename = tbls[t].getAttribute('id')
+            var thead = document.getElementById(tablename).getElementsByTagName("thead").item(0);
+            var node;
+            // set up blank spaceholder gifs
+            blankarrow = document.createElement('img');
+            blankarrow.setAttribute('src','arrowBlank.gif');
+            blankarrow.setAttribute('height',6);
+            blankarrow.setAttribute('width',9);
+            // the first sortable column should get an arrow initially.
+            initialsort = false;
+            for (var i = 0; (node = thead.getElementsByTagName("th").item(i)); i++) {
+                // check that the columns does not have class="nosort"
+                if (!xre.exec(node.className)) {
+                    node.insertBefore(blankarrow.cloneNode(1), node.firstChild);
+                    if (!initialsort) {
+                        initialsort = true;
+                        uparrow = document.createElement('img');
+                        uparrow.setAttribute('src','arrowUp.gif');
+                        uparrow.setAttribute('height',6);
+                        uparrow.setAttribute('width',9);
+                        node.appendChild(uparrow);
+                        //node.getElementsByTagName('img').item(0).setAttribute('src','arrowUp.gif')
+                    } else {
+                        node.appendChild(blankarrow.cloneNode(1));
+                    }
+
+                    if (node.addEventListener) node.addEventListener("click",sort,false);
+                    else if (node.attachEvent) node.attachEvent("onclick",sort);
+                }
             }
         }
     }

@@ -147,19 +147,23 @@ user.getUserName()==here.getId()" i18n:translate="heading_my_folder">
 
                     <metal:block tal:condition="folder_contents|not:standalone|nothing">
                     <tr>
-                        <th name="nosort"><input class="noborder" 
+                        <th class="nosort"><input class="noborder" 
                                                  type="image"
                                                  src="select_all_icon.gif" 
                                                  name="selectButton"
                                                  title="Select all items"
                                                  onClick="toggleSelect(this); return false;"
                                                  /></th>
-                        <th><span tal:omit-tag=""
-                        i18n:translate="listingheader_title">Title</span>&nbsp;<img tal:replace="structure here/arrowUp.gif" /></th>
-                        <th i18n:translate="listingheader_type">Type</th>
-                        <th i18n:translate="listingheader_size">Size</th>
-                        <th i18n:translate="listingheader_modified">Modified</th>
-                        <th i18n:translate="listingheader_status">Status</th>
+                        <th>&nbsp;<span tal:omit-tag=""
+                        i18n:translate="listingheader_title">Title</span>&nbsp;<img tal:condition="nothing" tal:replace="structure here/arrowUp.gif" /></th>
+                        <th>&nbsp;<span tal:omit-tag=""
+                        i18n:translate="listingheader_type">Type</span>&nbsp;</th>
+                        <th>&nbsp;<span tal:omit-tag=""
+                        i18n:translate="listingheader_size">Size</span>&nbsp;</th>
+                        <th>&nbsp;<span tal:omit-tag=""
+                        i18n:translate="listingheader_modified">Modified</span>&nbsp;</th>
+                        <th>&nbsp;<span tal:omit-tag=""
+                        i18n:translate="listingheader_status">Status</span>&nbsp;</th>
                     </tr>
                     </metal:block>
                 </thead>
