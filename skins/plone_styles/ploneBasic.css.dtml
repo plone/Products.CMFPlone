@@ -127,6 +127,22 @@ ul {
     list-style-image: url("bullet.gif"); 
     margin-top: 1em;
     margin-bottom: 1em;
+    margin-left: 2em;
+    padding:0;
+}
+
+/* we advise you to use the div.group and span.legend elements instead of these, 
+    as the only browser showing legends correctly is IE. They are just included here 
+    for completeness */
+fieldset {
+    border: &dtml-groupBorder;;
+    margin: 2em 0em 1em 0em;
+    padding: 1em 0em;
+}
+
+legend {
+    background: &dtml-mainBackground;;
+    padding: 0.5em;
 }
 
 
@@ -139,6 +155,8 @@ textarea {
     font: &dtml-inputFont;;
     border: &dtml-inputBorder;;  
     width: 100%;
+    color: &dtml-mainFontColor;;
+    background-color: white;
 }
 
 input {
@@ -156,7 +174,7 @@ select {
     margin: 0em 0em 1em 0em;
 }
 
-abbr, acronym, .help {
+abbr, acronym, .explain {
 /* Help classes */
     border-bottom: 1px dotted &dtml-mainFontColor;;
     color: &dtml-mainFontColor;;
@@ -168,6 +186,8 @@ abbr, acronym, .help {
 
 code {
     font-size: 120%;
+    color: &dtml-mainFontColor;;
+    background-color: &dtml-preBackground;;
 }
 
 pre {
