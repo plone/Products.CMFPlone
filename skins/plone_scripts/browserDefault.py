@@ -10,6 +10,8 @@
 if request.has_key('REQUEST_METHOD'):
     if request['REQUEST_METHOD'] != 'GET':
         return context, [request['REQUEST_METHOD']]
+else:
+    return context
 
 default_pages = ['index_html', ]
 pages = getattr(context, 'default_page', [])
