@@ -45,6 +45,7 @@ div.top {
 
 div.searchBox {
     /*searchbox style and positioning */
+    background-color: transparent;
     color: &dtml-searchTextColor;;
     float: right;
     margin: &dtml-searchMargin;;
@@ -93,6 +94,7 @@ div.tabs a:hover {
     background: &dtml-mainTabBackground;;
     border-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-color: &dtml-mainTabBackground;;
+    color: &dtml-mainTabFontColorSelected;;
 }
 
 div.personalBar {
@@ -101,12 +103,14 @@ div.personalBar {
     border-bottom-color: &dtml-mainTabBorderColorSelected;;
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    color: &dtml-mainTextColor;;
     padding-right: 3em;
     text-align: right;
     text-transform: &dtml-textTransform;;
 }
 
 div.personalBar a{
+    background-color: transparent;
 	color: &dtml-mainTabFontColorSelected;;
     font-weight: &dtml-mainTabFontWeight;;
 }
@@ -189,12 +193,14 @@ div.contentTabs a.selected {
 
 div.contentTabs a:hover {
     background-color: &dtml-contentTabBackground;;
+    color: &dtml-contentTabTextColor;;
 }
 
 div.contentBar {
     background: &dtml-contentTabBackground;;
     border-left: &dtml-contentTabBorder;;
     border-right: &dtml-contentTabBorder;;
+    color: &dtml-contentTabTextColor;;
     text-align: right;
     text-transform: &dtml-textTransform;;
 }
@@ -218,6 +224,7 @@ div.message {
     /* The portal messages for cut/paste operations etc */
     background: &dtml-messageBackground;;
     border: &dtml-messageBorder;;
+    color: &dtml-mainTextColor;;
     font: &dtml-messageFont;;
     margin: 0em 0em 1em 0em;
     padding: 0.5em 1em;
@@ -237,6 +244,7 @@ div.message {
     background: &dtml-footerBackground;;
     border-top: &dtml-footerBorder;;
     border-bottom: &dtml-footerBorder;;
+    color: &dtml-mainTextColor;;
     clear: both;
     float: none;
     margin: 2em 0em;

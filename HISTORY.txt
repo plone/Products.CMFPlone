@@ -1,4 +1,5 @@
 0.9.9 - Bola Release:   
+    - All CSS and most HTML validate according to W3C's validators
     - fixed up MembershipTool which will add a homepage which will partcipate in workflow
     - added a FormulatorTool (portal_form_validation) which is a *thin* wrapper around Formulator and exposes
       minimal amounts of functionality.  I didnt know about CMFFormsTool when I did this (cmf.zope.org not doing its job)

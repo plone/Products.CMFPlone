@@ -49,6 +49,7 @@ input.noborder {
        Border necessary in Moz, not in IE */
     border: &dtml-noBorder;;
     margin: 0;
+    background-color: transparent;
 }
 
 div.row {

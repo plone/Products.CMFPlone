@@ -33,11 +33,11 @@ contentTabTextColor:string=#000066
 contentTabTextColorSelected:string=#000066
 preBorder:string=1px solid #364970
 preBackground:string=#93BEE2
-messageFont:string=bold
+messageFont:string=bold 100% Verdana, Helvetica, Arial, sans-serif
 messageBackground:string=#93BEE2
 messageBorder:string=1px solid #364970
 textTransform:string=lowercase
-noBorder:string=1px solid #364970
+noBorder:none
 evenRowBackground:string=#D8E7F3
 oddRowBackground:string=White
 groupBorder:string=1px solid #364970

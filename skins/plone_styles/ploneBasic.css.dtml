@@ -45,6 +45,7 @@ body {
 a {
 	text-decoration: none;
     color: &dtml-mainLinkColor;;
+    background-color: transparent;
 }
 
 table {
@@ -76,6 +77,7 @@ hr {
     clear: both;
     height: 1px;
     color: &dtml-mainTabBorderColorSelected;;
+    background-color: transparent;
 }
 
 
@@ -130,6 +132,7 @@ input {
 /* Small cosmetic fix which makes input gadgets look nicer. */
     font: &dtml-inputFont;;
     border: &dtml-inputBorder;;  
+    color: &dtml-mainTextColor;;
     background-color: white;
     margin: 0em 0em 1em 0em;
 }
@@ -143,6 +146,7 @@ abbr, acronym, .help {
 /* Help classes */
     border-bottom: 1px dotted &dtml-mainTextColor;;
     color: &dtml-mainTextColor;;
+    background-color: transparent;
     cursor: help;
 }
 
@@ -156,6 +160,7 @@ pre {
     font-size: 120%;
     padding: 1em;
     border: &dtml-preBorder;;
+    color: &dtml-mainTextColor;;
     background-color: &dtml-preBackground;;
 }
 
