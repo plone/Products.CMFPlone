@@ -2,7 +2,7 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.0.5 - Backed Up Willie - Released (TBA)
+Plone 2.0.5 - Backed Up Willie - Unreleased
 
     - Made the check_id script work in the presence of incomplete 
       Plone sites and missing permissions.
@@ -30,7 +30,7 @@ Plone 2.0.5 - Backed Up Willie - Released (TBA)
       which would cause FileStorage to fail on _notify 
       [runyaga]
 
-Plone 2.0.4 - Warp - Released 16. August 2004
+Plone 2.0.4 - Warp - Released August 16, 2004
 
     - Fixed http://plone.org/collector/3329. Results of breadcrumbs.py 
       are no longer translated in global_pathbar.pt.
@@ -163,7 +163,7 @@ Plone 2.0.4 - Warp - Released 16. August 2004
       switchers.
       [limi]
 
-Plone 2.0.3 - Noname - Released 20. May 2004
+Plone 2.0.3 - Noname - Released May 20, 2004
 
     - Login portlet wasn't using the 'label' tag, corrected.
 
@@ -179,7 +179,7 @@ Plone 2.0.3 - Noname - Released 20. May 2004
       of the search term in simple searchs.
       [azy]
 
-Plone 2.0.2 - Hicks - Released 13. May 2004
+Plone 2.0.2 - Hicks - Released May 13, 2004
 
     - Added the 'listingNext' and 'listingPrevious' class for the batch 
       navigator. The old span.next/previous will still work, but are 
@@ -238,7 +238,7 @@ Plone 2.0.2 - Hicks - Released 13. May 2004
       a field in which the user is actually typing.
       [elvix]
 
-Plone 2.0.1 - Jello - Released 4. May 2004
+Plone 2.0.1 - Jello - Released May 4, 2004
 
     - Backported fix for http://plone.org/collector/2183 from HEAD.
       _verifyObjectPaste() should deny pasting if the content type is not
@@ -443,7 +443,7 @@ Plone 2.0.1 - Jello - Released 4. May 2004
       The folder listing of the current folder
       </div>
 
-Plone 2.0 - Fyuti - released 23. March 2004
+Plone 2.0 - Fyuti - Released March 23, 2004
 
    Final
 
@@ -1432,13 +1432,13 @@ Plone 2.0 - Fyuti - released 23. March 2004
       script which can be customized to filter out types based on user
       or context. [philikon]
 
-Plone 1.0.5 - Breakbeat Era - released 9. September 2003
+Plone 1.0.5 - Breakbeat Era - Released September 9, 2003
 
     - Security fix in CMF made us issue a new release with the updated CMF 1.3.2.
 
     - Workaround for the disappearing text bug in Internet Explorer 6 on Windows.
 
-Plone 1.0.4 - Zita Swoon - released 14. August 2003
+Plone 1.0.4 - Zita Swoon - Released August 14, 2003
 
     - Plone is now compliant with the two most widely-used accessibility
       standards in the world - Level A Conformance to the W3C's Web
@@ -1469,7 +1469,7 @@ Plone 1.0.4 - Zita Swoon - released 14. August 2003
       reverse is 0 by default
       [runyaga]
 
-Plone 1.0.3 - Brazil - released 19. June 2003
+Plone 1.0.3 - Brazil - Released June 19, 2003
 
     - Fixed ERRATA in 1.0.2
 
@@ -1482,7 +1482,7 @@ Plone 1.0.3 - Brazil - released 19. June 2003
     - added a property in portal_properties/site_properties called invalid_ids
     which will not be allowed to be used in the CMF/Plone site.
 
-Plone 1.0.2 - Vert - released 3. June 2003
+Plone 1.0.2 - Vert - Released June 3, 2003
 
     - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
 
@@ -1536,7 +1536,7 @@ Plone 1.0.2 - Vert - released 3. June 2003
 
     - removed the setHeader() in header
 
-Plone 1.0.1 - Mira Calix - released 19. February 2003
+Plone 1.0.1 - Mira Calix - Released February 19, 2003
 
     - Added "Dry run" option to portal_migration
 
@@ -1560,7 +1560,7 @@ Plone 1.0.1 - Mira Calix - released 19. February 2003
 
     - fixed Collector bug in new issue formPlone 1.0
 
-Plone 1.0 - released 6. February 2003
+Plone 1.0 - Released February 6, 2003
 
     - calendar_slot now uses absolute_url() and template.getId() (so you can stay on templates)
 
@@ -2306,7 +2306,7 @@ Plone 1.0alpha - Boards of Canada Release:
 
     - issue #51 resolved
 
-Plone 0.9.9 - Bola - released 25. May 2002:
+Plone 0.9.9 - Bola - Released May 25, 2002:
 
     - Replaced all references to TextColor with FontColor, added
       headingFontColor property
@@ -2496,7 +2496,7 @@ Plone 0.9.9 - Bola - released 25. May 2002:
 
     - many more changes and cleanups
 
-Plone 0.9.8 - Ulrich Schnauss - released 19. March 2002:
+Plone 0.9.8 - Ulrich Schnauss - Released March 19, 2002:
 
 
     - renaming of objects
@@ -2512,7 +2512,7 @@ Plone 0.9.8 - Ulrich Schnauss - released 19. March 2002:
 
     - other things I forgot ;'(
 
-Plone 0.9.5 - Released 31. January 2002:
+Plone 0.9.5 - Released January 31, 2002:
 
 
     - enormous overhaul of entire UI.  UI now works with Mozilla.
