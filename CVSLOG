@@ -1,3 +1,98 @@
+2004-02-03 02:44  seanupton
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Code-cleanup: removed definition of b_start variable in template
+	  now that batching is done in script.
+
+2004-02-03 02:19  seanupton
+
+	* skins/plone_scripts/batchedFolderContents.py (Plone-2_0-branch):
+	  Added batchedFolderContents.py - identical to getFolderContents,
+	  plus batching logic from folder_contents.pt moved here.
+
+2004-02-03 01:29  shh42
+
+	* PloneFolder.py, tests/testPloneFolder.py (Plone-2_0-branch):
+	  Retain Zope 2.6 compatibility wrt NotFound exception.
+
+2004-02-02 22:22  tiran
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): first fix
+	  for #2574: _convertActions() problem
+
+2004-02-02 22:18  zopezen
+
+	* PloneFolder.py (Plone-2_0-branch): fix for #2575
+
+2004-02-02 19:03  gbjk
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch): Sean
+	  accidently commited a modified .40 as .43.  The way to fix this
+	  is to use the instanceless merge option:   cvs update -r1.31.2.43
+	  -j1.31.2.40 -j1.31.2.42 folder_contents.pt and then commit it
+	  back as a new version after checking with cvs diff it's okay.
+	  Fixed here.
+
+2004-02-02 18:21  gregweb
+
+	* PloneFolder.py, skins/plone_scripts/folder_paste.cpy: temporary
+	  fix for bug 2183: paste now checks for allowed content types
+
+2004-02-02 18:18  gregweb
+
+	* tests/testCutPasteSecurity.py: temporary fix for bug 2183: paste
+	  now checks for allowed content types
+
+2004-02-02 17:28  seanupton
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Migrated folder_contents batching to (new) script out of template
+	  (more modular, easier pluggable batching by add-on products).
+
+2004-02-02 16:18  gbjk
+
+	* skins/plone_templates/global_contentmenu.pt (Plone-2_0-branch):
+	  Use getAllowedTypes instead of allowedSortedContentTypes and
+	  filterOut tests for iterations.  Use len(getAllowedTypes) for the
+	  drop down/single item conditions.
+
+2004-02-02 16:02  gbjk
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Moved hasAllowedTypes to getAllowedTypes.
+
+2004-02-02 15:59  gbjk
+
+	* skins/plone_scripts/: getAllowedTypes.py, hasAllowedTypes.py
+	  (Plone-2_0-branch): has is a test, get is a return.  Since this
+	  script returns a list it should be getAllowedTypes, not
+	  hasAllowedTypes.  Moving.
+
+2004-02-02 15:25  gbjk
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Don't use allowedSortedTypes as the list of types and then try to
+	  filter it.  Instead use contentTypes ( gotten from
+	  hasAllowedTypes ) to ensure we're not testing or iterating over
+	  types that are in getNotAddableTypes.  This removes checks
+	  against filterOut and ensures we only show one box if only one
+	  type is addable.  It should also act right if all types are in
+	  getNotAddableTypes.
+
+	  Depends on hasAllowedTypes - new python script in plone_scripts.
+
+2004-02-02 14:57  gbjk
+
+	* skins/plone_scripts/hasAllowedTypes.py (Plone-2_0-branch):
+	  Returns a list of content types from a sorted allowedContentTypes
+	  that aren't in getNotAddableTypes.  Essentially a list that
+	  should be used for size and iterations in folder_contents.pt and
+	  global_contentmenu.pt.
+
+2004-02-02 04:57  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-01 22:04  runyaga
 
 	* skins/plone_scripts/displayContentsTab.py (Plone-2_0-branch):
