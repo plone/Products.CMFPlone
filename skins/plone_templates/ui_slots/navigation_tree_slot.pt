@@ -44,10 +44,10 @@
                                       sibling python:te['object'];
                                       typeInfo sibling/getTypeInfo;
                                       stdCommand python:test(not notFolderContents,'folder_contents',test(typeInfo.id in useFolderContents,'',typeInfo.immediate_view));
-                                      stdCommand python:test(stdCommand in ('folder_contents','folder_listing'),test(checkPerm('List folder contents',sibling) ,stdCommand,''),typeInfo.immediate_view);
+                                      command python:test(stdCommand in ('folder_contents','folder_listing') and not checkPerm('List folder contents',sibling) ,'',stdCommand);
                                       title python:te['object'].title_or_id();
                                       sibling_title python:' '.join(title[:croppingLength].split(' '));"
-                                      rtal:on-error="structure string:<!--Error in Navigation loop!!-->"
+                                      tal:on-error="structure string:<!--Error in Navigation loop!!-->"
                                            >
                                
                         <tal:block repeat="x python:range( te['indent'])">&nbsp;</tal:block>
@@ -57,7 +57,7 @@
                         </tal:block>
                         <a href="" 
                            tal:condition="python: sibling != portalObject"
-                           tal:define="url string:${sibling/absolute_url}/${stdCommand}"
+                           tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');"
                            class="plain">
@@ -69,7 +69,7 @@
                         
                         <a href="" 
                            tal:condition="python: sibling == portalObject"
-                           tal:define="url string:${sibling/absolute_url}/${stdCommand}"
+                           tal:define="url string:${sibling/absolute_url}/${command}"
                            tal:attributes="href url;
                                            title python:test(title != sibling_title, title, '');">
                            
