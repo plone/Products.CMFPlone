@@ -23,11 +23,14 @@ class TestPloneTool(PloneTestCase.PloneTestCase):
         self.folder.invokeFactory('Document', 'doc')
         doc = self.folder.doc
         self.assertEqual(doc.Creator(), default_user)
+        self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
+
         self.utils.changeOwnershipOf(doc, 'new_owner')
         self.assertEqual(doc.Creator(), 'new_owner')
         self.assertEqual(doc.get_local_roles_for_userid('new_owner'), ('Owner',))
-        # XXX: Initial creator still has Owner role. Is this a bug?
-        self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
+
+        # Initial creator no longer has Owner role.
+        self.assertEqual(doc.get_local_roles_for_userid(default_user), ())
 
 
 if __name__ == '__main__':
