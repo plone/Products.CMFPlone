@@ -20,7 +20,7 @@
 
     <div class="padding">
 
-        <h5 i18n:translate="box_recentlypublished">Recently Published</h5>
+        <h5 i18n:translate="box_recentlypublished">Recent Items</h5>
 
         <div class="body">
 
@@ -43,7 +43,7 @@
 
             <div class="content odd" tal:condition="not: results"
                  i18n:translate="box_recently_no_items">
-            No items published since your last log-in.
+            No items published or changed since your last log-in.
             </div>
 
             <div class="content odd">
