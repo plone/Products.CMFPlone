@@ -34,6 +34,7 @@ view = None
 for id in relative_ids:
     try:
         o=o.restrictedTraverse(id)
+
         if o.getId() in ('talkback', ): # I'm sorry ;(
             raise 'talkbacks would clutter our precious breadcrumbs'
         if o.isPrincipiaFolderish and \
@@ -41,14 +42,16 @@ for id in relative_ids:
            currentlyViewingFolderContents:
             path_seq+=( (o.title_or_id(), o.absolute_url()+'/folder_contents'), )
         else:
+            # see if the object on the stack has a view action
+            # XXX this seems expensive
+            try:
+                view = o.getTypeInfo().getActionById('view')
+            except:
+                view = None
             if o.getId() != 'index_html':
-                # see if the object on the stack has a view action
-                # XXX this seems expensive
-                try:
-                    view = o.getTypeInfo().getActionById('view')
+                if view:
                     path_seq+=( (o.title_or_id(), o.absolute_url()+'/' + view), )
-                except:
-                    view = None
+                else:
                     path_seq+=( (o.title_or_id(), o.absolute_url()), )
     except:
         pass # gulp! this usually occurs when trying to traverse into talkback objects
