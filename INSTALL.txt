@@ -3,9 +3,9 @@ date, and have nice and funky pictures to go with them ;)
 
 **REQUIREMENTS**
 
-  - "Zope 2.6.2 or later":http://see www.zope.org/Products
+  - "Zope 2.6.2 or later":http://www.zope.org/Products
 
-  - "CMF 1.4 or later":http://cmf.zope.org
+  - "CMF 1.4.2 or later":http://cmf.zope.org
 
   - "Formulator 1.4.0 or later":http://www.zope.org/Members/faassen/Formulator
 
