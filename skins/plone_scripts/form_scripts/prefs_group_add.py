@@ -11,8 +11,14 @@ from Products.PythonScripts.standard import url_quote
 
 REQUEST=context.REQUEST
 name = REQUEST['addname']
-context.portal_groups.addGroup(name,"",(),())
-url='%s?%s=%s' % (context.prefs_group_details.absolute_url(),
+if name:
+  context.portal_groups.addGroup(name,"",(),())
+  url='%s?%s=%s' % (context.prefs_group_details.absolute_url(),
 	url_quote('groupname'),
 	url_quote(name))
+else:
+  url='%s?%s=%s' % (context.prefs_groups_overview.absolute_url(),
+	url_quote('portal_status_message'),
+	url_quote('Please choose a name for the group.'))
+
 return REQUEST.RESPONSE.redirect(url)
