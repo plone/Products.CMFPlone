@@ -12,31 +12,40 @@
 
    <div metal:fill-slot="main"
       tal:define="controlPanel python:modules['Products.CMFCore.utils'].getToolByName(here, 'portal_configuration');
-                    groups controlPanel/getGroups;
-                    getIconFor nocall:putils/getIconFor
-                    ">
+                  groups controlPanel/getGroups;
+                  getIconFor nocall:putils/getIconFor">
 
-    <h1>Plone Setup</h1>
+    <h1 i18n:translate="heading_control_panel">Plone Setup</h1>
 
-    <div id="description">
-    Configuration area for Plone and add-on Products.
+    <div id="description" i18n:translate="description_control_panel">
+      Configuration area for Plone and add-on Products.
     </div>
 
-    <tal:block tal:repeat="g groups">
-        <h2 tal:content="g/title"> Plone Configlet Group Title </h2>
-        <p tal:define="configlets python:controlPanel.enumConfiglets(group=g['id'])">
+    <tal:block tal:repeat="group groups">
+        <h2 tal:content="group/title"
+            i18n:translate="">Plone Configlet Group Title</h2>
+        <ul tal:define="configlets python:controlPanel.enumConfiglets(group=group['id'])">
 
-            <a href="" tal:repeat = "configl configlets" tal:attributes="href configl/url " >
-            <img tal:attributes="src python:getIconFor('controlpanel',configl['id']);alt configl/description"  tal:on-error="string:" />
-            <span tal:content="configl/name"    />
-            </a>
+            <li tal:repeat="configlet configlets">
+                <a href=""
+                   tal:attributes="href configlet/url">
+                    <img tal:attributes="src python:getIconFor('controlpanel',configlet['id']);
+                                         alt configlet/description"
+                         i18n:attributes="alt"
+                         tal:on-error="string:" />
+                <tal:configletname tal:content="configlet/name"
+                                   i18n:translate=""></tal:configletname>
+                </a>
+            </li>
 
-            <tal:noprefs tal:condition="not: configlets">
-            No Preference Panels available.
-            </tal:noprefs>
+            <p tal:condition="not:configlets"
+               i18n:translate="label_no_panels_available">
+              No Preference Panels available.
+            </p>
 
-        </p>
+        </ul>
     </tal:block>
     </div>
+
 </body>
 </html>

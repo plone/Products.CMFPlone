@@ -34,7 +34,7 @@
 
 <div class="document editable">
 
-    <h1 i18n:translate="">User Management</h1>
+    <h1 i18n:translate="heading_user_management">User Management</h1>
 
     <form action=""
           name="users"
@@ -47,35 +47,36 @@
            be adjacent visually. Do we even need a quicksearch? -->
     QuickSearch:
     <input class="quickSearch"
-              tabindex=""
-              type="text"
-              name="searchstring"
-              value=""
-              tal:attributes="tabindex tabindex/next;"
-              />
+            tabindex=""
+            type="text"
+            name="searchstring"
+            value=""
+            tal:attributes="tabindex tabindex/next;"
+            />
+
     <input type="hidden" name="searchonly" value="users" />
     <input type="submit"
-    		 class="context"
-		 name="prefs_user_group_search_form:method"
-		 value="Search"
-		 tabindex=""
-    		 tal:attributes="tabindex tabindex/next;" />
+           class="context"
+           name="prefs_user_group_search_form:method"
+           value="Search"
+           tabindex=""
+           tal:attributes="tabindex tabindex/next;" />
 
-    <p i18n:translate="">
-    Click the User Name to see and change the details of a specific user, or click
-    the envelope to send a mail. You can edit the roles and e-mail address
-    and remove users directly from this form.
-    You can also access the user registration form to add new users.
-    To deactivate a user without deleting, just remove all the roles for that
-    particular user.
+    <p i18n:translate="description_user_management">
+      Click the User Name to see and change the details of a specific
+      user, or click the envelope to send a mail. You can edit the
+      roles and e-mail address and remove users directly from this
+      form. You can also access the user registration form to add new
+      users. To deactivate a user without deleting, just remove all
+      the roles for that particular user.
     </p>
-
 
        <input class="standalone add"
               tabindex=""
               type="submit"
               name="portal_form/join_form:method"
               value="Add New User"
+              i18n:attributes="value"
               tal:attributes="tabindex tabindex/next;"
               />
 
@@ -173,7 +174,8 @@
                tabindex=""
                type="submit"
                name="prefs_user_manage:method"
-               value="Apply Changes"
+               value="Apply"
+               i18n:attributes="value"
                tal:attributes="tabindex tabindex/next;"
                />
 
