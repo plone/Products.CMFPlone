@@ -74,7 +74,8 @@
                 </div>
             </div>
 
-            <span class="legend" i18n:translate="legend_syndication_details">Syndication Details</span>
+            <div class="group">
+              <span class="legend" i18n:translate="legend_syndication_details">Syndication Details</span>
 
                 <div class="row">
                     <div class="label">
