@@ -92,6 +92,9 @@
     <!-- ECMAScript menu -->
     <script type="text/javascript"
             tal:attributes="src string:$portal_url/plone_menu.js"></script>
+    <!-- ECMAScript calendar -->
+    <script type="text/javascript"
+            tal:attributes="src string:$portal_url/plone_inplace_calendar.js"></script>
 
     <!-- Define dynamig server-side variables for javascripts in this one  -->
     <script type="text/javascript"
