@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master"
+      metal:use-macro="here/prefs_main_template/macros/master"
       i18n:domain="plone">
 
 <tal:block metal:fill-slot="head_slot">
@@ -9,7 +9,7 @@
 
 <body>
 
-<div metal:fill-slot="main"
+<div metal:fill-slot="prefs_configlet_main"
      tal:define="errors options/state/getErrors;">
 
     <h1 i18n:translate="heading_plone_setup">Plone Setup</h1>
@@ -26,6 +26,67 @@
           tal:define="props python:here.portal_properties;">
 
         <span class="legend" i18n:translate="legend_plone_details">Plone Details</span>
+
+        <div class="row"
+             tal:define="title request/title | props/title;
+                         error_title errors/title | nothing;">
+
+            <div class="label required">
+                <span i18n:translate="label_portal_title">Portal title</span>
+
+                <div id="portal_title_help"
+                     i18n:translate="help_portal_title"
+                     class="help"
+                     style="visibility:hidden">
+                This is the title of your Plone portal.
+                </div>
+            </div>
+
+            <div class="field"
+                 tal:attributes="class python:test(error_title, 'field error', 'field')">
+
+                <div tal:condition="error_title">
+                    <tal:block i18n:translate="" content="error_title">Error</tal:block>
+                    <br />
+                </div>
+
+                <input name="title"
+                       size="30"
+                       value=""
+                       tabindex=""
+                       onfocus="formtooltip('portal_title_help',1)"
+                       onblur="formtooltip('portal_title_help',0)"
+                       tal:attributes="value title;
+                                       tabindex tabindex/next;" />
+            </div>
+        </div>
+
+        <div class="row"
+             tal:define="description request/description | site_properties/description;
+                         error_description errors/description | nothing;">
+            <div class="label">
+                <span i18n:translate="label_portal_description">Portal description</span>
+
+                <div id="portal_description_help"
+                     i18n:translate="help_portal_description"
+                     class="help"
+                     style="visibility:hidden">
+                This description is made available via syndicated
+                content and elsewhere.  It should be fairly brief.
+                </div>
+            </div>
+
+            <div class="field">
+                <textarea cols="30"
+                          rows="6"
+                          name="description"
+                          tabindex=""
+                          onfocus="formtooltip('portal_description_help',1)"
+                          onblur="formtooltip('portal_description_help',0)"
+                          tal:attributes="tabindex tabindex/next"
+                          tal:content="description">Description</textarea>
+            </div>
+        </div>
 
         <div class="row"
              tal:define="email_from_name request/email_from_name|site_properties/email_from_name;
@@ -94,102 +155,6 @@
             </div>
         </div>
 
-        <div class="row"
-             tal:define="smtp_server request/smtp_server | site_properties/smtp_server;
-                         error_smtp_server errors/smtp_servers | nothing;">
-            <div class="label">
-                <span i18n:translate="label_smtp_server">SMTP server</span>
-
-                <div id="smtp_server_help"
-                     i18n:translate="help_smtp_server"
-                     class="help"
-                     style="visibility:hidden">
-                This is the address of your local SMTP (outgoing
-                mail) server. Usually "localhost", unless you use an
-                external server to send mail.
-                </div>
-            </div>
-
-            <div class="field"
-                 tal:attributes="class python:test(error_smtp_server, 'field error', 'field')">
-
-                <div tal:condition="error_smtp_server">
-                    <tal:block i18n:translate="" content="error_smtp_server">Error</tal:block>
-                    <br />
-                </div>
-
-                <input name="smtp_server"
-                       value=""
-                       size="30"
-                       tabindex=""
-                       onfocus="formtooltip('smtp_server_help',1)"
-                       onblur="formtooltip('smtp_server_help',0)"
-                       tal:attributes="value smtp_server;
-                                       tabindex tabindex/next;" />
-            </div>
-        </div>
-
-        <div class="row"
-             tal:define="title request/title | props/title;
-                         error_title errors/title | nothing;">
-
-            <div class="label required">
-                <span i18n:translate="label_portal_title">Portal title</span>
-
-                <div id="portal_title_help"
-                     i18n:translate="help_portal_title"
-                     class="help"
-                     style="visibility:hidden">
-                This is the title of your Plone portal.
-                </div>
-            </div>
-
-            <div class="field"
-                 tal:attributes="class python:test(error_title, 'field error', 'field')">
-
-                <div tal:condition="error_title">
-                    <tal:block i18n:translate="" content="error_title">Error</tal:block>
-                    <br />
-                </div>
-
-                <input name="title"
-                       size="30"
-                       value=""
-                       tabindex=""
-                       onfocus="formtooltip('portal_title_help',1)"
-                       onblur="formtooltip('portal_title_help',0)"
-                       tal:attributes="value title;
-                                       tabindex tabindex/next;" />
-            </div>
-        </div>
-
-        <div class="row"
-             tal:define="description request/description | site_properties/description;
-                         error_description errors/description | nothing;">
-            <div class="label">
-                <span i18n:translate="label_portal_description">Portal description</span>
-
-                <div id="portal_description_help"
-                     i18n:translate="help_portal_description"
-                     class="help"
-                     style="visibility:hidden">
-                This description is made available via syndicated
-                content and elsewhere.  It should be fairly brief.
-                </div>
-            </div>
-
-            <div class="field">
-                <textarea cols="30"
-                          rows="6"
-                          name="description"
-                          tabindex=""
-                          onfocus="formtooltip('portal_description_help',1)"
-                          onblur="formtooltip('portal_description_help',0)"
-                          tal:attributes="tabindex tabindex/next"
-                          tal:content="description">Description</textarea>
-            </div>
-        </div>
-
         <div class="row">
             <div class="label">
                <span i18n:translate="label_default_language">Default Language</span>
@@ -217,74 +182,6 @@
                            tal:content="structure python:language[1]" />
                 </select>
             </div>
-        </div>
-
-        <div class="row"
-             tal:define="localTimeFormat request/localTimeFormat | site_properties/localTimeFormat;
-                         error_localTimeFormat errors/localTimeFormat | nothing;">
-            <div class="label required">
-                <span i18n:translate="label_short_date_format">Short Date</span>
-                <div id="short_date_format_help"
-                     i18n:translate="help_short_date_format"
-                     class="help"
-                     style="visibility:hidden">
-                You can enter the strftime format for how dates in the system will be formatted.
-                Refer to strftime formats in C or Python manuals.
-                </div>
-            </div>
-            <div class="field"
-                 tal:attributes="class python:test(error_localTimeFormat, 'field error', 'field')">
-
-                <div tal:condition="error_localTimeFormat">
-                    <tal:block i18n:translate="" content="error_localTimeFormat">Error</tal:block>
-                    <br />
-                </div>
-
-                <input type="text"
-                       name="localTimeFormat"
-                       value=""
-                       tabindex=""
-                       onfocus="formtooltip('short_date_format_help',1)"
-                       onblur="formtooltip('short_date_format_help',0)"
-                       tal:attributes="value localTimeFormat;
-                                       tabindex tabindex/next;" />
-            </div>
-        </div>
-
-        <div class="row"
-            tal:define="localLongTimeFormat request/localLongTimeFormat | site_properties/localLongTimeFormat;
-                        error_localLongTimeFormat errors/localLongTimeFormat | nothing;">
-            <div class="label required">
-                <span i18n:translate="label_long_date_format">Long Date</span>
-                <div id="long_date_format_help"
-                     i18n:translate="help_long_date_format"
-                     class="help"
-                     style="visibility:hidden">
-                You can enter the strftime format for how dates in the system will be formatted.
-                Refer to strftime formats in C or Python manuals.
-                </div>
-            </div>
-
-            <div class="field"
-                 tal:attributes="class python:test(error_localLongTimeFormat, 'field error', 'field')">
-
-                 <div tal:condition="error_localLongTimeFormat">
-                     <tal:block i18n:translate="" content="error_localLongTimeFormat">Error</tal:block>
-                     <br />
-                 </div>
-
-                 <input type="text"
-                        name="localLongTimeFormat"
-                        size="45"
-                        value=""
-                        tabindex=""
-                        onfocus="formtooltip('long_date_format_help',1)"
-                        onblur="formtooltip('long_date_format_help',0)"
-                        tal:attributes="value localLongTimeFormat;
-                                        tabindex tabindex/next;" />
-
-            </div>
-
         </div>
 
         <div class="row">
