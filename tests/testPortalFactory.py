@@ -14,6 +14,7 @@ def sortTuple(t):
     l.sort()
     return tuple(l)
 
+
 class TestPortalFactory(PloneTestCase.PloneTestCase):
 
     def testTraverse(self):
@@ -21,13 +22,10 @@ class TestPortalFactory(PloneTestCase.PloneTestCase):
         self.assertEqual(temp_doc.meta_type, 'Document')
         self.assertEqual(temp_doc.getId(), 'tmp_id')
 
-
     def testTempFolderLocalRoles(self):
         self.membership = self.portal.portal_membership
         self.membership.addMember('user2', 'secret', ['Member'], [])
         self.portal._addRole('Foo')
-        # Cannot assign a role I do not have myself...
-        self.setRoles(['Member', 'Reviwer', 'Foo'])
 
         member = self.membership.getMemberById('user2')
         user = member.getUser()
