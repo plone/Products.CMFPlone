@@ -42,8 +42,7 @@
             <div class="field"
                   tal:attributes="class python:test(error_id, 'field error', 'field')" >
 
-                <div tal:condition="error_id"
-                      tal:replace="error_id" />
+                <div tal:replace="error_id" />
 
                 <input type="text" 
                        name="field_id" 
@@ -74,8 +73,7 @@
             <div class="field"
                   tal:attributes="class python:test(error_title, 'field error', 'field')" >
 
-                <div tal:condition="error_title"
-                      tal:replace="error_title" />
+                <div tal:replace="error_title" />
 
                 <input type="text" 
                        name="field_title" 
@@ -130,8 +128,7 @@
             <div class="field"
    	             tal:attributes="class python:test(error_file, 'field error', 'field')">
               
-                <div tal:condition="error_file"
-                     tal:replace="error_file" />
+                <div tal:replace="error_file" />
                 
                 <input type="file" 
                        name="field_file" 
