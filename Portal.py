@@ -162,7 +162,7 @@ def manage_addSite(self, id, title='Portal', description='',
         o=custom_policies[custom_policy]
         o.customize(p)
     if RESPONSE is not None:
-        RESPONSE.redirect(p.absolute_url() + '/finish_portal_construction')
+        RESPONSE.redirect(p.absolute_url())
         
 def register(context, globals):
     context.registerClass(meta_type='Plone Site',
