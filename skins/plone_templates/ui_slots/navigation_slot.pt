@@ -3,7 +3,11 @@
                    parent_url python:here.navigationParent(here, template.getId());
                    siblings here/navigationCurrent;
                    showOtherNav python:0;
-                   showNav python:0;"
+                   showNav python:0;
+		   listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
+		   notFolderContents python:test(template.getId()!='folder_contents', 1, 0);
+		   editorView python:test(listContentsPermission and notFolderContents, 1, 0);"
+       tal:condition="python:test(siblings or editorView or parent_url, 1, 0)"
        class="box"
        summary="Navigation"
        cellpadding="0"
@@ -13,8 +17,7 @@
         <tr><th>Navigation</th><th class="empty">&nbsp;</th></tr>
     </thead>
 
-    <tbody tal:define="listContentsPermission python:here.portal_membership.checkPermission('List folder contents', here);
-                       notFolderContents python:test(template.getId()!='folder_contents', 1, 0);">
+    <tbody>
         <tr class="odd">
             <td colspan="2">
             <strong tal:content="here/title_or_id">Current title</strong>
@@ -52,7 +55,7 @@
         </tr>
 
         <tr class="even"
-            tal:condition="python:test(listContentsPermission and notFolderContents, 1, 0)">
+            tal:condition="editorView">
             <td colspan="2"
                 tal:condition="notFolderContents">
                <a class="marker"
