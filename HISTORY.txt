@@ -1,6 +1,8 @@
 CHANGES
 
 Plone 1.0.2
+    - tabindex can now be used in left/right_slot too.
+    - Breadcrumbs and form validation error messages are now translated
     - Added javascript to warn people that they have cookies disabled before they try to log in.
     - Added graceful handling of logins when cookies aren't enabled.  You now get an error message
       that says something to the effect of "You weren't successful logging in because you don't have
