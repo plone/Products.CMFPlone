@@ -37,27 +37,38 @@
     </form>
 
     <h2 i18n:translate="heading_install_products_installed"> Installed products </h2>
-    <form action="uninstallProducts" tal:attributes="action python:QI.absolute_url()+'/uninstallProducts'" method="POST">
+    <form action="uninstallProducts" tal:attributes="action python:QI.absolute_url()" method="POST">
 
         <table>
-            <tr tal:repeat="product QI/listInstalledProducts">
-                <td><input class="noborder"
-                           type="checkbox"
-                           name="products:list" tal:attributes="value product/id"
-                           /></td>
-                <td>
-                     <span tal:content="product/id" >product name</span>
-
-                     (<a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview"
-                         i18n:translate="link_install_products_log">Install log</a>)
-
-                </td>
-            </tr>
+            <tal:block tal:repeat="product QI/listInstalledProducts">
+                <tr tal:condition="not: product/isHidden" >
+                    <td><input class="noborder"
+                               type="checkbox"
+                               name="products:list" tal:attributes="value product/id"
+                               tal:condition="not: product/isLocked"
+                               /></td>
+                    <td>
+                         <span tal:content="product/id" >product name</span>
+    
+                         (<a tal:attributes="href string:${QI/absolute_url}/${product/id}/prefs_installed_product_overview"
+                             i18n:translate="link_install_products_log">Install log</a>)
+    
+                    </td>
+                </tr>
+            </tal:block>
         </table>
         <input class="context"
                type="submit"
                i18n:attributes="value"
                value="Uninstall"
+               name="uninstallProducts:method"
+               />
+        <input class="context"
+               type="submit"
+               i18n:attributes="value"
+               value="Reinstall"
+               name="reinstallProducts:method"
+               tal:condition="python:QI.getProductFile('CMFQuickInstallerTool','version.txt') >= '1.4'"
                />
     </form>
 </div>
