@@ -40,7 +40,8 @@
         <select name=""
                 tal:attributes="name string:criteria.direction__${here/getId}:records;
                                 onfocus string:formtooltip('${here/getId}_help',1);
-                                onblur  string:formtooltip('${here/getId}_help',0);"
+                                onblur  string:formtooltip('${here/getId}_help',0);
+                                tabindex tabindex/next|nothing;"
                 >
                 
             <option value="min"
@@ -63,7 +64,8 @@
                size="20"
                tal:attributes="value here/getValueString; 
                                onfocus string:formtooltip('${here/getId}_help',1);
-                               onblur  string:formtooltip('${here/getId}_help',0);"
+                               onblur  string:formtooltip('${here/getId}_help',0);
+                               tabindex tabindex/next|nothing;"
                />
      </div>
      

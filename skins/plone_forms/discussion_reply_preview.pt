@@ -5,7 +5,9 @@
       metal:use-macro="here/main_template/macros/master">
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
     <h1 i18n:translate="">Comment Preview</h1>
 
@@ -51,13 +53,17 @@
                        type="submit" 
                        value="Change Comment" 
                        name=""
+                       tabindex=""
                        tal:define="hId here/getId"
-        		       tal:attributes="name python: hId + '/discussion_reply_form:method'">
+        		           tal:attributes="name python: hId + '/discussion_reply_form:method';
+                                       tabindex tabindex/next;">
                 
                 <input class="standalone"
                         type="submit" 
                         value="Add Comment" 
-                        name="discussion_reply:method">
+                        name="discussion_reply:method"
+                        tabindex=""
+                        tal:attributes="tabindex tabindex/next;">
             </div>
         </div>
         

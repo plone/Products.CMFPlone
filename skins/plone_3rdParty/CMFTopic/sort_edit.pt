@@ -46,7 +46,8 @@
                tal:attributes="checked not:here/reversed;
                                id string:${here/getId}_ascending;
                                onfocus string:formtooltip('${here/getId}_help',1);
-                               onblur  string:formtooltip('${here/getId}_help',0);"
+                               onblur  string:formtooltip('${here/getId}_help',0);
+                               tabindex tabindex/next|nothing;"
                />
                
         <label for=""
@@ -63,7 +64,8 @@
                tal:attributes="checked here/reversed;
                                id string:${here/getId}_descending;
                                onfocus string:formtooltip('${here/getId}_help',1);
-                               onblur  string:formtooltip('${here/getId}_help',0);"
+                               onblur  string:formtooltip('${here/getId}_help',0);
+                               tabindex tabindex/next|nothing;"
                />
 
         <label for=""

@@ -16,7 +16,9 @@
 
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
     <div tal:define="p_props here/portal_properties">
 		
@@ -77,9 +79,12 @@
 
                     <span class="legend" i18n:translate="">Password Details</span>
                                     
-                    <input type="hidden" name="came_from" value=""
-                    tal:condition="python:request.get('came_from', '')"
-                    tal:attributes="value request/came_from" />
+                    <input type="hidden" 
+                           name="came_from" 
+                           value=""
+                           tal:condition="python:request.get('came_from', '')"
+                           tal:attributes="value request/came_from" 
+                           />
                 
                     <div class="row">
                         <div class="label">Name</div>
@@ -87,7 +92,10 @@
                             <input type="text" 
                                    name="__ac_name" 
                                    size="20"
-                                   tal:attributes="value python:request.get('__ac_name', '')" />
+                                   tabindex=""
+                                   tal:attributes="value python:request.get('__ac_name', '');
+                                                   tabindex tabindex/next;" 
+                                                   />
                         </div>
                     </div>
 
@@ -95,15 +103,25 @@
                         <div class="label">Password</div>
                         <div class="field">
                             <input type="password" 
-                            name="__ac_password" 
-                            size="10" />
+                                   name="__ac_password" 
+                                   size="10"
+                                   tabindex=""
+                                   tal:attributes="tabindex tabindex/next;" 
+                                   />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="label">&nbsp;</div>
                         <div class="field">
-                            <input type="checkbox" class="noborder" name="__ac_persistent" value="1" checked id="cb_remember" />
+                            <input type="checkbox" 
+                                   class="noborder" 
+                                   name="__ac_persistent" 
+                                   value="1" 
+                                   checked id="cb_remember"
+                                   tabindex=""
+                                   tal:attributes="tabindex tabindex/next;" 
+                                   />
                             <label for="cb_remember">Remember my name.</label>
                         </div>
                     </div>
@@ -111,7 +129,11 @@
                     <div class="row">
                         <div class="label"></div>
                         <div class="field">
-                            <input type="submit" name="submit" value="Login">
+                            <input type="submit" 
+                                   name="submit" 
+                                   value="Login"
+                                   tabindex=""
+                                   tal:attributes="tabindex tabindex/next;">
                         </div>
                     </div>
 

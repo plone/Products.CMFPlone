@@ -33,7 +33,8 @@
 
         <select name="criteria.operator:records"
                 tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
-                                onblur  string:formtooltip('${here/getId}_help',0);"
+                                onblur  string:formtooltip('${here/getId}_help',0);
+                                tabindex tabindex/next|nothing;"
         >
             <option value="or"
                     tal:attributes="selected python:here.operator == 'or'">matches one of the following</option>
@@ -48,7 +49,8 @@
                   cols="40"
                   tal:content="python:modules['string'].join(here.value, '\n')"
                   tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
-                                  onblur  string:formtooltip('${here/getId}_help',0);"
+                                  onblur  string:formtooltip('${here/getId}_help',0);
+                                  tabindex tabindex/next|nothing;"
         ></textarea>
         
     

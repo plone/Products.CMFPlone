@@ -35,7 +35,8 @@
     <div class="field">
         <select name="criteria.operation:records"
                 tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
-                                onblur  string:formtooltip('${here/getId}_help',0);"
+                                onblur  string:formtooltip('${here/getId}_help',0);
+                                tabindex tabindex/next|nothing;"
                 >
                 
             <option value="min"
@@ -54,7 +55,8 @@
         <select name="criteria.value:records"
                 tal:define="dateoptions here/defaultDateOptions"
                 tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
-                                onblur  string:formtooltip('${here/getId}_help',0);"
+                                onblur  string:formtooltip('${here/getId}_help',0);
+                                tabindex tabindex/next|nothing;"
                 >
 
             <option value=""
@@ -67,7 +69,8 @@
         
         <select name="criteria.daterange:records"
                 tal:attributes="onfocus string:formtooltip('${here/getId}_help',1);
-                                onblur  string:formtooltip('${here/getId}_help',0);"
+                                onblur  string:formtooltip('${here/getId}_help',0);
+                                tabindex tabindex/next|nothing;"
                 >
 
             <option value="old"

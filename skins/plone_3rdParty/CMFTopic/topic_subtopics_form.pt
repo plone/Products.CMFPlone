@@ -4,7 +4,9 @@
 <body>
 <div metal:fill-slot="main"
      tal:define="Batch python:modules['ZTUtils'].Batch;
-                 b_start python:request.get('b_start', 0);">
+                 b_start python:request.get('b_start', 0);
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
 <div class="Desktop">
 
@@ -28,8 +30,11 @@
                        type="submit"
                        name="folder_rename_form:method" 
                        value="Rename"
+                       tabindex=""
                        tal:condition="python:len(batch) or (here.cb_dataValid and button['id'] == 'paste')"
-                       tal:attributes="value button/name; name button/url;" />
+                       tal:attributes="value button/name; 
+                                       name button/url;
+                                       tabindex tabindex/next;" />
     </tal:block>
   </table>
 </form>
@@ -37,8 +42,17 @@
 <form action="topic_addSubtopic" method="get">
 <h2> Add subtopic: </h2>
 <p><strong>Id: </strong>
-<input type="text" name="new_id" size="30" /><br />
-<input type="submit" value=" Add " /></p>
+<input type="text" 
+       name="new_id" 
+       size="30"
+       tabindex=""
+       tal:attributes="tabindex tabindex/next;" 
+       /><br />
+<input type="submit" 
+       value=" Add " 
+       tabindex=""
+       tal:attributes="tabindex tabindex/next;"
+       /></p>
 </form>
 
 </div>

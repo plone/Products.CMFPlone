@@ -27,7 +27,7 @@
     <span tal:define="criteria here/listCriteria;">
         <span tal:repeat="criterion criteria">
             <span tal:define="editform string:criterion/${criterion/getEditForm};"
-                tal:replace="structure python:path(editform)" />
+                  tal:replace="structure python:path(editform)" />
         </span>
     </span>
 
@@ -71,8 +71,8 @@ Field id
 
 <select name="field"
         tabindex="" 
-        tal:define="fields here/listAvailableFields;
-                    tabindex tabindex/next;">
+        tal:define="fields here/listAvailableFields;"
+        tal:attributes="tabindex tabindex/next;">
             <option value="" tal:repeat="field fields" tal:attributes="value field" tal:content="field">Field</option>
         </select>
 
@@ -80,8 +80,9 @@ Criteria type
 
 <select name="criterion_type" 
         tabindex=""
-        tal:define="types here/listCriteriaTypes;
-                    tabindex tabindex/next;">
+        tal:define="types here/listCriteriaTypes;"
+        tal:attributes="tabindex tabindex/next;"
+        >
     <option value="" tal:repeat="type types" tal:attributes="value type/name" tal:content="type/name">Type</option>
 </select>
 

@@ -19,7 +19,9 @@
                  global filterValues decodedFilter;
                  global filter decodedFilter;
                  global portal_url here/portal_url;
-                 global member here/portal_membership/getAuthenticatedMember;">
+                 global member here/portal_membership/getAuthenticatedMember;
+                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                 tabindex python:Iterator();">
 
 
     <form name="folderContentsForm"
@@ -42,9 +44,11 @@
     
                 <span style="float: right; vertical-align: top;" 
                       tal:define="allowedContentTypes here/allowedContentTypes"
-		      tal:condition="allowedContentTypes">
+		                  tal:condition="allowedContentTypes">
                     <!-- Add Item pulldown -->
-                    <select name="type_name" >
+                    <select name="type_name" 
+                            tabindex=""
+                            tal:attributes="tabindex tabindex/next;">
                         <option value="Select">Select</option>
                         <metal:block tal:repeat="ctype allowedContentTypes"
                                      tal:define="global filterOut  python:['Favorite']">
@@ -55,7 +59,13 @@
                         </metal:block>
                     </select>
         
-                    <input class="standalone" type="submit" name="folder_factories:method" value="Add New Item" />
+                    <input class="standalone" 
+                           type="submit" 
+                           name="folder_factories:method" 
+                           value="Add New Item"
+                           tabindex=""
+                           tal:attributes="tabindex tabindex/next;" 
+                           />
                 </span>
                 
                 <img src="folder.gif" alt="Folder" tal:attributes="src string:$portal_url/folder.gif" /> 
@@ -114,7 +124,8 @@
                                    value="#"
                                    tal:attributes="value item/getId;
                                                    id python: 'cb_'+item.getId();
-                                                   checked request/ids_checked|nothing;"/>
+                                                   checked request/ids_checked|nothing;
+                                                   tabindex tabindex/next|nothing"/>
                         </td>
     
                         <td tal:define="action python:item.getTypeInfo().getActionById('view');
@@ -175,8 +186,13 @@
                               types python:container.portal_types.listContentTypes();"
                   tal:condition="here/listFolderContents">
     
-                <select id="filter_selection" name="filter_by_Type:list" onChange="submitFilterAction()"
-                        tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" >
+                <select id="filter_selection" 
+                        name="filter_by_Type:list" 
+                        onChange="submitFilterAction()"
+                        tabindex=""
+                        tal:define="global filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));" 
+                        tal:attributes="tabindex tabindex/next;"
+                        >
     
                     <option value="#" 
                             tal:attributes="selected python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');">
@@ -195,15 +211,20 @@
                 <!--you can filter by subject keywords by filling in this value-->
             </span>
 
+            
             <tal:block tal:repeat="button actions/folder_buttons|nothing">
             <input class="context" 
-	           type="submit" 
-	           name="folder_rename_form:method" 
-		   value="Rename" 
+	                 type="submit" 
+	                 name="folder_rename_form:method" 
+		               value="Rename" 
+                   tabindex=""
                    tal:condition="python:folder_contents or (here.cb_dataValid and button['id'] == 'paste')"
-		   tal:attributes="value button/name; name button/url;" />
+		               tal:attributes="value button/name; 
+                                   name button/url;
+                                   tabindex tabindex/next;" />
             </tal:block>   
 
+            
         </td></tr></tbody></table>
     
     </form>
