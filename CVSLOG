@@ -1,3 +1,24 @@
+2004-02-06 22:59  jimroepcke
+
+	* skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt.metadata
+	  (Plone-2_0-branch): security section had a typo, should be
+	  View=0:Authenticated, not View:0:Authenticated
+
+2004-02-06 17:25  tesdal
+
+	* skins/plone_scripts/showEditableBorder.py (Plone-2_0-branch): We
+	  have to show the editable border if people can add content or
+	  change workflow state.
+
+2004-02-06 13:17  shh42
+
+	* skins/plone_templates/folder_contents.pt: Stamp out last remnants
+	  of toPortalTime usage.
+
+2004-02-06 04:56  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-05 22:49  shh42
 
 	* ActionIconsTool.py, CREDITS.txt, FormTool.py, HISTORY.txt,
