@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.26 2003/05/15 15:36:54 dreamcatcher Exp $
+# $Id: FormTool.py,v 1.27 2003/07/31 01:35:02 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.26 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.27 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -404,18 +404,19 @@ class CMFForm(BasicForm):
                 # if there is already a value at 'field_' + key,
                 #    move it to 'field_field_' + key, and repeat
                 #    to prevent key collisions
-                newKey = 'field_' + key
+                newKey = 'field_%s' % key
                 newValue = REQUEST.get(newKey)
                 while newValue:
                     REQUEST[newKey] = value
-                    newKey = 'field_' + newKey
+                    newKey = 'field_%s' % newKey
                     value = newValue
                     newValue = REQUEST.get(newKey)
                 REQUEST[newKey] = value
 
         try:
-            result=self.validate_all(REQUEST)
+            result = self.validate_all(REQUEST)
         except FormValidationError, e:
+            result = {}
             for error in e.errors:
                 errors[error.field.get_value('title')]=error.error_text
 
@@ -424,10 +425,14 @@ class CMFForm(BasicForm):
             key = field.id
             value = 1
             while value:
-                key = 'field_' + key
-                value = REQUEST.get(key)
+                key = 'field_%s' % key
+                value = result.get(key[6:], None) or REQUEST.get(key)
                 if value:
                     REQUEST[key[6:]] = value
+                    try:
+                        del result[key[6:]]
+                    except:
+                        pass
                     try:
                         del REQUEST[key]
                     except:
