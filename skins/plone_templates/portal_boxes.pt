@@ -5,6 +5,12 @@
 
 <head metal:use-macro="here/header/macros/html_header">
 
+    !! NOTICE !!
+    This PageTemplate is being deprecated.  We have moved all 
+    macros to their own PageTemplates in portal_templates/ui_slots.  
+    Eventually this PageTemplate will be gone.
+
+
 </head>
 
 
@@ -17,9 +23,10 @@
 </div>
 
 
-<!-- The default navigation box -->
+<!-- The default navigation box 
+     navigationBox macro -->
  
-<table metal:define-macro="navigationBox"
+<table 
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
                    parent_url python:here.navigationParent(here, template.getId());
                    siblings here/navigationCurrent;
@@ -87,9 +94,10 @@
 
 
 
-<!-- The default Related Items box -->
+<!-- The default Related Items box
+     relatedBox macro -->
 
-<table metal:define-macro="relatedBox"
+<table 
        tal:define="localContent here/navigationLocalRelated; 
                        remoteContent here/navigationRemoteResources;" 
        tal:condition="python:test(localContent or remoteContent, 1, 0)"
@@ -138,9 +146,10 @@
         
 </table>
 
-<!-- The Login box -->
+<!-- The Login box
+     loginBox macro -->
 
-<table metal:define-macro="loginBox"
+<table 
        class="box" cellpadding="0" cellspacing="0"
        summary="Login" 
        tal:condition="here/portal_membership/isAnonymousUser" >
@@ -206,9 +215,10 @@
 </table>
 
 
-<!-- The Favorites Box -->
+<!-- The Favorites Box
+     favoritesBox macro -->
 
-<table metal:define-macro="favoritesBox"
+<table 
        tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None)"
        tal:condition="folder"
        class="box" summary="Favorites" cellpadding="0" cellspacing="0">
@@ -243,9 +253,10 @@
 </table>
 
 
-<!-- The news box -->
+<!-- The news box
+     newsBox macro -->
 
-<table metal:define-macro="newsBox"
+<table 
        class="box"
        summary="News listing" 
        cellpadding="0" cellspacing="0"
@@ -285,9 +296,10 @@
 </table>
 
 
-<!-- The About box -->
+<!-- The About box 
+     aboutBox macro -->
 
-<table metal:define-macro="aboutBox"
+<table 
        class="box" 
        summary="About" cellpadding="0" cellspacing="0">
   
@@ -343,9 +355,10 @@
 </table>
 
 
-<!-- The review box -->
+<!-- The review box 
+     review_box macro -->
 	
-<table metal:define-macro="review_box"
+<table 
        class="box" 
        summary="Review listing" 
        cellpadding="0" cellspacing="0"
@@ -381,9 +394,9 @@
        
 </table>
 
-<!-- CMFTopic based navigation box -->
+<!-- CMFTopic based navigation box 
+     "CMFTopic_navigation_box" macro -->
 <table class="box" summary="Navigation listing" cellpadding="0" cellspacing="0"
-       metal:define-macro="CMFTopic_navigation_box"
        tal:define="results python:here.portal_catalog(meta_type='Portal Topic',sort_on='id');
                    pss modules/Products/PythonScripts/standard;
                    showNav python:0;
@@ -415,7 +428,7 @@
   </span>
 </table>
 
-        
+<!-- calendar box picker -->        
 <div metal:define-macro="calendarDatePickerBox">
 
  <comment tal:condition="nothing">
@@ -493,8 +506,9 @@
 
 
 
-
-<div metal:define-macro="calendarBox"
+<!-- Calendar UI Widget 
+     calendarBox -->
+<div 
      class="container"
      tal:define="DateTime python:modules['DateTime'].DateTime;
                  current python:DateTime();
