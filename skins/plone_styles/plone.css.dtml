@@ -1411,4 +1411,11 @@ ol.visualNoMarker {
    background-color: #feff82;
 }
 
+/* for highlighting current items, like the language or today in the calendar */
+.currentItem {
+    border-collapse: collapse;
+    border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;
+    padding: 1px;
+}
+
 /* </dtml-with> */
