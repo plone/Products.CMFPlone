@@ -2,7 +2,16 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
-Plone 2.0.4 - (no name yet) - Released (no date yet)
+Plone 2.0.5 - (Backed Up Willie) - Released (TBA)
+ 
+    - Fixed transaction_notes overflowing struct size in ZODB.
+    Also made there be 1 entry point into transaction_note instead
+    of stray in PloneTool. Publishing hundreds of thousands of items
+    would cause the trnx.description string to get larger than 65535
+    which would cause FileStorage to fail on _notify 
+    [runyaga]
+
+Plone 2.0.4 - (Warp) - Released (8/16/04)
 
     - Fixed http://plone.org/collector/3329. Results of breadcrumbs.py 
       are no longer translated in global_pathbar.pt.

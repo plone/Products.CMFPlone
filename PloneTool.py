@@ -15,7 +15,7 @@ from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.interfaces.DublinCore import DublinCore, MutableDublinCore
 from Products.CMFCore.interfaces.Discussions import Discussable
 from Products.CMFCore.WorkflowCore import WorkflowException
-from Products.CMFPlone import ToolNames
+from Products.CMFPlone import ToolNames, transaction_note
 
 from OFS.SimpleItem import SimpleItem
 from OFS.ObjectManager import bad_id
@@ -277,7 +277,7 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
             # that Latin-1 is probably not enough.
             msg = msg.encode('utf-8')
         if not get_transaction().description:
-            get_transaction().note(msg)
+            transaction_note(msg)
 
     security.declarePublic('contentEdit')
     def contentEdit(self, obj, **kwargs):
