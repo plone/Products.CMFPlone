@@ -118,9 +118,9 @@
             </div>
             <div class="field" 
                   tal:define="global contentSubjects here/Subject;
-                              global allowedSubjects python:here.unique(container.portal_metadata.listAllowedSubjects(here));
-                              global allowedSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
-                              global allowedSubjects python:list(allowedSubjects);
+                              global allowedSubjects python:here.portal_metadata.listAllowedSubjects(here);
+                              global catalogSubjects python:here.portal_catalog.uniqueValuesFor('Subject');
+                              global allowedSubjects python:list(here.unique(allowedSubjects+catalogSubjects));
                               dummy python:allowedSubjects.sort( lambda x,y: cmp(x,y) );">
 
                     <div style="width: 45%; float: left;">                              
