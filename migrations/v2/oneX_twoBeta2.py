@@ -20,6 +20,7 @@ from Products.CMFPlone.setup import ConfigurationMethods
 from Products.CMFPlone import ToolNames
 
 from portlet_migration import upgradeSlots2Portlets
+import plone2_base
 
 from Acquisition import aq_base
 
@@ -98,6 +99,8 @@ def oneX_twoBeta2(portal):
     deprFsViews(portal)
     out.append("Update slots to portlets")
     upgradeSlots2Portlets(portal)
+    out.append("Setup calendar tool")
+    plone2_base.setupCalendar(portal)
     return out
 
 def doit(self):
@@ -320,7 +323,7 @@ def addGroupUserFolder(portal):
     qi=getToolByName(portal, 'portal_quickinstaller')
     addGRUFTool=portal.manage_addProduct['GroupUserFolder'].manage_addTool
     if "portal_groups" not in portal.objectIds():
-        qi.installProduct('GroupUserFolder')
+        qi.installProduct('GroupUserFolder', locked=1)
         addGRUFTool('CMF Groups Tool')
         addGRUFTool('CMF Group Data Tool')
 
@@ -343,7 +346,7 @@ def addFormController(portal):
     """ """
     try:
         qi=getToolByName(portal, 'portal_quickinstaller')
-        qi.installProduct('CMFFormController')
+        qi.installProduct('CMFFormController', locked=1)
     except AlreadyInstalled:
         qi.notifyInstalled('CMFFormController') #Portal.py got to it first
 
@@ -353,7 +356,7 @@ def addActionIcons(portal):
     """
     try:
         qi=getToolByName(portal, 'portal_quickinstaller')
-        qi.installProduct('CMFActionIcons')
+        qi.installProduct('CMFActionIcons', locked=1)
     except AlreadyInstalled:
         qi.notifyInstalled('CMFActionIcons') #Portal.py got to it first
 

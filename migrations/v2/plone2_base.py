@@ -372,7 +372,7 @@ def setupCalendar(portal):
     except:
         pass
     qi = getToolByName(portal, 'portal_quickinstaller')
-    qi.notifyInstalled('CMFCalendar')
+    qi.notifyInstalled('CMFCalendar', locked=1)
     out.write('Event added to Metadata element Policies\n')
 
 
