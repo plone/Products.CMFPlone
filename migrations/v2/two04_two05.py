@@ -13,7 +13,7 @@ def two04_two05(portal):
     out = []
     out += replaceFolderPropertiesWithEdit(portal, out)
     out += addFolderListingActionToTopic(portal, out)
-
+    out += interchangeEditAndSharing(portal, out)
     return out
 
 
@@ -33,6 +33,22 @@ def replaceFolderPropertiesWithEdit(portal, out):
     out.append("Renamed folder 'properties' tab to 'edit'.")
     return out
 
+def interchangeEditAndSharing(portal, out):
+    typesTool=getToolByName(portal, 'portal_types')
+    typeInfo=typesTool.getTypeInfo('Folder')
+    typeObj=getattr(typesTool, typeInfo.getId())
+    _actions=typeInfo._cloneActions()
+    count = 0
+    for action in _actions:
+        if action.id=='local_roles':
+            i = count
+        if action.id=='edit':
+            j = count
+        count = count+1
+    _actions[i],_actions[j] = _actions[j],_actions[i]
+    out.append("Interchanged 'edit' and 'sharing' tabs.")      
+    typeObj._actions=_actions 
+    return out
 
 def addFolderListingActionToTopic(portal, out):
     """CMFTopics don't have a folderlisting action

@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Fixed http://plone.org/collector/3577 - Interchanged 'Edit' and 'Sharing'
+      tab on folder.
+      [jladage, thanks to vamsik]
+
     - Made prefs_error_log_form a tad safer in the face of weird upgrade issues.
       Also see http://plone.org/collector/3435
       [stefan]
