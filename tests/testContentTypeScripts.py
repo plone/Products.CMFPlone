@@ -40,7 +40,7 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
         self.discussion.overrideDiscussionFor(self.folder.doc, 1)
         self.discussion.getDiscussionFor(self.folder.doc)
         # Now test it
-        self.folder.doc.talkback.discussion_reply('Foo', 'blah')
+        self.folder.doc.discussion_reply('Foo', 'blah')
         talkback = self.discussion.getDiscussionFor(self.folder.doc)
         reply = talkback.objectValues()[0]
         self.assertEqual(reply.Title(), 'Foo')
