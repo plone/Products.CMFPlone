@@ -170,6 +170,13 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
                     new_object.workflow_history=wf_history
                 except:
                     out.write('Problems transfering workflow_history')
+                try:
+                    newmember=newsite.portal_membership.getMemberById(o.getOwner().getUserName())
+                    oldmember=original.portal_membership.getMemberById(o.getOwner().getUserName())
+                    newmember.setProperties({'email':oldmember.email})
+                except:
+                    out.write('Problems transfering membership properties')
+
             else:
                 out.write('Object existed :'+o.getId()+'\n')
             return #its not content, just copied. Content in other folders will not be migrated.
