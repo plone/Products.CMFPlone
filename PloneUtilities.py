@@ -114,6 +114,10 @@ def localized_time(time = None, long_format = None, context = None):
     if isinstance(time, StringTypes) or isinstance(time, IntType):
         time = DateTime(time)
 
+    # Avoid breakage if no dateFormat and no context (not caught above)
+    if not dateFormat:
+        return time.ISO()
+
     # extract date parts from DateTime object
     dateParts = time.parts()
     day = '%02d' % dateParts[2]
