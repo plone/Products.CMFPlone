@@ -178,7 +178,7 @@
                 <img tal:replace="structure portal/user.gif" />
             
                 <span tal:content="user/getUserName"
-                      class="case_sensitive">john</span>
+                      class="caseSensitive">john</span>
             </a>
 
             <span tal:condition="isAnon" 

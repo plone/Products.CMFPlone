@@ -352,7 +352,7 @@ div.personalBar a {
 div.personalBar img {
     vertical-align: top;
 }
-.case_sensitive {
+.caseSensitive {
     text-transform: none;
 }
 
