@@ -21,8 +21,8 @@
                 <td class="left">
                 
                     <div metal:use-macro="here/navigation_slot/macros/CMFTopic_navigation_box">
-                    CMFTopic Based Navigation box			
-                	</div>
+                       CMFTopic Based Navigation box			
+                    </div>
 
                     <div metal:use-macro="here/navigation_slot/macros/navigationBox">
                     Navigation box			

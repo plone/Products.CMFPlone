@@ -19,7 +19,7 @@ show_border = wf_actions or len(obj_actions) > 1
 
 if template_id=='folder_contents' and container.portal_membership.checkPermission( 'List folder contents', context):
     show_border = 1
-if template_id='folder_listing' and container.portal_membership.checkPermission( 'List folder contents', context):
+if template_id=='folder_listing' and container.portal_membership.checkPermission( 'List folder contents', context):
     show_border = 1
 
 return show_border
