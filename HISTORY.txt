@@ -988,6 +988,56 @@ Plone 2.0 - Fyuti
       script which can be customized to filter out types based on user
       or context. [philikon]
 
+Plone 1.0.5 - Breakbeat Era
+
+    - Security fix in CMF made us issue a new release with the updated CMF 1.3.2.
+
+    - Workaround for the disappearing text bug in Internet Explorer 6 on Windows.
+
+Plone 1.0.4 - Zita Swoon 
+
+    - Plone is now compliant with the two most widely-used accessibility 
+      standards in the world - Level A Conformance to the W3C's Web 
+      Content Accessibility Guidelines (WAI-A) and US Government 
+      Section 508 compliant.  The law applies to all US Federal agencies
+      when they develop, procure, maintain, or use electronic and 
+      information technology. Under Section 508 (29 U.S.C. ‘ 794d), 
+      agencies must give disabled employees and members of the public 
+      access to information that is comparable to the access available 
+      to others. Plone is now able to be used in these agencies.
+      [sh1mmer] [limi]
+
+    - Removed code that appeared to be causing login problems with IE 5.0.
+      To enable testing to see if cookies are enabled when a user logs in,
+      you will need to set the property 'test_cookie_name' to some non-empty
+      string in portal_properties/site_properties and make sure that your 
+      main_template actually sets a cookie with the name you have specified.
+      See the standard main_template for some sample code.
+      [geoffd]
+
+    - Backported Print CSS fixes from HEAD. All browsers now print properly, 
+      apart from Mozilla, which still has some way to go before it understands
+      print CSS properly, it seems. Tested in IE and Opera 7.
+      [limi]
+
+    - PloneFolder.contentValues has grown two args: sort_on and reverse.
+      sort_on is a attribute or a callable method on the objects.
+      reverse is 0 by default
+      [runyaga]
+
+Plone 1.0.3 - Brazil 
+
+    - Fixed ERRATA in 1.0.2
+
+    - various bug fixes such as favorites_slot, discussion edit problems
+
+    - WorkflowTool.doActionFor was not returning objects if they were moved
+
+    - DTML support is now working again (NOTE: deprecated in Plone 1.1)
+
+    - added a property in portal_properties/site_properties called invalid_ids
+    which will not be allowed to be used in the CMF/Plone site.
+
 Plone 1.0.2 - Vert Release
 
     - Fixed permissions on PloneFolder methods set in CopySupport.py (1195)
