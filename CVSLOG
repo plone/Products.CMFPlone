@@ -1,3 +1,385 @@
+2003-12-21 04:49  limi
+
+	* skins/plone_ecmascript/: stxPreview.js, stxPreview.js.metadata
+	  (Plone-2_0-branch): Removing redundant STX preview scripts.
+
+2003-12-21 04:49  limi
+
+	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch): If
+	  there are no groups, don't show the groups localrole section.
+
+2003-12-21 04:42  limi
+
+	* skins/plone_forms/folder_localrole_form.pt (Plone-2_0-branch):
+	  Fixed the wording on the Sharing page to cater to both folders
+	  and items.
+
+2003-12-21 04:36  gerry_kirk
+
+	* skins/plone_prefs/: prefs_groups_overview.pt,
+	  prefs_users_overview.pt (Plone-2_0-branch): fixed issue 2144:
+	  default button should be search
+
+2003-12-21 04:17  limi
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Added dynamic icon to the headline. Yuck, there has to be a
+	  better way to get to the actual icon object than
+	  python:getattr(here, here.getIcon(1)) ?
+
+2003-12-21 04:05  limi
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Added Description as title attribute on the links, and Short Name
+	  as title attribute on the icons.
+
+2003-12-21 03:48  limi
+
+	* skins/plone_templates/: folder_contents.pt, folder_listing.pt
+	  (Plone-2_0-branch): FIxed a bug in the "up one level" statement
+	  that made it render in the portal root, harmonized folder_listing
+	  with the new style. NOTE: Somebody should make the default view
+	  button check for anything that is in default_page, it only checks
+	  for index_html now, none of the others.
+
+2003-12-21 03:26  shh42
+
+	* MembershipTool.py (Plone-2_0-branch): GRUF users are already
+	  wrapped.
+
+2003-12-21 03:17  ronnix
+
+	* StatelessTreeNav.py (Plone-2_0-branch): Fixed navtree behaviour
+	  with discussion items (#1888).
+
+2003-12-21 03:14  limi
+
+	* www/addSite.zpt (Plone-2_0-branch): Put condition around entire
+	  CustomizationPolicy
+
+2003-12-21 03:13  limi
+
+	* skins/plone_portlets/portlet_news.pt (Plone-2_0-branch): Made
+	  news portlet display portal_type instead of meta_type
+
+2003-12-21 03:12  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Added style
+	  for folder_contents
+
+2003-12-21 03:10  shh42
+
+	* tests/testMembershipTool.py (Plone-2_0-branch): Added a few more
+	  tests.
+
+2003-12-21 03:09  dpunktnpunkt
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Fixes condition for "If you want to create a default page..."
+
+2003-12-21 03:05  shh42
+
+	* tests/testPloneTool.py (Plone-2_0-branch): Fixed a test that got
+	  stale after http://plone.org/collector/2042.	Please run (and
+	  amend) the tests before checking something in!
+
+2003-12-21 02:54  shh42
+
+	* MembershipTool.py (Plone-2_0-branch): Undo bad "fix" for
+	  http://plone.org/collector/1153 to make the tests pass again.
+	  Please run the tests before checking something in!
+
+2003-12-21 02:34  limi
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  Cleaned up folder_contents
+
+2003-12-21 02:15  dpunktnpunkt
+
+	* RegistrationTool.py (Plone-2_0-branch): Fixes #1947
+
+2003-12-21 00:49  dpunktnpunkt
+
+	* skins/plone_templates/sendto_template.pt (Plone-2_0-branch):
+	  Fixes #1304: Added Date header to sendto_template
+
+2003-12-21 00:47  dpunktnpunkt
+
+	* skins/plone_form_scripts/sendto.cpy (Plone-2_0-branch): Missing
+	  import
+
+2003-12-21 00:38  gerry_kirk
+
+	* skins/plone_scripts/browserDefault.py (Plone-2_0-branch): fixed
+	  issue 2134: changed call from context.objectIds to
+	  context.contentIds
+
+2003-12-21 00:07  dreamcatcher
+
+	* Extensions/add_copyright.py (Plone-2_0-branch): Back to simple
+	  version
+
+2003-12-20 22:28  ronnix
+
+	* skins/plone_portlets/portlet_navigation.pt (Plone-2_0-branch):
+	  Fixed incoherent display of portal root in navigation tree
+	  (#1855).
+
+2003-12-20 22:24  dpunktnpunkt
+
+	* skins/plone_scripts/portal_form_url.py (Plone-2_0-branch): 22:22
+	  < limi|templating> you can blame me
+
+2003-12-20 22:17  dreamcatcher
+
+	* DiscussionTool.py, FactoryTool.py, FormTool.py,
+	  MembershipTool.py, PloneFolder.py, PloneTool.py, Portal.py,
+	  zserverPatch.py, Extensions/add_copyright.py,
+	  Extensions/setupSite.py, migrations/v1/__init__.py,
+	  migrations/v2/__init__.py, migrations/v2/oneX_twoBeta2.py,
+	  migrations/v2/twoBeta2_twoBeta3.py,
+	  setup/ConfigurationMethods.py, setup/languages.py,
+	  skins/plone_scripts/check_id.py,
+	  skins/plone_scripts/date_components_support.py,
+	  skins/plone_scripts/navigationRemoteResources.py,
+	  tests/testGroupDataTool.py, tests/testGroupsTool.py,
+	  tests/testMembershipTool.py (Plone-2_0-branch): I like to run
+	  reindent.py just to make noise
+
+2003-12-20 22:11  dpunktnpunkt
+
+	* FormTool.py, PloneTool.py, skins/plone_scripts/check_id.py
+	  (Plone-2_0-branch): Fixes one eighth of 2164 ;) Moved good_id
+	  from portal_form to plone_utils and added deprecation warning.
+
+2003-12-20 22:02  dreamcatcher
+
+	* Extensions/add_copyright.py (Plone-2_0-branch): First try at a
+	  rewrite. **WARNING** Not ready yet. I need to get mx.Tidy running
+	  to make the .pt working in a nice shape, otherwise you will get
+	  all attributes in one line
+
+2003-12-20 21:57  limi
+
+	* skins/plone_forms/search_form.pt (Plone-2_0-branch): Changed the
+	  wording to "Select All/None".
+
+2003-12-20 21:42  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): copy button
+	  should have:	View management screens permission and then on teh
+	  condition 'Copy or Move'
+
+2003-12-20 21:34  runyaga
+
+	* HISTORY.txt, skins/plone_templates/folder_contents.pt
+	  (Plone-2_0-branch): do not show 'order' column if they do not
+	  have permissions to modify the ordering
+
+2003-12-20 21:27  runyaga
+
+	* skins/plone_scripts/logged_in.py (Plone-2_0-branch): if you have
+	  data on your clipboard and you logout/log back in.  the
+	  logged_in.py will now expire the clipboard cookie.  this is
+	  correect behavior
+
+2003-12-20 21:21  runyaga
+
+	* migrations/v2/plone2_base.py, www/addSite.zpt (Plone-2_0-branch):
+	  only show options for CustomizationPolicies if there is more than
+	  1.  fix sharing for objects to be {object_url} instead of
+	  {folder_url} Someone please look at the breakage on tests
+
+2003-12-20 21:06  runyaga
+
+	* HISTORY.txt, migrations/v2/plone2_base.py,
+	  skins/plone_scripts/showEditableBorder.py (Plone-2_0-branch):
+	  greenborder shows up if you have any aciton but view.  added
+	  sharing tab on all non-fodlerish portal_types on portal
+	  construction.
+
+2003-12-20 20:40  runyaga
+
+	* HISTORY.txt, PloneFolder.py, setup/ConfigurationMethods.py
+	  (Plone-2_0-branch): add
+	  declareProtected(PloneFolder.manage_copyObjects,
+	  Permissions.copy_or_move)
+
+2003-12-20 19:40  runyaga
+
+	* HISTORY.txt, setup/ConfigurationMethods.py (Plone-2_0-branch):
+	  fix for 1985
+
+2003-12-20 19:28  runyaga
+
+	* setup/ConfigurationMethods.py (Plone-2_0-branch): change
+	  permissions to fix #1985
+
+2003-12-20 18:44  tiran
+
+	* skins/: plone_form_scripts/delete_member_portraits.cpy,
+	  plone_form_scripts/delete_member_portraits.cpy.metadata,
+	  plone_form_scripts/validate_member_portraits.vpy,
+	  plone_prefs/prefs_member_portraits_form.cpt,
+	  plone_prefs/prefs_member_portraits_form.cpt.metadata
+	  (Plone-2_0-branch): moving manage member portraits to a seperate
+	  product
+
+2003-12-20 18:42  runyaga
+
+	* HISTORY.txt, setup/ConfigurationMethods.py (Plone-2_0-branch):
+	  change folder_buttons permissions so users do not see actions
+	  they can not execute
+
+2003-12-20 18:29  dpunktnpunkt
+
+	* skins/plone_portlets/portlet_navigation.pt (Plone-2_0-branch):
+	  Fix for 2137
+
+2003-12-20 18:12  plonista
+
+	* skins/plone_scripts/: folder_delete.cpy,
+	  folder_paste.cpy.metadata (Plone-2_0-branch): Fixed failure state
+	  action for folder_paste Cleaned up transaction note for
+	  folder_delete
+
+2003-12-20 18:00  plonista
+
+	* skins/plone_scripts/: folder_cut.cpy.metadata,
+	  folder_paste.cpy.metadata, folder_publish.cpy.metadata
+	  (Plone-2_0-branch): Added failure state actions for various
+	  scripts
+
+2003-12-20 16:51  dpunktnpunkt
+
+	* skins/plone_forms/sendto_form.cpt (Plone-2_0-branch): Fix 1886.
+
+2003-12-20 16:13  plonista
+
+	* MembershipTool.py, skins/plone_forms/folder_localrole_form.pt
+	  (Plone-2_0-branch): Fix for 1497
+
+2003-12-20 16:02  dannybloe
+
+	* skins/plone_prefs/: prefs_group_members.pt,
+	  prefs_member_portraits_form.cpt, prefs_search_macros.pt
+	  (Plone-2_0-branch): prefs_member_portraits_form: updated the
+	  toggle button so it displays the current toggle-state.
+
+	  prefs_search_macros: added toggle button to select all users when
+	  assigning them to a group
+
+	  prefs_group_members: added toggle button to select all users when
+	  assigning them to a group moved the last column to the first, to
+	  follow the standards.
+
+	  Limi, check it out. Needs some ui polishing IMO
+
+2003-12-20 15:59  dannybloe
+
+	* skins/plone_templates/folder_contents.pt (Plone-2_0-branch):
+	  removed filterTypes since it is not used anymore modified the
+	  text when there is only one portal_type that can be added (issue
+	  330) fixed a missing default string for the Add New <type> button
+	  for when there is no translation.  updated the toggle button so
+	  it displays the current toggle-state.  changed the position for
+	  the Add New Item button so that it aligns better (colspan was set
+	  wrongly).
+
+2003-12-20 15:58  dannybloe
+
+	* skins/plone_forms/search_form.pt (Plone-2_0-branch): updated
+	  toggle buttons so they show their toggle-state
+
+2003-12-20 14:24  arnia
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Fix for
+	  #2136. Changed .hiddenLabel to hide in the same way as
+	  .hiddenStructure
+
+2003-12-20 10:50  redcor
+
+	* skins/plone_templates/news.pt (Plone-2_0-branch): filter catalog
+	  result for non existing objects
+
+2003-12-20 08:57  limi
+
+	* skins/plone_prefs/: plone_control_panel.pt.metadata,
+	  prefs_error_log.pt.metadata,
+	  prefs_install_products_form.pt.metadata,
+	  prefs_mailhost_form.pt.metadata,
+	  prefs_portalskin_form.pt.metadata, reconfig_form.cpt,
+	  reconfig_form.cpt.metadata (Plone-2_0-branch): Added security
+	  settings to all visible control panels, added titles to all of
+	  them.
+
+2003-12-20 08:38  gerry_kirk
+
+	* skins/plone_prefs/: prefs_groups_overview.pt,
+	  prefs_search_macros.pt, prefs_users_overview.pt
+	  (Plone-2_0-branch): fixed issue 2127: removed condition on table
+	  listing, added a no results found comment beneath table if none
+	  found
+
+2003-12-20 08:33  limi
+
+	* skins/plone_content/event_edit_form.cpt (Plone-2_0-branch): Added
+	  missing Required indicator, issue #1841
+
+2003-12-20 08:23  limi
+
+	* skins/: plone_images/colophon_xhtml.png,
+	  plone_templates/colophon.pt (Plone-2_0-branch): Changed the XHTML
+	  button to not have version number, and changed the ordering in
+	  the colophon.
+
+2003-12-20 07:52  limi
+
+	* skins/: plone_ecmascript/plone_javascripts.js,
+	  plone_styles/plone.css.dtml (Plone-2_0-branch): Added HTTPS links
+	  for the links script. They're so darn cute! :D
+
+2003-12-20 07:38  limi
+
+	* skins/plone_images/lock_icon.gif (Plone-2_0-branch): Icon wasn't
+	  16 px wide. It should be. :)
+
+2003-12-20 06:51  eaon
+
+	* skins/plone_ecmascript/plone_minwidth.js.dtml (Plone-2_0-branch):
+	  place the generated element in the right part of the document
+
+2003-12-20 06:10  limi
+
+	* PloneControlPanel.py (Plone-2_0-branch): the icon paths were
+	  pointing inside plone_images, which made customization harder.
+	  Bug #2039
+
+2003-12-20 06:02  limi
+
+	* skins/plone_content/metadata_edit_form.cpt (Plone-2_0-branch):
+	  removed redundant id attributes. bug #2038.
+
+2003-12-20 05:28  eaon
+
+	* skins/plone_templates/main_template.pt (Plone-2_0-branch): the
+	  last 'stop to crash ie' checkin for 2.0 (?)
+
+2003-12-20 05:13  eaon
+
+	* skins/plone_styles/: plone.css.dtml, ploneIEFixes.css.dtml
+	  (Plone-2_0-branch): more checkins for preventing overlaps and
+	  wrapping columns - more to come tomorrow
+
+2003-12-20 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2003-12-20 05:06  limi
+
+	* skins/plone_templates/header.pt (Plone-2_0-branch): Removed
+	  references to current_skin.
+
 2003-12-20 03:03  runyaga
 
 	* skins/plone_forms/mail_password_template.dtml (Plone-2_0-branch):
