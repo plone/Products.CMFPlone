@@ -5,7 +5,7 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="contentTypes allowed_types;
+<ul tal:define="contentTypes here/getAllowedTypes;
         filterOut here/getNotAddableTypes;
 		size python:len(contentTypes);">
 
