@@ -1,6 +1,6 @@
-# $Id: NavigationTool.py,v 1.26 2002/09/11 04:13:01 plonista Exp $
+# $Id: NavigationTool.py,v 1.27 2002/09/11 21:48:52 plonista Exp $
 # $Source: /cvsroot/plone/CMFPlone/NavigationTool.py,v $
-__version__ = "$Revision: 1.26 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.27 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from ZPublisher.mapply import mapply
 from ZPublisher.Publish import call_object, missing_name, dont_publish_class
@@ -23,7 +23,7 @@ import sys
 
 from interfaces.NavigationController import INavigationController
 
-debug = 1  # enable/disable logging
+debug = 0  # enable/disable logging
 
 class NavigationTool (UniqueObject, SimpleItem):
     """ provides navigation related utilities """
