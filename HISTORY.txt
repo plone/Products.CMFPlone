@@ -4,8 +4,15 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Added Recently Published slot, and a complimentary Archive page.
+    
+    - Changed the comment structure and layout - it's much moresimple and 
+      elegant now.
+      [limi]
+
     - Added permanent CSS fix for the Internet Explorer 6 Disappearing Elements
       bug.
+      [limi]
 
     - Removed superfluous page refresh for IE6 disappearing text bug
       [limi]
