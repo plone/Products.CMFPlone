@@ -1,3 +1,6 @@
+1.0 beta
+    - removed tabs, request.set('disable_border',1) from: news, roster, search, and search_form
+
 1.0alpha2
 
     - Added localLongTimeFormat, set to '%Y-%m-%d %I:%M %p' by default. Used by Events.
