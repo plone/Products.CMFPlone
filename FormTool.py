@@ -53,7 +53,7 @@ class FormTool(UniqueObject, SimpleItem):
         if validators:
             return validators.strip().split(',')
         else:
-            return []
+            return None
 
 
     # expose ObjectManager's bad_id test to skin scripts
@@ -91,7 +91,7 @@ class FormTool(UniqueObject, SimpleItem):
 
         # see if we are handling validation for this form
         validators = self.getValidators(name)
-        if validators == []:
+        if validators is None:
             # no -- do normal traversal
             target = getattr(aq_parent(self), name, None)
             if name.endswith('.js'):
@@ -202,6 +202,7 @@ class FormValidator(SimpleItem):
            Places a dictionary of errors in the REQUEST that is accessed via REQUEST[FormTool.error_key]
         """
         errors = {}
+        status = 'success'  # default return value if the validator list is empty
         for validator in self.validators:
             
             self.log('calling validator [%s]' % (str(validator)))
@@ -286,13 +287,14 @@ class CMFForm(BasicForm):
 
 
     security.declarePublic('validate')
-    def validate(self, REQUEST):
+    def validate(self, REQUEST, errors=None):
         """
         Executes the validator for each field in the wrapped BasicForm.add_field
         Returns the results in a dictionary.
         """
 
-        errors = REQUEST.get('errors', {})
+        if errors is None:
+            errors = REQUEST.get('errors', {})
         
         # This is a bit of a hack to make some of Formulator's quirks
         # transparent to developers.  Formulator expects form fields to be
