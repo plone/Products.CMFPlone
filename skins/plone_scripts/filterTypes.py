@@ -7,6 +7,9 @@
 ##parameters=filter
 ##title=
 ##
-if same_type(filter, {}) and filter.has_key('portal_type'):
-    return filter['portal_type']
-return []
+results=[]
+try:
+    results=filter['portal_type']
+except KeyError:
+    pass
+return results

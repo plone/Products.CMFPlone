@@ -12,13 +12,19 @@ REQUEST=context.REQUEST
 if REQUEST.get('filter_state', 0):
     REQUEST.set(REQUEST['filter_state'], 1)
 
+#path = context.portal_url.getPortalPath()
+
 if REQUEST.get('clear_view_filter', 0):
-  context.clearCookie()
-  REQUEST.set('folderfilter', '')
-  REQUEST.set('close_filter_form', '1')
+    REQUEST.RESPONSE.expireCookie('folderfilter', path='/') 
+    REQUEST.set('portal_status_message', 'Filter cleared.')
+    REQUEST.set('folderfilter', '')
+    REQUEST.set('close_filter_form', '1')
+    return
 elif REQUEST.get('set_view_filter', 0):
-  filter=context.encodeFolderFilter(REQUEST)
-  cookie_path = context.portal_url.getPortalPath()
-  REQUEST.RESPONSE.setCookie('folderfilter', filter, path=cookie_path,
-                              expires='Wed, 19 Feb 2020 14:28:00 GMT')
-  REQUEST.set('folderfilter', '%s' % filter)
+    filter=context.encodeFolderFilter(REQUEST)
+    REQUEST.RESPONSE.setCookie('folderfilter', filter, path='/', 
+                               expires='Wed, 19 Feb 2020 14:28:00 GMT')
+    REQUEST.set('folderfilter', filter) 
+    REQUEST.set('portal_status_message',
+                'Filtered by %s.' % ' '.join(REQUEST['filter_by_portal_type']) )
+
