@@ -135,7 +135,7 @@
    	             tal:attributes="class python:test(error_file, 'field error', 'field')">
               
                 <div tal:condition="error_file"
-                     tal:replace="error_file" />
+                     tal:replace="structure string:$error_file <br />" />
                 
                 <input type="file" 
                        name="field_file" 

@@ -8,6 +8,7 @@
 ##title=
 ##
 from DateTime import DateTime
+from Products.CMFPlone import transaction_note
 REQUEST=context.REQUEST
 
 if type_name is None:
@@ -28,6 +29,6 @@ try:
     view=o.getTypeInfo().getActionById('edit')
 except:
     view=o.getTypeInfo().getActionById('view')
-
+transaction_note('new ' + o.getTypeInfo().getId() + ' was created.')
 return REQUEST.RESPONSE.redirect(o.absolute_url()+'/'+view)
 

@@ -72,7 +72,8 @@
             <tbody>
                 <metal:block tal:repeat="trx batch">
                     <tr class="even" 
-                        tal:define="oddrow repeat/trx/odd;"
+                        tal:define="oddrow repeat/trx/odd;
+			            descriptions python:trx.get('description').split('\n');"
                         tal:attributes="class python:test(oddrow, 'even', 'odd')" >
                         
                         <td>
@@ -83,10 +84,11 @@
                         </td>
             
                         <td>
-                        Title
+                        <span tal:condition="python:len(descriptions)>1"
+			      tal:replace="python:' '.join(descriptions[1:])">Title</span>
                         </td>
                         	
-                        <td tal:content="python:trx['description']">
+                        <td tal:content="python:descriptions[0]">
                         Action performed
                         </td>
             
