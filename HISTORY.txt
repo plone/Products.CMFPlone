@@ -22,6 +22,7 @@
       moved edit_forms in with content
       moved event_xxxx into plone_3rdParty/CMFCalendar for consitency
       Issue 204 fixed
+    - Sigve Tjora fixed the migration machinery - incredible job! CMFPlone/Extensions/migration.py
     
 1.0 alpha4
     - publishing now works without javascript. #202
