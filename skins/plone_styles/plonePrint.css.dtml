@@ -11,9 +11,9 @@
 body {
     background: White;
     font-family: Georgia, Garamond, Times, serif;
-    font-size: 11pt;
+    font-size: 10pt;
     color: Black;
-    margin: 5%;
+    margin: 0;
 }
 
 div.top,
@@ -23,12 +23,14 @@ div.top,
 .pathBar,
 td.left,
 td.right,
-.contentTabs,
-.contentBar,
+#contentTabs,
+#contentBar,
+div.documentActions,
 .footer,
 .help,
 .legend,
-div.message
+div.message,
+input
 {
     display: none;
 }
@@ -38,9 +40,12 @@ ul {
 }
 
 div.editableDocument,
+div.document,
 .group {
     background: transparent;
     border: none;
+    font-family: Georgia, Garamond, Times, serif;
+    font-size: 10pt;
     padding: 0;
     margin: 0;
 }

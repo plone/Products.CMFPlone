@@ -10,7 +10,7 @@
 
 
 body {
-    background: White url(logo.png) no-repeat fixed 95% 95%;
+    background: White url(logo.jpg) no-repeat fixed 95% 95%;
     font-family: Verdana Helvetica Arial sans-serif;
     font-size: 40px;
     color: Black;
@@ -24,6 +24,7 @@ h1 {
     border-color: &dtml-mainTabBorderColorSelected;;
     border-style: solid;
     border-width: 1px;
+    padding-top: 0em;
     padding-left: 0.5em;
     padding-right: 0.5em;
     margin-top: 1em;
@@ -51,15 +52,22 @@ div.top,
 .pathBar,
 td.left,
 td.right,
-.contentTabs,
-.contentBar,
 .footer,
 .help,
 .legend,
-div.message
+div.message,
+div.documentActions,
+input
 {
     display: none;
 }
+
+#contentTabs,
+#contentBar
+{
+display: none;
+}
+
 
 ul { 
     list-style-image: url("bulletBig.gif"); 
@@ -67,6 +75,7 @@ ul {
 }
 
 div.editableDocument,
+div.document,
 .group {
     background: transparent;
     border: none;
