@@ -4,13 +4,17 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello - Released XX. April 2004
 
+    - Added scoring details + i18n information in the search results. Thanks
+      to Andrew Veitch for the suggestion.
+      [limi]
+
     - Renamed METAL macro "list-item" to "listitem" in news.pt and folder_listing.pt
       to fix Zope 2.6 compatibility.
       [limi]
 
     - Commented out the javascript that auto-focuses on the first field in a form. 
       There are too many places that causes a lot of trouble by moving focus away from 
-      a field in which the user is actually  typing. 
+      a field in which the user is actually typing. 
       [elvix]
 
     - Backported fix for http://plone.org/collector/2183 from HEAD.
@@ -18,10 +22,12 @@ Plone 2.0.1 - Jello - Released XX. April 2004
       allowed in the target container.
       [stefan]
 
-    - improvement to Customization policy:
-      In a customization policy class you can now provide an optional method 'getPloneGenerator',
+    - Improvement to Customization policy:
+      In a customization policy class you can now provide an optional method 
+      'getPloneGenerator',
       where you can return a different PloneGenerator than the default one
-      Affected files: Portal.py, CustomizationPolicy.py, interfaces/CustomizationPolicy.py
+      Affected files: Portal.py, CustomizationPolicy.py, 
+      interfaces/CustomizationPolicy.py
       [zwork]
 
     - Fixed http://plone.org/collector/2973. Try to avoid brain.getObject() to
@@ -49,7 +55,7 @@ Plone 2.0.1 - Jello - Released XX. April 2004
       highlights the parts it is supposed to highlight.
       [elvix]
 
-    - http://plone.org/collector/2691 External-link-detector javasdcript 
+    - http://plone.org/collector/2691 External-link-detector javascript 
       is now case-insensitive
       [elvix]
 
