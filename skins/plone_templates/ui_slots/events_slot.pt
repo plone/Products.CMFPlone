@@ -8,8 +8,8 @@
 
 <div metal:define-macro="eventsBox"
      tal:define="results python:here.portal_catalog.searchResults( portal_type='Event'
-                                                                 , start=here.ZopeTime()
-                                                                 , start_usage='range:min'
+                                                                 , end=here.ZopeTime()
+                                                                 , end_usage='range:min'
                                                                  , sort_on='start'
                                                                  , review_state='published')[:5];"
      tal:condition="python:test(results, 1, 0)">
