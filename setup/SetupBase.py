@@ -8,11 +8,6 @@ class SetupWidget(Implicit):
     # show radio buttons rather than check boxes
     single = 0
     
-    def __init__(self):
-        #self.portal = portal
-        #self.migrationTool = migrationTool
-        pass
-
     #####################################################
     # To be overridden
 

@@ -10,7 +10,7 @@ class DefaultCustomizationPolicy:
         # run all the methods in the misc class 
         # this will change to use a config file hopefully
         mi_tool = portal.portal_migration
-        gs = mi_tool._getWidget('General Setup')
+        gs = mi_tool._getWidget('General Setup').__of__(portal)
         gs.addItems(gs.available())
 
 def register(context, app_state):
