@@ -9,16 +9,16 @@
 ##
 
 if position.lower()=='up':
-    context.moveObjectUp(id)
+    context.moveObjectsUp(id)
 
 if position.lower()=='down':
-    context.moveObjectDown(id)
+    context.moveObjectsDown(id)
 
 if position.lower()=='top':
-    context.moveObjectToTop(id)
+    context.moveObjectsToTop(id)
 
 if position.lower()=='bottom':
-    context.moveObjectToBottom(id)
+    context.moveObjectsToBottom(id)
 
 # order folder by field
 # id in this case is the field    

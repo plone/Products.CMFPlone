@@ -1,4 +1,3 @@
-from sys import maxint
 from Products.CMFCore.utils import _verifyActionPermissions, \
      getToolByName, getActionContext
 from Products.CMFCore.Skinnable import SkinnableObjectManager
@@ -18,9 +17,14 @@ from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
+from types import StringType
 
 # this import can change with Zope 2.7 to 
-# from OSF.Ordersupport import IOrderedContainer
+try:
+    from OFS.IOrderSupport import IOrderedContainer as IZopeOrderedContainer
+    hasZopeOrderedSupport=1
+except ImportError:
+    hasZopeOrderedSupport=0
 # atm its safer defining an own
 from interfaces.OrderedContainer import IOrderedContainer
 
@@ -87,7 +91,12 @@ Plone folders can define custom 'view' actions, or will behave like directory li
 
 class OrderedContainer(Folder):
 
-    __implements__  = (IOrderedContainer,)
+    if hasZopeOrderedSupport:
+        # got the IOrderedContainer interface from zope 2.7, too
+        # make shure this implementation fullfilles both interfaces
+        __implements__  = (IOrderedContainer, IZopeOrderedContainer)
+    else:
+        __implements__  = (IOrderedContainer,)
 
     security = ClassSecurityInfo()
 
@@ -160,37 +169,31 @@ class OrderedContainer(Folder):
 
         raise NotFound('Object %s was not found'%str(id))
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectUp')
-    def moveObjectUp(self, id, steps=1, RESPONSE=None):
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectsUp')
+    def moveObjectsUp(self, ids, delta=1, RESPONSE=None):
         """ Move an object up """
-        self.moveObject(
-            id,
-            self.getObjectPosition(id) - int(steps)
-            )
+        self.moveObjectsByDelta(ids, -delta) 
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectDown')
-    def moveObjectDown(self, id, steps=1, RESPONSE=None):
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectsDown')
+    def moveObjectsDown(self, ids, delta=1, RESPONSE=None):
         """ move an object down """
-        self.moveObject(
-            id,
-            self.getObjectPosition(id) + int(steps)
-            )
+        self.moveObjectsByDelta(ids, delta) 
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectToTop')
-    def moveObjectToTop(self, id, RESPONSE=None):
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectsToTop')
+    def moveObjectsToTop(self, ids, RESPONSE=None):
         """ move an object to the top """
-        self.moveObject(id, 0)
+        self.moveObjectsByDelta( ids, -len(self._objects) ) 
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
-    security.declareProtected(Permissions.copy_or_move, 'moveObjectToBottom')
-    def moveObjectToBottom(self, id, RESPONSE=None):
+    security.declareProtected(Permissions.copy_or_move, 'moveObjectsToBottom')
+    def moveObjectsToBottom(self, ids, RESPONSE=None):
         """ move an object to the bottom """
-        self.moveObject(id, maxint)
+        self.moveObjectsByDelta( ids, len(self._objects) )
         if RESPONSE is not None:
             RESPONSE.redirect('manage_workspace')
 
