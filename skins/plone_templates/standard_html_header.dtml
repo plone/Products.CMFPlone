@@ -3,7 +3,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US">
-
+      
+<dtml-call "REQUEST.set('portal_url', portal_url())">
 <dtml-var "macro_renderer(template='here/header', macro='html_header')" >
 
 <body>

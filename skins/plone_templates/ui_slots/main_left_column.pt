@@ -1,4 +1,5 @@
-<metal:block metal:define-macro="column">
+<metal:block metal:define-macro="column"
+             tal:define="global portal_url here/portal_url">
 
     <div metal:use-macro="here/topic_navigator_slot/macros/CMFTopic_navigation_box">
     Topic Navigation box - only does 1 level so far
