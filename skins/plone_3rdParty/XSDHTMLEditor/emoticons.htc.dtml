@@ -1,0 +1,146 @@
+<!--
+## Created by Alex Baker
+## Bakeral@tyson.com
+##
+## As is. No warranties. Use it at your own risk.
+## If it doesn't work like you like, don't contact me. Fix it yourself.
+## Use it. Love it, and pass it on.
+-->
+<public:component tagName="emoticonDisplay">
+	<public:defaults viewLinkContent/>
+	<public:attach event="oncontentready" onevent="init();"/>
+	<public:property name="emoticonPath" id="emoticonPath" put="putEmoticonPath" get="getEmoticonPath"/>
+	<public:property name="emoticonList"	id="emoticonList" put="putEmoticonList" get="getEmoticonList"/>
+	<public:property name="emoticonColumns"	id="emoticonColumns" put="putEmoticonColumns" get="getEmoticonColumns"/>
+	<public:property name="selectedIconPath"	id="selectedIconPath" get="getSelectedIconPath"/>
+	<public:event name="onChooseEmoticon" ID="editorClick"/>
+</public:component>
+
+<html>
+<head>
+<style> 
+  body{
+    margin: 0px;
+  }
+  
+  .tableDiv{    
+    cursor: hand;
+  }
+  
+  .displayTable{
+    border: 1pt outset;
+    background-color: ButtonFace;
+  }
+  
+  .imageBox{
+    height: 20px;
+    width: 20px;
+    border: 1pt solid ButtonFace;
+    overflow:hidden;    
+  }  
+  .mouseoverImageBox{
+    background-color: ButtonHighlight;
+    height: 20px;
+    width: 20px;   
+    border: 1pt outset;
+    overflow:hidden;
+  }  
+</style>
+<script type="text/javascript">
+<!--
+
+var iconPath = "";
+var iconArray = new Array();
+var iconColumns = 6;
+var selectedIconPath = "";
+
+function putEmoticonPath( data ){
+  iconPath = data;
+}
+
+function getEmoticonPath(){
+  return iconPath;
+}
+
+function putEmoticonList( data ){
+  //To make the rows come out right, our array must start at one
+  //tack on a comma to put an empty field at arrray[0]
+  data = "," + data;
+  iconArray = data.split(",");
+  drawTable();
+}
+
+function getEmoticonList(){
+  return iconArray.join(",");
+}
+
+function putEmoticonColumns( data ){
+  iconColumns = data
+}
+
+function getEmoticonColumns(){
+  return iconColumns;
+}
+
+function getSelectedIconPath(){
+  return selectedIconPath;
+}
+
+function doClick() { 
+  if( window.event.srcElement.id != "myImage" ){
+    var imgElements = window.event.srcElement.getElementsByTagName( "img" );
+    selectedIconPath = imgElements[0].src;
+  } else {
+	  selectedIconPath = window.event.srcElement.src;
+	}  
+	editorClick.fire();	   
+}
+
+function init() {
+	fixTitle();		
+	drawTable();
+}
+
+function fixTitle() {
+	document.title = parent.document.title;
+}
+
+function drawTable(){
+  var iconTable = "<table border='0' cellpadding='0' cellspacing='2' class='displayTable' >";
+  for( x = 1; x < iconArray.length; x++ ){
+    iconTable += '<TD class="imageBox" align="center" valign="middle" onMouseOver="mouseOver(this)" onMouseOut="mouseOut(this)" onclick="doClick()">';
+    iconTable += '<img id="myImage" border="0" src="' + iconPath + iconArray[x] + '"/></TD>\n';
+    if( x%iconColumns == 0 ){
+      iconTable += "</TR><TR>";
+    }
+  }
+  iconTable += "</tr></table>"
+  tableDiv.innerHTML = iconTable;
+}
+
+function mouseOver( tile ){
+  tile.className = "mouseoverImageBox"; 
+  //the filter is fun, but it doesn't always work right. Use at your own discretion.
+  //var imgElements = tile.getElementsByTagName( "img" );
+	//imgElements[0].style.filter = 'progid:DXImageTransform.Microsoft.shadow(Color="#666666", Direction="120", Strength="3"  )';
+}
+
+function mouseOut( tile ){
+  tile.className = "imageBox";
+  //var imgElements = tile.getElementsByTagName( "img" );
+	//imgElements[0].style.filter = '';
+}
+
+//-->
+</script>
+</head>
+<body>
+  <table border="0" cellpadding="0" cellspacing="0" >
+    <tr>
+      <td>
+        <div id="tableDiv" class="tableDiv" style="border: 1px outset;"></div>  
+      </td>
+    </tr>
+   </table>
+</body>
+</html>

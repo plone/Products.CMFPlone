@@ -1,0 +1,826 @@
+<dtml-call "REQUEST.REPSONSE.setHeader('Content-Type', 'text/x-component')">
+<!--
+////////////////////////////////////////////////////////////////////////////////
+//
+// XS DHTML Editor for use in Microsoft Internet Explorer 5.5+
+// Copyright (C) 2002	Ryan LaNeve
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU LesserGeneral Public License
+// along with this program; if not a copy can be obtained from
+//
+//    http://www.gnu.org/copyleft/lesser.html
+//
+// or by writing to:
+//
+//    Free Software Foundation, Inc.
+//    59 Temple Place - Suite 330,
+//    Boston,
+//    MA  02111-1307,
+//    USA.
+//
+// Original Developer:
+//
+//	Ryan LaNeve
+//  email: ryan@laneve.com
+//
+// Contributors:
+//	Alex Baker / John Parker
+//
+// Home Page:    http://www.sourceforge.net/projects/xsdheditor/
+//
+////////////////////////////////////////////////////////////////////////////////
+//
+// Release History:
+//
+//			04-07-2002
+//			version 0.95
+//
+//			11-27-2001
+//			version 0.94b
+//
+//			09-28-2001
+//			version 0.93b
+//
+//			06-28-2001
+//			version 0.92b
+//
+//			04-10-2001
+//			version 0.91b
+//
+//			04-02-2001
+//			version 0.90b
+//			(initial public release)
+//
+////////////////////////////////////////////////////////////////////////////////
+-->
+<public:component tagName="XsDhtmlEditor">
+	<public:defaults viewLinkContent/>
+	<public:attach event="oncontentready" onevent="fnInit();"/>
+	<public:property name="path" />
+	<public:property name="width" internalName="editWidth" put="receiveWidth" />
+	<public:property name="height" internalName="editHeight" put="receiveHeight" />
+	<public:property name="editorColumns" put="receiveEditorColumns" get="sendEditorColumns" />
+	<public:property name="editorRows" put="receiveEditorRows" get="sendEditorRows" />
+	<public:property name="action" put="receiveAction" />
+	<public:property name="content" get="sendContent" put="receiveContent" />
+	<public:property name="value" get="sendContent" put="receiveContent" />
+	<public:property name="blockFormatList" put="receiveBlockFormatList" />
+	<public:property name="blockFormatNameList" put="receiveBlockFormatNameList" />
+	<public:property name="fontList" put="receiveFontList" />
+	<public:property name="fontDefault" />
+	<public:property name="fontSizeList" put="receiveFontSizeList" />
+	<public:property name="fontSizeDefault" />
+	<public:property name="emoticonPath"  put="receiveEmoticonPath" get="sendEmoticonPath"/>
+	<public:property name="emoticonList" put="receiveEmoticonList" get="sendEmoticonList"/>
+	<public:property name="imagesPath" put="receiveImagesPath" />
+	<public:property name="replaceTags" />
+	<public:property name="styleSheet" put="receiveStyleSheet" />
+	<public:property name="showBlockFormat" put="receiveShowBlockFormat" />
+	<public:property name="showFont" put="receiveShowFont" />
+	<public:property name="showFontSize" put="receiveShowFontSize" />
+	<public:property name="showJustify" put="receiveShowJustify" />
+	<public:property name="showColorPicker" put="receiveShowColorPicker" />
+	<public:property name="showInsertImage" put="receiveShowInsertImage" />
+	<public:property name="showInsertLink" put="receiveShowInsertLink" />
+	<public:property name="showInsertTable" put="receiveShowInsertTable" />
+	<public:property name="showEmoticon" put="receiveShowEmoticon" />
+	<public:property name="showMode" put="receiveShowMode" />
+	<public:property name="showPreview" put="receiveShowPreview" />
+	<public:property name="showPrint" put="receiveShowPrint" />
+	<public:property name="showSave" put="receiveShowSave" />
+	<public:property name="showCancel" put="receiveShowCancel" />
+	<public:method name="insertHtml" />
+	<public:method name="insertText" />
+	<public:event name="onSave" id="editorSave" />
+	<public:event name="onPreview" id="editorPreview" />
+	<public:event name="onCancel" id="editorCancel" />
+</public:component>
+
+<html XMLNS:XS>
+	<head>
+		<?import namespace="XS" implementation="XsDhtmlEditorToolbarButton.htc" />
+		<?import namespace="XS" implementation="emoticons.htc" />
+		<style>
+			body {
+				margin: 0,0,0,0;
+				height: 100%;
+				width: 100%;
+				overflow: auto;
+			}
+			.editFrame {
+				border: 1.5pt outset;
+				padding: 4pt;
+				background-color : ButtonFace;
+				cursor: default;
+			}
+			.editDoc {
+				border: 1.5pt inset;
+				overflow : auto;
+				background-color : White;
+				margin-top : 2px;
+				white-space : pre;
+			}
+			.toolbar {
+				height: 25px;
+			}
+			.toolbarSeperator {
+				border-left: 1pt solid threedshadow;
+				position: relative;
+				cursor: default;
+				width : 2px;
+				height : 16px;
+			}
+			.toolbarSelect SELECT {
+				position : relative;
+				font-size : 10px;
+				height : 16px;	
+			}
+			.toolbarSelect {
+				position : relative;
+				font-size : 10px;
+				height : 25px;
+				vertical-align: middle;	
+				padding-top: 2px;
+			}
+		</style>
+	</head>
+	
+	<script type="text/javascript" for="document" event="onselectionchange" language="javascript">
+		// If color picker is visible, hide it.
+		if(colorPalette.style.display=="")
+			colorPalette.style.display="none";
+
+		//if no selection
+		if(document.selection.type == "None"){
+			//without the following line, selecting an image then deleting it will throw an error.
+			var range = document.selection.createRange()
+		}
+
+		resetToolbar();
+	</script>
+	
+	<script language="javascript">
+		var content = "";
+		var path = "";
+		var action = "";
+		var blockFormatList = "Normal,Formatted,Address,Definition,Definition Term,Heading 1,Heading 2,Heading 3,Heading 4,Heading 5,Heading 6";
+		var blockFormatNameList = "" //"Normal,Formatted,Address,Def,Definition Term,H1,H2,H3,H4,H5,H6";
+		var fontList = "Arial,Courier New,Georgia,Times New Roman";
+		var fontDefault = "";
+		var fontSizeList = "xx-small,x-small,small,medium,large,x-large,xx-large";
+		var fontSizeDefault = "medium";
+		var imagesPath = "";
+		var imagesSubPath = "";
+		var replaceImages = false;
+		var replaceTags = "";
+		var editHeight = "400";
+		var editWidth = "500";
+		var displayMode="RICH";
+		var dirty = false;
+		
+		function fnInit() {
+			setupToolbarImages();
+		    editFrame.style.height = editHeight;
+		    theDoc.style.height = editHeight;
+			sourceCode.style.height = editHeight;
+			editFrame.style.width = editWidth;
+			//sourceCode.style.width = editWidth;
+			//theDoc.style.width = editWidth;	// this is the line that caused the re-sizing anytime you typed in the doc.
+			
+			loadBlockFormatList();
+			loadFontList();
+			loadFontSizeList();
+			
+			resizingDoc();
+			theDoc.style.cursor = "auto";
+			theDoc.focus();
+		}
+
+		function receiveBlockFormatList(vValue) {
+			blockFormatList = vValue;
+		}
+		
+		function receiveBlockFormatNameList(vValue) {
+			blockFormatNameList = vValue;
+		}
+		
+		function loadBlockFormatList() {
+			// clear out all current options
+			var totalOptions = selectBlockFormat.options.length;
+			var curOption = 0;
+			while(curOption < totalOptions) {
+				selectBlockFormat.options.remove(0);
+				curOption++;
+			}
+			// load the new options
+			var useName = false;
+			var formatArray = blockFormatList.split(',');
+			var formatNameArray = blockFormatNameList.split(',');
+			if(formatArray.length == formatNameArray.length) {
+				useName = true;
+			}
+			for(curFormat = 0; curFormat < formatArray.length; curFormat++) {
+				var oOption = document.createElement("OPTION");
+				selectBlockFormat.options.add(oOption);
+				if(useName) {
+					oOption.text = formatNameArray[curFormat];
+					oOption.value = formatArray[curFormat];
+				} else {
+					oOption.text = formatArray[curFormat];
+					oOption.value = formatArray[curFormat];
+				}
+			}
+		}
+
+		function receiveFontList(vValue) {
+			fontList = vValue;
+		}
+		
+		function loadFontList() {
+			// clear out all current options
+			var totalOptions = selectFontName.options.length;
+			var curOption = 0
+			while(curOption < totalOptions) {
+				selectFontName.options.remove(0);
+				curOption++;
+			}
+			// load the new options
+			fontArray = fontList.split(',');
+			for(curFont = 0; curFont < fontArray.length; curFont++) {
+				var oOption = document.createElement("OPTION");
+				selectFontName.options.add(oOption);
+				oOption.text = fontArray[curFont];
+				if(oOption.text == fontDefault) {
+					selectFontName.selectedIndex = curFont;
+				}
+			}
+			// if we have a fontDefault, we'll use that as the default.
+			if(fontDefault > "") {
+				theDoc.style.fontFamily = fontDefault;
+			} else {
+				// set theDoc's default font to the first font in the list
+				theDoc.style.fontFamily = selectFontName.options[0].innerText;
+			}
+		}
+		
+		function receiveFontSizeList(vValue) {
+			fontSizeList = vValue;
+		}
+		
+		function loadFontSizeList() {
+			// clear out all current options
+			var totalOptions = selectFontSize.options.length;
+			var curOption = 0
+			while(curOption < totalOptions) {
+				selectFontSize.options.remove(0);
+				curOption++;
+			}
+			// load the new options
+			fontSizeArray = fontSizeList.split(',');
+			for(curFont = 0; curFont < fontSizeArray.length; curFont++) {
+				var oOption = document.createElement("OPTION");
+				selectFontSize.options.add(oOption);
+				oOption.text = fontSizeArray[curFont];
+				if(oOption.text == fontSizeDefault) {
+					selectFontSize.selectedIndex = curFont;
+				}
+			}
+			// set theDoc's default font size
+			if(isNaN(fontSizeDefault)) {
+				theDoc.style.fontSize = fontSizeDefault;
+			}
+		}
+		
+		function receiveEmoticonPath(vValue) {
+			emotePicker.emoticonPath = vValue;
+		}
+		
+		function sendEmoticonPath() {
+			return emotePicker.emoticonPath ;
+		}
+		
+		function receiveEmoticonList(vValue) {
+			emotePicker.emoticonList = vValue;
+		}
+		
+		function sendEmoticonList() {
+			return emotePicker.emoticonList;
+		}	
+
+		function receiveShowBlockFormat(vValue) {
+			setOptionVisibility(selectBlockFormat, vValue);
+		}
+		
+		function receiveShowFont(vValue) {
+			setOptionVisibility(selectFontName, vValue);
+		}
+		
+		function receiveShowFontSize(vValue) {
+			setOptionVisibility(selectFontSize, vValue);
+		}
+		
+		function receiveShowJustify(vValue) {
+			setOptionVisibility(buttonJustifyFull, vValue);
+		}
+		
+		function receiveShowColorPicker(vValue) {
+			setOptionVisibility(buttonColorPicker, vValue);
+		}
+		
+		function receiveShowInsertImage(vValue) {
+			setOptionVisibility(buttonInsertImage, vValue);
+		}
+		
+		function receiveShowInsertLink(vValue) {
+			setOptionVisibility(buttonInsertLink, vValue);
+		}
+		
+		function receiveShowInsertTable(vValue) {
+			setOptionVisibility(buttonInsertTable, vValue);
+		}
+		
+		function receiveShowEmoticon(vValue) {
+			setOptionVisibility(buttonInsertEmoticon, vValue);
+		}
+		
+		function receiveShowMode(vValue) {
+			setOptionVisibility(buttonMode, vValue);
+		}
+		
+		function receiveShowPreview(vValue) {
+			setOptionVisibility(buttonPreview, vValue);
+		}
+		
+		function receiveShowPrint(vValue) {
+			setOptionVisibility(buttonPrint, vValue);
+		}
+		
+		function receiveShowSave(vValue) {
+			setOptionVisibility(buttonSave, vValue);
+		}
+		
+		function receiveShowCancel(vValue) {
+			setOptionVisibility(buttonCancel, vValue);
+		}
+		
+		function receiveHeight(vValue) {
+			editHeight = vValue;
+			sourceHeight = vValue;
+		}
+		
+		function receiveWidth(vValue) {
+			editWidth = vValue;
+			sourceWidth = vValue;
+		}
+		
+		function receiveEditorColumns(vValue) {
+			editWidth = vValue * 10;
+			sourceWidth = vValue * 10;
+		}
+		
+		function sendEditorColumns() {
+			return editWidth / 10;
+		}
+		
+		function receiveEditorRows(vValue) {
+			editHeight = vValue * 15;
+			sourceHeight = vValue * 15;
+		}
+		
+		function sendEditorRows() {
+			return editHeight / 15;
+		}
+
+		function receiveAction(vValue) {
+			action = vValue;
+			theForm.action = action;
+		}
+		
+		function receiveContent(vValue) {
+			theDoc.innerHTML = vValue;
+			
+			if(replaceImages == true) {
+				// replace image paths
+				var images = theDoc.getElementsByTagName('IMG');
+				var imageCount = images.length;
+				for(var curImg=0;curImg < imageCount;curImg++) {
+					var newSrc = images[curImg].src.substr(images[curImg].src.lastIndexOf(imagesSubPath) + imagesSubPath.length);
+					images[curImg].src = imagesPath + newSrc;
+				}
+			}
+			
+			sourceCode.innerText = vValue;
+		}
+	
+		function sendContent() {
+			if(replaceImages == true) {
+				// replace image paths
+				var images = theDoc.getElementsByTagName('IMG');
+				var imageCount = images.length;
+				for(var curImg=0;curImg < imageCount;curImg++) {
+					if(imagesSubPath.length>0) {
+						var newSrc = images[curImg].src.substr(images[curImg].src.lastIndexOf(imagesSubPath));
+						images[curImg].src = newSrc;
+					}
+				}
+			}
+			
+			var finalContent;
+			if(displayMode == 'RICH') {
+				finalContent = theDoc.innerHTML;
+			} else {
+				finalContent = sourceCode.innerText;
+			}
+			
+			// run replacements
+			var tagsArray = replaceTags.split(',');
+			if(tagsArray.length > 1) {
+				for( i=0; i<tagsArray.length; i=+2 ) {
+					finalContent = replaceTag(finalContent, tagsArray[i], tagsArray[i+1]);
+				}
+			}
+			return finalContent;
+		}
+		
+		function receiveImagesPath(vValue) {
+			imagesPath = vValue;
+			imagesSubPath = imagesPath.substr(imagesPath.lastIndexOf("/"));
+			replaceImages = true;
+		}
+		
+		function receiveStyleSheet(vValue) {
+			var ss = document.styleSheets[0];
+			ss.addImport(vValue);
+		}
+
+		function buttonClick(button) {
+			var command = button.TBButton.command;
+			var buttonList = null;
+			if(command.substr(0,6)=='Insert') {
+				// An Insert button was clicked. Set buttonList to the button *not* clicked.
+				if(command.substr(6,9)=='Unordered') {
+					buttonList = buttonOrderedList;
+				} else {
+					buttonList = buttonUnorderedList;
+				}
+				if(buttonList.TBButton.state) {
+					// The button not clicked is true, so we need to turn it off.
+					buttonList.TBButton.state = false;
+				}
+			} else if(command.substr(0,7)=='Justify') {
+				if(command=='JustifyFull') {
+					var sel = document.selection.createRange();
+					var el = sel.parentElement();
+					el.style.textAlign = 'justify';
+					el.style.textJustify = 'distribute-all-lines';
+				} else {
+					if(button.TBButton.state) {
+			  			button.TBButton.mouseLeave();
+			  			theDoc.focus();
+			  			return;
+					} else {
+			  			buttonJustifyLeft.TBButton.state = false;
+			  			buttonJustifyCenter.TBButton.state = false;
+			  			buttonJustifyRight.TBButton.state = false;
+					}
+				}
+			}
+			else if(command.substr(0,6)=='Dialog') {
+				if(command=='DialogLink') {
+					document.execCommand('CreateLink','true');
+				} 
+				else if (command=='DialogImage') {
+					document.execCommand('InsertImage','true');
+					return;
+				} 
+				else if (command=='DialogColor') {
+					if(colorPalette.style.display == '') {
+						colorPalette.style.display = 'none';
+					} else {
+						colorPalette.style.left = (toolbarB.offsetLeft + buttonColorPicker.offsetLeft + 7) + 'px';
+						colorPalette.style.top = (toolbarB.offsetTop + buttonColorPicker.offsetTop + 30) + 'px';
+						colorPalette.style.display = '';
+					}
+					return;
+				} 
+				else if (command=='DialogTable') {
+					html = showModalDialog(path + "dlg_ins_table.html", null, "status:no;dialogWidth:250px;dialogHeight:275px;help:no")
+					if (html) {
+						theDoc.focus();
+						var sel = document.selection.createRange();
+						sel.pasteHTML(html);
+					}
+				}
+				else if (command=='DialogEmoticon') {
+					// hide the colorpallete if it's displayed.
+					if(colorPalette.style.display=="") {
+  						colorPalette.style.display="none";
+  					}  
+					if(emotePicker.style.display == '') {
+						emotePicker.style.display = 'none';
+					} else {
+						emotePicker.style.left = (toolbarB.offsetLeft + buttonInsertEmoticon.offsetLeft + 7) + 'px';
+						emotePicker.style.top = (toolbarB.offsetTop + buttonInsertEmoticon.offsetTop + 30) + 'px';
+						emotePicker.style.display = '';
+					}
+					return;
+				}
+			}
+			else if(command=='RemoveFormat') {
+				var sel = document.selection.createRange();
+				var el = sel.parentElement();
+				el.align = 'Left';
+				el.style.textJustify = '';
+				buttonJustifyFull.state = false;
+			}
+			
+			theDoc.focus();
+		}
+		
+		function setDisplayMode() {
+			buttonMode.TBButton.skip = true;
+			if(displayMode=='RICH') {
+				buttonMode.TBButton.state = true;
+				buttonMode.TBButton.alt = 'Go To Rich Mode';
+				if(dirty == true) {
+					sourceCode.innerText = theDoc.innerHTML;
+				}
+				theDoc.style.display = 'none';
+				sourceCode.style.display = '';
+				sourceCode.focus();
+				disableToolbar();
+				displayMode = 'CODE';
+			} else {
+				buttonMode.TBButton.state = false;
+				buttonMode.TBButton.alt = 'Go To Source Mode';
+				theDoc.innerHTML = sourceCode.innerText;
+				theDoc.style.display = '';
+				sourceCode.style.display = 'none';
+				theDoc.focus();
+				enableToolbar();
+				displayMode = 'RICH';
+			}
+			buttonMode.TBButton.mouseLeave();
+			resetToolbar();
+		}
+		
+		function setupToolbarImages() {
+			var buttons = toolbar.all.tags("XsToolbarButton");
+			var buttonCount = buttons.length;
+			for(i=0; i<buttonCount; i++) {
+				buttons[i].image = path + buttons[i].image;
+			}
+		}
+		
+		function resetToolbar() {
+			// set current BlockFormat
+			var blockFormat = document.queryCommandValue('FormatBlock');
+			selectOption(selectBlockFormat, blockFormat);
+			
+			// set current FontName
+			var fontName = document.queryCommandValue('FontName');
+			selectOption(selectFontName, fontName);
+			
+			// set current FontSize
+			var fontSize = document.queryCommandValue('FontSize');
+			selectFontSize.selectedIndex = fontSize - 1;
+
+			// if the type is "control", it's an image and we need to skip the createRange() code to avoid an error.
+			if(document.selection.type != "Control") {
+				if(document.selection.createRange().text.length > 0) {
+					buttonCut.enable();
+					buttonCopy.enable();
+				} else {
+					buttonCut.disable();
+					buttonCopy.disable();
+				}
+			} else {
+				buttonCut.enable();
+				buttonCopy.enable();
+			}
+		}
+		
+		function disableToolbar() {
+			selectFontName.disabled = true;
+			selectFontSize.disabled = true;
+
+			var buttons = toolbar.all.tags("XsToolbarButton");
+			var buttonCount = buttons.length;
+			for(i=0; i<buttonCount; i++) {
+				buttons[i].disable();
+			}
+			
+			buttonSave.enable();
+			buttonCancel.enable();
+			buttonPreview.enable();
+			buttonPrint.enable();
+			buttonMode.enable();
+		}
+		
+		function enableToolbar() {
+			selectFontName.disabled = false;
+			selectFontSize.disabled = false;
+
+			var buttons = toolbar.all.tags("XsToolbarButton");
+			var buttonCount = buttons.length;
+			for(i=0; i<buttonCount; i++) {
+				buttons[i].enable();
+			}
+		}
+
+		function saveDocument() {
+			buttonSave.TBButton.skip = true;
+			if(action == "") {
+				var oEvent = createEventObject();
+				editorSave.fire(oEvent);
+			} else {
+				theForm.xsContent.value = sendContent();
+				theForm.submit();
+			}
+		}
+
+		function previewDocument() {
+			buttonPreview.TBButton.skip = true;
+			var oEvent = createEventObject();
+			editorPreview.fire(oEvent);
+		}
+
+		function cancelDocument() {
+			buttonCancel.TBButton.skip = true;
+			var oEvent = createEventObject();
+			editorCancel.fire(oEvent);
+		}
+				
+		function replaceTag(source, oldTag, newTag) {
+			var expression, result;
+			var oldTagB = oldTag.substr(1, oldTag.length - 2);
+			expression = "<(" + oldTagB + ")>(.*?)<\/" + oldTagB + ">";
+			expression = new RegExp(expression, "igm");
+			result = source.replace(expression, newTag + "$2</" + newTag.substr(1));
+			return(result);
+		}
+		
+		function setOptionVisibility(option, show) {
+			if(show == "true") {
+				option.style.display = '';
+			} else {
+				option.style.display = 'none';
+			}
+		}
+		
+		function selectOption(select, value) {
+			for(curOption = 0; curOption < select.options.length; curOption++) {
+				if(select.options[curOption].text == value) {
+					select.selectedIndex = curOption;
+					return;
+				}
+			}
+		}
+
+		function insertEmoticon(source){
+			if(source == "") {
+				return;
+			}
+			insertHtml("<img border='0' src='"+ source +"'/>");
+		}
+
+		function setForeColor(vColor) {
+			document.execCommand('ForeColor',false,vColor);
+			theDoc.focus();
+		}
+		
+		function insertText(vValue) {
+			theDoc.focus();
+			var sel = document.selection.createRange();
+			sel.text = vValue;
+			dirty = true;
+		}
+		
+		function insertHtml(vValue) {
+			theDoc.focus();
+			var sel = document.selection.createRange();
+			sel.pasteHTML(vValue);
+			dirty = true;
+		}
+		
+		function resizingDoc() {
+			// the 15 below is not a magic number. It's just enough to detect that toolbarB has shifted down.
+			if(toolbarB.offsetTop > 15) {
+				preBreakBar.style.display = 'none';
+				toolbarA.style.borderBottom = '1px groove threedshadow';
+			} else {
+				preBreakBar.style.display = '';
+				toolbarA.style.borderBottom = '';
+			}
+		}
+		
+		function checkKey() {
+			window.status = window.event.keyCode + '-' + window.event.ctrlKey;
+			if(window.event.keyCode == 20 && window.event.ctrlKey == true) {
+				var sel = document.selection.createRange();
+				sel.text = "\t\t";
+			}
+		}
+	</script>
+
+	<script type="text/javascript" for="palette" event="onscriptletevent(name, eventData)" language="JavaScript">
+		if(name=='colorchange') {
+			buttonClick(buttonColorPicker);
+			buttonColorPicker.state = false;
+			setForeColor(eventData);
+		}
+	</script>
+
+	<xs:emoticondisplay id="emotePicker" 
+		emoticoncolumns="6" 
+		style="position:absolute;left:0px;top:0px;display:none;zindex:1;filter:progid:DXImageTransform.Microsoft.shadow(Color='#666666',Direction='120',Strength='2');"
+		onChooseEmoticon="insertEmoticon(this.selectedIconPath)" 
+		onmouseout="this.style.display='none';theDoc.focus();theDoc.click();"/>
+	
+	<body>
+		<div unselectable="on"
+			class="toolbarButton"
+			id="colorPalette"
+			style="position:absolute; padding: 0px; border:1px; height:195px;width:193px;padding-bottom: 0px; left:0px; top:0px; display:none; zindex: 1; margin 0px; border 0px;filter:progid:DXImageTransform.Microsoft.shadow(Color='#666666',Direction='120',Strength='2');">
+			<object id="palette"
+				type="text/x-scriptlet"
+				height="195px"
+				width="193px"
+				style="margin:0px;border:0px;"
+				data="./colorPicker.html" viewastext></object>
+		</div>
+		<div unselectable="on"
+			class="editFrame"
+			id="editFrame"
+			align="center">
+			<div unselectable="on" class="toolbar" id="toolbar" align="left">
+				<nobr>
+				<span unselectable="on" class="toolbar" id="toolbarA" align="left">
+				<span unselectable="on" class="toolbarSelect">
+					<select id="selectBlockFormat" onchange="document.execCommand('FormatBlock', false, this.options[this.selectedIndex].value);theDoc.focus();"></select>
+				</span>
+				<span unselectable="on" class="toolbarSelect">
+					<select id="selectFontName" onChange="document.execCommand('FontName', false, this.options[this.selectedIndex].text);theDoc.focus();"></select>
+				</span>
+				<span unselectable="on" class="toolbarSelect">
+					<select id="selectFontSize" onChange="document.execCommand('FontSize', false, this.selectedIndex + 1);theDoc.focus();"></select>
+				</span>
+				<XS:XsToolbarButton id="buttonBold" command="Bold" autoCheckState="true" image="IMAGES/icon_bold.gif" />
+				<XS:XsToolbarButton id="buttonItalic" command="Italic" autoCheckState="true" image="IMAGES/icon_italicize.gif" />
+				<XS:XsToolbarButton id="buttonUnderline" command="Underline" autoCheckState="true" image="IMAGES/icon_underline.gif" />
+				<span unselectable="on" class="toolbarSeperator"></span>
+				<XS:XsToolbarButton id="buttonOrderedList" command="InsertOrderedList" autoCheckState="true" image="IMAGES/icon_ulist.gif" alt="Ordered List" onClick="buttonClick(this);" />
+				<XS:XsToolbarButton id="buttonUnorderedList" command="InsertUnorderedList" autoCheckState="true" image="IMAGES/icon_olist.gif" alt="Unordered List" onClick="buttonClick(this);" />
+				<XS:XsToolbarButton id="buttonOutdent" command="Outdent" image="IMAGES/icon_outdent.gif" alt="Decrease Indent" onClick="this.state=true;" />
+				<XS:XsToolbarButton id="buttonIndent" command="Indent" image="IMAGES/icon_indent.gif" alt="Increase Indent" onClick="this.state=true;" />
+				<span id="preBreakBar" unselectable="on" class="toolbarSeperator"></span>
+				</span>
+				</nobr>
+				<nobr>
+				<span unselectable="on" class="toolbar" id="toolbarB" align="left">
+				<XS:XsToolbarButton id="buttonJustifyLeft" command="JustifyLeft" autoCheckState="true" image="IMAGES/icon_left.gif" alt="Align Left" onClick="buttonClick(this)" />
+				<XS:XsToolbarButton id="buttonJustifyCenter" command="JustifyCenter" autoCheckState="true" image="IMAGES/icon_center.gif" alt="Align Center" onClick="buttonClick(this)" />
+				<XS:XsToolbarButton id="buttonJustifyRight" command="JustifyRight" autoCheckState="true" image="IMAGES/icon_right.gif" alt="Align Right" onClick="buttonClick(this)" />
+				<XS:XsToolbarButton id="buttonJustifyFull" command="JustifyFull" image="IMAGES/icon_justify.gif" alt="Justify" onClick="buttonClick(this)" />
+				<span unselectable="on" class="toolbarSeperator"></span>
+				<XS:XsToolbarButton id="buttonColorPicker" command="DialogColor" image="IMAGES/icon_colorpicker.gif" onClick="buttonClick(this);this.state=true;" />
+				<XS:XsToolbarButton id="buttonInsertImage" command="DialogImage" image="IMAGES/icon_image.gif" alt="Insert Image..." onClick="buttonClick(this);this.state=true;" />
+				<XS:XsToolbarButton id="buttonInsertLink" command="DialogLink" image="IMAGES/icon_link.gif" alt="Insert Link..." onClick="buttonClick(this);this.state=true;" />
+				<XS:XsToolbarButton id="buttonInsertTable" command="DialogTable" image="IMAGES/icon_table.gif" alt="Insert Table..." onClick="buttonClick(this);this.state=true;" />
+				<XS:XsToolbarButton id="buttonInsertEmoticon" command="DialogEmoticon" image="IMAGES/icon_emoticon.gif" alt="Insert Emoticon..." onClick="buttonClick(this);this.state=true;" />
+				<span unselectable="on" class="toolbarSeperator"></span>
+				<XS:XsToolbarButton id="buttonCut" command="Cut" image="IMAGES/icon_cut.gif" onClick="this.state=true;" />
+				<XS:XsToolbarButton id="buttonCopy" command="Copy" image="IMAGES/icon_copy.gif" onClick="this.state=true;" />
+				<XS:XsToolbarButton id="buttonPaste" command="Paste" image="IMAGES/icon_paste.gif" onClick="this.state=true;" />
+				<span unselectable="on" class="toolbarSeperator"></span>
+				<XS:XsToolbarButton id="buttonUndo" command="Undo" image="IMAGES/icon_undo.gif" onClick="this.state=true;" />
+				<XS:XsToolbarButton id="buttonRedo" command="Redo" image="IMAGES/icon_redo.gif" onClick="this.state=true;" />
+				<span unselectable="on" class="toolbarSeperator"></span>
+				<XS:XsToolbarButton id="buttonRemoveFormat" command="RemoveFormat" image="IMAGES/icon_rem_formatting.gif" alt="Remove Formatting" onClick="buttonClick(this);this.state=true;" />
+				<XS:XsToolbarButton id="buttonMode" command="" image="IMAGES/icon_mode.gif" alt="Go To Source Mode" onClick="setDisplayMode()" />
+				<span unselectable="on" class="toolbarSeperator"></span>
+				<XS:XsToolbarButton id="buttonPreview" command="" image="IMAGES/icon_preview.gif" alt="Preview" onClick="previewDocument()" />
+				<xs:xstoolbarbutton id="buttonPrint" command="Print" image="IMAGES/icon_print.gif" onClick="this.state=true;" />
+				<XS:XsToolbarButton id="buttonSave" command="" image="IMAGES/icon_save.gif" alt="Save" onClick="saveDocument()" />
+				<XS:XsToolbarButton id="buttonCancel" command="" image="IMAGES/icon_cancel.gif" alt="Cancel" onClick="cancelDocument()" />
+				</span>
+				</nobr>
+			</div>
+			<div class="editDoc" id="theDoc" contentEditable="true" align="left" onResize="resizingDoc();" onKeyPress="dirty=true;"></div>
+			<div class="editDoc" id="sourceCode" contentEditable="true" align="left" style="display:none;" onKeyPress="checkKey();"></div>
+		</div>
+		<form id="theForm" method="POST">
+			<input id="xsContent" type="hidden" name="xsContent" value="" />
+		</form>
+	</body>
+</html>

@@ -1,0 +1,258 @@
+<!--
+#################################################################################
+##
+## HTML Text Editing Component for hosting in Web Pages
+## Copyright (C) 2001  Ramesys (Contracting Services) Limited
+##
+## This library is free software; you can redistribute it and/or
+## modify it under the terms of the GNU Lesser General Public
+## License as published by the Free Software Foundation; either
+## version 2.1 of the License, or (at your option) any later version.
+##
+## This library is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## Lesser General Public License for more details.
+##
+## You should have received a copy of the GNU LesserGeneral Public License
+## along with this program; if not a copy can be obtained from
+##
+##    http://www.gnu.org/copyleft/lesser.html
+##
+## or by writing to:
+##
+##    Free Software Foundation, Inc.
+##    59 Temple Place - Suite 330,
+##    Boston,
+##    MA  02111-1307,
+##    USA.
+##
+## Original Developer:
+##
+##	Austin David France
+##	Ramesys (Contracting Services) Limited
+##	Mentor House
+##	Ainsworth Street
+##	Blackburn
+##	Lancashire
+##	BB1 6AY
+##	United Kingdom
+##  email: Austin.France@Ramesys.com
+##
+## Home Page:    http://richtext.sourceforge.net/
+## Support:      http://richtext.sourceforge.net/
+##
+#################################################################################
+## Modified by Alex Baker
+## 03/21/2002
+## 1) Removed css link so there is only one document to keep track of
+## 2) Added Table Height and Width parameters
+## 3) Added a label and header class in the style sheet to control look of dialog
+## 4) Cleaned up the layout of the table a touch. Removed unneeded empty <td> tags
+## 5) Cleaned up the output of the table with a few tabs and returns
+-->
+<html>
+<head>
+<meta name="vs_targetSchema" content="HTML 4.0">
+<style>
+  BODY { 
+	  background-color: buttonface;
+	  border: 0; 
+	  margin: 2px; 
+  }
+
+  INPUT{
+  	font-family: sans-serif;
+  	font-size: 8pt;
+  }
+  
+  INPUT.button { 
+  	border-top: 1px solid white; 
+  	border-left: 1px solid white;
+  	border-bottom: 1px solid black; 
+  	border-right: 1px solid black;
+  	font-size: 8pt; 
+  	width: 60; 
+  }
+  
+  .label{
+    font-family: sans-serif;
+    font-size: 8pt;
+    text-align: right;
+  }
+  
+  .header{
+    font-family: sans-serif;
+    font-size: 8pt;
+    font-weight : bold;
+    text-align: left;
+  }
+
+</style>
+<title>Insert Table</title>
+  <script language="JavaScript">
+<!--  
+    function attr( name, value ) {
+    	if (!value || value == "") return "";
+    	return ' ' + name + '="' + value + '"';
+    }
+
+    function insertTable() {
+    	var nRows = rows.value ? parseInt(rows.value) : 2;
+    	var nCols = cols.value ? parseInt(cols.value) : 2;
+    	var strHTML = '<TABLE'
+    	        + attr("border", borderWidth.value)
+    	        + attr("height", tableHeight.value)
+    					+ attr("width", tableWidth.value)
+    					+ attr("bordercolor", borderColor.value)
+    					+ attr("cellspacing", cellSpacing.value)
+    					+ attr("cellpadding", cellPadding.value)
+    					+ attr("bgcolor", backgroundColor.value)
+    					+ '>\n';
+    	for (var i = 0; i < nRows; i++) {
+    		strHTML += '\t<TR>\n';
+    		for (var j = 0; j < nCols; j++) {
+    				strHTML += '\t\t<TD></TD>\n';
+    		}
+    		strHTML += '\t</TR>\n';
+    	}
+    	strHTML += '</TABLE>\n';
+     	window.returnValue = strHTML;
+     	window.close();
+    }
+
+    function cancel() {
+    	window.returnValue = null;
+    	window.close();
+    }
+//-->
+  </script>
+</head>
+
+<body scroll="no">
+  <table class="dlg" border="0" cellpadding="0" cellspacing="0" width="240px">
+    <tr>
+      <td>
+        <table width="100%">
+          <tr>
+            <td class="header">Layout</td>
+            <td valign="middle" width="90%">
+              <hr width="100%">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <table border="0" cellpadding="1" cellspacing="0">
+          <tr>
+            <td class="label">Rows:</td>
+            <td valign="middle">
+              <input type="text" class="inputBox" name="rows" value="2" size="1" maxlength="4">
+            </td>
+            <td class="label">Cols:</td>
+            <td valign="middle">
+              <input type="text" name="cols" value="2" size="1" maxlength="4">
+            </td>
+            
+          </tr>
+          <tr>
+            <td class="label"><nobr>Cell Padding:</nobr></td>
+            <td valign="middle">
+              <input type="text" name="cellPadding" value="0" size="1" maxlength="4">
+            </td>
+            <td class="label"><nobr>Cell Spacing:<nobr></td>
+            <td valign="middle">
+              <input type="text" name="cellSpacing" value="0" size="1" maxlength="4">
+            </td>
+          </tr>
+          <tr>
+            <td class="label"><nobr>Table Width:</nobr></td>
+            <td valign="middle">
+              <input type="text" name="tableWidth" value="100%" size="1" maxlength="5">
+            </td>
+            <td class="label"><nobr>Table Height:<nobr></td>
+            <td valign="middle">
+              <input type="text" name="tableHeight" value="" size="1" maxlength="5">
+            </td>
+          </tr>
+          <tr>
+            <td class="label"><nobr>Rows Height:</nobr></td>
+            <td valign="middle">
+              <input type="text" name="rowHeight" value="" size="1" maxlength="5">
+            </td>
+            <td class="label"><nobr>Column Width:</nobr></td>
+            <td valign="middle">
+              <input type="text" name="colWidth" value="" size="1" maxlength="5">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>      
+    <tr>
+      <td>
+        <table width="100%">
+          <tr>
+            <td class="header"><nobr>Borders</nobr></td>
+            <td valign="middle" width="90%">
+              <hr width="100%">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <table border="0" cellpadding="1" cellspacing="0">
+          <tr>
+            <td class="label">Size:</td>
+            <td valign="middle">
+              <input type="text" name="borderWidth" value="1" size="1" maxlength="4">
+            </td>
+            <td class="label">Color:</td>
+            <td valign="middle">
+              <input type="text" name="borderColor" value="" size="10">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>      
+    <tr>
+      <td>
+        <table width="100%">
+          <tr>
+            <td class="header">Background</td>
+            <td valign="middle" width="90%">
+              <hr width="100%">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <table border="0" cellpadding="1" cellspacing="0">
+          <tr>
+            <td class="label">Color:</td>
+            <td valign="middle">
+              <input type="text" name="backgroundColor" value="" size="15">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>      
+    <tr>
+      <td>
+        <hr width="100%">
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <input class="button" type="button" value="Insert" title="Insert Table" onclick="insertTable()">
+        <input class="button" type="button" value="Cancel" title="Cancel Dialog" onclick="cancel()">
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

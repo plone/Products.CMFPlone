@@ -1,0 +1,160 @@
+<!--
+##############################################
+#         WebFX Dynamic Webboard 2.0         #
+#       By Emil A Eklund (eae@eae.net)       #
+#      and Erik Arvidson (erik@eae.net)      #
+#           http://webfx.eae.net             #
+#              April 13, 1999                #
+##############################################
+# Feel free to use this script for personal  #
+# and non profit web sites, as long as you   #
+# are giving us credits for it, in other     #
+# words, not removing nor modifying this     #
+# notice in any of the files it appears in   #
+##############################################
+#  For commercial use contact Emil or Erik   #
+##############################################
+-->
+
+<html>
+<head>
+<style> 
+ <!--
+ body  {background : buttonface; margin: 5; margin-top: 2;
+ 		border-top: 1 solid buttonhighlight;
+		border-left: 1 solid buttonhighlight;
+		border-right: 1 solid buttonshadow;
+		border-bottom: 1 solid buttonshadow;}
+td		{width : 10px; height : 10px; font-size : 1px; cursor: hand;}
+ -->
+ </style>
+<script type="text/javascript">
+<!--
+
+var ie5 = document.getElementById != null;
+
+function doOver() {
+	var el = window.event.srcElement;
+	bgc = el.style.backgroundColor;
+
+	if (bgc != "") {
+		el.style.borderTopColor = "white";
+		el.style.borderLeftColor = "white";
+		el.style.borderRightColor = "black";
+		el.style.borderBottomColor = "black";
+	
+		colorBox.style.backgroundColor = bgc;
+		colorName.innerHTML = bgc;
+	}
+}
+function doClick() {
+	bgc = window.event.srcElement.style.backgroundColor;
+	window.event.srcElement.style.borderColor = bgc;
+	if (bgc != "") {
+		window.external.raiseEvent("colorchange", bgc);
+	}
+}
+function doOut() {
+	var el = window.event.fromElement;
+	bgc = el.style.backgroundColor;
+
+	if (bgc != "") {
+		el.style.borderColor = bgc;
+	}
+}
+window.onload = init;
+
+function init() {
+	fixTitle();
+}
+
+function fixTitle() {
+	document.title = parent.document.title;
+}
+
+var colors = new Array("white", "snow", "floralwhite", "ghostwhite", "whitesmoke", 
+"ivory", "oldlace", "linen", "seashell", "antiquewhite","papayawhip","peachpuff",
+"beige","bisque","blanchedalmond","cornsilk","lemonchiffon","lightyellow",
+"lightgoldenrodyellow","palegoldenrod",
+"wheat","moccasin","navajowhite","khaki","burlywood","tan","darkkhaki",
+"gold","yellow","goldenrod","darkgoldenrod","peru","saddlebrown","sienna","chocolate","brown",
+"mintcream", "aliceblue","azure","lightcyan","lightblue","powderblue",
+"lightskyblue","skyblue","deepskyblue",
+"cyan","aqua","aquamarine","paleturquoise","turquoise","darkturquoise","mediumturquoise",
+"darkcyan","royalblue","cornflowerblue","dodgerblue","blue","mediumblue","darkblue","midnightblue","navy",
+"darkslateblue","lightsteelblue","steelblue","cadetblue","slateblue","mediumslateblue",
+"indigo","purple","darkmagenta","darkorchid","mediumorchid","blueviolet","mediumpurple","darkviolet","magenta",
+"fuchsia","plum","thistle","violet","orchid","deeppink","hotpink",
+"mediumvioletred","palevioletred",
+"lavender","lavenderblush","mistyrose","pink","lightpink","salmon","lightsalmon",
+"coral","darksalmon","sandybrown","orange","orangered","tomato",
+"darkorange","crimson","red","firebrick","maroon","darkred","indianred","rosybrown","lightcoral",
+"honeydew","springgreen","mediumspringgreen",
+"palegreen","chartreuse","lawngreen","greenyellow",
+"lime","lightgreen","limegreen",
+"mediumaquamarine","lightseagreen","teal","mediumseagreen","seagreen","darkseagreen",
+"yellowgreen","olive","olivedrab",
+"forestgreen","green","darkgreen", "darkolivegreen",
+"lightslategray","slategray","darkslategray",
+"gainsboro","lightgrey","silver","darkgray","gray","dimgray","black");
+
+var sysColors = new Array("activeborder","activecaption","appworkspace","background","buttonface",
+"buttonhighlight","buttonshadow","buttontext","captiontext","graytext","highlight","highlighttext",
+"inactiveborder","inactivecaption","inactivecaptiontext","infobackground","infotext","menu","menutext",
+"scrollbar","threeddarkshadow","threedface","threedhighlight","threedlightshadow","threedshadow","window",
+"windowframe","windowtext");
+
+function writeRow(ar) {
+	var cells = 15;
+	var str = "";
+	
+	for (var i=0; i<ar.length; ) {
+		str += "<tr>"
+		for (var j=0; j<=cells && i<ar.length; j++) {
+			str += "<td style='background-color: " + ar[i] + "; border: 1px outset " + ar[i] + ";'>";
+			str += "&nbsp;</td>\n";
+			i++;
+		}
+		str += "</tr>\n";
+	}
+	return str;
+}	
+//-->
+</script>
+</head>
+<body>
+
+<table cellspacing="0" 
+       cellpadding="0" 
+       onmouseover="doOver()" 
+       onmouseout="doOut()" 
+       onclick="doClick()" 
+       style="width: 180;">
+  <tr>
+    <td colspan="15" 
+        style="font-family: verdana, helvetica; font-size: 9px; color: button-text; cursor: default; height: 15px;">
+        <nobr>Named Colors:</nobr>
+    </td>
+</tr>
+<script>
+  document.write(writeRow(colors));
+</script>
+</table>
+<table cellspacing="0" 
+       cellpadding="0" 
+       onmouseover="doOver()" 
+       onmouseout="doOut()" 
+       onclick="doClick()" 
+       style="width: 180;">
+<hr>
+<script>
+  document.write(writeRow(sysColors));
+</script>
+</table>
+<hr>
+<table>
+  <tr>
+    <td id="colorBox" style="border: 1px inset window;  width: 20; height: 20; font-size: 2px; cursor: default;">&nbsp;</td>
+    <td id="colorName" style="border: 0; font-family: verdana, helvetica; font-size: 9px; color: button-text; cursor: default;">ColorName</td>
+  </tr>
+</table></body></html>
