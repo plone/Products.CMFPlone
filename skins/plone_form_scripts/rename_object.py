@@ -8,15 +8,14 @@
 ##title=
 ##
 
-context.plone_debug('inside rename object ')
 REQUEST=context.REQUEST
 if not id:
     id = REQUEST.get( 'field_id'
                     , REQUEST.get( 'id'
 	                         , '') )
 if id!=context.getId():
-    context.manage_renameObjects( (context.getId(), )
-                                , (id, )
+    context.manage_renameObjects( [context.getId()]
+                                , [id]
 				, REQUEST )
     if redirect:
         status_msg=REQUEST.get( 'portal_status_message'

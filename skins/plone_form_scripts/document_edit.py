@@ -16,7 +16,7 @@ context.edit( text_format
             , safety_belt=SafetyBelt
             )
 
-filename=file.filename
+filename=getattr(file, 'filename', '')
 if file and filename:
     if filename.find('\\')>-1:       
         id=filename.split('\\')[-1]

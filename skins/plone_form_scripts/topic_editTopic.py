@@ -14,8 +14,6 @@ if errors:
     edit_form=getattr(context, context.getTypeInfo().getActionById( 'edit'))
     return edit_form()
 
-context.plone_debug('context is '+ context.absolute_url())
-
 context.edit(acquireCriteria=acquireCriteria,
              title=title,
              description=description)
