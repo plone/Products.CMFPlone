@@ -1,3 +1,25 @@
+2004-03-23 14:32  dpunktnpunkt
+
+	* skins/plone_templates/: folder_contents.pt, global_contentmenu.pt
+	  (Plone-2_0-branch): Default arg no longer needed.
+
+2004-03-23 14:30  dpunktnpunkt
+
+	* skins/plone_scripts/translate.py (Plone-2_0-branch): Smarter
+	  default handling.
+
+2004-03-22 15:47  shh42
+
+	* tests/: dummy.py, testContentTypeScripts.py,
+	  testMemberDataTool.py, testMembershipTool.py, testPloneTool.py,
+	  testPortalCreation.py, testQueryCatalog.py,
+	  testSecurityDeclarations.py (Plone-2_0-branch): Consolidated all
+	  test-helper classes in module dummy.py.
+
+2004-03-22 05:05  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-03-21 05:01  longsleep
 
 	* CVSLOG: auto generated new changelog
