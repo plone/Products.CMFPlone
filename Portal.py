@@ -29,7 +29,6 @@ For more information:
 
 - "CMF website":http://cmf.zope.org
 
-There is an enormous user community for you to take advantage of. 
 There are "mailing lists":http://www.zope.org/Resources/MailingLists and 
 "recipe websites":http://www.zopelabs.com  
 available to provide assistance to you and your new-found Content Management System.
@@ -167,12 +166,12 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_scripts/form_scripts'
                     , 'plone_styles'
                     , 'plone_templates'
-                    , 'plone_3rdParty'
+                    , 'plone_3rdParty/XSDHTMLEditor'
                     , 'plone_3rdParty/CMFTopic'
                     , 'plone_3rdParty/CMFCalendar'
                     , 'plone_templates/ui_slots'
                     , 'plone_wysiwyg'
-                    , 'plone_3rdParty/XSDHTMLEditor'
+                    , 'plone_ecmascript'
                     ):
             try:
                 path.insert( path.index( 'custom')+1, plonedir )
