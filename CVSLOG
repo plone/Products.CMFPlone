@@ -1,3 +1,18 @@
+2003-12-07 05:09  longsleep
+
+	* CVSLOG: auto generated new changelog
+
+2003-12-07 05:09  eaon
+
+	* skins/: plone_ecmascript/plone_minwidth.js,
+	  plone_ecmascript/plone_minwidth.js.dtml,
+	  plone_ecmascript/plone_minwidth.js.dtml.metadata,
+	  plone_ecmascript/plone_minwidth.js.metadata,
+	  plone_styles/base_properties.props,
+	  plone_styles/ploneColumns.css.dtml (Plone-2_0-branch): column
+	  widths are now variables (with fallback definition), fixed 'tiny'
+	  font size for opera
+
 2003-12-07 04:20  limi
 
 	* skins/plone_forms/login_password.pt (Plone-2_0-branch): Button
