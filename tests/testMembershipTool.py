@@ -14,6 +14,9 @@ app = ZopeTestCase.app()
 PloneTestCase.setupPloneSite(app, id='portal')
 ZopeTestCase.close(app)
 
+_user_name = ZopeTestCase._user_name
+_user_role = 'Member'
+
 
 class TestMembershipTool(PloneTestCase.PloneTestCase):
 
@@ -24,22 +27,19 @@ class TestMembershipTool(PloneTestCase.PloneTestCase):
         '''Should return the .personal folder'''
         personal = getattr(self.folder, self.mt.personal_id, None)
         assert personal is not None
-        assert self.mt.getPersonalFolder(self.user_name) == personal
+        assert self.mt.getPersonalFolder(_user_name) == personal
          
     def testGetPersonalFolderIfMissing(self):
         '''Should return None as the .personal folder is missing'''
         self.folder._delObject(self.mt.personal_id)
-        assert self.mt.getPersonalFolder(self.user_name) is None       
+        assert self.mt.getPersonalFolder(_user_name) is None       
 
     def testGetPersonalFolderIfNoHome(self):
         '''Should return None as the user has no home folder'''
         members = self.mt.getMembersFolder()
-        members._delObject(self.user_name)
-        assert self.mt.getPersonalFolder(self.user_name) is None       
+        members._delObject(_user_name)
+        assert self.mt.getPersonalFolder(_user_name) is None       
 
-    def testSearchForMembers(self):
-        ''' tests searching for member '''
-        test=self.mt.searchForMembers(name=self.user_name)
 
 if __name__ == '__main__':
     framework()

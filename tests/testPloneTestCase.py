@@ -41,7 +41,7 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
         self.setRoles(['Reviewer'])
         self.workflow.doActionFor(self.folder.new, 'publish')
         assert self.workflow.getInfoFor(self.folder.new, 'review_state') == 'published'
-        self.setRoles([self.user_role])
+        self.setRoles(['Member'])
         self.workflow.doActionFor(self.folder.new, 'retract')
         assert self.workflow.getInfoFor(self.folder.new, 'review_state') == 'visible'
 
