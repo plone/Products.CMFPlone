@@ -4,6 +4,13 @@ Changelog for Plone
 
 Plone 2.0.1 - Jello - Released XX. April 2004
 
+    - Default text on member pages are now disabled, since it just pollutes the
+      search results. You can insert the default text in 'homePageText.pt' like
+      before, the only difference is that it's disabled by default, and uses
+      Plone's built-in mechanism to show relevant help text if you're the owner
+      of the document instead.
+      [limi]
+
     - Added scoring details + i18n information in the search results. Thanks
       to Andrew Veitch for the suggestion.
       [limi]

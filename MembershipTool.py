@@ -157,11 +157,11 @@ class MembershipTool(PloneBaseTool, BaseTool):
             # Go get the home page text from the skin
             if hasattr(self, 'homePageText'):
                 member_object = self.getMemberById(member_id)
-                DEFAULT_MEMBER_CONTENT = self.homePageText(member=member_object)
+                DEFAULT_MEMBER_CONTENT = self.homePageText(member=member_object).strip()
                 addDocument( f
                            , 'index_html'
-                           , member_id+"'s Home Page"
-                           , member_id+"'s front page"
+                           , "Home page for " + member_id
+                           , ""
                            , "structured-text"
                            , DEFAULT_MEMBER_CONTENT
                            )
