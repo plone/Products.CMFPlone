@@ -11,7 +11,6 @@ ModuleSecurityInfo('zLOG').declarePublic('LOG')
 ModuleSecurityInfo('zLOG').declarePublic('INFO')
 
 #for form validation bits
-from AccessControl import ModuleSecurityInfo
 def allow_class(Class): 
     """Allow a class and all of its methods to be used from a 
     restricted Script. The argument Class must be a class.""" 
@@ -22,7 +21,8 @@ def allow_class(Class):
     from Globals import InitializeClass 
     InitializeClass(Class)
 
-#allow_class(ColorPreset)
+from StringIO import StringIO
+allow_class(StringIO)
 
 ModuleSecurityInfo('Products.Formulator').declarePublic('StringField','EmailField')
 ModuleSecurityInfo('Products.Formulator.Form').declarePublic('FormValidationError', 'BasicForm')
