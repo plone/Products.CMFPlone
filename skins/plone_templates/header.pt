@@ -44,7 +44,8 @@
            tal:content="string: @import url($portal_url/plone.css);">
     </style>
 
-    <!-- RTL style sheet for right-to-left languages -->
+    <!-- RTL style sheet for right-to-left languages, only included if PTS
+         reports the language as such -->
     <style type="text/css" media="screen" tal:condition="isRTL"
            tal:content="string: @import url($portal_url/plone-rtl.css);">
     </style>
