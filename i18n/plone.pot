@@ -1,6 +1,5 @@
 # Gettext Message File for Plone.
 # Your Name <your@email>, Year
-EDIT the lines below correctly (and DELETE this one) or your translation WILL NOT WORK
 msgid ""
 msgstr ""
 "Project-Id-Version: Plone 1.0\n"
@@ -16,7 +15,6 @@ msgstr ""
 "Language-name: Language\n"
 "Preferred-encodings: utf-8 latin1\n"
 "Domain: plone\n"
--------------- Delete this line too just to prove you paid attention --------------
 
 
 #: from plone_3rdParty/CMFTopic/topic_criteria_form.pt
