@@ -21,6 +21,9 @@ def oneX_twoBeta2(portal):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
     addGroupUserFolder(portal)
 
+    if 'portal_form_validation' in portal.objectIds():
+        portal.manage_delObjects('portal_form_validation')
+
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(props, 'default_page', default_values, 'lines')
@@ -104,6 +107,14 @@ def migrateTools(portal):
         else:
             if obj.meta_type!='Filesystem Directory View':
                 st._setObject(info['id'], obj)
+
+    at = getToolByName(portal, 'portal_actions')
+    ap = at.action_providers
+    if 'portal_types' not in ap:
+        ap.append('portal_types')
+    if 'portal_properties' not in ap:
+        ap.append('portal_properties')
+    at.action_providers = ap
 
 def migrateMemberdataTool(portal):
     from Acquisition import aq_base
