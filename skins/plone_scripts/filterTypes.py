@@ -7,6 +7,6 @@
 ##parameters=filter
 ##title=
 ##
-if same_type(filter, {}) and filter.has_key('Type'):
-    return filter['Type']
+if same_type(filter, {}) and filter.has_key('portal_type'):
+    return filter['portal_type']
 return []
