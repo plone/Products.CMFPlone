@@ -5,6 +5,7 @@ Changelog for Plone
 Plone 2.0 - Fyuti
 
    Final
+    - Fixed #2852 [geoffd]
 
     - Added cleanupSkinPath method to migration_util, used to remove
       bad skin layers when adding the Plone Tableless skin in the RC5-RC6

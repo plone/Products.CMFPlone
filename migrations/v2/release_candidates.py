@@ -235,3 +235,6 @@ def addTablelessSkin(portal):
             path.append(p)
 
     st.manage_skinLayers(add_skin=1, skinname=tablelessName, skinpath=path)
+
+def rc6_finalfinal(portal):
+    pass
