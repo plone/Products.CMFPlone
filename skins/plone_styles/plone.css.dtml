@@ -85,7 +85,6 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding-top: 0.5em;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-globalBorderColor;;
-    text-shadow: #999999 0.2em 0.2em 3px;
 }
 
 h1 a,
@@ -1061,7 +1060,6 @@ ol.visualNoMarker {
     border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
-    text-shadow: none;
     display: inline;
     font-size: 1em;
     height: 1em;
@@ -1074,7 +1072,6 @@ ol.visualNoMarker {
     border-style: &dtml-borderStyle; &dtml-borderStyle; none &dtml-borderStyle;;
     padding: 0em 1em 0em 1em;
     text-transform: &dtml-textTransform;;
-    text-shadow: none;
     display: block;
     font-size: 1em;
     height: 1.2em;
