@@ -2,6 +2,13 @@ Changelog for Plone
 
    (name of developer listed in brackets)
 
+Plone 2.0.6 - (Unnamed) - (Unreleased)
+
+    - It was impossible to create a item named 'index_html' on Portal
+      root or inside a folder via WebDAV. Added a functional doctest
+      for it.
+      [dreamcatcher]
+
 Plone 2.0.5 - Backed Up Willie - Released December 1, 2004
 
     - Allow migrations to and from release candidates to finish. This was
