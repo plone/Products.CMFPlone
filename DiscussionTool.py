@@ -1,7 +1,9 @@
 from Products.CMFDefault.DiscussionTool import DiscussionTool as BaseTool
+from Products.CMFDefault.DiscussionTool import DiscussionNotAllowed
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
+from Acquisition import aq_base
 from Products.CMFPlone.PloneBaseTool import PloneBaseTool
 
 from Products.CMFCore.utils import format_stx
@@ -18,7 +20,7 @@ class DiscussionTool(PloneBaseTool, BaseTool):
     security.declareProtected('Modify portal content', 'cookContent')
     def cookReply(self, reply, text_format=None):
         """ XXX We need this because currently we can not easily change the
-            text_format on Documetn objects.  Discussions in plone are going
+            text_format on document objects.  Discussions in plone are going
             to use plain-text for now.  stx is too confusing.
         """
         level = reply._stx_level

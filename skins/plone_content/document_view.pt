@@ -6,7 +6,7 @@
 
 <metal:main fill-slot="main">
     <tal:main-macro metal:define-macro="main"
-           tal:define="len_text python:len(here.text);">
+           tal:define="text python: here.CookedBody(stx_level=2)">
         <h1 tal:content="here/title_or_id" class="documentFirstHeading">
           Title or id
         </h1>
@@ -20,17 +20,17 @@
             description
         </div>
     
-        <p tal:condition="python: not len_text and is_editable"
+        <p tal:condition="python: not text and is_editable"
            i18n:translate="no_body_text"
            class="discreet">
             This item does not have any body text, click the edit tab to change it.
         </p>
     
         <div class="stx"
-             tal:condition="len_text"
+             tal:condition="text"
              tal:attributes="class python:test(here.Format() in ('text/structured',
                                                    'text/x-rst', ), 'stx', 'plain')">
-            <div tal:replace="structure python:here.CookedBody(stx_level=2)" />
+            <div tal:replace="structure text" />
         </div>
     
         <div metal:use-macro="here/document_byline/macros/byline">
