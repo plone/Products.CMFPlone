@@ -159,7 +159,6 @@ class MembershipTool(BaseTool):
             # Create Member's home page.
             # go get the home page text from the skin
             member_object=self.getMemberById(member_id)
-
             if hasattr(self, 'homePageText'):
                 DEFAULT_MEMBER_CONTENT = self.homePageText(member=member_object)
                 addDocument( f
