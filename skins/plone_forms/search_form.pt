@@ -68,9 +68,9 @@
 
                 <div class="formHelp" i18n:translate="help_search_keywords">
                 Return items matching one or more of these keywords.
-                Multiple words may be found
-                by pressing <strong>Ctrl</strong> while
-                <strong>left clicking</strong> the keywords.
+                Multiple words may be found by pressing <strong>Ctrl</strong>
+                (or <strong>Apple</strong> key on Mac) while clicking the
+                keywords.
                 </div>
 
                 <select name="Subject:list"
