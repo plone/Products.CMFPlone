@@ -81,7 +81,7 @@
                         <td class="top" colspan="6">
 
                             <!-- Add Item pulldown -->
-                            <label for="select_add_item"><div class="hiddenlabel">Select an item to add</div>
+                            <label for="select_add_item"><div class="hiddenlabel" i18n:translate="label_add_item">Select an item to add</div>
 			    <select id="select_add_item"
 				    name="type_name"
                                     tabindex=""
@@ -130,6 +130,7 @@
                                                  onClick="toggleSelect(this); return false;"
                                                  tal:attributes="src string:$portal_url/select_all_icon.gif"
 						 alt="Select all items"
+                                                 i18n:attributes="title alt"
                                                  /></th>
                         <th>&nbsp;<span tal:omit-tag=""
                         i18n:translate="listingheader_title">Title</span>&nbsp;</th>
@@ -189,7 +190,8 @@
                                  tal:replace="structure python:locked.tag(title='Locked')" />
 
                           <span class="expired"
-                                tal:condition="python:isExpired(item)">expired</span>
+                                tal:condition="python:isExpired(item)"
+                                i18n:translate="time_expired">expired</span>
                         </td>
 
                         <td i18n:translate="" tal:content="python:item_typeinfo.Title()">
