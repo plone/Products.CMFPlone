@@ -6,6 +6,7 @@ from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from BTrees.OOBTree import OOBTree
 from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2
+from Products.CMFCore.utils import getToolByName
 
 class MemberDataTool(BaseTool):
 
@@ -38,16 +39,16 @@ class MemberDataTool(BaseTool):
         tool with the list in the actual underlying acl_users
         and delete anything not in acl_users
         '''
-        pruneMemberDataContents.pruneMemberDataContents(self)
+        BaseTool.pruneMemberDataContents(self)
         membertool= getToolByName(self, 'portal_membership')
-        portraits   = self._portraits
+        portraits   = self.portraits
         user_list = membertool.listMemberIds()
 
         for tuple in portraits.items():
             member_id = tuple[0]
             member_obj  = tuple[1]
-            if member_name not in user_list:
-                del _portraits[member_id]
+            if member_id not in user_list:
+                self.portraits._delObject(member_id)
 
 MemberDataTool.__doc__ = BaseTool.__doc__
 
