@@ -79,7 +79,7 @@ boxOddBackground:string=transparent
 boxHighlight:string=2px solid #FFCF7F
 
 listingBorder:string=1px solid #5C5C5C
-listingHeaderBackground:string=#transparent
+listingHeaderBackground:string=transparent
 listingHeaderFontColor:string=#7F7F7F
 listingLinkHover:string=underline
 listingEvenBackground:string=#1A1A1A
@@ -96,5 +96,5 @@ searchMargin:string=3em 0em 0em 0em
 searchPadding:string=0em 2em 0em 0em
 searchFontColor:string=#808080
 
-footerBackground:string=#transparent
+footerBackground:string=transparent
 footerBorder:string=1px solid #5C5C5C
