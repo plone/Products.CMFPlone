@@ -30,7 +30,7 @@
 
         <div tal:condition="python: userIsAnonymous and not userHasReplyPermission"
              tal:define="pss modules/Products/PythonScripts/standard">
-          You may be able to add a comment or reply if you <a href="" tal:attributes="href python: '%s/login_form?came_from=%s' % (here.portal_url(), pss.url_quote(request['URL']))">log in</a>.
+          You can add comments to this item if you <a href="" tal:attributes="href python: '%s/login_form?came_from=%s' % (here.portal_url(), pss.url_quote(request['URL']))">log in</a>.
         </div>
     
         <a name="comments"> </a>
