@@ -1,4 +1,4 @@
-<span tal:omit-tag="" i18n:domain="plone">
+<div tal:omit-tag="" i18n:domain="plone">
 To: <span tal:replace="options/member/email" />
 From: "<span tal:replace="here/email_from_name" />" <<span tal:replace="here/email_from_address" />>
 Subject: <span i18n:translate="mailtemplate_registered_portal_membership_info" tal:omit-tag="">Portal Membership Information</span>
@@ -21,4 +21,4 @@ Password   : <span i18n:name="password" tal:omit-tag="" tal:content="options/pas
 </div>
 --
 <span tal:replace="here/email_from_name" />
-</span>
+</div>
