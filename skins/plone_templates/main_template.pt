@@ -39,7 +39,7 @@
     </metal:javascriptslot>
 </head>
 
-<body>
+<body metal:use-macro="here/global_bodytag/macros/body_tag"><metal:fillbodytag fill-slot="bodytag_body">
 
 <div id="visual-portal-wrapper">
 
@@ -178,7 +178,7 @@
 
 </div>
 
-</body>
+</metal:fillbodytag></body>
 </html>
 </metal:page>
 
