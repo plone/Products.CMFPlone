@@ -16,6 +16,10 @@
 REQUEST=context.REQUEST
 actions=REQUEST.get('filtered_actions', container.portal_actions.listFilteredActionsFor(context))
 
+for action in actions.get('object', []):
+    if action.get('id', '')!='view':
+        return 1
+
 if template_id is None and hasattr(REQUEST['PUBLISHED'], 'getId'):
     template_id=REQUEST['PUBLISHED'].getId()
 
@@ -30,3 +34,4 @@ if ( 'edit' in [ o.get('id', '') for o in actions.get('object', ()) ] or \
         return 1
 
 return 0
+

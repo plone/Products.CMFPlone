@@ -12,11 +12,8 @@ REQUEST=context.REQUEST
 actions = None
 act_text = '<a href="%s" class="passive">%s</a> <span class="netscape4">&middot;</span>'
 
-context.plone_debug('inside filter_action ' + str(REQUEST.has_key('filtered_actions')))
-if self:
-    actions = REQUEST.get('filtered_actions', context.portal_actions.listFilteredActionsFor(self))
-else:
-    actions = REQUEST.get('filtered_actions', context.portal_actions.listFilteredActionsFor(context))
+if self: actions = REQUEST.get('filtered_actions', context.portal_actions.listFilteredActionsFor(self))
+else: actions = REQUEST.get('filtered_actions', context.portal_actions.listFilteredActionsFor(context))
 
 filtered = {}
 

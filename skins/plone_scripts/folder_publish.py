@@ -12,7 +12,6 @@ workflow = context.portal_workflow
 
 failed = {}
 success = {}
-context.plone_debug('include subfolders?' + REQUEST.get('include_subfolders', ''))
 
 for id in ids:
     o = getattr(context, id)
