@@ -99,10 +99,10 @@ class TestInterfaceTool(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestInterfaceResolution))
-        suite.addTest(unittest.makeSuite(TestInterfaceFinder))
-        suite.addTest(unittest.makeSuite(TestInterfaceTool))
+        from unittest import TestSuite, makeSuite
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestInterfaceResolution))
+        suite.addTest(makeSuite(TestInterfaceFinder))
+        suite.addTest(makeSuite(TestInterfaceTool))
         return suite

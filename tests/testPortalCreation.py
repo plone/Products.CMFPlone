@@ -110,8 +110,8 @@ class DummyObject(SimpleItem):
 if __name__ == '__main__':
     framework()
 else:
-    from unittest import TestSuite, makeSuite
     def test_suite():
+        from unittest import TestSuite, makeSuite
         suite = TestSuite()
         suite.addTest(makeSuite(TestPortalCreation))
         suite.addTest(makeSuite(TestPortalBugs))

@@ -22,6 +22,7 @@ def sortTuple(t):
     l.sort()
     return tuple(l)
 
+
 class TestGroupsTool(PloneTestCase.PloneTestCase):
 
     def afterSetUp(self):
@@ -244,8 +245,8 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework(verbosity=1)
 else:
-    from unittest import TestSuite, makeSuite
     def test_suite():
+        from unittest import TestSuite, makeSuite
         suite = TestSuite()
         suite.addTest(makeSuite(TestGroupsTool))
         suite.addTest(makeSuite(TestGroupWorkspacesFolder))
