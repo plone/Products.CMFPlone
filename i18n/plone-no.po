@@ -778,13 +778,6 @@ msgstr "Du ble ikke logget inn. Brukernavne og/eller passord er muligens feil. N
 msgid "description_signed_in"
 msgstr "Det er første gang du besøker"
 
-#: from plone_forms/logged_out.pt
-#.   <p>
-#.   	 We hope you enjoyed using our services. We look forward to seeing you again.
-#.        </p>
-msgid "description_signed_out"
-msgstr "Vi håper du fant våre tjenester nyttige, og ønsker deg velkommen tilbake ved en senere anledning."
-
 #: from plone_templates/standard_error_message.pt
 #.   <p>
 #.           This site encountered an error trying to fulfill your request.
@@ -972,7 +965,7 @@ msgstr "Fleksibelt søk etter innhold"
 #.         			    ${folder (tal replace="here/title_or_id")}
 #.   		</span>
 msgid "heading_assign_localrole"
-msgstr "Tildél lokal rolle i mappen ${folder}"
+msgstr "Tildel lokal rolle i mappen ${folder}"
 
 #: from plone_forms/ownership_form.pt
 #.   <h1>Change ownership</h1>
@@ -3342,7 +3335,7 @@ msgid "Editor view"
 msgstr "Redigeringsvisning"
 
 msgid "visible"
-msgstr "Synlig"
+msgstr "synlig"
 
 msgid "Folder contents"
 msgstr "Innhold"
@@ -3370,9 +3363,6 @@ msgstr "Lokale roller"
 
 msgid "Ownership"
 msgstr "Eierskap"
-
-msgid "${type}s only"
-msgstr "Bare ${type}"
 
 msgid "Document"
 msgstr "Dokument"
@@ -3619,6 +3609,33 @@ msgstr "Bytt til normal visning"
 msgid "heading_edit_item"
 msgstr "Endre ${itemtype}"
 
+#. The "Show only items of type X" pulldown
+msgid "label_show_x_only"
+msgstr "Vis bare ${type}"
+
+#: from plone_templates/folder_contents_form.pt
+msgid "description_contains_items_by"
+msgstr "Innhold samlet sammen og laget av ${name}"
+
+#: from plone_forms/content_status_history.pt
+msgid "label_current_state"
+msgstr "Innholdet er for tiden i ${review_state} tilstand"
+
+#: from plone_templates/ui_slots/about_slot.pt
+msgid "label_state"
+msgstr "Tilstand"
+
+msgid "label_selected_keywords"
+msgstr "Valgte Nøkkelord"
+
+msgid "label_new_keywords"
+msgstr "Nye nøkkelord"
+
+msgid "description_logged_out"
+msgstr "<p>Vi håper du fant våre tjenester nyttige, og ønsker deg velkommen tilbake ved en senere anledning.</p>" 
+       "<p>Vennlig hilsen fra administrasjonen ved ${portal_title}.</p>" 
+
+
 #. The below is collected by inserting a plone-my-lang.missing file in the i18n
 #. directory. Thus we can translate tabs, pushishing states, item type names
 #. and type descriptions.
@@ -3634,6 +3651,79 @@ msgstr "Fjern denne kommentaren"
   
 msgid "State"  
 msgstr "Tilstand"
+
+msgid "BTree Folder"  
+msgstr "B-tre-mappe"
+
+msgid "CMF folder designed to hold a lot of objects."  
+msgstr "B-tre-baserte mapper er velegnet for store mengder objekter."
+
+msgid "Manager"  
+msgstr "Administrator"
+  
+msgid "Member"  
+msgstr "Bruker"
+  
+msgid "Owner"  
+msgstr "Eier"
+  
+msgid "Reviewer"  
+msgstr "Redaktør"
+
+msgid "Paste"  
+msgstr "Lim inn"
+
+msgid "Item(s) copied."
+msgstr "Innhold kopiert."
+
+#### State related stuff ####
+
+msgid "Local Roles changed."
+msgstr "Endret lokale roller."
+
+msgid "Make visible"
+msgstr "Gjør synlig"
+
+msgid "Reject"
+msgstr "Avvis"
+
+msgid "Retract"
+msgstr "Trekk tilbake"
+
+msgid "hide"
+msgstr "gjemt"
+
+msgid "publish"
+msgstr "publisert"
+  
+msgid "reject"
+msgstr "avvist"
+  
+msgid "retract"
+msgstr "trukket tilbake"
+  
+msgid "show"
+msgstr "gjort synlig"
+  
+msgid "submit"
+msgstr "sendt inn"
+
+#### State Roles stuff ####
+
+#### Status Messages ####
+
+msgid "Topic has been created."  
+msgstr "Emne ble opprettet."
+
+msgid "Content publishing information has been saved."
+msgstr "Tilstandsinformasjonen ble lagret."
+
+msgid "Please correct the indicated errors."
+msgstr "Vennligst rett feilene markert under."
+
+msgid "Your document changes have been saved."
+msgstr "Dine endringer ble lagret."
+
 
 #### Skin names ####
 

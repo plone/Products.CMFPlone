@@ -1,0 +1,40 @@
+#####################
+# 17.11.2002 update #
+#####################
+
+Added everything between the 17.11.2002 comments at the bottom of the plone.pot.
+
+Added a lot of new strings to reflect the cleanup.
+Merging of stings to make them more Japanese/Korean/Chinese-friendly is still 
+left to do. Remember to delete the strings on the delete-list below 
+if you are updating an existing po-file.
+
+Deleted:
+
+msgid "heading_edit_collector_issue"
+msgid "heading_edit_document"
+msgid "heading_edit_event"
+msgid "heading_edit_file"
+msgid "heading_edit_folder_properties"
+msgid "heading_edit_image"
+msgid "heading_edit_link_item"
+msgid "heading_edit_news_item"
+msgid "heading_edit_properties"
+msgid "heading_edit_topic"
+
+These were replaced with:
+
+
+Deleted:
+msgid "${type}s only"
+
+Replaced with
+msgid "label_show_x_only"
+
+Deleted:
+msgid "description_signed_out"
+
+Replaced with:
+msgid "description_logged_out"
+
+

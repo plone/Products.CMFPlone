@@ -778,13 +778,6 @@ msgstr "You are not currently logged in. Your user name and/or password may be i
 msgid "description_signed_in"
 msgstr "This is the first time that you've logged in to"
 
-#: from plone_forms/logged_out.pt
-#.   <p>
-#.   	 We hope you enjoyed using our services. We look forward to seeing you again.
-#.        </p>
-msgid "description_signed_out"
-msgstr "We hope you enjoyed using our services. We look forward to seeing you again."
-
 #: from plone_templates/standard_error_message.pt
 #.   <p>
 #.           This site encountered an error trying to fulfill your request.
@@ -3318,9 +3311,6 @@ msgstr ""
 msgid "Ownership"
 msgstr ""
 
-msgid "${type}s only"
-msgstr ""
-
 msgid "Document"
 msgstr ""
 
@@ -3566,6 +3556,33 @@ msgstr "Switch to Item View"
 msgid "heading_edit_item"
 msgstr "Edit ${itemtype}"
 
+#. The "Show only items of type X" pulldown
+msgid "label_show_x_only"
+msgstr "Show ${type}s only"
+
+#: from plone_templates/folder_contents_form.pt
+msgid "description_contains_items_by"
+msgstr "Contains the items created and collected by ${name}"
+
+#: from plone_forms/content_status_history.pt
+msgid "label_current_state"
+msgstr "This item is currently in the ${review_state} state"
+
+#: from plone_templates/ui_slots/about_slot.pt
+msgid "label_state"
+msgstr "State"
+
+msgid "label_selected_keywords"
+msgstr "Selected Keywords"
+
+msgid "label_new_keywords"
+msgstr "New Keywords"
+
+msgid "description_logged_out"
+msgstr "<p>We hope you enjoyed using our services. We look forward to seeing you again.</p>" 
+       "<p>Best Regards from the ${portal_title} team.</p>" 
+
+
 #. The below is collected by inserting a plone-my-lang.missing file in the i18n
 #. directory. Thus we can translate tabs, pushishing states, item type names
 #. and type descriptions.
@@ -3581,6 +3598,79 @@ msgstr ""
   
 msgid "State"  
 msgstr ""
+
+msgid "BTree Folder"  
+msgstr ""
+
+msgid "CMF folder designed to hold a lot of objects."  
+msgstr ""
+
+msgid "Manager"  
+msgstr ""
+  
+msgid "Member"  
+msgstr ""
+  
+msgid "Owner"  
+msgstr ""
+  
+msgid "Reviewer"  
+msgstr ""
+  
+msgid "Paste"  
+msgstr ""
+
+msgid "Item(s) copied."
+msgstr ""
+
+#### State related stuff ####
+
+msgid "Local Roles changed."
+msgstr ""
+
+msgid "Make visible"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Retract"
+msgstr ""
+
+msgid "hide"
+msgstr ""
+
+msgid "publish"
+msgstr ""
+  
+msgid "reject"
+msgstr ""
+  
+msgid "retract"
+msgstr ""
+  
+msgid "show"
+msgstr ""
+  
+msgid "submit"
+msgstr ""
+  
+#### End State stuff ####
+
+#### Status Messages ####
+
+msgid "Topic has been created."  
+msgstr ""
+
+msgid "Content publishing information has been saved."
+msgstr ""
+
+msgid "Please correct the indicated errors."
+msgstr ""
+
+msgid "Your document changes have been saved."
+msgstr ""
+
 
 #### Skin names ####
 
