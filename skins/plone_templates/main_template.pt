@@ -19,8 +19,8 @@
   </metal:block>
   
   <metal:block metal:fill-slot="javascript_head_slot">
-    <tal:block tal:replace="structure here/ieemu.js" />
-    <tal:block tal:replace="structure here/styley.js" />   
+    <script type="text/javascript" tal:attributes="src here/ieemu.js/absolute_url"></script>
+    <script type="text/javascript" tal:attributes="src here/styley.js/absolute_url"></script>
     <metal:block metal:define-slot="javascript_head_slot" />
   </metal:block>
 </head>

@@ -45,11 +45,9 @@
     For instance, folder_listing, folder_contents needs to inject javascript into the header
     </metal:block>
     
-    <tal:block tal:replace="structure string:&lt;script language='javascript' type='text/javascript' &gt;" />
-      <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
-      </metal:block>
-      <metal:block tal:replace="structure here/plone_javascripts.js" /> 
-    <tal:block tal:replace="structure python:'&lt;/script&gt;'" />
+    <metal:block metal:define-slot="javascript_head_slot" tal:replace="nothing">
+    </metal:block>
+    <script type="text/javascript" tal:attributes="src here/plone_javascripts.js/absolute_url"></script>
 </head>
 
 <div metal:define-macro="portal_header"

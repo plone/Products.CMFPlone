@@ -8,12 +8,8 @@
 
 <head>
   <metal:block metal:fill-slot="javascript_head_slot">
-    <tal:block tal:replace="structure here/table_sort.js" >
-    This is the table sorting javascript.  Thanks Geir!
-    </tal:block>
-    <tal:block tal:replace="structure here/folder_actions.js" >
-    Folder actions script
-    </tal:block>
+    <script type="text/javascript" tal:attributes="src here/table_sort.js/absolute_url"></script>
+    <script type="text/javascript" tal:attributes="src here/folder_actions.js/absolute_url"></script>
   </metal:block>
 </head>
 
