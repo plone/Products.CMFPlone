@@ -101,15 +101,19 @@ Header stuff
                     </metal:block>
         
                     <div class="documentActions">
-                     
+
+                        <metal:block metal:define-slot="documentActions" tal:content="nothing">
+                        Document actions slot
+                        </metal:block>                     
+
                         <a href=""
                            tal:condition="site_properties/allow_sendto | nothing"
                            tal:attributes="href python:'%s/portal_form/sendto_form' % here.absolute_url()">
-                            <img src="mail_icon.gif" alt="Send to" title="Send this page to somebody" />
+                            <img tal:attributes="src string:$portal_url/mail_icon.gif" src="mail_icon.gif" alt="Send to" title="Send this page to somebody" />
                         </a>
 
                         <a href="javascript:this.print();">
-                            <img src="print_icon.gif" alt="Print" title="Print this page" />
+                            <img tal:attributes="src string:$portal_url/print_icon.gif" src="print_icon.gif" alt="Print" title="Print this page" />
                         </a>
                     </div>
 
