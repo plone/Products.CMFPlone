@@ -9,7 +9,7 @@
 
 <body>
 
-<div metal:fill-slot="main"
+<div metal:fill-slot="prefs_configlet_main"
          tal:condition="here/rejectAnonymous" >
 
     <p i18n:translate="description_error_log_setup" class="form-help">
