@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased
 
+    - Made it so that headlines can't be obscured by the document action 
+      icons anymore.
+      [limi]
+
     - News portlet now also shows ATNewsItems (like event portlet which
       also shows ATEvents).
       [ajung]
@@ -24,7 +28,7 @@ Plone 2.0.5 - Backed Up Willie - Unreleased
       but that means abandoning support for Zope 2.6.x.
       [geoffd]
 
-    - Added title attribute to links in action menues.
+    - Added title attribute to links in action menus.
       [gotcha]
  
     - Fixed transaction_notes overflowing struct size in ZODB.
