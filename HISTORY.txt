@@ -5,7 +5,7 @@ Changelog for Plone
 Plone 2.0 - Fyuti
 
    RC6/Final?
- 
+
     - Fix bug 2373 so folder_contents items goto
       getTypeInfo.getActionById('view')
 	[runyaga]
@@ -25,6 +25,14 @@ Plone 2.0 - Fyuti
       security problem, since you couldn't save the document, but now we 
       also check that you are logged in, so you can't invoke the URL 
       directly to look at the edit form anymore either.
+
+    - Added getAllowedTypes for use in folder_contents and global_contentmenu 
+      to check for getNotAddableTypes and when to show a single item instead 
+      of a dropdown. ( fixes bug )
+
+    - If a content type is listed in 
+      portal_properties/site_properties/useFolderContents then use
+      'folder_contents' to display it, not ''
 
    RC5
 
