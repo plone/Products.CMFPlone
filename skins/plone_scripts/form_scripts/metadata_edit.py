@@ -5,8 +5,11 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##title=Update Content Metadata
-##parameters=allowDiscussion=None,title=None,subject=None,description=None,contributors=None,effective_date=None,expiration_date=None,format=None,language=None,rights=None
+##parameters=allowDiscussion=None,title=None,subject=None,description=None,contributors=None,effective_date=None,expiration_date=None,format=None,language=None,rights=None,predefined_subjects=None
 subject=[s for s in subject if s]
+if predefined_subjects:
+    subject=context.unique(list(subject)+list(predefined_subjects))
+
 if not effective_date:
    effective_date='None'
 if not expiration_date:

@@ -133,15 +133,17 @@
                                 onfocus="formtooltip('keywords_help',1)" 
                                 onblur="formtooltip('keywords_help',0)"
                                 tal:attributes="tabindex tabindex/next;">
-                        <option value="#" tal:repeat="subject allowedSubjects"
-                                tal:content="subject" tal:attributes="value subject"> an existing keyword </option>                                
+                          <option value="#" tal:repeat="subject allowedSubjects"
+                                  tal:content="subject" tal:attributes="value subject;
+                                                                        selected python:test(subject in contentSubjects, 'selected', '')"> 
+                          an existing keyword 
+                          </option>                                
                         </select>
                         
                         <br />
-
                     <tal:block tal:define="site_props here/portal_properties/site_properties;
                                            allowRolesToAddKeywords site_props/allowRolesToAddKeywords"
-                              tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
+                               tal:condition="python:[role for role in user.getRolesInContext(here) if role in allowRolesToAddKeywords]">
                           
                     <span i18n:translate="label_new_keywords">New keywords</span>
                     <br />
@@ -154,9 +156,8 @@
                       onfocus="formtooltip('keywords_help',1)" 
                       onblur="formtooltip('keywords_help',0)"
                       tal:attributes="tabindex tabindex/next;"
-                      tal:define="subject request/subject | here/Subject;
-                                  string modules/string"
-                      tal:content="python:string.join(subject or [],'\n')"
+                      tal:define="subject python:request.get('subject',[])"
+                      tal:content="python:'\n'.join(subject)"
                       >selected keywords</textarea>&nbsp;
                     
                     </tal:block>
