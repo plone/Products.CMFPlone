@@ -23,5 +23,4 @@ os.system("cd .. ; tar -cvf %s %s" % ( releasetar
                                      , releasename ) )
 os.system("cd .. ; gzip %s " % releasetar )
 
-#os.system("cd .. ; rm -rf " + releasename )
 
