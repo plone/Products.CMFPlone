@@ -80,9 +80,8 @@
 	            tabindex=""
 	            onfocus="formtooltip('include_subfolders_help',1)"
 	            onblur="formtooltip('include_subfolders_help',0)"
-	            checked="checked"
-              tal:attributes="tabindex tabindex/next;"
-              />
+                tal:attributes="tabindex tabindex/next;"
+                />
 	     <label for="include_subfolders" i18n:translate="label_include_subfolders">Include subfolders</label>
            </div>
    	</div>
