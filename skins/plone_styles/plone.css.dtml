@@ -1048,7 +1048,8 @@ ul.configlets li a {
 }
 
 .link-callto {
-    
+    background: transparent url("<dtml-var portal_url>/phone_icon.gif") 0px 1px no-repeat;
+    padding: 1px 0px 1px 16px;
 }
 
 .link-comment {
