@@ -171,6 +171,16 @@ class TestContentTypeScripts(PloneTestCase.PloneTestCase):
     #    self.folder.invokeFactory('Topic', id='topic')
     #    # TODO: Analyze that funky data structure
 
+    # Bug tests
+
+    def testClearImageTitle(self):
+        # Test for http://plone.org/collector/3303
+        # Should be able to clear Image title
+        self.folder.invokeFactory('Image', id='image', title='Foo', file=dummy.Image())
+        self.assertEqual(self.folder.image.Title(), 'Foo')
+        self.folder.image.image_edit(title='')
+        self.assertEqual(self.folder.image.Title(), '')
+ 
 
 class TestEditShortName(PloneTestCase.PloneTestCase):
     # Test fix for http://plone.org/collector/2246
