@@ -181,7 +181,7 @@ def correctFolderContentsAction(actionTool):
             action.title='Contents'
             action.name='Contents'
             action.condition=Expression(
-                    'member')
+                    'python:member and folder is not object')
     actionTool._actions=_actions
     
 
