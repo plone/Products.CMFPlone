@@ -346,7 +346,7 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
     def testHomePageIsCataloged(self):
         # Home page should be cataloged
         catalog = self.portal.portal_catalog
-        self.failUnless(catalog(id='index_html', Title="user2's Home Page"))
+        self.failUnless(catalog(id='index_html', Title="Home page for user2"))
 
     def testPersonalFolderExists(self):
         # Should have a .personal folder
