@@ -59,8 +59,6 @@ Header stuff
 				      global local_actions python:actions.get('object_tabs', []);
 				      global isFolder python:test(obj_type=='Folder',1,0);" />
 				      
-                    <span tal:define="dummy python:here.plone_debug('folder ' + str(folder_actions)) " />
-
                     <span tal:repeat="action python:test(obj_type=='Folder', folder_actions+local_actions, obj_actions+local_actions)">
                         <a class="" href="" 
                            tal:attributes="class python:test(action['url'][action['url'].rfind('/')+1:]==template.getId(), 'selected', 'plain');

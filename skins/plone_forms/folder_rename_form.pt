@@ -22,10 +22,10 @@
         <span class="legend" i18n:translate="">Rename Details</span>
 
         <div class="row" tal:repeat="item items">
-
+          <metal:block tal:define="obj python:getattr(here, item)">
+            
             <div class="label">
-                Rename
-                <span tal:replace="item">fav_999816073</span>
+                <span tal:replace="string:${obj/Title} (${obj/getId})" >fav_999816073</span>
                 to
             </div>
 
@@ -34,15 +34,21 @@
                        name="ids:list"
                        value="fav_999816073"
                        tal:attributes="value item">
-                <input type="text"
+                ID <input type="text"
                        name="new_ids:list"
                        value="fav_999816073"
                        size="30"
                        tal:attributes="value item"
-                       />
+                       /> <br />
+                Title <input type="text"
+                       name="new_titles:list"
+                       value="title"
+		       size="30"
+		       tal:attributes="value obj/Title" />
                 <br />
             </div>
-
+	    
+          </metal:block>
         </div>
 
         <div class="row">
