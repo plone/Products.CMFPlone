@@ -80,6 +80,9 @@ def registerMigrations():
                                       null)
                                       
     MigrationTool.registerUpgradePath('2.0.3',
-                                      '2.1-rc1',
-                                      v2_1.release_candidates.two0x_rc1)
-
+                                      '2.0.4',
+                                      null)
+                                      
+    MigrationTool.registerUpgradePath('2.0.4',
+                                      '2.1-beta1',
+                                      v2_1.betas.two0x_beta1)

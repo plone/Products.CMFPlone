@@ -1,4 +1,4 @@
 # Plone2.1.x migrations
 
-# Plone2 RCs
-import release_candidates
+# Plone2.1 betas
+import betas

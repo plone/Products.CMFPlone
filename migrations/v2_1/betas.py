@@ -7,8 +7,8 @@ from Products.CMFPlone.migrations.migration_util import saveCloneActions, cleanu
 import zLOG
 from StringIO import StringIO
 
-def two0x_rc1(portal):
-    """2.0.x -> 2.1.0rc1
+def two0x_beta1(portal):
+    """2.0.x -> 2.1-beta1
     """
     out = StringIO()
     replaceMailHost(portal, out)
