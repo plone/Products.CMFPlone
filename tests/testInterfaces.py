@@ -49,8 +49,27 @@ from Products.CMFPlone.GroupsTool import GroupsTool
 from Products.CMFPlone.InterfaceTool import InterfaceTool
 from Products.CMFPlone.LargePloneFolder import LargePloneFolder
 from Products.CMFPlone.MemberDataTool import MemberDataTool, MemberData
-#from Products.CMFPlone. import 
-#from Products.CMFPlone. import 
+from Products.CMFPlone.MembershipTool import MembershipTool
+from Products.CMFPlone.MetadataTool import MetadataTool
+from Products.CMFPlone.MigrationTool import MigrationTool
+from Products.CMFPlone.NavigationTool import NavigationTool, Redirector
+from Products.CMFPlone.PloneBatch import Batch
+from Products.CMFPlone.PloneContent import PloneContent
+from Products.CMFPlone.PloneControlPanel import PloneControlPanel, PloneConfiglet
+from Products.CMFPlone.PloneFolder import OrderedContainer, PloneFolder
+from Products.CMFPlone.PloneTool import PloneTool
+from Products.CMFPlone.Portal import PloneSite, PloneGenerator
+from Products.CMFPlone.PrivateSitePolicy import PrivateSitePolicy
+from Products.CMFPlone.PropertiesTool import PropertiesTool, SimpleItemWithProperties
+from Products.CMFPlone.QuickInstallerTool import QuickInstallerTool
+from Products.CMFPlone.RegistrationTool import RegistrationTool
+from Products.CMFPlone.SkinsTool import SkinsTool
+from Products.CMFPlone.StatelessTree import NavigationTreeViewBuilder
+from Products.CMFPlone.SyndicationTool import SyndicationTool
+from Products.CMFPlone.TypesTool import TypesTool
+from Products.CMFPlone.UndoTool import UndoTool
+from Products.CMFPlone.URLTool import URLTool
+from Products.CMFPlone.WorkflowTool import WorkflowTool
 
 def className(klass):
     """ get the short class name """
@@ -132,10 +151,29 @@ testClasses = [
     (InterfaceTool, ()),
     (LargePloneFolder, ()),
     (MemberDataTool, ()), (MemberData, ()),
-    #(, ()),
-    #(, ()),
+    (MembershipTool, ()), 
+    (MetadataTool, ()),
+    (MigrationTool, ()),
+    (NavigationTool, ()), (Redirector, ()),
+    # (Batch, ()), # has no __implements__
+    (PloneContent, ()),
+    (PloneControlPanel, ()), (PloneConfiglet, ()),
+    (OrderedContainer, ()), (PloneFolder, ()),
+    (PloneTool, ()),
+    (PloneSite, ()), # (PloneGenerator, ()), # PloneGenerator has no __implements__
+    (PrivateSitePolicy, ()),
+    (PropertiesTool, ()), (SimpleItemWithProperties, ()),
+    (QuickInstallerTool, ()),
+    (RegistrationTool, ()),
+    (SkinsTool, ()),
+    (NavigationTreeViewBuilder, ()),
+    (SyndicationTool, ()),
+    (TypesTool, ()),
+    (UndoTool, ()),
+    (URLTool, ()),
+    (WorkflowTool, ()),
 ]
- 
+
 for testClass in testClasses:
     klass, forcedImpl = testClass
     name = className(klass)
