@@ -267,10 +267,10 @@
         <table class="listing nosort" tal:condition="python:[review for review in review_history if review.get('action','')]">
             
             <tr>
-                <th i18n:attributes="listingheader_action">Action</th>
-                <th i18n:attributes="listingheader_performed_by">Performed&nbsp;by</th>
-                <th i18n:attributes="listingheader_date_and_time">Date&nbsp;and&nbsp;Time</th>
-                <th i18n:attributes="listingheader_comment">Comment</th>
+                <th i18n:translate="listingheader_action">Action</th>
+                <th i18n:translate="listingheader_performed_by">Performed&nbsp;by</th>
+                <th i18n:translate="listingheader_date_and_time">Date&nbsp;and&nbsp;Time</th>
+                <th i18n:translate="listingheader_comment">Comment</th>
             </tr>
 
             <metal:block tal:repeat="items review_history">
@@ -300,7 +300,7 @@
               
                 <td>
                     <span tal:condition="rhComments">
-                        <span tal:replace="rhComments"> Please review this ASAP </span>
+                        <span tal:replace="rhComments"> some comments </span>
                     </span>
 
                     <span tal:condition="not: rhComments" i18n:translate="no_comments">
