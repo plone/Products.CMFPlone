@@ -1,4 +1,5 @@
 1.0a - Boards of Canada Release:
+    - Tres added _cloneActions to ActionProviderBase and co. API  and gave diff to CustomizationPolicy. All hail Tres!
     - created a CustomizationPolicy for alternate Customizations to be applied to Plone on site creation
       these can be seperate products that register with the Portal.addPolicy()
     - all forms were majorly refactored: popup help boxes were added, i18n namespaces were used, general html cleanup
