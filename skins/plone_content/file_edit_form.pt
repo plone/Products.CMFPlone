@@ -172,7 +172,7 @@
         </div>
 
         <div class="row"
-            tal:define="content_type python:here.content_type();
+            tal:define="content_type python:here.content_type;
                         content_type python:test(content_type==None,'',content_type);"
             tal:condition="python:test(content_type.find('text')>-1, 1,0)">
             
