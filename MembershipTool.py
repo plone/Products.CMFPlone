@@ -146,7 +146,9 @@ class MembershipTool(BaseTool):
             acl_users = self.__getPUS()
             user = acl_users.getUser(member_id)
             if user is not None:
-                user= user.__of__(acl_users)
+                # GRUF users are already wrapped
+                if not hasattr(user, 'aq_base'):
+                    user= user.__of__(acl_users)
             else:
                 from AccessControl import getSecurityManager
                 user= getSecurityManager().getUser()
@@ -171,7 +173,7 @@ class MembershipTool(BaseTool):
                 f.index_html._setPortalTypeName( 'Document' )
                 # Overcome an apparent catalog bug.
                 f.index_html.reindexObject()
-                wftool = getToolByName( f, 'portal_workflow' )
+                wftool = getToolByName( self, 'portal_workflow' )
                 wftool.notifyCreated( f.index_html )
             #XXX the above is copy/pasted from CMFDefault.MembershipTool only because
             #its not using invokeFactory('Folder') -- FIX IT!
