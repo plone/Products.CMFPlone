@@ -157,8 +157,9 @@ def migrate_folder(self, source_folder_id, dest_folder_id):
                 except:
                     out.write('Raw copy didnt work')
                     
-                new_object=new_parent[o.getId()]
+                new_object=None
                 try:
+                    new_object=new_parent[o.getId()]
                     owner_id=o.getOwner().getUserName()
                     user=newsite.acl_users.getUser(owner_id).__of__(newsite.acl_users)
                     new_object.changeOwnership(user)
