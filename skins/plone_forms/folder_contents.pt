@@ -109,10 +109,10 @@ Home page area that contains the items created and collected by <span tal:replac
                                     </option>  
                                     <metal:block tal:repeat="type types">
                                         <option value="#"
-                                                tal:define="typetitle type/Title"
+                                                tal:define="typetitle type/Title; typeid type/getId"
                                                 tal:content="string:${typetitle}s only"
-                                                tal:attributes="value typetitle;
-                                                                selected python:test( len(filterTypes)==1 and (typetitle in filterTypes), 'selected', '');"
+                                                tal:attributes="value typeid;
+                                                                selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', '');"
                                         >Filtered type</option>
                                     </metal:block>
                                 </select>
