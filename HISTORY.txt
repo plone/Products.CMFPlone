@@ -5,6 +5,7 @@
     - related box now has <br /> seperating elements and will not show related items that dont have a title - thanks kpm!
       added icons, sort by Type and changed up navigationLocal    
     - MembershipTool.changeMemberPortrait() method added and removed from personazlize
+    - added MIGRATION documentation
 
 1.0 alpha4
     - publishing now works without javascript. #202

@@ -36,7 +36,7 @@ If you do not have an account here, head over to the <a href="join_form">registr
            name="came_from" 
            value=""
            tal:define="global came_from request/came_from|request/HTTP_REFERER;
-                       not_allowed python:('login_form','logged_out','register');
+                       not_allowed python:('login_form','logged_out','register', 'join_form');
                        corrected_from python:test(came_from.split('/')[-1:][0] in not_allowed, 'logged_in', came_from);"
 	       tal:attributes="value corrected_from" />
 
