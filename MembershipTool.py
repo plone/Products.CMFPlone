@@ -421,7 +421,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
 
             if domains is None:
                 domains = []
-            user = acl_users.getUserById(member.getUserName())
+            user = acl_users.getUserById(member.getUserName(), None)
             # we must change the users password trough grufs changepassword
             # to keep her  group settings
             if hasattr(user, 'changePassword'):

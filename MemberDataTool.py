@@ -96,7 +96,7 @@ class MemberDataTool(PloneBaseTool, BaseTool):
                     values[pty_name] = user_value
 
             # Wrap a new user object of the RIGHT class
-            u = self.acl_users.getUserById(member_name)
+            u = self.acl_users.getUserById(member_name, None)
             if not u:
                 continue                # User is not in main acl_users anymore
             self.wrapUser(u)

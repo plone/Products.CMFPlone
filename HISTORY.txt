@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - Fixed several potentially unsafe uses of acl_users.getUserById().
+      [stefan]
+
     - Intergrated PLIP16. It is now possible to stop acquisition of local roles
       in a Plone Folder and change the roles of already assigned users/groups.
       Many thanks to: ender, MrTopf, hazmat and pjgrizel.
