@@ -60,9 +60,9 @@ class TestPloneTestCase(PloneTestCase.PloneTestCase):
 if __name__ == '__main__':
     framework()
 else:
-    import unittest
+    from unittest import TestSuite, makeSuite
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestPloneTestCase))
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestPloneTestCase))
         return suite
 

@@ -26,9 +26,9 @@ if __name__ == '__main__':
 else:
     # While framework.py provides its own test_suite()
     # method the testrunner utility does not.
-    import unittest
+    from unittest import TestSuite, makeSuite
     def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(TestSomeProduct))
+        suite = TestSuite()
+        suite.addTest(makeSuite(TestSomeProduct))
         return suite
 
