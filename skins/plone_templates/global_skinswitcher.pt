@@ -1,0 +1,14 @@
+<html>
+<body>
+
+<!-- THE SKIN SWITCHER TABS DEFINITION -->
+<div id="switchbar" metal:define-macro="skin_tabs">
+  <tal:comment replace="nothing">
+  <a href="/">Public View</a>
+  <a href="./manage_main" class="selected">Admin View</a>
+  <a href="/">Intranet View</a>
+  </tal:comment>
+</div>
+
+</body>
+</html>

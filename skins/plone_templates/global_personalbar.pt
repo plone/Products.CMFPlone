@@ -1,0 +1,42 @@
+<html>
+<body>
+
+<!-- THE PERSONAL BAR DEFINITION -->
+
+<span metal:define-macro="personal_bar"
+      tal:define="portal_url portal_url|here/portal_url;
+                  user_actions user_actions|actions/user;
+                  global_actions global_actions|actions/global;
+                  mtool mtool|here/portal_membership;
+                  display_actions python:user_actions[:-1]+global_actions+user_actions[-1:];"
+      tal:omit-tag="" >
+<h5 class="hiddenstructure" i18n:translate="heading_personal_tools">Personal tools</h5>
+<ul id="personalBar">
+    <li id="personalBar-user" tal:condition="not: isAnon"><a href=""
+        tal:omit-tag="not: mtool/getHomeFolder"
+        tal:attributes="href string:${mtool/getHomeUrl}"
+        accesskey="accesskeys-personalbar"
+        i18n:attributes="accesskey">
+        <span tal:replace="user/getUserName">
+             john
+        </span>
+    </a></li>
+    <span id="personalBar-anon" tal:condition="isAnon"
+          i18n:translate="you_are_not_logged_in">
+              You are not logged in
+    </span>
+    <tal:actions tal:repeat="action python:display_actions">
+        <li>
+            <a href=""
+               tal:attributes="href action/url"
+               accesskey="accesskeys-personalbar"
+               i18n:attributes="accesskey">
+               <tal:actionname i18n:translate="" tal:content="action/name">dummy</tal:actionname>
+            </a>
+        </li>
+    </tal:actions>
+</ul>
+</span>
+
+</body>
+</html>

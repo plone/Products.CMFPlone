@@ -1,0 +1,30 @@
+<html>
+<body>
+
+<!-- THE SEARCHBOX DEFINITION -->
+<div id="searchBox" metal:define-macro="quick_search">
+    <form name="searchform"
+          action="search"
+          tal:attributes="action string:${portal_url}/search" >
+        <label for="searchGadget" class="hiddenlabel" i18n:translate="">Search</label><input id="searchGadget"
+               name="SearchableText"
+               type="text"
+               size="20"
+               value=""
+               alt="Search"
+	       title="Search"
+	       accesskey="accesskeys-search"
+	       i18n:attributes="alt accesskey title"
+	       tal:attributes="value request/SearchableText|nothing;
+                               tabindex tabindex/next" class="visibility:visible" />
+        <input class="context searchButton"
+               type="submit"
+               value="Search"
+	       accesskey="accesskeys-search"
+	       tal:attributes="tabindex tabindex/next"
+               i18n:attributes="value accesskey" />
+    </form>
+</div>
+
+</body>
+</html>

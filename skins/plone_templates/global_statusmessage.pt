@@ -1,0 +1,16 @@
+<html>
+<body>
+
+<!-- THE STATUS MESSAGE DEFINITION -->
+<div class="message"
+         i18n:domain="plone"
+         metal:define-macro="portal_message"
+         tal:define="portal_message request/portal_status_message | nothing"
+         tal:condition="portal_message">
+        <img tal:replace="structure here/info.gif" />
+        <strong tal:content="portal_message" i18n:translate=""></strong>
+</div>
+
+
+</body>
+</html>

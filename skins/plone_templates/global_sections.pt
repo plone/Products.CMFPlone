@@ -1,0 +1,27 @@
+<html>
+<body>
+
+<!-- THE SECTION TABS DEFINITION -->
+<div metal:define-macro="portal_tabs"
+     tal:omit-tag=""
+     tal:define="portal_tabs actions/portal_tabs|nothing;
+                 selected_tabs python:here.selectedTabs(template.getId(), here);
+                 selected_portal_tab selected_tabs/portal;" >
+    <h5 class="hiddenstructure" i18n:translate="heading_sections">Sections</h5>
+    <ul id="portalTabs">
+       <tal:tabs tal:repeat="tab portal_tabs">
+       <li tal:attributes="id string:portaltab-${tab/id};
+                           class python:test(selected_portal_tab==tab['id'], 'selected', 'plain');">
+          <a href="" class="" tal:attributes="href tab/url;"
+		       accesskey="accesskeys-tabs" i18n:attributes="accesskey" >
+          <tal:block omit-tag="" i18n:translate="">
+               <span tal:replace="tab/name">Tab Name</span>
+          </tal:block>
+          </a>
+       </li>
+       </tal:tabs>
+   </ul>
+</div>
+
+</body>
+</html>
