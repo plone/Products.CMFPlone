@@ -94,7 +94,6 @@
         <div class="top">
 
             <div class="searchBox">
-    
                 <form name="searchform" 
                       action="search"
                       tal:attributes="action string:${portal_url}/search" >
@@ -115,8 +114,13 @@
 
             <a href="/"
                tal:attributes="href portal_url" 
-               tal:define="logo here/logo.jpg">
-                <img tal:replace="structure python:logo.tag(css_class='logo')" />
+               tal:define="logo here/logo.jpg;
+                           uri logo/absolute_url" >
+                <img src="logo.jpg"
+                     class="logo"
+                     tal:attributes="width logo/width;
+                                     height logo/height;
+                                     src string:${logo/absolute_url}?skin=$current_skin" />
             </a>
         </div>
 
