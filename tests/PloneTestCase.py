@@ -31,6 +31,9 @@ ZopeTestCase.installProduct('ExternalMethod', quiet=1)
 ZopeTestCase.installProduct('Archetypes')
 ZopeTestCase.installProduct('MimetypesRegistry', quiet=1)
 ZopeTestCase.installProduct('PortalTransforms', quiet=1)
+# needed for ATCT 1.0
+if ZopeTestCase.hasProduct('ATReferenceBrowserWidget'):
+    ZopeTestCase.installProduct('ATReferenceBrowserWidget', quiet=1)
 ZopeTestCase.installProduct('ATContentTypes')
 
 # Install sessioning

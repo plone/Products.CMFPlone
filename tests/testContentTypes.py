@@ -11,7 +11,11 @@ from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 from Acquisition import aq_base
 
-from Products.ATContentTypes.interfaces.IATContentType import IATContentType
+# BBB
+try:
+    from Products.ATContentTypes.interfaces.IATContentType import IATContentType
+except ImportError:
+    from Products.ATContentTypes.interfaces import IATContentType
 
 AddPortalTopics = 'Add portal topics'
 
