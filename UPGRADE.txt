@@ -1,0 +1,24 @@
+How to upgrade a Plone site to a newer version
+
+1. Stop Plone
+
+2. Backup your Plone site, just in case. You should backup:
+
+    - your Data.fs which contains your site data
+    - any file system files in which you have modified
+    
+3. Install the new version of Plone, this depends upon your installation. Newest versions of Plone are always available from http://plone.org/downloads and your install will depend upon your particular setup. Generally you should unpack the CMFPlone folder over your existing one.
+
+4. Restart Plone
+
+5. For each Plone site enter the ZMI and go to portal_migrations and click on the migrate tab. Click the migrate button to migrate your instance to the version you have just downloaded.
+
+Running a migration may:
+
+- change values you have set in the ZODB such as actions, properties skins and such
+
+- mean a recataloguing of your portal_catalog, this may be time consuming
+
+- reapplying security to objects, this may be time consuming
+
+If you have issues please try one of the mailing lists including: your Zope, CMF and Python versions, the platform and the CMFPlone versions you are migrating to and from. The mailing lists can be found at http://plone.org
