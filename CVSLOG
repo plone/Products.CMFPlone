@@ -1,3 +1,20 @@
+2004-04-05 18:35  shh42
+
+	* tests/testSecurityDeclarations.py (Plone-2_0-branch): Add tests
+	  to see if 'getToolByName' can be used from PythonScripts.
+
+2004-04-05 17:06  dtremea
+
+	* migrations/__init__.py, migrations/v2/__init__.py,
+	  migrations/v2/final_two01.py, setup/ConfigurationMethods.py,
+	  skins/plone_scripts/date_components_support.py
+	  (Plone-2_0-branch): Fixed #2339 and added first steps towards
+	  2.0.1...
+
+2004-04-05 05:00  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-04 20:20  k_vertigo
 
 	* MembershipTool.py (Plone-2_0-branch), MembershipTool.py:  -
