@@ -1,7 +1,7 @@
 from Products.ZCatalog.ZCatalog import ZCatalog
 from Products.CMFCore.CatalogTool import CatalogTool as BaseTool
 from Products.CMFCore.utils import _getAuthenticatedUser, _checkPermission
-from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent
+from Products.CMFCore.CMFCorePermissions import AccessInactivePortalContent, ManagePortal
 from Products.CMFPlone import ToolNames
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_base
@@ -48,8 +48,11 @@ class CatalogTool(BaseTool):
         """ Safe removal of an index """
         try: self.manage_delIndex(index)
         except: pass
-               
+
     def manage_afterAdd(self, item, container):
+        self._createTextIndexes()
+               
+    def _createTextIndexes(self):
         """ In addition to the standard indexes we need to create 
             'SearchableText', 'Title' and 'Description' either as
             TextIndexNG2 or ZCTextIndex instance
@@ -97,6 +100,13 @@ class CatalogTool(BaseTool):
                 self.manage_addIndex('SearchableText', 'ZCTextIndex', extra=extra)
                 self.manage_addIndex('Description', 'ZCTextIndex', extra=extra)
                 self.manage_addIndex('Title', 'ZCTextIndex', extra=extra)
+
+
+    security.declareProtected(ManagePortal, 'migrateIndexes')
+    def migrateIndexes(self):
+        """ Recreate all indexes """
+        self._initIndexes()
+        self._createTextIndexes()
 
     def _listAllowedRolesAndUsers( self, user ):
         # Makes sure the list includes the user's groups
