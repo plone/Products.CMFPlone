@@ -4,6 +4,16 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - Added new directories: 'plone_portlets' (formerly 'plone_templates/ui_slots'),
+      'plone_form_scripts' (formerly 'plone_scripts/form_scripts') - these two to 
+      avoid having skin paths two levels deep - 'cmf_legacy' 
+      (contains the few CMF scripts we still depend on), and 'plone_prefs' (contains
+      the new Plone Control Panel). Skin paths updated.
+      [limi] [runyaga]
+    
+    - Location is now shown in the events box.
+      [limi]
+    
     - External Links in the default folder view now go directly to the URL specified.
       [limi]
     

@@ -33,8 +33,10 @@
                         <span tal:replace="python:test(obj.Title, obj.Title, obj.id)"> Event </span>
                     </a>
 
-                    <div class="boxDetails"
-                         tal:content="python:here.toPortalTime(obj.start)">July 7, 08:11</div>
+                    <div class="boxDetails">
+                        <tal:location content="obj/location">Location</tal:location>, <br />
+                        <tal:date content="python:here.toPortalTime(obj.start)">July 7, 08:11</tal:date>
+                    </div>
                 </div>
 
             </tal:block>
