@@ -35,7 +35,6 @@ if cmfcore:
                 filtered += v
             else:
                 break
-        filtered = 
         filtered = [int(x) for x in filtered.split('.')]
     except IOError, ValueError:
         x = []
