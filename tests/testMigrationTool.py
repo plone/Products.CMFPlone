@@ -22,13 +22,16 @@ class TestMigrationTool(PloneTestCase.PloneTestCase):
                          'Migration failed')
 
     def testMigrationNeedsUpgrading(self):
-        self.failIf(self.migration.needUpgrading())
+        self.failIf(self.migration.needUpgrading(),
+                    'Migration needs upgrading')
 
     def testMigrationNeedsUpdateRole(self):
-        self.failIf(self.migration.needUpdateRole())
+        self.failIf(self.migration.needUpdateRole(),
+                    'Migration needs role update')
 
     def testMigrationNeedsRecatalog(self):
-        self.failIf(self.migration.needRecatalog())
+        self.failIf(self.migration.needRecatalog(),
+                    'Migration needs recataloging')
 
 
 def test_suite():
