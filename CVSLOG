@@ -1,3 +1,248 @@
+2003-10-27 01:13  chrism
+
+	* skins/plone_form_scripts/discussion_reply.py (Plone-2_0-branch):
+	  Handle optional username/password entry on discussion_reply_form.
+	  If the user has typed a username or password into the form, we
+	  attempt to authenticate him before posting the message.
+
+2003-10-27 01:12  chrism
+
+	* skins/plone_forms/discussion_reply_form.pt (Plone-2_0-branch):
+	  Add username/password input boxes to form conditionally if user
+	  is not logged in and anonymous commenting is enabled.
+
+	  Also remove tabindex stuff because it's useless if there are
+	  other forms (like the login box) on the page.
+
+2003-10-27 01:04  jimroepcke
+
+	* PloneInitialize.py (Plone-2_0-branch): fixes to PloneInitialize
+	  to make the access rule work, ownership fixes
+
+2003-10-27 01:03  jimroepcke
+
+	* plone.ini (Plone-2_0-branch): plone.ini file used by
+	  PloneInitialize to set up a new Plone site in a new install
+
+2003-10-27 00:59  chrism
+
+	* skins/cmf_legacy/discussion_reply.py (Plone-2_0-branch): Remove
+	  discussion_reply as it's already overridden in
+	  plone_form_scripts.
+
+2003-10-27 00:24  limi
+
+	* skins/: plone_forms/member_search_results.pt,
+	  plone_portlets/login_slot.pt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): Fixed the member search results display.
+	  Whoever combined .portrait and .card into one should be put up
+	  against the wall.
+
+2003-10-27 00:15  limi
+
+	* skins/plone_styles/ploneIEFixes.css.dtml (Plone-2_0-branch): Some
+	  values from the old stylesheet_properties were causing errors.
+	  Fixed.
+
+2003-10-26 23:57  runyaga
+
+	* skins/plone_scripts/extract_date_components.py
+	  (Plone-2_0-branch): try/except
+
+2003-10-26 23:55  limi
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): h1 and
+	  other headers were bold, reverted back to normal.
+
+2003-10-26 23:45  limi
+
+	* HISTORY.txt, skins/plone_ecmascript/plone_javascripts.js,
+	  skins/plone_portlets/calendar_slot.pt,
+	  skins/plone_styles/base_properties.props,
+	  skins/plone_styles/plone.css.dtml,
+	  skins/plone_styles/ploneColumns.css.dtml,
+	  skins/plone_styles/ploneCustom.css.dtml,
+	  skins/plone_styles/ploneIEFixes.css.dtml,
+	  skins/plone_styles/ploneNS4.css.dtml,
+	  skins/plone_styles/plonePresentation.css.dtml,
+	  skins/plone_styles/plonePrint.css.dtml,
+	  skins/plone_styles/stylesheet_properties.props
+	  (Plone-2_0-branch): Deprecated stylesheet_properties for the new
+	  base_properties in the CSS. This one is much more flexible, clean
+	  and reusable, but note that if your site relied a lot on the old
+	  stylesheet_properties file, you will have to move the attributes
+	  to the new file. The reason for renaming it was to not cause
+	  errors when upgrading. It will reset your color choices, though.
+	  The new properties are documented in ploneCustom.css. Also
+	  brought back the old CSS for the pull-down menu, still not
+	  perfect, but good enough for the beta.
+
+2003-10-26 20:55  chrism
+
+	* __init__.py (Plone-2_0-branch): Make 'from AccessControl import
+	  Unauthorized' work from scripts.
+
+2003-10-26 20:49  buehlmann
+
+	* skins/: plone_portlets/calendar_slot.pt,
+	  plone_portlets/portlet_calendar.pt, plone_styles/plone.css.dtml
+	  (Plone-2_0-branch): name clash of the .day caused some wierd
+	  behavior in IE. (absolute attributes let days disappear)
+
+2003-10-26 20:47  runyaga
+
+	* skins/: cmf_legacy/iconHTML.py,
+	  plone_form_scripts/event_edit.cpy,
+	  plone_form_scripts/register.cpy, plone_form_scripts/sendto.cpy,
+	  plone_form_scripts/validate_effective_expiry_date.vpy,
+	  plone_form_scripts/validate_folder_rename.vpy,
+	  plone_form_scripts/validate_synPropertiesForm.vpy,
+	  plone_prefs/prefs_install_product_readme.pt,
+	  plone_scripts/browserDefault.py,
+	  plone_scripts/extract_date_components.py,
+	  plone_scripts/folder_paste.cpy,
+	  plone_scripts/getPlonePersonalPortait.py,
+	  plone_scripts/navigationRemoteResources.py,
+	  plone_scripts/quick_undo.py, plone_scripts/selectedTabs.py,
+	  plone_scripts/toLocalizedTime.py (Plone-2_0-branch): resolved
+	  1566. remove any catch-all except if possible.  under some
+	  circumstances you cant help but try/except especially when
+	  string/instances can be raised ;-(.
+
+	  AndyM some tools have try/except Migration/Navigation seem to
+	  have the most.  NavigationTool - iirc will be removed in 2.1 -
+	  its deprecaed.  Fixing up Migration would be nice.
+
+2003-10-26 19:18  runyaga
+
+	* Portal.py, skins/plone_3rdParty/CMFTopic/topic_view.pt
+	  (Plone-2_0-branch): add i18n:translate fixes issue 530
+
+2003-10-26 18:43  chrism
+
+	* PloneInitialize.py, __init__.py, Extensions/accessRule.py
+	  (Plone-2_0-branch): Make initialization code mostly work.
+
+2003-10-26 17:44  runyaga
+
+	* PloneTool.py (Plone-2_0-branch): fix for 1750
+
+2003-10-26 17:17  runyaga
+
+	* skins/plone_forms/: folder_rename_form.cpt, ownership_form.pt
+	  (Plone-2_0-branch): fix for bug 1824 (ownership form) fol
+
+2003-10-26 16:54  sh1mmer
+
+	* skins/plone_forms/login_form.pt (Plone-2_0-branch): Added a
+	  warning about case sensitivity in passwords and usernames.
+
+2003-10-26 16:41  runyaga
+
+	* skins/: plone_form_scripts/validate_folder_rename.vpy,
+	  plone_forms/folder_rename_form.cpt,
+	  plone_scripts/folder_rename.cpy,
+	  plone_scripts/folder_rename.cpy.metadata (Plone-2_0-branch):
+	  validator for folder_rename is working
+
+2003-10-26 16:33  roeder
+
+	* skins/plone_forms/discussion_reply_form.pt (Plone-2_0-branch):
+	  DOCTYPE should not be defined in templates other than the main
+	  one.
+
+2003-10-26 16:31  roeder
+
+	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch): Start
+	  date was the same as end date! Now start and end date are both
+	  showing up correctly.
+
+2003-10-26 16:29  roeder
+
+	* skins/plone_portlets/login_slot.pt (Plone-2_0-branch): Moved
+	  Iterator and tabindex from body tag to first div as in all other
+	  templates
+
+2003-10-26 15:47  runyaga
+
+	* skins/: plone_form_scripts/validate_folder_rename.vpy,
+	  plone_scripts/folder_rename.cpy (Plone-2_0-branch): fix
+	  folder_rename_validator
+
+2003-10-26 14:44  plonista
+
+	* skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt.metadata
+	  (Plone-2_0-branch): Fixed .metadata for topic_edit_form.
+	  Redirect on failure was clearing out errors.
+
+2003-10-26 13:43  redcor
+
+	* skins/plone_prefs/: prefs_workflow_advanced.pt,
+	  prefs_workflow_advanced_edit.py, prefs_workflow_basic.pt,
+	  prefs_workflow_basic_edit.py (Plone-2_0-branch): prefs_workflow_*
+	  made them barely work. How comes files of such distinguished
+	  quality are part of  plone ??
+
+2003-10-26 09:53  shh42
+
+	* tests/: PloneTestCase.py, testCatalogTool.py (Plone-2_0-branch):
+	  Renamed the portal owner to, well, 'portal_owner' which should
+	  make it easier to deduce its purpose.
+
+2003-10-26 09:41  runyaga
+
+	* skins/plone_templates/global_pathbar.pt (Plone-2_0-branch): 'add
+	  to favorites' must have been lost in the big template shuffle.
+	  re-enabled it
+
+2003-10-26 09:01  limi
+
+	* skins/plone_images/xml.gif (Plone-2_0-branch): Fixed up the XML
+	  icon.
+
+2003-10-26 08:58  limi
+
+	* PloneControlPanel.py, skins/plone_images/lock_icon.gif,
+	  skins/plone_images/search_icon.png,
+	  skins/plone_images/skins_icon.gif,
+	  skins/plone_images/zope_icon.gif,
+	  skins/plone_prefs/plone_control_panel.pt,
+	  skins/plone_prefs/plone_memberprefs_panel.pt,
+	  skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Started
+	  styling the control panel, added some new icons, changed some
+	  titles.
+
+2003-10-26 07:16  runyaga
+
+	* skins/plone_3rdParty/CMFTopic/topic_edit_form.cpt
+	  (Plone-2_0-branch): remove debug code
+
+2003-10-26 07:07  runyaga
+
+	* skins/plone_form_scripts/validate_emailaddr.vpy
+	  (Plone-2_0-branch): fix email validation
+
+2003-10-26 06:50  runyaga
+
+	* skins/: plone_content/document_edit_form.cpt,
+	  plone_form_scripts/getFilenameFromRequest.py (Plone-2_0-branch):
+	  removed cruft
+
+2003-10-26 06:44  runyaga
+
+	* skins/plone_form_scripts/validate_metadata_edit.vpy
+	  (Plone-2_0-branch): add back metadata_edit
+
+2003-10-26 06:37  runyaga
+
+	* skins/plone_form_scripts/: validate_content_status_modify.vpy,
+	  validate_effective_expiry_date.vpy, validate_emailaddr.vpy
+	  (Plone-2_0-branch): more validator fixin
+
+2003-10-26 06:13  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-10-26 04:42  runyaga
 
 	* RegistrationTool.py, tests/testContentTypeScripts.py,
