@@ -3,7 +3,9 @@
 
 <head metal:define-macro="html_header" 
       tal:define="global portal_url here/portal_url">
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
+          tal:define="charset here/portal_properties/default_charset|string:iso-8859-1"
+          tal:attributes="content string:text/html;;charset=${charset}" />
 
     <title tal:define="portal_title here/portal_properties/title;
                        here_title python:test( portal_title != here.title_or_id()

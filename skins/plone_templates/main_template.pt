@@ -13,8 +13,9 @@
   </metal:block>
   
   <metal:block metal:fill-slot="head_slot"
-               tal:define="lang python:test(here.Language(), here.Language(), here.portal_properties.default_language)">
-    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html')" />
+               tal:define="lang python:test(here.Language(), here.Language(), here.portal_properties.default_language);
+                           charset here/portal_properties/default_charset|string:iso-8859-1">
+    <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Type', 'text/html;;charset=%s' % charset)" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Content-Language', lang)" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Expires', 'Sat, 1 Jan 2000 00:00:00 GMT')" />
     <metal:block tal:define="dummy python:request.RESPONSE.setHeader('Pragma', 'no-cache')" />
