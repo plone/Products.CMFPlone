@@ -8,6 +8,7 @@
 ##title=Edit user's group membership
 ##
 REQUEST=context.REQUEST
+RESPONSE=REQUEST.RESPONSE
 
 delete = REQUEST.get('delete', [])
 for groupname in delete:
@@ -19,4 +20,6 @@ for groupname in add:
     group = context.portal_groups.getGroupById(groupname)
     group.addMember(userid)
 
-return container.prefs_user_memberships()
+return RESPONSE.redirect('%s?userid=%s' % (container.prefs_user_memberships.absolute_url(),
+                                           userid)
+                        )
