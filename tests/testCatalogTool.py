@@ -182,6 +182,82 @@ class TestCatalogBugs(PloneTestCase.PloneTestCase):
         self.failUnless(hasattr(self.app, 'foo'))
 
 
+class TestCatalogUnindexing(PloneTestCase.PloneTestCase):
+    # Tests for http://plone.org/collector/3547
+    # Published objects are not unindexed on delete?
+
+    def afterSetUp(self):
+        self.catalog = self.portal.portal_catalog
+        self.workflow = self.portal.portal_workflow
+        self.folder.invokeFactory('Document', id='doc')
+
+    def testVisibleIsDefault(self):
+        state = self.workflow.getInfoFor(self.folder.doc, 'review_state')
+        self.assertEqual(state, 'visible')
+
+    def testVisibleCanBeFound(self):
+        self.failUnless(self.catalog(id='doc'))
+
+    def testVisibleIsUnindexed(self):
+        self.folder._delObject('doc')
+        self.failIf(self.catalog(id='doc'))
+
+    def testPrivateCanBeFound(self):
+        self.workflow.doActionFor(self.folder.doc, 'hide')
+        self.failUnless(self.catalog(id='doc'))
+
+    def testPrivateIsUnindexed(self):
+        self.workflow.doActionFor(self.folder.doc, 'hide')
+        self.folder._delObject('doc')
+        self.failIf(self.catalog(id='doc'))
+
+    def testPendingCanBeFound(self):
+        self.workflow.doActionFor(self.folder.doc, 'submit')
+        self.failUnless(self.catalog(id='doc'))
+
+    def testPendingIsUnindexed(self):
+        self.workflow.doActionFor(self.folder.doc, 'submit')
+        self.folder._delObject('doc')
+        self.failIf(self.catalog(id='doc'))
+
+    def testPublishedCanBeFound(self):
+        self.setRoles(['Manager'])
+        self.workflow.doActionFor(self.folder.doc, 'publish')
+        self.failUnless(self.catalog(id='doc'))
+
+    def testPublishedIsUnindexed(self):
+        # Works here!
+        self.setRoles(['Manager'])
+        self.workflow.doActionFor(self.folder.doc, 'publish')
+        self.folder._delObject('doc')
+        self.failIf(self.catalog(id='doc'))
+
+    def testPublishedIsUnindexedIfOwnerDeletes(self):
+        # Works here!
+        self.setRoles(['Manager'])
+        self.workflow.doActionFor(self.folder.doc, 'publish')
+        self.setRoles(['Member'])
+        self.folder._delObject('doc')
+        self.failIf(self.catalog(id='doc'))
+
+    def testPublishedIsUnindexedByFolderDeleteScript(self):
+        # Works here too!
+        self.setRoles(['Manager'])
+        self.workflow.doActionFor(self.folder.doc, 'publish')
+        self.setRoles(['Member'])
+        self.app.REQUEST.set('ids', ['doc'])
+        self.folder.folder_delete()
+        self.failIf(self.catalog(id='doc'))
+
+    def testPublishedIsUnindexedWhenDeletingParentFolder(self):
+        # Works here too!
+        self.setRoles(['Manager'])
+        self.workflow.doActionFor(self.folder.doc, 'publish')
+        self.setRoles(['Member'])
+        self.folder.aq_parent._delObject(self.folder.getId())
+        self.failIf(self.catalog(id='doc'))
+
+
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
@@ -189,6 +265,7 @@ def test_suite():
     suite.addTest(makeSuite(TestCatalogSearch))
     suite.addTest(makeSuite(TestFolderCataloging))
     suite.addTest(makeSuite(TestCatalogBugs))
+    suite.addTest(makeSuite(TestCatalogUnindexing))
     return suite
 
 if __name__ == '__main__':
