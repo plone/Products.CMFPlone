@@ -1,12 +1,26 @@
-<dtml-with stylesheet_properties>
+/*
+** Plone Presentation style sheet for CSS2-capable browsers.
+** Copyright Alexander Limi, 2001-2003 - http://www.plonesolutions.com
+**
+** Style sheet documentation can be found at http://plone.org/documentation
+**
+** You should preferrably use ploneCustom.css to add your own CSS classes and to
+** customize your portal, as these are the base fundaments of Plone, and will 
+** change and be refined in newer versions. Keeping your changes in
+** ploneCustom.css will make it easier to upgrade. 
+**
+** Feel free to use whole or parts of this for your own designs, but give credit
+** where credit is due.
+**
+*/
+
+/* <dtml-with stylesheet_properties> (do not remove this :) */
 
 body {
     background: White url(<dtml-var portal_url>/logo.jpg) no-repeat fixed 95% 95%;
     font-family: Verdana Helvetica Arial sans-serif;
     font-size: 60px ! important;
     color: Black;
-    margin: 5%;
-    
 }
 
 h1 {
@@ -22,13 +36,22 @@ h1 {
     page-break-before : always;
 }
 
+div.documentActions+h1 { /* Trick to avoid getting an initial blank page */
+    page-break-before: avoid; 
+} 
+
 h2 {
     font-size: 50px  ! important;	
 }
 
-p, dl, ol, ul {
+dl, ol, ul {
     font-size: 50px  ! important;
     text-align: left;
+}
+
+p { /* This hides evertything that is a normal paragraph, so you can write 
+       presentations with additional notes that only show up in print/web */
+    display: none;
 }
 
 .description {
@@ -37,25 +60,26 @@ p, dl, ol, ul {
 }
 
 div.top,
-.netscape4,
-.tabs,
-.personalBar,
-.pathBar,
-td.left,
-td.right,
-.footer,
+#logo,
+.hiddenstructure,
+div#searchBox,
+ul#portalTabs,
+ul#personalBar,
+div#pathBar,
+div#columns div#left,
+div#columns div#right,
+.contentViews,
+.contentActions,
 .help,
 .legend,
 div.message,
 div.documentActions,
+.byline,
+.netscape4,
+.footer,
+.colophon,
 input
-{
-    display: none;
-}
-
-#contentTabs,
-#contentBar
-{
+{ /* Hides all the elements irrelevant for presentations */
     display: none;
 }
 
@@ -66,10 +90,15 @@ ul {
 pre { 
     font-size: 20px;
     padding: 1em;
+    font-weight: bold;
+    border: &dtml-preBorder;;
 }
 
-div.editableDocument,
-div.document,
+div.columns * {
+    width: 100%;
+}
+
+.pageContent,
 .group {
     background: transparent;
     border: none;
@@ -91,15 +120,8 @@ a:link, a:visited {
 	text-decoration: underline;
 	}
 
-div.document a:link:after, 
-div.document a:visited:after {
-   content: " (" attr(href) ") ";
-   font-size: 90%;
-   }
-
 a.skipnav { 
     display: none;
 }
 
-</dtml-with>
-
+/* </dtml-with> */
