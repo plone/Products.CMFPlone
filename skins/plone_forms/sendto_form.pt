@@ -20,25 +20,26 @@
 
 <h1 i18n:translate="heading_send_page_to">Send this page to somebody</h1>
 
-<div class="spacer" />
+<div class="description" i18n:translate="description_send_page_to">
+Fill in the email address of your friend to send an email with the address.
+</div>
 
-<div class="boxTitle" i18n:translate="box_page_summary">Page summary</div>
+<div class="spacer" />
 
 <div class="box">
 
-    <div class="content">
-        <h2 tal:content="here/Title">Heading</h2>
-        <p tal:content="here/description">
-        Description
-        </p>
+<h6 i18n:translate="box_page_summary">Page summary</h6>
+
+    <div class="body">
+        <div class="content odd">
+            <h2 tal:content="here/Title">Heading</h2>
+            <p tal:content="here/description">
+            Description
+            </p>
+        </div>
     </div>
     
 </div>
-
-    
-<p i18n:translate="description_send_page_to">
-Fill in the email address of your friend to send an email with the address.
-</p>
 
 <form class="group"
       name="sendto_form"
@@ -145,7 +146,7 @@ Fill in the email address of your friend to send an email with the address.
                    type="submit" 
                    name="submit" 
                    value="Send" 
-                   i18n:translate=""
+                   i18n:attributes="value"
                    tal:attributes="tabindex tabindex/next;" 
                    />   
         </div>

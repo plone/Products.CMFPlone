@@ -79,7 +79,7 @@
                            i18n:translate="description_newbie_pointers_preferences_link"
                            tal:define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']"
                            tal:condition="prefs" tal:attributes="href python:prefs.pop()"
-                           >set up your Preferences</a>
+                           >set up your Preferences</a>.
                     </span>
                 
                 </p>

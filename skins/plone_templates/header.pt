@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<head metal:define-macro="html_header" 
+<head metal:define-macro="html_header"
       tal:define="global portal_url here/portal_url;
                   ztu modules/ZTUtils;
                   current_skin python:ztu.make_query(skin=request.get(here.portal_skins.getRequestVarname(), ''))">
@@ -218,6 +218,7 @@
     </div>
 
     <div class="message"
+         i18n:domain="plone" 
          metal:define-macro="portal_message" 
          tal:define="portal_message request/portal_status_message | nothing"
          tal:condition="portal_message"> 

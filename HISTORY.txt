@@ -40,6 +40,7 @@ Plone 1.0 rc2
       - Plone Zed
       
     - Fix for the printing problems which caused some text to disappear along the right edge.
+    - Added more i18n stuff, the calendar is now fully localized. 
       
 Plone 1.0 rc1
     - added 'fullname' to portal_memberdata

@@ -65,7 +65,7 @@
                 <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
             </th>
             <th colspan="5" tal:define="date string:$month/1/$year">
-              <span tal:replace="python:DateTime(date).Month()"/> <span tal:replace="python:DateTime(date).year()"/>
+              <span i18n:translate="" tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag="" /> <span tal:replace="python:DateTime(date).year()"/>
             </th>
         
             <th>
@@ -75,7 +75,7 @@
         
         <tr tal:define="weekdays here/portal_calendar/getDays">
           <tal:block repeat="weekday weekdays">
-            <td class="weekdays" tal:content="weekday">Su</td>
+            <td class="weekdays" i18n:translate="" tal:content="weekday">Su</td>
           </tal:block>
         </tr>
             <tr tal:repeat="week weeks">

@@ -1,12 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" 
-      xml:lang="en-US"
-      lang="en-US" 
+      xml:lang="en"
+      lang="en" 
       metal:define-macro="master"
       tal:define="global actions python:here.portal_actions.listFilteredActionsFor(here);
                   global site_properties here/portal_properties/site_properties;
-                  global ztu modules/ZTUtils" >
+                  global ztu modules/ZTUtils"
+      tal:attributes="lang site_properties/default_language|default;
+                      xml:lang site_properties/default_language|default;"
+      >
 
 <head metal:use-macro="here/header/macros/html_header">
   <metal:block metal:fill-slot="base">
@@ -114,11 +117,11 @@ Header stuff
                         <a href=""
                            tal:condition="site_properties/allow_sendto | nothing"
                            tal:attributes="href python:'%s/portal_form/sendto_form' % here.absolute_url()">
-                            <img tal:attributes="src string:$portal_url/mail_icon.gif" src="mail_icon.gif" alt="Send to" title="Send this page to somebody" />
+                            <img i18n:attributes="title" tal:attributes="src string:$portal_url/mail_icon.gif" src="mail_icon.gif" alt="Send to" title="Send this page to somebody" />
                         </a>
 
                         <a href="javascript:this.print();">
-                            <img tal:attributes="src string:$portal_url/print_icon.gif" src="print_icon.gif" alt="Print" title="Print this page" />
+                            <img i18n:attributes="title" tal:attributes="src string:$portal_url/print_icon.gif" src="print_icon.gif" alt="Print" title="Print this page" />
                         </a>
                     </div>
 
