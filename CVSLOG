@@ -1,3 +1,134 @@
+2003-10-26 04:42  runyaga
+
+	* RegistrationTool.py, tests/testContentTypeScripts.py,
+	  tests/testPloneTestCase.py (Plone-2_0-branch): 5 hours later we
+	  get the unit tests working again.  there are some sideeffects!
+	  The most obviously one is that some scripts that use validators
+	  (say link_edit or document_edit) these call validators such as
+	  title.  so if title is not passed into the edit script the
+	  validator will fail.	this isnt so nice. geoff will look at it
+	  more ;-)
+
+2003-10-26 04:29  runyaga
+
+	* skins/plone_form_scripts/: validate_event_edit.vpy,
+	  validate_folder_edit.vpy, validate_personalize.vpy,
+	  validate_reconfig.vpy (Plone-2_0-branch): refactoring validators
+
+2003-10-25 22:14  runyaga
+
+	* interfaces/PloneControlPanel.py (Plone-2_0-branch): removed
+	  unused arg
+
+2003-10-25 21:58  shh42
+
+	* tests/PloneTestCase.py (Plone-2_0-branch): Added Formulator to
+	  installed product list.
+
+2003-10-25 21:35  redcor
+
+	* skins/plone_form_scripts/content_status_modify.cpy
+	  (Plone-2_0-branch): In content_status_modified UnboundLocalError:
+	  local variable 'wfcontext' referenced before assignment fixed
+
+2003-10-25 21:16  redcor
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  decodeURI is not defined in IE 5. So
+	  plone_javascript.highlightSearchTerm now just returns fals in
+	  such a case
+
+2003-10-25 20:04  runyaga
+
+	* PloneFolder.py, Portal.py (Plone-2_0-branch): interfaces on
+	  PloneFolder and Portal tweaks to make them work w/ unit tests
+
+2003-10-25 19:57  runyaga
+
+	* interfaces/FactoryTool.py (Plone-2_0-branch): add factory tool to
+	  fix unit tests
+
+2003-10-25 18:40  redcor
+
+	* tests/testMembershipTool.py (Plone-2_0-branch): added test to
+	  check whether group settings remain untouched whne changing
+	  password
+
+2003-10-25 18:39  redcor
+
+	* MembershipTool.py (Plone-2_0-branch): MembershipTool.setPassword
+	  must not uset _doChangeUser to set users password, or the user
+	  looses her group settings.  Use user.changePassword
+
+2003-10-25 18:34  redcor
+
+	* PloneControlPanel.py (Plone-2_0-branch): changed permission from
+	  from ManagePortal SetOwnProperties in PloneControlPanel.getGroups
+	  and enumConfiglets.  To make "my preferences" work again
+
+2003-10-25 18:30  redcor
+
+	* skins/plone_form_scripts/plone_change_password.py
+	  (Plone-2_0-branch): moved credentialsChanged to changePassword
+
+2003-10-25 11:53  redcor
+
+	* skins/plone_scripts/browserDefault.py (Plone-2_0-branch):
+	  # _robert_ I do not know why
+		  # but Authenticated is sometimes Anonymous and then
+		  # a private folder bombs with insufficent privileges
+	  wraped ids = context.objectIds() in a try except block
+
+2003-10-25 09:14  limi
+
+	* PloneInitialize.py, Portal.py (Plone-2_0-branch): Commented out
+	  the creation of the CMFCollector and CMFWiki skin paths.
+
+2003-10-25 07:54  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Updated history.
+
+2003-10-25 07:40  limi
+
+	* skins/plone_3rdParty/: CMFCalendar/calendar_support.pt,
+	  CMFCollector/collector_add_issue_form.pt,
+	  CMFCollector/collector_contents.pt,
+	  CMFCollector/collector_edit_form.pt,
+	  CMFCollector/collector_icon.gif,
+	  CMFCollector/collector_issue_contents.pt,
+	  CMFCollector/collector_issue_edit_form.pt,
+	  CMFCollector/collector_issue_followup_form.pt,
+	  CMFCollector/collector_issue_icon.gif,
+	  CMFCollector/collector_issue_notice.dtml,
+	  CMFCollector/collector_macros.pt, CMFWiki/wiki_allpages.pt,
+	  CMFWiki/wiki_icon.gif, CMFWiki/wiki_recentchanges.pt,
+	  CMFWiki/wiki_toc.pt, CMFWiki/wikipage_advanced_form.pt,
+	  CMFWiki/wikipage_backlinks.pt, CMFWiki/wikipage_comment_form.pt,
+	  CMFWiki/wikipage_compare_versions.pt,
+	  CMFWiki/wikipage_create_form.pt, CMFWiki/wikipage_edit_form.pt,
+	  CMFWiki/wikipage_header.pt, CMFWiki/wikipage_history.pt,
+	  CMFWiki/wikipage_icon.gif, CMFWiki/wikipage_toc.pt,
+	  CMFWiki/wikipage_view.pt, ratings/rate_content.py,
+	  ratings/ratings_box.pt (Plone-2_0-branch): Removed CMFWiki,
+	  CMFCollector and CMFCalendar skins from the Plone repository.
+	  CMFWiki and CMFCollector skins are now in the Zope CMF
+	  repository, and CMFCalendar only contained a deprecated template
+	  that wasn't used. Migrations need to be updated to reflect this,
+	  details in the Plone 2 Bug Day wiki.
+
+2003-10-25 06:48  limi
+
+	* skins/plone_portlets/: actions_slot.pt, portlet_calendar.pt,
+	  portlet_events.pt, portlet_favorites.pt, portlet_language.pt,
+	  portlet_login.pt, portlet_navigation.pt, portlet_news_.pt,
+	  portlet_recent.pt, portlet_related.pt, portlet_review.pt
+	  (Plone-2_0-branch): Checked in the new Portlet files, removed the
+	  old, unused actions slot.
+
+2003-10-25 06:13  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-10-25 05:30  limi
 
 	* skins/plone_content/: document_edit_form.cpt,
