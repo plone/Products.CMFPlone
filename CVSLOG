@@ -1,3 +1,96 @@
+2004-02-18 04:40  limi
+
+	* skins/plone_ecmascript/plone_javascripts.js (Plone-2_0-branch):
+	  The autofocus on form elements can go back in after the Diet
+	  Plone effort, since it triggers after all elements have loaded,
+	  and that was too slow earlier. Tested it on my very slow laptop,
+	  and I was not able to outflank it ;)
+
+2004-02-18 02:51  limi
+
+	* HISTORY.txt (Plone-2_0-branch): Wrong number, should be 15, not
+	  16 requests ;)
+
+2004-02-18 02:49  limi
+
+	* HISTORY.txt, skins/plone_templates/header.pt (Plone-2_0-branch):
+	  Updating history with the Diet Plone® changes, removed an
+	  additional HTTP request.
+
+2004-02-18 02:12  limi
+
+	* skins/: plone_styles/plone.css.dtml, plone_templates/colophon.pt,
+	  plone_templates/document_actions.pt, plone_templates/header.pt
+	  (Plone-2_0-branch): The footer now uses CSS instead of images,
+	  shaving off 6 image requests. :)
+
+2004-02-18 01:45  jimroepcke
+
+	* Extensions/setupSite.py (Plone-2_0-branch): made os.path.join
+	  line more cross platform
+
+2004-02-18 01:37  zopezen
+
+	* Extensions/setupSite.py (Plone-2_0-branch): ZConfig hacky thing,
+	  remove command line arguements
+
+2004-02-18 01:21  zopezen
+
+	* PloneInitialize.py (Plone-2_0-branch): untested change to only
+	  install Epoz...
+
+2004-02-18 01:17  limi
+
+	* skins/: plone_content/event_edit_form.cpt,
+	  plone_content/metadata_edit_form.cpt,
+	  plone_forms/content_status_history.cpt, plone_templates/header.pt
+	  (Plone-2_0-branch): The JS calendar is now only included on pages
+	  that need it, shaving an additional 40K off the average initial
+	  page load of a Plone page.
+
+2004-02-18 01:00  zopezen
+
+	* Extensions/setupSite.py (Plone-2_0-branch): Fix for 2.7, just use
+	  Zope.configure()
+
+2004-02-18 00:55  limi
+
+	* skins/plone_templates/header.pt (Plone-2_0-branch): Commented out
+	  the old tooltip JS, easy to re-enable if you need it. Saves ~20K,
+	  one HTTP request and a few conditional checks per initial page
+	  load of Plone.
+
+2004-02-18 00:36  limi
+
+	* skins/plone_templates/document_byline.pt (Plone-2_0-branch):
+	  Fixed the content byline to check for allowAnonymousViewAbout,
+	  like it should.
+
+2004-02-17 17:38  limi
+
+	* migrations/v2/release_candidates.py (Plone-2_0-branch): Fixed
+	  spelling error.
+
+2004-02-17 14:29  dpunktnpunkt
+
+	* skins/: plone_scripts/translate.py,
+	  plone_templates/folder_contents.pt,
+	  plone_templates/global_defines.pt (Plone-2_0-branch): Moved
+	  translate from global_defines to its own Python Script.
+
+2004-02-17 14:23  limi
+
+	* skins/plone_portlets/portlet_navigation.pt (Plone-2_0-branch):
+	  Reverting to previous behaviour for nav tree, doesn't use
+	  folder_contents on everything anymore. use_folder_contents is a
+	  property used in folder_contents - and shouldn't be touched.
+	  Hopefully this mess will be cleared up when we get the new
+	  navigation tree in 2.1.
+
+2004-02-17 04:51  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-02-16 20:19  jimroepcke
 
 	* skins/: plone_tableless/main_template.pt,
