@@ -1,23 +1,26 @@
+import re
+import sys
+import traceback
+from types import TupleType, UnicodeType, DictType
+from urllib import urlencode
+import urlparse
+from cgi import parse_qs
+
+from zLOG import LOG, INFO, WARNING
+
+from Acquisition import aq_inner, aq_parent
 from Products.CMFCore.utils import UniqueObject, getToolByName
-from Products.CMFCore.utils import _checkPermission, _getAuthenticatedUser, limitGrantedRoles
+from Products.CMFCore.utils import _checkPermission, \
+     _getAuthenticatedUser, limitGrantedRoles
 from Products.CMFCore.utils import getToolByName, _dtmldir
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass, DTMLFile
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore import CMFCorePermissions
-from types import TupleType, UnicodeType, DictType
-from urllib import urlencode
-import urlparse
-from cgi import parse_qs
 
-import re
-import sys
-import traceback
-
-from StatelessTree import constructNavigationTreeViewBuilder, NavigationTreeViewBuilder
-
-from zLOG import LOG, INFO, WARNING 
+from StatelessTree import constructNavigationTreeViewBuilder, \
+     NavigationTreeViewBuilder as NTVB
 
 _marker = ()
 
@@ -36,17 +39,10 @@ class PloneTool (UniqueObject, SimpleItem):
         """Sends a link of a page to someone
         """
         if not variables: return
-        mail_text = self.sendto_template( self
-                                        , send_from_address = variables['send_from_address']
-                                        , send_to_address = variables['send_to_address']
-                                        , url = variables['url']
-                                        , title = variables['title']
-                                        , description = variables['description']
-                                        , comment = variables['comment']
-                                        )
+        mail_text = self.sendto_template( self, **variables)
         host = self.MailHost
         host.send( mail_text )
-        
+
     security.declarePublic('editMetadata')
     def editMetadata( self
                      , obj
@@ -61,16 +57,18 @@ class PloneTool (UniqueObject, SimpleItem):
                      , language=None
                      , rights=None
                      ,  **kwargs):
-        """ responsible for setting metadata on a content object 
-            we assume the obj implemented IDublinCoreMetadata 
+        """ responsible for setting metadata on a content object
+            we assume the obj implemented IDublinCoreMetadata
         """
         REQUEST=self.REQUEST
         pfx=self.field_prefix
+
         def tuplify( value ):
             if not type(value) is TupleType:
                 value = tuple( value )
             temp = filter( None, value )
             return tuple( temp )
+
         if title is None:
             title=REQUEST.get(pfx+'title', obj.Title())
         if subject is None:
@@ -78,15 +76,18 @@ class PloneTool (UniqueObject, SimpleItem):
         if description is None:
             description=REQUEST.get(pfx+'description', obj.Description())
         if contributors is None:
-            contributors=tuplify(REQUEST.get(pfx+'contributors', obj.Contributors()))
-        else:    
+            contributors=tuplify(REQUEST.get(pfx+'contributors',
+                                             obj.Contributors()))
+        else:
             contributors=tuplify(contributors)
         if effective_date is None:
-            effective_date=REQUEST.get(pfx+'effective_date', obj.EffectiveDate())
+            effective_date=REQUEST.get(pfx+'effective_date',
+                                       obj.EffectiveDate())
         if effective_date == '':
             effective_date = 'None'
         if expiration_date is None:
-            expiration_date=REQUEST.get(pfx+'expiration_date', obj.ExpirationDate())
+            expiration_date=REQUEST.get(pfx+'expiration_date',
+                                        obj.ExpirationDate())
         if expiration_date == '':
             expiration_date = 'None'
         if format is None:
@@ -100,8 +101,9 @@ class PloneTool (UniqueObject, SimpleItem):
             if allowDiscussion=='default': allowDiscussion=None
             elif allowDiscussion=='off': allowDiscussion=0
             elif allowDiscussion=='on': allowDiscussion=1
-            getToolByName(self, 'portal_discussion').overrideDiscussionFor(obj, allowDiscussion)
-            
+            disc_tool = getToolByName(self, 'portal_discussion')
+            disc_tool.overrideDiscussionFor(obj, allowDiscussion)
+
         obj.editMetadata( title=title
                         , description=description
                         , subject=subject
@@ -118,10 +120,8 @@ class PloneTool (UniqueObject, SimpleItem):
             id = REQUEST.get('id', '')
             id = REQUEST.get(self.field_prefix+'id', '')
         if id != obj.getId():
-            try:
-                obj.getParentNode().manage_renameObject(obj.getId(), id)
-            except: #XXX have to do this for Topics and maybe other folderish objects
-                obj.aq_parent.manage_renameObject(obj.getId(), id)
+            parent = aq_parent(aq_inner(obj))
+            parent.manage_renameObject(obj.getId(), id)
 
     def _makeTransactionNote(self, obj, msg=''):
         #XXX why not aq_parent()?
@@ -139,26 +139,23 @@ class PloneTool (UniqueObject, SimpleItem):
     def contentEdit(self, obj, **kwargs):
         """ encapsulates how the editing of content occurs """
 
-        #XXX Interface package appears to be broken.  Atleast for Forum objects.
-        #    it may blow up on things that *done* implement the DublinCore interface. 
-        #    Someone please look into this.  We should probably catch the exception (think its Tuple error)
-        #    instead of swallowing all exceptions.
         try:
-            apply(self.editMetadata, (obj,), kwargs)
-        except AttributeError:
-            pass
-        
-        if kwargs.get('id', None) is not None: 
-            self._renameObject(obj, id=kwargs['id'].strip()) 
-	
-        self._makeTransactionNote(obj) #automated the manual transaction noting in xxxx_edit.py
+            self.editMetadata(obj, **kwargs)
+        except AttributeError, msg:
+            log('Failure editing metadata at: %s.\n%s\n' %
+                (obj.absolute_url(), msg))
+
+        if kwargs.get('id', None) is not None:
+            self._renameObject(obj, id=kwargs['id'].strip())
+
+        self._makeTransactionNote(obj)
 
     security.declarePublic('availableMIMETypes')
     def availableMIMETypes(self):
         """ Return a map of mimetypes """
         # This should probably be done in a more efficent way.
         import mimetypes
-        
+
         result = []
         for mimetype in mimetypes.types_map.values():
             if not mimetype in result:
@@ -177,15 +174,15 @@ class PloneTool (UniqueObject, SimpleItem):
         try:
             wfs=wftool.getChainFor(object)
         except: #XXX ick
-            pass 
+            pass
         return wfs
 
     security.declareProtected(CMFCorePermissions.View, 'getIconFor')
     def getIconFor(self, actinfo, default=_marker):
-        """ this does the mapping from ActionInformation instance
-            of a 'filtered' ActionInformation (dictionary) to its 
-            value in the 'action_to_icon mapping table in portal_properties 
-        """
+        """ This does the mapping from ActionInformation instance of a
+        'filtered' ActionInformation (dictionary) to its value in the
+        'action_to_icon mapping table in portal_properties """
+
         if type(actinfo) is DictType:
             _category=actinfo['category']
             _id=actinfo['id']
@@ -196,14 +193,15 @@ class PloneTool (UniqueObject, SimpleItem):
         iconmap=self.portal_properties.action_to_icon_mapping
         iconid=iconmap.getProperty('%s.%s' % (_category, _id), default)
         if iconid==_marker:
-            raise KeyError, "Icon could not be found for category, %s with action %s" % (_category, _id)
+            raise KeyError, "Icon could not be found for category %s, with action %s" % (_category, _id)
         return getattr(self, iconid) #return the icon instance
 
     security.declareProtected(CMFCorePermissions.View, 'getReviewStateTitleFor')
     def getReviewStateTitleFor(self, obj):
-        """Utility method that gets the workflow state title for the object's review_state.
-           Returns None if no review_state found.
-           """
+        """Utility method that gets the workflow state title for the
+        object's review_state.  Returns None if no review_state found.
+        """
+
         wf_tool=getToolByName(self, 'portal_workflow')
         wfs=()
         review_states=()
@@ -225,7 +223,7 @@ class PloneTool (UniqueObject, SimpleItem):
     def setDefaultSkin(self, default_skin):
         """ sets the default skin """
         st=getToolByName(self, 'portal_skins')
-        st.default_skin=default_skin        
+        st.default_skin=default_skin
 
     # Set the skin on the page to the specified value
     # Can be called from a page template, but it must be called before
@@ -237,26 +235,29 @@ class PloneTool (UniqueObject, SimpleItem):
         """ sets the current skin """
         portal = getToolByName(self, 'portal_url').getPortalObject()
         portal._v_skindata=(self.REQUEST, self.getSkinByName(skin_name), {} )
-     
+
     #XXX deprecated methods
     security.declarePublic('getNextPageFor')
     def getNextPageFor(self, context, action, status, **kwargs):
-        log( 'Plone Tool Deprecation', action + ' has called plone_utils.getNextPageFor()'    
-           + ' which has been deprecated use portal_navigation.getNextRequestFor() instead.'
-           , WARNING)
-        
+        log( 'Plone Tool Deprecation', action + \
+             ' has called plone_utils.getNextPageFor()' + \
+             ' which has been deprecated. ' + \
+             'Use portal_navigation.getNextRequestFor() instead.', WARNING)
+
         nav_tool=getToolByName(self, 'portal_navigation')
         return nav_tool.getNextPageFor(context, action, status, **kwargs)
-            
+
     security.declarePublic('getNextRequestFor')
     def getNextRequestFor(self, context, action, status, **kwargs):
-        log( 'Plone Tool Deprecation', action + ' has called plone_utils.getNextPageFor()' 
-           + ' which has been deprecated use portal_navigation.getNextRequestFor() instead.'
-           , WARNING)
+        log( 'Plone Tool Deprecation', action + \
+             ' has called plone_utils.getNextPageFor()' + \
+             ' which has been deprecated. ' + \
+             'Use portal_navigation.getNextRequestFor() instead.', WARNING)
         nav_tool=getToolByName(self, 'portal_navigation')
         return nav_tool.getNextRequestFor(context, action, status, **kwargs)
 
-    security.declareProtected(CMFCorePermissions.ManagePortal, 'changeOwnershipOf')
+    security.declareProtected(CMFCorePermissions.ManagePortal,
+                              'changeOwnershipOf')
     def changeOwnershipOf(self, object, owner, recursive=0):
         """ changes the ownership of an object """
         membership=getToolByName(self, 'portal_membership')
@@ -265,40 +266,39 @@ class PloneTool (UniqueObject, SimpleItem):
         acl_users=getattr(self, 'acl_users')
         user = acl_users.getUser(owner)
         if user is not None:
-            user= user.__of__(acl_users)
+            user = user.__of__(acl_users)
         else:
             from AccessControl import getSecurityManager
-            user= getSecurityManager().getUser()
+            user = getSecurityManager().getUser()
 
         catalog_tool=getToolByName(self, 'portal_catalog')
         object.changeOwnership(user, recursive)
 
         catalog_tool.reindexObject(object)
         if recursive:
-            _path=getToolByName(self, 'portal_url').getRelativeContentURL(object)
-            subobjects=[b.getObject() for b in catalog_tool( path={'query':_path,'level':1} )]
+            purl = getToolByName(self, 'portal_url')
+            _path = purl.getRelativeContentURL(object)
+            subobjects=[b.getObject() for b in \
+                        catalog_tool(path={'query':_path,'level':1})]
             for obj in subobjects:
                 catalog_tool.reindexObject(obj)
-            
-            
-    
+
     security.declarePublic('urlparse')
     def urlparse(self, url):
         """ returns the pieces of url """
         return urlparse.urlparse(url)
 
-
     # Enable scripts to get the string value of an exception
     # even if the thrown exception is a string and not a
     # subclass of Exception.
     def exceptionString(self):
-        s = sys.exc_info()[:2]  # don't assign the traceback to s (otherwise will generate a circular reference)
+        s = sys.exc_info()[:2]  # don't assign the traceback to s 
+                                # (otherwise will generate a circular reference)
         if s[0] == None:
             return None
         if type(s[0]) == type(''):
             return s[0]
         return str(s[1])
-
 
     # provide a way of dumping an exception to the log even if we
     # catch it and otherwise ignore it
@@ -307,37 +307,49 @@ class PloneTool (UniqueObject, SimpleItem):
         log(summary=self.exceptionString(),
             text='\n'.join(traceback.format_exception(*sys.exc_info())),
             log_level=WARNING)
-        
+
     #replaces navigation_tree_builder.py
     def createNavigationTreeBuilder(self, tree_root,
-      navBatchStart=None,showMyUserFolderOnly=None,
-      includeTop=None,showFolderishSiblingsOnly=None,
-      showFolderishChildrenOnly=None,showNonFolderishObject=None,
-      topLevel=None,batchSize=None,showTopicResults=None,
-      rolesSeeUnpublishedContent=None,sortCriteria=None,
-      metaTypesNotToList=None,parentMetaTypesNotToQuery=None,
-      forceParentsInBatch=None,skipIndex_html=None,rolesSeeHiddenContent=None):
-        """ returns a structure that can be used by navigation_tree_slot.
-            We are being quite lazy because of massive signature. 
-        """        
-        tree_builder=NavigationTreeViewBuilder(tree_root=tree_root, 
-          navBatchStart=navBatchStart, 
-          showMyUserFolderOnly=showMyUserFolderOnly, 
-          includeTop=includeTop, 
-          showFolderishSiblingsOnly=showFolderishSiblingsOnly, 
-          showFolderishChildrenOnly=showFolderishChildrenOnly, 
-          showNonFolderishObject=showNonFolderishObject, 
-          topLevel=topLevel, 
-          batchSize=batchSize, 
-          showTopicResults=showTopicResults,
-          rolesSeeUnpublishedContent=rolesSeeUnpublishedContent,
-          sortCriteria=sortCriteria, metaTypesNotToList=metaTypesNotToList, 
-          parentMetaTypesNotToQuery=parentMetaTypesNotToQuery, 
-          forceParentsInBatch=forceParentsInBatch, 
-          skipIndex_html=skipIndex_html, 
-          rolesSeeHiddenContent=rolesSeeHiddenContent )
-        ctx_tree_builder=tree_builder.__of__(self)
+                                    navBatchStart=None,
+                                    showMyUserFolderOnly=None,
+                                    includeTop=None,
+                                    showFolderishSiblingsOnly=None,
+                                    showFolderishChildrenOnly=None,
+                                    showNonFolderishObject=None,
+                                    topLevel=None,
+                                    batchSize=None,
+                                    showTopicResults=None,
+                                    rolesSeeUnpublishedContent=None,
+                                    sortCriteria=None,
+                                    metaTypesNotToList=None,
+                                    parentMetaTypesNotToQuery=None,
+                                    forceParentsInBatch=None,
+                                    skipIndex_html=None,
+                                    rolesSeeHiddenContent=None):
+
+        """ Returns a structure that can be used by
+        navigation_tree_slot.  We are being quite lazy because of
+        massive signature.  """
+
+        t_builder = NTVB(tree_root=tree_root,
+                         navBatchStart=navBatchStart,
+                         showMyUserFolderOnly=showMyUserFolderOnly,
+                         includeTop=includeTop,
+                         showFolderishSiblingsOnly=showFolderishSiblingsOnly,
+                         showFolderishChildrenOnly=showFolderishChildrenOnly,
+                         showNonFolderishObject=showNonFolderishObject,
+                         topLevel=topLevel,
+                         batchSize=batchSize,
+                         showTopicResults=showTopicResults,
+                         rolesSeeUnpublishedContent=rolesSeeUnpublishedContent,
+                         sortCriteria=sortCriteria,
+                         metaTypesNotToList=metaTypesNotToList,
+                         parentMetaTypesNotToQuery=parentMetaTypesNotToQuery,
+                         forceParentsInBatch=forceParentsInBatch,
+                         skipIndex_html=skipIndex_html,
+                         rolesSeeHiddenContent=rolesSeeHiddenContent )
+        ctx_tree_builder=t_builder.__of__(self)
         return ctx_tree_builder()
-        
+
 InitializeClass(PloneTool)
 
