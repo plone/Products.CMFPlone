@@ -1,7 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<div class="personalBar" metal:define-macro="personalBar"
+<div class="contentBar" metal:define-macro="contentBar"> &nbsp; </div>
+
+<div class="personalBar"
+     metal:define-macro="personalBar"
      tal:define="portal_url here/portal_url;
                  actions python:request.get('filtered_actions', here.portal_actions.listFilteredActionsFor(here)); 
                  my_stuff python:[ua for ua in actions['user'] if ua.get('id','')=='mystuff'];	
@@ -57,14 +60,17 @@
 
 </div>
 
-<div class="pathBar" metal:define-macro="pathBar"
+<div class="pathBar"
+     metal:define-macro="pathBar"
      tal:define="breadcrumbs python:here.breadcrumbs(here);
                  portal_url here/portal_url;"
      tal:condition="breadcrumbs">
 
-    <div class="clock" tal:content="here/toPortalTime"></div>
+    <div class="clock"
+         tal:content="here/toPortalTime">05/02/2002 07:20 AM</div>
 
         You are here: 
+
         <span tal:repeat="crumb breadcrumbs">
           <span tal:define="global is_last repeat/crumb/end"
                 tal:replace="nothing" />
@@ -72,27 +78,22 @@
           <a href="#" tal:attributes="href python:crumb[1]"
              tal:content="python:crumb[0]" tal:condition="not: is_last">crumb</a>
 
-          <strong tal:condition="python:not is_last">&raquo;</strong>
+          <strong tal:condition="python:not is_last"> &raquo; </strong>
 
-          <strong tal:condition="python:is_last" tal:content="python:crumb[0]" >crumb</strong>
+          <strong tal:condition="python:is_last"
+	          tal:content="python:crumb[0]" > crumb </strong>
 
         </span>   
 
         <a href="#"
            tal:condition="not: here/portal_membership/isAnonymousUser"
-           tal:attributes="href python:here.absolute_url()+'/addtoFavorites'">
-             <img src="plone_ico/img/linkTransparent.gif" alt="&gt;" border="0"
-	          tal:attributes="src string:$portal_url/linkTransparent.gif" />Add to My Favorites
+           tal:attributes="href string:${here/absolute_url}/addtoFavorites">
+             <img src="plone_ico/img/linkTransparent.gif" 
+	          alt="&gt;" 
+		  border="0"
+	          tal:attributes="src string:$portal_url/linkTransparent.gif" />
+	Add to My Favorites
         </a>
 
-
-
 </div>
 
-
-
-<div class="contentBar" metal:define-macro="contentBar">
-
-&nbsp;
-
-</div>
