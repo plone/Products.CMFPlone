@@ -8,6 +8,9 @@
 ##title=
 ##
 
+if context.portal_membership.isAnonymousUser():
+    return []
+
 wf_wlist_map = context.getWorklists() #getWorklists is currently a external method ;(
 catalog=context.portal_catalog
 avail_objs = []

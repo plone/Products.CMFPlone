@@ -35,7 +35,7 @@
 </div>
 
 <div class="pathBar" metal:define-macro="pathBar"
-     tal:define="breadcrumbs python:container.breadcrumbs(here)"
+     tal:define="breadcrumbs python:container.breadcrumbs(here); portal_url here/portal_url;"
      tal:condition="breadcrumbs">
 
     <div class="clock" tal:content="python:here.toPortalTime()"></div>
