@@ -1,5 +1,7 @@
 from __future__ import nested_scopes
 
+from ComputedAttribute import ComputedAttribute
+
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
 from Products.CMFPlone import PloneFolder
@@ -130,7 +132,6 @@ class PloneSite(CMFSite, OrderedContainer):
                     return getProperty('default_charset', 'utf-8')
         return 'utf-8'
 
-    from ComputedAttribute import ComputedAttribute
     management_page_charset = ComputedAttribute(_management_page_charset, 1)
 
 Globals.InitializeClass(PloneSite)
