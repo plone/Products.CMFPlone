@@ -4,7 +4,8 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       i18n:domain="plone">
 
-<body>
+<body tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                  tabindex python:Iterator()"> 
 
 <!-- The Log in box -->
 
@@ -25,16 +26,17 @@
     
                     <input type="hidden" name="came_from" value=""
                            tal:condition="python:request.get('came_from', '')"
-                           tal:attributes="value request/came_from" />
+                           tal:attributes="value request/came_from;
+                                           tabindex tabindex/next" />
     
                     <strong i18n:translate="label_name">Name</strong> <br />
                     <input type="text" name="__ac_name" size="12"
-                           tal:attributes="value python:request.get('__ac_name', '')" />
+                           tal:attributes="value python:request.get('__ac_name', ''); tabindex tabindex/next" />
     
                     <br />
     
                     <strong i18n:translate="label_password">Password</strong>  <br />
-                    <input type="password" name="__ac_password" size="12" />
+                    <input tal:attributes="tabindex tabindex/next" type="password" name="__ac_password" size="12" />
     
                     <br />
                     &nbsp;
@@ -44,6 +46,7 @@
                            type="submit" 
                            name="submit"
                            value="Log in" 
+                           tal:attributes="tabindex tabindex/next"
                            i18n:attributes="value"/>
                 </form>
             </div>

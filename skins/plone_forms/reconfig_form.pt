@@ -13,9 +13,7 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="errors python:request.get('errors', {});
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();"
+     tal:define="errors python:request.get('errors', {})"
      tal:condition="here/rejectAnonymous" >
 	
     <h1 i18n:translate="heading_plone_setup">Plone Setup</h1>
@@ -50,8 +48,10 @@
             
             <div class="field">                
               
-                <div tal:condition="error_email_from_name"
-                     tal:replace="structure string:$error_email_from_name <br />" />
+                <div tal:condition="error_email_from_name">
+                    <tal:block i18n:translate="" content="error_email_from_name">Error</tal:block>
+                    <br />
+                </div>
                 
                 <input name="email_from_name"
                        size="30"
@@ -82,8 +82,10 @@
             <div class="field"
                  tal:attributes="class python:test(error_email_from_address, 'field error', 'field')">
             
-                <div tal:condition="error_email_from_address"
-                     tal:replace="structure string:$error_email_from_address <br />" />
+                <div tal:condition="error_email_from_address">
+                    <tal:block i18n:translate="" content="error_email_from_address">Error</tal:block>
+                    <br />
+                </div>
                                  
                 <input name="email_from_address"
                        size="30"
@@ -115,8 +117,10 @@
             <div class="field"
                  tal:attributes="class python:test(error_smtp_server, 'field error', 'field')">
             
-                <div tal:condition="error_smtp_server"
-                     tal:replace="structure string:$error_smtp_server <br />" />
+                <div tal:condition="error_smtp_server">
+                    <tal:block i18n:translate="" content="error_smtp_server">Error</tal:block>
+                    <br />
+                </div>
                                                  
                 <input name="smtp_server" 
                        value=""
@@ -147,8 +151,10 @@
             <div class="field"
                  tal:attributes="class python:test(error_title, 'field error', 'field')">
             
-                <div tal:condition="error_title"
-                     tal:replace="structure string:$error_title <br />" />
+                <div tal:condition="error_title">
+                    <tal:block i18n:translate="" content="error_title">Error</tal:block>
+                    <br />
+                </div>
 
                 <input name="title" 
                        size="30"
@@ -233,8 +239,10 @@
             <div class="field"
                  tal:attributes="class python:test(error_localTimeFormat, 'field error', 'field')">
                  
-                <div tal:condition="error_localTimeFormat"
-                     tal:replace="structure string:$error_localTimeFormat <br />" />
+                <div tal:condition="error_localTimeFormat">
+                    <tal:block i18n:translate="" content="error_localTimeFormat">Error</tal:block>
+                    <br />
+                </div>
                      
                 <input type="text"
                        name="localTimeFormat"
@@ -264,8 +272,10 @@
             <div class="field"
                  tal:attributes="class python:test(error_localLongTimeFormat, 'field error', 'field')">
                  
-                 <div tal:condition="error_localLongTimeFormat"
-                      tal:replace="structure string:$error_localLongTimeFormat <br />" />
+                 <div tal:condition="error_localLongTimeFormat">
+                     <tal:block i18n:translate="" content="error_localLongTimeFormat">Error</tal:block>
+                     <br />
+                 </div>
                  
                  <input type="text"
                         name="localLongTimeFormat"

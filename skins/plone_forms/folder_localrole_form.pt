@@ -10,10 +10,8 @@
 
   <div metal:fill-slot="main"
        tal:define="join python:modules['string'].join;
-                   Iterator python:modules['Products.CMFPlone'].IndexIterator;
                    Batch python:modules['Products.CMFPlone'].Batch;
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
-                   tabindex python:Iterator();
                    search_submitted request/role_submit|nothing;
                    search_results python:test(search_submitted, here.portal_membership.searchMembers( search_param=request.get('search_param','')
                                                                                                     , search_term=request.get('search_term', '') ), None);"

@@ -4,9 +4,7 @@
 
 <body>
 <div metal:fill-slot="main"
-     tal:define="b_start python:request.get('b_start', 0);
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+     tal:define="b_start python:request.get('b_start', 0)">
 
 <h1> Topic Subtopics: <span tal:replace="here/getId">Id</span> </h1>
 

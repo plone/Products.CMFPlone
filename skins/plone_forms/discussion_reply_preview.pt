@@ -12,9 +12,7 @@
         </tal:block>
     </metal:block>
 
-<div metal:fill-slot="main"
-     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+<div metal:fill-slot="main">
 
     <h1 i18n:translate="heading_comment_preview">Comment Preview</h1>
 

@@ -31,7 +31,9 @@
         local_actions python:actions.get('object_tabs', []);
         isFolder python:test(here.getTypeInfo().getId() in site_properties.use_folder_tabs,1,0);
         template_id options/template_id|template_id|template/getId|nothing;
-        slots_mapping options/slots_mapping|template/prepare_slots|nothing;" 
+        slots_mapping options/slots_mapping|template/prepare_slots|here/prepare_slots|nothing;
+        Iterator python:modules['Products.CMFPlone'].IndexIterator;
+        tabindex python:Iterator(pos=30000);" 
       tal:attributes="lang site_properties/default_language|default;
                       xml:lang site_properties/default_language|default;">
 
@@ -79,6 +81,7 @@ Header stuff
     <tbody>
         <tr>
             <td class="left" metal:define-macro="left_column"
+	                     tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator; tabindex python:Iterator(pos=10000);" 
 	                     tal:condition="slots_mapping/left|nothing">
                 <metal:block tal:repeat="slot slots_mapping/left|slots_mapping/left">
                 <tal:block tal:define="global pathexpr python:slot[0];
@@ -92,7 +95,9 @@ Header stuff
             </td>
             <td class="main" 
                 tal:define="global show_border python:here.showEditableBorder( template_id=template_id
-                                                                             , actions=actions )">
+                                                                             , actions=actions );
+                            Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                            tabindex python:Iterator(pos=0);">
 
                 <metal:block define-slot="super"
 		             tal:condition="show_border" >
@@ -176,7 +181,10 @@ Header stuff
                 </div>
             </td>
 
-            <td class="right" tal:condition="slots_mapping/right">
+            <td class="right" metal:define-macro="right_column"
+	                      tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                                          tabindex python:Iterator(pos=20000);" 
+	                      tal:condition="slots_mapping/right">
                 <metal:block tal:repeat="slot slots_mapping/right">
                     <tal:block tal:define="global pathexpr python:slot[0];
                                            global usemacro python:slot[1];"

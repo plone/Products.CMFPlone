@@ -1,6 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<html tal:define="Iterator python:modules['Products.CMFPlone'].IndexIterator;
+                  tabindex python:Iterator();">
+
 <head metal:define-macro="html_header"
       tal:define="global portal_url portal_url|here/portal_url;
                   ztu ztu|modules/ZTUtils;
@@ -104,11 +107,12 @@
                            type="text" 
                            size="20" 
                            value=""
-                           tal:attributes="value request/SearchableText|nothing;" />
+                           tal:attributes="value request/SearchableText|nothing; tabindex tabindex/next" />
     
                     <input class="context searchButton" 
                            type="submit" 
                            value="Search"
+                           tal:attributes="tabindex tabindex/next"
                            i18n:attributes="value" />
                 </form>
             </div>
@@ -228,3 +232,4 @@
         <strong tal:content="portal_message" i18n:translate=""></strong> 
     </div>
 
+</html>

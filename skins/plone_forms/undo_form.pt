@@ -16,9 +16,7 @@
      tal:define="transactions python:container.portal_undo.listUndoableTransactionsFor(here);
                  Batch python:modules['Products.CMFPlone'].Batch;
                  DateTime python:modules['DateTime'].DateTime;
-                 b_start python:request.get('b_start',0);
-                 Iterator python:modules['Products.CMFPlone'].IndexIterator;
-                 tabindex python:Iterator();">
+                 b_start python:request.get('b_start',0)">
 
     <form name="undo_form" 
           action="undo" 
