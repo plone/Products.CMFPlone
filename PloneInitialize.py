@@ -34,7 +34,9 @@ def go(app):
         # oh dear
         out.append('Database init failed miserably [%s, %s]' % _get_error())
 
-    log('\n'.join(out)+'\n')
+    if out:
+        # only log if we have something to say
+        log('\n'.join(out)+'\n')
 
 def _get_error():
     type, value = sys.exc_info()[:2]
@@ -52,7 +54,6 @@ def _go(app):
         fh.close()
     except: 
         # no file found
-        out.append("No config file found, this is probably fine [%s, %s]" % _get_error())
         return
 
     # read the config file and find a million excuses
