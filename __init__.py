@@ -95,6 +95,9 @@ def initialize(context):
     # make ZCTextIndex ParseError importable ttw
     ModuleSecurityInfo('Products.ZCTextIndex.ParseTree').declarePublic('ParseError')
 
+    # make DateTimeError importable ttw
+    ModuleSecurityInfo('DateTime.DateTime').declarePublic('DateTimeError')
+
     # make base_hasattr importable ttw
     ModuleSecurityInfo('Products.CMFPlone').declarePublic('base_hasattr')
 

@@ -8,19 +8,26 @@
 ##parameters=effective_date=None,expiration_date=None
 ##title=Validates effective,expiration date
 ##
-from DateTime import DateTime
+try:
+    from DateTime.DateTime import DateTimeError
+except ImportError:
+    DateTimeError = 'DateTimeError'
+
+REQUEST=context.REQUEST
 
 try:
     if effective_date and effective_date!='None':
         effective_date = DateTime(effective_date)
-except (AttributeError, KeyError):
+except (AttributeError, KeyError, DateTimeError):
     state.setError('effective_date', 'Please enter a valid date and time.')
+    REQUEST.set('effective_date', '')   # Remove bad date from request
     
 try:
     if expiration_date and expiration_date != 'None':
         expiration_date = DateTime(expiration_date)
-except (AttributeError, KeyError):
+except (AttributeError, KeyError, DateTimeError):
     state.setError('expiration_date', 'Please enter a valid date and time.')
+    REQUEST.set('expiration_date', '')  # Remove bad date from request
 
 #if effective_date and expiration_date:
 #    if effective_date.greaterThan(expiration_date):

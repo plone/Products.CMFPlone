@@ -8,6 +8,11 @@
 ##title=
 ##
 
+try:
+    from DateTime.DateTime import DateTimeError
+except ImportError:
+    DateTimeError = 'DateTimeError'
+
 # 'id' is what shows up.  December for month 12. 
 # 'value' is the value for the form.
 # 'selected' is whether or not it is selected.
@@ -42,14 +47,18 @@ if same_type(date, ''):
     date=date.strip()
     if not date:
         date=None
-    if date and date.split(' ')[-1].startswith('GMT'):
-        date=DateTime(' '.join(date.split()[:-1]))
+    elif date.split(' ')[-1].startswith('GMT'):
+        date=' '.join(date.split(' ')[:-1])
 
 if date is None:
-    date=DateTime()
+    date=now
     default=1
 elif not same_type(date, now):
-    date=DateTime(date)
+    try:
+        date=DateTime(date)
+    except (TypeError, DateTimeError):
+        date=now
+        default=1
 
 # Anything above PLONE_CEILING should be PLONE_CEILING
 if date.greaterThan(PLONE_CEILING):

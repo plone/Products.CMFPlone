@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 2.0.5 - Backed Up Willie - Unreleased (rev: XXXX)
 
+    - Greatly improved the handling of DateTimeErrors in event_edit_form
+      and metadata_edit_form + validators. No more traceback on Feb 31!
+      [stefan]
+
     - Fixed http://plone.org/collector/2982 - the CMF does not allow to
       register with a user name that equals the name of a content object
       on the acquisition path. Provide a sane error message until this is

@@ -9,12 +9,15 @@
 ##title=Validates syndication form
 ##
 
-from DateTime import DateTime
+try:
+    from DateTime.DateTime import DateTimeError
+except ImportError:
+    DateTimeError = 'DateTimeError'
 
 if updateBase and updateBase!='None':
     try:
         updateBase=DateTime(updateBase)
-    except AttributeError:
+    except (AttributeError, DateTimeError):
         state.setError('updateBase', 'Please enter a valid date and time.')
 
 if updateFrequency is None:

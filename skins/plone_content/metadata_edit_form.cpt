@@ -177,7 +177,8 @@
           </div>
 
           <div class="field"
-               tal:define="error errors/effective_date | nothing;">
+               tal:define="error errors/effective_date | nothing;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="effective_date"
                    i18n:translate="label_effective_date">
@@ -196,8 +197,7 @@
                              formvalue  request/effective_date | nothing;
                              inputvalue python:test(here.effective_date, here.effective_date, '');
                              inputvalue python:test(formvalue,formvalue,inputvalue);
-                             tabindex tabindex/next;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
+                             tabindex tabindex/next">
 
               <div tal:content="error">Validation error output</div>
 
@@ -208,7 +208,8 @@
           </div>
 
           <div class="field"
-               tal:define="error errors/expiration_date | nothing;">
+               tal:define="error errors/expiration_date | nothing;"
+               tal:attributes="class python:test(error, 'field error', 'field')">
 
             <label for="expiration_date"
                    i18n:translate="label_expiration_date">
@@ -226,8 +227,7 @@
                              formvalue  request/expiration_date | nothing;
                              inputvalue python:test(here.expiration_date, here.expiration_date, '');
                              inputvalue python:test(formvalue,formvalue,inputvalue);
-                             tabindex tabindex/next;"
-                 tal:attributes="class python:test(error, 'field error', 'field')">
+                             tabindex tabindex/next">
 
               <div tal:content="error">Validation error output</div>
 
