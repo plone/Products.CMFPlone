@@ -104,6 +104,9 @@ class PloneGenerator(Portal.PortalGenerator):
         wf_tool.manage_addWorkflow( id='folder_workflow'
                                   , workflow_type='default_workflow (Web-configurable workflow [Revision 2])')
         folder_wf = wf_tool['folder_workflow']
+        #Published folders means that anonymous should be able to 'list the folder contents'
+        folder_wf.permissions+=(CMFCorePermissions.ListFolderContents, )
+        folder_wf.states.published.permission_roles[CMFCorePermissions.ListFolderContents]=['Anonymous',]
         folder_wf.states.deleteStates( ('pending', ) )
         state_priv=folder_wf.states['private']
         state_priv.transitions = ('publish', 'show') 
