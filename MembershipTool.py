@@ -192,6 +192,10 @@ class MembershipTool(BaseTool):
             if notify_script is not None:
                 notify_script()
 
+    # deal with ridiculous API change in CMF 
+    security.declarePublic('createMemberArea')
+    createMemberArea = createMemberarea
+
     def listMembers(self):
         '''Gets the list of all members.
         '''
