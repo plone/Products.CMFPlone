@@ -17,10 +17,10 @@
                 b_start python:request.get('b_start',0);"
      tal:condition="here/rejectAnonymous" >
 	
-    <tal:set tal:condition="here/management_page_charset|nothing"
+    <tal:set tal:condition="mdata/management_page_charset|nothing"
             tal:define="dummy python:request.set('management_page_charset_tag','')" />
             
-    <tal:set tal:condition="not:here/management_page_charset|nothing">
+    <tal:set tal:condition="not:mdata/management_page_charset|nothing">
         <tal:defines define="dummy python:request.set('management_page_charset','UTF-8');
                              dummy python:request.set('management_page_charset_tag','UTF-8:');" />
     </tal:set>
@@ -62,10 +62,20 @@
                tal:condition="python:'w' in property.get('mode', 'awd')">
                
                <input type="text" name="id" size="35"
-                      tal:condition="python:type in ('int', 'long', 'string', 'date', 'float', 'tokens', 'utokens')"
+                      tal:condition="python:type in ('int', 'long')"
                       tal:attributes="name string:$id:$type;
                                       value python:test(propertyvalue, propertyvalue, '')" />
-
+           
+               <input type="text" name="id" size="35"
+                      tal:condition="python:type in ('float','date')"
+                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                      value python:test(propertyvalue, propertyvalue, '')" />
+ 
+               <input type="text" name="string and ustring" size="35"
+                      tal:condition="python:type in ('string','ustring')"
+                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                      value python:test(propertyvalue, propertyvalue, '')" />
+               
                <input type="checkbox" 
                       class="noborder"
                       name="id" 
@@ -75,18 +85,23 @@
                                       id string:cb-$id;
                                       checked python:test(propertyvalue, 'checked', '')" />
 
-               <textarea name="id" 
+               <input name="tokens and utokens" value="" type="text" size="35"
+                      tal:condition="python:type in ('tokens', 'utokens')"
+                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type;
+                                      value python:test(propertyvalue, propertyvalue, '')" />
+
+               <textarea name="text and utext" 
                       rows="6" 
                       cols="35"
                       tal:condition="python: type in ('text', 'utext')"
-                      tal:attributes="name string:$id:$type;"
+                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type"
                       tal:content="propertyvalue">some data</textarea>
 
-               <textarea name="id" 
+               <textarea name="lines and ulines" 
                       rows="6" 
                       cols="35"
                       tal:condition="python: type in ('lines', 'ulines')"
-                      tal:attributes="name string:$id:$type;"
+                      tal:attributes="name string:$id:${request/management_page_charset_tag}$type;"
                       tal:content="propertyvalue"><tal:content 
                 tal:repeat="line propertyvalue"><span tal:replace="string:line\n"/></tal:content>
                 </textarea>   
@@ -98,35 +113,25 @@
                 <tal:define condition="select_variable"
                             define="global select_value python:path('here/%s' %select_variable);" />
 
-                <select name="id" tal:condition="python:type in ('selection',)"
-                    tal:attributes="name string:$id:$type;">
+                <select name="selection" tal:condition="python:type in ('selection',)"
+                    tal:attributes="name string:$id:${request/management_page_charset_tag}text">
                     <tal:values repeat="option select_value">
                         <option tal:attributes="SELECTED python:test(propertyvalue==option,'SELECTED','')"
                             tal:content="option">value</option>
                     </tal:values>
                 </select>
 
-                <select name="id" multiple tal:condition="python:type in ('multiple selection',)"
-                        tal:attributes="name string:$id:$type:list:string;
+                <select name="multiple selection" multiple tal:condition="python:type in ('multiple selection',)"
+                        tal:attributes="name string:$id:${request/management_page_charset_tag}list:string;
                                         size python:min(7, len(select_value));">
                     <tal:values repeat="option select_value">
-                        <option tal:attributes="SELECTED python:test(propertyvalue and select_value in propertyvalue,
-                                                                            'selected', '')"
+                        <option tal:attributes="SELECTED python:test(propertyvalue and option in propertyvalue,
+                                                                    'selected', '')"
                                 tal:content="option">value</option>
-                        </tal:values>
-                    </select>
+                    </tal:values>
+                </select>
     
-                    <select name="id" multiple tal:condition="python:type in ('multiple selection',)"
-                            tal:attributes="name string:$id:$type:list:string;
-                                            size python:min(7, len(select_value));">
-                        <tal:values repeat="option select_value">
-                            <option tal:attributes="SELECTED python:test(propertyvalue and select_value in propertyvalue,
-                                                                                'selected', '')"
-                                    tal:content="option">value</option>
-                        </tal:values>
-                    </select>
-    
-                    </tal:selections>
+                </tal:selections>
     
               </div>
               

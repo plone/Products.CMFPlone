@@ -29,6 +29,10 @@ for key in REQUEST.keys():
             username=key[len('email_entered_'):]
             entered[username]=email
 
+#booleans act differently; they do not show up in the REQUEST
+#if they are unchecked.  So we need to iterate over the properties
+#and if they are boolean and not found in REQUEST then we give them 0 value
+
 #if a email address was changed setProperty
 for userid,email in originals.items():
     if email!=entered[userid]:
