@@ -1,0 +1,64 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
+<!-- The news box -->
+
+<div metal:define-macro="portletNews"
+     tal:define="results python:request.get('news', here.portal_catalog.searchResults( meta_type='News Item'
+                                                                                     , sort_on='Date'
+                                                                                     , sort_order='reverse'
+                                                                                     , review_state='published')[:5]);"
+     tal:condition="python:test(template.getId()!='news' and results, 1, 0)">
+
+    <div class="box" id="portlet-news">
+
+    <div class="padding">
+
+        <h5 i18n:translate="box_news">News</h5>
+
+        <div class="body">
+
+            <tal:block tal:repeat="obj results">
+
+                <div tal:define="oddrow repeat/obj/odd"
+                     tal:attributes="class python:test(oddrow, 'content even', 'content odd')">
+
+                    <a href=""
+                       tal:attributes="href obj/getURL;
+                                       title obj/Description">
+                        <img tal:replace="structure here/newsitem_icon.gif" />
+                        <span tal:replace="python:test(obj.Title, obj.Title, obj.getId)"> Extended Calendar Product </span>
+                    </a>
+
+                    <div class="boxDetails"
+                         tal:content="python:here.toPortalTime(obj.Date)">July 7, 08:11</div>
+                </div>
+
+            </tal:block>
+
+            <div class="content odd">
+
+                <a href=""
+                   class="more"
+                   tal:attributes="href string:${portal_url}/news"
+                   i18n:translate="box_morelink"
+                   >
+                    More...
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

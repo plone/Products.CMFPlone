@@ -1,0 +1,52 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      i18n:domain="plone">
+
+<body>
+
+<!-- The Favorites Box -->
+
+<div metal:define-macro="portletFavorites"
+     tal:omit-tag=""
+     tal:define="folder python:getattr(here.portal_membership.getHomeFolder(), 'Favorites', None);"
+     tal:condition="nocall: folder">
+
+    <div class="box"
+         tal:define="favorites python:test(folder, folder.contentValues('Favorite'), None);" id="portlet-favorites">
+
+    <div class="padding">
+
+        <h5 i18n:translate="box_my_favorites">My Favorites</h5>
+
+        <div class="body">
+
+            <div class="content odd" tal:condition="favorites">
+
+                <span tal:repeat="o favorites">
+                    <a class="marker"
+                       href=""
+                       tal:attributes="href o/getRemoteUrl"
+                       tal:content="o/title_or_id">Favorite title</a>
+                    <br />
+                </span>
+
+            </div>
+
+            <div class="content even">
+                <a href=""
+                   class="marker"
+                   i18n:translate="box_organize_favorites"
+                   tal:attributes="href string:${folder/absolute_url}/folder_contents">Organize Favorites</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
