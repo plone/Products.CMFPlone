@@ -38,8 +38,10 @@
           name="edit_form"
           method="post"
           action="content_status_modify"
-          tal:define="self_publish not:request/ids|nothing"
-          tal:attributes="action string:${template/getId}">
+          tal:define="self_publish not:request/ids|nothing;
+                      folder_action string:${here/getId}/${template/getId};
+                      content_action string:${template/getId};"
+          tal:attributes="action python:test(not self_publish, content_action, folder_action)">
 
         <span class="legend" i18n:translate="legend_publishing_details">Publishing Details</span>
 

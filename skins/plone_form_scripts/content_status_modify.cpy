@@ -7,6 +7,7 @@
 ##parameters=workflow_action, comment='', effective_date=None, expiration_date=None
 ##title=handles the workflow transitions of objects
 ##
+state = context.portal_form_controller.getState(script, is_validator=0)
 portal_workflow=context.portal_workflow
 current_state=portal_workflow.getInfoFor(context, 'review_state')
 
@@ -21,7 +22,6 @@ if workflow_action!=current_state:
     context.portal_workflow.doActionFor( context
                                        , workflow_action
                                        , comment=comment )
-return ( 'success'
-       , context
-       , { 'portal_status_message' : context.REQUEST.get( 'portal_status_message'
-                                                        , 'Your contents status has been modified')} )
+
+return state.set(context=context, portal_status_message='Your contents status has been modified.')
+
