@@ -1,4 +1,9 @@
 ## Script (Python) "document_edit"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
 ##parameters=text_format, text, file='', SafetyBelt='', choice=' Change ', title='', description='', id=''
 ##title=Edit a document
 
