@@ -7,10 +7,16 @@
 ##parameters=
 ##title=
 ##
+from AccessControl import Unauthorized
+
 pm=context.portal_membership
 checkPermission=pm.checkPermission
 
-parent = context.aq_parent
+try:
+    parent = context.aq_parent
+except Unauthorized:
+    parent = None
+    
 show = 1
 #We only want to show the 'contents' tab under the following conditions:
 # - If you can DO SOMETHING in a folder_contents view. i.e.
@@ -24,7 +30,7 @@ for permission in ('Copy or Move',
         show = 0
         break
 
-if not show and (not checkPermission('Modify portal content', parent) or \
+if not show and parent and (not checkPermission('Modify portal content', parent) or \
                  not checkPermission('Copy or Move', parent)):
     return 0
 
