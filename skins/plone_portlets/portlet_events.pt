@@ -8,7 +8,7 @@
 
 <div metal:define-macro="portlet"
      tal:define="results python:here.portal_catalog.searchResults( portal_type_operator='or'
-                                                                 , portal_type=('Event', 'ATEvent')
+                                                                 , portal_type='Event'
                                                                  , end={'query': here.ZopeTime(),
                                                                         'range': 'min'}
                                                                  , sort_on='start'
