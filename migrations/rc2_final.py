@@ -10,8 +10,9 @@ def rc2Final(portal):
     # if there is the old editor in there,
     # change it to the new one
     if 'XSDHTMLEditor' in e:
-        e[e.index('XSDHTMLEditor')] = 'Visual Editor'
-        p._updateProperty('available_editors', e)
+        elist = list(e)
+        elist.remove('XSDHTMLEditor')
+        p._updateProperty('available_editors', elist)
 
     #update State action in portal_actions so that DTML Documents work.
     #XXX We really need to put the 'State' action on individual portal_type definitions
