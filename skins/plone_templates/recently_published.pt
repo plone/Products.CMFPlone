@@ -26,9 +26,6 @@
 
         <tal:results tal:repeat="result batch">
 
-            <tal:object define="resultObject result/getObject">
-
-
             <dl>
                 <dt>
                     <img src="" alt="" style="border: 0"
@@ -37,13 +34,13 @@
 
                     <a href="/view"
                        tal:content="result/Title"
-                       tal:attributes="href resultObject/absolute_url">
+                       tal:attributes="href result/getURL">
                     Title
                     </a>
 
                     <span class="discreet" i18n:translate="text_creator_date">
                         by <span tal:replace="result/Creator" i18n:name="creator" />,
-                        last updated: <span tal:replace="result/modified" i18n:name="date" />
+                        last updated: <span tal:replace="result/ModificationDate" i18n:name="date" />
                     </span>
                 </dt>
 
@@ -51,13 +48,11 @@
                 <dd class="link">
                     <a href="/view"
                        tal:content="structure result/Description"
-                       tal:attributes="href resultObject/absolute_url">
+                       tal:attributes="href result/getURL">
                     Description
                     </a>
                 </dd>
             </dl>
-
-            </tal:object>
 
         </tal:results>
 
