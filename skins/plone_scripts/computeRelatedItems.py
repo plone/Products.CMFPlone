@@ -10,7 +10,10 @@
 
 if hasattr(context, 'getRelatedItems'):
     outgoing = context.getRelatedItems()
-    incoming = context.getBRefs('relatesTo')
+    incoming = []
+    # if you want to show up the items which point to this one, too, then use the
+    # line below
+    #incoming = context.getBRefs('relatesTo') 
     res = []
     mtool = context.portal_membership
     
