@@ -9,7 +9,7 @@ div#columns {
     padding: 0;
 }
 div#columns div#fixwrap {
-    text-align: justify;
+    text-align: left;
 }
 div#columns div#main-left {
     float: left;
