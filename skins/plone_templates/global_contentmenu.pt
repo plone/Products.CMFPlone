@@ -5,12 +5,11 @@
 
 <metal:menubarmacro define-macro="contentMenu">
 
-<ul tal:define="allowed here/allowedContentTypes;
-                size python:len(allowed);">
+<ul tal:define="size python:len(allowedSortedContentTypes);">
 
     <tal:dropdown tal:condition="python: size>1">
 
-    <li tal:define="contentTypes python: here.sortObjects(allowed)">
+    <li>
         <a href="#"
            onclick="return buttonClick(event, 'objectMenu');"
            onmouseover="buttonMouseover(event, 'objectMenu');"
@@ -19,7 +18,7 @@
         <ul class="actionMenu" id="objectMenu"
             onmouseover="menuMouseover(event)"
             tal:define="filterOut here/getNotAddableTypes;">
-            <metal:block tal:repeat="ctype contentTypes"> 
+            <metal:block tal:repeat="ctype allowedSortedContentTypes"> 
             <li tal:define="Title ctype/Title;Id ctype/getId"
                 tal:condition="python:test(Id not in filterOut, 1, 0)">
                 <a href="#" 

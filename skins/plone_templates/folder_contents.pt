@@ -59,8 +59,7 @@
                                      use_folder_contents site_properties/use_folder_contents;
                                      filterOut here/getNotAddableTypes;
                                      filterValues decodedFilter/keys | nothing;
-                                     types python:here.sortObjects(here.allowedContentTypes());
-                                     no_types python:len(types);
+                                     types allowedSortedContentTypes|nothing;
                                      filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));
                                      isExpired nocall:here/isExpired;
                                      toPortalTime nocall:here/toPortalTime;
@@ -72,13 +71,18 @@
                                      isOrderable python:iface_tool.objectImplements(here, orderable_iface);
                                      nosortclass python:test(isOrderable, 'nosort', '')">
 
+            <tal:contentTypes condition="not: types">
+                <metal:block tal:define="global allowedSortedContentTypes python:here.sortObjects(here.allowedContentTypes())" />
+            </tal:contentTypes>
+
             <table id="sortable"
                    class="listing"
                    summary="Content listing"
                    cellpadding="0" cellspacing="0">
 
                 <thead>
-                    <tr tal:condition="standalone|nothing">
+                    <tr tal:define="no_types python:len(allowedSortedContentTypes)"
+                        tal:condition="standalone|nothing">
                         <td class="top" colspan="6">
 
                             <!-- Add Item pulldown -->

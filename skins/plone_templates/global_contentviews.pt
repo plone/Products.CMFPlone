@@ -35,9 +35,9 @@
      i18n:domain="plone"
      class="contentActions"
      tal:define="content_actions actions/object_actions|nothing;
-                 content_types python:here.sortObjects(here.allowedContentTypes());">
+                 global allowedSortedContentTypes python:here.sortObjects(here.allowedContentTypes());">
 
-    <h5 class="hiddenStructure" tal:condition="content_actions | content_types | wf_state"
+    <h5 class="hiddenStructure" tal:condition="content_actions | allowedSortedContentTypes | wf_state"
         i18n:translate="heading_actions">Actions</h5>
 
     <ul tal:condition="content_actions" class="actionItems">

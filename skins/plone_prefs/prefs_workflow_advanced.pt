@@ -47,13 +47,13 @@
           action="prefs_workflow_advanced_edit" 
           method="post">
 
-        <fieldset>
+        <fieldset tal:define="allowedContentTypes allowedSortedContentTypes|here/allowedContentTypes">
 
         <legend i18n:translate="legend_contenttypes">Content types</legend>
 
 
             <div class="field"
-                tal:repeat="ctype here/allowedContentTypes"
+                tal:repeat="ctype allowedContentTypes"
                 tal:define="Title ctype/Title;
                             Id ctype/getId;
                             current_wf python:wtool.getChainForPortalType(Id)[0]">
