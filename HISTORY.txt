@@ -4,6 +4,10 @@ Changelog for Plone
 
 Plone 1.1 - Fyuti
 
+    - SiteErrorLog is now created in the Plone site.  This will be easier for
+      people to provide us with 'traceback' information.  Before it was created
+      at the root of the Zope instance.
+
     - **REMOVED** portal_form_validation (which has been deprecated in 1.0) is
       no longer added to your Plone site on construction. the .py file still
       ships with Plone and will be removed in 1.2

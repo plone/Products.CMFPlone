@@ -1,11 +1,18 @@
+#custom_policies stories the available 'Customization Policies'
 cmfplone_globals=globals()
-custom_policies={} #stores the registered Policies
+custom_policies={} 
+
 import migrations, setup, MigrationTool
 from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo, allow_module, allow_class, allow_type
-import MembershipTool, FormulatorTool, PloneTool, WorkflowTool, URLTool
-import NavigationTool, FactoryTool, FormTool, PropertiesTool, RegistrationTool
-import InterfaceTool
+
+#CMFCore and CMFDefault Tools
+import MembershipTool, WorkflowTool, URLTool, MetadataTool, RegistrationTool
+import PropertiesTool, ActionsTool, SyndicationTool, TypesTool, UndoTool
+
+#Plone Tools
+import FormulatorTool, PloneTool, NavigationTool, FactoryTool, FormTool, InterfaceTool
+
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
 import PloneControlPanel
 
@@ -84,7 +91,12 @@ tools = ( MembershipTool.MembershipTool,
           InterfaceTool.InterfaceTool,
           PloneControlPanel.PloneControlPanel,
           RegistrationTool.RegistrationTool,
-          URLTool.URLTool
+          URLTool.URLTool,
+          MetadataTool.MetadataTool,
+          ActionsTool.ActionsTool,
+          SyndicationTool.SyndicationTool,
+          TypesTool.TypesTool,
+          UndoTool.UndoTool,
         )
 
 contentClasses = ( PloneFolder.PloneFolder , )

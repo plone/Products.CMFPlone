@@ -15,6 +15,7 @@ def listPolicies():
     
 def addPolicy(label, klass): custom_policies[label]=klass
 
+from Products.SiteErrorLog.SiteErrorLog import manage_addErrorLog
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
@@ -302,6 +303,7 @@ class PloneGenerator(Portal.PortalGenerator):
         self.setupPloneSkins(p)
         self.setupPortalContent(p)
         self.setupForms(p)
+        manage_addErrorLog(p)
 
         m = p.portal_migration
 
