@@ -322,7 +322,7 @@ pre {
     text-align: right;
     text-transform: &dtml-textTransform;;
     width: 50%;
-    whitespace: no-wrap;
+    whitespace: nowrap;
     z-index: 2;
 }
 #portal-globalnav {
