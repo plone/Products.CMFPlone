@@ -19,7 +19,8 @@
                  standalone python:1;
                  folder_contents python:here.getFolderContents(contentFilter=filter, suppressHiddenFiles=1);
                  mtool mtool|here/portal_membership;
-                 myfolder python:here.absolute_url()==mtool.getHomeUrl();">
+                 myfolder python:here.absolute_url()==mtool.getHomeUrl();
+                 num_types python: len(allowedSortedContentTypes)">
     <form name="folderContentsForm"
           method="post"
           action="folder_object"
@@ -41,8 +42,20 @@
 
             <metal:block tal:condition="not: folder_contents">
             <p i18n:translate="description_no_visible_items_press_add">
-            This folder has no visible items. To add content, press the 'Add New Item' button,
-            or paste content from another location.
+            This folder has no visible items. To add content, press the
+            <span i18n:name="button_name" i18n:translate="add-specific-item">
+                <span tal:condition="python:num_types==1" 
+                      i18n:translate="add-new-specific-type">
+                      'Add New
+                      <span i18n:name="portal_type" 
+                            tal:content="python:allowedSortedContentTypes[0].Title()" 
+                            i18n:translate=""/>'
+                </span>
+                <span tal:condition="python:num_types>1" 
+                      i18n:translate="add-new-item">'Add New Item'
+                </span>
+            </span>
+            button, or paste content from another location.
             </p>
             </metal:block>
 
@@ -93,13 +106,11 @@
                    class="listing"
                    summary="Content listing"
                    cellpadding="0" cellspacing="0"
-                   tal:define="types allowedSortedContentTypes;
-                               filterTypes python:test( filterValues==nothing, types, here.filterTypes(filter));">
+                   tal:define="types allowedSortedContentTypes;">
 
                 <thead>
-                    <tr tal:define="num_types python: len(types)"
-                        tal:condition="standalone|nothing">
-                        <td class="top" colspan="6">
+                    <tr tal:condition="standalone|nothing">
+                        <td class="top" colspan="7">
 
                             <!-- Add Item pulldown -->
                             <label for="select_add_item"><span class="hiddenLabel" i18n:translate="label_add_item">Select an item to add</span>
@@ -136,7 +147,7 @@
                                    tal:condition="python: num_types"
                                    tal:attributes="tabindex tabindex/next|nothing;
                                                    value python:test( num_types == 1
-                                                                    , translate('Add New ${type}', {'type': types[0].Title()})
+                                                                    , translate('Add New ${type}', {'type': types[0].Title()},'Add New '+types[0].Title() )
                                                                     , 'Add New Item');" />
                         </td>
                     </tr>
@@ -148,7 +159,7 @@
                                                  src="select_all_icon.gif"
                                                  name="selectButton"
                                                  title="Select all items"
-                                                 onClick="toggleSelect(this); return false;"
+                                                 onClick="toggleSelect(this);"
                                                  tal:attributes="src string:$portal_url/select_all_icon.gif"
 						 alt="Select all items"
                                                  i18n:attributes="title alt"
