@@ -2,26 +2,45 @@
 <ul metal:define-macro="content_views"
      class="contentViews" 
      i18n:domain="plone"
-     tal:define="plone_actions python:here.plonifyActions(template_id=template_id, actions=actions)">
-    <tal:actions repeat="action plone_actions">
+     tal:define="view_actions python:here.plonifyActions(template_id=template_id, actions=actions)">
+
+    <tal:viewactions repeat="action view_actions">
     <li tal:define="selected action/selected|nothing;"
-        tal:attributes="id string:contenttab-${action/id};
+        tal:attributes="id string:contentview-${action/id};
                         class python:test(selected, 'selected', 'plain')">
         <a class="" href=""
            tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
-	   i18n:attributes="accesskey" >
+           i18n:attributes="accesskey" >
             <span tal:omit-tag="" i18n:translate="">
                 <span tal:replace="action/name">dummy</span>
             </span>
         </a>
     </li>
-    </tal:actions>
+    </tal:viewactions>
+
 </ul>
 
 <div metal:define-macro="content_actions"
      i18n:domain="plone"
-     class="contentActions">
+     class="contentActions"
+     tal:define="content_actions python:here.plonifyContentActions(template_id=template_id, actions=actions)">
 
+    <ul class="contentActions">
+    <tal:contentactions repeat="action content_actions">
+    <li tal:define="selected action/selected|nothing;"
+        tal:attributes="id string:contentaction-${action/id};
+                        class python:test(selected, 'selected', 'plain')">
+        <a class="" href=""
+           tal:attributes="href action/url; accesskey string:accesskeys-${action/name}"
+           i18n:attributes="accesskey" >
+            <span tal:omit-tag="" i18n:translate="">
+                <span tal:replace="action/name">dummy</span>
+            </span>
+        </a>
+    </li>
+    </tal:contentactions>
+    </ul>
+    
     &nbsp;
 
     <span metal:use-macro="here/contentbar_menu/macros/contentbarMenu" />

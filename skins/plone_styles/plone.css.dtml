@@ -446,6 +446,24 @@ ul.contentViews li {
     padding: 0 1em;
     z-index: 2;
 }
+.contentActions ul {
+    background: &dtml-contentTabBackdrop;;
+    border: none;
+    padding-left: 1em;
+    line-height: 1.2em;
+    margin-right: 1em;
+    /* white-space: nowrap; */
+    list-style: none;
+    display: inline;
+}
+.contentActions ul.contentActions li {
+    display: inline;
+    margin-right: 1em;
+}
+
+
+
+
 .pageContent {
     padding: 1em;
     margin: 0em 0em 2em 0em;
