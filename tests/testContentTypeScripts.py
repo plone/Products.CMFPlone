@@ -1,0 +1,93 @@
+#
+# Tests the content type scripts
+#
+
+import os, sys
+if __name__ == '__main__':
+    execfile(os.path.join(sys.path[0], 'framework.py'))
+
+from Testing import ZopeTestCase
+from Products.CMFPlone.tests import PloneTestCase
+
+AddPortalTopics = 'Add portal topics'
+from DateTime import DateTime
+
+
+# Fake upload object
+class File:
+    __allow_access_to_unprotected_subobjects__ = 1
+    filename = 'foo.gif'
+    def seek(*args): pass
+    def tell(*args): return 0
+    def read(*args): return 'file_contents'
+
+
+class TestContentTypeScripts(PloneTestCase.PloneTestCase):
+
+    def afterSetUp(self):
+        perms = self.getPermissionsOfRole('Member')
+        self.setPermissions(perms + [AddPortalTopics])
+
+    def getPermissionsOfRole(self, role):
+        perms = self.portal.permissionsOfRole(role)
+        return [p['name'] for p in perms if p['selected']]
+
+    def testDocumentEdit(self):
+        self.folder.invokeFactory('Document', id='doc')
+        self.folder.doc.document_edit('plain', 'data')
+        assert self.folder.doc.EditableBody() == 'data'
+
+    def testEventEdit(self):
+        self.folder.invokeFactory('Event', id='event')
+        self.folder.event.event_edit(title='Foo', 
+                                     start_date='2003-09-18',
+                                     end_date='2003-09-19')
+        assert self.folder.event.Title() == 'Foo'
+        assert self.folder.event.start().ISO() == '2003-09-18 00:00:00'
+        assert self.folder.event.end().ISO() == '2003-09-19 00:00:00'
+
+    def testFileEdit(self):
+        self.folder.invokeFactory('File', id='file')
+        self.folder.file.file_edit(file=File())
+        assert str(self.folder.file) == 'file_contents'
+
+    def testFolderEdit(self):
+        self.folder.invokeFactory('Folder', id='folder')
+        self.folder.folder.folder_edit('Foo', 'Bar')
+        assert self.folder.folder.Title() == 'Foo'
+        assert self.folder.folder.Description() == 'Bar'
+
+    def testImageEdit(self):
+        self.folder.invokeFactory('Image', id='image')
+        self.folder.image.image_edit(file=File())
+        assert str(self.folder.image.data) == 'file_contents'
+
+    def testLinkEdit(self):
+        self.folder.invokeFactory('Link', id='link')
+        self.folder.link.link_edit('http://foo.com')
+        assert self.folder.link.getRemoteUrl() == 'http://foo.com'
+
+    def testNewsItemEdit(self):
+        self.folder.invokeFactory('News Item', id='newsitem')
+        self.folder.newsitem.newsitem_edit('data', 'plain')
+        assert self.folder.newsitem.EditableBody() == 'data'
+
+    def testTopicEditTopic(self):
+        self.folder.invokeFactory('Topic', id='topic')
+        self.folder.topic.topic_editTopic(1, 'topic', title='Foo')
+        assert self.folder.topic.Title() == 'Foo'
+
+    def testTopicEditCriteria(self):
+        self.folder.invokeFactory('Topic', id='topic')
+        # TODO: Analyze that funky data structure
+
+            
+if __name__ == '__main__':
+    framework()
+else:
+    import unittest
+    def test_suite():
+        suite = unittest.TestSuite()
+        suite.addTest(unittest.makeSuite(TestContentTypeScripts))
+        return suite
+
