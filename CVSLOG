@@ -1,3 +1,29 @@
+2004-04-06 21:31  limi
+
+	* HISTORY.txt, skins/plone_content/metadata_edit_form.cpt
+	  (Plone-2_0-branch): Renamed plone-keywords i18n domain to
+	  plone-metadata. Updated the change notes.
+
+2004-04-06 21:11  limi
+
+	* HISTORY.txt, skins/plone_content/metadata_edit_form.cpt
+	  (Plone-2_0-branch):	  - Plone now supports translation of
+	  keywords. There is a separate
+		i18n:domain for this - 'plone-keywords'. Anything added
+	  into a
+		'plone-keywords-fr.po' file with the 'plone-keywords'
+	  domain will
+		be parsed on the metadata_edit_form in French, and replaced
+	  with the
+		translated strings from the po-file. Please note that this
+	  usually
+		requires adding new keywords in a default language to avoid
+		a mess when translating. :)
+
+2004-04-06 04:59  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-04-05 18:35  shh42
 
 	* tests/testSecurityDeclarations.py (Plone-2_0-branch): Add tests
