@@ -39,7 +39,7 @@ function cookiesEnabled() {
 <h1 i18n:translate="heading_sign_in">Please log in</h1>
 
 <p i18n:translate="description_sign_in">
-To access this part of the site, you need to log in with your username and password.
+To access this part of the site, you need to log in with your user name and password.
 </p>
 
 <p i18n:translate="description_no_account"
@@ -86,7 +86,7 @@ to become a member.
 
             <div i18n:translate="help_user_name_caps"
                  class="formHelp">
-    		Usernames are case sensitive, make sure the caps lock key is not enabled.
+    		User names are case sensitive, make sure the caps lock key is not enabled.
             </div>
 
             <input type="text"
@@ -137,7 +137,7 @@ to become a member.
 
             <div i18n:translate="help_remember_my_name"
                  class="formHelp">
-                If you check this, your user name will be filled in for you when you log in later.
+                Check this to have your user name filled in automatically when you log in later.
             </div>
 
         </div>
@@ -157,7 +157,7 @@ to become a member.
 
 
         <p i18n:translate="remember_to_log_out">
-            Don't forget to log out or exit your browser when you're done.
+            Please log out or exit your browser when you're done.
         </p>
 
 
