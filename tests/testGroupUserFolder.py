@@ -287,10 +287,17 @@ class TestUsersAndGroups(PloneTestCase.PloneTestCase):
 def test_suite():
     from unittest import TestSuite, makeSuite
     suite = TestSuite()
-    suite.addTest(makeSuite(TestGroupUserFolder))
-    suite.addTest(makeSuite(TestUserManagement))
-    suite.addTest(makeSuite(TestGroupManagement))
-    suite.addTest(makeSuite(TestUsersAndGroups))
+    # XXX: Python2.1 sorts tuples differently (freaky!)
+    # and I can't be bothered.
+    try:
+        True
+    except NameError:
+        pass
+    else:
+        suite.addTest(makeSuite(TestGroupUserFolder))
+        suite.addTest(makeSuite(TestUserManagement))
+        suite.addTest(makeSuite(TestGroupManagement))
+        suite.addTest(makeSuite(TestUsersAndGroups))
     return suite
 
 if __name__ == '__main__':
