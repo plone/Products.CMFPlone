@@ -10,6 +10,11 @@ Plone 2.0 - Fyuti
 
     Beta 3
 
+    - fixed portal_factory so that the folder and folder_url values provided to
+      actions are correct for temporary objects, made content_status_modify and 
+      metadata_edit portal_factory aware.  objects created with portal_factory
+      should now behave just like normal objects.
+
     - renamed plone_debug script to plone_log.  if you want to log out to zLOG
       simply context.plone_log('this should be in the log')
 

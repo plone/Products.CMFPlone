@@ -1,18 +1,18 @@
-from Products.CMFCore.utils import UniqueObject, getToolByName
+import sys
+import urllib
 from Globals import InitializeClass
-from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
-from AccessControl import ClassSecurityInfo
-from OFS.SimpleItem import SimpleItem
 from DateTime import DateTime
+from AccessControl import ClassSecurityInfo
+from Acquisition import aq_parent, aq_base, aq_inner, aq_chain, aq_get
+from OFS.ObjectManager import ObjectManager
+from OFS.SimpleItem import SimpleItem
+from ZPublisher.Publish import call_object, missing_name, dont_publish_class
+from ZPublisher.mapply import mapply
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.CMFCore import CMFCorePermissions
-from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
-from DateTime import DateTime
-import urllib
-import sys
-
+from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.Skinnable import SkinnableObjectManager
-from OFS.ObjectManager import ObjectManager
+from Products.CMFPlone.PloneFolder import PloneFolder as TempFolderBase
 
 
 # ##############################################################################
@@ -137,6 +137,7 @@ class FactoryTool(UniqueObject, SimpleItem):
     security.declarePublic('__call__')
     def __call__(self, *args, **kwargs):
         """call method"""
+
         factory_info = self.REQUEST.get('__factory_info__', {})
         if not factory_info.get('fixed_request'):
             self.fixRequest()
@@ -150,8 +151,9 @@ class FactoryTool(UniqueObject, SimpleItem):
             if args == ():
                 # XXX hideous hack -- why isn't REQUEST passed in in args??
                 args = (self.REQUEST, )
-            return obj(*args, **kwargs)
-
+            return mapply(obj, self.REQUEST.args, self.REQUEST,
+                               call_object, 1, missing_name, dont_publish_class,
+                               self.REQUEST, bind=1)
         id = stack[1]
         if id in aq_parent(self).objectIds():
             return aq_parent(self).restrictedTraverse('/'.join(stack[1:]))(*args, **kwargs)
@@ -160,15 +162,16 @@ class FactoryTool(UniqueObject, SimpleItem):
 
         path = '/'.join(stack[1:])
         obj = tempFolder.restrictedTraverse(path)
-        return obj(*args, **kwargs)
+        
+        return mapply(obj, self.REQUEST.args, self.REQUEST,
+                               call_object, 1, missing_name, dont_publish_class,
+                               self.REQUEST, bind=1)
 
 
     index_html = None  # call __call__, not index_html
 
 
     def getTempFolder(self, type_name):
-        import sys
-
         factory_info = self.REQUEST.get('__factory_info__', {})
         tempFolder = factory_info.get('tempFolder', None)
         if not tempFolder:

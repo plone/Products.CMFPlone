@@ -22,7 +22,7 @@
                 tal:define="Title ctype/Title;Id ctype/getId"
                 tal:condition="python:test(Id not in filterOut, 1, 0)">
                 <a href="#" 
-                   tal:attributes="href string:createObject?type_name=$Id">
+                   tal:attributes="href python:here.getParentNode().absolute_url()+'/createObject?type_name='+Id">
                   <img src="folder.gif" 
                        alt="" 
                        width="16" 
