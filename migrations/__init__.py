@@ -1,4 +1,6 @@
 from Products.CMFPlone import MigrationTool
+
+import one01_one02
 import final_one_zero_one
 import rc2_final
 import rc1_rc2
@@ -37,3 +39,8 @@ def registerMigrations():
     MigrationTool.registerUpgradePath( '1.0',
                                        '1.0.1',
                                        final_one_zero_one.onezeroone )
+
+    MigrationTool.registerUpgradePath( '1.0.1',
+                                       '1.0.2',
+                                       one01_one02.onezerotwo )
+                                       

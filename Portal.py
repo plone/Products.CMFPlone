@@ -9,7 +9,9 @@ def listPolicies(): return custom_policies.keys()
 def addPolicy(label, klass): custom_policies[label]=klass
 
 from Products.CMFCore import CMFCorePermissions
-from Products.CMFCore.TypesTool import ContentFactoryMetadata, FactoryTypeInformation
+from Products.CMFCore.TypesTool import ContentFactoryMetadata
+from Products.CMFCore.TypesTool import FactoryTypeInformation
+
 from Products.CMFCore.DirectoryView import addDirectoryViews, registerDirectory
 from Products.CMFCore.utils import getToolByName, registerIcon
 from Products.CMFDefault import Portal
@@ -47,7 +49,6 @@ Thanks for using our product.
 
 "Plone":img:logoIcon.gif  "The Plone Team":http://plone.org/about/team
 """
-
 class PloneSite(CMFSite):
     """
     Make PloneSite subclass CMFSite and add some methods.

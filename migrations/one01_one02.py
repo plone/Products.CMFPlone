@@ -7,7 +7,8 @@ def onezerotwo(portal):
     #set up cookie crumbler
     cookie_authentication = getToolByName(portal, 'cookie_authentication')
     cookie_authentication._updateProperty('auto_login_page', 'require_login')
-            
+    portal.portal_syndication.isAllowed=1
+
 def registerMigrations():
     MigrationTool.registerUpgradePath(
             '1.0.1', 
