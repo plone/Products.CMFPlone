@@ -72,7 +72,7 @@
         </p>
     
     
-    	<h2>Search for new group members</h2>
+    	<h2 i18n:translate="heading_search_newmembers">Search for new group members</h2>
     	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
     	  <metal:block metal:fill-slot="hiddens">
     	    <input type="hidden" name="groupname" value="groupname" tal:attributes="value group/getGroupName" />

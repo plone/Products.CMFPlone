@@ -19,7 +19,7 @@
         <img src="site_icon.gif"
             alt="" 
             tal:attributes="src string:${portal_url}/site_icon.gif" />
-        Back to Panel
+        <span tal:omit-tag="" i18n:translate="label_backtopanel">Back to Panel</span>
         </a>
     </small>
 </tal:parent>

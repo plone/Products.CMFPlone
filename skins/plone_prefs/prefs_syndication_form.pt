@@ -129,7 +129,7 @@
               method="post"
               tal:attributes="action string:prefs_syndication_set">
     
-            <input type="submit" value="Disable Syndication" />
+            <input type="submit" value="Disable Syndication" i18n:attributes="value" />
             <input type="hidden" name="isAllowed:int" value="0" />
         </form>
     
@@ -140,7 +140,8 @@
               method="post"
               tal:condition="not:isSynAllowed"
               tal:attributes="action string:prefs_syndication_set">
-            <input class="standalone" type="submit" value="Enable Syndication" />
+            <input class="standalone" type="submit" value="Enable Syndication"
+                   i18n:attributes="value" />
             <input type="hidden" name="isAllowed:int" value="1" />
 
         </form>

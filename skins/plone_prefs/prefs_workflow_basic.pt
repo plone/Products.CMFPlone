@@ -91,7 +91,7 @@
                     tabindex=""
                     alt="">
 
-                <option value="current">Select</option>
+                <option value="current" i18n:translate="label_select">Select</option>
                 <metal:block tal:repeat="wf workflow_list">
                     <option value="wf"
                                 tal:attributes="value wf"

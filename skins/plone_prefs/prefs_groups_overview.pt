@@ -182,7 +182,8 @@
           combine to make up a Group.
         </p>
         
-        <p>Currently, if you want to add a new role, you'll have to use the 
+        <p i18n:translate="description_roles_zmi">
+        Currently, if you want to add a new role, you'll have to use the 
         Zope Management Interface.</p>
     
     </div>

@@ -49,7 +49,7 @@
 
         <fieldset>
 
-        <legend>Content types</legend>
+        <legend i18n:translate="legend_contenttypes">Content types</legend>
 
 
             <div class="field"

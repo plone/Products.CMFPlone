@@ -57,8 +57,9 @@
             <tbody>
             <tr tal:repeat="lrole python:here.acl_users.getLocalRolesForDisplay(here)">
                 <td class="field">
-                    <label class="hiddenLabel" for="member_ids:list">
-                        select user/group <span tal:content="python:lrole[3]" />
+                    <label class="hiddenLabel" for="member_ids:list"
+                           i18n:translate="label_select_usergroup">
+                        select user/group <span tal:content="python:lrole[3]" i18n:name="role"/>
                     </label>
                     <input class="formSelection"
                            type="checkbox"
@@ -155,8 +156,9 @@
                     <tbody>
                     <tr tal:repeat="member batch">
                         <td class="field">
-                            <label class="hiddenLabel" for="member_ids:list">
-                                select user <span tal:content="member/username" />
+                            <label class="hiddenLabel" for="member_ids:list"
+                                   i18n:translate="label_select_user">
+                                select user <span tal:content="member/username" i18n:name="user" />
                             </label>
                             <input class="formSelection"
                                    type="checkbox"
@@ -321,8 +323,9 @@
                 <tbody>
                     <tr tal:repeat="member here/portal_groups/listGroups">
                     <td>
-                        <label class="hiddenLabel" for="member_ids:list">
-                            select group <span tal:content="member/getUserName" />
+                        <label class="hiddenLabel" for="member_ids:list"
+                               i18n:translate="label_select_group">
+                            select group <span tal:content="member/getUserName" i18n:name="name"/>
                         </label>
                         <input class="formSelection"
                             type="checkbox"

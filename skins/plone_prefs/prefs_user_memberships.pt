@@ -49,7 +49,7 @@
         <h1 i18n:translate="">Group Memberships for <span tal:replace="string:${member/getUserName}"/></h1>
     
     	
-    	<h2>Search for new groups</h2>
+    	<h2 i18n:translate="heading_search_newgroups">Search for new groups</h2>
     	<div metal:use-macro="here/prefs_search_macros/macros/user_group_search">
     	  <metal:block metal:fill-slot="hiddens">
     	    <input type="hidden" name="userid" value="userid" tal:attributes="value member/getId" />
@@ -68,7 +68,7 @@
     
     	  <metal:block metal:fill-slot="removables">
     
-    	<h2>Current Group Memberships</h2>
+    	<h2 i18n:translate="heading_memberships_current">Current Group Memberships</h2>
     	<table class="listing">
     
                 <tr>

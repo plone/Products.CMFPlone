@@ -25,7 +25,7 @@
     
         <fieldset tal:define="props here/error_log/getProperties">
         
-            <legend>Log details</legend>
+            <legend i18n:translate="legend_logdetails">Log details</legend>
 
             <div class="field">
                 <label i18n:translate="label_number_exceptions">Number of exceptions to keep</label>
@@ -73,16 +73,16 @@
         
             <fieldset tal:define="entries here/error_log/getLogEntries">
             
-                <legend>Exception Log (most recent first)</legend>
+                <legend i18n:translate="legend_logexception">Exception Log (most recent first)</legend>
         
-                <div class="field" tal:condition="not:entries">
+                <div class="field" tal:condition="not:entries" i18n:translate="legend_lognoexceptions">
                 No exceptions logged.
                 </div>
 
                 <div class="field" tal:condition="entries">
-                        <span>Time</span>
-                        <span>Username (User Id)</span>
-                        <span>Exception</span>
+                        <span i18n:translate="label_time">Time</span>
+                        <span i18n:translate="label_user_name">Username (User Id)</span>
+                        <span i18n:translate="label_exception">Exception</span>
 
                     <div tal:define="updatetime python:float(member.getProperty('error_log_update',''))"
                          tal:repeat="entry entries">

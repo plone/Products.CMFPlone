@@ -34,7 +34,8 @@
     
                 <label i18n:translate="label_smtp_server">SMTP server</label>
     
-                <div class="formHelp" id="smtp_server_help">
+                <div class="formHelp" id="smtp_server_help"
+                     i18n:translate="help_smtp_server">
                 This is the address of your local SMTP (outgoing
                 mail) server. Usually "localhost", unless you use an
                 external server to send mail.
