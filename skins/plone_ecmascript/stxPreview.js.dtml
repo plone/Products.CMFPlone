@@ -1,0 +1,7 @@
+function GetPreview(text, element) {
+    var url = "&dtml-portal_url;";
+    var script = "formatStx";
+
+    res = XMLRPC.call(url, script, text);
+    document.getElementById(element).innerHTML = res;
+}
