@@ -1,3 +1,105 @@
+2004-01-13 03:21  tiran
+
+	* SkinsTool.py (speedup-branch): *hum* refreshing wasn't as easy as
+	  I thought. Now it works and both new files and changed files are
+	  reloaded
+
+2004-01-13 02:48  tiran
+
+	* SkinsTool.py, www/reloadPortalSkins.zpt (speedup-branch): fixed
+	  reloading added reload button to portal_skins
+
+2004-01-13 02:20  tiran
+
+	* __init__.py (speedup-branch): binding psyco to some methods
+	  doesn't work with zope2.7
+
+2004-01-13 02:19  tiran
+
+	* Portal.py (speedup-branch): replace Folder 'custom' with
+	  SkinCustomFolder
+
+2004-01-13 02:18  tiran
+
+	* SkinsCustomFolder.py, www/SkinCustomFolder_icon.gif
+	  (speedup-branch): fixed call to clearSkinCache() added icon
+
+2004-01-13 00:45  vinsci
+
+	* skins/plone_prefs/prefs_workflow_basic.pt (Plone-2_0-branch):
+	  Typo fixes. Closes http://plone.org/collector/2352.
+
+2004-01-12 23:41  plonista
+
+	* SkinsTool.py, __init__.py (speedup-branch): Fixed bug reported by
+	  ender- with skin collisions.	Also enable psyco if it's
+	  installed.
+
+2004-01-12 22:53  dannybloe
+
+	* skins/plone_templates/folder_listing.pt (Plone-2_0-branch): Fixed
+	  the missing icon for links.
+
+2004-01-12 22:51  dannybloe
+
+	* skins/: plone_3rdParty/CMFTopic/topic_view.pt,
+	  plone_content/document_view.pt, plone_content/event_view.pt,
+	  plone_content/favorite_view.pt, plone_content/file_view.pt,
+	  plone_content/image_view.pt, plone_content/link_view.pt,
+	  plone_content/newsitem_view.pt,
+	  plone_templates/folder_listing.pt: Added macro declarations so in
+	  the near future you can tell an object to render itself inside
+	  your own templates. So forms like discussion_reply_form can
+	  display the full context of what you are replying to.  Basically,
+	  every content type should have a main macro called 'main'
+	  defined.
+
+	  In Image, the size of the image must be displayed below the
+	  image.
+
+	  missing Link icon in folder_listing is fixed.
+
+2004-01-12 22:32  dannybloe
+
+	* skins/plone_templates/folder_listing.pt (speedup-branch): Fixed
+	  the missing icon for links.
+
+2004-01-12 22:25  plonista
+
+	* SkinsTool.py (speedup-branch): Fixed bug reported by nuon -
+	  add/delete skins on skins tool properties tab returned 404
+
+2004-01-12 21:34  dannybloe
+
+	* skins/plone_content/image_view.pt (Plone-2_0-branch): Size of the
+	  image must be displayed below the image.
+
+2004-01-12 17:06  plonista
+
+	* skins/plone_forms/join_form.cpt.metadata (Plone-2_0-branch):
+	  Modified .metadata for join_form.cpt so that validation and
+	  actions work even if the user doesn't submit using the Register
+	  button (I think in IE it's possible to submit using just carriage
+	  return when the focus is on the form, so the Register button may
+	  never be pressed)
+
+2004-01-12 11:48  dannybloe
+
+	* skins/: plone_3rdParty/CMFTopic/topic_view.pt,
+	  plone_content/document_view.pt, plone_content/event_view.pt,
+	  plone_content/favorite_view.pt, plone_content/file_view.pt,
+	  plone_content/image_view.pt, plone_content/link_view.pt,
+	  plone_content/newsitem_view.pt (Plone-2_0-branch): Added macro
+	  declarations so in the near future you can tell an object to
+	  render itself inside your own templates. So forms like
+	  discussion_reply_form can display the full context of what you
+	  are replying to.  Basically, every content type should have a
+	  main macro called 'main' defined.
+
+2004-01-12 05:03  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2004-01-12 04:18  tiran
 
 	* SkinsTool.py (speedup-branch): wrong permissions - again
