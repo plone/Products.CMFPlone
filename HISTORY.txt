@@ -1,5 +1,7 @@
 CHANGES
 Plone 1.0 rc2
+    - removed the properties in site_properties that belong in the root
+      validate_email, email_from_name/addr
     - added geoff davis's tidy_up.py and tidied up most PageTemplates
     - Issue 787 submitted by Ronnix.  Fixes the appropriate place of email_from_address 
     - now on a portal_workflow.doActionFor() we reindexObjectSecurity()

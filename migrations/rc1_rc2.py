@@ -27,6 +27,13 @@ def rc1rc2(portal):
     setup_skins(sk_tool, 'Plone Prime',         'plone_styles/prime')
     setup_skins(sk_tool, 'Plone Zed',           'plone_styles/zed')
 
+    #prematurely put some properties in.. which was very naughty
+    s_props=portal.portal_properties.site_properties
+    s_props._delProperty('validate_email')
+    s_props._delProperty('email_from_address')
+    s_props._delProperty('email_from_name')
+   
+
 def registerMigrations():
     # so the basic concepts is you put a bunch of migrations is here
     MigrationTool.registerUpgradePath(
