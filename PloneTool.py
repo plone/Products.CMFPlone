@@ -177,6 +177,23 @@ class PloneTool (UniqueObject, SimpleItem):
            , WARNING)
         nav_tool=getToolByName(self, 'portal_navigation')
         return nav_tool.getNextRequestFor(context, action, status, **kwargs)
-    
+
+    security.declareProtected(CMFCorePermissions.ManagePortal, 'changeOwnershipOf')
+    #security.declarePublic('changeOwnershipOf')
+    def changeOwnershipOf(self, object, owner):
+        """ changes the ownership of an object """
+        membership=getToolByName(self, 'portal_membership')
+        if owner not in membership.listMemberIds():
+            raise KeyError, 'Only users in this site can be made owners.'
+        acl_users=getattr(self, 'acl_users')
+        user = acl_users.getUser(owner)
+        if user is not None:
+            user= user.__of__(acl_users)
+        else:
+            from AccessControl import getSecurityManager
+            user= getSecurityManager().getUser()
+
+        object.changeOwnership(user) 
+
 InitializeClass(PloneTool)
 

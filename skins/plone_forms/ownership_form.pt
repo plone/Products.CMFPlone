@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master">
+
+<body>
+<div metal:fill-slot="main">
+        
+    <h1 i18n:translate="">Change ownership</h1>
+    
+    <p i18n:translate="">
+    You can change the current objects ownership to
+    another member easily from this form.  
+    </p>
+
+        <form class="group"
+              action="change_ownership"
+              name="ownership_form" 
+              method="post">
+        
+        <span class="legend" i18n:translate="">Change Ownership</span>
+
+        <div class="row" >
+
+            <div class="label required">
+            
+                <span i18n:id="id">New owner</span>
+            
+                <div id="id_help" 
+                     i18:id="id_help"
+                     class="help" 
+                     style="visibility:hidden">
+                Changes the ownership of the current object.
+                </div>
+            </div>
+            
+            <div class="field">
+                <select name="userid"
+                        onfocus="formtooltip('id_help',1)"
+                        nblur="formtooltip('id_help',0)" >
+                   <tal:block tal:repeat="uid here/portal_membership/listMemberIds">
+                     <option value="runyaga"
+                             tal:attributes="value uid;
+                                             selected python:test(uid==here.Creator(), 'SELECTED', '');"
+                             tal:content="uid">runyaga</option>
+                   </tal:block>
+            </div>
+
+        </div>
+      
+        <metal:block tal:replace="nothing">
+        XXX Noah complained about Creator being Owner.  This should be fixed.  it causes nightmares when
+            not persistenting the Creator info seperate from Owner().  If it ever gets fixed this will
+            break.
+        </metal:block>
+        
+        <div class="row">
+            <div class="label">&nbsp;</div>
+            <div class="field">
+                <input class="context"
+                       type="submit" 
+                       name="save" 
+                       value="save"
+                       />
+            </div>
+        </div>
+
+    </form>   
+</div>
+</body>
+</html>
