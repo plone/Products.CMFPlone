@@ -17,14 +17,16 @@ if not time:
    return None
 
 if long_format:
-   msgid = 'cal_date_long'
+   msgid = 'date_format_long'
 else:
-   msgid = 'cal_date_short'
+   msgid = 'date_format_short'
 
 localized_time = ''
 
+# retrieve date format via translation service
 dateFormat = translate_wrapper('plone', msgid, context = context) 
 if dateFormat == None or dateFormat == '':
+   # fallback to portal_properties if no msgstr received from translation service
     properties=context.portal_properties.site_properties
     if long_format:
         format=properties.localLongTimeFormat
@@ -45,7 +47,8 @@ try:
     time = DateTime(time)
 except:
     pass
-    
+
+# extract date parts from DateTime object
 dateParts = time.parts()
 day = '%02d' % dateParts[2]
 month = '%02d' % dateParts[1]
