@@ -1,0 +1,193 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
+      lang="en-US"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<tal:block metal:fill-slot="head_slot">
+   <tal:block tal:define="dummy python:request.set('disable_border',1)" />
+</tal:block>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors python:request.get('errors', {});
+		 isSynAllowed here/portal_syndication/isSiteSyndicationAllowed">
+
+    <h1 i18n:translate="heading_syndication_setup">Sitewide Syndication Setup</h1>
+
+    <div tal:condition="isSynAllowed">
+
+      <p i18n:translate="description_syndication_setup">
+	Here you configure some of the settings that affect sitewide default syndication.
+	</p>
+      
+      <form class="group"
+            action=""
+            name="reconfig"
+            method="post"
+            tal:attributes="action string:prefs_syndication_set"
+            tal:define="props python:here.portal_properties;">
+	
+        <span class="legend" i18n:translate="legend_syndication_details">Syndication Details</span>
+	
+	<!-- Update period -->
+        <div class="row">
+          <div class="label">
+            <span i18n:translate="label_syndication_updateperiod">Update period</span>
+            </div>
+	  
+	  <select name="updatePeriod" 
+		  size="1"
+		  tal:attributes="tabindex tabindex/next"
+		  tal:define="upperiod here/portal_syndication/getUpdatePeriod">
+	    <option tal:repeat="period here/portal_syndication/buildUpdatePeriods" 
+		    tal:content="python:period[1]" 
+		    tal:attributes="value python:period[0];
+                                    selected python:test( upperiod==period[0],'selected' ,'')" />
+	    </select>
+	  
+          </div>
+	
+	<!-- Update Frequency -->
+        <div class="row"
+             tal:define="syndication_frequency request/updateFrequency | here/portal_syndication/getUpdateFrequency;
+                         error_syndication_frequency nothing;">
+          <div class="label">
+            <span i18n:translate="label_syndication_frequency">Update frequency</span>
+	    
+            <div id="syndication_frequency_help"
+                 i18n:translate="help_syndication_frequency"
+                 class="help"
+                 style="visibility:hidden">
+              Update frequency (dummy description).
+              </div>
+            </div>
+	  
+          <div class="field"
+               tal:attributes="class python:test(error_syndication_frequency, 'field error', 'field')">
+	    
+            <div tal:condition="error_syndication_frequency">
+              <tal:block i18n:translate="" content="error_syndication_frequency">Error</tal:block>
+              <br />
+              </div>
+	    
+            <input name="updateFrequency"
+                   value=""
+                   size="3"
+                   tabindex=""
+                   onfocus="formtooltip(syndication_frequency_help',1)"
+                   onblur="formtooltip(syndication_frequency_help',0)"
+                   tal:attributes="value syndication_frequency;
+                                   tabindex tabindex/next;" />
+            </div>
+          </div>
+	
+	<!-- Update Base -->
+        <div class="row"
+             tal:define="syndication_base request/updateFrequency | here/portal_syndication/getUpdateBase;
+                         error_syndication_base nothing;">
+          <div class="label">
+            <span i18n:translate="label_syndication_base">Update base</span>
+	    
+            <div id="syndication_base_help"
+                 i18n:translate="help_syndication_base"
+                 class="help"
+                 style="visibility:hidden">
+              Update base date (dummy description).
+              </div>
+            </div>
+	  
+          <div class="field"
+               tal:attributes="class python:test(error_syndication_base, 'field error', 'field')">
+	    
+            <div tal:condition="error_syndication_base">
+              <tal:block i18n:translate="" content="error_syndication_base">Error</tal:block>
+              <br />
+              </div>
+	    
+            <input name="updateBase:date"
+                   value=""
+                   size="70"
+                   tabindex=""
+                   onfocus="formtooltip(syndication_base_help',1)"
+                   onblur="formtooltip(syndication_base_help',0)"
+                   tal:attributes="value syndication_base;
+                                   tabindex tabindex/next;" />
+            </div>
+          </div>
+	
+	<!-- Max syndicated items -->
+        <div class="row"
+             tal:define="syndication_maxitems request/max_items | here/portal_syndication/getMaxItems;
+                         error_syndication_maxitems nothing;">
+          <div class="label">
+            <span i18n:translate="label_syndication_maxitems">Max Syndicated Items </span>
+	    
+            <div id="syndication_maxitems_help"
+                 i18n:translate="help_syndication_maxitems"
+                 class="help"
+                 style="visibility:hidden">
+              Max Syndicated Items.
+              </div>
+            </div>
+	  
+          <div class="field"
+               tal:attributes="class python:test(error_syndication_maxitems, 'field error', 'field')">
+	    
+            <div tal:condition="error_syndication_maxitems">
+              <tal:block i18n:translate="" content="error_syndication_maxitems">Error</tal:block>
+              <br />
+              </div>
+	    
+            <input name="max_items"
+                   value=""
+                   size="3"
+                   tabindex=""
+                   onfocus="formtooltip(syndication_maxitems_help',1)"
+                   onblur="formtooltip(syndication_maxitems_help',0)"
+                   tal:attributes="value syndication_maxitems;
+                                   tabindex tabindex/next;" />
+            </div>
+          </div>
+	
+        <div class="row">
+          <div class="label">&nbsp;</div>
+          <div class="field">
+            <input class="context"
+                   tabindex=""
+                   type="submit"
+                   name="submit"
+                   value="Save"
+                   i18n:attributes="value"
+                   tal:attributes="tabindex tabindex/next;"
+                   />
+            </div>
+          </div>
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" />
+	</form>
+
+      <form action="" 
+	    method="post"
+	    class="group"
+	    tal:attributes="action string:prefs_syndication_set">
+	<input type="submit" value="Disable Syndication" />
+	<input type="hidden" name="isAllowed:int" value="0" />
+	</form>
+      </div>
+   
+      <div tal:condition="not:isSynAllowed">
+	<form action="" 
+	      method="post"
+	      class="group"
+	      tal:attributes="action string:prefs_syndication_set">
+	  <input type="submit" value="Enable Syndication" />
+	  <input type="hidden" name="isAllowed:int" value="1" />
+	  </form>
+      </div>
+   
+    </div>
+
+</body>
+</html>
+
+
