@@ -164,6 +164,12 @@ def migrateTools(portal):
     _migrate(portal, 'portal_catalog', ToolNames.CatalogTool, ['_actions', '_catalog'])
     _migrate(portal, 'portal_metadata', ToolNames.MetadataTool, ['_actions', 'element_specs'])
     _migrate(portal, 'portal_syndication', ToolNames.SyndicationTool, [])
+    _migrate(portal, 'portal_discussion', ToolNames.DiscussionTool, ['_actions'])
+    _migrate(portal, 'portal_groups', ToolNames.GroupsTool, ['_actions',
+        'groupworkspaces_id', 'groupWorkspacesCreationFlag',
+        'groupWorkspaceType', ]) # XXX 'groupworkspaces_title', 'groupWorkspaceContainerType'
+    _migrate(portal, 'portal_groupdata', ToolNames.GroupDataTool, ['_actions',
+        '_members']) # XXX properties
 
     orig=_migrate(portal, 'portal_types', ToolNames.TypesTool, ['_actions', 'meta_types']) #XXX
     tt = getToolByName(portal, 'portal_types')
@@ -447,6 +453,21 @@ def deprFsViews(portal):
         
         path = ','.join(newpath)
         st.addSkinSelection(skin, path)
+
+def fixToolClasses(portal):
+    # yes that's strange bug it works under python ... I love python :)
+    import Products.CMFPlone.DiscussionTool
+    pd = getToolByName(portal, 'portal_discussion')
+    pd = aq_base(pd)
+    pd.__class__ = Products.CMFPlone.DiscussionTool.DiscussionTool
+
+    import Products.CMFPlone.GroupsTool
+    pg = getToolByName(portal, 'portal_groups')
+    pg.__class__ = Products.CMFPlone.GroupsTool.GroupsTool
+    
+    import Products.CMFPlone.GroupDataTool
+    pgd = getToolByName(portal, 'portal_groupdata')
+    pgd.__class__ = Products.CMFPlone.GroupDataTool.GroupDataTool
             
 def registerMigrations():
     MigrationTool.registerUpgradePath('1.0.1','1.1alpha2',upg_1_0_1_to_1_1)
