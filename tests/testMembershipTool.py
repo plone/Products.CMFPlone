@@ -324,36 +324,9 @@ class TestMemberareaSetup(PloneTestCase.PloneTestCase):
         self.failUnless(catalog(id='user2', Type='Folder', Title="user2's Home"),
                         "Could not find user2's home folder in the catalog")
 
-    def testHomePageExists(self):
-        # Should have an index_html document
-        self.failUnless(hasattr(aq_base(self.home), 'index_html'))
-
-    def testHomePageIsDocument(self):
-        # Home page should be a Document
-        page = self.home.index_html
-        self.assertEqual(page.meta_type, 'ATDocument')
-        self.assertEqual(page.portal_type, 'Document')
-
-    def testHomePageIsOwnedByMember(self):
-        # Home page should be owned by member
-        page = self.home.index_html
-        try: owner_info = page.getOwnerTuple()
-        except AttributeError:
-            owner_info = page.getOwner(info=1)
-        self.assertEqual(owner_info[0], [PloneTestCase.portal_name, 'acl_users'])
-        self.assertEqual(owner_info[1], 'user2')
-        self.assertEqual(len(page.get_local_roles()), 1)
-        self.assertEqual(page.get_local_roles_for_userid('user2'), ('Owner',))
-
-    def testHomePageHasEmptyDescription(self):
-        # Home page should not have a description (since 2.0.1)
-        page = self.home.index_html
-        self.failIf(page.Description())
-
-    def testHomePageIsCataloged(self):
-        # Home page should be cataloged
-        catalog = self.portal.portal_catalog
-        self.failUnless(catalog(id='index_html', Title="Home page for user2"))
+    def testHomePageNotExists(self):
+        # Should not have an index_html document anymore
+        self.failIf('index_html' in self.home.objectIds())
 
     def testPersonalFolderExists(self):
         # Should have a .personal folder

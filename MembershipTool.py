@@ -113,7 +113,7 @@ class MembershipTool(PloneBaseTool, BaseTool):
             membertool   = getToolByName(self, 'portal_memberdata')
             membertool._setPortrait(portrait, member_id)
 
-    def createMemberarea(self, member_id=None, minimal=0):
+    def createMemberarea(self, member_id=None, minimal=1):
         """
         Create a member area for 'member_id' or the authenticated user.
         """
@@ -211,34 +211,33 @@ class MembershipTool(PloneBaseTool, BaseTool):
         # Don't add .personal folders to catalog
         catalog.unindexObject(personal)
         
-        if minimal:
-            # don't set up the index_html for unit tests to speed up tests
-            return
+        if not minimal:
+            # if it's minimal, don't create the memberarea but do notification
 
-        ## add homepage text
-        # get the text from portal_skins automagically
-        homepageText = getattr(self, 'homePageText', None)
-        if homepageText:
-            member_object = self.getMemberById(member_id)
-            portal = getToolByName(self, 'portal_url')
-            # call the page template
-            content = homepageText(member=member_object, portal=portal).strip()
-            _createObjectByType('Document', member_folder, id='index_html')
-            hpt = getattr(member_folder, 'index_html')
-            # edit title, text and format
-            # XXX
-            hpt.setTitle(member_folder_index_html_title)
-            if hpt.meta_type == 'Document':
-                # CMFDefault Document
-                hpt.edit(text_format='structured-text', text=content)
-            else:
-                hpt.update(text=content)
-            hpt.setFormat('structured-text')
-            hpt.reindexObject()
-            # Grant Ownership and Owner role to Member
-            hpt.changeOwnership(user)
-            hpt.__ac_local_roles__ = None
-            hpt.manage_setLocalRoles(member_id, ['Owner'])
+            ## add homepage text
+            # get the text from portal_skins automagically
+            homepageText = getattr(self, 'homePageText', None)
+            if homepageText:
+                member_object = self.getMemberById(member_id)
+                portal = getToolByName(self, 'portal_url')
+                # call the page template
+                content = homepageText(member=member_object, portal=portal).strip()
+                _createObjectByType('Document', member_folder, id='index_html')
+                hpt = getattr(member_folder, 'index_html')
+                # edit title, text and format
+                # XXX
+                hpt.setTitle(member_folder_index_html_title)
+                if hpt.meta_type == 'Document':
+                    # CMFDefault Document
+                    hpt.edit(text_format='structured-text', text=content)
+                else:
+                    hpt.update(text=content)
+                hpt.setFormat('structured-text')
+                hpt.reindexObject()
+                # Grant Ownership and Owner role to Member
+                hpt.changeOwnership(user)
+                hpt.__ac_local_roles__ = None
+                hpt.manage_setLocalRoles(member_id, ['Owner'])
 
         ## Hook to allow doing other things after memberarea creation.
         notify_script = getattr(member_folder, 'notifyMemberAreaCreated', None)

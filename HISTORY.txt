@@ -9,6 +9,24 @@ Plone 2.1 - Plaid - (unreleased)
       the site's default encoding.
       [stefan]
 
+    - fixed uitask bug #21: renamed "Name" to "Login Name" in login form and portlet
+      [mrtopf]
+
+    - fixed uitask bug #19: default homepage for new members is not created anymore 
+      per default
+      [mrtopf]
+
+    - fixed uitask bug #5: status message should show the name instead of title of a 
+      portal type on add. now shows the title
+      [mrtopf]
+
+    - fixed uitask bug #79: removed "you are logged in" message
+      [mrtopf]
+
+    - fixed uitask bug #73: added display of plone, zope and python version to the
+      ControlPanel
+      [mrtopf]
+
     - Merged plip81-BylineHistory r6154:HEAD into 2.1 branch. This adds
       workflow history to the document byline.
       [stefan] [ender] [limi]

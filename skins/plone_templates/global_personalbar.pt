@@ -25,12 +25,6 @@
         </span>
     </a></li>
 
-    <li class="portalNotLoggedIn" tal:condition="isAnon"
-          i18n:translate="you_are_not_logged_in">
-              You are not logged in
-    </li>
-
-       
     <tal:actions tal:repeat="action python:here.getOrderedUserActions(keyed_actions=keyed_actions)">
         <li>
             <a href=""
