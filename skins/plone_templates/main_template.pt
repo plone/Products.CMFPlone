@@ -46,11 +46,11 @@
     </div>
 
     <a metal:use-macro="here/global_elements/macros/portal_logo">
-        The portal logo , linked to the portal root
+        The portal logo, linked to the portal root
     </a>
 
     <div metal:use-macro="here/global_elements/macros/portal_tabs">
-        The global portal tabs.
+        The global portal tabs. (Welcome, News etc)
     </div>
 
 
@@ -59,7 +59,7 @@
     </div>
 
     <div metal:use-macro="here/global_elements/macros/path_bar">
-        The breadcrumb navigation thing
+        The breadcrumb navigation ("you are here")
     </div>
 </div>
 
@@ -82,8 +82,13 @@
          tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions )">
 
         <metal:ifborder tal:condition="show_border" >
-            <div metal:use-macro="here/view_tabs/macros/content_tabs"></div>
-            <div metal:use-macro="here/view_tabs/macros/content_bar"></div>
+            <div metal:use-macro="here/view_tabs/macros/content_tabs">
+            The content tabs (View, Edit, Properties, Workflow)
+            </div>
+            
+            <div metal:use-macro="here/view_tabs/macros/content_bar">
+            The content bar
+            </div>
         </metal:ifborder>
 
 
