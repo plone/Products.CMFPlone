@@ -8,97 +8,15 @@
     macros to their own PageTemplates in portal_templates/ui_slots.  
     Eventually this PageTemplate will be gone.
     
-    (This stuff is apparently still used in the calendar pop-up 
-     - Alexander Limi, 2002-08-16)
-
     the calendar UI widget can be found in plone_templates/ui_slots/calendar_slot
 
-<!-- calendar box picker -->        
-<div metal:define-macro="calendarDatePickerBox" tal:define="portal_url here/portal_url">
-
- <comment tal:condition="nothing">
- 
- This template relies on the presence of an 'inputname' variable, 
- which contains the name of the element whose value should be
- altered when the calendar returns a result.
- Similarly it requires a 'formname' variable - the name
- of the form in which this input element resides.
- Also it should be provided with inputvalue which is the
- current or default value for the field.
-
- onfocus and/or onblur are setup as attributes if availabe. 
- 
- tabindex is setup is provided.
-
- </comment>
- 
-  <input type=text tal:attributes="name inputname; 
-                                   id inputname; 
-                                   value inputvalue;
-                                   onfocus onfocus|nothing;
-                                   onblur onblur|nothing;
-                                   tabindex tabindex/next|nothing" 
-                                   />
-
-  <a href="" tal:attributes="onclick string:window.open('$portal_url/calendar_popup?inputname=${inputname}&amp;formname=${formname}','cal','dependent=yes,width=180,height=180,screenX=200,screenY=300,titlebar=no');; return false">
-    <img tal:replace="structure here/popup_calendar.gif" />
-  </a>
+<metal:relic define-macro="calendarDatePickerBox">
+<metal:real-stuff use-macro="here/calendar_slot/macros/calendarDatePickerBox" />
+</metal:relic>
 
 
- 
-</div>
-
-
-<div metal:define-macro="calendarDatePickerBoxPopup"
-     class="container"
-     tal:define="DateTime python:modules['DateTime'].DateTime;
-                 current python:DateTime();
-                 month python:request.get('month', DateTime().month());
-                 year python:request.get('year', DateTime().year());
-                 prevMonthTime python:here.getPreviousMonth(month, year);
-                 nextMonthTime python:here.getNextMonth(month, year);
-                 weeks python:here.portal_calendar.getWeeksList(month=month, year=year);">
-
-    <table cellpadding="2" cellspacing="0" border="0" class="calendar" id="thecalendar">
-        <tr tal:define="calendarurl python:'%s?inputname=%s&amp;formname=%s' % (path('template/absolute_url'),inputname,formname) ">
-            <th>
-                <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,prevMonthTime.month(),prevMonthTime.year())">&laquo;</a>
-            </th>
-            <th colspan="5" tal:define="date string:$month/1/$year">
-              <span i18n:translate="" tal:omit-tag="">
-                <span tal:content="python:DateTime(date).strftime('%B').capitalize()" tal:omit-tag=""> <span i18n:name="year" tal:content="python:DateTime(date).year()" tal:omit-tag="" /> </span>
-              </span>
-            </th>
-        
-            <th>
-                <a href="" tal:attributes="href python:'%s&amp;month:int=%d&amp;year:int=%d' % (calendarurl,nextMonthTime.month(),nextMonthTime.year())">&raquo;</a>
-            </th>
-        </tr>
-        
-        <tr tal:define="weekdays here/portal_calendar/getDays">
-          <tal:block repeat="weekday weekdays">
-            <td class="weekdays" i18n:translate="" tal:content="weekday">Su</td>
-          </tal:block>
-        </tr>
-            <tr tal:repeat="week weeks">
-              <tal:block define="days week">
-                <tal:block repeat="day days" tal:omit-tag="">
-                  <td tal:condition="not: python: day">
-                    &nbsp;
-                  </td>
-                  <td class="noevent" tal:condition="python: day"
-                                      tal:define="datestring python:'%d/%0.2d/%0.2d'%(year,month,day)"
-                                      tal:attributes="class python:test(current.year()==year and current.month()==month and current.day()==int(day), 'todaynoevent', 'noevent')">
-                    <a href="" tal:attributes="onclick string:returndate('${datestring}');; return false" tal:content="day">
-                      day number
-                    </a>
-                  </td>
-                </tal:block>
-              </tal:block>
-            </tr>
-    
-    </table>
-
-</div>  <!-- end of the calendar datepicker box -->
+<metal:relic define-macro="calendarDatePickerBoxPopup">
+<metal:real-stuff use-macro="here/calendar_slot/macros/calendarDatePickerBoxPopup" />
+</metal:relic>
 
 <html>
