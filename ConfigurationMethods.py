@@ -2,6 +2,7 @@ from OFS.PropertyManager import PropertyManager
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.Expression import Expression
+from migrations.migration_util import safeEditProperty
 
 
 def modifyAuthentication(self, portal):
@@ -24,25 +25,25 @@ def addSiteProperties(self, portal):
     p=getattr(portal.portal_properties, id)
 
     if not hasattr(p,'allowAnonymousViewAbout'):
-        p._setProperty('allowAnonymousViewAbout', 1, 'boolean')
+        safeEditProperty(p, 'allowAnonymousViewAbout', 1, 'boolean')
     if not hasattr(p,'localTimeFormat'):
-        p._setProperty('localTimeFormat', '%Y-%m-%d', 'string')
+        safeEditProperty(p, 'localTimeFormat', '%Y-%m-%d', 'string')
     if not hasattr(p,'localLongTimeFormat'):
-        p._setProperty('localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
+        safeEditProperty(p, 'localLongTimeFormat', '%Y-%m-%d %I:%M %p', 'string')
     if not hasattr(p,'default_language'):
-        p._setProperty('default_language', 'en', 'string')
+        safeEditProperty(p, 'default_language', 'en', 'string')
     if not hasattr(p,'default_charset'):
-        p._setProperty('default_charset', 'utf-8', 'string')
+        safeEditProperty(p, 'default_charset', 'utf-8', 'string')
     if not hasattr(p,'use_folder_tabs'):
-        p._setProperty('use_folder_tabs',('Folder',), 'lines')
+        safeEditProperty(p, 'use_folder_tabs',('Folder',), 'lines')
     if not hasattr(p,'use_folder_contents'):
-        p._setProperty('use_folder_contents',('Folder',), 'lines')
+        safeEditProperty(p, 'use_folder_contents',('Folder',), 'lines')
     if not hasattr(p,'ext_editor'):
-        p._setProperty('ext_editor', 0, 'boolean')
+        safeEditProperty(p, 'ext_editor', 0, 'boolean')
     if not hasattr(p, 'available_editors'):
-        p._setProperty('available_editors', ('None', ), 'lines')
+        safeEditProperty(p, 'available_editors', ('None', ), 'lines')
     if not hasattr(p, 'allowRolesToAddKeywords'):
-        p._setProperty('allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
+        safeEditProperty(p, 'allowRolesToAddKeywords', ['Manager', 'Reviewer'], 'lines')
 
 def setupDefaultSlots(self, portal):
     """ sets up the slots on objectmanagers """
@@ -56,10 +57,10 @@ def setupDefaultSlots(self, portal):
     item_action_slots=( 'here/actions_slot/macros/print'
                       , 'here/actions_slot/macros/sendto'
           , 'here/actions_slot/macros/syndication' )
-    portal._setProperty('left_slots', left_slots, 'lines')
-    portal._setProperty('right_slots', right_slots, 'lines')
-    portal._setProperty('item_action_slots', item_action_slots, 'lines')
-    portal.Members._setProperty('right_slots', (), 'lines')
+    safeEditProperty(portal, 'left_slots', left_slots, 'lines')
+    safeEditProperty(portal, 'right_slots', right_slots, 'lines')
+    safeEditProperty(portal, 'item_action_slots', item_action_slots, 'lines')
+    safeEditProperty(portal.Members, 'right_slots', (), 'lines')
 
 def installExternalEditor(self, portal):
     ''' responsible for doing whats necessary if external editor is found '''
@@ -81,7 +82,7 @@ def installExternalEditor(self, portal):
                                , 0 )
     site_props=getToolByName(portal, 'portal_properties').site_properties
     if not hasattr(site_props, 'ext_editor'):
-        p._setProperty('ext_editor', INSTALLED, 'boolean')
+        safeEditProperty('ext_editor', INSTALLED, 'boolean')
 
 def assignTitles(self, portal):
     titles={'portal_actions':'Contains custom tabs and buttons',
@@ -114,17 +115,17 @@ def assignTitles(self, portal):
 def addMemberdata(self, portal):
     md=getToolByName(portal, 'portal_memberdata')
     if not hasattr(md,'formtooltips'):
-        md._setProperty('formtooltips', '1', 'boolean')
+        safeEditProperty(md, 'formtooltips', '1', 'boolean')
     if not hasattr(md,'visible_ids'):
-        md._setProperty('visible_ids', '1', 'boolean')
+        safeEditProperty(md, 'visible_ids', '1', 'boolean')
     if not hasattr(md,'wysiwyg_editor'):
-        md._setProperty('wysiwyg_editor', '', 'string')
+        safeEditProperty(md, 'wysiwyg_editor', '', 'string')
     if not hasattr(md,'listed'):
-        md._setProperty('listed', '1', 'boolean')
+        safeEditProperty(md, 'listed', '1', 'boolean')
     else:
-        md._setPropValue('listed','1')
+        safeEditProperty(md, 'listed','1')
     if not hasattr(md, 'fullname'):
-        md._setProperty('fullname', '', 'string')
+        safeEditProperty(md, 'fullname', '', 'string')
 
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
@@ -165,9 +166,12 @@ def modifySkins(self, portal):
     st=getToolByName(portal, 'portal_skins')
     tt=getToolByName(portal, 'portal_types')
     skins_map=st._getSelections()
-    del skins_map['No CSS']
-    del skins_map['Nouvelle']
-    del skins_map['Basic']
+    if skins_map.has_key('No CSS'):
+        del skins_map['No CSS']
+    if skins_map.has_key('Nouvelle'):        
+        del skins_map['Nouvelle']
+    if skins_map.has_key('Basic'):        
+        del skins_map['Basic']
     st.selections=skins_map
 
     for t in tt.objectValues():

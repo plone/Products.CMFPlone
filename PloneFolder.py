@@ -17,6 +17,7 @@ from Products.CMFCore import CMFCorePermissions
 from Acquisition import aq_base, aq_inner, aq_parent
 from Globals import InitializeClass
 from webdav.WriteLockInterface import WriteLockInterface
+# from Products.BTreeFolder2.BTreeFolder2 import BTreeFolder2Base
 
 from OFS.ObjectManager import REPLACEABLE
 from ComputedAttribute import ComputedAttribute

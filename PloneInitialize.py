@@ -3,16 +3,7 @@ from Products.CMFPlone.Portal import manage_addSite
 from Products.SiteAccess.SiteRoot import manage_addSiteRoot
 from Products.SiteAccess.AccessRule import manage_addAccessRule
 
-# add in message catalog stuff
-try:
-    from Products.Localizer.Localizer import manage_addLocalizer
-    from Products.Localizer.MessageCatalog import manage_addMessageCatalog
-    hasLocalizer = 1
-except ImportError:
-    hasLocalizer = 0
-
 from AccessControl import User
-
 from App.Extensions import getObject
 
 import string
@@ -31,11 +22,6 @@ from ConfigParser import ConfigParser
 
 # grab the old initilalize...
 old_initialize = OFS.Application.initialize
-
-# for i18n stuff
-i18nDir = os.path.join(INSTANCE_HOME, 'Products', 'i18n')
-
-out = []
 
 def go(app):
     """ Initialize the ZODB with Plone """
@@ -58,75 +44,6 @@ def go(app):
 def _get_error():
     type, value = sys.exc_info()[:2]
     return str(type), str(value)
-
-def _installSkins(plone, skinList):
-    skin_tool = getattr(plone, 'portal_skins')
-
-   # ripped from Portal.py
-    for skin in skinList:
-        # cheeky fellow, this is bound to break at some point
-        directory_id = 'plone_styles/' + skin[6:].replace(' ', '_').lower()
-        path = [elem.strip() for elem in skin_tool.getSkinPath('Plone Default').split(',')]
-        path.insert(path.index('custom')+1, directory_id)
-        skin_tool.addSkinSelection(skin, ','.join(path))
-
-def _installLocalizer(plone):
-    out.append('Installing Localizer')
-
-    lName = 'Localizer'
-    tName = 'translation_service'
-    
-    if not plone.objectIds(lName):
-        # add localizer
-        manage_addLocalizer(plone, lName, 'en')
-        
-    if not tName in plone.objectIds():
-        # add a translation_service
-        plone.manage_addProduct['TranslationService'].addPlacefulTranslationService(tName)
-
-    tObj = plone._getOb(tName)
-    lObj = plone._getOb(lName)
-
-    # nuke out the accept_path
-    lObj.accept_methods = ['accept_cookie',]
-
-    # ok so now we should have valid localizer
-    # and translation service objects...
-
-    manage_addMessageCatalog(lObj, 'Plone', 'Plone Message Catalog', 'en')
-    mObj = lObj.Plone
-
-    tObj.manage_setDomainInfo(None, path_0='%s/Plone' % lName) 
-    # set the translation_service to the localizer...
-
-    # delete all languages, just in case, for 
-    # some reason im getting wierd ones
-    mObj.manage_delLanguages(languages=mObj._languages)
-
-    # add in languages
-    out.append('Reading .po files from %s' % i18nDir)
-    if os.path.exists(i18nDir):
-        for file in glob.glob(os.path.join(i18nDir, '*.po')):
-            try:
-                out.append('Found file: %s' % file)
-                fn = os.path.basename(file)
-                lang = fn[6:-3]
-
-                # first add in the language
-                out.append('Adding language: %s' % lang)
-                mObj.manage_addLanguage(lang)
-    
-                # then add in the file
-                out.append('Adding po file')
-                fh = open(file, 'rb')
-                mObj.manage_import(lang, fh)
-            except:
-                out.append('Failed to setup .po file for: %s' % file)
-    else:
-        out.append('No i18n directory found')
-
-    # set the default language to english
-    mObj.manage_changeDefaultLang(language='en')
 
 def _go(app):
     filename = 'plone.ini'
@@ -197,7 +114,6 @@ def _go(app):
     else:
         out.append("Gotten the admin user")
 
-
     # 3. now create the access rule
     if eid not in oids:
         # this is the actual access rule
@@ -236,31 +152,24 @@ def _go(app):
         manage_addSiteRoot(plone)
         if user:
             getattr(plone, sid).changeOwnership(user)
-
-    # 6. Install std products
-    # this is every product :)
-    # productList = app.Control_Panel.Products.objectIds()
-    # productList = ['CMFCollector', 'CMFForum']
-    for productId in productList:
-        try:
-            productId = productId.strip()
-            res = getObject('%s.Install' % productId, 'install')(plone)
-            out.append("Installed %s" % productId)
-            out.append("%s: %s" % (productId, res))
-
-        except:
-            value, type = _get_error()
-            out.append("Failed to install %s, reason:" % (productId, value, type))
-
+  
+    # 6. add in products
+    ids = [ x['id'] for x in plone.portal_quickinstaller.listInstallableProducts(skipInstalled=1) ]
+    qit.installProducts(ids)
+    
+    # 6.1 patch up the products
     # CMF Collector is a very bad product
     # import workflow
     plone.portal_workflow.manage_importObject('collector_issue_workflow.zexp')
     cbt = plone.portal_workflow._chains_by_type
     cbt['Collector Issue'] = ('collector_issue_workflow',)
 
+    # 7. add in skins
     # go and install the skins...
-    _installSkins(plone, skinList)
+    sk = plone.portal_migration._getWidget('Skin Setup')
+    sk.addItems(sk.available())   
 
+    # 7.1 patch up the skins
     # Plone is a bad product
     skins = plone.portal_skins.getSkinSelections()
     for skin in skins:
@@ -270,10 +179,11 @@ def _go(app):
         plone.portal_skins.addSkinSelection(skin, ','.join(path))
     # Sigh, ok now CMFCollector should be in the path
 
-    # go and install the translation service...
-    if hasLocalizer:
-        _installLocalizer(plone)
-
+    # 8. add in the languages
+    sk = plone.portal_migration._getWidget('Localizer Language Setup')
+    sk.addItems(sk.available())       
+    
+    # 9. commit
     get_transaction().commit()
 
     # and stop this happening again

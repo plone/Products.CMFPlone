@@ -56,9 +56,9 @@ class PloneSite(CMFSite):
     meta_type = 'Plone Site'
     manage_addPloneFolder = PloneFolder.addPloneFolder
 
-    #def __browser_default__(self, request):
-    #    """ Set default so we can return whatever we want instead of index_html """
-    #    return self.browserDefault(request)
+    def __browser_default__(self, request):
+        """ Set default so we can return whatever we want instead of index_html """
+        return self.browserDefault(request)
 
 class PloneGenerator(Portal.PortalGenerator):
 
@@ -192,6 +192,7 @@ class PloneGenerator(Portal.PortalGenerator):
                     , 'plone_scripts/form_scripts'
                     , 'plone_styles'
                     , 'plone_templates'
+                    , 'plone_3rdParty/CMFCollector'
                     , 'plone_3rdParty/CMFTopic'
                     , 'plone_3rdParty/CMFCalendar'
                     , 'plone_templates/ui_slots'
