@@ -1555,7 +1555,14 @@ ol.visualNoMarker {
    background-color: #feff82;
 }
 
+/* for greying out inherited roles */
+
+.noInheritedRoles {
+    color: #a0a0a0;
+}
+
 /* for highlighting current items, like the language or today in the calendar */
+
 .currentItem {
     border-collapse: collapse;
     border: 2px &dtml-borderStyle; &dtml-notifyBorderColor;;

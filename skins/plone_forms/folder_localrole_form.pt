@@ -9,11 +9,15 @@
 <body>
 
   <div metal:fill-slot="main"
+
        tal:define="Batch python:modules['Products.CMFPlone'].Batch;
                    username member/getUserName;
+                   avail_roles python:[role for role in container.portal_membership.getCandidateLocalRoles(here) if role!='Owner'];
                    group_submit request/group_submit|nothing;
                    b_size python:12;b_start python:0;b_start request/b_start | b_start;
                    tabindex python:Iterator();
+                   iscontainer here/isPrincipiaFolderish|nothing;
+                   inheritanceActive here/isLocalRoleAcquired|python:1;
                    search_submitted request/role_submit|nothing;
                    search_results python:search_submitted and mtool.searchForMembers(
                                          {request.get('search_param',''):
@@ -29,55 +33,22 @@
         These users have privileges here:
     </p>
 
-    <fieldset tal:define="iroles python:here.plone_utils.getInheritedLocalRoles(here);"
-              tal:condition="iroles">
 
-        <legend i18n:translate="legend_acquired_roles">
-            Acquired roles
-        </legend>
+    <tal:warning tal:condition="not:iscontainer">
+        <div class="portalMessage" style="background-color:rgb(255,191,191)">
+            <img tal:replace="structure here/info.gif" />
+            <span style="font-weight:normal" i18n:translate="local_role_warning"><strong>Attention!</strong> You are setting the sharing permissions for a <strong tal:content="here/portal_type"/>.
+            if you want to set the permissions for its containing folder, click 
+            <a href="" tal:attributes="href python:here.absolute_url()+'/../'+ template.id">here</a>
+            </span>.
+        </div>
+    </tal:warning>
 
-        <table class="listing" summary="Acquired roles">
-            <thead>
-            <tr>
-                <th i18n:translate="label_user_group_name">User/Group name</th>
-                <th i18n:translate="label_type">Type</th>
-                <th i18n:translate="label_roles">Role(s)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr tal:repeat="irole iroles">
-                <td tal:content="python:irole[0]">
-                    groupname
-                </td>
-
-                <td tal:condition="python:irole[2]=='group'"
-                    i18n:translate="label_group">
-                    Group
-                </td>
-                <td tal:condition="python:irole[2]=='user'"
-                    i18n:translate="label_user">
-                    User
-                </td>
-
-                <td>
-                <tal:block tal:repeat="role python:irole[1]">
-                    <span i18n:translate=""
-                          tal:content="role"
-                          tal:omit-tag="">Role</span>
-                    <span tal:condition="not: repeat/role/end"
-                          tal:omit-tag="">, </span>
-                </tal:block>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-    </fieldset>
-
+    <!-- form for changing existing roles -->
     <form method="post"
           name="deleterole"
-          action="folder_localrole_edit"
-          tal:attributes="action string:$here_url/folder_localrole_edit">
+          action="folder_localrole_delete"
+          tal:attributes="action string:$here_url">
 
       <fieldset>
 
@@ -89,7 +60,7 @@
         <input type="hidden" name="change_type" value="delete" />
         <input type="hidden" name="member_role" value="" />
 
-        <table class="listing" summary="Currently assigned local roles">
+        <table class="listing" summary="Currently assigned local roles" tal:define="showPortraits python:1">
             <thead>
             <tr>
                 <th>
@@ -102,17 +73,26 @@
                        tabindex=""
                        tal:attributes="tabindex tabindex/next;"/>
                 </th>
-                <th i18n:translate="label_user_group_name">User/Group name</th>
+                <th i18n:translate="label_name">Name</th>
                 <th i18n:translate="label_type">Type</th>
-                <th i18n:translate="label_roles">Role(s)</th>
+
+                <th class="" 
+                    tal:attributes="class   python:test(inheritanceActive,'','noInheritedRoles')">
+                    <span i18n:translate="label_acquired_roles" nowrap="nowrap">Inherited Role(s)</span>
+                    <span tal:condition="not:inheritanceActive" i18n:translate="label_acquired_roles_inactive" nowrap="nowrap">(inactive)</span>
+                </th>
+                <th i18n:translate="label_local_roles" nowrap="nowrap">Local Role(s)</th>
             </tr>
             </thead>
             <tbody>
-            <tr tal:repeat="lrole python:here.acl_users.getLocalRolesForDisplay(here)">
-                <td class="field">
+            <tal:repeat tal:repeat="entry here/computeRoleMap">
+        <tr tal:define="oddrow      repeat/entry/odd;
+                              isGroup   python:entry['type']=='group';"
+            tal:attributes="class python:test(oddrow,'even','odd');">
+                <td valign="top" class="field">
                     <label class="hiddenLabel" for="member_ids:list"
                            i18n:translate="label_select_usergroup">
-                        select user/group <span tal:content="python:lrole[3]" i18n:name="role"/>
+                        select user/group <span tal:content="entry/id" i18n:name="role"/>
                     </label>
                     <input class="formSelection"
                            type="checkbox"
@@ -120,42 +100,99 @@
                            id="#"
                            value=""
                            tabindex=""
-                           tal:condition="python:lrole[0]!=username"
-                           tal:attributes="value python:lrole[3];
+                           tal:condition="python:entry['name']!=username"
+                           tal:attributes="value entry/id;
                                            tabindex tabindex/next"
                            />
                 </td>
 
-                <td tal:content="python:lrole[0]">
-                    groupname
+                <td valign="top" tal:condition="not: isGroup">
+                        <img src=""
+                                 tal:condition="not: showPortraits"
+                                 tal:replace="structure portal/user.gif;" />
+           
+                        <img tal:replace="structure here/user.gif" />
+                        <span tal:replace="entry/name">
+                                    username
+                        </span>
+                </td>
+                <td valign="top" tal:condition="isGroup">
+                        <img tal:replace="structure here/group.gif" />
+                        <span tal:replace="entry/name">
+                                    groupname
+                        </span>
                 </td>
 
-                <td tal:condition="python:lrole[2]=='group'"
+                <td valign="top" tal:condition="isGroup"
                     i18n:translate="label_group">
                     Group
                 </td>
-                <td tal:condition="python:lrole[2]=='user'"
+                <td valign="top" tal:condition="not: isGroup"
                     i18n:translate="label_user">
                     User
                 </td>
 
-                <td>
-                <tal:block tal:repeat="role python:lrole[1]">
+                <td valign="top" 
+                    tal:attributes="class   python:test(inheritanceActive,'','noInheritedRoles')">
+                <tal:block tal:repeat="role entry/acquired">
+                    <span i18n:translate=""
+                          tal:define="isEnd     repeat/role/end"
+                          tal:content="python:test(isEnd,role,role+',')"
+                          tal:omit-tag="">Role</span>
+                    <br />
+                </tal:block>
+                </td>
+
+                <td valign="top">
+                <tal:block tal:repeat="role entry/local">
+            <input tal:condition="python:role!='Owner'" type="checkbox" 
+                name="member_role_ids:list"
+                value=""
+                tal:attributes="value   string:${entry/id}((${role}))"
+                />
                     <span i18n:translate=""
                           tal:content="role"
                           tal:omit-tag="">Role</span>
                     <span tal:condition="not: repeat/role/end"
-                          tal:omit-tag="">, </span>
+                          tal:omit-tag=""> </span><br />
                 </tal:block>
                 </td>
             </tr>
+        </tal:repeat>
             </tbody>
         </table>
+
+
+        <div class="label" i18n:translate="label_localroles_to_assign_to_selected_users">Roles to assign to selected user(s)/group(s)</div>
+
+        <div class="field"
+             tal:define="data    python:here.formatColumns(avail_roles);">
+            <table cellspacing=3>
+                <tr tal:repeat="row     data">
+                    <td tal:repeat="lrole row">
+                        <input type="checkbox" name="member_roles:list" 
+                                tal:condition="lrole"
+                                tal:attributes="tabindex tabindex/next;
+                                                value lrole">
+                            <span tal:condition="lrole" tal:content="lrole">role</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
         <div class="submit">
             <input class="context"
                 type="submit"
-                value="Delete Selected Role(s)"
+                value="Assign selected role(s) to selected user(s)/group(s)"
+                name="folder_localrole_add:method"
+                i18n:attributes="value"
+                tabindex=""
+                tal:attributes="tabindex tabindex/next;"
+                />
+            <input class="destructive"
+                type="submit"
+                value="Delete Selected Role(s) and User(s)"
+                name="folder_localrole_delete:method"
                 i18n:attributes="value"
                 tabindex=""
                 tal:attributes="tabindex tabindex/next;"
@@ -459,6 +496,41 @@
             </form>
 
         </tal:groupshares>
+
+    <form method="post"
+          name="setacquisition"
+          action="folder_localrole_set">
+
+      <fieldset>
+
+        <legend i18n:translate="legend_security_settings">
+            Advanced Settings
+        </legend>
+
+        <div class="field"
+          tal:condition="exists:here/isLocalRoleAcquired">
+            <input class="noborder" type="checkbox" name="use_acquisition:int" value="1" id="inherit"
+                tal:attributes="checked     python:test(inheritanceActive,1,None)"
+                /> 
+            <label for="inherit">inherit roles from higher levels <label />
+            <div class="formHelp" i18n:translate="help_use_acquisition">
+                Determines if the roles given to users and groups from higher levels are in
+                effect in this context.
+            </div>
+        </div>
+
+        <div class="submit">
+            <input class="context"
+                type="submit"
+                value="apply settings"
+                i18n:attributes="value"
+                tabindex=""
+                tal:attributes="tabindex tabindex/next;"
+                />
+        </div>
+
+      </fieldset>
+    </form>
 
       <div metal:use-macro="here/document_byline/macros/byline">
         Get the byline - contains details about author and modification date.

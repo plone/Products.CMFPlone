@@ -394,6 +394,28 @@ class PloneFolder( BasePloneFolder, OrderedContainer ):
     manage_renameObject = OrderedContainer.manage_renameObject
     security.declareProtected(Permissions.copy_or_move, 'manage_copyObjects')
 
+    security.declareProtected(CMFCorePermissions.ModifyPortalContent, 'acquireLocalRoles')
+    def acquireLocalRoles(self, status = 1):
+        """If status is 1, allow acquisition of local roles (regular behaviour).
+        If it's 0, prohibit it (it will allow some kind of local role blacklisting).
+        GRUF IS REQUIRED FOR THIS TO WORK.
+        """
+        # Set local role status
+        gruf = getToolByName( self, 'portal_url' ).acl_users
+        gruf._acquireLocalRoles(self, status)   # We perform our own security check
+
+        # Reindex the whole stuff.
+        self.reindexObjectSecurity()
+
+    security.declarePublic("isLocalRoleAcquired")
+    def isLocalRoleAcquired(self):
+        """GRUF IS REQUIRED FOR THIS TO WORK.
+        Return Local Role acquisition blocking status. True if normal, false if blocked.
+        """
+        gruf = getToolByName( self, 'portal_url' ).acl_users
+        return gruf.isLocalRoleAcquired(self, )
+
+
 InitializeClass(PloneFolder)
 
 def safe_cmp(x, y):
