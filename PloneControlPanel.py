@@ -38,9 +38,16 @@ class PloneConfiglet(ActionInformation):
 default_configlets = (
     {'id':'QuickInstaller','appId':'QuickInstaller','name':'Install Products',
         'action':'prefs_install_products_form','category':'Plone','permission': ManagePortal,'imageUrl':'plone_images/site_icon.gif'},
-    {'id':'PloneReconfig','appId':'Plone','name':'Reconfigure Portal',
+
+    {'id':'PloneReconfig','appId':'Plone','name':'Portal Settings',
         'action':'reconfig_form','category':'Plone','permission': ManagePortal,'imageUrl':'plone_images/site_icon.gif'},
+
+    {'id':'UsersGroups','appId':'UsersGroups','name':'Users and Groups',
+        'action':'prefs_users_overview','category':'Plone','permission': ManagePortal,'imageUrl':'plone_images/site_icon.gif'},
+
 )
+
+
         
 class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManager):
     """
@@ -62,7 +69,7 @@ class PloneControlPanel(UniqueObject, Folder, ActionProviderBase, PropertyManage
 
     manage_options=ActionProviderBase.manage_options + PropertyManager.manage_options
 
-    groups=['Plone|Plone System','Products|Registered Products']
+    groups=['Plone|Plone Preferences','Products|Add-on Product Preferences']
 
     def __init__(self,**kw):
         if kw:
