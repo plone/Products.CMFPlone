@@ -758,7 +758,6 @@ class PloneTool(PloneBaseTool, UniqueObject, SimpleItem):
                 return True
         
         return False
-        
 
     security.declarePublic('isTranslatable')
     def isTranslatable(self, obj):

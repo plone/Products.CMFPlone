@@ -10,6 +10,7 @@ from Testing import ZopeTestCase
 from Products.CMFPlone.tests import PloneTestCase
 from Products.CMFPlone.tests import dummy
 
+
 class TestTemplateMixinScripts(PloneTestCase.PloneTestCase):
     '''Tests the browser default and folder-default page scripts'''
 
@@ -48,6 +49,7 @@ class TestTemplateMixinScripts(PloneTestCase.PloneTestCase):
         self.failUnless(self.folder.canSelectDefaultPage())
         self.folder.saveDefaultPage('test')
         self.failUnless(self.folder.test.isDefaultPageInFolder())
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite
