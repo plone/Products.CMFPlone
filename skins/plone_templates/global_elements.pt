@@ -91,10 +91,10 @@
              john
         </span>
     </a></li>
-    <li id="personalBar-anon" tal:condition="isAnon"
+    <span id="personalBar-anon" tal:condition="isAnon"
           i18n:translate="you_are_not_logged_in">
               You are not logged in
-    </li>
+    </span>
     <tal:actions tal:repeat="action python:display_actions">
         <li>
             <a href=""
