@@ -158,6 +158,8 @@
                </select>
             </span>
 
+  <span i18n:translate="date_separator">/</span>
+
             <span>
                 <select name="ic_day"
                         id="ic_day"
@@ -178,7 +180,6 @@
                </select>
             </span>
 
-  <span i18n:translate="date_separator">/</span>
 
   <a href="" onclick="" 
      tal:attributes="onclick string:return showCalendar('${input_id}_year', '${input_id}', '${input_id}_year', '${input_id}_month', '${input_id}_day', '${input_id}_hour', '${input_id}_minute', 'y/mm/dd');">
