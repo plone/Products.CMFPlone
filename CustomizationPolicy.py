@@ -77,7 +77,10 @@ class DefaultCustomizationPolicy:
                              , 'metadata_edit_form'
                              , CMFCorePermissions.ModifyPortalContent
                              , 'object' )
-                             
+        #get rid of the download tab on File, the view has a download button
+        file_actions=tt['File']._cloneActions()
+        tt['File']._actions=[action for action in file_actions if action['id']!='download']
+        
         #change all Metadata labels to Properties for usability
         for t in tt.objectValues():
             _actions=t._cloneActions()
@@ -86,7 +89,7 @@ class DefaultCustomizationPolicy:
                     a['name']='Properties'
             t._actions=_actions
         
-        #add custom Plone actions
+        #add custom Plone actionsa
         at=getToolByName(portal, 'portal_actions')
         at.addAction('index_html','Welcome','portal_url','', 'View', 'portal_tabs')
         at.addAction('Members','Members','string: $portal_url/Members/roster','','List portal members','portal_tabs')
@@ -169,6 +172,16 @@ class DefaultCustomizationPolicy:
                 a.action=Expression('string:${portal_url}/portal_form/reconfig_form')
         pp._actions=pp_actions
 
+        #add quick-undo to portal_undo
+        ut=getToolByName(portal, 'portal_undo')
+        ut.addAction( 'undo'
+                    , 'Quick Undo'
+                    , 'string:${object_url}/quick_undo'
+                    , 'member'
+                    , CMFCorePermissions.UndoChanges
+                    , 'user'
+                    , visible=0)
+        
         #the new plone actions are prefix with 'portal_form/'  this
         #ensures a special proxy object shadows content objects and
         #they can participate in validation/navigation

@@ -40,7 +40,9 @@
       Alan fixed it so Ownership is carried over properly and reindexes newsite after migration
     - portal_status_message is shown when a object is created, type_name has been created.
     - Ownership form is wired up but is not visible by default
-    
+    - added quick_undo script, one step undo.  not visible by default
+    - removed the download tab on File view since we have a button
+
 1.0 alpha4
     - publishing now works without javascript. #202
     - moved plone_calendar to plone_3rdParty/CMFCalendar (your skinpath will need updating if migrate)
