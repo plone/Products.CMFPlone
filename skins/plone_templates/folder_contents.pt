@@ -107,7 +107,7 @@
                                                 i18n:translate="label_show_x_only"
                                                 tal:attributes="value typeid;
                                                                 selected python:test( len(filterTypes)==1 and (typeid in filterTypes), 'selected', '');"
-                                        ><span i18n:name="type"><span i18n:translate="" tal:content="string:${typetitle}"/></span>s only</option>
+                                        ><span i18n:name="type" tal:omit-tag=""><span i18n:translate="" tal:content="string:${typetitle}" tal:omit-tag="" /></span>s only</option>
                                     </metal:block>
                                 </select>
                     
@@ -179,8 +179,7 @@
                 <metal:block tal:condition="folder_contents|not:standalone|nothing">
                 <tbody>
                 <metal:block tal:repeat="item batch"> 
-                    <tr border="1"
-                        tal:define="oddrow repeat/item/odd"
+                    <tr tal:define="oddrow repeat/item/odd"
                         tal:attributes="class python:test(oddrow, 'even', 'odd')" > 
     
                         <td>
@@ -198,7 +197,7 @@
                                                         item.absolute_url()+'/'+action);"> 
     
                             <a href="#" tal:attributes="href url">
-                                <img tal:attributes="src python:item.getIcon(1)" 
+                                <img alt="" tal:attributes="src python:item.getIcon(1)" 
                                 />&nbsp;<span tal:replace="item/title_or_id">Title</span>
                             </a>
                             <tal:block tal:condition="python:test(here.portal_properties.site_properties.ext_editor and item.hasActionId('external_edit'), 1,0)">
