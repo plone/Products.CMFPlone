@@ -19,10 +19,15 @@
     page. Add the relevant details below, and press "Save".
     </p>
 
+    <span tal:replace="nothing">
+    ##### SET THE FORM ACTION TO request/url FOR THE FORM_TOOL -- CUT AND PASTE INTO YOUR FORM ####
+    </span>
+    
     <form class="group"
           name="edit_form" 
-          action="newsitem_edit" 
-          method="post" >
+          action="newsitem_edit"           
+          method="post" 
+          tal:attributes="action request/URL" >
 
         <span class="legend" i18n:translate="">News Details</span>
         
@@ -219,8 +224,13 @@
                        tal:attributes="tabindex tabindex/next;"
                        /> 
             </div>
-        </div>       
-         
+        </div> 
+
+        <span tal:replace="nothing">
+         ##### HIDDEN VARIABLES FOR THE FORM_TOOL -- CUT AND PASTE THESE INTO YOUR FORM ####
+        </span>                        
+        <input type="hidden" name="form_submitted" value="1" tal:attributes="value template/id" >        
+
     </form>
 
 </div>

@@ -210,7 +210,10 @@
                            onblur="formtooltip('item_type_search_help',0)" 
                            tal:attributes="value type;
                                            tabindex tabindex/next;"/> 
-                    <span tal:replace="type" /> <br />
+                    <span tal:replace="python:here.portal_types.getTypeInfo(type).Title()">
+                    Document
+                    </span>
+                    <br />
                 </span>       
             </div>
         </div>
