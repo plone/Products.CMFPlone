@@ -18,7 +18,7 @@
     <form class="group"
           name="edit_form"
           action="document_edit" 
-          method="POST" 
+          method="post" 
           enctype="multipart/form-data" >
 
         <span class="legend" i18n:translate="">Document Details</span>    
@@ -55,7 +55,8 @@
                        tal:attributes="value id" 
                        tabindex="1"
                        onfocus="formtooltip('id_help',1)" 
-                       onblur="formtooltip('id_help',0)" />
+                       onblur="formtooltip('id_help',0)" 
+                       />
             </div>
 
         </div>
@@ -87,7 +88,8 @@
                        tabindex="2"
                        tal:attributes="value Title" 
                        onfocus="formtooltip('title_help',1)" 
-                       onblur="formtooltip('title_help',0)" />
+                       onblur="formtooltip('title_help',0)" 
+                       />
 
             </div>
         </div>
