@@ -1,3 +1,37 @@
+2003-11-18 04:36  sh1mmer
+
+	* skins/plone_styles/plone.css.dtml (Plone-2_0-branch): Fixed
+	  credits
+
+2003-11-17 21:41  tiran
+
+	* skins/plone_form_scripts/file_edit.cpy (Plone-2_0-branch): fixed
+	  bug #1976 "Title Property Not Updated for Portal File"
+
+2003-11-17 07:25  eaon
+
+	* skins/: plone_3rdParty/CMFTopic/topic_view.pt,
+	  plone_content/document_view.pt, plone_content/event_view.pt,
+	  plone_content/favorite_view.pt, plone_content/file_view.pt,
+	  plone_content/image_view.pt, plone_content/link_view.pt,
+	  plone_content/newsitem_view.pt, plone_templates/folder_listing.pt
+	  (Plone-2_0-branch): flexibility - first heading is now styleable
+	  ... i wish ie would support + selectors...
+
+2003-11-17 06:35  eaon
+
+	* skins/: plone_styles/plone.css.dtml,
+	  plone_styles/ploneTextLarge.css, plone_styles/ploneTextSmall.css,
+	  plone_templates/global_siteactions.pt,
+	  plone_templates/main_template.pt (Plone-2_0-branch): moved
+	  styleswitcher and siteactions to the semantic correct position in
+	  the markup - siteactions aren't moving around when scaling
+	  anymore
+
+2003-11-17 05:07  longsleep
+
+	* CVSLOG: auto generated new changelog
+
 2003-11-16 12:45  runyaga
 
 	* skins/plone_form_scripts/plone_change_password.py
