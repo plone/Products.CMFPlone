@@ -43,7 +43,7 @@
             </div>
             
             <div class="field">
-	        <metal:block tal:define="val request/allowDiscussion | here/isDiscussable;
+	        <metal:block tal:define="val request/allowDiscussion | python: here.portal_discussion.isDiscussionAllowedFor(here);
                                    val python:test(val=='default',None,val);
                                    val python:test(val=='off',0,val);
                                    val python:test(val=='on',1,val);
