@@ -25,9 +25,12 @@
     in the lists below. 
     </div>
 
-    <form action="installProducts" tal:attributes="action python:QI.absolute_url()+'/installProducts'" method="post">
+    <form style="float: left;"
+          action="installProducts" 
+          tal:attributes="action python:QI.absolute_url()+'/installProducts'" 
+          method="post">
 
-        <fieldset>
+        <fieldset style="float: left; margin-right: 1em;">
             <legend i18n:translate="legend_install_products_available">Products available for install</legend>
 
             <ul class="configlets">
@@ -85,11 +88,12 @@
         </fieldset>
     </form>
 
-    <form action="uninstallProducts" 
-        tal:condition="python:len([p for p in QI.listInstalledProducts() if not p['isHidden'] and not p['isLocked']])" 
-        tal:attributes="action python:QI.absolute_url()" method="post">
+    <form style="float: left;"
+          action="uninstallProducts" 
+          tal:condition="python:len([p for p in QI.listInstalledProducts() if not p['isHidden'] and not p['isLocked']])" 
+          tal:attributes="action python:QI.absolute_url()" method="post">
 
-        <fieldset>
+        <fieldset style="float: left;">
             <legend i18n:translate="legend_installed_products">Installed products</legend> 
 
             <ul class="configlets">
