@@ -33,7 +33,7 @@ def make_plone(portal):
     typesTool = portal.portal_types
     wf_tool=portal.portal_workflow
     folder_wf = wf_tool['folder_workflow']
-    folder_wf.states.visible.permission_roles[ListFolderContents]=['Manager', 'Owner']
+    folder_wf.states.visible.permission_roles[ListFolderContents]=('Manager', 'Owner', 'Member')
 
     addPortalFormValidators(portal)
     addCatalogIndexes(portal)
