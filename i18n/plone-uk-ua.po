@@ -1,0 +1,4053 @@
+# Gettext Message File for Plone.
+# Myroslav Opyr <myroslav@zope.net.ua>, 2002
+msgid ""
+msgstr ""
+"Project-Id-Version: Plone 1.0\n"
+"POT-Creation-Date: 2002-09-13 06:11+0300\n"
+"PO-Revision-Date: 2002-09-25 11:15-0300\n"
+"Last-Translator: Myroslav Opyr <myroslav@zope.net.ua>\n"
+"Language-Team: Plone i18n <plone-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language-code: uk\n"
+"Language-name: Ukrainan\n"
+"Preferred-encodings: utf-8 koi8-u windows-1251\n"
+"Domain: plone\n"
+
+#.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Add" class="context" type="submit" />
+#.   
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Add" class="standalone" type="submit" />
+#.   
+#: from
+#: plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#: plone_forms/folder_factories.pt
+msgid "Add"
+msgstr "Додати"
+
+#.   <input tal:attributes="name string:discussion_reply:method;
+#.   											                 tabindex tabindex/next;" tabindex="" value="Add Comment" class="context" type="submit" name="" />
+#.   
+#.   <input value="Add Comment" class="standalone" type="submit" />
+#.   
+#: from
+#: plone_forms/discussion_reply_form.pt
+#: plone_forms/viewThreadsAtBottom.pt
+msgid "Add Comment"
+msgstr "Додати коментар"
+
+#.   <input attributes="tabindex tabindex/next|nothing;" tabindex="" value="Add New Item" class="standalone" name="folder_factories:method" type="submit" />
+#.   
+#: from
+#: plone_templates/folder_contents.pt
+msgid "Add New Item"
+msgstr "Додати новий елемент"
+
+#.   <input attributes="tabindex tabindex/next;" value="Apply" class="context" name="workflow_action_submit" type="submit" />
+#.   
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Apply" class="context" type="submit" />
+#.   
+#: from
+#: plone_forms/content_status_history.pt
+#: plone_forms/personalize_form.pt
+msgid "Apply"
+msgstr "Застосувати"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Assign Local Role to Selected User(s)" class="context" type="submit" />
+#.   
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "Assign Local Role to Selected User(s)"
+msgstr "Назначити Локальну Роль вибраному користувачу(чам)"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" onclick="javascript:document.folder_rename.action=document.folder_rename.here.value+'/folder_contents';document.folder_rename.submit();" class="context" type="submit" value="Cancel" />
+#.   
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Cancel" class="context" type="submit" name="cancel" />
+#.   
+#: from
+#: plone_forms/folder_rename_form.pt
+#: plone_forms/password_form.pt
+msgid "Cancel"
+msgstr "Скасувати"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Change Password" name="submit" type="submit">
+#.                           </input>
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Change Password" class="context" type="submit" />
+#.   
+#: from
+#: plone_forms/logged_in.pt
+#: plone_forms/password_form.pt
+msgid "Change Password"
+msgstr "Змінити пароль"
+
+#.   <input value="Compare" class="context" name="manage_historicalComparison:method" type="submit" />
+#.   
+#: from
+#: plone_forms/history_form.pt
+msgid "Compare"
+msgstr "Порівняти"
+
+#.   <input value="Copy to present" class="context" name="manage_customHistoryCopy:method" type="submit" />
+#.   
+#: from
+#: plone_forms/history_form.pt
+msgid "Copy to present"
+msgstr "Скопіювати в основну"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Delete Selected Role(s)" class="context" type="submit" />
+#.   
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "Delete Selected Role(s)"
+msgstr "Знищити вибрану роль(і)"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Disable Syndication" class="standalone" type="submit" />
+#.   
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "Disable Syndication"
+msgstr "Заборонити синдикацію"
+
+#.   <input value="Download file" class="standalone" type="submit" />
+#.   
+#: from
+#: plone_content/file_view.pt
+msgid "Download file"
+msgstr "Завантажити файл"
+
+#.   <a attributes="href string:mailto:${here/portal_properties/email_from_address}" content="string:${here/portal_properties/email_from_address}" href="mailto:admin@here.com" title="Email Administrator">
+#.               Email Admin
+#.               </a>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "Email Administrator"
+msgstr "Надіслати електронного листа Адміністратору"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Enable syndication" class="standalone" type="submit" />
+#.   
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "Enable syndication"
+msgstr "Дозволити синдикацію"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Perform Search" class="context" type="submit" />
+#.   
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "Perform Search"
+msgstr "Виконати пошук"
+
+#.   <img attributes="src string:$portal_url/plone_powered.gif" height="30" width="96" alt="Powered by Plone" src="" title="This site was built using the Plone Content Management System. Click for more information." />
+#.   
+#: from
+#: plone_templates/footer.pt
+msgid "Powered by Plone"
+msgstr "Працює завдяки Plone"
+
+#.   <input tal:define="hId here/getId" tal:attributes="name string:$hId/discussion_reply_preview:method;
+#.   											                 tabindex tabindex/next;" tabindex="" value="Preview Comment" class="context" type="submit" name="" />
+#.   
+#: from
+#: plone_forms/discussion_reply_form.pt
+msgid "Preview Comment"
+msgstr "Переглянути коментар"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Register" class="context" type="submit" name="submit">
+#.               </input>
+#: from
+#: plone_forms/join_form.pt
+msgid "Register"
+msgstr "Зареєструватися"
+
+#.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Remove" class="context" name="topic_deleteCriteria:action" type="submit" />
+#.   
+#: from
+#: plone_3rdParty/CMFTopic/topic_criteria_form.pt
+msgid "Remove"
+msgstr "Видалити"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Rename" class="context" type="submit" />
+#.   
+#: from
+#: plone_forms/folder_rename_form.pt
+msgid "Rename"
+msgstr "Перейменувати"
+
+#.   <input value="Reply to this" class="standalone" type="submit" />
+#.   
+#: from
+#: plone_forms/viewThreadsAtBottom.pt
+msgid "Reply to this"
+msgstr "Відповісти на це"
+
+#.   <input value="Reset" class="standalone" type="reset" />
+#.   
+#.   <input value="Reset" class="standalone" name="reset" type="reset">
+#.           </input>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "Reset"
+msgstr "Скинути"
+
+#.   <input tal:attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" name="topic_editCriteria:action" type="submit" />
+#.   
+#.   <input tabindex="5" value="Save" class="context" type="submit" name="Change Topic" />
+#.   
+#.   <input attributes="tabindex tabindex/next" tabindex="" value="Save" class="context" type="submit" name="Change" />
+#.   
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" type="submit" name="Change" />
+#.   
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" name="change" type="submit" />
+#.   
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" type="submit" name="save" />
+#.   
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save" class="context" type="submit" name="change_and_view" />
+#.   
+#: from
+#: plone_3rdParty/CMFTopic/topic_criteria_form.pt
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: plone_content/document_edit_form.pt
+#: plone_content/file_edit_form.pt
+#: plone_content/image_edit_form.pt
+#: plone_content/link_edit_form.pt
+#: plone_content/metadata_edit_form.pt
+#: 4
+#: more
+#: references
+msgid "Save"
+msgstr "Записати"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Save Settings" class="context" type="submit" name="submit" />
+#.   
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "Save Settings"
+msgstr "Записати настройки"
+
+#.   <input value="Search" class="context" type="Submit" />
+#.   
+#.   <input value="Search" class="context" type="submit" />
+#.   
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+#: plone_templates/header.pt
+msgid "Search"
+msgstr "Пошук"
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Send me my password" class="context" type="submit" />
+#.   
+#: from
+#: plone_forms/mail_password_form.pt
+msgid "Send me my password"
+msgstr "Відіслати мені мій пароль"
+
+#.   <input value="Sign in" class="standalone" type="submit" />
+#.   
+#.   <input value="Sign in" class="context" name="submit" type="submit" />
+#.   
+#: from
+#: plone_forms/registered.pt
+#: plone_templates/ui_slots/login_slot.pt
+msgid "Sign in"
+msgstr "Ввійти"
+
+#.   <input value="Submit" class="context" type="submit" />
+#.   
+#.   <input value="Submit" class="context" name="submit" type="submit">
+#.               <input value="Reset" class="standalone" name="reset" type="reset">
+#.           </input></input>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "Submit"
+msgstr "Подати на розгляд"
+
+#.   <img attributes="src string:$portal_url/plone_powered.gif" height="30" width="96" alt="Powered by Plone" src="" title="This site was built using the Plone Content Management System. Click for more information." />
+#.   
+#: from
+#: plone_templates/footer.pt
+msgid "This site was built using the Plone Content Management System. Click for more information."
+msgstr "Цей сайт було збудовано за допомогою Системи Управління Вмістом Plone. Клацніть за подальшою інформацією."
+
+#.   <input attributes="tabindex tabindex/next;" tabindex="" value="Undo" class="context" name="undo:method" type="submit" />
+#.   
+#: from
+#: plone_forms/undo_form.pt
+msgid "Undo"
+msgstr "Відновити"
+
+#.   <a attributes="href request/HTTP_REFERER" href="">back to where you came from</a>
+#: from
+#: plone_forms/logged_in.pt
+msgid "back_to_where_you_came_from"
+msgstr "повернутися назад, туди, звідки прийшли"
+
+#.   <span omit-tag="">
+#.                 Displaying
+#.                 </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_macros.pt
+msgid "batch_displaying"
+msgstr "Відображаю"
+
+#.   <span omit-tag="">items</span>
+#: from
+#: plone_forms/search.pt
+msgid "batch_items"
+msgstr "елементів"
+
+#.   <a tal:attributes="href python:
+#.                                        base+'&'+make_query(b_start=next.first)" href="NEXT BATCH">
+#.                 Next</a>
+#.   <span omit-tag="">Next</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_macros.pt
+#: plone_forms/search.pt
+msgid "batch_next"
+msgstr "Наступні"
+
+#.   <a tal:attributes="href python:
+#.                                        base+'&'+make_query(b_start=prev.first)" href="PREVIOUS BATCH">
+#.                  Previous</a>
+#.   <span omit-tag="">Previous</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_macros.pt
+#: plone_forms/search.pt
+msgid "batch_previous"
+msgstr "Попередні"
+
+#.   <span omit-tag="">to</span>
+#.   <span omit-tag="">
+#.                 of
+#.                 </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_macros.pt
+msgid "batch_to"
+msgstr "до"
+
+#.   <span omit-tag="">total</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_macros.pt
+msgid "batch_total"
+msgstr "загалом"
+
+#.   <span>items matching your criteria</span>
+#: from
+#: plone_forms/search.pt
+msgid "batch_x_items_matching_your_criteria"
+msgstr "елементів, що відповідають вашому критерію"
+
+#.   <th>About</th>
+#: from
+#: plone_templates/ui_slots/about_slot.pt
+msgid "box_about"
+msgstr "Опис"
+
+#.   <strong>Created&nbsp;by:</strong>
+#: from
+#: plone_templates/ui_slots/about_slot.pt
+msgid "box_created_by"
+msgstr "Створено:"
+
+#.   <span>Editor view</span>
+#: from
+#: plone_templates/ui_slots/navigation_slot.pt
+msgid "box_editor_view"
+msgstr "Вигляд для редактора"
+
+#.   <strong>External links</strong>
+#: from
+#: plone_templates/ui_slots/related_slot.pt
+msgid "box_external_links"
+msgstr "Зовнішні посилання"
+
+#.   <strong>Favorites</strong>
+#: from
+#: plone_templates/ui_slots/favorites_slot.pt
+msgid "box_favorites"
+msgstr "Улюбленці"
+
+#.   <span omit-tag="">Forgot your password?</span>
+#: from
+#: plone_templates/ui_slots/login_slot.pt
+msgid "box_forgot_password_option"
+msgstr "Ви забули пароль?"
+
+#.   <strong>Last&nbsp;modified:</strong>
+#: from
+#: plone_templates/ui_slots/about_slot.pt
+msgid "box_last_modified"
+msgstr "Востаннє&nbsp;змінено:"
+
+#.   <strong condition="localContent">Local resources</strong>
+#: from
+#: plone_templates/ui_slots/related_slot.pt
+msgid "box_local_resources"
+msgstr "Локальні ресурси"
+
+#.   <th>My&nbsp;Favorites</th>
+#: from
+#: plone_templates/ui_slots/favorites_slot.pt
+msgid "box_my_favorites"
+msgstr "Мої&nbsp;улюбленці"
+
+#.   <th>Navigation</th>
+#.   <th>navigation</th>
+#: from
+#: plone_templates/ui_slots/navigation_slot.pt
+#: plone_templates/ui_slots/topic_navigator_slot.pt
+msgid "box_navigation"
+msgstr "навіґація"
+
+#.   <span omit-tag="">New user?</span>
+#: from
+#: plone_templates/ui_slots/login_slot.pt
+msgid "box_new_user_option"
+msgstr "Новий користувач?"
+
+#.   <th>News</th>
+#: from
+#: plone_templates/ui_slots/news_slot.pt
+msgid "box_news"
+msgstr "Новини"
+
+#.   <span>Ordinary view</span>
+#: from
+#: plone_templates/ui_slots/navigation_slot.pt
+msgid "box_ordinary_view"
+msgstr "Звичайний вигляд"
+
+#.   <a attributes="href string:${folder/absolute_url}/folder_contents" href="" class="marker">Organize Favorites</a>
+#: from
+#: plone_templates/ui_slots/favorites_slot.pt
+msgid "box_organize_favorites"
+msgstr "Впорядкувати Favorites"
+
+#.   <strong>Other items</strong>
+#: from
+#: plone_templates/ui_slots/navigation_slot.pt
+msgid "box_other_items"
+msgstr "Syis tktvtynb"
+
+#.   <th>Related</th>
+#: from
+#: plone_templates/ui_slots/related_slot.pt
+msgid "box_related"
+msgstr "Пов'язані"
+
+#.   <th>Review List</th>
+#: from
+#: plone_templates/ui_slots/workflow_review_slot.pt
+msgid "box_review_list"
+msgstr "Список оглядів"
+
+#.   <th>Sign in</th>
+#: from
+#: plone_templates/ui_slots/login_slot.pt
+msgid "box_sign_in"
+msgstr "Вхід"
+
+#.   <div class="heading"> 
+#.                   Transcript for Issue
+#.                   ${id (tal replace="here/id")}
+#.                   (${num (tal replace="entries")}
+#.   		 ${listing_entry (tal condition="python:entries == 1")}${listing_entries (tal condition="python:entries != 1")})
+#.               </div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_contents.pt
+msgid "box_transcript_for_issue"
+msgstr "Розшифровка для статті ${id} (${num} ${listing_entry}${listing_entries})"
+
+#.   <span>Up one level</span>
+#: from
+#: plone_templates/ui_slots/navigation_slot.pt
+msgid "box_up_one_level"
+msgstr "Нагору на один рівнь"
+
+#.   <option value="">Choose Language</option>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "choose_language"
+msgstr "Виберіть мову"
+
+#.   <span>
+#.             Click ${here (tal attributes="href python: request.URL + '?do_cite=1'")} to cite the existing transcript.
+#.             </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "click_to_cite"
+msgstr "Клацніть ${here}, щоб процитувати існуючу стенограму."
+
+#.   <span tal:condition="item/assigned_to|nothing">,
+#.                 Assigned to
+#.                  
+#.                 ${names (tal content="python: ', '.join(item.assigned_to)")}
+#.               </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "collector_issue_assigned_to"
+msgstr ", Назначено для ${names}"
+
+#.   <tal:block condition="python:numcmts>1">
+#.                 (${num (tal replace="numcmts")}
+#.                 comments)
+#.             </tal:block>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "collector_issue_num_comments"
+msgstr "(${num} коментарів)"
+
+#.   <tal:block condition="python:numcmts==1">
+#.                 (1 comment)
+#.             </tal:block>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "collector_issue_one_comment"
+msgstr "(1 коментар)"
+
+#.   <a tal:attributes="href python:here.aq_parent.absolute_url()" href="">
+#.               ${collector_title (tal replace="here/aq_parent/Title")}
+#.               [${collector_abbrev (tal replace="here/abbrev|nothing")}]
+#.               </a>
+#: from
+#: plone_3rdParty/CMFCollector/collector_macros.pt
+msgid "collector_link"
+msgstr "${collector_title} [${collector_abbrev}]"
+
+#.   <div class="label">Contact Email</div>
+#: from
+#: plone_content/event_view.pt
+msgid "contact_email"
+msgstr "Контактна електронна адреса"
+
+#.   <div class="label">Name</div>
+#: from
+#: plone_content/event_view.pt
+msgid "contact_name"
+msgstr "Ім'я"
+
+#.   <div class="label">Contact Phone</div>
+#: from
+#: plone_content/event_view.pt
+msgid "contact_phone"
+msgstr "Контактний телефон"
+
+#.   <p>
+#.       You can add a comment by filling out the form below. To see how the posting 
+#.       will look before submitting it, click 'Preview Comment'.   
+#.       </p>
+#: from
+#: plone_forms/discussion_reply_form.pt
+msgid "description_add_comment"
+msgstr "Ви можете додати коментар заповнивши форму нижче. Для того, щоб побачити, як запис буде виглядати перед його поданням клацніть 'Переглянути коментар'."
+
+#.   <div class="description">
+#.   Use this form to add your issue to the Collector. Please provide as many details
+#.   as possible.
+#.   </div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+msgid "description_add_new_issue"
+msgstr "Ця форма для того, щоб додати вашу статтю в Колекціонер. Подайте якомога більше деталей, будь-ласка."
+
+#.   <p>
+#.   	Select the type of item you want to add to your folder.
+#.   	</p>
+#: from
+#: plone_forms/folder_factories.pt
+msgid "description_add_new_item"
+msgstr "Виберіть тип елемента, який хочете додати до вашої теки."
+
+#.   <p>
+#.       This search form enables you to find content on the site by
+#.       specifying one or more search terms. 
+#.       <br />
+#.   
+#.       Remember that you can use the quick search anytime, it's normally
+#.       good enough, this search form is just if you want to be more specific.
+#.       </p>
+#: from
+#: plone_forms/search_form.pt
+msgid "description_advanced_search"
+msgstr "Ця форма дозволить вам знайти вміст на сайті вказуючи один чи кілька критеріїв пошуку. <br />Пам'ятайте, що ви можете використовувати швидкий пошук завжди, зазвичай його достатньо, а ця форма тільки для того, щоб бути точнішим при пошуку."
+
+#.   <p>
+#.         			A local role is a way of allowing other users into some or all of your
+#.         			folders. These users can edit items, publish them - et cetera, depending
+#.         			on what permissions you give them.
+#.         			
+#.                   <br />
+#.   
+#.                   
+#.                   Local roles are ideal in cooperation projects, and as every item has a
+#.         			history and an undo option, it's easy to keep track of the changes.
+#.         			
+#.                   <br />
+#.   
+#.                   
+#.                   To give a person a local role in this folder, just search for the person's
+#.         			name or email address in the form below, and you will be presented with a
+#.         			page that will show you the options available.
+#.         			</p>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "description_assign_localrole"
+msgstr "Локальна роль - це спосіб, за допомогою якого ви можете допустити інших користувачів до деяких, або й усіх, ваших тек. Ці користувачі зможуть редагувати елементи, публікувати їх, і т.д., в залежності від повноважень, які ви надасте їм.<br />Локальні ролі є ідеальними в спільних проектах, так як кожен елемент має історію та можливість його повороту, і легко слідкувати за змінами.<br />Щоб надати особі локальну роль в цій теці, просто знайдіть особу за її ім'ям чи електронною адресою в формі нижче. Вам з'явиться сторінка, на якій будуть можливі варіанти."
+
+#.   <span>
+#.                   Before you start exploring you need to change your original password. 
+#.                   This will ensure that the password we sent you via email cannot be used in a malicious manner.
+#.                   </span>
+#: from
+#: plone_forms/logged_in.pt
+msgid "description_change_initial_password"
+msgstr "Перед тим, як почати вивчення вам необхідно змінити вах початковий пароль. Це не дозволить зловмисно використати пароль, що ми надіслали вам поштою."
+
+#.   <p>
+#.       You can change the current objects ownership to
+#.       another member easily from this form.  
+#.       </p>
+#: from
+#: plone_forms/ownership_form.pt
+msgid "description_change_ownership"
+msgstr "З допомогою цієї форми ви леггко можете поміняти власника поточного об'єкта на будь-якого іншого члена спільноти."
+
+#.   <a href="password_form">Click here to change your password</a>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "description_click_to_change_password"
+msgstr "Клацніть тут, щоб поміняти пароль"
+
+#.   <p>
+#.       This is how your comment will look when posted.
+#.       </p>
+#: from
+#: plone_forms/discussion_reply_preview.pt
+msgid "description_comment_preview"
+msgstr "Так буде виглядати ваш коментар після подання."
+
+#.   <a attributes="href string:${here/absolute_url}/invokeFactory?id=index_html&type_name=Document" href="#">click here.</a>
+#: from
+#: plone_forms/folder_listing.pt
+msgid "description_create_folder_click_here"
+msgstr "клацніть тут."
+
+#.   <p>
+#.               These users currently have local roles assigned in this folder:
+#.           </p>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "description_current_localroles"
+msgstr "Ці користувачі в цій теці мають назначені такі локальні ролі:"
+
+#.   <div class="description">
+#.       Use this form to edit the data of an existing issue. Do not use this form
+#.       to follow up or change the workflow status of an issue - use the issue follow
+#.       up form for that.
+#.       </div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "description_edit_collector_issue"
+msgstr "Ця форма - для редагування даних існуючої статті. Не використовуйте цфєї форми для прослідковування статті або зміни її статусу в робочому процесі - для цього використовуйте форму прослідковування статті."
+
+#.   <p>
+#.       Fill in the details of this document.
+#.       </p>
+#: from
+#: plone_content/document_edit_form.pt
+msgid "description_edit_document"
+msgstr "Заповніть подробиці про документ."
+
+#.   <p>
+#.       Fill in the details of the event you want to add.
+#.       </p>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "description_edit_event"
+msgstr "Заповніть подробиці про подію, яку хочете додати."
+
+#.   <p>
+#.       Add the relevant details of the file to be added in the form below,
+#.       select the file with the 'Browse' button, and press 'Save'.
+#.       </p>
+#: from
+#: plone_content/file_edit_form.pt
+msgid "description_edit_file"
+msgstr "Додайте важливі подробиці про файл в формі нижче, виберіть файл за допомогою кнопки 'Переглянути' та натисніть 'Записати'."
+
+#.   <p>
+#.       Using this form, you can enter details about the image, and upload 
+#.       an image if required.
+#.       </p>
+#: from
+#: plone_content/image_edit_form.pt
+msgid "description_edit_image"
+msgstr "За допомогою цієї форми ви можете ввести подробиці про зображення, та завантажити його якщо потрібно."
+
+#.   <p>
+#.       A link is a pointer to a location on the internet or intranet.
+#.       Enter the relevant details below, and press 'Save'.
+#.       </p>
+#: from
+#: plone_content/link_edit_form.pt
+msgid "description_edit_link_item"
+msgstr "Посилання - це вказівник на положення в Інтернеті чи Інтранеті. Введіть важливі подробиці нижче та натисніть 'Зберегти'."
+
+#.   <p>
+#.       A news item is a small piece of news that is published on the front
+#.       page. Add the relevant details below, and press 'Save'.
+#.       </p>
+#: from
+#: plone_content/newsitem_edit_form.pt
+msgid "description_edit_news_item"
+msgstr "Новина - це маленька частка новин, що публікуються на першій сторінці. Додайте важливі подробиці та натисніть 'Зберегти'."
+
+#.   <p>
+#.       This information, also referred to as <em>metadata</em> is the collection of information that is used to 
+#.       categorize an object, assign effectuation dates and expiration dates, 
+#.       language, and keywords.
+#.       <br />
+#.   
+#.       Change this item's metadata using the form below. Remember, metadata is
+#.       powerful - it enables us to do lots of useful categorization. So fill in the fields
+#.       as concisely as possible, and leave the ones you don't know blank.
+#.       </p>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "description_edit_properties"
+msgstr "Ця інформація, яку теж називають <em>метаданими</em>, є набором параметрів, що використовуються для категоризації об'єкту, призначення дат набуття та втрати чинності, мови та ключових слів.<br />Змінюйте метадані цього елементу за допомогою форми нижче. Пам'ятайте, метадані - потужний інструмент - вони дозволяють нам проводити найрізноманітніші корисні категоризації. Тому вкажіть їх так чітко, наскільки це можливо, та залиште ті, які ви не знаєте, порожніми."
+
+#.   <p> 
+#.       A topic is a pre-defined search, showing all items matching
+#.       criteria you specify. Topics may also contain sub-topics.
+#.       </p>
+#: from
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+msgid "description_edit_topic"
+msgstr "Тема - це наперед визначений пошук, що показує елементи вказаному вами критерію. Теми можуть містити підтеми."
+
+#.   <p>Select one or more Members, and a role to assign.</p>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "description_localrole_select_member"
+msgstr "Виберіть одного чи більше членів, та роль яку надаєте."
+
+#.   <p>
+#.                   You will notice that the top right bar has changed, it now
+#.                   contains several personalized items. These will stay there
+#.                   as long as you are logged in, and allow you to control your
+#.                   settings and your personal area.
+#.                   </p>
+#: from
+#: plone_forms/logged_in.pt
+msgid "description_logged_in_explain"
+msgstr "Зауважте, що смужка справа вгорі змінилася, вона містить кілька персоналізованих пунктів. Вони дозволяють вам контролювати ваші параметри та особисту область і залишаться там доки ви працюєте зі системою."
+
+#.   <p> 
+#.       Enter your username below, click <strong>Mail me my password</strong>, and your password
+#.       will be mailed to you if you gave a valid email address when you registered.
+#.       If this will not work for you (for example, if you forgot your member
+#.       name or didn't enter your email address) send an email to
+#.       </p>
+#: from
+#: plone_forms/mail_password_form.pt
+msgid "description_lost_password"
+msgstr "Введіть нижче ім'я вашого користувача, клацніть <strong>Надішліть мені мій пароль</strong>, і ваш пароль буде відіслано вам, якщо ви подали дійсну електронну адресу в момент реєстрації. Якщо у вашому випадку це не спрацює (наприклад ви забули ім'я члена, або не ввели своєї електронної адреси) то надішліть електронного листа"
+
+#.   <p>
+#.           A list of the visible members. 
+#.           </p>
+#: from
+#: plone_forms/roster.pt
+msgid "description_member_listing"
+msgstr "Список видимих членів."
+
+#.   <span>
+#.                   You might want to head over to
+#.                   </span>
+#: from
+#: plone_forms/logged_in.pt
+msgid "description_newbie_pointers_1"
+msgstr "Ви можете попрямувати до "
+
+#.   <span>
+#.                   and add some content, or
+#.                   </span>
+#: from
+#: plone_forms/logged_in.pt
+msgid "description_newbie_pointers_2"
+msgstr "та додати трохи вмісту, чи"
+
+#.   <a define="prefs python:[a['url'] for a in actions['user'] if a['id']=='preferences']" condition="prefs" attributes="href python:prefs.pop()" href="metadata_form">set up your Preferences</a>
+#: from
+#: plone_forms/logged_in.pt
+msgid "description_newbie_pointers_3"
+msgstr "встановити свої вподобання"
+
+#.   <span omit-tag="">
+#.   If you do not have an account here, head over to the
+#.   </span>
+#: from
+#: plone_forms/login_form.pt
+msgid "description_no_account_1"
+msgstr "Якщо у вас тут немає рахунку, то для того, щоб стати членом, заповніть"
+
+#.   <a href="portal_form/join_form" omit-tag="">
+#.   registration form
+#.   </a>
+#: from
+#: plone_forms/login_form.pt
+msgid "description_no_account_2"
+msgstr "реєстраційну форму"
+
+#.   <span omit-tag="">
+#.   to become a member.
+#.   </span>
+#: from
+#: plone_forms/login_form.pt
+msgid "description_no_account_3"
+msgstr "."
+
+#.   <p>
+#.         This object does not provide comparison support.
+#.         </p>
+#: from
+#: plone_forms/history_comparison.pt
+msgid "description_no_comparison_support"
+msgstr "Цей об'єкт не забезпечує можливості порівняння."
+
+#.   <span>
+#.               This folder does not have a default page, therefore a list of items
+#.               is shown instead.
+#.               If you want to create a default page in this folder that will
+#.               replace the item listing,
+#.               </span>
+#: from
+#: plone_forms/folder_listing.pt
+msgid "description_no_default_folder"
+msgstr "Ця тека не містить сторінки по замовчуванню, тому замість неї відображається список елементів. Якщо хочете створити сторінку по замовчуванню, що замістить цей список, "
+
+#.   <p condition="not: here/contentValues">
+#.            There are currently no items in this folder.
+#.           </p>
+#: from
+#: plone_forms/folder_listing.pt
+msgid "description_no_items_in_folder"
+msgstr "Наразі в теці немає елементів."
+
+#.   <strong>No results were found.</strong>
+#: from
+#: plone_forms/search.pt
+msgid "description_no_results_found"
+msgstr "Не знайдено жодного результату."
+
+#.   <p>
+#.               This folder has no visible items. To add content, press the 'Add New Item' button,
+#.               or paste content from another location.
+#.               </p>
+#: from
+#: plone_templates/folder_contents.pt
+msgid "description_no_visible_items_press_add"
+msgstr "Ця тека не містить видимих елементів. Щоб додати вміст, натисніть кнопку 'Додати новий елемент', чи вставте вміст з імншогі місця."
+
+#.   <p>
+#.       Here you configure some of the settings that affect Plone.
+#.       </p>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "description_plone_setup"
+msgstr "Тут можна настроїти деякі параметри, що впливають на Plone."
+
+#.   <p>
+#.       An item's status (also called its review state) determines who can see it.
+#.       A <strong>private</strong> item can only be viewed by its Owner and by the site
+#.       management. Only <strong>published</strong> items are available to the general
+#.       member base and anonymous visitors. To make an item published, it
+#.       has to be reviewed by one of the site's Reviewers. You can request
+#.       that an item be reviewed by <strong>submitting it for review</strong>. <br />
+#.   
+#.           
+#.       Another way to control the visibility of an item is with its <strong>effective
+#.       date</strong>. An item is not publicly available before its effective date,
+#.       <em>even if its status is <strong>published</strong></em>.
+#.       </p>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "description_publishing_process"
+msgstr "Стан елементу (його також називають станом огляду) визначає, хто його може бачити. <strong>Приватні</strong> елементи можуть бачити тільки власник та управляючі сайту. Тільки <strong>опубліковані</strong> елементи доступні звичайним членам та анонімним відвідувачам. Щоб опублікувати елемент, його потрібно переглянути одним з Рецензентів сайту. Ви можете попросити оглянути елемент <strong>подавши його на розгляд</strong>.<br />Ще одним способом контролювати видимість елемента є його <strong>дата чинності</strong>. Елемент не є публічно доступний перед датою чинності, <em>навіть якщо його статус є <strong>опублікований</strong></em>."
+
+#.   <p>
+#.       By registering with us, you will have your own account with the
+#.       possibility to have personalized content, and you will be able to add
+#.       your own documents, images and files to the site.
+#.       </p>
+#: from
+#: plone_forms/join_form.pt
+msgid "description_registration_form"
+msgstr "Реєструючись у нас, ви матимете свій власний рахунок з можливістю порсоналізованого вмісту, і ви зможете додавати власні документи, зображення та файли на сайт."
+
+#.   <p>To rename an item, enter the new name below.</p>
+#: from
+#: plone_forms/folder_rename_form.pt
+msgid "description_rename_item"
+msgstr "Щоб перейменувати елемент введіть нижче нове ім'я."
+
+#.   <p>
+#.   To access this part of the site, you need to sign in with your username and password.
+#.   </p>
+#: from
+#: plone_forms/login_form.pt
+msgid "description_sign_in"
+msgstr "Щоб дістати доступ до цієї частини сайту вам необхідно ввійти з вашим іменем та паролем."
+
+#.   <span>
+#.               You are not currently signed in.  Your user name and/or password may be incorrect.
+#.               Your browser may also not be configured to accept HTTP cookies.  
+#.               If you need help please try the 'Forgotten password' link or contact
+#.               </span>
+#: from
+#: plone_forms/logged_in.pt
+msgid "description_sign_in_failure"
+msgstr "Ви наразі не ввійшли. Можливо ваше імя та/чи пароль неправильні. Ткаж, можливо, ваш переглядач настроєно не приймати HTTP куснів. Якщо вам потрібна допомога, відвідайте посилання 'Забув пароль' або зв'яжіться з"
+
+#.   <span>
+#.                   This is the first time that you've signed in to 
+#.                   </span>
+#: from
+#: plone_forms/logged_in.pt
+msgid "description_signed_in"
+msgstr "Це перший рак, що ви ввійшли до"
+
+#.   <p>
+#.   	 We hope you enjoyed using our services. We look forward to seeing you again.
+#.        </p>
+#: from
+#: plone_forms/logged_out.pt
+msgid "description_signed_out"
+msgstr "Ми сподіваємося, вам сподобалося користуватися нашими послугами. Ми сподіваємося побачити вас знову."
+
+#.   <p>
+#.           This site encountered an error trying to fulfill your request.
+#.           The errors were:
+#.           </p>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "description_site_error"
+msgstr "Сайт натрапив на помилку при спробі задовільнити запит. Помилки:"
+
+#.   <p>
+#.               The item you requested does not exist on this server or cannot be served.
+#.               </p>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "description_site_error_does_not_exist"
+msgstr "Елемент, за яким ви звертаєтеся не існує на сервері або не може обслуговуватися."
+
+#.   <p>
+#.               Please double check the web address or use the search function on this page to find what you are looking for.
+#.               </p>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "description_site_error_double_check_or_search"
+msgstr "Перевірте, будь-ласка, веб адресу  ще раз, або скористайтеся пошуком на цій сторінці, щоб знайти те, що ви шукаєте."
+
+#.   <p>
+#.               If you know you have the correct web address but are encountering an error, please 
+#.               send a mail to the administrator of this site.
+#.               </p>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "description_site_error_mail_admin"
+msgstr "Якщо ви знаєте, що веб адреса правильна, але отримуєте помилку, надішліть листа адміністратору сайту."
+
+#.   <p>
+#.               Thank you.
+#.               </p>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "description_site_error_thank_you"
+msgstr "Дякуємо."
+
+#.   <div condition="python:not container.portal_syndication.isSiteSyndicationAllowed()">
+#.     Syndication has been disabled by site administrator.
+#.   </div>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "description_syndication_disabled"
+msgstr "Синдикацію заборонив адміністратор сайту."
+
+#.   <p>
+#.       Syndication enables you to syndicate this folder so it can
+#.       be synchronized from other web sites.
+#.       </p>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "description_syndication_properties"
+msgstr "Синдикація дозволяє вам синдикувати цю теку так, що вона може синхронізуватися з інших веб сайтів."
+
+#.   <span>
+#.                   Make sure to enable cookies in your web browser. 
+#.                   Don't forget to sign out or exit your browser when you're done.
+#.                   </span>
+#: from
+#: plone_forms/login_form.pt
+msgid "description_trouble_logging_in"
+msgstr "Перевірте, що ви дозволили кусні в вашому переглядачі. Не забувайте виходити з сайту або переглядача коли закінчуєте."
+
+#.   <p>
+#.           This applications transactional feature allows you to easily undo changes
+#.           made to the applications settings or data. You can revert the application
+#.           to a &quot;snapshot&quot; of its state at a previous point in time. 
+#.           </p>
+#: from
+#: plone_forms/undo_form.pt
+msgid "description_undo_action"
+msgstr "Транзакціїні риси, що закладені в це застосування, надають вам можливість легко відновлювати зміни, що внесли в настройки цього застосування чи дані. Ви можете повернути застосування до 'знімку'  її стану в попередній момент часу."
+
+#.   <p>
+#.           Select one or more transactions below and then click on the &quot;Undo&quot;
+#.           button to undo the transactions.  Note that even though a transaction
+#.           is shown below, you will not be able to undo it if later transactions
+#.           modified objects that were modified by the transaction. 
+#.           </p>
+#: from
+#: plone_forms/undo_form.pt
+msgid "description_undo_action_select"
+msgstr "Виберіть одну чи кілька транзакцій нижче та клікніть кнопку &laquo;Відновити&raquo; щоб відмінити транзакції. Зауважте, що якщо тразакція відображена нижче, ви її не зможете відмінити, якщо пізніші транзакції змінили об'єкти змодифіковані цією транзакцією."
+
+#.   <p>
+#.                   Please use the form below to change your password.
+#.                   </p>
+#: from
+#: plone_forms/logged_in.pt
+msgid "description_use_form_to_change_password"
+msgstr "Використайте, будь-ласка, форму нижче для зміни паролю."
+
+#.   <p> You have been registered as a member. </p>
+#: from
+#: plone_forms/registered.pt
+msgid "description_you_are_registered"
+msgstr "Ваз зареєстровано як члена спільноти."
+
+#.   <span>Click the button to sign in immediately.</span>
+#: from
+#: plone_forms/registered.pt
+msgid "description_you_can_log_on_now"
+msgstr "Натисніт цю кнопку щоб одразу ввійти."
+
+#.   <p tal:condition="ve"> 
+#.   You will receive an email shortly containing your password 
+#.       and instructions on how to activate your membership. 
+#.   </p>
+#: from
+#: plone_forms/registered.pt
+msgid "description_you_will_get_password"
+msgstr "Скоро ви отримаєте електронного листа з паролем тп інструкціями, як автивізувати своє членство."
+
+#.   <span>and</span>
+#: from
+#: plone_content/event_view.pt
+msgid "event_and"
+msgstr "та"
+
+#.   <span>Between</span>
+#: from
+#: plone_content/event_view.pt
+msgid "event_between"
+msgstr "Між"
+
+#.   <span>For more information, visit</span>
+#: from
+#: plone_content/event_view.pt
+msgid "event_for_more_info_go_to"
+msgstr "За додатковою інформацією відвідайте"
+
+#.   <div class="label">What</div>
+#: from
+#: plone_content/event_view.pt
+msgid "event_what"
+msgstr "Що"
+
+#.   <div class="label">When</div>
+#: from
+#: plone_content/event_view.pt
+msgid "event_when"
+msgstr "Коли"
+
+#.   <div class="label">Where</div>
+#: from
+#: plone_content/event_view.pt
+msgid "event_where"
+msgstr "Де"
+
+#.   <a href="mail_password_form">Click here</a>
+#: from
+#: plone_forms/login_form.pt
+msgid "forgotten_password_link_1"
+msgstr "Клацніть тут,"
+
+#.   <span>
+#.                   to have it mailed to you.
+#.                   </span>
+#: from
+#: plone_forms/login_form.pt
+msgid "forgotten_password_link_2"
+msgstr "щоб його надіслали вам."
+
+#.   <a define="parent_url python:here.navigationParent(here, template.getId());" attributes="href parent_url" href="">
+#.               Up one level
+#.               </a>
+#.   <a attributes="href parent_url" href="">Up one level</a>
+#: from
+#: plone_forms/folder_listing.pt
+#: plone_templates/folder_contents.pt
+msgid "go_to_parent_url"
+msgstr "Вверх на рівень"
+
+#.   <h1>Add Comment</h1>
+#: from
+#: plone_forms/discussion_reply_form.pt
+msgid "heading_add_comment"
+msgstr "Додавання коментаря"
+
+#.   <h1>
+#.   Add new issue to ${collector_title (tal replace="here/Title" condition="here/Title")}
+#.   </h1>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+msgid "heading_add_new_issue_to"
+msgstr "Додавання нової статті до ${collector_title}"
+
+#.   <h1>Add new item</h1>
+#: from
+#: plone_forms/folder_factories.pt
+msgid "heading_add_new_item"
+msgstr "Додати новий елемент"
+
+#    <h2>Add New Topic Criteria</h2>
+#: from
+#: plone_3rdParty/CMFTopic/topic_criteria_form.pt
+msgid "heading_add_new_topic_criteria"
+msgstr "Додайте новий критерій теми"
+
+#.   <h1>Advanced search for content</h1>
+#: from
+#: plone_forms/search_form.pt
+msgid "heading_advanced_search"
+msgstr "Розширений пошук вмісту"
+
+#    <span>Assign local roles to folder
+#          			    ${folder (tal replace="here/title_or_id")}
+#    		</span>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "heading_assign_localrole"
+msgstr "Надати локальні ролі теці ${folder}"
+
+#    <h1>Change ownership</h1>
+#: from
+#: plone_forms/ownership_form.pt
+msgid "heading_change_ownership"
+msgstr "Зміна власника"
+
+#.   <h1>Collector Configuration</h1>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "heading_collector_configuration"
+msgstr "Кофігурація Колекціонера"
+
+#.   <h1>Comment Preview</h1>
+#: from
+#: plone_forms/discussion_reply_preview.pt
+msgid "heading_comment_preview"
+msgstr "Перегляд кометаря"
+
+#.   <span>Criteria for</span>
+#: from
+#: plone_3rdParty/CMFTopic/topic_criteria_form.pt
+msgid "heading_criteria_for"
+msgstr "Критерій для"
+
+#.   <span>Currently assigned local roles in folder
+#.           		${folder (tal replace="here/title_or_id")}
+#.   	    </span>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "heading_currently_assigned_localroles"
+msgstr "Поточні надані локальні ролі в теці ${folder}"
+
+#.   <h1>
+#.       Edit Collector Issue
+#.       </h1>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "heading_edit_collector_issue"
+msgstr "Редагування статті Колекціонера"
+
+#.   <h1>Edit Document</h1>
+#: from
+#: plone_content/document_edit_form.pt
+msgid "heading_edit_document"
+msgstr "Редагування документу"
+
+#    <h1>Edit Event</h1>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "heading_edit_event"
+msgstr "Редагування події"
+
+#.   <h1>Edit file</h1>
+#: from
+#: plone_content/file_edit_form.pt
+msgid "heading_edit_file"
+msgstr "Редагування файлу"
+
+#.   <h1>Edit Folder Properties</h1>
+#: from
+#: plone_forms/folder_edit_form.pt
+msgid "heading_edit_folder_properties"
+msgstr "Редагування властивостей теки"
+
+#.   <h1>Edit Image</h1>
+#: from
+#: plone_content/image_edit_form.pt
+msgid "heading_edit_image"
+msgstr "Редагування зображення"
+
+#.   <h1>Edit Link item</h1>
+#: from
+#: plone_content/link_edit_form.pt
+msgid "heading_edit_link_item"
+msgstr "Редагування посилання"
+
+#.   <h1>Edit News Item</h1>
+#: from
+#: plone_content/newsitem_edit_form.pt
+msgid "heading_edit_news_item"
+msgstr "Редагування новини"
+
+#.   <h1>Edit Properties</h1>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "heading_edit_properties"
+msgstr "Редагування властивостей"
+
+#.   <h1>Edit Topic</h1>
+#: from
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+msgid "heading_edit_topic"
+msgstr "Редагування теми"
+
+#.   <h2>File contents</h2>
+#: from
+#: plone_content/file_view.pt
+msgid "heading_file_contents"
+msgstr "Вміст файлу"
+
+#.   <span>Link to</span>
+#: from
+#: plone_content/favorite_view.pt
+msgid "heading_link_to"
+msgstr "Посилання на"
+
+#.   <h1>Lost Password</h1>
+#: from
+#: plone_forms/mail_password_form.pt
+msgid "heading_lost_password"
+msgstr "Втрачений пароль"
+
+#.   <h1>Member Listing</h1>
+#: from
+#: plone_forms/roster.pt
+msgid "heading_member_listing"
+msgstr "Список членів"
+
+#.   <span condition="python:
+#.   user.getUserName()==here.getId()" class="folderName">
+#.                   My Folder
+#.                   </span>
+#: from
+#: plone_templates/folder_contents.pt
+msgid "heading_my_folder"
+msgstr "Моя тека"
+
+#.   <h1>My Preferences</h1>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "heading_my_preferences"
+msgstr "Мої вподобання"
+
+#.   <h1>Plone Setup</h1>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "heading_plone_setup"
+msgstr "Настройка Plone"
+
+#.   <h1>Publishing process</h1>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "heading_publishing_process"
+msgstr "Процес публікування"
+
+#.   <h1>Please register</h1>
+#: from
+#: plone_forms/join_form.pt
+msgid "heading_registration_form"
+msgstr "Зареєструйтеся, будь-ласка"
+
+#.   <h1>Rename item</h1>
+#: from
+#: plone_forms/folder_rename_form.pt
+msgid "heading_rename_item"
+msgstr "Перейменування елементу"
+
+#.   <h1>Search results</h1>
+#: from
+#: plone_forms/folder_localrole_form.pt
+#: plone_forms/search.pt
+msgid "heading_search_results"
+msgstr "Результати пошуку"
+
+#.   <h1>Please sign in</h1>
+#: from
+#: plone_forms/login_form.pt
+msgid "heading_sign_in"
+msgstr "Ввійдіть, будь-ласка"
+
+#.   <h1>Sign-in failure</h1>
+#: from
+#: plone_forms/logged_in.pt
+msgid "heading_sign_in_failure"
+msgstr "Ввійти не вдалося"
+
+#.   <h1>You are now signed out</h1>
+#: from
+#: plone_forms/logged_out.pt
+msgid "heading_signed_out"
+msgstr "Ви, нарзі, вийшли"
+
+#.   <h1>Site error</h1>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "heading_site_error"
+msgstr "Помилка сайту"
+
+#.   <h1>Our apologies...</h1>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "heading_site_error_apologies"
+msgstr "Наші вибачення..."
+
+#.   <h2>Sub-topics</h2>
+#: from
+#: plone_3rdParty/CMFTopic/topic_view.pt
+msgid "heading_sub_topics"
+msgstr "Підтеми"
+
+#.   <h1>Syndication Properties</h1>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "heading_syndication_properties"
+msgstr "Властивості синдикації"
+
+#.   <h1>Undo actions</h1>
+#: from
+#: plone_forms/undo_form.pt
+msgid "heading_undo_actions"
+msgstr "Відмінити дії"
+
+#.   <h1>Welcome!</h1>
+#: from
+#: plone_forms/logged_in.pt
+#: plone_forms/registered.pt
+msgid "heading_welcome"
+msgstr "Ласкаво просимо!"
+
+#.   <h1>You are now logged in</h1>
+#: from
+#: plone_forms/logged_in.pt
+msgid "heading_you_are_now_logged_in"
+msgstr "Ви ввійшли"
+
+#.   <span>
+#.               Abbreviation for the collector, used as the prefix of
+#.               the subject line in mail from the collector.
+#.           </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "help_abbreviation"
+msgstr "Абревіатура для колекціонера, використовується як префікс рядка предмету листів, що відсилає колекціонер."
+
+#.   <div class="help" id="allow_discussion_help" style="visibility:hidden">
+#.                   Specifies whether discussion items and comments can be
+#.                   added to this item. 'Default' will use the site-wide
+#.                   setting for Discussion.
+#.                   </div>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "help_allow_discussion"
+msgstr "Визначає, чи можна додавати дискусії та коментарі до цього елементу. 'По-замовчуванню' - використає загальну настройку дискусій."
+
+#.   <div class="help" id="body_help" style="visibility:hidden">
+#.                   The body text of the document. 
+#.                   </div>
+#.   <div class="help" id="body_help" style="visibility:hidden">
+#.                   The body text of the news item. 
+#.                   </div>
+#: from
+#: plone_content/document_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+msgid "help_body_text"
+msgstr "Текст тіла новини."
+
+#.   <div class="help" id="change_status_help" style="visibility:hidden">
+#.                   Select the new state for the selected documents.
+#.                   </div>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "help_change_status"
+msgstr "Виберіть новий стани вибраного документу."
+
+#.   <span>
+#.           This is the collector's email 'From' address.
+#.           </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "help_collector_email"
+msgstr "Ця адреса є адресою 'Від' колекціонера."
+
+#.   <span>
+#.               Managers configure the collector, and receive request notices.
+#.               Managers can accept issues, but must be on Supporters roster to be
+#.               assigned.  (Managers cannot remove <em>themselves</em> from the
+#.               management roster.)
+#.           </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "help_collector_managers"
+msgstr "Менеджери настроюють солекціонера та отримують повідомлення про запити. Менеджери можуть приймати статті але повинні в реєстрі Підтримувачів, щоб їх можна було призначити. (Менеджери не можуть викинути <em>себе</em> з управлінського реєстру)."
+
+#.   <span>
+#.               Fill in addresses next to the state names to have notifications for 
+#.               issues in that state sent to those addresses (this is in addition to 
+#.               normal issue-participant notifications)
+#.           </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "help_collector_notifications"
+msgstr "Заповніть адреси відповідно до імен станів, щоб оримувати повідомлення про статті в тих станах на ті адреси (ці адреи є додаткові до звичайних повідомлень учасників статтей)"
+
+#.   <span>
+#.                   Occasionally, product updates require internal catalog reinit and
+#.                   reindex and other existing-issue adjustment.  Collector product
+#.                   RELEASE_NOTES.txt will indicate when necessary.
+#.               </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "help_collector_reinstate"
+msgstr "Час від часу, оновлення продукту вимагають внутрішньої переініціалізації каталога, його переіндексування, та інших коректурах існуючих статей. RELEASE_NOTES.txt з продута Collector будуть містити вказівки щодо цього згідно необхідності."
+
+#.   <span>
+#.           Fill in the alternatives for issue categorization.
+#.           </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "help_collector_selections"
+msgstr "Заповніть альтернативи для категоризації статтей."
+
+#.   <span>
+#.           Supporters can be assigned to requests.  They may or may not
+#.               receive initial request notifications, depending on the
+#.               'dispatching' setting below.
+#.           </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "help_collector_supporters"
+msgstr "Підтримувачів можна назначати запитам. Вони можуть, а можуть і не отримувати повідомлення в залежності віз праметра 'Диспечеризація' нижче."
+
+#.   <span>
+#.       The text shown to users about what kind of version information they should include.
+#.       </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "help_collector_version_boilerplate"
+msgstr "The text shown to users about what kind of version information they should include."
+
+#.   <div class="help" id="confirm_password_help" style="visibility:hidden">
+#.                   Re-enter the password. Make sure the passwords are identical.
+#.                   </div>
+#.   <div class="help" id="confirm_password_help" style="visibility:hidden">
+#.                               Re-enter the password. Make sure the passwords are identical.
+#.                               </div>
+#: from
+#: plone_forms/join_form.pt
+#: plone_forms/logged_in.pt
+#: plone_forms/password_form.pt
+msgid "help_confirm_password"
+msgstr "Повторно введіть пароль. Впевніться, що вони ідентичні."
+
+#.   <div class="help" id="contact_email_help" style="visibility:hidden">
+#.                   Enter an e-mail address to use for information regarding
+#.                   the event.
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "help_contact_email"
+msgstr "Введіть електронну адресу яку використовуватимуть для інформування щодо події."
+
+#.   <div class="help" id="contact_name_help" style="visibility:hidden">
+#.                   Enter a contact person or organization for the event.
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "help_contact_name"
+msgstr "Введіть контактну особу чи організацію для події."
+
+#.   <div class="help" id="contact_phone_help" style="visibility:hidden">
+#.                   Enter the phone number to call for information and/or
+#.                   booking.
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "help_contact_phone"
+msgstr "Введіть телефонний номер для довідок та/або замовлення місць."
+
+#.   <div class="help" id="wysiwyg_editor_help" style="visibility:hidden">
+#.                       Select the editor that you would like to use for editing
+#.                       content more easily. Content editors
+#.                       often have specific browser requirements.
+#.                       </div>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "help_content_editor"
+msgstr "Виберіть редактор, який будете використовувати для простішого редагування вмісту. Редактори вмісту часто мають певні вимоги до переглядача."
+
+#.   <div class="help" id="contributors_help" style="visibility:hidden">
+#.                   The names of people that have contributed to this item.
+#.                   Each contributor should be on a separate line.
+#.                   </div>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "help_contributors"
+msgstr "Імена осіб, що зробили внесок в цей елемент. Кожна особа повинна бути в окремому рядку."
+
+#.   <div class="help" id="rights_help" style="visibility:hidden">
+#.                   Copyright information on the item.
+#.                   </div>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "help_copyrights"
+msgstr "Інформація про авторські права на елемент."
+
+#.   <div class="help" id="language_help" style="visibility:hidden">
+#.                  Specify the default language setting for newly created items. 
+#.                  </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_default_language"
+msgstr "Вкажіть мову по-замовчуванню для новостворених елементів."
+
+#.   <div class="help" id="skin_help" style="visibility:hidden">
+#.                  Specify the default site wide look to be used for users. 
+#.                  </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_default_look"
+msgstr "Виберіть як, по-замовчуванню, буде вглядати сайт для користувачів."
+
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the topic. 
+#.                   </div>
+#.   <div class="help" id="event_description_help" style="visibility:hidden">
+#.                   Enter a brief description of the event. 
+#.                   </div>
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the document. 
+#.                   </div>
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the file. 
+#.                   </div>
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the image. 
+#.                   </div>
+#.   <div class="help" id="description_help" style="visibility:hidden">
+#.                   Enter a brief description of the folder. 
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: plone_content/document_edit_form.pt
+#: plone_content/file_edit_form.pt
+#: plone_content/image_edit_form.pt
+#: plone_content/link_edit_form.pt
+#: plone_forms/folder_edit_form.pt
+msgid "help_description"
+msgstr "Введіть короткий опис теки."
+
+#.   <div class="help" id="visible_ids_help" style="visibility:hidden">
+#.                       Select whether you want Names (also known as IDs) to be 
+#.                       visible and editable when editing contents. If you choose not
+#.                       to display Names, they will be generated automatically.
+#.                       </div>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "help_display_names"
+msgstr "Виберіть чи бажаєте бачити та мати можливість редагувати Імена (також відомі як ID) при редагуванні вмісту. Якщо оберете не відображати Імена, то вони генеруватимуться автоматично."
+
+#.   <div class="help" id="domains_help" style="visibility:hidden">
+#.                   Here you can enter the domains you want to restrict the user to
+#.                   be able to sign in from. Useful in intranet situations.
+#.                   <strong>If you do not know what this field is for, leave it blank.</strong>
+#.                   </div>
+#: from
+#: plone_forms/password_form.pt
+msgid "help_domains"
+msgstr "Тут ви можете обмежити, з яких доменів користувач буде мати змогу ввійти. Корисно в ситуаціях інтранету. <strong>Якщо ви не знаєте, для чого це поле, залишіть його порожнім.</strong>"
+
+#.   <div class="help" id="edit_contents_help" style="visibility:hidden">
+#.                   This file is a text file, and you can edit its
+#.                   contents directly.
+#.                   </div>
+#: from
+#: plone_content/file_edit_form.pt
+msgid "help_edit_contents"
+msgstr "Цей файл - текстовий, а тому ви його можете редагувати напряму."
+
+#.   <div class="help" id="effective_date_help" style="visibility:hidden">
+#.                   The date when the document will be visible when it's published. This way, you can 
+#.                   publish a document in advance, but it will not be visible before this date.
+#.                   </div>
+#.   <div class="help" id="effective_date_help" style="visibility:hidden">
+#.                   The date when the document will be visible when it's published. This way, you can 
+#.                   publish a document in advance, but it will not be visible before this date.  If no date is selected
+#.                   the document will be effective immediately.
+#.                   </div>
+#: from
+#: plone_content/metadata_edit_form.pt
+#: plone_forms/content_status_history.pt
+msgid "help_effective_date"
+msgstr "Дата, коли документ стане видимий після публікації. Таким чином, ви можете опублікувати документи наперед, але їх не буде видно, перед цією датою. Якщо не вказано ніякої дати, то документ стає чинним негайно."
+
+#.   <div class="help" id="email_help" style="visibility:hidden">
+#.                   Enter your email address. This is necessary in case you lose your
+#.                   password. We respect your privacy, and will not give the address
+#.                   away to any third parties.
+#.                   </div>
+#: from
+#: plone_forms/join_form.pt
+msgid "help_email_creation"
+msgstr "Введіть ваше електронну адресу. Це необхідно у разі, якщо ви загубите пароль. Ми поважаємо вашу приватність і не надавтимемо цю адресу третім сторонам."
+
+#.   <div class="help" id="end_date_help" style="visibility:hidden">
+#.                        Enter the ending date and time,
+#.                        or click the calendar icon and select it.
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "help_event_end"
+msgstr "Введіть дату кінця та час, або клацніть на піктограмі календаря, щоб її вибрати."
+
+#.   <div class="help" id="event_location_help" style="visibility:hidden">
+#.                   Enter the location where the event will take place. 
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "help_event_location"
+msgstr "Введіть місце, де відбудеться подія."
+
+#.   <div class="help" id="start_date_help" style="visibility:hidden">
+#.                        Enter the starting date and time,
+#.                        or click the calendar icon and select it.
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "help_event_start"
+msgstr "Введіть дату початку та час, або клацніть на піктограмі календаря, щоб її вибрати."
+
+#.   <div class="help" id="event_type_help" style="visibility:hidden">
+#.                   Select the type of event. Multiple event types possible.
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "help_event_type"
+msgstr "Виберіть тип події. Можливі кілька типів події."
+
+#.   <div class="help" id="event_url_help" style="visibility:hidden">
+#.                   Enter the optional web address of a page containing more info about
+#.                   the event. 
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "help_event_url"
+msgstr "Введіть веб-адресу сторінки, що містить більше інформації про подію (необов'язково)."
+
+#.   <div class="help" id="expiration_date_help" style="visibility:hidden">
+#.                   The date when the document expires. This will automatically make the document
+#.                   invisible for others at the given date.
+#.                   </div>
+#.   <div class="help" id="expiration_date_help" style="visibility:hidden">
+#.                   The date when the document expires. This will automatically make the document
+#.                   invisible for others at the given date. If no date is chosen, it will never expire.
+#.                   </div>
+#: from
+#: plone_content/metadata_edit_form.pt
+#: plone_forms/content_status_history.pt
+msgid "help_expiration_date"
+msgstr "Дата коли документ втрачає чинність. Це автоматично зробить документ невидимим для інших у вказаний день. Якщо не вибрано дати, то документ ніколи не втрачає чинності."
+
+#.   <div class="help" id="file_help" style="visibility:hidden">
+#.                   Select the file to be added by clicking the 'Browse' button.
+#.                   </div>
+#: from
+#: plone_content/file_edit_form.pt
+msgid "help_file"
+msgstr "Виберіть файл, що додаєте натискаючи кнопу 'Перегляд'."
+
+#.   <div class="help" id="formtooltips_help" style="visibility:hidden">
+#.                       Select whether you want form help pop-ups to be displayed.
+#.                       </div>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "help_form_help"
+msgstr "Виберіть, чи хочете, щоб в формах спливали ці підказки."
+
+#.   <div class="help" id="format_help" style="visibility:hidden">
+#.                   Select which format you want to type the contents of this
+#.                   document in. If you are unsure of which format to use, just
+#.                   select Plain Text and type the document as you usually
+#.                   do.
+#.                   </div>
+#.   <div class="help" id="format_help" style="visibility:hidden">
+#.                   The MIME-type of the document. If you don't know what this does, just leave it. <br />
+#.    Please note that not all content types support all MIME-types. If you select a MIME-type that is not supported by the content type, it will be changed to a generic supported type.
+#.                   </div>
+#: from
+#: plone_content/document_edit_form.pt
+#: plone_content/metadata_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+msgid "help_format"
+msgstr "Виберіть, в якому форматі ви бажаєте мати вміст документа. Якщо не впевнені, який формат використати, то просто виберіть Звичайний текст та друкуйте текст так як ви це звичайно робите."
+
+#.   <div class="help" id="image_help" style="visibility:hidden">
+#.                   Select the image to be added by clicking the 'Browse' button.
+#.                   </div>
+#: from
+#: plone_content/image_edit_form.pt
+msgid "help_image"
+msgstr "Виберіть зображення, що додаєте натискаючи кнопу 'Перегляд'."
+
+#.   <div class="help" id="include_subfolders_help" style="visibility:hidden">
+#.   	          If checked, Plone will attempt to publish all content in subfolders.
+#.   	     </div>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "help_include_subfolders"
+msgstr "Якщо вибрано, Plone спробує опублікувати вміст і всіх підтеках."
+
+#.   <div class="help" id="acquire_criteria_help" style="visibility:hidden">
+#.                   Toggles inheritance of criteria. For example, if you
+#.                   have specified that only items from the last three days
+#.                   should be shown in a Topic above the current one, this
+#.                   Topic will also have that criterion automatically.
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+msgid "help_inherit_criteria"
+msgstr "Переключає успадкованість критерію. Наприклад ви вказали, що тільки елементи з трьох останніх днів повинні бути в Темі розташованій над поточною, ця тема автоматично будуть мати той критерій."
+
+#.   <div class="help" id="keywords_help" style="visibility:hidden">
+#.                   Here you add the relevant keywords that describe this item. You can either 
+#.                   add new ones, or use some of the existing ones. We recommend using the existing
+#.                   keywords if possible, try to avoid adding new keywords that are essentially the 
+#.                   same as the existing ones.
+#.                   <br />
+#.   
+#.                   Each keyword must be on a separate line in the 'selected keywords' textbox.
+#.                   <br />
+#.   
+#.                   Existing Keywords can be easily changed, but currently is all subjects 
+#.                   that have ever been used in the system.
+#.                   </div>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "help_keywords"
+msgstr "Тут ви додаєте відповідні ключові слова щоб описати елемент. Ви можете або ввести нові, або використати деякі існуючі. Ми рекомендуємо по мірі можливості викоримтовувати існуючі ключові слова, намагайтеся уникати додавати ключові слова що є по суті однакові з наявними. <br /> Кожне ключове слово повинно бути в окремому рядку поля 'вибрані ключові слова'. <br />Ключові слова, що наявні можна легко поміняти, але наразі це всі предмети, що коли-небудь використовувалися в системі."
+
+#.   <div class="help" id="language_help" style="visibility:hidden">
+#.                   The language the document is written in, indicated
+#.                   by the ISO-639-2 code.
+#.                   </div>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "help_language"
+msgstr "Мова, якою написано документ вказано кодом ISO-639-2."
+
+#.   <div class="help" id="leadin_help" style="visibility:hidden">
+#.                   A short descriptive summary of the news. This will be what shows up on the news
+#.                   page together with the headline and a link to the full news item.
+#.                   </div>
+#: from
+#: plone_content/newsitem_edit_form.pt
+msgid "help_lead-in"
+msgstr "Короткий, описовий підсумок новин. Це буде те, що з'являється на сторінці новин разом з заголовком та посиланням на повну новину."
+
+#.   <div class="help" id="listed_status_help" style="visibility:hidden">
+#.                       Select whether you want to be listed on the public membership listing
+#.                       or not.	Remember that your Member folder will still be publicly accessible unless
+#.                       you change its security settings, even if you select "unlisted" here.
+#.                       </div>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "help_listed_status"
+msgstr "Виберіть чи хочете бути присутнім в списках членів. Пам'ятайте, що ваша членська тека залишатиметься загальнодоступною доки ви не поміняєте настройок безпеки, навіть якщо ви тут виберете \"відсутній\"."
+
+#.   <div class="help" id="long_date_format_help" style="visibility:hidden">
+#.                   You can enter the strftime format for how dates in the system will be formatted.
+#.                   Refer to strftime formats in C or Python manuals.
+#.                   </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_long_date_format"
+msgstr "Ви можете ввести формат strftime для форматування дат в системі. Зверніться до документації по C xb Pthon за форматами strftime."
+
+#.   <div class="help" id="skin_help" style="visibility:hidden">
+#.                       Here you choose the appearance of the site. Several styles are available.
+#.                       </div>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "help_look"
+msgstr "Тут ви вибираєте вигляд сайту. Наявні кілька стилів."
+
+#.   <div class="help" id="mail_password_help" style="visibility:hidden">
+#.                   Check this box to have your password 
+#.                   delivered to your mailbox, so you won't lose it.
+#.                   </div>
+#: from
+#: plone_forms/join_form.pt
+msgid "help_mail_password"
+msgstr "Відмітьте це поле, щоб ваш пароль було доставлено до вашої скриньки, таким чином ви його не загубите."
+
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.               Enter the ID of the document. This is the part that will show up as part
+#.               of the web address. This should be short, descriptive
+#.               and preferrably not contain spaces, underscores or mixed case. Example:
+#.               "expense-report-2002"
+#.               </div>
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.                   Enter the Name of the event. This is the part that will show up as part
+#.                   of the web address. This should be short, descriptive
+#.                   and preferrably not contain spaces, underscores or mixed case. Example:
+#.                   "expense-report-2002"
+#.                   </div>
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.                   Enter the Name of the document. This is the part that will show up as part
+#.                   of the web address. This should be short, descriptive
+#.                   and preferrably not contain spaces, underscores or mixed case. Example:
+#.                   "expense-report-2002"
+#.                   </div>
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.                   Enter the Name of the file. This is the part that will show up as part
+#.                   of the web address. This should be short, descriptive
+#.                   and preferrably not contain spaces, underscores or mixed case. Example:
+#.                   "expense-report-2002"
+#.                   </div>
+#.   <div class="help" id="id_help" style="visibility:hidden">
+#.                   Enter the Short Name of the image. This is the part that will show up as part
+#.                   of the web address. This should be short, descriptive
+#.                   and preferrably not contain spaces, underscores or mixed case. Example:
+#.                   "expense-report-2002"
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: plone_content/document_edit_form.pt
+#: plone_content/file_edit_form.pt
+#: plone_content/image_edit_form.pt
+msgid "help_name"
+msgstr "Введіть коротке ім'я для зображення. Ця частина буде частиною веб адреси. Це повинна бути коротка, описова, і бажано не містити прогалин, підкреслень чи змішаного регістру. Наприклад: \"expense-report-2002\""
+
+#.   <div class="help" id="new_email_help" style="visibility:hidden">
+#.                       Enter your new e-mail address here, if you want to change it.
+#.                       </div>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "help_new_email"
+msgstr "Якщо хочете змінити адресу електронної пошти, то введіть нову."
+
+#.   <div class="help" id="new_password_help" style="visibility:hidden">
+#.                               Enter your new password. Minimum 5 characters.
+#.                               </div>
+#.   <div class="help" id="new_password_help" style="visibility:hidden">
+#.                   Enter your new password. Minimum 5 characters.
+#.                   </div>
+#: from
+#: plone_forms/logged_in.pt
+#: plone_forms/password_form.pt
+msgid "help_new_password"
+msgstr "Введіть ваш новий пароль. Мінімум 5 символів."
+
+#.   <div class="help" id="password_help" style="visibility:hidden">
+#.               Enter your password. If you have forgotten it, use the
+#.               links at the bottom of this form to request it again.
+#.               </div>
+#: from
+#: plone_forms/login_form.pt
+msgid "help_password"
+msgstr "Введіть ваш пароль. Якщо ви його забули, використайте посилання внизу цієї форми, щоб запросити його знову."
+
+#.   <div class="help" id="password_help" style="visibility:hidden">
+#.                   Enter the password you want. Minimum 5 characters.
+#.                   </div>
+#: from
+#: plone_forms/join_form.pt
+msgid "help_password_creation"
+msgstr "Введіть пароль для себе. Мінімум 5 символів."
+
+#.   <div class="help" id="password_policy_help" style="visibility:hidden">
+#.                   Selects if the users can choose their initial password or not. It's easier
+#.                   to create bogus accounts if the password is not generated, so if this is a concern, 
+#.                   choose "Generate".
+#.                   </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_password_policy"
+msgstr "Вибирає, чи можуть користувачі вибирати собі початкові паролі чи ні. Легше створювати фіктивні рахунки, якщо пароль негенерований, тому якщо це важливо, виберіть \"Генерувати\"."
+
+#.   <div class="help" id="portal_description_help" style="visibility:hidden">
+#.                   This description is made available via syndicated
+#.                   content and elsewhere.  It should be fairly brief.
+#.                   </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_portal_description"
+msgstr "Цей опис доступний через синдикований вміст та в інших місцях. Він повинен бути досить коротким."
+
+#.   <div class="help" id="portal_from_address_help" style="visibility:hidden">
+#.                   When Plone generates mail, it uses this address
+#.                   as its (apparent) return address.
+#.                   </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_portal_from_address"
+msgstr "Коли Plone генерує пошту, ця електронна адреса буде явною зворотньою адресою."
+
+#.   <div class="help" id="portal_from_name_help" style="visibility:hidden">
+#.                   When Plone generates mail, it uses this name
+#.                   as its (apparent) sender.
+#.                   </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_portal_from_name"
+msgstr "Коли Plone генерує пошту, це ім'я буде явним адресантом."
+
+#.   <div class="help" id="portal_title_help" style="visibility:hidden">
+#.                   This is the title of your Plone portal.
+#.                   </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_portal_title"
+msgstr "Це заголовок вашого порталу."
+
+#.   <div class="help" id="portrait_help" style="visibility:hidden">
+#.                       To add a new portrait, click the <strong>Browse</strong> button and select
+#.                       a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
+#.   
+#.                       </div>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "help_portrait"
+msgstr "Щоб додати новий портрет клацніть на кнопці <strong>Переглянути</strong> та виберіть свою фотографію. Рекомендовані розміри - 75 пікселів в ширину та 100 пікселів в висоту. <br />"
+
+#.   <textarea cols="55" name="description:text" rows="10">Prefix lines with whitespace or '&gt;' to preserve their format.</textarea>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+msgid "help_prefix_lines_with_whitespace"
+msgstr "Починайте рядки з прогалини або '&gt;' щоб зберегти форматування."
+
+#.   <div class="help" id="publishing_comments_help" style="visibility:hidden">
+#.                   Enter a short description or some comments to be added
+#.                   to the comments field in the publishing history. If multiple
+#.                   items are selected, this comment will be attached to all of
+#.                   them.
+#.                   </div>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "help_publishing_comments"
+msgstr "Введіть короткий опис або якісь коментарі. Їх буде додано до поля коментарів в історії публікації. Якщо кілька елементів вибрано, то коментар буде надано усім їм."
+
+#.   <div class="help" id="remember_help" style="visibility:hidden">
+#.               Setting the 'Remember my name' option will create a cookie with your username.
+#.               When you sign in later, your user name will already be filled in for you.
+#.               </div>
+#: from
+#: plone_forms/login_form.pt
+msgid "help_remember_my_name"
+msgstr "Опцію 'Запам'ятай моє ім'я' встановить кусень з іменем вашого користувача. Коли ви будете входити пізніше, ваше ім'я користувача уже буде заповнене."
+
+#.   <div class="help" id="author_search_help" style="visibility:hidden">
+#.                   Return items created by a particular person.
+#.                   </div>
+#: from
+#: plone_forms/search_form.pt
+msgid "help_search_author"
+msgstr "Для отримання елементів створених певною особою."
+
+#.   <div class="help" id="description_search_help" style="visibility:hidden">
+#.                   Return items matching this description.
+#.                   Multiple words may be found
+#.                   by combining them with <strong>AND</strong> and <strong>OR</strong>.
+#.                   </div>
+#: from
+#: plone_forms/search_form.pt
+msgid "help_search_description"
+msgstr "Для отримання елементів, що відповідають опису. Кілька слів можна об'єднувати за допомогою <strong>AND</strong> та <strong>OR</strong>."
+
+#.   <div class="help" id="item_type_search_help" style="visibility:hidden">
+#.                   Return items of a specific type.
+#.                   </div>
+#: from
+#: plone_forms/search_form.pt
+msgid "help_search_item_type"
+msgstr "Для отримання елементів певного типу."
+
+#.   <div class="help" id="keywords_search_help" style="visibility:hidden">
+#.                   Return items matching one or more of these subjects.
+#.                   Multiple words may be found
+#.                   by combining them with <strong>AND</strong> and <strong>OR</strong>.
+#.                   </div>
+#: from
+#: plone_forms/search_form.pt
+msgid "help_search_keywords"
+msgstr "Для отримання елементів, що відповідають одному чи кільком з цих предметів. Кілька слів можна об'єднувати за допомогою <strong>AND</strong> та <strong>OR</strong>."
+
+#.   <div class="help" id="new_items_since_search_help" style="visibility:hidden">
+#.                   Return items added since you were last logged on, the last week, etc.
+#.                   </div>
+#: from
+#: plone_forms/search_form.pt
+msgid "help_search_new_items_since"
+msgstr "Для отримання елементів, що були додані з часу вашого останнього входження, за останній тиждень, і т.п."
+
+#.   <div class="help" id="review_status_search_help" style="visibility:hidden">
+#.                   As a reviewer, you may search for items based on their
+#.                   review state. If you wish to constrain results to items
+#.                   in certain states, select them from this list.
+#.                   </div>
+#: from
+#: plone_forms/search_form.pt
+msgid "help_search_review_status"
+msgstr "Як рецензент, ви можете шукати за елементами, базуючись на їх стані огляду. Якщо хочете обмежити результати до елементів в певних станах, виберіть їх зі списку."
+
+#.   <div class="help" id="text_search_help" style="visibility:hidden">
+#.                   For a simple text search, enter your search term
+#.                   here. Multiple words may be found by combining
+#.                   them with <strong>AND</strong> and <strong>OR</strong>. 
+#.                   The text in this field will be matched with
+#.                   items' contents, title and description.
+#.                   </div>
+#: from
+#: plone_forms/search_form.pt
+msgid "help_search_text"
+msgstr "Для простого текстового пошуку введіть ваші терміни пошуку сюди. Кілька слів можна об'єднувати за допомогою <strong>AND</strong> та <strong>OR</strong>. Текст в полі буде шукатися серед вмісту, заголовку та опису елементів."
+
+#.   <div class="help" id="title_search_help" style="visibility:hidden">
+#.                   Return items matching this title.
+#.                   </div>
+#: from
+#: plone_forms/search_form.pt
+msgid "help_search_title"
+msgstr "Для отримання елементів, що мають такий заголовок."
+
+#.   <div class="help" id="short_date_format_help" style="visibility:hidden">
+#.                   You can enter the strftime format for how dates in the system will be formatted.
+#.                   Refer to strftime formats in C or Python manuals.
+#.                   </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_short_date_format"
+msgstr "Ви можете ввести формат strftime для форматування дат в системі. Зверніться до документації по C xb Pthon за форматами strftime."
+
+#.   <div class="help" id="smtp_server_help" style="visibility:hidden">
+#.                   This is the address of your local SMTP (outgoing
+#.                   mail) server. Usually "localhost", unless you use an
+#.                   external server to send mail.
+#.                   </div>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "help_smtp_server"
+msgstr "Це адреса вашого локального сервера SMTP (похта на вихід). Зазвичай \"localhost\", якщо тільки ви не використовуєте зовнішнього сервера для пересилання пошти."
+
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the topic.
+#.                   </div>
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of this event. 
+#.                   </div>
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the document.
+#.                   </div>
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the file.
+#.                   </div>
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the image.
+#.                   </div>
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the news item.
+#.                   </div>
+#.   <div class="help" id="title_help" style="visibility:hidden">
+#.                   Enter the title of the folder.
+#.                   </div>
+#: from
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: plone_content/document_edit_form.pt
+#: plone_content/file_edit_form.pt
+#: plone_content/image_edit_form.pt
+#: plone_content/link_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+#: plone_forms/folder_edit_form.pt
+msgid "help_title"
+msgstr "Введіть заголовок."
+
+#.   <div class="help" id="upload_help" style="visibility:hidden">
+#.                   This feature can be used if you already have the contents 
+#.                   in an existing file on your computer and want to add 
+#.                   it to this item.
+#.                   
+#.                   <br />
+#.   &nbsp;<br />
+#.   
+#.                   
+#.                   <strong>Please note that this takes precedence over the 
+#.                   body text entered above, and all content in the field above
+#.                   will be replaced with the contents of the file supplied here.
+#.                   </strong>
+#.                   </div>
+#: from
+#: plone_content/document_edit_form.pt
+msgid "help_upload_text"
+msgstr "Цю можливість можна використовувати, якщо у вас уже є вміст в файлі на вашому комп'ютері і ви хочете додати його до цього елементу. <br />&nbsp;<br /><strong>Зауважте будь-ласка, що він буде мати перевагу над текстом тіла, введеним вище, і весь вміст поля вище буде заміщено вмісто файлу поданого тут.</strong>"
+
+#.   <div class="help" id="url_help" style="visibility:hidden">
+#.                   The address of the location. Prefix is optional; if not
+#.                   provided, the link will be relative.
+#.                   </div>
+#: from
+#: plone_content/link_edit_form.pt
+msgid "help_url"
+msgstr "Адреса розташування. Префікс необов'язковий; якщо його не подати то посилання буде відносним."
+
+#.   <div class="help" id="user_name_help" style="visibility:hidden">
+#.                   Enter the user name you use on this site. If you haven't
+#.                   got a user name yet, or have forgotten it, use the links at the
+#.                   bottom of this form.
+#.                   </div>
+#: from
+#: plone_forms/login_form.pt
+msgid "help_user_name"
+msgstr "Введіть ім'я, яке ви використовуєте на чьому сайті. Якщо ви ще не отримали імені, або його забули, використайте посилання в низу цієї форми."
+
+#.   <div class="help" id="user_name_help" style="visibility:hidden">
+#.                   Enter the user name you want, usually something like
+#.                   "jsmith". No spaces or special characters. 
+#.                   This is the name you use to sign in.
+#.                   </div>
+#: from
+#: plone_forms/join_form.pt
+msgid "help_user_name_creation"
+msgstr "Введіть ім'я користувача, по-бажанню, звичайно щось на зразок \"jsmith\". Без пропусків чи спеціальних символів. Це буде ім'я, яки ви будете використовувати для входження."
+
+#.   <label for="cb_html">HTML</label>
+#: from
+#: plone_content/document_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+msgid "html"
+msgstr "HTML"
+
+#.   <div class="label"> 
+#.           Abbreviation 
+#.           
+#.           </div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_abbreviation"
+msgstr "Абривіатура"
+
+#.   <div class="label">Affected content</div>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "label_affected_content"
+msgstr "Задіяний вміст"
+
+#.   <span>Allow Discussion</span>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "label_allow_discussion"
+msgstr "Обговорення"
+
+#.   <label for="validate_email_off">Allow members to select their initial password</label>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_allow_members_to_create_password"
+msgstr "Дозволити членам вибирати початковий пароль"
+
+#.   <option value="">Any Author</option>
+#: from
+#: plone_forms/search_form.pt
+msgid "label_any_author"
+msgstr "будь-який"
+
+#.   <div class="label">Assign to</div>
+#.   <label for="radio_action_Assign">Assign to:</label>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_assign_to"
+msgstr "Надати для:"
+
+#.   <div class="label">Attachment (optional)</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_attachment_optional"
+msgstr "Долучення (необов'язково)"
+
+#.   <div class="label"> Attachment type (optional)</div>
+#.   <div class="label">Attachment type (optional)</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_attachment_type_optional"
+msgstr "Тип долучення (необов'язково)"
+
+#.   <span>Author</span>
+#: from
+#: plone_forms/search_form.pt
+msgid "label_author"
+msgstr "Автор"
+
+#.   <span>Body text</span>
+#.   <div class="label">
+#.               Body text
+#.               </div>
+#: from
+#: plone_content/document_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+#: plone_forms/discussion_reply_form.pt
+msgid "label_body_text"
+msgstr "Текст"
+
+#.   <span>Change State</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "label_change_status"
+msgstr "Змінити стан"
+
+#.   <option value="">Choose Language</option>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_choose_language"
+msgstr "Виберіть мову"
+
+#.   <option value="">Choose Look</option>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_choose_look"
+msgstr "Оберіть вигляд"
+
+#.   <div class="label">Classification</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_classification"
+msgstr "Класифікація"
+
+#.   <div class="label">Action</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_collector_action"
+msgstr "Дія"
+
+#.   <span>
+#.             Anyone
+#.   
+#.                     (Anyone, including anonymous visitors, can chime in)
+#.             </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_anyone"
+msgstr "Будь-хто (будь-хто, включаючи анонімних відвідувачів, можуть брати участь)"
+
+#.   <span>
+#.             Authenticated
+#.   
+#.                     (Any non-anonymous visitors can participate)
+#.             </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_authenticated"
+msgstr "Автентифікований (Будь-які неанонімні відвідувачі можуть брати участь)"
+
+#.   <span>Classifications</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_classifications"
+msgstr "Класифікації"
+
+#.   <div class="label">Dispatcher Mode</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_dispatcher_mode"
+msgstr "Режим диспечера"
+
+#.   <span>
+#.           Off (Managers and supporters receive pending-issue notices)
+#.           </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_dispatcher_off"
+msgstr "Вимкнено (менеджери та підтимувачі отримують повідомлення про чергові статті)"
+
+#.   <span>
+#.               On (Only managers receive pending-issue notices)
+#.           </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_dispatcher_on"
+msgstr "Ввімкнено (Тільки менеджери отримують повідомлення про чергові статті)"
+
+#.   <div class="label">Collector email</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_email"
+msgstr "Електронна адреса Колекціонера"
+
+#.   <span>Importance</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_importance"
+msgstr "Важлиівість"
+
+#.   <div class="label">Managers</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_managers"
+msgstr "Менеджери"
+
+#.   <div class="label">Participation Mode</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_participation_mode"
+msgstr "Режим участі"
+
+#.   <span>Internal only</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_reinstate_internal_only"
+msgstr "Тільки внутрішньо"
+
+#.   <span>No</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_reinstate_no"
+msgstr "Ні"
+
+#.   <span>Internal &amp; Site-wide (slow)</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_reinstate_sitewide"
+msgstr "Внутрішньо та по всьому сайту (повільно)"
+
+#.   <span>
+#.             Staff
+#.   
+#.                     (Only collector staff and issue requester participate in an
+#.                     issue)
+#.             </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_staff"
+msgstr "Штат (тільки штат колекціонера та подавач статті беруть участь)"
+
+#.   <div class="label">Supporters</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_supporters"
+msgstr "Підтимувачі"
+
+#.   <span>Topics</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_collector_topics"
+msgstr "Теми"
+
+#.   <div class="label">Transcript</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_collector_transcript"
+msgstr "Розшифровка"
+
+#.   <div class="label">Comment</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_comment"
+msgstr "Коментар"
+
+#.   <span>by</span>
+#.   <span>Posted by</span>
+#: from
+#: plone_forms/talkback_tree.pt
+#: plone_forms/viewThreadsAtBottom.pt
+msgid "label_comment_by"
+msgstr "Надіслано від"
+
+#.   <span>at</span>
+#: from
+#: plone_forms/talkback_tree.pt
+#: plone_forms/viewThreadsAtBottom.pt
+msgid "label_commented_at"
+msgstr "від"
+
+#.   <span>Comments</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "label_comments"
+msgstr "Коментарі"
+
+#.   <span>Confirm <br />
+#.   Password</span>
+#.   <span>Confirm password</span>
+#: from
+#: plone_forms/join_form.pt
+#: plone_forms/logged_in.pt
+#: plone_forms/password_form.pt
+msgid "label_confirm_password"
+msgstr "Підтвердіть пароль"
+
+#.   <span>Contact E-mail</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "label_contact_email"
+msgstr "Контактна електронна адреса"
+
+#.   <span>Contact Name</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "label_contact_name"
+msgstr "Ім'я контактної особи"
+
+#.   <span>Contact Phone</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "label_contact_phone"
+msgstr "Контактний телефон"
+
+#.   <div class="label">Contains</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "label_contains"
+msgstr "Вміщає"
+
+#.   <span>Content editor</span>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_content_editor"
+msgstr "Редактор вмісту"
+
+#.   <span>Contributors</span>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "label_contributors"
+msgstr "Зробили внески:"
+
+#.   <span>Copyrights</span>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "label_copyrights"
+msgstr "Авторські права"
+
+#.   <span>
+#.   Field name
+#.   </span>
+#: from
+#: plone_3rdParty/CMFTopic/topic_criteria_form.pt
+msgid "label_criteria_field_name"
+msgstr "Ім'я поля"
+
+#.   <span>
+#.   Criteria type
+#.   </span>
+#: from
+#: plone_3rdParty/CMFTopic/topic_criteria_form.pt
+msgid "label_criteria_type"
+msgstr "Тип критерію"
+
+#.   <div attributes="id string:${criterionid}_help;" content="criterion/Description | here/Description" class="help" id="" style="visibility:hidden">
+#.           Date
+#.           </div>
+#: from
+#: plone_3rdParty/CMFTopic/friendlydatec_editform.pt
+msgid "label_date"
+msgstr "Дата"
+
+#.   <span>Default Language</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_default_language"
+msgstr "Мова по-замовчуванню"
+
+#.   <span>Default Look</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_default_look"
+msgstr "Вигляд по замовчуванню"
+
+#.   <div class="label">Description</div>
+#.   <span>Description</span>
+#.   <span>Event Description</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: plone_content/document_edit_form.pt
+#: plone_content/file_edit_form.pt
+#: plone_content/image_edit_form.pt
+#: 3
+#: more
+#: references
+msgid "label_description"
+msgstr "Опис"
+
+#.   <label for="discussion_default">Default</label>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "label_discussion_default"
+msgstr "стандартно"
+
+#.   <label for="discussion_off">Disabled</label>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "label_discussion_disabled"
+msgstr "заборонено"
+
+#.   <label for="discussion_on">Enabled</label>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "label_discussion_enabled"
+msgstr "дозволено"
+
+#.   <span>Display Names</span>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_display_names"
+msgstr "Відображати імена"
+
+#.   <label for="radio_action_comment">Comment</label>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_do_comment"
+msgstr "Коментар"
+
+#.   <span>Domains</span>
+#: from
+#: plone_forms/password_form.pt
+msgid "label_domains"
+msgstr "Домени"
+
+#.   <span>Edit Contents</span>
+#: from
+#: plone_content/file_edit_form.pt
+msgid "label_edit_contents"
+msgstr "Редагування вмісту"
+
+#.   <span>Effective Date</span>
+#: from
+#: plone_content/metadata_edit_form.pt
+#: plone_forms/content_status_history.pt
+msgid "label_effective_date"
+msgstr "Дата набуття чинності"
+
+#.   <div class="label">Email</div>
+#.   <span>E-mail</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_forms/join_form.pt
+#: plone_forms/personalize_form.pt
+msgid "label_email"
+msgstr "Електронна пошта"
+
+#.   <option value="email">Email Address</option>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "label_email_address"
+msgstr "Адреса електронної пошти"
+
+#.   <div class="label">
+#.                       Error Message
+#.                       </div>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "label_error_message"
+msgstr "Повідомлення про помилку"
+
+#.   <div class="label">
+#.                       Error Type
+#.                       </div>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "label_error_type"
+msgstr "Тип помилки"
+
+#.   <div class="label">
+#.                       Error Value
+#.                       </div>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "label_error_value"
+msgstr "Значення помилки"
+
+#.   <span>Event Ends</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "label_event_end"
+msgstr "Кінець події"
+
+#.   <span>Event Location</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "label_event_location"
+msgstr "Місце де подія відбудеться"
+
+#.   <span>Event Starts</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "label_event_start"
+msgstr "Початок події"
+
+#.   <span>Event Type</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "label_event_type"
+msgstr "Тип події"
+
+#.   <span>Event URL</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+msgid "label_event_url"
+msgstr "URL події"
+
+#.   <span>Expiration Date</span>
+#: from
+#: plone_content/metadata_edit_form.pt
+#: plone_forms/content_status_history.pt
+msgid "label_expiration_date"
+msgstr "Дата втрати чинності"
+
+#.   <label for="radio_attachment_type_file">File</label>
+#.   <span>File</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#: plone_content/file_edit_form.pt
+msgid "label_file"
+msgstr "Файл"
+
+#.   <div class="label">File type</div>
+#: from
+#: plone_content/file_view.pt
+msgid "label_file_type"
+msgstr "Тип файлу"
+
+#.   <div class="label">Follow-up</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_follow_up"
+msgstr "Прослідковування"
+
+#.   <strong>
+#.                   Forgotten your password?
+#.                   </strong>
+#: from
+#: plone_forms/login_form.pt
+msgid "label_forgotten_your_password"
+msgstr "Забули свій пароль?"
+
+#.   <span>Form Help</span>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_form_help"
+msgstr "Підказки в формах"
+
+#.   <span>Format</span>
+#: from
+#: plone_content/document_edit_form.pt
+#: plone_content/metadata_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+msgid "label_format"
+msgstr "Формат"
+
+#.   <div class="label">From (alt. email)</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_from_alt_email"
+msgstr "Від (альт. ел.пошта)"
+
+#.   <div class="label">From (login name)</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_from_login_name"
+msgstr "Від (ім'я входження)"
+
+#.   <div class="label">From (name)</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_from_name"
+msgstr "Від (Ім'я)"
+
+#.   <label for="validate_email_on">Generate and e-mail members' initial password</label>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_generate_and_email_passwords"
+msgstr "Генерувати та відсилати початкові паролі членам"
+
+#.   <label for="radio_attachment_type_image">Image</label>
+#.   <span>Image</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+#: plone_content/image_edit_form.pt
+msgid "label_image"
+msgstr "Зображення"
+
+#.   <div class="label">Importance</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_importance"
+msgstr "Важливість"
+
+#.   <label for="include_subfolders">Include subfolders</label>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "label_include_subfolders"
+msgstr "Включати підтеки"
+
+#.   <span>Inherit Criteria</span>
+#: from
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+msgid "label_inherit_criteria"
+msgstr "Успадковувати критерій"
+
+#.   <span>Item type</span>
+#: from
+#: plone_forms/search_form.pt
+msgid "label_item_type"
+msgstr "Тип елемента"
+
+#.   <span>Keywords</span>
+#: from
+#: plone_content/metadata_edit_form.pt
+#: plone_forms/search_form.pt
+msgid "label_keywords"
+msgstr "Ключові слова"
+
+#.   <span>Language</span>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "label_language"
+msgstr "Мова"
+
+#.   <span>Lead-in</span>
+#: from
+#: plone_content/newsitem_edit_form.pt
+msgid "label_lead-in"
+msgstr "Вступ"
+
+#.   <span>Listed status</span>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_listed_status"
+msgstr "В списку"
+
+#.   <div class="label">
+#.             			Role to assign
+#.             			</div>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "label_localrole_to_assign"
+msgstr "Роль яку надається"
+
+#.   <span>Long Date</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_long_date_format"
+msgstr "Дата (довга форма)"
+
+#.   <span>Look</span>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_look"
+msgstr "Вигляд"
+
+#.   <span>Mail Password?</span>
+#: from
+#: plone_forms/join_form.pt
+msgid "label_mail_password"
+msgstr "Надіслати пароль?"
+
+#.   <label for="cb_listed">Listed</label>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_member_listed"
+msgstr "Присутній"
+
+#.   <label for="cb_unlisted">Unlisted</label>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_member_unlisted"
+msgstr "Відсутній"
+
+#.   <div class="label">
+#.               My user name is
+#.               </div>
+#: from
+#: plone_forms/mail_password_form.pt
+msgid "label_my_user_name_is"
+msgstr "Моє ім'я користувача - "
+
+#.   <span>Name</span>
+#.   <span>Short Name</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: plone_content/document_edit_form.pt
+#: plone_content/file_edit_form.pt
+#: plone_content/image_edit_form.pt
+#: plone_content/link_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+#: 2
+#: more
+#: references
+msgid "label_name"
+msgstr "Ім'я"
+
+#.   <div class="label">Name of upload (optional)</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "label_name_of_upload_optional"
+msgstr "Назва завантаження (необов'язково)"
+
+#.   <span>New items since</span>
+#: from
+#: plone_forms/search_form.pt
+msgid "label_new_items_since"
+msgstr "Нові елементи від"
+
+#.   <span>New owner</span>
+#: from
+#: plone_forms/ownership_form.pt
+msgid "label_new_owner"
+msgstr "Новий власник"
+
+#.   <span>New password</span>
+#: from
+#: plone_forms/logged_in.pt
+#: plone_forms/password_form.pt
+msgid "label_new_password"
+msgstr "Новий пароль"
+
+#.   <div class="label">Notifications</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_notifications"
+msgstr "Повідомлення"
+
+#.   <option attributes="value editor;
+#.                                                    selected python:test(editor==wysiwyg_editor, 'selected', '');" content="editor" value="None">
+#.                            Ordinary Form-based Editor (works in all browsers)
+#.                            </option>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_ordinary_content_editor"
+msgstr "Звичайний редактор на базі форм (працює у всіх переглядачах)"
+
+#.   <span>Password</span>
+#.   <strong>Password</strong>
+#: from
+#: plone_forms/join_form.pt
+#: plone_forms/login_form.pt
+#: plone_templates/ui_slots/login_slot.pt
+msgid "label_password"
+msgstr "Пароль"
+
+#.   <span>Password policy</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_password_policy"
+msgstr "Політика паролів"
+
+#.   <div class="field">
+#.               A password will be generated and 
+#.               e-mailed to you to complete the registration process.
+#.               </div>
+#: from
+#: plone_forms/join_form.pt
+msgid "label_password_will_be_mailed"
+msgstr "Пароль буде згенеровано та надіслано вам для закінчення реєстраціїйного процесу."
+
+#.   <span>Portal description</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_portal_description"
+msgstr "Опис порталу"
+
+#.   <span>Portal 'From' address</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_portal_from_address"
+msgstr "Адреса порталу 'Від' "
+
+#.   <span>Portal 'From' name</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_portal_from_name"
+msgstr "Ім'я порталу 'Від'"
+
+#.   <span>Portal title</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_portal_title"
+msgstr "Заголовок порталу"
+
+#.   <span>Portrait</span>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "label_portrait"
+msgstr "Портрет"
+
+#.   <span omit-tag="">effective</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "label_publishing_effective"
+msgstr "чинний з"
+
+#.   <div class="label">Reinstate catalog</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_reinstate_catalog"
+msgstr "Відновити каталог"
+
+#.   <label for="cb_remember">Remember my name.</label>
+#: from
+#: plone_forms/login_form.pt
+msgid "label_remember_my_name"
+msgstr "Запам'ятай моє ім'я."
+
+#.   <span>Review status</span>
+#: from
+#: plone_forms/search_form.pt
+msgid "label_review_status"
+msgstr "Статус огляду"
+
+#.   <span>
+#.                           Role(s): 
+#.                           </span>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "label_roles"
+msgstr "Роль(і):"
+
+#.   <div class="label">
+#.             				Search by
+#.             			</div>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "label_search_by"
+msgstr "Шукати за"
+
+#.   <div class="label">
+#.                           Search Term
+#.                       </div>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "label_search_term"
+msgstr "Параметр пошуку"
+
+#.   <span>Search Text</span>
+#: from
+#: plone_forms/search_form.pt
+msgid "label_search_text"
+msgstr "Текст, що шукати"
+
+#.   <div class="label">Security</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_security"
+msgstr "Безпека"
+
+#.   <label for="security_related_checkbox">Security related</label>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_security_related"
+msgstr "Стосується безпеки"
+
+#.   <span>
+#.               Yes, this issue is security related, and
+#.               should <strong>not</strong> be publicly visible until
+#.               completed.
+#.               </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+msgid "label_security_related_desc"
+msgstr "Так, ця стаття стосується безпеки і <strong>не</strong> повинна бути піблічно доступною поки не завершиться."
+
+#.   <option value="Select">Select</option>
+#: from
+#: plone_templates/folder_contents.pt
+msgid "label_select"
+msgstr "Оберіть"
+
+#.   <span>
+#.                       Selected keywords
+#.                       </span>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "label_selected_keywords"
+msgstr "Вибрані ключові слова"
+
+#.   <div class="label">Selections</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_selections"
+msgstr "Вибори"
+
+#.   <span>Short Date</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_short_date_format"
+msgstr "Дата (короткий формат)"
+
+#.   <option attributes="selected
+#.   					    python:test((len(filterTypes)>1 or len(filterTypes)==0), 'selected', '');" value="#">
+#.                                       Show All Items
+#.                                       </option>
+#: from
+#: plone_templates/folder_contents.pt
+msgid "label_show_all_items"
+msgstr "Показувати все"
+
+#.   <div class="label">Size</div>
+#.   <span>Size:</span>
+#: from
+#: plone_content/file_view.pt
+#: plone_content/image_view.pt
+msgid "label_size"
+msgstr "Розмір:"
+
+#.   <span>SMTP server</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "label_smtp_server"
+msgstr "SMTP сервер"
+
+#.   <div class="label">Status</div>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "label_status"
+msgstr "Статус"
+
+#.   <span>Subfolders</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "label_subfolders"
+msgstr "Підтеки"
+
+#.   <div class="label">
+#.               Subject
+#.               </div>
+#: from
+#: plone_forms/discussion_reply_form.pt
+msgid "label_subject"
+msgstr "Предмет"
+
+#.   <div class="label">Submitter</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+msgid "label_submitter"
+msgstr "Подавач"
+
+#.   <span>Subobjects</span>
+#: from
+#: plone_forms/ownership_form.pt
+msgid "label_subobjects"
+msgstr "Підоб'єкти"
+
+#.   <div class="label">Channel Description</div>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "label_syndication_channel_description"
+msgstr "Опис каналу"
+
+#.   <div class="label">Channel Title</div>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "label_syndication_channel_title"
+msgstr "Заголовок каналу"
+
+#.   <span>Maximum Items</span>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "label_syndication_max_items"
+msgstr "Максимальна кільківть елементів"
+
+#.   <span>Update Base</span>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "label_syndication_update_base"
+msgstr "База оновлення"
+
+#.   <span>Update Frequency</span>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "label_syndication_update_frequency"
+msgstr "Частота оновлення"
+
+#.   <span>Update Period</span>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "label_syndication_update_period"
+msgstr "Період оновлення"
+
+#.   <div class="label">Title</div>
+#.   <span>Title</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: plone_content/document_edit_form.pt
+#: plone_content/file_edit_form.pt
+#: plone_content/image_edit_form.pt
+#: plone_content/link_edit_form.pt
+#: 2
+#: more
+#: references
+msgid "label_title"
+msgstr "Заголовок"
+
+#.   <div class="label"> Topic </div>
+#.   <div class="label">Topic</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_topic"
+msgstr "Тема"
+
+#.   <strong>
+#.                   Having trouble logging in?
+#.                   </strong>
+#: from
+#: plone_forms/login_form.pt
+msgid "label_trouble_logging_in"
+msgstr "Маєте проблеми з входженням?"
+
+#.   <div class="label">Upload</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_upload"
+msgstr "Завантажити"
+
+#.   <span>Upload contents (optional)</span>
+#: from
+#: plone_content/document_edit_form.pt
+msgid "label_upload_contents_optional"
+msgstr "Завантажити вміст (необов'язково)"
+
+#.   <span>URL</span>
+#: from
+#: plone_content/link_edit_form.pt
+msgid "label_url"
+msgstr "URL"
+
+#.   <option value="username">User Name</option>
+#.   <span>User Name</span>
+#: from
+#: plone_forms/folder_localrole_form.pt
+#: plone_forms/join_form.pt
+#: plone_forms/login_form.pt
+msgid "label_user_name"
+msgstr "Ім'я користувача"
+
+#.   <div class="label">Version boilerplate</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "label_version_boilerplate"
+msgstr "Шаблон версії"
+
+#.   <div class="label">Version Info</div>
+#.   <div class="label">Version info</div>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "label_version_info"
+msgstr "Інформація про версію"
+
+#.   <span>Visible Members</span>
+#: from
+#: plone_forms/roster.pt
+msgid "label_visible_members"
+msgstr "Видимі члени"
+
+#.   <label for="cb_mailme">Yes, mail me my password</label>
+#: from
+#: plone_forms/join_form.pt
+msgid "label_yes_mail_me_password"
+msgstr "Так, вишліть мені мій пароль"
+
+#.   <option condition="python:test(container.portal_membership.isAnonymousUser(), 0, 1);" attributes="value python:container.portal_membership.getAuthenticatedMember().last_login_time" value="#">Last sign-in</option>
+#: from
+#: plone_forms/search_form.pt
+msgid "last_login"
+msgstr "останнього входження"
+
+#.   <span omit-tag="">Last Updated</span>
+#: from
+#: plone_templates/news.pt
+msgid "last_updated"
+msgstr "Востаннє змінено"
+
+#.   <span class="legend">Account details</span>
+#: from
+#: plone_forms/login_form.pt
+msgid "legend_account_details"
+msgstr "Подробиці про рахунок"
+
+#.   <span class="legend">Assigned Roles</span>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "legend_assigned_roles"
+msgstr "Назначені ролі"
+
+#.   <span class="legend">Available Members</span>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "legend_available_members"
+msgstr "Наявні члени спільноти"
+
+#.   <span class="legend">Change Ownership</span>
+#: from
+#: plone_forms/ownership_form.pt
+msgid "legend_change_ownership"
+msgstr "Змінити власника"
+
+#.   <span class="legend">Collector Details</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_edit_form.pt
+msgid "legend_collector_details"
+msgstr "Подробиці колекціонера"
+
+#.   <span class="legend">Comment Details</span>
+#: from
+#: plone_forms/discussion_reply_form.pt
+msgid "legend_comment_details"
+msgstr "Подробиці про коментар"
+
+#.   <span class="legend">Contact details</span>
+#: from
+#: plone_content/event_view.pt
+msgid "legend_contact_details"
+msgstr "Подробиці про контакт"
+
+#.   <span class="legend">Criteria Details</span>
+#: from
+#: plone_3rdParty/CMFTopic/topic_criteria_form.pt
+msgid "legend_criteria_details"
+msgstr "Подробиці критерію"
+
+#.   <span class="legend">Document Details</span>
+#: from
+#: plone_content/document_edit_form.pt
+msgid "legend_document_details"
+msgstr "Подробиці про документ"
+
+#.   <span class="legend">Error Details</span>
+#: from
+#: plone_templates/standard_error_message.pt
+msgid "legend_error_details"
+msgstr "Подробиці про помилку"
+
+#.   <span class="legend">Event Details</span>
+#: from
+#: plone_3rdParty/CMFCalendar/event_edit_form.pt
+#: plone_content/event_view.pt
+msgid "legend_event_details"
+msgstr "Подробиці про подію"
+
+#.   <span class="legend">File details</span>
+#: from
+#: plone_content/file_view.pt
+#: plone_content/file_edit_form.pt
+msgid "legend_file_details"
+msgstr "Подробиці про файл"
+
+#.   <span class="legend">Folder Details</span>
+#: from
+#: plone_forms/folder_edit_form.pt
+msgid "legend_folder_details"
+msgstr "Подробиці про теку"
+
+#.   <span class="legend">Follow-up details</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "legend_follow_up_details"
+msgstr "Подробиці прослідковування"
+
+#.   <span class="legend">Image Details</span>
+#: from
+#: plone_content/image_edit_form.pt
+msgid "legend_image_details"
+msgstr "Подробиці про зображення"
+
+#.   <span class="legend">Issue Details</span>
+#.   <span class="legend">Issue details</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_add_issue_form.pt
+#: plone_3rdParty/CMFCollector/collector_issue_edit_form.pt
+msgid "legend_issue_details"
+msgstr "Подробиці про статтю"
+
+#.   <span class="legend">Item Properties</span>
+#: from
+#: plone_content/metadata_edit_form.pt
+msgid "legend_item_properties"
+msgstr "Властивості елементу"
+
+#.   <span class="legend">Items Available</span>
+#: from
+#: plone_forms/folder_factories.pt
+msgid "legend_items_available"
+msgstr "Наявні елементи"
+
+#.   <span class="legend">Link Details</span>
+#: from
+#: plone_content/link_edit_form.pt
+msgid "legend_link_details"
+msgstr "Подробиці про посилання"
+
+#.   <span class="legend">Member Details</span>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "legend_member_details"
+msgstr "Подробиці про члена спільноти"
+
+#.   <span class="legend">News Item Details</span>
+#: from
+#: plone_content/newsitem_edit_form.pt
+msgid "legend_news_item_details"
+msgstr "Подробиці про новий елемент"
+
+#.   <span class="legend">Password Details</span>
+#: from
+#: plone_forms/logged_in.pt
+msgid "legend_password_details"
+msgstr "Подробиці про пароль"
+
+#.   <span class="legend">Personal Details</span>
+#: from
+#: plone_forms/join_form.pt
+msgid "legend_personal_details"
+msgstr "Особисті побробиці"
+
+#.   <span class="legend">Plone Details</span>
+#: from
+#: plone_forms/reconfig_form.pt
+msgid "legend_plone_details"
+msgstr "Подробиці про Plone"
+
+#.   <span class="legend">Publishing Details</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "legend_publishing_details"
+msgstr "Подробиці публікування"
+
+#.   <span class="legend">Rename Details</span>
+#: from
+#: plone_forms/folder_rename_form.pt
+msgid "legend_rename_details"
+msgstr "Подробиці перейменування"
+
+#.   <span class="legend">Search for issues</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "legend_search_for_issues"
+msgstr "Пошук статті"
+
+#.   <span class="legend">Search Terms</span>
+#: from
+#: plone_forms/folder_localrole_form.pt
+#: plone_forms/search_form.pt
+msgid "legend_search_terms"
+msgstr "Параметри пошуку"
+
+#.   <span class="legend">Status</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "legend_status"
+msgstr "Статус"
+
+#.   <span class="legend">Channel Details</span>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "legend_syndication_channel_details"
+msgstr "Подробиці про канал"
+
+#.   <span class="legend">Syndication Details</span>
+#: from
+#: plone_forms/synPropertiesForm.pt
+msgid "legend_syndication_details"
+msgstr "Подробиці синдикації"
+
+#.   <span class="legend">Topic Details</span>
+#: from
+#: plone_3rdParty/CMFTopic/topic_edit_form.pt
+msgid "legend_topic_details"
+msgstr "Побробиці про тему"
+
+#.   <span class="legend">Member Details</span>
+#: from
+#: plone_forms/mail_password_form.pt
+msgid "legend_user_details"
+msgstr "Подробиці про користувача"
+
+#.   <span>The link address is:</span>
+#: from
+#: plone_content/link_view.pt
+msgid "link_address"
+msgstr "Адреса посилання:"
+
+#.   <span>Created by</span>
+#: from
+#: plone_content/favorite_view.pt
+msgid "link_created_by"
+msgstr "Створено"
+
+#.   <span>Last modified:</span>
+#: from
+#: plone_content/favorite_view.pt
+msgid "link_last_modified"
+msgstr "Востаннє змінено:"
+
+#.   <th>Action</th>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "listingheader_action"
+msgstr "Дія"
+
+#.   <th>Action performed</th>
+#: from
+#: plone_forms/undo_form.pt
+msgid "listingheader_action_performed"
+msgstr "Виконана дія"
+
+#.   <th>Affected Item</th>
+#: from
+#: plone_forms/undo_form.pt
+msgid "listingheader_affected_item"
+msgstr "Задіяний елемент"
+
+#.   <th>Assigned</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_assigned"
+msgstr "Призначено"
+
+#.   <span omit-tag="">Author</span>
+#: from
+#: plone_forms/search.pt
+msgid "listingheader_author"
+msgstr "Автор"
+
+#.   <th>Classification</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_classification"
+msgstr "Класифікація"
+
+#.   <th>comment</th>
+#.   <th>Comment</th>
+#: from
+#: plone_content/discussionitem_view.pt
+#: plone_forms/content_status_history.pt
+#: plone_forms/viewThreadsAtBottom.pt
+msgid "listingheader_comment"
+msgstr "Коментар"
+
+#.   <th>Date</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_date"
+msgstr "Дата"
+
+#.   <th>Date&nbsp;and&nbsp;Time</th>
+#.   <th>Date and time</th>
+#: from
+#: plone_forms/content_status_history.pt
+#: plone_forms/undo_form.pt
+msgid "listingheader_date_and_time"
+msgstr "Дата та час"
+
+#.   <th>Description</th>
+#.   <span omit-tag="">Description</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+#: plone_forms/search.pt
+msgid "listingheader_description"
+msgstr "Опис"
+
+#.   <th>Importance</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_importance"
+msgstr "Важливість"
+
+#.   <th>Issue</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_issue"
+msgstr "Публікація"
+
+#.   <span omit-tag="">Last Modified</span>
+#: from
+#: plone_forms/search.pt
+msgid "listingheader_last_modified"
+msgstr "Востаннє змінено"
+
+#.   <span omit-tag="">Modified</span>
+#: from
+#: plone_templates/folder_contents.pt
+msgid "listingheader_modified"
+msgstr "Змінено"
+
+#.   <th>Performed&nbsp;by</th>
+#.   <th>Performed by</th>
+#: from
+#: plone_forms/content_status_history.pt
+#: plone_forms/undo_form.pt
+msgid "listingheader_performed_by"
+msgstr "Виконано"
+
+#.   <th>Requester</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_requester"
+msgstr "Замовник"
+
+#.   <th>Security Related</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_security_related"
+msgstr "Стосовно безпеки"
+
+#.   <span omit-tag="">Size</span>
+#: from
+#: plone_templates/folder_contents.pt
+msgid "listingheader_size"
+msgstr "Розмір"
+
+#.   <th>Status</th>
+#.   <span omit-tag="">Status</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+#: plone_templates/folder_contents.pt
+msgid "listingheader_status"
+msgstr "Стан"
+
+#.   <th>Submitter</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_submitter"
+msgstr "Подавач"
+
+#.   <th>Title</th>
+#.   <span omit-tag="">Title</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+#: plone_forms/search.pt
+#: plone_templates/folder_contents.pt
+msgid "listingheader_title"
+msgstr "Заголовок"
+
+#.   <th>Topic</th>
+#: from
+#: plone_3rdParty/CMFCollector/collector_contents.pt
+msgid "listingheader_topic"
+msgstr "Тема"
+
+#.   <span omit-tag="">Type</span>
+#: from
+#: plone_templates/folder_contents.pt
+msgid "listingheader_type"
+msgstr "Тип"
+
+#.   <th>Undo</th>
+#: from
+#: plone_forms/undo_form.pt
+msgid "listingheader_undo"
+msgstr "Відновити"
+
+#.   <span omit-tag="">Description</span>
+#: from
+#: plone_forms/folder_listing.pt
+msgid "listingheaders_description"
+msgstr "Опис"
+
+#.   <span omit-tag="">Last Modified</span>
+#: from
+#: plone_forms/folder_listing.pt
+msgid "listingheaders_last_modified"
+msgstr "Востаннє змінено"
+
+#.   <span omit-tag="">Size</span>
+#: from
+#: plone_forms/folder_listing.pt
+msgid "listingheaders_size"
+msgstr "Розмір"
+
+#.   <span omit-tag="">Title</span>
+#: from
+#: plone_forms/folder_listing.pt
+msgid "listingheaders_title"
+msgstr "Заголовок"
+
+#.   <span omit-tag="">Type</span>
+#: from
+#: plone_forms/folder_listing.pt
+msgid "listingheaders_type"
+msgstr "Тип"
+
+#.   <span omit-tag="">More Recent News</span>
+#: from
+#: plone_templates/news.pt
+msgid "more_recent_news"
+msgstr "Новіші новини"
+
+#.   <a define="mystuff python:[a['url'] for a in actions['user'] if a['id']=='mystuff']" condition="mystuff" attributes="href python:mystuff.pop()" href="metadata_form">My Folder</a>
+#: from
+#: plone_forms/logged_in.pt
+msgid "my_folder"
+msgstr "Моя тека"
+
+#.   <label for="cb_noformtooltips">No</label>
+#.   <label for="cb_invisible_ids">No</label>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "no"
+msgstr "Ні"
+
+#.   <p condition="not: len_text">
+#.       This document has yet to be written, click the edit tab to change the document.
+#.       </p>
+#.   <p condition="not: len_text">
+#.         This document has yet to be written, click the edit tab to change the document.
+#.         </p>
+#.   <p condition="not: len_text">
+#.             This document has yet to be written, click the edit button to write on document.
+#.           </p>
+#: from
+#: plone_content/document_view.pt
+#: plone_content/frontpage_view.pt
+#: plone_content/newsitem_view.pt
+msgid "no_body_text"
+msgstr "Цей документ ще треба написати, клацніть на кнопці редагування щоб його написати."
+
+#.   <span condition="not: rhComments">
+#.                       No comments.
+#.                       </span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "no_comments"
+msgstr "Без коментарів."
+
+#.   <span condition="python:test(here.size, 0, 1)">
+#.                 (No file has been uploaded)
+#.               </span>
+#.   <span condition="python:test(here.size, 0, 1)">
+#.             (No file has been uploaded)
+#.           </span>
+#.   <span condition="python:test(here.size, 0, 1)">
+#.                     (No file has been uploaded yet)
+#.                   </span>
+#.   <span condition="python:test(here.size, 0, 1)">
+#.                      (No image has been uploaded yet)
+#.                   </span>
+#: from
+#: plone_content/file_view.pt
+#: plone_content/image_view.pt
+#: plone_content/file_edit_form.pt
+#: plone_content/image_edit_form.pt
+msgid "no_file_uploaded"
+msgstr "(Ще не завантажено ніякого зображення)"
+
+#.   <span>
+#.       Note: We have no mail address for the submitters, so they won't
+#.       get followups.
+#.       </span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_issue_followup_form.pt
+msgid "no_mail_address"
+msgstr "Зауваження: Ми не маємо адреси для подавачів, тому вони не отримають прослідковування."
+
+#.   <p>No members were found using your <strong>Search Criteria</strong></p>
+#: from
+#: plone_forms/folder_localrole_form.pt
+msgid "no_members_found"
+msgstr "Не знайдено жодного члена за вашим <strong>критерієм пошуку</strong>"
+
+#.   <p condition="not: results">
+#.               No news has been posted.
+#.             </p>
+#: from
+#: plone_templates/news.pt
+msgid "no_new_news"
+msgstr "Не опібліковано ні одної новини."
+
+#.   <strong> No results match your criteria. </strong>
+#: from
+#: plone_3rdParty/CMFTopic/topic_view.pt
+msgid "no_results_found"
+msgstr "Нема результатів, що відповідали б вашому критерію."
+
+#.   <span omit-tag="">Older News</span>
+#: from
+#: plone_templates/news.pt
+msgid "older_news"
+msgstr "Старіші новини"
+
+#.   <label for="cb_plain">Plain Text</label>
+#: from
+#: plone_content/document_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+msgid "plain_text"
+msgstr "Звичайний текст"
+
+#.   <span>Posted by:</span>
+#.   <span omit-tag="">Posted by</span>
+#: from
+#: plone_content/discussionitem_view.pt
+#: plone_templates/news.pt
+msgid "posted_by"
+msgstr "Надіслано від"
+
+#.   <td align="right">on</td>
+#.   <span>at</span>
+#: from
+#: plone_3rdParty/CMFCollector/collector_macros.pt
+#: plone_content/discussionitem_view.pt
+msgid "posted_on"
+msgstr "від"
+
+#.   <a attributes="href resultObject/absolute_url" href="/view">
+#.                           Read More
+#.                           </a>
+#: from
+#: plone_templates/news.pt
+msgid "read_more"
+msgstr "Далі"
+
+#.   <span condition="effective">and <strong>is effective</strong>.</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "status_is_effective"
+msgstr "і <strong>є чинним</strong>."
+
+#.   <span condition="after">but is <strong>no longer</strong> effective.</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "status_no_longer_effective"
+msgstr "але <strong>уже не є</strong> чинним."
+
+#.   <span condition="before">but is <strong>not yet</strong> effective.</span>
+#: from
+#: plone_forms/content_status_history.pt
+msgid "status_not_yet_effective"
+msgstr "але <strong>все ще не</strong> чинний."
+
+#.   <label for="cb_structuredtext">Structured Text</label>
+#: from
+#: plone_content/document_edit_form.pt
+#: plone_content/newsitem_edit_form.pt
+msgid "structured_text"
+msgstr "Стркутурований текст"
+
+#.   <option attributes="value ever" selected="selected" value="#"> Ever </option>
+#: from
+#: plone_forms/search_form.pt
+msgid "time_ever"
+msgstr "завжди"
+
+#.   <option attributes="value lastmonth" value="#"> Last month </option>
+#: from
+#: plone_forms/search_form.pt
+msgid "time_last_month"
+msgstr "місяця"
+
+#.   <option attributes="value lastweek" value="#"> Last week </option>
+#: from
+#: plone_forms/search_form.pt
+msgid "time_last_week"
+msgstr "тижня"
+
+#.   <option attributes="value yesterday" value="#"> Yesterday </option>
+#: from
+#: plone_forms/search_form.pt
+msgid "time_yesterday"
+msgstr "вчора"
+
+#.   <label for="cb_formtooltips">Yes</label>
+#.   <label for="cb_visible_ids">Yes</label>
+#: from
+#: plone_forms/personalize_form.pt
+msgid "yes"
+msgstr "Так"
+
+#.   <span omit-tag="">You are here:</span>
+#: from
+#: plone_templates/header.pt
+msgid "you_are_here"
+msgstr "Ви знаходитеся тут:"
+
+#.   <span condition="here/portal_membership/isAnonymousUser">You are not logged in</span>
+#: from
+#: plone_templates/header.pt
+msgid "you_are_not_logged_in"
+msgstr "Ви не ввійшли"
+
+#. The below is collected by inserting a plone-my-lang.missing file in the i18n
+#. directory. Thus we can translate tabs, pushishing states, item type names
+#. and type descriptions.
+#. _____________________________________________________________________________
+#: .missing
+#: file
+msgid "Welcome"
+msgstr "Ласкаво просимо"
+
+msgid "Members"
+msgstr "Спільнота"
+
+msgid "News"
+msgstr "Новини"
+
+msgid "My Folder"
+msgstr "Моя тека"
+
+msgid "My Preferences"
+msgstr "Мої вподобання"
+
+msgid "Plone Setup"
+msgstr "Настройка Plone"
+
+msgid "Sign out"
+msgstr "Вийти"
+
+msgid "Navigation"
+msgstr "Навіґація"
+
+msgid "Editor view"
+msgstr "Вигляд від редактора"
+
+msgid "visible"
+msgstr "видимий"
+
+msgid "Folder contents"
+msgstr "Вміст папки"
+
+msgid "Contents"
+msgstr "Вміст"
+
+msgid "View"
+msgstr "Перегляд"
+
+msgid "Edit"
+msgstr "Редагувати"
+
+msgid "Properties"
+msgstr "Властивості"
+
+msgid "Publishing"
+msgstr "Публікування"
+
+msgid "Ordinary view"
+msgstr "Звичайний вигляд"
+
+msgid "Local Roles"
+msgstr "Локальні ролі"
+
+msgid "Ownership"
+msgstr "Власність"
+
+msgid "${type}s only"
+msgstr "Тільки ${type}(и)"
+
+msgid "Document"
+msgstr "Документ"
+
+msgid "Image"
+msgstr "Зображення"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "Link"
+msgstr "Посилання"
+
+msgid "News Item"
+msgstr "Новина"
+
+msgid "Topic"
+msgstr "Тема"
+
+msgid "Folder"
+msgstr "Папка"
+
+msgid "Event"
+msgstr "Подія"
+
+msgid "Collector"
+msgstr "Колекціонер"
+
+msgid "Collector Subset"
+msgstr "Підмножина Колекціонера"
+
+msgid "CMF Wiki Page"
+msgstr "Сторінка CMF Wiki"
+
+msgid "CMF Wiki"
+msgstr "CMF Wiki"
+
+msgid "Cut"
+msgstr "Вирізати"
+
+msgid "Copy"
+msgstr "Копіювати"
+
+msgid "Delete"
+msgstr "Знищити"
+
+msgid "Change Status"
+msgstr "Змінити статус"
+
+msgid "This item is currently in the ${review_state} state"
+msgstr "Цей елемент зараз в стані ${review_state}"
+
+msgid "Make private"
+msgstr "Зробити приватним"
+
+msgid "Publish"
+msgstr "Опублікувати"
+
+msgid "Collector Catalog"
+msgstr "Каталог Колекціонера"
+
+msgid "Collector Issue"
+msgstr "Публікація Колекціонера"
+
+msgid "Collector Issue Transcript"
+msgstr "Розшифровка публікації Колекціонера"
+
+msgid "Discussion Item"
+msgstr "Дискусія"
+
+msgid "Favorite"
+msgstr "Улюбленець"
+
+msgid "Documents can contain text that can be formatted using 'Structured Text.'"
+msgstr "Документи можуть вміщати текст та відформатовані за допомогою 'Структурованого тексту'."
+
+msgid "Image objects can be embedded in Portal documents."
+msgstr "Об'єкти-зображення можна вставляти в документи порталу."
+
+msgid "File objects can contain arbitrary downloadable files."
+msgstr "Об'єкти-файли можуть вміщати будь-яку інформацію для завантаження."
+
+msgid "Link items are URLs that come with additional information."
+msgstr "Елементи посилання є URL шо містять додаткову описову інформацію."
+
+msgid "News Items contain short text articles and carry a title as well as an optional description."
+msgstr "Новини вміщають короткий текст та мають заголовок і необов'язковий опис."
+
+msgid "Topics are canned queries for organizing content with up to date queries into the catalog."
+msgstr "Теми є наперед підготовані запити для організації вмісту за бопомогою актуальних запитів до каталогу."
+
+msgid "Plone folders can define custom 'view' actions, or will behave like directory listings without one defined."
+msgstr "Теки Plone можуть визначати індивідуальні дії 'перегляду', або якщо таких не буде, то поводитимуть себе як списки директорії."
+
+msgid "Events are objects for use in Calendar topical queries on the catalog."
+msgstr "Події - об'єкти, для використання в тематичних запитах Календаря до каталогу."
+
+msgid "A Collector is a facility for tracking bug reports and other issues."
+msgstr "Колекціонер - це засіб для відслідковування звітів про помилки та інші статті."
+
+msgid "A Collector Subset represents a view on a subset of the issues in a collector."
+msgstr "Підмножина колекціонера відображає вигляд підмножини статтеї в колекціонері."
+
+msgid "Loosely organized (yet structured) content can be added to Wikis."
+msgstr "Вільно організований (але структурований) вміст можна додавати до Wiki."
+
+msgid "Browse"
+msgstr "Переглянути"
+
+msgid "New Issue"
+msgstr "Нова публікація"
+
+msgid "Configure"
+msgstr "Настроїти"
+
+msgid "pending"
+msgstr "непідтверджений"
+
+msgid "private"
+msgstr "приватний"
+
+msgid "published"
+msgstr "опублікований"
+
+msgid "No"
+msgstr "Ні"
+
+msgid "Yes"
+msgstr "Так"
+
+msgid "Comment"
+msgstr "Коментар"
+
+msgid "History"
+msgstr "Історія"
+
+msgid "Backlinks"
+msgstr "Звортні посилання"
+
+msgid "Advanced"
+msgstr "Розширений"
+
+msgid "Help"
+msgstr "Допомога"
+
+msgid "Criteria"
+msgstr "Критерій"
+
+msgid "Subtopics"
+msgstr "Підтеми"
+
+msgid "Metadata"
+msgstr "Метадані"
+
