@@ -151,6 +151,10 @@ ul a, ol a {
     text-decoration: underline;
 }
 
+li {
+    margin-bottom: 1em;
+}
+
 dl {
 }
 
