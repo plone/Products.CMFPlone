@@ -10,7 +10,6 @@ if template_id is None:
     REQUEST=context.REQUEST
     template_id=REQUEST['PUBLISHED'].getId()
 
-show_border=0
 actions=container.portal_actions.listFilteredActionsFor(context)
 wf_actions=actions.get('workflow', ())
 obj_actions=actions.get('object', ())
@@ -27,13 +26,18 @@ def idInActions(seq, action_id):
 # XXX - runyaga; I wish it could be this simple ;(
 # show_border = wf_actions or len(obj_actions) > 1 #in CMF1.2 'log in' is a wf_action!
 
-if context.isPrincipiaFolderish or template_id=='folder_contents' or template_id=='folder_listing' :
-    if idInActions(folder_actions, 'edit'): 
-        return 1
-    if container.portal_membership.checkPermission( 'List folder contents', context):
-        show_border = 1
-else:
-    if idInActions(obj_actions, 'edit'): 
-        return 1
+show_border=0
+isPortalContent = getattr(context, 'isPortalContent', 0)
+checkPermission = container.portal_membership.checkPermission
+
+if folder_actions and \
+   template_id in ['folder_listing', 'folder_contents'] and \
+   checkPermission( 'List folder contents', context):
+    show_border = 1
+elif isPortalContent and idInActions(obj_actions, 'edit'): 
+    show_border = 1 
+
+#elif idInActions(folder_actions, 'edit'): #if you can edit the folder
+#    show_border = 1
 
 return show_border
