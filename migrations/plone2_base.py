@@ -42,7 +42,7 @@ def make_plone(portal):
     addNavigationProperties(portal)
     extendSiteProperties(portal)
     extendMemberdata(portal)
-#    addDefaultPloneSkins(portal)
+    addDefaultPloneSkins(portal)
     setupDefaultEditor(portal)
     setupCalendar(portal)
 
@@ -170,20 +170,24 @@ def extendMemberdata(portal):
         portal.portal_memberdata.manage_addProperty('error_log_update', 0.0, 'float')
 
 def addDefaultPloneSkins(portal):
-    from Products.CMFPlone.Portal import PloneGenerator
-    pg=PloneGenerator()
-    sk_tool=getToolByName(portal, 'portal_skins')
+    pass
 
-    setup_skins=pg.setupSecondarySkin
-    setup_skins(sk_tool, 'Plone Core',          'plone_styles/core')
-    setup_skins(sk_tool, 'Plone Corporate',     'plone_styles/corporate')
-    setup_skins(sk_tool, 'Plone Autumn',        'plone_styles/autumn')
-    setup_skins(sk_tool, 'Plone Core Inverted', 'plone_styles/core_inverted')
-    setup_skins(sk_tool, 'Plone Greensleeves',  'plone_styles/greensleeves')
-    setup_skins(sk_tool, 'Plone Kitty',         'plone_styles/kitty')
-    setup_skins(sk_tool, 'Plone Mozilla New',   'plone_styles/mozilla_new')
-    setup_skins(sk_tool, 'Plone Prime',         'plone_styles/prime')
-    setup_skins(sk_tool, 'Plone Zed',           'plone_styles/zed')
+# XXX I assume these can be removed, since they no longer ship with Plone.
+#
+#    from Products.CMFPlone.Portal import PloneGenerator
+#    pg=PloneGenerator()
+#    sk_tool=getToolByName(portal, 'portal_skins')
+#
+#    setup_skins=pg.setupSecondarySkin
+#    setup_skins(sk_tool, 'Plone Core',          'plone_styles/core')
+#    setup_skins(sk_tool, 'Plone Corporate',     'plone_styles/corporate')
+#    setup_skins(sk_tool, 'Plone Autumn',        'plone_styles/autumn')
+#    setup_skins(sk_tool, 'Plone Core Inverted', 'plone_styles/core_inverted')
+#    setup_skins(sk_tool, 'Plone Greensleeves',  'plone_styles/greensleeves')
+#    setup_skins(sk_tool, 'Plone Kitty',         'plone_styles/kitty')
+#    setup_skins(sk_tool, 'Plone Mozilla New',   'plone_styles/mozilla_new')
+#    setup_skins(sk_tool, 'Plone Prime',         'plone_styles/prime')
+#    setup_skins(sk_tool, 'Plone Zed',           'plone_styles/zed')
 
 def setupDefaultEditor(portal):
     pass
