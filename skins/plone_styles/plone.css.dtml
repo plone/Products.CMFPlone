@@ -596,7 +596,8 @@ span.card {
     width: 15%;
 }
 
-table.listing {
+table.listing,
+div.stx table {
     /* The default table for document listings. Contains name, document types, modification times etc in a file-browser-like fashion */
     border-collapse: collapse;
     border-left: &dtml-listingBorder;;
@@ -606,7 +607,8 @@ table.listing {
     clear: both;
 }
 
-table.listing th {
+table.listing th,
+div.stx table th {
     background: &dtml-listingHeaderBackground;;
     border-top: &dtml-listingBorder;;
     border-bottom: &dtml-listingBorder;;
@@ -639,7 +641,8 @@ table.listing tr.even {
     background: &dtml-listingEvenBackground;;
 }
 
-table.listing td {
+table.listing td,
+div.stx table td {
     border-right: &dtml-listingBorder;;
     padding: 0em 1em;
     text-align: left;
@@ -652,6 +655,21 @@ table.listing a:hover {
 table.listing img {
 	vertical-align: middle;
 }
+
+/* Additional STX workaround classes */
+
+div.stx table p /* stupid STX table workaround */
+{
+    margin: 0;
+    padding: 0;
+}
+
+div.stx table  /* stupid STX table workaround */
+{
+    border: &dtml-listingBorder; ! important;
+}
+
+
 
 div.box {
     margin: 0em 0em 2em 0em;
