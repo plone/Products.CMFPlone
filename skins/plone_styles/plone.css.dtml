@@ -53,7 +53,7 @@ table.columns td.right {
     color: &dtml-mainFontColor;;
     margin: 0;
     padding: 0;
-/* These work in IE only, changes the look of the scrollbar + textareas */
+/* These work in IE only, changes the look of the scrollbar + textareas 
     scrollbar-base-color: &dtml-mainTabBackground;;
     scrollbar-highlight-color: &dtml-mainTabBackground;;
     scrollbar-track-color: &dtml-evenRowBackground;;
@@ -61,8 +61,8 @@ table.columns td.right {
     scrollbar-3dlight-color: &dtml-mainTabBorderColorSelected;;
     scrollbar-shadow-color: &dtml-mainTabBorderColorSelected;;
     scrollbar-arrow-color: &dtml-mainTabFontColorSelected;;
+*/
 }
-
 table {
     font-size: 100%;
 }
@@ -75,10 +75,6 @@ a {
     color: &dtml-mainLinkColor;;
     background-color: transparent;
 }
-
-table {
-}
-
 
 img {
     border: none;
@@ -112,7 +108,6 @@ p img {
 
 
 hr {
-    clear: both;
     height: 1px;
     color: &dtml-mainTabBorderColorSelected;;
     background-color: transparent;
@@ -124,6 +119,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6 {
     color: &dtml-headingFontColor;;
+    background-color: transparent;
     font: <dtml-var headingFont>;
     margin: 0;
     padding-top: 0.5em;
@@ -179,9 +175,6 @@ li {
     margin-bottom: 1em;
 }
 
-dl {
-}
-
 dt {
     font-weight: bold;    
 }
@@ -196,7 +189,7 @@ dd {
     margin-bottom: 1em;
 }
 
-d a {
+dd a {
     text-decoration: underline;
 }
 
@@ -507,7 +500,6 @@ div.byline {
     border-top: &dtml-footerBorder;;
     border-bottom: &dtml-footerBorder;;
     color: &dtml-mainFontColor;;
-    clear: both;
     float: none;
     margin: 2em 0em;
     padding: 0.5em 0em 1em 0em;
@@ -836,7 +828,6 @@ div.listingBar {
     padding: 0em 1em;
     text-align: center;
     text-transform: &dtml-textTransform;;
-    clear: both;
     vertical-align: top;
     margin: 1em 0em;
 }

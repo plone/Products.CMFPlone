@@ -65,6 +65,7 @@
 
     <!-- start of main content block -->
     <td class="main"
+        id="contentWrapper"
          tal:define="global show_border python:here.showEditableBorder( template_id=template_id , actions=actions );
                      Iterator python:modules['Products.CMFPlone'].IndexIterator;
                      tabindex python:Iterator(pos=0);">
@@ -75,7 +76,7 @@
         </metal:ifborder>
 
 
-        <div class="document"
+        <div id="documentContent"
              tal:attributes="class python:test(show_border, 'editable document', 'document')">
 
             <div metal:use-macro="here/global_elements/macros/portal_message">

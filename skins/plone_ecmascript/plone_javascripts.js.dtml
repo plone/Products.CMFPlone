@@ -13,7 +13,14 @@
 if (document.all && window.attachEvent) window.attachEvent("onload", fixWinIE);
 function fixWinIE() {
     try {
+        document.getElementById('documentContent').style.display = 'block';
+    } catch(er) {}
+
+    try {
         document.getElementById('bodyContent').style.display = 'block';
+    } catch(er) {}
+
+    try {
         document.getElementById('description').style.display = 'block';
     } catch(er) {}
 }

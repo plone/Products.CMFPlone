@@ -53,12 +53,12 @@ div.document { background: &dtml-contentBackground;; }
 div.editableDocument { border: &dtml-contentTabBorder;; padding: 0em 1em 0em 1em; }
 div.message { background: &dtml-messageBackground;; font: &dtml-messageFont;; padding: 0.5em 1em; vertical-align: middle; }
 .description { /*font: <dtml-var mainFont>;*/ display: block; }
-.footer { clear: both; float: none; padding: 0em 0em 0em 0em; text-align: center; }
+.footer { float: none; padding: 0em 0em 0em 0em; text-align: center; }
 
 /* Widgets */
-div.row { clear: both; }
-div.rowEven { clear: both; }
-div.rowOdd { clear: both; }
+div.row {  }
+div.rowEven {  }
+div.rowOdd {  }
 .group { border: &dtml-groupBorder;; padding: 1em; }
 .legend { font-weight: bold; }
 input.standalone { cursor: pointer; font-weight: &dtml-buttonWeight;; }
