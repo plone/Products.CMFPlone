@@ -30,8 +30,8 @@ def transaction_note(note):
 
 def base_hasattr(ob, name):
     ob = aq_base(ob)
-    if hasattr(ob, name):
-        return 1
+    return hasattr(ob, name)
+
 
 def initialize(context):
 
