@@ -43,6 +43,11 @@ class IBrowserDefault(Interface):
         Get the selected layout template. Note that a selected default page
         will override the layout template.
         """
+        
+    def getDefaultLayout():
+        """
+        Get the default layout template.
+        """
     
 class ISelectableBrowserDefault(IBrowserDefault):
     """
@@ -75,11 +80,6 @@ class ISelectableBrowserDefault(IBrowserDefault):
         Set the layout as the current view. 'layout' should be one of the list
         returned by getAvailableLayouts(). If a default page has been set
         with setDefaultPage(), it is turned off by calling setDefaultPage(None).
-        """
-
-    def getDefaultLayout():
-        """
-        Get the default layout template.
         """
         
     def canSetLayout():
