@@ -11,7 +11,7 @@
        tal:omit-tag=""
        tal:define="isContainer here/isPrincipiaFolderish|nothing;
                    navBatchStart request/navBatchStart | python:None;
-                   portalObject here/portal_url/getPortalObject;
+                   portalObject utool/getPortalObject;
                    tree python:here.plone_utils.createNavigationTreeBuilder(portalObject,navBatchStart);
                    showOtherNav python:0;
                    showNav python:0;

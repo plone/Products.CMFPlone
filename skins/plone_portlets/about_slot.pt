@@ -9,7 +9,7 @@
 <!-- The About box -->
 
 <div metal:define-macro="aboutBox"
-     tal:define="mtool mtool|here/portal_membership;
+     tal:define="mtool mtool|mtool;
                  isAnon isAnon|mtool/isAnonymousUser"
      tal:condition="python:test(not site_properties.allowAnonymousViewAbout and isAnon, 0, 1)"
      tal:omit-tag="">
@@ -41,7 +41,7 @@
 
             <div class="portletContent even">
                 <img src="" alt=""
-                          tal:attributes="src python:portal_url + '/' + here.getIcon(relative_to_portal=1);
+                          tal:attributes="src python:utool() + '/' + here.getIcon(relative_to_portal=1);
                           alt here/meta_type;"
                  />&nbsp;<span tal:omit-tag=""
                                tal:content="python:here.getTypeInfo().Title()"

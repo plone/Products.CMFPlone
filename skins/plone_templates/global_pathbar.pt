@@ -7,7 +7,7 @@
 <div metal:define-macro="path_bar"
      id="portal-breadcrumbs"
      tal:define="breadcrumbs python:portal.breadcrumbs(here);
-                     portal_url portal_url|here/portal_url">
+                     portal_url portal_url|utool">
 
      <a href="#"
         tal:condition="python: not isAnon and mtool.getHomeFolder()"

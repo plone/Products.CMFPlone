@@ -36,7 +36,7 @@
                                 icon python: obj.getIcon(1)">
                 <a href="#" tal:attributes="href url">
                         <img src="" alt=""
-                                        tal:attributes="src string:${here/portal_url}/${icon};alt here/title" />
+                                        tal:attributes="src string:${utool}/${icon};alt here/title" />
                 </a>
 
                 <a href="#" tal:condition="python: obj.portal_type not in ['Link', 'Image']"
