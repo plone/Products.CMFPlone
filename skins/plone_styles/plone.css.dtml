@@ -469,10 +469,13 @@ div.title {
     margin: 1em 0em;
     line-height: 1.5em;
 }
+
 div.byline {
-    float: right;
+    text-align: right;
     font-size: 80%;
+    clear: both;
 }
+
 div#footer {
     background: &dtml-footerBackground;;
     border-top: &dtml-footerBorder;;
@@ -732,6 +735,28 @@ div.box .odd {
 div.box input {
     font-size: 100%;
 }
+
+div.comment {
+    background: &dtml-listingEvenBackground;; 
+    border: 1px dashed gray; 
+    padding: 0 1em 0.5em 1em;
+    border-style: dashed;
+    color: gray;
+    /* Fix for the IE6 disappearing float bug */
+    height: 100%;
+}
+
+div.comment h1,
+div.comment h2,
+div.comment h3,
+div.comment h4, 
+div.comment h5,
+div.comment h6 {
+    border-bottom: 1px dashed gray;
+    color: gray;
+}
+
+
 div.spacer {
 	margin: 1em;
 }
