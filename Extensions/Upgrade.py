@@ -1,4 +1,6 @@
 from Products.CMFCore.utils import getToolByName
+from Products.CMFCore.ActionInformation import ActionInformation
+from Products.CMFCore.Expression import Expression
 from Products.ExternalMethod import ExternalMethod
 
 def upgrade(self):
@@ -64,7 +66,42 @@ def normalize_tabs(self):
 	if a.get('id','') != 'syndication': #syndication tab belongs on syndication tool
             actions.append(a)
     tt['Folder']._actions=actions
- 
+
+    def global_tabs():
+	welcome=ActionInformation( 'welcome'
+	                         , title='Welcome'
+				 , category='global_tabs'
+				 , permissions=('View',)
+				 , action=Expression('portal_url'))
+	members=ActionInformation( 'roster'
+	                         , title='Members'
+				 , category='global_tabs'
+				 , permissions=('List portal members', )
+				 , action=Expression('string: $portal_url/Members/roster'))
+	news=ActionInformation( 'recent_news'
+	                      , title='News'
+			      , category='global_tabs'
+			      , permissions=('View', )
+			      , action=Expression('string: $portal_url/recent_news'))
+	search=ActionInformation( 'search_form'
+	                        , title='Search'
+				, category='global_tabs'
+				, permissions=('View', )
+				, action=Expression('string: $portal_url/search_form'))
+	return (welcome, members, news, search)
+			      
+    #make 'syndication' tab unvisible
+    st=getToolByName(self, 'portal_actions')
+    st_actions=[]
+    for a in st._actions:
+        if a.id=='folderContents':
+            a.id='folder_contents'
+	st_actions.append(a)
+
+    for globaltab in global_tabs():
+        st_actions.append(globaltab)
+    st._actions=st_actions
+
     get_transaction().commit(1)
     import time
     return 'finished tab migration at %s ' % time.strftime('%I:%M %p %m/%d/%Y')
