@@ -93,7 +93,7 @@
                           batch python:Batch(portal_users, b_size, int(b_start), orphan=1)">
 
         <input type="hidden" value="1" name="came_from_prefs" />
-            <table class="listing">
+            <table class="listing" summary="User search">
                 <tr>
                     <th colspan="4">
                         <span tal:omit-tag="" i18n:translate="label_quick_search">User Search</span>:
