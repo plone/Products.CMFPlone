@@ -1,3 +1,8 @@
+try:
+    from __future__ import nested_scopes
+except:
+    pass
+    
 from Products.CMFPlone import cmfplone_globals
 from Products.CMFPlone import custom_policies
 from Products.CMFPlone import PloneFolder
@@ -77,19 +82,33 @@ class PloneGenerator(Portal.PortalGenerator):
                 typeObj._setPropValue('immediate_view', view)
 
     def customizePortalOptions(self, p):
-        p.manage_delObjects( 'portal_membership' )
-        p.manage_delObjects( 'portal_workflow' )
-        p.manage_delObjects( 'portal_properties' )
+        def exists(id):
+            return id in p.objectIds()
+        if exists('portal_membership'):
+            p.manage_delObjects( 'portal_membership' )
+        if exists('portal_workflow'):
+            p.manage_delObjects( 'portal_workflow' )
+        if exists('portal_properties'):
+            p.manage_delObjects( 'portal_properties' )
+
         addPloneTool=p.manage_addProduct['CMFPlone'].manage_addTool
+
         addPloneTool('Plone Membership Tool', None)
         addPloneTool('CMF Workflow Tool', None) 
-        addPloneTool('CMF Formulator Tool', None)
-        addPloneTool('Plone Utility Tool', None)
-        addPloneTool('CMF Navigation Tool', None)
-        addPloneTool('Plone Factory Tool', None)
-        addPloneTool('Plone Form Tool', None)
-        addPloneTool('Plone Properties Tool', None)
-        addPloneTool('Plone Migration Tool', None)
+        if not exists('portal_form_validation'):
+            addPloneTool('CMF Formulator Tool', None)
+        if not exists('plone_utils'):
+            addPloneTool('Plone Utility Tool', None)
+        if not exists('portal_navigation'):
+            addPloneTool('CMF Navigation Tool', None)
+        if not exists('portal_factory'):
+            addPloneTool('Plone Factory Tool', None)
+        if not exists('portal_form'):
+            addPloneTool('Plone Form Tool', None)
+        if not exists('portal_properties'):
+            addPloneTool('Plone Properties Tool', None)
+        if not exists('portal_migration'):
+            addPloneTool('Plone Migration Tool', None)
 
         p.manage_permission( CMFCorePermissions.ListFolderContents, \
                              ('Manager', 'Member', 'Owner',), acquire=1 )

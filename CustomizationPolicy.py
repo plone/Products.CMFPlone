@@ -282,9 +282,12 @@ class DefaultCustomizationPolicy:
         #since we implemented the portal_form proxy these skins will no longer work
         st=getToolByName(portal, 'portal_skins')
         skins_map=st._getSelections()
-        del skins_map['No CSS']
-        del skins_map['Nouvelle']
-        del skins_map['Basic']
+        if skins_map.has_key('No CSS'):
+            del skins_map['No CSS']
+        if skins_map.has_key('Nouvelle'):
+            del skins_map['Nouvelle']
+        if skins_map.has_key('Basic'):
+            del skins_map['Basic']
         st.selections=skins_map
 
         self.setupDefaultSlots(portal)
