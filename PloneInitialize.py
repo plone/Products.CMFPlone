@@ -5,10 +5,11 @@ from Products.SiteAccess.AccessRule import manage_addAccessRule
 
 from AccessControl import User
 from App.Extensions import getObject
+from App.Common import package_home
 
 import string
 import glob 
-import OFS
+import OFS.Application
 import os
 import sys
 import zLOG
@@ -27,14 +28,19 @@ def go(app):
     """ Initialize the ZODB with Plone """
     old_initialize(app)
     out = []
+    # make sure that anything we have done so
+    # far is committed, in case anything goes 
+    # wrong later
+    get_transaction().commit()
+    
     # nothing no error at all should
     # stop the creation of the db
     # that would truly suck
     try: 
         _go(app)
     except:
-        # TODO: could we remove this?
-        # oh dear
+        # if anything went wrong do an abort
+        get_transaction().abort()
         out.append('Database init failed miserably [%s, %s]' % _get_error())
 
     if DEBUG and out:
@@ -48,10 +54,10 @@ def _get_error():
 
 def _go(app):
     filename = 'plone.ini'
-    filename = os.path.join(INSTANCE_HOME, filename)
+    filename = os.path.join(package_home(globals()), filename)
 
     # not the best
-    try: 
+    try:
         fh = open(filename, 'r')
         cfg = ConfigParser()
         cfg.readfp(fh)

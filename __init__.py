@@ -27,6 +27,10 @@ def transaction_note(note):
     T=get_transaction()
     T.note(str(note))
 
+# this patches OFS.Application 
+# and so must be outside a function
+# so it is run on the import of CMFPlone
+import PloneInitialize
 
 def initialize(context):
 
@@ -86,9 +90,6 @@ def initialize(context):
     allow_class(EmailField)
     allow_class(FormValidationError)
     allow_class(BasicForm)
-
-    # Setup ZODB if needed
-    import PloneInitialize
 
     # Setup migrations
     import migrations
