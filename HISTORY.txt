@@ -1,6 +1,7 @@
 CHANGES
 
 Plone 1.0 rc1
+    - Added code to ensure that content object ids do not collide with skin names or reserved ids.
     - Added protocol parameter to portal_form_url script.  Fixes issue 593
     - Made sure that the main portal types (file, image, document, event, link, newsitem, folder) all
       work with portal_factory.  Cleaned up some minor edit form bugs and added some form titles where
