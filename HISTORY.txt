@@ -4,6 +4,9 @@ Changelog for Plone
 
 Plone 2.1 - (TBA) - (Unreleased)
 
+    - PloneFolders now expose ordering controls in the ZMI (experimental).
+      [stefan]
+
     - Added convenience ID for use in CSS - #portal-header - useful for background
       images in the portal header, for instance.
       [limi]
