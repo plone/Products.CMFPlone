@@ -440,6 +440,12 @@ table.columns td.right {
     text-transform: &dtml-textTransform;;
 }
 
+/* Fix for IE6 disappearing float bug */
+#content {  
+    height: 100%; 
+}
+
+
 div.document {
     background: &dtml-mainBackground;;
     font: &dtml-contentFont;;
