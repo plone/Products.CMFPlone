@@ -62,17 +62,20 @@ if parentMetaTypesNotToQuery is None:
 if sortCriteria is None:
     sortCriteria=getattr(props, 'sortCriteria', [('isPrincipiaFolderish','desc'),('Title','asc')])
 
-if not same_type(sortCriteria, []):
-    criteria=[]
-    for c in sortCriteria:
+# go through sortCriteria and check that each line is not a string 
+# if it is make a duple out of it (necessary because a lines-property contains strings)
+# and sortcriteria should contain tuples as seen in the statement above
+
+criteria=[]
+for c in sortCriteria:
+    if same_type(c,'') or same_type(c,u''): # string -> duple
         if not c.strip(): continue #skip empty lines
         c=c.split(',')
         if len(c)==1: c[1]='asc'
 
-        criteria.append(c)
+    criteria.append(c)
 
-    sortCriteria = criteria
-
+sortCriteria = criteria
 
 workflow_tool=context.portal_workflow
 
@@ -97,18 +100,6 @@ def cmp(a,b):
                 return -1
             elif bval < aval:
                 return 1
-    return 0
-        
-    if a.isPrincipiaFolderish and not b.isPrincipiaFolderish:
-        return -1
-    elif b.isPrincipiaFolderish and not a.isPrincipiaFolderish:
-        return 1
-    
-    if a.Title < b.Title:
-        return -1
-    elif b.Title < a.Title:
-        return 1
-    
     return 0
 
 def checkPublished(o):
