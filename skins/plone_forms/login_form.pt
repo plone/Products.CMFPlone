@@ -193,7 +193,7 @@ to become a member.
                 </span>
             </p>
             
-            <p i18n:translate="dont_forget_to_logout">
+            <p i18n:translate="remember_to_log_out">
                 Don't forget to log out or exit your browser when you're done.
             </p>
     	</div>
