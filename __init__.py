@@ -32,11 +32,7 @@ def base_hasattr(ob, name):
     ob = aq_base(ob)
     if hasattr(ob, name):
         return 1
-
-# this patches OFS.Application 
-import PloneInitialize
-PloneInitialize.patch()
-
+        
 def initialize(context):
 
     # Stuff has been moved from module level to this method for a
