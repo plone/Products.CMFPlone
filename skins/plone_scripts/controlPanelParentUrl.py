@@ -1,6 +1,6 @@
 ##parameters=templateId
 #!/usr/bin/python
-#$Id: controlPanelParentUrl.py,v 1.1.2.1 2003/10/24 23:08:10 zopezen Exp $
+#$Id: controlPanelParentUrl.py,v 1.1.2.2 2003/11/10 22:27:41 dreamcatcher Exp $
 #Copyright: ClearWind Consulting Ltd
 
 # please someone fix this!
@@ -8,6 +8,7 @@
 # this is a horrific hack to take a page template and rummage
 # through the tool to find the parent template
 parentPages = {
+  'Products':'plone_control_panel',
   'Plone':'plone_control_panel',
   'Member':'plone_memberprefs_panel',
   }
