@@ -37,9 +37,10 @@ for id in ids:
                                          comment,
                                          effective_date=effective_date,
                                          expiration_date=expiration_date )
-            except:
-                # skip this object but continue with sub-objects.
-                pass          
+
+		    except Exception, e:
+		        # skip this object but continue with sub-objects.
+		        failed[id]=e
             
             o.folder_publish( workflow_action, 
                               o.objectIds(), 
