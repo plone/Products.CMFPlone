@@ -41,7 +41,7 @@ Plone 2.0.4 - (no name yet) - Released (no date yet)
       [geoffd]
 
     - Added enableHTTPCompression script and enabled HTTP compression for
-      HTML, CSS and JavaScript.
+      HTML, CSS, and JavaScript.
       [tiran]
 
     - Fixed http://plone.org/collector/3240 and related issues.
@@ -969,16 +969,17 @@ Plone 2.0 - Fyuti - released 23. March 2004
       administrators.
       [limi]
 
-    - Bug fix for http://plone.org/collector/1154 (SearchableText should be       ZCTextIndex)
+    - Bug fix for http://plone.org/collector/1154 (SearchableText should be ZCTextIndex)
       [kapil]
 
-    - Added unicode splitter for zctextindex element pipeline from silva (w/       license).
+    - Added unicode splitter for zctextindex element pipeline from silva (w/ license).
       [kapil]
 
     - Added lexicon addition to migration.
       [kapil]
 
-    - Added lexicon addition and recreation of searchabletext index as zctext to       catalog tool's manage_afterAdd.
+    - Added lexicon addition and recreation of searchabletext index as zctext to catalog 
+      tool's manage_afterAdd.
       [kapil]
 
     - Added new directories: 'plone_portlets' (formerly 'plone_templates/ui_slots'),
@@ -997,7 +998,8 @@ Plone 2.0 - Fyuti - released 23. March 2004
     - Events now show location and from/to-date in the default folder view.
       [limi]
 
-    - Changed the behaviour of deleting objects in PloneFolder, so the object is       checked for the Delete Object permission instead of the folder. This means
+    - Changed the behaviour of deleting objects in PloneFolder, so the object is
+      checked for the Delete Object permission instead of the folder. This means
       that the workflow can restrict the Owner from deleting an object (for example
       in a published state).
       [dreamcatcher]
@@ -1005,7 +1007,8 @@ Plone 2.0 - Fyuti - released 23. March 2004
     - Subclassed all CMFCore and CMFDefault tools for easier extension in the future.
       [dreamcatcher]
 
-    - generateUniqueId and isIDUnique now are a bit more unique (with regards to       randomness) and we now suffix generated ID's with .html - issue #1343
+    - generateUniqueId and isIDUnique now are a bit more unique (with regards to
+      randomness) and we now suffix generated ID's with .html - issue #1343
       [runyaga]
 
     - Added Recently Published slot, and a complimentary Archive page.
