@@ -1,4 +1,4 @@
-## Script (Python) "prefs_user_edit"
+## Script (Python) "prefs_portrait_delete"
 ##bind container=container
 ##bind context=context
 ##bind namespace=

@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=userid, portrait=''
+##parameters=userid, portrait='',delete_portrait=''
 ##title=Edit user
 ##
 #update portrait
@@ -14,6 +14,9 @@ member=portal_membership.getMemberById(userid)
 if portrait:
     portrait.seek(0)
     portal_membership.changeMemberPortrait(portrait, userid)
+
+if delete_portrait:
+    context.portal_membership.deletePersonalPortrait(member.getId())
 
 processed={}
 for id, property in context.portal_memberdata.propertyItems():

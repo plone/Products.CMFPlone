@@ -479,15 +479,15 @@ we eventually might want to merge this form with personalize_form
                     tal:attributes="tabindex tabindex/next;"
                     />
                 <br />
-                <br />
-                <input class="standalone add"
+                <input class="noborder"
                     tabindex=""
-                    type="submit"
-                    name="prefs_portrait_delete:method"
+                    type="checkbox"
+		    id="pdelete"
                     value="Delete Portrait"
-                    i18n:attributes="value"
+                    name="delete_portrait"
                     tal:attributes="tabindex tabindex/next;"
                     />
+                <label for="pdelete" i18n:translate="label_delete_portrait">Delete Portrait</label>
                 <br />
 
             </div>

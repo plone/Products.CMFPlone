@@ -294,15 +294,18 @@
                        />
 
                 <br />
+
                 
-                <input class="destructive"
+                <input class="noborder"
                     tabindex=""
-                    type="submit"
+                    type="checkbox"
+		    id="pdelete"
                     value="Delete Portrait"
-                    name="form.button.PortraitDelete"
-                    i18n:attributes="value"
+                    name="delete_portrait"
                     tal:attributes="tabindex tabindex/next;"
                     />
+                <label for="pdelete" i18n:translate="label_delete_portrait">Delete Portrait</label>
+		 
             </div>
     
             <div class="formControls">
@@ -334,3 +337,4 @@
 </body>
 </html>
 
+                    
