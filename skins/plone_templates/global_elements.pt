@@ -99,8 +99,7 @@
               You are not logged in
     </li>
     <tal:actions tal:repeat="action python:display_actions"> 
-        <li id=""
-            tal:attributes="id string:personalBar-${action/id};">
+        <li>
             <a href=""
                tal:attributes="href action/url"
                accesskey="accesskeys-personalbar"
