@@ -411,5 +411,5 @@ class PloneTool(UniqueObject, SimpleItem):
             return 0
         return 1
 
-    
+
 InitializeClass(PloneTool)

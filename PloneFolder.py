@@ -313,7 +313,7 @@ class BasePloneFolder ( SkinnedFolder, DefaultDublinCoreImpl ):
         try:
             return self.browserDefault()
         except AttributeError:
-            skins = getToolByName(self, "portal_skins")        
+            skins = getToolByName(self, "portal_skins")
             default = skins.default_skin
             if not default: default = "[None]"
             msg = """The Script (Python) object browserDefault could

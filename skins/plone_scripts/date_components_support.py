@@ -59,7 +59,7 @@ elif not same_type(date, now):
 
 #Now we need to convert from CEILING to Plone CEILING
 if date.equalTo(CEILING):
-    date = PLONE_CEILING    
+    date = PLONE_CEILING
 
 year=int(date.strftime('%Y'))
 

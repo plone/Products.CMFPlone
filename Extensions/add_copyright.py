@@ -34,6 +34,8 @@ class PythonChecker(BaseChecker):
             # XXX We need a better check here
             if data.split('\n')[0].startswith('## '):
                 return False
+            if data.startswith('#!'):
+                return False
         return True
 
 class PageTemplateChecker(BaseChecker):

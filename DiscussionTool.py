@@ -13,7 +13,7 @@ class DiscussionTool(BaseTool):
 
     security.declareProtected('Modify portal content', 'cookContent')
     def cookReply(self, reply, text_format=None):
-        """ XXX We need this because currently we can not easily change the 
+        """ XXX We need this because currently we can not easily change the
             text_format on Documetn objects.  Discussions in plone are going
             to use plain-text for now.  stx is too confusing.
         """

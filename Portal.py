@@ -15,12 +15,12 @@ def listPolicies(creation=1):
         available=getattr(klass, 'availableAtConstruction', None)
         if creation and available:
             names.append(name)
-    
+
     default=names.pop(names.index('Default Plone'))
     names.insert(0, default)
     return names
 
-def addPolicy(label, klass): 
+def addPolicy(label, klass):
     custom_policies[label]=klass
 
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
@@ -119,7 +119,7 @@ class PloneSite(CMFSite, OrderedContainer):
         try:
             return self.browserDefault()
         except AttributeError:
-            skins = getToolByName(self, "portal_skins")        
+            skins = getToolByName(self, "portal_skins")
             default = skins.default_skin
             if not default: default = "None"
             msg = """The Script (Python) object browserDefault could

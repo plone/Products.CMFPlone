@@ -4,7 +4,7 @@
 import oneX_twoBeta2
 
 # Plone 2.0 base migration
-import plone2_base 
+import plone2_base
 
 # Plone 2.0b2 to 2.0b3
 import twoBeta2_twoBeta3

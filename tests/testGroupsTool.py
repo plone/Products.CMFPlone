@@ -63,7 +63,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(g.getRoles(), ('Authenticated', 'Reviewer'))
         self.assertEqual(g.getDomains(), ('foo.com',))
         self.assertEqual(g.getGroup()._getPassword(), 'secret')
-        
+
     def testEditBadGroup(self):
         # Error type depends on the user folder...
         self.assertRaises(KeyError, self.groups.editGroup, 'foo', '', [], [])
@@ -83,7 +83,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.acl_users._updateUser(default_user, groups=['foo'])
         gs = self.groups.getGroupsByUserId(default_user)
         self.assertEqual(gs[0].getId(), self.prefix + 'foo')
-    
+
     def testGroupsByUserIdAreWrapped(self):
         self.groups.addGroup('foo', '', [], [])
         self.acl_users._updateUser(default_user, groups=['foo'])
@@ -91,7 +91,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.assertEqual(gs[0].__class__.__name__, 'GroupData')
         self.assertEqual(gs[0].aq_parent.__class__.__name__, 'GRUFUser')
         self.assertEqual(gs[0].aq_parent.aq_parent.__class__.__name__, 'GroupUserFolder')
-    
+
     def testListGroups(self):
         self.groups.addGroup('foo', '', [], [])
         self.groups.addGroup('bar', '', [], [])
@@ -175,7 +175,7 @@ class TestGroupWorkspacesFolder(PloneTestCase.PloneTestCase):
         # Creation flag is False
         self.groups.createGrouparea('foo')
         self.failIf(hasattr(aq_base(self.groups.getGroupWorkspacesFolder()), 'foo'))
-        
+
     def testCreateGroupareaCreatesGroupWorkspacesFolder(self):
         self.groups.addGroup('foo', '', [], [])
         self.groups.toggleGroupWorkspacesCreation()
@@ -218,4 +218,3 @@ else:
         suite.addTest(makeSuite(TestGroupsTool))
         suite.addTest(makeSuite(TestGroupWorkspacesFolder))
         return suite
-

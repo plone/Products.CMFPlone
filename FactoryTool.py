@@ -52,7 +52,7 @@ class TempFolder(TempFolderBase):
             obj = self._getOb(id).__of__(aq_parent(aq_parent(self)))
             obj.unindexObject()
             return obj
-    
+
     # ignore rename requests since they don't do anything
     def manage_renameObject(self, id1, id2):
         pass

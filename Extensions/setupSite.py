@@ -30,7 +30,7 @@ def process(name, swhome, ihome):
     opts.realize()
     h.handleConfig(opts.configroot,opts.confighandlers)
     config.setConfiguration(opts.configroot)
-    # end hack    
+    # end hack
 
     app = Zope.app()
 

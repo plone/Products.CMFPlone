@@ -43,4 +43,3 @@ def twoBeta2_twoBeta3(portal):
 
 if __name__=='__main__':
     registerMigrations()
-

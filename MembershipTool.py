@@ -166,7 +166,7 @@ class MembershipTool(BaseTool):
                            , member_id+"'s Home Page"
                            , member_id+"'s front page"
                            , "structured-text"
-                           , DEFAULT_MEMBER_CONTENT 
+                           , DEFAULT_MEMBER_CONTENT
                            )
                 f.index_html._setPortalTypeName( 'Document' )
                 # Overcome an apparent catalog bug.

@@ -14,7 +14,7 @@ except:
 
 from zLOG import INFO, ERROR
 from SetupBase import SetupWidget
-from Products.CMFCore.utils import getToolByName 
+from Products.CMFCore.utils import getToolByName
 
 class LocalizerLanguageSetup(SetupWidget):
     lName = 'Localizer'

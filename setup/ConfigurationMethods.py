@@ -173,7 +173,7 @@ def modifyActionProviders(self, portal):
     # Remove the portal_workflow from the actionproviders
     # Since we have the 'review_slot'
 #    at.deleteActionProvider('portal_workflow')
-    
+
     dt=getToolByName(portal, 'portal_discussion')
     _actions=dt._cloneActions()
     for action in _actions:
@@ -321,13 +321,13 @@ def addSiteActions(self, portal):
                  condition='',
                  permission=CMFCorePermissions.View,
                  category="site_actions")
-    at.addAction('normal_text', 
+    at.addAction('normal_text',
                  name='Normal Text',
                  action="string:javascript:setActiveStyleSheet('', 1);",
                  condition='',
                  permission=CMFCorePermissions.View,
                  category="site_actions")
-    at.addAction('large_text', 
+    at.addAction('large_text',
                  name='Large Text',
                  action="string:javascript:setActiveStyleSheet('Large Text', 1);",
                  condition='',
@@ -346,7 +346,7 @@ def addSiteActions(self, portal):
                      'large_text',
                      'textsize_large.gif',
                      'Large Text')
-                 
+
 functions = {
     'addSiteProperties': addSiteProperties,
     'setupDefaultLeftRightSlots': setupDefaultLeftRightSlots,

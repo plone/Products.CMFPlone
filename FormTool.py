@@ -1,6 +1,6 @@
-# $Id: FormTool.py,v 1.28.4.2 2003/12/19 18:10:30 plonista Exp $
+# $Id: FormTool.py,v 1.28.4.3 2003/12/20 21:11:51 dpunktnpunkt Exp $
 # $Source: /cvsroot/plone/CMFPlone/FormTool.py,v $
-__version__ = "$Revision: 1.28.4.2 $"[11:-2] + " " + "$Name:  $"[7:-2]
+__version__ = "$Revision: 1.28.4.3 $"[11:-2] + " " + "$Name:  $"[7:-2]
 
 from Products.Formulator.Form import FormValidationError, BasicForm
 from Products.Formulator import StandardFields
@@ -306,8 +306,8 @@ class FormValidator(SimpleItem):
                     controller_state = getToolByName('portal_form_controller').getState(context, 1)
                     controller_state.setStatus(REQUEST.get('validation_status', 'success'))
                     controller_state.setErrors(REQUEST.get('errors', {}))
-                    # XXX this is a bit of a hack -- lots of REQUEST keys could be 
-                    # controller_state kwargs, but we don't know which ones.  
+                    # XXX this is a bit of a hack -- lots of REQUEST keys could be
+                    # controller_state kwargs, but we don't know which ones.
                     # portal_status_message is a common one.
                     msg = REQUEST.get('portal_status_message', None)
                     if msg:
@@ -346,22 +346,22 @@ class FormValidator(SimpleItem):
                     script_status = mapply(v, REQUEST.args, REQUEST,
                                            call_object, 1, missing_name, dont_publish_class,
                                            REQUEST, bind=1)
-    
+
                     # The preferred return type for scripts will
                     # eventually be an object.  Until then, preserve
                     # compatibility with 1.0 alpha 4
-    
+
                     if type(script_status) == type(()):
                         (status, errors, kwargs) = script_status
                         kwargs['errors'] = errors
                         script_status = ScriptStatus(status, kwargs, None)
-    
+
                         # disable deprecation warning for now
                         # log_deprecated('Validator \'%s\' uses a return
                         # signature that has been marked for deprecation.
                         # Validators should return a ScriptStatus object.'
                         # % validator)
-    
+
                     status = script_status.status
                     kwargs = script_status.kwargs
                     new_context = script_status.new_context

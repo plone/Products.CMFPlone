@@ -25,61 +25,61 @@ def oneX_twoBeta2(portal):
     """ Migrations from 1.0.x to 2.x """
     #create the QuickInstaller
     out = []
-    
+
     out.append("Creating a quick installer")
     if not hasattr(portal.aq_explicit,'portal_quickinstaller'):
         portal.manage_addProduct['CMFQuickInstallerTool'].manage_addTool('CMF QuickInstaller Tool', None)
-    out.append("Adding in a group user folder")        
+    out.append("Adding in a group user folder")
     addGroupUserFolder(portal)
 
-    out.append("Removing deprecated portal_form_validation tool")            
+    out.append("Removing deprecated portal_form_validation tool")
     if 'portal_form_validation' in portal.objectIds():
         portal.manage_delObjects('portal_form_validation')
 
-    out.append("Setting default page values")                    
+    out.append("Setting default page values")
     props = portal.portal_properties.site_properties
     default_values = ['index_html', 'index.html', 'index.htm', 'FrontPage']
     safeEditProperty(props, 'default_page', default_values, 'lines')
-    out.append("Turning on syndication")                    
+    out.append("Turning on syndication")
     portal.portal_syndication.isAllowed=1 #turn syndication on
 
-    out.append("Adding document actions")                        
+    out.append("Adding document actions")
     addDocumentActions(portal)
-    out.append("Adding action icons")                            
+    out.append("Adding action icons")
     addActionIcons(portal)
-    out.append("Adding cache accelerators")                                
+    out.append("Adding cache accelerators")
     addCacheAccelerators(portal)
 
-    out.append("Adding cache accelerators")                                
+    out.append("Adding cache accelerators")
     if 'portal_interface' not in portal.objectIds():
         portal.manage_addProduct['CMFPlone'].manage_addTool('Portal Interface Tool')
 
-    out.append("Altering skins to reflect plone 2 new skin paths")                                        
+    out.append("Altering skins to reflect plone 2 new skin paths")
     fixupPlone2SkinPaths(portal, out)
     # add portal_prefs
 
-    out.append("Adding in a control panel")                                    
+    out.append("Adding in a control panel")
     addControlPanel(portal)
-    out.append("Upgrading with new portal factory")                                        
+    out.append("Upgrading with new portal factory")
     upgradePortalFactory(portal)
     updateNavigationProperties(portal)
 
     #Support for cropping descriptions in search results
     safeEditProperty(props,'search_results_description_length',160,'int')
     safeEditProperty(props,'ellipsis','...','string')
-    
-    #Set ext_editor property in site_properties   
+
+    #Set ext_editor property in site_properties
     setupExtEditor(portal)
 
     out.append("Adding in new form controller")
     addFormController(portal)
-    
-    out.append("Adding in site actions")    
+
+    out.append("Adding in site actions")
     addSiteActions(portal, portal)
 
     out.append("Moving portraits into the memberdata tool")
     #migrate Memberdata, Membership and Portraits
-    migrateMemberdataTool(portal)    
+    migrateMemberdataTool(portal)
     migratePortraits(portal)
 
     out.append("Moving all tools to the new Plone base classes")
@@ -103,7 +103,7 @@ def fixActionsOn(tool):
             _action.remove('portal_form')
         a.action=Expression('/'.join(_action))
     tool._actions=tuple(actions)
-        
+
 def removePortalFormFromActions(portal):
     at=getToolByName(portal, 'portal_actions')
     aps=at.action_providers
@@ -124,7 +124,7 @@ def _migrate(portal, toolid, name, attrs):
     portal.manage_addProduct['CMFPlone'].manage_addTool(name)
     tool = getToolByName(portal, toolid)
     for attr in attrs:
-            setattr(tool, attr, aq_base(getattr(aq_base(orig), attr)))
+        setattr(tool, attr, aq_base(getattr(aq_base(orig), attr)))
     return aq_base(orig)
 
 def moveOldTemplates(portal):
@@ -180,19 +180,19 @@ def migrateNavTree(portal):
     p=getToolByName(portal,'portal_properties').navtree_properties
 
     # these won't set the property... so they won't change a existing navtree
-    # since it has them already, so this is pointless. What I believe we want to do 
+    # since it has them already, so this is pointless. What I believe we want to do
     # here is add TempFolder to the properties...
-    
+
 #    if not p.hasProperty('metaTypesNotToList'):
-#        p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')   
+#        p._setProperty('metaTypesNotToList',['CMF Collector','CMF Collector Issue','CMF Collector Catalog','TempFolder'],'lines')
 #    if not p.hasProperty('parentMetaTypesNotToQuery'):
 #        p._setProperty('parentMetaTypesNotToQuery',['TempFolder'],'lines')
-    
+
     # these are all new
     if not p.hasProperty('typesForcedFolderContents'):
         p._setProperty('typesForcedFolderContents', [] , 'lines')
     if not p.hasProperty('bottomLevel'):
-        p._setProperty('bottomLevel', 65535 , 'int') 
+        p._setProperty('bottomLevel', 65535 , 'int')
     if not p.hasProperty('idsNotToList'):
         p._setProperty('idsNotToList', [] , 'lines')
 
@@ -217,7 +217,7 @@ def migratePortraits(portal):
     from StringIO import StringIO
     mt = getToolByName(portal, 'portal_membership')
     acl_users = getToolByName(portal, 'acl_users')
-    
+
     for id in mt.listMemberIds():
         personal=mt.getPersonalFolder(id)
         if personal and PORTRAIT_ID in personal.objectIds():
@@ -226,7 +226,7 @@ def migratePortraits(portal):
             buf.filename=PORTRAIT_ID
             buf.seek(0) #lovely Zope mixing OFS interfaces w/ HTTP interfaces
             mt.changeMemberPortrait(buf, id)
-        
+
 def fixupPlone2SkinPaths(portal, out):
     def newDV(st, dir):
         from os import path
@@ -238,21 +238,21 @@ def fixupPlone2SkinPaths(portal, out):
         if item not in portal.portal_skins.objectIds():
             newDV(st, item)
 
-    to_remove=['plone_templates/ui_slots', 'plone_scripts/form_scripts', 
+    to_remove=['plone_templates/ui_slots', 'plone_scripts/form_scripts',
                'plone_3rdParty/CMFCollector', 'plone_3rdParty/CMFCalendar']
     skins = st.getSkinSelections()
     for skin in skins:
         path = st.getSkinPath(skin)
         path = map(string.strip, string.split(path,','))
         for old in to_remove:
-            if old in path: 
+            if old in path:
                 path.remove(old)
         for new in to_add:
             if new not in path:
                 try:
                     path.insert(path.index('plone_forms'), new)
                 except ValueError:
-                    out.append(("No path plone_forms was found, so couldn't add %s into skin %" % (new, skin), zLOG.ERROR)) 
+                    out.append(("No path plone_forms was found, so couldn't add %s into skin %" % (new, skin), zLOG.ERROR))
         st.addSkinSelection(skin, ','.join(path))
     return out
 
