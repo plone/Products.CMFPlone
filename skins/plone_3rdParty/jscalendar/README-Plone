@@ -68,6 +68,8 @@ Plone integration
 
     - add a vertical offset of 2, so the calendar doesn't obscure (and
       then autohide) the other date/time controls.
+    - Add a style definition to all style sheets. This closes issue 1628,
+      http://plone.org/collector/1628
 
 Index: calendar.js
 ===================================================================
@@ -86,4 +88,123 @@ diff -u -r1.1.2.1 calendar.js
         }
         this.element.style.display = "block";
 
-
+Index: calendar-blue.css
+===================================================================
+RCS file: /cvsroot/plone/CMFPlone/skins/plone_3rdParty/jscalendar/Attic/calendar-blue.css,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 calendar-blue.css
+--- calendar-blue.css	22 Dec 2003 10:26:55 -0000	1.1.2.1
++++ calendar-blue.css	23 Dec 2003 17:58:55 -0000
+@@ -168,6 +168,7 @@
+ .combo .label,
+ .combo .label-IEfix {
+   text-align: center;
++  display: block;
+   padding: 1px;
+ }
+ 
+Index: calendar-brown.css
+===================================================================
+RCS file: /cvsroot/plone/CMFPlone/skins/plone_3rdParty/jscalendar/Attic/calendar-brown.css,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 calendar-brown.css
+--- calendar-brown.css	22 Dec 2003 10:26:55 -0000	1.1.2.1
++++ calendar-brown.css	23 Dec 2003 17:58:55 -0000
+@@ -161,6 +161,7 @@
+ .combo .label,
+ .combo .label-IEfix {
+   text-align: center;
++  display: block;
+   padding: 1px;
+ }
+ 
+Index: calendar-green.css
+===================================================================
+RCS file: /cvsroot/plone/CMFPlone/skins/plone_3rdParty/jscalendar/Attic/calendar-green.css,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 calendar-green.css
+--- calendar-green.css	22 Dec 2003 10:26:55 -0000	1.1.2.1
++++ calendar-green.css	23 Dec 2003 17:58:55 -0000
+@@ -165,6 +165,7 @@
+ .combo .label,
+ .combo .label-IEfix {
+   text-align: center;
++  display: block;
+   padding: 1px;
+ }
+ 
+Index: calendar-system.css
+===================================================================
+RCS file: /cvsroot/plone/CMFPlone/skins/plone_3rdParty/jscalendar/Attic/calendar-system.css,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 calendar-system.css
+--- calendar-system.css	22 Dec 2003 10:26:55 -0000	1.1.2.1
++++ calendar-system.css	23 Dec 2003 17:58:55 -0000
+@@ -188,6 +188,7 @@
+ .combo .label,
+ .combo .label-IEfix {
+   text-align: center;
++  display: block;
+   padding: 1px;
+ }
+ 
+Index: calendar-win2k-1.css
+===================================================================
+RCS file: /cvsroot/plone/CMFPlone/skins/plone_3rdParty/jscalendar/Attic/calendar-win2k-1.css,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 calendar-win2k-1.css
+--- calendar-win2k-1.css	22 Dec 2003 10:26:55 -0000	1.1.2.1
++++ calendar-win2k-1.css	23 Dec 2003 17:58:55 -0000
+@@ -204,6 +204,7 @@
+ .combo .label,
+ .combo .label-IEfix {
+   text-align: center;
++  display: block;
+   padding: 1px;
+ }
+ 
+Index: calendar-win2k-2.css
+===================================================================
+RCS file: /cvsroot/plone/CMFPlone/skins/plone_3rdParty/jscalendar/Attic/calendar-win2k-2.css,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 calendar-win2k-2.css
+--- calendar-win2k-2.css	22 Dec 2003 10:26:55 -0000	1.1.2.1
++++ calendar-win2k-2.css	23 Dec 2003 17:58:56 -0000
+@@ -204,6 +204,7 @@
+ .combo .label,
+ .combo .label-IEfix {
+   text-align: center;
++  display: block;
+   padding: 1px;
+ }
+ 
+Index: calendar-win2k-cold-1.css
+===================================================================
+RCS file: /cvsroot/plone/CMFPlone/skins/plone_3rdParty/jscalendar/Attic/calendar-win2k-cold-1.css,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 calendar-win2k-cold-1.css
+--- calendar-win2k-cold-1.css	22 Dec 2003 10:26:55 -0000	1.1.2.1
++++ calendar-win2k-cold-1.css	23 Dec 2003 17:58:56 -0000
+@@ -198,6 +198,7 @@
+ .combo .label,
+ .combo .label-IEfix {
+   text-align: center;
++  display: block;
+   padding: 1px;
+ }
+ 
+Index: calendar-win2k-cold-2.css
+===================================================================
+RCS file: /cvsroot/plone/CMFPlone/skins/plone_3rdParty/jscalendar/Attic/calendar-win2k-cold-2.css,v
+retrieving revision 1.1.2.1
+diff -u -r1.1.2.1 calendar-win2k-cold-2.css
+--- calendar-win2k-cold-2.css	22 Dec 2003 10:26:55 -0000	1.1.2.1
++++ calendar-win2k-cold-2.css	23 Dec 2003 17:58:56 -0000
+@@ -204,6 +204,7 @@
+ .combo .label,
+ .combo .label-IEfix {
+   text-align: center;
++  display: block;
+   padding: 1px;
+ }
+ 

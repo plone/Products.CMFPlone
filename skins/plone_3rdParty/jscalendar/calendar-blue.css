@@ -168,6 +168,7 @@ div.calendar { position: relative; }
 .combo .label,
 .combo .label-IEfix {
   text-align: center;
+  display: block;
   padding: 1px;
 }
 
