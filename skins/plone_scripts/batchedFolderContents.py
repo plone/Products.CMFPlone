@@ -23,7 +23,8 @@ except TypeError:
     #XXX Manually do suppression
     context.plone_log('Manual fall back in getFolderContents - your Folder.listFolderContents method does not ' \
                       'support suppressHiddenFiles')
-    contents = [obj for obj in context.aq_inner.listFolderContents(contentFilter=contentFilter) if obj.getId()[:1]!='.']
+    contents = [obj for obj in context.aq_inner.listFolderContents(contentFilter=contentFilter)
+                if not obj.getId().startswith('.')]
 
 from Products.CMFPlone import Batch
 b_start = context.REQUEST.get('b_start', 0)
