@@ -4,9 +4,11 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=
+##parameters=type_name=None
 ##title=
 ##
-
 now=DateTime()
-return type_name.replace(' ', '_')+'.'+now.strftime('%Y-%m-%d')+'.'+now.strftime('%M%S')
+prefix=''
+if type_name is not None:
+    prefix = type_name.replace(' ', '_')+'.'
+return prefix+now.strftime('%Y-%m-%d')+'.'+now.strftime('%M%S')
