@@ -56,49 +56,67 @@ div.row {
     clear: both;
     min-height: 4em;
     margin-top: 1em;
+    position: relative;
 }
 
 .group {
     border: &dtml-groupBorder;;
     margin: 2em 0em 1em 0em;
-    width: 94%;
     padding: 1em 0em;
+    width: 94%;
 }
-.legend {
+span.legend {
+    background: &dtml-mainBackground;;
+    padding: 0.5em;
     position : relative;
     top: -1.8em;
     left: 1em;
-    background: &dtml-mainBackground;;
-    padding: 0.5em;
 }
 
-span.label {
+div.label {
     float: left;
     font-weight: bold;
     text-align: right;
-    width: 15%;
-    position : relative;
-    left: -1em;
+    width: 12em;
+    padding-right: 1em;
+    position: relative;
+    z-index: 1;
 }
 
-span.field {
-    float: left;
+div.help {
+    background-color: #FFFFE1; 
+    border: 1px solid black; 
+    padding: 0.5em;
+    position: absolute;
+    width: 20em;
+    top: 1.5em;
+    left: -9em;
+    font-weight: normal;
     text-align: left;
-    width: 55%;
+    z-index: 2;
+}
+
+div.field {
+    width: 68%;
+    float: left;
 }
 
 span.info {
+/* deprecated */
     background-color: transparent;
     float: right;
     text-align: left;
     width: 28%;
+    border: 1px solid red;
 }
 
 .error {
     /* Class for error indication in forms */
     background: &dtml-messageBackground;;
     border: &dtml-messageBorder;;
-    margin: 1em;
+    padding: 1em;
+    margin: 0;
+    width: 68% !important;
 }
 
 .required {

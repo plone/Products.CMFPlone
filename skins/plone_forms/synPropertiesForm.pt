@@ -6,12 +6,24 @@
 
 <body>
 
+<div metal:fill-slot="super">
+
+    <div metal:use-macro="here/portal_tabs/macros/folderTabs">
+    Content tabs
+    </div>
+
+    <div class="contentBar">        
+    &nbsp;
+    </div>	
+
+</div>
+
 <div metal:fill-slot="main"
      tal:define="syndicateInfo here/syndication_information | nothing">
 
-    <h1>Syndication Properties</h1>
+    <h1 i18n:translate="">Syndication Properties</h1>
     
-    <p>
+    <p i18n:translate="">
     Syndication enables you to syndicate this folder so it can
     be synchronized from other web sites.
     </p>
@@ -44,16 +56,16 @@
         <span tal:condition="python:container.portal_syndication.isSyndicationAllowed(here)">
 
             <div class="group">
-                <span class="legend">Channel Details</span>
+                <span class="legend" i18n:translate="">Channel Details</span>
 
                 <div class="row">
-                    <span class="label">Channel Title</span>
-                    <span class="info" tal:content="here/Title">title</span>
+                    <div class="label">Channel Title</div>
+                    <div class="info" tal:content="here/Title">title</div>
                 </div>
 
                 <div class="row">
-                    <span class="label">Channel Description</span>
-                    <span class="info" tal:content="here/Description">description</span>
+                    <div class="label">Channel Description</div>
+                    <div class="info" tal:content="here/Description">description</div>
                 </div>
             </div>
 
@@ -62,95 +74,125 @@
                   name="syndication" 
                   method="post">
 
-                <span class="legend">Syndication Details</span>
+                <span class="legend" i18n:translate="">Syndication Details</span>
 
                 <div class="row">
-                    <span class="label">
-                    Update Period
-                    </span>
-                    
-                    <span class="field">
-                        <select name="updatePeriod">
-                            <option value=""
-                                    tal:repeat="period python:container.portal_syndication.buildUpdatePeriods()"
-                                    tal:attributes="value python:period[0];
-                                    selected python:test(period[0]==container.portal_syndication.getUpdatePeriod(here), 'selected', '');"
-                                    tal:content="python:period[1]"> 
-                                    update interval 
-                            </option>
-                        </select>
-                    </span>
-                    
-                    <span class="info">
+                    <div class="label">
+                    <span i18n:id="update_period">Update Period</span>
+                    <div id="update_period_help" 
+                         i18:id="update_period_help"
+                         class="help" 
+                         style="visibility:hidden">
                     Controls how often the channel is updated.
-                    </span>
+                    </div>
                 </div>
+                    
+                <div class="field">
+                    <select name="updatePeriod"
+                            tabindex="1"
+                            onfocus="formtooltip('update_period_help',1)" 
+                            onblur="formtooltip('update_period_help',0)"
+                            >
+                        <option value=""
+                                tal:repeat="period python:container.portal_syndication.buildUpdatePeriods()"
+                                tal:attributes="value python:period[0];
+                                selected python:test(period[0]==container.portal_syndication.getUpdatePeriod(here), 'selected', '');"
+                                tal:content="python:period[1]"> 
+                                update interval 
+                        </option>
+                    </select>
+                </div>
+            </div>
 
-                <div class="row">
-                    <span class="label">
-                    Update Frequency
-                    </span>
-                    
-                    <span class="field">
-                        <input type="text" 
-                               name="updateFrequency" 
-                               size="3"
-                               value="#" 
-                               tal:attributes="value python:container.portal_syndication.getUpdateFrequency(here)" />
-                    </span>
-                    
-                    <span class="info">
+            <div class="row">
+                <div class="label">
+                    <span i18n:id="update_frequency">Update Frequency</span>
+                    <div id="update_frequency_help" 
+                         i18:id="update_frequency_help"
+                         class="help" 
+                         style="visibility:hidden">
                     Controls the frequency of the updates. For example, if you wnat it to update every second week,
                     select "weekly" above, and "2" here.
-                    </span>	
+                    </div>
                 </div>
+                
+                <div class="field">
+                    <input type="text" 
+                           name="updateFrequency" 
+                           size="3"
+                           value="#" 
+                           tabindex="2"
+                           onfocus="formtooltip('update_frequency_help',1)" 
+                           onblur="formtooltip('update_frequency_help',0)" 
+                           tal:attributes="value python:container.portal_syndication.getUpdateFrequency(here)" />
+                </div>
+            </div>
 			
-    			<div class="row">
-    			
-                    <span class="label">
-                    Update Base
-                    </span>
-    				
-                    <span class="field">
-                        <input type="text" 
-                               name="updateBase:date" 
-                               size="20" 
-                               value="2000-12-31 00:00:00" 
-                               tal:attributes="value python:container.portal_syndication.getUpdateBase(here)"><a href="javascript:doNothing()" onclick="setDateField(document.forms['syndication'].elements[4]);top.newWin = window.open('cmf_skin_tools/calendar.html','cal','dependent=yes,width=310,height=230,screenX=200,screenY=300,titlebar=yes')"><img src="popup_calendar.gif"></a>
-                    </span>
-    				
-                    <span class="info">
+			<div class="row">
+			
+                <div class="label">
+                    <span i18n:id="update_base">Update Base</span>
+
+                    <div id="update_base_help" 
+                         i18:id="update_base_help"
+                         class="help" 
+                         style="visibility:hidden">
                     This is the date the updater starts counting from. 
                     So if you want to update weekly every Tuesday,
                     make sure this starts on a Tuesday.
-                    </span>
-    			
+                    </div>
                 </div>
+				
+                <div class="field">
+                    <input type="text" 
+                           name="updateBase:date" 
+                           size="20" 
+                           value="" 
+                           tabindex="3"
+                           onfocus="formtooltip('update_base_help',1)" 
+                           onblur="formtooltip('update_base_help',0)"
+                           tal:attributes="value python:container.portal_syndication.getUpdateBase(here)" />
+                           <a href="javascript:doNothing()" 
+                              onclick="setDateField(document.forms['syndication'].elements[4]);top.newWin = window.open('cmf_skin_tools/calendar.html','cal','dependent=yes,width=310,height=230,screenX=200,screenY=300,titlebar=yes')">
+                              <img src="popup_calendar.gif">
+                           </a>
+                </div>
+            </div>
     
-                <div class="row">
-                    <span class="label">
-                    Maximum Items
-                    </span>
+            <div class="row">
+                <div class="label">
+                    <span i18n:id="max_items">Maximum Items</span>
                     
-                    <span class="field">
-                        <input type="text" 
-                               name="max_items"	
-                               value="#" 
-                               size="3"
-                               tal:attributes="value python:container.portal_syndication.getMaxItems(here)" />
-                    </span>
-                    
-                    <span class="info">
+                    <div id="max_items_help" 
+                         i18:id="max_items_help"
+                         class="help" 
+                         style="visibility:hidden">
                     Maximum number of items that will be syndicated. 
-                    </span>
+                    </div>
                 </div>
+                
+                <div class="field">
+                    <input type="text" 
+                           name="max_items"	
+                           value="#" 
+                           size="3"
+                           tabindex="4"
+                           onfocus="formtooltip('max_items_help',1)" 
+                           onblur="formtooltip('max_items_help',0)"
+                           tal:attributes="value python:container.portal_syndication.getMaxItems(here)" />
+                </div>
+            </div>
     			
-                <div class="row">
-                    <span class="label"></span>
-                    <span class="field">
-                        <input class="context" type="submit" value="Save" />
-                    </span>
+            <div class="row">
+                <div class="label">&nbsp;</div>
+                <div class="field">
+                    <input class="context" 
+                           tabindex="5"
+                           type="submit" 
+                           value="Save" 
+                           />
                 </div>
+            </div>
 
             </form>
 
@@ -161,7 +203,8 @@
 </div>
 
 
-<div tal:condition="python:not container.portal_syndication.isSiteSyndicationAllowed()">
+<div tal:condition="python:not container.portal_syndication.isSiteSyndicationAllowed()"
+     i18n:translate="">
   Syndication has not been enabled by site administrator.
 </div>
 

@@ -13,16 +13,17 @@
                       DateTime python:modules['DateTime'].DateTime;
                       b_start python:request.get('b_start', 0);">
 	
-        <h1>Member Listing</h1>
+        <h1 i18n:translate="">Member Listing</h1>
 		
-		<p> Here is a list of the members that are visible. </p>
+		<p i18n:translate=""> Here is a list of the members that are visible. </p>
 
 		<form name="search_results" action="#" method="post"
               tal:condition="members"
               tal:define="batch python:Batch(members, 20, int(b_start), orphan=1)">
 				
 		<p>
-        Visible Members: <strong tal:content="python:len(members)">number of members</strong> 
+        <span i18n:translate="">Visible Members</span>:
+        <strong tal:content="python:len(members)">number of members</strong> 
         </p>
 		  
 	<div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">		

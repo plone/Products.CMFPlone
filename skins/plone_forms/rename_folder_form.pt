@@ -6,9 +6,9 @@
 
 <div metal:fill-slot="main">
 
-    <h1>Rename item</h1>
+    <h1 i18n:translate="">Rename item</h1>
 	
-    <p>To rename an item, enter the new name below.</p>
+    <p i18n:translate="">To rename one or more items, enter the new name(s) below.</p>
 
     <form class="group"
           name="folder_rename" 
@@ -16,14 +16,18 @@
           method="post"
           tal:condition="python:test(here.folder_rename_items(), 0, 1)">
 
-        <span class="legend">Item details</span>
+        <span class="legend" i18n:translate="">Item details</span>
         
         <div class="row">
-            <span class="label"></span>
-            <span class="field">
+            <div class="label">&nbsp;</div>
+            <div class="field">
                 <strong>You have not selected any items to rename </strong>
                 <br />
-                <input type="submit" value="Back to folder" class="standalone" />
+                <input type="submit" 
+                       value="Back to folder" 
+                       class="standalone" 
+                       />
+            </div>
         </div>
 	</form>
 	

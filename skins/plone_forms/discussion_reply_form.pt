@@ -7,9 +7,9 @@
 
 <div metal:fill-slot="main">	
 
-    <h1>Post Comment</h1>
+    <h1 i18n:translate="">Add Comment</h1>
     
-    <p>
+    <p i18n:translate="">
     You can add a comment by filling out the form below. To see how the posting 
     will look before submitting it, click "Preview Comment".   
     </p>
@@ -17,68 +17,68 @@
     <form class="group"
           name="edit_form"
           method="post"
-	  action="talkback">
+          action="talkback">
 
-        <span class="legend">Comment Details</span>
+        <span class="legend" i18n:translate="">Comment Details</span>
 
         <input type="hidden" name="Creator" value=""
         	   tal:attributes="value here/portal_membership/getAuthenticatedMember" />
     
         <div class="row">
         
-            <span class="label">
+            <div class="label" i18n:id="subject">
             Subject
-            </span>
+            </div>
             
-            <span class="field">
-                <input name="title" value=""
+            <div class="field">
+                <input name="title" 
+                       value="" 
+                       size="40"
+                       tabindex="1"
                        tal:attributes="value request/title_override|nothing" />
-            </span>
-            
-            <span class="info">
-            &nbsp;
-            </span>
+            </div>
             
         </div>
 
         <div class="row">
         
-            <span class="label">
+            <div class="label" i18n:id="body_text">
             Body text
-            </span>
+            </div>
             
-            <span class="field">
+            <div class="field">
                 <textarea name="text"
                           cols="40"
                           rows="8"
+                          tabindex="2"
 			              tal:content="request/text_override | nothing"></textarea>
-            </span>
-            
-            <span class="info">
-            &nbsp;
-            </span>
+            </div>
             
         </div>
     
         <div class="row">
         
-            <span class="label">
+            <div class="label">
             &nbsp;
-            </span>
+            </div>
             
-            <span class="field">
+            <div class="field">
             
                 <input class="context"
-                       type="submit" value="Preview Comment" name=""
+                       type="submit" 
+                       value="Preview Comment" 
+                       name=""
+                       tabindex="3"
                        tal:define="hId here/getId"
                        tal:attributes="name string:$hId/discussion_reply_preview:method" />
                       
-            </span>
-            
-            <span class="info">
-                <input class="context" type="submit" value="Submit Comment" name=""
+                <input class="context" 
+                       type="submit" 
+                       value="Add Comment" 
+                       name=""
+                       tabindex="4"
                        tal:attributes="name string:discussion_reply:method" />
-            </span>
+            </div>
             
         </div>
     

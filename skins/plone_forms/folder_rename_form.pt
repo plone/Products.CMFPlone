@@ -8,9 +8,9 @@
 
 <div metal:fill-slot="main">
 
-    <h1>Rename item</h1>
+    <h1 i18n:translate="">Rename item</h1>
 
-    <p>To rename an item, enter the new name below.</p>
+    <p i18n:translate="">To rename an item, enter the new name below.</p>
 
     <form class="group"
           name="folder_rename" 
@@ -19,35 +19,35 @@
           tal:define="items request/ids|nothing"
           tal:condition="items">
 
-        <span class="legend">Rename Details</span>
+        <span class="legend" i18n:translate="">Rename Details</span>
 
         <div class="row" tal:repeat="item items">
 
-            <span class="label">
+            <div class="label">
                 Rename
                 <span tal:replace="item">fav_999816073</span>
                 to
-            </span>
+            </div>
 
-            <span class="field">
+            <div class="field">
                 <input type="hidden" name="ids:list" value="fav_999816073"
                       tal:attributes="value item">
                 <input type="text" name="new_ids:list" value="" size="25"> <br />
-            </span>
+            </div>
 
         </div>
 
         <div class="row">
 
-            <span class="label"></span>
+            <div class="label">&nbsp;</div>
             
-            <span class="field">
+            <div class="field">
                 <input type="hidden" name="here" value=""
                        tal:attributes="value here/absolute_url">
                 <input class="context" type="submit" value="Rename" />
                 <input class="context" type="submit" value="Cancel"
                        onClick="javascript:document.folder_rename.action=document.folder_rename.here.value+'/folder_contents';document.folder_rename.submit();" />
-            </span>
+            </div>
 
         </div>
 

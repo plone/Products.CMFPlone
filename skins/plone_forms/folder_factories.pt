@@ -13,9 +13,9 @@
         <tal tal:define="dummy python:request.response.redirect(here.absolute_url()+'/createObject?type_name='+request.get('type_name'))" />
      </metal:block>
      
-	<h1>Add new item</h1>
+	<h1 i18n:translate="">Add new item</h1>
 	
-	<p>
+	<p i18n:translate="">
 	Select the type of item you want to add to your folder.
 	</p>
 
@@ -25,41 +25,37 @@
                      id_query string:&amp;id=$create_id;
                      query python:test(create_id, id_query, '');">
     
-        <span class="legend">Items Available</span>
+        <span class="legend" i18n:translate="">Items Available</span>
         
         <div tal:repeat="ctype here/allowedContentTypes"> 
 
     		<div class="row" tal:define="Type ctype/Type;Id ctype/getId"
                          tal:condition="python:test(Id not in filterOut, 1, 0)">
     	
-                <span class="label" >
+                <div class="label">
                     <span for="#" tal:attributes="for string:cb_${repeat/ctype/number}" tal:replace="Type">
                         Type
                     </span>
                     <a href="#" tal:attributes="href string:createObject?type_name=$Id">
                         <img src="folder.gif" alt="" width="16" height="16" tal:attributes="src string:$portal_url/${ctype/getIcon}" />
                     </a>
-                </span>
+                </div>
     	
-                <span class="field">
+                <div class="field">
                     <form name="quickAdd" action="createObject" method="post">
         				<input name="type_name" type="hidden" value="" tal:attributes="value Id">
         				<input name="id" type="hidden" value="" tal:attributes="value create_id" tal:condition="create_id">
                         <input class="standalone" type="submit" value="Add" />
+                        <br />
+                        <p tal:content="ctype/Description">
+                        Item description
+                        </p>
                     </form>
-    			</span>
+    			</div>
     		 
-                <span class="info" tal:content="ctype/Description">
-                Description
-                </span>
-                           
             </div>
         </div>
         
-        <div class="spacer">
-        &nbsp;
-        </div>
-
     </div>
 
 </div>

@@ -9,9 +9,9 @@
 <div metal:fill-slot="main"
      tal:define="errors python:request.get('errors', {})" > 
  
-    <h1>Please register</h1>
+    <h1 i18n:translate="">Please register</h1>
 
-    <p>
+    <p i18n:translate="">
     By registering with us, you will have your own account with the
     possibility to have personalized content, and you will be able to add
     your own documents, images and files to the site.
@@ -22,7 +22,7 @@
           method="post"
           tal:define="allowEnterPassword here/portal_properties/validate_email|nothing;">
 
-        <span class="legend">Personal Details</span>
+        <span class="legend" i18n:translate="">Personal Details</span>
 	
         <input type="hidden" name="last_visit:date" value="ZopeTime"
                tal:attributes="value here/ZopeTime">
@@ -32,60 +32,96 @@
     	<div class="row"
              tal:define="error_fullname errors/fullname | nothing;
                          fullname request/fullname | nothing;" >
-            <span class="label required">Full name</span>
-            <span class="field" 
+
+            <div class="label required">
+                <span i18:id="full_name">Full name</span>
+                <div id="full_name_help" 
+                     i18n:id="full_name_help"
+                     class="help" 
+                     style="visibility:hidden">
+                Enter your full name.
+                </div>
+            </div>
+            
+            <div class="field" 
                   tal:attributes="class python:test(error_fullname, 'field error', 'field')" >
 
                 <div tal:condition="error_fullname"
                       tal:replace="error_fullname" />
 
-                <input type="text" name="field_fullname" size="25"
+                <input type="text" 
+                       name="field_fullname" 
+                       size="30"
                        value="fullname"
-                       tal:attributes="value fullname">
-            </span>
-            <span class="info">
-            Enter your full name.
-            </span>
+                       tal:attributes="value fullname"
+                       tabindex="1"
+                       onfocus="formtooltip('full_name_help',1)" 
+                       onblur="formtooltip('full_name_help',0)" />
+            </div>
         </div>
 	
         <div class="row"
              tal:define="error_username errors/username| nothing;
                          username request/username | nothing;" >
-            <span class="label required">User name</span>
-            <span class="field"
+            
+            <div class="label required">
+                <span i18n:id="user_name">User name</span>
+                <div id="user_name_help" 
+                     i18n:id="user_name_help"
+                     class="help" 
+                     style="visibility:hidden">
+                Enter the user name you want, usually something like
+                "jsmith". No spaces or special characters. 
+                This is the name you use to sign in.
+                </div>
+            </div>
+            
+            <div class="field"
                   tal:attributes="class python:test(error_username, 'field error', 'field')" >
                 <div tal:condition="error_username"
                       tal:replace="structure string:$error_username<br />" />
 
-                <input type="text" name="field_username" size="25"
+                <input type="text" 
+                       name="field_username" 
+                       size="30"
                        value="username"
-                       tal:attributes="value username">
-            </span>
-            <span class="info">
-            Enter the user name you wish to have, usually something like
-            "jsmith". No spaces or special characters. This is the name you use to sign in.
-            </span>
+                       tal:attributes="value username"
+                       tabindex="2"
+                       onfocus="formtooltip('user_name_help',1)" 
+                       onblur="formtooltip('user_name_help',0)" />
+            </div>
+
         </div>
 
         <div class="row"
              tal:define="error_email errors/email | nothing;
                          email request/email | nothing;" >
-            <span class="label required">Email</span>
-            <span class="field"
+
+            <div class="label required">
+                <span i18n:id="email">E-mail</span>
+                <div id="email_help" 
+                     i18n:id="email_help"
+                     class="help" 
+                     style="visibility:hidden">
+                Enter your email address. This is necessary in case you lose your
+                password. We respect your privacy, and will not give the address
+                away to any third parties.
+                </div>            
+            </div>
+
+            <div class="field"
                   tal:attributes="class python:test(error_email, 'field error', 'field')" >
                 <div tal:condition="error_email "
                       tal:replace="error_email " />
 
                 <input type="text" 
                        name="field_email" 
-                       size="25"
-                       tal:attributes="value email">
-            </span>
-            <span class="info">
-            Enter your email address. This is necessary in case you lose your
-            password. We respect your privacy, and will not give the address
-            away to any third parties.
-            </span>
+                       size="30"
+                       tal:attributes="value email"
+                       tabindex="3"
+                       onfocus="formtooltip('email_help',1)" 
+                       onblur="formtooltip('email_help',0)" />
+            </div>
         </div>
 
 
@@ -93,8 +129,18 @@
              tal:condition="not: allowEnterPassword"
              tal:define="error_password errors/password | nothing;
                          password request/password | nothing;" >
-            <span class="label required">Password</span>
-            <span class="field"
+
+            <div class="label required">
+                <span i18n:id="password">Password</span>
+                <div id="password_help" 
+                     i18n:id="password_help"
+                     class="help" 
+                     style="visibility:hidden">
+                Enter the password you want. Minimum 5 characters.
+                </div>
+            </div>
+
+            <div class="field"
                   tal:attributes="class python:test(error_password, 'field error', 'field')" >
                <div tal:condition="error_password "
                       tal:replace="error_password " />
@@ -102,19 +148,29 @@
                        name="field_password" 
                        size="10"
                        value="" 
-                       tal:attributes="value password" />
-            </span>
-            <span class="info">
-            Enter the password you want. Minimum 5 characters.
-            </span>
+                       tal:attributes="value password" 
+                       tabindex="4"
+                       onfocus="formtooltip('password_help',1)" 
+                       onblur="formtooltip('password_help',0)" />
+            </div>
         </div>
 
         <div class="row" 
              tal:condition="not: allowEnterPassword"
              tal:define="error_confirm errors/confirm | nothing;
                          confirm request/confirm | nothing;" >
-            <span class="label required">Confirm Password</span>
-            <span class="field"
+                         
+            <div class="label required">
+                <span i18n:id="confirm_password">Confirm <br />Password</span>
+                <div id="confirm_password_help" 
+                     i18n:id="confirm_password_help"
+                     class="help" 
+                     style="visibility:hidden">
+                Re-enter the password. Make sure the passwords are identical.
+                </div>
+            </div>
+            
+            <div class="field"
                  tal:attributes="class python:test(error_confirm, 'field error', 'field')" >
                 <span tal:condition="error_confirm"
                       tal:replace="error_confirm" />
@@ -122,40 +178,57 @@
                        name="field_confirm" 
                        size="10" 
                        value="" 
-                       tal:attributes="value confirm" />
-            </span>
-            <span class="info">
-            Re-enter the password. Make sure the passwords are identical.
-            </span>
+                       tal:attributes="value confirm"
+                       tabindex="5"
+                       onfocus="formtooltip('confirm_password_help',1)" 
+                       onblur="formtooltip('confirm_password_help',0)" />
+            </div>
         </div>
 
         <div class="row" tal:condition="not: allowEnterPassword">
-            <span class="label">Mail Password?</span>
-            <span class="field">
-                <input type="checkbox" class="noborder" name="field_mail_me" size="30" id="cb_mailme" checked />
+            
+            <div class="label">
+                <span i18n:id="mail_password">Mail Password?</span>
+                <div id="mail_password_help" 
+                     i18n:id="mail_password_help"
+                     class="help" 
+                     style="visibility:hidden">
+                Check this box to have your password 
+                delivered to your mailbox, so you won't lose it.
+                </div>
+            </div>
+            
+            <div class="field">
+                <input type="checkbox" 
+                       class="noborder" 
+                       name="field_mail_me" 
+                       size="30" 
+                       id="cb_mailme" 
+                       checked="checked" 
+                       tabindex="6"
+                       onfocus="formtooltip('mail_password_help',1)" 
+                       onblur="formtooltip('mail_password_help',0)" />
                 <label for="cb_mailme">Yes, mail me my password</label>
-            </span>
-            <span class="info">
-            Check this box to have your password 
-            delivered to your mailbox, so you won't lose it.
-            </span>
+            </div>
         </div>
 
         <div class="row" tal:condition="allowEnterPassword">
-            <span class="label">NOTE</span>
-            <span class="field">
+            <div class="label" i18n:translate="">NOTE</div>
+            <div class="field" i18n:translate="">
             This portal has been configured to automatically generate and 
             email you a password to complete the registration process.
-            </span>
-            <span class="info">
-            </span>
+            </div>
         </div>
 
         <div class="row">
-            <span class="label"></span>
-            <span class="field">
-                <input class="context" type="submit" name="submit" value="Register">
-            </span>
+            <div class="label">&nbsp;</div>
+            <div class="field">
+                <input class="context" 
+                type="submit"
+                tabindex="7" 
+                name="submit" 
+                value="Register">
+            </div>
         </div>
 
     </form>

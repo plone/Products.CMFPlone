@@ -8,21 +8,22 @@
 
 <div tal:define="pprops here/portal_properties; ve pprops/validate_email">
 
-<h1>Welcome!</h1>
+<h1 i18n:translate="">Welcome!</h1>
 
-<p> You have been registered as a member. </p>
+<p i18n:translate=""> You have been registered as a member. </p>
 
-<p tal:condition="ve"> You will receive an email shortly containing your password 
+<p tal:condition="ve" i18n:translate=""> You will receive an email shortly containing your password 
     and instructions on how to activate your membership. </p>
 
-<p tal:condition="python:not(ve)"> You can log on immediately by clicking
+<p tal:condition="python:not(ve)"> 
+    <span i18n:translate="">You can log on immediately by clicking</span>
     <a href=""
 	   tal:define="pss modules/Products.PythonScripts.standard; uname request/username; username python:pss.url_quote(uname); pword request/password; password python:pss.url_quote(pword)"
-	   tal:attributes="href python: here.portal_url() + '/logged_in?__ac_name=' + username + '&__ac_password=' + password">here</a>.  
+	   tal:attributes="href python: here.portal_url() + '/logged_in?__ac_name=' + username + '&__ac_password=' + password" i18n:translate="">here</a>.  
 </p>
 
 <p> 
-    <a href="" tal:attributes="href python:here.portal_url() + '/index_html'">Return to homepage</a> 
+    <a href="" tal:attributes="href python:here.portal_url() + '/index_html'" i18n:translate="">Return to homepage</a> 
 </p>
 
 </div>

@@ -1,12 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
 <body>
 			
-<div class="document">
-
 <div metal:fill-slot="main"
      tal:define="errors python:request.get('errors', {})"
      tal:condition="here/rejectAnonymous" >
@@ -14,9 +13,12 @@
     
     <span tal:define="dummy python:request.response.setHeader('pragma','no-cache')" />
 
-    <h1>Member Preferences</h1>
+    <h1 i18n:translate="">Member Preferences</h1>
 
-    <p> <a href="password_form">Click here</a> to change your password. </p>
+    <p> 
+        <a href="password_form" i18n:translate="">Click here</a> 
+        <span i18n:translate="">to change your password</span>. 
+    </p>
       
   
     <metal:block tal:condition="not: here/portal_membership/isAnonymousUser"
@@ -33,31 +35,59 @@
             <div class="row"
 	         tal:define="error_email errors/email | nothing;
                              email request/email|member/email;">
-                <span class="label required">Email address</span>
-                <span class="field" tal:attributes="class python:test(error_email, 'field error', 'field')"> 
+                
+                <div class="label required">
+                    <span i18n:id="new_email">New e-mail <br /> address</span>
+
+                    <div id="new_email_help"
+                         i18n:id="new_email_help" 
+                         class="help" 
+                         style="visibility:hidden">
+                    Enter your new e-mail address here, if you want to change it.
+                    </div>
+                </div>
+                
+                <div class="field" tal:attributes="class python:test(error_email, 'field error', 'field')"> 
+                    
                     <div tal:condition="error_email" 
                          tal:replace="structure string:$error_email <br />" />					  
+                    
                     <input type="text" 
                            name="field_email" 
                            size="25"
+                           tabindex="1"
                            value="member.email html_quote"
-                           tal:attributes="value email" />
-                </span>
-                <span class="info">
-                Enter your new email address here, if you want to change it.
-                </span>
+                           onfocus="formtooltip('new_email_help',1)" 
+                           onblur="formtooltip('new_email_help',0)" 
+                           tal:attributes="value email" 
+                           />
+                </div>
+
             </div>
 
             <div class="row">
-                <span class="label">Listed status</span>
+                <div class="label">
+                    <span i18n:id="listed_status">Listed status</span>
 
-                <span class="field"> 
+                    <div id="listed_status_help"
+                         i18n:id="listed_status_help" 
+                         class="help" 
+                         style="visibility:hidden">
+                    Select whether you want to be listed on the public membership listing
+                    or not.	Remember that your Member folder will still be publicly accessible unless
+                    you change its security settings, even if you select "unlisted" here.
+                    </div>                
+                </div>
+                <div class="field"> 
                     <input type="radio" 
                            class="noborder" 
                            name="listed" 
                            value="on"
                            id="cb_listed" 
                            checked="checked"
+                           tabindex="2"
+                           onfocus="formtooltip('listed_status_help',1)" 
+                           onblur="formtooltip('listed_status_help',0)" 
                            tal:condition="python:member.listed and ('checked' or '');" />
                            
                     <input type="radio" 
@@ -65,6 +95,9 @@
                            name="listed" 
                            value="on"
                            id="cb_listed"
+                           tabindex="2"
+                           onfocus="formtooltip('listed_status_help',1)" 
+                           onblur="formtooltip('listed_status_help',0)" 
                            tal:condition="python:not(member.listed) and 'checked' or '';" />
                     
                     <label for="cb_listed">Listed</label>
@@ -76,6 +109,9 @@
                            name="listed" 
                            value=""
                            id="cb_unlisted"
+                           tabindex="2"
+                           onfocus="formtooltip('listed_status_help',1)" 
+                           onblur="formtooltip('listed_status_help',0)" 
                            tal:condition="python:member.listed and 'checked' or '';" />
                     
                     <input type="radio" 
@@ -84,57 +120,83 @@
                            value=""
                            id="cb_unlisted" 
                            checked="checked"
+                           tabindex="2"
+                           onfocus="formtooltip('listed_status_help',1)" 
+                           onblur="formtooltip('listed_status_help',0)" 
                            tal:condition="python:not(member.listed) and 'checked' or '';" />		   
                     
                     <label for="cb_unlisted">Unlisted</label>
-                </span>
-
-                <span class="info">
-                Select whether you want to be listed on the public membership listing
-                or not.	Remember that your Member folder will still be publicly accessible unless
-                you change its security settings, even if you select "unlisted" here.
-                </span>
+                </div>
             </div>
 
             <div class="row" 
                  tal:condition="here/portal_skins/allow_any">
-                <span class="label">Skin</span>
-                <span class="field"> 
-                    <select name="portal_skin">
+                
+                <div class="label">
+                    <span i18n:id="skin">Skin</span>
+                    <div id="skin_help"
+                         i18n:id="skin_help" 
+                         class="help" 
+                         style="visibility:hidden">
+                    Here you choose the appearance of the site. Several styles are available,
+                    and you can always change it back to the default if you do not like a skin.
+                    </div>
+                </div>
+                
+                <div class="field"> 
+                    <select name="portal_skin"
+                            tabindex="3"
+                            onfocus="formtooltip('skin_help',1)" 
+                            onblur="formtooltip('skin_help',0)">
                     <option value="#"
                             tal:repeat="skin container/portal_skins/getSkinSelections"
                             tal:attributes="value skin;
                             selected python:test(request.get('portal_skin', here.portal_skins.getDefaultSkin())==skin, 'selected', '');"
                             tal:content="skin">Plone</option>
                     </select>
-                </span>
-                <span class="info">
-                Here you choose the appearance of the site. Several styles are available,
-                and you can always change it back to the default if you do not like a skin.
-                </span>
+                </div>
             </div>
 
             <div class="row" tal:define="portrait here/getPlonePersonalPortait | nothing">
-                <span class="label">Portrait</span>
-                <span class="field"> 
+                <div class="label">
+                    <span i18n:id="portrait">Portrait</span>
+                    <div id="portrait_help"
+                         i18n:id="portrait_help" 
+                         class="help" 
+                         style="visibility:hidden">
+                    To add a new portrait, click the <strong>Browse</strong> button and select
+                    a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
+                    </div>
+                    
+                </div>
+                <div class="field"> 
+
+                    <input type="file" 
+                           name="portrait" 
+                           size="20" 
+                           tabindex="4"
+                           onfocus="formtooltip('portrait_help',1)" 
+                           onblur="formtooltip('portrait_help',0)"
+                           />
+                    <br />
+                    
                     <img src="" 
                          style="border: 1px solid black" 
                          tal:condition="portrait"
-                         tal:attributes="src portrait/absolute_url" />
-                    <br />
-                    <input type="file" name="portrait" size="15" /> <br />
-                </span>
-                <span class="info">
-                To add a new portrait, click the <strong>Browse</strong> button and select
-                a picture of yourself. Recommended size is 75 pixels wide, 100 pixels tall. <br />
-                </span>
+                         tal:attributes="src portrait/absolute_url" 
+                         />
+                </div>
             </div>
 
             <div class="row">
-                <span class="label">&nbsp;</span>
-                <span class="field">
-                    <input class="context" type="submit" value="Apply" />
-                </span>
+                <div class="label">&nbsp;</div>
+                <div class="field">
+                    <input class="context"
+                           tabindex="5" 
+                           type="submit" 
+                           value="Apply" 
+                           />
+                </div>
             </div>
         		
 		</form>

@@ -7,9 +7,9 @@
 
 <div metal:fill-slot="main">
 
-    <h1>Comment Preview</h1>
+    <h1 i18n:translate="">Comment Preview</h1>
 
-    <p>
+    <p i18n:translate="">
     This is how your comment will look when posted.
     </p>
 
@@ -18,36 +18,47 @@
           method="post" 
           action="talkback">
     
-        <span class="legend">Comment Preview</span>
+        <span class="legend" i18n:translate="">Comment Preview</span>
 
-        <h3 tal:content="python: request.form['title']"></h3>
-
-        <div tal:define="pss modules/Products.PythonScripts.standard"
-             tal:replace="structure python: pss.structured_text(request.form['text'])">Text Body</div>
+        <div class="row">
         
-        <input type="hidden" name="title" value=""
-               tal:attributes="value python: request.form['title']">
-        <input type="hidden" name="text" value=""
-               tal:attributes="value python: request.form['text']">
-        <input type="hidden" name="title_override" value=""
-               tal:attributes="value python:  request.form['title']">
-        <input type="hidden" name="text_override" value=""
-               tal:attributes="value python:  request.form['text']">
-        <input type="hidden" name="Creator" value=""
-               tal:attributes="value python: here.portal_membership.getAuthenticatedMember()">
-
-        <div class="row">         
-            <input class="standalone"
-                   type="submit" 
-                   value="Change comment" 
-                   name=""
-                   tal:define="hId here/getId"
-    		       tal:attributes="name python: hId + '/discussion_reply_form:method'">
+            <div class="label">&nbsp;</div>
             
-            <input class="standalone"
-                    type="submit" 
-                    value="Submit comment" 
-                    name="discussion_reply:method">
+            <div class="field">
+                <h1 tal:content="python: request.form['title']"></h1>
+        
+                <div tal:define="pss modules/Products.PythonScripts.standard"
+                     tal:replace="structure python: pss.structured_text(request.form['text'])">Text Body</div>
+                
+                <input type="hidden" name="title" value=""
+                       tal:attributes="value python: request.form['title']">
+                <input type="hidden" name="text" value=""
+                       tal:attributes="value python: request.form['text']">
+                <input type="hidden" name="title_override" value=""
+                       tal:attributes="value python:  request.form['title']">
+                <input type="hidden" name="text_override" value=""
+                       tal:attributes="value python:  request.form['text']">
+                <input type="hidden" name="Creator" value=""
+                       tal:attributes="value python: here.portal_membership.getAuthenticatedMember()">
+            </div>
+        </div>
+        
+        <div class="row">         
+            <div class="label">&nbsp;</div>
+
+            <div class="field">
+                <input class="standalone"
+                       type="submit" 
+                       value="Change Comment" 
+                       name=""
+                       tal:define="hId here/getId"
+        		       tal:attributes="name python: hId + '/discussion_reply_form:method'">
+                
+                <input class="standalone"
+                        type="submit" 
+                        value="Add Comment" 
+                        name="discussion_reply:method">
+            </div>
         </div>
         
     </form>

@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
@@ -9,151 +10,201 @@
 <div metal:fill-slot="main"
      tal:condition="here/rejectAnonymous" >
 	
-    <h1>CMF Setup</h1>
+    <h1 i18n:translate="">Plone Setup</h1>
     
-    <p>
-    Here you configure some settings that affects the entire Content Management Framework (CMF).
+    <p i18n:translate="">
+    Here you configure some of the settings that affect Plone.
     </p>
     
     <form class="group"
           action="" 
           name="reconfig" 
           method="post" 
-	  tal:attributes="action here/absolute_url"
+          tal:attributes="action here/absolute_url"
           tal:define="props python:container.portal_properties">
 
-        <span class="legend">CMF Details</span>
+        <span class="legend" i18n:translate="">Plone Details</span>
 		
         <div class="row">
-            <span class="label">
-            CMF 'From' name
-            </span>
+            <div class="label">
+                <span i18n:id="portal_from_name">Portal 'From' name</span>
+
+                <div id="portal_from_name_help"
+                     i18n:id="portal_from_name_help" 
+                     class="help" 
+                     style="visibility:hidden">
+                When Plone generates mail, it uses this name
+                as its (apparent) sender.
+                </div>
+            </div>
             
-            <span class="field">
-            <input name="email_from_name"
-                   size="30"
-                   value=""
-                   tal:attributes="value python:props.email_from_name" />
-            </span>
-            
-            <span class="info">			
-            When the CMF generates mail, it uses this name
-            as its (apparent) sender.
-            </span>
+            <div class="field">
+                <input name="email_from_name"
+                       size="30"
+                       value=""
+                       tabindex="1"
+                       onfocus="formtooltip('portal_from_name_help',1)" 
+                       onblur="formtooltip('portal_from_name_help',0)" 
+                       tal:attributes="value python:props.email_from_name" 
+                       />
+            </div>
         </div>
 		
         <div class="row">
-            <span class="label">
-            CMF 'From' address
-            </span>
+            <div class="label">
+                <span i18n:id="portal_from_address">Portal 'From' address</span>
+
+                <div id="portal_from_address_help"
+                     i18n:id="portal_from_address_help" 
+                     class="help" 
+                     style="visibility:hidden">
+                When Plone generates mail, it uses this address
+                as its (apparent) return address.
+                </div>
+            </div>
             
-            <span class="field">
+            <div class="field">
                 <input name="email_from_address"
                        size="30"
                        value=""
+                       tabindex="2"
+                       onfocus="formtooltip('portal_from_address_help',1)" 
+                       onblur="formtooltip('portal_from_address_help',0)" 
                        tal:attributes="value python:props.email_from_address" />
-            </span>
-            
-            <span class="info">			
-            When the CMF generates mail, it uses this address
-            as its (apparent) return address.
-            </span>
+            </div>
         </div>
 		
         <div class="row">
-            <span class="label">
-            SMTP server
-            </span>
+            <div class="label">
+                <span i18n:id="smtp_server">SMTP server</span>
+
+                <div id="smtp_server_help"
+                     i18n:id="smtp_server_help" 
+                     class="help" 
+                     style="visibility:hidden">
+                This is the address of your local SMTP (out-going
+                mail) server. Usually "localhost", unless you use an
+                external server to send mail.
+                </div>
+            </div>
             
-            <span class="field">
+            <div class="field">
                 <input name="smtp_server" 
                        value=""
                        size="30"
-                       tal:attributes="value props/smtp_server" />
-            </span>
-            
-            <span class="info">			
-            This is the address of your local SMTP (out-going
-            mail) server. Usually "localhost", unless you use an
-            external server to send mail.
-            </span>
+                       tabindex="3"
+                       onfocus="formtooltip('smtp_server_help',1)" 
+                       onblur="formtooltip('smtp_server_help',0)" 
+                       tal:attributes="value props/smtp_server" 
+                       />
+            </div>
         </div>
 
         <div class="row">
-            <span class="label">
-            Portal title
-            </span>
+            <div class="label">
+                <span i18n:id="portal_title">Portal title</span>
+
+                <div id="portal_title_help"
+                     i18n:id="portal_title_help" 
+                     class="help" 
+                     style="visibility:hidden">
+                This is the title of your Plone instance.
+                </div>
+            </div>
             
-            <span class="field">
+            <div class="field">
                 <input name="title" 
                        size="30"
                        value=""
+                       tabindex="4"
+                       onfocus="formtooltip('portal_title_help',1)" 
+                       onblur="formtooltip('portal_title_help',0)" 
                        tal:attributes="value props/Title" />
-            </span>
-            
-            <span class="info">			
-            This is the title of the CMF.
-            </span>
+            </div>
         </div>
 
         <div class="row">
-            <span class="label">
-            Portal description
-            </span>
+            <div class="label">
+                <span i18n:id="portal_description">Portal description</span>
+
+                <div id="portal_description_help"
+                     i18n:id="portal_description_help" 
+                     class="help" 
+                     style="visibility:hidden">
+                This description is made available via syndicated
+                content and elsewhere.  It should be fairly brief.
+                </div>
+            </div>
             
-            <span class="field">
+            <div class="field">
                 <textarea cols="30" 
                           rows="6" 
                           name="description"
+                          tabindex="5"
+                          onfocus="formtooltip('portal_description_help',1)" 
+                          onblur="formtooltip('portal_description_help',0)" 
                           tal:content="python:props.description">Description</textarea>
-            </span>
-            
-            <span class="info">			
-            This description is made available via syndicated
-            content and elsewhere.  It should be fairly brief.
-            </span>
+            </div>
         </div>
 
         <div class="row">
-            <span class="label">
-            Password policy
-            </span>
+            <div class="label">
+                <span i18n:id="password_policy">Password policy</span>
+
+                <div id="password_policy_help"
+                     i18n:id="password_policy_help" 
+                     class="help" 
+                     style="visibility:hidden">
+                Selects if the users can choose their initial password or not. It's easier
+                to create bogus accounts if the password is not generated, so if this is a concern, 
+                choose "Generate".
+                </div>
+            </div>
             
-            <span class="field">
+            <div class="field">
                 <span tal:define="validateChecked python:props.validate_email;
                                   allowEnterChecked python:not props.validate_email;">
                 
                     <input class="noborder" 
                            type="radio" 
-                           name="validate_email:int" 
+                           name="validate_email:int"
+                           id="validate_email_on" 
                            value="1"
+                           tabindex="6"
+                           onfocus="formtooltip('password_policy_help',1)" 
+                           onblur="formtooltip('password_policy_help',0)" 
                            tal:attributes="checked validateChecked" />
                     
-                Generate and email members' initial password <br />
+                    <label for="validate_email_on" i18n:translate="">Generate and email members' initial password</label> 
+                
+                    <br />
                 
                     <input class="noborder" 
                            type="radio" 
-                           name="validate_email:int" 
+                           name="validate_email:int"
+                           id="validate_email_off"
                            value="0"
+                           tabindex="6"
+                           onfocus="formtooltip('password_policy_help',1)" 
+                           onblur="formtooltip('password_policy_help',0)" 
                            tal:attributes="checked allowEnterChecked" />
                 
-                Allow members to select their initial password
+                    <label for="validate_email_off">Allow members to select their initial password</label>
                 
                 </span>
-            </span>
-            
-            <span class="info">			
-            Selects if the users can choose their initial password or not. It's easier
-            to create bogus accounts if the password is not generated, so if this is a concern, 
-            choose "Generate".
-            </span>
+            </div>
         </div>
 
         <div class="row">
-            <span class="label">&nbsp;</span>
-            <span class="field">
-                <input class="context" type="submit" name="reconfig:method" value="Save settings" />
-            </span>
+            <div class="label">&nbsp;</div>
+            <div class="field">
+                <input class="context"
+                       tabindex="7" 
+                       type="submit" 
+                       name="reconfig:method" 
+                       value="Save settings" 
+                       />
+            </div>
         </div>
 
     </form>

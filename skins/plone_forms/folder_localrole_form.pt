@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
       metal:use-macro="here/main_template/macros/master">
@@ -16,7 +17,7 @@
         </div>	
 
   </div>
-
+																																											
   <div metal:fill-slot="main"
     tal:define="join python:modules['string'].join;
     search_submitted request/role_submit|nothing;
@@ -24,23 +25,23 @@
                                                                                      , search_term=request.get('search_term', '') ), None);">
 
     <metal:block tal:condition="python:test(search_submitted and not search_results, 1, 0)">
-                <h1>Search results</h1>
-		<p>No members were found using your <strong>Search Term(s)</strong></p>
+		<h1 i18n:translate="">Search results</h1>
+		<p i18n:translate="">No members were found using your <strong>Search Criteria</strong></p>
 		<hr />
     </metal:block>
     
     <metal:block tal:condition="python:test(search_submitted and search_results, 1, 0)">
     
-		<h1>Search results</h1>
+		<h1 i18n:translate="">Search results</h1>
 
-		<p>Select one or more Members, and a role to assign.</p>
+		<p i18n:translate="">Select one or more Members, and a role to assign.</p>
 	
 	<form class="group"
               method="post" 
               name="change_type" 
               action="folder_localrole_edit">
  		
-            <span class="legend">Available Members</span>
+            <span class="legend" i18n:translate="">Available Members</span>
             
             <input type="hidden" name="change_type" value="add" />
 		
@@ -71,11 +72,11 @@
 		
     		<div class="row">
     				
-    			<span class="label">
-    			Role to assign:
-    			</span>
+    			<div class="label">
+    			Role to assign
+    			</div>
     
-                <span class="field">
+                <div class="field">
     
                     <select name="member_role">
     
@@ -86,22 +87,18 @@
     
                     </select>
     
-                </span>
+                </div>
     
-                <span class="info"></span>
-                
     		</div>
 
     		<div class="row">
     		
-    			<span class="label"></span>
+    			<div class="label">&nbsp;</div>
     			
-    			<span class="field">
+    			<div class="field">
                     <input class="context" type="submit" value="Assign Local Role to Selected User(s)" />
-                </span>
+                </div>
     		
-    			<span class="info"></span>
-    			
     		</div>			
 		
 		</form>				
@@ -112,22 +109,23 @@
 	
 	<div>
 		<span tal:condition="python:test(not search_submitted or (search_submitted and not search_results), 1, 0)">
- 			<h1>Assign local roles to folder
+ 			<h1>
+            <span i18n:translate="">Assign local roles to folder</span>
 			<span tal:replace="here/title_or_id">title</span> 
 			</h1>
 			
-			<p>
+			<p i18n:translate="">
 			A local role is a way of allowing other users into some or all of your
 			folders. These users can edit items, publish them - et cetera, depending
 			on what permissions you give them.
 			</p>
 			
-			<p>
+			<p i18n:translate="">
 			Local roles are ideal in cooperation projects, and as every item has a
 			history and an undo option, it's easy to keep track of the changes.
 			</p>
 			
-			<p>
+			<p i18n:translate="">
 			To give a person a local role in this folder, just search for the person's
 			name or email address in the form below, and you will be presented with a
 			page that will show you the options available.
@@ -138,44 +136,44 @@
                   name="localrole" 
                   action="folder_localrole_form">
 			
-                <span class="legend">Search Terms</span>
+                <span class="legend" i18n:translate="">Search Terms</span>
 			
                 <input type="hidden" name="role_submit" value="role_submit" />
 			
     			<div class="row">
     			
-    				<span class="label">
+    				<div class="label">
     				Search by
-    				</span>
+    				</div>
     				
-    				<span class="field">
+    				<div class="field">
     					<select name="search_param">
     						<option value="username">User Name</option>
     						<option value="email">Email Address</option>
     					</select>
-    				</span>
+    				</div>
     			
     			</div>
     			
     			<div class="row">
     			
-    				<span class="label">
+    				<div class="label">
     				Search Term
-    				</span>
+    				</div>
     				
-    				<span class="field">
+    				<div class="field">
     					<input type="text" name="search_term" size="30" />
-    				</span>
+    				</div>
     			
     			</div>
     
     			<div class="row">
     			
-    				<span class="label">&nbsp;</span>
+    				<div class="label">&nbsp;</div>
     				
-    				<span class="field">
+    				<div class="field">
     					<input class="context" type="submit" value="Perform Search" />
-    				</span>
+    				</div>
     			
     			</div>
             			
@@ -185,18 +183,21 @@
 
 	    <hr />
 
-    	<h1>Currently assigned local roles in folder
+    	<h1>
+        <span i18n:translate="">Currently assigned local roles in folder</span>
     		<span tal:replace="here/title_or_id">title</span>
     	</h1>
     
-    	<p>These users currently have local roles assigned in this folder:</p>
+    	<p i18n:translate="">
+        These users currently have local roles assigned in this folder:
+        </p>
     
     	<form class="group"
               method="post" 
               name="deleterole" 
               action="folder_localrole_edit">
 
-            <span class="legend">Assigned Roles</span>
+            <span class="legend" i18n:translate="">Assigned Roles</span>
 
 	        <input type="hidden" name="change_type" value="delete">
 	        <input type="hidden" name="member_role" value="">
@@ -241,11 +242,11 @@
 
         	<div class="row">
         		
-        		<span class="label">&nbsp;</span>
+        		<div class="label">&nbsp;</div>
         		
-        		<span class="field">
+        		<div class="field">
         			<input class="context" type="submit" value="Delete Selected Role(s)" />
-        		</span>
+        		</div>
         		
         	</div>
     

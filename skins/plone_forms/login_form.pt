@@ -7,16 +7,20 @@
 
 <div metal:fill-slot="main">
 
-<h1>Please sign in</h1>
+<h1 i18n:translate="">Please sign in</h1>
 
-<p>
+<p i18n:translate="">
 To access this part of the site, you need to sign in with your username and password.
 </p>
 
 <p>
-Enter your name and password below. 
+
 <metal:block tal:condition="python: here.portal_membership.checkPermission('Add portal members', here)">
+
+<span i18n:translate="">
 If you do not have an account here, head over to the <a href="join_form">registration form</a> to become a member.
+</span>
+
 </metal:block>
 </p>
 
@@ -28,59 +32,119 @@ If you do not have an account here, head over to the <a href="join_form">registr
 	       tal:condition="python:request.get('came_from', '')"
 	       tal:attributes="value request/came_from" />
 
-<span class="legend">Account details</span>
+<span class="legend" i18n:translate="">Account details</span>
 	
-	<div metal:define-macro="form_contents">
 	<div class="row">
-			<span class="label">Name</span>
-			<span class="field">
-				  <input type="text" name="__ac_name" size="20"
-	        		 	 tal:attributes="value python:request.get('__ac_name', '')" />
-			</span>
+			<div class="label">
+                <span i18n:id="user_name">User Name</span>
+                <div id="user_name_help" 
+                     i18n:id="user_name_help"
+                     class="help" 
+                     style="visibility:hidden">
+                Enter the user name you use on this site. If you haven't
+                got a user name yet, or have forgotten it, use the links at the
+                bottom of this form.
+                </div>
+            </div>
+
+			<div class="field">
+				<input type="text" 
+                       name="__ac_name" 
+                       size="20"
+                       tabindex="1"
+                       onfocus="formtooltip('user_name_help',1)" 
+                       onblur="formtooltip('user_name_help',0)" 
+                       tal:attributes="value python:request.get('__ac_name', '')" 
+                       />
+			</div>
 
 	</div>
 
 	<div class="row">
-			<span class="label">Password</span>
-			<span class="field">
-				  <input type="password" name="__ac_password" size="20" />
-			</span>
-            <span class="info">
-            <strong>Forgotten your password?</strong> No problem, 
-            <a href="mail_password_form">click here</a> to have it mailed to you.
-            </span> 
+        <div class="label">
+            <span i18n:id="password">Password</span> 
+            <div id="password_help" 
+                 i18n:id="password_help"
+                 class="help" 
+                 style="visibility:hidden">
+            Enter your password. If you have forgotten it, use the
+            links at the bottom of this form to request it again.
+            </div>
+        </div>
+        
+        <div class="field">
+            <input type="password" 
+                   name="__ac_password" 
+                   size="10" 
+                   tabindex="2"
+                   onfocus="formtooltip('password_help',1)" 
+                   onblur="formtooltip('password_help',0)" 
+                   />
+        </div>
 	</div>
 
-	<div class="row">
-			<span class="label">&nbsp;</span>
-			<span class="field">
-              <input type="checkbox" class="noborder" name="__ac_persistent" value="1" checked="checked" id="cb_remember" />
-              <label for="cb_remember">Remember my name.</label>
-			</span>
-            <span class="info">
+    <div class="row">
+        <div class="label">
+                &nbsp;
+            <div id="remember_help" 
+                 i18n:id="remember_help"
+                 class="help" 
+                 style="visibility:hidden">
             Setting the 'Remember my name' option will bake a cookie with your username.
             When you sign in later, your user name will already be filled in for you.
-            </span>
+            </div>
+        </div>
+        
+        <div class="field">
+            <input type="checkbox" 
+                   class="noborder" 
+                   name="__ac_persistent" 
+                   value="1" 
+                   checked="checked" 
+                   id="cb_remember"
+                   tabindex="3" 
+                   onfocus="formtooltip('remember_help',1)" 
+                   onblur="formtooltip('remember_help',0)" />
 
-	</div>
+            <label for="cb_remember" i18n:id="remember">Remember my name.</label>
+        </div>
+    </div>
 	
-  </div>
-
 	<div class="row">
-			<span class="label">&nbsp;</span>
-			<span class="field">
-				  <input class="context" type="submit" name="submit" value="Sign in" />
-			</span>
-            <span class="info">
-            Having trouble logging in? Make sure to enable cookies in your web browser. 
-            Don't forget to logout or exit your browser when you're done.
-            </span>
+    	<div class="label">&nbsp;</div>
+    	<div class="field">
+            <input class="context"
+                   tabindex="4" 
+                   type="submit" 
+                   name="submit" 
+                   value="Sign in" />
+
+            <p>
+                <strong i18n:translate="">
+                Forgotten your password?
+                </strong> 
+                
+                <span i18n:translate="">
+                No problem, 
+                <a href="mail_password_form">click here</a> to have it mailed to you.
+                </span>
+                
+            </p>
+            
+            <p>           
+                <strong i18n:translate="">
+                Having trouble logging in?
+                </strong> 
+                
+                <span i18n:translate="">
+                Make sure to enable cookies in your web browser. 
+                Don't forget to logout or exit your browser when you're done.
+                </span>
+            </p>
+                        
+    	</div>
     </div>	
 
-    <div class="spacer">
-    &nbsp;
-    </div>
-    
 </form>
 
 </div>

@@ -4,10 +4,6 @@
 <body>
 <div metal:fill-slot="main">
 
-<div class="Desktop">
-
-<div class="Topic">
-
 <h2> Topic Criteria: <span tal:replace="here/getId" /> </h2>
 
 <form action="" 
@@ -56,8 +52,5 @@
 
 </div>
 
-</div>
-
-</div>
 </body>
 </html>

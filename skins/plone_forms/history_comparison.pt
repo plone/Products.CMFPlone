@@ -9,7 +9,9 @@
     </div>
 
     <div tal:condition="python:test(results, 0, 1)">
-      <p class="form-text">This object does not provide comparison support.</p>
+      <p i18n:translate="">
+      This object does not provide comparison support.
+      </p>
     </div> 
 
   </div>

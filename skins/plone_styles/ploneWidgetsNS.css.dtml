@@ -57,25 +57,22 @@ input.noborder {
 }
 
 .label {
-    float: left;
     font-weight: bold;
     padding: 0em 0em;
-    text-align: right;
-    width: 15%;
 }
 
 .field {
-    float: left;
     padding: 0em 0em 0em 0em;
     text-align: left;
-    width: 45%;
 }
 
 .info {
-    float: right;
     padding: 0em 0em 0.2em 0em;
     text-align: left;
-    width: 30%;
+}
+
+div.help {
+	font-weight: normal;
 }
 
 span.card {
@@ -87,7 +84,6 @@ span.card {
     margin: 1em;
     padding: 1em;
     text-align: center;
-    width: 15%;
 }
 
 span.left {

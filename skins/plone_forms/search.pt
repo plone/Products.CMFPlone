@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
@@ -12,14 +12,19 @@
                  DateTime python:modules['DateTime'].DateTime;
                  b_size python:30;b_start python:0;b_start request/b_start | b_start;">
     
-    <h1>Search results</h1>
+    <h1 i18n:translate="">Search results</h1>
                  
     <div tal:condition="results"
           tal:define="batch python:Batch(results, b_size, int(b_start), orphan=1);
                       mq python:modules['ZTUtils'].make_query;
                       mhi python:modules['ZTUtils'].make_hidden_input">
 
-        <strong> Found <span tal:replace="python:len(results)" /> items matching your criteria. </strong> <br/>
+        <strong> 
+        <span tal:replace="python:len(results)" /> 
+        <span i18n:translate="">items matching your criteria</span>. 
+        </strong> 
+        
+        <br/>
         
         <!-- Navigation -->
         <div class="listingBar" tal:condition="python:test(batch.previous or batch.next, 1, 0)">
@@ -50,10 +55,10 @@
         
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Last Modified</th>
-                    <th>Description</th>
+                    <th i18n:id="title">Title</th>
+                    <th i18n:id="author">Author</th>
+                    <th i18n:id="last_modified">Last Modified</th>
+                    <th i18n:id="description">Description</th>
                 </tr>
             </thead>
 
@@ -102,7 +107,7 @@
     </div>
     
     <div tal:condition="not: results">
-        <p><strong> No Results were Found </strong></p>
+        <p><strong i18n:translate=""> No Results were Found </strong></p>
     </div>		 
 
 </div>
@@ -110,3 +115,4 @@
 
 </body>
 </html>
+

@@ -7,15 +7,21 @@
 
  	 <span metal:fill-slot="main">
    
-	 <h1>You are now signed out</h1>
+	 <h1 i18n:translate="">You are now signed out</h1>
 	 
-	 <p>
+	 <p i18n:translate="">
 	 We hope you enjoyed using our services. We look forward to seeing you again.
      </p>
 	 
 	 <p>
-	 Best Regards from the 
-	  <strong tal:content="python:container.portal_url.getPortalObject().Title()">portal title</strong> team.
+     
+	 <span i18n:translate="">
+     Best Regards from the
+     </span> 
+	 
+     <strong tal:content="python:container.portal_url.getPortalObject().Title()">portal title</strong> 
+     
+     <span i18n:translate="">team</span>.
 	 </p>
 	 
 	</span>
