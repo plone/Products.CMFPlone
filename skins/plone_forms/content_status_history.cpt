@@ -61,7 +61,7 @@
                              batch containedobjects;
                              global folders_in_publishing python:[o.getId() for o in batch if o.isPrincipiaFolderish];"
                  tal:condition="batch">
-              <table metal:use-macro="here/folder_contents/macros/folder_listing">
+              <table summary="" metal:use-macro="here/folder_contents/macros/folder_listing">
               </table>
             </div>
           </div>
@@ -270,7 +270,8 @@
 
       <div tal:condition="not: request/ids|nothing">
 
-        <table class="listing nosort"
+        <table class="listing nosort" summary="Review History"
+               i18n:attributes="summary"
                tal:define="review_history python:wtool.getInfoFor(here, 'review_history', [])"
                tal:condition="python:[review for review in review_history if review.get('action','')]">
 
