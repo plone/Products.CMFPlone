@@ -130,7 +130,7 @@ class TestGroupsTool(PloneTestCase.PloneTestCase):
         self.groups.setGroupOwnership(g, doc)
         self.assertEqual(doc.Creator(), self.prefix + 'foo')
         self.assertEqual(doc.get_local_roles_for_userid(self.prefix + 'foo'), ('Owner',))
-        # XXX: Is this a bug?
+        # XXX: Initial creator still has Owner role. Is this a bug?
         self.assertEqual(doc.get_local_roles_for_userid(default_user), ('Owner',))
 
     def testWrapGroup(self):
