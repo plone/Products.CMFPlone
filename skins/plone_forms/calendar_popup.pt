@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en"
+      lang="en" 
+      tal:define="input_id request/input_id;
+                  global site_properties here/portal_properties/site_properties;"
+      tal:attributes="lang site_properties/default_language|default;
+                      xml:lang site_properties/default_language|default;"
+       i18n:domain="plone">
+
+  <head>
+    <title i18n:translate="label_calendar">Calendar</title>
+
+    <script type="text/javascript" language="javascript" 
+            tal:content="python: here.getPopupScript(input_id=input_id)">
+      
+    </script>
+
+    <!-- Style sheets for CSS2 capable browsers (Mozilla, Opera, IE, Netscape6+, Konqueror etc. -->
+
+    <style type="text/css" media="all" tal:content="string: @import url(${here/portal_url}/plone.css);"></style>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"
+          tal:define="charset here/portal_properties/site_properties/default_charset|string:utf-8"
+          tal:attributes="content string:text/html;;charset=${charset}" />
+
+  </head>
+  <body style="margin: 1em 2em 0em 2em;">
+
+        <div style="text-align: center; margin-bottom: 1em;" i18n:translate="help_choose_a_date">
+        Choose a date
+        </div>
+
+        <div metal:use-macro="here/calendar_slot/macros/calendarDatePickerBoxPopup">
+            Show calendar
+        </div>
+        
+        
+  </body>
+</html>
