@@ -2,7 +2,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
       lang="en-US"
-      metal:use-macro="here/main_template/macros/master">
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
 
 <metal:block metal:fill-slot="base"
              tal:define="default_view python:test(here.getId()=='index_html',1,0);">
