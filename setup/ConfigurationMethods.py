@@ -134,6 +134,14 @@ def modifyActionProviders(self, portal):
         if action.id=='configPortal':
             action.title='Setup Plone'
     mt._actions=_actions
+
+    at=getToolByName(portal, 'portal_actions')
+    _actions=at._cloneActions()
+    for action in _actions:
+        if action.id=='folderContents':
+            action.title='Contents'
+            action.name='Contents'
+    at._actions=_actions
     
 def modifyMembershipTool(self, portal):
     mt=getToolByName(portal, 'portal_membership')
@@ -190,6 +198,11 @@ def modifySkins(self, portal):
             if a.id == 'metadata':
                 a.name = 'Properties'   #1.3
                 a.title = 'Properties'  #1.4
+            if a.id == 'local_roles':
+                a.name = 'Sharing'
+                a.title = 'Sharing'
+            if a.id == 'content_status_history':
+                a.visible = 0
         t._actions=_actions
             
 def addNewActions(self, portal):
@@ -214,6 +227,7 @@ def addNewActions(self, portal):
                  permission='View',
                  category='portal_tabs')
 
+    #This is now a drop down.
     #at.addAction('content_status_history',
     #             name='State',
     #             action='string:${object_url}/content_status_history',
