@@ -5,7 +5,10 @@ from Products.CMFCore.Expression import Expression
 
 import ConfigurationMethods
 
+class ConfigurationNotFound(NameError): pass
+
 ONEFOUR=1
+
 _registry={}
 _methods=('addSiteProperties',
           'setupDefaultSlots',
@@ -17,6 +20,17 @@ _methods=('addSiteProperties',
           'modifySkins',
           'installPortalTools')
 
+def getCMFVersion():
+    from os.path import join
+    from Globals import package_home
+    from Products.CMFCore import cmfcore_globals
+
+    path=join(package_home(cmfcore_globals),'version.txt')
+    file=open(path, 'r')
+    _version=file.read()
+    file.close()
+    return _version.strip()
+    
 def registerConfiguration(versions, configuration):
     _versions=()
     if type(versions) is StringType:
@@ -25,18 +39,23 @@ def registerConfiguration(versions, configuration):
         _versions=tuple(version)
     else:
         _versions=versions
-
     for methodname in _methods:
         setattr(configuration, methodname, getattr(ConfigurationMethods, methodname))
-
     _registry[_versions]=configuration
 
 def getConfiguration(version):
     for versions, config in _registry.items():
         if version in versions:
             return config
+    raise ConfigurationNotFound, \
+      str(version) + ' was not found in configuration '
+
+def getCurrentConfiguration():
+    return getConfiguration(getCMFVersion())
 
 class OriginalConfiguration:
+    _methods=_methods+('modifyActions',
+                       'plonify_typeActions')
     def addTypeActions(self, portal):
         tt=getToolByName(portal, 'portal_types')
         tt['Event'].addAction( 'metadata'
@@ -76,21 +95,21 @@ class OriginalConfiguration:
         tt=getToolByName(portal, 'portal_types')
         folder_actions=tt['Folder']._cloneActions()
         for a in folder_actions:
-            if a.id=='folderlisting':
-                a.visible = 0
-            if a.id=='edit':
-                a.name='Properties'
+            if a['id']=='folderlisting':
+                a['visible']=0
+            if a['id']=='edit':
+                a['name']='Properties'
         tt['Folder']._actions=folder_actions
 
         file_actions=tt['File']._cloneActions()
-        tt['File']._actions=[action for action in file_actions if action.id!='download']
+        tt['File']._actions=[action for action in file_actions if action['id']!='download']
         self.addTypeActions(portal)
 
         for t in tt.objectValues():
             _actions=t._cloneActions()
             for a in _actions:
-                if a.id=='metadata':
-                    a.name='Properties'
+                if a['id']=='metadata':
+                    a['name']='Properties'
             t._actions=_actions
 
         at=getToolByName(portal, 'portal_actions')
@@ -133,10 +152,11 @@ class OriginalConfiguration:
         for ptype in types_tool.objectValues():
             ptype_actions=ptype._cloneActions()
             for action in ptype_actions:
-                exprtxt=getattr(action.action,'text', action.action)
-                if exprtxt.startswith('string:') and \
-                    action.id in ('edit', 'metadata'):
-                    action.action=Expression(text='string:portal_form/'+exprtxt[len('string:'):])
+                if action['id'] in ('edit', 'metadata'):
+                    if action['id'].startswith('portal_form'):
+                        continue
+                    exprtxt='portal_form/'+action['action']
+                    action['action']=exprtxt
             ptype._actions=tuple(ptype_actions)
 
         actions_tool=getToolByName(portal, 'portal_actions')
@@ -156,6 +176,7 @@ class OriginalConfiguration:
 registerConfiguration(('1.1','1.2','1.3'), OriginalConfiguration)
 
 class OneFourConfiguration(OriginalConfiguration):
+    _methods=_methods+('plonify_typeActions',)
 
     def addTypeActions(self, portal):
         tt=getToolByName(portal, 'portal_types')

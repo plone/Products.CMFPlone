@@ -173,8 +173,8 @@ def modifySkins(self, portal):
     for t in tt.objectValues():
         _actions=t._cloneActions()
         for a in _actions:
-            if a.id=='metadata':
-                a.name='Properties'
+            if a['id']=='metadata':
+                a['name']='Properties'
         t._actions=_actions
 
 def addNewActions(self, portal):

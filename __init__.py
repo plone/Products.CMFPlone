@@ -1,11 +1,12 @@
 cmfplone_globals=globals()
 custom_policies={} #stores the registered Policies
-import migrations
+import MigrationTool, migrations
 from Products.CMFCore import CachingPolicyManager, DirectoryView, utils
 from AccessControl import ModuleSecurityInfo, ClassSecurityInfo, allow_module, allow_class, allow_type
 import MembershipTool, FormulatorTool, PloneTool, WorkflowTool
-import NavigationTool, FactoryTool, FormTool, PropertiesTool, MigrationTool
+import NavigationTool, FactoryTool, FormTool, PropertiesTool
 import PloneFolder, Portal, PloneWorkflow, FolderWorkflow
+
 import CustomizationPolicy, PrivateSitePolicy
 
 import sys

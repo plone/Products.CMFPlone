@@ -10,8 +10,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.Expression import Expression
 from Products.CMFCore import CMFCorePermissions
 from Products.CMFCore.CMFCorePermissions import AddPortalMember
-
 from CustomizationPolicy import DefaultCustomizationPolicy
+
 from interfaces.CustomizationPolicy import ICustomizationPolicy
 
 def register(context, app_state):
