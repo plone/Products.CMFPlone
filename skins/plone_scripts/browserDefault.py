@@ -7,6 +7,13 @@
 ##parameters=
 ##title=Set Browser Default
 ##
+
+# WARNING: Do not remove this, or else WebDAV breaks badly
+request = context.REQUEST
+if request.has_key('REQUEST_METHOD'):
+    if request['REQUEST_METHOD'] not in  ['GET', 'HEAD']:
+        return context, [request['REQUEST_METHOD']]
+
 default_pages = ['index_html', ]
 pages = getattr(context, 'default_page', [])
 props = context.portal_properties.site_properties
