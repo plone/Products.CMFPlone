@@ -24,11 +24,14 @@ if o is None:
 
 transaction_note(o.getTypeInfo().getId() + ' was created.')
 status = 'success'
-try:
-    edit_action = o.getTypeInfo().getActionById('edit')
-except TypeError:
-    status = 'success_no_edit'
+
+if o.getTypeInfo().getActionById('edit', None) is None:
+    status='success_no_edit'
 
 script_id = script_id or script.getId()
-return context.portal_navigation.getNext(o, script_id, status,
+
+return context.portal_navigation.getNext(o, 
+                                         script_id, 
+                                         status,
                                          portal_status_message = type_name + ' has been created.')
+
